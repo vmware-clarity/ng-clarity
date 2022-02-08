@@ -122,6 +122,13 @@ export default function (): void {
       expect(input.getAttribute('aria-label')).toBe('Filter items');
       tick();
     }));
+
+    it('has placeholder on the input', fakeAsync(function () {
+      openFilter();
+      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      expect(input.getAttribute('placeholder')).toBe('Filter items');
+      tick();
+    }));
   });
 }
 
