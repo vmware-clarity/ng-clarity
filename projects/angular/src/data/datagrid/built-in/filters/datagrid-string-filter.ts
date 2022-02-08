@@ -29,6 +29,7 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
         [(ngModel)]="value"
         class="clr-input"
         [attr.aria-label]="commonStrings.keys.filterItems"
+        [placeholder]="commonStrings.keys.filterItems"
       />
     </clr-dg-filter>
   `,
