@@ -10,6 +10,7 @@ import { ClrWizard } from '../wizard';
 
 import { PageCollectionService } from './page-collection.service';
 import { WizardNavigationService } from './wizard-navigation.service';
+import { ClrWizardPage } from '../wizard-page';
 
 export default function (): void {
   describe('Wizard Navigation Service', function () {
@@ -318,6 +319,18 @@ export default function (): void {
       expect(secondPage.completed).toBe(true, 'validate secondPage.completed was turned true as expected');
       expect(thirdPage.completed).toBe(false, 'validate thirdPage.completed is still false as expected');
       expect(fourthPage.completed).toBe(false, 'validate fourthPage.completed is still false as expected');
+    });
+
+    it('.goTo() should emit the current page for navItemChanged subject', function () {
+      // const startPage = wizardNavigationService.pageCollection.getPageByIndex(0);
+      const secondPage = wizardNavigationService.pageCollection.getPageByIndex(1);
+      let pageTest: ClrWizardPage;
+      wizardNavigationService.currentPageChanged.subscribe(page => (pageTest = page));
+
+      expect(pageTest).toBeUndefined();
+      wizardNavigationService.goTo(secondPage, true);
+      context.detectChanges();
+      expect(pageTest).toBe(secondPage);
     });
 
     it('.setFirstPageCurrent() should set the first page as the current page', function () {

@@ -434,7 +434,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     if (!pageId) {
       return;
     }
-
     this.navService.goTo(pageId);
   }
 
@@ -471,7 +470,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   private listenForPageChanges(): Subscription {
-    return this.navService.currentPageChanged.subscribe(() => this.currentPageChanged.emit());
+    return this.navService.currentPageChanged.subscribe(() => {
+      // Added to address VPAT-749:
+      //   When clicking on a wizard tab, focus should move to that
+      //   tabs content to make the wizard more accessible.
+      this.wizardTitle?.nativeElement.focus();
+      this.currentPageChanged.emit();
+    });
   }
 
   private updateNavOnPageChanges(): void {
