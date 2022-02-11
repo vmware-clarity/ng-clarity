@@ -1,3 +1,0 @@
-body:not([cds-version]) {
-  display: none;
-}
