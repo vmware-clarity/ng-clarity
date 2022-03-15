@@ -1,4 +1,4 @@
 /.angular
-/node_modules
+**/node_modules
 /dist
 /projects/angular/clarity.api.md
