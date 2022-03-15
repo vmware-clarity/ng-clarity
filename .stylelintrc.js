@@ -7,11 +7,12 @@
 module.exports = {
   extends: ['stylelint-config-recommended-scss'],
   defaultSeverity: 'error',
-  plugins: ['stylelint-scss'],
+  plugins: ['stylelint-scss', 'stylelint-plugin-license-header'],
   rules: {
     'no-descending-specificity': null,
     'no-duplicate-selectors': null,
     'no-invalid-position-at-import-rule': null,
+    'plugin/license-header': [true, { license: './.license-header.js' }],
     'scss/at-extend-no-missing-placeholder': null,
     'scss/at-import-no-partial-leading-underscore': null,
     'scss/at-import-partial-extension': null,
