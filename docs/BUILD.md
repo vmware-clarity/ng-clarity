@@ -10,7 +10,7 @@ This repository contains the code for two public packages:
 
 ## Project Structure
 
-This repository consists of four projects:
+This repository consists of three projects:
 
 ```bash
 projects
@@ -18,8 +18,6 @@ projects
 ├── angular # All Angular Clarity components and styles (@clr/angular)
 
 ├── demo # A demo angular application
-
-├── schematics # Auto update scripts
 
 ├── ui # Extracted global CSS (@clr/ui)
 

@@ -29,17 +29,13 @@
 
 ## Installing Clarity Angular
 
-1.  The easiest way to run a sample Angular application with Clarity is to use
-    the Angular CLI and run `ng add @clr/angular`. If you have an existing project
-    or are not using the Angular CLI, follow the following steps.
-
-2.  Install the clarity-angular package through npm:
+1.  Install the clarity-angular package through npm:
 
     ```bash
     npm install @clr/angular --save
     ```
 
-3.  Import the ClarityModule into your Angular application's module. Your
+2.  Import the ClarityModule into your Angular application's module. Your
     application's main module might look like this:
 
     ```typescript

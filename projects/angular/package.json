@@ -23,14 +23,5 @@
     "@angular/core": "^12.0.0",
     "@cds/core": "^5.0.0",
     "@clr/ui": "@VERSION"
-  },
-  "schematics": "./schematics/collection.json",
-  "ng-update": {
-    "migrations": "./schematics/migration-collection.json",
-    "packageGroup": [
-      "@clr/angular",
-      "@clr/ui",
-      "@cds/core"
-    ]
   }
 }
