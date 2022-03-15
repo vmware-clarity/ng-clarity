@@ -48,7 +48,8 @@
     "publish:next": "npm publish ./dist/clr-angular --tag next; npm publish ./dist/clr-ui --tag next; npm publish ./dist/clr-icons --tag next;",
     "publish:local": "npm publish ./dist/clr-icons --registry http://localhost:4873 --tag local; npm publish ./dist/clr-ui --registry http://localhost:4873 --tag local; npm publish ./dist/clr-angular --registry http://localhost:4873 --tag local;",
     "publish:verify": "node ./scripts/publish-verify.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "cz -s"
   },
   "dependencies": {
     "@angular/animations": "~13.0.0",
@@ -71,14 +72,15 @@
     "@angular-devkit/schematics": "~13.0.1",
     "@angular/cli": "~13.0.1",
     "@angular/compiler-cli": "~13.0.0",
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/cz-commitlint": "^16.1.0",
     "@microsoft/api-extractor": "7.19.4",
     "@schematics/angular": "~13.0.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
+    "commitizen": "^4.2.4",
+    "commitlint": "^16.1.0",
     "cpy-cli": "^3.1.0",
     "csso-cli": "^3.0.0",
     "eslint": "^8.6.0",
@@ -111,5 +113,10 @@
     "stylelint-plugin-license-header": "1.0.3",
     "ts-node": "~8.3.0",
     "typescript": "~4.4.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
