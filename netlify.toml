@@ -1,0 +1,8 @@
+[build]
+  command = "npm run _build:demo"
+  publish = "./dist/clr-demo"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
