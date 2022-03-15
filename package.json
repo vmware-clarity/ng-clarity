@@ -49,7 +49,8 @@
     "publish:local": "npm publish ./dist/clr-ui --registry http://localhost:4873 --tag local && npm publish ./dist/clr-angular --registry http://localhost:4873 --tag local",
     "publish:verify": "node ./scripts/publish-verify.js",
     "publish:verify:registry": "node ./scripts/version-validation.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "cz -s"
   },
   "dependencies": {
     "@angular/animations": "~12.0.5",
@@ -72,14 +73,15 @@
     "@angular-devkit/schematics": "~12.0.5",
     "@angular/cli": "~12.0.5",
     "@angular/compiler-cli": "~12.0.5",
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/cz-commitlint": "^16.1.0",
     "@microsoft/api-extractor": "7.19.4",
     "@schematics/angular": "~11.2.4",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^14.0.0",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
+    "commitizen": "^4.2.4",
+    "commitlint": "^16.1.0",
     "cpy-cli": "^3.1.0",
     "csso-cli": "^3.0.0",
     "eslint": "^8.6.0",
@@ -114,5 +116,10 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.2.4",
     "webpack": "^4.46.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
