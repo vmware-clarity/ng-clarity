@@ -12,3 +12,4 @@ projects/schematics/src/**/*.js
 projects/schematics/src/**/*.js.map
 
 .angular/cache
+/projects/angular/clarity.api.md
