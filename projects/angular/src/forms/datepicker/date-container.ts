@@ -3,6 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 import { Component, Optional, ViewChild, ElementRef, Input, AfterViewInit, Renderer2 } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 

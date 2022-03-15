@@ -3,6 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { AriaService } from '../../utils/aria/aria.service';
