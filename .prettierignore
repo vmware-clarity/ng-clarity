@@ -1,12 +1,6 @@
-package-lock.json
-package.json
-dist/
-reports/
+/.angular
+/node_modules
+/dist
 /projects/angular/clarity.api.md
-.vscode
-.ng_build
-**/node_modules/**
-**/web_modules/**
-.cache
 projects/schematics/src/**/*.js
 projects/schematics/src/**/*.js.map
