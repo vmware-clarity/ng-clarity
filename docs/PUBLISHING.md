@@ -31,3 +31,9 @@ Public releases are automatically handled through the following GitHub workflows
 - publish a GitHub release
 - publish @clr/angular and @clr/ui packages to npm
 - publish a release notification to [VMware internal Slack channel #clarity](https://vmware-clarity.slack.com/archives/CBZB6LZ39)
+
+---
+
+`bot`: This workflow runs automatically whenever a PR is opened or updated. It will:
+
+- comment on a PR whenever a `build` workflow is started or completed
