@@ -1,9 +1,9 @@
-name: Build
+name: Release
 on:
-  pull_request:
+  workflow_dispatch:
 jobs:
-  build:
-    name: Build
+  release:
+    name: Release
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: '.nvmrc'
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
@@ -23,3 +23,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: npx semantic-release
