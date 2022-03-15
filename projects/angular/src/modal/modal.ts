@@ -76,7 +76,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (!this.bypassScrollService && changes && changes.hasOwnProperty('_open')) {
+    if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
         this._scrollingService.stopScrolling();
       } else {
