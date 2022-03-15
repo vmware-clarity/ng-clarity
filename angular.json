@@ -114,7 +114,7 @@
     },
     "clr-angular": {
       "projectType": "library",
-      "root": "projects/clr-angular",
+      "root": "projects/angular",
       "sourceRoot": "projects/angular/src",
       "prefix": "lib",
       "architect": {
