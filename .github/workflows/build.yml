@@ -23,3 +23,10 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Deploy Demo Preview
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+        run: netlify deploy --alias ${{github.event.pull_request.number}}

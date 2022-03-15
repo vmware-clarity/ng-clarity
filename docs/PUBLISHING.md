@@ -8,6 +8,7 @@ Public releases are automatically handled through the following GitHub workflows
 - verify the project builds
 - verify all tests pass
 - verify any changes to the public api have been accepted
+- publish a preview of the demo app
 
 ---
 
@@ -18,6 +19,7 @@ Public releases are automatically handled through the following GitHub workflows
 - verify all tests pass
 - verify any changes to the public api have been accepted
 - generate a preview of the release
+- publish a preview of the demo app
 
 ---
 
@@ -31,6 +33,7 @@ Public releases are automatically handled through the following GitHub workflows
 - publish a GitHub release
 - publish @clr/angular and @clr/ui packages to npm
 - publish a release notification to [VMware internal Slack channel #clarity](https://vmware-clarity.slack.com/archives/CBZB6LZ39)
+- publish the demo app
 
 ---
 
