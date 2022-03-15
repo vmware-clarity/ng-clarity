@@ -1,6 +1,7 @@
 {
   "name": "clarity",
   "version": "12.0.12",
+  "private": true,
   "engines": {
     "yarn": "please-use-npm",
     "npm": ">= 6.14.0"
@@ -50,7 +51,6 @@
     "publish:verify": "node ./scripts/publish-verify.js",
     "publish:verify:registry": "node ./scripts/version-validation.js"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~12.0.5",
     "@angular/common": "~12.0.5",
