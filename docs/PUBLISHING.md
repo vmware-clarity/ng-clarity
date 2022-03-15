@@ -30,3 +30,4 @@ Public releases are automatically handled through the following GitHub workflows
 - tag the latest commit with the new version number
 - publish a GitHub release
 - publish @clr/angular and @clr/ui packages to npm
+- publish a release notification to [VMware internal Slack channel #clarity](https://vmware-clarity.slack.com/archives/CBZB6LZ39)
