@@ -1,9 +1,9 @@
-name: Build
+name: Preview
 on:
-  pull_request:
+  workflow_dispatch:
 jobs:
-  build:
-    name: Build
+  release:
+    name: Preview
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +15,7 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install npm
         run: npm i -g npm@7.5.6
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
@@ -25,3 +25,5 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Preview Release
+        run: npm run preview
