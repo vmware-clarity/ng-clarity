@@ -1,44 +1,32 @@
 # Installing the Clarity Design System
 
-## Installing Clarity UI (CSS Only)
+## Installing Clarity UI [![npm version](https://badge.fury.io/js/%40clr%2Fui.svg)](https://badge.fury.io/js/%40clr%2Fui)
 
 1.  Install Clarity UI package through npm:
 
-    ```bash
-    npm install @clr/ui --save
+    ```
+    npm install @clr/ui
     ```
 
-2.  Include the clr-ui.min.css in your HTML file:
+2.  Include clr-ui.min.css in your HTML file:
 
-    ```html
-    <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css" />
     ```
-
-    If your site is built with [angular-cli](https://github.com/angular/angular-cli),
-    you can achieve the above by adding the file to the styles array in `angular-cli.json`:
-
-    ```js
-    "styles": [
-        ...
-        "../node_modules/@clr/ui/clr-ui.min.css"
-        ...
-    ]
+    <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
 3.  Write your HTML with the Clarity CSS class names and markup.
 
-## Installing Clarity Angular
+## Installing Clarity Angular [![npm version](https://badge.fury.io/js/%40clr%2Fangular.svg)](https://badge.fury.io/js/%40clr%2Fangular)
 
-1.  Install the clarity-angular package through npm:
+1.  Install Clarity packages through npm:
 
-    ```bash
-    npm install @clr/angular --save
+    ```
+    npm install @clr/ui @clr/angular @cds/core
     ```
 
-2.  Import the ClarityModule into your Angular application's module. Your
-    application's main module might look like this:
+2.  Import the ClarityModule into your Angular application's module. Your application's main module might look like this:
 
-    ```typescript
+    ```
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
     import { ClarityModule } from '@clr/angular';
@@ -54,18 +42,4 @@
          bootstrap: [ AppComponent ]
     })
     export class AppModule {    }
-    ```
-
-    If your application uses [systemjs](https://github.com/systemjs/systemjs),
-    add the configuration as in the example below.
-
-    ```
-    System.config({
-      ...
-      map: {
-         ...
-         '@clr/angular': 'node_modules/@clr/angular/bundles/clr-angular.umd.js',
-      },
-      ...
-    });
     ```
