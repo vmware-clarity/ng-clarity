@@ -25,7 +25,7 @@
     "clean:build": "rimraf dist",
     "build:angular": "ng build clr-angular --configuration production",
     "build:angular:watch": "ng build clr-angular --configuration production --watch",
-    "build:demo": "ng build clr-demo",
+    "build:demo": "ng build clr-demo --configuration production",
     "build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer -d ./dist/clr-ui",
     "build:ui:optimize": "csso ./dist/clr-ui/clr-ui.css -o ./dist/clr-ui/clr-ui.min.css -s file --no-restructure & csso ./dist/clr-ui/clr-ui-dark.css -o ./dist/clr-ui/clr-ui-dark.min.css -s file --no-restructure",
