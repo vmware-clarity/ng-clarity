@@ -129,7 +129,6 @@ steps.
 3.  Run `npm run build:ci` to build entire project (this may take several minutes)
 4.  Startup the project
     - If Angular change run `npm run start`
-    - If Website Documentation change run `npm run start:website`
 5.  To run tests and other project-specific commands see our project [Build Guide](BUILD.md)
 
 ### Public API Changes
@@ -234,8 +233,7 @@ you should:
 The CI runs three parallel Jobs for performance.
 
 1. Build and test libraries
-2. Build website and storybook
-3. Build angular dev app
+2. Build angular dev app
 
 To ensure your PR will pass the CI you can run `npm run build:ci` which will run
 all three CI checks locally on your machine. This may take several minutes.
