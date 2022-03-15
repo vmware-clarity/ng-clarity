@@ -130,16 +130,6 @@ export default function (): void {
       expect(input.getAttribute('placeholder')).toBe('Filter items');
       tick();
     }));
-
-    xit('closes when the user presses Enter in the input', function () {
-      // TODO
-      openFilter();
-    });
-
-    xit('closes when the user presses Escape in the input', function () {
-      // TODO
-      openFilter();
-    });
   });
 }
 
