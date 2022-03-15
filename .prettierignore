@@ -2,7 +2,7 @@ package-lock.json
 package.json
 dist/
 reports/
-golden/
+/projects/angular/clarity.api.md
 .vscode
 .ng_build
 **/node_modules/**
