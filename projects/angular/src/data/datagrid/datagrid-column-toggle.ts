@@ -3,6 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 import { Component, Inject, ContentChild, ElementRef, NgZone, PLATFORM_ID, ViewChild, OnDestroy } from '@angular/core';
 
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
