@@ -1,0 +1,75 @@
+name: Bot
+on:
+  workflow_run:
+    workflows: [Build]
+jobs:
+  bot:
+    name: Bot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Event
+        id: get_pr_event
+        uses: potiuk/get-workflow-origin@v1_1
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          sourceRunId: ${{github.event.workflow_run.id}}
+      - name: Find Comment
+        id: find-comment
+        uses: peter-evans/find-comment@v1
+        with:
+          issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
+          comment-author: 'github-actions[bot]'
+          body-includes: 🤖 Clarity Release Bot
+      - name: Build Started PR Comment
+        if: ${{github.event.action == 'requested'}}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
+          body: |
+            👋 @${{github.event.sender.login}},
+
+            * 🙏 The Clarity team thanks you for opening a pull request
+            * ⏳ The build for this PR has started
+            * 📫 I'll update this comment when the build has finished
+
+            Thank you,
+
+            🤖 Clarity Release Bot
+          edit-mode: replace
+      - name: Build Succeeded PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'success'}}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
+          body: |
+            👋 @${{github.event.sender.login}},
+
+            * 🙏 The Clarity team thanks you for opening a pull request
+            * 🎉 The build for this PR has succeeded
+            * 🔍 The PR is now ready for review
+            * 🍿 In the meantime, checkout out a [preview of this PR](https://${{steps.get_pr_event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app)
+            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal #clarity-support Slack channel](https://vmware-clarity.slack.com/archives/C0JF8D2LB)
+
+            Thank you,
+
+            🤖 Clarity Release Bot
+          edit-mode: replace
+      - name: Build Failed PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'failure'}}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
+          body: |
+            👋 @${{github.event.sender.login}},
+
+            * 😭 The build for this PR has failed
+            * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
+            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal #clarity-support Slack channel](https://vmware-clarity.slack.com/archives/C0JF8D2LB)
+
+            Thank you,
+
+            🤖 Clarity Release Bot
+          edit-mode: replace
