@@ -72,21 +72,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "demo:build"
+            "browserTarget": "clr-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "demo:build:production"
+              "browserTarget": "clr-demo:build:production"
             },
             "dark": {
-              "browserTarget": "demo:build:dark"
+              "browserTarget": "clr-demo:build:dark"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demo:build"
+            "browserTarget": "clr-demo:build"
           }
         },
         "test": {
