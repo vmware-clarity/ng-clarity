@@ -4,7 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, ContentChildren, Input, QueryList } from '@angular/core';
+import { Component, Inject, ContentChildren, Input, QueryList, AfterContentInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -13,6 +14,7 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 
 import { ClrButton } from './button';
@@ -26,17 +28,19 @@ import { ClrButton } from './button';
     ClrPopoverToggleService,
     ClrPopoverEventsService,
     ClrPopoverPositionService,
+    ClrDestroyService,
   ],
   host: { '[class.btn-group]': 'true' },
 })
-export class ClrButtonGroup {
+export class ClrButtonGroup implements AfterContentInit {
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService,
     @Inject(UNIQUE_ID) public popoverId: string,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {}
 
   public popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
@@ -55,7 +59,7 @@ export class ClrButtonGroup {
    */
   ngAfterContentInit() {
     this.initializeButtons();
-    this.buttonGroupNewService.changes.subscribe(button => this.rearrangeButton(button));
+    this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
     this.buttons.changes.subscribe(() => {
       this.initializeButtons();
     });
