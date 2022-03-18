@@ -1180,6 +1180,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
+    get shouldDisplayPlaceholder(): boolean;
     set singleSelected(value: T);
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;

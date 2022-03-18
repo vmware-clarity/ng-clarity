@@ -199,6 +199,18 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /**
+   * Should we display placeholder when there are no items?
+   *
+   * This is to resolve accessibility issue when placeholder container is render but not visible and trigger
+   * a false number of rows rendered message.
+   *
+   * Placeholder is only shown when there is no data.
+   */
+  public get shouldDisplayPlaceholder() {
+    return this.page.totalItems === 0;
+  }
+
+  /**
    * Custom placeholder detection
    */
   @ContentChild(ClrDatagridPlaceholder) public placeholder: ClrDatagridPlaceholder<T>;

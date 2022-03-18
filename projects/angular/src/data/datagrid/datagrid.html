@@ -71,8 +71,8 @@
           </div>
           <ng-container #displayedRows></ng-container>
           <!-- Custom placeholder overrides the default empty one -->
-          <ng-content select="clr-dg-placeholder"></ng-content>
-          <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+          <ng-content *ngIf="shouldDisplayPlaceholder" select="clr-dg-placeholder"></ng-content>
+          <clr-dg-placeholder *ngIf="!placeholder && shouldDisplayPlaceholder"></clr-dg-placeholder>
         </div>
       </div>
     </div>
