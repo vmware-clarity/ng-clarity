@@ -46,7 +46,9 @@ import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
     >
       <div class="switch-header">
         <div class="clr-sr-only" tabindex="-1" #allSelected>{{ commonStrings.keys.allColumnsSelected }}</div>
-        <ng-container *ngIf="!customToggleTitle">{{ commonStrings.keys.showColumns }}</ng-container>
+        <ng-container *ngIf="!customToggleTitle">
+          <h2>{{ commonStrings.keys.showColumns }}</h2>
+        </ng-container>
         <ng-content select="clr-dg-column-toggle-title"></ng-content>
         <button
           class="btn btn-sm btn-link toggle-switch-close-button"
