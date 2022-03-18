@@ -546,8 +546,8 @@ export class ClrButton implements LoadingListener {
 }
 
 // @public (undocumented)
-export class ClrButtonGroup {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, popoverId: string, commonStrings: ClrCommonStringsService);
+export class ClrButtonGroup implements AfterContentInit {
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, popoverId: string, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -2068,6 +2068,16 @@ export class ClrDaypicker {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDaypicker, "clr-daypicker", never, {}, {}, never, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDaypicker, never>;
+}
+
+// @public
+export class ClrDestroyService extends Subject<void> implements OnDestroy {
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
 }
 
 // @public (undocumented)
