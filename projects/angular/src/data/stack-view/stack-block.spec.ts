@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -367,10 +367,27 @@ export default function (): void {
       expect(topLevelBlock.getAttribute('aria-level')).toBe('3');
 
       const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block');
-      childBlocks.forEach(blok => {
-        expect(blok.getAttribute('role')).toBe('heading');
-        expect(blok.getAttribute('aria-level')).toBe('4');
+      childBlocks.forEach(block => {
+        expect(block.getAttribute('role')).toBe('heading');
+        expect(block.getAttribute('aria-level')).toBe('4');
       });
     }));
+
+    describe('change detection behavior', () => {
+      it('should not trigger change detection on `click` and `keyup` events if the `clr-stack-block` is not expandable', () => {
+        fixture = TestBed.createComponent(BasicBlock);
+        fixture.detectChanges();
+
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+
+        const label: HTMLElement = fixture.nativeElement.querySelector('.stack-block-label');
+
+        label.dispatchEvent(new Event('click'));
+        label.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+
+        expect(appRef.tick).not.toHaveBeenCalled();
+      });
+    });
   });
 }

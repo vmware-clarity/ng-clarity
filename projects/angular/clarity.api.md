@@ -3750,8 +3750,8 @@ export class ClrSpinnerModule {
 }
 
 // @public (undocumented)
-export class ClrStackBlock implements OnInit {
-    constructor(parent: ClrStackBlock, uniqueId: string, commonStrings: ClrCommonStringsService);
+export class ClrStackBlock implements OnInit, OnDestroy {
+    constructor(parent: ClrStackBlock, uniqueId: string, commonStrings: ClrCommonStringsService, ngZone: NgZone, ref: ChangeDetectorRef);
     // (undocumented)
     addChild(): void;
     // (undocumented)
@@ -3782,6 +3782,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get labelledById(): any;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     get onStackLabelFocus(): boolean;
@@ -3789,6 +3791,7 @@ export class ClrStackBlock implements OnInit {
     get role(): string;
     // (undocumented)
     set setChangedValue(value: boolean);
+    stackBlockLabel: ElementRef<HTMLElement>;
     // (undocumented)
     stackBlockTitle: any;
     // (undocumented)
@@ -3800,7 +3803,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
 
 // @public (undocumented)

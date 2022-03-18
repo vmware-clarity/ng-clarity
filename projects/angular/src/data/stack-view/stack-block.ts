@@ -5,17 +5,26 @@
  */
 
 import {
+  ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   HostBinding,
   Inject,
   Input,
+  NgZone,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
   SkipSelf,
+  ViewChild,
 } from '@angular/core';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrStackViewLabel } from './stack-view-custom-tags';
@@ -24,10 +33,8 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   selector: 'clr-stack-block',
   template: `
     <div
+      #stackBlockLabel
       class="stack-block-label"
-      (click)="toggleExpand()"
-      (keyup.enter)="toggleExpand()"
-      (keyup.space)="toggleExpand()"
       (focus)="focused = true"
       (blur)="focused = false"
       [id]="uniqueId"
@@ -76,7 +83,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   },
   providers: [UNIQUE_ID_PROVIDER],
 })
-export class ClrStackBlock implements OnInit {
+export class ClrStackBlock implements OnInit, OnDestroy {
   @HostBinding('class.stack-block-expanded')
   @Input('clrSbExpanded')
   expanded = false;
@@ -89,10 +96,14 @@ export class ClrStackBlock implements OnInit {
   @ContentChild(ClrStackViewLabel)
   stackBlockTitle: any;
 
+  /** The native `<div class="stack-block-label"></div>` element. */
+  @ViewChild('stackBlockLabel', { static: true }) stackBlockLabel: ElementRef<HTMLElement>;
+
   focused = false;
   private _changedChildren = 0;
   private _fullyInitialized = false;
   private _changed = false;
+  private destroy$ = new Subject<void>();
 
   @HostBinding('class.stack-block-changed')
   get getChangedValue(): boolean {
@@ -157,7 +168,9 @@ export class ClrStackBlock implements OnInit {
     @Optional()
     private parent: ClrStackBlock,
     @Inject(UNIQUE_ID) public uniqueId: string,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private ngZone: NgZone,
+    private ref: ChangeDetectorRef
   ) {
     if (parent) {
       parent.addChild();
@@ -168,6 +181,30 @@ export class ClrStackBlock implements OnInit {
     // in order to access the parent ClrStackBlock's properties,
     // the child ClrStackBlock has to be fully initialized at first.
     this._fullyInitialized = true;
+
+    this.ngZone.runOutsideAngular(() => {
+      const enterOrSpace$ = fromEvent<KeyboardEvent>(this.stackBlockLabel.nativeElement, 'keyup').pipe(
+        // This is used to prevent running change detection on non-handled `keyup` events since
+        // we're only interested in handing `Enter` and `Space`.
+        filter(event => event.key === KeyCodes.Enter || event.key === KeyCodes.Space)
+      );
+
+      merge(enterOrSpace$, fromEvent(this.stackBlockLabel.nativeElement, 'click'))
+        .pipe(
+          filter(() => this.expandable),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.ngZone.run(() => {
+            this.toggleExpand();
+            this.ref.markForCheck();
+          });
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   addChild(): void {
