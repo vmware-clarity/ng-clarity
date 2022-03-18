@@ -16,10 +16,12 @@ import { Directive, ElementRef, NgZone, OnDestroy, Renderer2 } from '@angular/co
 export class ClrModalBody implements OnDestroy {
   private tabindex = '0';
   private unlisteners: VoidFunction[] = [];
+  private observer: ResizeObserver;
 
   constructor(private readonly renderer: Renderer2, private readonly host: ElementRef<HTMLElement>, ngZone: NgZone) {
     ngZone.runOutsideAngular(() => {
-      new ResizeObserver(() => this.addOrRemoveTabIndex()).observe(this.host.nativeElement);
+      this.observer = new ResizeObserver(() => this.addOrRemoveTabIndex());
+      this.observer.observe(this.host.nativeElement);
 
       this.unlisteners.push(
         this.renderer.listen(this.host.nativeElement, 'mouseup', () => {
@@ -39,6 +41,9 @@ export class ClrModalBody implements OnDestroy {
     while (this.unlisteners.length) {
       this.unlisteners.pop()();
     }
+
+    this.observer.disconnect();
+    this.observer = null;
   }
 
   private addTabIndex() {
