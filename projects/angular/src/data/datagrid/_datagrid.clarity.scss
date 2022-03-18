@@ -1842,6 +1842,21 @@
       padding-bottom: $clr_baselineRem_0_5;
       line-height: $clr_baselineRem_1;
 
+      // From accessibility perspective we let use of header tags inside the switch header,
+      // but want not to be affected from the global header styles so this is a workaround.
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        @include css-var(color, clr-p1-color, $clr-p1-color, $clr-use-custom-properties);
+        font-weight: 400;
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        margin: 0;
+      }
+
       button {
         min-width: $clr_baselineRem_0_75;
         margin: 0;
