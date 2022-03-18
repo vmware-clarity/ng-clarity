@@ -12,6 +12,7 @@ import {
   ContentChildren,
   Directive,
   ElementRef,
+  NgZone,
   OnDestroy,
   PLATFORM_ID,
   QueryList,
@@ -60,7 +61,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     private renderer: Renderer2,
     private detailService: DetailService,
     private tableSizeService: TableSizeService,
-    private columnsService: ColumnsService
+    private columnsService: ColumnsService,
+    private ngZone: NgZone
   ) {
     this.subscriptions.push(
       this.organizer
@@ -107,8 +109,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       this.stabilizeColumns();
     }
     if (this.shouldComputeHeight()) {
-      setTimeout(() => {
-        this.computeDatagridHeight();
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.computeDatagridHeight();
+        });
       });
     }
   }

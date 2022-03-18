@@ -5328,7 +5328,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService);
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
