@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -71,7 +71,7 @@ describe('Abstract Popover', function () {
   describe('Keyboard Events', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [TestPopover], providers: [ClrPopoverToggleService] });
-      toggleService = TestBed.get(ClrPopoverToggleService);
+      toggleService = TestBed.inject(ClrPopoverToggleService);
       toggleService.open = true;
       fixture = TestBed.createComponent(TestPopover);
       fixture.detectChanges();
@@ -84,6 +84,20 @@ describe('Abstract Popover', function () {
 
       expect(toggleService.open).toBe(false);
     });
+
+    it('should not run change detection when any button is pressed except ESC', () => {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick').and.callThrough();
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+      expect(appRef.tick).not.toHaveBeenCalled();
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+      expect(appRef.tick).not.toHaveBeenCalled();
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+      expect(appRef.tick).toHaveBeenCalled();
+    });
   });
 
   describe('Popover with clrIfOpen Directive', () => {
@@ -93,7 +107,7 @@ describe('Abstract Popover', function () {
         imports: [ClrConditionalModule],
         providers: [ClrPopoverToggleService],
       });
-      toggleService = TestBed.get(ClrPopoverToggleService);
+      toggleService = TestBed.inject(ClrPopoverToggleService);
       fixture = TestBed.createComponent(TestPopoverWithIfOpenDirective);
       fixture.detectChanges();
     });
@@ -144,7 +158,7 @@ describe('Abstract Popover', function () {
   describe('Open behavior', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [TestPopover], providers: [ClrPopoverToggleService] });
-      toggleService = TestBed.get(ClrPopoverToggleService);
+      toggleService = TestBed.inject(ClrPopoverToggleService);
       toggleService.open = true;
       fixture = TestBed.createComponent(TestPopover);
       fixture.detectChanges();
