@@ -104,7 +104,8 @@ export default function (): void {
       const input: HTMLInputElement = document.querySelector("input[type='number']");
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();
-      tick();
+      // The `requestAnimationFrame` is mocked through `setTimeout(fn, 16)`.
+      tick(16);
       expect(input.focus).toHaveBeenCalled();
     }));
 
