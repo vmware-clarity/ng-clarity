@@ -52,8 +52,10 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.smartEventsService.scrollToClose = !!scrollToClose;
   }
 
+  private removeClickListenerFn: VoidFunction | null = null;
+
   constructor(
-    @Inject(DOCUMENT) private document: HTMLDocument,
+    @Inject(DOCUMENT) private document: Document,
     private container: ViewContainerRef,
     private template: TemplateRef<any>,
     private renderer: Renderer2,
@@ -100,6 +102,10 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     if (!this.view) {
       return;
     }
+    if (this.removeClickListenerFn) {
+      this.removeClickListenerFn();
+      this.removeClickListenerFn = null;
+    }
     this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
     this.container.clear();
     delete this.view;
@@ -115,16 +121,17 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private addContent() {
     // Create the view container
     this.view = this.container.createEmbeddedView(this.template);
-    this.smartEventsService.contentRef = this.view.rootNodes[0]; // So we know where/what to set close focus on
-    this.renderer.addClass(this.view.rootNodes[0], 'clr-popover-content');
+    const [rootNode] = this.view.rootNodes;
+    this.smartEventsService.contentRef = rootNode; // So we know where/what to set close focus on
+    this.renderer.addClass(rootNode, 'clr-popover-content');
     // Reset to the begining of the document to be available for sizing/positioning calculations.
     // If we add new content to the bottom it triggers changes in the layout that may lead to false anchor
     // coordinates values.
-    this.renderer.setStyle(this.view.rootNodes[0], 'top', '0px');
-    this.renderer.setStyle(this.view.rootNodes[0], 'left', '0px');
+    this.renderer.setStyle(rootNode, 'top', '0px');
+    this.renderer.setStyle(rootNode, 'left', '0px');
     // We need to hide it during the calculation phase, while it's not yet finally positioned.
-    this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '0');
-    this.renderer.listen(this.view.rootNodes[0], 'click', event => {
+    this.renderer.setStyle(rootNode, 'opacity', '0');
+    this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
       this.smartOpenService.openEvent = event;
     });
     this.view.rootNodes.forEach(node => {
