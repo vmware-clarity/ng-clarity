@@ -753,6 +753,9 @@ export interface ClrCommonStrings {
     next: string;
     nextPage: string;
     open: string;
+    passwordHide: string;
+    // (undocumented)
+    passwordShow: string;
     pickColumns: string;
     previous: string;
     previousPage: string;
@@ -785,6 +788,8 @@ export interface ClrCommonStrings {
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
+    wizardStepError: string;
+    wizardStepSuccess: string;
 }
 
 // @public (undocumented)
