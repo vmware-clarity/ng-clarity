@@ -96,6 +96,13 @@ export default function (): void {
         fixture.detectChanges();
         expect(containerEl.querySelector('button')).toBeFalsy();
       });
+      it('should provide screen-reader only text for toggle button', () => {
+        const button: HTMLButtonElement = containerEl.querySelector('button');
+        expect(button.textContent).toEqual('Show password');
+        button.click();
+        fixture.detectChanges();
+        expect(button.textContent).toEqual('Hide password');
+      });
     });
   });
 }
