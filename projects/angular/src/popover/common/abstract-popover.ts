@@ -13,6 +13,8 @@ import {
   Renderer2,
   SkipSelf,
   Directive,
+  NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -28,6 +30,8 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
     this.renderer = injector.get(Renderer2);
+    this.ngZone = injector.get(NgZone);
+    this.ref = injector.get(ChangeDetectorRef);
     // Default anchor is the parent host
     this.anchorElem = parentHost.nativeElement;
 
@@ -50,6 +54,8 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   protected el: ElementRef;
   protected toggleService: ClrPopoverToggleService;
   protected renderer: Renderer2;
+  protected ngZone: NgZone;
+  protected ref: ChangeDetectorRef;
 
   private popoverInstance: Popover;
   private subscription: Subscription;
@@ -105,24 +111,31 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
    * a separate directive on the host. So let's do dirty but performant for now.
    */
   public closeOnOutsideClick = false;
-  private documentESCListener: () => void;
+  private documentESCListener: VoidFunction | null = null;
 
   private attachESCListener(): void {
-    if (!this.popoverOptions.ignoreGlobalESCListener) {
+    if (this.popoverOptions.ignoreGlobalESCListener) {
+      return;
+    }
+
+    this.ngZone.runOutsideAngular(() => {
       this.documentESCListener = this.renderer.listen('document', 'keydown', event => {
         if (event && event.key) {
           if (event.key === 'Escape' || event.key === 'Esc') {
-            this.toggleService.open = false;
+            this.ngZone.run(() => {
+              this.toggleService.open = false;
+              this.ref.markForCheck();
+            });
           }
         }
       });
-    }
+    });
   }
 
   private detachESCListener(): void {
     if (this.documentESCListener) {
       this.documentESCListener();
-      delete this.documentESCListener;
+      this.documentESCListener = null;
     }
   }
 
