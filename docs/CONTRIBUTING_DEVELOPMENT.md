@@ -65,7 +65,7 @@ Once it's ready, post it either on the original GitHub issue for bug fixes or in
 a new issue otherwise. If you are planning on implementing an already designed
 component, please mention the issue containing the existing specification in
 your proposal. If the original issue hasn't been updated in a while, please ping
-@coryrylan, @gnomeontherun, or @mathisscott. We will start the discussion as
+@coryrylan or @mathisscott. We will start the discussion as
 soon as possible.
 
 We will discuss the proposal with you publicly on the issue, potentially
@@ -88,7 +88,7 @@ First, make sure you:
 When we post on the issue to approve your proposal, the person on the team
 who'll be your primary contact will post a link to a topic branch against which
 you will submit your pull requests. The topic branch will be branched from the
-latest `angular` and named `topic/{feature-name}`. To merge any pull request into
+latest `main` and named `topic/{feature-name}`. To merge any pull request into
 this branch, it will need 2 approvals from team members.
 
 Start by [forking](https://help.github.com/articles/fork-a-repo/) the main
@@ -101,8 +101,8 @@ above.
 For instance, this setup part could look like this:
 
 ```shell
-## Clone your forked repository, using the angular branch
-git clone --branch angular git@github.com:<github username>/clarity.git
+## Clone your forked repository
+git clone git@github.com:<github username>/ng-clarity.git
 
 ## Navigate to the directory
 cd clarity
@@ -112,7 +112,7 @@ git config user.name "John Doe"
 git config user.email johndoe@example.com
 
 ## Setup the upstream remote
-git remote add upstream https://github.com/vmware/clarity.git
+git remote add upstream https://github.com/vmware-clarity/ng-clarity.git
 
 ## Check out the upstream a topic branch for your changes
 git fetch
@@ -211,7 +211,7 @@ These documents provide guidance creating a well-crafted commit message:
 As you implement your contribution, make sure all work stays on your local topic
 branch. When an isolated part of the feature is complete with unit tests, make
 sure to submit your pull request **against the topic branch** on the main
-Clarity repository instead of `angular`. This will allow us to accept and merge
+Clarity repository instead of `main`. This will allow us to accept and merge
 partial changes that shouldn't make it into a production release of Clarity yet.
 We expect every pull request to come with exhaustive unit tests for the
 submitted code.
@@ -246,11 +246,11 @@ as soon as possible.
 ### Shipping it
 
 Once your contribution is fully implemented, reviewed, and ready, we will rebase
-the topic branch on the newest `angular` and squash down to fewer commits if
+the topic branch on the newest `main` and squash down to fewer commits if
 needed (keeping you as the author, obviously).
 
 ```bash
-$ git rebase -i angular
+$ git rebase -i main
 
 # Rebase commits and resolve conflict, if any.
 
@@ -259,7 +259,7 @@ $ git push origin branch -f
 
 Chances are, we will be more familiar with potential conflicts that might happen,
 but we can work with you if you want to solve some conflicts yourself. Once
-rebased, we will merge the topic branch into `angular`, which involves a quick
+rebased, we will merge the topic branch into `main`, which involves a quick
 internal pull request you don't have to worry about, and we will finally delete
 the topic branch.
 

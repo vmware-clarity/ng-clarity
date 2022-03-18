@@ -6,7 +6,7 @@ documentation, and review phases of this process. We will work together
 with you on during each of these phases to guide you through our process.
 
 UX and Visual Design can be documented directly in a Github issue. Please create
-a [Contribution Proposal](https://github.com/vmware/clarity/issues/new?template=contribution-proposal.md).
+a [Contribution Proposal](https://github.com/vmware-clarity/ng-clarity/issues/new?template=contribution-proposal.md).
 If there is not an existing issue related to the proposal. There are three
 phases a design goes through as it's refined and made ready for development.
 

@@ -12,14 +12,14 @@ our development environment on your computer. You will need to have
 [NodeJS](https://nodejs.org) preinstalled as well as [Git Source Control](https://git-scm.com/).
 
 1.  [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo)
-    the [Clarity Repository](https://github.com/vmware/clarity) using you Github
-    account.
+    the [Clarity Repository](https://github.com/vmware-clarity/ng-clarity)
+    using your Github account.
 
 2.  Clone the Clarity Repository
 
     ```bash
-    ## Clone your forked repository, using the angular branch
-    git clone --branch angular git@github.com:<github username>/clarity.git
+    ## Clone your forked repository
+    git clone git@github.com:<github username>/clarity.git
 
     ## Navigate to the directory
     cd clarity
@@ -29,7 +29,7 @@ our development environment on your computer. You will need to have
     git config user.email johndoe@example.com
 
     ## Setup the upstream remote
-    git remote add upstream https://github.com/vmware/clarity.git
+    git remote add upstream https://github.com/vmware-clarity/ng-clarity.git
 
     ## Check out the upstream a topic branch for your changes
     git fetch
