@@ -2535,13 +2535,13 @@ export class ClrIfDetail implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrIfDragged<T> implements OnDestroy {
-    constructor(template: TemplateRef<any>, container: ViewContainerRef, dragEventListener: DragEventListenerService<T>);
+    constructor(template: TemplateRef<any>, container: ViewContainerRef | null, dragEventListener: DragEventListenerService<T> | null, ngZone: NgZone);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDragged<any>, "[clrIfDragged]", never, {}, {}, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDragged<any>, [null, { optional: true; skipSelf: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDragged<any>, [null, { optional: true; skipSelf: true; }, { optional: true; }, null]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "AbstractIfState" needs to be exported by the entry point index.d.ts

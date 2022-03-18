@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, OnDestroy, Optional, SkipSelf, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Inject, NgZone, OnDestroy, Optional, SkipSelf, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DragEventListenerService } from './providers/drag-event-listener.service';
@@ -16,28 +16,33 @@ import { DragEventListenerService } from './providers/drag-event-listener.servic
 
 @Directive({ selector: '[clrIfDragged]' })
 export class ClrIfDragged<T> implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[];
+
   constructor(
     private template: TemplateRef<any>,
     @Optional()
     @SkipSelf()
-    private container: ViewContainerRef,
-    @Optional() private dragEventListener: DragEventListenerService<T>
+    @Inject(ViewContainerRef)
+    private container: ViewContainerRef | null,
+    @Optional() @Inject(DragEventListenerService) private dragEventListener: DragEventListenerService<T> | null,
+    private ngZone: NgZone
   ) {
     if (!this.dragEventListener || !this.container) {
       throw new Error('The *clrIfDragged directive can only be used inside of a clrDraggable directive.');
     }
 
-    this.subscriptions.push(
+    this.subscriptions = [
       this.dragEventListener.dragStarted.subscribe(() => {
-        this.container.createEmbeddedView(this.template);
-      })
-    );
-    this.subscriptions.push(
+        // Note: the `dragStarted` emits outside of the Angular zone, see `DragEventListenerService#broadcast`.
+        // This won't trigger another change detection if it's already being run in the zone.
+        this.ngZone.run(() => this.container.createEmbeddedView(this.template));
+      }),
       this.dragEventListener.dragEnded.subscribe(() => {
-        this.container.clear();
-      })
-    );
+        // Note: the `dragEnded` emits outside of the Angular zone, see `DragEventListenerService#broadcast`.
+        // This won't trigger another change detection if it's already being run in the zone.
+        this.ngZone.run(() => this.container.clear());
+      }),
+    ];
   }
 
   ngOnDestroy() {

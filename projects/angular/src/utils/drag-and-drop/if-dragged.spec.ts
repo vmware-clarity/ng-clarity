@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive } from '@angular/core';
+import { Component, Directive, NgZone } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfDragged } from './if-dragged';
@@ -25,14 +25,14 @@ export default function (): void {
     describe('With ClrDragEventListener', function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
-          declarations: [IfDraggedTest, ClrIfDragged, MockVCRProvider],
+          declarations: [IfDraggedTest, ClrIfDragged, MockVCRProvider, IfDraggedComponent],
           providers: [MOCK_DRAG_EVENT_LISTENER_PROVIDER],
         });
 
         this.fixture = TestBed.createComponent(IfDraggedTest);
         this.fixture.detectChanges();
 
-        this.dragEventListener = TestBed.get(DragEventListenerService);
+        this.dragEventListener = TestBed.inject(DragEventListenerService);
         this.testElement = this.fixture.nativeElement;
       });
 
@@ -53,14 +53,40 @@ export default function (): void {
         this.dragEventListener.dragEnded.next();
         expect(this.testElement.textContent.trim()).toBe('');
       });
+
+      it('should ensure that the view is created within the Angular zone', function () {
+        this.dragEventListener.dragStarted.next();
+        this.fixture.detectChanges();
+        expect(this.testElement.querySelector('if-dragged-component').textContent).toEqual(
+          'hasBeenCreatedWithinAngularZone: true'
+        );
+      });
     });
   });
 }
 
 @Directive({ selector: '[mockVCRProvider]' })
 class MockVCRProvider {}
+
 @Component({
-  template: `<div mockVCRProvider class="parent-vcr"><span class="if-dragged" *clrIfDragged>Test</span></div>`,
+  selector: 'if-dragged-component',
+  template: 'hasBeenCreatedWithinAngularZone: {{ hasBeenCreatedWithinAngularZone }}',
+})
+class IfDraggedComponent {
+  hasBeenCreatedWithinAngularZone: boolean;
+
+  constructor() {
+    this.hasBeenCreatedWithinAngularZone = NgZone.isInAngularZone();
+  }
+}
+
+@Component({
+  template: `
+    <div mockVCRProvider class="parent-vcr">
+      <span class="if-dragged" *clrIfDragged>Test</span>
+      <if-dragged-component *clrIfDragged></if-dragged-component>
+    </div>
+  `,
 })
 class IfDraggedTest {}
 
