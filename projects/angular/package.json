@@ -10,12 +10,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vmware/clarity.git"
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
   },
   "author": "Clarity Design System",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vmware/clarity/issues"
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "peerDependencies": {
     "@angular/common": "^13.0.0",
