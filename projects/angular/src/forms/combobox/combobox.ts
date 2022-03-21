@@ -68,7 +68,6 @@ import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state
     AriaService,
     FOCUS_SERVICE_PROVIDER,
     COMBOBOX_FOCUS_HANDLER_PROVIDER,
-    ClrPopoverToggleService,
     ClrPopoverEventsService,
     ClrPopoverPositionService,
   ],
