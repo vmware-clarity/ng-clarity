@@ -1,10 +1,10 @@
 {
   "name": "@clr/ui",
   "description": "CSS for Clarity",
-  "homepage": "https://clarity.design",
+  "homepage": "https://angular.clarity.design",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vmware/clarity.git"
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
   },
   "author": "Clarity Design System",
   "license": "MIT",
