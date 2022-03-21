@@ -4,7 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  OnDestroy,
+  NgZone,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
@@ -43,7 +53,8 @@ export class DatagridStringFilter<T = any>
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
-    private smartToggleService: ClrPopoverToggleService
+    private smartToggleService: ClrPopoverToggleService,
+    private ngZone: NgZone
   ) {
     super(filters);
   }
@@ -83,13 +94,21 @@ export class DatagridStringFilter<T = any>
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
   @ViewChild(ClrDatagridFilter) public filterContainer: ClrDatagridFilter<T>;
+
   ngAfterViewInit() {
     this.subs.push(
       this.smartToggleService.openChange.subscribe(openChange => {
         this.open = openChange;
-        // The timeout in used because when this executes, the input isn't displayed.
-        setTimeout(() => {
-          this.domAdapter.focus(this.input.nativeElement);
+        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
+        // running change detection.
+        this.ngZone.runOutsideAngular(() => {
+          // The animation frame in used because when this executes, the input isn't displayed.
+          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
+          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
+          // Animation tasks are executed within the next rendering frame.
+          requestAnimationFrame(() => {
+            this.domAdapter.focus(this.input.nativeElement);
+          });
         });
       })
     );

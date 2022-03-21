@@ -104,7 +104,7 @@ export default function (): void {
       const input: HTMLInputElement = document.querySelector("input[type='text']");
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();
-      tick();
+      tick(16);
       expect(input.focus).toHaveBeenCalled();
     }));
 
