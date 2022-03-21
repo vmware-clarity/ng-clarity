@@ -24,7 +24,7 @@
     "public-api:update": "api-extractor run -l",
     "start": "ng serve clr-demo",
     "test": "ng test clr-angular --source-map=false --watch=false",
-    "test:watch": "npm run --silent _test:angular -- --watch",
+    "test:watch": "npm run --silent test -- --watch",
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:angular:watch": "npm run --silent build:angular -- --watch",
     "_build:demo": "ng build clr-demo --configuration production",
