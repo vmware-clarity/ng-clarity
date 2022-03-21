@@ -105,16 +105,16 @@ export class DragEventListenerService<T> {
       // Initialize nested listeners' property with a new empty array;
       this.nestedListeners = [];
 
-      // This is needed to disable selection during dragging (especially in EDGE/IE11).
-      this.nestedListeners.push(
-        this.renderer.listen('document', 'selectstart', (selectEvent: Event) => {
-          selectEvent.preventDefault();
-          selectEvent.stopImmediatePropagation();
-        })
-      );
-
-      // Listen to mousemove/touchmove events outside of angular zone.
+      // Listen to selectstart/mousemove/touchmove events outside of angular zone.
       this.ngZone.runOutsideAngular(() => {
+        // This is needed to disable selection during dragging (especially in EDGE/IE11).
+        this.nestedListeners.push(
+          this.renderer.listen('document', 'selectstart', (selectEvent: Event) => {
+            selectEvent.preventDefault();
+            selectEvent.stopImmediatePropagation();
+          })
+        );
+
         // During the drag start delay, pointer should stay within the boundary.
         this.checkDragStartBoundary(moveOnEvent);
 
