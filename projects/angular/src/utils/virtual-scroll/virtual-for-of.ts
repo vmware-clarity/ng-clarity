@@ -217,7 +217,7 @@ export class VirtualForOf<T> implements AfterViewInit {
     // This is called too often on iOS and trackpads, so we need to run it outside of the NgZone
     // and add the event listener directly on the native element rather than use the renderer.
     this.ngZone.runOutsideAngular(() => {
-      startListening(this.containerEl, 'scroll', this.scrollListener);
+      startListening(this.containerEl, 'scroll', this.scrollListener, { passive: true });
     });
   }
 

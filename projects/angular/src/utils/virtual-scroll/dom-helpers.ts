@@ -50,8 +50,13 @@ export function setScrollTop(el: HTMLElement, value: number) {
   el.scrollTop = value;
 }
 
-export function startListening(el: HTMLElement, eventName: string, listener: (event: Event) => boolean | void) {
-  el.addEventListener(eventName, listener);
+export function startListening(
+  el: HTMLElement,
+  eventName: string,
+  listener: (event: Event) => boolean | void,
+  options?: AddEventListenerOptions
+) {
+  el.addEventListener(eventName, listener, options);
 }
 export function stopListening(el: HTMLElement, eventName: string, listener: (event: Event) => boolean | void) {
   el.removeEventListener(eventName, listener);
