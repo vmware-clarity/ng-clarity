@@ -2356,14 +2356,14 @@ class ClrExpandableAnimationModule {
 }
 
 // @public (undocumented)
-export class ClrFocusOnViewInit implements AfterViewInit {
-    constructor(el: ElementRef, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2);
+export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
+    constructor(el: ElementRef, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
     // (undocumented)
     set isEnabled(value: boolean | string);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    onFocusout(): void;
+    ngOnDestroy(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": "clrFocusOnViewInit"; }, {}, never>;
     // (undocumented)
