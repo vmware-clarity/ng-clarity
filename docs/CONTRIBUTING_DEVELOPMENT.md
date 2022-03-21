@@ -130,6 +130,14 @@ steps.
 4.  Startup the demo project: `npm start`
 5.  To run tests and other project-specific commands see our project [Build Guide](/docs/BUILD.md)
 
+#### Starting the development environment
+
+1.  Have [NodeJS](https://nodejs.org) installed
+2.  In the root project directory run, `npm install`
+3.  Run `npm build` to build entire project (this may take several minutes)
+4.  Run `npm run build:angular:watch` to run the Angular library build in watch mode so you see the changes in real time (keep that one running in isolated terminal instance)
+5.  Startup the development environment project: `npm start` will start an Angular application that consumes the Clarity Angular Library (keep that one running in isolated terminal instance)
+
 ### Public API Changes
 
 If you are making a change that changes the public API of a Component make sure

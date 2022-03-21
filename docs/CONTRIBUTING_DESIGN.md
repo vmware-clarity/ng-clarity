@@ -64,26 +64,22 @@ please reach out so we can help guide the organization of your research.
 
 Once all of the use cases that need to be developed have been identified, they
 need to be paired up with visual designs focused on the details for each use
-case. These visual designs can be created using [Sketch](https://www.sketchapp.com/).
+case. These visual designs can be created using [Figma](https://www.figma.com/).
 
 ### Getting Started
 
 An excellent place to get started is with the Clarity Design Resources:
 
-1.  [Clarity Light Theme](https://github.com/vmware/clarity-assets/blob/master/sketch/light/clarity-library-light-2.2.0.sketch?raw=true)
-2.  [Clarity Dark Theme](https://github.com/vmware/clarity-assets/blob/master/sketch/dark/clarity-library-dark-2.2.0.sketch?raw=true)
+1.  [Clarity Light Theme](https://www.figma.com/community/file/934540749886979275/Clarity-UI-Library---light-5.0.0)
+2.  [Clarity Dark Theme](https://www.figma.com/community/file/934542021301047501/Clarity-UI-Library---dark-5.0.0)
 
-Download those files and familiarize yourself with how the existing components are organized. Reach out to us if you
-have questions about the natural place for a new component. Much of the visual aspects for the new component have
-already been built into the Figma files (typography, colors, padding, font-size, etc.). What you have to do is find an
+Familiarize yourself with how the existing components are organized. Reach out to us if you
+have questions about the natural place for a new component. What you have to do is find an
 appropriate place to create the visual representation of the proposed component. This asset will be used to generate
 mockup images that will be useful when:
 
 - Documenting use cases and their respective features
-- Creating dynamic mockups (with a tool like InDesign) as needed to demonstrate aspects of a use case
-
-Finally, the Figma file will become the design representation of the component and stay part of the Clarity Design
-Resources once the component is implemented in the code.
+- Creating dynamic mockups (with a tool like Figma) as needed to demonstrate aspects of a use case
 
 Remember, if (for example) a component has five use cases and ten features, you still only need one instance designed
 in Figma (there is a handy way to toggle visibility for various parts of a Figma document). This is how we suggest

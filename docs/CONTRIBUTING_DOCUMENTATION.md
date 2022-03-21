@@ -12,14 +12,14 @@ our development environment on your computer. You will need to have
 [NodeJS](https://nodejs.org) preinstalled as well as [Git Source Control](https://git-scm.com/).
 
 1.  [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo)
-    the [Clarity Repository](https://github.com/vmware-clarity/ng-clarity)
-    using your Github account.
+    the [Clarity Repository](https://github.com/vmware-clarity/ng-clarity) using you Github
+    account.
 
 2.  Clone the Clarity Repository
 
     ```bash
     ## Clone your forked repository
-    git clone git@github.com:<github username>/clarity.git
+    git clone git@github.com:<github username>/ng-clarity.git
 
     ## Navigate to the directory
     cd clarity
