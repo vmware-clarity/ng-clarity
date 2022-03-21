@@ -9,12 +9,16 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  HostListener,
   Inject,
   Input,
+  NgZone,
+  OnDestroy,
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
 
 /*  This directive is for guiding the document focus to the newly added content when its view is initialized
@@ -22,13 +26,16 @@ import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
 @Directive({
   selector: '[clrFocusOnViewInit]',
 })
-export class ClrFocusOnViewInit implements AfterViewInit {
+export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   constructor(
     private el: ElementRef,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(FOCUS_ON_VIEW_INIT) private focusOnViewInit: boolean,
     @Inject(DOCUMENT) document: any,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    ngZone: NgZone
   ) {
     this._isEnabled = this.focusOnViewInit;
 
@@ -37,19 +44,22 @@ export class ClrFocusOnViewInit implements AfterViewInit {
     // even though it understands the injection token DOCUMENT
     // https://github.com/angular/angular/issues/20351
     this.document = document;
+
+    ngZone.runOutsideAngular(() =>
+      fromEvent(el.nativeElement, 'focusout')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if (!this.directFocus) {
+            // manually set attributes and styles should be removed
+            this.renderer.removeAttribute(this.el.nativeElement, 'tabindex');
+            this.renderer.setStyle(this.el.nativeElement, 'outline', null);
+          }
+        })
+    );
   }
 
   private document: Document;
   private directFocus = true; // true if the element gets focused without need to set tabindex;
-
-  @HostListener('focusout')
-  onFocusout() {
-    if (!this.directFocus) {
-      // manually set attributes and styles should be removed
-      this.renderer.removeAttribute(this.el.nativeElement, 'tabindex');
-      this.renderer.setStyle(this.el.nativeElement, 'outline', null);
-    }
-  }
 
   private _isEnabled: boolean;
   @Input('clrFocusOnViewInit')
@@ -61,6 +71,10 @@ export class ClrFocusOnViewInit implements AfterViewInit {
 
   ngAfterViewInit() {
     this.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   private focus() {

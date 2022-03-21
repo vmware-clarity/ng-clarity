@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
@@ -91,13 +91,15 @@ describe('ClrFocusOnViewInit', () => {
       expect(document.activeElement).toBe(component.focusOnItElRef.nativeElement);
     });
 
-    it('removes tabindex on focusout event', () => {
+    it('should remove tabindex on focusout event and should not run change detection', () => {
       component.displayNoExistingTabindex = true;
       fixture.detectChanges();
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('-1');
       component.buttonElRef.nativeElement.focus();
-      fixture.detectChanges();
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBeNull();
+      expect(appRef.tick).not.toHaveBeenCalled();
     });
 
     it('should not remove tabindex if it was pre-existing tabindex', () => {
