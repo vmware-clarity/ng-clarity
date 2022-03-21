@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature Request
+    url: https://github.com/vmware-clarity/ng-clarity/discussions/new
+    about: Submit new ideas in our GitHub Discussions forum.
