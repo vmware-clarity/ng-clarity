@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ElementRef, Injectable, Renderer2, Inject, OnDestroy } from '@angular/core';
+import { ElementRef, Injectable, Renderer2, Inject, OnDestroy, NgZone } from '@angular/core';
 import { ClrPopoverToggleService } from './popover-toggle.service';
-import { Observable, fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 
@@ -17,13 +17,14 @@ export class ClrPopoverEventsService implements OnDestroy {
   public outsideClickClose = true;
   public scrollToClose = true;
   private documentClickListener: () => void;
-  public ignoredEvent: any;
+  public ignoredEvent: Event;
   private subscriptions: Subscription[] = [];
 
   constructor(
     private renderer: Renderer2,
     private smartOpenService: ClrPopoverToggleService,
-    @Inject(DOCUMENT) private document: HTMLDocument
+    @Inject(DOCUMENT) private document: Document,
+    private ngZone: NgZone
   ) {
     this.subscriptions.push(
       smartOpenService.openChange.subscribe(open => {
@@ -42,16 +43,18 @@ export class ClrPopoverEventsService implements OnDestroy {
     );
   }
 
-  private scrollSubscription: Subscription;
+  private scrollSubscription: Subscription | null = null;
   public addScrollListener() {
     if (this.scrollToClose) {
-      this.documentScroller = fromEvent(this.document, 'scroll', { capture: true });
-      this.scrollSubscription = this.documentScroller
-        .pipe(filter(this.testForSmartPopoverContentContainer))
-        .subscribe(() => {
-          this.smartOpenService.open = false;
+      const documentScroller$ = fromEvent(this.document, 'scroll', { capture: true, passive: true });
+
+      this.scrollSubscription = this.ngZone.runOutsideAngular(() =>
+        documentScroller$.pipe(filter(this.testForSmartPopoverContentContainer)).subscribe(() => {
+          // Re-enter the Angular zone only when the condition is met and the popover needs to be closed.
+          this.ngZone.run(() => (this.smartOpenService.open = false));
           this.setAnchorFocus();
-        });
+        })
+      );
     } else {
       // I think this is where dynamic re-positioning will be added
       // Instead of testing like we do in the close pipe below
@@ -63,9 +66,9 @@ export class ClrPopoverEventsService implements OnDestroy {
   }
 
   public removeScrollListener() {
-    if (this.documentScroller) {
+    if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
-      delete this.documentScroller;
+      this.scrollSubscription = null;
     }
   }
 
@@ -92,26 +95,30 @@ export class ClrPopoverEventsService implements OnDestroy {
 
   public addClickListener() {
     if (this.outsideClickClose) {
-      this.documentClickListener = this.renderer.listen(this.document, 'click', (event: MouseEvent) => {
-        if (event === this.ignoredEvent) {
-          // Here we ignore the opening click event (w/o this content opens and immediately closes.
-          delete this.ignoredEvent;
-        } else {
-          this.smartOpenService.open = false;
-          // Rather than a complex change to the focus trap I put focus on the element that was clicked
-          const clickedElement = event.target as HTMLElement;
-          clickedElement.focus();
-        }
-      });
+      this.documentClickListener = this.ngZone.runOutsideAngular(() =>
+        this.renderer.listen(this.document, 'click', (event: MouseEvent) => {
+          if (event === this.ignoredEvent) {
+            // Here we ignore the opening click event (w/o this content opens and immediately closes.
+            this.ignoredEvent = null;
+          } else {
+            // Re-enter the Angular zone only when the condition is met and the popover needs to be closed.
+            this.ngZone.run(() => (this.smartOpenService.open = false));
+            // Rather than a complex change to the focus trap I put focus on the element that was clicked
+            const clickedElement = event.target as HTMLElement;
+            clickedElement.focus();
+          }
+        })
+      );
     }
   }
 
   public removeClickListener() {
     if (this.outsideClickClose) {
-      delete this.ignoredEvent;
+      this.ignoredEvent = null;
+
       if (this.documentClickListener) {
         this.documentClickListener();
-        delete this.documentClickListener;
+        this.documentClickListener = null;
       }
     }
   }
@@ -162,8 +169,6 @@ export class ClrPopoverEventsService implements OnDestroy {
   public get contentRef(): ElementRef {
     return this._contentRef;
   }
-
-  private documentScroller: Observable<Event>;
 
   private removeAllEventListeners() {
     this.removeScrollListener();

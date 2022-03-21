@@ -3206,7 +3206,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
 
 // @public (undocumented)
 export class ClrPopoverEventsService implements OnDestroy {
-    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: HTMLDocument);
+    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: Document, ngZone: NgZone);
     // (undocumented)
     addClickListener(): void;
     // (undocumented)
@@ -3223,7 +3223,7 @@ export class ClrPopoverEventsService implements OnDestroy {
     // (undocumented)
     get contentRef(): ElementRef;
     // (undocumented)
-    ignoredEvent: any;
+    ignoredEvent: Event;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
