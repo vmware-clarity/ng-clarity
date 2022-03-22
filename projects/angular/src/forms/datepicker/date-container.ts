@@ -129,10 +129,10 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     public commonStrings: ClrCommonStringsService,
     private focusService: FocusService,
     private viewManagerService: ViewManagerService,
-    protected controlClassService: ControlClassService,
-    @Optional() protected layoutService: LayoutService,
-    protected ngControlService: NgControlService,
-    protected ifControlStateService: IfControlStateService
+    protected override controlClassService: ControlClassService,
+    @Optional() protected override layoutService: LayoutService,
+    protected override ngControlService: NgControlService,
+    protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 

@@ -81,7 +81,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
 
   private subscription: Subscription;
 
-  destroy() {
+  override destroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

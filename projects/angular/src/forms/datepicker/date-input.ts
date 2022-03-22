@@ -79,15 +79,15 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     this.dateIOService.setMaxDate(dateString);
   }
 
-  protected index = 1;
+  protected override index = 1;
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
 
   constructor(
     viewContainerRef: ViewContainerRef,
     injector: Injector,
-    protected el: ElementRef,
-    protected renderer: Renderer2,
+    protected override el: ElementRef,
+    protected override renderer: Renderer2,
     @Self()
     @Optional()
     protected control: NgControl,
@@ -103,7 +103,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.populateServicesFromContainerComponent();
 
@@ -133,7 +133,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   }
 
   @HostListener('blur')
-  triggerValidation() {
+  override triggerValidation() {
     super.triggerValidation();
     this.setFocus(false);
   }

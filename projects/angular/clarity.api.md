@@ -771,8 +771,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     onBlur(): void;
     // (undocumented)
     onFocus(): void;

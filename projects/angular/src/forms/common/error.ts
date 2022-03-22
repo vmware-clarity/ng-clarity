@@ -18,11 +18,11 @@ import { ControlIdService } from './providers/control-id.service';
   },
 })
 export class ClrControlError extends ClrAbstractControl {
-  controlIdSuffix = CONTROL_SUFFIX.ERROR;
+  override controlIdSuffix = CONTROL_SUFFIX.ERROR;
 
   constructor(
-    @Optional() protected controlIdService: ControlIdService,
-    @Optional() protected containerIdService: ContainerIdService
+    @Optional() protected override controlIdService: ControlIdService,
+    @Optional() protected override containerIdService: ContainerIdService
   ) {
     super(controlIdService, containerIdService);
   }

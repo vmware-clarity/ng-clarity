@@ -22,11 +22,11 @@ export class DatagridIfExpandService extends IfExpandService {
     this.expandableId = 'clr-dg-expandable-row-' + nbRow;
   }
   // due to the es5 spec if the set is overridden on base class the getter must also be overridden
-  get expanded(): boolean {
+  override get expanded(): boolean {
     return this._expanded;
   }
 
-  set expanded(value: boolean) {
+  override set expanded(value: boolean) {
     value = !!value;
     if (value !== this._expanded) {
       this._expanded = value;
@@ -35,7 +35,7 @@ export class DatagridIfExpandService extends IfExpandService {
     }
   }
 
-  loadingStateChange(state: ClrLoadingState) {
+  override loadingStateChange(state: ClrLoadingState) {
     super.loadingStateChange(state);
     if (state !== ClrLoadingState.LOADING) {
       this._animate.next();

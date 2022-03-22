@@ -27,7 +27,7 @@ export class ClrIfSuccess extends AbstractIfState {
   /**
    * @param state CONTROL_STATE
    */
-  protected handleState(state: CONTROL_STATE) {
+  protected override handleState(state: CONTROL_STATE) {
     const isValid = CONTROL_STATE.VALID === state;
 
     if (isValid && !this.displayedContent) {

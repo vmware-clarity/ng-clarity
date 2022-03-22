@@ -11,7 +11,7 @@ import { NgControl } from '@angular/forms';
 
 @Directive({ selector: '[clrControl]', host: { '[class.clr-input]': 'true' } })
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
-  protected index = 1;
+  protected override index = 1;
 
   constructor(
     vcr: ViewContainerRef,

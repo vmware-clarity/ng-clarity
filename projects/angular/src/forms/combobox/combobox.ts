@@ -24,7 +24,7 @@ import {
   Inject,
   ChangeDetectorRef,
 } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 
@@ -88,7 +88,7 @@ export class ClrCombobox<T>
 
   private onChangeCallback: (model: T | T[]) => any;
 
-  protected index = 1;
+  protected override index = 1;
 
   invalid = false;
   focused = false;
@@ -99,8 +99,8 @@ export class ClrCombobox<T>
     @Self()
     @Optional()
     public control: NgControl,
-    protected renderer: Renderer2,
-    protected el: ElementRef,
+    protected override renderer: Renderer2,
+    protected override el: ElementRef,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
     private toggleService: ClrPopoverToggleService,
@@ -125,11 +125,11 @@ export class ClrCombobox<T>
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
   // Otherwise the label/component connection does not work and screen readers do not read the label.
-  get id() {
+  override get id() {
     return this.controlIdService.id + '-combobox';
   }
 
-  set id(id: string) {
+  override set id(id: string) {
     super.id = id;
   }
 
@@ -390,9 +390,5 @@ export class ClrCombobox<T>
     // This assignment is needed by the wrapper, so it can set
     // the aria properties on the input element, not on the component.
     this.el = this.textbox;
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

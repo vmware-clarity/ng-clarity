@@ -35,7 +35,7 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     }
   }
 
-  destroy() {
+  override destroy() {
     if (this.parent) {
       this.parent._removeChild(this);
     }

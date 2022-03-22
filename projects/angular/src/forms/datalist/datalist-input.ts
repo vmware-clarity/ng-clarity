@@ -62,7 +62,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
   }
 
   @HostListener('blur')
-  triggerValidation() {
+  override triggerValidation() {
     super.triggerValidation();
     if (this.focusService) {
       this.focusService.focused = false;

@@ -38,7 +38,7 @@ import { isPlatformBrowser } from '@angular/common';
   providers: [IfExpandService, UNIQUE_ID_PROVIDER],
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-  isAccordion = false;
+  override isAccordion = false;
 
   @ViewChild('headerButton') headerButton: ElementRef;
   private subscriptions: Subscription[] = [];
@@ -47,17 +47,17 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
-  get id(): string {
+  override get id(): string {
     return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
   }
 
-  set id(_value: string) {
+  override set id(_value: string) {
     // overriding parent id required empty setter
   }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    public commonStrings: ClrCommonStringsService,
+    public override commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
@@ -67,7 +67,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     super(commonStrings, stepperService, ifExpandService, id);
   }
 
-  ngOnInit() {
+  override ngOnInit(): void {
     super.ngOnInit();
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);

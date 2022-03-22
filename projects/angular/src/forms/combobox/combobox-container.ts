@@ -59,7 +59,7 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef;
-  @ContentChild(ClrLabel) label: ClrLabel;
+  @ContentChild(ClrLabel) override label: ClrLabel;
 
   constructor(
     ifControlStateService: IfControlStateService,
@@ -72,7 +72,7 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }
 
-  ngAfterContentInit() {
+  override ngAfterContentInit() {
     if (this.label) {
       this.containerService.labelText = this.label.labelText;
     }

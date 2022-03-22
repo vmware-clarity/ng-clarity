@@ -68,7 +68,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
     private focusService: FocusService,
-    protected ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 

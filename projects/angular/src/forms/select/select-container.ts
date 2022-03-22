@@ -55,10 +55,10 @@ export class ClrSelectContainer extends ClrAbstractContainer {
   private multi = false;
 
   constructor(
-    @Optional() protected layoutService: LayoutService,
-    protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService,
-    protected ifControlStateService: IfControlStateService
+    @Optional() protected override layoutService: LayoutService,
+    protected override controlClassService: ControlClassService,
+    protected override ngControlService: NgControlService,
+    protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }

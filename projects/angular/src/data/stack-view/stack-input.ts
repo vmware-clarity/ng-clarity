@@ -27,7 +27,7 @@ import { ClrStackView } from './stack-view';
 export class ClrStackInput extends StackControl {
   type = 'text';
 
-  constructor(public stackView: ClrStackView) {
+  constructor(public override stackView: ClrStackView) {
     super(stackView);
   }
 }
