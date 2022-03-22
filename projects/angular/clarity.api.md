@@ -38,7 +38,6 @@ import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
-import { RendererFactory2 } from '@angular/core';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -770,6 +769,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     onBlur(): void;
     // (undocumented)

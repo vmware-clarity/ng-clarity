@@ -391,4 +391,13 @@ export class ClrCombobox<T>
     // the aria properties on the input element, not on the component.
     this.el = this.textbox;
   }
+
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    // The zone.js stores its tasks on elements within `__zone_symbol__$eventName` property. Chrome has an internal
+    // bug where it skips garbage collecting detached DOM nodes if they have references to other objects.
+    // In this case DOM nodes (which have `blur` listeners) may reference focus handler and the combobox component
+    // itself (through the `componentCdRef`).
+    this.focusHandler.trigger = this.focusHandler.textInput = null;
+  }
 }

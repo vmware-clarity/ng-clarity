@@ -138,6 +138,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   }
 
   ngOnDestroy() {
+    // Remove the listbox when the `crl-options` component is destroyed so `blur` listener will be also removed.
+    this.focusHandler.listbox = null;
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

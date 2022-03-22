@@ -5,73 +5,119 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2, ChangeDetectorRef } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
+import { EMPTY, fromEvent, Observable, Subject } from 'rxjs';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
+
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { OptionSelectionService } from './option-selection.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
-import { take } from 'rxjs/operators';
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
 import { keyValidator } from '../../../utils/focus/key-focus/util';
 
 @Injectable()
-export class ComboboxFocusHandler<T> {
+export class ComboboxFocusHandler<T> implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  /**
+   * These subjects are used to emit elements when they are set within combobox components.
+   * They might be set asynchronously whenever the change detection is run.
+   * Having subject makes the code reactive and cancellable (e.g. event listeners will be
+   * automatically removed and re-added through the `switchMap` below).
+   */
+  private trigger$ = new Subject<HTMLElement | null>();
+  private listbox$ = new Subject<HTMLElement | null>();
+  private textInput$ = new Subject<HTMLElement | null>();
+
   constructor(
     @Inject(UNIQUE_ID) public id: string,
-    rendererFactory: RendererFactory2,
     private toggleService: ClrPopoverToggleService,
     private selectionService: OptionSelectionService<T>,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: string,
+    private ngZone: NgZone
   ) {
-    this.handleFocusSubscription();
-    // Direct renderer injection can be problematic and leads to failing tests at least
-    this.renderer = rendererFactory.createRenderer(null, null);
+    this.initializeSubscriptions();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   // We need a Change Detector from the related component, so we can update it on Blur
   // (which is needed because of Edge specific lifecycle mis-behavior)
-  componentCdRef: ChangeDetectorRef;
+  componentCdRef: ChangeDetectorRef | null = null;
 
-  private renderer: Renderer2;
-
-  private handleFocusSubscription() {
-    this.toggleService.openChange.subscribe(open => {
+  private initializeSubscriptions(): void {
+    this.toggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe(open => {
       if (!open) {
         this.pseudoFocus.model = null;
       }
     });
+
+    [this.trigger$, this.listbox$, this.textInput$].forEach(element$ => {
+      element$
+        .pipe(
+          switchMap(element => (element ? this.addEventListenerOutsideAngular<FocusEvent>(element, 'blur') : EMPTY)),
+          takeUntil(this.destroy$)
+        )
+        .subscribe((event: FocusEvent) => {
+          if (this.focusOutOfComponent(event)) {
+            // Note: the `blur` callback is called within the `<root>` zone, we re-enter the Angular zone
+            // only when the condition is met.
+            this.ngZone.run(() => {
+              this.toggleService.open = false;
+              // Workaround for popover close-on-outside-click timing issues in Edge browser
+              this.componentCdRef?.detectChanges();
+            });
+          }
+        });
+    });
+
+    this.textInput$
+      .pipe(
+        switchMap(textInput =>
+          textInput ? this.addEventListenerOutsideAngular<KeyboardEvent>(textInput, 'keydown') : EMPTY
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => {
+        const preventDefault = this.handleTextInput(event);
+        if (preventDefault) {
+          event.preventDefault();
+        }
+      });
   }
 
-  private _trigger: HTMLElement;
+  private _trigger: HTMLElement | null = null;
   get trigger() {
     return this._trigger;
   }
-  set trigger(el: HTMLElement) {
+  set trigger(el: HTMLElement | null) {
     this._trigger = el;
-    this.addFocusOnBlurListener(el);
+    this.trigger$.next(el);
   }
 
-  private _listbox: HTMLElement;
+  private _listbox: HTMLElement | null = null;
   get listbox() {
     return this._listbox;
   }
-  set listbox(el: HTMLElement) {
+  set listbox(el: HTMLElement | null) {
     this._listbox = el;
-    this.addFocusOnBlurListener(el);
+    this.listbox$.next(el);
   }
 
   public pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
-  private _textInput: HTMLElement;
+  private _textInput: HTMLElement | null = null;
   get textInput() {
     return this._textInput;
   }
-  set textInput(el: HTMLElement) {
+  set textInput(el: HTMLElement | null) {
     this._textInput = el;
-    this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event));
-    this.addFocusOnBlurListener(el);
+    this.textInput$.next(el);
   }
 
   private moveFocusTo(direction: ArrowKeyDirection) {
@@ -167,20 +213,6 @@ export class ComboboxFocusHandler<T> {
     }
   }
 
-  private addFocusOnBlurListener(el: HTMLElement) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.renderer.listen(el, 'blur', event => {
-        if (this.focusOutOfComponent(event)) {
-          this.toggleService.open = false;
-          // Workaround for popover close-on-outside-click timing issues in Edge browser
-          if (this.componentCdRef) {
-            this.componentCdRef.detectChanges();
-          }
-        }
-      });
-    }
-  }
-
   private focusOutOfComponent(event: FocusEvent): boolean {
     // event.relatedTarget is null in IE11. In that case we use document.activeElement
     // which points to the element that becomes active as the blur event occurs on the input.
@@ -209,6 +241,12 @@ export class ComboboxFocusHandler<T> {
 
   addOptionValues(options: OptionData<T>[]) {
     this.optionData = options;
+  }
+
+  private addEventListenerOutsideAngular<T extends Event>(element: HTMLElement, eventName: string): Observable<T> {
+    return new Observable<T>(subscriber =>
+      this.ngZone.runOutsideAngular(() => fromEvent(element, eventName).subscribe(subscriber))
+    );
   }
 }
 
