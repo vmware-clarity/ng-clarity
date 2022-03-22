@@ -8,7 +8,7 @@ import { TestBed, ComponentFixture, tick, async, fakeAsync } from '@angular/core
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
 
 import { ClrCombobox } from './combobox';
 import { OptionSelectionService } from './providers/option-selection.service';
@@ -223,6 +223,27 @@ export default function (): void {
         const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
         expect(button.disabled).toBeTruthy();
       }));
+    });
+
+    describe('change detection behavior', () => {
+      it('should not run change detection when the `focus` event is dispatched on the input but should update the focus indicator class', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        const input = clarityElement.querySelector('.clr-combobox-input');
+        input.dispatchEvent(new Event('focus'));
+        const focusIndicator = clarityElement.querySelector('.clr-focus-indicator');
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(focusIndicator).toHaveClass('clr-focus');
+        input.dispatchEvent(new Event('blur'));
+        expect(focusIndicator).not.toHaveClass('clr-focus');
+      });
+
+      it('should not run change detection when the `keydown` event is dispatched on the `clr-combobox`', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        spyOn(appRef, 'tick');
+        clarityElement.dispatchEvent(new Event('keydown'));
+        expect(appRef.tick).not.toHaveBeenCalled();
+      });
     });
   });
 }

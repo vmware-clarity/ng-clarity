@@ -54,7 +54,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl,
+    private ngControl: NgControl | null,
     renderer: Renderer2,
     el: ElementRef
   ) {

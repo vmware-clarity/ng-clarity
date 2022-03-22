@@ -715,7 +715,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "AriaService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, ariaService: AriaService, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl | null, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, ariaService: AriaService, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -733,17 +733,16 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    control: NgControl;
+    control: NgControl | null;
     // (undocumented)
     get displayField(): string;
     // (undocumented)
     protected el: ElementRef;
     // (undocumented)
-    focused: boolean;
-    // (undocumented)
     focusedPill: any;
     // (undocumented)
     focusFirstActive(): void;
+    focusIndicator: ElementRef<HTMLElement>;
     // (undocumented)
     focusInput(): void;
     // (undocumented)
@@ -771,12 +770,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    onBlur(): void;
-    // (undocumented)
-    onFocus(): void;
-    // (undocumented)
-    onKeyUp(event: KeyboardEvent): void;
-    // (undocumented)
     get openState(): boolean;
     // (undocumented)
     optionSelected: ClrOptionSelected<T>;
@@ -789,7 +782,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     registerOnChange(onChange: any): void;
     // (undocumented)
-    registerOnTouched(onTouched: any): void;
+    registerOnTouched(onTouched: VoidFunction): void;
     // (undocumented)
     protected renderer: Renderer2;
     set searchText(text: string);
@@ -799,10 +792,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     setDisabledState(): void;
     // (undocumented)
     smartPosition: ClrPopoverPosition;
-    // (undocumented)
-    textbox: ElementRef;
-    // (undocumented)
-    trigger: ElementRef;
+    textbox: ElementRef<HTMLInputElement>;
+    trigger: ElementRef<HTMLButtonElement>;
     // (undocumented)
     unselect(item: T): void;
     // (undocumented)
@@ -810,7 +801,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": "placeholder"; "multiSelect": "clrMulti"; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected"], ["*"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -5147,7 +5138,7 @@ export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef);
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)

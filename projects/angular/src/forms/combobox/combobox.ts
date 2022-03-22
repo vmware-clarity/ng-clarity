@@ -9,7 +9,6 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  HostListener,
   PLATFORM_ID,
   Renderer2,
   ViewChild,
@@ -23,8 +22,9 @@ import {
   AfterContentInit,
   Inject,
   ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 
@@ -82,8 +82,13 @@ export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>
   implements ControlValueAccessor, LoadingListener, AfterContentInit
 {
-  @ViewChild('textboxInput') textbox: ElementRef;
-  @ViewChild('trigger') trigger: ElementRef;
+  /** The native `<input class="clr-input clr-combobox-input" />` element. */
+  @ViewChild('textboxInput', { static: true }) textbox: ElementRef<HTMLInputElement>;
+  /** The native `<button class="clr-combobox-trigger"></button>` element. */
+  @ViewChild('trigger', { static: true }) trigger: ElementRef<HTMLButtonElement>;
+  /** The native `<div class="clr-focus-indicator"></div>` element. */
+  @ViewChild('focusIndicator', { static: true }) focusIndicator: ElementRef<HTMLElement>;
+
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
   private onChangeCallback: (model: T | T[]) => any;
@@ -91,14 +96,14 @@ export class ClrCombobox<T>
   protected override index = 1;
 
   invalid = false;
-  focused = false;
 
   constructor(
     vcr: ViewContainerRef,
     injector: Injector,
     @Self()
     @Optional()
-    public control: NgControl,
+    @Inject(NgControl)
+    public control: NgControl | null,
     protected override renderer: Renderer2,
     protected override el: ElementRef,
     public optionSelectionService: OptionSelectionService<T>,
@@ -110,7 +115,8 @@ export class ClrCombobox<T>
     @Inject(PLATFORM_ID) private platformId: any,
     private ariaService: AriaService,
     private focusHandler: ComboboxFocusHandler<T>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
     if (control) {
@@ -224,36 +230,11 @@ export class ClrCombobox<T>
     return this.optionSelectionService.displayField;
   }
 
-  onBlur() {
-    this.onTouchedCallback();
-    if (this.control.control.updateOn === 'blur') {
-      this.control.control.updateValueAndValidity();
-    }
-    this.focused = false;
-  }
-
-  onFocus() {
-    this.focused = true;
-  }
-
   getSelectionAriaLabel() {
     if (this.containerService && this.containerService.labelText) {
       return `${this.containerService.labelText} ${this.commonStrings.keys.comboboxSelection}`;
     }
     return this.commonStrings.keys.comboboxSelection;
-  }
-
-  @HostListener('keydown', ['$event'])
-  onKeyUp(event: KeyboardEvent) {
-    // if BACKSPACE in multiselect mode, delete the last pill if text is empty
-    if (event.keyCode === BACKSPACE && this.multiSelect && this._searchText.length === 0) {
-      const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
-      if (multiModel && multiModel.length > 0) {
-        const lastItem: T = multiModel[multiModel.length - 1];
-        this.control.control.markAsTouched();
-        this.optionSelectionService.unselect(lastItem);
-      }
-    }
   }
 
   @Output('clrInputChange') public clrInputChange: EventEmitter<string> = new EventEmitter<string>(false);
@@ -312,6 +293,50 @@ export class ClrCombobox<T>
         })
       );
     }
+
+    this.subscriptions.push(
+      // Setup the `focus` listener on the `<input class="clr-input clr-combobox-input" />` element.
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent(this.textbox.nativeElement, 'focus').subscribe(() =>
+          this.updateClrFocusClassOnTheFocusIndicator(/* focused */ true)
+        )
+      ),
+      // Setup the `blur` listener on the `<input class="clr-input clr-combobox-input" />` element.
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent(this.textbox.nativeElement, 'blur').subscribe(() => {
+          if (this.control) {
+            // Note: we'll run change detection only when the combobox acts as a value accessor.
+            this.ngZone.run(() => {
+              this.onTouched();
+              if (this.control.control.updateOn === 'blur') {
+                this.control.control.updateValueAndValidity();
+              }
+              this.cdr.markForCheck();
+            });
+          }
+
+          this.updateClrFocusClassOnTheFocusIndicator(/* focused */ false);
+        })
+      ),
+      // Setup the `keydown` on the `<clr-combobox></clr-combobox>` element.
+      this.ngZone.runOutsideAngular(() =>
+        fromEvent<KeyboardEvent>(this.el.nativeElement, 'keydown').subscribe(event => {
+          // if BACKSPACE in multiselect mode, delete the last pill if text is empty
+          if (event.keyCode === BACKSPACE && this.multiSelect && this._searchText.length === 0) {
+            const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
+            if (multiModel && multiModel.length > 0) {
+              const lastItem: T = multiModel[multiModel.length - 1];
+              // Note: we'll run change detection on the `keydown` event only when the condition is met.
+              this.ngZone.run(() => {
+                this.control.control.markAsTouched();
+                this.optionSelectionService.unselect(lastItem);
+                this.cdr.markForCheck();
+              });
+            }
+          }
+        })
+      )
+    );
   }
 
   focusFirstActive() {
@@ -348,10 +373,14 @@ export class ClrCombobox<T>
     return model ? model.id : null;
   }
 
-  private onTouchedCallback: () => any;
+  /**
+   * Note: this is `null` until the `formControl` or `ngModel` is bound to the combobox,
+   * so this components acts as a control value accessor.
+   */
+  private onTouched: VoidFunction | null = null;
 
-  registerOnTouched(onTouched: any): void {
-    this.onTouchedCallback = onTouched;
+  registerOnTouched(onTouched: VoidFunction): void {
+    this.onTouched = onTouched;
   }
 
   setDisabledState(): void {
@@ -390,5 +419,17 @@ export class ClrCombobox<T>
     // This assignment is needed by the wrapper, so it can set
     // the aria properties on the input element, not on the component.
     this.el = this.textbox;
+  }
+
+  /**
+   * Toggles the `clr-focus` class on the `<div class="clr-focus-indicator"></div>`.
+   */
+  private updateClrFocusClassOnTheFocusIndicator(focused: boolean): void {
+    const focusIndicator = this.focusIndicator.nativeElement;
+    if (focused) {
+      this.renderer.addClass(focusIndicator, 'clr-focus');
+    } else {
+      this.renderer.removeClass(focusIndicator, 'clr-focus');
+    }
   }
 }
