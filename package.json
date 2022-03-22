@@ -26,7 +26,7 @@
     "test": "ng test clr-angular --source-map=false --watch=false",
     "test:watch": "npm run --silent test -- --watch",
     "_build:angular": "ng build clr-angular --configuration production",
-    "_build:angular:watch": "npm run --silent build:angular -- --watch",
+    "_build:angular:watch": "npm run --silent _build:angular -- --watch",
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer -d ./dist/clr-ui",
