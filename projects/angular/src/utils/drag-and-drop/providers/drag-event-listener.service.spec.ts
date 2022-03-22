@@ -281,6 +281,10 @@ export default function (): void {
     });
 
     describe('from touch events', function () {
+      beforeEach(() => {
+        testComponent.reapplyDragListenersForTouchTests();
+      });
+
       testCases('touchstart', 'touchmove', 'touchend');
     });
   });
@@ -356,5 +360,12 @@ class TestComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.dragEventListener.detachDragListeners();
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  reapplyDragListenersForTouchTests(): void {
+    this.dragEventListener.detachDragListeners();
+    // Note: we don't run tests on touch devices so there's no `ontouchstart` property on the element.
+    this.draggableButtonRef.nativeElement.ontouchstart = null;
+    this.dragEventListener.attachDragListeners(this.draggableButtonRef.nativeElement);
   }
 }

@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, NgZone, Renderer2 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, NgZone, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { fromEvent, Observable, Subject } from 'rxjs';
 
 import { DragEventInterface, DragEventType, DragPointPosition } from '../interfaces/drag-event.interface';
 import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';
@@ -47,7 +48,12 @@ export class DragEventListenerService<T> {
     return this.initialPosition;
   }
 
-  constructor(private ngZone: NgZone, private renderer: Renderer2, private eventBus: DragAndDropEventBusService<T>) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: string,
+    private ngZone: NgZone,
+    private renderer: Renderer2,
+    private eventBus: DragAndDropEventBusService<T>
+  ) {}
 
   private initialPosition: DragPointPosition;
 
@@ -60,10 +66,18 @@ export class DragEventListenerService<T> {
   public ghostElement?: any;
   public dropPointPosition?: DragPointPosition;
 
-  public attachDragListeners(draggableEl: Node) {
+  public attachDragListeners(draggableEl: Node): void {
     this.draggableEl = draggableEl;
-    this.listeners.push(this.customDragEvent(this.draggableEl, 'mousedown', 'mousemove', 'mouseup'));
-    this.listeners.push(this.customDragEvent(this.draggableEl, 'touchstart', 'touchmove', 'touchend'));
+    // Note: there's no need to add touch and mouse event listeners together.
+    // Touch events are handled earlier than mouse events, tho not all user agents dispatch
+    // mouse events after touch events. See the spec: https://www.w3.org/TR/touch-events/#mouse-events.
+    const supportsTouch = isPlatformBrowser(this.platformId) && 'ontouchstart' in draggableEl;
+
+    if (supportsTouch) {
+      this.listeners.push(this.customDragEvent(this.draggableEl, 'touchstart', 'touchmove', 'touchend'));
+    } else {
+      this.listeners.push(this.customDragEvent(this.draggableEl, 'mousedown', 'mousemove', 'mouseup'));
+    }
   }
 
   public detachDragListeners() {
@@ -93,7 +107,12 @@ export class DragEventListenerService<T> {
     }
   }
 
-  private customDragEvent(element: Node, startOnEvent: string, moveOnEvent: string, endOnEvent: string): () => void {
+  private customDragEvent(
+    element: Node,
+    startOnEvent: 'mousedown' | 'touchstart',
+    moveOnEvent: 'mousemove' | 'touchmove',
+    endOnEvent: 'mouseup' | 'touchend'
+  ): () => void {
     return this.renderer.listen(element, startOnEvent, (startEvent: MouseEvent | TouchEvent) => {
       // save the initial point to initialPosition
       // this will be used to calculate how far the draggable has been dragged from its initial position
@@ -150,8 +169,11 @@ export class DragEventListenerService<T> {
       });
 
       // Listen to mouseup/touchend events.
-      this.nestedListeners.push(
-        this.renderer.listen('document', endOnEvent, (endEvent: MouseEvent | TouchEvent) => {
+      // We use `fromEvent` because `renderer.listen` does not support passing `AddEventListener` options.
+      // Note: since Chrome 56 now defaults document level `touchstart` and `touchmove` listeners to passive.
+      // The `touchend` is not passive by default, we never call `preventDefault()` on it, so we're safe making it passive too.
+      const subscription = fromEvent(document, endOnEvent, { passive: true }).subscribe(
+        (endEvent: MouseEvent | TouchEvent) => {
           if (this.hasDragStarted) {
             // Fire "dragend" only if dragstart is registered
             this.hasDragStarted = false;
@@ -167,8 +189,10 @@ export class DragEventListenerService<T> {
           if (this.checkDragStartBoundaryListener) {
             this.checkDragStartBoundaryListener();
           }
-        })
+        }
       );
+
+      this.nestedListeners.push(() => subscription.unsubscribe());
     });
   }
 
