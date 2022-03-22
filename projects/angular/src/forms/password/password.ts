@@ -26,7 +26,7 @@ import { FocusService } from '../common/providers/focus.service';
 
 @Directive({ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
-  protected index = 1;
+  protected override index = 1;
 
   constructor(
     vcr: ViewContainerRef,
@@ -62,7 +62,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
   }
 
   @HostListener('blur')
-  triggerValidation() {
+  override triggerValidation() {
     super.triggerValidation();
     if (this.focusService) {
       this.focusService.focused = false;

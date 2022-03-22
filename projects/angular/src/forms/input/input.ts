@@ -12,7 +12,7 @@ import { WrappedFormControl } from '../common/wrapped-control';
 
 @Directive({ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } })
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
-  protected index = 1;
+  protected override index = 1;
 
   constructor(
     vcr: ViewContainerRef,

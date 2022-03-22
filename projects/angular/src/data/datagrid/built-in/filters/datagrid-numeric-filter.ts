@@ -60,7 +60,8 @@ export class DatagridNumericFilter<T = any>
 
   private subscriptions: Subscription[] = [];
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });

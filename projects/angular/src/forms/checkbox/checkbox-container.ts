@@ -57,10 +57,10 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
 
   constructor(
-    @Optional() protected layoutService: LayoutService,
-    protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService,
-    protected ifControlStateService: IfControlStateService
+    @Optional() protected override layoutService: LayoutService,
+    protected override controlClassService: ControlClassService,
+    protected override ngControlService: NgControlService,
+    protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }
@@ -83,7 +83,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     return this.inline;
   }
 
-  ngAfterContentInit() {
+  override ngAfterContentInit() {
     this.setAriaRoles();
   }
 

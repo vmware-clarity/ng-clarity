@@ -7,6 +7,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
+    "noImplicitOverride": true,
     "types": [],
     "lib": ["dom", "es2018"]
   },

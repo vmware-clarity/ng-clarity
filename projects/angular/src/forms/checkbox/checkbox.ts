@@ -32,7 +32,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
 
     const toggleService = this.getProviderFromContainer<BehaviorSubject<boolean>>(IS_TOGGLE, null);

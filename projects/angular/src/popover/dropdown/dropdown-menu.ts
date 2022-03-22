@@ -114,7 +114,7 @@ export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit
     this.items.notifyOnChanges();
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
     this.focusHandler.resetChildren();
   }

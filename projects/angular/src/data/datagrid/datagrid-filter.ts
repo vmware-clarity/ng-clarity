@@ -144,7 +144,7 @@ export class ClrDatagridFilter<T = any>
     return !!this.filter && this.filter.isActive();
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
   }

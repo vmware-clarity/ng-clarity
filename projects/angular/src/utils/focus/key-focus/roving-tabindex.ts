@@ -39,7 +39,7 @@ export class ClrRovingTabindex extends ClrKeyFocus {
     }
   }
 
-  handleKeyboardEvent(event: KeyboardEvent) {
+  override handleKeyboardEvent(event: KeyboardEvent) {
     if (this.prevKeyPressed(event) && this.currentFocusIsNotFirstItem()) {
       this.updateTabindex(this.current - 1);
     } else if (this.nextKeyPressed(event) && this.currentFocusIsNotLastItem()) {
@@ -52,7 +52,7 @@ export class ClrRovingTabindex extends ClrKeyFocus {
     super.handleKeyboardEvent(event);
   }
 
-  setClickedItemCurrent(event: any) {
+  override setClickedItemCurrent(event: any) {
     let position: number;
 
     if (this.focusableItems[0].nativeElement) {
@@ -67,7 +67,7 @@ export class ClrRovingTabindex extends ClrKeyFocus {
     super.setClickedItemCurrent(event);
   }
 
-  protected initializeFocus() {
+  protected override initializeFocus() {
     if (this.focusableItems && this.focusableItems.length) {
       this.focusableItems.forEach(item => {
         this.setTabindex(item, -1);

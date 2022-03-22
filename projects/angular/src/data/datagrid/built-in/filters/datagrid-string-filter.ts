@@ -114,7 +114,7 @@ export class DatagridStringFilter<T = any>
     );
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
   }

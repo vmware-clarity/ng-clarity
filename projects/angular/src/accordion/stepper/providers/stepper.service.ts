@@ -14,7 +14,7 @@ import { StepperModel } from '../models/stepper.model';
 @Injectable()
 export class StepperService extends AccordionService {
   readonly panelsCompleted = this.getAllCompletedPanelChanges();
-  protected accordion = new StepperModel();
+  protected override accordion = new StepperModel();
 
   private _activeStepChanges = new Subject<string>();
   readonly activeStep = this._activeStepChanges.asObservable();

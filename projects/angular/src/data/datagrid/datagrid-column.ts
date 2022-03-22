@@ -113,7 +113,8 @@ export class ClrDatagridColumn<T = any>
    */
   private subscriptions: Subscription[] = [];
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 

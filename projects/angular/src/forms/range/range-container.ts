@@ -70,7 +70,7 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     ngControlService: NgControlService,
     private renderer: Renderer2,
     private idService: ControlIdService,
-    protected ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }

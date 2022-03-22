@@ -147,7 +147,9 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     this.popoverOptions.offsetX = setPosition.offsetX;
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+
     if (isPlatformBrowser(this.platformId) && this.el.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }

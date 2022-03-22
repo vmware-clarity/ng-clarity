@@ -14,19 +14,19 @@ export class StepperModel extends AccordionModel {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
   }
 
-  addPanel(id: string, open = false) {
+  override addPanel(id: string, open = false) {
     super.addPanel(id, open);
     this._panels[id].disabled = true;
   }
 
-  updatePanelOrder(ids: string[]) {
+  override updatePanelOrder(ids: string[]) {
     super.updatePanelOrder(ids);
     if (this.stepperModelInitialize === false) {
       this.openFirstPanel();
     }
   }
 
-  togglePanel(panelId: string) {
+  override togglePanel(panelId: string) {
     if (this._panels[panelId].status === AccordionStatus.Complete) {
       this._panels[panelId].open = !this._panels[panelId].open;
     }

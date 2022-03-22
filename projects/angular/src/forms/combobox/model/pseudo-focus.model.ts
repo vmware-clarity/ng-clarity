@@ -13,7 +13,7 @@ export class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
     return this._focusChanged.asObservable();
   }
 
-  select(item: T): void {
+  override select(item: T): void {
     if (this.model !== item) {
       this.model = item;
       this._focusChanged.next(item);
