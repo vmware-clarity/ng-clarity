@@ -185,6 +185,9 @@ describe('Abstract Popover', function () {
       // popover should stay open if button is clicked again
       btn.dispatchEvent(new Event('click'));
       expect(toggleService.open).toBe(true);
+
+      // must cleanup elements that are manually added to document body
+      document.body.removeChild(btn);
     });
   });
 });

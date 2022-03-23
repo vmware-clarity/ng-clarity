@@ -128,5 +128,40 @@ export default function (): void {
       treeFocusManager.focusNodeBelow(treeIdModelRefs.id6);
       expect(focusRequestedOnId).toBeNull();
     });
+
+    describe('.focusNodeStartsWith', () => {
+      treeIdModelRefs.id1.textContent = 'one';
+      treeIdModelRefs.id2.textContent = 'two';
+      treeIdModelRefs.id3.textContent = 'three';
+      treeIdModelRefs.id4.textContent = 'four';
+      treeIdModelRefs.id5.textContent = 'five';
+      treeIdModelRefs.id6.textContent = 'six';
+      treeIdModelRefs.id7.textContent = 'seven';
+      treeIdModelRefs.id8.textContent = 'eight';
+
+      it('finds and focuses node that starts with given string from children/sibling nodes', () => {
+        treeFocusManager.focusNodeStartsWith('eig', treeIdModelRefs.id1);
+        expect(focusRequestedOnId).toBe('id8');
+        treeFocusManager.focusNodeStartsWith('t', treeIdModelRefs.id1);
+        expect(focusRequestedOnId).toBe('id2');
+        treeFocusManager.focusNodeStartsWith('th', treeIdModelRefs.id1);
+        expect(focusRequestedOnId).toBe('id3');
+        treeFocusManager.focusNodeStartsWith('s', treeIdModelRefs.id8);
+        expect(focusRequestedOnId).toBe('id7');
+      });
+
+      it('finds and focuses node that starts with given string from root node if not found in children/sibling nodes', () => {
+        treeFocusManager.focusNodeStartsWith('f', treeIdModelRefs.id7);
+        expect(focusRequestedOnId).toBe('id4');
+      });
+
+      it('finds and focuses node that starts with given string by skipping nodes that are not expanded', () => {
+        treeFocusManager.focusNodeStartsWith('s', treeIdModelRefs.id2);
+        expect(focusRequestedOnId).toBe('id6');
+        treeIdModelRefs.id3.expanded = false;
+        treeFocusManager.focusNodeStartsWith('s', treeIdModelRefs.id2);
+        expect(focusRequestedOnId).toBe('id7');
+      });
+    });
   });
 }

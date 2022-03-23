@@ -99,6 +99,86 @@ export class TreeFocusManagerService<T> {
     }
   }
 
+  private findDescendentNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+    if (model.expanded && model.children.length > 0) {
+      for (const childModel of model.children) {
+        const found = this.findNodeStartsWith(searchString, childModel);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  private findSiblingNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+    const siblings = this.findSiblings(model);
+    const selfIndex = siblings.indexOf(model);
+
+    // Look from sibling nodes
+    for (let i = selfIndex + 1; i < siblings.length; i++) {
+      const siblingModel = siblings[i];
+      const found = this.findNodeStartsWith(searchString, siblingModel);
+      if (found) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  private findRootNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+    for (const rootModel of this.rootNodeModels) {
+      // Don't look from a parent yet
+      if (model.parent && model.parent === rootModel) {
+        continue;
+      }
+
+      const found = this.findNodeStartsWith(searchString, rootModel);
+      if (found) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  private findNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+    if (!model) {
+      return null;
+    }
+
+    if (model.textContent.startsWith(searchString)) {
+      return model;
+    }
+
+    return this.findDescendentNodeStartsWith(searchString, model);
+  }
+
+  private findClosestNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+    if (!model) {
+      return null;
+    }
+
+    const foundFromDescendents = this.findDescendentNodeStartsWith(searchString, model);
+
+    if (foundFromDescendents) {
+      return foundFromDescendents;
+    }
+
+    const foundFromSiblings = this.findSiblingNodeStartsWith(searchString, model);
+
+    if (foundFromSiblings) {
+      return foundFromSiblings;
+    }
+
+    const foundFromRootNodes = this.findRootNodeStartsWith(searchString, model);
+
+    if (foundFromRootNodes) {
+      return foundFromRootNodes;
+    }
+    // Now look from its own direct parent
+    return this.findNodeStartsWith(searchString, model.parent);
+  }
+
   focusNode(model: TreeNodeModel<T>): void {
     if (model) {
       this._focusRequest.next(model.nodeId);
@@ -133,5 +213,9 @@ export class TreeFocusManagerService<T> {
 
   focusNodeBelow(model: TreeNodeModel<T>): void {
     this.focusNode(this.findNodeBelow(model));
+  }
+
+  focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void {
+    this.focusNode(this.findClosestNodeStartsWith(searchString, model));
   }
 }

@@ -39,3 +39,9 @@ export function preventArrowKeyScroll(event: KeyboardEvent) {
     event.preventDefault();
   }
 }
+
+export function isKeyEitherLetterOrNumber(event: KeyboardEvent) {
+  const char = event.key;
+  // Only letter characters differ when they switch between lowercase and uppercase, whether it's an English or non-English letter.
+  return char.toLowerCase() !== char.toUpperCase() || (char >= '0' && char <= '9');
+}
