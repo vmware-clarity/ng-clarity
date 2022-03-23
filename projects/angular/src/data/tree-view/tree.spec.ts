@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -93,17 +93,20 @@ export default function (): void {
       expect(this.clarityElement.getAttribute('role')).toBe('tree');
     });
 
-    it('calls focusManager.focusFirstVisibleNode when focus is received', function (this: Context) {
+    it('calls focusManager.focusFirstVisibleNode when focus is received and should not run change detection', function (this: Context) {
+      const appRef = TestBed.inject(ApplicationRef);
+      spyOn(appRef, 'tick');
       const focusManager = this.getClarityProvider(TreeFocusManagerService);
       spyOn(focusManager, 'focusFirstVisibleNode');
       this.clarityElement.focus();
+      expect(appRef.tick).not.toHaveBeenCalled();
       expect(focusManager.focusFirstVisibleNode).toHaveBeenCalled();
     });
 
-    it('removes tabindex once focus is shifted to the first visiible child', function (this: Context) {
-      expect(this.clarityDirective.tabindex).toBe(0);
+    it('removes tabindex once focus is shifted to the first visible child', function (this: Context) {
+      expect(this.clarityElement.getAttribute('tabindex')).toEqual('0');
       this.clarityElement.focus();
-      expect(this.clarityDirective.tabindex).toBeUndefined();
+      expect(this.clarityElement.hasAttribute('tabindex')).toEqual(false);
     });
   });
 
