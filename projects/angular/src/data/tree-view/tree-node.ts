@@ -216,9 +216,11 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
   }
 
   focusTreeNode(): void {
-    if (isPlatformBrowser(this.platformId) && document.activeElement !== this.contentContainer.nativeElement) {
+    const containerEl = this.contentContainer.nativeElement;
+    if (isPlatformBrowser(this.platformId) && document.activeElement !== containerEl) {
       this.setTabIndex(0);
-      this.contentContainer.nativeElement.focus();
+      containerEl.focus();
+      containerEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
   }
 
@@ -248,19 +250,21 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
         this.collapseOrFocusParent();
         break;
       case KeyCodes.Home:
+        event.preventDefault();
         this.focusManager.focusFirstVisibleNode();
         break;
       case KeyCodes.End:
+        event.preventDefault();
         this.focusManager.focusLastVisibleNode();
         break;
       case KeyCodes.Enter:
-        this.expandOrDefault();
+        this.toggleExpandOrTriggerDefault();
         break;
       case KeyCodes.Space:
       case KeyCodes.Spacebar:
         // to prevent scrolling on space key in this specific case
         event.preventDefault();
-        this.expandOrDefault();
+        this.toggleExpandOrTriggerDefault();
         break;
       default:
         break;
@@ -271,9 +275,9 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
     return this._model.children && this._model.children.length > 0;
   }
 
-  private expandOrDefault() {
+  private toggleExpandOrTriggerDefault() {
     if (this.isExpandable() && !this.isSelectable()) {
-      this.expandOrFocusFirstChild();
+      this.expandService.expanded = !this.expanded;
     } else {
       this.triggerDefaultAction();
     }
