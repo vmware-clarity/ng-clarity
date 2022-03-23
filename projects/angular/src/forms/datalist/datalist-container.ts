@@ -5,6 +5,8 @@
  */
 
 import { Component, Optional } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { ControlClassService } from '../common/providers/control-class.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -13,6 +15,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 import { DatalistIdService } from './providers/datalist-id.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -58,6 +61,7 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
     NgControlService,
     DatalistIdService,
     IfControlStateService,
+    ClrDestroyService,
   ],
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
@@ -68,10 +72,11 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
     private focusService: FocusService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
 
-    this.subscriptions.push(this.focusService.focusChange.subscribe(state => (this.focus = state)));
+    this.focusService.focusChange.pipe(takeUntil(destroy$)).subscribe(state => (this.focus = state));
   }
 }

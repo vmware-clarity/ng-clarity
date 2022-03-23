@@ -19,6 +19,7 @@ import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepperPanel } from './stepper-panel';
 import { ClrStepper } from './stepper';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   template: `
@@ -65,7 +66,7 @@ describe('ClrStep Reactive Forms', () => {
       });
 
       TestBed.overrideComponent(ClrStepper, {
-        set: { providers: [{ provide: StepperService, useClass: MockStepperService }] },
+        set: { providers: [{ provide: StepperService, useClass: MockStepperService }, ClrDestroyService] },
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);

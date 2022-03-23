@@ -5,23 +5,26 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
+
+import { ClrDestroyService } from '../../../utils/destroy';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { ExpandableRowsCount } from '../providers/global-expandable-rows';
 import { DatagridWillyWonka } from './datagrid-willy-wonka';
 
-@Directive({ selector: 'clr-datagrid, clr-dg-row' })
+@Directive({ selector: 'clr-datagrid, clr-dg-row', providers: [ClrDestroyService] })
 export class ExpandableOompaLoompa extends OompaLoompa {
   private expandableCount: ExpandableRowsCount;
 
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() willyWonka: DatagridWillyWonka,
-    expandableCount: ExpandableRowsCount
+    expandableCount: ExpandableRowsCount,
+    destroy$: ClrDestroyService
   ) {
     if (!willyWonka) {
       throw new Error('clr-dg-row should only be used inside of a clr-datagrid');
     }
-    super(cdr, willyWonka);
+    super(cdr, willyWonka, destroy$);
     this.expandableCount = expandableCount;
   }
 

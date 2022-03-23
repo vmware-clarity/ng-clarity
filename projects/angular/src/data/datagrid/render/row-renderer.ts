@@ -4,37 +4,31 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angular/core';
 
 import { DatagridCellRenderer } from './cell-renderer';
 import { ColumnsService } from '../providers/columns.service';
-import { Subscription } from 'rxjs';
 
 @Directive({ selector: 'clr-dg-row, clr-dg-row-detail' })
-export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
+export class DatagridRowRenderer implements AfterContentInit {
   @ContentChildren(DatagridCellRenderer) private cells: QueryList<DatagridCellRenderer>;
 
   constructor(private columnsService: ColumnsService) {}
 
   ngAfterContentInit() {
     this.setColumnState(); // case #3 and #4
-    this.subscriptions.push(
-      this.cells.changes.subscribe(() => {
-        this.setColumnState(); // case #2
-        // Note on case #2: In the case of dynamic columns, when one column (header/cell together) gets deleted,
-        // this.cells.changes emits before this.columnsService.columns gets updated in MainRenderer
-        // when this.headers.changes emits as well. So that means there will be n+1 column state providers
-        // when this.cells.changes emits. Hence, we should quit earlier there. But this method will be called
-        // right after again when this.headers.changes emits. By then, there will be the same number of column state
-        // providers as column headers.
-      })
-    );
-  }
 
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.cells.changes.subscribe(() => {
+      this.setColumnState(); // case #2
+      // Note on case #2: In the case of dynamic columns, when one column (header/cell together) gets deleted,
+      // this.cells.changes emits before this.columnsService.columns gets updated in MainRenderer
+      // when this.headers.changes emits as well. So that means there will be n+1 column state providers
+      // when this.cells.changes emits. Hence, we should quit earlier there. But this method will be called
+      // right after again when this.headers.changes emits. By then, there will be the same number of column state
+      // providers as column headers.
+    });
   }
 
   public setColumnState() {

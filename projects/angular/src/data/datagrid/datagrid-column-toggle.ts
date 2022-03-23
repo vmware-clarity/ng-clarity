@@ -4,8 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, ContentChild, ElementRef, NgZone, PLATFORM_ID, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Inject, ContentChild, ElementRef, ViewChild } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../../utils/destroy';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
@@ -20,7 +22,6 @@ import { ColumnState } from './interfaces/column-state.interface';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clr-dg-column-toggle',
@@ -87,12 +88,17 @@ import { Subscription } from 'rxjs';
     </div>
   `,
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
-  providers: [UNIQUE_ID_PROVIDER, ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  providers: [
+    UNIQUE_ID_PROVIDER,
+    ClrPopoverEventsService,
+    ClrPopoverPositionService,
+    ClrPopoverToggleService,
+    ClrDestroyService,
+  ],
 })
 /** @deprecated since 2.0, remove in 3.0 */
-export class ClrDatagridColumnToggle implements OnDestroy {
+export class ClrDatagridColumnToggle {
   private _allColumnsVisible: boolean;
-  private subscription: Subscription;
 
   // Smart Popover
   public smartPosition: ClrPopoverPosition = {
@@ -120,16 +126,11 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
     @Inject(UNIQUE_ID) public columnSwitchId: string,
-    @Inject(PLATFORM_ID) private platformId: any,
-    private zone: NgZone,
     @Inject(UNIQUE_ID) public popoverId: string,
-    private popoverToggleService: ClrPopoverToggleService
+    popoverToggleService: ClrPopoverToggleService,
+    destroy$: ClrDestroyService
   ) {
-    this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    popoverToggleService.openChange.pipe(takeUntil(destroy$)).subscribe(change => (this.openState = change));
   }
 
   get hideableColumnStates(): ColumnState[] {

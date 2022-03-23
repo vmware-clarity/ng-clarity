@@ -5,23 +5,26 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
+
+import { ClrDestroyService } from '../../../utils/destroy';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { ResponsiveNavigationService } from '../providers/responsive-navigation.service';
 import { MainContainerWillyWonka } from './main-container-willy-wonka';
 
-@Directive({ selector: 'clr-header' })
+@Directive({ selector: 'clr-header', providers: [ClrDestroyService] })
 export class NavDetectionOompaLoompa extends OompaLoompa {
   private responsiveNavService: ResponsiveNavigationService;
 
   constructor(
     cdr: ChangeDetectorRef,
     @Optional() willyWonka: MainContainerWillyWonka,
-    responsiveNavService: ResponsiveNavigationService
+    responsiveNavService: ResponsiveNavigationService,
+    destroy$: ClrDestroyService
   ) {
     if (!willyWonka) {
       throw new Error('clr-header should only be used inside of a clr-main-container');
     }
-    super(cdr, willyWonka);
+    super(cdr, willyWonka, destroy$);
     this.responsiveNavService = responsiveNavService;
   }
 

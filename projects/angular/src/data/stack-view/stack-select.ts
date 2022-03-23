@@ -11,8 +11,10 @@
  */
 
 import { Component } from '@angular/core';
+
 import { StackControl } from './stack-control';
 import { ClrStackView } from './stack-view';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-stack-select',
@@ -26,9 +28,10 @@ import { ClrStackView } from './stack-view';
       </select>
     </div>
   `,
+  providers: [ClrDestroyService],
 })
 export class ClrStackSelect extends StackControl {
-  constructor(public override stackView: ClrStackView) {
-    super(stackView);
+  constructor(public override stackView: ClrStackView, destroy$: ClrDestroyService) {
+    super(stackView, destroy$);
   }
 }

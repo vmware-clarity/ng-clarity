@@ -8,30 +8,26 @@
  * Undocumented experimental feature: inline editing.
  */
 
-import { Directive, EventEmitter, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, EventEmitter } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrStackView } from './stack-view';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive()
-export class StackControl implements OnDestroy {
+export class StackControl {
   model: any;
   modelChange: EventEmitter<any> = new EventEmitter<any>(false);
 
-  private subscription: Subscription;
-
-  constructor(protected stackView: ClrStackView) {
+  constructor(protected stackView: ClrStackView, destroy$: ClrDestroyService) {
     // Make the ClrStackView editable, since it contains a StackControl
     this.stackView.editable = true;
-    this.subscription = this.stackView.editingChange.subscribe((editing: boolean) => {
+
+    this.stackView.editingChange.pipe(takeUntil(destroy$)).subscribe((editing: boolean) => {
       // Edit mode was closed
       if (!editing) {
         this.modelChange.emit(this.model);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

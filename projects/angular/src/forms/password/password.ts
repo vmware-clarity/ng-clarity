@@ -10,22 +10,27 @@ import {
   HostListener,
   Inject,
   Injector,
-  OnDestroy,
   OnInit,
   Optional,
   Renderer2,
   Self,
   ViewContainerRef,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { NgControl } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { FocusService } from '../common/providers/focus.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Directive({ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } })
-export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
+@Directive({
+  selector: '[clrPassword]',
+  host: { '[class.clr-input]': 'true' },
+  providers: [ClrDestroyService],
+})
+export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit {
   protected override index = 1;
 
   constructor(
@@ -39,19 +44,18 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     @Optional() private focusService: FocusService,
     @Optional()
     @Inject(TOGGLE_SERVICE)
-    private toggleService: BehaviorSubject<boolean>
+    private toggleService: BehaviorSubject<boolean>,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrPasswordContainer, injector, control, renderer, el);
+    super(vcr, ClrPasswordContainer, injector, control, renderer, el, destroy$);
 
     if (!this.focusService) {
       throw new Error('clrPassword requires being wrapped in <clr-password-container>');
     }
 
-    this.subscriptions.push(
-      this.toggleService.subscribe(toggle => {
-        renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
-      })
-    );
+    this.toggleService.pipe(takeUntil(destroy$)).subscribe(toggle => {
+      renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
+    });
   }
 
   @HostListener('focus')

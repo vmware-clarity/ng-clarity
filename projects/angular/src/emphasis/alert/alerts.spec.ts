@@ -6,6 +6,7 @@
 
 import { Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrDestroyService } from 'src/utils/destroy';
 
 import { ClrEmphasisModule } from '../emphasis.module';
 
@@ -18,10 +19,12 @@ export default function () {
     describe('Typescript API', function () {
       let component: ClrAlerts;
       let service: MultiAlertService;
+      let destroy$: ClrDestroyService;
       let queryList: QueryList<ClrAlert>;
 
       beforeEach(function () {
         service = new MultiAlertService();
+        destroy$ = new ClrDestroyService();
 
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule] });
 
@@ -34,7 +37,11 @@ export default function () {
         queryList = new QueryList<ClrAlert>();
         queryList.reset([this.alert, this.anotherAlert]);
         service.manage(queryList);
-        component = new ClrAlerts(service);
+        component = new ClrAlerts(service, destroy$);
+      });
+
+      afterEach(() => {
+        destroy$.ngOnDestroy();
       });
 
       it('knows the current alert', function () {

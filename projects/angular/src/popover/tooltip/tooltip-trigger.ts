@@ -5,9 +5,11 @@
  */
 
 import { Directive, HostListener } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -17,13 +19,18 @@ import { Subscription } from 'rxjs';
     '[attr.aria-describedby]': 'ariaDescribedBy',
     '[attr.role]': '"button"',
   },
+  providers: [ClrDestroyService],
 })
 export class ClrTooltipTrigger {
   public ariaDescribedBy: string;
-  private subs: Subscription[] = [];
-  constructor(private toggleService: ClrPopoverToggleService, private tooltipIdService: TooltipIdService) {
+
+  constructor(
+    private toggleService: ClrPopoverToggleService,
+    private tooltipIdService: TooltipIdService,
+    destroy$: ClrDestroyService
+  ) {
     // The aria-described by comes from the id of content. It
-    this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
+    this.tooltipIdService.id.pipe(takeUntil(destroy$)).subscribe(tooltipId => (this.ariaDescribedBy = tooltipId));
   }
 
   @HostListener('mouseenter')
@@ -36,9 +43,5 @@ export class ClrTooltipTrigger {
   @HostListener('blur')
   hideTooltip(): void {
     this.toggleService.open = false;
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

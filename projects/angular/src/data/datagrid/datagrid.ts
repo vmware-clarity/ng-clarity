@@ -14,14 +14,13 @@ import {
   EventEmitter,
   Inject,
   Input,
-  OnDestroy,
   Output,
   QueryList,
   Renderer2,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
@@ -46,6 +45,7 @@ import { SelectionType } from './enums/selection-type';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-datagrid',
@@ -66,14 +66,16 @@ import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-gener
     TableSizeService,
     ColumnsService,
     DisplayModeService,
+    ClrDestroyService,
   ],
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
   },
 })
-export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit {
   public selectAllId: string;
+
   constructor(
     private organizer: DatagridRenderOrganizer,
     public items: Items<T>,
@@ -87,7 +89,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     @Inject(UNIQUE_ID) datagridId: string,
     private el: ElementRef,
     private page: Page,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     this.detailService.id = datagridId;
@@ -226,35 +229,35 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
 
-    this._subscriptions.push(
-      this.rows.changes.subscribe(() => {
-        if (!this.items.smart) {
-          this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.rows.changes.subscribe(() => {
+      if (!this.items.smart) {
+        this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
+      }
+      // Remove any projected rows from the displayedRows container
+      // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
+      for (let i = this._displayedRows.length - 1; i >= 0; i--) {
+        if (this._displayedRows.get(i).destroyed) {
+          this._displayedRows.remove(i);
         }
-        // Remove any projected rows from the displayedRows container
-        // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
-        for (let i = this._displayedRows.length - 1; i >= 0; i--) {
-          if (this._displayedRows.get(i).destroyed) {
-            this._displayedRows.remove(i);
-          }
-        }
-        this.rows.forEach(row => {
-          this._displayedRows.insert(row._view);
+      }
+      this.rows.forEach(row => {
+        this._displayedRows.insert(row._view);
+      });
+
+      // Try to update only when there is something cached and its open.
+      if (this.detailService.state && this.detailService.isOpen) {
+        const row = this.rows.find((row, index) => {
+          return this.items.trackBy(index, row.item) === this.items.trackBy(index, this.detailService.state);
         });
 
-        // Try to update only when there is something cached and its open.
-        if (this.detailService.state && this.detailService.isOpen) {
-          const row = this.rows.find((row, index) => {
-            return this.items.trackBy(index, row.item) === this.items.trackBy(index, this.detailService.state);
-          });
-
-          /**
-           * Reopen updated row or close it
-           */
-          row ? this.detailService.open(row.item, row.detailButton.nativeElement) : this.detailService.close();
-        }
-      })
-    );
+        /**
+         * Reopen updated row or close it
+         */
+        row ? this.detailService.open(row.item, row.detailButton.nativeElement) : this.detailService.close();
+      }
+    });
   }
 
   /**
@@ -263,68 +266,61 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   ngAfterViewInit() {
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
-    this._subscriptions.push(
-      this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
-      this.selection.change.subscribe(s => {
-        if (this.selection.selectionType === SelectionType.Single) {
-          this.singleSelectedChanged.emit(s as T);
-        } else if (this.selection.selectionType === SelectionType.Multi) {
-          this.selectedChanged.emit(s as T[]);
-        }
-      }),
-      this.page.change.subscribe(() => {
-        if (!this.clrDgDisablePageFocus) {
-          this.datagridTable.nativeElement.focus();
-        }
-      }),
-      // A subscription that listens for displayMode changes on the datagrid
-      this.displayMode.view.subscribe(viewChange => {
-        // Remove any projected columns from the projectedDisplayColumns container
-        for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
-          this._projectedDisplayColumns.detach();
-        }
-        // Remove any projected columns from the projectedCalculationColumns container
-        for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
-          this._projectedCalculationColumns.detach();
-        }
-        // Remove any projected rows from the calculationRows container
-        for (let i = this._calculationRows.length; i > 0; i--) {
-          this._calculationRows.detach();
-        }
-        // Remove any projected rows from the displayedRows container
-        for (let i = this._displayedRows.length; i > 0; i--) {
-          this._displayedRows.detach();
-        }
-        if (viewChange === DatagridDisplayMode.DISPLAY) {
-          // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
-          this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
-          this.columns.forEach(column => {
-            this._projectedDisplayColumns.insert(column._view);
-          });
-          this.rows.forEach(row => {
-            this._displayedRows.insert(row._view);
-          });
-        } else {
-          // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
-          this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
-          this.columns.forEach(column => {
-            this._projectedCalculationColumns.insert(column._view);
-          });
-          this.rows.forEach(row => {
-            this._calculationRows.insert(row._view);
-          });
-        }
-      })
-    );
-  }
 
-  /**
-   * Subscriptions to all the services and queries changes
-   */
-  private _subscriptions: Subscription[] = [];
+    this.stateProvider.change.pipe(takeUntil(this.destroy$)).subscribe(state => this.refresh.emit(state));
 
-  ngOnDestroy() {
-    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.selection.change.pipe(takeUntil(this.destroy$)).subscribe(s => {
+      if (this.selection.selectionType === SelectionType.Single) {
+        this.singleSelectedChanged.emit(s as T);
+      } else if (this.selection.selectionType === SelectionType.Multi) {
+        this.selectedChanged.emit(s as T[]);
+      }
+    });
+
+    this.page.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (!this.clrDgDisablePageFocus) {
+        this.datagridTable.nativeElement.focus();
+      }
+    });
+
+    // A subscription that listens for displayMode changes on the datagrid
+    this.displayMode.view.pipe(takeUntil(this.destroy$)).subscribe(viewChange => {
+      // Remove any projected columns from the projectedDisplayColumns container
+      for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
+        this._projectedDisplayColumns.detach();
+      }
+      // Remove any projected columns from the projectedCalculationColumns container
+      for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
+        this._projectedCalculationColumns.detach();
+      }
+      // Remove any projected rows from the calculationRows container
+      for (let i = this._calculationRows.length; i > 0; i--) {
+        this._calculationRows.detach();
+      }
+      // Remove any projected rows from the displayedRows container
+      for (let i = this._displayedRows.length; i > 0; i--) {
+        this._displayedRows.detach();
+      }
+      if (viewChange === DatagridDisplayMode.DISPLAY) {
+        // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
+        this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
+        this.columns.forEach(column => {
+          this._projectedDisplayColumns.insert(column._view);
+        });
+        this.rows.forEach(row => {
+          this._displayedRows.insert(row._view);
+        });
+      } else {
+        // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
+        this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
+        this.columns.forEach(column => {
+          this._projectedCalculationColumns.insert(column._view);
+        });
+        this.rows.forEach(row => {
+          this._calculationRows.insert(row._view);
+        });
+      }
+    });
   }
 
   resize(): void {

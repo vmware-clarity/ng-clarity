@@ -13,6 +13,7 @@ import { LayoutService } from '../common/providers/layout.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ContainerIdService } from '../common/providers/container-id.service';
 import { ClrCheckbox } from './checkbox';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-checkbox-container,clr-toggle-container',
@@ -48,7 +49,7 @@ import { ClrCheckbox } from './checkbox';
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
   },
-  providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
+  providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService, ClrDestroyService],
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   private inline = false;
@@ -60,9 +61,10 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     @Optional() protected override layoutService: LayoutService,
     protected override controlClassService: ControlClassService,
     protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
   }
 
   /*

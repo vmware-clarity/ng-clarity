@@ -18,6 +18,7 @@ import { MOCK_DRAG_EVENT_LISTENER_PROVIDER } from '../providers/drag-event-liste
 import { DragHandleRegistrarService } from '../providers/drag-handle-registrar.service';
 import { DraggableSnapshotService } from '../providers/draggable-snapshot.service';
 import { GlobalDragModeService } from '../providers/global-drag-mode.service';
+import { ClrDestroyService } from '../../../utils/destroy';
 
 import { ClrDraggable } from './draggable';
 import { generateDragPosition } from '../helpers.spec';
@@ -41,6 +42,7 @@ export default function (): void {
             DraggableSnapshotService,
             GlobalDragModeService,
             MOCK_DRAG_EVENT_LISTENER_PROVIDER,
+            ClrDestroyService,
           ],
         },
       });

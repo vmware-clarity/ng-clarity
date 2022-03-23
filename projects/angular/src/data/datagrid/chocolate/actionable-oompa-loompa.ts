@@ -5,6 +5,8 @@
  */
 
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
+
+import { ClrDestroyService } from '../../../utils/destroy';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { RowActionService } from '../providers/row-action-service';
 import { DatagridWillyWonka } from './datagrid-willy-wonka';
@@ -13,11 +15,16 @@ import { DatagridWillyWonka } from './datagrid-willy-wonka';
 export class ActionableOompaLoompa extends OompaLoompa {
   private rowActions: RowActionService;
 
-  constructor(cdr: ChangeDetectorRef, @Optional() willyWonka: DatagridWillyWonka, rowActions: RowActionService) {
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() willyWonka: DatagridWillyWonka,
+    rowActions: RowActionService,
+    destroy$: ClrDestroyService
+  ) {
     if (!willyWonka) {
       throw new Error('clr-dg-row should only be used inside of a clr-datagrid');
     }
-    super(cdr, willyWonka);
+    super(cdr, willyWonka, destroy$);
     this.rowActions = rowActions;
   }
 

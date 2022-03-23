@@ -113,7 +113,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('injects the IfControlStateService and subscribes', () => {
       expect(ifControlStateService).toBeTruthy();
-      expect(container.subscriptions[0]).toBeTruthy();
     });
 
     it('projects the label as first child', () => {
@@ -216,9 +215,5 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
         expect(containerEl.className).toContain('clr-form-control-disabled');
       });
     }));
-
-    it('implements ngOnDestroy', () => {
-      expect(container.ngOnDestroy).toBeDefined();
-    });
   });
 }

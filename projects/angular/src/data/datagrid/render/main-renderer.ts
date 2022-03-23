@@ -13,12 +13,11 @@ import {
   Directive,
   ElementRef,
   NgZone,
-  OnDestroy,
   PLATFORM_ID,
   QueryList,
   Renderer2,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { Items } from '../providers/items';
@@ -34,6 +33,7 @@ import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRowRenderer } from './row-renderer';
 import { ColumnStateDiff } from '../interfaces/column-state.interface';
 import { DetailService } from '../providers/detail.service';
+import { ClrDestroyService } from '../../../utils/destroy';
 
 // Fixes build error
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)
@@ -49,9 +49,9 @@ export const domAdapterFactory = (platformId: any) => {
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)
 @Directive({
   selector: 'clr-datagrid',
-  providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }],
+  providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }, ClrDestroyService],
 })
-export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked {
   constructor(
     private organizer: DatagridRenderOrganizer,
     private items: Items,
@@ -62,23 +62,23 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     private detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    destroy$: ClrDestroyService
   ) {
-    this.subscriptions.push(
-      this.organizer
-        .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
-        .subscribe(() => this.computeHeadersWidth())
-    );
+    this.organizer
+      .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
+      .pipe(takeUntil(destroy$))
+      .subscribe(() => this.computeHeadersWidth());
 
-    this.subscriptions.push(
-      this.page.sizeChange.subscribe(() => {
-        if (this._heightSet) {
-          this.resetDatagridHeight();
-        }
-      })
-    );
-    this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
-    this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+    this.page.sizeChange.pipe(takeUntil(destroy$)).subscribe(() => {
+      if (this._heightSet) {
+        this.resetDatagridHeight();
+      }
+    });
+
+    this.detailService.stateChange.pipe(takeUntil(destroy$)).subscribe(state => this.toggleDetailPane(state));
+
+    this.items.change.pipe(takeUntil(destroy$)).subscribe(() => (this.shouldStabilizeColumns = true));
   }
 
   @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
@@ -88,15 +88,15 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   ngAfterContentInit() {
     this.setupColumns();
 
-    this.subscriptions.push(
-      this.headers.changes.subscribe(() => {
-        // TODO: only re-stabilize if a column was added or removed. Reordering is fine.
-        // Need to setup columns before stabalizing them
-        this.setupColumns();
-        this.columnsSizesStable = false;
-        this.stabilizeColumns();
-      })
-    );
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.headers.changes.subscribe(() => {
+      // TODO: only re-stabilize if a column was added or removed. Reordering is fine.
+      // Need to setup columns before stabalizing them
+      this.setupColumns();
+      this.columnsSizesStable = false;
+      this.stabilizeColumns();
+    });
   }
 
   // Initialize and set Table width for horizontal scrolling here.
@@ -172,12 +172,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private resetDatagridHeight() {
     this.renderer.setStyle(this.el.nativeElement, 'height', '');
     this._heightSet = false;
-  }
-
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   /**

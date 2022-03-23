@@ -15,11 +15,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { Page } from './providers/page';
 import { ClrDatagridPageSize } from './datagrid-page-size';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DetailService } from './providers/detail.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-dg-pagination',
@@ -120,12 +122,18 @@ import { DetailService } from './providers/detail.service';
     </ng-container>
   `,
   host: { '[class.pagination]': 'true' },
+  providers: [ClrDestroyService],
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @ContentChild(ClrDatagridPageSize) _pageSizeComponent: ClrDatagridPageSize;
   @ViewChild('currentPageInput') currentPageInputRef: ElementRef;
 
-  constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
+  constructor(
+    public page: Page,
+    public commonStrings: ClrCommonStringsService,
+    public detailService: DetailService,
+    private destroy$: ClrDestroyService
+  ) {
     this.page.activated = true;
   }
 
@@ -142,19 +150,12 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     if (!this.page.size) {
       this.page.size = 10;
     }
-    this._pageSubscription = this.page.change.subscribe(current => this.currentChanged.emit(current));
-  }
 
-  /**
-   * Subscription to the page service changes
-   */
-  private _pageSubscription: Subscription;
+    this.page.change.pipe(takeUntil(this.destroy$)).subscribe(current => this.currentChanged.emit(current));
+  }
 
   ngOnDestroy() {
     this.page.resetPageSize(true);
-    if (this._pageSubscription) {
-      this._pageSubscription.unsubscribe();
-    }
   }
 
   @Input('clrDgPageInputDisabled') public disableCurrentPageInput: boolean;

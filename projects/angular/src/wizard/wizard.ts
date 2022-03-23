@@ -13,7 +13,6 @@ import {
   EventEmitter,
   Input,
   IterableDiffers,
-  OnDestroy,
   Output,
   QueryList,
   ViewChild,
@@ -21,10 +20,10 @@ import {
   Inject,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { filter, takeUntil } from 'rxjs/operators';
 
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { ClrDestroyService } from '../utils/destroy';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -40,6 +39,7 @@ import { ClrWizardPage } from './wizard-page';
     ButtonHubService,
     HeaderActionService,
     UNIQUE_ID_PROVIDER,
+    ClrDestroyService,
   ],
   templateUrl: './wizard.html',
   host: {
@@ -50,7 +50,7 @@ import { ClrWizardPage } from './wizard-page';
     '[class.lastPage]': 'navService.currentPageIsLast',
   },
 })
-export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
+export class ClrWizard implements AfterContentInit, DoCheck {
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
@@ -240,7 +240,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
-  private subscriptions: Subscription[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -250,15 +249,14 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     public headerActionService: HeaderActionService,
     private elementRef: ElementRef,
     differs: IterableDiffers,
-    @Inject(UNIQUE_ID) public wizardId: string
+    @Inject(UNIQUE_ID) public wizardId: string,
+    private destroy$: ClrDestroyService
   ) {
-    this.subscriptions.push(
-      this.listenForNextPageChanges(),
-      this.listenForPreviousPageChanges(),
-      this.listenForCancelChanges(),
-      this.listenForFinishedChanges(),
-      this.listenForPageChanges()
-    );
+    this.listenForNextPageChanges();
+    this.listenForPreviousPageChanges();
+    this.listenForCancelChanges();
+    this.listenForFinishedChanges();
+    this.listenForPageChanges();
 
     this.differ = differs.find([]).create(null);
   }
@@ -271,10 +269,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   public ngDoCheck(): void {
     this.updateNavOnPageChanges();
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   /**
@@ -455,30 +449,40 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     this.onReset.next();
   }
 
-  private listenForNextPageChanges(): Subscription {
-    return this.navService.movedToNextPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
-      this.onMoveNext.emit();
-      this.wizardTitle?.nativeElement.focus();
-    });
+  private listenForNextPageChanges() {
+    this.navService.movedToNextPage
+      .pipe(
+        filter(() => isPlatformBrowser(this.platformId)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.onMoveNext.emit();
+        this.wizardTitle?.nativeElement.focus();
+      });
   }
 
-  private listenForPreviousPageChanges(): Subscription {
-    return this.navService.movedToPreviousPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
-      this.onMovePrevious.emit();
-      this.wizardTitle?.nativeElement.focus();
-    });
+  private listenForPreviousPageChanges() {
+    this.navService.movedToPreviousPage
+      .pipe(
+        filter(() => isPlatformBrowser(this.platformId)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.onMovePrevious.emit();
+        this.wizardTitle?.nativeElement.focus();
+      });
   }
 
-  private listenForCancelChanges(): Subscription {
-    return this.navService.notifyWizardCancel.subscribe(() => this.checkAndCancel());
+  private listenForCancelChanges() {
+    this.navService.notifyWizardCancel.pipe(takeUntil(this.destroy$)).subscribe(() => this.checkAndCancel());
   }
 
-  private listenForFinishedChanges(): Subscription {
-    return this.navService.wizardFinished.subscribe(() => this.emitWizardFinished());
+  private listenForFinishedChanges() {
+    this.navService.wizardFinished.pipe(takeUntil(this.destroy$)).subscribe(() => this.emitWizardFinished());
   }
 
-  private listenForPageChanges(): Subscription {
-    return this.navService.currentPageChanged.subscribe(() => {
+  private listenForPageChanges() {
+    this.navService.currentPageChanged.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // Added to address VPAT-749:
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.

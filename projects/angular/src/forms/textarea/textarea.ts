@@ -9,8 +9,13 @@ import { NgControl } from '@angular/forms';
 
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrTextareaContainer } from './textarea-container';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Directive({ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } })
+@Directive({
+  selector: '[clrTextarea]',
+  host: { '[class.clr-textarea]': 'true' },
+  providers: [ClrDestroyService],
+})
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
   protected override index = 1;
 
@@ -21,8 +26,9 @@ export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrTextareaContainer, injector, control, renderer, el);
+    super(vcr, ClrTextareaContainer, injector, control, renderer, el, destroy$);
   }
 }

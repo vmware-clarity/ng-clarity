@@ -11,13 +11,11 @@ import {
   ElementRef,
   Inject,
   Input,
-  OnDestroy,
   QueryList,
   ViewChild,
   ViewContainerRef,
   HostBinding,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
@@ -95,9 +93,7 @@ import { ClrTabOverflowContent } from './tab-overflow-content';
   `,
   providers: [IfActiveService, ClrPopoverToggleService, TabsService, TABS_ID_PROVIDER],
 })
-export class ClrTabs implements AfterContentInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
-
+export class ClrTabs implements AfterContentInit {
   private get overflowPosition() {
     return this._tabLinkDirectives.filter(link => !link.inOverflow).length;
   }
@@ -250,14 +246,16 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   private listenForTabLinkChanges() {
-    return this.tabs.changes.pipe(startWith(this.tabs.map(tab => tab.tabLink))).subscribe(() => {
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.tabs.changes.pipe(startWith(this.tabs.map(tab => tab.tabLink))).subscribe(() => {
       this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
       this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
     });
   }
 
   ngAfterContentInit() {
-    this.subscriptions.push(this.listenForTabLinkChanges());
+    this.listenForTabLinkChanges();
 
     if (typeof this.ifActiveService.current === 'undefined' && this.tabLinkDirectives[0]) {
       this.tabLinkDirectives[0].activate();
@@ -265,11 +263,5 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
     // set initial current position
     this.keyFocus.current = this.activeTabPosition;
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
   }
 }

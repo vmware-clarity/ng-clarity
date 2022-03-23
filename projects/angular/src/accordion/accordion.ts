@@ -14,10 +14,8 @@ import {
   OnInit,
   OnChanges,
   AfterViewInit,
-  OnDestroy,
 } from '@angular/core';
 import { startWith } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 
 import { AccordionService } from './providers/accordion.service';
 import { ClrAccordionPanel } from './accordion-panel';
@@ -30,11 +28,10 @@ import { AccordionStrategy } from './enums/accordion-strategy.enum';
   providers: [AccordionService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class ClrAccordion implements OnInit, OnChanges, AfterViewInit {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
   @ContentChildren(ClrAccordionPanel, { descendants: true })
   panels: QueryList<ClrAccordionPanel>;
-  subscriptions: Subscription[] = [];
 
   constructor(private accordionService: AccordionService) {}
 
@@ -49,11 +46,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit() {
-    this.subscriptions.push(this.listenForDOMChanges());
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.listenForDOMChanges();
   }
 
   private setAccordionStrategy() {
@@ -62,7 +55,9 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   private listenForDOMChanges() {
-    return this.panels.changes
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.panels.changes
       .pipe(startWith(this.panels))
       .subscribe((panels: QueryList<ClrAccordionPanel>) =>
         this.accordionService.updatePanelOrder(panels.toArray().map(p => p.id))

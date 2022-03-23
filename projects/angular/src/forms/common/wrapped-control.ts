@@ -15,25 +15,25 @@ import {
   ViewContainerRef,
   Renderer2,
   ElementRef,
-  OnDestroy,
   Directive,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { NgControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 
 import { ControlIdService } from './providers/control-id.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
-import { NgControl } from '@angular/forms';
 import { ControlClassService } from './providers/control-class.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
 import { CONTROL_SUFFIX } from './abstract-control';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit {
   protected ngControlService: NgControlService;
   private ifControlStateService: IfControlStateService;
   private controlClassService: ControlClassService;
@@ -42,7 +42,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   protected renderer: Renderer2;
   protected el: ElementRef<any>;
 
-  protected subscriptions: Subscription[] = [];
   protected index = 0;
   protected controlIdService: ControlIdService;
 
@@ -56,7 +55,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     injector: Injector,
     private ngControl: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
     this.renderer = renderer;
     this.el = el;
@@ -72,20 +72,17 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     if (this.controlClassService) {
       this.controlClassService.initControlClass(renderer, el.nativeElement);
     }
+
     if (this.markControlService) {
-      this.subscriptions.push(
-        this.markControlService.touchedChange.subscribe(() => {
-          this.markAsTouched();
-        })
-      );
+      this.markControlService.touchedChange.pipe(takeUntil(destroy$)).subscribe(() => {
+        this.markAsTouched();
+      });
     }
 
     if (this.ngControlService) {
-      this.subscriptions.push(
-        this.ngControlService.helpersChange.subscribe((state: Helpers) => {
-          this.setAriaDescribedBy(state);
-        })
-      );
+      this.ngControlService.helpersChange.pipe(takeUntil(destroy$)).subscribe((state: Helpers) => {
+        this.setAriaDescribedBy(state);
+      });
     }
   }
 
@@ -156,10 +153,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     if (this.ngControlService) {
       this.ngControlService.setControl(this.ngControl);
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private setAriaDescribedBy(helpers: Helpers) {

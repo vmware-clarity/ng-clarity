@@ -17,20 +17,19 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { debounceTime } from 'rxjs/operators';
 
 // https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */
-@Directive({ selector: '[clrPopoverContent]' })
+@Directive({ selector: '[clrPopoverContent]', providers: [ClrDestroyService] })
 export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private view: EmbeddedViewRef<void>;
-  private subscriptions: Subscription[] = [];
 
   @Input('clrPopoverContent')
   public set open(value: boolean) {
@@ -61,41 +60,41 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     private renderer: Renderer2,
     private smartPositionService: ClrPopoverPositionService,
     private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
+    private smartOpenService: ClrPopoverToggleService,
+    private destroy$: ClrDestroyService
   ) {}
 
   ngAfterViewInit() {
-    this.subscriptions.push(
-      this.smartOpenService.openChange.subscribe(change => {
-        if (change) {
-          this.addContent();
-        } else {
-          this.removeContent();
-        }
-      }),
-      this.smartPositionService.shouldRealign.subscribe(() => {
-        this.shouldRealign = true;
-        // Avoid flickering on initialization, caused by the asynchronous nature of the
-        // check-collector pattern.
-        if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '0');
-        }
-      }),
-      // Here we collect subsequent synchronously received content-check events and only take action
-      // at the end of the cycle. See below for details on the check-collector pattern.
-      this.checkCollector.pipe(debounceTime(0)).subscribe(() => {
-        this.alignContent();
-        this.shouldRealign = false;
-        if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
-        }
-      })
-    );
+    this.smartOpenService.openChange.pipe(takeUntil(this.destroy$)).subscribe(change => {
+      if (change) {
+        this.addContent();
+      } else {
+        this.removeContent();
+      }
+    });
+
+    this.smartPositionService.shouldRealign.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.shouldRealign = true;
+      // Avoid flickering on initialization, caused by the asynchronous nature of the
+      // check-collector pattern.
+      if (this.view) {
+        this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '0');
+      }
+    });
+
+    // Here we collect subsequent synchronously received content-check events and only take action
+    // at the end of the cycle. See below for details on the check-collector pattern.
+    this.checkCollector.pipe(debounceTime(0), takeUntil(this.destroy$)).subscribe(() => {
+      this.alignContent();
+      this.shouldRealign = false;
+      if (this.view) {
+        this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
+      }
+    });
   }
 
   ngOnDestroy() {
     this.removeContent();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private removeContent(): void {

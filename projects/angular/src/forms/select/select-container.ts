@@ -6,6 +6,7 @@
 
 import { Component, ContentChild, Optional } from '@angular/core';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -13,6 +14,7 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-select-container',
@@ -47,7 +49,7 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ClrDestroyService],
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(SelectMultipleControlValueAccessor, { static: false })
@@ -58,21 +60,19 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     @Optional() protected override layoutService: LayoutService,
     protected override controlClassService: ControlClassService,
     protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService,
+    private destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
   }
 
   ngOnInit() {
-    /* The unsubscribe is handle inside the ClrAbstractContainer */
-    this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        if (control) {
-          this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
-          this.control = control;
-        }
-      })
-    );
+    this.ngControlService.controlChanges.pipe(takeUntil(this.destroy$)).subscribe(control => {
+      if (control) {
+        this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
+        this.control = control;
+      }
+    });
   }
 
   wrapperClass() {

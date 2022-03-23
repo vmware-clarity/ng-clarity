@@ -4,23 +4,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
+import { AfterContentInit, ContentChild, Directive, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 import { NgControlService } from './providers/ng-control.service';
 import { LayoutService } from './providers/layout.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
-import { Subscription } from 'rxjs';
 import { IfControlStateService, CONTROL_STATE } from './if-control-state/if-control-state.service';
 import { ClrControlSuccess } from './success';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive()
-export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
-  protected subscriptions: Subscription[] = [];
+export abstract class ClrAbstractContainer implements DynamicWrapper, AfterContentInit {
   _dynamic = false;
   @ContentChild(ClrLabel, { static: false })
   label: ClrLabel;
@@ -71,20 +71,17 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     protected ifControlStateService: IfControlStateService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService
+    protected ngControlService: NgControlService,
+    destroy$: ClrDestroyService
   ) {
-    this.subscriptions.push(
-      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-        this.state = state;
-        this.updateHelpers();
-      })
-    );
+    this.ifControlStateService.statusChanges.pipe(takeUntil(destroy$)).subscribe((state: CONTROL_STATE) => {
+      this.state = state;
+      this.updateHelpers();
+    });
 
-    this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      })
-    );
+    this.ngControlService.controlChanges.pipe(takeUntil(destroy$)).subscribe(control => {
+      this.control = control;
+    });
   }
 
   ngAfterContentInit() {
@@ -94,10 +91,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
      * like locating IDs  and setting  attributes.
      */
     this.updateHelpers();
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   controlClass() {

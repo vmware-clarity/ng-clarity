@@ -12,22 +12,26 @@ import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DetailService } from './providers/detail.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 export default function (): void {
   describe('ClrDatagridPagination component', function () {
     describe('Typescript API', function () {
       let pageService: Page;
       let component: ClrDatagridPagination;
+      let destroy$: ClrDestroyService;
       let commonStrings: ClrCommonStringsService;
 
       beforeEach(function () {
         pageService = new Page(new StateDebouncer());
         commonStrings = new ClrCommonStringsService();
-        component = new ClrDatagridPagination(pageService, commonStrings, null);
+        destroy$ = new ClrDestroyService();
+        component = new ClrDatagridPagination(pageService, commonStrings, null, destroy$);
         component.ngOnInit(); // For the subscription that will get destroyed.
       });
 
       afterEach(function () {
+        destroy$.ngOnDestroy();
         component.ngOnDestroy();
       });
 

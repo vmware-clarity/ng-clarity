@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, OnDestroy, Optional, SkipSelf, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, Optional, SkipSelf, TemplateRef, ViewContainerRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { DragEventListenerService } from './providers/drag-event-listener.service';
 
 // This structural directive will be used mainly together with `clr-draggable-ghost` directive inside of clrDraggable
@@ -14,33 +15,26 @@ import { DragEventListenerService } from './providers/drag-event-listener.servic
 // that Angular Change Detection is prevented from running if a component or directive is placed inside of the
 // `clr-draggable-ghost` directive.
 
-@Directive({ selector: '[clrIfDragged]' })
-export class ClrIfDragged<T> implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+@Directive({ selector: '[clrIfDragged]', providers: [ClrDestroyService] })
+export class ClrIfDragged<T> {
   constructor(
     private template: TemplateRef<any>,
     @Optional()
     @SkipSelf()
     private container: ViewContainerRef,
-    @Optional() private dragEventListener: DragEventListenerService<T>
+    @Optional() private dragEventListener: DragEventListenerService<T>,
+    destroy$: ClrDestroyService
   ) {
     if (!this.dragEventListener || !this.container) {
       throw new Error('The *clrIfDragged directive can only be used inside of a clrDraggable directive.');
     }
 
-    this.subscriptions.push(
-      this.dragEventListener.dragStarted.subscribe(() => {
-        this.container.createEmbeddedView(this.template);
-      })
-    );
-    this.subscriptions.push(
-      this.dragEventListener.dragEnded.subscribe(() => {
-        this.container.clear();
-      })
-    );
-  }
+    this.dragEventListener.dragStarted.pipe(takeUntil(destroy$)).subscribe(() => {
+      this.container.createEmbeddedView(this.template);
+    });
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.dragEventListener.dragEnded.pipe(takeUntil(destroy$)).subscribe(() => {
+      this.container.clear();
+    });
   }
 }

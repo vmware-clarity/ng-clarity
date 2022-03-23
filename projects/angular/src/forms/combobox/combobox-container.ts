@@ -22,6 +22,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { ClrLabel } from '../common/label';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-combobox-container',
@@ -55,7 +56,14 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
+  providers: [
+    IfControlStateService,
+    NgControlService,
+    ControlIdService,
+    ControlClassService,
+    ComboboxContainerService,
+    ClrDestroyService,
+  ],
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef;
@@ -67,9 +75,10 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private containerService: ComboboxContainerService,
-    private el: ElementRef
+    private el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
   }
 
   override ngAfterContentInit() {

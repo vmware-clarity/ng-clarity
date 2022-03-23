@@ -11,6 +11,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-textarea-container',
@@ -45,6 +46,6 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ClrDestroyService],
 })
 export class ClrTextareaContainer extends ClrAbstractContainer {}

@@ -5,12 +5,17 @@
  */
 
 import { Directive, ViewContainerRef, Renderer2, ElementRef, Injector, Optional, Self } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrSelectContainer } from './select-container';
-import { NgControl } from '@angular/forms';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Directive({ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } })
+@Directive({
+  selector: '[clrSelect]',
+  host: { '[class.clr-select]': 'true' },
+  providers: [ClrDestroyService],
+})
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
   protected override index = 1;
 
@@ -21,8 +26,9 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrSelectContainer, injector, control, renderer, el);
+    super(vcr, ClrSelectContainer, injector, control, renderer, el, destroy$);
   }
 }

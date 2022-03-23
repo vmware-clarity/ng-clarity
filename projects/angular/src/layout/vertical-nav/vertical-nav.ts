@@ -4,18 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-vertical-nav',
   templateUrl: './vertical-nav.html',
-  providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
+  providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService, ClrDestroyService],
   host: {
     class: 'clr-vertical-nav',
     '[class.is-collapsed]': 'collapsed',
@@ -23,7 +24,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
     '[class.has-icons]': 'hasIcons',
   },
 })
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav {
   get collapsible(): boolean | string {
     return this._navService.collapsible;
   }
@@ -60,24 +61,19 @@ export class ClrVerticalNav implements OnDestroy {
     return !this.collapsed ? 'true' : 'false';
   }
 
-  private _sub: Subscription;
-
   constructor(
     private _navService: VerticalNavService,
     private _navIconService: VerticalNavIconService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    destroy$: ClrDestroyService
   ) {
-    this._sub = this._navService.collapsedChanged.subscribe(value => {
+    this._navService.collapsedChanged.pipe(takeUntil(destroy$)).subscribe(value => {
       this._collapsedChanged.emit(value);
     });
   }
 
   toggleByButton() {
     this.collapsed = !this.collapsed;
-  }
-
-  ngOnDestroy() {
-    this._sub.unsubscribe();
   }
 }

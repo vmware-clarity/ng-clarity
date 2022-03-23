@@ -13,9 +13,11 @@ import {
   Optional,
   QueryList,
   AfterViewInit,
-  OnDestroy,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { fromEvent } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { OptionSelectionService } from './providers/option-selection.service';
 import { IF_ACTIVE_ID } from '../../utils/conditional/if-active.service';
@@ -25,8 +27,8 @@ import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrOption } from './option';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
-import { fromEvent, Subscription } from 'rxjs';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 let nbOptionsComponents = 0;
 
@@ -52,16 +54,15 @@ let nbOptionsComponents = 0;
     <!--Option Groups and Options will be projected here-->
     <ng-content></ng-content>
   `,
-  providers: [{ provide: LoadingListener, useExisting: ClrOptions }],
+  providers: [{ provide: LoadingListener, useExisting: ClrOptions }, ClrDestroyService],
   host: {
     '[class.clr-combobox-options]': 'true',
     '[attr.role]': '"listbox"',
     '[id]': 'optionsId',
   },
 })
-export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
+export class ClrOptions<T> implements AfterViewInit, LoadingListener {
   public loading = false;
-  private subscriptions: Subscription[] = [];
 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
@@ -74,7 +75,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: any,
+    private destroy$: ClrDestroyService
   ) {
     if (!parentHost) {
       throw new Error('clr-options should only be used inside of a clr-combobox');
@@ -124,8 +126,9 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   ngAfterViewInit() {
     this.focusHandler.listbox = this.el.nativeElement;
 
-    this.subscriptions.push(
-      fromEvent(this.document, 'scroll', { capture: true }).subscribe(event => {
+    fromEvent(this.document, 'scroll', { capture: true })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
         if (
           this.toggleService.open &&
           (event as Event).target !== this.el.nativeElement &&
@@ -133,11 +136,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
         ) {
           this.toggleService.open = false;
         }
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+      });
   }
 }

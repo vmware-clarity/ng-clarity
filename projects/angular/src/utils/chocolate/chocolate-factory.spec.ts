@@ -7,6 +7,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrDestroyService } from '../destroy';
 
 import { OompaLoompa } from './oompa-loompa';
 import { WillyWonka } from './willy-wonka';
@@ -90,10 +91,10 @@ class ChocolateParent extends WillyWonka {
   }
 }
 
-@Component({ selector: 'child', template: '{{last}} {{incrementChange()}}' })
+@Component({ selector: 'child', template: '{{last}} {{incrementChange()}}', providers: [ClrDestroyService] })
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
-  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
-    super(cdr, parent);
+  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent, destroy$: ClrDestroyService) {
+    super(cdr, parent, destroy$);
   }
 
   private index: number;
@@ -103,7 +104,6 @@ class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    super.ngOnDestroy();
     this.parent.nbChildren--;
   }
 

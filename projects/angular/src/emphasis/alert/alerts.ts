@@ -14,14 +14,16 @@ import {
   Output,
   QueryList,
 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-alerts',
   templateUrl: './alerts.html',
-  providers: [MultiAlertService],
+  providers: [MultiAlertService, ClrDestroyService],
   host: {
     '[class.alerts]': 'true',
     '[class.alert-danger]': "this.currentAlertType == 'danger'",
@@ -32,8 +34,6 @@ import { Subscription } from 'rxjs';
   styles: [':host { display: block }'],
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
-
   @ContentChildren(ClrAlert)
   set allAlerts(value: QueryList<ClrAlert>) {
     this.multiAlertService.manage(value); // provide alerts
@@ -88,19 +88,16 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     return '';
   }
 
-  constructor(public multiAlertService: MultiAlertService) {}
+  constructor(public multiAlertService: MultiAlertService, private destroy$: ClrDestroyService) {}
 
   ngAfterContentInit() {
-    this.subscriptions.push(
-      this.multiAlertService.changes.subscribe(index => {
-        this.currentAlertIndexChange.next(index);
-        this.currentAlertChange.next(this.multiAlertService.currentAlert);
-      })
-    );
+    this.multiAlertService.changes.pipe(takeUntil(this.destroy$)).subscribe(index => {
+      this.currentAlertIndexChange.next(index);
+      this.currentAlertChange.next(this.multiAlertService.currentAlert);
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
     this.multiAlertService.destroy();
   }
 }

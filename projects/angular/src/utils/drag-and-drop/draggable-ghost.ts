@@ -5,9 +5,10 @@
  */
 
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostBinding, NgZone, OnDestroy, Optional, Renderer2 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, ElementRef, HostBinding, NgZone, Optional, Renderer2 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { DragEventInterface } from './interfaces/drag-event.interface';
 import { DragEventListenerService } from './providers/drag-event-listener.service';
 import { DraggableSnapshotService } from './providers/draggable-snapshot.service';
@@ -32,11 +33,10 @@ type OffsetPosition = {
       ]),
     ]),
   ],
+  providers: [ClrDestroyService],
 })
-export class ClrDraggableGhost<T> implements OnDestroy {
+export class ClrDraggableGhost<T> {
   private draggableGhostEl: any;
-
-  private subscriptions: Subscription[] = [];
 
   @HostBinding('@leaveAnimation') leaveAnimConfig = { value: 0, params: { top: '0px', left: '0px' } };
 
@@ -45,7 +45,8 @@ export class ClrDraggableGhost<T> implements OnDestroy {
     @Optional() private dragEventListener: DragEventListenerService<T>,
     @Optional() private draggableSnapshot: DraggableSnapshotService<T>,
     private renderer: Renderer2,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    destroy$: ClrDestroyService
   ) {
     if (!this.dragEventListener || !this.draggableSnapshot) {
       throw new Error('The clr-draggable-ghost component can only be used inside of a clrDraggable directive.');
@@ -73,30 +74,28 @@ export class ClrDraggableGhost<T> implements OnDestroy {
 
     let isAnimationConfigured = false;
 
-    this.subscriptions.push(
-      this.dragEventListener.dragMoved.subscribe((event: DragEventInterface<T>) => {
-        // On the first drag move event, we configure the animation as it's dependent on the first drag event.
-        if (!isAnimationConfigured) {
-          if (this.draggableSnapshot.hasDraggableState) {
-            this.animateToOnLeave(
-              `${this.draggableSnapshot.clientRect.top}px`,
-              `${this.draggableSnapshot.clientRect.left}px`
-            );
-          } else {
-            this.animateToOnLeave(
-              `${this.dragEventListener.dragStartPosition.pageY}px`,
-              `${this.dragEventListener.dragStartPosition.pageY}px`
-            );
-          }
-          isAnimationConfigured = true;
+    this.dragEventListener.dragMoved.pipe(takeUntil(destroy$)).subscribe((event: DragEventInterface<T>) => {
+      // On the first drag move event, we configure the animation as it's dependent on the first drag event.
+      if (!isAnimationConfigured) {
+        if (this.draggableSnapshot.hasDraggableState) {
+          this.animateToOnLeave(
+            `${this.draggableSnapshot.clientRect.top}px`,
+            `${this.draggableSnapshot.clientRect.left}px`
+          );
+        } else {
+          this.animateToOnLeave(
+            `${this.dragEventListener.dragStartPosition.pageY}px`,
+            `${this.dragEventListener.dragStartPosition.pageY}px`
+          );
         }
+        isAnimationConfigured = true;
+      }
 
-        // Position the draggable ghost.
-        const topLeftPosition: PagePosition = this.findTopLeftPosition(event.dragPosition, offset);
-        this.setPositionStyle(this.draggableGhostEl, topLeftPosition.pageX, topLeftPosition.pageY);
-        this.dragEventListener.dropPointPosition = this.findDropPointPosition(topLeftPosition);
-      })
-    );
+      // Position the draggable ghost.
+      const topLeftPosition: PagePosition = this.findTopLeftPosition(event.dragPosition, offset);
+      this.setPositionStyle(this.draggableGhostEl, topLeftPosition.pageX, topLeftPosition.pageY);
+      this.dragEventListener.dropPointPosition = this.findDropPointPosition(topLeftPosition);
+    });
   }
 
   private setDefaultGhostSize(el: Node): void {
@@ -135,9 +134,5 @@ export class ClrDraggableGhost<T> implements OnDestroy {
     this.renderer.setStyle(el, 'left', `${left}px`);
     this.renderer.setStyle(el, 'top', `${top}px`);
     this.renderer.setStyle(el, 'visibility', 'visible');
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

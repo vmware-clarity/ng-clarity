@@ -4,12 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, EventEmitter, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.service';
-
-@Directive({ selector: '[clrIfOpen]' })
 
 /**********
  *
@@ -21,10 +20,9 @@ import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.ser
  * using it in the component template.
  *
  */
-export class ClrIfOpen implements OnDestroy {
+@Directive({ selector: '[clrIfOpen]', providers: [ClrDestroyService] })
+export class ClrIfOpen {
   public static ngAcceptInputType_open: boolean | '';
-
-  private subscription: Subscription;
 
   /*********
    *
@@ -60,9 +58,10 @@ export class ClrIfOpen implements OnDestroy {
   constructor(
     private toggleService: ClrPopoverToggleService,
     private template: TemplateRef<any>,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    destroy$: ClrDestroyService
   ) {
-    this.subscription = this.toggleService.openChange.subscribe(change => {
+    this.toggleService.openChange.pipe(takeUntil(destroy$)).subscribe(change => {
       this.updateView(change);
       this.openChange.emit(change);
     });
@@ -81,9 +80,5 @@ export class ClrIfOpen implements OnDestroy {
     } else {
       this.container.clear();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

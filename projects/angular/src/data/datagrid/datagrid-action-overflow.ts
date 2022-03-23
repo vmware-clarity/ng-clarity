@@ -5,10 +5,11 @@
  */
 
 import { Component, EventEmitter, Inject, Input, OnDestroy, Output, NgZone, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
 
 import { RowActionService } from './providers/row-action-service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { isPlatformBrowser } from '@angular/common';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
@@ -17,13 +18,19 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 
 let clrDgActionId = 0;
 
 @Component({
   selector: 'clr-dg-action-overflow',
-  providers: [UNIQUE_ID_PROVIDER, ClrPopoverToggleService, ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [
+    UNIQUE_ID_PROVIDER,
+    ClrPopoverToggleService,
+    ClrPopoverEventsService,
+    ClrPopoverPositionService,
+    ClrDestroyService,
+  ],
   template: `
     <button
       class="datagrid-action-toggle"
@@ -55,7 +62,6 @@ let clrDgActionId = 0;
   `,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  private subscriptions: Subscription[] = [];
   public smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.HORIZONTAL,
     side: ClrSide.AFTER,
@@ -69,23 +75,23 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,
     private smartToggleService: ClrPopoverToggleService,
-    @Inject(UNIQUE_ID) public popoverId: string
+    @Inject(UNIQUE_ID) public popoverId: string,
+    destroy$: ClrDestroyService
   ) {
     this.rowActionService.register();
-    this.subscriptions.push(
-      this.smartToggleService.openChange.subscribe(openState => {
-        this.open = openState;
-        if (openState) {
-          this.focusFirstButton();
-        }
-      })
-    );
+
+    this.smartToggleService.openChange.pipe(takeUntil(destroy$)).subscribe(openState => {
+      this.open = openState;
+      if (openState) {
+        this.focusFirstButton();
+      }
+    });
+
     this.popoverId = 'clr-action-menu' + clrDgActionId++;
   }
 
   ngOnDestroy() {
     this.rowActionService.unregister();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   closeOverflowContent(event: Event): void {

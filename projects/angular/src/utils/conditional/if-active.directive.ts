@@ -4,21 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  EventEmitter,
-  Inject,
-  Input,
-  OnDestroy,
-  Output,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, EventEmitter, Inject, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { IF_ACTIVE_ID, IfActiveService } from './if-active.service';
-
-@Directive({ selector: '[clrIfActive]' })
 
 /**********
  *
@@ -30,19 +20,20 @@ import { IF_ACTIVE_ID, IfActiveService } from './if-active.service';
  * the component using it in the component template.
  *
  */
-export class ClrIfActive implements OnDestroy {
-  private subscription: Subscription;
+@Directive({ selector: '[clrIfActive]', providers: [ClrDestroyService] })
+export class ClrIfActive {
   private wasActive = false;
 
   constructor(
     private ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) private id: number,
     private template: TemplateRef<any>,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    destroy$: ClrDestroyService
   ) {
     this.checkAndUpdateView(ifActiveService.current);
 
-    this.subscription = this.ifActiveService.currentChange.subscribe(newCurrentId => {
+    this.ifActiveService.currentChange.pipe(takeUntil(destroy$)).subscribe(newCurrentId => {
       this.checkAndUpdateView(newCurrentId);
     });
   }
@@ -103,9 +94,5 @@ export class ClrIfActive implements OnDestroy {
     } else {
       this.container.clear();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

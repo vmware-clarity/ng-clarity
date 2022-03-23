@@ -4,13 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { filter } from 'rxjs/operators';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-header',
@@ -39,36 +39,36 @@ import { filter } from 'rxjs/operators';
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
   `,
   host: { '[class.header]': 'true' },
+  providers: [ClrDestroyService],
 })
-export class ClrHeader implements OnDestroy {
+export class ClrHeader {
   isNavLevel1OnPage = false;
   isNavLevel2OnPage = false;
   openNavLevel: number = null;
   responsiveNavCodes = ResponsiveNavCodes;
-  private _subscription: Subscription;
 
   constructor(
     private responsiveNavService: ResponsiveNavigationService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    destroy$: ClrDestroyService
   ) {
-    this._subscription = this.responsiveNavService.registeredNavs.subscribe({
+    this.responsiveNavService.registeredNavs.pipe(takeUntil(destroy$)).subscribe({
       next: (navLevelList: number[]) => {
         this.initializeNavTriggers(navLevelList);
       },
     });
 
-    this._subscription.add(
-      this.responsiveNavService.navControl
-        .pipe(
-          filter(
-            ({ controlCode }) =>
-              controlCode === ResponsiveNavCodes.NAV_CLOSE || controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL
-          )
-        )
-        .subscribe(() => {
-          this.openNavLevel = null;
-        })
-    );
+    this.responsiveNavService.navControl
+      .pipe(
+        filter(
+          ({ controlCode }) =>
+            controlCode === ResponsiveNavCodes.NAV_CLOSE || controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL
+        ),
+        takeUntil(destroy$)
+      )
+      .subscribe(() => {
+        this.openNavLevel = null;
+      });
   }
 
   get responsiveNavCommonString() {
@@ -133,9 +133,5 @@ export class ClrHeader implements OnDestroy {
   openNav(navLevel: number) {
     this.openNavLevel = navLevel;
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
-  }
-
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
   }
 }

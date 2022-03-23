@@ -6,7 +6,7 @@
 
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 
@@ -14,6 +14,7 @@ import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-gr
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 const EXPANDED_STATE = 'expanded';
 const COLLAPSED_STATE = 'collapsed';
@@ -21,7 +22,7 @@ const COLLAPSED_STATE = 'collapsed';
 @Component({
   selector: 'clr-vertical-nav-group',
   templateUrl: './vertical-nav-group.html',
-  providers: [IfExpandService, VerticalNavGroupService],
+  providers: [IfExpandService, VerticalNavGroupService, ClrDestroyService],
   animations: [
     trigger('clrExpand', [
       state(EXPANDED_STATE, style({ height: '*' })),
@@ -37,7 +38,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
     private _navGroupService: VerticalNavGroupService,
     private _navService: VerticalNavService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    destroy$: ClrDestroyService
   ) {
     this._navGroupRegistrationService.registerNavGroup();
 
@@ -47,41 +49,35 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // on the clrIfExpanded directive, we have no chance to run the animation
     // and wait for it to complete. This subscription makes sure that the
     // animation states are correct for that edge case.
-    this._subscriptions.push(
-      this._itemExpand.expandChange.subscribe(value => {
-        if (value && this.expandAnimationState === COLLAPSED_STATE) {
-          if (this._navService.collapsed) {
-            this._navService.collapsed = false;
-          }
-          this.expandAnimationState = EXPANDED_STATE;
-        } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
-          this.expandAnimationState = COLLAPSED_STATE;
+    this._itemExpand.expandChange.pipe(takeUntil(destroy$)).subscribe(value => {
+      if (value && this.expandAnimationState === COLLAPSED_STATE) {
+        if (this._navService.collapsed) {
+          this._navService.collapsed = false;
         }
-      })
-    );
+        this.expandAnimationState = EXPANDED_STATE;
+      } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
+        this.expandAnimationState = COLLAPSED_STATE;
+      }
+    });
 
     // 1. If the nav is collapsing, close the open nav group + save its state
     // 2. If the nav is expanding, expand the nav group if the previous state was expanded
-    this._subscriptions.push(
-      this._navService.animateOnCollapsed.subscribe((goingToCollapse: boolean) => {
-        if (goingToCollapse && this.expanded) {
-          this.wasExpanded = true;
-          this.expandAnimationState = COLLAPSED_STATE;
-        } else if (!goingToCollapse && this.wasExpanded) {
-          this.expandGroup();
-          this.wasExpanded = false;
-        }
-      })
-    );
+    this._navService.animateOnCollapsed.pipe(takeUntil(destroy$)).subscribe((goingToCollapse: boolean) => {
+      if (goingToCollapse && this.expanded) {
+        this.wasExpanded = true;
+        this.expandAnimationState = COLLAPSED_STATE;
+      } else if (!goingToCollapse && this.wasExpanded) {
+        this.expandGroup();
+        this.wasExpanded = false;
+      }
+    });
 
     // If a link is clicked, expand the nav group
-    this._subscriptions.push(
-      this._navGroupService.expandChange.subscribe((expand: boolean) => {
-        if (expand && !this.expanded) {
-          this.expandGroup();
-        }
-      })
-    );
+    this._navGroupService.expandChange.pipe(takeUntil(destroy$)).subscribe((expand: boolean) => {
+      if (expand && !this.expanded) {
+        this.expandGroup();
+      }
+    });
   }
 
   private wasExpanded = false;
@@ -113,8 +109,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   @Output('clrVerticalNavGroupExpandedChange') expandedChange: EventEmitter<boolean> = new EventEmitter<boolean>(true);
-
-  private _subscriptions: Subscription[] = [];
 
   private _expandAnimationState: string = COLLAPSED_STATE;
 
@@ -170,7 +164,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._navGroupRegistrationService.unregisterNavGroup();
   }
 }

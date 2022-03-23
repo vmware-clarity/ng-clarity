@@ -14,21 +14,21 @@ import {
   TemplateRef,
   TrackByFunction,
   ViewContainerRef,
-  OnDestroy,
 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../../utils/destroy';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { Subscription } from 'rxjs';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',
+  providers: [ClrDestroyService],
 })
-export class ClrOptionItems<T> implements DoCheck, OnDestroy {
+export class ClrOptionItems<T> implements DoCheck {
   private iterableProxy: NgForOf<T>;
   private _rawItems: T[];
   private filteredItems: T[];
-  private subscriptions: Subscription[] = [];
   private filter = '';
   private _filterField: string;
   private differ: IterableDiffer<T> | null = null;
@@ -55,15 +55,15 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     private differs: IterableDiffers,
     private optionService: OptionSelectionService<T>,
     private positionService: ClrPopoverPositionService,
-    private vcr: ViewContainerRef
+    private vcr: ViewContainerRef,
+    destroy$: ClrDestroyService
   ) {
     this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
-    this.subscriptions.push(
-      optionService.inputChanged.subscribe(filter => {
-        this.filter = filter;
-        this.updateItems();
-      })
-    );
+
+    optionService.inputChanged.pipe(takeUntil(destroy$)).subscribe(filter => {
+      this.filter = filter;
+      this.updateItems();
+    });
   }
 
   private updateItems() {
@@ -103,9 +103,5 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
         this.positionService.realign();
       }
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

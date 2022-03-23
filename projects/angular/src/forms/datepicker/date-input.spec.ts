@@ -32,6 +32,7 @@ import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-e
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 export default function () {
   describe('Date Input Component', () => {
@@ -76,7 +77,10 @@ export default function () {
       beforeEach(function () {
         TestBed.overrideComponent(ClrDateContainer, {
           set: {
-            providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+            providers: [
+              { provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService },
+              ClrDestroyService,
+            ],
           },
         });
 
@@ -452,7 +456,10 @@ export default function () {
 
         TestBed.overrideComponent(ClrDateContainer, {
           set: {
-            providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+            providers: [
+              { provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService },
+              ClrDestroyService,
+            ],
           },
         });
 

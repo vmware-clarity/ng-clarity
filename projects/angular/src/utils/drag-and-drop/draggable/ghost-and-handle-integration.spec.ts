@@ -9,6 +9,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ClrDestroyService } from '../../../utils/destroy';
 import { ClrIconModule } from '../../../icon/icon.module';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrDragAndDropModule } from '../drag-and-drop.module';
@@ -41,6 +42,7 @@ export default function (): void {
             DraggableSnapshotService,
             GlobalDragModeService,
             MOCK_DRAG_EVENT_LISTENER_PROVIDER,
+            ClrDestroyService,
           ],
         },
       });

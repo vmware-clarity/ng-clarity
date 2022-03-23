@@ -4,28 +4,29 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Renderer2 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, ElementRef, HostBinding, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../../utils/destroy';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
 
-@Directive({ selector: 'label' })
-export class ClrLabel implements OnInit, OnDestroy {
+@Directive({ selector: 'label', providers: [ClrDestroyService] })
+export class ClrLabel implements OnInit {
   constructor(
     @Optional() private controlIdService: ControlIdService,
     @Optional() private layoutService: LayoutService,
     @Optional() private ngControlService: NgControlService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef<HTMLElement>,
+    private destroy$: ClrDestroyService
   ) {}
 
   @HostBinding('attr.for')
   @Input('for')
   forAttr: string;
 
-  private subscriptions: Subscription[] = [];
   private enableGrid = true;
 
   get labelText(): string {
@@ -49,15 +50,11 @@ export class ClrLabel implements OnInit, OnDestroy {
       this.renderer.addClass(this.el.nativeElement, `clr-col-md-${this.layoutService.labelSize}`);
     }
     if (this.controlIdService && !this.forAttr) {
-      this.subscriptions.push(this.controlIdService.idChange.subscribe(id => (this.forAttr = id)));
+      this.controlIdService.idChange.pipe(takeUntil(this.destroy$)).subscribe(id => (this.forAttr = id));
     }
   }
 
   disableGrid() {
     this.enableGrid = false;
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

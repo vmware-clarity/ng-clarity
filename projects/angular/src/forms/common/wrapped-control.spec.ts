@@ -24,6 +24,7 @@ import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
 import { ClrControlSuccess } from './success';
 import { ClrAbstractContainer } from './abstract-container';
+import { ClrDestroyService } from '../../utils/destroy';
 
 /*
  * Components using the WrappedFormControl we want to test.
@@ -33,10 +34,10 @@ class TestWrapper implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl]' })
+@Directive({ selector: '[testControl]', providers: [ClrDestroyService] })
 class TestControl extends WrappedFormControl<TestWrapper> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper, null, null, null, null);
+  constructor(vcr: ViewContainerRef, destroy$: ClrDestroyService) {
+    super(vcr, TestWrapper, null, null, null, null, destroy$);
   }
 }
 
@@ -50,26 +51,33 @@ class TestWrapper2 implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl2]' })
+@Directive({ selector: '[testControl2]', providers: [ClrDestroyService] })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, TestWrapper2, null, null, null, null);
+  constructor(vcr: ViewContainerRef, destroy$: ClrDestroyService) {
+    super(vcr, TestWrapper2, null, null, null, null, destroy$);
   }
 }
 
 @Component({
   selector: 'test-wrapper3',
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
-  providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService],
+  providers: [ControlIdService, NgControlService, IfControlStateService, ControlClassService, ClrDestroyService],
 })
 class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl3]' })
+@Directive({ selector: '[testControl3]', providers: [ClrDestroyService] })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
-  constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef) {
-    super(vcr, TestWrapper3, injector, control, renderer, el);
+  constructor(
+    vcr: ViewContainerRef,
+    injector: Injector,
+    control: NgControl,
+    renderer: Renderer2,
+    el: ElementRef,
+    destroy$: ClrDestroyService
+  ) {
+    super(vcr, TestWrapper3, injector, control, renderer, el, destroy$);
   }
 }
 
@@ -176,6 +184,7 @@ interface TestContext {
   ngControlService?: NgControlService;
   ifControlStateService: IfControlStateService;
   layoutService?: LayoutService;
+  destroy$: ClrDestroyService;
 }
 
 export default function (): void {
@@ -201,6 +210,7 @@ export default function (): void {
         testContext.ngControlService = wrapperDebugElement.injector.get(NgControlService);
         testContext.ifControlStateService = wrapperDebugElement.injector.get(IfControlStateService);
         testContext.layoutService = wrapperDebugElement.injector.get(LayoutService);
+        testContext.destroy$ = wrapperDebugElement.injector.get(ClrDestroyService);
       } catch (error) {
         // Swallow errors
       }
@@ -303,11 +313,6 @@ export default function (): void {
         this.fixture.detectChanges();
         expect(this.input.className).toContain('ng-touched');
         expect(this.fixture.nativeElement.querySelector('#control2').className).toContain('ng-untouched');
-      });
-
-      it('implements ngOnDestroy', function (this: TestContext) {
-        setupTest(this, WithControl, TestControl3);
-        expect(this.control.ngOnDestroy).toBeDefined();
       });
     });
 

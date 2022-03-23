@@ -55,6 +55,8 @@ import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ComboboxModel } from './model/combobox.model';
 import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'clr-combobox',
@@ -71,6 +73,7 @@ import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state
     ClrPopoverToggleService,
     ClrPopoverEventsService,
     ClrPopoverPositionService,
+    ClrDestroyService,
   ],
   host: {
     '[class.aria-required]': 'true',
@@ -110,9 +113,10 @@ export class ClrCombobox<T>
     @Inject(PLATFORM_ID) private platformId: any,
     private ariaService: AriaService,
     private focusHandler: ComboboxFocusHandler<T>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrComboboxContainer, injector, control, renderer, el);
+    super(vcr, ClrComboboxContainer, injector, control, renderer, el, destroy$);
     if (control) {
       control.valueAccessor = this;
     }
@@ -265,8 +269,9 @@ export class ClrCombobox<T>
     this.optionSelectionService.selectionChanged;
 
   private initializeSubscriptions(): void {
-    this.subscriptions.push(
-      this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
+    this.optionSelectionService.selectionChanged
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
         if (this.multiSelect) {
           this.positionService.realign();
@@ -275,42 +280,35 @@ export class ClrCombobox<T>
           this.toggleService.open = false;
         }
         this.updateControlValue();
-      })
-    );
+      });
 
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
-        if (open) {
-          this.focusFirstActive();
-        }
-        if (this.multiSelect) {
-          this.searchText = '';
-        } else {
-          this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
-        }
-      })
-    );
+    this.toggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe(open => {
+      if (open) {
+        this.focusFirstActive();
+      }
+      if (this.multiSelect) {
+        this.searchText = '';
+      } else {
+        this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
+      }
+    });
 
-    this.subscriptions.push(
-      this.toggleService.popoverAligned.subscribe(popoverNode => {
-        // When used outside a combobox container
-        if (!this.containerService) {
-          return;
-        }
-        const popover: HTMLElement = popoverNode as HTMLElement;
-        // Update position if popover hides the label
-        if (popover.getBoundingClientRect().top < this.el.nativeElement.getBoundingClientRect().top) {
-          this.renderer.setStyle(popoverNode, 'top', `${popover.offsetTop + this.containerService.labelOffset}px`);
-        }
-      })
-    );
+    this.toggleService.popoverAligned.pipe(takeUntil(this.destroy$)).subscribe(popoverNode => {
+      // When used outside a combobox container
+      if (!this.containerService) {
+        return;
+      }
+      const popover: HTMLElement = popoverNode as HTMLElement;
+      // Update position if popover hides the label
+      if (popover.getBoundingClientRect().top < this.el.nativeElement.getBoundingClientRect().top) {
+        this.renderer.setStyle(popoverNode, 'top', `${popover.offsetTop + this.containerService.labelOffset}px`);
+      }
+    });
 
     if (this.controlStateService) {
-      this.subscriptions.push(
-        this.controlStateService.statusChanges.subscribe(invalid => {
-          this.invalid = invalid === CONTROL_STATE.INVALID;
-        })
-      );
+      this.controlStateService.statusChanges.pipe(takeUntil(this.destroy$)).subscribe(invalid => {
+        this.invalid = invalid === CONTROL_STATE.INVALID;
+      });
     }
   }
 

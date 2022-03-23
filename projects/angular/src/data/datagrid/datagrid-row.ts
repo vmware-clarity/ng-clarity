@@ -19,7 +19,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
@@ -37,6 +38,7 @@ import { SelectionType } from './enums/selection-type';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrExpandableAnimation } from '../../utils/animations/expandable-animation/expandable-animation';
 import { DetailService } from './providers/detail.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 let nbRow = 0;
 
@@ -51,6 +53,7 @@ let nbRow = 0;
   },
   providers: [
     DatagridIfExpandService,
+    ClrDestroyService,
     { provide: IfExpandService, useExisting: DatagridIfExpandService },
     { provide: LoadingListener, useExisting: DatagridIfExpandService },
   ],
@@ -85,7 +88,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private vcr: ViewContainerRef,
     private renderer: Renderer2,
     private el: ElementRef,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
@@ -93,22 +97,20 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;
 
-    this.subscriptions.push(
-      combineLatest(this.expand.replace, this.expand.expandChange).subscribe(
-        ([expandReplaceValue, expandChangeValue]) => {
-          if (expandReplaceValue && expandChangeValue) {
-            // replaced and expanding
-            this.replaced = true;
-            this.renderer.addClass(this.el.nativeElement, 'datagrid-row-replaced');
-          } else {
-            this.replaced = false;
-            // Handles these cases: not replaced and collapsing & replaced and
-            // collapsing and not replaced and expanding.
-            this.renderer.removeClass(this.el.nativeElement, 'datagrid-row-replaced');
-          }
+    combineLatest(this.expand.replace, this.expand.expandChange)
+      .pipe(takeUntil(destroy$))
+      .subscribe(([expandReplaceValue, expandChangeValue]) => {
+        if (expandReplaceValue && expandChangeValue) {
+          // replaced and expanding
+          this.replaced = true;
+          this.renderer.addClass(this.el.nativeElement, 'datagrid-row-replaced');
+        } else {
+          this.replaced = false;
+          // Handles these cases: not replaced and collapsing & replaced and
+          // collapsing and not replaced and expanding.
+          this.renderer.removeClass(this.el.nativeElement, 'datagrid-row-replaced');
         }
-      )
-    );
+      });
   }
 
   private _selected = false;
@@ -208,6 +210,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
 
   ngAfterContentInit() {
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
     this.dgCells.changes.subscribe(() => {
       this.dgCells.forEach(cell => {
         if (!cell._view.destroyed) {
@@ -218,43 +222,36 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   ngAfterViewInit() {
-    this.subscriptions.push(
-      this.displayMode.view.subscribe(viewChange => {
-        // Listen for view changes and move cells around depending on the current displayType
-        // remove cell views from display view
-        for (let i = this._scrollableCells.length; i > 0; i--) {
-          this._scrollableCells.detach();
-        }
-        // remove cell views from calculated view
-        for (let i = this._calculatedCells.length; i > 0; i--) {
-          this._calculatedCells.detach();
-        }
-        if (viewChange === DatagridDisplayMode.CALCULATE) {
-          this.displayCells = false;
-          this.dgCells.forEach(cell => {
-            if (!cell._view.destroyed) {
-              this._calculatedCells.insert(cell._view);
-            }
-          });
-        } else {
-          this.displayCells = true;
-          this.dgCells.forEach(cell => {
-            if (!cell._view.destroyed) {
-              this._scrollableCells.insert(cell._view);
-            }
-          });
-        }
-      }),
-      this.expand.animate.subscribe(() => {
-        this.expandAnimationTrigger = !this.expandAnimationTrigger;
-      })
-    );
-  }
+    this.displayMode.view.pipe(takeUntil(this.destroy$)).subscribe(viewChange => {
+      // Listen for view changes and move cells around depending on the current displayType
+      // remove cell views from display view
+      for (let i = this._scrollableCells.length; i > 0; i--) {
+        this._scrollableCells.detach();
+      }
+      // remove cell views from calculated view
+      for (let i = this._calculatedCells.length; i > 0; i--) {
+        this._calculatedCells.detach();
+      }
+      if (viewChange === DatagridDisplayMode.CALCULATE) {
+        this.displayCells = false;
+        this.dgCells.forEach(cell => {
+          if (!cell._view.destroyed) {
+            this._calculatedCells.insert(cell._view);
+          }
+        });
+      } else {
+        this.displayCells = true;
+        this.dgCells.forEach(cell => {
+          if (!cell._view.destroyed) {
+            this._scrollableCells.insert(cell._view);
+          }
+        });
+      }
+    });
 
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.expand.animate.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.expandAnimationTrigger = !this.expandAnimationTrigger;
+    });
   }
 
   public displayCells = false;

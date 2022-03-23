@@ -13,4 +13,3 @@ export * from './drag-and-drop/index';
 export * from './popover/index';
 export * from './focus/focus-on-view-init/index';
 export * from './focus-trap/index';
-export * from './destroy';

@@ -31,6 +31,7 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ViewManagerService } from './providers/view-manager.service';
 import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
 import { DayModel } from './model/day.model';
+import { ClrDestroyService } from '../../utils/destroy';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverEventsService,
@@ -65,7 +66,7 @@ export default function () {
       });
       TestBed.overrideComponent(ClrDateContainer, {
         set: {
-          providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+          providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }, ClrDestroyService],
         },
       });
 

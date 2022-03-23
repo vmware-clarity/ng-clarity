@@ -4,25 +4,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
+import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { ClrDestroyService } from '../destroy';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[clrPopoverOpenCloseButton]',
   host: {
     '[class.clr-smart-open-close]': 'true',
   },
+  providers: [ClrDestroyService],
 })
-export class ClrPopoverOpenCloseButton implements OnDestroy {
-  private subscriptions: Subscription[] = [];
-
-  constructor(private smartOpenService: ClrPopoverToggleService) {
-    this.subscriptions.push(
-      this.smartOpenService.openChange.subscribe(change => {
-        this.openCloseChange.next(change);
-      })
-    );
+export class ClrPopoverOpenCloseButton {
+  constructor(private smartOpenService: ClrPopoverToggleService, destroy$: ClrDestroyService) {
+    this.smartOpenService.openChange.pipe(takeUntil(destroy$)).subscribe(change => {
+      this.openCloseChange.next(change);
+    });
   }
 
   @Output('clrPopoverOpenCloseChange') openCloseChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -30,9 +29,5 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
     this.smartOpenService.toggleWithEvent(event);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

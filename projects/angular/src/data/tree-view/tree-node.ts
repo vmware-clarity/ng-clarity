@@ -23,8 +23,7 @@ import {
   SkipSelf,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import { KeyCodes } from './../../utils/enums/key-codes.enum';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -38,6 +37,7 @@ import { TreeNodeModel } from './models/tree-node.model';
 import { TreeFeaturesService, TREE_FEATURES_PROVIDER } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
+import { ClrDestroyService } from '../../utils/destroy';
 
 const LVIEW_CONTEXT_INDEX = 8;
 
@@ -48,6 +48,7 @@ const LVIEW_CONTEXT_INDEX = 8;
     UNIQUE_ID_PROVIDER,
     TREE_FEATURES_PROVIDER,
     IfExpandService,
+    ClrDestroyService,
     { provide: LoadingListener, useExisting: IfExpandService },
   ],
   animations: [
@@ -77,6 +78,7 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
     public expandService: IfExpandService,
     public commonStrings: ClrCommonStringsService,
     private focusManager: TreeFocusManagerService<T>,
+    private destroy$: ClrDestroyService,
     injector: Injector
   ) {
     if (this.featuresService.recursion) {
@@ -155,44 +157,44 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
 
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 
-  private subscriptions: Subscription[] = [];
-
   contentContainerTabindex = -1;
   @ViewChild('contentContainer', { read: ElementRef, static: true })
   private contentContainer: ElementRef;
 
   ngOnInit() {
     this._model.expanded = this.expanded;
-    this.subscriptions.push(
-      this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
-        this.selectedChange.emit(value);
-      })
-    );
-    this.subscriptions.push(
-      this.expandService.expandChange.subscribe(value => {
-        this.expandedChange.emit(value);
-        this._model.expanded = value;
-      })
-    );
-    this.subscriptions.push(
-      this.focusManager.focusRequest.subscribe(nodeId => {
-        if (this.nodeId === nodeId) {
-          this.focusTreeNode();
-        }
-      }),
-      this.focusManager.focusChange.subscribe(nodeId => {
-        this.checkTabIndex(nodeId);
-      })
-    );
 
-    this.subscriptions.push(
-      this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
-    );
+    this._model.selected
+      .pipe(
+        filter(() => !this.skipEmitChange),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => {
+        this.selectedChange.emit(value);
+      });
+
+    this.expandService.expandChange.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      this.expandedChange.emit(value);
+      this._model.expanded = value;
+    });
+
+    this.focusManager.focusRequest.pipe(takeUntil(this.destroy$)).subscribe(nodeId => {
+      if (this.nodeId === nodeId) {
+        this.focusTreeNode();
+      }
+    });
+
+    this.focusManager.focusChange.pipe(takeUntil(this.destroy$)).subscribe(nodeId => {
+      this.checkTabIndex(nodeId);
+    });
+
+    this._model.loading$
+      .pipe(debounceTime(0), takeUntil(this.destroy$))
+      .subscribe(isLoading => (this.isModelLoading = isLoading));
   }
 
   ngOnDestroy() {
     this._model.destroy();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   // @ContentChild would have been more succinct

@@ -10,7 +10,6 @@ import {
   EventEmitter,
   Injector,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewContainerRef,
@@ -19,7 +18,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -40,6 +39,7 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DetailService } from './providers/detail.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-dg-column',
@@ -84,7 +84,7 @@ import { DetailService } from './providers/detail.service';
       <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
     </div>
   `,
-  providers: [ClrPopoverPositionService, ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverPositionService, ClrPopoverEventsService, ClrPopoverToggleService, ClrDestroyService],
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',
@@ -94,7 +94,7 @@ import { DetailService } from './providers/detail.service';
 })
 export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements OnDestroy, OnInit, OnChanges
+  implements OnInit, OnChanges
 {
   constructor(
     private _sort: Sort<T>,
@@ -102,27 +102,18 @@ export class ClrDatagridColumn<T = any>
     private vcr: ViewContainerRef,
     private detailService: DetailService,
     private changeDetectorRef: ChangeDetectorRef,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {
     super(filters);
-    this.subscriptions.push(this.listenForSortingChanges());
-    this.subscriptions.push(this.listenForDetailPaneChanges());
+    this.listenForSortingChanges();
+    this.listenForDetailPaneChanges();
   }
 
   public showSeparator = true;
 
-  /**
-   * Subscription to the sort service changes
-   */
-  private subscriptions: Subscription[] = [];
-
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   private listenForDetailPaneChanges() {
-    return this.detailService.stateChange.subscribe(state => {
+    this.detailService.stateChange.pipe(takeUntil(this.destroy$)).subscribe(state => {
       if (this.showSeparator !== !state) {
         this.showSeparator = !state;
         // Have to manually change because of OnPush
@@ -132,7 +123,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   private listenForSortingChanges() {
-    return this._sort.change.subscribe(sort => {
+    this._sort.change.pipe(takeUntil(this.destroy$)).subscribe(sort => {
       // Need to manually mark the component to be checked
       // for both activating and deactivating sorting
       this.changeDetectorRef.markForCheck();

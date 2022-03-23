@@ -4,35 +4,37 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, OnDestroy, AfterViewInit, Inject, PLATFORM_ID, HostBinding } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { OptionSelectionService } from './providers/option-selection.service';
+import { Directive, ElementRef, AfterViewInit, Inject, PLATFORM_ID, HostBinding } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
+
+import { ClrDestroyService } from '../../utils/destroy';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 // TODO: Check if this directive is properly sanitized and:
 //       - return to module
 //       - return to dev-app examples
 //       - return to website docs
-@Directive({ selector: '[clrFilterHighlight]' })
-export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+@Directive({ selector: '[clrFilterHighlight]', providers: [ClrDestroyService] })
+export class ClrFilterHighlight<T> implements AfterViewInit {
   private initialHtml: string;
   private filter = '';
+
   constructor(
     private element: ElementRef,
     private optionSelectionService: OptionSelectionService<T>,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: string,
+    private destroy$: ClrDestroyService
   ) {}
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.initialHtml = this.element.nativeElement.innerHTML;
-      this.subscriptions.push(
-        this.optionSelectionService.inputChanged.subscribe(filter => {
-          this.filter = filter;
-          this.findMatches();
-        })
-      );
+
+      this.optionSelectionService.inputChanged.pipe(takeUntil(this.destroy$)).subscribe(filter => {
+        this.filter = filter;
+        this.findMatches();
+      });
     }
   }
 
@@ -57,9 +59,5 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
     } else {
       this.element.nativeElement.innerHTML = this.initialHtml;
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

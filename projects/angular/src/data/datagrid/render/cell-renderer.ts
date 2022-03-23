@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { switchAll, takeUntil } from 'rxjs/operators';
 
 import { DatagridRenderStep } from '../enums/render-step.enum';
 
@@ -13,36 +14,32 @@ import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
+import { ClrDestroyService } from '../../../utils/destroy';
 
-@Directive({ selector: 'clr-dg-cell' })
-export class DatagridCellRenderer implements OnDestroy {
-  private stateSubscription: Subscription;
+@Directive({ selector: 'clr-dg-cell', providers: [ClrDestroyService] })
+export class DatagridCellRenderer {
+  private columnStateChanges$ = new Subject<BehaviorSubject<ColumnState>>();
 
   private runAllChanges: DatagridColumnChanges[];
 
   // @TODO(JEREMY) Work out how to dedupe some of this code between header and cell renderers
   set columnState(columnState: BehaviorSubject<ColumnState>) {
-    if (this.stateSubscription) {
-      this.stateSubscription.unsubscribe();
-    }
-
     this.runAllChanges = ALL_COLUMN_CHANGES;
-    this.stateSubscription = columnState.subscribe(state => this.stateChanges(state));
+    this.columnStateChanges$.next(columnState);
   }
 
-  constructor(private el: ElementRef, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
-    this.subscriptions.push(
-      organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
-    );
-  }
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    organizer: DatagridRenderOrganizer,
+    destroy$: ClrDestroyService
+  ) {
+    organizer
+      .filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS)
+      .pipe(takeUntil(destroy$))
+      .subscribe(() => this.clearWidth());
 
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    if (this.stateSubscription) {
-      this.stateSubscription.unsubscribe();
-    }
+    this.columnStateChanges$.pipe(switchAll(), takeUntil(destroy$)).subscribe(state => this.stateChanges(state));
   }
 
   private stateChanges(state: ColumnState) {

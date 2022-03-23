@@ -12,8 +12,10 @@
  */
 
 import { Component } from '@angular/core';
+
 import { StackControl } from './stack-control';
 import { ClrStackView } from './stack-view';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-stack-input',
@@ -23,11 +25,12 @@ import { ClrStackView } from './stack-view';
     <span *ngIf="!stackView.editing">{{ model }}</span>
     <input [type]="type" *ngIf="stackView.editing" [(ngModel)]="model" />
   `,
+  providers: [ClrDestroyService],
 })
 export class ClrStackInput extends StackControl {
   type = 'text';
 
-  constructor(public override stackView: ClrStackView) {
-    super(stackView);
+  constructor(public override stackView: ClrStackView, destroy$: ClrDestroyService) {
+    super(stackView, destroy$);
   }
 }

@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, ElementRef, HostListener } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
 
@@ -18,16 +18,21 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { DateIOService } from './providers/date-io.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Component({ selector: 'clr-calendar', templateUrl: './calendar.html' })
-export class ClrCalendar implements OnDestroy {
-  private _subs: Subscription[] = [];
+@Component({
+  selector: 'clr-calendar',
+  templateUrl: './calendar.html',
+  providers: [ClrDestroyService],
+})
+export class ClrCalendar {
   constructor(
     private _localeHelperService: LocaleHelperService,
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef
+    private _elRef: ElementRef,
+    private _destroy$: ClrDestroyService
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();
@@ -68,23 +73,17 @@ export class ClrCalendar implements OnDestroy {
    * 3. focus on the focusable day in the calendar.
    */
   private initializeSubscriptions(): void {
-    this._subs.push(
-      this._dateNavigationService.displayedCalendarChange.subscribe(() => {
-        this.generateCalendarView();
-      })
-    );
+    this._dateNavigationService.displayedCalendarChange.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this.generateCalendarView();
+    });
 
-    this._subs.push(
-      this._dateNavigationService.focusedDayChange.subscribe((focusedDay: DayModel) => {
-        this.calendarViewModel.updateFocusableDay(focusedDay);
-      })
-    );
+    this._dateNavigationService.focusedDayChange.pipe(takeUntil(this._destroy$)).subscribe((focusedDay: DayModel) => {
+      this.calendarViewModel.updateFocusableDay(focusedDay);
+    });
 
-    this._subs.push(
-      this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
-        this._datepickerFocusService.focusCell(this._elRef);
-      })
-    );
+    this._dateNavigationService.focusOnCalendarChange.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this._datepickerFocusService.focusCell(this._elRef);
+    });
   }
 
   /**
@@ -135,12 +134,5 @@ export class ClrCalendar implements OnDestroy {
    */
   ngAfterViewInit() {
     this._datepickerFocusService.focusCell(this._elRef);
-  }
-
-  /**
-   * Unsubscribe from subscriptions.
-   */
-  ngOnDestroy(): void {
-    this._subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

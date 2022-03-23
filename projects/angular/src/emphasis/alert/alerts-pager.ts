@@ -4,21 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-alerts-pager',
   templateUrl: './alerts-pager.html',
   host: { '[class.alerts-pager]': 'true' },
+  providers: [ClrDestroyService],
 })
-export class ClrAlertsPager implements OnInit, OnDestroy {
-  private multiAlertServiceChanges: Subscription;
-
+export class ClrAlertsPager implements OnInit {
   /**
    * Input/Output to support two way binding on current alert instance
    */
@@ -47,10 +47,14 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
 
   @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>();
 
-  constructor(public multiAlertService: MultiAlertService, public commonStrings: ClrCommonStringsService) {}
+  constructor(
+    public multiAlertService: MultiAlertService,
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
+  ) {}
 
   ngOnInit() {
-    this.multiAlertServiceChanges = this.multiAlertService.changes.subscribe(index => {
+    this.multiAlertService.changes.pipe(takeUntil(this.destroy$)).subscribe(index => {
       this.currentAlertIndexChange.emit(index);
       this.currentAlertChange.emit(this.multiAlertService.activeAlerts[index]);
     });
@@ -62,9 +66,5 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
 
   pageDown() {
     this.multiAlertService.previous();
-  }
-
-  ngOnDestroy() {
-    this.multiAlertServiceChanges.unsubscribe();
   }
 }

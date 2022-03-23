@@ -4,15 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentChecked, ChangeDetectorRef, OnDestroy, Directive } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterContentChecked, ChangeDetectorRef, Directive } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { ClrDestroyService } from '../destroy';
 import { WillyWonka } from './willy-wonka';
 
 @Directive()
-export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
+export abstract class OompaLoompa implements AfterContentChecked {
   // FIXME: Request Injector once we move to Angular 4.2+, it'll allow easier refactors
-  constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka) {
-    this.subscription = willyWonka.chocolate.subscribe(() => {
+  constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka, destroy$: ClrDestroyService) {
+    willyWonka.chocolate.pipe(takeUntil(destroy$)).subscribe(() => {
       if (this.latestFlavor !== this.flavor) {
         willyWonka.disableChocolateCheck = true;
         cdr.detectChanges();
@@ -21,17 +23,11 @@ export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     });
   }
 
-  private subscription: Subscription;
-
   private latestFlavor: any;
 
   abstract get flavor(): any;
 
   ngAfterContentChecked() {
     this.latestFlavor = this.flavor;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

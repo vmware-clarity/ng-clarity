@@ -5,7 +5,7 @@
  */
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
@@ -16,10 +16,11 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
+import { ClrDestroyService } from '../../../../utils/destroy';
 
 @Component({
   selector: 'clr-dg-numeric-filter',
-  providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
+  providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }, ClrDestroyService],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <input
@@ -53,18 +54,10 @@ export class DatagridNumericFilter<T = any>
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
     private popoverToggleService: ClrPopoverToggleService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private destroy$: ClrDestroyService
   ) {
     super(filters);
-  }
-
-  private subscriptions: Subscription[] = [];
-
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
   }
 
   /**
@@ -117,23 +110,22 @@ export class DatagridNumericFilter<T = any>
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
   @ViewChild(ClrDatagridFilter) public filterContainer: ClrDatagridFilter<T>;
+
   ngAfterViewInit() {
-    this.subscriptions.push(
-      this.popoverToggleService.openChange.subscribe(openChange => {
-        this.open = openChange;
-        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
-        // running change detection.
-        this.ngZone.runOutsideAngular(() => {
-          // The animation frame in used because when this executes, the input isn't displayed.
-          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
-          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
-          // Animation tasks are executed within the next rendering frame.
-          requestAnimationFrame(() => {
-            this.domAdapter.focus(this.input.nativeElement);
-          });
+    this.popoverToggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe(openChange => {
+      this.open = openChange;
+      // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
+      // running change detection.
+      this.ngZone.runOutsideAngular(() => {
+        // The animation frame in used because when this executes, the input isn't displayed.
+        // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
+        // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
+        // Animation tasks are executed within the next rendering frame.
+        requestAnimationFrame(() => {
+          this.domAdapter.focus(this.input.nativeElement);
         });
-      })
-    );
+      });
+    });
   }
 
   private initFilterValues: [number, number];

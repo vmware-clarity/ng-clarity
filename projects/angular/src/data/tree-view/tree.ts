@@ -11,10 +11,9 @@ import {
   ElementRef,
   HostListener,
   Input,
-  OnDestroy,
   QueryList,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { TreeFeaturesService, TREE_FEATURES_PROVIDER } from './tree-features.service';
 import { ClrTreeNode } from './tree-node';
@@ -35,14 +34,12 @@ import { ClrTreeNode } from './tree-node';
     '[attr.aria-multiselectable]': 'isMultiSelectable',
   },
 })
-export class ClrTree<T> implements AfterContentInit, OnDestroy {
+export class ClrTree<T> implements AfterContentInit {
   constructor(
     public featuresService: TreeFeaturesService<T>,
     private focusManagerService: TreeFocusManagerService<T>,
-    private el: ElementRef
+    private el: ElementRef<HTMLElement>
   ) {}
-
-  private subscriptions: Subscription[] = [];
 
   @Input('clrLazy')
   set lazy(value: boolean) {
@@ -68,15 +65,15 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     }
   }
 
-  @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
+  @ContentChildren(ClrTreeNode) rootNodes: QueryList<ClrTreeNode<T>>;
 
   ngAfterContentInit() {
     this.setRootNodes();
-    this.subscriptions.push(
-      this.rootNodes.changes.subscribe(() => {
-        this.setRootNodes();
-      })
-    );
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.rootNodes.changes.subscribe(() => {
+      this.setRootNodes();
+    });
   }
 
   private setRootNodes(): void {
@@ -84,9 +81,5 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // for recursive tree, this.rootNodes registers also nested children
     // so we have to use filter to extract the ones that are truly root nodes
     this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

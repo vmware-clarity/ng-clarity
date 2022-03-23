@@ -60,6 +60,8 @@ export class ClrButtonGroup implements AfterContentInit {
   ngAfterContentInit() {
     this.initializeButtons();
     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
     this.buttons.changes.subscribe(() => {
       this.initializeButtons();
     });

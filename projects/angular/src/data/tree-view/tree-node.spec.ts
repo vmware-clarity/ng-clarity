@@ -20,6 +20,7 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { KeyCodes } from './../../utils/enums/key-codes.enum';
+import { ClrDestroyService } from 'src/utils/destroy';
 
 @Component({
   template: `<clr-tree-node #node [(clrSelected)]="selected" [(clrExpanded)]="expanded" [clrExpandable]="expandable">
@@ -42,6 +43,7 @@ interface TsApiContext {
   featureService: TreeFeaturesService<void>;
   expandService: IfExpandService;
   focusManagerService: TreeFocusManagerService<void>;
+  destroy$: ClrDestroyService;
 }
 
 export default function (): void {
@@ -69,6 +71,7 @@ export default function (): void {
         this.expandService = new IfExpandService();
         const stringsService = new ClrCommonStringsService();
         this.focusManagerService = new TreeFocusManagerService<void>();
+        this.destroy$ = new ClrDestroyService();
         const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
         this.parent = new ClrTreeNode(
           'parent',
@@ -78,6 +81,7 @@ export default function (): void {
           this.expandService,
           stringsService,
           this.focusManagerService,
+          this.destroy$,
           null
         );
         this.node = new ClrTreeNode(
@@ -88,8 +92,13 @@ export default function (): void {
           this.expandService,
           stringsService,
           this.focusManagerService,
+          this.destroy$,
           null
         );
+      });
+
+      afterEach(function (this: TsApiContext) {
+        this.destroy$.ngOnDestroy();
       });
 
       it('instantiates a DeclarativeTreeNodeModel', function (this: TsApiContext) {

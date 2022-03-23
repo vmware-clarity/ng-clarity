@@ -4,17 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  Inject,
-  OnDestroy,
-  PLATFORM_ID,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, Inject, PLATFORM_ID, ViewChild, ElementRef } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
@@ -26,9 +18,8 @@ import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { Subscription } from 'rxjs';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { isPlatformBrowser } from '@angular/common';
+import { ClrDestroyService } from '../../utils/destroy';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.
@@ -38,7 +29,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'clr-dg-filter',
   // We register this component as a CustomFilter, for the parent column to detect it.
-  providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }, UNIQUE_ID_PROVIDER],
+  providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }, UNIQUE_ID_PROVIDER, ClrDestroyService],
   template: `
     <button
       class="datagrid-filter-toggle"
@@ -79,9 +70,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements CustomFilter, OnDestroy
+  implements CustomFilter
 {
-  private subs: Subscription[] = [];
   public ariaExpanded = false;
 
   constructor(
@@ -89,15 +79,15 @@ export class ClrDatagridFilter<T = any>
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(UNIQUE_ID) public popoverId: string
+    @Inject(UNIQUE_ID) public popoverId: string,
+    destroy$: ClrDestroyService
   ) {
     super(_filters);
-    this.subs.push(
-      smartToggleService.openChange.subscribe(change => {
-        this.open = change;
-        this.ariaExpanded = change;
-      })
-    );
+
+    smartToggleService.openChange.pipe(takeUntil(destroy$)).subscribe(change => {
+      this.open = change;
+      this.ariaExpanded = change;
+    });
   }
 
   @ViewChild('anchor', { read: ElementRef })
@@ -142,10 +132,5 @@ export class ClrDatagridFilter<T = any>
    */
   public get active() {
     return !!this.filter && this.filter.isActive();
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

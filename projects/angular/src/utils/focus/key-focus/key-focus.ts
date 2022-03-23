@@ -14,7 +14,7 @@ import {
   QueryList,
   ElementRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
 import { ClrFocusDirection } from './enums/focus-direction.enum';
 import { FocusableItem } from './interfaces';
 
@@ -27,7 +27,8 @@ import { preventArrowKeyScroll, keyValidator } from './util';
   template: '<ng-content></ng-content>',
 })
 export class ClrKeyFocus {
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef<HTMLElement>) {}
+
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;
   @Input('clrFocusOnLoad') focusOnLoad = false;
   @Output('clrFocusChange') private focusChange: EventEmitter<number> = new EventEmitter<number>();
@@ -94,15 +95,9 @@ export class ClrKeyFocus {
     }
   }
 
-  protected subscriptions: Subscription[] = [];
-
   ngAfterContentInit() {
-    this.subscriptions.push(this.listenForItemUpdates());
+    this.listenForItemUpdates();
     this.initializeFocus();
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   @HostListener('keydown', ['$event'])
@@ -174,7 +169,9 @@ export class ClrKeyFocus {
   }
 
   private listenForItemUpdates() {
-    return this.clrKeyFocusItems.changes.subscribe(() => {
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.clrKeyFocusItems.changes.subscribe(() => {
       this.initializeFocus();
     });
   }

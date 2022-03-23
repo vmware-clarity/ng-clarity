@@ -4,25 +4,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  EventEmitter,
-  Inject,
-  Input,
-  OnDestroy,
-  Optional,
-  Output,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, EventEmitter, Inject, Input, Optional, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { ColumnsService } from './providers/columns.service';
 import { ColumnState } from './interfaces/column-state.interface';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { COLUMN_STATE } from './providers/column-state.provider';
-
-@Directive({ selector: '[clrDgHideableColumn]' })
+import { ClrDestroyService } from '../../utils/destroy';
 
 /**
  *
@@ -39,7 +29,8 @@ import { COLUMN_STATE } from './providers/column-state.provider';
  * datagrid toggle component.
  *
  */
-export class ClrDatagridHideableColumn implements OnDestroy {
+@Directive({ selector: '[clrDgHideableColumn]', providers: [ClrDestroyService] })
+export class ClrDatagridHideableColumn {
   /**
    *
    * @description
@@ -87,7 +78,8 @@ export class ClrDatagridHideableColumn implements OnDestroy {
     private columnsService: ColumnsService,
     @Optional()
     @Inject(COLUMN_STATE)
-    private columnState: BehaviorSubject<ColumnState>
+    private columnState: BehaviorSubject<ColumnState>,
+    private destroy$: ClrDestroyService
   ) {
     this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
 
@@ -95,8 +87,6 @@ export class ClrDatagridHideableColumn implements OnDestroy {
       throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
     }
   }
-
-  private subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.columnsService.emitStateChange(this.columnState, {
@@ -106,16 +96,10 @@ export class ClrDatagridHideableColumn implements OnDestroy {
       changes: [DatagridColumnChanges.HIDDEN],
     });
 
-    this.subscriptions.push(
-      this.columnState.subscribe((state: ColumnState) => {
-        if (state.changes && state.changes.indexOf(DatagridColumnChanges.HIDDEN) > -1) {
-          this.hiddenChange.emit(state.hidden); // Can emit through @Output when desugared syntax is used
-        }
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.columnState.pipe(takeUntil(this.destroy$)).subscribe((state: ColumnState) => {
+      if (state.changes && state.changes.indexOf(DatagridColumnChanges.HIDDEN) > -1) {
+        this.hiddenChange.emit(state.hidden); // Can emit through @Output when desugared syntax is used
+      }
+    });
   }
 }

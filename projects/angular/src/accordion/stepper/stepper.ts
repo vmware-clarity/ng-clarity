@@ -14,16 +14,16 @@ import {
   SimpleChanges,
   OnInit,
   AfterViewInit,
-  OnDestroy,
   OnChanges,
+  Inject,
 } from '@angular/core';
 import { FormGroupDirective, NgForm } from '@angular/forms';
-import { startWith, filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { startWith, filter, takeUntil } from 'rxjs/operators';
 
 import { StepperService } from './providers/stepper.service';
 import { AccordionService } from '../providers/accordion.service';
 import { ClrStepperPanel } from './stepper-panel';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'form[clrStepper]',
@@ -32,20 +32,20 @@ import { ClrStepperPanel } from './stepper-panel';
     '[class.clr-accordion]': 'true',
     '[class.clr-stepper-forms]': 'true',
   },
-  providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],
+  providers: [StepperService, { provide: AccordionService, useExisting: StepperService }, ClrDestroyService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class ClrStepper implements OnInit, OnChanges, AfterViewInit {
   @Input('clrInitialStep') initialPanel: string;
   @ContentChildren(ClrStepperPanel, { descendants: true })
   panels: QueryList<ClrStepperPanel>;
-  subscriptions: Subscription[] = [];
   form: FormGroupDirective | NgForm;
 
   constructor(
-    @Optional() private formGroup: FormGroupDirective,
-    @Optional() private ngForm: NgForm,
-    private stepperService: StepperService
+    @Optional() @Inject(FormGroupDirective) private formGroup: FormGroupDirective | null,
+    @Optional() @Inject(NgForm) private ngForm: NgForm | null,
+    private stepperService: StepperService,
+    private destroy$: ClrDestroyService
   ) {}
 
   ngOnInit() {
@@ -54,8 +54,8 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     }
 
     this.form = this.formGroup ? this.formGroup : this.ngForm;
-    this.subscriptions.push(this.listenForPanelsCompleted());
-    this.subscriptions.push(this.listenForFormResetChanges());
+    this.listenForPanelsCompleted();
+    this.listenForFormResetChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -65,21 +65,20 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.subscriptions.push(this.listenForDOMChanges());
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.listenForDOMChanges();
   }
 
   private listenForFormResetChanges() {
-    return this.form.statusChanges
-      .pipe(filter(() => this.form.pristine)) // https://github.com/angular/angular/issues/10887
+    this.form.statusChanges
+      .pipe(
+        filter(() => this.form.pristine),
+        takeUntil(this.destroy$)
+      ) // https://github.com/angular/angular/issues/10887
       .subscribe(() => this.stepperService.resetPanels());
   }
 
   private listenForPanelsCompleted() {
-    return this.stepperService.panelsCompleted.subscribe(panelsCompleted => {
+    this.stepperService.panelsCompleted.pipe(takeUntil(this.destroy$)).subscribe(panelsCompleted => {
       if (panelsCompleted && this.form.valid) {
         this.form.ngSubmit.emit();
       } else if (!this.form.valid && this.form.touched) {
@@ -94,7 +93,9 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   private listenForDOMChanges() {
-    return this.panels.changes.pipe(startWith(this.panels)).subscribe((panels: QueryList<ClrStepperPanel>) => {
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
+    this.panels.changes.pipe(startWith(this.panels)).subscribe((panels: QueryList<ClrStepperPanel>) => {
       this.stepperService.updatePanelOrder(panels.toArray().map(p => p.id));
 
       if (this.initialPanel) {

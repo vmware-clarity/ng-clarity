@@ -5,7 +5,7 @@
  */
 
 import { Component, Optional, ViewChild, ElementRef, Input, AfterViewInit, Renderer2 } from '@angular/core';
-import { startWith } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -28,6 +28,7 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ViewManagerService } from './providers/view-manager.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-date-container',
@@ -88,6 +89,7 @@ import { ClrAbstractContainer } from '../common/abstract-container';
     DateFormControlService,
     ViewManagerService,
     IfControlStateService,
+    ClrDestroyService,
   ],
   host: {
     '[class.clr-date-container]': 'true',
@@ -132,35 +134,30 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
     protected override ngControlService: NgControlService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService,
+    private destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
 
-    this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      })
-    );
+    this.focusService.focusChange.pipe(takeUntil(destroy$)).subscribe(state => {
+      this.focus = state;
+    });
 
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe(() => {
-        this.dateFormControlService.markAsTouched();
-      })
-    );
+    this.toggleService.openChange.pipe(takeUntil(destroy$)).subscribe(() => {
+      this.dateFormControlService.markAsTouched();
+    });
   }
 
   ngAfterViewInit(): void {
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
-        if (open) {
-          this.initializeCalendar();
-        } else {
-          this.toggleButton.nativeElement.focus();
-        }
-      })
-    );
+    this.toggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe(open => {
+      if (open) {
+        this.initializeCalendar();
+      } else {
+        this.toggleButton.nativeElement.focus();
+      }
+    });
 
-    this.subscriptions.push(this.listenForDateChanges());
+    this.listenForDateChanges();
   }
 
   /**
@@ -201,8 +198,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // because date-input.ts initializes the input in ngAfterViewInit,
     // using a databound attribute to change the button labels results in ExpressionChangedAfterItHasBeenCheckedError.
     // so instead, update the attribute directly on the element
-    return this.dateNavigationService.selectedDayChange
-      .pipe(startWith(this.dateNavigationService.selectedDay))
+    this.dateNavigationService.selectedDayChange
+      .pipe(startWith(this.dateNavigationService.selectedDay), takeUntil(this.destroy$))
       .subscribe(day => {
         const label = this.getToggleButtonLabel(day);
         const toggleEl = this.toggleButton.nativeElement;

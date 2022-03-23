@@ -15,8 +15,8 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { tap, filter, pairwise } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { tap, filter, pairwise, takeUntil } from 'rxjs/operators';
 
 import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -27,7 +27,7 @@ import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { ClrAccordionPanel } from '../accordion-panel';
-import { isPlatformBrowser } from '@angular/common';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-stepper-panel',
@@ -35,13 +35,12 @@ import { isPlatformBrowser } from '@angular/common';
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
-  providers: [IfExpandService, UNIQUE_ID_PROVIDER],
+  providers: [IfExpandService, UNIQUE_ID_PROVIDER, ClrDestroyService],
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
 
   @ViewChild('headerButton') headerButton: ElementRef;
-  private subscriptions: Subscription[] = [];
 
   get formGroup() {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
@@ -62,7 +61,8 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
     ifExpandService: IfExpandService,
-    @Inject(UNIQUE_ID) id: string
+    @Inject(UNIQUE_ID) id: string,
+    private destroy$: ClrDestroyService
   ) {
     super(commonStrings, stepperService, ifExpandService, id);
   }
@@ -75,26 +75,21 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
     if (this.formGroup) {
       // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
-      this.subscriptions.push(
-        this.formGroup.statusChanges.pipe(pairwise()).subscribe(([prevStatus, newStatus]) => {
-          if ('VALID' === prevStatus && 'INVALID' === newStatus) {
-            this.stepperService.navigateToNextPanel(this.id, this.formGroup.valid);
-          }
-        })
-      );
+      this.formGroup.statusChanges.pipe(pairwise(), takeUntil(this.destroy$)).subscribe(([prevStatus, newStatus]) => {
+        if ('VALID' === prevStatus && 'INVALID' === newStatus) {
+          this.stepperService.navigateToNextPanel(this.id, this.formGroup.valid);
+        }
+      });
     }
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
   private listenToFocusChanges() {
-    this.subscriptions.push(
-      this.stepperService.activeStep
-        .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
-        .subscribe(() => this.headerButton.nativeElement.focus())
-    );
+    this.stepperService.activeStep
+      .pipe(
+        filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.headerButton.nativeElement.focus());
   }
 
   private triggerAllFormControlValidationIfError(panel: AccordionPanelModel) {

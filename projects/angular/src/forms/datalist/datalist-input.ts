@@ -15,11 +15,14 @@ import {
   HostListener,
   AfterContentInit,
 } from '@angular/core';
+import { NgControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrDatalistContainer } from './datalist-container';
-import { NgControl } from '@angular/forms';
 import { FocusService } from '../common/providers/focus.service';
 import { DatalistIdService } from './providers/datalist-id.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive({
   selector: '[clrDatalistInput]',
@@ -27,6 +30,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
     '[class.clr-input]': 'true',
     '[attr.list]': 'listValue',
   },
+  providers: [ClrDestroyService],
 })
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
   constructor(
@@ -38,9 +42,10 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef,
-    private datalistIdService: DatalistIdService
+    private datalistIdService: DatalistIdService,
+    private destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrDatalistContainer, injector, control, renderer, el);
+    super(vcr, ClrDatalistContainer, injector, control, renderer, el, destroy$);
 
     if (!this.focusService) {
       throw new Error('clrDatalist requires being wrapped in <clr-datalist-container>');
@@ -50,8 +55,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
   listValue: string;
 
   ngAfterContentInit() {
-    // Subscriptions is inherited from WrappedFormControl, unsubscribe is handled there
-    this.subscriptions.push(this.datalistIdService.idChange.subscribe(id => (this.listValue = id)));
+    this.datalistIdService.idChange.pipe(takeUntil(this.destroy$)).subscribe(id => (this.listValue = id));
   }
 
   @HostListener('focus')

@@ -5,11 +5,17 @@
  */
 
 import { Directive, ElementRef, Injector, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
-import { WrappedFormControl } from './wrapped-control';
-import { ClrControlContainer } from './control-container';
 import { NgControl } from '@angular/forms';
 
-@Directive({ selector: '[clrControl]', host: { '[class.clr-input]': 'true' } })
+import { WrappedFormControl } from './wrapped-control';
+import { ClrControlContainer } from './control-container';
+import { ClrDestroyService } from '../../utils/destroy';
+
+@Directive({
+  selector: '[clrControl]',
+  host: { '[class.clr-input]': 'true' },
+  providers: [ClrDestroyService],
+})
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
   protected override index = 1;
 
@@ -20,8 +26,9 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrControlContainer, injector, control, renderer, el);
+    super(vcr, ClrControlContainer, injector, control, renderer, el, destroy$);
   }
 }

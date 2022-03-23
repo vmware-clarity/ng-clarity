@@ -6,6 +6,7 @@
 
 import { Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -15,6 +16,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
 export function ToggleServiceFactory() {
@@ -80,6 +82,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     FocusService,
     TOGGLE_SERVICE_PROVIDER,
     IfControlStateService,
+    ClrDestroyService,
   ],
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
@@ -105,16 +108,14 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     ngControlService: NgControlService,
     public focusService: FocusService,
     @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
 
-    /* The unsubscribe is handle inside the ClrAbstractContainer */
-    this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      })
-    );
+    this.focusService.focusChange.pipe(takeUntil(destroy$)).subscribe(state => {
+      this.focus = state;
+    });
   }
 
   toggle() {

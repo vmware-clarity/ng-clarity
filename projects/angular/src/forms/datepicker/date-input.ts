@@ -15,7 +15,6 @@ import {
   Inject,
   Injector,
   Input,
-  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -25,7 +24,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { FocusService } from '../common/providers/focus.service';
@@ -39,6 +38,7 @@ import { DatepickerEnabledService } from './providers/datepicker-enabled.service
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { datesAreEqual } from './utils/date-utils';
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
+import { ClrDestroyService } from '../../utils/destroy';
 
 // There are four ways the datepicker value is set
 // 1. Value set by user typing into text input as a string ex: '01/28/2015'
@@ -51,9 +51,9 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
   host: {
     '[class.clr-input]': 'true',
   },
-  providers: [DatepickerFocusService],
+  providers: [DatepickerFocusService, ClrDestroyService],
 })
-export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit {
   public static ngAcceptInputType_date: Date | null | string;
 
   @Input() placeholder: string;
@@ -98,22 +98,21 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     @Optional() private dateFormControlService: DateFormControlService,
     @Inject(PLATFORM_ID) private platformId: any,
     @Optional() private focusService: FocusService,
-    private datepickerFocusService: DatepickerFocusService
+    private datepickerFocusService: DatepickerFocusService,
+    private destroy$: ClrDestroyService
   ) {
-    super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
+    super(viewContainerRef, ClrDateContainer, injector, control, renderer, el, destroy$);
   }
 
   override ngOnInit() {
     super.ngOnInit();
     this.populateServicesFromContainerComponent();
 
-    this.subscriptions.push(
-      this.listenForUserSelectedDayChanges(),
-      this.listenForControlValueChanges(),
-      this.listenForTouchChanges(),
-      this.listenForDirtyChanges(),
-      this.listenForInputRefocus()
-    );
+    this.listenForUserSelectedDayChanges();
+    this.listenForControlValueChanges();
+    this.listenForTouchChanges();
+    this.listenForDirtyChanges();
+    this.listenForInputRefocus();
   }
 
   ngAfterViewInit() {
@@ -265,35 +264,47 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   }
 
   private listenForControlValueChanges() {
-    return of(this.datepickerHasFormControl())
+    of(this.datepickerHasFormControl())
       .pipe(
         filter(hasControl => hasControl),
         switchMap(() => this.control.valueChanges),
         // only update date value if not being set by user
-        filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
+        filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement)),
+        takeUntil(this.destroy$)
       )
       .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
   }
 
   private listenForUserSelectedDayChanges() {
-    return this.dateNavigationService.selectedDayChange.subscribe(dayModel => this.updateDate(dayModel.toDate(), true));
+    this.dateNavigationService.selectedDayChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(dayModel => this.updateDate(dayModel.toDate(), true));
   }
 
   private listenForTouchChanges() {
-    return this.dateFormControlService.touchedChange
-      .pipe(filter(() => this.datepickerHasFormControl()))
+    this.dateFormControlService.touchedChange
+      .pipe(
+        filter(() => this.datepickerHasFormControl()),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => this.control.control.markAsTouched());
   }
 
   private listenForDirtyChanges() {
-    return this.dateFormControlService.dirtyChange
-      .pipe(filter(() => this.datepickerHasFormControl()))
+    this.dateFormControlService.dirtyChange
+      .pipe(
+        filter(() => this.datepickerHasFormControl()),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => this.control.control.markAsDirty());
   }
 
   private listenForInputRefocus() {
-    return this.dateNavigationService.selectedDayChange
-      .pipe(filter(date => !!date))
+    this.dateNavigationService.selectedDayChange
+      .pipe(
+        filter(date => !!date),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => this.datepickerFocusService.focusInput(this.el.nativeElement));
   }
 }

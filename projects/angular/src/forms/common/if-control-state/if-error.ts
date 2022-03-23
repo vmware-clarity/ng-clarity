@@ -5,11 +5,13 @@
  */
 
 import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
+
 import { NgControlService } from '../providers/ng-control.service';
 import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
 import { AbstractIfState } from './abstract-if-state';
+import { ClrDestroyService } from '../../../utils/destroy';
 
-@Directive({ selector: '[clrIfError]' })
+@Directive({ selector: '[clrIfError]', providers: [ClrDestroyService] })
 export class ClrIfError extends AbstractIfState {
   @Input('clrIfError') error: string;
 
@@ -19,9 +21,10 @@ export class ClrIfError extends AbstractIfState {
     @Optional() ifControlStateService: IfControlStateService,
     @Optional() ngControlService: NgControlService,
     private template: TemplateRef<any>,
-    private container: ViewContainerRef
+    private container: ViewContainerRef,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, ngControlService);
+    super(ifControlStateService, ngControlService, destroy$);
 
     if (!this.ifControlStateService) {
       throw new Error('clrIfError can only be used within a form control container element like clr-input-container');

@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
 import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrDestroyService } from '../../utils/destroy';
 
 /**
  * This implements both the clrCheckbox and clrToggle functionality, since they are both just checkboxes with different
@@ -17,7 +18,7 @@ import { WrappedFormControl } from '../common/wrapped-control';
  * decorator gets for us to determine if the toggle is used, and emits a value to the wrapper container to tell it
  * there is a toggle switch instead.
  */
-@Directive({ selector: '[clrCheckbox],[clrToggle]' })
+@Directive({ selector: '[clrCheckbox],[clrToggle]', providers: [ClrDestroyService] })
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   constructor(
     vcr: ViewContainerRef,
@@ -27,9 +28,10 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     control: NgControl,
     renderer: Renderer2,
     el: ElementRef,
-    @Attribute('clrToggle') private toggle: string
+    @Attribute('clrToggle') private toggle: string,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);
+    super(vcr, ClrCheckboxWrapper, injector, control, renderer, el, destroy$);
   }
 
   override ngOnInit() {

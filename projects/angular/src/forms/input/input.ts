@@ -9,8 +9,13 @@ import { NgControl } from '@angular/forms';
 
 import { ClrInputContainer } from './input-container';
 import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Directive({ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } })
+@Directive({
+  selector: '[clrInput]',
+  host: { '[class.clr-input]': 'true' },
+  providers: [ClrDestroyService],
+})
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
   protected override index = 1;
 
@@ -21,8 +26,9 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrInputContainer, injector, control, renderer, el);
+    super(vcr, ClrInputContainer, injector, control, renderer, el, destroy$);
   }
 }

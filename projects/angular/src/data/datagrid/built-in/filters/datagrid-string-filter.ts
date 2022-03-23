@@ -15,7 +15,8 @@ import {
   OnDestroy,
   NgZone,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
@@ -23,13 +24,13 @@ import { FiltersProvider, RegisteredFilter } from '../../providers/filters';
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
-
+import { ClrDestroyService } from '../../../../utils/destroy';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-dg-string-filter',
-  providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }],
+  providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }, ClrDestroyService],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <input
@@ -48,13 +49,13 @@ export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>
   implements CustomFilter, AfterViewInit, OnDestroy
 {
-  private subs: Subscription[] = [];
   constructor(
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private destroy$: ClrDestroyService
   ) {
     super(filters);
   }
@@ -105,27 +106,20 @@ export class DatagridStringFilter<T = any>
   @ViewChild(ClrDatagridFilter) public filterContainer: ClrDatagridFilter<T>;
 
   ngAfterViewInit() {
-    this.subs.push(
-      this.smartToggleService.openChange.subscribe(openChange => {
-        this.open = openChange;
-        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
-        // running change detection.
-        this.ngZone.runOutsideAngular(() => {
-          // The animation frame in used because when this executes, the input isn't displayed.
-          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
-          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
-          // Animation tasks are executed within the next rendering frame.
-          requestAnimationFrame(() => {
-            this.domAdapter.focus(this.input.nativeElement);
-          });
+    this.smartToggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe(openChange => {
+      this.open = openChange;
+      // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
+      // running change detection.
+      this.ngZone.runOutsideAngular(() => {
+        // The animation frame in used because when this executes, the input isn't displayed.
+        // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
+        // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
+        // Animation tasks are executed within the next rendering frame.
+        requestAnimationFrame(() => {
+          this.domAdapter.focus(this.input.nativeElement);
         });
-      })
-    );
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.subs.forEach(sub => sub.unsubscribe());
+      });
+    });
   }
 
   private initFilterValue: string;

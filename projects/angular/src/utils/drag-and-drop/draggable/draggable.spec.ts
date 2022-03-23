@@ -20,6 +20,7 @@ import { DraggableSnapshotService } from '../providers/draggable-snapshot.servic
 import { GlobalDragModeService } from '../providers/global-drag-mode.service';
 import { ClrDraggable } from './draggable';
 import { generateDragPosition } from '../helpers.spec';
+import { ClrDestroyService } from '../../../utils/destroy';
 
 export default function (): void {
   describe('Basic Draggable', function () {
@@ -52,6 +53,7 @@ export default function (): void {
             DraggableSnapshotService,
             GlobalDragModeService,
             MOCK_DRAG_EVENT_LISTENER_PROVIDER,
+            ClrDestroyService,
           ],
         },
       });

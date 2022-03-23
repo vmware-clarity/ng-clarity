@@ -9,8 +9,9 @@ import { NgControl } from '@angular/forms';
 
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrRadioWrapper } from '../radio/radio-wrapper';
+import { ClrDestroyService } from '../../utils/destroy';
 
-@Directive({ selector: '[clrRadio]' })
+@Directive({ selector: '[clrRadio]', providers: [ClrDestroyService] })
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
   constructor(
     vcr: ViewContainerRef,
@@ -19,8 +20,9 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrRadioWrapper, injector, control, renderer, el);
+    super(vcr, ClrRadioWrapper, injector, control, renderer, el, destroy$);
   }
 }

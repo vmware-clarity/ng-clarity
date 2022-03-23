@@ -8,6 +8,7 @@ import { Component, Directive, NgModule, Type, ViewContainerRef } from '@angular
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ClrDestroyService } from '../../utils/destroy';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
 
@@ -31,10 +32,10 @@ class GenericWrapper implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[genericControl]' })
+@Directive({ selector: '[genericControl]', providers: [ClrDestroyService] })
 class GenericControl extends WrappedFormControl<GenericWrapper> {
-  constructor(vcr: ViewContainerRef) {
-    super(vcr, GenericWrapper, null, null, null, null);
+  constructor(vcr: ViewContainerRef, destroy$: ClrDestroyService) {
+    super(vcr, GenericWrapper, null, null, null, null, destroy$);
   }
 }
 

@@ -7,10 +7,15 @@
 import { Directive, Optional, ViewContainerRef, Renderer2, ElementRef, Injector, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
+import { ClrDestroyService } from '../../utils/destroy';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrRangeContainer } from './range-container';
 
-@Directive({ selector: '[clrRange]', host: { '[class.clr-range]': 'true' } })
+@Directive({
+  selector: '[clrRange]',
+  host: { '[class.clr-range]': 'true' },
+  providers: [ClrDestroyService],
+})
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
   constructor(
     vcr: ViewContainerRef,
@@ -19,9 +24,10 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef,
+    destroy$: ClrDestroyService
   ) {
-    super(vcr, ClrRangeContainer, injector, control, renderer, el);
+    super(vcr, ClrRangeContainer, injector, control, renderer, el, destroy$);
   }
 
   // Notes: We need an output here EventEmitter for the value

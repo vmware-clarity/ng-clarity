@@ -12,6 +12,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-range-container',
@@ -47,7 +48,7 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ClrDestroyService],
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
@@ -70,9 +71,10 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     ngControlService: NgControlService,
     private renderer: Renderer2,
     private idService: ControlIdService,
-    protected override ifControlStateService: IfControlStateService
+    protected override ifControlStateService: IfControlStateService,
+    destroy$: ClrDestroyService
   ) {
-    super(ifControlStateService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService, destroy$);
   }
 
   getRangeProgressFillWidth(): string {

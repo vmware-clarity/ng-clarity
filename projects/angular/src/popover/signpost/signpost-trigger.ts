@@ -5,8 +5,10 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, ElementRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { ClrDestroyService } from '../../utils/destroy';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -20,8 +22,8 @@ import { SignpostIdService } from './providers/signpost-id.service';
     '[attr.aria-controls]': 'ariaControl',
     '[class.active]': 'isOpen',
   },
+  providers: [ClrDestroyService],
 })
-
 /*********
  *
  * @description
@@ -29,9 +31,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
  * ClrSignpostContent.
  *
  */
-export class ClrSignpostTrigger implements OnDestroy {
-  private subscriptions: Subscription[] = [];
-
+export class ClrSignpostTrigger {
   public ariaExpanded: boolean;
   public ariaControl: string;
   public isOpen: boolean;
@@ -45,29 +45,31 @@ export class ClrSignpostTrigger implements OnDestroy {
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(DOCUMENT) document: any,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: string,
+    private destroy$: ClrDestroyService
   ) {
     this.document = document;
   }
 
   ngOnInit() {
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe((isOpen: boolean) => {
-        this.ariaExpanded = isOpen;
 
-        const prevIsOpen = this.isOpen;
-        this.isOpen = isOpen;
+    this.toggleService.openChange.pipe(takeUntil(this.destroy$)).subscribe((isOpen: boolean) => {
+      this.ariaExpanded = isOpen;
 
-        // openChange fires false on initialization because signpost starts as closed by default
-        // but we shouldn't focus on that initial false value
-        // we should focus back only if it's closed after being opened
-        if (!this.isOpen && prevIsOpen) {
-          this.focusOnClose();
-        }
-      }),
-      this.signpostIdService.id.subscribe(idChange => (this.ariaControl = idChange))
-    );
+      const prevIsOpen = this.isOpen;
+      this.isOpen = isOpen;
+
+      // openChange fires false on initialization because signpost starts as closed by default
+      // but we shouldn't focus on that initial false value
+      // we should focus back only if it's closed after being opened
+      if (!this.isOpen && prevIsOpen) {
+        this.focusOnClose();
+      }
+    });
+
+    this.signpostIdService.id.pipe(takeUntil(this.destroy$)).subscribe(idChange => (this.ariaControl = idChange));
+
     this.addDefaultAriaLabel(this.el.nativeElement);
   }
 
@@ -86,10 +88,6 @@ export class ClrSignpostTrigger implements OnDestroy {
     if (!this.isOpen && this.document.activeElement === this.document.body) {
       this.signpostFocusManager.focusTrigger();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
   /**********

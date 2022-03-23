@@ -5,8 +5,9 @@
  */
 
 import { Input, Directive, AfterContentInit, Optional } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({
@@ -14,18 +15,21 @@ import { DatalistIdService } from './providers/datalist-id.service';
   host: {
     '[id]': 'datalistId',
   },
+  providers: [ClrDestroyService],
 })
 export class ClrDatalist implements AfterContentInit {
-  private subscriptions: Subscription[] = [];
-  constructor(@Optional() private datalistIdService: DatalistIdService) {}
+  constructor(@Optional() private datalistIdService: DatalistIdService, private destroy$: ClrDestroyService) {}
+
   datalistId: string;
 
   ngAfterContentInit() {
     if (!this.datalistIdService) {
       return;
     }
-    this.subscriptions.push(this.datalistIdService.idChange.subscribe(id => (this.datalistId = id)));
+
+    this.datalistIdService.idChange.pipe(takeUntil(this.destroy$)).subscribe(id => (this.datalistId = id));
   }
+
   @Input()
   set id(idValue: string) {
     if (!!idValue && this.datalistIdService) {
@@ -34,9 +38,5 @@ export class ClrDatalist implements AfterContentInit {
     } else if (idValue) {
       this.datalistId = idValue;
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

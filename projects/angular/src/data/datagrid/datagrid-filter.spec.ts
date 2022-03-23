@@ -18,6 +18,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrDestroyService } from 'src/utils/destroy';
 
 class MockRenderer {
   listen() {
@@ -37,6 +38,7 @@ export default function (): void {
       let filterService: FiltersProvider<number>;
       let filter: TestFilter;
       let component: ClrDatagridFilter<number>;
+      let destroy$: ClrDestroyService;
       let toggleService: ClrPopoverToggleService;
 
       beforeEach(function () {
@@ -44,17 +46,20 @@ export default function (): void {
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
         toggleService = new ClrPopoverToggleService();
         filter = new TestFilter();
+        destroy$ = new ClrDestroyService();
         component = new ClrDatagridFilter(
           filterService,
           new ClrCommonStringsService(),
           toggleService,
           'browser' as any,
-          'clr-id-1'
+          'clr-id-1',
+          destroy$
         );
       });
 
       afterEach(function () {
         cleanPopoverDOM(component);
+        destroy$.ngOnDestroy();
       });
 
       it('registers to the FiltersProvider provider', function () {

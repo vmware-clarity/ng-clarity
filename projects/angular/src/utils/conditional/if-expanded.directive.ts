@@ -17,11 +17,12 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { ClrDestroyService } from '../destroy';
 import { IfExpandService } from './if-expanded.service';
 
-@Directive({ selector: '[clrIfExpanded]' })
+@Directive({ selector: '[clrIfExpanded]', providers: [ClrDestroyService] })
 export class ClrIfExpanded implements OnInit, OnDestroy {
   private _expanded = false;
 
@@ -44,20 +45,14 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     private container: ViewContainerRef,
     private el: ElementRef,
     private renderer: Renderer2,
-    private expand: IfExpandService
+    private expand: IfExpandService,
+    destroy$: ClrDestroyService
   ) {
-    this._subscriptions.push(
-      expand.expandChange.subscribe(() => {
-        this.updateView();
-        this.expandedChange.emit(this.expand.expanded);
-      })
-    );
+    expand.expandChange.pipe(takeUntil(destroy$)).subscribe(() => {
+      this.updateView();
+      this.expandedChange.emit(this.expand.expanded);
+    });
   }
-
-  /**
-   * Subscriptions to all the services and queries changes
-   */
-  private _subscriptions: Subscription[] = [];
 
   private updateView() {
     if (this.expand.expanded && this.container.length !== 0) {
@@ -96,6 +91,5 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.expand.expandable--;
-    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

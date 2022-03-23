@@ -4,42 +4,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, Input, Optional, Output, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Optional, Output, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 // providers
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-alert',
-  providers: [AlertIconAndTypesService],
+  providers: [AlertIconAndTypesService, ClrDestroyService],
   templateUrl: './alert.html',
   styles: [':host { display: block; }'],
 })
-export class ClrAlert implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
-
+export class ClrAlert implements OnInit {
   constructor(
     private iconService: AlertIconAndTypesService,
     private cdr: ChangeDetectorRef,
     @Optional() private multiAlertService: MultiAlertService,
-    private commonStrings: ClrCommonStringsService
+    private commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {}
 
   ngOnInit() {
     if (this.multiAlertService) {
-      this.subscriptions.push(
-        this.multiAlertService.changes.subscribe(() => {
-          this.hidden = this.multiAlertService.currentAlert !== this;
-        })
-      );
+      this.multiAlertService.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.hidden = this.multiAlertService.currentAlert !== this;
+      });
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   @Input('clrAlertSizeSmall') isSmall = false;

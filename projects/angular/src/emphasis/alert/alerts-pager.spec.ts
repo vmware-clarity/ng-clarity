@@ -13,21 +13,24 @@ import { ClrAlert } from './alert';
 import { ClrAlertsPager } from './alerts-pager';
 import { MultiAlertService } from './providers/multi-alert.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDestroyService } from 'src/utils/destroy';
 
 export default function () {
   describe('ClrAlerts pager component', function () {
     describe('Typescript API', function () {
       let component: ClrAlertsPager;
       let service: MultiAlertService;
+      const destroy$ = new ClrDestroyService();
 
       beforeEach(() => {
         service = new MultiAlertService();
-        component = new ClrAlertsPager(service, new ClrCommonStringsService());
+        component = new ClrAlertsPager(service, new ClrCommonStringsService(), destroy$);
       });
 
       afterEach(() => {
         service = null;
         component = null;
+        destroy$.ngOnDestroy();
       });
 
       it('page up calls the multi alert service', function () {

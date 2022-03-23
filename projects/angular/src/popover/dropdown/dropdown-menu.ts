@@ -109,6 +109,8 @@ export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit
 
   ngAfterContentInit() {
     this.focusHandler.container = this.el.nativeElement;
+    // Note: doesn't need to unsubscribe, because `changes`
+    // gets completed by Angular when the view is destroyed.
     this.items.changes.subscribe(() => this.focusHandler.addChildren(this.items.toArray()));
     // I saw this on GitHub as a solution to avoid code duplication because of missed QueryList changes
     this.items.notifyOnChanges();

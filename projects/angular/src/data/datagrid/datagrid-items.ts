@@ -14,20 +14,20 @@ import {
   TemplateRef,
   TrackByFunction,
   ViewContainerRef,
-  OnDestroy,
 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { Items } from './providers/items';
-import { Subscription } from 'rxjs';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Directive({
   selector: '[clrDgItems][clrDgItemsOf]',
+  providers: [ClrDestroyService],
 })
-export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
+export class ClrDatagridItems<T> implements DoCheck {
   private iterableProxy: NgForOf<T>;
   private _rawItems: T[];
   private differ: IterableDiffer<T> | null = null;
-  private subscriptions: Subscription[] = [];
 
   @Input('clrDgItemsOf')
   public set rawItems(items: T[]) {
@@ -44,16 +44,15 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,
     private items: Items,
-    private vcr: ViewContainerRef
+    private vcr: ViewContainerRef,
+    destroy$: ClrDestroyService
   ) {
     items.smartenUp();
     this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
-    this.subscriptions.push(
-      items.change.subscribe(newItems => {
-        this.iterableProxy.ngForOf = newItems;
-        this.iterableProxy.ngDoCheck();
-      })
-    );
+    items.change.pipe(takeUntil(destroy$)).subscribe(newItems => {
+      this.iterableProxy.ngForOf = newItems;
+      this.iterableProxy.ngDoCheck();
+    });
   }
 
   ngDoCheck() {
@@ -68,9 +67,5 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
         this.items.all = this._rawItems;
       }
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

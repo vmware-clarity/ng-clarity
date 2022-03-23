@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, OnDestroy, QueryList } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -14,6 +14,7 @@ import { Selection } from './providers/selection';
 import { SelectionType } from './enums/selection-type';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDestroyService } from '../../utils/destroy';
 
 /**
  * Generic bland container serving various purposes for Datagrid.
@@ -36,8 +37,9 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
     '[class.datagrid-container]': 'cells.length === 0',
     '[attr.id]': 'expand.expandableId',
   },
+  providers: [ClrDestroyService],
 })
-export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
+export class ClrDatagridRowDetail implements AfterContentInit {
   /* reference to the enum so that template can access it */
   public SELECTION_TYPE = SelectionType;
 
@@ -46,7 +48,8 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     public rowActionService: RowActionService,
     public expand: DatagridIfExpandService,
     public expandableRows: ExpandableRowsCount,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private destroy$: ClrDestroyService
   ) {}
 
   @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
@@ -55,19 +58,13 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   set replace(value: boolean) {
     this.expand.setReplace(!!value);
   }
-  private subscriptions: Subscription[] = [];
+
   public replacedRow = false;
 
   ngAfterContentInit() {
-    this.subscriptions.push(
-      this.expand.replace.subscribe(replaceChange => {
-        this.replacedRow = replaceChange;
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.expand.replace.pipe(takeUntil(this.destroy$)).subscribe(replaceChange => {
+      this.replacedRow = replaceChange;
+    });
   }
 
   // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.

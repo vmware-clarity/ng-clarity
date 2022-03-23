@@ -5,13 +5,14 @@
  */
 
 import { Component, Input, Optional } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { TreeFeaturesService } from './tree-features.service';
 import { TreeNodeModel } from './models/tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
+import { ClrDestroyService } from '../../utils/destroy';
 
 @Component({
   selector: 'clr-recursive-children',
@@ -25,15 +26,20 @@ import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
   host: {
     '[attr.role]': '"group"', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
+  providers: [ClrDestroyService],
 })
 /**
  * Internal component, do not export!
  * This is part of the hack to get around https://github.com/angular/angular/issues/15998
  */
 export class RecursiveChildren<T> {
-  constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
+  constructor(
+    public featuresService: TreeFeaturesService<T>,
+    @Optional() private expandService: IfExpandService,
+    destroy$: ClrDestroyService
+  ) {
     if (expandService) {
-      this.subscription = this.expandService.expandChange.subscribe(value => {
+      this.expandService.expandChange.pipe(takeUntil(destroy$)).subscribe(value => {
         if (!value && this.parent && !this.featuresService.eager && this.featuresService.recursion) {
           // In the case of lazy-loading recursive trees, we clear the children on collapse.
           // This is better in case they change between two user interaction, and that way
@@ -64,13 +70,5 @@ export class RecursiveChildren<T> {
       $implicit: node.model,
       clrModel: node,
     };
-  }
-
-  subscription: Subscription;
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }

@@ -4,24 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContainerRef } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { ClrDestroyService } from '../../utils/destroy';
 import { DetailService } from './providers/detail.service';
 
 @Directive({
   selector: '[clrIfDetail]',
+  providers: [ClrDestroyService],
 })
-export class ClrIfDetail implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class ClrIfDetail implements OnInit {
   private skip = false; // This keeps us from resetting the input and calling the toggle twice
 
   @Input('clrIfDetail')
@@ -37,21 +30,20 @@ export class ClrIfDetail implements OnInit, OnDestroy {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private detailService: DetailService
+    private detailService: DetailService,
+    private destroy$: ClrDestroyService
   ) {
     this.detailService.enabled = true;
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.detailService.stateChange.subscribe(state => {
-        if (state === true) {
-          this.togglePanel(true);
-        } else {
-          this.togglePanel(false);
-        }
-      })
-    );
+    this.detailService.stateChange.pipe(takeUntil(this.destroy$)).subscribe(state => {
+      if (state === true) {
+        this.togglePanel(true);
+      } else {
+        this.togglePanel(false);
+      }
+    });
   }
 
   private togglePanel(showPanel: boolean) {
@@ -64,9 +56,5 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     }
 
     this.stateChange.emit(stateChangeParams);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

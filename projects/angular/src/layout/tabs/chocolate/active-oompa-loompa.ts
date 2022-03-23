@@ -6,12 +6,13 @@
 
 import { ChangeDetectorRef, Directive, Inject, Optional } from '@angular/core';
 
+import { ClrDestroyService } from '../../../utils/destroy';
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { IF_ACTIVE_ID, IfActiveService } from '../../../utils/conditional/if-active.service';
 
 import { TabsWillyWonka } from './tabs-willy-wonka';
 
-@Directive({ selector: '[clrTabLink], clr-tab-content' })
+@Directive({ selector: '[clrTabLink], clr-tab-content', providers: [ClrDestroyService] })
 export class ActiveOompaLoompa extends OompaLoompa {
   private ifActive: IfActiveService;
   private id: number;
@@ -20,12 +21,13 @@ export class ActiveOompaLoompa extends OompaLoompa {
     cdr: ChangeDetectorRef,
     @Optional() willyWonka: TabsWillyWonka,
     @Inject(IF_ACTIVE_ID) id: number,
-    ifActive: IfActiveService
+    ifActive: IfActiveService,
+    destroy$: ClrDestroyService
   ) {
     if (!willyWonka) {
       throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
     }
-    super(cdr, willyWonka);
+    super(cdr, willyWonka, destroy$);
     this.ifActive = ifActive;
     this.id = id;
   }
