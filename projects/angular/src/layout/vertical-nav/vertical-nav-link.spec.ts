@@ -6,11 +6,13 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
+import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
@@ -64,6 +66,12 @@ export default function (): void {
 
         // expect(icon.parentElement).toBe(compiled.querySelector("#link2"));
       });
+
+      it('should not add `click` listener if the `[clrVerticalNavLink]` is not located within the `clr-vertical-nav-group`', () => {
+        const vertinalNavLink = fixture.debugElement.query(By.directive(ClrVerticalNavLink));
+        expect(() => vertinalNavLink.injector.get(VerticalNavGroupService)).toThrow();
+        expect(vertinalNavLink.nativeElement.eventListeners()).toEqual([]);
+      });
     });
 
     describe('Nav Link Interactions with Nav Group', () => {
@@ -73,8 +81,9 @@ export default function (): void {
         compiled = fixture.nativeElement;
       });
 
-      afterEach(() => {
-        fixture.destroy();
+      it('should add `click` listener if the `[clrVerticalNavLink]` is located within the `clr-vertical-nav-group`', () => {
+        const vertinalNavLink = fixture.debugElement.query(By.css('#link1'));
+        expect(vertinalNavLink.nativeElement.eventListeners().length).toEqual(1);
       });
     });
   });

@@ -4,7 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostListener, Optional } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, Optional } from '@angular/core';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 
 @Component({
@@ -17,13 +20,26 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
   `,
   host: { class: 'nav-link' },
 })
-export class ClrVerticalNavLink {
-  constructor(@Optional() private _navGroupService: VerticalNavGroupService) {}
+export class ClrVerticalNavLink implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  @HostListener('click')
-  public expandParentNavGroup(): void {
-    if (this._navGroupService) {
-      this._navGroupService.expand();
-    }
+  constructor(
+    host: ElementRef<HTMLElement>,
+    ref: ChangeDetectorRef,
+    @Optional() @Inject(VerticalNavGroupService) navGroupService: VerticalNavGroupService | null
+  ) {
+    // Note: since the `VerticalNavGroupService` is an optional provider, we'll setup the event
+    // listener only when the `[clrVerticalLink]` is located within the `clr-vertical-nav-group`.
+    navGroupService &&
+      fromEvent(host.nativeElement, 'click')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          navGroupService.expand();
+          ref.markForCheck();
+        });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 }

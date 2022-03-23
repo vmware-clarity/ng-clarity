@@ -41,7 +41,7 @@ export default function (): void {
         compiled = fixture.nativeElement;
         navGroup = fixture.componentInstance.navGroup;
         expandService = fixture.debugElement.query(By.directive(ClrVerticalNavGroup)).injector.get(IfExpandService);
-        vertNavService = TestBed.get(VerticalNavService);
+        vertNavService = TestBed.inject(VerticalNavService);
       });
 
       afterEach(() => {
