@@ -22,6 +22,7 @@ import { TreeNodeRoutingAbbeyRoadDemo } from './tree-node-routing/tree-node-rout
 import { TreeNodeRoutingRevolverDemo } from './tree-node-routing/tree-node-routing-revolver';
 import { TreeNodeRoutingRubberSoulDemo } from './tree-node-routing/tree-node-routing-rubber-soul';
 import { PreSelectionDemo } from './pre-selection/pre-selection';
+import { TypeAheadTreeViewDemo } from './type-ahead/tree-view-type-ahead';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING, UtilsDemoModule],
@@ -37,6 +38,7 @@ import { PreSelectionDemo } from './pre-selection/pre-selection';
     TreeNodeRoutingRevolverDemo,
     TreeNodeRoutingRubberSoulDemo,
     PreSelectionDemo,
+    TypeAheadTreeViewDemo,
   ],
   exports: [TreeViewDemo],
 })

@@ -18,6 +18,7 @@ import { ClrPopoverModule } from './popover/popover.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrFocusTrapModule } from './utils/focus-trap/focus-trap.module';
+import { ClrForTypeAheadModule } from './utils/for-type-ahead/for-type-ahead.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 import { ClrStepperModule } from './accordion/stepper/stepper.module';
@@ -39,6 +40,7 @@ import '@cds/core/icon/register';
     ClrConditionalModule,
     ClrFocusTrapModule,
     ClrFocusOnViewInitModule,
+    ClrForTypeAheadModule,
     ClrButtonModule,
     ClrFormsModule,
     ClrLayoutModule,
