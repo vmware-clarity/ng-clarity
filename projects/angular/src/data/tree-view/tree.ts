@@ -9,12 +9,13 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  HostListener,
   Input,
+  NgZone,
   OnDestroy,
   QueryList,
+  Renderer2,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
@@ -31,42 +32,44 @@ import { ClrTreeNode } from './tree-node';
   `,
   providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService],
   host: {
-    '[attr.tabindex]': 'tabindex',
+    tabindex: '0',
     '[attr.role]': '"tree"',
     '[attr.aria-multiselectable]': 'isMultiSelectable',
   },
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   constructor(
     public featuresService: TreeFeaturesService<T>,
     private focusManagerService: TreeFocusManagerService<T>,
-    private el: ElementRef
-  ) {}
+    { nativeElement }: ElementRef<HTMLElement>,
+    renderer: Renderer2,
+    ngZone: NgZone
+  ) {
+    const subscription = ngZone.runOutsideAngular(() =>
+      fromEvent(nativeElement, 'focusin').subscribe((event: FocusEvent) => {
+        if (event.target === nativeElement) {
+          // After discussing with the team, I've made it so that when the tree receives focus, the first visible node will be focused.
+          // This will prevent from the page scrolling abruptly to the first selected node if it exist in a deeply nested tree.
+          this.focusManagerService.focusFirstVisibleNode();
+          // when the first child gets focus,
+          // tree should no longer have tabindex of 0.
+          renderer.removeAttribute(nativeElement, 'tabindex');
+        }
+      })
+    );
 
-  private subscriptions: Subscription[] = [];
+    this.subscriptions.push(subscription);
+  }
 
   @Input('clrLazy')
   set lazy(value: boolean) {
     this.featuresService.eager = !value;
   }
 
-  tabindex = 0;
-
   get isMultiSelectable() {
     return this.featuresService.selectable && this.rootNodes.length > 0;
-  }
-
-  @HostListener('focusin', ['$event'])
-  onFocusIn(event: FocusEvent) {
-    if (event.target === this.el.nativeElement) {
-      // After discussing with the team, I've made it so that when the tree receives focus, the first visible node will be focused.
-      // This will prevent from the page scrolling abruptly to the first selected node if it exist in a deeply nested tree.
-      this.focusManagerService.focusFirstVisibleNode();
-
-      // when the first child gets focus,
-      // tree should no longer have tabindex of 0;
-      delete this.tabindex;
-    }
   }
 
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
