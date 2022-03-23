@@ -4535,14 +4535,14 @@ export class ClrVerticalNavIcon implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrVerticalNavLink {
-    constructor(_navGroupService: VerticalNavGroupService);
+export class ClrVerticalNavLink implements OnDestroy {
+    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
     // (undocumented)
-    expandParentNavGroup(): void;
+    ngOnDestroy(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
