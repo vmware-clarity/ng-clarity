@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, style, transition, trigger, state } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterContentInit,
   Component,
   ContentChildren,
   ElementRef,
@@ -20,18 +21,19 @@ import {
   Output,
   PLATFORM_ID,
   QueryList,
+  Self,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-
-import { KeyCodes } from './../../utils/enums/key-codes.enum';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
+import { isKeyALetter, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
+import { ForTypeAheadProvider } from '../../utils/for-type-ahead/for-type-ahead.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
+import { KeyCodes } from './../../utils/enums/key-codes.enum';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
 import { TreeNodeModel } from './models/tree-node.model';
@@ -40,6 +42,10 @@ import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
 
 const LVIEW_CONTEXT_INDEX = 8;
+
+// If the user types multiple keys without allowing 200ms to pass between them,
+// then those keys are sent together in one request.
+const TREE_TYPE_AHEAD_TIMEOUT = 200;
 
 @Component({
   selector: 'clr-tree-node',
@@ -62,10 +68,14 @@ const LVIEW_CONTEXT_INDEX = 8;
     '[class.clr-tree-node]': 'true',
   },
 })
-export class ClrTreeNode<T> implements OnInit, OnDestroy {
+export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   STATES = ClrSelectedState;
   private skipEmitChange = false;
   isModelLoading = false;
+
+  private typeAheadKeyEvent: Subject<string> = new Subject<string>();
+
+  private typeAheadKeyBuffer = '';
 
   constructor(
     @Inject(UNIQUE_ID) public nodeId: string,
@@ -73,6 +83,7 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
     @Optional()
     @SkipSelf()
     parent: ClrTreeNode<T>,
+    @Optional() @Self() private forTypeAheadProvider: ForTypeAheadProvider,
     public featuresService: TreeFeaturesService<T>,
     public expandService: IfExpandService,
     public commonStrings: ClrCommonStringsService,
@@ -188,6 +199,20 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
     );
+
+    this.subscriptions.push(
+      this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
+        this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
+        // reset once bufferedKeys are used
+        this.typeAheadKeyBuffer = '';
+      })
+    );
+  }
+
+  ngAfterContentInit() {
+    if (this.forTypeAheadProvider) {
+      this._model.textContent = this.forTypeAheadProvider.textContent;
+    }
   }
 
   ngOnDestroy() {
@@ -267,8 +292,16 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
         this.toggleExpandOrTriggerDefault();
         break;
       default:
+        if (this._model.textContent && isKeyALetter(event)) {
+          this.typeAheadKeyBuffer += event.key;
+          this.typeAheadKeyEvent.next(this.typeAheadKeyBuffer);
+          return;
+        }
         break;
     }
+
+    // if non-letter keys are pressed, do reset.
+    this.typeAheadKeyBuffer = '';
   }
 
   private get isParent() {
