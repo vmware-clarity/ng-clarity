@@ -19,7 +19,9 @@
     display: inline-block;
 
     .dropdown-toggle {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       margin: 0;
       white-space: nowrap;
@@ -33,8 +35,6 @@
       clr-icon[shape^='caret'],
       clr-icon[shape^='angle'] {
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
         color: inherit;
         @include equilateral($clr-dropdown-caret-icon-dimension);
       }
@@ -45,7 +45,6 @@
       cds-icon[shape^='caret'],
       cds-icon[shape^='angle'] {
         position: absolute;
-        top: 35%;
         color: inherit;
         @include equilateral($clr-dropdown-caret-icon-dimension);
         // need custom property override here to force minimum size of
@@ -57,6 +56,13 @@
         padding-right: $clr-btn-horizontal-padding + $clr-dropdown-caret-icon-dimension +
           $clr-dropdown-caret-left-margin;
         text-overflow: unset;
+
+        clr-icon {
+          /**
+           * The .btn applies some transform settings that we need to remove in here to align the icon correctly
+           */
+          transform: none;
+        }
 
         cds-icon[shape^='caret'],
         clr-icon[shape^='caret'],
