@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ClrTree } from './tree';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
@@ -13,6 +13,9 @@ import { TreeFeaturesService } from './tree-features.service';
 import { RecursiveChildren } from './recursive-children';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrForTypeAheadModule } from 'src/utils/for-type-ahead/for-type-ahead.module';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { ClrTreeNode } from './tree-node';
 
 @Component({
   template: `<clr-tree [clrLazy]="lazy">Hello world <clr-tree-node *ngIf="hasChild">Child</clr-tree-node></clr-tree>`,
@@ -23,10 +26,28 @@ class TestComponent {
   lazy = false;
   hasChild = false;
 }
+@Component({
+  template: `<clr-tree>
+    <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+      California
+      <clr-tree-node clrForTypeAhead>San Francisco</clr-tree-node>
+      <clr-tree-node clrForTypeAhead>Los Angeles</clr-tree-node>
+    </clr-tree-node>
+    <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+      Washington
+      <clr-tree-node clrForTypeAhead>Seattle</clr-tree-node>
+    </clr-tree-node>
+    <clr-tree-node clrForTypeAhead [clrExpanded]="false">
+      Vermont
+      <clr-tree-node clrForTypeAhead>Burlington</clr-tree-node>
+    </clr-tree-node>
+  </clr-tree>`,
+})
+class TreeTypeAhead {}
 
 export default function (): void {
+  type Context = TestContext<ClrTree<void>, TestComponent>;
   describe('ClrTree Component', function () {
-    type Context = TestContext<ClrTree<void>, TestComponent>;
     spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
 
     it('declares a TreeFeaturesService provider', function (this: Context) {
@@ -83,5 +104,48 @@ export default function (): void {
       this.clarityElement.focus();
       expect(this.clarityDirective.tabindex).toBeUndefined();
     });
+  });
+
+  describe('Type-Ahead in ClrTree Component', function () {
+    let forTypeAheadDirectiveDEs: DebugElement[];
+    let forTypeAheadDirectives: ClrTreeNode<any>[];
+
+    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule, ClrForTypeAheadModule] });
+
+    beforeEach(function (this: Context) {
+      forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
+      forTypeAheadDirectives = forTypeAheadDirectiveDEs.map(de => de.componentInstance);
+      this.fixture.detectChanges();
+    });
+
+    it('focuses node whose text content that starts with pressed keys', fakeAsync(function () {
+      forTypeAheadDirectives[0].focusTreeNode();
+      expect(document.activeElement.textContent.trim()).toBe('California');
+      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+      tick(200);
+      expect(document.activeElement.textContent.trim()).toBe('San Francisco');
+      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+      tick(200);
+      expect(document.activeElement.textContent.trim()).toBe('Seattle');
+    }));
+
+    it('skips and focuses node whose text content that starts with pressed keys', fakeAsync(function () {
+      forTypeAheadDirectives[0].focusTreeNode();
+      expect(document.activeElement.textContent.trim()).toBe('California');
+      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
+      tick(200);
+      expect(document.activeElement.textContent.trim()).toBe('Seattle');
+    }));
+
+    it('should skip node even if its text content starts with pressed keys', fakeAsync(function () {
+      forTypeAheadDirectives[0].focusTreeNode();
+      expect(document.activeElement.textContent.trim()).toBe('California');
+      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
+      tick(200);
+      expect(document.activeElement.textContent.trim()).toBe(
+        'California',
+        'Should skip Burlington because the containing node is not expanded'
+      );
+    }));
   });
 }

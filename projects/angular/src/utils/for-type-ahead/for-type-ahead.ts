@@ -39,4 +39,11 @@ export class ClrForTypeAhead {
       this.forTypeAheadProvider.textContent = this._content;
     }
   }
+
+  ngOnInit() {
+    if (!this._content) {
+      this._content = this.trimAndLowerCase(this.el.nativeElement.textContent);
+      this.forTypeAheadProvider.textContent = this._content;
+    }
+  }
 }
