@@ -489,7 +489,7 @@
 
         .nav-group-text,
         .nav-text {
-          display: none;
+          @include screen-reader-only();
         }
       }
     }
