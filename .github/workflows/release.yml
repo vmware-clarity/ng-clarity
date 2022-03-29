@@ -37,4 +37,4 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: netlify deploy --alias $GITHUB_REF_NAME $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "")
+        run: npx netlify deploy --alias $GITHUB_REF_NAME $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "")

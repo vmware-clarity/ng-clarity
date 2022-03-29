@@ -33,4 +33,4 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: netlify deploy
+        run: npx netlify deploy
