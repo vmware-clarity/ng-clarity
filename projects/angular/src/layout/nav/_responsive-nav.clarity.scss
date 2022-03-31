@@ -52,6 +52,12 @@
   }
 }
 
+@mixin clr-nav-close-trigger-animation() {
+  left: $clr_baselineRem_0_125;
+  transform-origin: 9%;
+  transition: $clr-trigger-animation;
+}
+
 @mixin overflow-menu-trigger-animation() {
   & > span {
     background: transparent;
@@ -78,12 +84,24 @@
 @import './properties.responsive-nav';
 
 @include exports('responsive-nav.clarity') {
+  .clr-nav-close {
+    margin: 0.75rem;
+
+    &:hover,
+    &:focus {
+      --color: var(--clr-responsive-nav-trigger-bg-color);
+    }
+
+    --color: var(--clr-color-neutral-500);
+  }
+
   .header-hamburger-trigger,
   .header-overflow-trigger {
     display: none;
   }
 
-  .header-hamburger-trigger {
+  .header-hamburger-trigger,
+  .clr-nav-close {
     $trigger-span-psuedo-positioning: -1 * $clr_baselineRem_7px;
 
     & > span,
@@ -131,7 +149,8 @@
     }
   }
 
-  .header-overflow-trigger {
+  .header-overflow-trigger,
+  .clr-nav-close {
     $overflow-trigger-psuedo-positioning: -1 * $clr_baselineRem_8px;
 
     & > span,
@@ -219,6 +238,11 @@
         @include sliding-nav-positioning(0, 0, 0, auto);
         transform: translateX($clr-sliding-panel-width);
         transition: $clr-sliding-panel-animation;
+      }
+
+      .sidenav.clr-nav-level-2 {
+        // This is to prevent the close button to be hidden by the sidenav content
+        overflow: inherit;
       }
 
       .subnav.clr-nav-level-1,
@@ -451,7 +475,7 @@
           }
         }
 
-        .header-hamburger-trigger {
+        .clr-nav-close {
           @include menu-trigger();
           @include hamburger-menu-trigger-animation();
         }
@@ -487,7 +511,7 @@
           padding-top: $clr_baselineRem_1;
         }
 
-        .header-overflow-trigger {
+        .clr-nav-close {
           @include menu-trigger(0, auto, (-1 * $clr-trigger-position));
           @include overflow-menu-trigger-animation();
         }
@@ -562,7 +586,7 @@
           max-width: $clr-sliding-panel-width-sm;
         }
 
-        .header-hamburger-trigger {
+        .clr-nav-close {
           @include menu-trigger(auto, 0, $clr-trigger-position-sm);
         }
       }
@@ -577,7 +601,7 @@
           max-width: $clr-sliding-panel-width-sm;
         }
 
-        .header-overflow-trigger {
+        .clr-nav-close {
           @include menu-trigger(0, auto, (-1 * $clr-trigger-position-sm));
         }
       }
