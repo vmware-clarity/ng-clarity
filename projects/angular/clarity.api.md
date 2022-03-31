@@ -2427,6 +2427,8 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    openNav(navLevel: number): void;
+    // (undocumented)
     openNavLevel: number;
     // (undocumented)
     resetNavTriggers(): void;
@@ -2434,7 +2436,7 @@ export class ClrHeader implements OnDestroy {
     //
     // (undocumented)
     responsiveNavCodes: typeof ResponsiveNavCodes;
-    // (undocumented)
+    // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)
     static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, {}, {}, never, ["*"]>;
@@ -2951,17 +2953,30 @@ export class ClrNavigationModule {
     static ɵmod: ɵngcc0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ɵngcc1_38.ClrHeader, typeof ɵngcc2_28.ClrNavLevel, typeof ɵngcc3_19.NavDetectionOompaLoompa, typeof ɵngcc4_13.MainContainerWillyWonka], [typeof ɵngcc6.CommonModule, typeof ɵngcc3_2.ClrIconModule, typeof ɵngcc8.ClrDropdownModule], [typeof ɵngcc1_38.ClrHeader, typeof ɵngcc2_28.ClrNavLevel, typeof ɵngcc3_19.NavDetectionOompaLoompa, typeof ɵngcc4_13.MainContainerWillyWonka]>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "FocusTrap" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export class ClrNavLevel implements OnInit {
-    constructor(responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef);
+export class ClrNavLevel extends FocusTrap implements OnInit {
+    // Warning: (ae-forgotten-export) The symbol "FocusTrapElement" needs to be exported by the entry point index.d.ts
+    constructor(platformId: any, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<FocusTrapElement>, renderer: Renderer2, injector: Injector);
     // (undocumented)
     addNavClass(level: number): void;
     // (undocumented)
     close(): void;
     // (undocumented)
+    closeButtonAriaLabel: string;
+    // (undocumented)
+    protected hideCloseButton(): void;
+    // (undocumented)
+    protected hideNavigation(): void;
+    // (undocumented)
+    get isOpen(): boolean;
+    // (undocumented)
     get level(): number;
     // (undocumented)
     _level: number;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -2969,11 +2984,17 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     onMouseClick(target: any): void;
     // (undocumented)
+    onResize(event: Event): void;
+    // (undocumented)
     open(): void;
     // (undocumented)
     get responsiveNavCodes(): ResponsiveNavCodes;
     // (undocumented)
-    static ɵdir: ɵngcc0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; }, {}, never>;
+    protected showCloseButton(): void;
+    // (undocumented)
+    protected showNavigation(): void;
+    // (undocumented)
+    static ɵdir: ɵngcc0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "closeButtonAriaLabel": "closeAriaLabel"; "_level": "clr-nav-level"; }, {}, never>;
     // (undocumented)
     static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }

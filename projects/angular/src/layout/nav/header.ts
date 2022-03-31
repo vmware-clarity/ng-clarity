@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'clr-header',
@@ -22,6 +23,8 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
         openNavLevel !== responsiveNavCodes.NAV_LEVEL_1 ? commonStrings.keys.open : commonStrings.keys.close
       "
       (click)="toggleNav(responsiveNavCodes.NAV_LEVEL_1)"
+      [attr.aria-expanded]="openNavLevel === 1 ? 'true' : 'false'"
+      (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
     >
       <span></span>
     </button>
@@ -33,7 +36,8 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
       [attr.aria-label]="
         openNavLevel !== responsiveNavCodes.NAV_LEVEL_2 ? commonStrings.keys.open : commonStrings.keys.close
       "
-      (click)="toggleNav(responsiveNavCodes.NAV_LEVEL_2)"
+      [attr.aria-expanded]="openNavLevel === 2 ? 'true' : 'false'"
+      (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
     >
       <span></span>
     </button>
@@ -57,6 +61,19 @@ export class ClrHeader implements OnDestroy {
         this.initializeNavTriggers(navLevelList);
       },
     });
+
+    this._subscription.add(
+      this.responsiveNavService.navControl
+        .pipe(
+          filter(
+            ({ controlCode }) =>
+              controlCode === ResponsiveNavCodes.NAV_CLOSE || controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL
+          )
+        )
+        .subscribe(() => {
+          this.openNavLevel = null;
+        })
+    );
   }
 
   // reset triggers. handles cases when an application has different nav levels on different pages.
@@ -86,10 +103,23 @@ export class ClrHeader implements OnDestroy {
     this.responsiveNavService.closeAllNavs();
   }
 
-  // toggles the nav that is open
+  /**
+   * @deprecated Will be removed in with @clr/angular v15.0.0
+   *
+   * Use `openNav(navLevel)` instead to open the navigation and ResponsiveNavService to close it.
+   */
   toggleNav(navLevel: number) {
-    this.openNavLevel = this.openNavLevel === navLevel ? null : navLevel;
-    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_TOGGLE, navLevel);
+    if (this.openNavLevel === navLevel) {
+      this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, navLevel);
+      return;
+    }
+
+    this.openNav(navLevel);
+  }
+
+  openNav(navLevel: number) {
+    this.openNavLevel = navLevel;
+    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
   }
 
   ngOnDestroy() {

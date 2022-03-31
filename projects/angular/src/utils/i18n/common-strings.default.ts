@@ -91,6 +91,10 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridExpandableEndOf: 'End of',
   datagridExpandableRowContent: 'Expandable row content',
   datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
+  responsiveNavToggleOpen: 'Navigation menu',
+  responsiveNavToggleClose: 'Navigation menu',
+  responsiveNavOverflowOpen: 'Navigation overflow menu',
+  responsiveNavOverflowClose: 'Navigation overflow menu',
   // Wizard
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
