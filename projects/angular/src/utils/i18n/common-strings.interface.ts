@@ -219,6 +219,13 @@ export interface ClrCommonStrings {
   datepickerSelectMonthText: string;
   datepickerSelectYearText: string;
   /**
+   * Navigation
+   */
+  responsiveNavToggleOpen: string;
+  responsiveNavToggleClose: string;
+  responsiveNavOverflowOpen: string;
+  responsiveNavOverflowClose: string;
+  /**
    * Stack View: Record has changed
    */
   stackViewChanged: string;
