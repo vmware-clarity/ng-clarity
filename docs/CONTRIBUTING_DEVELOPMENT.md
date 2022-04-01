@@ -125,7 +125,7 @@ Once you have the project checked out with a fork you will need to run some step
 steps.
 
 1.  Have [NodeJS](https://nodejs.org) installed
-2.  Run `npm install -g npm@^7.5.6` (Need to update npm to ^7.5.6 for Angular 12 and NPM workspaces)
+2.  Run `npm install -g npm@^7.8.0` (Need to update npm to ^7.8.0 for Angular 12 and NPM workspaces)
 3.  In the root project directory run, `npm install`
 4.  Run `npm build` to build entire project (this may take several minutes)
 5.  Startup the demo project: `npm start`
