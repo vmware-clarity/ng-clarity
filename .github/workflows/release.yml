@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: '.nvmrc'
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
