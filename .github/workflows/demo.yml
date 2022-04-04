@@ -2,6 +2,8 @@ name: Demo
 on:
   workflow_run:
     workflows: [Build]
+    types:
+      - completed
 jobs:
   demo:
     name: Demo
