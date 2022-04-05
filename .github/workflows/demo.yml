@@ -33,7 +33,6 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Deploy Demo Preview
-        continue-on-error: true
         timeout-minutes: 5
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
