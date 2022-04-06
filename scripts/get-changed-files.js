@@ -46,6 +46,6 @@ function getChanges() {
 function getFile(entry) {
   const data = entry.trim().split(/\s+/);
   const status = data[0];
-  const name = status === 'RM' ? data[3] : data[1];
+  const name = ['R', 'RM'].includes(status) ? data[3] : data[1];
   return { status, name };
 }
