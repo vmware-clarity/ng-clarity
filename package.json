@@ -42,7 +42,7 @@
     "_lint:format:fix": "npm run --silent _lint:format -- -w",
     "_lint:format:changed": "node ./scripts/get-changed-files.js --command \"prettier -c --loglevel warn --ignore-unknown\" --filter \"**\"",
     "_lint:format:changed:fix": "node ./scripts/get-changed-files.js --command \"prettier -w --loglevel warn --ignore-unknown\" --filter \"**\"",
-    "_lint:styles": "stylelint \"**/*.{css,scss,sass}\"",
+    "_lint:styles": "stylelint \"**/*.{css,scss,sass}\" \"**/.*/**/*.{css,scss,sass}\"",
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
     "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\""
