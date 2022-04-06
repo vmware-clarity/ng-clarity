@@ -30,7 +30,7 @@ function runCommandOnChangedFiles(command, files) {
 function getFilteredChanges(filter) {
   return getChanges()
     .filter(file => file.status !== 'D')
-    .filter(file => !filter || minimatch(file.name, filter))
+    .filter(file => !filter || minimatch(file.name, filter, { dot: true }))
     .map(file => file.name);
 }
 
