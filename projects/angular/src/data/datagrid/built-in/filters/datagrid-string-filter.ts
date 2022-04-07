@@ -28,8 +28,8 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
         name="search"
         [(ngModel)]="value"
         class="clr-input"
-        [attr.aria-label]="commonStrings.keys.filterItems"
-        [placeholder]="commonStrings.keys.filterItems"
+        [attr.aria-label]="placeholderValue"
+        [placeholder]="placeholderValue"
       />
     </clr-dg-filter>
   `,
@@ -46,6 +46,15 @@ export class DatagridStringFilter<T = any>
     private smartToggleService: ClrPopoverToggleService
   ) {
     super(filters);
+  }
+
+  /**
+   * Provide a way to pass external placeholder and aria-label to the filter input
+   */
+  @Input('clrFilterPlaceholder') placeholder: string;
+
+  get placeholderValue() {
+    return this.placeholder || this.commonStrings.keys.filterItems;
   }
 
   /**

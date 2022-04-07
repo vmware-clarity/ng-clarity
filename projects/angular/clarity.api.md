@@ -1001,6 +1001,17 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     get field(): string;
     set field(field: string);
     // (undocumented)
+    filterNumberMaxPlaceholder: string;
+    // (undocumented)
+    get filterNumberMaxPlaceholderValue(): string;
+    // (undocumented)
+    filterNumberMinPlaceholder: string;
+    // (undocumented)
+    get filterNumberMinPlaceholderValue(): string;
+    filterStringPlaceholder: string;
+    // (undocumented)
+    get filterStringPlaceholderValue(): string;
+    // (undocumented)
     get filterValue(): any;
     set filterValue(newValue: any);
     // (undocumented)
@@ -3635,6 +3646,13 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     get low(): number | string;
     set low(low: number | string);
+    maxPlaceholder: string;
+    // (undocumented)
+    get maxPlaceholderValue(): string;
+    // (undocumented)
+    minPlaceholder: string;
+    // (undocumented)
+    get minPlaceholderValue(): string;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -3692,6 +3710,9 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
+    placeholder: string;
+    // (undocumented)
+    get placeholderValue(): string;
     get value(): string;
     set value(value: string);
 }
