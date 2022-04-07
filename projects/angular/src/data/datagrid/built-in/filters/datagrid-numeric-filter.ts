@@ -28,8 +28,8 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         type="number"
         name="low"
         [(ngModel)]="low"
-        [placeholder]="commonStrings.keys.minValue"
-        [attr.aria-label]="commonStrings.keys.minValue"
+        [placeholder]="minPlaceholderValue"
+        [attr.aria-label]="minPlaceholderValue"
       />
       <span class="datagrid-filter-input-spacer"></span>
       <input
@@ -38,8 +38,8 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         type="number"
         name="high"
         [(ngModel)]="high"
-        [placeholder]="commonStrings.keys.maxValue"
-        [attr.aria-label]="commonStrings.keys.maxValue"
+        [placeholder]="maxPlaceholderValue"
+        [attr.aria-label]="maxPlaceholderValue"
       />
     </clr-dg-filter>
   `,
@@ -63,6 +63,21 @@ export class DatagridNumericFilter<T = any>
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+  }
+
+  /**
+   * Provide a way to pass external placeholder and aria-label to the filter input
+   */
+  @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
+
+  get maxPlaceholderValue() {
+    return this.maxPlaceholder || this.commonStrings.keys.maxValue;
+  }
+
+  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
+
+  get minPlaceholderValue() {
+    return this.minPlaceholder || this.commonStrings.keys.minValue;
   }
 
   /**
