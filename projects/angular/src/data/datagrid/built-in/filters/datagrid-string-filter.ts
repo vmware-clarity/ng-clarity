@@ -38,8 +38,8 @@ import { ClrPopoverToggleService } from '../../../../utils/popover/providers/pop
         name="search"
         [(ngModel)]="value"
         class="clr-input"
-        [attr.aria-label]="commonStrings.keys.filterItems"
-        [placeholder]="commonStrings.keys.filterItems"
+        [attr.aria-label]="placeholderValue"
+        [placeholder]="placeholderValue"
       />
     </clr-dg-filter>
   `,
@@ -57,6 +57,15 @@ export class DatagridStringFilter<T = any>
     private ngZone: NgZone
   ) {
     super(filters);
+  }
+
+  /**
+   * Provide a way to pass external placeholder and aria-label to the filter input
+   */
+  @Input('clrFilterPlaceholder') placeholder: string;
+
+  get placeholderValue() {
+    return this.placeholder || this.commonStrings.keys.filterItems;
   }
 
   /**

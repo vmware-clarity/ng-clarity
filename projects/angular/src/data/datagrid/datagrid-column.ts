@@ -60,12 +60,15 @@ import { DetailService } from './providers/detail.service';
 
       <clr-dg-string-filter
         *ngIf="field && !customFilter && colType == 'string'"
+        [clrFilterPlaceholder]="filterStringPlaceholderValue"
         [clrDgStringFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-string-filter>
 
       <clr-dg-numeric-filter
         *ngIf="field && !customFilter && colType == 'number'"
+        [clrFilterMaxPlaceholder]="filterMaxPlaceholderValue"
+        [clrFilterMinPlaceholder]="filterMinPlaceholderValue"
         [clrDgNumericFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-numeric-filter>
@@ -380,6 +383,24 @@ export class ClrDatagridColumn<T = any>
       this.deleteFilter();
       this.customFilter = true;
     }
+  }
+
+  /**
+   * Help with accessibility for screen readers by providing custom placeholder text inside internal filters
+   */
+  @Input('clrFilterStringPlaceholder') public filterStringPlaceholder: string;
+  get filterStringPlaceholderValue() {
+    return this.filterStringPlaceholder || this.commonStrings.keys.filterItems;
+  }
+
+  @Input('clrFilterNumberMaxPlaceholder') public filterNumberMaxPlaceholder: string;
+  get filterNumberMaxPlaceholderValue() {
+    return this.filterNumberMaxPlaceholder || this.commonStrings.keys.maxValue;
+  }
+
+  @Input('clrFilterNumberMinPlaceholder') public filterNumberMinPlaceholder: string;
+  get filterNumberMinPlaceholderValue() {
+    return this.filterNumberMinPlaceholder || this.commonStrings.keys.minValue;
   }
 
   @Input('clrFilterValue')
