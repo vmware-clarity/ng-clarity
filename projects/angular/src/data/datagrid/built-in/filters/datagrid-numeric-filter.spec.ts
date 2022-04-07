@@ -41,6 +41,47 @@ const PROVIDERS = [
   },
 ];
 export default function (): void {
+  describe('DatagridNumericFilter accessibility', function () {
+    let context: TestContext<DatagridNumericFilter<string>, AccessibilityTest>;
+
+    function openFilter() {
+      context.clarityElement.querySelector('.datagrid-filter-toggle').click();
+      context.detectChanges();
+    }
+
+    beforeEach(function () {
+      context = this.create(DatagridNumericFilter, AccessibilityTest, PROVIDERS);
+    });
+
+    afterEach(function () {
+      const popoverContent = document.querySelectorAll('.clr-popover-content');
+      popoverContent.forEach(content => document.body.removeChild(content));
+      context.fixture.destroy();
+    });
+
+    it('should be able to change the min placeholder text', fakeAsync(function () {
+      context.testComponent.filterValue = [null, 10];
+      context.testComponent.clrFilterMinPlaceholder = 'min demo placeholder';
+
+      openFilter();
+      const inputMin: HTMLInputElement = document.querySelector('input[name=low]');
+      expect(inputMin.getAttribute('placeholder')).toBe('min demo placeholder');
+      expect(inputMin.getAttribute('aria-label')).toBe('min demo placeholder');
+      tick();
+    }));
+
+    it('should be able to change the max placeholder text', fakeAsync(function () {
+      context.testComponent.filterValue = [null, 10];
+      context.testComponent.clrFilterMaxPlaceholder = 'max demo placeholder';
+
+      openFilter();
+      const inputMax: HTMLInputElement = document.querySelector('input[name=high]');
+      expect(inputMax.getAttribute('placeholder')).toBe('max demo placeholder');
+      expect(inputMax.getAttribute('aria-label')).toBe('max demo placeholder');
+      tick();
+    }));
+  });
+
   describe('DatagridNumericFilter component', function () {
     // Until we can properly type "this"
     let context: TestContext<DatagridNumericFilter<number>, FullTest>;
@@ -140,4 +181,21 @@ class FullTest {
 
   filter: ClrDatagridNumericFilterInterface<number>;
   filterValue: [number, number];
+}
+
+@Component({
+  template: `<clr-dg-numeric-filter
+    [clrDgNumericFilter]="filter"
+    [(clrFilterValue)]="filterValue"
+    [clrFilterMaxPlaceholder]="clrFilterMaxPlaceholder"
+    [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
+  ></clr-dg-numeric-filter>`,
+})
+class AccessibilityTest {
+  @ViewChild(CustomFilter) customFilter: CustomFilter;
+
+  filter: ClrDatagridNumericFilterInterface<string>;
+  filterValue: [number, number];
+  clrFilterMaxPlaceholder: string;
+  clrFilterMinPlaceholder: string;
 }

@@ -42,6 +42,30 @@ const PROVIDERS = [
 ];
 
 export default function (): void {
+  describe('DatagridStringFilter accessibility', function () {
+    let context: TestContext<DatagridStringFilter<string>, AccessibilityTest>;
+
+    function openFilter() {
+      context.clarityElement.querySelector('.datagrid-filter-toggle').click();
+      context.detectChanges();
+    }
+
+    beforeEach(function () {
+      context = this.create(DatagridStringFilter, AccessibilityTest, PROVIDERS);
+    });
+
+    it('should be able to change the placeholder text', fakeAsync(function () {
+      context.testComponent.filterValue = 'M';
+      context.testComponent.clrFilterPlaceholder = 'demo placeholder';
+
+      openFilter();
+      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      expect(input.getAttribute('placeholder')).toBe('demo placeholder');
+      expect(input.getAttribute('aria-label')).toBe('demo placeholder');
+      tick();
+    }));
+  });
+
   describe('DatagridStringFilter component', function () {
     let context: TestContext<DatagridStringFilter<string>, FullTest>;
     let filter: TestFilter;
@@ -150,4 +174,19 @@ class FullTest {
 
   filter: ClrDatagridStringFilterInterface<string>;
   filterValue: string;
+}
+
+@Component({
+  template: `<clr-dg-string-filter
+    [clrDgStringFilter]="filter"
+    [(clrFilterValue)]="filterValue"
+    [clrFilterPlaceholder]="clrFilterPlaceholder"
+  ></clr-dg-string-filter>`,
+})
+class AccessibilityTest {
+  @ViewChild(CustomFilter) customFilter: CustomFilter;
+
+  filter: ClrDatagridStringFilterInterface<string>;
+  filterValue: string;
+  clrFilterPlaceholder: string;
 }
