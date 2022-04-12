@@ -4,7 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../angular/src"]
+      "@clr/angular": ["./dist/clr-angular"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
