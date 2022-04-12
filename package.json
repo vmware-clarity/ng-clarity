@@ -30,7 +30,7 @@
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer --dir ./dist/clr-ui",
-    "_build:ui:optimize": "csso ./dist/clr-ui/clr-ui.css --output ./dist/clr-ui/clr-ui.min.css --source-map file --no-restructure & csso ./dist/clr-ui/clr-ui-dark.css --output ./dist/clr-ui/clr-ui-dark.min.css --sourcemap file --no-restructure",
+    "_build:ui:optimize": "csso ./dist/clr-ui/clr-ui.css --output ./dist/clr-ui/clr-ui.min.css --source-map file --no-restructure && csso ./dist/clr-ui/clr-ui-dark.css --output ./dist/clr-ui/clr-ui-dark.min.css --source-map file --no-restructure",
     "_build:ui:src": "cpy \"**/*.scss\" ./../../dist/clr-ui --cwd=./projects/angular --parents",
     "_build:ui:package": "cpy ./projects/ui/package.json ./projects/ui/README.md ./dist/clr-ui",
     "_build:ui": "npm-run-all _build:ui:css _build:ui:prefix _build:ui:optimize _build:ui:src _build:ui:package",
