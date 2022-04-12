@@ -1,6 +1,6 @@
 # Reporting Bugs and Creating Issues
 
-You can submit an issue or a bug to our [GitHub repository](https://github.com/vmware/clarity/issues). You must provide:
+You can submit an issue or a bug to our [GitHub repository](https://github.com/vmware-clarity/ng-clarity/issues). You must provide:
 
 - The link to the reproduction scenario you created using one of the
   [Clarity StackBlitz Templates](https://stackblitz.com/@clr-team)

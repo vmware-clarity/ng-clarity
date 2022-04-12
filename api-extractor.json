@@ -12,7 +12,7 @@
   "apiReport": {
     "enabled": true,
     "reportFolder": "projects/angular/",
-    "reportTempFolder": "dist/angular/"
+    "reportTempFolder": "dist/clr-angular/"
   },
   "docModel": {
     "enabled": false
