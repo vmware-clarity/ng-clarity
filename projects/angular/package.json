@@ -1,7 +1,7 @@
 {
   "name": "@clr/angular",
   "description": "Angular components for Clarity",
-  "homepage": "https://clarity.design",
+  "homepage": "https://angular.clarity.design",
   "keywords": [
     "ng-add",
     "clarity",
@@ -10,43 +10,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vmware/clarity.git"
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
   },
   "author": "Clarity Design System",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vmware/clarity/issues"
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "peerDependencies": {
     "@angular/common": "^12.0.0",
     "@angular/core": "^12.0.0",
     "@cds/core": "^5.0.0"
-  },
-  "devDependencies": {
-    "@angular/animations": "~12.0.0",
-    "@angular/cli": "~12.0.0",
-    "@angular/common": "~12.0.0",
-    "@angular/compiler": "~12.0.0",
-    "@angular/compiler-cli": "~12.0.0",
-    "@angular/core": "~12.0.0",
-    "@angular-devkit/build-angular": "~12.0.0",
-    "@angular/forms": "~12.0.0",
-    "@angular/platform-browser": "~12.0.0",
-    "@angular/platform-browser-dynamic": "~12.0.0",
-    "@angular/router": "~12.0.0",
-    "@cds/core": "^5.6.0",
-    "@types/jasmine": "~3.6.0",
-    "jasmine-core": "~3.10.0",
-    "jasmine-expect": "^5.0.0",
-    "karma": "~6.3.4",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.0.3",
-    "karma-jasmine": "~4.0.0",
-    "karma-jasmine-html-reporter": "^1.5.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-parallel": "^0.3.1",
-    "ng-packagr": "^12.0.6",
-    "typescript": "~4.2.4",
-    "zone.js": "~0.11.4"
   }
 }

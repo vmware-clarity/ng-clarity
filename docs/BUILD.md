@@ -25,7 +25,7 @@ projects
 
 ## Build Process
 
-The build scripts in this repository have been designed to work with Node.js v17 or later.
+The build scripts in this repository have been designed to work with Node.js v14 or later.
 
 The build process consists of the following five stages. Each stage can be ran individually or all stages could be executed by running `npm run build:ci`. This is useful when submitting pull requests, because `npm run build:ci` is essentially the same command the CI system will run.
 
