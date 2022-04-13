@@ -24,6 +24,7 @@ import { APP_ROUTES } from './app.routing';
             <li *ngFor="let route of routes">
               <a
                 *ngIf="route.path != ''"
+                clrAriaCurrentLink
                 class="nav-link"
                 [routerLink]="[route.path]"
                 [routerLinkActive]="['active']"

@@ -14,10 +14,12 @@ import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka'
 import { NavDetectionOompaLoompa } from './chocolate/nav-detection-oompa-loompa';
 import { ClrHeader } from './header';
 import { ClrNavLevel } from './nav-level';
+import { ClrAriaCurrentLink } from './aria-current-link';
 
 export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [
   ClrHeader,
   ClrNavLevel,
+  ClrAriaCurrentLink,
   NavDetectionOompaLoompa,
   MainContainerWillyWonka,
 ];
