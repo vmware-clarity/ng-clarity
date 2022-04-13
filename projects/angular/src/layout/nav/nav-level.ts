@@ -31,6 +31,7 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   cdsCloseButton.setAttribute('icon-size', '32');
   console.log(ariaLabel);
   cdsCloseButton.setAttribute('aria-label', ariaLabel);
+  cdsCloseButton.setAttribute('aria-hidden', 'true');
   cdsCloseButton.setAttribute('type', 'button');
   /**
    * The button is hidden by default based on our Desktop-first approach.
@@ -193,18 +194,22 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
   }
 
   protected hideNavigation() {
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-hidden', 'true');
     this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', 'true');
   }
 
   protected showNavigation() {
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement, 'hidden');
   }
 
   protected hideCloseButton() {
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-hidden', 'true');
     this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden', 'true');
   }
 
   protected showCloseButton() {
+    this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
   }
 
