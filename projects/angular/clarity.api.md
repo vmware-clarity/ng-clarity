@@ -958,6 +958,13 @@ export interface ClrCommonStrings {
     pickColumns: string;
     previous: string;
     previousPage: string;
+    // (undocumented)
+    responsiveNavOverflowClose: string;
+    // (undocumented)
+    responsiveNavOverflowOpen: string;
+    // (undocumented)
+    responsiveNavToggleClose: string;
+    responsiveNavToggleOpen: string;
     rowActions: string;
     select: string;
     selectAll: string;

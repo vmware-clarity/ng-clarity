@@ -33,6 +33,7 @@ describe('NavLevelDirective', function () {
     const navLevel = this.clarityDirective;
     navLevel.hideNavigation();
     const element = this.fixture.nativeElement.querySelector('nav');
+    expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
   });
 
@@ -42,6 +43,7 @@ describe('NavLevelDirective', function () {
     navLevel.hideNavigation();
     expect(element.getAttribute('hidden')).toBe('true');
     navLevel.showNavigation();
+    expect(element.getAttribute('aria-hidden')).toBe('false');
     expect(element.getAttribute('hidden')).toBeNull();
   });
 
@@ -49,6 +51,7 @@ describe('NavLevelDirective', function () {
     const navLevel = this.clarityDirective;
     const element = this.fixture.nativeElement.querySelector('cds-internal-close-button');
     navLevel.hideCloseButton();
+    expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
   });
 
@@ -56,8 +59,10 @@ describe('NavLevelDirective', function () {
     const navLevel = this.clarityDirective;
     const element = this.fixture.nativeElement.querySelector('cds-internal-close-button');
     navLevel.hideCloseButton();
+    expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
     navLevel.showCloseButton();
+    expect(element.getAttribute('aria-hidden')).toBe('false');
     expect(element.getAttribute('hidden')).toBeNull();
   });
 
