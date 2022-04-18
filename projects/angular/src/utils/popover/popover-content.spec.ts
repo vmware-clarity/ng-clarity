@@ -97,13 +97,14 @@ export default function (): void {
       it('responds to openChange events from the toggleService', function (this: Context) {
         this.testComponent.openState = true; // Add content to the DOM
         this.fixture.detectChanges();
-        const content = document.body.getElementsByClassName('clr-popover-content');
+        let content = document.body.querySelectorAll('div.clr-popover-content');
         // Popovers are not getting cleaned up here.
         expect(content.length).toBe(1);
         expect(content[0].textContent.trim()).toBe('Popover content');
 
         this.testComponent.openState = false; // Remove content from the DOM
         this.fixture.detectChanges();
+        content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(0);
       });
 
