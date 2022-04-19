@@ -48,12 +48,11 @@
     </span>
   </span>
 
-  <span class="clr-combobox-input-wrapper">
+  <span class="clr-combobox-input-wrapper" role="combobox">
     <input
       #textboxInput
       type="text"
       [id]="inputId()"
-      role="combobox"
       class="clr-input clr-combobox-input"
       [(ngModel)]="searchText"
       (blur)="onBlur()"
@@ -67,7 +66,6 @@
       [disabled]="control?.disabled? true: null"
       [attr.aria-activedescendant]="getActiveDescendant()"
       [attr.placeholder]="placeholder"
-      aria-multiline="false"
     />
   </span>
 
