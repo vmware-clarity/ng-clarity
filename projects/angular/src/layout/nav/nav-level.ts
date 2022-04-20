@@ -185,7 +185,7 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
     while (current) {
       if (current === navHost) {
         return;
-      } else if (current.classList.contains('nav-link')) {
+      } else if (current.classList.contains('nav-link') && this._document.body.clientWidth < LARGE_BREAKPOINT) {
         this.close();
         return;
       }
