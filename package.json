@@ -1,5 +1,5 @@
 {
-  "name": "clarity",
+  "name": "@clr/angular",
   "private": true,
   "engines": {
     "yarn": "please-use-npm",
