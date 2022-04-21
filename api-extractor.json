@@ -11,6 +11,7 @@
   },
   "apiReport": {
     "enabled": true,
+    "reportFileName": "clarity.api.md",
     "reportFolder": "projects/angular/",
     "reportTempFolder": "dist/clr-angular/"
   },
