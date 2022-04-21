@@ -44,6 +44,7 @@ module.exports = {
       {
         notifyOnSuccess: true,
         notifyOnFail: true,
+        markdownReleaseNotes: true,
       },
     ],
   ],
