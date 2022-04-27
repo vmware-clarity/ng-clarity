@@ -14,7 +14,7 @@ import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';
 
 export default function () {
-  describe('ClrAlerts component', function () {
+  xdescribe('ClrAlerts component', function () {
     describe('Typescript API', function () {
       let component: ClrAlerts;
       let service: MultiAlertService;

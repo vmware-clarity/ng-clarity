@@ -4,6 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@import 'modern-normalize/modern-normalize.css';
+@import '@cds/core/global.min.css';
+@import '@cds/core/styles/theme.dark.min.css';
+@import '@cds/city/css/bundles/default.css';
+@import '@cds/core/styles/shim.clr-ui.min.css';
+// @import '@clr/ui/clr-ui.min.css';
 @import './app/_utils/clarity-variables';
 @import '../../angular/src/utils/variables/variables';
 

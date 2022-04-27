@@ -39,10 +39,6 @@
 @import '../button/button-group/button-group.clarity'; // depends on variables.clarity, mixins.clarity
 @import '../utils/close.clarity'; //depends on variables.clarity, mixins.clarity
 
-//Alerts
-//depends on variables.clarity, mixins.clarity, color.clarity, icons.clarity, buttons.clarity
-@import '../emphasis/alert/alert.clarity';
-
 //Cards
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, list-group.clarity, buttons.clarity
 @import '../layout/card.clarity';

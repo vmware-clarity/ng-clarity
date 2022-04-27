@@ -22,7 +22,7 @@ export class MultiAlertService {
     return this._change.asObservable();
   }
 
-  private _current: number;
+  private _current = 0;
 
   get current() {
     return this._current;

@@ -12,27 +12,17 @@
       </div>
     </header>
     <div class="content-container">
-      <div class="content-area">
+      <div class="content-area" cds-layout="vertical gap:lg align:stretch">
         <clr-alert [clrAlertClosable]="false">
           <clr-alert-item>
             <span class="alert-text"> This alert cannot be dismissed. </span>
             <div class="alert-actions">
               <a class="alert-action" href="javascript://">Acknowledge</a>
               <a class="alert-action" href="javascript://">Reset</a>
-              <clr-dropdown>
-                <button class="dropdown-toggle" clrDropdownTrigger>
-                  More Actions
-                  <cds-icon shape="angle" direction="down"></cds-icon>
-                </button>
-                <clr-dropdown-menu clrPosition="bottom-right">
-                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Shutdown</a>
-                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Delete</a>
-                  <a href="javascript://" class="dropdown-item" clrDropdownItem>Reboot</a>
-                </clr-dropdown-menu>
-              </clr-dropdown>
             </div>
           </clr-alert-item>
         </clr-alert>
+
         <clr-alert clrAlertType="warning">
           <clr-alert-item>
             <span class="alert-text"> Try closing this alert. </span>
@@ -50,13 +40,6 @@
             <span class="alert-text"> Try closing this alert. </span>
           </clr-alert-item>
         </clr-alert>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </p>
       </div>
     </div>
   </div>

@@ -20,16 +20,8 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clr-alerts',
-  templateUrl: './alerts.html',
+  template: '<ng-content select="clr-alert"></ng-content>',
   providers: [MultiAlertService],
-  host: {
-    '[class.alerts]': 'true',
-    '[class.alert-danger]': "this.currentAlertType == 'danger'",
-    '[class.alert-info]': "this.currentAlertType == 'info'",
-    '[class.alert-success]': "this.currentAlertType == 'success'",
-    '[class.alert-warning]': "this.currentAlertType == 'warning'",
-  },
-  styles: [':host { display: block }'],
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -50,13 +42,6 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
   }
 
   @Output('clrCurrentAlertIndexChange') public currentAlertIndexChange = new EventEmitter<number>(false);
-
-  set currentAlertIndex(index: number) {
-    this.multiAlertService.current = index;
-  }
-  get currentAlertIndex() {
-    return this.multiAlertService.current;
-  }
 
   /**
    * Input/Output to support two way binding on current alert instance

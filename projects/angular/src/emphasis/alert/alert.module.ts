@@ -6,15 +6,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
-
-import { ClrAlert } from './alert';
-import { ClrAlertItem } from './alert-item';
-import { ClrAlerts } from './alerts';
-import { ClrAlertsPager } from './alerts-pager';
-import { ClrAlertText } from './alert-text';
+import { CdsAlertModule } from '@cds/angular/alert';
+import { CdsPaginationModule } from '@cds/angular/pagination';
 import {
   infoCircleIcon,
   checkCircleIcon,
@@ -24,10 +17,14 @@ import {
   windowCloseIcon,
 } from '@cds/core/icon';
 
-export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText];
+import { ClrAlert } from './alert';
+import { ClrAlertItem } from './alert-item';
+import { ClrAlerts } from './alerts';
+
+export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrDropdownModule],
+  imports: [CommonModule, CdsAlertModule, CdsPaginationModule],
   declarations: [CLR_ALERT_DIRECTIVES],
   exports: [CLR_ALERT_DIRECTIVES],
 })
