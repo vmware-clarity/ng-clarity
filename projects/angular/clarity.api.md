@@ -868,7 +868,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, datagridId: string, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point index.d.ts
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, datagridId: string, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1063,7 +1065,6 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle {
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
     constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnSwitchId: string, platformId: any, zone: NgZone, popoverId: string);
     // (undocumented)
     allColumnsSelected(): void;
