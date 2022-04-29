@@ -12,7 +12,7 @@ import { Items } from './providers/items';
   template: `
     <div class="datagrid-placeholder" [class.datagrid-empty]="emptyDatagrid" role="row">
       <div class="datagrid-placeholder-image" *ngIf="emptyDatagrid"></div>
-      <span role="gridcell"><ng-content *ngIf="emptyDatagrid"></ng-content></span>
+      <span role="gridcell" class="datagrid-placeholder-content"><ng-content *ngIf="emptyDatagrid"></ng-content></span>
     </div>
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },

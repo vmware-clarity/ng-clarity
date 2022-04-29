@@ -35,6 +35,7 @@ import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DetailService } from './providers/detail.service';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 // Reusable list of providers used in a number of tests
 export const DATAGRID_SPEC_PROVIDERS = [
@@ -56,6 +57,7 @@ export const DATAGRID_SPEC_PROVIDERS = [
   StateProvider,
   TableSizeService,
   DetailService,
+  KeyNavigationGridController,
   UNIQUE_ID_PROVIDER,
 ];
 
