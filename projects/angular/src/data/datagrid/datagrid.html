@@ -19,13 +19,17 @@
                     role="columnheader"
                     class="datagrid-column datagrid-select datagrid-fixed-column"
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
+                    (keydown.space)="allSelected = !allSelected; $event.preventDefault()"
                   >
                     <div class="clr-checkbox-wrapper">
+                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
+                           which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input
                         type="checkbox"
                         [id]="selectAllId"
                         [(ngModel)]="allSelected"
                         [attr.aria-label]="commonStrings.keys.selectAll"
+                        tabindex="-1"
                       />
                       <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
                       <label [for]="selectAllId" class="clr-control-label clr-col-null">
