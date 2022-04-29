@@ -21,7 +21,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
@@ -46,6 +46,7 @@ import { SelectionType } from './enums/selection-type';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 @Component({
   selector: 'clr-datagrid',
@@ -66,6 +67,7 @@ import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-gener
     TableSizeService,
     ColumnsService,
     DisplayModeService,
+    KeyNavigationGridController,
   ],
   host: {
     '[class.datagrid-host]': 'true',
@@ -87,7 +89,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     @Inject(UNIQUE_ID) datagridId: string,
     private el: ElementRef,
     private page: Page,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private columnsService: ColumnsService,
+    private keyNavigation: KeyNavigationGridController
   ) {
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     this.detailService.id = datagridId;
@@ -261,6 +265,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Our setup happens in the view of some of our components, so we wait for it to be done before starting
    */
   ngAfterViewInit() {
+    this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
     this._subscriptions.push(
@@ -272,11 +278,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.selectedChanged.emit(s as T[]);
         }
       }),
+      // Reinitialize arrow key navigation on page changes
       this.page.change.subscribe(() => {
+        this.keyNavigation.resetKeyGrid();
         if (!this.clrDgDisablePageFocus) {
           this.datagridTable.nativeElement.focus();
         }
       }),
+      // Reinitialize arrow key navigation on hide/unhide columns
+      combineLatest(this.columnsService.columns).subscribe(() => this.keyNavigation?.resetKeyGrid()),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
         // Remove any projected columns from the projectedDisplayColumns container

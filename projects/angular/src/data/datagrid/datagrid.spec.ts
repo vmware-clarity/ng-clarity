@@ -31,6 +31,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
 import { SelectionType } from './enums/selection-type';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DetailService } from './providers/detail.service';
+import { KeyCodes } from 'src/utils/enums/key-codes.enum';
 
 @Component({
   template: `
@@ -773,6 +774,100 @@ export default function (): void {
             .querySelector('.datagrid-header .datagrid-column.datagrid-expandable-caret')
             .getAttribute('aria-label')
         ).toBe('Expand one of the rows');
+      });
+    });
+
+    describe('Key focus', function () {
+      // We use SingleSelctionTest to test focusing of actionalbe content in cells
+      let context: TestContext<ClrDatagrid<number>, SingleSelectionTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, SingleSelectionTest, [Selection]);
+      });
+
+      it('Moves focus across cells', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        expect(grid).toBeDefined();
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        expect(cells.length).toBe(13); // 3*2 data, 3 select radios, 3 headers and 1 placeholder
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowRight }));
+        // second time, to avoid cycling over cells with radios
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowRight }));
+        expect(document.activeElement).toBe(cells[2]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        expect(document.activeElement).toBe(cells[5]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowLeft }));
+        expect(document.activeElement).toBe(cells[4]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowUp }));
+        expect(document.activeElement).toBe(cells[1]);
+      });
+
+      it('Moves focus to inner actionable element', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        expect(document.activeElement).toEqual(cells[3].querySelector('[type=radio]'));
+      });
+
+      it('Does not move focus to the placeholder element', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+        // we're at the edge, then we click once more to get to the placeholder
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+      });
+
+      it('Moves focus to a clicked element', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        const testCell = 7;
+        expect(document.activeElement).not.toEqual(cells[testCell]);
+        cells[testCell].dispatchEvent(new MouseEvent('mousedown', { buttons: 1, bubbles: true }));
+        expect(document.activeElement).toEqual(cells[testCell]);
+      });
+
+      it('Moves focus on PageDown and PageUp', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        expect(document.activeElement).toEqual(cells[0]);
+      });
+
+      it('Moves focus on Home and End', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
+        expect(document.activeElement).toEqual(cells[2]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home' }));
+        expect(document.activeElement).toEqual(cells[0]);
+      });
+
+      it('Moves focus on Ctrl-Home and Ctrl-End', function () {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true }));
+        expect(document.activeElement).toEqual(cells[11]);
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true }));
+        expect(document.activeElement).toEqual(cells[0]);
       });
     });
 

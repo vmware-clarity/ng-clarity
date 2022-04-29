@@ -670,6 +670,11 @@
       vertical-align: top;
       border: none;
 
+      &:focus {
+        outline: -webkit-focus-ring-color solid $clr_baselineRem_2px;
+        outline-offset: -$clr_baselineRem_2px;
+      }
+
       clr-dg-filter,
       clr-dg-string-filter,
       clr-dg-numeric-filter {
@@ -981,6 +986,11 @@
       &.datagrid-expandable-caret {
         padding: $clr_baselineRem_2px $horizontalPadding $clr_baselineRem_0_125;
         text-align: center;
+      }
+
+      &:focus {
+        outline: -webkit-focus-ring-color solid $clr_baselineRem_2px;
+        outline-offset: -$clr_baselineRem_2px;
       }
 
       .datagrid-action-toggle {
