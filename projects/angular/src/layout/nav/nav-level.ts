@@ -29,7 +29,6 @@ import '@cds/core/internal-components/close-button/register.js';
 const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   const cdsCloseButton = document.createElement('cds-internal-close-button');
   cdsCloseButton.setAttribute('icon-size', '32');
-  console.log(ariaLabel);
   cdsCloseButton.setAttribute('aria-label', ariaLabel);
   cdsCloseButton.setAttribute('aria-hidden', 'true');
   cdsCloseButton.setAttribute('type', 'button');
