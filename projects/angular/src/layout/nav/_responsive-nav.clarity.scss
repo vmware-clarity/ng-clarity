@@ -523,6 +523,7 @@
         .sub-nav.clr-nav-level-1,
         .sidenav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
+          overflow: inherit;
           width: $clr-sliding-panel-width;
           max-width: $clr-sliding-panel-width;
         }
@@ -582,6 +583,7 @@
         .sub-nav.clr-nav-level-1,
         .sidenav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
+          overflow: inherit;
           width: $clr-sliding-panel-width-sm;
           max-width: $clr-sliding-panel-width-sm;
         }
