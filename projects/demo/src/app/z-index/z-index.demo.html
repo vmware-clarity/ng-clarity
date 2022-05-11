@@ -1,0 +1,38 @@
+<h3>Component nesting z-index visual tests</h3>
+
+<h5>Datagrid with filter</h5>
+<clr-datagrid style="width: 300px">
+  <clr-dg-column>
+    Name
+    <clr-dg-filter>
+      <z-index-custom-filter></z-index-custom-filter>
+    </clr-dg-filter>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of [{name: 'Binky'}]">
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer></clr-dg-footer>
+</clr-datagrid>
+
+<h5>Modal</h5>
+<clr-modal [(clrModalOpen)]="open">
+  <h3 class="modal-title">I have a nice title</h3>
+  <div class="modal-body">
+    <z-index-various-content></z-index-various-content>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="open = false">Ok</button>
+  </div>
+</clr-modal>
+<button type="button" class="btn btn-outline" (click)="open = true">Open modal</button>
+
+<h5>Signpost</h5>
+<clr-signpost>
+  <clr-signpost-content *clrIfOpen>
+    <h3>Default Signpost</h3>
+    <z-index-various-content></z-index-various-content>
+  </clr-signpost-content>
+</clr-signpost>
