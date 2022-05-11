@@ -1,0 +1,44 @@
+<h5>Button group overflow</h5>
+<clr-button-group class="btn-primary">
+  <clr-button>Create</clr-button>
+  <clr-button>Favorite</clr-button>
+  <clr-button [clrInMenu]="true">Assign</clr-button>
+  <clr-button [clrInMenu]="true">Download</clr-button>
+  <clr-button [clrInMenu]="true">Delete</clr-button>
+</clr-button-group>
+
+<form clrForm>
+  <clr-date-container>
+    <label>Datepicker</label>
+    <input type="date" clrDate name="demo" [(ngModel)]="demo" />
+  </clr-date-container>
+</form>
+
+<form clrForm>
+  <clr-combobox-container>
+    <label>Combobox</label>
+    <clr-combobox [(ngModel)]="selected" name="two" required placeholder="Select a number">
+      <clr-options>
+        <clr-option clrValue="1">1</clr-option>
+        <clr-option clrValue="2">2</clr-option>
+        <clr-option clrValue="3">3</clr-option>
+      </clr-options>
+    </clr-combobox>
+  </clr-combobox-container>
+</form>
+
+<h5>Datagrid with filter, action, column select</h5>
+<clr-datagrid style="width: 300px">
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn="{hidden: false}"> Name </ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of [{name: 'Binky'}]">
+    <clr-dg-action-overflow>
+      <button class="action-item">Do something</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer></clr-dg-footer>
+</clr-datagrid>
