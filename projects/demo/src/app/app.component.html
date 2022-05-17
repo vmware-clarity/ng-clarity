@@ -34,14 +34,7 @@
           <a href="javascript://" clrDropdownItem>Preferences</a>
           <a href="javascript://" clrDropdownItem>Log out</a>
           <form clrForm clrLayout="vertical">
-            <clr-select-container (change)="onUseShimChange($event)">
-              <label>Cds Theme</label>
-              <select clrSelect>
-                <option value="">None</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
-            </clr-select-container>
+            <app-cds-theme-select></app-cds-theme-select>
           </form>
         </clr-dropdown-menu>
       </clr-dropdown>
