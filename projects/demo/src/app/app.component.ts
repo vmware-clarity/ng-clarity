@@ -41,4 +41,12 @@ export class AppComponent {
     loadTextEditIconSet();
     loadTravelIconSet();
   }
+
+  onUseShimChange(e) {
+    if (e.target.value === '') {
+      document.body.removeAttribute('cds-theme');
+    } else {
+      document.body.setAttribute('cds-theme', e.target.value);
+    }
+  }
 }

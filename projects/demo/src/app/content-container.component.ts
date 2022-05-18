@@ -12,29 +12,21 @@ import { APP_ROUTES } from './app.routing';
 @Component({
   selector: 'my-app-content-container',
   template: `
+    <clr-vertical-nav>
+      <ng-container *ngFor="let route of routes">
+        <a
+          *ngIf="route.path != ''"
+          clrVerticalNavLink
+          clrAriaCurrentLink
+          [routerLink]="[route.path]"
+          [routerLinkActive]="['active']"
+          >{{ route.path }}</a
+        >
+      </ng-container>
+    </clr-vertical-nav>
     <main class="content-area">
       <router-outlet></router-outlet>
     </main>
-    <nav class="sidenav" [clr-nav-level]="2">
-      <section class="sidenav-content">
-        <section class="nav-group collapsible">
-          <input id="tab1" type="checkbox" />
-          <label for="tab1">Clarity Navigation</label>
-          <ul class="nav-list">
-            <li *ngFor="let route of routes">
-              <a
-                *ngIf="route.path != ''"
-                clrAriaCurrentLink
-                class="nav-link"
-                [routerLink]="[route.path]"
-                [routerLinkActive]="['active']"
-                >{{ route.path }}</a
-              >
-            </li>
-          </ul>
-        </section>
-      </section>
-    </nav>
 
     <!--DO NOT DELETE THE COMMENTS BELOW. Needed for testing the Vertical Nav-->
     <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
