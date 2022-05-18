@@ -5,7 +5,7 @@
   -->
 
 <clr-main-container>
-  <clr-header>
+  <clr-header class="header-6">
     <div class="branding">
       <a href="#" class="nav-link">
         <cds-icon shape="vm-bug"></cds-icon>
@@ -29,10 +29,20 @@
           <cds-icon shape="cog" inverse></cds-icon>
           <cds-icon shape="angle" inverse direction="down"></cds-icon>
         </button>
-        <clr-dropdown-menu clrPosition="bottom-right" *clrIfOpen>
+        <clr-dropdown-menu clrPosition="bottom-right">
           <a href="javascript://" clrDropdownItem> <cds-icon shape="user"></cds-icon> About </a>
           <a href="javascript://" clrDropdownItem>Preferences</a>
           <a href="javascript://" clrDropdownItem>Log out</a>
+          <form clrForm clrLayout="vertical">
+            <clr-select-container (change)="onUseShimChange($event)">
+              <label>Cds Theme</label>
+              <select clrSelect>
+                <option value="">None</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </clr-select-container>
+          </form>
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
