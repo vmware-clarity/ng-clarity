@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 const cdsThemeAttribute = 'cds-theme';
 
@@ -21,7 +21,11 @@ const cdsThemeAttribute = 'cds-theme';
     </clr-select-container>
   `,
 })
-export class CdsThemeSelectComponent {
+export class CdsThemeSelectComponent implements OnDestroy {
+  ngOnDestroy() {
+    this.applyTheme(null);
+  }
+
   applyTheme(theme: string) {
     setThemeInDom(theme);
   }
