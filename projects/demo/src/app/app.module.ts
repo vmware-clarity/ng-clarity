@@ -13,6 +13,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
+import { cdsThemePathLocationStrategyProvider } from './cds-theme-path-location-strategy';
 import { CdsThemeSelectComponent } from './cds-theme-select.component';
 import { AppContentContainerComponent } from './content-container.component';
 import { LandingComponent } from './landing.component';
@@ -20,6 +21,7 @@ import { LandingComponent } from './landing.component';
 @NgModule({
   declarations: [AppComponent, LandingComponent, AppContentContainerComponent, CdsThemeSelectComponent],
   imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
+  providers: [cdsThemePathLocationStrategyProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
