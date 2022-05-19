@@ -5,6 +5,7 @@
   },
   "version": 1,
   "newProjectRoot": "projects",
+  "defaultProject": "clr-angular",
   "projects": {
     "clr-demo": {
       "projectType": "application",
@@ -23,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/clr-demo",
+            "outputPath": "dist/storybook/demo",
             "index": "projects/demo/src/index.html",
             "main": "projects/demo/src/main.ts",
             "polyfills": "projects/demo/src/polyfills.ts",
@@ -31,6 +32,7 @@
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": ["projects/angular/src/main.scss", "projects/demo/src/styles.scss"],
             "scripts": [],
+            "baseHref": "/demo/",
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,

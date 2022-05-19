@@ -1,3 +1,5 @@
 /.angular
 **/node_modules
+/coverage
 /dist
+/documentation.json
