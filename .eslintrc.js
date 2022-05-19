@@ -12,6 +12,10 @@ module.exports = {
     jasmine: true,
   },
   extends: ['eslint:recommended', 'plugin:json/recommended-with-comments', 'prettier'],
+  parserOptions: {
+    sourceType: 'module',
+    allowImportExportEverywhere: true,
+  },
   plugins: ['import', 'license-header'],
   rules: {
     curly: 'error',

@@ -1,0 +1,46 @@
+diff --git a/node_modules/@storybook/angular/dist/ts3.9/client/docs/compodoc.js b/node_modules/@storybook/angular/dist/ts3.9/client/docs/compodoc.js
+index e6cd36c..ebcbab2 100644
+--- a/node_modules/@storybook/angular/dist/ts3.9/client/docs/compodoc.js
++++ b/node_modules/@storybook/angular/dist/ts3.9/client/docs/compodoc.js
+@@ -167,17 +167,15 @@ const extractDefaultValueFromComments = (property, value) => {
+     return commentValue;
+ };
+ const extractDefaultValue = (property) => {
+-    var _a, _b;
++    var _b;
+     try {
+-        let value = (_a = property.defaultValue) === null || _a === void 0 ? void 0 : _a.replace(/^'(.*)'$/, '$1');
+-        value = castDefaultValue(property, value);
++        let value = eval(property.defaultValue);
+         if (value == null && ((_b = property.jsdoctags) === null || _b === void 0 ? void 0 : _b.length) > 0) {
+             value = extractDefaultValueFromComments(property, value);
+         }
+         return value;
+     }
+-    catch (err) {
+-        client_logger_1.logger.debug(`Error extracting ${property.name}: ${property.defaultValue}`);
++    catch {
+         return undefined;
+     }
+ };
+diff --git a/node_modules/@storybook/angular/dist/ts3.9/client/preview/angular-beta/utils/NgModulesAnalyzer.js b/node_modules/@storybook/angular/dist/ts3.9/client/preview/angular-beta/utils/NgModulesAnalyzer.js
+index 06e12ca..9251e84 100644
+--- a/node_modules/@storybook/angular/dist/ts3.9/client/preview/angular-beta/utils/NgModulesAnalyzer.js
++++ b/node_modules/@storybook/angular/dist/ts3.9/client/preview/angular-beta/utils/NgModulesAnalyzer.js
+@@ -10,14 +10,14 @@ const reflectionCapabilities = new core_1.ɵReflectionCapabilities();
+  */
+ exports.isComponentAlreadyDeclaredInModules = (componentToFind, moduleDeclarations, moduleImports) => {
+     if (moduleDeclarations &&
+-        moduleDeclarations.some((declaration) => declaration === componentToFind)) {
++        moduleDeclarations.flat().some((declaration) => declaration === componentToFind)) {
+         // Found component in declarations array
+         return true;
+     }
+     if (!moduleImports) {
+         return false;
+     }
+-    return moduleImports.some((importItem) => {
++    return moduleImports.flat().some((importItem) => {
+         const extractedNgModuleMetadata = extractNgModuleMetadata(importItem);
+         if (!extractedNgModuleMetadata) {
+             // Not an NgModule

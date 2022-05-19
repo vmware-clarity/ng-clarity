@@ -1,4 +1,6 @@
 /.angular
 **/node_modules
+/coverage
 /dist
 /projects/angular/clarity.api.md
+/documentation.json
