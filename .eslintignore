@@ -1,5 +1,8 @@
 !.*
 /.angular
 **/node_modules
+/coverage
 /dist
 /projects/angular/clarity.api.md
+/.storybook/preview.js
+/documentation.json

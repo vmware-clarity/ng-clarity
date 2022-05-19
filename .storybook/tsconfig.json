@@ -1,0 +1,10 @@
+{
+  "extends": "../projects/angular/tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
+  "include": ["../stories/**/*", "../projects/angular/src/**/*.stories.mdx", "../projects/angular/src/**/*.stories.ts"],
+  "files": ["./typings.d.ts"]
+}

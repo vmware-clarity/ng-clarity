@@ -1,0 +1,25 @@
+diff --git a/node_modules/@storybook/addon-docs/dist/esm/frameworks/angular/compodoc.js b/node_modules/@storybook/addon-docs/dist/esm/frameworks/angular/compodoc.js
+index 25e13af..b3a47ca 100644
+--- a/node_modules/@storybook/addon-docs/dist/esm/frameworks/angular/compodoc.js
++++ b/node_modules/@storybook/addon-docs/dist/esm/frameworks/angular/compodoc.js
+@@ -259,18 +259,14 @@ var extractDefaultValueFromComments = function extractDefaultValueFromComments(p
+ 
+ var extractDefaultValue = function extractDefaultValue(property) {
+   try {
+-    var _property$defaultValu, _property$jsdoctags;
+-
+-    var value = (_property$defaultValu = property.defaultValue) === null || _property$defaultValu === void 0 ? void 0 : _property$defaultValu.replace(/^'(.*)'$/, '$1');
+-    value = castDefaultValue(property, value);
++    var value = eval(property.defaultValue);
+ 
+     if (value == null && ((_property$jsdoctags = property.jsdoctags) === null || _property$jsdoctags === void 0 ? void 0 : _property$jsdoctags.length) > 0) {
+       value = extractDefaultValueFromComments(property, value);
+     }
+ 
+     return value;
+-  } catch (err) {
+-    logger.debug("Error extracting ".concat(property.name, ": ").concat(property.defaultValue));
++  } catch {
+     return undefined;
+   }
+ };
