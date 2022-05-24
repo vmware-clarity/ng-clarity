@@ -6,11 +6,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClarityModule } from '@clr/angular';
 
 import { ColorPalette } from './color-palette';
 import { ColorsDemo } from './color.demo';
 import { ROUTING } from './color.demo.routing';
-import { ClarityModule } from '@clr/angular';
 
 @NgModule({
   imports: [CommonModule, ROUTING, ClarityModule],

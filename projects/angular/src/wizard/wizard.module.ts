@@ -10,7 +10,6 @@ import { ClarityIcons, errorStandardIcon } from '@cds/core/icon';
 
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
 import { ClrModalModule } from '../modal/modal.module';
-
 import { ClrWizard } from './wizard';
 import { ClrWizardButton } from './wizard-button';
 import { ClrWizardCustomTags } from './wizard-custom-tags';

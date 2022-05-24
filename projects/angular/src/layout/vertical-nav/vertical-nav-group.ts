@@ -9,11 +9,10 @@ import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestro
 import { Subscription } from 'rxjs';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 const EXPANDED_STATE = 'expanded';
 const COLLAPSED_STATE = 'collapsed';

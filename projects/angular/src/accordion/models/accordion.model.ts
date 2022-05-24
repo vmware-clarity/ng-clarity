@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionStrategy } from '../enums/accordion-strategy.enum';
 import { AccordionStatus } from '../enums/accordion-status.enum';
+import { AccordionStrategy } from '../enums/accordion-strategy.enum';
 
 let accordionCount = 0;
 

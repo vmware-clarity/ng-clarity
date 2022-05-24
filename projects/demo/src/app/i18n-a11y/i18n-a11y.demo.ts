@@ -7,8 +7,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService, commonStringsDefault, ClrCommonStrings } from '@clr/angular';
 
-import { USERS } from './users';
 import { frenchTranslation } from './fr-translation';
+import { USERS } from './users';
 
 @Component({
   templateUrl: './i18n-a11y.demo.html',

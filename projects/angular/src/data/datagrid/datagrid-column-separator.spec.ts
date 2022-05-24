@@ -7,18 +7,18 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 
+import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { ClrDragAndDropModule } from '../../utils/drag-and-drop/drag-and-drop.module';
 import { ClrDragEvent } from '../../utils/drag-and-drop/drag-event';
 import { ClrDraggable } from '../../utils/drag-and-drop/draggable/draggable';
 import { DragEventType } from '../../utils/drag-and-drop/interfaces/drag-event.interface';
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
 import { MOCK_TABLE_SIZE_PROVIDER } from './providers/table-size.service.mock';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
 
 @Component({
   template: `<clr-dg-column-separator></clr-dg-column-separator>`,

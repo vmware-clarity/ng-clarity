@@ -8,8 +8,8 @@ import { Component, OnInit, ContentChild, Inject, InjectionToken, OnDestroy } fr
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrLabel } from '../common/label';
+import { ControlIdService } from '../common/providers/control-id.service';
 
 export const IS_TOGGLE = new InjectionToken<BehaviorSubject<boolean>>('IS_TOGGLE');
 export function isToggleFactory() {

@@ -5,6 +5,7 @@
  */
 
 import { Injectable, QueryList } from '@angular/core';
+
 import { ClrWizardHeaderAction } from '../wizard-header-action';
 import { WizardNavigationService } from './wizard-navigation.service';
 

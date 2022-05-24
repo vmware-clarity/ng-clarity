@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
 import { ClrDay } from './day';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';

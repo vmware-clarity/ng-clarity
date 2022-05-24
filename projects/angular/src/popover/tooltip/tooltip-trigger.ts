@@ -5,9 +5,10 @@
  */
 
 import { Directive, HostListener } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
-import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[clrTooltipTrigger]',

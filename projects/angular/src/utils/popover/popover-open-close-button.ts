@@ -5,8 +5,9 @@
  */
 
 import { Directive, EventEmitter, HostListener, OnDestroy, Output } from '@angular/core';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 import { Subscription } from 'rxjs';
+
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Directive({
   selector: '[clrPopoverOpenCloseButton]',

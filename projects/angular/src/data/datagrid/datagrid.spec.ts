@@ -5,19 +5,22 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Subject } from 'rxjs';
 import { async, fakeAsync, tick } from '@angular/core/testing';
+import { Subject } from 'rxjs';
 
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
+import { SelectionType } from './enums/selection-type';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ClrDatagridStringFilterInterface } from './interfaces/string-filter.interface';
+import { DetailService } from './providers/detail.service';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
@@ -27,11 +30,8 @@ import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
-import { DatagridRenderOrganizer } from './render/render-organizer';
-import { SelectionType } from './enums/selection-type';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
-import { DetailService } from './providers/detail.service';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { DatagridRenderOrganizer } from './render/render-organizer';
 
 @Component({
   template: `

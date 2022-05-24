@@ -8,14 +8,14 @@ import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Rendere
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-import { DatagridRenderStep } from '../enums/render-step.enum';
-import { ColumnResizerService } from '../providers/column-resizer.service';
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
-import { DatagridRenderOrganizer } from './render-organizer';
-import { ColumnState } from '../interfaces/column-state.interface';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
+import { DatagridRenderStep } from '../enums/render-step.enum';
+import { ColumnState } from '../interfaces/column-state.interface';
+import { ColumnResizerService } from '../providers/column-resizer.service';
 import { COLUMN_STATE, COLUMN_STATE_PROVIDER } from '../providers/column-state.provider';
 import { ColumnsService } from '../providers/columns.service';
+import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { DatagridRenderOrganizer } from './render-organizer';
 
 @Directive({ selector: 'clr-dg-column', providers: [ColumnResizerService, COLUMN_STATE_PROVIDER] })
 export class DatagridHeaderRenderer implements OnDestroy {

@@ -7,13 +7,12 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ClrLoadingState } from '../../utils/loading/loading';
+import { ClrLoadingModule } from '../../utils/loading/loading.module';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
-
 import { ClrButton } from './button';
 import { ClrButtonGroupModule } from './button-group.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   template: `

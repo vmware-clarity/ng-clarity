@@ -6,9 +6,9 @@
 
 import { Subscription } from 'rxjs';
 
-import { OptionSelectionService } from './option-selection.service';
-import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 import { ComboboxModel } from '../model/combobox.model';
+import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
+import { OptionSelectionService } from './option-selection.service';
 
 export default function () {
   describe('Option Selection Service', () => {

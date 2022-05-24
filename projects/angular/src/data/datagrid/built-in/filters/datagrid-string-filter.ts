@@ -6,16 +6,16 @@
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
+import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
+import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridFilter } from '../../datagrid-filter';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from '../../providers/filters';
-import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
-import { ClrCommonStringsService } from '../../../../utils/i18n/common-strings.service';
-
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
 
 @Component({
   selector: 'clr-dg-string-filter',

@@ -5,7 +5,6 @@
  */
 
 import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
-
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
 

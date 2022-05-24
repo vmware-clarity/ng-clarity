@@ -7,6 +7,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from '../helpers.spec';

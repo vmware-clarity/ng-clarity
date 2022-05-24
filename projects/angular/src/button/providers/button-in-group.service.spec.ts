@@ -5,7 +5,6 @@
  */
 
 import { ClrButton } from '../button-group/button';
-
 import { ButtonInGroupService } from './button-in-group.service';
 
 export default function (): void {

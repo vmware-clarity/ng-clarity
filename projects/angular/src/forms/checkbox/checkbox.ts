@@ -8,8 +8,8 @@ import { Directive, Renderer2, ElementRef, Injector, Self, Optional, ViewContain
 import { NgControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
 import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
 
 /**
  * This implements both the clrCheckbox and clrToggle functionality, since they are both just checkboxes with different

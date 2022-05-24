@@ -5,6 +5,7 @@
  */
 
 import { Directive, ElementRef, OnDestroy, Optional } from '@angular/core';
+
 import { DragHandleRegistrarService } from './providers/drag-handle-registrar.service';
 
 @Directive({ selector: '[clrDragHandle]', host: { '[class.drag-handle]': 'true' } })

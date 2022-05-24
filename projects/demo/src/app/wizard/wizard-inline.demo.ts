@@ -5,7 +5,6 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-
 import { ClrWizard } from '@clr/angular';
 
 @Component({ selector: 'clr-wizard-inline', templateUrl: './wizard-inline.demo.html' })

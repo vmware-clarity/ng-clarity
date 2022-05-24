@@ -9,7 +9,6 @@ import { NgModule, Type } from '@angular/core';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
-
 import { ClrButton } from './button';
 import { ClrButtonGroup } from './button-group';
 

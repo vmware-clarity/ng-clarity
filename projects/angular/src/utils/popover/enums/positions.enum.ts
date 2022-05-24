@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrAlignment } from './alignment.enum';
 import { ClrAxis } from './axis.enum';
 import { ClrSide } from './side.enum';
-import { ClrAlignment } from './alignment.enum';
 
 interface ClrPopoverPositionsInterface {
   axis: ClrAxis;

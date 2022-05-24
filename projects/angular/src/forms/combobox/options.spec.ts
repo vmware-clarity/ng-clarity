@@ -9,16 +9,15 @@ import { TestBed } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
-import { ClrOptions } from './options';
-import { OptionSelectionService } from './providers/option-selection.service';
-import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { AriaService } from '../../utils/aria/aria.service';
-import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
+import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
-import { FocusService } from '../../utils/focus/focus.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrOptions } from './options';
+import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 const OPTION_PROVIDERS = [
   ClrPopoverToggleService,

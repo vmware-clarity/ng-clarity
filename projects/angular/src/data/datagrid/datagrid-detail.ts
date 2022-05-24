@@ -5,9 +5,10 @@
  */
 
 import { Component, ContentChild, HostListener } from '@angular/core';
-import { DetailService } from './providers/detail.service';
+
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
+import { DetailService } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-detail',

@@ -5,9 +5,10 @@
  */
 
 import { Injectable, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
-import { Subject } from 'rxjs';
 
 @Injectable()
 export class TreeFeaturesService<T> {

@@ -5,14 +5,13 @@
  */
 
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
-
+import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
 import { ClrSignpostModule } from './signpost.module';
-import { SignpostIdService } from './providers/signpost-id.service';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCustomTriggerSignpost> {
   toggleService: ClrPopoverToggleService;

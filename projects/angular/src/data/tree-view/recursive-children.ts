@@ -8,10 +8,10 @@ import { Component, Input, Optional } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { TreeFeaturesService } from './tree-features.service';
+import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { TreeNodeModel } from './models/tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
-import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
+import { TreeFeaturesService } from './tree-features.service';
 
 @Component({
   selector: 'clr-recursive-children',

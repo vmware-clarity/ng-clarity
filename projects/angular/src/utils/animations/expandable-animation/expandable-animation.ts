@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, HostBinding, HostListener, Input } from '@angular/core';
 
-import { animate, style, transition, trigger } from '@angular/animations';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({

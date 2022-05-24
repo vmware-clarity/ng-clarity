@@ -5,17 +5,16 @@
  */
 
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { TestContext } from '../helpers.spec';
-
+import { ColumnState } from '../interfaces/column-state.interface';
 import { DatagridCellRenderer } from './cell-renderer';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
-import { BehaviorSubject } from 'rxjs';
-import { ColumnState } from '../interfaces/column-state.interface';
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 @Component({ template: `<clr-dg-cell>Hello world</clr-dg-cell>` })
 class SimpleTest {}

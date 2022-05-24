@@ -7,10 +7,10 @@
 import { Component } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { NgControlService } from './providers/ng-control.service';
-import { ControlIdService } from './providers/control-id.service';
-import { ControlClassService } from './providers/control-class.service';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
+import { ControlClassService } from './providers/control-class.service';
+import { ControlIdService } from './providers/control-id.service';
+import { NgControlService } from './providers/ng-control.service';
 
 @Component({
   selector: 'clr-control-container',

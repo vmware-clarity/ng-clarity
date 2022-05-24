@@ -17,12 +17,12 @@ import {
   Self,
   ViewContainerRef,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { NgControl } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
-import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
-import { WrappedFormControl } from '../common/wrapped-control';
 import { FocusService } from '../common/providers/focus.service';
+import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 
 @Directive({ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {

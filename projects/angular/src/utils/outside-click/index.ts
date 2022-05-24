@@ -5,6 +5,7 @@
  */
 
 import { Type } from '@angular/core';
+
 import { OutsideClick } from './outside-click';
 
 export * from './outside-click';

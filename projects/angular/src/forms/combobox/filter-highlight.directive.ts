@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import { Directive, ElementRef, OnDestroy, AfterViewInit, Inject, PLATFORM_ID, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { OptionSelectionService } from './providers/option-selection.service';
-import { isPlatformBrowser } from '@angular/common';
 
 // TODO: Check if this directive is properly sanitized and:
 //       - return to module

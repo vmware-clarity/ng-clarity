@@ -7,10 +7,10 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { SpinnerComponentDemo } from './spinner-component';
 import { SpinnerSizesDemo } from './spinner-sizes';
 import { SpinnerTypesDemo } from './spinner-types';
 import { SpinnerDemo } from './spinner.demo';
-import { SpinnerComponentDemo } from './spinner-component';
 
 const ROUTES: Routes = [
   {

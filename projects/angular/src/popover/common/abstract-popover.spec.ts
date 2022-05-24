@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
 import { AbstractPopover } from './abstract-popover';
 import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 

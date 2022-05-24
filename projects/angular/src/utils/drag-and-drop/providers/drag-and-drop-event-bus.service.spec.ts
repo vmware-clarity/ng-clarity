@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Observable } from 'rxjs';
+
+import { generateDragPosition } from '../helpers.spec';
 import { DragEventInterface, DragEventType } from '../interfaces/drag-event.interface';
 import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';
-import { generateDragPosition } from '../helpers.spec';
-import { Observable } from 'rxjs';
 
 type DragTransfer = {
   data: any;

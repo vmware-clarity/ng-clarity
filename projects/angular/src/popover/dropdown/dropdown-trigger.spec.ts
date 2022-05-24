@@ -5,12 +5,12 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { FocusService } from '../../utils/focus/focus.service';
 
+import { FocusService } from '../../utils/focus/focus.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrDropdown } from './dropdown';
+import { ClrDropdownTrigger } from './dropdown-trigger';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 @Component({

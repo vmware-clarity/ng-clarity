@@ -5,6 +5,7 @@
  */
 
 import { Component, Input, HostBinding } from '@angular/core';
+
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 
 @Component({

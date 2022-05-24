@@ -4,9 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { preventArrowKeyScroll } from './util';
-
 import { KeyCodes, IEKeyCodes } from '../../enums/key-codes.enum';
+import { preventArrowKeyScroll } from './util';
 
 describe('preventArrowKeyScroll', () => {
   it('should prevent scroll on element based on key event', () => {

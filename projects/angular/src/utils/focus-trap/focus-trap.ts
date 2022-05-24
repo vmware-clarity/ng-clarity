@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { createId, FocusTrapTrackerService, isFocusable, isHTMLElement } from '@cds/core/internal';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Injectable, Injector, Renderer2 } from '@angular/core';
+import { createId, FocusTrapTrackerService, isFocusable, isHTMLElement } from '@cds/core/internal';
 
 export interface FocusTrapElement extends HTMLElement {
   topReboundElement: HTMLElement | undefined;

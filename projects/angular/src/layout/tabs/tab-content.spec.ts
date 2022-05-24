@@ -7,11 +7,10 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
-
 import { AriaService } from '../../utils/aria/aria.service';
-import { ClrTabContent } from './tab-content';
+import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
+import { ClrTabContent } from './tab-content';
 
 @Component({
   selector: 'test-wrapper',

@@ -8,7 +8,6 @@ import { Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/co
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrEmphasisModule } from '../emphasis.module';
-
 import { ClrAlert } from './alert';
 import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';

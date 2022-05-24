@@ -8,13 +8,12 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IfActiveService } from '../../utils/conditional/if-active.service';
-
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
+import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabLink } from './tab-link.directive';
 import { TABS_ID_PROVIDER } from './tabs-id.provider';
 import { ClrTabsModule } from './tabs.module';
-import { TabsLayout } from './enums/tabs-layout.enum';
 
 @Component({
   template: `

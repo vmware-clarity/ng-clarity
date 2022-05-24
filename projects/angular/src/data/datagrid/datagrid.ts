@@ -23,12 +23,17 @@ import {
 } from '@angular/core';
 import { combineLatest, Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
+import { SelectionType } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
+import { ColumnsService } from './providers/columns.service';
+import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -41,11 +46,6 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { SelectionType } from './enums/selection-type';
-import { ColumnsService } from './providers/columns.service';
-import { DetailService } from './providers/detail.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 @Component({

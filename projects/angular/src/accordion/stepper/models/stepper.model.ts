@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionModel } from '../../models/accordion.model';
 import { AccordionStatus } from '../../enums/accordion-status.enum';
+import { AccordionModel } from '../../models/accordion.model';
 
 export class StepperModel extends AccordionModel {
   private stepperModelInitialize = false;

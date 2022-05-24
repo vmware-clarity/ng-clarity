@@ -7,9 +7,8 @@
 import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
-
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';

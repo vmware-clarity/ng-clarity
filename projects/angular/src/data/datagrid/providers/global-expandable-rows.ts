@@ -5,6 +5,7 @@
  */
 
 import { Injectable } from '@angular/core';
+
 import { DetailService } from './detail.service';
 
 @Injectable()

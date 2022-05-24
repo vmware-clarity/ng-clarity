@@ -7,10 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { TemplateDrivenSpec, ControlStandaloneSpec, ReactiveSpec } from '../tests/control.spec';
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
-
-import { TemplateDrivenSpec, ControlStandaloneSpec, ReactiveSpec } from '../tests/control.spec';
 
 @Component({
   template: ` <textarea clrTextarea></textarea> `,

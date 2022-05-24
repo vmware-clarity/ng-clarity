@@ -7,17 +7,17 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { TreeViewDemo } from './tree-view.demo';
 import { EagerDeclarativeTreeDemo } from './eager-declarative-tree/eager-declarative-tree';
 import { EagerRecursiveTreeDemo } from './eager-recursive-tree/eager-recursive-tree';
 import { LazyDeclarativeTreeDemo } from './lazy-declarative-tree/lazy-declarative-tree';
 import { LazyRecursiveTreeDemo } from './lazy-recursive-tree/lazy-recursive-tree';
 import { NodesWithIconsDemo } from './nodes-with-icons/nodes-with-icons';
+import { PreSelectionDemo } from './pre-selection/pre-selection';
 import { TreeNodeRoutingDemo } from './tree-node-routing/tree-node-routing';
 import { TreeNodeRoutingAbbeyRoadDemo } from './tree-node-routing/tree-node-routing-abbey-road';
 import { TreeNodeRoutingRevolverDemo } from './tree-node-routing/tree-node-routing-revolver';
 import { TreeNodeRoutingRubberSoulDemo } from './tree-node-routing/tree-node-routing-rubber-soul';
-import { PreSelectionDemo } from './pre-selection/pre-selection';
+import { TreeViewDemo } from './tree-view.demo';
 
 const ROUTES: Routes = [
   {

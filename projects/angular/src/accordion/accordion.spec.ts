@@ -4,16 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AccordionService } from './providers/accordion.service';
-import { ClrAccordionModule } from './accordion.module';
 import { ClrAccordion } from './accordion';
 import { ClrAccordionPanel } from './accordion-panel';
+import { ClrAccordionModule } from './accordion.module';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   template: `

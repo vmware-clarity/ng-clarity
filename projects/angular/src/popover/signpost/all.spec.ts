@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { addHelpers } from '../../data/datagrid/helpers.spec';
+import SignpostFocusManagerServiceSpec from './providers/signpost-focus-manager.service.spec';
+import SignpostIdServiceSpec from './providers/signpost-id.service.spec';
 import SignpostContentSpecs from './signpost-content.spec';
 import SignpostTriggerSpecs from './signpost-trigger.spec';
 import SignpostSpecs from './signpost.spec';
-import SignpostIdServiceSpec from './providers/signpost-id.service.spec';
-import SignpostFocusManagerServiceSpec from './providers/signpost-focus-manager.service.spec';
-import { addHelpers } from '../../data/datagrid/helpers.spec';
 
 describe('Signpost', function () {
   addHelpers();

@@ -7,10 +7,10 @@
 import { Component, ContentChild } from '@angular/core';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
-import { Selection } from './providers/selection';
 import { SelectionType } from './enums/selection-type';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
+import { Selection } from './providers/selection';
 
 @Component({
   selector: 'clr-dg-footer',

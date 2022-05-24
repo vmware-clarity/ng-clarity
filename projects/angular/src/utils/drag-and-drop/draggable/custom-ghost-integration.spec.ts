@@ -12,15 +12,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIconModule } from '../../../icon/icon.module';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrDragAndDropModule } from '../drag-and-drop.module';
+import { generateDragPosition } from '../helpers.spec';
 import { DragEventInterface, DragEventType } from '../interfaces/drag-event.interface';
 import { DragEventListenerService } from '../providers/drag-event-listener.service';
 import { MOCK_DRAG_EVENT_LISTENER_PROVIDER } from '../providers/drag-event-listener.service.mock';
 import { DragHandleRegistrarService } from '../providers/drag-handle-registrar.service';
 import { DraggableSnapshotService } from '../providers/draggable-snapshot.service';
 import { GlobalDragModeService } from '../providers/global-drag-mode.service';
-
 import { ClrDraggable } from './draggable';
-import { generateDragPosition } from '../helpers.spec';
 
 export default function (): void {
   describe('With Custom Draggable Ghost', function () {

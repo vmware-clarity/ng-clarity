@@ -6,9 +6,9 @@
 
 import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { ClrDropdown } from './dropdown';
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
+import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
 
 @Directive({

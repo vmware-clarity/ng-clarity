@@ -4,13 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrRovingTabindex } from './roving-tabindex';
 import { Component, DebugElement, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { ClrKeyFocusModule } from './key-focus.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
 import { ClrKeyFocusItem } from './key-focus-item';
+import { ClrKeyFocusModule } from './key-focus.module';
+import { ClrRovingTabindex } from './roving-tabindex';
 
 @Component({
   template: `

@@ -5,32 +5,31 @@
  */
 
 import { Component, Renderer2 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { TestBed, async } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
+import { PopoverPosition } from '../../popover/common/popover-positions';
+import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrCommonFormsModule } from '../common/common.module';
+import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { PopoverPosition } from '../../popover/common/popover-positions';
-
 import { ClrDateContainer } from './date-container';
+import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
 import { LocaleHelperService } from './providers/locale-helper.service';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
-import { DayModel } from './model/day.model';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverEventsService,

@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { StackViewNgDemo } from './stack-view-ng-demo';
 
 @Component({

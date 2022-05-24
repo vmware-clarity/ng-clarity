@@ -8,14 +8,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
-import { ClrOption } from './option';
-import { OptionSelectionService } from './providers/option-selection.service';
-import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
-import { ComboboxModel } from './model/combobox.model';
-import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ComboboxModel } from './model/combobox.model';
+import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOption } from './option';
+import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 @Component({
   template: ` <clr-option [clrValue]="value" [id]="id" #option> Test </clr-option> `,

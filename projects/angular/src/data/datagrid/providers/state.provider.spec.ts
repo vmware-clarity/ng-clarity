@@ -4,12 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Page } from './page';
-import { StateDebouncer } from './state-debouncer.provider';
 import { Subscription } from 'rxjs';
-import { StateProvider } from './state.provider';
+
 import { FiltersProvider } from './filters';
+import { Page } from './page';
 import { Sort } from './sort';
+import { StateDebouncer } from './state-debouncer.provider';
+import { StateProvider } from './state.provider';
 
 export default function (): void {
   describe('State Provider', function () {

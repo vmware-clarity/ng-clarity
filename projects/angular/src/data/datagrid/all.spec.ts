@@ -11,33 +11,35 @@
  * over the place because we load them asynchronously.
  */
 
+import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
-import DatagridPropertyStringFilterSpecs from './built-in/filters/datagrid-property-string-filter.spec';
-import DatagridStringFilterSpecs from './built-in/filters/datagrid-string-filter.spec';
-import DatagridStringFilterImplSpecs from './built-in/filters/datagrid-string-filter-impl.spec';
-import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
+import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
+import DatagridPropertyStringFilterSpecs from './built-in/filters/datagrid-property-string-filter.spec';
+import DatagridStringFilterImplSpecs from './built-in/filters/datagrid-string-filter-impl.spec';
+import DatagridStringFilterSpecs from './built-in/filters/datagrid-string-filter.spec';
 import NestedPropertySpecs from './built-in/nested-property.spec';
 import DatagridActionBarSpecs from './datagrid-action-bar.spec';
 import DatagridActionOverflowSpecs from './datagrid-action-overflow.spec';
 import DatagridCellSpecs from './datagrid-cell.spec';
+import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridColumnToggleButtonSpecs from './datagrid-column-toggle-button.spec';
 import DatagridColumnToggleSpecs from './datagrid-column-toggle.spec';
 import DatagridColumnSpecs from './datagrid-column.spec';
-import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridFilterSpecs from './datagrid-filter.spec';
 import DatagridFooterSpecs from './datagrid-footer.spec';
 import DatagridHideableColumnDirectiveSpec from './datagrid-hideable-column.spec';
 import DatagridItemsTrackBySpecs from './datagrid-items-trackby.spec';
 import DatagridItemsSpecs from './datagrid-items.spec';
 import DatagridPageSizeSpecs from './datagrid-page-size.spec';
-import DatagridPaginationSpecs from './datagrid-pagination.spec';
 import DatagridPaginationIntegrationSpecs from './datagrid-pagination.integration.spec';
+import DatagridPaginationSpecs from './datagrid-pagination.spec';
 import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
 import DatagridSpecs from './datagrid.spec';
 import { addHelpers } from './helpers.spec';
+import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
 import DisplayModeServiceSpecs from './providers/display-mode.service.spec';
 import FiltersProviderSpecs from './providers/filters.spec';
 import ItemsProviderSpecs from './providers/items.spec';
@@ -47,7 +49,6 @@ import SortProviderSpecs from './providers/sort.spec';
 import StateProviderSpecs from './providers/state.provider.spec';
 import TableSizeServiceSpec from './providers/table-size.service.spec';
 import DatagridCellRendererSpecs from './render/cell-renderer.spec';
-import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 import DatagridHeaderRendererSpecs from './render/header-renderer.spec';
 import DatagridMainRendererSpecs from './render/main-renderer.spec';
 import NoopDomAdapterSpecs from './render/noop-dom-adapter.spec';
@@ -56,7 +57,6 @@ import DatagridRowRendererSpecs from './render/row-renderer.spec';
 import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
-import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
 
 describe('Datagrid', function () {
   addHelpers();

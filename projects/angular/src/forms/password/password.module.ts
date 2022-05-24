@@ -11,7 +11,6 @@ import { checkCircleIcon, ClarityIcons, exclamationCircleIcon, eyeHideIcon, eyeI
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
 

@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
 import { ClrIfActive } from './if-active.directive';
-import { ClrIfOpen } from './if-open.directive';
 import { ClrIfExpanded } from './if-expanded.directive';
+import { ClrIfOpen } from './if-open.directive';
 
 export const CONDITIONAL_DIRECTIVES: Type<any>[] = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
 

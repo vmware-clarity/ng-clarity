@@ -9,7 +9,6 @@ import { Subject, Observable } from 'rxjs';
 import { Subscription } from 'rxjs';
 
 import { ClrWizardPage } from '../wizard-page';
-
 import { ButtonHubService } from './button-hub.service';
 import { PageCollectionService } from './page-collection.service';
 

@@ -6,13 +6,14 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrInputModule } from '../input/input.module';
 import { ClrForm } from './form';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
-import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { ClrInputModule } from '../input/input.module';
 
 @Component({
   template: ` <form clrForm [formGroup]="model">

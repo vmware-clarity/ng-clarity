@@ -15,6 +15,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { DetailService } from './providers/detail.service';
 
 @Directive({

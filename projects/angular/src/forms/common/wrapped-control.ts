@@ -18,19 +18,18 @@ import {
   OnDestroy,
   Directive,
 } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-
-import { ControlIdService } from './providers/control-id.service';
-import { Helpers, NgControlService } from './providers/ng-control.service';
-import { NgControl } from '@angular/forms';
-import { ControlClassService } from './providers/control-class.service';
-import { MarkControlService } from './providers/mark-control.service';
+import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { CONTROL_SUFFIX } from './abstract-control';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
-import { CONTROL_SUFFIX } from './abstract-control';
+import { ControlClassService } from './providers/control-class.service';
+import { ControlIdService } from './providers/control-id.service';
+import { MarkControlService } from './providers/mark-control.service';
+import { Helpers, NgControlService } from './providers/ng-control.service';
 
 @Directive()
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {

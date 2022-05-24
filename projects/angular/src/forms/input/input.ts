@@ -7,8 +7,8 @@
 import { Directive, Optional, ViewContainerRef, Renderer2, ElementRef, Injector, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-import { ClrInputContainer } from './input-container';
 import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrInputContainer } from './input-container';
 
 @Directive({ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } })
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {

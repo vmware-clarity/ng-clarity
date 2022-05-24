@@ -6,13 +6,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClarityIcons, windowCloseIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../icon/icon.module';
 import { ClrFocusTrapModule } from '../utils/focus-trap/focus-trap.module';
+import { ClrFocusOnViewInitModule } from '../utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrModal } from './modal';
 import { ClrModalBody } from './modal-body';
-import { ClrFocusOnViewInitModule } from '../utils/focus/focus-on-view-init/focus-on-view-init.module';
-import { ClarityIcons, windowCloseIcon } from '@cds/core/icon';
 
 export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody];
 

@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import RangeSpecs from './range.spec';
 import RangeContainerSpecs from './range-container.spec';
+import RangeSpecs from './range.spec';
 
 describe('Radio component', function () {
   RangeContainerSpecs();

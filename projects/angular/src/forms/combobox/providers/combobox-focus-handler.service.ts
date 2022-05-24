@@ -6,15 +6,16 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2, ChangeDetectorRef } from '@angular/core';
-import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
-import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
-import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
-import { OptionSelectionService } from './option-selection.service';
-import { PseudoFocusModel } from '../model/pseudo-focus.model';
 import { take } from 'rxjs/operators';
+
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
+import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { keyValidator } from '../../../utils/focus/key-focus/util';
+import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { PseudoFocusModel } from '../model/pseudo-focus.model';
+import { OptionSelectionService } from './option-selection.service';
 
 @Injectable()
 export class ComboboxFocusHandler<T> {

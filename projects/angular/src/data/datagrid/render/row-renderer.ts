@@ -5,10 +5,10 @@
  */
 
 import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
-
-import { DatagridCellRenderer } from './cell-renderer';
-import { ColumnsService } from '../providers/columns.service';
 import { Subscription } from 'rxjs';
+
+import { ColumnsService } from '../providers/columns.service';
+import { DatagridCellRenderer } from './cell-renderer';
 
 @Directive({ selector: 'clr-dg-row, clr-dg-row-detail' })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {

@@ -5,12 +5,11 @@
  */
 
 import { Component } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-
-import { ClrCombobox } from './combobox';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { ClrCombobox } from './combobox';
 
 @Component({
   template: `

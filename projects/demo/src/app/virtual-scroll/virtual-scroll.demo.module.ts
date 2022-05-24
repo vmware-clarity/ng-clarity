@@ -6,10 +6,9 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { ClrAlertModule } from '@clr/angular';
-import { ClrVirtualScrollModule } from '../../../../angular/src/utils/virtual-scroll/virtual-scroll.module';
 
+import { ClrVirtualScrollModule } from '../../../../angular/src/utils/virtual-scroll/virtual-scroll.module';
 import { VirtualScrollArrayDemo } from './virtual-scroll-array';
 import { VirtualScrollInfiniteGeneratorDemo } from './virtual-scroll-infinite-generator';
 import { VirtualScrollSlotMachineDemo } from './virtual-scroll-slot-machine';

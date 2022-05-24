@@ -6,17 +6,17 @@
 
 import { AfterContentInit, ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
-
-import { NgControlService } from './providers/ng-control.service';
-import { LayoutService } from './providers/layout.service';
-import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-import { ClrLabel } from './label';
-import { ControlClassService } from './providers/control-class.service';
 import { Subscription } from 'rxjs';
-import { IfControlStateService, CONTROL_STATE } from './if-control-state/if-control-state.service';
-import { ClrControlSuccess } from './success';
+
+import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
+import { IfControlStateService, CONTROL_STATE } from './if-control-state/if-control-state.service';
+import { ClrLabel } from './label';
+import { ControlClassService } from './providers/control-class.service';
+import { LayoutService } from './providers/layout.service';
+import { NgControlService } from './providers/ng-control.service';
+import { ClrControlSuccess } from './success';
 
 @Directive()
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {

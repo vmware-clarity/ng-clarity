@@ -4,16 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule, FormGroup, FormsModule, FormControl, Validators } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule, FormGroup, FormsModule, FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrStepperModule } from './stepper.module';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
+import { ClrStepperModule } from './stepper.module';
 
 @Component({
   template: `

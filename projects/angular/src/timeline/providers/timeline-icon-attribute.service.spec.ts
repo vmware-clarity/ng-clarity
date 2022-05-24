@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TimelineIconAttributeService } from './timeline-icon-attribute.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';
+import { TimelineIconAttributeService } from './timeline-icon-attribute.service';
 
 export default function (): void {
   describe('Timeline icon attribute service', () => {

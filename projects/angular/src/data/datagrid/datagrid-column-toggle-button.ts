@@ -5,10 +5,11 @@
  */
 
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ColumnsService } from './providers/columns.service';
-import { ColumnState } from './interfaces/column-state.interface';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
 import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnState } from './interfaces/column-state.interface';
+import { ColumnsService } from './providers/columns.service';
 
 @Component({
   selector: 'clr-dg-column-toggle-button',

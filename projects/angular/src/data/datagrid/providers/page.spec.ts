@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Subscription } from 'rxjs';
+
 import { Page } from './page';
 import { StateDebouncer } from './state-debouncer.provider';
-import { Subscription } from 'rxjs';
 
 export default function (): void {
   describe('Page provider', function () {

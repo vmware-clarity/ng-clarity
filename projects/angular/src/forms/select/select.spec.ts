@@ -7,10 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { TemplateDrivenSpec, ControlStandaloneSpec, ReactiveSpec } from '../tests/control.spec';
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
-
-import { TemplateDrivenSpec, ControlStandaloneSpec, ReactiveSpec } from '../tests/control.spec';
 
 @Component({
   template: ` <select clrSelect></select> `,

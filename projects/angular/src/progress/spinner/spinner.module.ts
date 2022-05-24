@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
 import { ClrSpinner } from './spinner';
 
 export const CLR_SPINNER_DIRECTIVES: Type<any>[] = [ClrSpinner];

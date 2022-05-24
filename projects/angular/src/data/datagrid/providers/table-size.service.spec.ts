@@ -8,16 +8,15 @@ import { Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridRenderOrganizer } from '../render/render-organizer';
-
+import { ColumnsService } from './columns.service';
+import { DetailService } from './detail.service';
 import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
 import { TableSizeService } from './table-size.service';
-import { ClrDatagridModule } from '../datagrid.module';
-import { ColumnsService } from './columns.service';
-import { DetailService } from './detail.service';
 
 @Component({
   template: `

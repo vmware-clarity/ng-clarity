@@ -6,6 +6,7 @@
 
 import { Component } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
+
 import { FetchResult, Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 

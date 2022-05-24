@@ -5,8 +5,9 @@
  */
 
 import { Injectable, ViewContainerRef } from '@angular/core';
-import { ClrTab } from '../tab';
+
 import { TabsLayout } from '../enums/tabs-layout.enum';
+import { ClrTab } from '../tab';
 
 @Injectable()
 export class TabsService {

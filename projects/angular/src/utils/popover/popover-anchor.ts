@@ -5,6 +5,7 @@
  */
 
 import { Directive, ElementRef } from '@angular/core';
+
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 
 @Directive({

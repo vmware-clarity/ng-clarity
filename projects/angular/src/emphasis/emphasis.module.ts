@@ -5,6 +5,7 @@
  */
 
 import { NgModule } from '@angular/core';
+
 import { ClrAlertModule } from './alert/alert.module';
 
 @NgModule({ exports: [ClrAlertModule] })

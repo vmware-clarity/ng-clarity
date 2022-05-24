@@ -7,7 +7,6 @@
 import { Subscription } from 'rxjs';
 
 import { DayModel } from '../model/day.model';
-
 import { DateNavigationService } from './date-navigation.service';
 
 export default function () {

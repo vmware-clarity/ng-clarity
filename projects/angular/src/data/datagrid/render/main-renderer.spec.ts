@@ -6,17 +6,18 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
 import { By } from '@angular/platform-browser';
-import { DatagridRenderStep } from '../enums/render-step.enum';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
+
+import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
+import { DatagridRenderStep } from '../enums/render-step.enum';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from '../helpers.spec';
+import { ColumnsService } from '../providers/columns.service';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';
-import { ClrDatagridColumn } from '../datagrid-column';
-import { ColumnsService } from '../providers/columns.service';
 import { DatagridRowRenderer } from './row-renderer';
 
 export default function (): void {

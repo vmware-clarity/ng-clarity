@@ -7,13 +7,14 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
+
 import { ClrIconModule } from '../../../icon/icon.module';
 import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { NgControlService } from '../providers/ng-control.service';
 import { ClrControlSuccess } from '../success';
-import { ClrIfSuccess } from './if-success';
 import { IfControlStateService } from './if-control-state.service';
+import { ClrIfSuccess } from './if-success';
 
 const successMessage = 'SUCCESS_MESSAGE';
 

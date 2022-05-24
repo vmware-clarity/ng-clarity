@@ -6,7 +6,6 @@
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { DragEventType } from '../interfaces/drag-event.interface';
-
 import { DraggableSnapshotService } from './draggable-snapshot.service';
 
 export default function (): void {

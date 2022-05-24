@@ -5,7 +5,6 @@
  */
 
 import { getNumberOfDaysInTheMonth } from '../utils/date-utils';
-
 import { DayModel } from './day.model';
 
 export class CalendarModel {

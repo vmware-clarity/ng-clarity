@@ -9,6 +9,7 @@
  */
 
 import { EventEmitter } from '@angular/core';
+
 import { ClrStackView } from './stack-view';
 
 export class StackControl {

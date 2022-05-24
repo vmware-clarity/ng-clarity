@@ -14,9 +14,10 @@ import {
   Output,
   QueryList,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clr-alerts',

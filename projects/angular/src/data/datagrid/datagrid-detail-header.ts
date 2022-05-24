@@ -5,8 +5,9 @@
  */
 
 import { Component } from '@angular/core';
-import { DetailService } from './providers/detail.service';
+
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { DetailService } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-detail-header',

@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Observable, of } from 'rxjs';
-import { RecursiveTreeNodeModel } from './recursive-tree-node.model';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+
+import { RecursiveTreeNodeModel } from './recursive-tree-node.model';
 
 function synchronousChildren(node: string): string[] {
   return [node + 'A', node + 'B'];

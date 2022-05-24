@@ -7,9 +7,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrTimelineStepTitle } from './timeline-step-title';
 import { UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
+import { ClrTimelineStepTitle } from './timeline-step-title';
 
 export default function (): void {
   describe('ClrTimelineStepTitle', () => {

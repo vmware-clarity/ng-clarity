@@ -5,8 +5,8 @@
  */
 
 import AlertSpecs from './alert.spec';
-import AlertsSpecs from './alerts.spec';
 import AlertsPagerSpecs from './alerts-pager.spec';
+import AlertsSpecs from './alerts.spec';
 import AlertIconAndTypesServiceSpecs from './providers/icon-and-types.service.spec';
 import MultiAlertServiceSpecs from './providers/multi-alert.service.spec';
 

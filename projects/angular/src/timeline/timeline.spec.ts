@@ -8,11 +8,10 @@ import { Component, ViewChild, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ClrTimelineLayout } from './enums/timeline-layout.enum';
 import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineModule } from './timeline.module';
-
-import { ClrTimelineLayout } from './enums/timeline-layout.enum';
 
 export default function (): void {
   describe('ClrTimeline component', () => {

@@ -6,9 +6,10 @@
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
-import { TreeFeaturesService } from './tree-features.service';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
+import { TreeFeaturesService } from './tree-features.service';
 
 /*
  * Some utilities for this spec

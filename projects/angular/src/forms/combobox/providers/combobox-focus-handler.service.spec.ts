@@ -6,11 +6,12 @@
 
 import { Component, ViewChild, ElementRef, RendererFactory2, Renderer2 } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
-import { OptionSelectionService } from './option-selection.service';
-import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
+
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
+import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
+import { OptionSelectionService } from './option-selection.service';
 
 @Component({
   template: `<form (submit)="onSubmit()">

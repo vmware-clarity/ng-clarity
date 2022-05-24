@@ -8,16 +8,15 @@ import { Component } from '@angular/core';
 import { async } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
-
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { createKeyboardEvent } from './utils/test-utils';
 import { ClrYearpicker } from './yearpicker';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function () {
   describe('Yearpicker Component', () => {

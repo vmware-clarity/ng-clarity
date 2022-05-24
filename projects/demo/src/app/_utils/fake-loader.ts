@@ -5,7 +5,6 @@
  */
 
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-
 import { ClrLoading, ClrLoadingState } from '@clr/angular';
 
 const LATENCY = 2000;

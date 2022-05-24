@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -27,8 +28,8 @@ import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { ClrTabLink } from './tab-link.directive';
-import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
 import { ClrTabOverflowContent } from './tab-overflow-content';
+import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
 
 @Component({
   selector: 'clr-tabs',

@@ -5,7 +5,6 @@
  */
 
 import { Component } from '@angular/core';
-
 import {
   chartCollectionIcons as ChartShapes,
   coreCollectionIcons as CoreShapes,

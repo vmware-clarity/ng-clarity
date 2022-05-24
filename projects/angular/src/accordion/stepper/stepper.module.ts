@@ -7,13 +7,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ClrAccordionModule } from '../accordion.module';
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrAccordionModule } from '../accordion.module';
 import { ClrStepButton } from '../stepper/step-button';
 import { ClrStepper } from '../stepper/stepper';
-import { ClrStepperPanel } from './stepper-panel';
 import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
 import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';
+import { ClrStepperPanel } from './stepper-panel';
 
 const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka];
 

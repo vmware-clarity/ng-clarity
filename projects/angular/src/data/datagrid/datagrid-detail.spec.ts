@@ -7,10 +7,10 @@
 import { Component } from '@angular/core';
 import { async } from '@angular/core/testing';
 
-import { TestContext } from './helpers.spec';
-import { ClrDatagridDetail } from './datagrid-detail';
-import { DetailService } from './providers/detail.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDatagridDetail } from './datagrid-detail';
+import { TestContext } from './helpers.spec';
+import { DetailService } from './providers/detail.service';
 
 const content = 'Detail Pane';
 

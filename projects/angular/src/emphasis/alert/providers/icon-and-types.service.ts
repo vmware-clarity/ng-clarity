@@ -6,9 +6,9 @@
 
 import { Injectable } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../../utils/i18n/common-strings.service';
 import { AlertInfoObject } from '../utils/alert-info-object';
 import { ALERT_TYPES } from '../utils/alert-types';
-import { ClrCommonStringsService } from '../../../utils/i18n/common-strings.service';
 
 @Injectable()
 export class AlertIconAndTypesService {

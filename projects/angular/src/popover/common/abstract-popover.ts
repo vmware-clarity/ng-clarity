@@ -17,7 +17,6 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 

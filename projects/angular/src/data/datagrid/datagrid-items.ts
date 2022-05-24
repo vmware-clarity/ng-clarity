@@ -16,9 +16,9 @@ import {
   ViewContainerRef,
   OnDestroy,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { Items } from './providers/items';
-import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[clrDgItems][clrDgItemsOf]',
