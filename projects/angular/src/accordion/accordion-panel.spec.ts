@@ -7,15 +7,15 @@
 import { Component } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
-import { ClrAccordionModule } from './accordion.module';
-import { ClrAccordionPanel } from './accordion-panel';
-import { AccordionService } from './providers/accordion.service';
-import { AccordionPanelModel } from './models/accordion.model';
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
+import { UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { ClrAccordionPanel } from './accordion-panel';
+import { ClrAccordionModule } from './accordion.module';
+import { AccordionPanelModel } from './models/accordion.model';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   template: `

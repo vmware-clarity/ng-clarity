@@ -6,12 +6,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { ClarityModule } from '@clr/angular';
 
+import { SpinnerComponentDemo } from './spinner-component';
 import { SpinnerSizesDemo } from './spinner-sizes';
 import { SpinnerTypesDemo } from './spinner-types';
-import { SpinnerComponentDemo } from './spinner-component';
 import { SpinnerDemo } from './spinner.demo';
 import { ROUTING } from './spinners.demo.routing';
 

@@ -5,8 +5,9 @@
  */
 
 import { Directive, Optional } from '@angular/core';
-import { ControlIdService } from './providers/control-id.service';
+
 import { ContainerIdService } from './providers/container-id.service';
+import { ControlIdService } from './providers/control-id.service';
 
 export const CONTROL_SUFFIX: { [key: string]: string | null } = {
   HELPER: 'helper',

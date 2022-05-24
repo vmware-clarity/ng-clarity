@@ -6,16 +6,16 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../icon/icon.module';
-import { ClrAccordionPanel } from './accordion-panel';
-import { ClrAccordionTitle } from './accordion-title';
-import { ClrAccordionDescription } from './accordion-description';
 import { ClrAccordion } from './accordion';
 import { ClrAccordionContent } from './accordion-content';
+import { ClrAccordionDescription } from './accordion-description';
+import { ClrAccordionPanel } from './accordion-panel';
+import { ClrAccordionTitle } from './accordion-title';
 import { AccordionOompaLoompa } from './chocolate/accordion-oompa-loompa';
 import { AccordionWillyWonka } from './chocolate/accordion-willy-wonka';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
 
 const declarations = [
   ClrAccordion,

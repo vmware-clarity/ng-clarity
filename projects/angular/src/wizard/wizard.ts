@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   Component,
@@ -20,7 +21,6 @@ import {
   PLATFORM_ID,
   Inject,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

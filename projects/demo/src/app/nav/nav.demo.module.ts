@@ -6,7 +6,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { ClarityModule } from '@clr/angular';
 
 import { HeaderColorsDemo } from './header-colors';

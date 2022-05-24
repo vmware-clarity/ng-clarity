@@ -7,15 +7,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownModule } from './dropdown.module';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-import { Subscription } from 'rxjs';
 
 export default function (): void {
   describe('Dropdown', () => {

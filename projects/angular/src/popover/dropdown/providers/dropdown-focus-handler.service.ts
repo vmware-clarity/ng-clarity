@@ -8,14 +8,15 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, Optional, PLATFORM_ID, Renderer2, SkipSelf } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
-import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
-import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
+
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FocusService } from '../../../utils/focus/focus.service';
+import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { wrapObservable } from '../../../utils/focus/wrap-observable';
+import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 
 @Injectable()
 export class DropdownFocusHandler implements FocusableItem {

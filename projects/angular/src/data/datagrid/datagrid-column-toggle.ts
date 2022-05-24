@@ -6,20 +6,20 @@
 
 import { Component, Inject, ContentChild, ElementRef, NgZone, PLATFORM_ID, ViewChild } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
+import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ColumnsService } from './providers/columns.service';
-import { ColumnState } from './interfaces/column-state.interface';
-import { DatagridColumnChanges } from './enums/column-changes.enum';
-import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
+import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
+import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnState } from './interfaces/column-state.interface';
+import { ColumnsService } from './providers/columns.service';
 
 @Component({
   selector: 'clr-dg-column-toggle',

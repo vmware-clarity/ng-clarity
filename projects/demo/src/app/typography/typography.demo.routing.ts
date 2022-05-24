@@ -7,14 +7,14 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
 import { TypographyFontCharTestDemo } from './typography-font-char-test';
 import { TypographyFontWeightDemo } from './typography-font-weight';
 import { TypographyHeadersDemo } from './typography-headers';
+import { TypographyLineHeightDemo } from './typography-line-height';
 import { TypographyLinksDemo } from './typography-links';
 import { TypographyTextDemo } from './typography-text';
 import { TypographyDemo } from './typography.demo';
-import { TypographyLineHeightDemo } from './typography-line-height';
-import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
 
 const ROUTES: Routes = [
   {

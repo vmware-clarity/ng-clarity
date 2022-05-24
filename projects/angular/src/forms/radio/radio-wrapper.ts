@@ -7,8 +7,8 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrLabel } from '../common/label';
+import { ControlIdService } from '../common/providers/control-id.service';
 
 @Component({
   selector: 'clr-radio-wrapper',

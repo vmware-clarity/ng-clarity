@@ -6,13 +6,13 @@
 
 import { Component } from '@angular/core';
 
-import { ClrDatagrid } from '../datagrid';
-import { TestContext } from '../helpers.spec';
-import { ExpandableRowsCount } from '../providers/global-expandable-rows';
-import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
-import { DetailService } from '../providers/detail.service';
 import { IfExpandService } from '../../../utils/conditional/if-expanded.service';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridDetailRegisterer } from '../datagrid-detail-registerer';
+import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
+import { TestContext } from '../helpers.spec';
+import { DetailService } from '../providers/detail.service';
+import { ExpandableRowsCount } from '../providers/global-expandable-rows';
 
 export default function (): void {
   describe('DatagridDetailRegisterer directive', function () {

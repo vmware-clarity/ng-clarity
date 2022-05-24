@@ -16,10 +16,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Page } from './providers/page';
-import { ClrDatagridPageSize } from './datagrid-page-size';
+
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrDatagridPageSize } from './datagrid-page-size';
 import { DetailService } from './providers/detail.service';
+import { Page } from './providers/page';
 
 @Component({
   selector: 'clr-dg-pagination',

@@ -6,6 +6,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
 @Injectable()

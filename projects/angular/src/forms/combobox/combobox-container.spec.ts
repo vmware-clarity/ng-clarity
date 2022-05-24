@@ -5,17 +5,16 @@
  */
 
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrPopoverContent } from '../../utils/popover/popover-content';
+import { ClrCommonFormsModule } from '../common/common.module';
+import { ContainerNoLabelSpec, TemplateDrivenSpec, ReactiveSpec } from '../tests/container.spec';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
-
-import { ContainerNoLabelSpec, TemplateDrivenSpec, ReactiveSpec } from '../tests/container.spec';
-import { ClrPopoverContent } from '../../utils/popover/popover-content';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
-import { TestBed } from '@angular/core/testing';
-import { ClrCommonFormsModule } from '../common/common.module';
-import { ClrIconModule } from '../../icon/icon.module';
-import { By } from '@angular/platform-browser';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 
 @Component({

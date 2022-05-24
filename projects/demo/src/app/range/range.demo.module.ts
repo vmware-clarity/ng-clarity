@@ -6,7 +6,6 @@
 
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { ClarityModule } from '@clr/angular';
 
 import { RangeDemo } from './range.demo';

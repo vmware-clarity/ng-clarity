@@ -7,7 +7,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { TestContext } from '../utils/testing/helpers.spec';
-
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { TemplateApiWizardTestComponent } from './test-components/api-wizard.mock';

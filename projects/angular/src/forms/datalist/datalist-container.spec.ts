@@ -7,10 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ClrDatalistInput } from './datalist-input';
-import { ClrDatalistContainer } from './datalist-container';
-
 import { TemplateDrivenSpec, ReactiveSpec, ContainerNoLabelSpec } from '../tests/container.spec';
+import { ClrDatalistContainer } from './datalist-container';
+import { ClrDatalistInput } from './datalist-input';
 
 @Component({
   template: `

@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import { Component, ContentChild, ElementRef, Inject, Input, PLATFORM_ID } from '@angular/core';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
 import { ClrTimelineStepTitle } from './timeline-step-title';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'clr-timeline-step',

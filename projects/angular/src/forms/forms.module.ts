@@ -8,16 +8,16 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ClrCheckboxModule } from './checkbox/checkbox.module';
+import { ClrComboboxModule } from './combobox/combobox.module';
 import { ClrCommonFormsModule } from './common/common.module';
+import { ClrDatalistModule } from './datalist/datalist.module';
 import { ClrDatepickerModule } from './datepicker/datepicker.module';
 import { ClrInputModule } from './input/input.module';
 import { ClrPasswordModule } from './password/password.module';
 import { ClrRadioModule } from './radio/radio.module';
+import { ClrRangeModule } from './range/range.module';
 import { ClrSelectModule } from './select/select.module';
 import { ClrTextareaModule } from './textarea/textarea.module';
-import { ClrRangeModule } from './range/range.module';
-import { ClrDatalistModule } from './datalist/datalist.module';
-import { ClrComboboxModule } from './combobox/combobox.module';
 
 @NgModule({
   imports: [CommonModule],

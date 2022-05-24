@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ColumnsService } from './columns.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ColumnState } from '../interfaces/column-state.interface';
+
 import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
+import { ColumnState } from '../interfaces/column-state.interface';
+import { ColumnsService } from './columns.service';
 
 export default function (): void {
   describe('ColumnsService provider', function () {

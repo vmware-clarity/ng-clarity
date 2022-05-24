@@ -6,8 +6,8 @@
 
 import DatalistContainerSpecs from './datalist-container.spec';
 import DatalistInputSpecs from './datalist-input.spec';
-import DatalistIdServiceSpecs from './providers/datalist-id.service.spec';
 import DatalistSpec from './datalist.spec';
+import DatalistIdServiceSpecs from './providers/datalist-id.service.spec';
 
 describe('ClrDatalist', function () {
   DatalistIdServiceSpecs();

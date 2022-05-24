@@ -5,10 +5,11 @@
  */
 
 import { Component, ElementRef, Inject, Injector, Input, Optional } from '@angular/core';
+
+import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { AbstractPopover } from '../common/abstract-popover';
 import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
-import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
 const POSITIONS: string[] = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];

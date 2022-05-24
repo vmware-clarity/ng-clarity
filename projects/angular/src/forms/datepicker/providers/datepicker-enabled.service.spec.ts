@@ -5,7 +5,6 @@
  */
 
 import { DATEPICKER_ENABLE_BREAKPOINT } from '../../../utils/breakpoints/breakpoints';
-
 import { DatepickerEnabledService } from './datepicker-enabled.service';
 
 export default function () {

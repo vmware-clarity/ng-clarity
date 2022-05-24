@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
-import { PokemonFilter } from '../utils/pokemon-filter';
 import { IDFilter } from '../utils/id-filter';
+import { PokemonFilter } from '../utils/pokemon-filter';
 
 @Component({
   selector: 'clr-built-in-filters-demo',

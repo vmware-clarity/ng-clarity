@@ -5,6 +5,7 @@
  */
 
 import { Injectable } from '@angular/core';
+
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { DragEventInterface } from '../interfaces/drag-event.interface';
 

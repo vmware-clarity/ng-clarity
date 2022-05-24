@@ -6,6 +6,7 @@
 
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { FontPreset, fontPresets } from './utils/font-presets';
 import { getPreset } from './utils/font-presets';
 

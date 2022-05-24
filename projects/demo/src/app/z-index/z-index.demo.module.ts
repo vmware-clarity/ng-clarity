@@ -7,8 +7,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { ClarityModule } from '@clr/angular';
+
 import { ZIndexCustomFilter } from './custom-filter.demo';
 import { ZIndexVariousContent } from './various-content/various-content';
 import { ZIndexDemo } from './z-index.demo';

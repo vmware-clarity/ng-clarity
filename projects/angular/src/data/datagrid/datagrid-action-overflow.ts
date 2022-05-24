@@ -4,20 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Inject, Input, OnDestroy, Output, NgZone, PLATFORM_ID } from '@angular/core';
-
-import { RowActionService } from './providers/row-action-service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Component, EventEmitter, Inject, Input, OnDestroy, Output, NgZone, PLATFORM_ID } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrSide } from '../../utils/popover/enums/side.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { Subscription } from 'rxjs';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { RowActionService } from './providers/row-action-service';
 
 let clrDgActionId = 0;
 

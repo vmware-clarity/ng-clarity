@@ -6,6 +6,7 @@
 
 import { Component, EventEmitter } from '@angular/core';
 import { ClrDatagridFilterInterface } from '@clr/angular';
+
 import { User } from '../inventory/user';
 import { COLORS } from '../inventory/values';
 

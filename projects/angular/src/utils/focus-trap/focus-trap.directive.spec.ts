@@ -12,8 +12,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrModal } from '../../modal/modal';
 import { ClrModalModule } from '../../modal/modal.module';
-import { FocusTrapDirective, FOCUSABLES } from './focus-trap.directive';
 import { FocusTrapConfig } from './focus-trap-config.interface';
+import { FocusTrapDirective, FOCUSABLES } from './focus-trap.directive';
 import { ClrFocusTrapModule } from './focus-trap.module';
 
 describe('FocusTrap', () => {

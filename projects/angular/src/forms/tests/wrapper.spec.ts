@@ -10,10 +10,9 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-
-import { NgControlService } from '../common/providers/ng-control.service';
-import { LayoutService } from '../common/providers/layout.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 
 export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {

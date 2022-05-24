@@ -19,12 +19,12 @@ import { DatepickerInReactiveForms } from './datepicker-in-reactive-forms';
 import { DatepickerInTemplateDrivenFormsDemo } from './datepicker-in-template-driven-forms';
 import { DatepickerKKJDemo } from './datepicker-KKJ';
 import { DatepickerLocaleData } from './datepicker-locale-data';
+import { DatepickerMinMaxDemo } from './datepicker-min-max';
 import { DatepickerDemo } from './datepicker.demo';
-import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
-import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
 import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
-import { DatepickerMinMaxDemo } from './datepicker-min-max';
+import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
+import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
 
 const ROUTES: Routes = [
   {

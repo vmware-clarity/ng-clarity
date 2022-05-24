@@ -4,17 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, ElementRef, Inject, Injector, Input, Optional, OnDestroy, PLATFORM_ID } from '@angular/core';
 
-import { AbstractPopover } from '../common/abstract-popover';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
-
-import { SIGNPOST_POSITIONS } from './signpost-positions';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
-import { SignpostIdService } from './providers/signpost-id.service';
+import { AbstractPopover } from '../common/abstract-popover';
+import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { SignpostIdService } from './providers/signpost-id.service';
+import { SIGNPOST_POSITIONS } from './signpost-positions';
 
 // aka where the arrow / pointer is at in relation to the anchor
 const POSITIONS: string[] = [

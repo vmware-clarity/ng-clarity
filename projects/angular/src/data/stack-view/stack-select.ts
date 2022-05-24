@@ -11,6 +11,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { StackControl } from './stack-control';
 import { ClrStackView } from './stack-view';
 

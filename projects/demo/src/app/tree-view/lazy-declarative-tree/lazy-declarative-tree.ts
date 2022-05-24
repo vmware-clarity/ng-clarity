@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { InfiniteTree } from '../utils/infinite-tree';
 import { AsyncInfiniteTree } from '../utils/async-infinite-tree';
+import { InfiniteTree } from '../utils/infinite-tree';
 
 @Component({
   selector: 'clr-lazy-declarative-tree-demo',

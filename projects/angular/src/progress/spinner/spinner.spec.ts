@@ -7,8 +7,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrSpinnerModule } from './spinner.module';
+
 import { ClrSpinner } from './spinner';
+import { ClrSpinnerModule } from './spinner.module';
 
 const SPINNER_BASE_CLASS = 'spinner';
 

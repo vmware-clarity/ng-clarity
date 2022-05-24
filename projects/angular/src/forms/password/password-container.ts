@@ -7,14 +7,14 @@
 import { Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
 export function ToggleServiceFactory() {

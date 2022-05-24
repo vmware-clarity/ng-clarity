@@ -5,10 +5,10 @@
  */
 
 import { ClrSelectedState } from '@clr/angular';
-
-import { InfiniteTree } from './infinite-tree';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { InfiniteTree } from './infinite-tree';
 
 export class AsyncInfiniteTree {
   constructor(width: number, latency = 100) {

@@ -22,24 +22,24 @@ import {
 import { Subscription } from 'rxjs';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
-import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
-import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
-import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
+import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
+import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
+import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
+import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
+import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
-import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { WrappedColumn } from './wrapped-column';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DetailService } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-column',

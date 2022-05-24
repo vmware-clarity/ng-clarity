@@ -34,6 +34,20 @@ module.exports = {
         eqeqeq: 'error',
         'import/no-absolute-path': ['error'],
         'import/no-useless-path-segments': ['error'],
+        'import/order': [
+          'error',
+          {
+            alphabetize: {
+              order: 'asc',
+              caseInsensitive: true,
+            },
+            groups: [
+              ['builtin', 'external'],
+              ['parent', 'sibling'],
+            ],
+            'newlines-between': 'always',
+          },
+        ],
         'jasmine/no-focused-tests': 'error',
         'no-irregular-whitespace': ['error', { skipTemplates: true }],
         'unused-imports/no-unused-imports-ts': 'error',

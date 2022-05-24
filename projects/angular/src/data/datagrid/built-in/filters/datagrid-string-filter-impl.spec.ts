@@ -5,10 +5,11 @@
  */
 
 import { Observable } from 'rxjs';
-import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
-import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
+
 import { ClrDatagridFilterInterface } from '../../interfaces/filter.interface';
+import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
+import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
+import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
 export default function (): void {
   describe('DatagridStringFilterImpl', function () {

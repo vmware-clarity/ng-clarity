@@ -7,6 +7,7 @@
 import { Component } from '@angular/core';
 import { fakeAsync } from '@angular/core/testing';
 import { CdsInternalCloseButton } from '@cds/core/internal-components/close-button';
+
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { spec } from '../../utils/testing/helpers.spec';
 import { ClrNavLevel } from './nav-level';

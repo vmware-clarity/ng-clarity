@@ -5,20 +5,21 @@
  */
 
 import { Component, DebugElement, Renderer2 } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
+import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
+import { ClrDatagridModule } from './datagrid.module';
+import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnsService } from './providers/columns.service';
+import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { TableSizeService } from './providers/table-size.service';
-import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
-import { DatagridRenderOrganizer } from './render/render-organizer';
-import { ColumnsService } from './providers/columns.service';
 import { DatagridHeaderRenderer } from './render/header-renderer';
-import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClrDatagridModule } from './datagrid.module';
-import { DatagridColumnChanges } from './enums/column-changes.enum';
-import { DetailService } from './providers/detail.service';
+import { DatagridRenderOrganizer } from './render/render-organizer';
 
 const PROVIDERS_NEEDED = [
   Sort,

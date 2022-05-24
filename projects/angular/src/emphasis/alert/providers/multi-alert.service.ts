@@ -6,6 +6,7 @@
 
 import { Injectable, QueryList } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+
 import { ClrAlert } from '../alert';
 
 @Injectable()

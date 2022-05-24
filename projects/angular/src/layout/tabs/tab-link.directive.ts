@@ -15,13 +15,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
+import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TemplateRefContainer } from '../../utils/template-ref/template-ref-container';
-import { TabsService } from './providers/tabs.service';
-
-import { AriaService } from '../../utils/aria/aria.service';
-import { TABS_ID } from './tabs-id.provider';
 import { TabsLayout } from './enums/tabs-layout.enum';
+import { TabsService } from './providers/tabs.service';
+import { TABS_ID } from './tabs-id.provider';
 
 let nbTabLinkComponents = 0;
 

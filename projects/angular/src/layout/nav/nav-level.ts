@@ -16,14 +16,14 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
-import { ResponsiveNavCodes } from './responsive-nav-codes';
-import { Subscription } from 'rxjs';
+import { commonStringsDefault } from '../../utils';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { FocusTrap, FocusTrapElement } from '../../utils/focus-trap/focus-trap';
-import { commonStringsDefault } from '../../utils';
+import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
+import { ResponsiveNavCodes } from './responsive-nav-codes';
 import '@cds/core/internal-components/close-button/register.js';
 
 const createCdsCloseButton = (document: Document, ariaLabel: string) => {

@@ -12,7 +12,6 @@ import { ClrDragAndDropModule } from '../drag-and-drop.module';
 import { ClrDragHandle } from '../drag-handle';
 import { DragEventListenerService } from '../providers/drag-event-listener.service';
 import { DragHandleRegistrarService } from '../providers/drag-handle-registrar.service';
-
 import { ClrDraggable } from './draggable';
 
 export default function (): void {

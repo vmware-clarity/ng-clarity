@@ -16,12 +16,12 @@ import {
   AfterViewInit,
   OnDestroy,
 } from '@angular/core';
-import { startWith } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
-import { AccordionService } from './providers/accordion.service';
 import { ClrAccordionPanel } from './accordion-panel';
 import { AccordionStrategy } from './enums/accordion-strategy.enum';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   selector: 'clr-accordion',

@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrStackViewModule } from './stack-view.module';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrStackViewModule } from './stack-view.module';
 
 @Component({
   template: `

@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrAccordionModule } from './accordion.module';
 import { ClrAccordionTitle } from './accordion-title';
+import { ClrAccordionModule } from './accordion.module';
 
 @Component({
   template: `<clr-accordion-title>Hello world</clr-accordion-title>`,

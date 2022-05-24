@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrKeyFocus } from './key-focus';
 import { Component, DebugElement, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { KeyCodes } from '../../enums/key-codes.enum';
-import { ClrKeyFocusModule } from './key-focus.module';
+import { ClrKeyFocus } from './key-focus';
 import { ClrKeyFocusItem } from './key-focus-item';
+import { ClrKeyFocusModule } from './key-focus.module';
 
 @Component({
   template: `

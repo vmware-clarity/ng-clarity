@@ -6,11 +6,11 @@
 
 import { Injectable, TrackByFunction, NgZone } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
+import { SelectionType } from '../enums/selection-type';
 import { FiltersProvider } from './filters';
 import { Items } from './items';
-import { SelectionType } from '../enums/selection-type';
-import { debounceTime } from 'rxjs/operators';
 
 let nbSelection = 0;
 

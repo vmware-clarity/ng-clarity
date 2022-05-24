@@ -6,8 +6,8 @@
 
 // Isolated tests for services: https://angular.io/docs/ts/latest/guide/testing.html#!#isolated-service-tests
 import { ResponsiveNavCodes } from '../responsive-nav-codes';
-import { ResponsiveNavigationService } from './responsive-navigation.service';
 import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
+import { ResponsiveNavigationService } from './responsive-navigation.service';
 
 describe('ResponsiveNavigationService', () => {
   let service: ResponsiveNavigationService;

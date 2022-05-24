@@ -10,7 +10,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrNavigationModule } from '../nav/navigation.module';
 import { ResponsiveNavCodes } from '../nav/responsive-nav-codes';
 import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-message';
-
 import { ClrMainContainer } from './main-container';
 import { ClrMainContainerModule } from './main-container.module';
 

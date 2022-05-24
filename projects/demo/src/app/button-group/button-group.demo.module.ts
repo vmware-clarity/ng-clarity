@@ -6,7 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { BasicButtonGroupDemo } from './angular/basic-structure/basic-button-group';
@@ -37,7 +37,6 @@ import { ButtonGroupIconsDemo } from './static/icons/button-group-icons';
 import { StaticMenuDirectionsDemo } from './static/menu-directions/menu-directions';
 import { ButtonGroupRadiosDemo } from './static/radio/button-group-radios';
 import { ButtonGroupTypes } from './static/types/button-group-types';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING],

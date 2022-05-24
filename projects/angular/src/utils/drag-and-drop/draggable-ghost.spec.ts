@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { DomAdapter } from '../dom-adapter/dom-adapter';
 import { ClrDragAndDropModule } from './drag-and-drop.module';
 import { ClrDraggableGhost } from './draggable-ghost';

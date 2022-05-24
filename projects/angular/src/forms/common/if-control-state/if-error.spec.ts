@@ -13,9 +13,8 @@ import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { ClrControlError } from '../error';
 import { NgControlService } from '../providers/ng-control.service';
-
-import { ClrIfError } from './if-error';
 import { IfControlStateService } from './if-control-state.service';
+import { ClrIfError } from './if-error';
 
 const errorMessage = 'ERROR_MESSAGE';
 const minLengthMessage = 'MIN_LENGTH_MESSAGE';

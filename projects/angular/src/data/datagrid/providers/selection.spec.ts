@@ -8,15 +8,14 @@ import { TrackByFunction, NgZone } from '@angular/core';
 import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
+import { SelectionType } from '../enums/selection-type';
 import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
-
 import { FiltersProvider } from './filters';
 import { Items } from './items';
 import { Page } from './page';
 import { Selection } from './selection';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
-import { SelectionType } from '../enums/selection-type';
 
 const numberSort = (a: number, b: number) => a - b;
 

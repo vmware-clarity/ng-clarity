@@ -5,10 +5,11 @@
  */
 
 import { NgModule } from '@angular/core';
+
+import { ClrPopoverAnchor } from './popover-anchor';
+import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
-import { ClrPopoverCloseButton } from './popover-close-button';
-import { ClrPopoverAnchor } from './popover-anchor';
 
 @NgModule({
   imports: [],

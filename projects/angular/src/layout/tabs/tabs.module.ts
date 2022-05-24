@@ -6,11 +6,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+import { ClarityIcons, ellipsisHorizontalIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
 import { ClrTemplateRefModule } from '../../utils/template-ref/template-ref.module';
-
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { ClrTab } from './tab';
@@ -18,8 +19,6 @@ import { ClrTabContent } from './tab-content';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { ClrTabs } from './tabs';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { ClarityIcons, ellipsisHorizontalIcon } from '@cds/core/icon';
 
 export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabContent,

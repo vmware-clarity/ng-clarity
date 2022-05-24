@@ -11,7 +11,6 @@ import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
 

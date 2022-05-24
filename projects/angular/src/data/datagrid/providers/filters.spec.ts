@@ -7,7 +7,6 @@
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
-
 import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { StateDebouncer } from './state-debouncer.provider';

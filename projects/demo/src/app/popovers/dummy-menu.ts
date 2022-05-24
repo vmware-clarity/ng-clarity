@@ -9,7 +9,6 @@ import { Component, ElementRef, Inject, Injector, Optional } from '@angular/core
 import { AbstractPopover } from '../../../../angular/src/popover/common/abstract-popover';
 import { Point } from '../../../../angular/src/popover/common/popover';
 import { POPOVER_HOST_ANCHOR } from '../../../../angular/src/popover/common/popover-host-anchor.token';
-
 import { DummyAnchor } from './dummy-anchor';
 
 @Component({

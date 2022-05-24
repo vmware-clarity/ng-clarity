@@ -5,6 +5,7 @@
  */
 
 import { Type } from '@angular/core';
+
 import { TemplateRefContainer } from './template-ref-container';
 
 export * from './template-ref-container';

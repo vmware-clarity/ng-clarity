@@ -15,6 +15,7 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
+
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
 
 /*  This directive is for guiding the document focus to the newly added content when its view is initialized

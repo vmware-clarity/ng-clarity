@@ -7,8 +7,8 @@
 import { Component, ElementRef, Renderer2, Input } from '@angular/core';
 
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
-import { ClrKeyFocus } from './key-focus';
 import { FocusableItem } from './interfaces';
+import { ClrKeyFocus } from './key-focus';
 
 @Component({
   selector: '[clrRovingTabindex]',

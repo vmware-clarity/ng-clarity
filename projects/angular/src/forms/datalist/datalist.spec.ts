@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatalistIdService } from './providers/datalist-id.service';
 import { Component } from '@angular/core';
+
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDatalist } from './datalist';
+import { DatalistIdService } from './providers/datalist-id.service';
 
 @Component({
   template: `

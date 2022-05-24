@@ -12,6 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrDragAndDropModule } from '../drag-and-drop.module';
 import { ClrDragEvent } from '../drag-event';
+import { generateDragPosition } from '../helpers.spec';
 import { DragEventInterface, DragEventType } from '../interfaces/drag-event.interface';
 import { DragEventListenerService } from '../providers/drag-event-listener.service';
 import { MOCK_DRAG_EVENT_LISTENER_PROVIDER } from '../providers/drag-event-listener.service.mock';
@@ -19,7 +20,6 @@ import { DragHandleRegistrarService } from '../providers/drag-handle-registrar.s
 import { DraggableSnapshotService } from '../providers/draggable-snapshot.service';
 import { GlobalDragModeService } from '../providers/global-drag-mode.service';
 import { ClrDraggable } from './draggable';
-import { generateDragPosition } from '../helpers.spec';
 
 export default function (): void {
   describe('Basic Draggable', function () {

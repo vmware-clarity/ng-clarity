@@ -6,6 +6,7 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';
 import { DragEventListenerService } from './drag-event-listener.service';
 import { MOCK_DRAG_EVENT_LISTENER_PROVIDER } from './drag-event-listener.service.mock';

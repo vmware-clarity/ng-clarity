@@ -16,10 +16,10 @@ import {
   ViewContainerRef,
   OnDestroy,
 } from '@angular/core';
-
-import { OptionSelectionService } from './providers/option-selection.service';
 import { Subscription } from 'rxjs';
+
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 @Directive({
   selector: '[clrOptionItems][clrOptionItemsOf]',

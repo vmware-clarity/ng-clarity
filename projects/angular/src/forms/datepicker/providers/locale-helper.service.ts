@@ -14,6 +14,7 @@ import {
   TranslationWidth,
 } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+
 import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
 
 /**

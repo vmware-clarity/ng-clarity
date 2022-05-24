@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { PageCollectionService } from './providers/page-collection.service';
 
 @Component({

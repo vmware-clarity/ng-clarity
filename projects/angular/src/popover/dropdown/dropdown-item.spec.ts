@@ -6,10 +6,10 @@
 
 import { Component } from '@angular/core';
 
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrDropdownItem } from './dropdown-item';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
+import { ClrDropdownItem } from './dropdown-item';
 import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
 
 @Component({

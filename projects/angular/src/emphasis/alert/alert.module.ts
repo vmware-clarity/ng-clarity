@@ -6,15 +6,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
-
-import { ClrAlert } from './alert';
-import { ClrAlertItem } from './alert-item';
-import { ClrAlerts } from './alerts';
-import { ClrAlertsPager } from './alerts-pager';
-import { ClrAlertText } from './alert-text';
 import {
   infoCircleIcon,
   checkCircleIcon,
@@ -23,6 +14,14 @@ import {
   exclamationTriangleIcon,
   windowCloseIcon,
 } from '@cds/core/icon';
+
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
+import { ClrAlert } from './alert';
+import { ClrAlertItem } from './alert-item';
+import { ClrAlertText } from './alert-text';
+import { ClrAlerts } from './alerts';
+import { ClrAlertsPager } from './alerts-pager';
 
 export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText];
 

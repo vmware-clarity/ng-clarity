@@ -5,6 +5,7 @@
  */
 
 import { Injectable } from '@angular/core';
+
 import { ClrPopoverPositions } from '../../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../../utils/popover/interfaces/popover-position.interface';
 

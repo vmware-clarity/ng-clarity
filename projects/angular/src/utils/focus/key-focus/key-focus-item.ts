@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Directive, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 
 @Directive({
   selector: '[clrKeyFocusItem]',

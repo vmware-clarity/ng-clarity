@@ -7,7 +7,6 @@
 import { Component, Input } from '@angular/core';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';

@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+
 import { uniqueIdFactory } from '../id-generator/id-generator.service';
 
 export enum ClrAriaLivePoliteness {

@@ -5,10 +5,10 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
-import { NgControl } from '@angular/forms';
 import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
 
 @Directive()

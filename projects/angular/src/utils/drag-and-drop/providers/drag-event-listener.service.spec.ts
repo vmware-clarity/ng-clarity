@@ -7,6 +7,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
+
 import { emulateDragEvent, generateDragPosition } from '../helpers.spec';
 import { DragEventInterface, DragPointPosition } from '../interfaces/drag-event.interface';
 import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';

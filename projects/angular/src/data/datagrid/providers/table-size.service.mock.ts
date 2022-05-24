@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TableSizeService } from './table-size.service';
 import { Injectable } from '@angular/core';
+
+import { TableSizeService } from './table-size.service';
 
 // With this mock service, we could test individual child components of Datagrid that are dependent on TableSizeService.
 @Injectable()

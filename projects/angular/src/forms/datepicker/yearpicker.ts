@@ -6,13 +6,12 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
-
 import { YearRangeModel } from './model/year-range.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-yearpicker',

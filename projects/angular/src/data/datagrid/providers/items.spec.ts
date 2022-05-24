@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 
 import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
-
 import { FiltersProvider } from './filters';
 import { Items } from './items';
 import { Page } from './page';

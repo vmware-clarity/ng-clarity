@@ -6,13 +6,14 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { ClrTree } from './tree';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrTreeViewModule } from './tree-view.module';
-import { TreeFeaturesService } from './tree-features.service';
-import { RecursiveChildren } from './recursive-children';
-import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { RecursiveChildren } from './recursive-children';
+import { ClrTree } from './tree';
+import { TreeFeaturesService } from './tree-features.service';
+import { TreeFocusManagerService } from './tree-focus-manager.service';
+import { ClrTreeViewModule } from './tree-view.module';
 
 @Component({
   template: `<clr-tree [clrLazy]="lazy">Hello world <clr-tree-node *ngIf="hasChild">Child</clr-tree-node></clr-tree>`,

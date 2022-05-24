@@ -8,14 +8,16 @@ import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { isObservable, Observable } from 'rxjs';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus.service';
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
+
 // eslint-disable-next-line id-blacklist
 import any = jasmine.any;
 

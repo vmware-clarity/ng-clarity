@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
+
 import { ArrowKeyDirection } from './arrow-key-direction.enum';
 import { FOCUS_SERVICE_PROVIDER, FocusService } from './focus.service';
 import { FocusableItem } from './focusable-item/focusable-item';

@@ -5,14 +5,15 @@
  */
 
 import { Component, Optional } from '@angular/core';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { FocusService } from '../common/providers/focus.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { DatalistIdService } from './providers/datalist-id.service';
+
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { FocusService } from '../common/providers/focus.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
+import { DatalistIdService } from './providers/datalist-id.service';
 
 @Component({
   selector: 'clr-datalist-container',

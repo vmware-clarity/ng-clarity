@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { ProgBarExample } from './progbar-example';
 
 @Component({

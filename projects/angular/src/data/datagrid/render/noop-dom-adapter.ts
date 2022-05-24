@@ -10,6 +10,7 @@
  */
 
 import { Injectable } from '@angular/core';
+
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 
 @Injectable()

@@ -5,6 +5,7 @@
  */
 
 import { Component, HostListener, Optional } from '@angular/core';
+
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 
 @Component({

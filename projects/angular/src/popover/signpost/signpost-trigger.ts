@@ -7,8 +7,9 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Directive, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 

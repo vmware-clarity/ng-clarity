@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -15,19 +16,18 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { tap, filter, pairwise } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { tap, filter, pairwise } from 'rxjs/operators';
 
-import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { StepperService } from './providers/stepper.service';
-import { stepAnimation } from '../utils/animation';
-import { triggerAllFormControlValidation } from '../../utils/forms/validation';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { AccordionPanelModel } from '../models/accordion.model';
-import { AccordionStatus } from '../enums/accordion-status.enum';
+import { triggerAllFormControlValidation } from '../../utils/forms/validation';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { ClrAccordionPanel } from '../accordion-panel';
-import { isPlatformBrowser } from '@angular/common';
+import { AccordionStatus } from '../enums/accordion-status.enum';
+import { AccordionPanelModel } from '../models/accordion.model';
+import { stepAnimation } from '../utils/animation';
+import { StepperService } from './providers/stepper.service';
 
 @Component({
   selector: 'clr-stepper-panel',

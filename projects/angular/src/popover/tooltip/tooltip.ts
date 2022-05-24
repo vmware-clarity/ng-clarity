@@ -5,9 +5,10 @@
  */
 
 import { Component, ElementRef } from '@angular/core';
+
+import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
 @Component({

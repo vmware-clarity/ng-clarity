@@ -5,7 +5,6 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-
 import { ClrWizard } from '@clr/angular';
 
 @Component({

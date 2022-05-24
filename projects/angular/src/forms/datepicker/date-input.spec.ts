@@ -11,12 +11,15 @@ import { By } from '@angular/platform-browser';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFormsModule } from '../../forms/forms.module';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
+import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-input';
 import { DayModel } from './model/day.model';
@@ -25,13 +28,9 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
-import { LocaleHelperService } from './providers/locale-helper.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
+import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 export default function () {
   describe('Date Input Component', () => {

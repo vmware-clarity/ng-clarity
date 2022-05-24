@@ -7,27 +7,26 @@
 import { Component, Optional, ViewChild, ElementRef, Input, AfterViewInit, Renderer2 } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ClrAbstractContainer } from '../common/abstract-container';
 
 @Component({
   selector: 'clr-date-container',

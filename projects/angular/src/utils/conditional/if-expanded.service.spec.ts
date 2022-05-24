@@ -5,7 +5,6 @@
  */
 
 import { ClrLoadingState } from '../loading/loading';
-
 import { IfExpandService } from './if-expanded.service';
 
 export default function (): void {

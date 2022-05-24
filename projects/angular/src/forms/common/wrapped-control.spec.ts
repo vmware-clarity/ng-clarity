@@ -6,24 +6,23 @@
 
 import { Component, Directive, NgModule, Type, ViewContainerRef, ElementRef, Renderer2, Injector } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { NgControl, FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-
-import { ControlIdService } from './providers/control-id.service';
-import { NgControlService } from './providers/ng-control.service';
-import { ControlClassService } from './providers/control-class.service';
-import { MarkControlService } from './providers/mark-control.service';
-import { WrappedFormControl } from './wrapped-control';
-import { LayoutService } from './providers/layout.service';
-import { IfControlStateService } from './if-control-state/if-control-state.service';
+import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
+import { IfControlStateService } from './if-control-state/if-control-state.service';
+import { ControlClassService } from './providers/control-class.service';
+import { ControlIdService } from './providers/control-id.service';
+import { LayoutService } from './providers/layout.service';
+import { MarkControlService } from './providers/mark-control.service';
+import { NgControlService } from './providers/ng-control.service';
 import { ClrControlSuccess } from './success';
-import { ClrAbstractContainer } from './abstract-container';
+import { WrappedFormControl } from './wrapped-control';
 
 /*
  * Components using the WrappedFormControl we want to test.

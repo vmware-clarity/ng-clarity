@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { SignpostIdService } from './signpost-id.service';
 import { Observable } from 'rxjs';
+
+import { SignpostIdService } from './signpost-id.service';
 
 interface TestContext {
   idService: SignpostIdService;

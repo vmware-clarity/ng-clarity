@@ -7,9 +7,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Component({
   selector: 'clr-alerts-pager',

@@ -6,12 +6,12 @@
 
 import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
 
-import { ControlClassService } from '../common/providers/control-class.service';
-import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { LayoutService } from '../common/providers/layout.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ContainerIdService } from '../common/providers/container-id.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrRadio } from './radio';
 
 @Component({

@@ -5,9 +5,10 @@
  */
 
 import { ContentChildren, Directive, HostListener, QueryList, Input } from '@angular/core';
+
+import { ClrLabel } from './label';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
-import { ClrLabel } from './label';
 
 @Directive({
   selector: '[clrForm]',

@@ -5,12 +5,13 @@
  */
 
 import { ChangeDetectorRef, Directive, Input, OnChanges, OnDestroy, TemplateRef } from '@angular/core';
-import { TreeFeaturesService } from './tree-features.service';
-import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
-import { TreeNodeModel } from './models/tree-node.model';
-import { AsyncArray } from './models/async-array';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
+import { AsyncArray } from './models/async-array';
+import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
+import { TreeNodeModel } from './models/tree-node.model';
+import { TreeFeaturesService } from './tree-features.service';
 
 export interface ClrRecursiveForOfContext<T> {
   $implicit: T;

@@ -4,11 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DOCUMENT } from '@angular/common';
 import { ElementRef, Injectable, Renderer2, Inject, OnDestroy } from '@angular/core';
-import { ClrPopoverToggleService } from './popover-toggle.service';
 import { Observable, fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/common';
+
+import { ClrPopoverToggleService } from './popover-toggle.service';
 
 // https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */

@@ -4,20 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Component } from '@angular/core';
 import { TestBed, ComponentFixture, tick, async, fakeAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component } from '@angular/core';
 
-import { ClrCombobox } from './combobox';
-import { OptionSelectionService } from './providers/option-selection.service';
-import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
-import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
+import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverContent } from '../../utils/popover/popover-content';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrIconModule } from '../../icon/icon.module';
+import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
+import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
+import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 @Component({
   template: `

@@ -6,9 +6,10 @@
 
 import { Component, Directive } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrDatagridModule } from './datagrid.module';
 import { ClrDatagridPagination } from './datagrid-pagination';
+import { ClrDatagridModule } from './datagrid.module';
 import { Page } from './providers/page';
 
 @Component({

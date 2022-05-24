@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DetailService } from './detail.service';
 import { Subscription } from 'rxjs';
+
+import { DetailService } from './detail.service';
 
 export default function (): void {
   describe('DetailService provider', function () {

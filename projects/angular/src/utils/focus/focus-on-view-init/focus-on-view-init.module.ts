@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { FOCUS_ON_VIEW_INIT_PROVIDER } from './focus-on-view-init.provider';
 

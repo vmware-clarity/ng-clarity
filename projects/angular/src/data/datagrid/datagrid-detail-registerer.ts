@@ -5,6 +5,7 @@
  */
 
 import { Directive, Optional } from '@angular/core';
+
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 
 /*

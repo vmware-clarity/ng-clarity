@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TooltipIdService } from './tooltip-id.service';
 import { Observable } from 'rxjs';
+
+import { TooltipIdService } from './tooltip-id.service';
 
 interface TestContext {
   idService: TooltipIdService;

@@ -7,8 +7,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ClrProgressBarModule } from './progress-bar.module';
+
 import { ClrProgressBar } from './progress-bar';
+import { ClrProgressBarModule } from './progress-bar.module';
 
 @Component({
   template: `<clr-progress-bar id="randomId" [clrValue]="progressValue"></clr-progress-bar>`,

@@ -8,7 +8,6 @@ import { TestContext } from '../../utils/testing/helpers.spec';
 import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
 import { ClrWizard } from '../wizard';
 import { ClrWizardPage } from '../wizard-page';
-
 import { PageCollectionService } from './page-collection.service';
 
 export default function (): void {

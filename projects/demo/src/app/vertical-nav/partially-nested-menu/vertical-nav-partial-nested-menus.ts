@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { VerticalNavCases } from '../vertical-nav-cases';
 
 @Component({

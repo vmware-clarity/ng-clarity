@@ -6,6 +6,7 @@
 
 import { Component, ViewChild, ElementRef, ApplicationRef } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
+
 import { ClrModalBody } from './modal-body';
 
 describe('ClrModalBody Directive', () => {

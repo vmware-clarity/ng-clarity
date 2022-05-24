@@ -4,11 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ColumnsService } from './columns.service';
 import { EmbeddedViewRef, Injectable, TemplateRef } from '@angular/core';
-import { columnStateFactory } from './column-state.provider';
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
+
 import { ClrDatagridHideableColumn } from '../datagrid-hideable-column';
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
+import { columnStateFactory } from './column-state.provider';
+import { ColumnsService } from './columns.service';
 
 class MockHideableColumnTemplateRef extends TemplateRef<ClrDatagridHideableColumn> {
   elementRef = null;

@@ -10,13 +10,12 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-
-import { NgControlService } from '../common/providers/ng-control.service';
+import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
-import { ControlIdService } from '../common/providers/control-id.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { DatalistIdService } from '../datalist/providers/datalist-id.service';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {

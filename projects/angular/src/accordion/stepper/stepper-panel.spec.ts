@@ -7,18 +7,18 @@
 import { Component, Injectable, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrStepperModule } from './stepper.module';
+import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
-import { ClrStepperPanel } from './stepper-panel';
 import { ClrStepper } from './stepper';
+import { ClrStepperPanel } from './stepper-panel';
+import { ClrStepperModule } from './stepper.module';
 
 @Component({
   template: `

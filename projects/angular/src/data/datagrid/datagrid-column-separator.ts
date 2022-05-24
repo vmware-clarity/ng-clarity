@@ -6,6 +6,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, NgZone, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+
 import { KeyCodes, IEKeyCodes } from '../../utils/enums/key-codes.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';

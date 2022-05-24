@@ -5,6 +5,7 @@
  */
 
 import { ClrDatagridStringFilterInterface } from '@clr/angular';
+
 import { User } from '../inventory/user';
 
 export class PokemonFilter implements ClrDatagridStringFilterInterface<User> {

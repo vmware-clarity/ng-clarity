@@ -7,8 +7,8 @@
 import { Component } from '@angular/core';
 
 import { ClrDatagridFooter } from './datagrid-footer';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { SelectionType } from './enums/selection-type';
+import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { DetailService } from './providers/detail.service';
 
 export default function (): void {

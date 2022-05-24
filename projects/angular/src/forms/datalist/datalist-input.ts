@@ -15,10 +15,11 @@ import {
   HostListener,
   AfterContentInit,
 } from '@angular/core';
+import { NgControl } from '@angular/forms';
+
+import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrDatalistContainer } from './datalist-container';
-import { NgControl } from '@angular/forms';
-import { FocusService } from '../common/providers/focus.service';
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({

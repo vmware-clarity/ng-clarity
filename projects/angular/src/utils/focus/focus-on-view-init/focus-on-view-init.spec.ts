@@ -6,6 +6,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';

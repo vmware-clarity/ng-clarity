@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { ClrPopoverContentOffset } from './interfaces/popover-content-offset.interface';
-import { ClrViewportViolation } from './enums/viewport-violation.enum';
-import { ClrVisibilityCoords } from './interfaces/visibility-coords.interface';
 import { ClrAlignment } from './enums/alignment.enum';
+import { ClrViewportViolation } from './enums/viewport-violation.enum';
+import { ClrPopoverContentOffset } from './interfaces/popover-content-offset.interface';
+import { ClrPopoverPosition } from './interfaces/popover-position.interface';
+import { ClrVisibilityCoords } from './interfaces/visibility-coords.interface';
 
 // Put the forward arg here but it is only needed when nudging content or anchors.
 export type ClrTransform = (position: ClrPopoverPosition, back?: boolean) => ClrPopoverPosition;

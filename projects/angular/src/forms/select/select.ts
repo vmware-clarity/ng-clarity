@@ -5,10 +5,10 @@
  */
 
 import { Directive, ViewContainerRef, Renderer2, ElementRef, Injector, Optional, Self } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrSelectContainer } from './select-container';
-import { NgControl } from '@angular/forms';
 
 @Directive({ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } })
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {

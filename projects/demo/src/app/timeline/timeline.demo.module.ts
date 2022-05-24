@@ -6,12 +6,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-
 import { ClrTimelineModule } from '@clr/angular';
-import { ROUTING } from './timeline.demo.routing';
-import { TimelineDemo } from './timeline.demo';
-import { TimelineStaticDemo } from './static/timeline-static';
+
 import { TimelineAngularDemo } from './angular/timeline-angular';
+import { TimelineStaticDemo } from './static/timeline-static';
+import { TimelineDemo } from './timeline.demo';
+import { ROUTING } from './timeline.demo.routing';
 
 const TIMELINE_DEMO_DIRECTIVES: Type<any>[] = [TimelineDemo, TimelineStaticDemo, TimelineAngularDemo];
 

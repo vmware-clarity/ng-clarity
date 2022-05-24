@@ -5,9 +5,10 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrTooltip } from './tooltip';
+
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { ClrTooltip } from './tooltip';
 import { ClrTooltipModule } from './tooltip.module';
 
 @Component({

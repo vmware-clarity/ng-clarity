@@ -6,10 +6,10 @@
 
 import { Component, ElementRef, HostBinding, HostListener, Inject, Input, OnInit } from '@angular/core';
 
-import { OptionSelectionService } from './providers/option-selection.service';
-import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 @Component({
   selector: 'clr-option',
   template: `<ng-content></ng-content>
