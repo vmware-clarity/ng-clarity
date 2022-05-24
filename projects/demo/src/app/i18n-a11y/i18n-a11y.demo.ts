@@ -5,7 +5,7 @@
  */
 
 import { Component, OnDestroy } from '@angular/core';
-import { ClrCommonStringsService, commonStringsDefault, ClrCommonStrings } from '@clr/angular';
+import { ClrCommonStrings, ClrCommonStringsService, commonStringsDefault } from '@clr/angular';
 
 import { frenchTranslation } from './fr-translation';
 import { USERS } from './users';

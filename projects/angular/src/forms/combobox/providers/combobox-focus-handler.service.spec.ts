@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, ElementRef, RendererFactory2, Renderer2 } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { Component, ElementRef, Renderer2, RendererFactory2, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';

@@ -5,24 +5,24 @@
  */
 
 import {
-  Component,
   ChangeDetectionStrategy,
-  Input,
-  EventEmitter,
-  Output,
-  SimpleChanges,
-  Inject,
-  OnInit,
-  OnChanges,
+  Component,
   ContentChildren,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   QueryList,
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../utils/id-generator/id-generator.service';
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionDescription } from './accordion-description';
 import { AccordionStatus } from './enums/accordion-status.enum';
 import { AccordionPanelModel } from './models/accordion.model';

@@ -5,13 +5,13 @@
  */
 
 import {
-  Component,
-  Optional,
-  ElementRef,
-  ViewChild,
-  ContentChild,
-  AfterViewInit,
   AfterContentInit,
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  Optional,
+  ViewChild,
 } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';

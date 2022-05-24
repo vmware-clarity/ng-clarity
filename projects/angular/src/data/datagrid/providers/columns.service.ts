@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ALL_COLUMN_CHANGES } from '../enums/column-changes.enum';
-import { ColumnStateDiff, ColumnState } from '../interfaces/column-state.interface';
+import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';
 
 @Injectable()
 export class ColumnsService {

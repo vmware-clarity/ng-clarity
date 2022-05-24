@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { FontPreset, fontPresets, checkForExistingPresetName, getPreset } from './font-presets';
+import { checkForExistingPresetName, FontPreset, fontPresets, getPreset } from './font-presets';
 
 @Component({
   selector: 'clr-typography-font-switcher',

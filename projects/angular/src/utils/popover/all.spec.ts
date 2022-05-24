@@ -8,7 +8,7 @@ import ClrPopoverAnchorSpec from './popover-anchor.spec';
 import ClrPopoverCloseButtonSpec from './popover-close-button.spec';
 import ClrPopoverContentSpec from './popover-content.spec';
 import ClrPopoverOpenCloseButtonSpec from './popover-open-close-button.spec';
-import { ClrPositionTransformSpec, ClrAlignmentSpec, ClrViewportValidationSpec } from './position-operators.spec';
+import { ClrAlignmentSpec, ClrPositionTransformSpec, ClrViewportValidationSpec } from './position-operators.spec';
 import EventServiceSpec from './providers/popover-events.service.spec';
 import PositionServiceSpec from './providers/popover-position.service.spec';
 import ToggleServiceSpec from './providers/popover-toggle.service.spec';

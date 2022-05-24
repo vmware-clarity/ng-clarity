@@ -5,7 +5,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, Output, NgZone, PLATFORM_ID } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, NgZone, OnDestroy, Output, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';

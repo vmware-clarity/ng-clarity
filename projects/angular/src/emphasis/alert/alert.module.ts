@@ -7,11 +7,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import {
-  infoCircleIcon,
   checkCircleIcon,
   ClarityIcons,
   exclamationCircleIcon,
   exclamationTriangleIcon,
+  infoCircleIcon,
   windowCloseIcon,
 } from '@cds/core/icon';
 

@@ -6,16 +6,16 @@
 
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterContentChecked,
   Directive,
   EmbeddedViewRef,
+  EventEmitter,
   Inject,
   Input,
   OnDestroy,
   Renderer2,
   TemplateRef,
   ViewContainerRef,
-  AfterContentChecked,
-  EventEmitter,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';

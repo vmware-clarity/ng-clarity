@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ContentChildren, Directive, HostListener, QueryList, Input } from '@angular/core';
+import { ContentChildren, Directive, HostListener, Input, QueryList } from '@angular/core';
 
 import { ClrLabel } from './label';
 import { LayoutService } from './providers/layout.service';

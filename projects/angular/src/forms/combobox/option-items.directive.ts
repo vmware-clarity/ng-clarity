@@ -11,10 +11,10 @@ import {
   Input,
   IterableDiffer,
   IterableDiffers,
+  OnDestroy,
   TemplateRef,
   TrackByFunction,
   ViewContainerRef,
-  OnDestroy,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 

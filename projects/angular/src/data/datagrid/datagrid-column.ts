@@ -5,19 +5,19 @@
  */
 
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
   Injector,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  ViewContainerRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  OnChanges,
   SimpleChanges,
+  ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 

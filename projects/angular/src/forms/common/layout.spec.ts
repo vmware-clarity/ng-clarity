@@ -9,7 +9,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ClrLayout } from './layout';
-import { LayoutService, ClrFormLayout } from './providers/layout.service';
+import { ClrFormLayout, LayoutService } from './providers/layout.service';
 
 function customTestComponentFactory(
   layout: ClrFormLayout = ClrFormLayout.VERTICAL,

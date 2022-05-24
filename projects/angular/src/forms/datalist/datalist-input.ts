@@ -5,15 +5,15 @@
  */
 
 import {
+  AfterContentInit,
   Directive,
-  ViewContainerRef,
-  Injector,
-  Self,
-  Optional,
-  Renderer2,
   ElementRef,
   HostListener,
-  AfterContentInit,
+  Injector,
+  Optional,
+  Renderer2,
+  Self,
+  ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 

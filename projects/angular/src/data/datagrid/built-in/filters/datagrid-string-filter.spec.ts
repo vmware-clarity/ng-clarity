@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, Renderer2 } from '@angular/core';
+import { Component, Renderer2, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';

@@ -8,7 +8,7 @@ import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainer
 
 import { NgControlService } from '../providers/ng-control.service';
 import { AbstractIfState } from './abstract-if-state';
-import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 
 @Directive({ selector: '[clrIfError]' })
 export class ClrIfError extends AbstractIfState {

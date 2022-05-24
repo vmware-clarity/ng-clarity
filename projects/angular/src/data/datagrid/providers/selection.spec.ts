@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TrackByFunction, NgZone } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { NgZone, TrackByFunction } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { SelectionType } from '../enums/selection-type';

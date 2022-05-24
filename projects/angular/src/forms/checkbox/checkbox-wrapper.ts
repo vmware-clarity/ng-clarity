@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit, ContentChild, Inject, InjectionToken, OnDestroy } from '@angular/core';
+import { Component, ContentChild, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';

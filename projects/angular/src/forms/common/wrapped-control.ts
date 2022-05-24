@@ -5,18 +5,18 @@
  */
 
 import {
+  Directive,
+  ElementRef,
   HostBinding,
-  InjectionToken,
   HostListener,
+  InjectionToken,
   Injector,
   Input,
+  OnDestroy,
   OnInit,
+  Renderer2,
   Type,
   ViewContainerRef,
-  Renderer2,
-  ElementRef,
-  OnDestroy,
-  Directive,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';

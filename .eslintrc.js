@@ -50,6 +50,13 @@ module.exports = {
         ],
         'jasmine/no-focused-tests': 'error',
         'no-irregular-whitespace': ['error', { skipTemplates: true }],
+        'sort-imports': [
+          'error',
+          {
+            ignoreCase: true,
+            ignoreDeclarationSort: true,
+          },
+        ],
         'unused-imports/no-unused-imports-ts': 'error',
       },
     },

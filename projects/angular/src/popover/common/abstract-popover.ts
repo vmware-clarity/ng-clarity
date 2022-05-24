@@ -6,13 +6,13 @@
 
 import {
   AfterViewChecked,
+  Directive,
   ElementRef,
   HostBinding,
   Injector,
   OnDestroy,
   Renderer2,
   SkipSelf,
-  Directive,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 

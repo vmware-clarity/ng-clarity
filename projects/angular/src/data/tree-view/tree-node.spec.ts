@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, PLATFORM_ID } from '@angular/core';
+import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';

@@ -7,14 +7,14 @@
 import { Component } from '@angular/core';
 import {
   chartCollectionIcons as ChartShapes,
-  coreCollectionIcons as CoreShapes,
   commerceCollectionIcons as CommerceShapes,
+  coreCollectionIcons as CoreShapes,
   essentialCollectionIcons as EssentialShapes,
   mediaCollectionIcons as MediaShapes,
   socialCollectionIcons as SocialShapes,
-  travelCollectionIcons as TravelShapes,
-  textEditCollectionIcons as TextEditShapes,
   technologyCollectionIcons as TechnologyShapes,
+  textEditCollectionIcons as TextEditShapes,
+  travelCollectionIcons as TravelShapes,
 } from '@cds/core/icon';
 
 @Component({
