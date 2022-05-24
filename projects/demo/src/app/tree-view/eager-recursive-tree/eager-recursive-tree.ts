@@ -5,7 +5,6 @@
  */
 
 import { Component } from '@angular/core';
-
 import { ClrSelectedState } from '@clr/angular';
 
 interface SelectedMap {

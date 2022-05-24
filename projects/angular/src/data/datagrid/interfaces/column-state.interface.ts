@@ -5,6 +5,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 export interface ColumnState {

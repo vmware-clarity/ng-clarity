@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
 import { CdsIconCustomTag, ClrIconCustomTag } from './icon';
 
 export const CLR_ICON_DIRECTIVES: Type<any>[] = [ClrIconCustomTag, CdsIconCustomTag];

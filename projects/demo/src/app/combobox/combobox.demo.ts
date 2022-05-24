@@ -5,9 +5,9 @@
  */
 
 import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { timer, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './combobox.demo.html',

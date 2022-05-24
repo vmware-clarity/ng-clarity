@@ -4,18 +4,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
-
+import { Component, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrFocusTrapModule } from '../utils/focus-trap/focus-trap.module';
-
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 

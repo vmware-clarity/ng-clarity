@@ -4,11 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatalistDemo } from './datalist.demo';
 import { ClarityModule } from '@clr/angular';
+
+import { DatalistDemo } from './datalist.demo';
 import { ROUTING } from './datalist.demo.routing';
 
 @NgModule({

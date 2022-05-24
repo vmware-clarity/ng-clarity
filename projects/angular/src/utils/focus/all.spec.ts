@@ -5,9 +5,9 @@
  */
 
 import FocusServiceSpec from './focus.service.spec';
-import WrapObservable from './wrap-observable.spec';
 import BasicFocusableItemSpec from './focusable-item/basic-focusable-item.spec';
 import LinkersSpec from './focusable-item/linkers.spec';
+import WrapObservable from './wrap-observable.spec';
 
 describe('Focus management', function () {
   FocusServiceSpec();

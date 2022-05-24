@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionService } from './accordion.service';
 import { take } from 'rxjs/operators';
+
 import { AccordionStrategy } from '../enums/accordion-strategy.enum';
+import { AccordionService } from './accordion.service';
 
 describe('AccordionService', () => {
   let accordionService: AccordionService;

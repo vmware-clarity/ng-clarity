@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Injectable } from '@angular/core';
+
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';
 import { IconAttributes } from '../interface/icon-attribute.interface';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TimelineIconAttributeService {

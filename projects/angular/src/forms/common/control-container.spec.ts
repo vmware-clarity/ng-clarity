@@ -7,10 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ClrControlContainer } from './control-container';
-import { ClrControl } from './control';
-
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ClrControl } from './control';
+import { ClrControlContainer } from './control-container';
 
 @Component({
   template: `

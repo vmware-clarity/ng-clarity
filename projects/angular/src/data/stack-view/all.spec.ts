@@ -15,10 +15,10 @@
  */
 
 import StackBlockSpecs from './stack-block.spec';
-import StackHeaderSpecs from './stack-header.spec';
-import StackViewSpecs from './stack-view.spec';
 import StackContentInputSpecs from './stack-content-input.spec';
+import StackHeaderSpecs from './stack-header.spec';
 import StackViewCustomTagSpecs from './stack-view-custom-tags.spec';
+import StackViewSpecs from './stack-view.spec';
 
 describe('Stack View directives', () => {
   StackViewSpecs();

@@ -6,6 +6,7 @@
 
 import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
 import { addHelpers, TestContext } from '../../data/datagrid/helpers.spec';
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';

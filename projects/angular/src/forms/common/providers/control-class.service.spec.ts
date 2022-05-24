@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 import { ControlClassService } from './control-class.service';
 import { LayoutService } from './layout.service';
-import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 
 export default function (): void {
   describe('ControlClassService', function () {

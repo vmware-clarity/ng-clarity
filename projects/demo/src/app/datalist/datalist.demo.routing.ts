@@ -6,6 +6,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { DatalistDemo } from './datalist.demo';
 
 const ROUTES: Routes = [{ path: '', component: DatalistDemo }];

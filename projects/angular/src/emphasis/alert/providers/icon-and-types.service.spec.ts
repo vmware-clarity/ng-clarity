@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AlertIconAndTypesService } from './icon-and-types.service';
 import { ClrCommonStringsService } from '../../../utils/i18n/common-strings.service';
+import { AlertIconAndTypesService } from './icon-and-types.service';
 
 export default function (): void {
   describe('Alert Icon and Types Service', function () {

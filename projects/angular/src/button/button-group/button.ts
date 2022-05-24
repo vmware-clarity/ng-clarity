@@ -8,8 +8,8 @@ import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef
 
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
   selector: 'clr-button',

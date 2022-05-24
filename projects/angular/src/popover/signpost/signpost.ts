@@ -6,13 +6,12 @@
 
 import { Component, ContentChild, ElementRef } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
-
-import { ClrSignpostTrigger } from './signpost-trigger';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { SignpostIdService } from './providers/signpost-id.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
+import { SignpostIdService } from './providers/signpost-id.service';
+import { ClrSignpostTrigger } from './signpost-trigger';
 
 @Component({
   selector: 'clr-signpost',

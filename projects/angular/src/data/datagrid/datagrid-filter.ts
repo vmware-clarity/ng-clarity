@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -15,20 +16,19 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
+import { ClrAxis } from '../../utils/popover/enums/axis.enum';
+import { ClrSide } from '../../utils/popover/enums/side.enum';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
-import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { Subscription } from 'rxjs';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { isPlatformBrowser } from '@angular/common';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.

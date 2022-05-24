@@ -20,20 +20,19 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
+import { ColumnStateDiff } from '../interfaces/column-state.interface';
+import { ColumnsService } from '../providers/columns.service';
+import { DetailService } from '../providers/detail.service';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
-
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
-import { ColumnsService } from '../providers/columns.service';
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRowRenderer } from './row-renderer';
-import { ColumnStateDiff } from '../interfaces/column-state.interface';
-import { DetailService } from '../providers/detail.service';
 
 // Fixes build error
 // @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)

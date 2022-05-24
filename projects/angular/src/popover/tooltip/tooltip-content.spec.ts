@@ -6,14 +6,13 @@
 
 import { Component } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { Point } from '../common/popover';
-
-import { ClrTooltipContent } from './tooltip-content';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrTooltipModule } from './tooltip.module';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { Point } from '../common/popover';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { ClrTooltipContent } from './tooltip-content';
+import { ClrTooltipModule } from './tooltip.module';
 
 @Component({
   template: `

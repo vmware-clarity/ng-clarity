@@ -8,6 +8,7 @@ import { AfterContentInit, Component, DebugElement, ViewChild } from '@angular/c
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ClrCommonStringsService } from '../utils';
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { PageCollectionMock } from './providers/page-collection.service.mock';
@@ -16,7 +17,6 @@ import { ClrWizardPageNavTitle } from './wizard-page-navtitle';
 import { MockPage } from './wizard-page.mock';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 import { ClrWizardModule } from './wizard.module';
-import { ClrCommonStringsService } from '../utils';
 
 const pageIndex = 0;
 const fakeOutPage = new MockPage(pageIndex);

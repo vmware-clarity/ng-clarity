@@ -10,7 +10,6 @@ import { map } from 'rxjs/operators';
 
 import { DatagridPropertyComparator } from '../built-in/comparators/datagrid-property-comparator';
 import { ClrDatagridStateInterface } from '../interfaces/state.interface';
-
 import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { Sort } from './sort';

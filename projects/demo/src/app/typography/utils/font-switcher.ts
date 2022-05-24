@@ -6,6 +6,7 @@
 
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+
 import { FontPreset, fontPresets, checkForExistingPresetName, getPreset } from './font-presets';
 
 @Component({

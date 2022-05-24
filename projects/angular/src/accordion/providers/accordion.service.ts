@@ -8,8 +8,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AccordionModel, AccordionPanelModel } from '../models/accordion.model';
 import { AccordionStrategy } from '../enums/accordion-strategy.enum';
+import { AccordionModel, AccordionPanelModel } from '../models/accordion.model';
 
 @Injectable()
 export class AccordionService {

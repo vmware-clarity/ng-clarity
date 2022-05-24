@@ -6,9 +6,8 @@
 
 import { Component, ContentChild, Inject } from '@angular/core';
 
-import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
-
 import { AriaService } from '../../utils/aria/aria.service';
+import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';
 import { ClrTabLink } from './tab-link.directive';

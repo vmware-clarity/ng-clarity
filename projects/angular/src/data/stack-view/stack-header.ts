@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { ClrStackView } from './stack-view';
 
 @Component({

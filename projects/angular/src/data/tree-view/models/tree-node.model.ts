@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSelectedState } from './selected-state.enum';
 import { BehaviorSubject } from 'rxjs';
+
+import { ClrSelectedState } from './selected-state.enum';
 
 export abstract class TreeNodeModel<T> {
   nodeId: string;

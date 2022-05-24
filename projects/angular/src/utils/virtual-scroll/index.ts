@@ -5,6 +5,7 @@
  */
 
 import { Type } from '@angular/core';
+
 import { VirtualForOf } from './virtual-for-of';
 
 export { NonNgIterable } from './non-ng-iterable';

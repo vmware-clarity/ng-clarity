@@ -11,7 +11,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNavGroup } from './vertical-nav-group';

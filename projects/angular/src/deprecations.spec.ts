@@ -6,8 +6,8 @@
 
 import { ClrDatagrid } from './data/datagrid/datagrid';
 import { ClrDatagridColumnToggle } from './data/datagrid/datagrid-column-toggle';
-import { ClrDatagridColumnToggleTitle } from './data/datagrid/datagrid-column-toggle-title';
 import { ClrDatagridColumnToggleButton } from './data/datagrid/datagrid-column-toggle-button';
+import { ClrDatagridColumnToggleTitle } from './data/datagrid/datagrid-column-toggle-title';
 import { ClrWizard } from './wizard/wizard';
 
 describe('Deprecations', () => {

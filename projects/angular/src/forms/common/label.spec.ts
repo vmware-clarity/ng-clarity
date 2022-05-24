@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrInputContainer } from '../input/input-container';
-
 import { ClrLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';

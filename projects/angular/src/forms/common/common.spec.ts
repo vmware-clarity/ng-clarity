@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
-
 import { ClrCommonFormsModule } from './common.module';
 import { ControlIdService } from './providers/control-id.service';
 import { WrappedFormControl } from './wrapped-control';

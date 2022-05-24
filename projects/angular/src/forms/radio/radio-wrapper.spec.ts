@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 
 import { WrapperFullSpec, WrapperNoLabelSpec, WrapperContainerSpec } from '../tests/wrapper.spec';
 import { ClrRadio } from './radio';
-import { ClrRadioWrapper } from './radio-wrapper';
 import { ClrRadioContainer } from './radio-container';
+import { ClrRadioWrapper } from './radio-wrapper';
 
 @Component({
   template: `

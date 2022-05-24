@@ -5,12 +5,13 @@
  */
 
 import { Component, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+
 import { spec, TestContext } from '../testing/helpers.spec';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
+import { ClrPopoverEventsService } from './providers/popover-events.service';
+import { ClrPopoverPositionService } from './providers/popover-position.service';
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
   selector: 'test-host',

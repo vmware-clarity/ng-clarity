@@ -14,14 +14,14 @@ import {
   AfterContentInit,
 } from '@angular/core';
 
-import { NgControlService } from '../common/providers/ng-control.service';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { ComboboxContainerService } from './providers/combobox-container.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { ClrLabel } from '../common/label';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ClrLabel } from '../common/label';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
+import { ComboboxContainerService } from './providers/combobox-container.service';
 
 @Component({
   selector: 'clr-combobox-container',

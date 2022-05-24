@@ -18,6 +18,7 @@ import {
   SimpleChange,
   ViewChild,
 } from '@angular/core';
+
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';

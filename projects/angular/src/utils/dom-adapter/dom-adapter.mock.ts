@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DomAdapter } from './dom-adapter';
 import { Injectable } from '@angular/core';
+
+import { DomAdapter } from './dom-adapter';
 
 @Injectable()
 export class MockDomAdapter extends DomAdapter {

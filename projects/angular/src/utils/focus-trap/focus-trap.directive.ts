@@ -18,8 +18,9 @@ import {
   Renderer2,
   OnInit,
 } from '@angular/core';
-import { FocusTrapTracker } from './focus-trap-tracker.service';
+
 import { FocusTrapConfig } from './focus-trap-config.interface';
+import { FocusTrapTracker } from './focus-trap-tracker.service';
 
 export const FOCUSABLES =
   '[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), [contenteditable="true"]:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"]) ';

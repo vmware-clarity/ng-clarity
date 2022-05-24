@@ -7,12 +7,13 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { VerticalNavAccessibilityDemo } from './accessibility/vertical-nav-accessibility';
 import { VerticalNavAllCases } from './all-cases/vertical-all-cases.demo';
 import { VerticalNavBasicDemo } from './basic/vertical-nav-basic';
-
 import { VerticalNavCollapsibleDemo } from './collapsible/vertical-nav-collapsible';
 import { VerticalNavDirectIconDemo } from './direct-icon/vertical-nav-icon';
 import { VerticalNavHeaderAndDividerDemo } from './header-and-divider/vertical-nav-header-and-divider';
+import { VerticalNavHighlightsDemo } from './highlights/vertical-nav-highlights.demo';
 import { VerticalNavNestedIconMenusDemo } from './nested-icon-menus/vertical-nav-nested-icon-menus';
 import { VerticalNavNestedMenusDemo } from './nested-menus/vertical-nav-nested-menus';
 import { VerticalNavPartiallyNestedIconMenusDemo } from './partially-nested-icon-menu/vertical-nav-partial-nested-icon-menus';
@@ -49,8 +50,6 @@ import { SamsTown1Demo } from './without-expanded-directive/the-killers/sams-tow
 import { Killers1Demo } from './without-expanded-directive/the-killers/the-killers';
 import { Wikipedia1Demo } from './without-expanded-directive/wikipedia';
 import { WithoutExpandedDirectiveDemo } from './without-expanded-directive/without-expanded-directive';
-import { VerticalNavHighlightsDemo } from './highlights/vertical-nav-highlights.demo';
-import { VerticalNavAccessibilityDemo } from './accessibility/vertical-nav-accessibility';
 
 const ROUTES: Routes = [
   {

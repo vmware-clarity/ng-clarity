@@ -4,9 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TreeFocusManagerService } from './tree-focus-manager.service';
-import { TreeNodeModel } from './models/tree-node.model';
 import { Subscription } from 'rxjs';
+
+import { TreeNodeModel } from './models/tree-node.model';
+import { TreeFocusManagerService } from './tree-focus-manager.service';
 
 class TreeNodeModelMock extends TreeNodeModel<void> {
   nodeId: string;

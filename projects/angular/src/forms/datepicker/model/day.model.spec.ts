@@ -5,7 +5,6 @@
  */
 
 import { assertEqualDates } from '../utils/test-utils';
-
 import { DayModel } from './day.model';
 
 export default function (): void {

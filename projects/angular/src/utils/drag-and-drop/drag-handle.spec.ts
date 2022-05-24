@@ -7,6 +7,7 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { ClrDragHandle } from './drag-handle';
 import { DragHandleRegistrarService } from './providers/drag-handle-registrar.service';
 import { MOCK_DRAG_HANDLE_REGISTRAR_PROVIDER } from './providers/drag-handle-registrar.service.mock';

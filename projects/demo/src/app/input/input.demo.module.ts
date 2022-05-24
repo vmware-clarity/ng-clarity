@@ -6,7 +6,6 @@
 
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { ClarityModule } from '@clr/angular';
 
 import { InputDemo } from './input.demo';

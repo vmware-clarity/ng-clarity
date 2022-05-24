@@ -6,6 +6,7 @@
 
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { UNIQUE_ID } from '../../id-generator/id-generator.service';
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from './basic-focusable-item.service';
 import { FocusableItem } from './focusable-item';

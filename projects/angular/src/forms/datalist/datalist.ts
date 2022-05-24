@@ -5,8 +5,8 @@
  */
 
 import { Input, Directive, AfterContentInit, Optional } from '@angular/core';
-
 import { Subscription } from 'rxjs';
+
 import { DatalistIdService } from './providers/datalist-id.service';
 
 @Directive({

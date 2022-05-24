@@ -6,9 +6,9 @@
 
 import { isObservable, Subscription } from 'rxjs';
 
-import { TreeNodeModel } from './tree-node.model';
-import { AsyncArray, isPromise } from './async-array';
 import { TreeFeaturesService } from '../tree-features.service';
+import { AsyncArray, isPromise } from './async-array';
+import { TreeNodeModel } from './tree-node.model';
 
 /*
  * A recursive model is built received from the app and traversed to create the corresponding components.

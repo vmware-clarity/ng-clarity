@@ -6,8 +6,8 @@
 
 import { Component } from '@angular/core';
 
-import { InfiniteTree } from '../utils/infinite-tree';
 import { AsyncInfiniteTree } from '../utils/async-infinite-tree';
+import { InfiniteTree } from '../utils/infinite-tree';
 
 @Component({
   selector: 'clr-lazy-recursive-tree-demo',

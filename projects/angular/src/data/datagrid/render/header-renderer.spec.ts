@@ -14,9 +14,13 @@ import { ClrDragEvent } from '../../../utils/drag-and-drop/drag-event';
 import { ClrDraggable } from '../../../utils/drag-and-drop/draggable/draggable';
 import { DragEventType } from '../../../utils/drag-and-drop/interfaces/drag-event.interface';
 import { ClrDatagrid } from '../datagrid';
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { TestContext } from '../helpers.spec';
+import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';
+import { ColumnsService } from '../providers/columns.service';
+import { DetailService } from '../providers/detail.service';
 import { FiltersProvider } from '../providers/filters';
 import { Page } from '../providers/page';
 import { Sort } from '../providers/sort';
@@ -26,10 +30,6 @@ import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
-import { ColumnState } from '../interfaces/column-state.interface';
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
-import { ColumnsService } from '../providers/columns.service';
-import { DetailService } from '../providers/detail.service';
 
 @Component({ template: `<clr-dg-column>Hello world</clr-dg-column>` })
 class SimpleTest {}

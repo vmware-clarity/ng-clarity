@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestContext } from '../../data/datagrid/helpers.spec';
-
 import { Component } from '@angular/core';
+
+import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFilterHighlight } from './filter-highlight.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
 

@@ -7,10 +7,9 @@
 import { TestContext } from '../../utils/testing/helpers.spec';
 import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
 import { ClrWizard } from '../wizard';
-
+import { ClrWizardPage } from '../wizard-page';
 import { PageCollectionService } from './page-collection.service';
 import { WizardNavigationService } from './wizard-navigation.service';
-import { ClrWizardPage } from '../wizard-page';
 
 export default function (): void {
   describe('Wizard Navigation Service', function () {

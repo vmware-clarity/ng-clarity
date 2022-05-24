@@ -5,6 +5,7 @@
  */
 
 import { Directive, OnDestroy } from '@angular/core';
+
 import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 import { FiltersProvider, RegisteredFilter } from '../providers/filters';
 

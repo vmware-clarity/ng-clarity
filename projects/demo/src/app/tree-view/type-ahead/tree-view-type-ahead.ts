@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { getStatesAndCities, TreeNode } from './inventory';
 
 const STATES_AND_CITIES = getStatesAndCities(10);

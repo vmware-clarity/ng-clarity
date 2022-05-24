@@ -6,12 +6,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { TogglesDemo } from './toggles.demo';
 import { ROUTING } from './toggles.demo.routing';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, FormsModule, ROUTING],

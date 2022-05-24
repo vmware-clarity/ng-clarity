@@ -9,16 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { NgControlService } from '../common/providers/ng-control.service';
-
 import { ClrCommonFormsModule } from '../common/common.module';
-import { WrappedFormControl } from '../common/wrapped-control';
-import { ControlIdService } from '../common/providers/control-id.service';
-import { ControlClassService } from '../common/providers/control-class.service';
-import { MarkControlService } from '../common/providers/mark-control.service';
-import { LayoutService } from '../common/providers/layout.service';
-import { DatalistIdService } from '../datalist/providers/datalist-id.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { ControlIdService } from '../common/providers/control-id.service';
+import { LayoutService } from '../common/providers/layout.service';
+import { MarkControlService } from '../common/providers/mark-control.service';
+import { NgControlService } from '../common/providers/ng-control.service';
+import { WrappedFormControl } from '../common/wrapped-control';
+import { DatalistIdService } from '../datalist/providers/datalist-id.service';
 
 export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {

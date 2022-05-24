@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DOCUMENT } from '@angular/common';
 import {
   Directive,
   EmbeddedViewRef,
@@ -16,14 +17,13 @@ import {
   AfterContentChecked,
   EventEmitter,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverPositionService } from './providers/popover-position.service';
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { debounceTime } from 'rxjs/operators';
+import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 // https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */

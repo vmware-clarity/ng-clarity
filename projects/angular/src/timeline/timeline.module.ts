@@ -10,7 +10,6 @@ import { circleIcon, ClarityIcons, dotCircleIcon, errorStandardIcon, successStan
 
 import { ClrIconModule } from '../icon/icon.module';
 import { ClrSpinnerModule } from '../progress/spinner/spinner.module';
-
 import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineStepDescription } from './timeline-step-description';

@@ -6,10 +6,10 @@
 
 import { Component, Input } from '@angular/core';
 
+import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardPage } from './wizard-page';
-import { ClrCommonStringsService } from '../utils';
 
 @Component({
   selector: '[clr-wizard-stepnav-item]',

@@ -7,10 +7,11 @@
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
+import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRow } from './datagrid-row';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
+import { SelectionType } from './enums/selection-type';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
@@ -18,7 +19,6 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { Items } from './providers/items';
 import { Selection } from './providers/selection';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { SelectionType } from './enums/selection-type';
 
 type Item = { id: number };
 

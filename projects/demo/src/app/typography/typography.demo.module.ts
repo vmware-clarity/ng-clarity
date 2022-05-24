@@ -8,19 +8,18 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { ClarityModule } from '@clr/angular';
 
+import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
 import { TypographyFontCharTestDemo } from './typography-font-char-test';
 import { TypographyFontWeightDemo } from './typography-font-weight';
 import { TypographyHeadersDemo } from './typography-headers';
+import { TypographyLineHeightDemo } from './typography-line-height';
 import { TypographyLinksDemo } from './typography-links';
 import { TypographyTextDemo } from './typography-text';
 import { TypographyDemo } from './typography.demo';
-import { TypographyLineHeightDemo } from './typography-line-height';
-import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
-import { FontSwitcher } from './utils/font-switcher';
 import { ROUTING } from './typography.demo.routing';
+import { FontSwitcher } from './utils/font-switcher';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],

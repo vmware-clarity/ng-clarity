@@ -9,10 +9,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
-import { ClrSignpostModule } from './signpost.module';
-import { SignpostIdService } from './providers/signpost-id.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
+import { SignpostIdService } from './providers/signpost-id.service';
+import { ClrSignpostModule } from './signpost.module';
 
 export default function (): void {
   describe('SignpostToggle component', function () {

@@ -5,14 +5,14 @@
  */
 
 import { Component, ViewChild, Injectable } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrStepperModule } from './stepper.module';
-import { ClrStepButton, ClrStepButtonType } from './step-button';
 import { StepperService } from './providers/stepper.service';
+import { ClrStepButton, ClrStepButtonType } from './step-button';
+import { ClrStepperModule } from './stepper.module';
 
 @Component({
   template: `

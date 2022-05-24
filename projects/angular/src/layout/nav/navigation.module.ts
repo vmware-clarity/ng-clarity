@@ -9,12 +9,11 @@ import { NgModule, Type } from '@angular/core';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';
-
+import { ClrAriaCurrentLink } from './aria-current-link';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { NavDetectionOompaLoompa } from './chocolate/nav-detection-oompa-loompa';
 import { ClrHeader } from './header';
 import { ClrNavLevel } from './nav-level';
-import { ClrAriaCurrentLink } from './aria-current-link';
 
 export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [
   ClrHeader,

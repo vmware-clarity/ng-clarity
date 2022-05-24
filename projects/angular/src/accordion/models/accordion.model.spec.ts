@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionModel } from './accordion.model';
 import { AccordionStrategy } from '../enums/accordion-strategy.enum';
+import { AccordionModel } from './accordion.model';
 
 describe('AccordionModel', () => {
   let accordion: AccordionModel;

@@ -15,12 +15,12 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ColumnsService } from './providers/columns.service';
-import { ColumnState } from './interfaces/column-state.interface';
+
 import { DatagridColumnChanges } from './enums/column-changes.enum';
+import { ColumnState } from './interfaces/column-state.interface';
 import { COLUMN_STATE } from './providers/column-state.provider';
+import { ColumnsService } from './providers/columns.service';
 
 @Directive({ selector: '[clrDgHideableColumn]' })
 

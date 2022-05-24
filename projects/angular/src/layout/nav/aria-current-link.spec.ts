@@ -10,9 +10,9 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { ClrAriaCurrentLink } from './aria-current-link';
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { ClrNavigationModule } from './navigation.module';
-import { ClrAriaCurrentLink } from './aria-current-link';
 @Component({
   template: `
     <clr-header class="header">

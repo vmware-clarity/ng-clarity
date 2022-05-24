@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { SingleSelectComboboxModel } from './single-select-combobox.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+
+import { SingleSelectComboboxModel } from './single-select-combobox.model';
 
 export class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
   private _focusChanged: BehaviorSubject<T> = new BehaviorSubject(null);

@@ -10,7 +10,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
-
 import { ClrLoadingButton } from './loading-button';
 import { ClrLoadingButtonModule } from './loading-button.module';
 

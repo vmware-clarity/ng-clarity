@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DateRange } from '../interfaces/date-range.interface';
 import { CalendarViewModel } from './calendar-view.model';
 import { CalendarModel } from './calendar.model';
 import { DayViewModel } from './day-view.model';
 import { DayModel } from './day.model';
-import { DateRange } from '../interfaces/date-range.interface';
 
 export default function (): void {
   describe('CalendarViewModel', function () {

@@ -24,37 +24,34 @@ import {
   Inject,
   ChangeDetectorRef,
 } from '@angular/core';
+import { NgControl, ControlValueAccessor } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-
-import { OptionSelectionService } from './providers/option-selection.service';
-import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrComboboxContainer } from './combobox-container';
-import { NgControl, ControlValueAccessor } from '@angular/forms';
-import { ClrOptionSelected } from './option-selected.directive';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-
 import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
-import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
-import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
-import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { BACKSPACE } from '../../utils/key-codes/key-codes';
-
-import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrAxis } from '../../utils/popover/enums/axis.enum';
+import { ClrLoadingState } from '../../utils/loading/loading';
+import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
+import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ComboboxContainerService } from './providers/combobox-container.service';
-import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrLoadingState } from '../../utils/loading/loading';
-import { ComboboxModel } from './model/combobox.model';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { WrappedFormControl } from '../common/wrapped-control';
+import { ClrComboboxContainer } from './combobox-container';
+import { ComboboxModel } from './model/combobox.model';
+import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
+import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOptionSelected } from './option-selected.directive';
+import { ComboboxContainerService } from './providers/combobox-container.service';
+import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
+import { OptionSelectionService } from './providers/option-selection.service';
 
 @Component({
   selector: 'clr-combobox',

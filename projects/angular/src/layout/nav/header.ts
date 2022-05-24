@@ -6,11 +6,11 @@
 
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'clr-header',

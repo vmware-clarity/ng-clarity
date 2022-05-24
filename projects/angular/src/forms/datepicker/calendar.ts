@@ -8,16 +8,15 @@ import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
-
+import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
 import { DayModel } from './model/day.model';
+import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
-import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
-import { DateIOService } from './providers/date-io.service';
 
 @Component({ selector: 'clr-calendar', templateUrl: './calendar.html' })
 export class ClrCalendar implements OnDestroy {

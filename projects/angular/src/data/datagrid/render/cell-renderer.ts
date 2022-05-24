@@ -7,12 +7,11 @@
 import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
+import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
-
+import { ColumnState } from '../interfaces/column-state.interface';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
-import { ColumnState } from '../interfaces/column-state.interface';
-import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
 
 @Directive({ selector: 'clr-dg-cell' })
 export class DatagridCellRenderer implements OnDestroy {

@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { TemplateDrivenSpec, ControlStandaloneSpec, ReactiveSpec } from '../tests/control.spec';
-import { ClrControlContainer } from './control-container';
 import { ClrControl } from './control';
+import { ClrControlContainer } from './control-container';
 
 @Component({
   template: ` <input type="text" clrControl /> `,

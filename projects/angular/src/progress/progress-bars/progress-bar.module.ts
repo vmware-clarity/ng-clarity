@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
 import { ClrProgressBar } from './progress-bar';
 
 export const CLR_PROGRESS_BAR_DIRECTIVES: Type<any>[] = [ClrProgressBar];

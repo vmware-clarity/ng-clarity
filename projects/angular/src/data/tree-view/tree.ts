@@ -15,8 +15,9 @@ import {
   QueryList,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { TreeFocusManagerService } from './tree-focus-manager.service';
+
 import { TreeFeaturesService, TREE_FEATURES_PROVIDER } from './tree-features.service';
+import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 
 @Component({

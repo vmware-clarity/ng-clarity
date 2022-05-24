@@ -7,9 +7,9 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { TimelineAngularDemo } from './angular/timeline-angular';
 import { TimelineStaticDemo } from './static/timeline-static';
 import { TimelineDemo } from './timeline.demo';
-import { TimelineAngularDemo } from './angular/timeline-angular';
 
 const ROUTES: Routes = [
   {

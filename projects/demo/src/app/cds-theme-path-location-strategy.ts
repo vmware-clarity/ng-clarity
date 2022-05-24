@@ -7,6 +7,7 @@
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { Inject, Injectable, Optional, Provider } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
+
 import { cdsThemeAttribute, getCdsThemeFromDom } from './cds-theme-select.component';
 
 /**

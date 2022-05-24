@@ -5,12 +5,11 @@
  */
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, Optional, Output, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-// providers
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clr-alert',

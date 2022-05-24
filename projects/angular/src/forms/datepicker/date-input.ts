@@ -25,9 +25,10 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { filter, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
+import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrDateContainer } from './date-container';
@@ -38,7 +39,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { datesAreEqual } from './utils/date-utils';
-import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 
 // There are four ways the datepicker value is set
 // 1. Value set by user typing into text input as a string ex: '01/28/2015'

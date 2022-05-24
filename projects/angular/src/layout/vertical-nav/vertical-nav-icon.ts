@@ -5,6 +5,7 @@
  */
 
 import { Directive, OnDestroy } from '@angular/core';
+
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 
 @Directive({ selector: '[clrVerticalNavIcon]', host: { class: 'nav-icon' } })

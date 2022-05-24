@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
+
 import { FocusTrapDirective } from './focus-trap.directive';
 
 export const FOCUS_TRAP_DIRECTIVES: Type<any>[] = [FocusTrapDirective];

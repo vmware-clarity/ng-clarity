@@ -5,9 +5,9 @@
  */
 
 import { ComboboxModel } from './combobox.model';
-import { SingleSelectComboboxModel } from './single-select-combobox.model';
 import { MultiSelectComboboxModel } from './multi-select-combobox.model';
 import { PseudoFocusModel } from './pseudo-focus.model';
+import { SingleSelectComboboxModel } from './single-select-combobox.model';
 
 export default function () {
   describe('Combobox Model', () => {

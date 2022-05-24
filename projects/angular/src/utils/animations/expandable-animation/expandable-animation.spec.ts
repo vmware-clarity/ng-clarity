@@ -4,13 +4,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrExpandableAnimation } from './index';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ClrExpandableAnimationModule } from './expandable-animation.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import { ClrExpandableAnimationModule } from './expandable-animation.module';
+
+import { ClrExpandableAnimation } from './index';
 
 @Component({
   template: `

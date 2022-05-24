@@ -7,8 +7,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
-import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 import { ComboboxModel } from '../model/combobox.model';
+import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
 export class OptionSelectionService<T> {

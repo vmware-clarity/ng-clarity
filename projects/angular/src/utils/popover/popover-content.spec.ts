@@ -4,18 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TestContext } from '../testing/helpers.spec';
 import { Component, Renderer2, ViewChild } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+
+import { TestContext } from '../testing/helpers.spec';
 import { ClrAlignment } from './enums/alignment.enum';
 import { ClrAxis } from './enums/axis.enum';
 import { ClrSide } from './enums/side.enum';
+import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverContent } from './popover-content';
+import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { ClrPopoverModuleNext } from './popover.module';
 
 @Component({
   selector: 'test-host',

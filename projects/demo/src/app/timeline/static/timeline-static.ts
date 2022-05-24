@@ -5,7 +5,6 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-
 import { ClarityIcons } from '@cds/core/icon';
 
 @Component({

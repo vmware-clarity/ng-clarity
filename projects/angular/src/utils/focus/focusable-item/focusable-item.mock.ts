@@ -5,6 +5,7 @@
  */
 
 import { Observable } from 'rxjs';
+
 import { FocusableItem } from './focusable-item';
 
 export class MockFocusableItem implements FocusableItem {

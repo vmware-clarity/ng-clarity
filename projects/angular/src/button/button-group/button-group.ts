@@ -7,16 +7,15 @@
 import { Component, Inject, ContentChildren, Input, QueryList, AfterContentInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { ButtonInGroupService } from '../providers/button-in-group.service';
+import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrDestroyService } from '../../utils/destroy/destroy.service';
-import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
-
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
 
 @Component({

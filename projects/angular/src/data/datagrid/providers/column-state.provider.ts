@@ -6,6 +6,7 @@
 
 import { InjectionToken } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+
 import { ColumnState } from '../interfaces/column-state.interface';
 
 export const COLUMN_STATE = new InjectionToken<ColumnState>('COLUMN_STATE');

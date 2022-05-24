@@ -5,6 +5,7 @@
  */
 
 import { Component, Input } from '@angular/core';
+
 import { Page } from './providers/page';
 
 @Component({

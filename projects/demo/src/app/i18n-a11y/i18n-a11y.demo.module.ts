@@ -5,9 +5,8 @@
  */
 
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { NgModule, LOCALE_ID } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
-
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 import { I18nA11yDemo } from './i18n-a11y.demo';

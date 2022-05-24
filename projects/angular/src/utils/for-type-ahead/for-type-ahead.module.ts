@@ -6,6 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import { ClrForTypeAhead } from './for-type-ahead';
 @NgModule({
   imports: [CommonModule],

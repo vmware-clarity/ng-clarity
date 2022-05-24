@@ -8,7 +8,6 @@ import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IfActiveService } from '../../utils/conditional/if-active.service';
-
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';

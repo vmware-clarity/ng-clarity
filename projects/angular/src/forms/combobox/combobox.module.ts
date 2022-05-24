@@ -7,21 +7,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrCommonFormsModule } from '../common/common.module';
+import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-
-import { ClrOption } from './option';
-import { ClrOptions } from './options';
+import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
+import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
+import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrOptionSelected } from './option-selected.directive';
-import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
+import { ClrOption } from './option';
 import { ClrOptionItems } from './option-items.directive';
-import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
-import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '@cds/core/icon';
+import { ClrOptionSelected } from './option-selected.directive';
+import { ClrOptions } from './options';
 
 @NgModule({
   imports: [

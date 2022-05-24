@@ -6,10 +6,10 @@
 
 import { Component } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
-import { DatagridIfExpandService } from './datagrid-if-expanded.service';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function (): void {
   describe('ClrDatagridRowDetail component', function () {

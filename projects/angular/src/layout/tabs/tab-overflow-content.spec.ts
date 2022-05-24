@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
 import { ClrTabOverflowContent } from './tab-overflow-content';
 
 @Component({

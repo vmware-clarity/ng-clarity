@@ -6,14 +6,12 @@
 
 import { Component } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-
-import { ClrTooltipTrigger } from './tooltip-trigger';
-
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrTooltipModule } from './tooltip.module';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { ClrTooltipTrigger } from './tooltip-trigger';
+import { ClrTooltipModule } from './tooltip.module';
 
 @Component({
   template: ` <span clrTooltipTrigger [attr.aria-label]="ariaLabel"> Hello world </span> `,

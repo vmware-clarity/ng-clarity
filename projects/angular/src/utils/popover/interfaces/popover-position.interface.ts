@@ -5,8 +5,8 @@
  */
 
 import { ClrAlignment } from '../enums/alignment.enum';
-import { ClrSide } from '../enums/side.enum';
 import { ClrAxis } from '../enums/axis.enum';
+import { ClrSide } from '../enums/side.enum';
 
 /**
  * ClrPopoverPosition

@@ -7,7 +7,6 @@
 import { TestContext } from '../../utils/testing/helpers.spec';
 import { HeaderActionsTestComponent } from '../test-components/header-action-wizard.mock';
 import { ClrWizard } from '../wizard';
-
 import { HeaderActionService } from './header-actions.service';
 import { WizardNavigationService } from './wizard-navigation.service';
 

@@ -20,14 +20,14 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../utils/id-generator/id-generator.service';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { AccordionService } from './providers/accordion.service';
-import { AccordionStatus } from './enums/accordion-status.enum';
-import { panelAnimation } from './utils/animation';
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
-import { AccordionPanelModel } from './models/accordion.model';
+import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
+import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionDescription } from './accordion-description';
+import { AccordionStatus } from './enums/accordion-status.enum';
+import { AccordionPanelModel } from './models/accordion.model';
+import { AccordionService } from './providers/accordion.service';
+import { panelAnimation } from './utils/animation';
 
 @Component({
   selector: 'clr-accordion-panel',

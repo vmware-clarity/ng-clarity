@@ -4,13 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DateRange } from '../interfaces/date-range.interface';
 import { NO_OF_DAYS_IN_A_WEEK, NO_OF_ROWS_IN_CALENDAR_VIEW, TOTAL_DAYS_IN_DAYS_VIEW } from '../utils/constants';
 import { getDay } from '../utils/date-utils';
-
 import { CalendarModel } from './calendar.model';
 import { DayViewModel } from './day-view.model';
 import { DayModel } from './day.model';
-import { DateRange } from '../interfaces/date-range.interface';
 
 export class CalendarViewModel {
   constructor(

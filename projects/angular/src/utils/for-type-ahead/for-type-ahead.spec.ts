@@ -6,10 +6,11 @@
 
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
 import { ClrForTypeAhead } from './for-type-ahead';
 import { ClrForTypeAheadModule } from './for-type-ahead.module';
 import { ForTypeAheadProvider } from './for-type-ahead.service';
-import { By } from '@angular/platform-browser';
 
 @Component({
   template: ` <span [clrForTypeAhead]="textContent">World</span> `,

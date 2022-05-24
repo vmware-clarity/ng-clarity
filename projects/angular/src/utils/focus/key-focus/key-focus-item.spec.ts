@@ -7,8 +7,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import { ClrKeyFocusModule } from './key-focus.module';
 import { ClrKeyFocusItem } from './key-focus-item';
+import { ClrKeyFocusModule } from './key-focus.module';
 
 @Component({
   template: ` <button clrKeyFocusItem>Button 1</button> `,

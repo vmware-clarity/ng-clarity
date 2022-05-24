@@ -5,11 +5,10 @@
  */
 
 import { addHelpers } from '../../data/datagrid/helpers.spec';
-
-import DropdownMenuSpecs from './dropdown-menu.spec';
-import DropdownSpecs from './dropdown.spec';
 import DropdownItemSpecs from './dropdown-item.spec';
+import DropdownMenuSpecs from './dropdown-menu.spec';
 import DropdownTriggerSpecs from './dropdown-trigger.spec';
+import DropdownSpecs from './dropdown.spec';
 import DropdownFocusHandlerSpecs from './providers/dropdown-focus-handler.spec';
 
 describe('Dropdown', function () {

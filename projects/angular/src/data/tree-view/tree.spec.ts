@@ -5,17 +5,18 @@
  */
 
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { ClrTree } from './tree';
-import { spec, TestContext } from '../../utils/testing/helpers.spec';
-import { ClrTreeViewModule } from './tree-view.module';
-import { TreeFeaturesService } from './tree-features.service';
-import { RecursiveChildren } from './recursive-children';
-import { TreeFocusManagerService } from './tree-focus-manager.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrForTypeAheadModule } from '../../utils/for-type-ahead/for-type-ahead.module';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ClrForTypeAheadModule } from '../../utils/for-type-ahead/for-type-ahead.module';
+import { spec, TestContext } from '../../utils/testing/helpers.spec';
+import { RecursiveChildren } from './recursive-children';
+import { ClrTree } from './tree';
+import { TreeFeaturesService } from './tree-features.service';
+import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
+import { ClrTreeViewModule } from './tree-view.module';
 
 @Component({
   template: `<clr-tree [clrLazy]="lazy">Hello world <clr-tree-node *ngIf="hasChild">Child</clr-tree-node></clr-tree>`,

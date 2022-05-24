@@ -5,6 +5,7 @@
  */
 
 import { Observable } from 'rxjs';
+
 import { ArrowKeyDirection } from '../arrow-key-direction.enum';
 import { FocusableItem } from './focusable-item';
 

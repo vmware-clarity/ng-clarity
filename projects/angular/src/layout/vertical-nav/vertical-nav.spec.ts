@@ -10,11 +10,10 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
-
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 export default function (): void {
   describe('Vertical Nav', () => {

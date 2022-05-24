@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 
 @Component({

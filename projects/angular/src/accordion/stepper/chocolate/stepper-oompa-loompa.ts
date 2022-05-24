@@ -7,8 +7,8 @@
 import { ChangeDetectorRef, Directive, Optional } from '@angular/core';
 
 import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
-import { StepperWillyWonka } from './stepper-willy-wonka';
 import { IfExpandService } from '../../../utils/conditional/if-expanded.service';
+import { StepperWillyWonka } from './stepper-willy-wonka';
 
 @Directive({ selector: 'clr-stepper-panel, [clrStepButton]' })
 export class StepperOompaLoompa extends OompaLoompa {

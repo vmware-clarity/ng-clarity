@@ -12,11 +12,10 @@ import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrIconCustomTag } from '../../icon/icon';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
-
+import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
+import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostContent } from './signpost-content';
 import { SIGNPOST_POSITIONS } from './signpost-positions';
-import { SignpostIdService } from './providers/signpost-id.service';
-import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 
 export default function (): void {
   describe('ClrSignpostContent', function () {

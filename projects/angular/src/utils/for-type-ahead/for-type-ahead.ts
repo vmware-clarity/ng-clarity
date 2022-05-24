@@ -5,6 +5,7 @@
  */
 
 import { Directive, ElementRef, Input } from '@angular/core';
+
 import { ForTypeAheadProvider } from './for-type-ahead.service';
 
 // The purpose of this directive is to provide the text content of its host element

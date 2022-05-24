@@ -27,13 +27,14 @@ import {
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
+
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { isKeyEitherLetterOrNumber, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
 import { ForTypeAheadProvider } from '../../utils/for-type-ahead/for-type-ahead.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
 import { TreeNodeModel } from './models/tree-node.model';

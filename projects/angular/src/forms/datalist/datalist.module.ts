@@ -6,12 +6,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrDatalistInput } from './datalist-input';
-import { ClrInputModule } from '../input/input.module';
-import { ClrDatalistContainer } from './datalist-container';
-import { ClrIconModule } from '../../icon/icon.module';
-import { ClrDatalist } from './datalist';
 import { checkCircleIcon, ClarityIcons, exclamationCircleIcon } from '@cds/core/icon';
+
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrInputModule } from '../input/input.module';
+import { ClrDatalist } from './datalist';
+import { ClrDatalistContainer } from './datalist-container';
+import { ClrDatalistInput } from './datalist-input';
 
 @NgModule({
   imports: [CommonModule, ClrInputModule, ClrIconModule],
