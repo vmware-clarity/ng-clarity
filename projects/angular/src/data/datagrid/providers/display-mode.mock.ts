@@ -6,8 +6,8 @@
 
 import { Injectable } from '@angular/core';
 
-import { DatagridDisplayMode } from './../enums/display-mode.enum';
-import { DatagridRenderOrganizer } from './../render/render-organizer';
+import { DatagridDisplayMode } from '../enums/display-mode.enum';
+import { DatagridRenderOrganizer } from '../render/render-organizer';
 import { DisplayModeService } from './display-mode.service';
 
 @Injectable()

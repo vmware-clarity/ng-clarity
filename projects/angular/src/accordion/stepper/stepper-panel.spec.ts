@@ -14,7 +14,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrStepperModule } from './stepper.module';
-import { AccordionStatus } from './../enums/accordion-status.enum';
+import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepperPanel } from './stepper-panel';

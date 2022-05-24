@@ -7,7 +7,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { commonStringsDefault } from './../../utils/i18n/common-strings.default';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { TestContext } from './helpers.spec';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';

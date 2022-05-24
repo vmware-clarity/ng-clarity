@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 
-import { commonStringsDefault } from './../../utils/i18n/common-strings.default';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
