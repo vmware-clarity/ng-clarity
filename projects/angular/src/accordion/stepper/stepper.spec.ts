@@ -11,7 +11,7 @@ import { Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ClrStepperModule } from './stepper.module';
-import { StepperService } from '././providers/stepper.service';
+import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
 

@@ -1,0 +1,26 @@
+diff --git a/node_modules/eslint-plugin-import/lib/rules/no-useless-path-segments.js b/node_modules/eslint-plugin-import/lib/rules/no-useless-path-segments.js
+index b788f38..3ec7afe 100644
+--- a/node_modules/eslint-plugin-import/lib/rules/no-useless-path-segments.js
++++ b/node_modules/eslint-plugin-import/lib/rules/no-useless-path-segments.js
+@@ -69,18 +69,18 @@ module.exports = {
+             node: source,
+             // Note: Using messageIds is not possible due to the support for ESLint 2 and 3
+             message: 'Useless path segments for "' + String(importPath) + '", should be "' + String(proposedPath) + '"',
+-            fix: function () {function fix(fixer) {return proposedPath && fixer.replaceText(source, JSON.stringify(proposedPath));}return fix;}() });
++            fix: function () {function fix(fixer) {return proposedPath && fixer.replaceText(source, `'${proposedPath}'`);}return fix;}() });
+ 
+         }
+ 
+         // Only relative imports are relevant for this rule --> Skip checking
+-        if (!importPath.startsWith('.')) {
++        if (!importPath.startsWith('.') && !importPath.startsWith('src/')) {
+           return;
+         }
+ 
+         // Report rule violation if path is not the shortest possible
+         var resolvedPath = (0, _resolve2['default'])(importPath, context);
+-        var normedPath = normalize(importPath);
++        var normedPath = normalize(importPath.startsWith('src/') ? _path.relative(currentDir, _path.resolve(importPath)).replace(/\\/g, '/') : importPath);
+         var resolvedNormedPath = (0, _resolve2['default'])(normedPath, context);
+         if (normedPath !== importPath && resolvedPath === resolvedNormedPath) {
+           return reportWithProposedPath(normedPath);

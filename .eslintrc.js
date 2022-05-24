@@ -12,7 +12,7 @@ module.exports = {
     jasmine: true,
   },
   extends: ['eslint:recommended', 'plugin:json/recommended-with-comments', 'prettier'],
-  plugins: ['license-header'],
+  plugins: ['import', 'license-header'],
   rules: {
     curly: 'error',
     eqeqeq: 'error',
@@ -32,6 +32,8 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'error',
         curly: 'error',
         eqeqeq: 'error',
+        'import/no-absolute-path': ['error'],
+        'import/no-useless-path-segments': ['error'],
         'jasmine/no-focused-tests': 'error',
         'no-irregular-whitespace': ['error', { skipTemplates: true }],
         'unused-imports/no-unused-imports-ts': 'error',
