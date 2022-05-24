@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { commonStringsDefault } from './../../utils/i18n/common-strings.default';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 
 import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { ClrNavigationModule } from './navigation.module';

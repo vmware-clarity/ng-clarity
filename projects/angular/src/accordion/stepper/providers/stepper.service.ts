@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
-import { AccordionService } from './../../providers/accordion.service';
+import { AccordionService } from '../../providers/accordion.service';
 import { StepperModel } from '../models/stepper.model';
 
 @Injectable()

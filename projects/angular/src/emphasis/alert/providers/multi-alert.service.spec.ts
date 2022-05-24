@@ -7,8 +7,8 @@
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrEmphasisModule } from './../../emphasis.module';
-import { ClrAlert } from './../alert';
+import { ClrEmphasisModule } from '../../emphasis.module';
+import { ClrAlert } from '../alert';
 import { MultiAlertService } from './multi-alert.service';
 
 export default function () {
