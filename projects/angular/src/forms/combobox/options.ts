@@ -6,15 +6,15 @@
 
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ContentChildren,
   ElementRef,
   Inject,
   Input,
+  OnDestroy,
   Optional,
   QueryList,
-  AfterViewInit,
-  OnDestroy,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 

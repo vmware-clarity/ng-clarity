@@ -8,7 +8,7 @@ import { Directive, Optional, TemplateRef, ViewContainerRef } from '@angular/cor
 
 import { NgControlService } from '../providers/ng-control.service';
 import { AbstractIfState } from './abstract-if-state';
-import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 
 @Directive({ selector: '[clrIfSuccess]' })
 export class ClrIfSuccess extends AbstractIfState {

@@ -4,13 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ClrFormLayout, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';

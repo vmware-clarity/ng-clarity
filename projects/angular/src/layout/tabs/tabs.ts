@@ -9,13 +9,13 @@ import {
   Component,
   ContentChildren,
   ElementRef,
+  HostBinding,
   Inject,
   Input,
   OnDestroy,
   QueryList,
   ViewChild,
   ViewContainerRef,
-  HostBinding,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';

@@ -5,16 +5,16 @@
  */
 
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  QueryList,
-  ChangeDetectionStrategy,
   Input,
-  SimpleChanges,
-  OnInit,
   OnChanges,
-  AfterViewInit,
   OnDestroy,
+  OnInit,
+  QueryList,
+  SimpleChanges,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';

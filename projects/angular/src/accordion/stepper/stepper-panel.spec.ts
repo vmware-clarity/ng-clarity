@@ -5,8 +5,8 @@
  */
 
 import { Component, Injectable, ViewChild } from '@angular/core';
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { ReactiveFormsModule, FormGroup, FormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';

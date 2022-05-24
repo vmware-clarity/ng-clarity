@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, ContentChildren, Input, QueryList, AfterContentInit } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Inject, Input, QueryList } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';

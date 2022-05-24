@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { IfControlStateService, CONTROL_STATE } from './if-control-state/if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
 import { ClrLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';

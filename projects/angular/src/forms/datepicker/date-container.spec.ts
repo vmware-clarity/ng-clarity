@@ -5,7 +5,7 @@
  */
 
 import { Component, Renderer2 } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
@@ -15,7 +15,7 @@ import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-e
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';

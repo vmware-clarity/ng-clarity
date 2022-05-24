@@ -6,7 +6,7 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
 

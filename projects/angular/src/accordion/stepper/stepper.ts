@@ -5,21 +5,21 @@
  */
 
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  QueryList,
-  Optional,
-  ChangeDetectionStrategy,
   Input,
-  SimpleChanges,
-  OnInit,
-  AfterViewInit,
-  OnDestroy,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
+  SimpleChanges,
 } from '@angular/core';
 import { FormGroupDirective, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { startWith, filter } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { AccordionService } from '../providers/accordion.service';
 import { StepperService } from './providers/stepper.service';

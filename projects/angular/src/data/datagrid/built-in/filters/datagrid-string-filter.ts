@@ -10,10 +10,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
+  OnDestroy,
   Output,
   ViewChild,
-  OnDestroy,
-  NgZone,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 

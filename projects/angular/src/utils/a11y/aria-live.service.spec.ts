@@ -5,9 +5,9 @@
  */
 
 import { Component } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { ClrAriaLiveService, ClrAriaLivePoliteness } from './aria-live.service';
+import { ClrAriaLivePoliteness, ClrAriaLiveService } from './aria-live.service';
 
 // keep in sync with the ClrAriaLiveService manualy
 const ARIA_LIVE_TICK = 100;

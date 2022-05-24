@@ -6,15 +6,15 @@
 
 import {
   AfterViewChecked,
+  ChangeDetectorRef,
+  Directive,
   ElementRef,
   HostBinding,
   Injector,
+  NgZone,
   OnDestroy,
   Renderer2,
   SkipSelf,
-  Directive,
-  NgZone,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 

@@ -5,7 +5,7 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, Injector, Input, Optional, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, Inject, Injector, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';

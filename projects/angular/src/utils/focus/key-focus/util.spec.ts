@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { KeyCodes, IEKeyCodes } from '../../enums/key-codes.enum';
+import { IEKeyCodes, KeyCodes } from '../../enums/key-codes.enum';
 import { preventArrowKeyScroll } from './util';
 
 describe('preventArrowKeyScroll', () => {

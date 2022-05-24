@@ -5,14 +5,14 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 import { ClrAxis } from '../enums/axis.enum';
 import { ClrViewportViolation } from '../enums/viewport-violation.enum';
 import { ClrPopoverContentOffset } from '../interfaces/popover-content-offset.interface';
 import { ClrPopoverPosition } from '../interfaces/popover-position.interface';
-import { align, flipSidesAndNudgeContent, flipSides, nudgeContent, testVisibility } from '../position-operators';
+import { align, flipSides, flipSidesAndNudgeContent, nudgeContent, testVisibility } from '../position-operators';
 import { ClrPopoverEventsService } from './popover-events.service';
 
 @Injectable()

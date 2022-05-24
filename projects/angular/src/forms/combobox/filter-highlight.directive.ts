@@ -5,7 +5,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Directive, ElementRef, OnDestroy, AfterViewInit, Inject, PLATFORM_ID, HostBinding } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './providers/option-selection.service';

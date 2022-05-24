@@ -5,8 +5,8 @@
  */
 
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { timer, Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Component({

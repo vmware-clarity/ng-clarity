@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentChecked, ChangeDetectorRef, OnDestroy, Directive } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Directive, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { WillyWonka } from './willy-wonka';

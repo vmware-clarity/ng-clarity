@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 import { ClrTimelineLayout } from './enums/timeline-layout.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Optional, ViewChild, ElementRef, Input, AfterViewInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';

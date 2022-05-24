@@ -6,7 +6,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';

@@ -5,7 +5,7 @@
  */
 
 import { Component, Renderer2, ViewChild } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { TestContext } from '../testing/helpers.spec';
 import { ClrAlignment } from './enums/alignment.enum';

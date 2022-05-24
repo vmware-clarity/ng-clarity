@@ -7,14 +7,14 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
-  Input,
-  Output,
   Inject,
+  Input,
   OnDestroy,
+  Output,
   PLATFORM_ID,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
