@@ -31,7 +31,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
 import { SelectionType } from './enums/selection-type';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DetailService } from './providers/detail.service';
-import { KeyCodes } from 'src/utils/enums/key-codes.enum';
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 
 @Component({
   template: `

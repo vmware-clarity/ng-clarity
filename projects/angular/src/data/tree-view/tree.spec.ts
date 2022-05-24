@@ -13,7 +13,7 @@ import { TreeFeaturesService } from './tree-features.service';
 import { RecursiveChildren } from './recursive-children';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrForTypeAheadModule } from 'src/utils/for-type-ahead/for-type-ahead.module';
+import { ClrForTypeAheadModule } from '../../utils/for-type-ahead/for-type-ahead.module';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { ClrTreeNode } from './tree-node';
 
