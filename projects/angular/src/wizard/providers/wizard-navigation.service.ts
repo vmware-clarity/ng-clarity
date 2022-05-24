@@ -5,7 +5,7 @@
  */
 
 import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 
 import { ClrWizardPage } from '../wizard-page';

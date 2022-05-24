@@ -5,7 +5,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';

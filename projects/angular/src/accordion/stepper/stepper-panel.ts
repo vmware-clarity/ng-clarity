@@ -6,23 +6,23 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
-  Component,
   ChangeDetectionStrategy,
-  Optional,
+  Component,
+  ElementRef,
   Inject,
   OnInit,
-  ViewChild,
-  ElementRef,
+  Optional,
   PLATFORM_ID,
+  ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { tap, filter, pairwise } from 'rxjs/operators';
+import { filter, pairwise, tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID_PROVIDER, UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
+import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrAccordionPanel } from '../accordion-panel';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';

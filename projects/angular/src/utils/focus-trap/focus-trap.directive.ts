@@ -14,9 +14,9 @@ import {
   Injector,
   Input,
   OnDestroy,
+  OnInit,
   PLATFORM_ID,
   Renderer2,
-  OnInit,
 } from '@angular/core';
 
 import { FocusTrapConfig } from './focus-trap-config.interface';

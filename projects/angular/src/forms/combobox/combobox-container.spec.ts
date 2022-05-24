@@ -6,13 +6,13 @@
 
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrPopoverContent } from '../../utils/popover/popover-content';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { ContainerNoLabelSpec, TemplateDrivenSpec, ReactiveSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
 import { ComboboxContainerService } from './providers/combobox-container.service';

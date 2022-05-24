@@ -9,7 +9,7 @@ import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { NgControlService } from '../providers/ng-control.service';
-import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 
 @Directive()
 export abstract class AbstractIfState {

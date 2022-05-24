@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener, HostBinding, Input, OnInit } from '@angular/core';
+import { Directive, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepperPanel } from './stepper-panel';

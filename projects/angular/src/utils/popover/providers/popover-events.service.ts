@@ -5,8 +5,8 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { ElementRef, Injectable, Renderer2, Inject, OnDestroy } from '@angular/core';
-import { Observable, fromEvent, Subscription } from 'rxjs';
+import { ElementRef, Inject, Injectable, OnDestroy, Renderer2 } from '@angular/core';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ClrPopoverToggleService } from './popover-toggle.service';

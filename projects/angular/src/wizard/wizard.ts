@@ -12,14 +12,14 @@ import {
   DoCheck,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   IterableDiffers,
   OnDestroy,
   Output,
+  PLATFORM_ID,
   QueryList,
   ViewChild,
-  PLATFORM_ID,
-  Inject,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';

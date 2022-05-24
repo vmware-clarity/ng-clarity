@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ViewChild, Directive } from '@angular/core';
+import { Directive, ViewChild } from '@angular/core';
 import { ClrStackBlock } from '@clr/angular';
 
 @Directive()

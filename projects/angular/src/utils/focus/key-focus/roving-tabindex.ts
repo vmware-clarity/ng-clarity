@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Renderer2, Input } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
 import { FocusableItem } from './interfaces';

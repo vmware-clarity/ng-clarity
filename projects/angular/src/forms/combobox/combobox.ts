@@ -6,26 +6,26 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
+  EventEmitter,
   HostListener,
+  Inject,
+  Injector,
+  Input,
+  Optional,
+  Output,
   PLATFORM_ID,
   Renderer2,
+  Self,
   ViewChild,
   ViewContainerRef,
-  Injector,
-  Self,
-  Optional,
-  Input,
-  Output,
-  EventEmitter,
-  AfterContentInit,
-  Inject,
-  ChangeDetectorRef,
 } from '@angular/core';
-import { NgControl, ControlValueAccessor } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { AriaService } from '../../utils/aria/aria.service';
@@ -42,7 +42,7 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrComboboxContainer } from './combobox-container';
 import { ComboboxModel } from './model/combobox.model';

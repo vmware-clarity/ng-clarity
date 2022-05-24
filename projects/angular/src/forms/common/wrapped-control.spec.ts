@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, NgModule, Type, ViewContainerRef, ElementRef, Renderer2, Injector } from '@angular/core';
+import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NgControl, FormsModule } from '@angular/forms';
+import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';

@@ -7,12 +7,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import {
+  angleIcon,
+  calendarIcon,
   checkCircleIcon,
   ClarityIcons,
   eventIcon,
   exclamationCircleIcon,
-  angleIcon,
-  calendarIcon,
 } from '@cds/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';

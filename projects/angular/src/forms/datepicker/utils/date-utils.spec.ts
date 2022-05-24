@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { datesAreEqual, parseToFourDigitYear, getDay, getNumberOfDaysInTheMonth } from './date-utils';
+import { datesAreEqual, getDay, getNumberOfDaysInTheMonth, parseToFourDigitYear } from './date-utils';
 
 describe('date utility functions', () => {
   it('should get the number of days in the month', () => {

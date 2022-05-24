@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, ElementRef, ApplicationRef } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrModalBody } from './modal-body';
 

@@ -5,7 +5,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
