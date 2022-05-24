@@ -6,7 +6,7 @@
 
 import { animate, AnimationMetadata, state, style, transition } from '@angular/animations';
 
-import { defaultAnimationTiming } from './../constants';
+import { defaultAnimationTiming } from '../constants';
 
 export function collapse(): AnimationMetadata[] {
   'use strict';

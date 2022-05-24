@@ -6,7 +6,7 @@
 
 import { animate, AnimationMetadata, style, transition } from '@angular/animations';
 
-import { defaultAnimationTiming } from './../constants';
+import { defaultAnimationTiming } from '../constants';
 
 export function fade(opacity = 1): AnimationMetadata[] {
   return [

@@ -31,7 +31,7 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'clr-stepper-panel',
-  templateUrl: './../accordion-panel.html',
+  templateUrl: '../accordion-panel.html',
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,

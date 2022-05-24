@@ -9,8 +9,8 @@ import { NgModule } from '@angular/core';
 
 import { ClrAccordionModule } from '../accordion.module';
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrStepButton } from './../stepper/step-button';
-import { ClrStepper } from './../stepper/stepper';
+import { ClrStepButton } from '../stepper/step-button';
+import { ClrStepper } from '../stepper/stepper';
 import { ClrStepperPanel } from './stepper-panel';
 import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
 import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';

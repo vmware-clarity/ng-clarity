@@ -26,7 +26,7 @@ import {
 import { Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { KeyCodes } from './../../utils/enums/key-codes.enum';
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
