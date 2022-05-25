@@ -15,7 +15,7 @@
     "lint:fix": "npm-run-all _lint:code:fix _lint:styles:fix _lint:format:fix",
     "lint:changed": "npm-run-all _lint:code:changed _lint:styles:changed _lint:format:changed",
     "lint:changed:fix": "npm-run-all _lint:code:changed:fix _lint:styles:changed:fix _lint:format:changed:fix",
-    "prepare": "husky install; patch-package",
+    "prepare": "husky install && patch-package",
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
     "public-api:update": "api-extractor run --local",
