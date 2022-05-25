@@ -1740,10 +1740,13 @@
       justify-content: flex-end;
 
       .btn.btn-link {
-        @include css-var(color, clr-modal-close-color, $clr-modal-close-color, $clr-use-custom-properties);
         margin-top: $clr_baselineRem_0_667;
         margin-bottom: 0;
         padding-right: 0;
+
+        cds-icon {
+          @include css-var(color, clr-modal-close-color, $clr-modal-close-color, $clr-use-custom-properties);
+        }
       }
     }
   }
