@@ -48,6 +48,7 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
+import { ValueProvider } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
 // @public (undocumented)
@@ -112,6 +113,12 @@ export const CLR_ICON_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_LAYOUT_DIRECTIVES: Type<any>[];
+
+// @public (undocumented)
+export const CLR_LIST_KEY_NAVIGATION_COFNIG_PROVIDER: ValueProvider;
+
+// @public (undocumented)
+export const CLR_LIST_KEY_NAVIGATION_CONFIG: InjectionToken<unknown>;
 
 // @public (undocumented)
 export const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
@@ -2790,6 +2797,35 @@ class ClrKeyFocusModule {
 }
 
 // @public (undocumented)
+export class ClrKeyNavigationList implements AfterViewInit {
+    constructor(host: ElementRef<HTMLElement>, defaultConfig: KeyNavigationListConfig, focusableElementSelectors: string[]);
+    // (undocumented)
+    set configuration(config: Partial<KeyNavigationListConfig>);
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    onClick(e: Event): void;
+    // (undocumented)
+    onKeyDown(e: KeyboardEvent): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrKeyNavigationList, "[clrKeyNavigationList]", never, { "configuration": "configuration"; }, {}, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyNavigationList, never>;
+}
+
+// @public (undocumented)
+export class ClrKeyNavigationListModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyNavigationListModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrKeyNavigationListModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrKeyNavigationListModule, [typeof i1_50.ClrKeyNavigationList], never, [typeof i1_50.ClrKeyNavigationList]>;
+}
+
+// @public (undocumented)
 export class ClrLabel implements OnInit, OnDestroy {
     constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef);
     // (undocumented)
@@ -5139,6 +5175,12 @@ export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 const FOCUS_TRAP_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
+export const FOCUSABLE_ELEMENT_SELECTORS: InjectionToken<unknown>;
+
+// @public (undocumented)
+export const FOCUSABLE_ELEMENT_SELECTORS_PROVIDER: ValueProvider;
+
+// @public (undocumented)
 const FOCUSABLES = "[href]:not([tabindex=\"-1\"]), button:not([disabled]):not([tabindex=\"-1\"]), input:not([disabled]):not([tabindex=\"-1\"]), select:not([disabled]):not([tabindex=\"-1\"]), textarea:not([disabled]):not([tabindex=\"-1\"]), [contenteditable=\"true\"]:not([tabindex=\"-1\"]), [tabindex]:not([tabindex=\"-1\"]) ";
 
 // @public (undocumented)
@@ -5152,6 +5194,22 @@ export const IS_TOGGLE_PROVIDER: {
 
 // @public (undocumented)
 export function isToggleFactory(): BehaviorSubject<boolean>;
+
+// @public (undocumented)
+export interface KeyNavigationListConfig {
+    // (undocumented)
+    dir: string | null;
+    // (undocumented)
+    keyListItems: string;
+    // (undocumented)
+    layout: 'both' | 'horizontal' | 'vertical';
+    // (undocumented)
+    loop: boolean;
+    // (undocumented)
+    manageFocus: boolean;
+    // (undocumented)
+    manageTabindex: boolean;
+}
 
 // @public
 export abstract class LoadingListener {

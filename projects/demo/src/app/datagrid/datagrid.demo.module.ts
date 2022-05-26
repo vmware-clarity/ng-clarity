@@ -7,7 +7,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
+import { ClarityModule, ClrKeyNavigationListModule } from '@clr/angular';
 
 import { UtilsDemoModule } from '../_utils/utils.module';
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
@@ -44,7 +44,7 @@ import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { ColorFilter } from './utils/color-filter';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
+  imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule, ClrKeyNavigationListModule],
   declarations: [
     DatagridDemo,
     DatagridBasicStructureDemo,
