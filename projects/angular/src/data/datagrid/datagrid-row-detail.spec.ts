@@ -75,6 +75,10 @@ export default function (): void {
     it('should add id to the root element', function () {
       expect(context.clarityElement.getAttribute('id')).not.toBeNull();
     });
+
+    it('should have role=gridcell', function () {
+      expect(context.clarityElement.getAttribute('role')).toBe('gridcell');
+    });
   });
 }
 

@@ -35,6 +35,7 @@ import { Selection } from './providers/selection';
     '[class.datagrid-row-detail]': 'true',
     '[class.datagrid-container]': 'cells.length === 0',
     '[attr.id]': 'expand.expandableId',
+    role: 'gridcell',
   },
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
