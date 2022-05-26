@@ -42,7 +42,6 @@ let clrDgActionId = 0;
 
     <div
       class="datagrid-action-overflow"
-      role="menu"
       [id]="popoverId"
       [attr.aria-hidden]="!open"
       [attr.id]="popoverId"
