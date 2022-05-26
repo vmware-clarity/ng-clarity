@@ -44,6 +44,7 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
+import { ValueProvider } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
 // @public (undocumented)
@@ -77,6 +78,12 @@ export const CLR_ICON_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_LAYOUT_DIRECTIVES: Type<any>[];
+
+// @public (undocumented)
+export const CLR_LIST_KEY_NAVIGATION_COFNIG_PROVIDER: ValueProvider;
+
+// @public (undocumented)
+export const CLR_LIST_KEY_NAVIGATION_CONFIG: InjectionToken<unknown>;
 
 // @public (undocumented)
 export const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
@@ -2020,6 +2027,23 @@ export class ClrInputModule {
 }
 
 // @public (undocumented)
+export class ClrKeyNavigationList implements AfterViewInit {
+    constructor(host: ElementRef<HTMLElement>, defaultConfig: KeyNavigationListConfig, focusableElementSelectors: string[]);
+    // (undocumented)
+    set configuration(config: Partial<KeyNavigationListConfig>);
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    onClick(e: Event): void;
+    // (undocumented)
+    onKeyDown(e: KeyboardEvent): void;
+}
+
+// @public (undocumented)
+export class ClrKeyNavigationListModule {
+}
+
+// @public (undocumented)
 export class ClrLabel implements OnInit, OnDestroy {
     constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef);
     // (undocumented)
@@ -3736,6 +3760,12 @@ export const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
 export const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
+export const FOCUSABLE_ELEMENT_SELECTORS: InjectionToken<unknown>;
+
+// @public (undocumented)
+export const FOCUSABLE_ELEMENT_SELECTORS_PROVIDER: ValueProvider;
+
+// @public (undocumented)
 export const IS_TOGGLE: InjectionToken<BehaviorSubject<boolean>>;
 
 // @public (undocumented)
@@ -3746,6 +3776,22 @@ export const IS_TOGGLE_PROVIDER: {
 
 // @public (undocumented)
 export function isToggleFactory(): BehaviorSubject<boolean>;
+
+// @public (undocumented)
+export interface KeyNavigationListConfig {
+    // (undocumented)
+    dir: string | null;
+    // (undocumented)
+    keyListItems: string;
+    // (undocumented)
+    layout: 'both' | 'horizontal' | 'vertical';
+    // (undocumented)
+    loop: boolean;
+    // (undocumented)
+    manageFocus: boolean;
+    // (undocumented)
+    manageTabindex: boolean;
+}
 
 // @public
 export abstract class LoadingListener {
