@@ -273,7 +273,7 @@ export default function (): void {
     <clr-vertical-nav-group #group>
       Group
       <clr-vertical-nav-group-children>
-        <a href="#" clrVerticalNavLink> Link </a>
+        <a href="#" clrVerticalNavLink>Link</a>
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
@@ -288,7 +288,7 @@ class GroupInternalsTestComponent {
       Group
       <ng-template clrIfExpanded>
         <clr-vertical-nav-group-children>
-          <a href="#" clrVerticalNavLink> Link </a>
+          <a href="#" clrVerticalNavLink>Link</a>
         </clr-vertical-nav-group-children>
       </ng-template>
     </clr-vertical-nav-group>
@@ -307,7 +307,7 @@ class IfExpandedTestComponent {
     >
       Group
       <clr-vertical-nav-group-children>
-        <a href="#" clrVerticalNavLink> Link </a>
+        <a href="#" clrVerticalNavLink>Link</a>
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,

@@ -182,7 +182,7 @@ class TemplateTestComponent {
         <ng-template clrPageTitle>View Page 4</ng-template>
         <clr-alert [clrAlertClosable]="false">
           <div class="alert-item">
-            <span class="alert-text"> i believe the answer is {{ innerProjector / 2 }} </span>
+            <span class="alert-text">i believe the answer is {{ innerProjector / 2 }}</span>
           </div>
         </clr-alert>
       </clr-wizard-page>
@@ -224,7 +224,7 @@ class ViewTestComponent {
 @Component({
   template: `
     <ng-container *ngFor="let page of [0, 1, 2, 3]">
-      <clr-wizard-page [id]="3 === page ? 'lastpage' : page"> Content for page {{ page }} </clr-wizard-page>
+      <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
     </ng-container>
   `,
 })

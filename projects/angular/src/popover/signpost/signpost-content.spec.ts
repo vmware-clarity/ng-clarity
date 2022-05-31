@@ -111,7 +111,7 @@ export default function (): void {
     <button class="outside-click-test" (click)="bodyClickHandler()">
       Button to test clicks outside of the dropdown component
     </button>
-    <clr-signpost-content [clrPosition]="position"> Signpost content </clr-signpost-content>
+    <clr-signpost-content [clrPosition]="position">Signpost content</clr-signpost-content>
   `,
   providers: [{ provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
 })

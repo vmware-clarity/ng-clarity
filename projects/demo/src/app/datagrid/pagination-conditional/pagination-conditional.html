@@ -24,7 +24,7 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <ng-container *ngIf="!paginationEnabled"> {{users.length}} users </ng-container>
+    <ng-container *ngIf="!paginationEnabled">{{users.length}} users</ng-container>
     <clr-dg-pagination #pagination [clrDgPageSize]="5" *ngIf="paginationEnabled">
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
     </clr-dg-pagination>

@@ -14,7 +14,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   selector: 'clr-option',
   template: `
     <ng-content></ng-content>
-    <span *ngIf="selected" class="clr-sr-only"> {{ commonStrings.keys.comboboxSelected }} </span>
+    <span *ngIf="selected" class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
   `,
   providers: [UNIQUE_ID_PROVIDER],
   host: {

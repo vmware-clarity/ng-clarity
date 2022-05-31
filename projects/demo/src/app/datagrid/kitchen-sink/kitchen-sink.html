@@ -400,20 +400,20 @@
   <button class="btn btn-outline-primary" id="toggle-id" (click)="toggleId()">Toggle ID</button>
   <clr-datagrid>
     <clr-dg-column *ngIf="showId">
-      <ng-container *clrDgHideableColumn> User ID </ng-container>
+      <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
     <clr-dg-column>
       <!--Name-->
-      <ng-container *clrDgHideableColumn> Name </ng-container>
+      <ng-container *clrDgHideableColumn>Name</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Creation date </ng-container>
+      <ng-container *clrDgHideableColumn>Creation date</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Pokemon </ng-container>
+      <ng-container *clrDgHideableColumn>Pokemon</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Favorite color </ng-container>
+      <ng-container *clrDgHideableColumn>Favorite color</ng-container>
     </clr-dg-column>
 
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
@@ -448,7 +448,7 @@
           <label>{{user.id}}</label>
         </clr-toggle-wrapper>
       </clr-dg-cell>
-      <clr-dg-cell *ngIf="!isFirst"> {{user.id}} </clr-dg-cell>
+      <clr-dg-cell *ngIf="!isFirst">{{user.id}}</clr-dg-cell>
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>{{user.color}}</clr-dg-cell>
