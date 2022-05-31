@@ -10,7 +10,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
 
 @Component({
   selector: 'clr-spinner',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[attr.aria-busy]': 'true',
   },

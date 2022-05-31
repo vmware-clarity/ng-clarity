@@ -31,7 +31,7 @@ function resetMockPages(): MockPage[] {
 mockPages = resetMockPages();
 
 @Component({
-  template: ` <clr-wizard-stepnav></clr-wizard-stepnav> `,
+  template: `<clr-wizard-stepnav></clr-wizard-stepnav>`,
 })
 class TestComponent {
   @ViewChild(ClrWizardStepnav, { static: true })

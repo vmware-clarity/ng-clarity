@@ -13,7 +13,7 @@ import { ClrDropdownItem } from './dropdown-item';
 import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
 
 @Component({
-  template: ` <button clrDropdownItem [disabled]="disabledDeprecated" [clrDisabled]="disabled">Hello world</button> `,
+  template: `<button clrDropdownItem [disabled]="disabledDeprecated" [clrDisabled]="disabled">Hello world</button>`,
 })
 class SimpleTest {
   disabled: boolean;

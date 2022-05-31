@@ -24,7 +24,7 @@ const successMessage = 'SUCCESS_MESSAGE';
 class InvalidUseTest {}
 
 @Component({
-  template: ` <clr-control-success *clrIfSuccess>${successMessage}</clr-control-success> `,
+  template: `<clr-control-success *clrIfSuccess>${successMessage}</clr-control-success>`,
   providers: [IfControlStateService, NgControlService],
 })
 class GeneralSuccessTest {}

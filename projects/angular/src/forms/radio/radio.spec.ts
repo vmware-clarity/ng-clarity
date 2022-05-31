@@ -12,12 +12,12 @@ import { ClrRadio } from './radio';
 import { ClrRadioWrapper } from './radio-wrapper';
 
 @Component({
-  template: ` <input type="radio" clrRadio /> `,
+  template: `<input type="radio" clrRadio />`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <input type="radio" clrRadio name="model" class="test-class" [(ngModel)]="model" /> `,
+  template: `<input type="radio" clrRadio name="model" class="test-class" [(ngModel)]="model" />`,
 })
 class TemplateDrivenTest {}
 

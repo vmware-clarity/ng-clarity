@@ -165,6 +165,6 @@ export default function () {
 }
 
 @Component({
-  template: ` <clr-calendar></clr-calendar> `,
+  template: `<clr-calendar></clr-calendar>`,
 })
 class TestComponent {}

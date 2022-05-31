@@ -13,7 +13,7 @@ import { TooltipIdService } from './providers/tooltip-id.service';
 
 @Component({
   selector: 'clr-tooltip',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[class.tooltip]': 'true',
   },

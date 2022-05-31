@@ -112,7 +112,7 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <clr-dg-footer>Hello world</clr-dg-footer>`,
+  template: `<clr-dg-footer>Hello world</clr-dg-footer>`,
 })
 class SimpleTest {}
 

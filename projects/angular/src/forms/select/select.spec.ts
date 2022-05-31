@@ -12,12 +12,12 @@ import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
 
 @Component({
-  template: ` <select clrSelect></select> `,
+  template: `<select clrSelect></select>`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <select clrSelect name="model" class="test-class" [(ngModel)]="model"></select> `,
+  template: `<select clrSelect name="model" class="test-class" [(ngModel)]="model"></select>`,
 })
 class TemplateDrivenTest {}
 
