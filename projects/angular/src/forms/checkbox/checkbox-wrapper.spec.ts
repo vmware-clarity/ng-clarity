@@ -24,20 +24,24 @@ class FullTest {
 }
 
 @Component({
-  template: ` <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
-  </clr-checkbox-wrapper>`,
+  template: `
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
+    </clr-checkbox-wrapper>
+  `,
 })
 class NoLabelTest {
   model = '';
 }
 
 @Component({
-  template: `<clr-checkbox-container>
-    <clr-checkbox-wrapper>
-      <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
-    </clr-checkbox-wrapper>
-  </clr-checkbox-container>`,
+  template: `
+    <clr-checkbox-container>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
 })
 class ContainerTest {
   model = '';

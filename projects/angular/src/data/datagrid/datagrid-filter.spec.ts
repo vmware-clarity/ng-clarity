@@ -228,12 +228,14 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
 }
 
 @Component({
-  template: `<clr-dg-filter
-    [clrDgFilter]="filter"
-    [clrDgFilterOpen]="open"
-    (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
-    >Hello world</clr-dg-filter
-  >`,
+  template: `
+    <clr-dg-filter
+      [clrDgFilter]="filter"
+      [clrDgFilterOpen]="open"
+      (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
+      >Hello world</clr-dg-filter
+    >
+  `,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

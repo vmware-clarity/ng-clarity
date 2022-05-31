@@ -163,10 +163,9 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
 }
 
 @Component({
-  template: `<clr-dg-string-filter
-    [clrDgStringFilter]="filter"
-    [(clrFilterValue)]="filterValue"
-  ></clr-dg-string-filter>`,
+  template: `
+    <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
+  `,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -176,11 +175,13 @@ class FullTest {
 }
 
 @Component({
-  template: `<clr-dg-string-filter
-    [clrDgStringFilter]="filter"
-    [(clrFilterValue)]="filterValue"
-    [clrFilterPlaceholder]="clrFilterPlaceholder"
-  ></clr-dg-string-filter>`,
+  template: `
+    <clr-dg-string-filter
+      [clrDgStringFilter]="filter"
+      [(clrFilterValue)]="filterValue"
+      [clrFilterPlaceholder]="clrFilterPlaceholder"
+    ></clr-dg-string-filter>
+  `,
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

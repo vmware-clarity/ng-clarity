@@ -368,7 +368,8 @@ class TestComponent {
 }
 
 @Component({
-  template: ` <p>
+  template: `
+    <p>
       <button class="btn btn-primary" id="toggleButton" (click)="openState = true">Show modal</button>
     </p>
     <clr-modal [(clrModalOpen)]="openState">
@@ -385,7 +386,8 @@ class TestComponent {
           </section>
         </form>
       </div>
-    </clr-modal>`,
+    </clr-modal>
+  `,
 })
 class TestModalComponent {
   @ViewChild(ClrModal) modal: ClrModal;

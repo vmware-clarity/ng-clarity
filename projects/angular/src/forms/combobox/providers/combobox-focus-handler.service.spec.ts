@@ -14,10 +14,12 @@ import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } fro
 import { OptionSelectionService } from './option-selection.service';
 
 @Component({
-  template: `<form (submit)="onSubmit()">
-    <input type="text" #textInput /><button #trigger></button>
-    <ul #listbox></ul>
-  </form>`,
+  template: `
+    <form (submit)="onSubmit()">
+      <input type="text" #textInput /><button #trigger></button>
+      <ul #listbox></ul>
+    </form>
+  `,
 })
 class SimpleHost {
   @ViewChild('textInput') textInput: ElementRef;

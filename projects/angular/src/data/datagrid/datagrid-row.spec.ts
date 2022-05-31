@@ -510,16 +510,18 @@ class FullTest {
 }
 
 @Component({
-  template: ` <clr-dg-row
-    [(clrDgExpanded)]="expanded"
-    [clrDgDetailOpenLabel]="clrDgDetailOpenLabel"
-    [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
-  >
-    <clr-dg-cell>Hello world</clr-dg-cell>
-    <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
-      <clr-dg-row-detail *clrIfExpanded> Detail </clr-dg-row-detail>
-    </ng-container>
-  </clr-dg-row>`,
+  template: `
+    <clr-dg-row
+      [(clrDgExpanded)]="expanded"
+      [clrDgDetailOpenLabel]="clrDgDetailOpenLabel"
+      [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
+    >
+      <clr-dg-cell>Hello world</clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="!removeRowDetail">
+        <clr-dg-row-detail *clrIfExpanded> Detail </clr-dg-row-detail>
+      </ng-container>
+    </clr-dg-row>
+  `,
 })
 class ExpandTest {
   expanded = false;

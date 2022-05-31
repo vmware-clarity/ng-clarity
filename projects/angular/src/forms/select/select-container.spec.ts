@@ -12,13 +12,15 @@ import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
 
 @Component({
-  template: ` <clr-select-container>
-    <select clrSelect [(ngModel)]="model">
-      <option value="1">one</option>
-      <option value="2">two</option>
-    </select>
-    <clr-control-helper>Helper text</clr-control-helper>
-  </clr-select-container>`,
+  template: `
+    <clr-select-container>
+      <select clrSelect [(ngModel)]="model">
+        <option value="1">one</option>
+        <option value="2">two</option>
+      </select>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-select-container>
+  `,
 })
 class NoLabelTest {}
 
@@ -61,18 +63,20 @@ class TemplateDrivenMultipleTest {
 }
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-select-container>
-      <select name="test" clrSelect formControlName="model">
-        <option value="1">one</option>
-        <option value="2">two</option>
-      </select>
-      <label>Hello World</label>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>Must be at least 5 characters</clr-control-error>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-select-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-select-container>
+        <select name="test" clrSelect formControlName="model">
+          <option value="1">one</option>
+          <option value="2">two</option>
+        </select>
+        <label>Hello World</label>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>Must be at least 5 characters</clr-control-error>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-select-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;
@@ -82,18 +86,20 @@ class ReactiveTest {
 }
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-select-container>
-      <select multiple name="test" clrSelect formControlName="model">
-        <option value="1">one</option>
-        <option value="2">two</option>
-      </select>
-      <label>Hello World</label>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>Must be at least 5 characters</clr-control-error>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-select-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-select-container>
+        <select multiple name="test" clrSelect formControlName="model">
+          <option value="1">one</option>
+          <option value="2">two</option>
+        </select>
+        <label>Hello World</label>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>Must be at least 5 characters</clr-control-error>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-select-container>
+    </form>
+  `,
 })
 class ReactiveMultipleTest {
   disabled = false;

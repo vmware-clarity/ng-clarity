@@ -22,9 +22,11 @@ class StandaloneUseTest {}
 class TemplateDrivenTest {}
 
 @Component({
-  template: ` <div [formGroup]="example">
-    <textarea clrTextarea name="model" class="test-class" formControlName="model"></textarea>
-  </div>`,
+  template: `
+    <div [formGroup]="example">
+      <textarea clrTextarea name="model" class="test-class" formControlName="model"></textarea>
+    </div>
+  `,
 })
 class ReactiveTest {
   example = new FormGroup({

@@ -51,12 +51,14 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <clr-dg-cell>
-    Hello world
-    <clr-signpost *ngIf="signpostTest">
-      <clr-signpost-content *clrIfOpen> The user is strong. </clr-signpost-content>
-    </clr-signpost>
-  </clr-dg-cell>`,
+  template: `
+    <clr-dg-cell>
+      Hello world
+      <clr-signpost *ngIf="signpostTest">
+        <clr-signpost-content *clrIfOpen> The user is strong. </clr-signpost-content>
+      </clr-signpost>
+    </clr-dg-cell>
+  `,
 })
 class SimpleTest {
   signpostTest = false;

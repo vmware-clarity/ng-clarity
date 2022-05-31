@@ -33,15 +33,17 @@ class TemplateDrivenTest {
 }
 
 @Component({
-  template: ` <clr-datalist-container>
-    <input clrDatalistInput list="clr-datalist-1" name="Option" />
-    <datalist id="clr-datalist-1">
-      <option [value]="'item1'"></option>
-      <option [value]="'item2'"></option>
-      <option [value]="'item3'"></option>
-    </datalist>
-    <clr-control-helper>Helper text</clr-control-helper>
-  </clr-datalist-container>`,
+  template: `
+    <clr-datalist-container>
+      <input clrDatalistInput list="clr-datalist-1" name="Option" />
+      <datalist id="clr-datalist-1">
+        <option [value]="'item1'"></option>
+        <option [value]="'item2'"></option>
+        <option [value]="'item3'"></option>
+      </datalist>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-datalist-container>
+  `,
 })
 class NoLabelTest {}
 

@@ -28,23 +28,27 @@ class SimpleTest {
 }
 
 @Component({
-  template: ` <clr-textarea-container>
-    <textarea clrTextarea [(ngModel)]="model"></textarea>
-    <clr-control-helper>Helper text</clr-control-helper>
-  </clr-textarea-container>`,
+  template: `
+    <clr-textarea-container>
+      <textarea clrTextarea [(ngModel)]="model"></textarea>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-textarea-container>
+  `,
 })
 class NoLabelTest {}
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-textarea-container>
-      <textarea name="test" clrTextarea formControlName="model"></textarea>
-      <label>Hello World</label>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>Must be at least 5 characters</clr-control-error>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-textarea-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-textarea-container>
+        <textarea name="test" clrTextarea formControlName="model"></textarea>
+        <label>Hello World</label>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>Must be at least 5 characters</clr-control-error>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-textarea-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;

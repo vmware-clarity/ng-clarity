@@ -63,11 +63,13 @@ export default function (): void {
   });
 }
 @Component({
-  template: `<div clrDraggable>
-    Test
-    <clr-draggable-ghost *clrIfDragged>
-      <cds-icon shape="check"></cds-icon>
-    </clr-draggable-ghost>
-  </div> `,
+  template: `
+    <div clrDraggable>
+      Test
+      <clr-draggable-ghost *clrIfDragged>
+        <cds-icon shape="check"></cds-icon>
+      </clr-draggable-ghost>
+    </div>
+  `,
 })
 class CustomGhostTest {}
