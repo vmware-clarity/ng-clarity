@@ -323,7 +323,7 @@
             <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
             <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
             <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
-            <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu. </clr-dg-cell>
+            <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
             <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
           </ng-template>
         </ng-template>
@@ -337,20 +337,20 @@
 <div id="datagrid-compact-hide-show-columns">
   <clr-datagrid [(clrDgSelected)]="selected" class="datagrid-compact">
     <clr-dg-column *ngIf="showId">
-      <ng-container *clrDgHideableColumn> User ID </ng-container>
+      <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
     <clr-dg-column>
       <!--Name-->
-      <ng-container *clrDgHideableColumn> Name </ng-container>
+      <ng-container *clrDgHideableColumn>Name</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Creation date </ng-container>
+      <ng-container *clrDgHideableColumn>Creation date</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Pokemon </ng-container>
+      <ng-container *clrDgHideableColumn>Pokemon</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Favorite color </ng-container>
+      <ng-container *clrDgHideableColumn>Favorite color</ng-container>
     </clr-dg-column>
 
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
@@ -387,13 +387,13 @@
           <button type="button" class="signpost-action btn btn-small btn-link" clrSignpostTrigger>
             <cds-icon shape="help-info"></cds-icon>
           </button>
-          <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'"> The pokemon is strong. </clr-signpost-content>
+          <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'">The pokemon is strong.</clr-signpost-content>
         </clr-signpost>
       </clr-dg-cell>
       <clr-dg-cell>
         {{user.name}}
         <clr-signpost>
-          <clr-signpost-content *clrIfOpen [clrPosition]="'bottom-middle'"> The user is strong. </clr-signpost-content>
+          <clr-signpost-content *clrIfOpen [clrPosition]="'bottom-middle'">The user is strong.</clr-signpost-content>
         </clr-signpost>
       </clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>

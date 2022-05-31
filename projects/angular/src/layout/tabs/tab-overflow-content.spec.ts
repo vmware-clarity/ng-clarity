@@ -11,7 +11,7 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { ClrTabOverflowContent } from './tab-overflow-content';
 
 @Component({
-  template: `<clr-tab-overflow-content> Hello world </clr-tab-overflow-content>`,
+  template: `<clr-tab-overflow-content>Hello world</clr-tab-overflow-content>`,
 })
 class TestComponent {}
 

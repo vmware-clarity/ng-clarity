@@ -14,8 +14,8 @@ import { ClrCombobox } from './combobox';
 @Component({
   template: `
     <clr-combobox>
-      <clr-option [clrValue]="'Option 1'"> Option 1 </clr-option>
-      <clr-option [clrValue]="'Option 2'"> Option 2 </clr-option>
+      <clr-option [clrValue]="'Option 1'">Option 1</clr-option>
+      <clr-option [clrValue]="'Option 2'">Option 2</clr-option>
     </clr-combobox>
   `,
 })

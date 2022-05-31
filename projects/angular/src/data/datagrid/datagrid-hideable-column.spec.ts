@@ -166,17 +166,17 @@ export default function (): void {
 }
 
 @Component({
-  template: `<ng-container *clrDgHideableColumn> Why am I not inside a datagrid column? </ng-container>`,
+  template: `<ng-container *clrDgHideableColumn>Why am I not inside a datagrid column?</ng-container>`,
 })
 class HideableNotInsideColumnTest {}
 
 @Component({
   template: `
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: hideFirst }"> Date </ng-container>
+      <ng-container *clrDgHideableColumn="{ hidden: hideFirst }">Date</ng-container>
     </clr-dg-column>
     <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Name </ng-container>
+      <ng-container *clrDgHideableColumn>Name</ng-container>
     </clr-dg-column>
     <clr-dg-column></clr-dg-column>
   `,
@@ -188,11 +188,11 @@ class HideableSugaredTest {
 @Component({
   template: `
     <clr-dg-column>
-      <ng-template clrDgHideableColumn> Date </ng-template>
+      <ng-template clrDgHideableColumn>Date</ng-template>
     </clr-dg-column>
     <clr-dg-column>
       <!-- sugar syntax does not support @Output on structural directives, see https://github.com/angular/angular/issues/12121 -->
-      <ng-template clrDgHideableColumn [(clrDgHidden)]="hideSecond"> Name </ng-template>
+      <ng-template clrDgHideableColumn [(clrDgHidden)]="hideSecond">Name</ng-template>
     </clr-dg-column>
   `,
 })
