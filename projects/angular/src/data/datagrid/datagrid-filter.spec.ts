@@ -233,8 +233,9 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       [clrDgFilter]="filter"
       [clrDgFilterOpen]="open"
       (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
-      >Hello world</clr-dg-filter
     >
+      Hello world
+    </clr-dg-filter>
   `,
 })
 class FullTest {

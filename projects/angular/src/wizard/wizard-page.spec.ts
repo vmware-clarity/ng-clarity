@@ -167,9 +167,9 @@ class TemplateTestComponent {
 
         <ng-template clrPageButtons>
           <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-          <clr-wizard-button [type]="'previous'" #pagePreviousBtn class="clrtest-page-previous-2"
-            >Previous</clr-wizard-button
-          >
+          <clr-wizard-button [type]="'previous'" #pagePreviousBtn class="clrtest-page-previous-2">
+            Previous
+          </clr-wizard-button>
           <clr-wizard-button [type]="'danger'">Danger</clr-wizard-button>
         </ng-template>
       </clr-wizard-page>

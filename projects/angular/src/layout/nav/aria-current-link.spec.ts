@@ -17,12 +17,12 @@ import { ClrNavigationModule } from './navigation.module';
   template: `
     <clr-header class="header">
       <div class="header-nav">
-        <a clrAriaCurrentLink class="nav-link" id="link1" routerLink="/home" routerLinkActive="active"
-          ><span class="nav-text">Components</span></a
-        >
-        <a clrAriaCurrentLink class="nav-link" id="link2" routerLink="/patterns" routerLinkActive="active"
-          ><span class="nav-text">Patterns</span></a
-        >
+        <a clrAriaCurrentLink class="nav-link" id="link1" routerLink="/home" routerLinkActive="active">
+          <span class="nav-text">Components</span>
+        </a>
+        <a clrAriaCurrentLink class="nav-link" id="link2" routerLink="/patterns" routerLinkActive="active">
+          <span class="nav-text">Patterns</span>
+        </a>
       </div>
     </clr-header>
   `,

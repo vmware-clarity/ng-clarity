@@ -102,10 +102,10 @@ export default function (): void {
       });
       it('should provide screen-reader only text for toggle button', () => {
         const button: HTMLButtonElement = containerEl.querySelector('button');
-        expect(button.textContent).toEqual('Show password');
+        expect(button.textContent.trim()).toEqual('Show password');
         button.click();
         fixture.detectChanges();
-        expect(button.textContent).toEqual('Hide password');
+        expect(button.textContent.trim()).toEqual('Hide password');
       });
     });
   });

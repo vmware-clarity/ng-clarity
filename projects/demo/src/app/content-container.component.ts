@@ -20,8 +20,9 @@ import { APP_ROUTES } from './app.routing';
           clrAriaCurrentLink
           [routerLink]="[route.path]"
           [routerLinkActive]="['active']"
-          >{{ route.path }}</a
         >
+          {{ route.path }}
+        </a>
       </ng-container>
     </clr-vertical-nav>
     <main class="content-area">
