@@ -26,7 +26,7 @@ const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 class InvalidUseTest {}
 
 @Component({
-  template: ` <clr-control-error *clrIfError>${errorMessage}</clr-control-error> `,
+  template: `<clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
   providers: [IfControlStateService, NgControlService],
 })
 class GeneralErrorTest {}

@@ -40,6 +40,6 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <clr-timeline-step-header>Header Content</clr-timeline-step-header> `,
+  template: `<clr-timeline-step-header>Header Content</clr-timeline-step-header>`,
 })
 class TestTimelineStepHeader {}

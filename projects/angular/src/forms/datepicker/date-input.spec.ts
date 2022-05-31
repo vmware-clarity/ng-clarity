@@ -793,7 +793,7 @@ class TestComponentWithNgModel {
 }
 
 @Component({
-  template: ` <input type="date" [(clrDate)]="date" [disabled]="disabled" /> `,
+  template: `<input type="date" [(clrDate)]="date" [disabled]="disabled" />`,
 })
 class TestComponentWithClrDate {
   date: Date;

@@ -19,7 +19,7 @@ import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
 
 @Component({
-  template: ` <input type="password" clrPassword /> `,
+  template: `<input type="password" clrPassword />`,
 })
 class InvalidUseTest {}
 

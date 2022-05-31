@@ -8,6 +8,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-wikipedia-demo',
-  template: ` <p>Credit: Wikipedia</p> `,
+  template: `<p>Credit: Wikipedia</p>`,
 })
 export class Wikipedia2Demo {}

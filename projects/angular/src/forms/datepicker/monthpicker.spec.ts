@@ -298,6 +298,6 @@ export default function () {
 }
 
 @Component({
-  template: ` <clr-monthpicker></clr-monthpicker> `,
+  template: `<clr-monthpicker></clr-monthpicker>`,
 })
 class TestComponent {}

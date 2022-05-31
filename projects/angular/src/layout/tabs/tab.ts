@@ -14,7 +14,7 @@ import { ClrTabLink } from './tab-link.directive';
 
 @Component({
   selector: 'clr-tab',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   providers: [IF_ACTIVE_ID_PROVIDER, AriaService],
 })
 export class ClrTab {

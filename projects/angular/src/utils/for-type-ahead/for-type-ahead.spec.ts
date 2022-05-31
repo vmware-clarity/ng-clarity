@@ -13,7 +13,7 @@ import { ClrForTypeAheadModule } from './for-type-ahead.module';
 import { ForTypeAheadProvider } from './for-type-ahead.service';
 
 @Component({
-  template: ` <span [clrForTypeAhead]="textContent">World</span> `,
+  template: `<span [clrForTypeAhead]="textContent">World</span>`,
 })
 class TestComponent {
   textContent: string;

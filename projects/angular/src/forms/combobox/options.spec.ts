@@ -31,7 +31,7 @@ const OPTION_PROVIDERS = [
 ];
 
 @Component({
-  template: ` <clr-options> Test </clr-options> `,
+  template: `<clr-options> Test </clr-options>`,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
 })
 class TestComponent {}
@@ -49,7 +49,7 @@ class TestComponentWithChild {
 }
 
 @Component({
-  template: ` <clr-options> Test </clr-options> `,
+  template: `<clr-options> Test </clr-options>`,
   providers: OPTION_PROVIDERS,
 })
 class TestComponentWithError {}

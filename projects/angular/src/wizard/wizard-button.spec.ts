@@ -58,7 +58,7 @@ export default function (): void {
       const buttonHub = new ButtonHubMock();
 
       @Component({
-        template: ` <clr-wizard-button></clr-wizard-button> `,
+        template: `<clr-wizard-button></clr-wizard-button>`,
       })
       class TestComponent {}
 
