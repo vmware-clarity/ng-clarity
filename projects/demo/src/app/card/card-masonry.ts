@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-card-masonry-demo', styleUrls: ['./card.demo.scss'], templateUrl: './card-masonry.html' })
+@Component({
+  selector: 'clr-card-masonry-demo',
+  styleUrls: ['./card.demo.scss'],
+  templateUrl: './card-masonry.html',
+})
 export class CardMasonryDemo {}

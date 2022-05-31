@@ -6,5 +6,7 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './file.html' })
+@Component({
+  templateUrl: './file.html',
+})
 export class FormsFileDemo {}

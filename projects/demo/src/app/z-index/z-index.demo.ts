@@ -6,7 +6,10 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'z-index-demo', templateUrl: './z-index.demo.html' })
+@Component({
+  selector: 'z-index-demo',
+  templateUrl: './z-index.demo.html',
+})
 export class ZIndexDemo {
   open = false;
 }

@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-grid-demo-nesting', templateUrl: './nesting.html', styleUrls: ['../grid.demo.scss'] })
+@Component({
+  selector: 'clr-grid-demo-nesting',
+  templateUrl: './nesting.html',
+  styleUrls: ['../grid.demo.scss'],
+})
 export class GridNestingDemo {}

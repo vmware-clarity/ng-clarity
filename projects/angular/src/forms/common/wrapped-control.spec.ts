@@ -27,12 +27,18 @@ import { WrappedFormControl } from './wrapped-control';
 /*
  * Components using the WrappedFormControl we want to test.
  */
-@Component({ selector: 'test-wrapper', template: `<ng-content></ng-content>`, providers: [ControlIdService] })
+@Component({
+  selector: 'test-wrapper',
+  template: `<ng-content></ng-content>`,
+  providers: [ControlIdService],
+})
 class TestWrapper implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl]' })
+@Directive({
+  selector: '[testControl]',
+})
 class TestControl extends WrappedFormControl<TestWrapper> {
   constructor(vcr: ViewContainerRef) {
     super(vcr, TestWrapper, null, null, null, null);
@@ -49,7 +55,9 @@ class TestWrapper2 implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl2]' })
+@Directive({
+  selector: '[testControl2]',
+})
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
   constructor(vcr: ViewContainerRef) {
     super(vcr, TestWrapper2, null, null, null, null);
@@ -65,7 +73,9 @@ class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[testControl3]' })
+@Directive({
+  selector: '[testControl3]',
+})
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
   constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef) {
     super(vcr, TestWrapper3, injector, control, renderer, el);
@@ -90,19 +100,29 @@ class WrappedFormControlTestModule {}
 /*
  * Actual test components, one for each case we support
  */
-@Component({ template: `<input testControl />` })
+@Component({
+  template: `<input testControl />`,
+})
 class NoWrapperNoId {}
 
-@Component({ template: `<input testControl id="hello" />` })
+@Component({
+  template: `<input testControl id="hello" />`,
+})
 class NoWrapperWithId {}
 
-@Component({ template: `<test-wrapper><input testControl /></test-wrapper>` })
+@Component({
+  template: `<test-wrapper><input testControl /></test-wrapper>`,
+})
 class WithWrapperNoId {}
 
-@Component({ template: `<test-wrapper><input testControl id="hello" /></test-wrapper>` })
+@Component({
+  template: `<test-wrapper><input testControl id="hello" /></test-wrapper>`,
+})
 class WithWrapperWithId {}
 
-@Component({ template: `<test-wrapper2><input testControl id="hello" /></test-wrapper2>` })
+@Component({
+  template: `<test-wrapper2><input testControl id="hello" /></test-wrapper2>`,
+})
 class WithMultipleNgContent {}
 
 @Component({

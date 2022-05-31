@@ -10,7 +10,9 @@ import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { IfExpandService } from '../../../utils/conditional/if-expanded.service';
 import { StepperWillyWonka } from './stepper-willy-wonka';
 
-@Directive({ selector: 'clr-stepper-panel, [clrStepButton]' })
+@Directive({
+  selector: 'clr-stepper-panel, [clrStepButton]',
+})
 export class StepperOompaLoompa extends OompaLoompa {
   private expand: IfExpandService;
 

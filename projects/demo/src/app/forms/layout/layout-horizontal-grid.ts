@@ -6,7 +6,10 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'layout-horizontal-grid-demo', templateUrl: './layout.html' })
+@Component({
+  selector: 'layout-horizontal-grid-demo',
+  templateUrl: './layout.html',
+})
 export class FormsLayoutHorizontalGridDemo {
   layout = 'horizontal';
   grid = true;

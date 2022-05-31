@@ -18,7 +18,10 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
 
-@Component({ selector: 'clr-calendar', templateUrl: './calendar.html' })
+@Component({
+  selector: 'clr-calendar',
+  templateUrl: './calendar.html',
+})
 export class ClrCalendar implements OnDestroy {
   private _subs: Subscription[] = [];
   constructor(

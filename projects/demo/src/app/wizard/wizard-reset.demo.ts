@@ -7,7 +7,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
-@Component({ selector: 'clr-wizard-reset', templateUrl: './wizard-reset.demo.html' })
+@Component({
+  selector: 'clr-wizard-reset',
+  templateUrl: './wizard-reset.demo.html',
+})
 export class WizardResetDemo implements OnInit {
   @ViewChild('wizard') wizard: ClrWizard;
 

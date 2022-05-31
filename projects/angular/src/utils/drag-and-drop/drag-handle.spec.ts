@@ -56,10 +56,14 @@ export default function (): void {
   });
 }
 
-@Component({ template: `<div *ngIf="display" clrDragHandle>Test</div>` })
+@Component({
+  template: `<div *ngIf="display" clrDragHandle>Test</div>`,
+})
 class DragHandleTest {
   display = true;
 }
 
-@Component({ template: `<div clrDragHandle>Test</div>` })
+@Component({
+  template: `<div clrDragHandle>Test</div>`,
+})
 class NoDragHandleRegistrar {}

@@ -13,7 +13,9 @@ import { ClrControlError } from './error';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlIdService } from './providers/control-id.service';
 
-@Component({ template: `<clr-control-error>Test error</clr-control-error>` })
+@Component({
+  template: `<clr-control-error>Test error</clr-control-error>`,
+})
 class SimpleTest {}
 
 export default function (): void {

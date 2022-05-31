@@ -13,7 +13,9 @@ import { ClrControlHelper } from './helper';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlIdService } from './providers/control-id.service';
 
-@Component({ template: `<clr-control-helper>Test helper</clr-control-helper>` })
+@Component({
+  template: `<clr-control-helper>Test helper</clr-control-helper>`,
+})
 class SimpleTest {}
 
 export default function (): void {

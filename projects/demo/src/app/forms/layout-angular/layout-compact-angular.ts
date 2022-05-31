@@ -6,7 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './layout-angular.html' })
+@Component({
+  templateUrl: './layout-angular.html',
+})
 export class FormsLayoutCompactAngularDemo {
   layout = 'compact';
   labelSize = '';

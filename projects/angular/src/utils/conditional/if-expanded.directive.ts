@@ -21,7 +21,9 @@ import { Subscription } from 'rxjs';
 
 import { IfExpandService } from './if-expanded.service';
 
-@Directive({ selector: '[clrIfExpanded]' })
+@Directive({
+  selector: '[clrIfExpanded]',
+})
 export class ClrIfExpanded implements OnInit, OnDestroy {
   private _expanded = false;
 

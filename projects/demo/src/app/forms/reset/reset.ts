@@ -8,7 +8,9 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
 
-@Component({ templateUrl: './reset.html' })
+@Component({
+  templateUrl: './reset.html',
+})
 export class FormsResetDemo {
   @ViewChild(ClrForm) form: ClrForm;
 

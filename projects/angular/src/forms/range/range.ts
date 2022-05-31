@@ -10,7 +10,10 @@ import { NgControl } from '@angular/forms';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrRangeContainer } from './range-container';
 
-@Directive({ selector: '[clrRange]', host: { '[class.clr-range]': 'true' } })
+@Directive({
+  selector: '[clrRange]',
+  host: { '[class.clr-range]': 'true' },
+})
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
   constructor(
     vcr: ViewContainerRef,

@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-nav-demo-sidenav', styleUrls: ['./sidenav.demo.scss'], templateUrl: './sidenav.demo.html' })
+@Component({
+  selector: 'clr-nav-demo-sidenav',
+  styleUrls: ['./sidenav.demo.scss'],
+  templateUrl: './sidenav.demo.html',
+})
 export class SidenavDemo {}

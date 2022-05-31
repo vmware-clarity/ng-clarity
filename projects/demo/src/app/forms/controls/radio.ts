@@ -6,5 +6,7 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './radio.html' })
+@Component({
+  templateUrl: './radio.html',
+})
 export class FormsRadioDemo {}

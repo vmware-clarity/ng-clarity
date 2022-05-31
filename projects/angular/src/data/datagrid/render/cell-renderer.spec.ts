@@ -16,7 +16,9 @@ import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 
-@Component({ template: `<clr-dg-cell>Hello world</clr-dg-cell>` })
+@Component({
+  template: `<clr-dg-cell>Hello world</clr-dg-cell>`,
+})
 class SimpleTest {}
 
 export default function (): void {

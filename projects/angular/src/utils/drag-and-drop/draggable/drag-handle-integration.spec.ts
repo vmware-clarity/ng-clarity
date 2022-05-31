@@ -41,5 +41,7 @@ export default function (): void {
   });
 }
 
-@Component({ template: `<div clrDraggable><button clrDragHandle></button></div>` })
+@Component({
+  template: `<div clrDraggable><button clrDragHandle></button></div>`,
+})
 class CustomHandleTest {}

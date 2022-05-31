@@ -7,7 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-@Component({ templateUrl: './a11y.html' })
+@Component({
+  templateUrl: './a11y.html',
+})
 export class FormsA11yDemo {
   reactiveModel = new FormGroup({
     checkbox: new FormControl('', [Validators.required]),

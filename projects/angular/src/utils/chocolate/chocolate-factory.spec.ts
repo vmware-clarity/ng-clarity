@@ -90,7 +90,10 @@ class ChocolateParent extends WillyWonka {
   }
 }
 
-@Component({ selector: 'child', template: '{{last}} {{incrementChange()}}' })
+@Component({
+  selector: 'child',
+  template: '{{last}} {{incrementChange()}}',
+})
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
   constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
     super(cdr, parent);

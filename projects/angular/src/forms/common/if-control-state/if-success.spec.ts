@@ -18,7 +18,9 @@ import { ClrIfSuccess } from './if-success';
 
 const successMessage = 'SUCCESS_MESSAGE';
 
-@Component({ template: `<div *clrIfSuccess></div>` })
+@Component({
+  template: `<div *clrIfSuccess></div>`,
+})
 class InvalidUseTest {}
 
 @Component({

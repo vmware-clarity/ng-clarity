@@ -15,10 +15,14 @@ import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
 
-@Component({ template: `<label></label>` })
+@Component({
+  template: `<label></label>`,
+})
 class NoForTest {}
 
-@Component({ template: `<label [for]="forValue"></label>` })
+@Component({
+  template: `<label [for]="forValue"></label>`,
+})
 class ExplicitForTest {
   forValue = 'hello';
 }

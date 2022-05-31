@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-card-layout-demo', styleUrls: ['./card.demo.scss'], templateUrl: './card-layout.html' })
+@Component({
+  selector: 'clr-card-layout-demo',
+  styleUrls: ['./card.demo.scss'],
+  templateUrl: './card-layout.html',
+})
 export class CardLayoutDemo {}

@@ -17,7 +17,10 @@ import { ColumnsService } from '../providers/columns.service';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 
-@Directive({ selector: 'clr-dg-column', providers: [ColumnResizerService, COLUMN_STATE_PROVIDER] })
+@Directive({
+  selector: 'clr-dg-column',
+  providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
+})
 export class DatagridHeaderRenderer implements OnDestroy {
   constructor(
     private el: ElementRef,
