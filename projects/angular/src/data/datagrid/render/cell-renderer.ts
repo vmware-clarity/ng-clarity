@@ -13,7 +13,9 @@ import { ColumnState } from '../interfaces/column-state.interface';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 
-@Directive({ selector: 'clr-dg-cell' })
+@Directive({
+  selector: 'clr-dg-cell',
+})
 export class DatagridCellRenderer implements OnDestroy {
   private stateSubscription: Subscription;
 

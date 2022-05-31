@@ -148,10 +148,14 @@ export default function (): void {
   });
 }
 
-@Component({ template: `<clr-draggable-ghost></clr-draggable-ghost>` })
+@Component({
+  template: `<clr-draggable-ghost></clr-draggable-ghost>`,
+})
 class WithNoWrappingDraggable {}
 
-@Component({ template: `<clr-draggable-ghost *ngIf="display"></clr-draggable-ghost>` })
+@Component({
+  template: `<clr-draggable-ghost *ngIf="display"></clr-draggable-ghost>`,
+})
 class WithWrappingDraggable {
   display = true;
 }

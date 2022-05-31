@@ -40,7 +40,9 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   return cdsCloseButton;
 };
 
-@Directive({ selector: '[clr-nav-level]' })
+@Directive({
+  selector: '[clr-nav-level]',
+})
 export class ClrNavLevel extends FocusTrap implements OnInit {
   @Input('clr-nav-level') _level: number;
   @Input('closeAriaLabel')

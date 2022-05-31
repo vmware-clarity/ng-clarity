@@ -110,7 +110,10 @@ class SimpleTest {
   constructor(@Inject('counter') public counter: { total: number }) {}
 }
 
-@Component({ selector: 'test-counter', template: `{{ count }}` })
+@Component({
+  selector: 'test-counter',
+  template: `{{ count }}`,
+})
 class TestCounter {
   public count: number;
 

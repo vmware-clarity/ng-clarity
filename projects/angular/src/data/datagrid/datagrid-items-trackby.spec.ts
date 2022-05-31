@@ -47,7 +47,9 @@ export default function (): void {
   });
 }
 
-@Component({ template: `<div *ngFor="let n of numbers; trackBy: trackBy">{{ n }}</div>` })
+@Component({
+  template: `<div *ngFor="let n of numbers; trackBy: trackBy">{{ n }}</div>`,
+})
 class FullTest {
   @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
 

@@ -6,7 +6,11 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-signpost-demo', styleUrls: ['./signpost.demo.scss'], templateUrl: 'signpost.demo.html' })
+@Component({
+  selector: 'clr-signpost-demo',
+  styleUrls: ['./signpost.demo.scss'],
+  templateUrl: 'signpost.demo.html',
+})
 export class SignpostDemo {
   openState = false;
   positions = [

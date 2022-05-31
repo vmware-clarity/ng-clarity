@@ -6,7 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './login.demo.html' })
+@Component({
+  templateUrl: './login.demo.html',
+})
 export class LoginDemo {
   form = {
     type: 'local',

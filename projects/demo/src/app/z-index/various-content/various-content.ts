@@ -6,7 +6,10 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'z-index-various-content', templateUrl: './various-content.html' })
+@Component({
+  selector: 'z-index-various-content',
+  templateUrl: './various-content.html',
+})
 export class ZIndexVariousContent {
   demo: any;
   selected: any;

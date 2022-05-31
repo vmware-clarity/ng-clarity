@@ -6,7 +6,10 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'layout-compact-grid-demo', templateUrl: './layout.html' })
+@Component({
+  selector: 'layout-compact-grid-demo',
+  templateUrl: './layout.html',
+})
 export class FormsLayoutCompactGridDemo {
   layout = 'compact';
   grid = true;

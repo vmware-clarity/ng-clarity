@@ -7,7 +7,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
-@Component({ selector: 'clr-wizard-step-error', templateUrl: './wizard-step-error.demo.html' })
+@Component({
+  selector: 'clr-wizard-step-error',
+  templateUrl: './wizard-step-error.demo.html',
+})
 export class WizardStepErrorDemo {
   @ViewChild('wizard') wizard: ClrWizard;
   open = false;

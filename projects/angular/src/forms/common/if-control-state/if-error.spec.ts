@@ -20,7 +20,9 @@ const errorMessage = 'ERROR_MESSAGE';
 const minLengthMessage = 'MIN_LENGTH_MESSAGE';
 const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
-@Component({ template: `<div *clrIfError></div>` })
+@Component({
+  template: `<div *clrIfError></div>`,
+})
 class InvalidUseTest {}
 
 @Component({

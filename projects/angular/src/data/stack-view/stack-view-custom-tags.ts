@@ -8,7 +8,9 @@ import { Component, Directive, Inject, Input, OnInit } from '@angular/core';
 
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 
-@Directive({ selector: 'clr-stack-content' })
+@Directive({
+  selector: 'clr-stack-content',
+})
 export class ClrStackViewCustomTags {
   // No behavior
   // The only purpose is to "declare" the tag in Angular

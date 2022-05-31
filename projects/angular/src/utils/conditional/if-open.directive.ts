@@ -9,7 +9,9 @@ import { Subscription } from 'rxjs';
 
 import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.service';
 
-@Directive({ selector: '[clrIfOpen]' })
+@Directive({
+  selector: '[clrIfOpen]',
+})
 
 /**********
  *

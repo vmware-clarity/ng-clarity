@@ -13,7 +13,9 @@ import { ContainerIdService } from './providers/container-id.service';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrControlSuccess } from './success';
 
-@Component({ template: `<clr-control-success>Test success message</clr-control-success>` })
+@Component({
+  template: `<clr-control-success>Test success message</clr-control-success>`,
+})
 class SimpleTest {}
 
 export default function (): void {

@@ -12,7 +12,9 @@ import { Directive, ElementRef, NgZone, OnDestroy, Renderer2 } from '@angular/co
  * This allows inner focusable items to be focused without
  * the overflow scroll being focused.
  */
-@Directive({ selector: '.modal-body' })
+@Directive({
+  selector: '.modal-body',
+})
 export class ClrModalBody implements OnDestroy {
   private tabindex = '0';
   private unlisteners: VoidFunction[] = [];

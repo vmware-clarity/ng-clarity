@@ -7,7 +7,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
-@Component({ selector: 'clr-wizard-basic', templateUrl: './wizard-not-closable.demo.html' })
+@Component({
+  selector: 'clr-wizard-basic',
+  templateUrl: './wizard-not-closable.demo.html',
+})
 export class WizardNotClosableDemo {
   @ViewChild('wizard') wizard: ClrWizard;
   open = false;

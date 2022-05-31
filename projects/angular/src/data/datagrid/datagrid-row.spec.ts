@@ -501,7 +501,9 @@ class SelectableRowOrder {
   item: Item = { id: 42 };
 }
 
-@Component({ template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>` })
+@Component({
+  template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>`,
+})
 class FullTest {
   item: Item;
   selected = false;

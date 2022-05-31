@@ -12,7 +12,9 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
  * I don't think this deserves to be in IfExpanded itself,
  * so I'm adding a second directive on the same selector for now just for the datagrid
  */
-@Directive({ selector: '[clrIfExpanded]' })
+@Directive({
+  selector: '[clrIfExpanded]',
+})
 export class DatagridDetailRegisterer {
   constructor(@Optional() private expandableRowsCount: ExpandableRowsCount) {
     if (this.expandableRowsCount) {

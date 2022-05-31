@@ -14,7 +14,9 @@ import { DragEventListenerService } from './providers/drag-event-listener.servic
 // that Angular Change Detection is prevented from running if a component or directive is placed inside of the
 // `clr-draggable-ghost` directive.
 
-@Directive({ selector: '[clrIfDragged]' })
+@Directive({
+  selector: '[clrIfDragged]',
+})
 export class ClrIfDragged<T> implements OnDestroy {
   private subscriptions: Subscription[] = [];
   constructor(

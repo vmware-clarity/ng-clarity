@@ -22,7 +22,9 @@ import { ColumnState } from './interfaces/column-state.interface';
 import { COLUMN_STATE } from './providers/column-state.provider';
 import { ColumnsService } from './providers/columns.service';
 
-@Directive({ selector: '[clrDgHideableColumn]' })
+@Directive({
+  selector: '[clrDgHideableColumn]',
+})
 
 /**
  *

@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-popovers-demo', styleUrls: ['./popovers.demo.scss'], templateUrl: './popovers.demo.html' })
+@Component({
+  selector: 'clr-popovers-demo',
+  styleUrls: ['./popovers.demo.scss'],
+  templateUrl: './popovers.demo.html',
+})
 export class PopoversDemo {}

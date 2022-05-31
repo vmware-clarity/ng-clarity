@@ -24,7 +24,9 @@ class WrapperComponent implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[wrappedDirective]' })
+@Directive({
+  selector: '[wrappedDirective]',
+})
 class WrappedDirective implements OnInit {
   injected: number;
 
