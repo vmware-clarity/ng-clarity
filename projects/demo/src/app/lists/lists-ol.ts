@@ -6,5 +6,8 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-lists-ol-demo', templateUrl: './lists-ol.html' })
+@Component({
+  selector: 'clr-lists-ol-demo',
+  templateUrl: './lists-ol.html',
+})
 export class ListsOlDemo {}

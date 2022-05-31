@@ -102,13 +102,17 @@ export default function () {
   });
 }
 
-@Component({ template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>` })
+@Component({
+  template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,
+})
 export class TestIndex {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
   index = 0;
 }
 
-@Component({ template: `<clr-alerts-pager [(clrCurrentAlert)]="currentAlert"></clr-alerts-pager>` })
+@Component({
+  template: `<clr-alerts-pager [(clrCurrentAlert)]="currentAlert"></clr-alerts-pager>`,
+})
 export class TestInstance {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
   currentAlert: ClrAlert;

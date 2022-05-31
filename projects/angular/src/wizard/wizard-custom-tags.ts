@@ -6,7 +6,9 @@
 
 import { Directive } from '@angular/core';
 
-@Directive({ selector: 'clr-wizard-title, clr-wizard-pagetitle' })
+@Directive({
+  selector: 'clr-wizard-title, clr-wizard-pagetitle',
+})
 export class ClrWizardCustomTags {
   // No behavior
   // The only purpose is to "declare" the tag in Angular

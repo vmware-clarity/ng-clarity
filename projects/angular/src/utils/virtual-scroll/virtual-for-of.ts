@@ -46,7 +46,9 @@ const PRELOAD_MARGIN = 1;
  * - export index
  * - export firstDisplayed and LastDisplayed
  */
-@Directive({ selector: '[clrVirtualForOf]' })
+@Directive({
+  selector: '[clrVirtualForOf]',
+})
 export class VirtualForOf<T> implements AfterViewInit {
   constructor(
     private viewContainer: ViewContainerRef,

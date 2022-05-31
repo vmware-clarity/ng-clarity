@@ -9,7 +9,9 @@ import { ClrLoading, ClrLoadingState } from '@clr/angular';
 
 const LATENCY = 2000;
 
-@Directive({ selector: '[clrFakeLoader]' })
+@Directive({
+  selector: '[clrFakeLoader]',
+})
 export class FakeLoader implements OnInit {
   constructor(private template: TemplateRef<any>, private container: ViewContainerRef, private loading: ClrLoading) {}
 

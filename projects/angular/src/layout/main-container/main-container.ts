@@ -11,7 +11,10 @@ import { ResponsiveNavigationService } from '../nav/providers/responsive-navigat
 import { ResponsiveNavCodes } from '../nav/responsive-nav-codes';
 import { ResponsiveNavControlMessage } from '../nav/responsive-nav-control-message';
 
-@Directive({ selector: 'clr-main-container', host: { '[class.main-container]': 'true' } })
+@Directive({
+  selector: 'clr-main-container',
+  host: { '[class.main-container]': 'true' },
+})
 export class ClrMainContainer implements OnDestroy, OnInit {
   private _subscription: Subscription;
   private _classList: DOMTokenList;

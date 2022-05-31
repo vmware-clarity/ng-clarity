@@ -6,7 +6,9 @@
 
 import { Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
 
-@Directive({ selector: '[clrOutsideClick]' })
+@Directive({
+  selector: '[clrOutsideClick]',
+})
 export class OutsideClick implements OnDestroy {
   @Input('clrStrict') strict = false;
 

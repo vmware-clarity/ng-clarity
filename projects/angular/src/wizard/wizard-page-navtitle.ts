@@ -6,7 +6,9 @@
 
 import { Directive, TemplateRef } from '@angular/core';
 
-@Directive({ selector: '[clrPageNavTitle]' })
+@Directive({
+  selector: '[clrPageNavTitle]',
+})
 export class ClrWizardPageNavTitle {
   constructor(public pageNavTitleTemplateRef: TemplateRef<any>) {}
 }

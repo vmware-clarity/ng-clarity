@@ -10,7 +10,9 @@ import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { RowActionService } from '../providers/row-action-service';
 import { DatagridWillyWonka } from './datagrid-willy-wonka';
 
-@Directive({ selector: 'clr-datagrid, clr-dg-row' })
+@Directive({
+  selector: 'clr-datagrid, clr-dg-row',
+})
 export class ActionableOompaLoompa extends OompaLoompa {
   private rowActions: RowActionService;
 

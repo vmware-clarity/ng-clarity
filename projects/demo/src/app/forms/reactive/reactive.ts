@@ -7,7 +7,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-@Component({ templateUrl: './reactive.html' })
+@Component({
+  templateUrl: './reactive.html',
+})
 export class FormsReactiveDemo {
   model = new FormGroup({
     basic: new FormControl(''),

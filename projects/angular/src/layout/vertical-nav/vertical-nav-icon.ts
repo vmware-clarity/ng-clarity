@@ -8,7 +8,10 @@ import { Directive, OnDestroy } from '@angular/core';
 
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 
-@Directive({ selector: '[clrVerticalNavIcon]', host: { class: 'nav-icon' } })
+@Directive({
+  selector: '[clrVerticalNavIcon]',
+  host: { class: 'nav-icon' },
+})
 export class ClrVerticalNavIcon implements OnDestroy {
   constructor(private _verticalNavIconService: VerticalNavIconService) {
     this._verticalNavIconService.registerIcon();

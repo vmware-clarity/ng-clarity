@@ -6,5 +6,9 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 
-@Component({ encapsulation: ViewEncapsulation.None, selector: 'clr-tabs-demo', templateUrl: './tabs.demo.html' })
+@Component({
+  encapsulation: ViewEncapsulation.None,
+  selector: 'clr-tabs-demo',
+  templateUrl: './tabs.demo.html',
+})
 export class TabsDemo {}

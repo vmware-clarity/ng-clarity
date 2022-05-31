@@ -8,7 +8,10 @@ import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-@Directive({ selector: '[clrAriaCurrentLink]', host: { '[attr.aria-current]': 'ariaCurrent' } })
+@Directive({
+  selector: '[clrAriaCurrentLink]',
+  host: { '[attr.aria-current]': 'ariaCurrent' },
+})
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {
   public ariaCurrent: string | undefined;
   private subscription: Subscription;

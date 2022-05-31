@@ -10,7 +10,9 @@ import { Subscription } from 'rxjs';
 import { ColumnsService } from '../providers/columns.service';
 import { DatagridCellRenderer } from './cell-renderer';
 
-@Directive({ selector: 'clr-dg-row, clr-dg-row-detail' })
+@Directive({
+  selector: 'clr-dg-row, clr-dg-row-detail',
+})
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
   @ContentChildren(DatagridCellRenderer) private cells: QueryList<DatagridCellRenderer>;
 

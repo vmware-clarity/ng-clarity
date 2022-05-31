@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-grid-no-gutters', templateUrl: './no-gutters.html', styleUrls: ['../grid.demo.scss'] })
+@Component({
+  selector: 'clr-grid-no-gutters',
+  templateUrl: './no-gutters.html',
+  styleUrls: ['../grid.demo.scss'],
+})
 export class GridNoGuttersDemo {}

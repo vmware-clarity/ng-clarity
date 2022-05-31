@@ -8,7 +8,9 @@ import { Component, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
 
-@Component({ templateUrl: './validation.html' })
+@Component({
+  templateUrl: './validation.html',
+})
 export class FormsValidationDemo {
   @ViewChildren(ClrForm) forms: ClrForm[];
 

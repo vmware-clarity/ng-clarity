@@ -6,7 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './template-driven.html' })
+@Component({
+  templateUrl: './template-driven.html',
+})
 export class FormsTemplateDrivenDemo {
   model = {
     basic: '',

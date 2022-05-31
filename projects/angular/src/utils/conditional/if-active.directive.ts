@@ -18,7 +18,9 @@ import { Subscription } from 'rxjs';
 
 import { IF_ACTIVE_ID, IfActiveService } from './if-active.service';
 
-@Directive({ selector: '[clrIfActive]' })
+@Directive({
+  selector: '[clrIfActive]',
+})
 
 /**********
  *

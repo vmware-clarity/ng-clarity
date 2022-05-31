@@ -6,7 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ templateUrl: './disabled.html' })
+@Component({
+  templateUrl: './disabled.html',
+})
 export class FormsDisabledDemo {
   items: string[] = ['one', 'two'];
 

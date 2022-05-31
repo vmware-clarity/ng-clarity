@@ -14,7 +14,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
 //       - return to module
 //       - return to dev-app examples
 //       - return to website docs
-@Directive({ selector: '[clrFilterHighlight]' })
+@Directive({
+  selector: '[clrFilterHighlight]',
+})
 export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private initialHtml: string;

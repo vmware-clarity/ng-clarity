@@ -30,7 +30,9 @@ class GenericWrapper implements DynamicWrapper {
   _dynamic = false;
 }
 
-@Directive({ selector: '[genericControl]' })
+@Directive({
+  selector: '[genericControl]',
+})
 class GenericControl extends WrappedFormControl<GenericWrapper> {
   constructor(vcr: ViewContainerRef) {
     super(vcr, GenericWrapper, null, null, null, null);
@@ -48,10 +50,14 @@ class CommonFormsTestModule {}
 /*
  * Actual test components, one for each case we support
  */
-@Component({ template: `<input genericControl />` })
+@Component({
+  template: `<input genericControl />`,
+})
 class NoWrapperNoId {}
 
-@Component({ template: `<input genericControl id="hello" />` })
+@Component({
+  template: `<input genericControl id="hello" />`,
+})
 class NoWrapperWithId {}
 
 @Component({

@@ -10,7 +10,9 @@ import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { ResponsiveNavigationService } from '../providers/responsive-navigation.service';
 import { MainContainerWillyWonka } from './main-container-willy-wonka';
 
-@Directive({ selector: 'clr-header' })
+@Directive({
+  selector: 'clr-header',
+})
 export class NavDetectionOompaLoompa extends OompaLoompa {
   private responsiveNavService: ResponsiveNavigationService;
 

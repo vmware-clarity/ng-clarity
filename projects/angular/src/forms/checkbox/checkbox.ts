@@ -17,7 +17,9 @@ import { ClrCheckboxWrapper, IS_TOGGLE } from './checkbox-wrapper';
  * decorator gets for us to determine if the toggle is used, and emits a value to the wrapper container to tell it
  * there is a toggle switch instead.
  */
-@Directive({ selector: '[clrCheckbox],[clrToggle]' })
+@Directive({
+  selector: '[clrCheckbox],[clrToggle]',
+})
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   constructor(
     vcr: ViewContainerRef,
