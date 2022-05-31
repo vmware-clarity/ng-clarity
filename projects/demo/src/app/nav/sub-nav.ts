@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-nav-demo-subnav', styleUrls: ['./sub-nav.demo.scss'], templateUrl: './sub-nav.demo.html' })
+@Component({
+  selector: 'clr-nav-demo-subnav',
+  styleUrls: ['./sub-nav.demo.scss'],
+  templateUrl: './sub-nav.demo.html',
+})
 export class SubNavDemo {}

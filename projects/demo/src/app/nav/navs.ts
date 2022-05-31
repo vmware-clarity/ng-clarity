@@ -6,5 +6,9 @@
 
 import { Component } from '@angular/core';
 
-@Component({ selector: 'clr-nav-demo-navs', styleUrls: [], templateUrl: './navs.demo.html' })
+@Component({
+  selector: 'clr-nav-demo-navs',
+  styleUrls: [],
+  templateUrl: './navs.demo.html',
+})
 export class NavsDemo {}

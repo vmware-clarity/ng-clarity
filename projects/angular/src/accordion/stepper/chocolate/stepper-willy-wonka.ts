@@ -8,5 +8,7 @@ import { Directive } from '@angular/core';
 
 import { WillyWonka } from '../../../utils/chocolate/willy-wonka';
 
-@Directive({ selector: 'form[clrStepper]' })
+@Directive({
+  selector: 'form[clrStepper]',
+})
 export class StepperWillyWonka extends WillyWonka {}

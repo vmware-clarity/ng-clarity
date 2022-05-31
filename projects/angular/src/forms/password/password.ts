@@ -24,7 +24,10 @@ import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 
-@Directive({ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } })
+@Directive({
+  selector: '[clrPassword]',
+  host: { '[class.clr-input]': 'true' },
+})
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
   protected index = 1;
 

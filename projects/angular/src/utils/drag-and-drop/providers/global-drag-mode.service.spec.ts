@@ -33,5 +33,8 @@ export default function (): void {
   });
 }
 
-@Component({ providers: [GlobalDragModeService], template: `<div>test</div>` })
+@Component({
+  providers: [GlobalDragModeService],
+  template: `<div>test</div>`,
+})
 class TestComponent {}

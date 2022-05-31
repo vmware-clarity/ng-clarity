@@ -11,7 +11,9 @@ import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
 
-@Directive({ selector: 'label' })
+@Directive({
+  selector: 'label',
+})
 export class ClrLabel implements OnInit, OnDestroy {
   constructor(
     @Optional() private controlIdService: ControlIdService,

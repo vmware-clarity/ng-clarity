@@ -6,13 +6,17 @@
 
 import { Directive } from '@angular/core';
 
-@Directive({ selector: 'clr-icon' })
+@Directive({
+  selector: 'clr-icon',
+})
 export class ClrIconCustomTag {
   // No behavior
   // The only purpose is to "declare" the tag in Angular
 }
 
-@Directive({ selector: 'cds-icon' })
+@Directive({
+  selector: 'cds-icon',
+})
 export class CdsIconCustomTag {
   // No behavior
   // The only purpose is to "declare" the tag in Angular

@@ -27,7 +27,9 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 // https://github.com/angular/angular/issues/20351#issuecomment-344009887
 /** @dynamic */
-@Directive({ selector: '[clrPopoverContent]' })
+@Directive({
+  selector: '[clrPopoverContent]',
+})
 export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private view: EmbeddedViewRef<void>;
   private subscriptions: Subscription[] = [];

@@ -10,7 +10,10 @@ import { NgControl } from '@angular/forms';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrTextareaContainer } from './textarea-container';
 
-@Directive({ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } })
+@Directive({
+  selector: '[clrTextarea]',
+  host: { '[class.clr-textarea]': 'true' },
+})
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
   protected index = 1;
 

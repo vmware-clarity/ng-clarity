@@ -7,7 +7,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
-@Component({ templateUrl: './generic-container.html' })
+@Component({
+  templateUrl: './generic-container.html',
+})
 export class FormsGenericContainerDemo {
   constructor(private fb: FormBuilder) {}
 

@@ -6,7 +6,9 @@
 
 import { Directive, Input, TemplateRef } from '@angular/core';
 
-@Directive({ selector: '[clrOptionSelected]' })
+@Directive({
+  selector: '[clrOptionSelected]',
+})
 export class ClrOptionSelected<T> {
   constructor(public template: TemplateRef<{ $implicit: T }>) {}
 

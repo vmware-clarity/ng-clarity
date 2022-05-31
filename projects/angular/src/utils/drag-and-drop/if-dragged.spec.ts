@@ -57,12 +57,16 @@ export default function (): void {
   });
 }
 
-@Directive({ selector: '[mockVCRProvider]' })
+@Directive({
+  selector: '[mockVCRProvider]',
+})
 class MockVCRProvider {}
 @Component({
   template: `<div mockVCRProvider class="parent-vcr"><span class="if-dragged" *clrIfDragged>Test</span></div>`,
 })
 class IfDraggedTest {}
 
-@Component({ template: `<div *clrIfDragged>Test</div>` })
+@Component({
+  template: `<div *clrIfDragged>Test</div>`,
+})
 class NoDragEventListener {}

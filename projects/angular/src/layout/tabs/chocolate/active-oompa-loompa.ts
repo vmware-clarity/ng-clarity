@@ -10,7 +10,9 @@ import { OompaLoompa } from '../../../utils/chocolate/oompa-loompa';
 import { IF_ACTIVE_ID, IfActiveService } from '../../../utils/conditional/if-active.service';
 import { TabsWillyWonka } from './tabs-willy-wonka';
 
-@Directive({ selector: '[clrTabLink], clr-tab-content' })
+@Directive({
+  selector: '[clrTabLink], clr-tab-content',
+})
 export class ActiveOompaLoompa extends OompaLoompa {
   private ifActive: IfActiveService;
   private id: number;

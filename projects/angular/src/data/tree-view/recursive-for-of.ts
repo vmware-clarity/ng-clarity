@@ -18,7 +18,9 @@ export interface ClrRecursiveForOfContext<T> {
   clrModel: TreeNodeModel<T>;
 }
 
-@Directive({ selector: '[clrRecursiveFor][clrRecursiveForOf]' })
+@Directive({
+  selector: '[clrRecursiveFor][clrRecursiveForOf]',
+})
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   constructor(
     private template: TemplateRef<ClrRecursiveForOfContext<T>>,

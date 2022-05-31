@@ -86,10 +86,14 @@ export default function (): void {
   });
 }
 
-@Component({ template: `<clr-dg-page-size>Hello world</clr-dg-page-size>` })
+@Component({
+  template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,
+})
 class SimpleTest {}
 
-@Component({ template: `<clr-dg-page-size [clrPageSizeOptions]="pageSizeOptions">Hello world</clr-dg-page-size>` })
+@Component({
+  template: `<clr-dg-page-size [clrPageSizeOptions]="pageSizeOptions">Hello world</clr-dg-page-size>`,
+})
 class FullTest {
   pageSizeOptions: number[];
 }

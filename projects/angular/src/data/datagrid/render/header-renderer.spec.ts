@@ -31,7 +31,9 @@ import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
 
-@Component({ template: `<clr-dg-column>Hello world</clr-dg-column>` })
+@Component({
+  template: `<clr-dg-column>Hello world</clr-dg-column>`,
+})
 class SimpleTest {}
 
 @Component({

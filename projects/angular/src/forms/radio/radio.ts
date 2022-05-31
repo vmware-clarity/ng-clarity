@@ -10,7 +10,9 @@ import { NgControl } from '@angular/forms';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrRadioWrapper } from '../radio/radio-wrapper';
 
-@Directive({ selector: '[clrRadio]' })
+@Directive({
+  selector: '[clrRadio]',
+})
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
   constructor(
     vcr: ViewContainerRef,

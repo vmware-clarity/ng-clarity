@@ -7,7 +7,9 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ClrForm } from '@clr/angular';
 
-@Component({ templateUrl: './toggles.demo.html' })
+@Component({
+  templateUrl: './toggles.demo.html',
+})
 export class TogglesDemo {
   @ViewChildren(ClrForm) forms: QueryList<ClrForm>;
 

@@ -25,7 +25,9 @@ import { FocusTrapTracker } from './focus-trap-tracker.service';
 export const FOCUSABLES =
   '[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), [contenteditable="true"]:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"]) ';
 
-@Directive({ selector: '[clrFocusTrap]' })
+@Directive({
+  selector: '[clrFocusTrap]',
+})
 export class FocusTrapDirective implements OnInit, AfterViewInit, OnDestroy {
   private previousActiveElement: any;
   private localFocusEscaped = false;

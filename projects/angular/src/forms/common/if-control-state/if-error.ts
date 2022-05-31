@@ -10,7 +10,9 @@ import { NgControlService } from '../providers/ng-control.service';
 import { AbstractIfState } from './abstract-if-state';
 import { CONTROL_STATE, IfControlStateService } from './if-control-state.service';
 
-@Directive({ selector: '[clrIfError]' })
+@Directive({
+  selector: '[clrIfError]',
+})
 export class ClrIfError extends AbstractIfState {
   @Input('clrIfError') error: string;
 

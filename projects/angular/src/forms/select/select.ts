@@ -10,7 +10,10 @@ import { NgControl } from '@angular/forms';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrSelectContainer } from './select-container';
 
-@Directive({ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } })
+@Directive({
+  selector: '[clrSelect]',
+  host: { '[class.clr-select]': 'true' },
+})
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
   protected index = 1;
 
