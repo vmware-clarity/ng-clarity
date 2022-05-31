@@ -16,13 +16,15 @@ import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
 
 @Component({
-  template: ` <form clrForm [formGroup]="model">
-    <clr-input-container>
-      <label #testLabel>Required</label>
-      <input clrInput placeholder="Placeholder" name="testControl" formControlName="testControl" />
-    </clr-input-container>
-    <button class="btn btn-primary" #submitBtn type="submit">Submit</button>
-  </form>`,
+  template: `
+    <form clrForm [formGroup]="model">
+      <clr-input-container>
+        <label #testLabel>Required</label>
+        <input clrInput placeholder="Placeholder" name="testControl" formControlName="testControl" />
+      </clr-input-container>
+      <button class="btn btn-primary" #submitBtn type="submit">Submit</button>
+    </form>
+  `,
 })
 class SimpleTest {
   @ViewChild(ClrForm, { static: true })

@@ -17,26 +17,30 @@ import { ClrProgressBarModule } from './progress-bar.module';
 class TestComponent {}
 
 @Component({
-  template: `<clr-progress-bar
-    clrLabeled
-    [clrValue]="progressValue"
-    [clrMax]="maxValue"
-    [clrDisplayval]="displayValue"
-  ></clr-progress-bar>`,
+  template: `
+    <clr-progress-bar
+      clrLabeled
+      [clrValue]="progressValue"
+      [clrMax]="maxValue"
+      [clrDisplayval]="displayValue"
+    ></clr-progress-bar>
+  `,
 })
 class TestDisplayValueComponent {}
 
 @Component({
-  template: `<clr-progress-bar
-    clrLabeled
-    clrFade
-    clrLoop
-    clrSuccess
-    clrDanger
-    clrFlash
-    clrFlashDanger
-    class="random"
-  ></clr-progress-bar>`,
+  template: `
+    <clr-progress-bar
+      clrLabeled
+      clrFade
+      clrLoop
+      clrSuccess
+      clrDanger
+      clrFlash
+      clrFlashDanger
+      class="random"
+    ></clr-progress-bar>
+  `,
 })
 class TestStylesComponent {}
 

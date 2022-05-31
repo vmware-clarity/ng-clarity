@@ -28,21 +28,23 @@ class TestComponent {
   hasChild = false;
 }
 @Component({
-  template: `<clr-tree>
-    <clr-tree-node clrForTypeAhead [clrExpanded]="true">
-      California
-      <clr-tree-node clrForTypeAhead>San Francisco</clr-tree-node>
-      <clr-tree-node clrForTypeAhead>Los Angeles</clr-tree-node>
-    </clr-tree-node>
-    <clr-tree-node clrForTypeAhead [clrExpanded]="true">
-      Washington
-      <clr-tree-node clrForTypeAhead>Seattle</clr-tree-node>
-    </clr-tree-node>
-    <clr-tree-node clrForTypeAhead [clrExpanded]="false">
-      Vermont
-      <clr-tree-node clrForTypeAhead>Burlington</clr-tree-node>
-    </clr-tree-node>
-  </clr-tree>`,
+  template: `
+    <clr-tree>
+      <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+        California
+        <clr-tree-node clrForTypeAhead>San Francisco</clr-tree-node>
+        <clr-tree-node clrForTypeAhead>Los Angeles</clr-tree-node>
+      </clr-tree-node>
+      <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+        Washington
+        <clr-tree-node clrForTypeAhead>Seattle</clr-tree-node>
+      </clr-tree-node>
+      <clr-tree-node clrForTypeAhead [clrExpanded]="false">
+        Vermont
+        <clr-tree-node clrForTypeAhead>Burlington</clr-tree-node>
+      </clr-tree-node>
+    </clr-tree>
+  `,
 })
 class TreeTypeAhead {}
 

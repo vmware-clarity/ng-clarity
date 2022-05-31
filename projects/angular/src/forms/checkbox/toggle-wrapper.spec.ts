@@ -32,20 +32,24 @@ class FullTest {
 }
 
 @Component({
-  template: ` <clr-toggle-wrapper>
-    <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
-  </clr-toggle-wrapper>`,
+  template: `
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
+    </clr-toggle-wrapper>
+  `,
 })
 class NoLabelTest {
   model = '';
 }
 
 @Component({
-  template: `<clr-toggle-container>
-    <clr-toggle-wrapper>
-      <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
-    </clr-toggle-wrapper>
-  </clr-toggle-container>`,
+  template: `
+    <clr-toggle-container>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
+      </clr-toggle-wrapper>
+    </clr-toggle-container>
+  `,
 })
 class ContainerTest {
   model = '';
