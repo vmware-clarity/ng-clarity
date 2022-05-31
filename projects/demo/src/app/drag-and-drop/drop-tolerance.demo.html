@@ -105,15 +105,12 @@
           </tr>
           <tr *ngFor="let file of files">
             <td>
-              <span class="label" [clrDraggable]="file"
-                >{{file.name}}<clr-draggable-ghost *clrIfDragged>
-                  <cds-icon
-                    shape="image"
-                    size="36"
-                    solid
-                    style="transform: translate3d(-50%, -50%, 0)"
-                  ></cds-icon> </clr-draggable-ghost
-              ></span>
+              <span class="label" [clrDraggable]="file">
+                {{file.name}}
+                <clr-draggable-ghost *clrIfDragged>
+                  <cds-icon shape="image" size="36" solid style="transform: translate3d(-50%, -50%, 0)"></cds-icon>
+                </clr-draggable-ghost>
+              </span>
             </td>
           </tr>
         </tbody>
@@ -133,8 +130,8 @@
           </tr>
           <tr *ngFor="let file of droppedFiles">
             <td>
-              <span class="label" [clrDraggable]="file"
-                >{{file.name}}
+              <span class="label" [clrDraggable]="file">
+                {{file.name}}
                 <clr-draggable-ghost *clrIfDragged>
                   <cds-icon shape="image" size="36" solid style="transform: translate3d(-50%, -50%, 0)"></cds-icon>
                 </clr-draggable-ghost>

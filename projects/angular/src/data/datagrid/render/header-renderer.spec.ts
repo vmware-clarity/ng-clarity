@@ -42,9 +42,9 @@ class SimpleTest {}
       <clr-datagrid>
         <clr-dg-column>First</clr-dg-column>
         <clr-dg-column [style.min-width.px]="120">Second</clr-dg-column>
-        <clr-dg-column [style.width.px]="column3WidthStrict" (clrDgColumnResize)="newWidth = $event"
-          >Three</clr-dg-column
-        >
+        <clr-dg-column [style.width.px]="column3WidthStrict" (clrDgColumnResize)="newWidth = $event">
+          Three
+        </clr-dg-column>
         <clr-dg-column>Four</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let item of items">

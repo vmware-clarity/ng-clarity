@@ -24,8 +24,9 @@ import { ClrWizardModule } from './wizard.module';
       [clrWizardButtonHidden]="hideBtn"
       (clrWizardButtonClicked)="doClick($event)"
       *ngIf="show"
-      >hello {{ projector }}</clr-wizard-button
     >
+      hello {{ projector }}
+    </clr-wizard-button>
   `,
 })
 class ViewTestComponent {

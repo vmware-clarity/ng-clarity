@@ -37,8 +37,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Checkbox</label
-        >
+          Checkbox
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -85,8 +85,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Inline checkbox</label
-        >
+          Inline checkbox
+        </label>
         <div
           class="clr-control-container clr-control-inline"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -133,8 +133,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Checkbox</label
-        >
+          Checkbox
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -181,8 +181,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Inline checkbox</label
-        >
+          Inline checkbox
+        </label>
         <div
           class="clr-control-container clr-control-inline"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -229,8 +229,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Radio</label
-        >
+          Radio
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -277,8 +277,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Inline radio</label
-        >
+          Inline radio
+        </label>
         <div
           class="clr-control-container clr-control-inline"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -326,8 +326,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          File</label
-        >
+          File
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -348,8 +348,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Plain file</label
-        >
+          Plain file
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -369,8 +369,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Textarea</label
-        >
+          Textarea
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"
@@ -393,8 +393,8 @@ import { ClrIconModule } from '../../icon/icon.module';
           class="clr-control-label"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical' }"
         >
-          Select</label
-        >
+          Select
+        </label>
         <div
           class="clr-control-container"
           [ngClass]="{ 'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical' }"

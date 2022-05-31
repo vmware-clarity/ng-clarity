@@ -15,9 +15,9 @@ import { ClrWizardModule } from './wizard.module';
     <clr-wizard-header-action #unset></clr-wizard-header-action>
     <clr-wizard-header-action #disabled [clrWizardHeaderActionDisabled]="true"></clr-wizard-header-action>
     <clr-wizard-header-action #identified [id]="myId" title="I have a title"></clr-wizard-header-action>
-    <clr-wizard-header-action #projected [id]="'projection'" [clrWizardHeaderActionDisabled]="disableMe">{{
-      projector
-    }}</clr-wizard-header-action>
+    <clr-wizard-header-action #projected [id]="'projection'" [clrWizardHeaderActionDisabled]="disableMe">
+      {{ projector }}
+    </clr-wizard-header-action>
     <clr-wizard-header-action
       #clicker
       id="gotklikz"
