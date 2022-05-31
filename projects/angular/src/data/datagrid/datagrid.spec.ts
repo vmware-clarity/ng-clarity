@@ -104,7 +104,7 @@ class NgForTest {
 // Have to wrap the OnPush component otherwise change detection doesn't run.
 // The secret here is OnPush only updates on input changes, hence the wrapper.
 @Component({
-  template: ` <multi-select-test [items]="items" [selected]="selected"></multi-select-test> `,
+  template: `<multi-select-test [items]="items" [selected]="selected"></multi-select-test>`,
 })
 class OnPushTest {
   items = [1, 2, 3];

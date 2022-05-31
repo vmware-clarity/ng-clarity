@@ -122,7 +122,7 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <ng-template [(clrIfActive)]="activeState"> Hello Template! </ng-template> `,
+  template: `<ng-template [(clrIfActive)]="activeState"> Hello Template! </ng-template>`,
 })
 class IfOpenTest {
   @ViewChild(ClrIfActive) directive: ClrIfActive;

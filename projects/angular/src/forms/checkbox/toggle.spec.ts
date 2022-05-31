@@ -12,12 +12,12 @@ import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
 
 @Component({
-  template: ` <input type="checkbox" clrToggle /> `,
+  template: `<input type="checkbox" clrToggle />`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <input type="checkbox" clrToggle name="model" class="test-class" [(ngModel)]="model" /> `,
+  template: `<input type="checkbox" clrToggle name="model" class="test-class" [(ngModel)]="model" />`,
 })
 class TemplateDrivenTest {}
 

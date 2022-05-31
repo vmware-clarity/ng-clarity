@@ -12,7 +12,7 @@ import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from './id-generator.service';
 
 @Component({
   selector: 'id-test',
-  template: ` <div [id]="divId">My Div</div>`,
+  template: `<div [id]="divId">My Div</div>`,
   providers: [UNIQUE_ID_PROVIDER],
 })
 class IdTest {

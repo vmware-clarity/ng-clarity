@@ -19,7 +19,7 @@ import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
 
 @Component({
-  template: ` <input clrDatalistInput /> `,
+  template: `<input clrDatalistInput />`,
 })
 class InvalidUseTest {}
 

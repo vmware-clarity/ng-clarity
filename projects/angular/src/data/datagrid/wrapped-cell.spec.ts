@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WrappedCell } from './wrapped-cell';
 
 @Component({
-  template: ` <dg-wrapped-cell>Hello World!</dg-wrapped-cell> `,
+  template: `<dg-wrapped-cell>Hello World!</dg-wrapped-cell>`,
 })
 class WrappedCellTest {
   @ViewChild(WrappedCell, { static: true })

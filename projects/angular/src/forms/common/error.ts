@@ -12,7 +12,7 @@ import { ControlIdService } from './providers/control-id.service';
 
 @Component({
   selector: 'clr-control-error',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-subtext]': 'true',
     '[attr.id]': 'id',

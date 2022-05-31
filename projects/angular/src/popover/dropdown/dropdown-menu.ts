@@ -26,7 +26,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
 
 @Component({
   selector: 'clr-dropdown-menu',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     '[class.dropdown-menu]': 'true',
     '[attr.role]': '"menu"',

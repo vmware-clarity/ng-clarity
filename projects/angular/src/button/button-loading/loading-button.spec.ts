@@ -119,7 +119,7 @@ describe('Loading Buttons', () => {
 });
 
 @Component({
-  template: ` <button [(clrLoading)]="buttonState" id="testBtn" [disabled]="disabled">Test 1</button> `,
+  template: `<button [(clrLoading)]="buttonState" id="testBtn" [disabled]="disabled">Test 1</button>`,
 })
 class TestLoadingButtonComponent {
   @ViewChild(ClrLoadingButton) loadingButtonInstance: ClrLoadingButton;

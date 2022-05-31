@@ -166,7 +166,7 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <ng-container *clrDgHideableColumn> Why am I not inside a datagrid column? </ng-container> `,
+  template: `<ng-container *clrDgHideableColumn> Why am I not inside a datagrid column? </ng-container>`,
 })
 class HideableNotInsideColumnTest {}
 

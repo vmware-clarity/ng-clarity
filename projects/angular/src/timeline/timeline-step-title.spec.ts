@@ -47,6 +47,6 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <clr-timeline-step-title>Title Content</clr-timeline-step-title> `,
+  template: `<clr-timeline-step-title>Title Content</clr-timeline-step-title>`,
 })
 class TestTimelineStepTitle {}

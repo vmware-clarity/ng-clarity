@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-dg-action-bar',
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: { '[class.datagrid-action-bar]': 'true' },
 })
 export class ClrDatagridActionBar {}

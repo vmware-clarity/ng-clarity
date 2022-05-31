@@ -12,12 +12,12 @@ import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
 
 @Component({
-  template: ` <textarea clrTextarea></textarea> `,
+  template: `<textarea clrTextarea></textarea>`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <textarea clrTextarea name="model" class="test-class" [(ngModel)]="model"></textarea> `,
+  template: `<textarea clrTextarea name="model" class="test-class" [(ngModel)]="model"></textarea>`,
 })
 class TemplateDrivenTest {}
 
