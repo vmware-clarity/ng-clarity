@@ -170,10 +170,9 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
 }
 
 @Component({
-  template: `<clr-dg-numeric-filter
-    [clrDgNumericFilter]="filter"
-    [(clrFilterValue)]="filterValue"
-  ></clr-dg-numeric-filter>`,
+  template: `
+    <clr-dg-numeric-filter [clrDgNumericFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-numeric-filter>
+  `,
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -183,12 +182,14 @@ class FullTest {
 }
 
 @Component({
-  template: `<clr-dg-numeric-filter
-    [clrDgNumericFilter]="filter"
-    [(clrFilterValue)]="filterValue"
-    [clrFilterMaxPlaceholder]="clrFilterMaxPlaceholder"
-    [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
-  ></clr-dg-numeric-filter>`,
+  template: `
+    <clr-dg-numeric-filter
+      [clrDgNumericFilter]="filter"
+      [(clrFilterValue)]="filterValue"
+      [clrFilterMaxPlaceholder]="clrFilterMaxPlaceholder"
+      [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
+    ></clr-dg-numeric-filter>
+  `,
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

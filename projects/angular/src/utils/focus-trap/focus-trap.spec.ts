@@ -40,10 +40,12 @@ class FocusTrapComponent extends FocusTrap {
 
 @Component({
   selector: 'test-focus-trap-ng',
-  template: ` <button class="outside-focus">nope</button>
+  template: `
+    <button class="outside-focus">nope</button>
     <focus-trap>
       <a href="#" class="inside-focus">Link 1</a>
-    </focus-trap>`,
+    </focus-trap>
+  `,
 })
 class TestFocusTrapComponent {
   @ViewChild(FocusTrapComponent)

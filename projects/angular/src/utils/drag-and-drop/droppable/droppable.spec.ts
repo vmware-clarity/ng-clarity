@@ -500,18 +500,20 @@ export default function (): void {
 
 @Component({
   styles: ['.basic-droppable { position: absolute; left: 400px; top: 200px; width: 200px; height: 400px; }'],
-  template: `<div
-    class="basic-droppable"
-    clrDroppable
-    (clrDragStart)="dragStartEvent = $event"
-    (clrDragMove)="dragMoveEvent = $event"
-    (clrDragEnd)="dragEndEvent = $event"
-    (clrDragLeave)="dragLeaveEvent = $event"
-    (clrDragEnter)="dragEnterEvent = $event"
-    (clrDrop)="dropEvent = $event"
-  >
-    Test
-  </div>`,
+  template: `
+    <div
+      class="basic-droppable"
+      clrDroppable
+      (clrDragStart)="dragStartEvent = $event"
+      (clrDragMove)="dragMoveEvent = $event"
+      (clrDragEnd)="dragEndEvent = $event"
+      (clrDragLeave)="dragLeaveEvent = $event"
+      (clrDragEnter)="dragEnterEvent = $event"
+      (clrDrop)="dropEvent = $event"
+    >
+      Test
+    </div>
+  `,
 })
 class BasicDroppable {
   public dragStartEvent: any;
@@ -523,14 +525,11 @@ class BasicDroppable {
 }
 
 @Component({
-  template: `<div
-    class="droppable-with-group"
-    clrDroppable
-    [clrGroup]="droppableGroup"
-    (clrDragStart)="dragStartEvent = $event"
-  >
-    Test
-  </div>`,
+  template: `
+    <div class="droppable-with-group" clrDroppable [clrGroup]="droppableGroup" (clrDragStart)="dragStartEvent = $event">
+      Test
+    </div>
+  `,
 })
 class DroppableWithGroup {
   public droppableGroup: string | string[];
@@ -539,16 +538,18 @@ class DroppableWithGroup {
 
 @Component({
   styles: ['.droppable-with-tolerance { position: absolute; left: 400px; top: 200px; width: 200px; height: 400px; }'],
-  template: `<div
-    class="droppable-with-tolerance"
-    clrDroppable
-    [clrDropTolerance]="tolerance"
-    (clrDragStart)="dragStartEvent = $event"
-    (clrDragLeave)="dragLeaveEvent = $event"
-    (clrDragEnter)="dragEnterEvent = $event"
-  >
-    Test
-  </div>`,
+  template: `
+    <div
+      class="droppable-with-tolerance"
+      clrDroppable
+      [clrDropTolerance]="tolerance"
+      (clrDragStart)="dragStartEvent = $event"
+      (clrDragLeave)="dragLeaveEvent = $event"
+      (clrDragEnter)="dragEnterEvent = $event"
+    >
+      Test
+    </div>
+  `,
 })
 class DroppableWithTolerance {
   public tolerance: number | ClrDropToleranceInterface;

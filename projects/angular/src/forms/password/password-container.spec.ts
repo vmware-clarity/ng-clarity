@@ -36,23 +36,27 @@ class TemplateDrivenTest {
 }
 
 @Component({
-  template: ` <clr-password-container>
-    <input clrPassword [(ngModel)]="model" />
-    <clr-control-helper>Helper text</clr-control-helper>
-  </clr-password-container>`,
+  template: `
+    <clr-password-container>
+      <input clrPassword [(ngModel)]="model" />
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-password-container>
+  `,
 })
 class NoLabelTest {}
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-password-container>
-      <input clrPassword formControlName="model" />
-      <label>Hello World</label>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>Must be at least 5 characters</clr-control-error>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-password-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-password-container>
+        <input clrPassword formControlName="model" />
+        <label>Hello World</label>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>Must be at least 5 characters</clr-control-error>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-password-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;

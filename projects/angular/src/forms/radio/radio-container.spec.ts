@@ -53,22 +53,24 @@ class TemplateDrivenTest {
 }
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-radio-container>
-      <label>Hello World</label>
-      <clr-radio-wrapper>
-        <label>One</label>
-        <input clrRadio type="radio" formControlName="model" value="one" />
-      </clr-radio-wrapper>
-      <clr-radio-wrapper>
-        <label>Two</label>
-        <input clrRadio type="radio" formControlName="model" value="two" />
-      </clr-radio-wrapper>
-      <clr-control-error>There was an error</clr-control-error>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-radio-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-radio-container>
+        <label>Hello World</label>
+        <clr-radio-wrapper>
+          <label>One</label>
+          <input clrRadio type="radio" formControlName="model" value="one" />
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <label>Two</label>
+          <input clrRadio type="radio" formControlName="model" value="two" />
+        </clr-radio-wrapper>
+        <clr-control-error>There was an error</clr-control-error>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-radio-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;

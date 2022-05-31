@@ -107,15 +107,17 @@ export default function (): void {
 }
 
 @Component({
-  template: ` <div>
-    <div class="outside-click-test">This is an area outside of the action overflow</div>
-    <clr-dg-action-overflow
-      [(clrDgActionOverflowOpen)]="open"
-      (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
-    >
-      <button #actionItem class="action-item" clrPopoverCloseButton>Hello world</button>
-    </clr-dg-action-overflow>
-  </div>`,
+  template: `
+    <div>
+      <div class="outside-click-test">This is an area outside of the action overflow</div>
+      <clr-dg-action-overflow
+        [(clrDgActionOverflowOpen)]="open"
+        (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
+      >
+        <button #actionItem class="action-item" clrPopoverCloseButton>Hello world</button>
+      </clr-dg-action-overflow>
+    </div>
+  `,
 })
 class SimpleTest {
   // eslint-disable-next-line

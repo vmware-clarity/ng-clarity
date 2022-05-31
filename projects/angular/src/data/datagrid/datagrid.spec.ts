@@ -113,15 +113,17 @@ class OnPushTest {
 
 @Component({
   selector: 'multi-select-test',
-  template: ` <clr-datagrid [(clrDgSelected)]="selected">
-    <clr-dg-column>First</clr-dg-column>
-    <clr-dg-column>Second</clr-dg-column>
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected">
+      <clr-dg-column>First</clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
 
-    <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
-      <clr-dg-cell>{{ item }}</clr-dg-cell>
-      <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-    </clr-dg-row>
-  </clr-datagrid>`,
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MultiSelectionTest {
@@ -335,32 +337,36 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
 
 @Component({
   selector: 'hidden-column-test',
-  template: ` <clr-datagrid>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: true }"> First </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>Second</clr-dg-column>
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>
+        <ng-container *clrDgHideableColumn="{ hidden: true }"> First </ng-container>
+      </clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
 
-    <clr-dg-row *ngFor="let item of items">
-      <clr-dg-cell>{{ item }}</clr-dg-cell>
-      <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-    </clr-dg-row>
-  </clr-datagrid>`,
+      <clr-dg-row *ngFor="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
 })
 class HiddenColumnTest {
   items = [1, 2, 3];
 }
 
 @Component({
-  template: ` <clr-datagrid>
-    <clr-dg-column>First</clr-dg-column>
-    <clr-dg-column>Second</clr-dg-column>
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>First</clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
 
-    <clr-dg-row *ngFor="let item of items">
-      <clr-dg-cell>{{ item }}</clr-dg-cell>
-      <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-    </clr-dg-row>
-  </clr-datagrid>`,
+      <clr-dg-row *ngFor="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
 })
 class ProjectionTest {
   items = [1, 2, 3];

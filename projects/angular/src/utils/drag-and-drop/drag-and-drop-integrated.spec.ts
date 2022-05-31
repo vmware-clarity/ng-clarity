@@ -247,7 +247,8 @@ export default function (): void {
       }
     `,
   ],
-  template: ` <button clrDraggable>draggable button</button>
+  template: `
+    <button clrDraggable>draggable button</button>
     <div
       class="draggable-test-state"
       clrGroup="draggable-1"
@@ -268,7 +269,8 @@ export default function (): void {
       (clrDragEnter)="dragEnterEvent = $event"
       (clrDrop)="dropEvent = $event"
     ></div>
-    <div clrDroppable clrGroup="draggable-1"></div>`,
+    <div clrDroppable clrGroup="draggable-1"></div>
+  `,
 })
 class WithDraggableTest {
   public mockDataPayload = MOCK_DATA_PAYLOAD;

@@ -153,15 +153,17 @@ export default function (): void {
 }
 
 @Component({
-  template: `<div
-    clrDraggable
-    [clrDragStartDelay]="dragStartDelay"
-    (clrDragStart)="dragStartEvent = $event"
-    (clrDragMove)="dragMoveEvent = $event"
-    (clrDragEnd)="dragEndEvent = $event"
-  >
-    Test
-  </div>`,
+  template: `
+    <div
+      clrDraggable
+      [clrDragStartDelay]="dragStartDelay"
+      (clrDragStart)="dragStartEvent = $event"
+      (clrDragMove)="dragMoveEvent = $event"
+      (clrDragEnd)="dragEndEvent = $event"
+    >
+      Test
+    </div>
+  `,
 })
 class BasicDraggableTest {
   dragStartEvent: ClrDragEvent<any>;

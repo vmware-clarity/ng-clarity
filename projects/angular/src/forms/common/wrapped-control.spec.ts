@@ -47,8 +47,10 @@ class TestControl extends WrappedFormControl<TestWrapper> {
 
 @Component({
   selector: 'test-wrapper2',
-  template: `<div id="first"><ng-content></ng-content></div>
-    <div id="second"><ng-content></ng-content></div>`,
+  template: `
+    <div id="first"><ng-content></ng-content></div>
+    <div id="second"><ng-content></ng-content></div>
+  `,
   providers: [ControlIdService],
 })
 class TestWrapper2 implements DynamicWrapper {
@@ -126,11 +128,13 @@ class WithWrapperWithId {}
 class WithMultipleNgContent {}
 
 @Component({
-  template: ` <form-wrapper>
-    <test-wrapper3>
-      <input testControl3 [(ngModel)]="model" required />
-    </test-wrapper3>
-  </form-wrapper>`,
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <input testControl3 [(ngModel)]="model" required />
+      </test-wrapper3>
+    </form-wrapper>
+  `,
 })
 class WithControl {
   model = '';
@@ -149,36 +153,42 @@ class WithNumberControl {
 }
 
 @Component({
-  template: ` <form-wrapper>
-    <test-wrapper3>
-      <input testControl3 [(ngModel)]="model" required />
-      <clr-control-helper>Helper</clr-control-helper>
-    </test-wrapper3>
-  </form-wrapper>`,
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <input testControl3 [(ngModel)]="model" required />
+        <clr-control-helper>Helper</clr-control-helper>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
 })
 class WithControlAndHelper {
   model = '';
 }
 
 @Component({
-  template: ` <form-wrapper>
-    <test-wrapper3>
-      <input testControl3 [(ngModel)]="model" required />
-      <clr-control-error>Error</clr-control-error>
-    </test-wrapper3>
-  </form-wrapper>`,
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <input testControl3 [(ngModel)]="model" required />
+        <clr-control-error>Error</clr-control-error>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
 })
 class WithControlAndError {
   model = '';
 }
 
 @Component({
-  template: ` <form-wrapper>
-    <test-wrapper3>
-      <input testControl3 [(ngModel)]="model" required />
-      <clr-control-success>Success</clr-control-success>
-    </test-wrapper3>
-  </form-wrapper>`,
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <input testControl3 [(ngModel)]="model" required />
+        <clr-control-success>Success</clr-control-success>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
 })
 class WithControlAndSuccess {
   model = '';
