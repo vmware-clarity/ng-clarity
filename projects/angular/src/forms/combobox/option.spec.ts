@@ -17,7 +17,7 @@ import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service
 import { OptionSelectionService } from './providers/option-selection.service';
 
 @Component({
-  template: `<clr-option [clrValue]="value" [id]="id" #option> Test </clr-option>`,
+  template: `<clr-option [clrValue]="value" [id]="id" #option>Test</clr-option>`,
   providers: [
     ClrPopoverToggleService,
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },

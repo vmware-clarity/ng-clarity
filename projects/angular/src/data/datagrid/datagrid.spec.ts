@@ -340,7 +340,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
   template: `
     <clr-datagrid>
       <clr-dg-column>
-        <ng-container *clrDgHideableColumn="{ hidden: true }"> First </ng-container>
+        <ng-container *clrDgHideableColumn="{ hidden: true }">First</ng-container>
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -376,7 +376,7 @@ class ProjectionTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>
-        <ng-container *clrDgHideableColumn="{ hidden: true }"> First </ng-container>
+        <ng-container *clrDgHideableColumn="{ hidden: true }">First</ng-container>
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 

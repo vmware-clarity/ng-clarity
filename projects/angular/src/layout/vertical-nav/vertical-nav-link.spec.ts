@@ -90,7 +90,7 @@ export default function (): void {
 
 @Component({
   template: `
-    <a href="#" clrVerticalNavLink id="link1"> Text </a>
+    <a href="#" clrVerticalNavLink id="link1">Text</a>
     <a href="#" clrVerticalNavLink id="link2">
       <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
       Icon Text
@@ -104,10 +104,10 @@ class TestComponent {}
   template: `
     <clr-vertical-nav-group #group>
       Group
-      <a href="#" clrVerticalNavLink id="link1" #link> Link 1 </a>
-      <a href="#" clrVerticalNavLink id="link2"> Link 2 </a>
+      <a href="#" clrVerticalNavLink id="link1" #link>Link 1</a>
+      <a href="#" clrVerticalNavLink id="link2">Link 2</a>
     </clr-vertical-nav-group>
-    <a href="#" clrVerticalNavLink id="link3"> Link 3 </a>
+    <a href="#" clrVerticalNavLink id="link3">Link 3</a>
   `,
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
 })

@@ -33,7 +33,7 @@
   <clr-wizard-page [clrWizardPageNextDisabled]="number.pristine || !formPageTwo.valid">
     <ng-template clrPageTitle>We need a number</ng-template>
     <!-- mandatory -->
-    <ng-template clrPageNavTitle> Enter a number </ng-template>
+    <ng-template clrPageNavTitle>Enter a number</ng-template>
     <!-- optional -->
     <form clrForm #formPageTwo="ngForm">
       <clr-input-container>
@@ -48,8 +48,8 @@
     <ng-template clrPageTitle>Title for page 3</ng-template>
     <!-- mandatory -->
     <ng-template clrPageNavTitle>
-      <span *ngIf="formPageOne.valid && formPageTwo.valid"> Ready to go! </span>
-      <span *ngIf="!formPageOne.valid || !formPageTwo.valid"> Not ready yet </span>
+      <span *ngIf="formPageOne.valid && formPageTwo.valid">Ready to go!</span>
+      <span *ngIf="!formPageOne.valid || !formPageTwo.valid">Not ready yet</span>
     </ng-template>
     <!-- optional -->
 

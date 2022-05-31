@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
   template: `
     <clr-alert [clrAlertType]="'alert-warning'">
       <clr-alert-item>
-        <span class="alert-text"> This is a private demo, nothing here is part of Clarity's public API </span>
+        <span class="alert-text">This is a private demo, nothing here is part of Clarity's public API</span>
       </clr-alert-item>
     </clr-alert>
 

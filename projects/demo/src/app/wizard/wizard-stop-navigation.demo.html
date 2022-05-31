@@ -55,7 +55,7 @@
     </form>
   </clr-wizard-page>
   <clr-wizard-page [clrWizardPagePreventDefaultNext]="true" (clrWizardPageOnCommit)="onCommit()">
-    <ng-template clrPageTitle> Validate your information </ng-template>
+    <ng-template clrPageTitle>Validate your information</ng-template>
     <ng-template clrPageNavTitle>
       <span *ngIf="!readyToFinish">Validate Info</span>
       <span *ngIf="readyToFinish">Ready to Go!</span>
