@@ -22,13 +22,9 @@ import { APP_ROUTES } from './app.routing';
           <label for="tab1">Clarity Navigation</label>
           <ul class="nav-list">
             <li *ngFor="let route of routes">
-              <a
-                *ngIf="route.path != ''"
-                class="nav-link"
-                [routerLink]="[route.path]"
-                [routerLinkActive]="['active']"
-                >{{ route.path }}</a
-              >
+              <a *ngIf="route.path != ''" class="nav-link" [routerLink]="[route.path]" [routerLinkActive]="['active']">
+                {{ route.path }}
+              </a>
             </li>
           </ul>
         </section>
