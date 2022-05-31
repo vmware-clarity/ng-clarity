@@ -246,7 +246,7 @@ export default function () {
         [clrAlertAppLevel]="true"
       >
         <clr-alert-item>
-          <span class="alert-text"> This is the first alert! </span>
+          <span class="alert-text">This is the first alert!</span>
         </clr-alert-item>
       </clr-alert>
       <clr-alert
@@ -256,7 +256,7 @@ export default function () {
         [clrAlertAppLevel]="true"
       >
         <clr-alert-item>
-          <span class="alert-text"> This is the second alert! </span>
+          <span class="alert-text">This is the second alert!</span>
         </clr-alert-item>
       </clr-alert>
     </clr-alerts>
@@ -279,7 +279,7 @@ class TestComponent {
         [clrAlertAppLevel]="true"
       >
         <clr-alert-item>
-          <span class="alert-text"> This is the first alert! </span>
+          <span class="alert-text">This is the first alert!</span>
         </clr-alert-item>
       </clr-alert>
       <clr-alert
@@ -289,7 +289,7 @@ class TestComponent {
         [clrAlertAppLevel]="true"
       >
         <clr-alert-item>
-          <span class="alert-text"> This is the second alert! </span>
+          <span class="alert-text">This is the second alert!</span>
         </clr-alert-item>
       </clr-alert>
     </clr-alerts>

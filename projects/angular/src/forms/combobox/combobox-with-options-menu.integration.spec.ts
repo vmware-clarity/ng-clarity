@@ -13,7 +13,7 @@ import { ClrCombobox } from './combobox';
 @Component({
   template: `
     <clr-combobox>
-      <clr-options class="test"> Test </clr-options>
+      <clr-options class="test">Test</clr-options>
     </clr-combobox>
   `,
 })

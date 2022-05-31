@@ -44,7 +44,7 @@ export default function (): void {
       <clr-dg-row>
         <clr-dg-cell>A</clr-dg-cell>
         <clr-dg-cell>B</clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded> Lorem ipsum...{{ user | json }} </clr-dg-row-detail>
+        <clr-dg-row-detail *clrIfExpanded>Lorem ipsum...{{ user | json }}</clr-dg-row-detail>
       </clr-dg-row>
 
       <clr-dg-detail *clrIfDetail="let detail">

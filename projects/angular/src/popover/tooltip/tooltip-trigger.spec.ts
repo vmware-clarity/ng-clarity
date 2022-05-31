@@ -14,7 +14,7 @@ import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
 
 @Component({
-  template: `<span clrTooltipTrigger [attr.aria-label]="ariaLabel"> Hello world </span>`,
+  template: `<span clrTooltipTrigger [attr.aria-label]="ariaLabel">Hello world</span>`,
 })
 class SimpleTest {
   ariaLabel = 'Uniq aria label';
