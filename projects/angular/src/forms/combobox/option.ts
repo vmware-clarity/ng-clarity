@@ -12,8 +12,10 @@ import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/com
 import { OptionSelectionService } from './providers/option-selection.service';
 @Component({
   selector: 'clr-option',
-  template: `<ng-content></ng-content>
-    <span *ngIf="selected" class="clr-sr-only"> {{ commonStrings.keys.comboboxSelected }} </span> `,
+  template: `
+    <ng-content></ng-content>
+    <span *ngIf="selected" class="clr-sr-only"> {{ commonStrings.keys.comboboxSelected }} </span>
+  `,
   providers: [UNIQUE_ID_PROVIDER],
   host: {
     '[class.clr-combobox-option]': 'true',

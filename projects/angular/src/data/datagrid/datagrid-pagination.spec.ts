@@ -390,14 +390,16 @@ export default function (): void {
 }
 
 @Component({
-  template: `<clr-dg-pagination
-    [(clrDgPage)]="current"
-    [clrDgPageSize]="size"
-    [clrDgTotalItems]="total"
-    [clrDgLastPage]="last"
-    [clrDgPageInputDisabled]="disableCurrentPageInput"
-  >
-  </clr-dg-pagination>`,
+  template: `
+    <clr-dg-pagination
+      [(clrDgPage)]="current"
+      [clrDgPageSize]="size"
+      [clrDgTotalItems]="total"
+      [clrDgLastPage]="last"
+      [clrDgPageInputDisabled]="disableCurrentPageInput"
+    >
+    </clr-dg-pagination>
+  `,
 })
 class FullTest {
   // this value needs to be initialized; otherwise, when you call a setter for size, the page number is set

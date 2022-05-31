@@ -53,22 +53,24 @@ class TemplateDrivenTest {
 }
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-toggle-container>
-      <label>Hello World</label>
-      <clr-toggle-wrapper>
-        <label>One</label>
-        <input clrToggle type="checkbox" formControlName="model" value="one" />
-      </clr-toggle-wrapper>
-      <clr-toggle-wrapper>
-        <label>Two</label>
-        <input clrToggle type="checkbox" formControlName="model" value="two" />
-      </clr-toggle-wrapper>
-      <clr-control-error>There was an error</clr-control-error>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-toggle-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-toggle-container>
+        <label>Hello World</label>
+        <clr-toggle-wrapper>
+          <label>One</label>
+          <input clrToggle type="checkbox" formControlName="model" value="one" />
+        </clr-toggle-wrapper>
+        <clr-toggle-wrapper>
+          <label>Two</label>
+          <input clrToggle type="checkbox" formControlName="model" value="two" />
+        </clr-toggle-wrapper>
+        <clr-control-error>There was an error</clr-control-error>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-toggle-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;

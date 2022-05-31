@@ -123,9 +123,11 @@ class TestCounter {
 }
 
 @Component({
-  template: ` <ng-container *ngIf="expandable">
-    <div *clrIfExpanded>Hello World</div>
-  </ng-container>`,
+  template: `
+    <ng-container *ngIf="expandable">
+      <div *clrIfExpanded>Hello World</div>
+    </ng-container>
+  `,
 })
 class NgIfTest {
   expandable = true;

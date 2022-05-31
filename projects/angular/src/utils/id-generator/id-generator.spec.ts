@@ -23,9 +23,11 @@ class IdTest {
 class IdTestingModule {}
 
 @Component({
-  template: ` <id-test></id-test>
+  template: `
     <id-test></id-test>
-    <id-test></id-test>`,
+    <id-test></id-test>
+    <id-test></id-test>
+  `,
 })
 class UniqueIdTest {}
 

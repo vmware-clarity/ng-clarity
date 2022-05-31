@@ -22,9 +22,11 @@ class StandaloneUseTest {}
 class TemplateDrivenTest {}
 
 @Component({
-  template: ` <div [formGroup]="example">
-    <select clrSelect name="model" class="test-class" formControlName="model"></select>
-  </div>`,
+  template: `
+    <div [formGroup]="example">
+      <select clrSelect name="model" class="test-class" formControlName="model"></select>
+    </div>
+  `,
 })
 class ReactiveTest {
   example = new FormGroup({

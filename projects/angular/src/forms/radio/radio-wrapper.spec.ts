@@ -24,20 +24,24 @@ class FullTest {
 }
 
 @Component({
-  template: ` <clr-radio-wrapper>
-    <input type="radio" clrRadio name="model" [(ngModel)]="model" />
-  </clr-radio-wrapper>`,
+  template: `
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="model" [(ngModel)]="model" />
+    </clr-radio-wrapper>
+  `,
 })
 class NoLabelTest {
   model = '';
 }
 
 @Component({
-  template: `<clr-radio-container>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio name="model" [(ngModel)]="model" />
-    </clr-radio-wrapper>
-  </clr-radio-container>`,
+  template: `
+    <clr-radio-container>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="model" [(ngModel)]="model" />
+      </clr-radio-wrapper>
+    </clr-radio-container>
+  `,
 })
 class ContainerTest {
   model = '';

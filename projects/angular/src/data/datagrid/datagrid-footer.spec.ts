@@ -117,13 +117,15 @@ export default function (): void {
 class SimpleTest {}
 
 @Component({
-  template: ` <clr-dg-footer>
-    <clr-dg-column-toggle>
-      <clr-dg-column-toggle-title>Custom Title</clr-dg-column-toggle-title>
-      <clr-dg-column-toggle-button type="ok">OK!!!</clr-dg-column-toggle-button>
-      <clr-dg-column-toggle-button type="selectAll">Select All!!!</clr-dg-column-toggle-button>
-    </clr-dg-column-toggle>
-    Hello world
-  </clr-dg-footer>`,
+  template: `
+    <clr-dg-footer>
+      <clr-dg-column-toggle>
+        <clr-dg-column-toggle-title>Custom Title</clr-dg-column-toggle-title>
+        <clr-dg-column-toggle-button type="ok">OK!!!</clr-dg-column-toggle-button>
+        <clr-dg-column-toggle-button type="selectAll">Select All!!!</clr-dg-column-toggle-button>
+      </clr-dg-column-toggle>
+      Hello world
+    </clr-dg-footer>
+  `,
 })
 class ColumnTogglerTest {}

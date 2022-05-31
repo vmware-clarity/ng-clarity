@@ -16,9 +16,11 @@ import { ResponsiveNavigationService } from './providers/responsive-navigation.s
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
 @Component({
-  template: ` <nav [clr-nav-level]="1">
-    <a href="javascript:void(0)">Level 1</a>
-  </nav>`,
+  template: `
+    <nav [clr-nav-level]="1">
+      <a href="javascript:void(0)">Level 1</a>
+    </nav>
+  `,
 })
 class TestComponent {}
 

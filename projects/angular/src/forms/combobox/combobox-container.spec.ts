@@ -44,15 +44,17 @@ class TemplateDrivenTest {
 }
 
 @Component({
-  template: ` <form [formGroup]="form">
-    <clr-combobox-container>
-      <label>Hello World</label>
-      <clr-combobox formControlName="model"></clr-combobox>
-      <clr-control-error>There was an error</clr-control-error>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-success>Valid</clr-control-success>
-    </clr-combobox-container>
-  </form>`,
+  template: `
+    <form [formGroup]="form">
+      <clr-combobox-container>
+        <label>Hello World</label>
+        <clr-combobox formControlName="model"></clr-combobox>
+        <clr-control-error>There was an error</clr-control-error>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-success>Valid</clr-control-success>
+      </clr-combobox-container>
+    </form>
+  `,
 })
 class ReactiveTest {
   disabled = false;
