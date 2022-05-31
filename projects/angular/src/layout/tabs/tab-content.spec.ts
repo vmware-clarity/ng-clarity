@@ -14,7 +14,7 @@ import { ClrTabContent } from './tab-content';
 
 @Component({
   selector: 'test-wrapper',
-  template: ` <ng-container #tabContentViewContainer></ng-container> `,
+  template: `<ng-container #tabContentViewContainer></ng-container>`,
 })
 class TestWrapper {
   @ViewChild('tabContentViewContainer', { read: ViewContainerRef, static: true })

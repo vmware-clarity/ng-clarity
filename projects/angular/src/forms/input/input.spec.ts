@@ -12,12 +12,12 @@ import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
 
 @Component({
-  template: ` <input type="text" clrInput /> `,
+  template: `<input type="text" clrInput />`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <input clrInput name="model" class="test-class" [(ngModel)]="model" /> `,
+  template: `<input clrInput name="model" class="test-class" [(ngModel)]="model" />`,
 })
 class TemplateDrivenTest {}
 

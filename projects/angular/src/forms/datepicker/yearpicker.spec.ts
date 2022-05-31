@@ -346,6 +346,6 @@ export default function () {
 }
 
 @Component({
-  template: ` <clr-yearpicker></clr-yearpicker> `,
+  template: `<clr-yearpicker></clr-yearpicker>`,
 })
 class TestComponent {}

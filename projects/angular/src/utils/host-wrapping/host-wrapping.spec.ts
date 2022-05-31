@@ -45,17 +45,17 @@ class WrappedDirective implements OnInit {
 class HostWrappingTestModule {}
 
 @Component({
-  template: ` <span wrappedDirective>World</span> `,
+  template: `<span wrappedDirective>World</span>`,
 })
 class WrappingTest {}
 
 @Component({
-  template: ` <wrapper-component><span wrappedDirective>World</span></wrapper-component> `,
+  template: `<wrapper-component><span wrappedDirective>World</span></wrapper-component>`,
 })
 class ExplicitTest {}
 
 @Component({
-  template: ` <span *ngIf="show" wrappedDirective>World</span> `,
+  template: `<span *ngIf="show" wrappedDirective>World</span>`,
 })
 class NgIfTest {
   show = true;

@@ -12,12 +12,12 @@ import { ClrRange } from './range';
 import { ClrRangeContainer } from './range-container';
 
 @Component({
-  template: ` <input type="text" clrRange /> `,
+  template: `<input type="text" clrRange />`,
 })
 class StandaloneUseTest {}
 
 @Component({
-  template: ` <input clrRange name="model" class="test-class" [(ngModel)]="model" /> `,
+  template: `<input clrRange name="model" class="test-class" [(ngModel)]="model" />`,
 })
 class TemplateDrivenTest {}
 

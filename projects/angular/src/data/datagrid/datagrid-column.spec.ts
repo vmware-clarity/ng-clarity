@@ -567,7 +567,7 @@ class StringFilterTest {
 }
 
 @Component({
-  template: ` <clr-dg-column [(clrFilterValue)]="filterValue" [clrDgField]="field"> Column Title </clr-dg-column> `,
+  template: `<clr-dg-column [(clrFilterValue)]="filterValue" [clrDgField]="field"> Column Title </clr-dg-column>`,
 })
 class PreFilterTest {
   field: string;
@@ -593,7 +593,7 @@ class UnregisterTest {
 }
 
 @Component({
-  template: ` <clr-dg-column [clrDgField]="field" [clrDgColType]="type"> Column Title </clr-dg-column> `,
+  template: `<clr-dg-column [clrDgField]="field" [clrDgColType]="type"> Column Title </clr-dg-column>`,
 })
 class ColTypeTest {
   field: string;
