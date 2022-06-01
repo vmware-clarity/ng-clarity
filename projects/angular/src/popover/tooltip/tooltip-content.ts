@@ -16,6 +16,9 @@ const POSITIONS: string[] = ['bottom-left', 'bottom-right', 'top-left', 'top-rig
 
 const SIZES: string[] = ['xs', 'sm', 'md', 'lg'];
 
+const defaultPosition = 'right';
+const defaultSize = 'sm';
+
 @Component({
   selector: 'clr-tooltip-content',
   template: `<ng-content></ng-content>`,
@@ -58,7 +61,7 @@ export class ClrTooltipContent extends AbstractPopover {
   }
   private _id: string;
 
-  private _position = 'right';
+  private _position = defaultPosition;
 
   get position() {
     return this._position;
@@ -67,7 +70,7 @@ export class ClrTooltipContent extends AbstractPopover {
   @Input('clrPosition')
   set position(value: string) {
     const oldPosition = this._position;
-    const newPosition = POSITIONS.includes(value) ? value : 'right';
+    const newPosition = POSITIONS.includes(value) ? value : defaultPosition;
 
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
@@ -105,7 +108,7 @@ export class ClrTooltipContent extends AbstractPopover {
     }
   }
 
-  private _size = 'sm';
+  private _size = defaultSize;
 
   get size() {
     return this._size;
@@ -114,7 +117,7 @@ export class ClrTooltipContent extends AbstractPopover {
   @Input('clrSize')
   set size(value: string) {
     const oldSize = this._size;
-    const newSize = SIZES.includes(value) ? value : 'sm';
+    const newSize = SIZES.includes(value) ? value : defaultSize;
 
     this._size = newSize;
     this.updateCssClass({ oldClass: `tooltip-${oldSize}`, newClass: `tooltip-${newSize}` });
