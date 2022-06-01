@@ -72,11 +72,7 @@ export class ClrTooltipContent extends AbstractPopover {
   set position(value: string) {
     // Ugh
     this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this.position);
-    if (POSITIONS.includes(value)) {
-      this._position = value;
-    } else {
-      this._position = 'right';
-    }
+    this._position = POSITIONS.includes(value) ? value : 'right';
     // Ugh
     this.renderer.addClass(this.el.nativeElement, 'tooltip-' + this.position);
 
@@ -123,11 +119,7 @@ export class ClrTooltipContent extends AbstractPopover {
   set size(value: string) {
     // Ugh
     this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this.size);
-    if (SIZES.includes(value)) {
-      this._size = value;
-    } else {
-      this._size = 'sm';
-    }
+    this._size = SIZES.includes(value) ? value : 'sm';
     // Ugh
     this.renderer.addClass(this.el.nativeElement, 'tooltip-' + this.size);
   }
