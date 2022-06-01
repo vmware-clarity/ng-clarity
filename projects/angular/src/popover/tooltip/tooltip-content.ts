@@ -41,10 +41,6 @@ export class ClrTooltipContent extends AbstractPopover {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
     }
 
-    // Defaults
-    this.position = 'right';
-    this.size = 'sm';
-
     // Set the default id in case consumer does not supply a custom id.
     this.id = uniqueId;
   }
@@ -62,7 +58,7 @@ export class ClrTooltipContent extends AbstractPopover {
   }
   private _id: string;
 
-  private _position: string;
+  private _position = 'right';
 
   get position() {
     return this._position;
@@ -109,7 +105,7 @@ export class ClrTooltipContent extends AbstractPopover {
     }
   }
 
-  private _size: string;
+  private _size = 'sm';
 
   get size() {
     return this._size;
