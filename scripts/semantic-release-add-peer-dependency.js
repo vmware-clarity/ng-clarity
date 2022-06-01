@@ -8,11 +8,11 @@ const fs = require('fs');
 
 // https://semantic-release.gitbook.io/semantic-release/developer-guide/plugin
 function prepare(_, context) {
-  const packagePath = './dist/clr-ui/package.json';
-  const package = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-  package.peerDependencies = package.peerDependencies || {};
-  package.peerDependencies['@clr/angular'] = context.nextRelease.version;
-  fs.writeFileSync(packagePath, JSON.stringify(package, null, 2) + '\n');
+  const packageManifestPath = './dist/clr-ui/package.json';
+  const packageManifest = JSON.parse(fs.readFileSync(packageManifestPath, 'utf8'));
+  packageManifest.peerDependencies = packageManifest.peerDependencies || {};
+  packageManifest.peerDependencies['@clr/angular'] = context.nextRelease.version;
+  fs.writeFileSync(packageManifestPath, JSON.stringify(packageManifest, null, 2) + '\n');
 }
 
 module.exports = {
