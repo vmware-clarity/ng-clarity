@@ -4413,10 +4413,10 @@ export class ClrTooltipContent extends AbstractPopover {
     set id(value: string);
     // (undocumented)
     get position(): string;
-    set position(position: string);
+    set position(value: string);
     // (undocumented)
     get size(): string;
-    set size(size: string);
+    set size(value: string);
     // (undocumented)
     uniqueId: string;
     // (undocumented)
