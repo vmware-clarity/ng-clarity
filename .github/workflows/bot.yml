@@ -27,7 +27,7 @@ jobs:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
           body: |
-            👋 @${{github.event.sender.login}},
+            👋 @${{github.event.pull_request.user.login}},
 
             * 🙏 The Clarity team thanks you for opening a pull request
             * ⏳ The build for this PR has started
@@ -44,7 +44,7 @@ jobs:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
           body: |
-            👋 @${{github.event.sender.login}},
+            👋 @${{github.event.pull_request.user.login}},
 
             * 🙏 The Clarity team thanks you for opening a pull request
             * 🎉 The build for this PR has succeeded
@@ -63,7 +63,7 @@ jobs:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get_pr_event.outputs.pullRequestNumber}}
           body: |
-            👋 @${{github.event.sender.login}},
+            👋 @${{github.event.pull_request.user.login}},
 
             * 😭 The build for this PR has failed
             * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
