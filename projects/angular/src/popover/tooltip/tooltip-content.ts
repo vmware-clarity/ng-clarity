@@ -46,7 +46,7 @@ export class ClrTooltipContent extends AbstractPopover {
     this.size = 'sm';
 
     // Set the default id in case consumer does not supply a custom id.
-    this.updateId(uniqueId);
+    this.id = uniqueId;
   }
 
   get id(): string {
@@ -55,14 +55,12 @@ export class ClrTooltipContent extends AbstractPopover {
 
   @Input()
   set id(value: string) {
-    this.updateId(value || '');
-  }
-  private _id: string;
+    const id = value || '';
 
-  private updateId(id: string) {
     this._id = id;
     this.tooltipIdService.updateId(id);
   }
+  private _id: string;
 
   private _position: string;
 
