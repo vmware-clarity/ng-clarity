@@ -12,9 +12,9 @@ import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
-const POSITIONS: string[] = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
+const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
 
-const SIZES: string[] = ['xs', 'sm', 'md', 'lg'];
+const SIZES = ['xs', 'sm', 'md', 'lg'];
 
 const defaultPosition = 'right';
 const defaultSize = 'sm';
