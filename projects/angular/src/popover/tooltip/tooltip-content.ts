@@ -70,11 +70,11 @@ export class ClrTooltipContent extends AbstractPopover {
 
   @Input('clrPosition')
   set position(value: string) {
-    // Ugh
-    this.renderer.removeClass(this.el.nativeElement, `tooltip-${this.position}`);
-    this._position = POSITIONS.includes(value) ? value : 'right';
-    // Ugh
-    this.renderer.addClass(this.el.nativeElement, `tooltip-${this.position}`);
+    const oldPosition = this._position;
+    const newPosition = POSITIONS.includes(value) ? value : 'right';
+
+    this._position = newPosition;
+    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
 
     // set the popover values based on direction
     switch (value) {
@@ -117,10 +117,15 @@ export class ClrTooltipContent extends AbstractPopover {
 
   @Input('clrSize')
   set size(value: string) {
-    // Ugh
-    this.renderer.removeClass(this.el.nativeElement, `tooltip-${this.size}`);
-    this._size = SIZES.includes(value) ? value : 'sm';
-    // Ugh
-    this.renderer.addClass(this.el.nativeElement, `tooltip-${this.size}`);
+    const oldSize = this._size;
+    const newSize = SIZES.includes(value) ? value : 'sm';
+
+    this._size = newSize;
+    this.updateCssClass({ oldClass: `tooltip-${oldSize}`, newClass: `tooltip-${newSize}` });
+  }
+
+  private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {
+    this.renderer.removeClass(this.el.nativeElement, oldClass);
+    this.renderer.addClass(this.el.nativeElement, newClass);
   }
 }
