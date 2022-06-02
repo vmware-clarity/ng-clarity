@@ -6,13 +6,15 @@
 
 import { Component, ElementRef, Inject, Injector, Input, Optional } from '@angular/core';
 
+import { assertNever } from '../../utils/assert/assert.helpers';
 import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { AbstractPopover } from '../common/abstract-popover';
 import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
-const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
+const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
+type Position = typeof POSITIONS[number];
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 
@@ -70,13 +72,13 @@ export class ClrTooltipContent extends AbstractPopover {
   @Input('clrPosition')
   set position(value: string) {
     const oldPosition = this._position;
-    const newPosition = POSITIONS.includes(value) ? value : defaultPosition;
+    const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
 
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
 
     // set the popover values based on direction
-    switch (value) {
+    switch (newPosition) {
       case 'top-right':
         this.anchorPoint = Point.TOP_CENTER;
         this.popoverPoint = Point.LEFT_BOTTOM;
@@ -102,9 +104,7 @@ export class ClrTooltipContent extends AbstractPopover {
         this.popoverPoint = Point.RIGHT_TOP;
         break;
       default:
-        this.anchorPoint = Point.RIGHT_CENTER;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
+        assertNever(newPosition);
     }
   }
 
