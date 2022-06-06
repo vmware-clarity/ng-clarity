@@ -55,7 +55,7 @@
     @include css-var(font-size, clr-combobox-font-size, $clr-combobox-font-size, $clr-use-custom-properties);
 
     &.multi {
-      min-width: $clr-ng-multiselect-min-width;
+      min-width: calc(min($clr-ng-multiselect-min-width, 100%));
       padding-bottom: $clr_baselineRem_0_125;
     }
 
