@@ -201,7 +201,13 @@ export class ComboboxFocusHandler<T> {
           firstActive = this.selectionService.selectionModel.model as T;
         }
         const activeProxy = this.optionData.find(option => option.value === firstActive);
-        this.pseudoFocus.select(activeProxy);
+        if (activeProxy) {
+          // active element is visible
+          this.pseudoFocus.select(activeProxy);
+        } else {
+          // we have active element, but it's filtered out
+          this.pseudoFocus.select(this.optionData[0]);
+        }
       }
     }
   }
