@@ -426,7 +426,7 @@ class TabsIntegrationTest {
       <clr-dg-row *ngFor="let item of items; trackBy: trackById" [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
       </clr-dg-row>
-      <clr-dg-detail *clrIfDetail> </clr-dg-detail>
+      <clr-dg-detail *clrIfDetail></clr-dg-detail>
     </clr-datagrid>
   `,
 })

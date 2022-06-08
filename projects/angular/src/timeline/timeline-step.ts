@@ -22,8 +22,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
         [attr.shape]="iconShape"
         [attr.aria-label]="iconAriaLabel"
         [attr.aria-current]="iconAriaCurrent"
-      >
-      </cds-icon>
+      ></cds-icon>
     </ng-container>
     <div class="clr-timeline-step-body">
       <ng-content select="clr-timeline-step-title"></ng-content>
