@@ -16,7 +16,12 @@ import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeViewModule } from './tree-view.module';
 
 @Component({
-  template: `<clr-tree [clrLazy]="lazy">Hello world <clr-tree-node *ngIf="hasChild">Child</clr-tree-node></clr-tree>`,
+  template: `
+    <clr-tree [clrLazy]="lazy">
+      Hello world
+      <clr-tree-node *ngIf="hasChild">Child</clr-tree-node>
+    </clr-tree>
+  `,
 })
 class TestComponent {
   @ViewChild(ClrTree) tree: ClrTree<void>;
