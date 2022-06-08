@@ -121,7 +121,7 @@
           (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
         >
           <clr-vertical-nav-group routerLinkActive="active" [clrVerticalNavGroupLabel]="'Toggle The Beatles nav group'">
-            <a hidden aria-hidden="true" [routerLink]="['./beatles']"> </a>
+            <a hidden aria-hidden="true" [routerLink]="['./beatles']"></a>
             <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
             The Beatles
             <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
@@ -136,7 +136,7 @@
           </clr-vertical-nav-group>
 
           <clr-vertical-nav-group routerLinkActive="active" [clrVerticalNavGroupLabel]="'Toggle The Killers nav group'">
-            <a hidden aria-hidden="true" [routerLink]="['./killers']"> </a>
+            <a hidden aria-hidden="true" [routerLink]="['./killers']"></a>
             <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
             The Killers
             <ng-template clrIfExpanded>

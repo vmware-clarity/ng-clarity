@@ -648,8 +648,7 @@ class ViewBasicsTestComponent {
       [clrVerticalNavCollapsible]="collapsible"
       [clrVerticalNavCollapsed]="collapsed"
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
-    >
-    </clr-vertical-nav>
+    ></clr-vertical-nav>
   `,
 })
 class APITestComponent {

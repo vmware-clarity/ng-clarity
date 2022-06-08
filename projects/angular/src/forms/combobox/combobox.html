@@ -29,8 +29,7 @@
             *ngIf="optionSelected"
             [ngTemplateOutlet]="optionSelected.template"
             [ngTemplateOutletContext]="{$implicit: optionSelectionService.selectionModel.model[i]}"
-          >
-          </ng-container>
+          ></ng-container>
         </span>
       </span>
       <span role="gridcell">
