@@ -85,8 +85,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
               <ng-container
                 *ngIf="link.tabsId === tabsId && link.inOverflow"
                 [ngTemplateOutlet]="link.templateRefContainer.template"
-              >
-              </ng-container>
+              ></ng-container>
             </ng-container>
           </clr-tab-overflow-content>
         </div>

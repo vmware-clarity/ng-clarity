@@ -397,8 +397,7 @@ export default function (): void {
       [clrDgTotalItems]="total"
       [clrDgLastPage]="last"
       [clrDgPageInputDisabled]="disableCurrentPageInput"
-    >
-    </clr-dg-pagination>
+    ></clr-dg-pagination>
   `,
 })
 class FullTest {
