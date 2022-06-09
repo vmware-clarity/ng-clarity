@@ -78,9 +78,6 @@ $styledInputs: 'input[type=text], input[type=password], input[type=number], inpu
     @include css-var(background-color, clr-stack-view-bg-color, $clr-stack-view-bg-color, $clr-use-custom-properties);
     word-wrap: break-word;
 
-    /* this fixes the overflow problem of children elements in a wrapper with a border-radius in Chrome */
-    -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-
     dd,
     dt {
       // One of the caveats of using definition lists here. Browsers automatically style them in unpredictable ways... :(
