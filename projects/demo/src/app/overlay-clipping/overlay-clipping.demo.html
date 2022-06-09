@@ -1,0 +1,197 @@
+<h3>Component overlays visual tests</h3>
+<p>(Signposts and tooltips should not get clipped by their containers)</p>
+
+<h5>Datagrid</h5>
+<clr-datagrid style="width: 300px">
+  <clr-dg-column>Name</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of [{name: 'Binky'}]">
+    <clr-dg-cell>
+      {{user.name}}
+      <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer></clr-dg-footer>
+</clr-datagrid>
+
+<h5>Modal</h5>
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'sm'">
+  <h3 class="modal-title">I have a nice title</h3>
+  <div class="modal-body">
+    <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>long content for scrolling</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="open = false">Ok</button>
+  </div>
+</clr-modal>
+<button type="button" class="btn btn-outline" (click)="open = true">Open modal</button>
+
+<h5>Stack view</h5>
+
+<clr-stack-view>
+  <clr-stack-block>
+    <clr-stack-label> Block 1 </clr-stack-label>
+    <clr-stack-content>Block content</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label> Block 1 </clr-stack-label>
+    <clr-stack-content>
+      Block content
+      <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+    </clr-stack-content>
+  </clr-stack-block>
+</clr-stack-view>
+
+<h5>Card</h5>
+
+<div class="card">
+  <div class="card-block">
+    <h3 class="card-title">Card 1</h3>
+    <p class="card-text">
+      <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat.
+    </p>
+  </div>
+  <div class="card-footer">
+    <a href="javascript://" class="btn btn-sm btn-link">Action 1</a>
+  </div>
+</div>
+
+<h5>Accordion</h5>
+
+<clr-accordion>
+  <clr-accordion-panel>
+    <clr-accordion-title>Step 1</clr-accordion-title>
+    <clr-accordion-content>
+      <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+      Content 1
+    </clr-accordion-content>
+  </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Step 2</clr-accordion-title>
+    <clr-accordion-content>
+      Content 2
+      <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>
+
+<h5>Wizard</h5>
+
+<button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
+
+<clr-wizard #wizard [(clrWizardOpen)]="wizOpen">
+  <clr-wizard-title>Wizard Title</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Title for page 1</ng-template>
+    <!-- mandatory -->
+    <ng-template clrPageNavTitle>Step 1</ng-template>
+    <!-- optional -->
+    <ng-content *ngTemplateOutlet="signpostDemo"></ng-content>
+    <p class="content-for-page-1">Content for step 1</p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
+      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
+      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
+      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
+      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
+      et orci hendrerit, consequat purus non, imperdiet ipsum.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
+      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
+      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
+      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
+      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
+      et orci hendrerit, consequat purus non, imperdiet ipsum.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
+      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
+      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
+      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
+      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
+      et orci hendrerit, consequat purus non, imperdiet ipsum.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
+      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
+      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
+      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
+      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
+      et orci hendrerit, consequat purus non, imperdiet ipsum.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu odio nisi. Vestibulum dignissim eget massa sit
+      amet feugiat. Quisque auctor mattis quam eu suscipit. Morbi ipsum risus, feugiat vitae sem at, tincidunt elementum
+      magna. Phasellus tristique posuere dui, ut tempus felis sagittis quis. Integer iaculis ultrices elit, sed
+      venenatis eros. Vivamus interdum semper velit eget gravida. Sed finibus eget lacus sed semper. Suspendisse
+      fringilla, tellus in molestie cursus, sapien purus volutpat lacus, eget venenatis erat est vitae libero. Aliquam
+      et orci hendrerit, consequat purus non, imperdiet ipsum.
+    </p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Title for page 2</ng-template>
+    <!-- mandatory -->
+    <ng-template clrPageNavTitle>Step 2</ng-template>
+    <!-- optional -->
+    <p class="content-for-page-2">Content for step 2</p>
+  </clr-wizard-page>
+</clr-wizard>
+
+<ng-template #signpostDemo>
+  <clr-signpost>
+    <clr-signpost-content *clrIfOpen>
+      <h3>Default Signpost</h3>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </clr-signpost-content>
+  </clr-signpost>
+  <clr-tooltip>
+    <cds-icon
+      status="info"
+      title="Tooltip icon"
+      clrTooltipTrigger
+      shape="info-standard"
+      size="18"
+      aria-label="blank id string"
+    ></cds-icon>
+    <clr-tooltip-content [id]="blankStringId" clrPosition="top-right" clrSize="md">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat.
+    </clr-tooltip-content>
+  </clr-tooltip>
+</ng-template>
