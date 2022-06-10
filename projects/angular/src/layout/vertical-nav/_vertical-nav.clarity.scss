@@ -293,6 +293,7 @@
 
       //Dims
       @include equilateral($clr-vertical-nav-icon-size);
+      @include min-equilateral($clr-vertical-nav-icon-size);
       margin-right: $clr-vertical-nav-icon-right-margin;
 
       //Others
