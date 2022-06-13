@@ -86,14 +86,16 @@
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
-        <button class="action-item">
-          <cds-icon shape="note"></cds-icon>
-          Edit
-        </button>
-        <button class="action-item">
-          <cds-icon shape="trash"></cds-icon>
-          Delete
-        </button>
+        <div role="menu" clrKeyNavigationList>
+          <button role="menuitem" class="action-item">
+            <cds-icon shape="note"></cds-icon>
+            Edit
+          </button>
+          <button role="menuitem" class="action-item">
+            <cds-icon shape="trash"></cds-icon>
+            Delete
+          </button>
+        </div>
       </clr-dg-action-overflow>
 
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
