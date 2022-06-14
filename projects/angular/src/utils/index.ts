@@ -15,4 +15,3 @@ export * from './focus/focus-on-view-init/index';
 export * from './focus-trap/index';
 export * from './destroy';
 export * from './for-type-ahead/index';
-export * from './list-key-navigation/index';
