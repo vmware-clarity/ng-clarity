@@ -1,12 +1,12 @@
-name: Demo
+name: PR Preview
 on:
   workflow_run:
-    workflows: [Build]
+    workflows: [PR Build]
     types:
       - completed
 jobs:
-  demo:
-    name: Demo
+  pr-preview:
+    name: PR Preview
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     timeout-minutes: 10
     runs-on: ubuntu-latest
