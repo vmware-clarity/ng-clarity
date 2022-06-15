@@ -43,7 +43,7 @@ export class CdsThemeSelectComponent implements OnInit, OnDestroy {
   }
 
   private setThemeInQueryString(theme: string) {
-    this.router.navigate([], {
+    this.router.navigate([window.location.pathname], {
       queryParams: { ...getQueryParams(), [cdsThemeAttribute]: theme || null },
       replaceUrl: true,
     });
