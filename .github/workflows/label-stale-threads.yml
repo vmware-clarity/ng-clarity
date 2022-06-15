@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: '0 0 * * *'
 jobs:
-  label:
+  label-stale-threads:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:

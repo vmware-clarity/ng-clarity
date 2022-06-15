@@ -2,7 +2,7 @@ name: Preview
 on:
   workflow_dispatch:
 jobs:
-  release:
+  preview:
     name: Preview
     timeout-minutes: 30
     runs-on: ubuntu-latest
