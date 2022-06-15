@@ -1,9 +1,9 @@
-name: Preview
+name: PR Build
 on:
-  workflow_dispatch:
+  pull_request:
 jobs:
-  preview:
-    name: Preview
+  pr-build:
+    name: PR Build
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -23,12 +23,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
-      - name: Preview Release
-        run: npm run preview
-      - name: Deploy Demo Preview
-        continue-on-error: true
-        timeout-minutes: 5
-        env:
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy
+      - name: Upload Demo Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: demo
+          path: dist/clr-demo/

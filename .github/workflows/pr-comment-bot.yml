@@ -1,10 +1,10 @@
-name: Bot
+name: PR Comment Bot
 on:
   workflow_run:
-    workflows: [Build]
+    workflows: [PR Build]
 jobs:
-  bot:
-    name: Bot
+  pr-comment-bot:
+    name: PR Comment Bot
     runs-on: ubuntu-latest
     steps:
       - name: Get PR Event
