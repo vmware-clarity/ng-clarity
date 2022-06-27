@@ -14,7 +14,7 @@ import styles from '../dist/clr-ui/clr-ui.css';
 
 const privateModifier = 121;
 
-addStyles(styles);
+addStyles();
 loadIcons();
 addDocs(docs);
 
@@ -29,7 +29,7 @@ export const parameters = {
   },
 };
 
-function addStyles(styles) {
+function addStyles() {
   const styleElement = document.createElement('style');
   styleElement.textContent = `${styles}`;
   window.document.head.append(styleElement);
