@@ -61,8 +61,6 @@ const defaultParameters: Parameters = {
   title: 'Header/Header',
   component: ClrHeader,
   argTypes: {
-    // inputs
-    // outputs
     // methods
     closeOpenNav: { control: { disable: true }, table: { disable: true } },
     initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
@@ -71,12 +69,7 @@ const defaultParameters: Parameters = {
     toggleNav: { control: { disable: true }, table: { disable: true } },
     // story helpers
   },
-  args: {
-    // inputs
-    // outputs
-    // methods
-    // story helpers
-  },
+  args: {},
 };
 
 const variants: Parameters[] = [];
