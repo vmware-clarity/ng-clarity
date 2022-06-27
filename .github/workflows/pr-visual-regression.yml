@@ -6,7 +6,6 @@ on:
       - completed
 jobs:
   pr-visual-regression:
-    name: PR Visual Regression
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     timeout-minutes: 10
     runs-on: ubuntu-latest
