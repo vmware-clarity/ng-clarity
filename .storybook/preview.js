@@ -13,6 +13,7 @@ import docs from '../documentation.json';
 import styles from './public/preview.css';
 
 const privateModifier = 121;
+const cdsThemeAttribute = 'cds-theme';
 
 addStyles();
 loadIcons();
@@ -28,6 +29,37 @@ export const parameters = {
     },
   },
 };
+
+export const globalTypes = {
+  theme: {
+    name: 'Themes',
+    description: 'Available Clarity themes',
+    defaultValue: '',
+    toolbar: {
+      icon: 'paintbrush',
+      showName: true,
+      items: [
+        { value: '', title: 'None' },
+        { value: 'light', title: 'Core Light Theme' },
+        { value: 'dark', title: 'Core Dark Theme' },
+      ],
+    },
+  },
+};
+
+const themeDecorator = (story, { globals }) => {
+  const { theme } = globals;
+
+  if (theme) {
+    document.body.setAttribute(cdsThemeAttribute, theme);
+  } else {
+    document.body.removeAttribute(cdsThemeAttribute);
+  }
+
+  return story();
+};
+
+export const decorators = [themeDecorator];
 
 function addStyles() {
   const styleElement = document.createElement('style');
