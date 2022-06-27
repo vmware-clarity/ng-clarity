@@ -30,9 +30,9 @@ export const parameters = {
 };
 
 function addStyles(styles) {
-  const style = document.createElement('style');
-  style.textContent = `${styles}`;
-  window.document.head.append(style);
+  const styleElement = document.createElement('style');
+  styleElement.textContent = `${styles}`;
+  window.document.head.append(styleElement);
 }
 
 function loadIcons() {
