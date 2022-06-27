@@ -7,6 +7,10 @@
 import { addons } from '@storybook/addons';
 import { create } from '@storybook/theming';
 
+import styles from './public/manager.css';
+
+addStyles();
+
 addons.setConfig({
   theme: create({
     base: 'light',
@@ -14,3 +18,9 @@ addons.setConfig({
     brandImage: 'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png',
   }),
 });
+
+function addStyles() {
+  const styleElement = document.createElement('style');
+  styleElement.textContent = styles;
+  window.document.head.append(styleElement);
+}
