@@ -10,7 +10,7 @@ import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
-import styles from '../dist/clr-ui/clr-ui.css';
+import styles from './public/preview.css';
 
 const privateModifier = 121;
 
@@ -31,7 +31,7 @@ export const parameters = {
 
 function addStyles() {
   const styleElement = document.createElement('style');
-  styleElement.textContent = `${styles}`;
+  styleElement.textContent = styles;
   window.document.head.append(styleElement);
 }
 
