@@ -23,7 +23,7 @@ jobs:
           name: docs
           path: dist/docs
           workflow: ${{github.event.workflow_run.workflow_id}}
-          workflow_conclusion: success
+          run_id: ${{github.event.workflow_run.id}}
       - name: Get PR Event
         id: get_pr_event
         uses: potiuk/get-workflow-origin@v1_1
