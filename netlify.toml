@@ -1,5 +1,5 @@
 [build]
-  publish = "./dist/storybook"
+  publish = "./dist/docs"
 
 [[redirects]]
   from = "/demo/*"

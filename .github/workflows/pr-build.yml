@@ -23,8 +23,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
-      - name: Upload Storybook Artifact
+      - name: Upload Docs Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: storybook
-          path: dist/storybook/
+          name: docs
+          path: dist/docs/

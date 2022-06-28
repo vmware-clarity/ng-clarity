@@ -28,7 +28,7 @@
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:angular:watch": "npm run --silent _build:angular -- --watch",
     "_build:demo": "ng build clr-demo --configuration production",
-    "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/storybook",
+    "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/docs",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "_build:ui:css:watch": "npm run --silent _build:ui:css -- --watch",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer --dir ./dist/clr-ui",
