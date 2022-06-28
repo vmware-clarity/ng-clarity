@@ -19,15 +19,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: '.nvmrc'
-      - name: Download Storybook Artifact
+      - name: Download Docs Artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: storybook
-          path: dist/storybook
+          name: docs
+          path: dist/docs
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
       - name: Deploy Chromatic
         timeout-minutes: 5
         env:
           CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
-        run: npx chromatic --storybook-build-dir ./dist/storybook
+        run: npx chromatic --storybook-build-dir ./dist/docs

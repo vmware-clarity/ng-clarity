@@ -17,11 +17,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: '.nvmrc'
-      - name: Download Storybook Artifact
+      - name: Download Docs Artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: storybook
-          path: dist/storybook
+          name: docs
+          path: dist/docs
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
       - name: Get PR Event
@@ -30,7 +30,7 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
-      - name: Deploy Storybook Preview
+      - name: Deploy Docs Preview
         timeout-minutes: 5
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}

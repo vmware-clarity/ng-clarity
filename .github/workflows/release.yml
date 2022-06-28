@@ -29,7 +29,7 @@ jobs:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
         run: npx semantic-release
-      - name: Deploy Storybook
+      - name: Deploy Docs
         continue-on-error: true
         timeout-minutes: 5
         env:
@@ -41,4 +41,4 @@ jobs:
         timeout-minutes: 5
         env:
           CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
-        run: npx chromatic --storybook-build-dir ./dist/storybook --exit-zero-on-changes
+        run: npx chromatic --storybook-build-dir ./dist/docs --exit-zero-on-changes
