@@ -25,7 +25,7 @@ jobs:
         run: npm run public-api:check
       - name: Preview Release
         run: npm run preview
-      - name: Deploy Demo Preview
+      - name: Deploy Storybook Preview
         continue-on-error: true
         timeout-minutes: 5
         env:
