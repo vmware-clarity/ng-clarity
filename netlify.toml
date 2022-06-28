@@ -1,6 +1,6 @@
 [build]
   command = "npm run _build:demo"
-  publish = "./dist/clr-demo"
+  publish = "./dist/docs"
 
 [[redirects]]
   from = "/*"

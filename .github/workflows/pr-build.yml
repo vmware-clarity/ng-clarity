@@ -25,8 +25,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
-      - name: Upload Demo Artifact
+      - name: Upload Docs Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: demo
-          path: dist/clr-demo/
+          name: docs
+          path: dist/docs/
