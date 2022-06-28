@@ -24,7 +24,7 @@ jobs:
         with:
           name: docs
           path: dist/docs
-          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow: ${{github.event.workflow_run.workflow_id}}
           workflow_conclusion: success
       - name: Deploy Chromatic
         timeout-minutes: 5
