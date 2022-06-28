@@ -5,9 +5,20 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, NgZone, OnDestroy, Output, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  NgZone,
+  OnDestroy,
+  Output,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
@@ -45,6 +56,7 @@ let clrDgActionId = 0;
       [id]="popoverId"
       [attr.aria-hidden]="!open"
       [attr.id]="popoverId"
+      clrKeyFocus
       clrFocusTrap
       (click)="closeOverflowContent($event)"
       *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
@@ -62,6 +74,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     content: ClrAlignment.CENTER,
   };
 
+  @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
+
   constructor(
     private rowActionService: RowActionService,
     public commonStrings: ClrCommonStringsService,
@@ -75,7 +89,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
       this.smartToggleService.openChange.subscribe(openState => {
         this.open = openState;
         if (openState) {
-          this.focusFirstButton();
+          this.initializeFocus();
         }
       })
     );
@@ -91,13 +105,17 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     this.smartToggleService.toggleWithEvent(event);
   }
 
-  private focusFirstButton(): void {
+  private initializeFocus(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
-          const firstButton: HTMLButtonElement | null = document.querySelector('button.action-item');
-          if (firstButton) {
-            firstButton.focus();
+          const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
+
+          if (buttons.length) {
+            this.keyFocus.current = 0;
+            this.keyFocus.focusableItems = buttons;
+
+            this.keyFocus.focusCurrent();
           }
         });
       });
