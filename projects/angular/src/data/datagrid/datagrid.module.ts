@@ -28,6 +28,7 @@ import { ClrConditionalModule } from '../../utils/conditional/conditional.module
 import { ClrDragAndDropModule } from '../../utils/drag-and-drop/drag-and-drop.module';
 import { ClrFocusTrapModule } from '../../utils/focus-trap/focus-trap.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
+import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
 import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
@@ -127,6 +128,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
     ClrDragAndDropModule,
     ClrSpinnerModule,
     ClrPopoverModuleNext,
+    ClrKeyFocusModule,
     ClrFocusTrapModule,
     ClrFocusOnViewInitModule,
   ],
