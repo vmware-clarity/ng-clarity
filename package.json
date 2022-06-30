@@ -21,12 +21,11 @@
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
     "public-api:update": "api-extractor run --local",
-    "start": "npm run clean && npm-run-all --parallel docs:json:watch _build:angular:watch _build:ui:css:watch _start:storybook",
-    "start:demo": "npm run clean && npm-run-all --parallel _build:angular:watch _start:demo",
+    "start": "npm run clean && npm-run-all --parallel docs:json:watch _build:ui:css:watch _start:storybook",
+    "start:demo": "npm run clean && ng serve clr-demo",
     "test": "ng test clr-angular --source-map=false --watch=false",
     "test:watch": "npm run --silent test -- --watch",
     "_build:angular": "ng build clr-angular --configuration production",
-    "_build:angular:watch": "npm run --silent _build:angular -- --watch",
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/docs",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
@@ -48,8 +47,7 @@
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
     "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start:demo": "wait-on ./dist/clr-angular/index.d.ts && ng serve clr-demo",
-    "_start:storybook": "wait-on ./documentation.json ./dist/clr-angular/index.d.ts ./dist/clr-ui/clr-ui.css && start-storybook -p 6006"
+    "_start:storybook": "wait-on ./documentation.json ./dist/clr-ui/clr-ui.css && start-storybook -p 6006"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "2.17.0",

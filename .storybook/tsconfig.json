@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["./../dist/clr-angular"]
+      "@clr/angular": ["./../projects/angular/src/public-api.ts"]
     },
     "types": ["node"],
     "allowSyntheticDefaultImports": true
