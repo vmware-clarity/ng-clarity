@@ -4,8 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+const isWatch = process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.endsWith('"--watch"');
 const cpusAvailable = require('os').cpus().length;
-const cpus = Math.min(cpusAvailable - 1, 8);
+const executors = isWatch ? 1 : Math.min(cpusAvailable - 1, 8);
+const browser = isWatch ? 'Chrome' : 'ChromeHeadless';
 
 module.exports = function (config) {
   config.set({
@@ -21,7 +23,7 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
     parallelOptions: {
-      executors: process.env.npm_lifecycle_event && process.env.npm_lifecycle_event.endsWith(':watch') ? 1 : cpus,
+      executors,
       shardStrategy: 'round-robin',
     },
     client: {
@@ -43,7 +45,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
+    browsers: [browser],
     singleRun: false,
     restartOnFileChange: true,
   });
