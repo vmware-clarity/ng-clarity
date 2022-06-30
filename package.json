@@ -7,7 +7,7 @@
     "npm": "^7.8.0"
   },
   "scripts": {
-    "build": "npm-run-all _build:angular _build:ui _build:demo _build:angular",
+    "build": "npm-run-all _build:angular _build:ui _build:demo",
     "build:ci": "npm-run-all clean lint build test public-api:check",
     "clean": "rimraf dist",
     "commit": "cz --signoff",
