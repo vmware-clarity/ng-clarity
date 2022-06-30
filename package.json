@@ -19,7 +19,7 @@
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
     "public-api:update": "api-extractor run --local",
-    "start": "npm run clean && npm-run-all --parallel _build:angular:watch _start",
+    "start": "npm run clean && ng serve clr-demo",
     "test": "ng test clr-angular --source-map=false --watch=false",
     "test:watch": "npm run --silent test -- --watch",
     "_build:angular": "ng build clr-angular --configuration production",
@@ -42,8 +42,7 @@
     "_lint:styles": "stylelint \"**/*.{css,scss,sass}\" \"**/.*/**/*.{css,scss,sass}\"",
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
-    "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start": "wait-on ./dist/clr-angular/index.d.ts && ng serve clr-demo"
+    "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\""
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "2.17.0",
@@ -103,7 +102,6 @@
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "tslib": "^2.3.0",
     "typescript": "~4.2.4",
-    "wait-on": "6.0.1",
     "zone.js": "~0.11.4"
   }
 }
