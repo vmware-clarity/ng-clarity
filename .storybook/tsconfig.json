@@ -1,6 +1,10 @@
 {
   "extends": "../projects/angular/tsconfig.lib.json",
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@clr/angular": ["./../dist/clr-angular"]
+    },
     "types": ["node"],
     "allowSyntheticDefaultImports": true
   },
