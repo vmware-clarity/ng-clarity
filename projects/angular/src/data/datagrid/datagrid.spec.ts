@@ -133,6 +133,24 @@ class MultiSelectionTest {
 
 @Component({
   template: `
+    <clr-datagrid [(clrDgSelected)]="selected">
+      <clr-dg-column>First</clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+})
+class MultiSelectionSimpleTest {
+  items: any[] = [1, 2, 3, 4, 5, 6, 7];
+  selected: any[] = [];
+}
+
+@Component({
+  template: `
     <clr-datagrid [(clrDgSingleSelected)]="selected" clrDgSingleSelectionAriaLabel="Select row from Datagrid">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
@@ -988,7 +1006,7 @@ export default function (): void {
       });
     });
 
-    describe('Multi selection', function () {
+    describe('Multi selection (OnPush)', function () {
       let context: TestContext<ClrDatagrid<number>, OnPushTest>;
       let selection: Selection<number>;
 
@@ -1008,6 +1026,103 @@ export default function (): void {
           context.detectChanges();
           expect(selection.current).toEqual(context.testComponent.selected);
         });
+      });
+    });
+
+    describe('Multi selection', function () {
+      let context: TestContext<ClrDatagrid<number>, MultiSelectionSimpleTest>;
+      let selection: Selection<number>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, MultiSelectionSimpleTest, [Selection]);
+        selection = context.getClarityProvider(Selection) as Selection<number>;
+      });
+
+      describe('Range selection', function () {
+        let checkboxes: HTMLElement[];
+
+        beforeEach(function () {
+          checkboxes = Array.from(context.clarityElement.querySelectorAll('input[type=checkbox]')) as HTMLElement[];
+        });
+
+        it('updates selection independently without Shift key', function () {
+          // We use .clr-control-label because the datagrid implementation hides the
+          // real checkbox and only leaves visible the label area.
+          expect(checkboxes.length).toEqual(8); // "select all" option in header included
+          checkboxes[1].click();
+          expect(selection.current).toEqual([1]);
+          checkboxes[3].click();
+          expect(selection.current).toEqual([1, 3]);
+        });
+
+        it('updates selection range when Shift key pressed', function () {
+          checkboxes[1].click();
+          expect(selection.current).toEqual([1]);
+          expect(selection.shiftPressed).toBeFalse();
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+          expect(selection.shiftPressed).toBeTrue();
+          checkboxes[3].click();
+          document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          expect(selection.shiftPressed).toBeFalse();
+          expect(selection.current).toEqual([1, 2, 3]);
+        });
+
+        it('updates selection range in reverse order', function () {
+          checkboxes[3].click();
+          expect(selection.current).toEqual([3]);
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+          checkboxes[1].click();
+          document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          // We don't really care about the order, do we?
+          expect(selection.current.every(x => [1, 2, 3].includes(x))).toBeTrue();
+        });
+
+        it('can update ranges in a sequence, without releasing Shift', function () {
+          // first range
+          checkboxes[1].click();
+          expect(selection.current).toEqual([1]);
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+          checkboxes[3].click();
+          expect(selection.current).toEqual([1, 2, 3]);
+          // second range
+          checkboxes[5].click();
+          expect(selection.current).toEqual([1, 2, 3, 4, 5]);
+          checkboxes[7].click();
+          document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          // final state
+          expect(selection.current.every(x => [1, 2, 3, 4, 5, 6, 7].includes(x))).toBeTrue();
+        });
+        it('can update ranges in a sequence, releasing Shift', function () {
+          // first range
+          checkboxes[1].click();
+          expect(selection.current).toEqual([1]);
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+          checkboxes[3].click();
+          document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          expect(selection.current).toEqual([1, 2, 3]);
+          // second range
+          checkboxes[5].click();
+          expect(selection.current).toEqual([1, 2, 3, 5]);
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+          checkboxes[7].click();
+          document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+          expect(selection.current.includes(4)).toBeFalse();
+          // final state
+          expect(selection.current.every(x => [1, 2, 3, 5, 6, 7].includes(x))).toBeTrue();
+        });
+        it('can deselect items inside a range', fakeAsync(function () {
+          // define range
+          selection.current.push(1, 2, 3, 4, 5, 6, 7);
+          context.detectChanges();
+          tick();
+          // // deselect inside range
+          checkboxes[2].click();
+          checkboxes[4].click();
+          checkboxes[6].click();
+          context.detectChanges();
+          tick();
+          expect(selection.current).toEqual([1, 3, 5, 7]);
+        }));
       });
     });
 

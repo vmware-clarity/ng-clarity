@@ -1124,7 +1124,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, datagridId: string, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, datagridId: string, document: any, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1704,11 +1704,12 @@ export class ClrDatagridPlaceholder<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStringsService);
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStringsService, items: Items, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
     checkboxId: string;
+    clearRanges(event: MouseEvent): void;
     set clrDgDetailCloseLabel(label: string);
     // (undocumented)
     get clrDgDetailCloseLabel(): string;
