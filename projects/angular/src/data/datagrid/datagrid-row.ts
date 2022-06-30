@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -11,6 +12,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Inject,
   Injector,
   Input,
   Output,
@@ -33,6 +35,7 @@ import { SelectionType } from './enums/selection-type';
 import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
+import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { WrappedRow } from './wrapped-row';
@@ -74,6 +77,25 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   public expandAnimationTrigger = false;
 
+  /**
+   * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
+   * This prevents our intended range-selection, because this text-selection overrides our shift-click event.
+   * We need to clear the stored selection range when shift-clicking. This will override the mostly unused shift-click
+   * selection browser functionality, which is inconsistently implemented in browsers anyway.
+   */
+  clearRanges(event: MouseEvent) {
+    if (event.shiftKey) {
+      this.document.getSelection().removeAllRanges();
+      // Firefox is too persistent about its text-selection behaviour. So we need to add a preventDefault();
+      // We should not try to enforce this on the other browsers, though, because their toggle cycle does not get canceled by
+      // the preventDefault() and they toggle the checkbox second time, effectively retrurning it to not-selected.
+      if (window.navigator.userAgent.indexOf('Firefox') !== -1) {
+        event.preventDefault();
+        this.toggle(true);
+      }
+    }
+  }
+
   constructor(
     public selection: Selection<T>,
     public rowActionService: RowActionService,
@@ -84,7 +106,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private vcr: ViewContainerRef,
     private renderer: Renderer2,
     private el: ElementRef,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    private items: Items,
+    @Inject(DOCUMENT) private document: any
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
@@ -127,6 +151,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
     } else {
+      if (value && this.selection.selectionType === SelectionType.Multi) {
+        this.rangeSelect();
+      } else {
+        this.selection.rangeStart = null;
+      }
       this.selection.setSelected(this.item, value as boolean);
     }
   }
@@ -248,6 +277,33 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         this.expandAnimationTrigger = !this.expandAnimationTrigger;
       })
     );
+  }
+
+  private rangeSelect() {
+    const items = this.items.displayed;
+    if (!items) {
+      return;
+    }
+    const startIx = items.indexOf(this.selection.rangeStart);
+    if (
+      this.selection.rangeStart &&
+      this.selection.current.includes(this.selection.rangeStart) &&
+      this.selection.shiftPressed &&
+      startIx !== -1
+    ) {
+      const endIx = items.indexOf(this.item);
+      // Using Set to remove duplicates
+      const newSelection = new Set(
+        this.selection.current.concat(items.slice(Math.min(startIx, endIx), Math.max(startIx, endIx) + 1))
+      );
+      this.selection.clearSelection();
+      this.selection.current.push(...newSelection);
+    } else {
+      // page number has changed or
+      // no Shift was pressed or
+      // rangeStart not yet set
+      this.selection.rangeStart = this.item;
+    }
   }
 
   private subscriptions: Subscription[] = [];
