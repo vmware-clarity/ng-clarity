@@ -33,13 +33,13 @@ const defaultStory: Story = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgRefresh)="clrDgRefresh($event)"
     >
-      <clr-dg-column>
+      <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
-      <clr-dg-column>
+      <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
       </clr-dg-column>
-      <clr-dg-column>
+      <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
       <clr-dg-column>
