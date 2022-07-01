@@ -31,6 +31,7 @@ const defaultStory: Story = args => ({
       [ngClass]="{ 'datagrid-compact': compact }"
     >
       <clr-dg-column
+        [style.width.px]="250"
         [ngClass]="{ highlight }"
         [clrDgColType]="clrDgColType"
         clrDgField="name"
@@ -47,10 +48,10 @@ const defaultStory: Story = args => ({
       >
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
-      <clr-dg-column>
+      <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
       </clr-dg-column>
-      <clr-dg-column>
+      <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
       <clr-dg-column>
