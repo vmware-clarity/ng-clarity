@@ -38,4 +38,5 @@ jobs:
           CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
           CHROMATIC_SHA: ${{steps.get_pr_event.outputs.sourceHeadSha}}
           CHROMATIC_BRANCH: ${{steps.get_pr_event.outputs.sourceHeadBranch}}
+          CHROMATIC_SLUG: ${{steps.get_pr_event.outputs.sourceHeadRepo}}
         run: npx chromatic --storybook-build-dir ./dist/docs
