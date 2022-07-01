@@ -20,7 +20,10 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
-    <style>.highlight { border: 1px solid red !important; } .electronegativity-container { border-bottom: 4px solid #119cd4; }</style>
+    <style>
+      .highlight { border: 1px solid red !important; }
+      .electronegativity-container { border-bottom: 4px solid #119cd4; }
+    </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
