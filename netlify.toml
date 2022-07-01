@@ -2,6 +2,12 @@
   publish = "./dist/docs"
 
 [[redirects]]
+  from = "https://storybook.angular.clarity.design/*"
+  to = "https://storybook.clarity.design/:splat"
+  status = 302
+  force = true
+
+[[redirects]]
   from = "/demo/*"
   to = "/demo/index.html"
   status = 200
