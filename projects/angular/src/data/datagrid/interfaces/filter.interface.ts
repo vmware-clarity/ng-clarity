@@ -11,6 +11,8 @@ export interface ClrDatagridFilterInterface<T, S = any> {
 
   accepts(item: T): boolean;
 
+  clear?(): void;
+
   changes: Observable<any>;
 
   readonly state?: S;

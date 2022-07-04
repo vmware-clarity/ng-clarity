@@ -118,6 +118,19 @@ export default function (): void {
       it('registers itself as a CustomFilter provider', function () {
         expect(context.testComponent.customFilter).toBe(context.clarityDirective);
       });
+
+      it('should call clear when clear button is clicked', function () {
+        context.testComponent.filter = filter;
+        spyOn(filter, 'clear');
+        context.testComponent.open = true;
+        context.detectChanges();
+
+        const clearButton = document.querySelector('.datagrid-filter-close-wrapper button.clear') as HTMLButtonElement;
+        clearButton.click();
+        context.detectChanges();
+
+        expect(filter.clear).toHaveBeenCalled();
+      });
     });
 
     describe('View', function () {
@@ -222,6 +235,10 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
   // eslint-disable-next-line
   accepts(_n: number): boolean {
     return true;
+  }
+
+  clear(): void {
+    this.active = false;
   }
 
   changes = new Subject<boolean>();

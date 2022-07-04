@@ -892,6 +892,7 @@ export class ClrCommonFormsModule {
 export interface ClrCommonStrings {
     alertCloseButtonAriaLabel: string;
     allColumnsSelected: string;
+    clear?: string;
     close: string;
     collapse: string;
     columnSeparatorAriaLabel?: string;
@@ -1474,6 +1475,10 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     ariaExpanded: boolean;
     // (undocumented)
+    clearAvailable(): boolean;
+    // (undocumented)
+    clearFilter(event: MouseEvent): void;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // Warning: (ae-forgotten-export) The symbol "RegisteredFilter" needs to be exported by the entry point index.d.ts
     //
@@ -1502,6 +1507,8 @@ export interface ClrDatagridFilterInterface<T, S = any> {
     accepts(item: T): boolean;
     // (undocumented)
     changes: Observable<any>;
+    // (undocumented)
+    clear?(): void;
     // (undocumented)
     equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
     // (undocumented)

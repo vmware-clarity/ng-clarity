@@ -84,6 +84,10 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     return this.filterFn.accepts(item, this._low, this._high);
   }
 
+  public clear(): void {
+    this.value = [null, null];
+  }
+
   public get state() {
     if (this.filterFn instanceof DatagridPropertyNumericFilter) {
       return {

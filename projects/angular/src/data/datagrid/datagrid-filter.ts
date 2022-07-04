@@ -71,6 +71,9 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
         <button type="button" class="close" clrPopoverCloseButton>
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
+        <button type="button" class="close clear" *ngIf="clearAvailable()" (click)="clearFilter($event)">
+          <cds-icon shape="trash" [attr.title]="commonStrings.keys.clear"></cds-icon>
+        </button>
       </div>
 
       <ng-content></ng-content>
@@ -142,6 +145,17 @@ export class ClrDatagridFilter<T = any>
    */
   public get active() {
     return !!this.filter && this.filter.isActive();
+  }
+
+  public clearAvailable() {
+    return this.active && typeof this.filter.clear === 'function';
+  }
+
+  public clearFilter(event: MouseEvent) {
+    if (this.clearAvailable()) {
+      this.filter.clear();
+      this.smartToggleService.toggleWithEvent(event);
+    }
   }
 
   override ngOnDestroy(): void {

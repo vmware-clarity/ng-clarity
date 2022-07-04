@@ -26,6 +26,10 @@ export interface ClrCommonStrings {
    */
   delete?: string;
   /**
+   * Clear button
+   */
+  clear?: string;
+  /**
    * Expandable components: expand caret
    */
   expand: string;
