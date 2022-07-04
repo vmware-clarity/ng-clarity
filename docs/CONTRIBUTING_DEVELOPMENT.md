@@ -126,7 +126,7 @@ steps.
 
 1.  Have [NodeJS](https://nodejs.org) installed
 2.  In the root project directory run, `npm install`
-3.  Run `npm build` to build entire project (this may take several minutes)
+3.  Run `npm run build` to build entire project (this may take several minutes)
 4.  Startup the demo project: `npm start`
 5.  To run tests and other project-specific commands see our project [Build Guide](/docs/BUILD.md)
 
@@ -134,7 +134,7 @@ steps.
 
 1.  Have [NodeJS](https://nodejs.org) installed
 2.  In the root project directory run, `npm install`
-3.  Run `npm build` to build entire project (this may take several minutes)
+3.  Run `npm run build` to build entire project (this may take several minutes)
 4.  Run `npm run build:angular:watch` to run the Angular library build in watch mode so you see the changes in real time (keep that one running in isolated terminal instance)
 5.  Startup the development environment project: `npm start` will start an Angular application that consumes the Clarity Angular Library (keep that one running in isolated terminal instance)
 
@@ -149,7 +149,7 @@ files which track our public API surface.
 To update the Golden files follow these steps:
 
 1.  Make public API change
-2.  Run `npm build`
+2.  Run `npm run build`
 3.  Run `npm run public-api:update` this should fail
 
 ### Commits
