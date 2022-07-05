@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Get PR Event
         id: get_pr_event
-        uses: potiuk/get-workflow-origin@v1_1
+        uses: potiuk/get-workflow-origin@v1_3
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
