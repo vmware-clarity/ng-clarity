@@ -144,6 +144,13 @@ describe('ClrStepper', () => {
       expect(stepperService.resetPanels).toHaveBeenCalled();
     });
 
+    it('should not reset panels when form is patched', () => {
+      spyOn(stepperService, 'resetPanels');
+      testComponent.form.patchValue({});
+      fixture.detectChanges();
+      expect(stepperService.resetPanels).not.toHaveBeenCalled();
+    });
+
     it('should trigger ngSubmit event when all panels have completed', () => {
       spyOn(testComponent, 'submit');
       (testComponent.form.controls.group as FormGroup).controls.name.setValue('1');
