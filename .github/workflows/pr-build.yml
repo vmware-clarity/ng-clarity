@@ -9,6 +9,9 @@ jobs:
     name: PR Build
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cds-core: ['', '@cds/core@^5.6.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -18,6 +21,12 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
         run: npm ci
+      - name: Install Alternate @cds/core Version
+        if: ${{matrix.cds-core != ''}}
+        run: npm install ${{matrix.cds-core}}
+      - name: Disable Docs Build
+        if: ${{matrix.cds-core != ''}}
+        run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
       - name: Lint
         run: npm run lint
       - name: Build
@@ -27,6 +36,7 @@ jobs:
       - name: Public Api Check
         run: npm run public-api:check
       - name: Upload Docs Artifact
+        if: ${{matrix.cds-core == ''}}
         uses: actions/upload-artifact@v3
         with:
           name: docs
