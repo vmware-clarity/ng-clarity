@@ -10,10 +10,28 @@ import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
-import styles from './public/preview.css';
+import clrUiStyles from 'raw-loader!../dist/clr-ui/clr-ui.css';
+import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
+import tokensStyles from 'raw-loader!../node_modules/@cds/core/styles/module.tokens.min.css';
+import layoutStyles from 'raw-loader!../node_modules/@cds/core/styles/module.layout.min.css';
+import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module.typography.min.css';
+import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
+import highContrastThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.high-contrast.min.css';
+import shimStyles from 'raw-loader!../node_modules/@cds/core/styles/shim.clr-ui.min.css';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
+
+const styles = [
+  clrUiStyles,
+  resetStyles,
+  tokensStyles,
+  layoutStyles,
+  typographyStyles,
+  darkThemeStyles,
+  highContrastThemeStyles,
+  shimStyles,
+];
 
 addStyles();
 loadIcons();
@@ -64,7 +82,7 @@ export const decorators = [themeDecorator];
 
 function addStyles() {
   const styleElement = document.createElement('style');
-  styleElement.textContent = styles;
+  styleElement.textContent = styles.join('');
   window.document.head.append(styleElement);
 }
 

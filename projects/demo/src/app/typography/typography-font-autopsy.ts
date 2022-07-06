@@ -63,19 +63,19 @@ export class TypographyFontAutopsyDemo {
   }
 
   get topGapHeight() {
-    return pixelifyValues(millifyValues(parseFloat(this.model.value.topGap)));
+    return pixelifyValues(millifyValues(this.model.value.topGap));
   }
 
   get ascenderHeight() {
-    return pixelifyValues(millifyValues(parseFloat(this.model.value.ascender)));
+    return pixelifyValues(millifyValues(this.model.value.ascender));
   }
 
   get xHeightHeight() {
-    return pixelifyValues(millifyValues(parseFloat(this.model.value.xHeight)));
+    return pixelifyValues(millifyValues(this.model.value.xHeight));
   }
 
   get descenderOverageHeight() {
-    return pixelifyValues(millifyValues(parseFloat(this.model.value.descenderOverage)));
+    return pixelifyValues(millifyValues(this.model.value.descenderOverage));
   }
 }
 

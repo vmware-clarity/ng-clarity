@@ -144,7 +144,7 @@ export default function () {
     it('returns the locale date format', () => {
       expect(localeHelperServiceUS.localeDateFormat).toBe('M/d/yy');
       expect(localeHelperServiceFr.localeDateFormat).toBe('dd/MM/y');
-      expect(localeHelperServicePl.localeDateFormat).toBe('dd.MM.y');
+      expect(localeHelperServicePl.localeDateFormat).toBe('d.MM.y');
     });
 
     it(

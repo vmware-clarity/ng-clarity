@@ -16,7 +16,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "strict": false, // TURN BACK ON
-    "target": "es2015"
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

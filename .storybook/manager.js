@@ -7,7 +7,7 @@
 import { addons } from '@storybook/addons';
 import { create } from '@storybook/theming';
 
-import styles from './public/manager.css';
+import styles from 'raw-loader!./public/manager.css';
 
 addStyles();
 

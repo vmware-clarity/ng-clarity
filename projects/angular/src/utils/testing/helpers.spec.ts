@@ -5,7 +5,7 @@
  */
 
 import { DebugElement, InjectionToken, ModuleWithProviders, Type } from '@angular/core';
-import { ComponentFixture, TestBed, TestBedStatic, TestModuleMetadata, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, TestModuleMetadata, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
@@ -17,7 +17,7 @@ export class TestContext<C, H> {
    */
   clarityDirectiveType: Type<C>;
   hostType: Type<H>;
-  testingModule: TestBedStatic;
+  testingModule: TestBed;
 
   /*
    * Objects instantiated for one test

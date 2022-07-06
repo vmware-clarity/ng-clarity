@@ -56,7 +56,7 @@ import { ViewContainerRef } from '@angular/core';
 // @public (undocumented)
 export class CdsIconCustomTag {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
 }
@@ -206,7 +206,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     // (undocumented)
     protected subscriptions: Subscription[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [null, { optional: true; }, null, null]>;
 }
@@ -230,7 +230,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // (undocumented)
     subscriptions: Subscription[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": "clrAccordionMultiPanel"; }, {}, ["panels"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": "clrAccordionMultiPanel"; }, {}, ["panels"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
 }
@@ -238,7 +238,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
 // @public (undocumented)
 export class ClrAccordionContent {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content, clr-step-content", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content, clr-step-content", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionContent, never>;
 }
@@ -246,7 +246,7 @@ export class ClrAccordionContent {
 // @public (undocumented)
 export class ClrAccordionDescription {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description, clr-step-description", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description, clr-step-description", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionDescription, never>;
 }
@@ -312,7 +312,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, never>;
 }
@@ -320,7 +320,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 // @public (undocumented)
 export class ClrAccordionTitle {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
 }
@@ -363,7 +363,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "closed": "clrAlertClosed"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "closed": "clrAlertClosed"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null]>;
 }
@@ -374,7 +374,7 @@ export class ClrAlertItem {
     // (undocumented)
     iconService: AlertIconAndTypesService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertItem, "clr-alert-item", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertItem, "clr-alert-item", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertItem, never>;
 }
@@ -423,7 +423,7 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, { "_inputCurrentIndex": "clrCurrentAlertIndex"; "currentAlert": "clrCurrentAlert"; }, { "currentAlertIndexChange": "clrCurrentAlertIndexChange"; "currentAlertChange": "clrCurrentAlertChange"; }, ["allAlerts"], ["clr-alert"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, { "_inputCurrentIndex": "clrCurrentAlertIndex"; "currentAlert": "clrCurrentAlert"; }, { "currentAlertIndexChange": "clrCurrentAlertIndexChange"; "currentAlertChange": "clrCurrentAlertChange"; }, ["allAlerts"], ["clr-alert"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlerts, never>;
 }
@@ -454,7 +454,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     // (undocumented)
     pageUp(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": "clrCurrentAlert"; "currentAlertIndex": "clrCurrentAlertIndex"; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": "clrCurrentAlert"; "currentAlertIndex": "clrCurrentAlertIndex"; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertsPager, never>;
 }
@@ -462,7 +462,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
 // @public
 export class ClrAlertText {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
 }
@@ -487,7 +487,7 @@ export class ClrAriaCurrentLink implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAriaCurrentLink, "[clrAriaCurrentLink]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaCurrentLink, never>;
 }
@@ -560,7 +560,7 @@ export class ClrButton implements LoadingListener {
     get type(): string;
     set type(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; skipSelf: true; }, null]>;
 }
@@ -593,7 +593,7 @@ export class ClrButtonGroup implements AfterContentInit {
     popoverPosition: ClrPopoverPosition;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
 }
@@ -652,7 +652,7 @@ export class ClrCalendar implements OnDestroy {
     // (undocumented)
     get today(): DayModel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCalendar, "clr-calendar", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCalendar, "clr-calendar", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCalendar, never>;
 }
@@ -663,7 +663,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }]>;
 }
@@ -689,7 +689,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": "clrInline"; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": "clrInline"; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{ optional: true; }, null, null, null]>;
 }
@@ -725,7 +725,7 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
     // (undocumented)
     toggle: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label"], ["[clrCheckbox],[clrToggle]", "label"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxWrapper, "clr-checkbox-wrapper,clr-toggle-wrapper", never, {}, {}, ["label"], ["[clrCheckbox],[clrToggle]", "label"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxWrapper, never>;
 }
@@ -827,7 +827,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": "placeholder"; "multiSelect": "clrMulti"; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": "placeholder"; "multiSelect": "clrMulti"; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
@@ -842,7 +842,7 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [null, { optional: true; }, null, null, null, null]>;
 }
@@ -1054,7 +1054,7 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     // (undocumented)
     protected index: number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControl, "[clrControl]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControl, "[clrControl]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControl, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -1062,7 +1062,7 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
 // @public (undocumented)
 export class ClrControlContainer extends ClrAbstractContainer {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlContainer, "clr-control-container", never, {}, {}, never, ["label", "*", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlContainer, "clr-control-container", never, {}, {}, never, ["label", "*", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlContainer, never>;
 }
@@ -1083,7 +1083,7 @@ export class ClrControlError extends ClrAbstractControl {
     // (undocumented)
     controlIdSuffix: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlError, "clr-control-error", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlError, "clr-control-error", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlError, [{ optional: true; }, { optional: true; }]>;
 }
@@ -1098,7 +1098,7 @@ export class ClrControlHelper extends ClrAbstractControl {
     // (undocumented)
     controlIdSuffix: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlHelper, [{ optional: true; }, { optional: true; }]>;
 }
@@ -1113,7 +1113,7 @@ export class ClrControlSuccess extends ClrAbstractControl {
     // (undocumented)
     controlIdSuffix: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
 }
@@ -1203,7 +1203,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -1211,7 +1211,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 // @public (undocumented)
 export class ClrDatagridActionBar {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionBar, "clr-dg-action-bar", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionBar, "clr-dg-action-bar", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionBar, never>;
 }
@@ -1235,7 +1235,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "open": "clrDgActionOverflowOpen"; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "open": "clrDgActionOverflowOpen"; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
 }
@@ -1249,7 +1249,7 @@ export class ClrDatagridCell implements OnInit {
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridCell, "clr-dg-cell", never, {}, {}, ["signpost"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridCell, "clr-dg-cell", never, {}, {}, ["signpost"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridCell, never>;
 }
@@ -1322,7 +1322,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "colType": "clrDgColType"; "field": "clrDgField"; "sortBy": "clrDgSortBy"; "sorted": "clrDgSorted"; "sortOrder": "clrDgSortOrder"; "filterStringPlaceholder": "clrFilterStringPlaceholder"; "filterNumberMaxPlaceholder": "clrFilterNumberMaxPlaceholder"; "filterNumberMinPlaceholder": "clrFilterNumberMinPlaceholder"; "updateFilterValue": "clrFilterValue"; }, { "sortedChange": "clrDgSortedChange"; "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "colType": "clrDgColType"; "field": "clrDgField"; "sortBy": "clrDgSortBy"; "sorted": "clrDgSorted"; "sortOrder": "clrDgSortOrder"; "filterStringPlaceholder": "clrFilterStringPlaceholder"; "filterNumberMaxPlaceholder": "clrFilterNumberMaxPlaceholder"; "filterNumberMinPlaceholder": "clrFilterNumberMinPlaceholder"; "updateFilterValue": "clrFilterValue"; }, { "sortedChange": "clrDgSortedChange"; "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
 }
@@ -1349,7 +1349,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     // (undocumented)
     showTracker(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnSeparator, "clr-dg-column-separator", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnSeparator, "clr-dg-column-separator", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnSeparator, never>;
 }
@@ -1389,7 +1389,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     trackByFn(index: number): number;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, ["customToggleTitle", "customToggleButton"], ["clr-dg-column-toggle-title", "clr-dg-column-toggle-button"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, ["customToggleTitle", "customToggleButton"], ["clr-dg-column-toggle-title", "clr-dg-column-toggle-button"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggle, never>;
 }
@@ -1404,7 +1404,7 @@ export class ClrDatagridColumnToggleButton {
     // (undocumented)
     selectAll(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleButton, never>;
 }
@@ -1412,7 +1412,7 @@ export class ClrDatagridColumnToggleButton {
 // @public (undocumented)
 export class ClrDatagridColumnToggleTitle {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleTitle, "clr-dg-column-toggle-title", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleTitle, "clr-dg-column-toggle-title", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleTitle, never>;
 }
@@ -1435,7 +1435,7 @@ export class ClrDatagridDetail {
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {}, {}, ["header"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {}, {}, ["header"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -1443,7 +1443,7 @@ export class ClrDatagridDetail {
 // @public (undocumented)
 export class ClrDatagridDetailBody {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailBody, "clr-dg-detail-body", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailBody, "clr-dg-detail-body", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailBody, never>;
 }
@@ -1458,7 +1458,7 @@ export class ClrDatagridDetailHeader {
     // (undocumented)
     get titleId(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailHeader, "clr-dg-detail-header", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailHeader, "clr-dg-detail-header", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailHeader, never>;
 }
@@ -1495,7 +1495,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     toggleButtonAriaLabel: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": "clrDgFilterOpen"; "customFilter": "clrDgFilter"; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": "clrDgFilterOpen"; "customFilter": "clrDgFilter"; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, never>;
 }
@@ -1530,7 +1530,7 @@ export class ClrDatagridFooter<T = any> {
     // (undocumented)
     toggle: ClrDatagridColumnToggle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, ["toggle"], ["clr-dg-column-toggle", "*", "clr-dg-pagination"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, ["toggle"], ["clr-dg-column-toggle", "*", "clr-dg-pagination"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFooter<any>, never>;
 }
@@ -1550,7 +1550,7 @@ export class ClrDatagridHideableColumn implements OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, { "clrDgHideableColumn": "clrDgHideableColumn"; "clrDgHidden": "clrDgHidden"; }, { "hiddenChange": "clrDgHiddenChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, { "clrDgHideableColumn": "clrDgHideableColumn"; "clrDgHidden": "clrDgHidden"; }, { "hiddenChange": "clrDgHiddenChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridHideableColumn, [null, null, null, { optional: true; }]>;
 }
@@ -1569,7 +1569,7 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     // (undocumented)
     set trackBy(value: TrackByFunction<T>);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItems<any>, "[clrDgItems][clrDgItemsOf]", never, { "rawItems": "clrDgItemsOf"; "trackBy": "clrDgItemsTrackBy"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItems<any>, "[clrDgItems][clrDgItemsOf]", never, { "rawItems": "clrDgItemsOf"; "trackBy": "clrDgItemsTrackBy"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItems<any>, never>;
 }
@@ -1580,7 +1580,7 @@ export class ClrDatagridItemsTrackBy<T = any> {
     // (undocumented)
     set trackBy(value: TrackByFunction<T>);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItemsTrackBy<any>, "[ngForTrackBy]", never, { "trackBy": "ngForTrackBy"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItemsTrackBy<any>, "[ngForTrackBy]", never, { "trackBy": "ngForTrackBy"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItemsTrackBy<any>, [{ optional: true; }]>;
 }
@@ -1653,7 +1653,7 @@ export class ClrDatagridPageSize {
     // (undocumented)
     pageSizeOptionsId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": "clrPageSizeOptions"; "pageSizeOptionsId": "clrPageSizeOptionsId"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": "clrPageSizeOptions"; "pageSizeOptionsId": "clrPageSizeOptionsId"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
 }
@@ -1693,7 +1693,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     set totalItems(total: number | string);
     updateCurrentPage(event: any): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": "clrDgPageInputDisabled"; "pageSize": "clrDgPageSize"; "totalItems": "clrDgTotalItems"; "lastPage": "clrDgLastPage"; "currentPage": "clrDgPage"; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": "clrDgPageInputDisabled"; "pageSize": "clrDgPageSize"; "totalItems": "clrDgTotalItems"; "lastPage": "clrDgLastPage"; "currentPage": "clrDgPage"; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
 }
@@ -1703,7 +1703,7 @@ export class ClrDatagridPlaceholder<T = any> {
     constructor(items: Items<T>);
     get emptyDatagrid(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPlaceholder<any>, never>;
 }
@@ -1790,7 +1790,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "selected": "clrDgSelected"; "clrDgSelectable": "clrDgSelectable"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowAriaLabel": "clrDgRowAriaLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "selected": "clrDgSelected"; "clrDgSelectable": "clrDgSelectable"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowAriaLabel": "clrDgRowAriaLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
 }
@@ -1829,7 +1829,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "replace": "clrDgReplace"; "_beginningOfExpandableContentAriaText": "clrRowDetailBeginningAriaText"; "_endOfExpandableContentAriaText": "clrRowDetailEndAriaText"; }, {}, ["cells"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "replace": "clrDgReplace"; "_beginningOfExpandableContentAriaText": "clrRowDetailBeginningAriaText"; "_endOfExpandableContentAriaText": "clrRowDetailEndAriaText"; }, {}, ["cells"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
 }
@@ -1881,7 +1881,7 @@ export class ClrDatalist implements AfterContentInit {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalist, "datalist", never, { "id": "id"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalist, "datalist", never, { "id": "id"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalist, [{ optional: true; }]>;
 }
@@ -1895,7 +1895,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, { optional: true; }, null, null, null]>;
 }
@@ -1912,7 +1912,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalistInput, "[clrDatalistInput]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalistInput, "[clrDatalistInput]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null, null]>;
 }
@@ -1980,7 +1980,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container", never, { "clrPosition": "clrPosition"; }, {}, never, ["label", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
@@ -2026,7 +2026,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "placeholder": "placeholder"; "date": "clrDate"; "min": "min"; "max": "max"; "disabled": "disabled"; }, { "dateChange": "clrDateChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "placeholder": "placeholder"; "date": "clrDate"; "min": "min"; "max": "max"; "disabled": "disabled"; }, { "dateChange": "clrDateChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, [null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
 }
@@ -2037,7 +2037,7 @@ export class ClrDateInputValidator implements Validator {
     // (undocumented)
     validate(control: AbstractControl): ValidationErrors;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{ optional: true; }]>;
 }
@@ -2072,7 +2072,7 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
 }
@@ -2089,7 +2089,7 @@ export class ClrDay {
     onDayViewFocus(): void;
     selectDay(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": "clrDayView"; }, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": "clrDayView"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDay, never>;
 }
@@ -2111,7 +2111,7 @@ export class ClrDaypicker {
     // (undocumented)
     get yearAttrString(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDaypicker, "clr-daypicker", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDaypicker, "clr-daypicker", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDaypicker, never>;
 }
@@ -2186,7 +2186,7 @@ export class ClrDraggable<T> implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDraggable<any>, "[clrDraggable]", never, { "dataTransfer": "clrDraggable"; "group": "clrGroup"; "dragStartDelay": "clrDragStartDelay"; }, { "dragStartEmitter": "clrDragStart"; "dragMoveEmitter": "clrDragMove"; "dragEndEmitter": "clrDragEnd"; }, ["customGhost"]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDraggable<any>, "[clrDraggable]", never, { "dataTransfer": "clrDraggable"; "group": "clrGroup"; "dragStartDelay": "clrDragStartDelay"; }, { "dragStartEmitter": "clrDragStart"; "dragMoveEmitter": "clrDragMove"; "dragEndEmitter": "clrDragEnd"; }, ["customGhost"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDraggable<any>, never>;
 }
@@ -2205,7 +2205,7 @@ export class ClrDraggableGhost<T> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDraggableGhost<any>, "clr-draggable-ghost", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDraggableGhost<any>, "clr-draggable-ghost", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDraggableGhost<any>, [null, { optional: true; }, { optional: true; }, null, null]>;
 }
@@ -2216,7 +2216,7 @@ export class ClrDragHandle<T> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDragHandle<any>, "[clrDragHandle]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDragHandle<any>, "[clrDragHandle]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDragHandle<any>, [null, { optional: true; }]>;
 }
@@ -2234,7 +2234,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     toggleService: ClrPopoverToggleService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": "clrCloseMenuOnItemClick"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": "clrCloseMenuOnItemClick"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null]>;
 }
@@ -2261,7 +2261,7 @@ export class ClrDropdownItem implements AfterViewInit {
     // (undocumented)
     setByDeprecatedDisabled: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "disabledDeprecated": "disabled"; "dropdownItemId": "id"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "disabledDeprecated": "disabled"; "dropdownItemId": "id"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
 }
@@ -2281,7 +2281,7 @@ export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit
     // (undocumented)
     set position(position: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": "clrPosition"; }, {}, ["items"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": "clrPosition"; }, {}, ["items"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [null, { optional: true; }, { optional: true; skipSelf: true; }, null]>;
 }
@@ -2311,7 +2311,7 @@ export class ClrDropdownTrigger {
     // (undocumented)
     onDropdownTriggerClick(event: any): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownTrigger, "[clrDropdownTrigger],[clrDropdownToggle]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
 }
@@ -2346,7 +2346,7 @@ export class ClrDroppable<T> implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDroppable<any>, "[clrDroppable]", never, { "group": "clrGroup"; "dropTolerance": "clrDropTolerance"; }, { "dragStartEmitter": "clrDragStart"; "dragMoveEmitter": "clrDragMove"; "dragEndEmitter": "clrDragEnd"; "dragLeaveEmitter": "clrDragLeave"; "dragEnterEmitter": "clrDragEnter"; "dropEmitter": "clrDrop"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDroppable<any>, "[clrDroppable]", never, { "group": "clrGroup"; "dropTolerance": "clrDropTolerance"; }, { "dragStartEmitter": "clrDragStart"; "dragMoveEmitter": "clrDragMove"; "dragEndEmitter": "clrDragEnd"; "dragLeaveEmitter": "clrDragLeave"; "dragEnterEmitter": "clrDragEnter"; "dropEmitter": "clrDrop"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDroppable<any>, never>;
 }
@@ -2394,7 +2394,7 @@ export class ClrExpandableAnimation {
     // (undocumented)
     updateStartHeight(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": "clrExpandTrigger"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": "clrExpandTrigger"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
 }
@@ -2409,7 +2409,7 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": "clrFocusOnViewInit"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": "clrFocusOnViewInit"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
 }
@@ -2441,7 +2441,7 @@ export class ClrForm {
     // (undocumented)
     onFormSubmit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForm, "[clrForm]", never, { "labelSize": "clrLabelSize"; }, {}, ["labels"]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForm, "[clrForm]", never, { "labelSize": "clrLabelSize"; }, {}, ["labels"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrForm, never>;
 }
@@ -2486,7 +2486,7 @@ export class ClrForTypeAhead {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForTypeAhead, "[clrForTypeAhead]", never, { "content": "clrForTypeAhead"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForTypeAhead, "[clrForTypeAhead]", never, { "content": "clrForTypeAhead"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrForTypeAhead, never>;
 }
@@ -2536,7 +2536,7 @@ export class ClrHeader implements OnDestroy {
     // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
 }
@@ -2544,7 +2544,7 @@ export class ClrHeader implements OnDestroy {
 // @public (undocumented)
 export class ClrIconCustomTag {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconCustomTag, never>;
 }
@@ -2572,7 +2572,7 @@ export class ClrIfActive implements OnDestroy {
     ngOnDestroy(): void;
     updateView(value: boolean): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": "clrIfActive"; }, { "activeChange": "clrIfActiveChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": "clrIfActive"; }, { "activeChange": "clrIfActiveChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
 }
@@ -2589,7 +2589,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     // (undocumented)
     stateChange: EventEmitter<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": "clrIfDetail"; }, { "stateChange": "clrIfDetailChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": "clrIfDetail"; }, { "stateChange": "clrIfDetailChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
 }
@@ -2600,7 +2600,7 @@ export class ClrIfDragged<T> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDragged<any>, "[clrIfDragged]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDragged<any>, "[clrIfDragged]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDragged<any>, [null, { optional: true; skipSelf: true; }, { optional: true; }]>;
 }
@@ -2617,7 +2617,7 @@ export class ClrIfError extends AbstractIfState {
     // (undocumented)
     protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, { "error": "clrIfError"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, { "error": "clrIfError"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfError, [{ optional: true; }, { optional: true; }, null, null]>;
 }
@@ -2635,7 +2635,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": "clrIfExpanded"; }, { "expandedChange": "clrIfExpandedChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": "clrIfExpanded"; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
 }
@@ -2652,7 +2652,7 @@ export class ClrIfOpen implements OnDestroy {
     openChange: EventEmitter<boolean>;
     updateView(value: boolean): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": "clrIfOpen"; }, { "openChange": "clrIfOpenChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": "clrIfOpen"; }, { "openChange": "clrIfOpenChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
 }
@@ -2663,7 +2663,7 @@ export class ClrIfSuccess extends AbstractIfState {
     // (undocumented)
     protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{ optional: true; }, { optional: true; }, null, null]>;
 }
@@ -2674,7 +2674,7 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     // (undocumented)
     protected index: number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -2682,7 +2682,7 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
 // @public (undocumented)
 export class ClrInputContainer extends ClrAbstractContainer {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInput]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInput]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputContainer, never>;
 }
@@ -2715,7 +2715,7 @@ export class ClrLabel implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "forAttr": "for"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "forAttr": "for"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }
@@ -2730,7 +2730,7 @@ export class ClrLayout implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLayout, "[clrForm][clrLayout]", never, { "layout": "clrLayout"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLayout, "[clrForm][clrLayout]", never, { "layout": "clrLayout"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayout, never>;
 }
@@ -2761,7 +2761,7 @@ export class ClrLoading implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": "clrLoading"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": "clrLoading"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
 }
@@ -2782,7 +2782,7 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     state: ClrLoadingState;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": "disabled"; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": "disabled"; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
 }
@@ -2837,7 +2837,7 @@ export class ClrMainContainer implements OnDestroy, OnInit {
     // (undocumented)
     processMessage(message: ResponsiveNavControlMessage): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainer, never>;
 }
@@ -2899,7 +2899,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "bypassScrollService": "clrModalOverrideScrollService"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "bypassScrollService": "clrModalOverrideScrollService"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
@@ -2910,7 +2910,7 @@ export class ClrModalBody implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
 }
@@ -2939,7 +2939,7 @@ export class ClrMonthpicker implements AfterViewInit {
     ngAfterViewInit(): void;
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrMonthpicker, "clr-monthpicker", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrMonthpicker, "clr-monthpicker", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMonthpicker, never>;
 }
@@ -3001,7 +3001,7 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
     // (undocumented)
     protected showNavigation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; "closeButtonAriaLabel": "closeAriaLabel"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; "closeButtonAriaLabel": "closeAriaLabel"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
@@ -3032,7 +3032,7 @@ export class ClrOption<T> implements OnInit {
     // (undocumented)
     get value(): T;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": "id"; "value": "clrValue"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": "id"; "value": "clrValue"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOption<any>, never>;
 }
@@ -3053,7 +3053,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     // (undocumented)
     set trackBy(value: TrackByFunction<T>);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionItems<any>, "[clrOptionItems][clrOptionItemsOf]", never, { "rawItems": "clrOptionItemsOf"; "trackBy": "clrOptionItemsTrackBy"; "field": "clrOptionItemsField"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionItems<any>, "[clrOptionItems][clrOptionItemsOf]", never, { "rawItems": "clrOptionItemsOf"; "trackBy": "clrOptionItemsTrackBy"; "field": "clrOptionItemsField"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptionItems<any>, never>;
 }
@@ -3086,7 +3086,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     searchText(input: string): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, { "optionsId": "id"; }, {}, ["items"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, { "optionsId": "id"; }, {}, ["items"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptions<any>, [null, null, null, null, null, null, { optional: true; }, null]>;
 }
@@ -3103,7 +3103,7 @@ export class ClrOptionSelected<T> {
         $implicit: T;
     }>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionSelected<any>, "[clrOptionSelected]", never, { "selected": "clrOptionSelected"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionSelected<any>, "[clrOptionSelected]", never, { "selected": "clrOptionSelected"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptionSelected<any>, never>;
 }
@@ -3118,7 +3118,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, { optional: true; self: true; }, null, null, { optional: true; }, { optional: true; }]>;
 }
@@ -3140,7 +3140,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     toggle(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "clrToggle": "clrToggle"; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "clrToggle": "clrToggle"; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordContainer, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -3163,7 +3163,7 @@ export class ClrPasswordModule {
 export class ClrPopoverAnchor {
     constructor(smartEventService: ClrPopoverEventsService, element: ElementRef);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
 }
@@ -3186,7 +3186,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     // (undocumented)
     set scrollToClose(scrollToClose: boolean);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": "clrPopoverContent"; "contentAt": "clrPopoverContentAt"; "outsideClickClose": "clrPopoverContentOutsideClickToClose"; "scrollToClose": "clrPopoverContentScrollToClose"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": "clrPopoverContent"; "contentAt": "clrPopoverContentAt"; "outsideClickClose": "clrPopoverContentOutsideClickToClose"; "scrollToClose": "clrPopoverContentScrollToClose"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, never>;
 }
@@ -3352,7 +3352,7 @@ export class ClrProgressBar {
     get value(): number | string;
     set value(value: number | string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "id": "id"; "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "id": "id"; "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
 }
@@ -3373,7 +3373,7 @@ export class ClrProgressBarModule {
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -3399,7 +3399,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null, null]>;
 }
@@ -3428,7 +3428,7 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioWrapper, "clr-radio-wrapper", never, {}, {}, ["label"], ["[clrRadio]", "label"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioWrapper, "clr-radio-wrapper", never, {}, {}, ["label"], ["[clrRadio]", "label"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioWrapper, never>;
 }
@@ -3437,7 +3437,7 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -3453,7 +3453,7 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, { "hasProgress": "clrRangeHasProgress"; }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, { "hasProgress": "clrRangeHasProgress"; }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeContainer, [{ optional: true; }, null, null, null, null, null]>;
 }
@@ -3487,7 +3487,7 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
     // (undocumented)
     nodes: T | T[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": "clrRecursiveForOf"; "getChildren": "clrRecursiveForGetChildren"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": "clrRecursiveForOf"; "getChildren": "clrRecursiveForGetChildren"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
 }
@@ -3508,7 +3508,7 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     // (undocumented)
     protected index: number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSelect, "[clrSelect]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSelect, "[clrSelect]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -3531,7 +3531,7 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     // (undocumented)
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSelectContainer, "clr-select-container", never, {}, {}, ["multiple"], ["label", "[clrSelect]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSelectContainer, "clr-select-container", never, {}, {}, ["multiple"], ["label", "[clrSelect]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectContainer, [{ optional: true; }, null, null, null]>;
 }
@@ -3576,7 +3576,7 @@ export class ClrSignpost {
     set customTrigger(trigger: ClrSignpostTrigger);
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {}, {}, ["customTrigger"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {}, {}, ["customTrigger"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -3597,7 +3597,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "position": "clrPosition"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "position": "clrPosition"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
@@ -3634,7 +3634,7 @@ export class ClrSignpostTrigger implements OnDestroy {
     ngOnInit(): void;
     onSignpostTriggerClick(event: Event): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSignpostTrigger, "[clrSignpostTrigger]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostTrigger, never>;
 }
@@ -3659,7 +3659,7 @@ export class ClrSpinner {
     get smallClass(): boolean;
     get spinnerClass(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": "clrInline"; "clrInverse": "clrInverse"; "clrSmall": "clrSmall"; "clrMedium": "clrMedium"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSpinner, "clr-spinner", never, { "clrInline": "clrInline"; "clrInverse": "clrInverse"; "clrSmall": "clrSmall"; "clrMedium": "clrMedium"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinner, never>;
 }
@@ -3725,7 +3725,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     uniqueId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
 }
@@ -3735,7 +3735,7 @@ export class ClrStackContentInput {
     // (undocumented)
     uniqueId: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackContentInput, "[clrStackInput]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackContentInput, never>;
 }
@@ -3746,7 +3746,7 @@ export class ClrStackHeader {
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {}, {}, never, ["*", ".stack-action"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {}, {}, never, ["*", ".stack-action"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
 }
@@ -3761,7 +3761,7 @@ export class ClrStackInput extends StackControl {
     // (undocumented)
     type: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackInput, "clr-stack-input", never, { "model": "clrModel"; "type": "type"; }, { "modelChange": "clrModelChange"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackInput, "clr-stack-input", never, { "model": "clrModel"; "type": "type"; }, { "modelChange": "clrModelChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackInput, never>;
 }
@@ -3772,7 +3772,7 @@ export class ClrStackSelect extends StackControl {
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackSelect, "clr-stack-select", never, { "model": "clrModel"; }, { "modelChange": "clrModelChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackSelect, "clr-stack-select", never, { "model": "clrModel"; }, { "modelChange": "clrModelChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackSelect, never>;
 }
@@ -3788,7 +3788,7 @@ export class ClrStackView {
     // (undocumented)
     save: EventEmitter<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackView, "clr-stack-view", never, {}, { "save": "clrStackSave"; }, never, ["clr-stack-header", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackView, "clr-stack-view", never, {}, { "save": "clrStackSave"; }, never, ["clr-stack-header", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackView, never>;
 }
@@ -3796,7 +3796,7 @@ export class ClrStackView {
 // @public (undocumented)
 export class ClrStackViewCustomTags {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStackViewCustomTags, "clr-stack-content", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewCustomTags, never>;
 }
@@ -3809,7 +3809,7 @@ export class ClrStackViewLabel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": "id"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": "id"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
 }
@@ -3846,7 +3846,7 @@ export class ClrStepButton implements OnInit {
     // (undocumented)
     type: ClrStepButtonType | string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": "clrStepButton"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": "clrStepButton"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, never>;
 }
@@ -3879,7 +3879,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     subscriptions: Subscription[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": "clrInitialStep"; }, {}, ["panels"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": "clrInitialStep"; }, {}, ["panels"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
 }
@@ -3907,7 +3907,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    get formGroup(): FormGroup;
+    get formGroup(): FormGroup<any>;
     // (undocumented)
     headerButton: ElementRef;
     // (undocumented)
@@ -3920,7 +3920,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null]>;
 }
@@ -3942,7 +3942,7 @@ export class ClrTab {
     // (undocumented)
     tabLink: ClrTabLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTab, "clr-tab", never, {}, {}, ["tabLink", "tabContent"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTab, never>;
 }
@@ -3963,7 +3963,7 @@ export class ClrTabContent implements OnDestroy {
     // (undocumented)
     tabContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": "id"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": "id"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
 }
@@ -3997,7 +3997,7 @@ export class ClrTabLink {
     // (undocumented)
     templateRefContainer: TemplateRefContainer;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "inOverflow": "clrTabLinkInOverflow"; "tabLinkId": "id"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "inOverflow": "clrTabLinkInOverflow"; "tabLinkId": "id"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
 }
@@ -4005,7 +4005,7 @@ export class ClrTabLink {
 // @public (undocumented)
 export class ClrTabOverflowContent {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabOverflowContent, "clr-tab-overflow-content", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabOverflowContent, never>;
 }
@@ -4068,7 +4068,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     toggleService: ClrPopoverToggleService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": "clrLayout"; }, {}, ["tabs"], never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": "clrLayout"; }, {}, ["tabs"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
 }
@@ -4099,7 +4099,7 @@ export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     // (undocumented)
     protected index: number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTextarea, "[clrTextarea]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTextarea, "[clrTextarea]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, { optional: true; self: true; }, null, null]>;
 }
@@ -4107,7 +4107,7 @@ export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
 // @public (undocumented)
 export class ClrTextareaContainer extends ClrAbstractContainer {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTextareaContainer, "clr-textarea-container", never, {}, {}, never, ["label", "[clrTextarea]", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTextareaContainer, "clr-textarea-container", never, {}, {}, never, ["label", "[clrTextarea]", "clr-control-helper", "clr-control-error", "clr-control-success"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextareaContainer, never>;
 }
@@ -4133,7 +4133,7 @@ export class ClrTimeline {
     // (undocumented)
     layout: ClrTimelineLayout;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, { "layout": "clrLayout"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, { "layout": "clrLayout"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimeline, never>;
 }
@@ -4184,7 +4184,7 @@ export class ClrTimelineStep {
     // (undocumented)
     stepTitleText: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": "clrState"; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": "clrState"; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;
 }
@@ -4192,7 +4192,7 @@ export class ClrTimelineStep {
 // @public (undocumented)
 export class ClrTimelineStepDescription {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepDescription, "clr-timeline-step-description", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepDescription, "clr-timeline-step-description", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepDescription, never>;
 }
@@ -4200,7 +4200,7 @@ export class ClrTimelineStepDescription {
 // @public (undocumented)
 export class ClrTimelineStepHeader {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepHeader, "clr-timeline-step-header", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepHeader, "clr-timeline-step-header", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepHeader, never>;
 }
@@ -4222,7 +4222,7 @@ export enum ClrTimelineStepState {
 // @public
 export class ClrTimelineStepTitle {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepTitle, "clr-timeline-step-title", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStepTitle, "clr-timeline-step-title", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStepTitle, never>;
 }
@@ -4230,7 +4230,7 @@ export class ClrTimelineStepTitle {
 // @public (undocumented)
 export class ClrTooltip {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
 }
@@ -4251,7 +4251,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     get size(): string;
     set size(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": "id"; "position": "clrPosition"; "size": "clrSize"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": "id"; "position": "clrPosition"; "size": "clrSize"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null]>;
 }
@@ -4282,7 +4282,7 @@ export class ClrTooltipTrigger {
     // (undocumented)
     showTooltip(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTooltipTrigger, "[clrTooltipTrigger]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipTrigger, never>;
 }
@@ -4302,7 +4302,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": "clrLazy"; }, {}, ["rootNodes"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": "clrLazy"; }, {}, ["rootNodes"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
 }
@@ -4359,7 +4359,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "selected": "clrSelected"; "expandable": "clrExpandable"; "expanded": "clrExpanded"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "selected": "clrSelected"; "expandable": "clrExpandable"; "expanded": "clrExpanded"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, { optional: true; self: true; }, null, null, null, null, null]>;
 }
@@ -4372,7 +4372,7 @@ export class ClrTreeNodeLink {
     // (undocumented)
     get active(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
 }
@@ -4419,7 +4419,7 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "collapsible": "clrVerticalNavCollapsible"; "collapsed": "clrVerticalNavCollapsed"; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
 }
@@ -4455,7 +4455,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // (undocumented)
     set userExpandedInput(value: boolean | string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "groupLabel": "clrVerticalNavGroupLabel"; "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "groupLabel": "clrVerticalNavGroupLabel"; "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
 }
@@ -4463,7 +4463,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 // @public (undocumented)
 export class ClrVerticalNavGroupChildren {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroupChildren, never>;
 }
@@ -4474,7 +4474,7 @@ export class ClrVerticalNavIcon implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrVerticalNavIcon, "[clrVerticalNavIcon]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrVerticalNavIcon, "[clrVerticalNavIcon]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavIcon, never>;
 }
@@ -4485,7 +4485,7 @@ export class ClrVerticalNavLink implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, { optional: true; }]>;
 }
@@ -4594,7 +4594,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     wizardTitle: ElementRef;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -4635,7 +4635,7 @@ export class ClrWizardButton {
     // (undocumented)
     wasClicked: EventEmitter<string>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": "type"; "disabled": "clrWizardButtonDisabled"; "hidden": "clrWizardButtonHidden"; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": "type"; "disabled": "clrWizardButtonDisabled"; "hidden": "clrWizardButtonHidden"; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
 }
@@ -4643,7 +4643,7 @@ export class ClrWizardButton {
 // @public (undocumented)
 export class ClrWizardCustomTags {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title, clr-wizard-pagetitle", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title, clr-wizard-pagetitle", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardCustomTags, never>;
 }
@@ -4663,7 +4663,7 @@ export class ClrWizardHeaderAction {
     // (undocumented)
     title: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, { "title": "title"; "_id": "id"; "disabled": "clrWizardHeaderActionDisabled"; }, { "headerActionClicked": "actionClicked"; }, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, { "title": "title"; "_id": "id"; "disabled": "clrWizardHeaderActionDisabled"; }, { "headerActionClicked": "actionClicked"; }, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardHeaderAction, never>;
 }
@@ -4746,7 +4746,7 @@ export class ClrWizardPage implements OnInit {
     set stopNext(val: boolean);
     get title(): TemplateRef<any>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, { "nextStepDisabled": "clrWizardPageNextDisabled"; "previousStepDisabled": "clrWizardPagePreviousDisabled"; "hasError": "clrWizardPageHasError"; "preventDefault": "clrWizardPagePreventDefault"; "stopCancel": "clrWizardPagePreventDefaultCancel"; "stopNext": "clrWizardPagePreventDefaultNext"; "_id": "id"; }, { "nextStepDisabledChange": "clrWizardPageNextDisabledChange"; "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange"; "stopCancelChange": "clrWizardPagePreventDefaultCancelChange"; "onCommit": "clrWizardPageOnCommit"; "onLoad": "clrWizardPageOnLoad"; "pageOnCancel": "clrWizardPageOnCancel"; "finishButtonClicked": "clrWizardPageFinish"; "previousButtonClicked": "clrWizardPagePrevious"; "nextButtonClicked": "clrWizardPageNext"; "dangerButtonClicked": "clrWizardPageDanger"; "primaryButtonClicked": "clrWizardPagePrimary"; "customButtonClicked": "clrWizardPageCustomButton"; }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, { "nextStepDisabled": "clrWizardPageNextDisabled"; "previousStepDisabled": "clrWizardPagePreviousDisabled"; "hasError": "clrWizardPageHasError"; "preventDefault": "clrWizardPagePreventDefault"; "stopCancel": "clrWizardPagePreventDefaultCancel"; "stopNext": "clrWizardPagePreventDefaultNext"; "_id": "id"; }, { "nextStepDisabledChange": "clrWizardPageNextDisabledChange"; "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange"; "stopCancelChange": "clrWizardPagePreventDefaultCancelChange"; "onCommit": "clrWizardPageOnCommit"; "onLoad": "clrWizardPageOnLoad"; "pageOnCancel": "clrWizardPageOnCancel"; "finishButtonClicked": "clrWizardPageFinish"; "previousButtonClicked": "clrWizardPagePrevious"; "nextButtonClicked": "clrWizardPageNext"; "dangerButtonClicked": "clrWizardPageDanger"; "primaryButtonClicked": "clrWizardPagePrimary"; "customButtonClicked": "clrWizardPageCustomButton"; }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPage, never>;
 }
@@ -4757,7 +4757,7 @@ export class ClrWizardPageButtons {
     // (undocumented)
     pageButtonsTemplateRef: TemplateRef<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageButtons, "[clrPageButtons]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageButtons, "[clrPageButtons]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageButtons, never>;
 }
@@ -4768,7 +4768,7 @@ export class ClrWizardPageHeaderActions {
     // (undocumented)
     pageHeaderActionsTemplateRef: TemplateRef<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageHeaderActions, "[clrPageHeaderActions]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageHeaderActions, "[clrPageHeaderActions]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageHeaderActions, never>;
 }
@@ -4779,7 +4779,7 @@ export class ClrWizardPageNavTitle {
     // (undocumented)
     pageNavTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageNavTitle, "[clrPageNavTitle]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageNavTitle, "[clrPageNavTitle]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageNavTitle, never>;
 }
@@ -4790,7 +4790,7 @@ export class ClrWizardPageTitle {
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageTitle, never>;
 }
@@ -4801,7 +4801,7 @@ export class ClrWizardStepnav {
     // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
@@ -4834,7 +4834,7 @@ export class ClrWizardStepnavItem {
     // (undocumented)
     get stepAriaCurrent(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": "page"; }, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": "page"; }, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
 }
@@ -4855,7 +4855,7 @@ export class ClrYearpicker implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "YearRangeModel" needs to be exported by the entry point index.d.ts
     yearRangeModel: YearRangeModel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrYearpicker, "clr-yearpicker", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrYearpicker, "clr-yearpicker", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrYearpicker, never>;
 }
@@ -4905,7 +4905,7 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "maxPlaceholder": "clrFilterMaxPlaceholder"; "minPlaceholder": "clrFilterMinPlaceholder"; "customNumericFilter": "clrDgNumericFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "maxPlaceholder": "clrFilterMaxPlaceholder"; "minPlaceholder": "clrFilterMinPlaceholder"; "customNumericFilter": "clrDgNumericFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
@@ -4964,7 +4964,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     get value(): string;
     set value(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": "clrFilterPlaceholder"; "customStringFilter": "clrDgStringFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": "clrFilterPlaceholder"; "customStringFilter": "clrDgStringFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
 }
@@ -5010,7 +5010,7 @@ export abstract class LoadingListener {
 // @public (undocumented)
 export class MainContainerWillyWonka extends WillyWonka {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
 }
@@ -5023,7 +5023,7 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
 }
@@ -5076,7 +5076,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     // (undocumented)
     protected wrapperType: Type<W>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WrappedFormControl<any>, never, never, { "id": "id"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<WrappedFormControl<any>, never, never, { "id": "id"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WrappedFormControl<any>, never>;
 }
@@ -5087,7 +5087,7 @@ export class ÇlrAccordionOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrAccordionOompaLoompa, [null, { optional: true; }, null]>;
 }
@@ -5095,7 +5095,7 @@ export class ÇlrAccordionOompaLoompa extends OompaLoompa {
 // @public (undocumented)
 export class ÇlrAccordionWillyWonka extends WillyWonka {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionWillyWonka, "clr-accordion", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrAccordionWillyWonka, never>;
 }
@@ -5106,7 +5106,7 @@ export class ÇlrActionableOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrActionableOompaLoompa, [null, { optional: true; }, null]>;
 }
@@ -5117,7 +5117,7 @@ export class ÇlrActiveOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrActiveOompaLoompa, [null, { optional: true; }, null, null]>;
 }
@@ -5146,7 +5146,7 @@ export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverCloseButton, never>;
 }
@@ -5176,7 +5176,7 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
     // (undocumented)
     openCloseChange: EventEmitter<boolean>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverOpenCloseButton, never>;
 }
@@ -5189,7 +5189,7 @@ export class ÇlrDatagridCellRenderer implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridCellRenderer, never>;
 }
@@ -5200,7 +5200,7 @@ export class ÇlrDatagridDetailRegisterer {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridDetailRegisterer, [{ optional: true; }]>;
 }
@@ -5217,7 +5217,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridHeaderRenderer, never>;
 }
@@ -5236,7 +5236,7 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
     // (undocumented)
     toggleDetailPane(state: boolean): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridMainRenderer, never>;
 }
@@ -5251,7 +5251,7 @@ export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     // (undocumented)
     setColumnState(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowRenderer, never>;
 }
@@ -5259,7 +5259,7 @@ export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
 // @public (undocumented)
 export class ÇlrDatagridWillyWonka extends WillyWonka {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridWillyWonka, "clr-datagrid", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridWillyWonka, never>;
 }
@@ -5270,7 +5270,7 @@ export class ÇlrExpandableOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrExpandableOompaLoompa, [null, { optional: true; }, null]>;
 }
@@ -5293,7 +5293,7 @@ export class ÇlrFocusTrapDirective implements OnInit, AfterViewInit, OnDestroy 
     // (undocumented)
     setPreviousFocus(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrFocusTrapDirective, "[clrFocusTrap]", never, { "config": "clrFocusTrap"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrFocusTrapDirective, "[clrFocusTrap]", never, { "config": "clrFocusTrap"; }, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrFocusTrapDirective, never>;
 }
@@ -5319,7 +5319,7 @@ export class ÇlrStepperOompaLoompa extends OompaLoompa {
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrStepperOompaLoompa, [null, { optional: true; }, null]>;
 }
@@ -5327,7 +5327,7 @@ export class ÇlrStepperOompaLoompa extends OompaLoompa {
 // @public (undocumented)
 export class ÇlrStepperWillyWonka extends WillyWonka {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperWillyWonka, "form[clrStepper]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrStepperWillyWonka, never>;
 }
@@ -5335,7 +5335,7 @@ export class ÇlrStepperWillyWonka extends WillyWonka {
 // @public (undocumented)
 export class ÇlrTabsWillyWonka extends WillyWonka {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrTabsWillyWonka, "clr-tabs", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrTabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrTabsWillyWonka, never>;
 }
@@ -5353,7 +5353,7 @@ export class ÇlrWrappedCell implements DynamicWrapper, AfterViewInit, OnDestroy
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedCell, never>;
 }
@@ -5371,7 +5371,7 @@ export class ÇlrWrappedColumn implements DynamicWrapper, AfterViewInit, OnDestr
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedColumn, never>;
 }
@@ -5389,7 +5389,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedRow, never>;
 }
