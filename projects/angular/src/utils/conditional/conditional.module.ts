@@ -13,5 +13,9 @@ import { ClrIfOpen } from './if-open.directive';
 
 export const CONDITIONAL_DIRECTIVES: Type<any>[] = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
 
-@NgModule({ imports: [CommonModule], declarations: [CONDITIONAL_DIRECTIVES], exports: [CONDITIONAL_DIRECTIVES] })
+@NgModule({
+  imports: [CommonModule],
+  declarations: [CONDITIONAL_DIRECTIVES],
+  exports: [CONDITIONAL_DIRECTIVES],
+})
 export class ClrConditionalModule {}
