@@ -132,7 +132,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES],
   exports: [CLR_DATAGRID_DIRECTIVES],
-  entryComponents: [WrappedCell, WrappedColumn, WrappedRow],
 })
 export class ClrDatagridModule {
   constructor() {

@@ -12,7 +12,6 @@ import { TEMPLATE_REF_DIRECTIVES } from './index';
 @NgModule({
   imports: [CommonModule],
   declarations: [TEMPLATE_REF_DIRECTIVES],
-  entryComponents: [TEMPLATE_REF_DIRECTIVES],
   exports: [TEMPLATE_REF_DIRECTIVES],
 })
 export class ClrTemplateRefModule {}

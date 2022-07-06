@@ -19,7 +19,6 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
   imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule],
   declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
   exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper],
-  entryComponents: [ClrCheckboxWrapper],
 })
 export class ClrCheckboxModule {
   constructor() {

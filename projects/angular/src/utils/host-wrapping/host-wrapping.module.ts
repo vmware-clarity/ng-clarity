@@ -14,6 +14,5 @@ import { EmptyAnchor } from './empty-anchor';
 @NgModule({
   declarations: [EmptyAnchor],
   exports: [EmptyAnchor],
-  entryComponents: [EmptyAnchor],
 })
 export class ClrHostWrappingModule {}

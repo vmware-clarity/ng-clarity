@@ -24,7 +24,6 @@ export const CLR_DRAG_AND_DROP_DIRECTIVES: Type<any>[] = [
 @NgModule({
   imports: [CommonModule],
   declarations: [CLR_DRAG_AND_DROP_DIRECTIVES],
-  entryComponents: [ClrDraggableGhost],
   exports: [CLR_DRAG_AND_DROP_DIRECTIVES],
 })
 export class ClrDragAndDropModule {}

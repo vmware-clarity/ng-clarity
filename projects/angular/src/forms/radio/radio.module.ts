@@ -19,7 +19,6 @@ import { ClrRadioWrapper } from './radio-wrapper';
   imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
   declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
   exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-  entryComponents: [ClrRadioWrapper],
 })
 export class ClrRadioModule {
   constructor() {

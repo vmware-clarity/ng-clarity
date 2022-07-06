@@ -53,7 +53,6 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ],
   declarations: [CLR_DATEPICKER_DIRECTIVES],
   exports: [CLR_DATEPICKER_DIRECTIVES],
-  entryComponents: [ClrDateContainer],
 })
 export class ClrDatepickerModule {
   constructor() {

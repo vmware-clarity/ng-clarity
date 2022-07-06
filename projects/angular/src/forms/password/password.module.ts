@@ -18,7 +18,6 @@ import { ClrPasswordContainer } from './password-container';
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrPassword, ClrPasswordContainer],
   exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
-  entryComponents: [ClrPasswordContainer],
 })
 export class ClrPasswordModule {
   constructor() {
