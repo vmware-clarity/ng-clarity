@@ -20,6 +20,6 @@
   "peerDependencies": {
     "@angular/common": "^13.0.0",
     "@angular/core": "^13.0.0",
-    "@cds/core": "^6.0.0 || ^5.6.0"
+    "@cds/core": "^5.6.0 || ^6.0.0"
   }
 }
