@@ -11,5 +11,9 @@ import { ClarityModule } from '@clr/angular';
 import { ImagesDemo } from './images.demo';
 import { ROUTING } from './images.demo.routing';
 
-@NgModule({ imports: [CommonModule, ClarityModule, ROUTING], declarations: [ImagesDemo], exports: [ImagesDemo] })
+@NgModule({
+  imports: [CommonModule, ClarityModule, ROUTING],
+  declarations: [ImagesDemo],
+  exports: [ImagesDemo],
+})
 export class ImagesDemoModule {}

@@ -10,5 +10,9 @@ import { ClarityModule } from '@clr/angular';
 
 import { FakeLoader } from './fake-loader';
 
-@NgModule({ imports: [CommonModule, ClarityModule], declarations: [FakeLoader], exports: [FakeLoader] })
+@NgModule({
+  imports: [CommonModule, ClarityModule],
+  declarations: [FakeLoader],
+  exports: [FakeLoader],
+})
 export class UtilsDemoModule {}

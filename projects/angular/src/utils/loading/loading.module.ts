@@ -11,5 +11,9 @@ import { ClrLoading } from './loading';
 
 export const CLR_LOADING_DIRECTIVES: Type<any>[] = [ClrLoading];
 
-@NgModule({ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] })
+@NgModule({
+  imports: [CommonModule],
+  declarations: [CLR_LOADING_DIRECTIVES],
+  exports: [CLR_LOADING_DIRECTIVES],
+})
 export class ClrLoadingModule {}

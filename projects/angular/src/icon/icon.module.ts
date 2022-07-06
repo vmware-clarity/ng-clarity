@@ -11,5 +11,9 @@ import { CdsIconCustomTag, ClrIconCustomTag } from './icon';
 
 export const CLR_ICON_DIRECTIVES: Type<any>[] = [ClrIconCustomTag, CdsIconCustomTag];
 
-@NgModule({ imports: [CommonModule], declarations: [CLR_ICON_DIRECTIVES], exports: [CLR_ICON_DIRECTIVES] })
+@NgModule({
+  imports: [CommonModule],
+  declarations: [CLR_ICON_DIRECTIVES],
+  exports: [CLR_ICON_DIRECTIVES],
+})
 export class ClrIconModule {}
