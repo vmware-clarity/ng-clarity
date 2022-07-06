@@ -17,9 +17,9 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroupDirective, NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { filter, startWith } from 'rxjs/operators';
+import { AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { AccordionService } from '../providers/accordion.service';
 import { StepperService } from './providers/stepper.service';
@@ -73,9 +73,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   private listenForFormResetChanges() {
-    return this.form.statusChanges
-      .pipe(filter(() => this.form.pristine)) // https://github.com/angular/angular/issues/10887
-      .subscribe(() => this.stepperService.resetPanels());
+    return fromControlReset(this.form.form).subscribe(() => this.stepperService.resetPanels());
   }
 
   private listenForPanelsCompleted() {
@@ -102,4 +100,19 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
       }
     });
   }
+}
+
+function fromControlReset(control: AbstractControl) {
+  return new Observable<void>(observer => {
+    const unpatchedControlReset = control.reset;
+
+    control.reset = () => {
+      observer.next();
+      unpatchedControlReset.apply(control);
+    };
+
+    return () => {
+      control.reset = unpatchedControlReset;
+    };
+  });
 }

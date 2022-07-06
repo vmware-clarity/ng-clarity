@@ -26,6 +26,10 @@ const defaultStory: Story = args => ({
             <input clrInput formControlName="value" />
           </clr-input-container>
 
+          <br />
+          <button class="btn" (click)="form.patchValue({})">Patch Form</button>
+          <button class="btn" (click)="form.reset()">Reset Form</button>
+
           <button *ngIf="stepCount > i + 1" clrStepButton="next">next</button>
           <button *ngIf="stepCount === i + 1" clrStepButton="submit">submit</button>
         </clr-step-content>
