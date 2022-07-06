@@ -18,7 +18,6 @@ import { ClrSelectContainer } from './select-container';
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrSelect, ClrSelectContainer],
   exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
-  entryComponents: [ClrSelectContainer],
 })
 export class ClrSelectModule {
   constructor() {

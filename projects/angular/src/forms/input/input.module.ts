@@ -18,7 +18,6 @@ import { ClrInputContainer } from './input-container';
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrInput, ClrInputContainer],
   exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
-  entryComponents: [ClrInputContainer],
 })
 export class ClrInputModule {
   constructor() {

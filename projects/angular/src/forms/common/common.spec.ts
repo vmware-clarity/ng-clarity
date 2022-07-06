@@ -43,7 +43,6 @@ class GenericControl extends WrappedFormControl<GenericWrapper> {
   imports: [ClrCommonFormsModule, ClrHostWrappingModule],
   declarations: [GenericWrapper, GenericControl],
   exports: [ClrCommonFormsModule, GenericWrapper, GenericControl],
-  entryComponents: [GenericWrapper],
 })
 class CommonFormsTestModule {}
 

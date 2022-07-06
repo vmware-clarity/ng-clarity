@@ -18,7 +18,6 @@ import { ClrRangeContainer } from './range-container';
   imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
   declarations: [ClrRange, ClrRangeContainer],
   exports: [ClrCommonFormsModule, ClrRange, ClrRangeContainer],
-  entryComponents: [ClrRangeContainer],
 })
 export class ClrRangeModule {
   constructor() {

@@ -40,7 +40,6 @@ class WrappedDirective implements OnInit {
 @NgModule({
   declarations: [WrapperComponent, WrappedDirective],
   exports: [WrapperComponent, WrappedDirective],
-  entryComponents: [WrapperComponent],
 })
 class HostWrappingTestModule {}
 

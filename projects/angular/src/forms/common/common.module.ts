@@ -46,7 +46,6 @@ import { ClrControlSuccess } from './success';
     ClrControlContainer,
     ClrControl,
   ],
-  entryComponents: [ClrControlContainer],
 })
 export class ClrCommonFormsModule {
   constructor() {

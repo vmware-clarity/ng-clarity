@@ -18,7 +18,6 @@ import { ClrTextareaContainer } from './textarea-container';
   imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
   declarations: [ClrTextarea, ClrTextareaContainer],
   exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
-  entryComponents: [ClrTextareaContainer],
 })
 export class ClrTextareaModule {
   constructor() {

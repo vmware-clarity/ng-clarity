@@ -95,7 +95,6 @@ class FormWrapper {}
   imports: [ClrHostWrappingModule, FormsModule],
   declarations: [TestWrapper, TestControl, TestWrapper2, TestControl2, TestControl3, TestWrapper3, FormWrapper],
   exports: [TestWrapper, TestControl, TestWrapper2, TestControl2, TestControl3, TestWrapper3, FormWrapper],
-  entryComponents: [TestWrapper, TestWrapper2, TestWrapper3, FormWrapper],
 })
 class WrappedFormControlTestModule {}
 
