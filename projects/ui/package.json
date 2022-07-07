@@ -1,7 +1,7 @@
 {
   "name": "@clr/ui",
   "description": "CSS for Clarity",
-  "homepage": "https://angular.clarity.design",
+  "homepage": "https://clarity.design",
   "repository": {
     "type": "git",
     "url": "https://github.com/vmware-clarity/ng-clarity.git"
