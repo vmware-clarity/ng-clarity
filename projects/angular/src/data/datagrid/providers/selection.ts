@@ -239,6 +239,15 @@ export class Selection<T = any> {
     this.updateCurrent(value, true);
   }
 
+  /**
+   * Last selection, for use in range selection.
+   */
+  public rangeStart: T;
+  /**
+   * Shift key state, for use in range selection.
+   */
+  public shiftPressed = false;
+
   private valueCollector: Subject<T[]> = new Subject<T[]>();
   public updateCurrent(value: T[], emit: boolean) {
     this._current = value;

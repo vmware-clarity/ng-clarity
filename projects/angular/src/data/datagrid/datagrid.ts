@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -14,6 +15,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   Output,
   QueryList,
@@ -21,7 +23,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, fromEvent, Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
@@ -87,11 +89,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(UNIQUE_ID) datagridId: string,
+    @Inject(DOCUMENT) private document: any,
     private el: ElementRef,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    private keyNavigation: KeyNavigationGridController
+    private keyNavigation: KeyNavigationGridController,
+    private zone: NgZone
   ) {
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     this.detailService.id = datagridId;
@@ -326,6 +330,23 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }
       })
     );
+
+    // We need to preserve shift state, so it can be used on selection change, regardless of the input event
+    // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
+    this.zone.runOutsideAngular(() => {
+      this._subscriptions.push(
+        fromEvent(this.document.body, 'keydown').subscribe((event: KeyboardEvent) => {
+          if (event.key === 'Shift') {
+            this.selection.shiftPressed = true;
+          }
+        }),
+        fromEvent(this.document.body, 'keyup').subscribe((event: KeyboardEvent) => {
+          if (event.key === 'Shift') {
+            this.selection.shiftPressed = false;
+          }
+        })
+      );
+    });
   }
 
   /**
