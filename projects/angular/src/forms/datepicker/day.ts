@@ -6,6 +6,7 @@
 
 import { Component, Input } from '@angular/core';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
@@ -35,12 +36,12 @@ import { DateNavigationService } from './providers/date-navigation.service';
 })
 export class ClrDay {
   private _dayView: DayViewModel;
-  public dayString: string;
 
   constructor(
     private _dateNavigationService: DateNavigationService,
     private _toggleService: ClrPopoverToggleService,
-    private dateFormControlService: DateFormControlService
+    private dateFormControlService: DateFormControlService,
+    private commonStrings: ClrCommonStringsService
   ) {}
 
   /**
@@ -50,11 +51,18 @@ export class ClrDay {
   @Input('clrDayView')
   public set dayView(day: DayViewModel) {
     this._dayView = day;
-    this.dayString = this._dayView.dayModel.toDateString();
   }
 
   public get dayView(): DayViewModel {
     return this._dayView;
+  }
+
+  public get dayString(): string {
+    return this.dayView.isSelected
+      ? this.commonStrings.parse(this.commonStrings.keys.datepickerSelectedLabel, {
+          FULL_DATE: this._dayView.dayModel.toDateString(),
+        })
+      : this._dayView.dayModel.toDateString();
   }
 
   /**

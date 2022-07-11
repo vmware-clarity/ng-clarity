@@ -942,6 +942,8 @@ export interface ClrCommonStrings {
     // (undocumented)
     datepickerPreviousMonth: string;
     // (undocumented)
+    datepickerSelectedLabel: string;
+    // (undocumented)
     datepickerSelectMonthText: string;
     // (undocumented)
     datepickerSelectYearText: string;
@@ -2061,9 +2063,9 @@ export class ClrDatepickerViewManager {
 
 // @public (undocumented)
 export class ClrDay {
-    constructor(_dateNavigationService: DateNavigationService, _toggleService: ClrPopoverToggleService, dateFormControlService: DateFormControlService);
+    constructor(_dateNavigationService: DateNavigationService, _toggleService: ClrPopoverToggleService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    dayString: string;
+    get dayString(): string;
     // Warning: (ae-forgotten-export) The symbol "DayViewModel" needs to be exported by the entry point index.d.ts
     set dayView(day: DayViewModel);
     // (undocumented)

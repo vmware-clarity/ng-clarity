@@ -218,6 +218,7 @@ export interface ClrCommonStrings {
   datepickerCurrentDecade: string;
   datepickerSelectMonthText: string;
   datepickerSelectYearText: string;
+  datepickerSelectedLabel: string;
   /**
    * Stack View: Record has changed
    */
