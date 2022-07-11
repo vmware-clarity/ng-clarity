@@ -68,6 +68,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   datepickerCurrentDecade: 'Current decade',
   datepickerSelectMonthText: 'Select month, the current month is {CALENDAR_MONTH}',
   datepickerSelectYearText: 'Select year, the current year is {CALENDAR_YEAR}',
+  datepickerSelectedLabel: '{FULL_DATE} - Selected',
   // Stack View
   stackViewChanged: 'Value changed.',
   // Responsive Nav

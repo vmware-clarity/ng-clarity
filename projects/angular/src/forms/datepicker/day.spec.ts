@@ -142,6 +142,16 @@ export default function () {
         expect(dayBtn.attributes['aria-label'].value).toEqual(dvm.dayModel.toDateString());
       });
 
+      it('sets the correct value for the aria-label attribute when the date is selected', () => {
+        const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
+        const dvm: DayViewModel = context.clarityDirective.dayView;
+
+        context.testComponent.dayView.isSelected = true;
+
+        context.detectChanges();
+        expect(dayBtn.attributes['aria-label'].value).toEqual(`${dvm.dayModel.toDateString()} - Selected`);
+      });
+
       it('sets aria-selected when the date is selected', () => {
         const button: HTMLButtonElement = context.clarityElement.children[0];
         expect(button.attributes['aria-selected'].value).toBe('false');
