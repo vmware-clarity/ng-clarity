@@ -691,6 +691,10 @@
         width: $clr_baselineRem_78px;
       }
 
+      .datagrid-date-filter-input {
+        width: $clr_baselineRem_78px;
+      }
+
       .datagrid-filter-toggle {
         @include clr-no-styles-button();
         cursor: pointer;

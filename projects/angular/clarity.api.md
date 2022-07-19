@@ -22,7 +22,7 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i40 from '@angular/forms';
+import * as i41 from '@angular/forms';
 import * as i6 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
@@ -860,10 +860,10 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i48" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i49" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_12.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i48.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i19_2.ClrPopoverModuleNext, typeof i17_2.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_12.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_12.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i49.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i19_2.ClrPopoverModuleNext, typeof i17_2.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_12.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -1426,6 +1426,12 @@ export interface ClrDatagridComparatorInterface<T> {
 }
 
 // @public (undocumented)
+export interface ClrDatagridDateFilterInterface<T> {
+    // (undocumented)
+    accepts(item: T, from: Date, to: Date): boolean;
+}
+
+// @public (undocumented)
 export class ClrDatagridDetail {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
@@ -1626,11 +1632,12 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i34" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i35" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i36" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i43" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i37" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i44" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i45" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_8.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridColumn, typeof i5_2.ClrDatagridColumnSeparator, typeof i6_3.ClrDatagridColumnToggle, typeof i7.ClrDatagridHideableColumn, typeof i8_2.ClrDatagridFilter, typeof i9.ClrDatagridItems, typeof i10.ClrDatagridItemsTrackBy, typeof i11.ClrDatagridRow, typeof i12.ClrDatagridRowDetail, typeof i13.DatagridDetailRegisterer, typeof i14.ClrDatagridCell, typeof i15.ClrDatagridFooter, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPageSize, typeof i18.ClrDatagridPlaceholder, typeof i19.ClrDatagridColumnToggleButton, typeof i20.ClrDatagridColumnToggleTitle, typeof i21.ClrDatagridDetail, typeof i22.ClrIfDetail, typeof i23.ClrDatagridDetailHeader, typeof i24.ClrDatagridDetailBody, typeof i25.WrappedCell, typeof i26.WrappedColumn, typeof i27.WrappedRow, typeof i28.DatagridMainRenderer, typeof i29.DatagridHeaderRenderer, typeof i30.DatagridRowRenderer, typeof i31.DatagridCellRenderer, typeof i32.DatagridWillyWonka, typeof i33.ActionableOompaLoompa, typeof i34.ExpandableOompaLoompa, typeof i35.DatagridStringFilter, typeof i36.DatagridNumericFilter], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i11_2.ClrFormsModule, typeof i40.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i43.ClrOutsideClickModule, typeof i44.ClrExpandableAnimationModule, typeof i15_2.ClrDragAndDropModule, typeof i17_2.ClrSpinnerModule, typeof i19_2.ClrPopoverModuleNext, typeof i48.ClrKeyFocusModule, typeof i7_5.ClrFocusTrapModule, typeof i8_6.ClrFocusOnViewInitModule], [typeof i1_8.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridColumn, typeof i5_2.ClrDatagridColumnSeparator, typeof i6_3.ClrDatagridColumnToggle, typeof i7.ClrDatagridHideableColumn, typeof i8_2.ClrDatagridFilter, typeof i9.ClrDatagridItems, typeof i10.ClrDatagridItemsTrackBy, typeof i11.ClrDatagridRow, typeof i12.ClrDatagridRowDetail, typeof i13.DatagridDetailRegisterer, typeof i14.ClrDatagridCell, typeof i15.ClrDatagridFooter, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPageSize, typeof i18.ClrDatagridPlaceholder, typeof i19.ClrDatagridColumnToggleButton, typeof i20.ClrDatagridColumnToggleTitle, typeof i21.ClrDatagridDetail, typeof i22.ClrIfDetail, typeof i23.ClrDatagridDetailHeader, typeof i24.ClrDatagridDetailBody, typeof i25.WrappedCell, typeof i26.WrappedColumn, typeof i27.WrappedRow, typeof i28.DatagridMainRenderer, typeof i29.DatagridHeaderRenderer, typeof i30.DatagridRowRenderer, typeof i31.DatagridCellRenderer, typeof i32.DatagridWillyWonka, typeof i33.ActionableOompaLoompa, typeof i34.ExpandableOompaLoompa, typeof i35.DatagridStringFilter, typeof i36.DatagridNumericFilter]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_8.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridColumn, typeof i5_2.ClrDatagridColumnSeparator, typeof i6_3.ClrDatagridColumnToggle, typeof i7.ClrDatagridHideableColumn, typeof i8_2.ClrDatagridFilter, typeof i9.ClrDatagridItems, typeof i10.ClrDatagridItemsTrackBy, typeof i11.ClrDatagridRow, typeof i12.ClrDatagridRowDetail, typeof i13.DatagridDetailRegisterer, typeof i14.ClrDatagridCell, typeof i15.ClrDatagridFooter, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPageSize, typeof i18.ClrDatagridPlaceholder, typeof i19.ClrDatagridColumnToggleButton, typeof i20.ClrDatagridColumnToggleTitle, typeof i21.ClrDatagridDetail, typeof i22.ClrIfDetail, typeof i23.ClrDatagridDetailHeader, typeof i24.ClrDatagridDetailBody, typeof i25.WrappedCell, typeof i26.WrappedColumn, typeof i27.WrappedRow, typeof i28.DatagridMainRenderer, typeof i29.DatagridHeaderRenderer, typeof i30.DatagridRowRenderer, typeof i31.DatagridCellRenderer, typeof i32.DatagridWillyWonka, typeof i33.ActionableOompaLoompa, typeof i34.ExpandableOompaLoompa, typeof i35.DatagridStringFilter, typeof i36.DatagridNumericFilter, typeof i37.DatagridDateFilter], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i11_2.ClrFormsModule, typeof i41.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i44.ClrOutsideClickModule, typeof i45.ClrExpandableAnimationModule, typeof i15_2.ClrDragAndDropModule, typeof i17_2.ClrSpinnerModule, typeof i19_2.ClrPopoverModuleNext, typeof i49.ClrKeyFocusModule, typeof i7_5.ClrFocusTrapModule, typeof i8_6.ClrFocusOnViewInitModule], [typeof i1_8.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridColumn, typeof i5_2.ClrDatagridColumnSeparator, typeof i6_3.ClrDatagridColumnToggle, typeof i7.ClrDatagridHideableColumn, typeof i8_2.ClrDatagridFilter, typeof i9.ClrDatagridItems, typeof i10.ClrDatagridItemsTrackBy, typeof i11.ClrDatagridRow, typeof i12.ClrDatagridRowDetail, typeof i13.DatagridDetailRegisterer, typeof i14.ClrDatagridCell, typeof i15.ClrDatagridFooter, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPageSize, typeof i18.ClrDatagridPlaceholder, typeof i19.ClrDatagridColumnToggleButton, typeof i20.ClrDatagridColumnToggleTitle, typeof i21.ClrDatagridDetail, typeof i22.ClrIfDetail, typeof i23.ClrDatagridDetailHeader, typeof i24.ClrDatagridDetailBody, typeof i25.WrappedCell, typeof i26.WrappedColumn, typeof i27.WrappedRow, typeof i28.DatagridMainRenderer, typeof i29.DatagridHeaderRenderer, typeof i30.DatagridRowRenderer, typeof i31.DatagridCellRenderer, typeof i32.DatagridWillyWonka, typeof i33.ActionableOompaLoompa, typeof i34.ExpandableOompaLoompa, typeof i35.DatagridStringFilter, typeof i36.DatagridNumericFilter, typeof i37.DatagridDateFilter]>;
 }
 
 // @public (undocumented)
@@ -2708,7 +2715,7 @@ export class ClrInputModule {
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof i1_18.ClrInput, typeof i2_13.ClrInputContainer], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_18.ClrInput, typeof i2_13.ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof i1_18.ClrInput, typeof i2_13.ClrInputContainer], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_18.ClrInput, typeof i2_13.ClrInputContainer]>;
 }
 
 // @public (undocumented)
@@ -3260,7 +3267,7 @@ export class ClrPasswordModule {
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof i1_19.ClrPassword, typeof i2_14.ClrPasswordContainer], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_19.ClrPassword, typeof i2_14.ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof i1_19.ClrPassword, typeof i2_14.ClrPasswordContainer], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_19.ClrPassword, typeof i2_14.ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
@@ -3681,7 +3688,7 @@ export class ClrSelectModule {
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof i1_21.ClrSelect, typeof i2_16.ClrSelectContainer], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_21.ClrSelect, typeof i2_16.ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof i1_21.ClrSelect, typeof i2_16.ClrSelectContainer], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_21.ClrSelect, typeof i2_16.ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -3956,7 +3963,7 @@ export class ClrStackViewModule {
     // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_9.ClrStackViewLabel, typeof i5_9.ClrStackViewCustomTags, typeof i6_8.ClrStackInput, typeof i7_7.ClrStackSelect], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i44.ClrExpandableAnimationModule], [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_9.ClrStackViewLabel, typeof i5_9.ClrStackViewCustomTags, typeof i6_8.ClrStackInput, typeof i7_7.ClrStackSelect]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_9.ClrStackViewLabel, typeof i5_9.ClrStackViewCustomTags, typeof i6_8.ClrStackInput, typeof i7_7.ClrStackSelect], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i45.ClrExpandableAnimationModule], [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_9.ClrStackViewLabel, typeof i5_9.ClrStackViewCustomTags, typeof i6_8.ClrStackInput, typeof i7_7.ClrStackSelect]>;
 }
 
 // @public (undocumented)
@@ -4214,7 +4221,7 @@ export class ClrTabsModule {
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_40.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_12.ClrTabLink, typeof i6_9.TabsWillyWonka, typeof i7_8.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_4.ClrTemplateRefModule, typeof i48.ClrKeyFocusModule], [typeof i1_40.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_12.ClrTabLink, typeof i6_9.TabsWillyWonka, typeof i7_8.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_40.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_12.ClrTabLink, typeof i6_9.TabsWillyWonka, typeof i7_8.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_4.ClrTemplateRefModule, typeof i49.ClrKeyFocusModule], [typeof i1_40.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_12.ClrTabLink, typeof i6_9.TabsWillyWonka, typeof i7_8.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -4259,7 +4266,7 @@ export class ClrTextareaModule {
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof i1_22.ClrTextarea, typeof i2_17.ClrTextareaContainer], [typeof i6.CommonModule, typeof i40.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_22.ClrTextarea, typeof i2_17.ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof i1_22.ClrTextarea, typeof i2_17.ClrTextareaContainer], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_22.ClrTextarea, typeof i2_17.ClrTextareaContainer]>;
 }
 
 // @public (undocumented)
@@ -5008,6 +5015,44 @@ export const CONDITIONAL_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CUSTOM_BUTTON_TYPES: any;
 
+// Warning: (ae-forgotten-export) The symbol "DatagridDateFilterImpl" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export class DatagridDateFilter<T = any> extends DatagridFilterRegistrar<T, DatagridDateFilterImpl<T>> implements CustomFilter, AfterViewInit {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverToggleService: ClrPopoverToggleService, ngZone: NgZone);
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
+    set customDateFilter(value: ClrDatagridDateFilterInterface<T> | RegisteredFilter<T, DatagridDateFilterImpl<T>>);
+    filterContainer: ClrDatagridFilter<T>;
+    // (undocumented)
+    filterValueChange: EventEmitter<any>;
+    // (undocumented)
+    get from(): Date;
+    set from(from: Date);
+    input: ElementRef;
+    maxPlaceholder: string;
+    // (undocumented)
+    get maxPlaceholderValue(): string;
+    // (undocumented)
+    minPlaceholder: string;
+    // (undocumented)
+    get minPlaceholderValue(): string;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    open: boolean;
+    // (undocumented)
+    get to(): Date;
+    set to(to: Date);
+    get value(): [Date, Date];
+    set value(values: [Date, Date]);
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridDateFilter<any>, "clr-dg-date-filter", never, { "maxPlaceholder": "clrFilterMaxPlaceholder"; "minPlaceholder": "clrFilterMinPlaceholder"; "customDateFilter": "clrDgDateFilter"; "value": "clrFilterValue"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDateFilter<any>, never>;
+}
+
 // Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
@@ -5051,6 +5096,17 @@ export class DatagridPropertyComparator<T = any> implements ClrDatagridComparato
     constructor(prop: string);
     // (undocumented)
     compare(a: T, b: T): number;
+    // (undocumented)
+    prop: string;
+}
+
+// @public (undocumented)
+export class DatagridPropertyDateFilter<T = any> implements ClrDatagridDateFilterInterface<T> {
+    constructor(prop: string, exact?: boolean);
+    // (undocumented)
+    accepts(item: T, from: Date, to: Date): boolean;
+    // (undocumented)
+    exact: boolean;
     // (undocumented)
     prop: string;
 }

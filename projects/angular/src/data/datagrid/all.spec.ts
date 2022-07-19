@@ -13,8 +13,11 @@
 
 import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
+import DatagridDateFilterImplSpecs from './built-in/filters/datagrid-date-filter-impl.spec';
+import DatagridDateFilterSpecs from './built-in/filters/datagrid-date-filter.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
 import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
+import DatagridPropertyDateFilterSpecs from './built-in/filters/datagrid-property-date-filter.spec';
 import DatagridPropertyNumericFilterSpecs from './built-in/filters/datagrid-property-numeric-filter.spec';
 import DatagridPropertyStringFilterSpecs from './built-in/filters/datagrid-property-string-filter.spec';
 import DatagridStringFilterImplSpecs from './built-in/filters/datagrid-string-filter-impl.spec';
@@ -112,8 +115,11 @@ describe('Datagrid', function () {
   describe('Built-in', function () {
     NestedPropertySpecs();
     DatagridPropertyComparatorSpecs();
+    DatagridPropertyDateFilterSpecs();
     DatagridPropertyStringFilterSpecs();
     DatagridPropertyNumericFilterSpecs();
+    DatagridDateFilterSpecs();
+    DatagridDateFilterImplSpecs();
     DatagridStringFilterSpecs();
     DatagridStringFilterImplSpecs();
     DatagridNumericFilterSpecs();
