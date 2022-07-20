@@ -13,7 +13,7 @@ import { Page } from './providers/page';
   template: `
     <ng-content></ng-content>
     <div class="clr-select-wrapper">
-      <select [class.clr-page-size-select]="true" [(ngModel)]="page.size">
+      <select id="pageSizeOptionsId" [class.clr-page-size-select]="true" [(ngModel)]="page.size">
         <option *ngFor="let option of pageSizeOptions" [ngValue]="option">{{ option }}</option>
       </select>
     </div>
@@ -21,6 +21,7 @@ import { Page } from './providers/page';
 })
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];
+  @Input('clrPageSizeOptionsId') pageSizeOptionsId: string = '';
 
   constructor(public page: Page) {}
 
