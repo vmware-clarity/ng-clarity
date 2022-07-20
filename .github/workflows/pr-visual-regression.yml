@@ -35,6 +35,13 @@ jobs:
           path: dist/docs
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
+      - name: Fetch Commit
+        if: ${{steps.get_pr_event.outputs.targetBranch == 'main'}}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          SOURCE_HEAD_REPO: ${{steps.get_pr_event.outputs.sourceHeadRepo}}
+          SOURCE_HEAD_SHA: ${{steps.get_pr_event.outputs.sourceHeadSha}}
+        run: git fetch https://x-access-token:${GITHUB_TOKEN}@github.com/${SOURCE_HEAD_REPO}.git ${SOURCE_HEAD_SHA}
       - name: Deploy Chromatic
         if: ${{steps.get_pr_event.outputs.targetBranch == 'main'}}
         timeout-minutes: 5
