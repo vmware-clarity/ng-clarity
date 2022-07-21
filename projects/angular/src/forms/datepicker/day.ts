@@ -25,6 +25,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
       [attr.tabindex]="dayView.tabIndex"
       (click)="selectDay()"
       (focus)="onDayViewFocus()"
+      [attr.aria-current]="dayView.isTodaysDate ? 'date' : 'false'"
       [attr.aria-label]="dayString"
       [attr.aria-selected]="dayView.isSelected"
     >

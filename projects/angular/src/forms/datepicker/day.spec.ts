@@ -122,6 +122,20 @@ export default function () {
         expect(context.clarityDirective.selectDay).toHaveBeenCalled();
       });
 
+      it('sets arria-current on the button correctly', function () {
+        const button: HTMLButtonElement = context.clarityElement.children[0];
+
+        context.testComponent.dayView.isTodaysDate = true;
+
+        context.detectChanges();
+        expect(button.attributes['aria-current'].value).toBe('date');
+
+        context.testComponent.dayView.isTodaysDate = false;
+
+        context.detectChanges();
+        expect(button.attributes['aria-current'].value).toBe('false');
+      });
+
       it('sets the correct value for the aria-label attribute', () => {
         const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
         const dvm: DayViewModel = context.clarityDirective.dayView;
