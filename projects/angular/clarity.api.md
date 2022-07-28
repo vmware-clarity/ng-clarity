@@ -1275,6 +1275,8 @@ export class ClrDatagridPageSize {
     page: Page;
     // (undocumented)
     pageSizeOptions: number[];
+    // (undocumented)
+    pageSizeOptionsId: string;
 }
 
 // @public (undocumented)
