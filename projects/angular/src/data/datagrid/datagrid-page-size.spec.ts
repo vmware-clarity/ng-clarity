@@ -25,6 +25,12 @@ export default function (): void {
         context.detectChanges();
         expect(context.clarityDirective.pageSizeOptions).toEqual([10, 20, 50, 100]);
       });
+
+      it('receives an input for page size options id', function () {
+        context.testComponent.pageSizeOptionsId = 'some-id';
+        context.detectChanges();
+        expect(context.clarityDirective.pageSizeOptionsId).toEqual('some-id');
+      });
     });
 
     describe('View', function () {
@@ -54,6 +60,21 @@ export default function (): void {
 
         it('projects content before the select element', function () {
           expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+        });
+
+        it('displays a select with a default id if none given', function () {
+          const select = context.clarityElement.querySelector('select');
+          expect(select).not.toBeNull();
+          expect(select.id).toBeTruthy();
+        });
+
+        it('displays a select with pageSizeOptionsId as id', function () {
+          const pageSizeOptionsId = 'some-id';
+          context.testComponent.pageSizeOptionsId = pageSizeOptionsId;
+          context.detectChanges();
+          const select = context.clarityElement.querySelector('select');
+          expect(select).not.toBeNull();
+          expect(select.id).toBe(pageSizeOptionsId);
         });
 
         it('displays a select with pageSizeOptions as choices', function () {
@@ -92,8 +113,13 @@ export default function (): void {
 class SimpleTest {}
 
 @Component({
-  template: `<clr-dg-page-size [clrPageSizeOptions]="pageSizeOptions">Hello world</clr-dg-page-size>`,
+  template: `
+    <clr-dg-page-size [clrPageSizeOptions]="pageSizeOptions" [clrPageSizeOptionsId]="pageSizeOptionsId">
+      Hello world
+    </clr-dg-page-size>
+  `,
 })
 class FullTest {
   pageSizeOptions: number[];
+  pageSizeOptionsId: string;
 }
