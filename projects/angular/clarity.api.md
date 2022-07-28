@@ -1649,7 +1649,9 @@ export class ClrDatagridPageSize {
     // (undocumented)
     pageSizeOptions: number[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": "clrPageSizeOptions"; }, {}, never, ["*"]>;
+    pageSizeOptionsId: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": "clrPageSizeOptions"; "pageSizeOptionsId": "clrPageSizeOptionsId"; }, {}, never, ["*"]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
 }
