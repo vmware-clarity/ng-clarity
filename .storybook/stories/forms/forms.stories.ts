@@ -26,6 +26,7 @@ const defaultStory: Story = args => ({
         <label>Name</label>
         <input clrInput formControlName="name" required />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
@@ -34,6 +35,7 @@ const defaultStory: Story = args => ({
         <label>Age</label>
         <input clrInput formControlName="age" type="number" min="0" required />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-success>Age is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
         <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
         <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
@@ -42,6 +44,7 @@ const defaultStory: Story = args => ({
         <label>Password</label>
         <input clrPassword formControlName="password" required />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-success>Password is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
@@ -56,6 +59,7 @@ const defaultStory: Story = args => ({
         <label>Description</label>
         <textarea clrTextarea formControlName="description" required></textarea>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-success>Description is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Description is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
