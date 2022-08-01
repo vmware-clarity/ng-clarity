@@ -66,6 +66,10 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
     return this.filterFn.accepts(item, this.lowerCaseValue);
   }
 
+  public clear(): void {
+    this.value = '';
+  }
+
   public get state() {
     if (this.filterFn instanceof DatagridPropertyStringFilter) {
       return {

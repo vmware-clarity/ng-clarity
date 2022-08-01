@@ -57,4 +57,10 @@ export class ColorFilter implements ClrDatagridFilterInterface<User> {
   isActive(): boolean {
     return this.nbColors > 0;
   }
+
+  clear(): void {
+    this.nbColors = 0;
+    this.selectedColors = {};
+    this.changes.emit(true);
+  }
 }
