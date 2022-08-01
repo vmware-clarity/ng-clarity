@@ -11,11 +11,20 @@ import { Story } from '@storybook/angular';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
+const buttonTypes = ['primary', 'success', 'warning', 'danger'];
+const buttonStyles = ['outline', 'solid', 'flat'];
+
 const defaultStory: Story = args => ({
   template: `
     <clr-button-group>
       <clr-button
-        [class]="class"
+        class="btn ${
+          args.buttonStyle === 'flat'
+            ? 'btn-link'
+            : args.buttonStyle === 'solid'
+            ? `btn-${args.buttonType}`
+            : `btn-${args.buttonType}-outline`
+        }"
         [clrInMenu]="clrInMenu"
         [disabled]="disabled"
         (click)="click($event)"
@@ -32,7 +41,7 @@ const defaultParameters: Parameters = {
   component: ClrButton,
   argTypes: {
     // inputs
-    class: { defaultValue: 'btn' },
+    class: { control: { disable: true } },
     clrInMenu: { defaultValue: false },
     disabled: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
@@ -40,6 +49,14 @@ const defaultParameters: Parameters = {
     // methods
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
+    buttonType: {
+      defaultValue: 'primary',
+      control: { type: 'radio', options: buttonTypes },
+    },
+    buttonStyle: {
+      defaultValue: 'outline',
+      control: { type: 'radio', options: buttonStyles },
+    },
   },
   args: {
     // outputs
@@ -49,13 +66,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    disabled: false,
-  },
-  {
-    disabled: true,
-  },
-];
+setupStorybook(ClrButtonGroupModule, defaultStory, defaultParameters, generateVariants());
 
-setupStorybook(ClrButtonGroupModule, defaultStory, defaultParameters, variants);
+function generateVariants() {
+  const variants: Parameters[] = [];
+
+  for (const buttonType of buttonTypes) {
+    for (const buttonStyle of buttonStyles) {
+      for (const disabled of [false, true]) {
+        variants.push({
+          buttonType,
+          buttonStyle,
+          disabled,
+        });
+      }
+    }
+  }
+
+  return variants;
+}
