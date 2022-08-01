@@ -5,6 +5,7 @@
  */
 
 import { Component, Input } from '@angular/core';
+import { uniqueIdFactory } from 'src/utils/id-generator/id-generator.service';
 
 import { Page } from './providers/page';
 
@@ -21,7 +22,7 @@ import { Page } from './providers/page';
 })
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];
-  @Input('clrPageSizeOptionsId') pageSizeOptionsId = '';
+  @Input('clrPageSizeOptionsId') pageSizeOptionsId = uniqueIdFactory();
 
   constructor(public page: Page) {}
 
