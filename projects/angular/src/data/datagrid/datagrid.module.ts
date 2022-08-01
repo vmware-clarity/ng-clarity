@@ -32,6 +32,7 @@ import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module'
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
 import { ClrOutsideClickModule } from '../../utils/outside-click/outside-click.module';
 import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
+import { DatagridDateFilter } from './built-in/filters/datagrid-date-filter';
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
 import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
@@ -113,6 +114,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   // Built-in shortcuts
   DatagridStringFilter,
   DatagridNumericFilter,
+  DatagridDateFilter,
 ];
 
 @NgModule({

@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
+import { CreationFilter } from '../utils/creation-filter';
 import { IDFilter } from '../utils/id-filter';
 import { PokemonFilter } from '../utils/pokemon-filter';
 
@@ -22,6 +23,7 @@ export class DatagridBuiltInFiltersDemo {
 
   pokemonFilter = new PokemonFilter();
   idFilter = new IDFilter();
+  creationFilter = new CreationFilter();
   myFilterValue1 = 'A';
   myFilterValue2 = 'E';
   displayFilter = true;
