@@ -50,4 +50,4 @@ jobs:
           CHROMATIC_SHA: ${{steps.get_pr_event.outputs.sourceHeadSha}}
           CHROMATIC_BRANCH: ${{steps.get_pr_event.outputs.sourceHeadBranch}}
           CHROMATIC_SLUG: ${{steps.get_pr_event.outputs.sourceHeadRepo}}
-        run: npx chromatic --storybook-build-dir ./dist/docs
+        run: npx chromatic --storybook-build-dir ./dist/docs --exit-once-uploaded
