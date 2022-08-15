@@ -144,10 +144,6 @@ export const APP_ROUTES: Routes = [
     path: 'vertical-nav',
     loadChildren: () => import('./vertical-nav/vertical-nav.demo.module').then(m => m.VerticalNavDemoModule),
   },
-  {
-    path: 'virtual-scroll',
-    loadChildren: () => import('./virtual-scroll/virtual-scroll.demo.module').then(m => m.VirtualScrollDemoModule),
-  },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
 ];
