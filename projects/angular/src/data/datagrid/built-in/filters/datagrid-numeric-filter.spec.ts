@@ -39,6 +39,7 @@ const PROVIDERS = [
     useClass: MockRenderer,
   },
 ];
+
 export default function (): void {
   describe('DatagridNumericFilter accessibility', function () {
     let context: TestContext<DatagridNumericFilter<string>, AccessibilityTest>;

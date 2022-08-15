@@ -12,6 +12,7 @@ export default function (): void {
   describe('ControlClassService', function () {
     let controlClassService: ControlClassService;
     let layoutService: LayoutService;
+
     beforeEach(() => {
       layoutService = new LayoutService();
       controlClassService = new ControlClassService(layoutService);

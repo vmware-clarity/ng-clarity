@@ -181,6 +181,7 @@ export default function () {
 
           expect(alertsContainer.classList.contains('alert-danger')).toBe(true);
         });
+
         it('sets info classname as expected', function () {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
@@ -189,6 +190,7 @@ export default function () {
 
           expect(alertsContainer.classList.contains('alert-info')).toBe(true);
         });
+
         it('sets success classname as expected', function () {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
@@ -197,6 +199,7 @@ export default function () {
 
           expect(alertsContainer.classList.contains('alert-success')).toBe(true);
         });
+
         it('sets warning classname as expected', function () {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;

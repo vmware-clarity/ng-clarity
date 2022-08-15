@@ -82,6 +82,7 @@ export default function (): void {
     describe('label offset', () => {
       let fixture, containerDE;
       let containerService: ComboboxContainerService;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

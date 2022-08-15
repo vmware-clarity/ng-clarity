@@ -76,6 +76,7 @@ export default function (): void {
 
     describe('set datalist type', () => {
       let fixture, containerDE, containerEl;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

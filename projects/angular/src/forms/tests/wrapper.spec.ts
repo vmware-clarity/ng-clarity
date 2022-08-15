@@ -17,6 +17,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
     let fixture, containerDE, containerEl;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
@@ -40,6 +41,7 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
 export function WrapperFullSpec(testContainer, testControl, testComponent, wrapperClass): void {
   describe('full example', () => {
     let fixture, containerDE, containerEl;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
@@ -78,6 +80,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
 export function WrapperContainerSpec(testContainer, testWrapper, testControl, testComponent, wrapperClass): void {
   describe('wrapper in container', () => {
     let fixture, wrapper, wrapperEl;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

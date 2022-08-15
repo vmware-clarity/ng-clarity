@@ -37,17 +37,21 @@ export default function (): void {
     type Context = TestContext<ClrPopoverOpenCloseButton, TestHost> & {
       toggleService: ClrPopoverToggleService;
     };
+
     describe('TypeScript API', function (this: Context) {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
       });
+
       beforeEach(function (this: Context) {
         this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
         this.detectChanges();
       });
+
       it('declares a ClrPopoverToggleService', function (this: Context) {
         expect(this.toggleService).toBeDefined();
       });
+
       it('responds to openChange events from the toggleService', function (this: Context) {
         let changeCount = 0;
         const sub: Subscription = this.toggleService.openChange.subscribe(() => {
@@ -66,10 +70,12 @@ export default function (): void {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
       });
+
       beforeEach(function (this: Context) {
         this.toggleService = this.getClarityProvider(ClrPopoverToggleService);
         this.detectChanges();
       });
+
       it('emits events when the open state changes', function (this: Context) {
         expect(this.fixture.componentInstance.openState).toBeUndefined(); // inital state
         this.clarityElement.click();
@@ -79,12 +85,14 @@ export default function (): void {
         expect(this.hostComponent.openState).toEqual(this.toggleService.open);
         expect(this.hostComponent.openState).toBe(false); // closed state
       });
+
       it('handles click events', function (this: Context) {
         const clickSpy = spyOn(this.toggleService, 'toggleWithEvent');
         this.clarityElement.click();
         expect(clickSpy.calls.count()).toEqual(1);
       });
     });
+
     describe('View Basics', function (this: Context) {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],

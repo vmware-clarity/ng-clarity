@@ -174,6 +174,7 @@ export function addHelpers(): void {
       return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
     };
   });
+
   afterEach(function () {
     if (this._context) {
       this._context.fixture.destroy();

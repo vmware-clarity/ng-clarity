@@ -55,6 +55,7 @@ class TreeTypeAhead {}
 
 export default function (): void {
   type Context = TestContext<ClrTree<void>, TestComponent>;
+
   describe('ClrTree Component', function () {
     spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
 

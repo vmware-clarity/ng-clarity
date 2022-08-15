@@ -68,6 +68,7 @@ export default function (): void {
 
     describe('set password type', () => {
       let fixture, containerDE, containerEl;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

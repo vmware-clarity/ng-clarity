@@ -40,6 +40,7 @@ export default function (): void {
     spec(ClrDatalist, TestDatalistId, undefined, {
       providers: [DatalistIdService],
     });
+
     beforeEach(function () {
       datalistIdService = this.getClarityProvider(DatalistIdService);
     });

@@ -19,11 +19,13 @@ describe('ClrPopover', () => {
     ClrAlignmentSpec();
     ClrViewportValidationSpec();
   });
+
   describe('Service', () => {
     EventServiceSpec();
     ToggleServiceSpec();
     PositionServiceSpec();
   });
+
   describe('Directive', () => {
     ClrPopoverAnchorSpec();
     ClrPopoverOpenCloseButtonSpec();
