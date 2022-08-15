@@ -163,6 +163,7 @@ export default function (): void {
         this.directive = this.context.clarityDirective;
         expect(this.directive._view).toBeDefined();
       });
+
       it('receives an input for the comparator', function () {
         this.context = this.create(ClrDatagridColumn, SimpleTest, DATAGRID_SPEC_PROVIDERS);
         this.comparator = new TestComparator();
@@ -416,6 +417,7 @@ export default function (): void {
 
     describe('Build-in string and numeric filters', function () {
       let context;
+
       beforeEach(function () {
         context = this.create(ClrDatagridColumn, ColTypeTest, DATAGRID_SPEC_PROVIDERS);
       });

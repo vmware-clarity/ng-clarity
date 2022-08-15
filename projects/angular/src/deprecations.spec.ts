@@ -20,11 +20,13 @@ describe('Deprecations', () => {
       expect(ClrDatagridColumnToggleTitle).toBeTruthy();
       expect(ClrDatagridColumnToggleButton).toBeTruthy();
     });
+
     it('should deprecate but still support clrDgRowSelection', () => {
       const propTest = Object.getOwnPropertyDescriptor(ClrDatagrid.prototype, 'rowSelectionMode');
       expect(propTest.set).toBeDefined();
     });
   });
+
   describe('3.0', () => {
     it('should deprecate inline wizard inputs', () => {
       const propTest = Object.getOwnPropertyDescriptor(ClrWizard.prototype, 'stopModalAnimations');

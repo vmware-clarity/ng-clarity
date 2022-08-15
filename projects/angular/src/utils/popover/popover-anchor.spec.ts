@@ -26,6 +26,7 @@ export default function (): void {
     type Context = TestContext<ClrPopoverAnchor, TestHost> & {
       eventService: ClrPopoverEventsService;
     };
+
     describe('Template API', () => {
       spec(ClrPopoverAnchor, TestHost, undefined, { providers: [ClrPopoverEventsService] });
 
@@ -38,8 +39,10 @@ export default function (): void {
         expect(this.eventService.anchorButtonRef).toEqual(this.hostComponent.anchor);
       });
     });
+
     describe('View Basics', function (this: Context) {
       spec(ClrPopoverAnchor, TestHost, undefined, { providers: [ClrPopoverEventsService] });
+
       it('adds the clr-anchor classname', function (this: Context) {
         expect(this.clarityElement.classList).toContain('clr-anchor');
       });

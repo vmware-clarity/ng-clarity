@@ -162,16 +162,19 @@ describe('NavLevelDirective', function () {
       it('should be closed by default', function () {
         expect(this.clarityDirective.isOpen).toBe(false);
       });
+
       it('should call hideNavigation()', function () {
         const spy = spyOn(this.clarityDirective, 'hideNavigation');
         this.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });
+
       it('should call removeFocusTrap()', function () {
         const spy = spyOn(this.clarityDirective, 'removeFocusTrap');
         this.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });
+
       it('should call hideCloseButton()', function () {
         const spy = spyOn(this.clarityDirective, 'hideCloseButton');
         this.clarityDirective.close();

@@ -20,6 +20,7 @@ import { DatalistIdService } from '../datalist/providers/datalist-id.service';
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
     let fixture, containerDE, containerEl, layoutService, container;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

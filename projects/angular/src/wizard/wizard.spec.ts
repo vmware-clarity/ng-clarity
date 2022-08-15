@@ -731,6 +731,7 @@ export default function (): void {
         wizard = context.clarityDirective;
         context.detectChanges();
       });
+
       describe('Page title focus', () => {
         it('should be placed on the page title after page change', () => {
           wizard.pageCollection.lastPage.makeCurrent();

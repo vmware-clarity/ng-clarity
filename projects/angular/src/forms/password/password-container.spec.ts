@@ -73,6 +73,7 @@ export default function (): void {
 
     describe('password toggle', () => {
       let fixture, containerDE, containerEl;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
@@ -100,6 +101,7 @@ export default function (): void {
         fixture.detectChanges();
         expect(containerEl.querySelector('button')).toBeFalsy();
       });
+
       it('should provide screen-reader only text for toggle button', () => {
         const button: HTMLButtonElement = containerEl.querySelector('button');
         expect(button.textContent.trim()).toEqual('Show password');

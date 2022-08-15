@@ -25,6 +25,7 @@ export default function () {
   describe('Highlight directive', () => {
     let context: TestContext<ClrFilterHighlight<string>, TestComponent>;
     let optionService: OptionSelectionService<string>;
+
     beforeEach(function () {
       context = this.createOnly(ClrFilterHighlight, TestComponent, [OptionSelectionService]);
       optionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;

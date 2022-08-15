@@ -27,17 +27,20 @@ describe('Drag And Drop', function () {
     ClrDraggableSnapshotSpecs();
     ClrGlobalDragModeSpecs();
   });
+
   describe('Components And Directives', function () {
     ClrIfDraggedSpecs();
     ClrDragHandleSpecs();
     ClrDraggableGhostSpecs();
     ClrDragAndDropIntegratedSpecs();
+
     describe('ClrDraggable', function () {
       ClrDraggableSpecs();
       ClrDraggableWithCustomGhostSpecs();
       ClrDraggableWithDragHandleSpecs();
       ClrDraggableWithGhostAndHandleSpecs();
     });
+
     describe('ClrDroppable', function () {
       ClrDroppableSpecs();
     });

@@ -1092,6 +1092,7 @@ export default function (): void {
           // final state
           expect(selection.current.every(x => [1, 2, 3, 4, 5, 6, 7].includes(x))).toBeTrue();
         });
+
         it('can update ranges in a sequence, releasing Shift', function () {
           // first range
           checkboxes[1].click();
@@ -1110,6 +1111,7 @@ export default function (): void {
           // final state
           expect(selection.current.every(x => [1, 2, 3, 5, 6, 7].includes(x))).toBeTrue();
         });
+
         it('can deselect items inside a range', fakeAsync(function () {
           // define range
           selection.current.push(1, 2, 3, 4, 5, 6, 7);
