@@ -189,6 +189,7 @@ export default function () {
         expect(assertEqualDates(date, new Date(2016, 0, 3)));
       });
     });
+
     describe('TypeScript API', () => {
       beforeEach(() => {
         localeHelperService = new LocaleHelperService('en-US');

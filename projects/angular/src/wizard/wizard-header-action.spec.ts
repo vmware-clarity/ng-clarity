@@ -212,6 +212,7 @@ export default function (): void {
           lookupEl = debugEl.nativeElement;
           projectedEl = lookupEl.querySelector('#clr-wizard-header-action-projection');
         });
+
         it('projects as expected', () => {
           expect(projectedEl.textContent.trim()).toBe(testComponent.projector);
         });

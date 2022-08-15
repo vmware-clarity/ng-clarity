@@ -21,6 +21,7 @@ import {
 export function ClrPositionTransformSpec(): void {
   describe('Transorm Function', () => {
     let position: ClrPopoverPosition;
+
     beforeEach(function () {
       position = {
         anchor: ClrAlignment.START,
@@ -29,6 +30,7 @@ export function ClrPositionTransformSpec(): void {
         side: ClrSide.BEFORE,
       };
     });
+
     describe('flipSides', () => {
       it('transforms a ClrPopoverPosition.side into the opposite ClrSide', () => {
         position = flipSides(position);
@@ -37,6 +39,7 @@ export function ClrPositionTransformSpec(): void {
         expect(position.side).toBe(ClrSide.BEFORE);
       });
     });
+
     describe('flipAxis', () => {
       it('transforms ClrPopoverPosition.axis into the opposite ClrAxis', () => {
         position = flipAxis(position);
@@ -45,37 +48,44 @@ export function ClrPositionTransformSpec(): void {
         expect(position.axis).toBe(ClrAxis.HORIZONTAL);
       });
     });
+
     describe('nudgeContent', () => {
       it('transforms a ClrPopoverPosition.content alignment forward from start to middle', () => {
         position = nudgeContent(position, true);
         expect(position.content).toBe(ClrAlignment.CENTER);
       });
+
       it('transforms the content alignment forward from center to end', () => {
         position.content = ClrAlignment.CENTER;
         position = nudgeContent(position, true);
         expect(position.content).toBe(ClrAlignment.END);
       });
+
       it('does not transform the content alignment forward when ClrAlignment.END', () => {
         position.content = ClrAlignment.END;
         position = nudgeContent(position, true);
         expect(position.content).toBe(ClrAlignment.END);
       });
+
       it('does not transform the content alignment backwards when ClrAlignment.START', () => {
         expect(position.content).toBe(ClrAlignment.START);
         position = nudgeContent(position);
         expect(position.content).toBe(ClrAlignment.START);
       });
+
       it('transforms the content alignment backwards from center to start', () => {
         position.content = ClrAlignment.CENTER;
         position = nudgeContent(position);
         expect(position.content).toBe(ClrAlignment.START);
       });
+
       it('transforms the content alignment backwards from end to center', () => {
         position.content = ClrAlignment.END;
         position = nudgeContent(position);
         expect(position.content).toBe(ClrAlignment.CENTER);
       });
     });
+
     describe('flipSidesAndNudgeContent', () => {
       it('should compose a function that performs two transforms on a ClrPosition', () => {
         const flipSidesAndNudgeRight = flipSidesAndNudgeContent(flipSides, nudgeContent, true);
@@ -108,18 +118,21 @@ export function ClrViewportValidationSpec() {
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
     };
+
     beforeEach(() => {
       // resize the browser for this suite
       (window as any).innerHeight = 600;
       (window as any).innerWidth = 600;
       window.dispatchEvent(new Event('resize'));
     });
+
     afterEach(() => {
       // Put the browser size back to its original
       (window as any).innerHeight = originalWindowSize.innerHeight;
       (window as any).innerWidth = originalWindowSize.innerWidth;
       window.dispatchEvent(new Event('resize'));
     });
+
     describe('Single violations', () => {
       it('should identify top window violations', () => {
         // make content rect very tall for a TOP violation
@@ -143,6 +156,7 @@ export function ClrViewportValidationSpec() {
         expect(errors.length).toEqual(1);
         expect(errors[0]).toBe(ClrViewportViolation.TOP);
       });
+
       it('should identify left window violations', () => {
         const wideContentRect: ClientRect = {
           bottom: 400,
@@ -164,6 +178,7 @@ export function ClrViewportValidationSpec() {
         expect(errors.length).toEqual(1);
         expect(errors[0]).toBe(ClrViewportViolation.LEFT);
       });
+
       it('should identify bottom window violations', () => {
         // make content rect very tall for a BOTTOM violation
         const tallContentRect: ClientRect = {
@@ -186,6 +201,7 @@ export function ClrViewportValidationSpec() {
         expect(errors.length).toEqual(1);
         expect(errors[0]).toBe(ClrViewportViolation.BOTTOM);
       });
+
       it('should identify right window violations', () => {
         const wideContentRect: ClientRect = {
           bottom: 400,
@@ -208,6 +224,7 @@ export function ClrViewportValidationSpec() {
         expect(errors[0]).toBe(ClrViewportViolation.RIGHT);
       });
     });
+
     describe('Double violations', () => {
       it('should identify top+left violations', () => {
         const topLeftRect: ClientRect = {
@@ -231,6 +248,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.LEFT);
         expect(errors).toContain(ClrViewportViolation.TOP);
       });
+
       it('should identify top+right violations', () => {
         const topRightRect: ClientRect = {
           bottom: 400,
@@ -253,6 +271,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
         expect(errors).toContain(ClrViewportViolation.TOP);
       });
+
       it('should identify bottom+left violations', () => {
         const bottomLeftRect: ClientRect = {
           bottom: 400,
@@ -275,6 +294,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.LEFT);
         expect(errors).toContain(ClrViewportViolation.BOTTOM);
       });
+
       it('should identify bottom+right violations', () => {
         const bottomRightRect: ClientRect = {
           bottom: 400,
@@ -297,6 +317,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
         expect(errors).toContain(ClrViewportViolation.BOTTOM);
       });
+
       it('should identify top+bottom violations', () => {
         const bottomTopRect: ClientRect = {
           bottom: 400,
@@ -319,6 +340,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.TOP);
         expect(errors).toContain(ClrViewportViolation.BOTTOM);
       });
+
       it('should identify left+right violations', () => {
         const leftRightRect: ClientRect = {
           bottom: 400,
@@ -342,6 +364,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
       });
     });
+
     describe('Triple violations', () => {
       it('should identify left+top+right violations', () => {
         const leftRightRect: ClientRect = {
@@ -366,6 +389,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
         expect(errors).toContain(ClrViewportViolation.TOP);
       });
+
       it('should identify top+right+bottom violations', () => {
         const topRightBottomRect: ClientRect = {
           bottom: 400,
@@ -389,6 +413,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
         expect(errors).toContain(ClrViewportViolation.TOP);
       });
+
       it('should identify right+bottom+left violations', () => {
         const rightBottomLeftRect: ClientRect = {
           bottom: 400,
@@ -412,6 +437,7 @@ export function ClrViewportValidationSpec() {
         expect(errors).toContain(ClrViewportViolation.RIGHT);
         expect(errors).toContain(ClrViewportViolation.LEFT);
       });
+
       it('should identify bottom+left+top violations', () => {
         const bottomLeftTopRect: ClientRect = {
           bottom: 400,

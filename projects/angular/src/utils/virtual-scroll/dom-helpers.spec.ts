@@ -31,6 +31,7 @@ export default function (): void {
         this.viewport = createDiv(document.body, { height: '100px', overflow: 'auto' });
         this.child = createDiv(this.viewport, { height: '300px' }, 'Hello');
       });
+
       afterEach(function (this: TestContext) {
         document.body.removeChild(this.viewport);
       });
@@ -73,6 +74,7 @@ export default function (): void {
         this.child = createDiv(this.viewport, { height: '300px' }, 'Hello');
         this.viewport.scrollTop = 200;
       });
+
       afterEach(function (this: TestContext) {
         document.body.removeChild(this.viewport);
       });
@@ -127,6 +129,7 @@ export default function (): void {
         this.viewport = createDiv(document.body, { height: '100px', overflow: 'auto' });
         this.child = createDiv(this.viewport, { height: '300px' }, 'Hello');
       });
+
       afterEach(function (this: TestContext) {
         document.body.removeChild(this.viewport);
       });
@@ -149,6 +152,7 @@ export default function (): void {
         this.viewport = createDiv(document.body, { height: '100px', overflow: 'auto' });
         this.child = createDiv(this.viewport, { height: '300px' }, 'Hello');
       });
+
       afterEach(function (this: TestContext) {
         document.body.removeChild(this.viewport);
       });

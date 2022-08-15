@@ -22,6 +22,7 @@ export default function (): void {
         }).toThrowError('The *clrIfDragged directive can only be used inside of a clrDraggable directive.');
       });
     });
+
     describe('With ClrDragEventListener', function () {
       beforeEach(function () {
         TestBed.configureTestingModule({

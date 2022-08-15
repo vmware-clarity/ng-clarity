@@ -532,6 +532,7 @@ export default function (): void {
 
       describe('single selection', function () {
         let ngZone: NgZone;
+
         beforeEach(function () {
           selectionInstance.selectionType = SelectionType.Single;
           ngZone = TestBed.get(NgZone);

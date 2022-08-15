@@ -145,6 +145,7 @@ export default function (): void {
     describe('smart datagrid width', () => {
       let context: ComponentFixture<RenderWidthTest>;
       let containerWidth: number;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [BrowserAnimationsModule, ClrDatagridModule],

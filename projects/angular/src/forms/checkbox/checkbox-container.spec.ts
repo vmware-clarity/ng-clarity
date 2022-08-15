@@ -105,6 +105,7 @@ export default function (): void {
 
     describe('inline buttons', () => {
       let fixture, containerDE, containerEl;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],

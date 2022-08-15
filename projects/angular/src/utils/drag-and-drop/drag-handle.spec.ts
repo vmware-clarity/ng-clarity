@@ -23,6 +23,7 @@ export default function (): void {
         }).toThrowError('The clrDragHandle directive can only be used inside of a clrDraggable directive.');
       });
     });
+
     describe('With ClrDragHandleRegistrar', function () {
       beforeEach(function () {
         TestBed.configureTestingModule({

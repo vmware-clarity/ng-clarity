@@ -173,6 +173,7 @@ export default function (): void {
         expect(replacedItem.style.color).toBe('red');
       });
     });
+
     describe('handles object arrays correctly', () => {
       beforeEach(function () {
         TestBed.configureTestingModule({

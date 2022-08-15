@@ -150,6 +150,7 @@ export function addHelpersDeprecated(
       return this._context;
     };
   });
+
   afterEach(function () {
     if (this._context) {
       this._context.fixture.destroy();

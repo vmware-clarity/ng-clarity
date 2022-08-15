@@ -68,16 +68,19 @@ export default function (): void {
         const testElementRef = setupAnchor(this);
         expect(this.eventService.anchorButtonRef).toEqual(testElementRef);
       });
+
       it('sets the content element', function (this: TestContext) {
         expect(this.eventService.contentRef).not.toBeDefined();
         const testElementRef = setupContent(this);
         expect(this.eventService.contentRef).toEqual(testElementRef);
       });
+
       it('sets the close button reference', function (this: TestContext) {
         expect(this.eventService.closeButtonRef).not.toBeDefined();
         const testElementRef = setupCloseButton(this);
         expect(this.eventService.closeButtonRef).toEqual(testElementRef);
       });
+
       it('sets outside click to close property', function (this: TestContext) {
         expect(this.eventService.ignoredEvent).not.toBeDefined();
         const testClick = new MouseEvent('click', {
@@ -88,6 +91,7 @@ export default function (): void {
         this.toggleService.toggleWithEvent(testClick);
         expect(this.eventService.ignoredEvent).toEqual(testClick);
       });
+
       it('set focus on the anchor button', function (this: TestContext) {
         const testAnchor = setupAnchor(this);
         setupContent(this);
@@ -95,6 +99,7 @@ export default function (): void {
         this.eventService.setAnchorFocus();
         expect(testAnchor.nativeElement.focus).toHaveBeenCalled();
       });
+
       it('sets focus on the close button', function (this: TestContext) {
         setupContent(this);
         const closeBtn = setupCloseButton(this);

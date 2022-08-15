@@ -62,6 +62,7 @@ export default function (): void {
       positionService: ClrPopoverPositionService;
       toggleService: ClrPopoverToggleService;
     };
+
     beforeEach(function (this: Context) {
       /*
        * The ClrPopoverContent element is a template and not rendered in the DOM,
@@ -86,9 +87,11 @@ export default function (): void {
       it('declares a Popover EventService', function (this: Context) {
         expect(this.eventService).toBeDefined();
       });
+
       it('declares a Popover PositionService', function (this: Context) {
         expect(this.positionService).toBeDefined();
       });
+
       it('declares a Popover ToggleService', function (this: Context) {
         expect(this.toggleService).toBeDefined();
       });

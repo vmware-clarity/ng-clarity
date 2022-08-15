@@ -30,6 +30,7 @@ interface TooltipContext extends TestContext<ClrTooltip, SimpleTest> {
 export default function (): void {
   describe('Tooltip component', function () {
     spec(ClrTooltip, SimpleTest, ClrTooltipModule, { providers: [TooltipIdService] });
+
     beforeEach(function (this: TooltipContext) {
       this.tooltipIdService = this.getClarityProvider(TooltipIdService);
     });

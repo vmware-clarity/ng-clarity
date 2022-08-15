@@ -30,12 +30,15 @@ export default function (): void {
       this.wrapper = this.fixture.componentInstance.wrapper;
       this.fixture.detectChanges();
     });
+
     it('should have a columnView', function (this: TestContext) {
       expect(this.wrapper.columnView).toBeDefined();
     });
+
     it('should have a templateRef to the portal', function (this: TestContext) {
       expect(this.wrapper.templateRef).toBeDefined();
     });
+
     it('projects content into the template', function (this: TestContext) {
       expect(this.wrapper.columnView.rootNodes[0].textContent.trim()).toBe('Hello World!');
     });
