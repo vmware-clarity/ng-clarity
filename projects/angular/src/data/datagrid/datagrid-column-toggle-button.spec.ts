@@ -29,6 +29,7 @@ export default function (): void {
       toggleButton = context.clarityDirective;
       columnsService.mockColumns(3);
     });
+
     describe('Typescript API', function () {
       it('checks hideable columns are all hidden', function () {
         columnsService.mockPartialHideable(0, 1);
@@ -48,6 +49,7 @@ export default function (): void {
         expect(toggleButton.allHideablesVisible).toBeTruthy();
       });
     });
+
     describe('View', function () {
       it('makes button disabled when all hideable columns are visible', function () {
         columnsService.mockPartialHideable(0, 1);

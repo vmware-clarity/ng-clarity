@@ -132,6 +132,7 @@ describe('KeyFocus directive', () => {
       keyPress(KeyCodes.ArrowUp);
       expect(clarityDirective.current).toBe(0);
     });
+
     it('current value updates, when elements are being removed', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
@@ -140,6 +141,7 @@ describe('KeyFocus directive', () => {
       component.showLast = false;
       fixture.detectChanges();
     });
+
     it('checks if keyboard event comes focused current', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
@@ -309,6 +311,7 @@ describe('KeyFocus directive', () => {
       fixture.detectChanges();
       expect(clarityDirective.focusableItems.length).toBe(3);
     });
+
     it('focus updates, when elements are being removed', () => {
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
       fixture.detectChanges();

@@ -120,6 +120,7 @@ export default function (): void {
         tick();
         expect(toggleBtn.getAttribute('aria-expanded')).toBe('false');
       }));
+
       it('toggles switch panel', fakeAsync(function () {
         context.detectChanges();
         expect(document.querySelectorAll('.column-switch').length).toBe(0);

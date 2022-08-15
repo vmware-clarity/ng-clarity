@@ -42,11 +42,13 @@ export default function (): void {
         expect(changeObservable).toBeDefined();
         expect(changeObservable instanceof Observable).toBe(true);
       });
+
       it('exposes an observable for the change events', function (this: TestContext) {
         const eventObservable: Observable<Event> = this.toggleService.getEventChange();
         expect(eventObservable).toBeDefined();
         expect(eventObservable instanceof Observable).toBe(true);
       });
+
       it('exposes an observable for the alignment events', function (this: TestContext) {
         const alignedObservable: Observable<HTMLElement> = this.toggleService.popoverAligned;
         expect(alignedObservable).toBeDefined();
@@ -59,6 +61,7 @@ export default function (): void {
         expect(aligned).toBeTrue();
         subscription.unsubscribe();
       });
+
       it('updates and notifies when the openEvent changes', function (this: TestContext) {
         const clickEvent: Event = new MouseEvent('click');
         let testEvent: Event;
@@ -71,6 +74,7 @@ export default function (): void {
         expect(this.toggleService.openEvent).toBe(testEvent);
         eventSubscription.unsubscribe();
       });
+
       it('updates and notifies when the open value changes', function (this: TestContext) {
         let openValue: boolean;
         const openSubscription = this.toggleService.openChange.subscribe(change => {
@@ -83,6 +87,7 @@ export default function (): void {
         expect(this.toggleService.open).toEqual(openValue);
         openSubscription.unsubscribe();
       });
+
       it('toggles open state with events', function (this: TestContext) {
         const openClickEvent: Event = new MouseEvent('click');
         const closeClickEvent: Event = new MouseEvent('click');

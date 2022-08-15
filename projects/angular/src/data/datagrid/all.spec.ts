@@ -72,6 +72,7 @@ describe('Datagrid', function () {
     TableSizeServiceSpec();
     ColumnResizerServiceSpecs();
   });
+
   describe('Components', function () {
     DatagridActionBarSpecs();
     DatagridActionOverflowSpecs();
@@ -96,6 +97,7 @@ describe('Datagrid', function () {
     WrappedColumnSpec();
     WrappedRowSpec();
   });
+
   describe('Render', function () {
     DomAdapterSpecs();
     NoopDomAdapterSpecs();
@@ -105,6 +107,7 @@ describe('Datagrid', function () {
     DatagridHeaderRendererSpecs();
     DatagridMainRendererSpecs();
   });
+
   describe('Built-in', function () {
     NestedPropertySpecs();
     DatagridPropertyComparatorSpecs();

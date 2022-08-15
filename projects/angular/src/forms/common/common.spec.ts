@@ -107,8 +107,11 @@ export default function (): void {
     }
 
     it('works without an explicit wrapper and without an id', assertMatching(NoWrapperNoId, false));
+
     it('works without an explicit wrapper and with an id', assertMatching(NoWrapperWithId, false, 'hello'));
+
     it('works with an explicit wrapper and without an id', assertMatching(WithWrapperNoId, true));
+
     it('works with an explicit wrapper and with an id', assertMatching(WithWrapperWithId, true, 'hello'));
   });
 }

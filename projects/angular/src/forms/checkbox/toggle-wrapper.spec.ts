@@ -63,6 +63,7 @@ export default function (): void {
 
     describe('toggle class', () => {
       let fixture, containerDE, containerEl;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
