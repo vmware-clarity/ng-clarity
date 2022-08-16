@@ -51,7 +51,6 @@ export default function (): void {
 
     describe('API', function () {
       beforeEach(function (this: TestContext) {
-        // Because the service uses Angular's Renderer2, we need to use TestBed for this spec.
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         const fixture = TestBed.createComponent(SimpleHost);
         this.focusService = fixture.debugElement.injector.get(FocusService, null);

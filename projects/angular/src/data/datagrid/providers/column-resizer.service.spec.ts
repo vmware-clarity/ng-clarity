@@ -12,7 +12,7 @@ import { DatagridRenderOrganizer } from '../render/render-organizer';
 import { ColumnResizerService } from './column-resizer.service';
 
 @Component({
-  providers: [ColumnResizerService, DomAdapter, DatagridRenderOrganizer], // Should be declared here in a component level, not in the TestBed because Renderer2 wouldn't be present
+  providers: [ColumnResizerService, DomAdapter, DatagridRenderOrganizer],
   template: `<div></div>`,
   styles: [':host { position: position; width: 200px; height: 400px;}'],
 })
