@@ -288,7 +288,7 @@ export default function (): void {
 }
 
 @Component({
-  providers: [DragEventListenerService], // Should be declared here in a component level, not in the TestBed because Renderer2 wouldn't be present
+  providers: [DragEventListenerService],
   template: `<button #draggableButton></button>`,
 })
 class TestComponent implements OnInit, OnDestroy {
