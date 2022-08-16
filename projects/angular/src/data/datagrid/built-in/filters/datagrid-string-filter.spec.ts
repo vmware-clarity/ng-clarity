@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
@@ -20,25 +20,7 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 import { DatagridStringFilter } from './datagrid-string-filter';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
-class MockRenderer {
-  listen() {
-    // Do nothing
-  }
-}
-
-const PROVIDERS = [
-  FiltersProvider,
-  DomAdapter,
-  Page,
-  StateDebouncer,
-  ClrPopoverEventsService,
-  ClrPopoverPositionService,
-  ClrPopoverToggleService,
-  {
-    provide: Renderer2,
-    useClass: MockRenderer,
-  },
-];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
 
 export default function (): void {
   describe('DatagridStringFilter accessibility', function () {
@@ -166,6 +148,7 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
   template: `
     <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -182,6 +165,7 @@ class FullTest {
       [clrFilterPlaceholder]="clrFilterPlaceholder"
     ></clr-dg-string-filter>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
