@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { TestContext } from '../testing/helpers.spec';
@@ -72,7 +72,6 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [ClrPopoverModuleNext],
         declarations: [SimpleContent],
-        providers: [Renderer2],
       });
       this.fixture = TestBed.createComponent(SimpleContent);
       this.fixture.detectChanges();

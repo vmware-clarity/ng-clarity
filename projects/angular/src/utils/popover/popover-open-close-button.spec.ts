@@ -4,13 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverOpenCloseButton } from './popover-open-close-button';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
@@ -40,7 +38,7 @@ export default function (): void {
 
     describe('TypeScript API', function (this: Context) {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService],
       });
 
       beforeEach(function (this: Context) {
@@ -68,7 +66,7 @@ export default function (): void {
 
     describe('Template API', () => {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService],
       });
 
       beforeEach(function (this: Context) {
@@ -95,7 +93,7 @@ export default function (): void {
 
     describe('View Basics', function (this: Context) {
       spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService],
       });
 
       it('adds the clr-smart-open-close classname', function (this: Context) {

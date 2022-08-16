@@ -28,7 +28,7 @@ export default function (): void {
     };
 
     describe('Template API', () => {
-      spec(ClrPopoverAnchor, TestHost, undefined, { providers: [ClrPopoverEventsService] });
+      spec(ClrPopoverAnchor, TestHost, undefined);
 
       beforeEach(function (this: Context) {
         this.eventService = this.getClarityProvider(ClrPopoverEventsService);
@@ -41,7 +41,7 @@ export default function (): void {
     });
 
     describe('View Basics', function (this: Context) {
-      spec(ClrPopoverAnchor, TestHost, undefined, { providers: [ClrPopoverEventsService] });
+      spec(ClrPopoverAnchor, TestHost, undefined);
 
       it('adds the clr-anchor classname', function (this: Context) {
         expect(this.clarityElement.classList).toContain('clr-anchor');
