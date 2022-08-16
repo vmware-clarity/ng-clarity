@@ -10,7 +10,6 @@ import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverCloseButton } from './popover-close-button';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
@@ -42,7 +41,7 @@ export default function (): void {
 
     describe('TypeScript API', function (this: Context) {
       spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
+        providers: [ClrPopoverToggleService],
       });
 
       beforeEach(function (this: Context) {
@@ -66,7 +65,7 @@ export default function (): void {
 
     describe('Template API', () => {
       spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
+        providers: [ClrPopoverToggleService],
       });
 
       beforeEach(function (this: Context) {
@@ -97,7 +96,7 @@ export default function (): void {
 
     describe('View Basics', function (this: Context) {
       spec(ClrPopoverCloseButton, TestHost, undefined, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
+        providers: [ClrPopoverToggleService],
       });
 
       it('adds the clr-smart-close-button classname to the host', function (this: Context) {
