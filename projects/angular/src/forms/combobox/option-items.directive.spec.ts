@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
@@ -20,6 +20,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -33,6 +34,7 @@ class FullTest {
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class TrackByIndexTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -46,6 +48,7 @@ class TrackByIndexTest {
       <li *clrOptionItems="let n of numbers; field: 'a'">{{ n.a }}</li>
     </ul>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -53,13 +56,7 @@ class ObjectDataTest {
   trackBy = (index: number) => index;
 }
 
-const OPTION_ITEM_PROVIDERS = [
-  OptionSelectionService,
-  ClrPopoverToggleService,
-  ClrPopoverPositionService,
-  ClrPopoverEventsService,
-  Renderer2,
-];
+const OPTION_ITEM_PROVIDERS = [OptionSelectionService, ClrPopoverToggleService];
 
 export default function (): void {
   describe('ClrOptionItems directive', function () {

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -32,21 +32,17 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
-  ClrPopoverEventsService,
-  ClrPopoverPositionService,
   ClrPopoverToggleService,
   DateNavigationService,
   ViewManagerService,
   LocaleHelperService,
   ControlClassService,
   IfControlStateService,
-  FocusService,
   LayoutService,
   NgControlService,
   DateIOService,
   ControlIdService,
   DateFormControlService,
-  Renderer2,
 ];
 
 export default function () {
@@ -233,6 +229,7 @@ export default function () {
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
 })
 class TestComponent {
   model = '';
