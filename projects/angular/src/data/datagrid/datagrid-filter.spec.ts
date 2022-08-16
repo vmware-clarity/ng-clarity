@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -18,12 +18,6 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
-
-class MockRenderer {
-  listen() {
-    // Do nothing
-  }
-}
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
   const popoverContent = document.querySelectorAll('.clr-popover-content');
@@ -91,10 +85,7 @@ export default function (): void {
           FiltersProvider,
           Page,
           StateDebouncer,
-          ClrPopoverEventsService,
-          ClrPopoverPositionService,
           ClrPopoverToggleService,
-          Renderer2,
         ]);
         toggleService = context.getClarityProvider(ClrPopoverToggleService);
       });
@@ -130,13 +121,7 @@ export default function (): void {
           FiltersProvider,
           Page,
           StateDebouncer,
-          ClrPopoverEventsService,
-          ClrPopoverPositionService,
           ClrPopoverToggleService,
-          {
-            provide: Renderer2,
-            useClass: MockRenderer,
-          },
         ]);
         context.testComponent.filter = filter;
       });
@@ -237,6 +222,7 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       Hello world
     </clr-dg-filter>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

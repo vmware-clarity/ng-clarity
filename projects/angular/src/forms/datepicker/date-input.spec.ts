@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, Injectable, Renderer2, ViewChild } from '@angular/core';
+import { Component, DebugElement, Injectable, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -58,13 +58,9 @@ export default function () {
       LayoutService,
       IfControlStateService,
       ClrPopoverToggleService,
-      ClrPopoverEventsService,
-      ClrPopoverPositionService,
-      FocusService,
       DatepickerFocusService,
       DateNavigationService,
       LocaleHelperService,
-      Renderer2,
       ViewManagerService,
       DateIOService,
       ControlIdService,
@@ -770,6 +766,7 @@ export default function () {
       (clrDateChange)="dateChanged($event)"
     />
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
 })
 class TestComponent {
   date: Date;
@@ -806,6 +803,7 @@ class TestComponentWithClrDate {
       <input id="dateControl" type="date" clrDate (clrDateChange)="dateChanged($event)" formControlName="date" />
     </form>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
 })
 class TestComponentWithReactiveForms {
   dateInput = '01/01/2015';
