@@ -6,8 +6,6 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
@@ -19,12 +17,7 @@ export default function (): void {
     let toggle: HTMLElement;
 
     beforeEach(function () {
-      context = this.create(ClrDatagridActionOverflow, SimpleTest, [
-        RowActionService,
-        ClrPopoverEventsService,
-        ClrPopoverToggleService,
-        ClrPopoverPositionService,
-      ]);
+      context = this.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverToggleService]);
       toggle = context.clarityElement.querySelector('.clr-smart-open-close');
     });
 

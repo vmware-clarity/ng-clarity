@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Renderer2, RendererFactory2, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyCodes } from '../../../utils/enums/key-codes.enum';
@@ -44,15 +44,7 @@ export default function (): void {
     beforeEach(function (this: TestContext) {
       TestBed.configureTestingModule({
         declarations: [SimpleHost],
-        providers: [
-          {
-            provide: Renderer2,
-            useFactory: RendererFactory2,
-          },
-          ClrPopoverToggleService,
-          OptionSelectionService,
-          COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ],
+        providers: [ClrPopoverToggleService, OptionSelectionService, COMBOBOX_FOCUS_HANDLER_PROVIDER],
       });
       this.fixture = TestBed.createComponent(SimpleHost);
       this.testComponent = this.fixture.componentInstance;

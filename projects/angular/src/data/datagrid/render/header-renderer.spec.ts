@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, Renderer2 } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
@@ -82,7 +82,6 @@ export default function (): void {
         StateDebouncer,
         TableSizeService,
         DetailService,
-        Renderer2,
         ColumnsService,
       ]);
       domAdapter = context.getClarityProvider(DomAdapter) as MockDomAdapter;

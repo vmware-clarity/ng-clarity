@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, Renderer2 } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -29,7 +29,6 @@ const PROVIDERS_NEEDED = [
   Page,
   StateDebouncer,
   TableSizeService,
-  Renderer2,
   ColumnsService,
   DetailService,
 ];

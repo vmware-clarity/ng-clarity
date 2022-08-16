@@ -37,7 +37,7 @@ export default function (): void {
     beforeEach(function (this: TestContext) {
       TestBed.configureTestingModule({
         declarations: [TestHost],
-        providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+        providers: [ClrPopoverToggleService],
       });
       this.fixture = TestBed.createComponent(TestHost);
       this.eventService = this.fixture.debugElement.injector.get(ClrPopoverEventsService, null);
