@@ -112,7 +112,7 @@ export default function (): void {
 }
 
 @Component({
-  providers: [MOCK_DRAG_EVENT_LISTENER_PROVIDER, DragHandleRegistrarService], // Should be declared here in a component level, not in the TestBed because Renderer2 wouldn't be present
+  providers: [MOCK_DRAG_EVENT_LISTENER_PROVIDER, DragHandleRegistrarService],
   template: '<div>Test</div>',
 })
 class DragHandleTestComponent {}
