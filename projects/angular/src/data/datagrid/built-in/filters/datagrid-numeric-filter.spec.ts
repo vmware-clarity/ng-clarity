@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
@@ -20,25 +20,7 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
-class MockRenderer {
-  listen() {
-    // Do nothing
-  }
-}
-
-const PROVIDERS = [
-  FiltersProvider,
-  DomAdapter,
-  Page,
-  StateDebouncer,
-  ClrPopoverEventsService,
-  ClrPopoverPositionService,
-  ClrPopoverToggleService,
-  {
-    provide: Renderer2,
-    useClass: MockRenderer,
-  },
-];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
 
 export default function (): void {
   describe('DatagridNumericFilter accessibility', function () {
@@ -173,6 +155,7 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
   template: `
     <clr-dg-numeric-filter [clrDgNumericFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-numeric-filter>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -190,6 +173,7 @@ class FullTest {
       [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
     ></clr-dg-numeric-filter>
   `,
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

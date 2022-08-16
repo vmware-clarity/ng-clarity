@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { spec, TestContext } from '../testing/helpers.spec';
 import { ClrPopoverCloseButton } from './popover-close-button';
@@ -19,7 +19,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
     <button #closeButton clrPopoverCloseButton (clrPopoverOnCloseChange)="handleClose()">Smart Close Button</button>
     <button #toggleButton clrPopoverAnchor>Toggle Button</button>
   `,
-  providers: [ClrPopoverToggleService],
+  providers: [ClrPopoverToggleService, ClrPopoverEventsService],
 })
 class TestHost {
   @ViewChild('closeButton', { read: ElementRef, static: true })
@@ -42,7 +42,7 @@ export default function (): void {
 
     describe('TypeScript API', function (this: Context) {
       spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
       });
 
       beforeEach(function (this: Context) {
@@ -66,7 +66,7 @@ export default function (): void {
 
     describe('Template API', () => {
       spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
       });
 
       beforeEach(function (this: Context) {
@@ -97,7 +97,7 @@ export default function (): void {
 
     describe('View Basics', function (this: Context) {
       spec(ClrPopoverCloseButton, TestHost, undefined, {
-        providers: [ClrPopoverToggleService, ClrPopoverPositionService, ClrPopoverEventsService, Renderer2],
+        providers: [ClrPopoverToggleService, ClrPopoverPositionService],
       });
 
       it('adds the clr-smart-close-button classname to the host', function (this: Context) {
