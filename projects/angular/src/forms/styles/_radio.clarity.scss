@@ -67,7 +67,7 @@
       //background-color around the dot
       @include css-var(
         box-shadow,
-        $clr-forms-radio-disabled-shadow,
+        clr-forms-radio-disabled-shadow,
         $clr-forms-radio-disabled-shadow,
         $clr-use-custom-properties
       );
@@ -76,14 +76,14 @@
     input[type='radio']:checked:disabled + label::before {
       @include css-var(
         background-color,
-        $clr-forms-radio-disabled-background-color,
+        clr-forms-radio-disabled-background-color,
         $clr-forms-radio-disabled-background-color,
         $clr-use-custom-properties
       );
       //background-color around the dot
       @include css-var(
         box-shadow,
-        $clr-forms-radio-checked-disabled-shadow,
+        clr-forms-radio-checked-disabled-shadow,
         $clr-forms-radio-checked-disabled-shadow,
         $clr-use-custom-properties
       );
