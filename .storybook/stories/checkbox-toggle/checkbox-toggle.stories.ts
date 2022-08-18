@@ -23,9 +23,9 @@ const defaultStory: Story = args => {
   return {
     template: `
       <${containerSelector} [clrInline]="clrInline">
-        <${wrapperSelector} *ngFor="let _ of createArray(checkboxCount); let i = index">
+        <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
           <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>{{content}} {{i + 1}}</label>
+          <label>{{label}} {{i + 1}}</label>
         </${wrapperSelector}>
       </${containerSelector}>
     `,
@@ -48,13 +48,13 @@ const defaultParameters: Parameters = {
       control: { type: 'inline-radio', options: CheckboxType },
     },
     createArray: { control: { disable: true }, table: { disable: true } },
-    checkboxCount: { control: { type: 'number', min: 1, max: 100 } },
+    optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
     // story helpers
     createArray: n => new Array(n),
-    checkboxCount: 4,
-    content: 'Option',
+    optionCount: 4,
+    label: 'Option',
     checked: false,
     disabled: false,
   },
