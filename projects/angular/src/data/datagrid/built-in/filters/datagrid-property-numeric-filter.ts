@@ -19,10 +19,10 @@ export class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumeri
     if (propValue === undefined) {
       return false;
     }
-    if (low !== null && propValue < low) {
+    if (low !== null && (typeof propValue !== 'number' || propValue < low)) {
       return false;
     }
-    if (high !== null && propValue > high) {
+    if (high !== null && (typeof propValue !== 'number' || propValue > high)) {
       return false;
     }
     return true;
