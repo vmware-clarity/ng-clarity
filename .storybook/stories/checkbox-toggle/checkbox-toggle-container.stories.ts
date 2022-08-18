@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
+import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
@@ -22,10 +22,11 @@ const defaultStory: Story = args => {
 
   return {
     template: `
-      <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
-        <${wrapperSelector}>
-          <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>{{label}}</label>
+      <${containerSelector} [clrInline]="clrInline">
+        <label>{{label}}</label>
+        <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
+          <input type="checkbox" ${directive} />
+          <label>Option {{i + 1}}</label>
         </${wrapperSelector}>
       </${containerSelector}>
     `,
@@ -34,25 +35,27 @@ const defaultStory: Story = args => {
 };
 
 const defaultParameters: Parameters = {
-  title: 'Checkbox or Toggle/Checkbox or Toggle',
-  component: ClrCheckbox,
+  title: 'Checkbox or Toggle/Checkbox or Toggle Container',
+  component: ClrCheckboxContainer,
   argTypes: {
     // inputs
-    id: { defaultValue: '' },
+    clrInline: { defaultValue: false, control: { type: 'boolean' } },
     // methods
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    addGrid: { control: { disable: true }, table: { disable: true } },
+    controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
     type: {
       defaultValue: CheckboxType.Checkbox,
       control: { type: 'inline-radio', options: CheckboxType },
     },
+    createArray: { control: { disable: true }, table: { disable: true } },
+    optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
     // story helpers
-    label: 'Option',
-    checked: false,
-    disabled: false,
+    label: 'Options',
+    createArray: n => new Array(n),
+    optionCount: 4,
   },
 };
 
@@ -62,14 +65,11 @@ function generateVariants() {
   const variants: Parameters[] = [];
 
   for (const type of [CheckboxType.Checkbox, CheckboxType.Toggle]) {
-    for (const disabled of [false, true]) {
-      for (const checked of [false, true]) {
-        variants.push({
-          type,
-          disabled,
-          checked,
-        });
-      }
+    for (const clrInline of [false, true]) {
+      variants.push({
+        clrInline,
+        type,
+      });
     }
   }
 
