@@ -21,10 +21,10 @@ export default function (): void {
       expect(this.filter.accepts({ a: 'not a number' }, null, null)).toBe(true);
     });
 
-    // it('rejects strings when active', function () {
-    //   this.filter = new DatagridPropertyNumericFilter('a');
-    //   expect(this.filter.accepts({ a: 'not a number' }, null, 1)).toBe(false);
-    // });
+    it('rejects strings when active', function () {
+      this.filter = new DatagridPropertyNumericFilter('a');
+      expect(this.filter.accepts({ a: 'not a number' }, null, 1)).toBe(false);
+    });
 
     it('always rejects undefined', function () {
       this.filter = new DatagridPropertyNumericFilter('a');
