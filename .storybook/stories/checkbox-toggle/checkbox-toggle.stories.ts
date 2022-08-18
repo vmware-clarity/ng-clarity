@@ -24,7 +24,7 @@ const defaultStory: Story = args => {
     template: `
       <${containerSelector} [clrInline]="clrInline">
         <${wrapperSelector} *ngFor="let _ of createArray(checkboxCount); let i = index">
-          <input type="checkbox" ${directive} [checked]="checked" [disabled]="disabled" />
+          <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
           <label>{{content}} {{i + 1}}</label>
         </${wrapperSelector}>
       </${containerSelector}>
