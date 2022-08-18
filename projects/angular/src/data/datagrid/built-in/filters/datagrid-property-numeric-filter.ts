@@ -16,6 +16,9 @@ export class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumeri
 
   accepts(item: T, low: number, high: number): boolean {
     const propValue = this.nestedProp.getPropValue(item);
+    if (propValue === undefined) {
+      return false;
+    }
     if (low !== null && propValue < low) {
       return false;
     }
