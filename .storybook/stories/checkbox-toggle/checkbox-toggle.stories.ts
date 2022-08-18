@@ -67,12 +67,15 @@ function generateVariants() {
 
   for (const type of [CheckboxType.Checkbox, CheckboxType.Toggle]) {
     for (const clrInline of [false, true]) {
-      for (const checked of [false, true]) {
-        variants.push({
-          clrInline,
-          type,
-          checked,
-        });
+      for (const disabled of [false, true]) {
+        for (const checked of [false, true]) {
+          variants.push({
+            clrInline,
+            type,
+            disabled,
+            checked,
+          });
+        }
       }
     }
   }
