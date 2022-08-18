@@ -15,6 +15,7 @@ import DomAdapterSpecs from '../../utils/dom-adapter/dom-adapter.spec';
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
 import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
+import DatagridPropertyNumericFilterSpecs from './built-in/filters/datagrid-property-numeric-filter.spec';
 import DatagridPropertyStringFilterSpecs from './built-in/filters/datagrid-property-string-filter.spec';
 import DatagridStringFilterImplSpecs from './built-in/filters/datagrid-string-filter-impl.spec';
 import DatagridStringFilterSpecs from './built-in/filters/datagrid-string-filter.spec';
@@ -112,6 +113,7 @@ describe('Datagrid', function () {
     NestedPropertySpecs();
     DatagridPropertyComparatorSpecs();
     DatagridPropertyStringFilterSpecs();
+    DatagridPropertyNumericFilterSpecs();
     DatagridStringFilterSpecs();
     DatagridStringFilterImplSpecs();
     DatagridNumericFilterSpecs();
