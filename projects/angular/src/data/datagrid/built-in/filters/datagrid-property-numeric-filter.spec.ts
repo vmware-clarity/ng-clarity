@@ -26,10 +26,10 @@ export default function (): void {
     //   expect(this.filter.accepts({ a: 'not a number' }, null, 1)).toBe(false);
     // });
 
-    // it('always rejects undefined', function () {
-    //   this.filter = new DatagridPropertyNumericFilter('a');
-    //   expect(this.filter.accepts({}, null, null)).toBe(false);
-    // });
+    it('always rejects undefined', function () {
+      this.filter = new DatagridPropertyNumericFilter('a');
+      expect(this.filter.accepts({}, null, null)).toBe(false);
+    });
 
     it('supports nested properties', function () {
       this.filter = new DatagridPropertyNumericFilter('a.b');
