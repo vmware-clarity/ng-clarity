@@ -6,7 +6,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Type } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Parameters } from '@storybook/addons';
 import { moduleMetadata, storiesOf, Story } from '@storybook/angular';
@@ -25,6 +25,7 @@ export function setupStorybook(
         imports: [
           CommonModule,
           BrowserAnimationsModule,
+          FormsModule,
           ReactiveFormsModule,
           NgLetModule,
           ...(Array.isArray(ngModules) ? ngModules : [ngModules]),
