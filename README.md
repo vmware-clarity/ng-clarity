@@ -11,8 +11,8 @@ Clarity Angular is published as two npm packages:
 
 ## Installing Clarity
 
-- **[Install CSS Only](/docs/INSTALLATION.md#installing-clarity-ui)**
-- **[Install Angular Components](/docs/INSTALLATION.md#installing-clarity-angular)**
+- **[Install CSS Only](/docs/INSTALLATION.md#installing-clarity-ui-)**
+- **[Install Angular Components](/docs/INSTALLATION.md#installing-clarity-angular-)**
 
 ## Documentation
 
