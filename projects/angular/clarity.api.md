@@ -36,6 +36,7 @@ import { Observable } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Provider } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
@@ -5009,16 +5010,21 @@ export const CONDITIONAL_DIRECTIVES: Type<any>[];
 export const CUSTOM_BUTTON_TYPES: any;
 
 // @public (undocumented)
+export const DATAGRID_CTRL_CLICK_ROW_SELECTION: InjectionToken<boolean>;
+
+// @public (undocumented)
 export class DatagridCtrlClickRowSelectionDirective implements OnInit {
-    constructor(elementRef: ElementRef, datagrid: ClrDatagrid);
+    constructor(elementRef: ElementRef, datagrid: ClrDatagrid, enabledGlobally: any);
+    // (undocumented)
+    enabledLocally: boolean;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     overrideSelection(event: MouseEvent): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCtrlClickRowSelectionDirective, "clr-datagrid[clrDgCtrlClickRowSelection]", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCtrlClickRowSelectionDirective, "clr-datagrid", never, { "enabledLocally": "clrDgCtrlClickRowSelection"; }, {}, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCtrlClickRowSelectionDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCtrlClickRowSelectionDirective, [null, null, { optional: true; }]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point index.d.ts
@@ -5133,6 +5139,9 @@ class EmptyAnchor {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<EmptyAnchor, never>;
 }
+
+// @public (undocumented)
+export const enableDatagridCtrlClickRowSelectionProvider: Provider;
 
 // @public (undocumented)
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];

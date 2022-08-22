@@ -4,23 +4,53 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Inject,
+  InjectionToken,
+  Input,
+  OnInit,
+  Optional,
+  Provider,
+} from '@angular/core';
 
 import { ClrDatagrid } from './datagrid';
+import { SelectionType } from './enums/selection-type';
+
+export const DATAGRID_CTRL_CLICK_ROW_SELECTION = new InjectionToken<boolean>('DATAGRID_CTRL_CLICK_ROW_SELECTION');
+
+export const enableDatagridCtrlClickRowSelectionProvider: Provider = {
+  provide: DATAGRID_CTRL_CLICK_ROW_SELECTION,
+  useValue: true,
+};
 
 @Directive({
-  selector: 'clr-datagrid[clrDgCtrlClickRowSelection]',
+  selector: 'clr-datagrid',
 })
 export class DatagridCtrlClickRowSelectionDirective implements OnInit {
-  constructor(private readonly elementRef: ElementRef, private readonly datagrid: ClrDatagrid) {}
+  @Input('clrDgCtrlClickRowSelection') enabledLocally: boolean;
+
+  constructor(
+    private readonly elementRef: ElementRef,
+    private readonly datagrid: ClrDatagrid,
+    @Optional() @Inject(DATAGRID_CTRL_CLICK_ROW_SELECTION) private readonly enabledGlobally
+  ) {}
 
   ngOnInit() {
-    this.datagrid.selected = [];
-    this.datagrid.rowSelectionMode = true;
+    if (this.enabledLocally) {
+      this.datagrid.selected = [];
+      this.datagrid.rowSelectionMode = true;
+    }
   }
 
   @HostListener('click', ['$event'])
   overrideSelection(event: MouseEvent) {
+    if (!this.enabled()) {
+      return;
+    }
+
     const target = event.target as HTMLElement;
 
     if (
@@ -29,6 +59,21 @@ export class DatagridCtrlClickRowSelectionDirective implements OnInit {
       elementHasDatagridRowParent(target, this.elementRef.nativeElement)
     ) {
       this.datagrid.selected = [];
+    }
+  }
+
+  private enabled() {
+    if (this.enabledLocally) {
+      return true;
+    } else if (this.enabledGlobally) {
+      const disabledLocally = this.enabledLocally === false;
+
+      const multiRowSelectionEnabled =
+        this.datagrid.selection.selectionType === SelectionType.Multi && this.datagrid.selection.rowSelectionMode;
+
+      return !disabledLocally && multiRowSelectionEnabled;
+    } else {
+      return false;
     }
   }
 }

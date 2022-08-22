@@ -4,9 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ClrDatagrid } from './datagrid';
+import { enableDatagridCtrlClickRowSelectionProvider } from './datagrid-ctrl-click-row-selection.directive';
+import { SelectionType } from './enums/selection-type';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 
 export default function (): void {
@@ -16,7 +18,11 @@ export default function (): void {
 
   describe('clrDgCtrlClickRowSelection', () => {
     beforeEach(function () {
-      context = this.create(ClrDatagrid, TestComponent, DATAGRID_SPEC_PROVIDERS);
+      context = this.create(
+        ClrDatagrid,
+        DatagridWithCtrlClickRowSelectionDirectiveTestComponent,
+        DATAGRID_SPEC_PROVIDERS
+      );
 
       datagrid = context.clarityDirective;
       element = context.fixture.nativeElement;
@@ -26,6 +32,103 @@ export default function (): void {
       context.fixture.destroy();
     });
 
+    describe('when enabled', () => {
+      beforeEach(() => {
+        context.testComponent.clrDgCtrlClickRowSelection = true;
+        context.detectChanges();
+      });
+
+      enabledTests();
+    });
+
+    describe('when disabled', () => {
+      beforeEach(() => {
+        context.testComponent.clrDgCtrlClickRowSelection = false;
+        context.detectChanges();
+      });
+
+      disabledTests();
+    });
+  });
+
+  describe('enableDatagridCtrlClickRowSelectionProvider', () => {
+    describe('when `clrDgCtrlClickRowSelection` is false`', () => {
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, DatagridWithCtrlClickRowSelectionDirectiveTestComponent, [
+          ...DATAGRID_SPEC_PROVIDERS,
+          enableDatagridCtrlClickRowSelectionProvider,
+        ]);
+
+        datagrid = context.clarityDirective;
+        element = context.fixture.nativeElement;
+
+        context.testComponent.clrDgCtrlClickRowSelection = false;
+        context.detectChanges();
+      });
+
+      afterEach(() => {
+        context.fixture.destroy();
+      });
+
+      disabledTests();
+    });
+
+    describe('when multi row selection is enabled on the datagrid', () => {
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, DatagridTestComponent, [
+          ...DATAGRID_SPEC_PROVIDERS,
+          enableDatagridCtrlClickRowSelectionProvider,
+        ]);
+
+        datagrid = context.clarityDirective;
+        element = context.fixture.nativeElement;
+
+        datagrid.selected = [];
+        datagrid.rowSelectionMode = true;
+        context.detectChanges();
+      });
+
+      afterEach(() => {
+        context.fixture.destroy();
+      });
+
+      enabledTests();
+    });
+
+    describe('when single row selection is enabled on the datagrid', () => {
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, DatagridTestComponent, [
+          ...DATAGRID_SPEC_PROVIDERS,
+          enableDatagridCtrlClickRowSelectionProvider,
+        ]);
+
+        datagrid = context.clarityDirective;
+        element = context.fixture.nativeElement;
+
+        datagrid.singleSelected = 1;
+        datagrid.rowSelectionMode = true;
+        context.detectChanges();
+      });
+
+      afterEach(() => {
+        context.fixture.destroy();
+      });
+
+      it('does not interfere with single selection', () => {
+        datagrid.singleSelected = 1;
+        context.detectChanges();
+
+        element.querySelector<HTMLElement>('.row-4 clr-dg-cell')?.click();
+
+        expect(datagrid.selection.currentSingle).toEqual(4);
+        expect(datagrid.selection.selectionType).toEqual(SelectionType.Single);
+      });
+    });
+  });
+
+  function enabledTests() {
+    commonTests();
+
     it('deselects other rows when a modifier key is not pressed', () => {
       datagrid.selected = [1, 2, 3];
       context.detectChanges();
@@ -34,7 +137,22 @@ export default function (): void {
 
       expect(datagrid.selection.current).toEqual([4]);
     });
+  }
 
+  function disabledTests() {
+    commonTests();
+
+    it('does not deselect other rows when a modifier key is not pressed', () => {
+      datagrid.selected = [1, 2, 3];
+      context.detectChanges();
+
+      element.querySelector<HTMLElement>('.row-4 clr-dg-cell')?.click();
+
+      expect(datagrid.selection.current).toEqual([1, 2, 3, 4]);
+    });
+  }
+
+  function commonTests() {
     it('does not deselect other rows when the selection cell is clicked', () => {
       datagrid.selected = [1, 2, 3];
       context.detectChanges();
@@ -55,7 +173,7 @@ export default function (): void {
         expect(datagrid.selection.current).toEqual([1, 2, 3, 4]);
       });
     });
-  });
+  }
 }
 
 @Component({
@@ -73,6 +191,27 @@ export default function (): void {
     </clr-datagrid>
   `,
 })
-class TestComponent {
+class DatagridTestComponent {
+  readonly items = [1, 2, 3, 4, 5];
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgCtrlClickRowSelection]="clrDgCtrlClickRowSelection">
+      <clr-dg-column>First</clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
+
+      <clr-dg-row *ngFor="let item of items" class="row-{{ item }}" [clrDgItem]="item">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * item }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
+    </clr-datagrid>
+  `,
+})
+class DatagridWithCtrlClickRowSelectionDirectiveTestComponent {
+  @Input() clrDgCtrlClickRowSelection = true;
+
   readonly items = [1, 2, 3, 4, 5];
 }

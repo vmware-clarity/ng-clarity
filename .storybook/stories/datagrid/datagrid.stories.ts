@@ -21,13 +21,13 @@ const defaultStory: Story = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      ${args.clrDgCtrlClickRowSelection ? 'clrDgCtrlClickRowSelection' : ''}
       [ngClass]="{ 'datagrid-compact': compact }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
       [clrDgDisablePageFocus]="clrDgDisablePageFocus"
       [clrDgLoading]="clrDgLoading"
       [clrDgPreserveSelection]="clrDgPreserveSelection"
       [clrDgRowSelection]="clrDgRowSelection"
+      [clrDgCtrlClickRowSelection]="clrDgCtrlClickRowSelection"
       [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
@@ -83,6 +83,7 @@ const defaultParameters: Parameters = {
     clrDgLoading: { defaultValue: false },
     clrDgPreserveSelection: { defaultValue: false },
     clrDgRowSelection: { defaultValue: false },
+    clrDgCtrlClickRowSelection: { defaultValue: false, control: { type: 'boolean' } }, // input to a directive
     clrDgSelected: { control: { disable: true } },
     clrDgSingleActionableAriaLabel: { defaultValue: commonStringsService.keys.singleActionableAriaLabel },
     clrDgSingleSelected: { control: { disable: true } },
@@ -96,7 +97,6 @@ const defaultParameters: Parameters = {
     resize: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    clrDgCtrlClickRowSelection: { defaultValue: false, control: { type: 'boolean' } }, // adds a directive
   },
   args: {
     // outputs
