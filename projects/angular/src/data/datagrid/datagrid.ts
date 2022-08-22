@@ -176,6 +176,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   set clrDgPreserveSelection(state: boolean) {
     this.selection.preserveSelection = state;
   }
+
   /**
    * @deprecated since 2.0, remove in 3.0
    *
