@@ -21,6 +21,7 @@ const defaultStory: Story = args => ({
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
       ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      ${args.clrDgCtrlClickRowSelection ? 'clrDgCtrlClickRowSelection' : ''}
       [ngClass]="{ 'datagrid-compact': compact }"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
       [clrDgDisablePageFocus]="clrDgDisablePageFocus"
@@ -95,6 +96,7 @@ const defaultParameters: Parameters = {
     resize: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    clrDgCtrlClickRowSelection: { defaultValue: false, control: { type: 'boolean' } }, // adds a directive
   },
   args: {
     // outputs

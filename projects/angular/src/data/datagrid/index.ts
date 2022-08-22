@@ -28,6 +28,8 @@ export * from './datagrid-page-size';
 export * from './datagrid-pagination';
 export * from './datagrid-placeholder';
 
+export * from './datagrid-ctrl-click-row-selection.directive';
+
 export * from './interfaces/state.interface';
 export * from './enums/sort-order.enum';
 export * from './interfaces/filter.interface';

@@ -27,6 +27,7 @@ import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridColumnToggleButtonSpecs from './datagrid-column-toggle-button.spec';
 import DatagridColumnToggleSpecs from './datagrid-column-toggle.spec';
 import DatagridColumnSpecs from './datagrid-column.spec';
+import DatagridCtrlClickRowSelectionDirectiveSpecs from './datagrid-ctrl-click-row-selection.directive.spec';
 import DatagridFilterSpecs from './datagrid-filter.spec';
 import DatagridFooterSpecs from './datagrid-footer.spec';
 import DatagridHideableColumnDirectiveSpec from './datagrid-hideable-column.spec';
@@ -97,6 +98,10 @@ describe('Datagrid', function () {
     WrappedCellSpec();
     WrappedColumnSpec();
     WrappedRowSpec();
+  });
+
+  describe('Directives', function () {
+    DatagridCtrlClickRowSelectionDirectiveSpecs();
   });
 
   describe('Render', function () {

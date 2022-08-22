@@ -46,6 +46,7 @@ import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
 import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
+import { DatagridCtrlClickRowSelectionDirective } from './datagrid-ctrl-click-row-selection.directive';
 import { ClrDatagridDetail } from './datagrid-detail';
 import { ClrDatagridDetailBody } from './datagrid-detail-body';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -98,6 +99,9 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   WrappedCell,
   WrappedColumn,
   WrappedRow,
+
+  // Options
+  DatagridCtrlClickRowSelectionDirective,
 
   // Renderers
   DatagridMainRenderer,
