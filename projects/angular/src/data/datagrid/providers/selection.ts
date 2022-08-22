@@ -189,7 +189,6 @@ export class Selection<T = any> {
     }
   }
 
-  /** @deprecated since 2.0, remove in 3.0 */
   public rowSelectionMode = false;
 
   private get _selectable(): boolean {

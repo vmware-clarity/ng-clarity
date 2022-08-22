@@ -1182,7 +1182,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     rowActionService: RowActionService;
     rows: QueryList<ClrDatagridRow<T>>;
-    // @deprecated (undocumented)
     set rowSelectionMode(value: boolean);
     // (undocumented)
     scrollableColumns: ViewContainerRef;

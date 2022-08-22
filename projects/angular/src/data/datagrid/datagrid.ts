@@ -178,8 +178,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /**
-   * @deprecated since 2.0, remove in 3.0
-   *
    * Selection/Deselection on row click mode
    */
   @Input('clrDgRowSelection')
