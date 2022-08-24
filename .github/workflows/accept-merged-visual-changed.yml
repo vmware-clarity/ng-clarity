@@ -1,0 +1,26 @@
+name: Accept Merged Visual Changes
+on:
+  push:
+    branches: main
+jobs:
+  accept-merged-visual-changes:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Deploy Chromatic
+        timeout-minutes: 5
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
+        run: npx chromatic --storybook-build-dir ./dist/docs --auto-accept-changes main
