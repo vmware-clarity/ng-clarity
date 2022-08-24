@@ -21,7 +21,17 @@
       $clr-use-custom-properties
     );
 
-    border-left: $clr_baselineRem_3px solid var(--clr-nav-active-box-shadow-color);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: $clr_baselineRem_3px;
+      background: var(--clr-nav-active-box-shadow-color);
+    }
 
     .nav-icon {
       @include css-var(
