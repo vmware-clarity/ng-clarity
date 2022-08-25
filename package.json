@@ -50,7 +50,7 @@
     "_start:storybook": "wait-on ./documentation.json ./dist/clr-ui/clr-ui.css && start-storybook -p 6006"
   },
   "devDependencies": {
-    "@amanda-mitchell/semantic-release-npm-multiple": "2.17.0",
+    "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
     "@angular-devkit/build-angular": "13.3.9",
     "@angular/animations": "13.3.11",
     "@angular/cli": "13.3.9",
