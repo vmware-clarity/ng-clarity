@@ -5,6 +5,12 @@
  */
 
 export const elements: { name: string; symbol: string; number: number; electronegativity: number }[] = [
+  {
+    name: 'A really really really really really really really really really long content in the cell',
+    symbol: 'Ac',
+    number: 89,
+    electronegativity: 1.1,
+  },
   { name: 'Actinium', symbol: 'Ac', number: 89, electronegativity: 1.1 },
   { name: 'Aluminum', symbol: 'Al', number: 13, electronegativity: 1.61 },
   { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
