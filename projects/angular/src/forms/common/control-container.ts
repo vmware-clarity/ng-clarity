@@ -23,7 +23,6 @@ import { NgControlService } from './providers/ng-control.service';
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
-          status="danger"
           shape="exclamation-circle"
           aria-hidden="true"
         ></cds-icon>
