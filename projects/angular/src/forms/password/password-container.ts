@@ -47,8 +47,8 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
-          status="danger"
           shape="exclamation-circle"
+          status="danger"
           aria-hidden="true"
         ></cds-icon>
         <cds-icon
