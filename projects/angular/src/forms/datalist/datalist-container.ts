@@ -29,8 +29,8 @@ import { DatalistIdService } from './providers/datalist-id.service';
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
-          status="danger"
           shape="exclamation-circle"
+          status="danger"
           aria-hidden="true"
         ></cds-icon>
         <cds-icon

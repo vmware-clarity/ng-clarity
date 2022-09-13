@@ -26,15 +26,15 @@ import { ClrCheckbox } from './checkbox';
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
-          status="danger"
           shape="exclamation-circle"
+          status="danger"
           aria-hidden="true"
         ></cds-icon>
         <cds-icon
           *ngIf="showValid"
           class="clr-validate-icon"
-          status="success"
           shape="check-circle"
+          status="success"
           aria-hidden="true"
         ></cds-icon>
         <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
