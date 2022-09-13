@@ -24,6 +24,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
           *ngIf="showInvalid"
           class="clr-validate-icon"
           shape="exclamation-circle"
+          status="danger"
           aria-hidden="true"
         ></cds-icon>
         <cds-icon
