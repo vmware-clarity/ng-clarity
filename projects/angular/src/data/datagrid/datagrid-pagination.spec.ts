@@ -256,7 +256,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('4');
       });
 
-      it('changes the current page on blur', function () {
+      it('does not change the current page on blur', function () {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -269,7 +269,23 @@ export default function (): void {
         current.dispatchEvent(new Event('blur'));
         // Note: the toString() wouldn't be necessary if we used input type='number',
         // but we decided to opt for type='text' for now due to limited cross-browser support
-        expect(context.testComponent.current.toString()).toBe('4');
+        expect(context.testComponent.current.toString()).toBe('1');
+      });
+
+      it('input value resets on blur', function () {
+        context.testComponent.size = 10;
+        context.testComponent.total = 100;
+        context.testComponent.current = 1;
+        context.detectChanges();
+
+        const current = context.clarityElement.querySelector('.pagination-current');
+        expect(current).not.toBeNull();
+        current.value = 4;
+        current.dispatchEvent(new Event('input'));
+        current.dispatchEvent(new Event('blur'));
+        // Note: the toString() wouldn't be necessary if we used input type='number',
+        // but we decided to opt for type='text' for now due to limited cross-browser support
+        expect(current.value.toString()).toBe('1');
       });
 
       it('ignores the current page when input value is invalid', function () {
@@ -298,7 +314,12 @@ export default function (): void {
         expect(current).not.toBeNull();
         current.value = 0;
         current.dispatchEvent(new Event('input'));
-        current.dispatchEvent(new Event('blur'));
+        current.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            code: 'Enter',
+            key: 'Enter',
+          })
+        );
         // Note: the toString() wouldn't be necessary if we used input type='number',
         // but we decided to opt for type='text' for now due to limited cross-browser support
         expect(context.testComponent.current.toString()).toBe('1');
@@ -314,7 +335,12 @@ export default function (): void {
         expect(current).not.toBeNull();
         current.value = 20;
         current.dispatchEvent(new Event('input'));
-        current.dispatchEvent(new Event('blur'));
+        current.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            code: 'Enter',
+            key: 'Enter',
+          })
+        );
         // Note: the toString() wouldn't be necessary if we used input type='number',
         // but we decided to opt for type='text' for now due to limited cross-browser support
         expect(context.testComponent.current.toString()).toBe('10');

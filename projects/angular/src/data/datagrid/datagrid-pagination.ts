@@ -61,7 +61,7 @@ import { Page } from './providers/page';
           [size]="page.last.toString().length"
           [value]="page.current"
           (keydown.enter)="updateCurrentPage($event)"
-          (blur)="updateCurrentPage($event)"
+          (blur)="verifyCurrentPage($event)"
           [attr.aria-label]="commonStrings.keys.currentPage"
         />
         <ng-template #readOnly>
@@ -261,9 +261,15 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     return middlePages;
   }
 
+  verifyCurrentPage(event: any): void {
+    const parsed = parseInt(event.target.value, 10);
+    if (parsed !== this.page.current) {
+      event.target.value = this.page.current;
+    }
+  }
+
   /**
-   * We only update the pagination's current page on blur of the input field, or
-   * when they press enter.
+   * We only update the pagination's current page on enter.
    */
   updateCurrentPage(event: any): void {
     const parsed = parseInt(event.target.value, 10);
