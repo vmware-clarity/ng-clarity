@@ -1652,6 +1652,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     set totalItems(total: number | string);
     updateCurrentPage(event: any): void;
     // (undocumented)
+    verifyCurrentPage(event: any): void;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": "clrDgPageInputDisabled"; "pageSize": "clrDgPageSize"; "totalItems": "clrDgTotalItems"; "lastPage": "clrDgLastPage"; "currentPage": "clrDgPage"; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
