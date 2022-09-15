@@ -273,11 +273,11 @@ export default function (): void {
         });
 
         it('should have aria-controls attribute', () => {
-          const stepNavItemId = testItemComponent.id;
+          const pageId = testItemComponent.page.id;
 
           expect(myStepnavItem.hasAttribute('aria-controls')).toBeTruthy('stepnav item should have aria-controls attr');
           const myAriaControls = myStepnavItem.getAttribute('aria-controls');
-          expect(myAriaControls).toBe(stepNavItemId, 'aria-controls should contain id');
+          expect(myAriaControls).toBe(pageId, 'aria-controls should contain page id');
         });
 
         it('should add disabled attribute when isDisabled return true', () => {

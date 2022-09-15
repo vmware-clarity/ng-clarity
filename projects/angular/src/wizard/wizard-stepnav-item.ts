@@ -39,7 +39,7 @@ import { ClrWizardPage } from './wizard-page';
   host: {
     '[id]': 'id',
     '[attr.aria-current]': 'stepAriaCurrent',
-    '[attr.aria-controls]': 'id',
+    '[attr.aria-controls]': 'page.id',
     '[class.clr-nav-link]': 'true',
     '[class.nav-item]': 'true',
     '[class.active]': 'isCurrent',
