@@ -3089,8 +3089,6 @@ export class ClrTimelineStep {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point index.d.ts
     constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
     // (undocumented)
-    get iconAriaCurrent(): boolean;
-    // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
     get iconShape(): string;
