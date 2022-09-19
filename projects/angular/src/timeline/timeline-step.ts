@@ -53,10 +53,6 @@ export class ClrTimelineStep {
     }
   }
 
-  get iconAriaCurrent(): boolean {
-    return this.state === ClrTimelineStepState.CURRENT;
-  }
-
   get iconAriaLabel(): string {
     return this.iconAttributeService.getAriaLabel(this.state);
   }

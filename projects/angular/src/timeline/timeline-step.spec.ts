@@ -103,23 +103,6 @@ export default function (): void {
         step.state = ClrTimelineStepState.ERROR;
         expect(step.iconAriaLabel).toBe('Error');
       });
-
-      it('set the aria-current', () => {
-        step.state = ClrTimelineStepState.NOT_STARTED;
-        expect(step.iconAriaCurrent).toBe(false);
-
-        step.state = ClrTimelineStepState.CURRENT;
-        expect(step.iconAriaCurrent).toBe(true);
-
-        step.state = ClrTimelineStepState.PROCESSING;
-        expect(step.iconAriaCurrent).toBe(false);
-
-        step.state = ClrTimelineStepState.SUCCESS;
-        expect(step.iconAriaCurrent).toBe(false);
-
-        step.state = ClrTimelineStepState.ERROR;
-        expect(step.iconAriaCurrent).toBe(false);
-      });
     });
 
     describe('Template API', () => {
