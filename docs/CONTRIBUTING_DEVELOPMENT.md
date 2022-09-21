@@ -101,13 +101,45 @@ Signed-off-by: Your Name <your.email@example.com>
 
 Set scope of the commit if possible:
 
-```
-  a11y      accordion    alert      badge         build         button        card         checkbox
-  datagrid  date-picker  dropdown   form          grid          header        icons        i18n
-  input     label        list       login         modal         password      progress-bar radio
-  select    sidenav      signpost   spinner       stack-view    stepper       table        tabs
-  textarea  timeline     toggle     tooltip       tree-view     vertical-nav  wizard
-```
+- a11y
+- accordion
+- alert
+- badge
+- build
+- button
+- card
+- checkbox
+- datagrid
+- date-picker
+- dropdown
+- form
+- grid
+- header
+- icons
+- i18n
+- input
+- label
+- list
+- login
+- modal
+- password
+- progress-bar
+- radio
+- select
+- sidenav
+- signpost
+- spinner
+- stack-view
+- stepper
+- table
+- tabs
+- textarea
+- timeline
+- toggle
+- tooltip
+- tree-view
+- vertical-nav
+- wizard
 
 For example, a commit message could look like this:
 
