@@ -91,12 +91,7 @@ button.nav-link {
       }
 
       &:not(.active):hover {
-        @include css-var(
-          background-color,
-          clr-nav-hover-bg-color,
-          $clr-sidenav-link-hover-color,
-          $clr-use-custom-properties
-        );
+        @include css-var(background-color, clr-nav-hover-bg-color, $clr-nav-hover-bg-color, $clr-use-custom-properties);
       }
     }
   }

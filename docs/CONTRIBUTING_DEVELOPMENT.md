@@ -126,7 +126,6 @@ Set scope of the commit if possible:
 - progress-bar
 - radio
 - select
-- sidenav
 - signpost
 - spinner
 - stack-view
