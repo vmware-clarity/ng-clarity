@@ -14,8 +14,6 @@ import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-
 import { ClrStackBlock } from './stack-block';
 import { ClrStackContentInput } from './stack-content-input';
 import { ClrStackHeader } from './stack-header';
-import { ClrStackInput } from './stack-input';
-import { ClrStackSelect } from './stack-select';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewCustomTags, ClrStackViewLabel } from './stack-view-custom-tags';
 
@@ -26,14 +24,6 @@ export const CLR_STACK_VIEW_DIRECTIVES: Type<any>[] = [
   ClrStackContentInput,
   ClrStackViewLabel,
   ClrStackViewCustomTags,
-  /**
-   * Undocumented experimental feature: inline editing.
-   */
-  ClrStackInput,
-  ClrStackSelect,
-  /**
-   * End of undocumented experimental feature.
-   */
 ];
 
 @NgModule({

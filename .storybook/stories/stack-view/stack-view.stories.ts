@@ -33,8 +33,6 @@ const defaultParameters: Parameters = {
   title: 'Stack View/Stack View',
   component: ClrStackView,
   argTypes: {
-    // outputs
-    clrStackSave: { control: { disable: true }, table: { disable: true } }, // experimental
     // story helpers
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },

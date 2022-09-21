@@ -58,8 +58,6 @@ const defaultParameters: Parameters = {
   title: 'Stack View/Stack View with lazy-loaded blocks',
   component: ClrStackView,
   argTypes: {
-    // outputs
-    clrStackSave: { control: { disable: true }, table: { disable: true } }, // experimental
     // story helpers
     elementsBlockService: { control: { disable: true }, table: { disable: true } },
   },
