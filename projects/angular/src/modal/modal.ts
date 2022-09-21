@@ -64,8 +64,6 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
   @Input('clrModalSkipAnimation') skipAnimation = 'false';
 
-  // presently this is only used by wizards
-  @Input('clrModalOverrideScrollService') bypassScrollService = false;
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
@@ -75,7 +73,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
+    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
         this._scrollingService.stopScrolling();
       } else {

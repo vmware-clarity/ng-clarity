@@ -153,17 +153,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private _disableStepnav = false;
 
   /**
-   * Used to communicate to the underlying modal that animations are not
-   * wanted. Primary use is for the display of static/inline wizards.
-   * Set using `[clrWizardPreventModalAnimation]` input.
-   */
-  /** @deprecated since 3.0, input should be removed in 4.0 because is only related to inline wizards */
-  @Input('clrWizardPreventModalAnimation') _stopModalAnimations = false;
-  get stopModalAnimations(): string {
-    return this._stopModalAnimations ? 'true' : 'false';
-  }
-
-  /**
    * Emits when the wizard is opened or closed.
    * Listen via `(clrWizardOpenChange)` event.
    */
@@ -229,10 +218,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return this.navService.currentPageIsFirst;
   }
 
-  get isStatic(): boolean {
-    return (this.elementRef.nativeElement as HTMLElement).classList.contains('clr-wizard--inline');
-  }
-
   wizardId = uniqueIdFactory();
 
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
@@ -244,7 +229,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
     public headerActionService: HeaderActionService,
-    private elementRef: ElementRef,
     differs: IterableDiffers
   ) {
     this.subscriptions.push(
@@ -261,7 +245,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   ngAfterContentInit(): void {
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
-    this.initializeButtons();
   }
 
   ngDoCheck(): void {
@@ -487,13 +470,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     if (changes) {
       changes.forEachAddedItem(() => this.navService.updateNavigation());
       changes.forEachRemovedItem(() => this.navService.updateNavigation());
-    }
-  }
-
-  private initializeButtons(): void {
-    // Only trigger buttons ready if default is open (inlined)
-    if (this._open) {
-      this.buttonService.buttonsReady = true;
     }
   }
 
