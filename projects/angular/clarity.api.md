@@ -1306,13 +1306,6 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get sortDirection(): 'up' | 'down' | null;
     // (undocumented)
-    get sorted(): boolean;
-    set sorted(value: boolean);
-    // @deprecated (undocumented)
-    sortedChange: EventEmitter<boolean>;
-    // @deprecated (undocumented)
-    sortIcon: string | null;
-    // (undocumented)
     get sortOrder(): ClrDatagridSortOrder;
     set sortOrder(value: ClrDatagridSortOrder);
     // (undocumented)
@@ -1322,7 +1315,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "colType": "clrDgColType"; "field": "clrDgField"; "sortBy": "clrDgSortBy"; "sorted": "clrDgSorted"; "sortOrder": "clrDgSortOrder"; "filterStringPlaceholder": "clrFilterStringPlaceholder"; "filterNumberMaxPlaceholder": "clrFilterNumberMaxPlaceholder"; "filterNumberMinPlaceholder": "clrFilterNumberMinPlaceholder"; "updateFilterValue": "clrFilterValue"; }, { "sortedChange": "clrDgSortedChange"; "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "colType": "clrDgColType"; "field": "clrDgField"; "sortBy": "clrDgSortBy"; "sortOrder": "clrDgSortOrder"; "filterStringPlaceholder": "clrFilterStringPlaceholder"; "filterNumberMaxPlaceholder": "clrFilterNumberMaxPlaceholder"; "filterNumberMinPlaceholder": "clrFilterNumberMinPlaceholder"; "updateFilterValue": "clrFilterValue"; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
 }

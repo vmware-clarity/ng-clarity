@@ -69,11 +69,11 @@ export default function (): void {
 
       it('knows if the column is currently sorted', function () {
         component.sortBy = comparator;
-        expect(component.sorted).toBe(false);
+        expect(component.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
         component.sort();
-        expect(component.sorted).toBe(true);
+        expect(component.sortOrder).toBe(ClrDatagridSortOrder.ASC);
         component.sort();
-        expect(component.sorted).toBe(true);
+        expect(component.sortOrder).toBe(ClrDatagridSortOrder.DESC);
       });
 
       it('sorts according to the optional input parameter', function () {
@@ -96,32 +96,26 @@ export default function (): void {
         expect(component.sortOrder).toBe(ClrDatagridSortOrder.DESC);
       });
 
-      it('knows when the column has an ascending sortIcon', function () {
+      it('knows when the column has an ascending sortDirection', function () {
         component.sortBy = comparator;
-        expect(component.sortIcon).toBeUndefined();
         expect(component.sortDirection).toBeUndefined();
         component.sort();
-        expect(component.sortIcon).toBe('arrow');
         expect(component.sortDirection).toBe('up');
       });
 
-      it('knows when the column has a descending sortIcon', function () {
+      it('knows when the column has a descending sortDirection', function () {
         component.sortBy = comparator;
-        expect(component.sortIcon).toBeUndefined();
         expect(component.sortDirection).toBeUndefined();
         component.sort();
         component.sort();
-        expect(component.sortIcon).toBe('arrow down');
         expect(component.sortDirection).toBe('down');
       });
 
-      it('sets the column sortIcon to null when sort is cleared', function () {
+      it('sets the column sortDirection to null when sort is cleared', function () {
         component.sortBy = comparator;
         expect(component.sortDirection).toBe(undefined);
-        expect(component.sortIcon).toBe(undefined);
         component.sort();
         sortService.clear();
-        expect(component.sortIcon).toBeNull();
         expect(component.sortDirection).toBeNull();
       });
 
@@ -193,18 +187,6 @@ export default function (): void {
         this.context.testComponent.filterValue = 'M';
         this.context.detectChanges();
         expect(this.context.clarityDirective.filterValue).toBe('M');
-      });
-
-      it('offers two-way binding on the sorted state', function () {
-        this.context = this.create(ClrDatagridColumn, SimpleDeprecatedTest, DATAGRID_SPEC_PROVIDERS);
-        this.comparator = new TestComparator();
-        this.context.testComponent.comparator = this.comparator;
-        this.context.testComponent.sorted = true;
-        this.context.detectChanges();
-        expect(this.context.clarityDirective.sorted).toBe(true); // dg col instance
-        this.context.getClarityProvider(Sort).clear();
-        this.context.detectChanges();
-        expect(this.context.testComponent.sorted).toBe(false);
       });
 
       it('offers two-way binding on the sortOrder state', function () {
@@ -511,19 +493,6 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
   accepts(_n: number, _search: string): boolean {
     return true;
   }
-}
-
-@Component({
-  template: `
-    <clr-dg-column [clrDgSortBy]="comparator" [clrDgField]="field" [(clrDgSorted)]="sorted">
-      Hello world
-    </clr-dg-column>
-  `,
-})
-class SimpleDeprecatedTest {
-  comparator: ClrDatagridComparatorInterface<number>;
-  field: string;
-  sorted = false;
 }
 
 @Component({

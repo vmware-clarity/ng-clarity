@@ -139,36 +139,3 @@
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>
-
-<p>
-  The following example is showcasing the deprecated way of sorting pokemons. This will be removed in the next major
-  release.
-</p>
-<p>
-  The datagrid is currently {{sorted ? "" : "not"}} sorted.
-  <button class="btn btn-secondary" (click)="sorted = !sorted">{{sorted ? "Clear sort" : "Sort"}}</button>
-</p>
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator" [(clrDgSorted)]="sorted">
-    Pokemon
-  </clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of usersDeprecated">
-    <clr-dg-cell>{{user.id}}</clr-dg-cell>
-    <clr-dg-cell>{{user.name}}</clr-dg-cell>
-    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-    <clr-dg-cell>
-      {{user.pokemon.name}}
-      <span class="badge badge-5">#{{user.pokemon.number}}</span>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-</clr-datagrid>

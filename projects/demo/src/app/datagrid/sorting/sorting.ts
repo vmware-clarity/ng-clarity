@@ -19,9 +19,7 @@ import { PokemonComparator } from '../utils/pokemon-comparator';
 })
 export class DatagridSortingDemo {
   users: User[];
-  usersDeprecated: User[];
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
-  sorted = false;
 
   pokemonComparator = new PokemonComparator();
 
@@ -29,6 +27,5 @@ export class DatagridSortingDemo {
     inventory.size = 10;
     inventory.reset();
     this.users = inventory.all;
-    this.usersDeprecated = inventory.all;
   }
 }
