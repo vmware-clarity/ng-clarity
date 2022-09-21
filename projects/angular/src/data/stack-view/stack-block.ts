@@ -133,24 +133,6 @@ export class ClrStackBlock implements OnInit {
    */
   @Input('clrStackViewLevel') ariaLevel: number;
 
-  /**
-   * @deprecated
-   * Total number of rows in a given group
-   * - removed per a11y (see: VPAT-592)
-   * - remains here and unused to avoid breaking change to the public API
-   * - remove in v14
-   */
-  @Input('clrStackViewSetsize') ariaSetsize: number;
-
-  /**
-   * @deprecated
-   * The position of the row inside the grouped by level rows
-   * - removed per a11y (see: VPAT-592)
-   * - remains here and unused to avoid breaking change to the public API
-   * - remove in v14
-   */
-  @Input('clrStackViewPosinset') ariaPosinset: number;
-
   /*
    * This would be more efficient with @ContentChildren, with the parent ClrStackBlock
    * querying for children StackBlocks, but this feature is not available when downgrading
