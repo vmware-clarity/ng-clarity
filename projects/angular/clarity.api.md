@@ -920,14 +920,6 @@ export interface ClrCommonStrings {
     datagridExpandableRowsHelperText?: string;
     datagridFilterAriaLabel?: string;
     datagridFilterDialogAriaLabel?: string;
-    // @deprecated (undocumented)
-    dategridExpandableBeginningOf?: string;
-    // @deprecated (undocumented)
-    dategridExpandableEndOf?: string;
-    // @deprecated (undocumented)
-    dategridExpandableRowContent?: string;
-    // @deprecated (undocumented)
-    dategridExpandableRowsHelperText?: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)

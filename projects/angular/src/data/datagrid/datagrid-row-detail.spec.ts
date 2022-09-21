@@ -54,19 +54,12 @@ export default function (): void {
       const commonStrings = new ClrCommonStringsService();
       const rows: HTMLElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
 
-      // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
       const first = [
-        commonStrings.keys.dategridExpandableBeginningOf,
-        commonStrings.keys.dategridExpandableRowContent,
-        commonStrings.keys.dategridExpandableRowsHelperText,
-        commonStrings.keys.dategridExpandableBeginningOf || commonStrings.keys.datagridExpandableBeginningOf,
-        commonStrings.keys.dategridExpandableRowContent || commonStrings.keys.datagridExpandableRowContent,
-        commonStrings.keys.dategridExpandableRowsHelperText || commonStrings.keys.datagridExpandableRowsHelperText,
+        commonStrings.keys.datagridExpandableBeginningOf,
+        commonStrings.keys.datagridExpandableRowContent,
+        commonStrings.keys.datagridExpandableRowsHelperText,
       ];
-      const last = [
-        commonStrings.keys.dategridExpandableEndOf || commonStrings.keys.datagridExpandableEndOf,
-        commonStrings.keys.dategridExpandableRowContent || commonStrings.keys.datagridExpandableRowContent,
-      ];
+      const last = [commonStrings.keys.datagridExpandableEndOf, commonStrings.keys.datagridExpandableRowContent];
 
       expect(rows[0].innerText.trim()).toBe(first.join(' ').trim());
       expect(rows[1].innerText.trim()).toBe(last.join(' ').trim());
