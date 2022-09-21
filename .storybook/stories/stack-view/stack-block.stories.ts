@@ -17,7 +17,6 @@ const defaultStory: Story = args => ({
       <clr-stack-block
         ${args.clrSbExpandable === undefined ? '' : '[clrSbExpandable]="clrSbExpandable"'}
         [clrSbExpanded]="clrSbExpanded"
-        [clrSbNotifyChange]="clrSbNotifyChange"
         [clrStackViewLevel]="clrStackViewLevel"
         (clrSbExpandedChange)="clrSbExpandedChange($event)"
       >
@@ -37,8 +36,6 @@ const defaultParameters: Parameters = {
   title: 'Stack View/Stack Block',
   component: ClrStackBlock,
   argTypes: {
-    // inputs
-    clrSbNotifyChange: { control: { disable: true }, table: { disable: true } }, // experimental
     // outputs
     clrSbExpandedChange: { control: { disable: true }, table: { disable: true } },
     // methods

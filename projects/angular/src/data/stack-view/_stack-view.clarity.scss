@@ -4,8 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-$styledInputs: 'input[type=text], input[type=password], input[type=number], input[type=email], input[type=url], input[type=tel], input[type=date], input[type=time], input[type=datetime-local]';
-
 @mixin lastElementBottomBorder($use-custom-props: true) {
   border-bottom: none;
   $fallbackShadow: 0 $clr_baselineRem_1px 0 $clr-stack-view-border-box-color;
@@ -297,70 +295,6 @@ $styledInputs: 'input[type=text], input[type=password], input[type=number], inpu
           $clr-stack-view-stack-block-expanded-text-color,
           $clr-use-custom-properties
         );
-      }
-    }
-
-    /*
-      Styles specific to inputs used in a stack view
-    */
-    #{$styledInputs},
-    .select {
-      display: inline-block;
-      vertical-align: top;
-      margin-right: $clr_baselineRem_0_5;
-      // We need to account for the border at the bottom of inputs
-      // Or the stack view blocks all move 1px when going in edit mode.
-      // Inputs are 24px high but 25px total when you include the border.
-      margin-bottom: -1 + $clr-global-borderwidth;
-    }
-
-    // Fix for Firefox and IE, which are throwing line-height for inputs in the air,
-    // like they just don't care.
-    // Yes, hard-coding the height isn't great. Haven't found anything better cross-browser.
-    #{$styledInputs},
-    .select select {
-      height: $clr_baselineRem_1;
-    }
-
-    // TODO: Clean up if not being used
-    .stack-block-expandable > .stack-block-content {
-      #{$styledInputs} {
-        transition: background-size 0.2s ease, border-bottom-color 0.2s ease-in-out;
-      }
-      .select {
-        select {
-          transition: border-bottom-color 0.2s ease-in-out;
-        }
-        &::after {
-          transition: color 0.2s ease-in-out;
-        }
-      }
-    }
-    // TODO: Clean up if not being used
-    .stack-block-expanded > .stack-block-content {
-      #{$styledInputs} {
-        @include css-var(
-          border-bottom-color,
-          clr-color-neutral-600,
-          $clr-color-neutral-600,
-          $clr-use-custom-properties
-        );
-        @include input-border-bottom-animation($clr-color-action-600, clr-color-action-600, $clr-use-custom-properties);
-      }
-
-      .select {
-        select {
-          @include css-var(
-            border-bottom-color,
-            clr-color-neutral-600,
-            $clr-color-neutral-600,
-            $clr-use-custom-properties
-          );
-        }
-
-        &::after {
-          @include css-var(color, clr-color-neutral-600, $clr-color-neutral-600, $clr-use-custom-properties);
-        }
       }
     }
 

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-stack-view',
@@ -21,32 +21,4 @@ import { Component, EventEmitter, Output } from '@angular/core';
     `,
   ],
 })
-export class ClrStackView {
-  /**
-   * Undocumented experimental feature: inline editing.
-   */
-  editable = false;
-
-  @Output('clrStackSave') save: EventEmitter<void> = new EventEmitter<void>(false);
-
-  private _editMode = false;
-
-  editingChange: EventEmitter<boolean> = new EventEmitter<boolean>(false);
-
-  get editing(): boolean {
-    return this.editable && this._editMode;
-  }
-
-  set editing(value: boolean) {
-    if (this.editable) {
-      this._editMode = value;
-      this.editingChange.emit(value);
-      if (!value) {
-        this.save.emit(null);
-      }
-    }
-  }
-  /**
-   * End of undocumented experimental feature.
-   */
-}
+export class ClrStackView {}

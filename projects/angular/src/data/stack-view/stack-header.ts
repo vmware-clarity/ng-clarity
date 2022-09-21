@@ -16,16 +16,6 @@ import { ClrStackView } from './stack-view';
 
       <span class="stack-actions">
         <ng-content select=".stack-action"></ng-content>
-        <!-- Undocumented experimental feature: inline editing. -->
-        <button
-          *ngIf="stackView.editable"
-          class="stack-action btn btn-sm btn-link"
-          (click)="stackView.editing = !stackView.editing"
-          type="button"
-        >
-          Edit
-        </button>
-        <!-- End of undocumented experimental feature. -->
       </span>
     </div>
   `,
