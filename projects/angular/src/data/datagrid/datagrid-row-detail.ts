@@ -21,11 +21,10 @@ import { Selection } from './providers/selection';
  */
 @Component({
   selector: 'clr-dg-row-detail',
-  // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
   template: `
     <div class="clr-sr-only">
       {{ beginningOfExpandableContentAriaText }}
-      {{ commonStrings.keys.dategridExpandableRowsHelperText || commonStrings.keys.datagridExpandableRowsHelperText }}
+      {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
     <ng-content></ng-content>
     <div class="clr-sr-only">{{ endOfExpandableContentAriaText }}</div>
@@ -71,25 +70,21 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
-      `${
-        this.commonStrings.keys.dategridExpandableBeginningOf || this.commonStrings.keys.datagridExpandableBeginningOf
-      } 
-      ${this.commonStrings.keys.dategridExpandableRowContent || this.commonStrings.keys.datagridExpandableRowContent}`
+      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
+      ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
 
-  // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
   @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
   get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.dategridExpandableEndOf || this.commonStrings.keys.datagridExpandableEndOf} 
-      ${this.commonStrings.keys.dategridExpandableRowContent || this.commonStrings.keys.datagridExpandableRowContent}`
+      `${this.commonStrings.keys.datagridExpandableEndOf} 
+      ${this.commonStrings.keys.datagridExpandableRowContent}`
     );
   }
 }
