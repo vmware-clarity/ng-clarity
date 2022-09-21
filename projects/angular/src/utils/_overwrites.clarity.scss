@@ -55,7 +55,6 @@ $clr-typography-xxsmalltext: null; // 11/$clr-rem-denominator*$clr-font-size;
 $clr-typography-tinytext: null; // 10/$clr-rem-denominator*$clr-font-size;
 
 // Navigation
-$clr-sidenav-width: null; // 18%;
 $clr-header-height: null; // $clr-baseline*2.5;
 $clr-subnav-height: null; // $clr-baseline*1.5;
 
@@ -411,12 +410,6 @@ $clr-tree-link-hover-color: null; // $clr-custom-links-hover-color
 $clr-tree-link-selection-color: null; // $clr-global-selection-color
 $clr-tree-link-text-color: null; // $clr-color-neutral-700
 $clr-tree-node-caret-color: null; // $clr-color-neutral-500
-
-/*================================================================================*/
-/* Overwrite the default variable assignments in _sidenav.clarity.scss here:      */
-/*================================================================================*/
-
-$clr-sidenav-border-color: null; // $clr-color-neutral-400;
 
 /*================================================================================*/
 /* Overwrite the default variable assignments in _modal.clarity.scss here:        */
@@ -807,11 +800,8 @@ $clr-spinner-opacity: null; // 0.15
 /*================================================================================*/
 
 $clr-wizard-main-bgcolor: null; // $clr-color-neutral-0
-$clr-wizard-sidenav-bgcolor: null; // $clr-color-neutral-50
 $clr-wizard-default-space: null; // $clr_baselineRem_1
 $clr-wizard-main-textColor: null; // $clr-color-on-neutral-0
-$clr-wizard-sidenav-text: null; // $clr-color-neutral-900
-$clr-wizard-sidenav-text--active: null; // $clr-global-on-selection-color
 $clr-wizard-title-text: null; // $clr-color-neutral-1000
 $clr-wizard-stepnav-border-size: null; // $clr_baselineRem_4px
 $clr-wizard-stepnav-border-color: null; // $clr-color-neutral-200

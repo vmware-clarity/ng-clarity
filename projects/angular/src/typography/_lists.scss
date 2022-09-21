@@ -43,7 +43,7 @@
   }
 
   // right now this causes no problems. but watch out in the future because it may
-  // cause issues with nested tabs, list-groups of sidenav lists or something.
+  // cause issues with nested tabs
   // just be aware that this may need to be overridden down the line.
   ul:not(.list-unstyled):not([cds-list]),
   ol:not([cds-list]) {

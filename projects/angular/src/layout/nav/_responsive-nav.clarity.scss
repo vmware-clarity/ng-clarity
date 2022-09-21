@@ -223,7 +223,6 @@
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
-      .sidenav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include sliding-nav-positioning();
         transform: translateX(-1 * $clr-sliding-panel-width);
@@ -233,16 +232,10 @@
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
-      .sidenav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         @include sliding-nav-positioning(0, 0, 0, auto);
         transform: translateX($clr-sliding-panel-width);
         transition: $clr-sliding-panel-animation;
-      }
-
-      .sidenav.clr-nav-level-2 {
-        // This is to prevent the close button to be hidden by the sidenav content
-        overflow: inherit;
       }
 
       .subnav.clr-nav-level-1,
@@ -301,25 +294,6 @@
         }
       }
 
-      .sidenav.clr-nav-level-1,
-      .sidenav.clr-nav-level-2 {
-        .nav-link {
-          &:hover,
-          &.active {
-            color: inherit;
-            // Is the menu that showsup when the viewport is narrow (x-axis)
-            @include css-var(
-              background,
-              clr-responsive-nav-hover-bg,
-              $clr-responsive-nav-hover-bg,
-              $clr-use-custom-properties
-            );
-          }
-        }
-      }
-
-      .sidenav.clr-nav-level-1,
-      .sidenav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-2 {
         border-right: none;
@@ -483,15 +457,10 @@
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
-        .sidenav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           padding-top: $clr-header-height + $clr_baselineRem_1;
           transform: translateX(0);
           transition: $clr-sliding-panel-animation;
-
-          .sidenav-content {
-            padding-bottom: $clr_baselineRem_1;
-          }
         }
       }
 
@@ -499,7 +468,6 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2,
-        .sidenav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           transform: translateX(0);
           transition: $clr-sliding-panel-animation;
@@ -521,7 +489,6 @@
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
-        .sidenav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: $clr-sliding-panel-width;
@@ -533,7 +500,6 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2,
-        .sidenav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: $clr-sliding-panel-width;
           max-width: $clr-sliding-panel-width;
@@ -555,7 +521,6 @@
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
-      .sidenav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         transform: translateX(-1 * $clr-sliding-panel-width-sm);
       }
@@ -563,7 +528,6 @@
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
-      .sidenav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         transform: translateX($clr-sliding-panel-width-sm);
       }
@@ -581,7 +545,6 @@
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
-        .sidenav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: $clr-sliding-panel-width-sm;
@@ -597,7 +560,6 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2,
-        .sidenav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: $clr-sliding-panel-width-sm;
           max-width: $clr-sliding-panel-width-sm;
