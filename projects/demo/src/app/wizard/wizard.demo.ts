@@ -29,7 +29,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
           <li><a [routerLink]="['./header-actions']">Header actions</a></li>
           <li><a [routerLink]="['./alt-cancel']">Alt cancel</a></li>
           <li><a [routerLink]="['./alt-next']">Alt next</a></li>
-          <li><a [routerLink]="['./inline']">Inline/static wizard</a></li>
           <li><a [routerLink]="['./force-forward']">Force forward</a></li>
           <li><a [routerLink]="['./stop-navigation']">Stop navigation</a></li>
         </ul>

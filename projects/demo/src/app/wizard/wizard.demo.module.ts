@@ -17,8 +17,6 @@ import { WizardCustomButtonsDemo } from './wizard-custom-buttons.demo';
 import { WizardForceForwardDemo } from './wizard-force-forward.demo';
 import { WizardFormValidation } from './wizard-form-validation.demo';
 import { WizardHeaderActionsDemo } from './wizard-header-actions.demo';
-/** @deprecated since 3.0, inline wizard should be removed in 4.0 */
-import { WizardInlineDemo } from './wizard-inline.demo';
 import { WizardJumpToDemo } from './wizard-jump-to.demo';
 import { WizardNotClosableDemo } from './wizard-not-closable.demo';
 import { WizardResetDemo } from './wizard-reset.demo';
@@ -41,7 +39,6 @@ import { ROUTING } from './wizard.demo.routing';
     WizardResetDemo,
     WizardHeaderActionsDemo,
     WizardAltCancelDemo,
-    WizardInlineDemo,
     WizardJumpToDemo,
     WizardAltNextDemo,
     WizardForceForwardDemo,
@@ -58,7 +55,6 @@ import { ROUTING } from './wizard.demo.routing';
     WizardCustomButtonsDemo,
     WizardHeaderActionsDemo,
     WizardAltCancelDemo,
-    WizardInlineDemo,
     WizardResetDemo,
     WizardJumpToDemo,
     WizardAltNextDemo,

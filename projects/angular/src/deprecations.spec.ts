@@ -8,7 +8,6 @@ import { ClrDatagrid } from './data/datagrid/datagrid';
 import { ClrDatagridColumnToggle } from './data/datagrid/datagrid-column-toggle';
 import { ClrDatagridColumnToggleButton } from './data/datagrid/datagrid-column-toggle-button';
 import { ClrDatagridColumnToggleTitle } from './data/datagrid/datagrid-column-toggle-title';
-import { ClrWizard } from './wizard/wizard';
 
 describe('Deprecations', () => {
   // When we deprecate some code, we should write a test to verify it is still in the bundle
@@ -24,13 +23,6 @@ describe('Deprecations', () => {
     it('should deprecate but still support clrDgRowSelection', () => {
       const propTest = Object.getOwnPropertyDescriptor(ClrDatagrid.prototype, 'rowSelectionMode');
       expect(propTest.set).toBeDefined();
-    });
-  });
-
-  describe('3.0', () => {
-    it('should deprecate inline wizard inputs', () => {
-      const propTest = Object.getOwnPropertyDescriptor(ClrWizard.prototype, 'stopModalAnimations');
-      expect(propTest.get).toBeDefined();
     });
   });
 });
