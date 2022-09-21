@@ -140,16 +140,8 @@ export class ClrDatagridColumn<T = any>
       if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
         this._sortOrder = ClrDatagridSortOrder.UNSORTED;
         this.sortOrderChange.emit(this._sortOrder);
-        // removes the sortIcon when column becomes unsorted
-        this.sortIcon = null;
         this._sortDirection = null;
       }
-      // deprecated: to be removed - START
-      if (this.sorted && sort.comparator !== this._sortBy) {
-        this._sorted = false;
-        this.sortedChange.emit(false);
-      }
-      // deprecated: to be removed - END
     });
   }
 
@@ -257,37 +249,6 @@ export class ClrDatagridColumn<T = any>
     return !!this._sortBy;
   }
 
-  // deprecated: to be removed - START
-  /**
-   * Indicates if the column is currently sorted
-   *
-   * @deprecated This will be removed soon, in favor of the sortOrder mechanism
-   */
-  private _sorted = false;
-  get sorted() {
-    return this._sorted;
-  }
-
-  /**
-   * @deprecated This will be removed soon, in favor of the sortOrder mechanism
-   */
-  @Input('clrDgSorted')
-  set sorted(value: boolean) {
-    if (!value && this.sorted) {
-      this._sorted = false;
-      this._sort.clear();
-    } else if (value && !this.sorted) {
-      this.sort();
-    }
-  }
-
-  /**
-   * @deprecated This will be removed soon, in favor of the sortOrder mechanism
-   */
-  @Output('clrDgSortedChange') sortedChange = new EventEmitter<boolean>();
-
-  // deprecated: to be removed - END
-
   /**
    * Indicates how the column is currently sorted
    */
@@ -336,13 +297,6 @@ export class ClrDatagridColumn<T = any>
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
 
-  /**
-   * @deprecated
-   *
-   * Use `sortDirection` to indentify the sort direction
-   */
-  sortIcon: string | null;
-
   private _sortDirection: 'up' | 'down' | null;
 
   get sortDirection(): 'up' | 'down' | null {
@@ -363,13 +317,7 @@ export class ClrDatagridColumn<T = any>
     this._sortOrder = this._sort.reverse ? ClrDatagridSortOrder.DESC : ClrDatagridSortOrder.ASC;
     // Sets the correct icon for current sort order
     this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
-    this.sortIcon = this._sortOrder === ClrDatagridSortOrder.DESC ? 'arrow down' : 'arrow'; // Backward compatibility
     this.sortOrderChange.emit(this._sortOrder);
-
-    // deprecated: to be removed - START
-    this._sorted = true;
-    this.sortedChange.emit(true);
-    // deprecated: to be removed - END
   }
 
   /**
