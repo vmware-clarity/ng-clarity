@@ -15,11 +15,7 @@ import { ClrStackViewModule } from './stack-view.module';
 
 @Component({
   template: `
-    <clr-stack-block
-      [clrStackViewLevel]="ariaLevel"
-      [clrStackViewSetsize]="ariaSetsize"
-      [clrStackViewPosinset]="ariaPosinset"
-    >
+    <clr-stack-block [clrStackViewLevel]="ariaLevel">
       <clr-stack-label>Label</clr-stack-label>
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
@@ -28,8 +24,6 @@ import { ClrStackViewModule } from './stack-view.module';
 class BasicBlock {
   @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
   ariaLevel: number;
-  ariaSetsize: number;
-  ariaPosinset: number;
 }
 
 @Component({

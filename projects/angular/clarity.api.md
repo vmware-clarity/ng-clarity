@@ -3678,10 +3678,6 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get ariaExpanded(): string;
     ariaLevel: number;
-    // @deprecated (undocumented)
-    ariaPosinset: number;
-    // @deprecated (undocumented)
-    ariaSetsize: number;
     // (undocumented)
     get caretDirection(): string;
     // (undocumented)
@@ -3719,7 +3715,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     uniqueId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
 }

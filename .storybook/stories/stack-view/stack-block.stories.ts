@@ -39,8 +39,6 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrSbNotifyChange: { control: { disable: true }, table: { disable: true } }, // experimental
-    clrStackViewPosinset: { control: { disable: true }, table: { disable: true } }, // deprecated
-    clrStackViewSetsize: { control: { disable: true }, table: { disable: true } }, // deprecated
     // outputs
     clrSbExpandedChange: { control: { disable: true }, table: { disable: true } },
     // methods
