@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -119,8 +119,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    @Inject(PLATFORM_ID) private platformId: any,
-    private zone: NgZone,
     @Inject(UNIQUE_ID) public popoverId: string,
     popoverToggleService: ClrPopoverToggleService
   ) {
