@@ -493,28 +493,6 @@ export class ClrAriaCurrentLink implements OnInit, OnDestroy {
 }
 
 // @public (undocumented)
-export enum ClrAriaLivePoliteness {
-    // (undocumented)
-    assertive = "assertive",
-    // (undocumented)
-    off = "off",
-    // (undocumented)
-    polite = "polite"
-}
-
-// @public @deprecated (undocumented)
-export class ClrAriaLiveService implements OnDestroy {
-    constructor(ngZone: NgZone, _document: any, platformId: any);
-    announce(message: string | HTMLElement, politeness?: ClrAriaLivePoliteness): void;
-    get id(): string;
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAriaLiveService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrAriaLiveService>;
-}
-
-// @public (undocumented)
 export enum ClrAxis {
     // (undocumented)
     HORIZONTAL = 1,
