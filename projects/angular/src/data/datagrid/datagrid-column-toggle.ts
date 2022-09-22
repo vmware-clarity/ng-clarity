@@ -119,7 +119,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    @Inject(UNIQUE_ID) public columnSwitchId: string,
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,
     @Inject(UNIQUE_ID) public popoverId: string,

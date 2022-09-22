@@ -1359,14 +1359,12 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnSwitchId: string, platformId: any, zone: NgZone, popoverId: string, popoverToggleService: ClrPopoverToggleService);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, platformId: any, zone: NgZone, popoverId: string, popoverToggleService: ClrPopoverToggleService);
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
     get allColumnsVisible(): boolean;
     set allColumnsVisible(value: boolean);
-    // (undocumented)
-    columnSwitchId: string;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
