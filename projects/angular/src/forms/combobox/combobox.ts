@@ -28,7 +28,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -49,6 +48,7 @@ import { ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOptionSelected } from './option-selected.directive';
+import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
@@ -62,7 +62,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
     OptionSelectionService,
     { provide: LoadingListener, useExisting: ClrCombobox },
     IF_ACTIVE_ID_PROVIDER,
-    AriaService,
     FOCUS_SERVICE_PROVIDER,
     COMBOBOX_FOCUS_HANDLER_PROVIDER,
     ClrPopoverToggleService,
@@ -82,6 +81,7 @@ export class ClrCombobox<T>
   @ViewChild('textboxInput') textbox: ElementRef;
   @ViewChild('trigger') trigger: ElementRef;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
+  @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
   private onChangeCallback: (model: T | T[]) => any;
 
@@ -105,7 +105,6 @@ export class ClrCombobox<T>
     @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private ariaService: AriaService,
     private focusHandler: ComboboxFocusHandler<T>,
     private cdr: ChangeDetectorRef
   ) {
@@ -206,11 +205,11 @@ export class ClrCombobox<T>
   }
 
   get ariaControls(): string {
-    return this.ariaService.ariaControls;
+    return this.options?.optionsId;
   }
 
   get ariaOwns(): string {
-    return this.ariaService.ariaOwns;
+    return this.options?.optionsId;
   }
 
   get ariaDescribedBySelection(): string {

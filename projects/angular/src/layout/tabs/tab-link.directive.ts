@@ -15,7 +15,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TemplateRefContainer } from '../../utils/template-ref/template-ref-container';
 import { TabsLayout } from './enums/tabs-layout.enum';
@@ -55,7 +54,6 @@ export class ClrTabLink {
   constructor(
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) private id: number,
-    private ariaService: AriaService,
     public el: ElementRef,
     private cfr: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef,
@@ -77,18 +75,12 @@ export class ClrTabLink {
 
   @HostBinding('attr.aria-controls')
   get ariaControls(): string {
-    return this.ariaService.ariaControls;
-  }
-
-  get tabLinkId(): string {
-    return this.ariaService.ariaLabelledBy;
+    return this.tabsService.children.find(tab => tab.tabLink === this)?.tabContent?.tabContentId;
   }
 
   @HostBinding('id')
   @Input('id')
-  set tabLinkId(id: string) {
-    this.ariaService.ariaLabelledBy = id;
-  }
+  tabLinkId: string;
 
   @HostListener('click')
   activate() {
