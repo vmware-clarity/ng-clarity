@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrStackViewModule } from './stack-view.module';
 
 @Component({
@@ -30,7 +29,6 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [ClrStackViewModule, NoopAnimationsModule],
         declarations: [TestComponent],
-        providers: [UNIQUE_ID_PROVIDER],
       });
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();

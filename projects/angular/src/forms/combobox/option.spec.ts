@@ -8,7 +8,6 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ComboboxModel } from './model/combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -23,7 +22,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
     SingleSelectComboboxModel,
     ComboboxFocusHandler,
-    UNIQUE_ID_PROVIDER,
     OptionSelectionService,
   ],
 })

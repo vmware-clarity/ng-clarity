@@ -273,7 +273,7 @@ export class ClrAccordionModule {
 // @public (undocumented)
 export class ClrAccordionPanel implements OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point index.d.ts
-    constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, _id: string);
+    constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
@@ -567,7 +567,7 @@ export class ClrButton implements LoadingListener {
 
 // @public (undocumented)
 export class ClrButtonGroup implements AfterContentInit {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, popoverId: string, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -1128,7 +1128,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, datagridId: string, document: any, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1220,7 +1220,7 @@ export class ClrDatagridActionBar {
 
 // @public (undocumented)
 export class ClrDatagridActionOverflow implements OnDestroy {
-    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, zone: NgZone, smartToggleService: ClrPopoverToggleService, popoverId: string);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, zone: NgZone, smartToggleService: ClrPopoverToggleService);
     // (undocumented)
     closeOverflowContent(event: Event): void;
     // (undocumented)
@@ -1333,7 +1333,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnResizerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "TableSizeService" needs to be exported by the entry point index.d.ts
-    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any, columnSeparatorId: string);
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
     // (undocumented)
     columnSeparatorId: string;
     // (undocumented)
@@ -1358,7 +1358,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverId: string, popoverToggleService: ClrPopoverToggleService);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverToggleService: ClrPopoverToggleService);
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
@@ -1469,7 +1469,7 @@ export class ClrDatagridDetailHeader {
 //
 // @public
 export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, popoverId: string);
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any);
     get active(): boolean;
     // (undocumented)
     anchor: ElementRef;
@@ -2962,7 +2962,7 @@ export class ClrMainContainerModule {
 // @public (undocumented)
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalId: string);
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
@@ -3113,7 +3113,7 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
 
 // @public (undocumented)
 export class ClrOption<T> implements OnInit {
-    constructor(elRef: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>, autoId: string);
+    constructor(elRef: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -3722,7 +3722,7 @@ export class ClrSignpost {
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef, commonStrings: ClrCommonStringsService, signpostContentId: string, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
+    constructor(injector: Injector, parentHost: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
     close(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -3736,7 +3736,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "position": "clrPosition"; }, {}, never, ["*"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [null, { optional: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -3815,7 +3815,7 @@ export class ClrSpinnerModule {
 
 // @public (undocumented)
 export class ClrStackBlock implements OnInit {
-    constructor(parent: ClrStackBlock, uniqueId: string, commonStrings: ClrCommonStringsService);
+    constructor(parent: ClrStackBlock, commonStrings: ClrCommonStringsService);
     // (undocumented)
     addChild(): void;
     // (undocumented)
@@ -3864,12 +3864,11 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": "clrSbExpanded"; "expandable": "clrSbExpandable"; "setChangedValue": "clrSbNotifyChange"; "ariaLevel": "clrStackViewLevel"; "ariaSetsize": "clrStackViewSetsize"; "ariaPosinset": "clrStackViewPosinset"; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
 }
 
 // @public (undocumented)
 export class ClrStackContentInput {
-    constructor(uniqueId: string);
     // (undocumented)
     uniqueId: string;
     // (undocumented)
@@ -3941,7 +3940,6 @@ export class ClrStackViewCustomTags {
 
 // @public (undocumented)
 export class ClrStackViewLabel implements OnInit {
-    constructor(uniqueId: string);
     set id(val: string);
     // (undocumented)
     get id(): string;
@@ -4042,7 +4040,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, id: string);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -4061,7 +4059,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -4385,7 +4383,7 @@ export class ClrTooltip {
 // @public (undocumented)
 export class ClrTooltipContent extends AbstractPopover {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef, uniqueId: string, tooltipIdService: TooltipIdService);
+    constructor(injector: Injector, parentHost: ElementRef, tooltipIdService: TooltipIdService);
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -4396,11 +4394,9 @@ export class ClrTooltipContent extends AbstractPopover {
     get size(): string;
     set size(value: string);
     // (undocumented)
-    uniqueId: string;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": "id"; "position": "clrPosition"; "size": "clrSize"; }, {}, never, ["*"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null]>;
 }
 
 // @public (undocumented)
@@ -4456,7 +4452,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
-    constructor(nodeId: string, platformId: any, parent: ClrTreeNode<T>, forTypeAheadProvider: ForTypeAheadProvider, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, injector: Injector);
+    constructor(platformId: any, parent: ClrTreeNode<T>, forTypeAheadProvider: ForTypeAheadProvider, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, injector: Injector);
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
@@ -4508,7 +4504,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "selected": "clrSelected"; "expandable": "clrExpandable"; "expanded": "clrExpanded"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, null, { optional: true; skipSelf: true; }, { optional: true; self: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, { optional: true; self: true; }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -4654,7 +4650,7 @@ export class ClrVerticalNavModule {
 
 // @public (undocumented)
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
-    constructor(platformId: any, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef, differs: IterableDiffers, wizardId: string);
+    constructor(platformId: any, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef, differs: IterableDiffers);
     // Warning: (ae-forgotten-export) The symbol "ButtonHubService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

@@ -17,7 +17,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '../../clr-angular.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ColumnsService } from './providers/columns.service';
@@ -58,7 +57,6 @@ export const DATAGRID_SPEC_PROVIDERS = [
   TableSizeService,
   DetailService,
   KeyNavigationGridController,
-  UNIQUE_ID_PROVIDER,
 ];
 
 export class TestContext<D, C> {

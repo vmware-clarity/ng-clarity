@@ -26,7 +26,7 @@ import {
 import { combineLatest, fromEvent, Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
@@ -64,7 +64,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     ExpandableRowsCount,
     StateDebouncer,
     DetailService,
-    UNIQUE_ID_PROVIDER,
     StateProvider,
     TableSizeService,
     ColumnsService,
@@ -88,7 +87,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private displayMode: DisplayModeService,
     private renderer: Renderer2,
     public detailService: DetailService,
-    @Inject(UNIQUE_ID) datagridId: string,
     @Inject(DOCUMENT) private document: any,
     private el: ElementRef,
     private page: Page,
@@ -97,6 +95,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
+    const datagridId = uniqueIdFactory();
+
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     this.detailService.id = datagridId;
   }

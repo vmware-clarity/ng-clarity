@@ -24,7 +24,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -34,13 +34,7 @@ import { ClrWizardPage } from './wizard-page';
 
 @Component({
   selector: 'clr-wizard',
-  providers: [
-    WizardNavigationService,
-    PageCollectionService,
-    ButtonHubService,
-    HeaderActionService,
-    UNIQUE_ID_PROVIDER,
-  ],
+  providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService],
   templateUrl: './wizard.html',
   host: {
     '[class.clr-wizard]': 'true',
@@ -239,6 +233,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return (this.elementRef.nativeElement as HTMLElement).classList.contains('clr-wizard--inline');
   }
 
+  wizardId = uniqueIdFactory();
+
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
 
@@ -249,8 +245,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     public buttonService: ButtonHubService,
     public headerActionService: HeaderActionService,
     private elementRef: ElementRef,
-    differs: IterableDiffers,
-    @Inject(UNIQUE_ID) public wizardId: string
+    differs: IterableDiffers
   ) {
     this.subscriptions.push(
       this.listenForNextPageChanges(),

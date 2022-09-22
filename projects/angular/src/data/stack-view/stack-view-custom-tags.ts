@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, Inject, Input, OnInit } from '@angular/core';
+import { Component, Directive, Input, OnInit } from '@angular/core';
 
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Directive({
   selector: 'clr-stack-content',
@@ -19,14 +19,11 @@ export class ClrStackViewCustomTags {
 @Component({
   selector: 'clr-stack-label',
   template: '<ng-content></ng-content>',
-  providers: [UNIQUE_ID_PROVIDER],
   host: {
     '[attr.id]': 'id',
   },
 })
 export class ClrStackViewLabel implements OnInit {
-  constructor(@Inject(UNIQUE_ID) private uniqueId: string) {}
-
   private _generatedId: string = null;
 
   private _id: string = null;
@@ -44,7 +41,7 @@ export class ClrStackViewLabel implements OnInit {
   }
 
   ngOnInit() {
-    this._generatedId = 'clr-stack-label-' + this.uniqueId;
+    this._generatedId = 'clr-stack-label-' + uniqueIdFactory();
 
     if (!this.id) {
       this._id = this._generatedId + '';

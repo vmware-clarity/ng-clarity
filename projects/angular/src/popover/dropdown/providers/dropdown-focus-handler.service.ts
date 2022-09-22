@@ -15,13 +15,14 @@ import { customFocusableItemProvider } from '../../../utils/focus/focusable-item
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { wrapObservable } from '../../../utils/focus/wrap-observable';
-import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
+  id = uniqueIdFactory();
+
   constructor(
-    @Inject(UNIQUE_ID) public id: string,
     private renderer: Renderer2,
     @SkipSelf()
     @Optional()

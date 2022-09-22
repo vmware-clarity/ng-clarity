@@ -6,7 +6,6 @@
 
 import { Component } from '@angular/core';
 
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -28,7 +27,7 @@ interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
 export default function (): void {
   describe('TooltipTrigger component', function (this: TooltipContext) {
     spec(ClrTooltipTrigger, SimpleTest, ClrTooltipModule, {
-      providers: [ClrPopoverToggleService, UNIQUE_ID_PROVIDER, TooltipIdService],
+      providers: [ClrPopoverToggleService, TooltipIdService],
     });
 
     beforeEach(function () {

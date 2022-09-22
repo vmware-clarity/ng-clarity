@@ -7,18 +7,19 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ElementRef, Inject, Injectable, PLATFORM_ID, Renderer2 } from '@angular/core';
 
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../id-generator/id-generator.service';
 import { FocusableItem } from './focusable-item';
 
 @Injectable()
 export class BasicFocusableItem implements FocusableItem {
+  id = uniqueIdFactory();
+
   constructor(
-    @Inject(UNIQUE_ID) public id: string,
     private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
-    renderer.setAttribute(el.nativeElement, 'id', id);
+    renderer.setAttribute(el.nativeElement, 'id', this.id);
     renderer.setAttribute(el.nativeElement, 'tabindex', '-1');
   }
 
@@ -46,7 +47,6 @@ export class BasicFocusableItem implements FocusableItem {
 }
 
 export const BASIC_FOCUSABLE_ITEM_PROVIDER = [
-  UNIQUE_ID_PROVIDER,
   {
     provide: FocusableItem,
     useClass: BasicFocusableItem,

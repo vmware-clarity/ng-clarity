@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
-import { UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
 import { AccordionPanelModel } from './models/accordion.model';
@@ -66,7 +65,7 @@ describe('ClrAccordionPanel', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [UNIQUE_ID_PROVIDER, AccordionService, IfExpandService],
+        providers: [AccordionService, IfExpandService],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 
@@ -108,7 +107,6 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent],
-        providers: [UNIQUE_ID_PROVIDER],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 
@@ -187,7 +185,6 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent],
-        providers: [UNIQUE_ID_PROVIDER],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 

@@ -6,12 +6,10 @@
 
 import { Type } from '@angular/core';
 
-import { UNIQUE_ID_PROVIDER } from '../../id-generator/id-generator.service';
 import { FocusableItem } from './focusable-item';
 
 export function customFocusableItemProvider<T>(implementation: Type<T>) {
   return [
-    UNIQUE_ID_PROVIDER,
     implementation,
     {
       provide: FocusableItem,

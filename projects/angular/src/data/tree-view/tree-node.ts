@@ -33,7 +33,7 @@ import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { isKeyEitherLetterOrNumber, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
 import { ForTypeAheadProvider } from '../../utils/for-type-ahead/for-type-ahead.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -51,12 +51,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
 @Component({
   selector: 'clr-tree-node',
   templateUrl: './tree-node.html',
-  providers: [
-    UNIQUE_ID_PROVIDER,
-    TREE_FEATURES_PROVIDER,
-    IfExpandService,
-    { provide: LoadingListener, useExisting: IfExpandService },
-  ],
+  providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
   animations: [
     trigger('toggleChildrenAnim', [
       transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
@@ -73,13 +68,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   STATES = ClrSelectedState;
   private skipEmitChange = false;
   isModelLoading = false;
+  nodeId = uniqueIdFactory();
 
   private typeAheadKeyEvent: Subject<string> = new Subject<string>();
 
   private typeAheadKeyBuffer = '';
 
   constructor(
-    @Inject(UNIQUE_ID) public nodeId: string,
     @Inject(PLATFORM_ID) private platformId: any,
     @Optional()
     @SkipSelf()

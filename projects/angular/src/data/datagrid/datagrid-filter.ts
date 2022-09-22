@@ -19,7 +19,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
@@ -38,7 +38,7 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 @Component({
   selector: 'clr-dg-filter',
   // We register this component as a CustomFilter, for the parent column to detect it.
-  providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }, UNIQUE_ID_PROVIDER],
+  providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }],
   template: `
     <button
       class="datagrid-filter-toggle"
@@ -84,12 +84,13 @@ export class ClrDatagridFilter<T = any>
   private subs: Subscription[] = [];
   public ariaExpanded = false;
 
+  popoverId = uniqueIdFactory();
+
   constructor(
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
-    @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(UNIQUE_ID) public popoverId: string
+    @Inject(PLATFORM_ID) private platformId: any
   ) {
     super(_filters);
     this.subs.push(

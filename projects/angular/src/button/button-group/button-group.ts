@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Inject, Input, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
@@ -23,7 +23,6 @@ import { ClrButton } from './button';
   templateUrl: 'button-group.html',
   providers: [
     ButtonInGroupService,
-    UNIQUE_ID_PROVIDER,
     ClrPopoverToggleService,
     ClrPopoverEventsService,
     ClrPopoverPositionService,
@@ -34,10 +33,11 @@ import { ClrButton } from './button';
 export class ClrButtonGroup implements AfterContentInit {
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
+  popoverId = uniqueIdFactory();
+
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService,
-    @Inject(UNIQUE_ID) public popoverId: string,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService
   ) {}

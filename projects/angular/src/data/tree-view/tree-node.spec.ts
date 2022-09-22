@@ -11,7 +11,6 @@ import { ClrIconModule } from '../../icon/icon.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -56,10 +55,6 @@ export default function (): void {
         providers: [TreeFocusManagerService],
       });
 
-      it('declares a unique id provider', function (this: Context) {
-        expect(this.getClarityProvider(UNIQUE_ID, null)).not.toBeNull();
-      });
-
       it('declares a TreeFeaturesService provider', function (this: Context) {
         expect(this.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
       });
@@ -73,7 +68,6 @@ export default function (): void {
         this.focusManagerService = new TreeFocusManagerService<void>();
         const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
         this.parent = new ClrTreeNode(
-          'parent',
           platformID,
           undefined,
           undefined,
@@ -84,7 +78,6 @@ export default function (): void {
           null
         );
         this.node = new ClrTreeNode(
-          'node',
           platformID,
           this.parent,
           undefined,

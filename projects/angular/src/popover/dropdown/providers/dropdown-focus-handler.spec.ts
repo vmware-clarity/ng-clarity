@@ -14,7 +14,6 @@ import { FOCUS_SERVICE_PROVIDER, FocusService } from '../../../utils/focus/focus
 import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-item';
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
-import { UNIQUE_ID } from '../../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 
@@ -66,10 +65,6 @@ export default function (): void {
         document.body.removeChild(this.trigger);
         document.body.removeChild(this.container);
         document.body.removeChild(this.outside);
-      });
-
-      it('declares a UNIQUE_ID provider', function (this: TestContext) {
-        expect(this.fixture.debugElement.injector.get(UNIQUE_ID, 'not_found')).not.toBe('not_found');
       });
 
       it('declares a DropdownFocusHandler provider', function (this: TestContext) {

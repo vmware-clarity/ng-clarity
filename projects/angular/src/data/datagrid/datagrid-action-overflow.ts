@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
@@ -34,7 +34,7 @@ let clrDgActionId = 0;
 
 @Component({
   selector: 'clr-dg-action-overflow',
-  providers: [UNIQUE_ID_PROVIDER, ClrPopoverToggleService, ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverToggleService, ClrPopoverEventsService, ClrPopoverPositionService],
   template: `
     <button
       class="datagrid-action-toggle"
@@ -74,6 +74,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     content: ClrAlignment.CENTER,
   };
 
+  popoverId = uniqueIdFactory();
+
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
 
   constructor(
@@ -81,8 +83,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     public commonStrings: ClrCommonStringsService,
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,
-    private smartToggleService: ClrPopoverToggleService,
-    @Inject(UNIQUE_ID) public popoverId: string
+    private smartToggleService: ClrPopoverToggleService
   ) {
     this.rowActionService.register();
     this.subscriptions.push(
