@@ -109,7 +109,7 @@ export class ClrDatagridColumn<T = any>
     this.subscriptions.push(this.listenForDetailPaneChanges());
   }
 
-  public showSeparator = true;
+  showSeparator = true;
 
   /**
    * Subscription to the sort service changes
@@ -176,12 +176,12 @@ export class ClrDatagridColumn<T = any>
    * based on native comparison of the specified property on the items.
    */
   private _field: string;
-  public get field() {
+  get field() {
     return this._field;
   }
 
   @Input('clrDgField')
-  public set field(field: string) {
+  set field(field: string) {
     if (typeof field === 'string') {
       this._field = field;
 
@@ -229,12 +229,12 @@ export class ClrDatagridColumn<T = any>
 
   private _sortBy: ClrDatagridComparatorInterface<T>;
 
-  public get sortBy() {
+  get sortBy() {
     return this._sortBy;
   }
 
   @Input('clrDgSortBy')
-  public set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
+  set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
     } else {
@@ -253,7 +253,7 @@ export class ClrDatagridColumn<T = any>
   /**
    * Indicates if the column is sortable
    */
-  public get sortable(): boolean {
+  get sortable(): boolean {
     return !!this._sortBy;
   }
 
@@ -264,7 +264,7 @@ export class ClrDatagridColumn<T = any>
    * @deprecated This will be removed soon, in favor of the sortOrder mechanism
    */
   private _sorted = false;
-  public get sorted() {
+  get sorted() {
     return this._sorted;
   }
 
@@ -272,7 +272,7 @@ export class ClrDatagridColumn<T = any>
    * @deprecated This will be removed soon, in favor of the sortOrder mechanism
    */
   @Input('clrDgSorted')
-  public set sorted(value: boolean) {
+  set sorted(value: boolean) {
     if (!value && this.sorted) {
       this._sorted = false;
       this._sort.clear();
@@ -284,7 +284,7 @@ export class ClrDatagridColumn<T = any>
   /**
    * @deprecated This will be removed soon, in favor of the sortOrder mechanism
    */
-  @Output('clrDgSortedChange') public sortedChange = new EventEmitter<boolean>();
+  @Output('clrDgSortedChange') sortedChange = new EventEmitter<boolean>();
 
   // deprecated: to be removed - END
 
@@ -292,12 +292,12 @@ export class ClrDatagridColumn<T = any>
    * Indicates how the column is currently sorted
    */
   private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
-  public get sortOrder() {
+  get sortOrder() {
     return this._sortOrder;
   }
 
   @Input('clrDgSortOrder')
-  public set sortOrder(value: ClrDatagridSortOrder) {
+  set sortOrder(value: ClrDatagridSortOrder) {
     if (typeof value === 'undefined') {
       return;
     }
@@ -322,7 +322,7 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  public get ariaSort() {
+  get ariaSort() {
     switch (this._sortOrder) {
       default:
       case ClrDatagridSortOrder.UNSORTED:
@@ -334,25 +334,25 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  @Output('clrDgSortOrderChange') public sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
+  @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
 
   /**
    * @deprecated
    *
    * Use `sortDirection` to indentify the sort direction
    */
-  public sortIcon: string | null;
+  sortIcon: string | null;
 
   private _sortDirection: 'up' | 'down' | null;
 
-  public get sortDirection(): 'up' | 'down' | null {
+  get sortDirection(): 'up' | 'down' | null {
     return this._sortDirection;
   }
 
   /**
    * Sorts the datagrid based on this column
    */
-  public sort(reverse?: boolean) {
+  sort(reverse?: boolean) {
     if (!this.sortable) {
       return;
     }
@@ -375,10 +375,10 @@ export class ClrDatagridColumn<T = any>
   /**
    * A custom filter for this column that can be provided in the projected content
    */
-  public customFilter = false;
+  customFilter = false;
 
   @ContentChild(CustomFilter)
-  public set projectedFilter(custom: any) {
+  set projectedFilter(custom: any) {
     if (custom) {
       this.deleteFilter();
       this.customFilter = true;
@@ -388,23 +388,23 @@ export class ClrDatagridColumn<T = any>
   /**
    * Help with accessibility for screen readers by providing custom placeholder text inside internal filters
    */
-  @Input('clrFilterStringPlaceholder') public filterStringPlaceholder: string;
+  @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   get filterStringPlaceholderValue() {
     return this.filterStringPlaceholder || this.commonStrings.keys.filterItems;
   }
 
-  @Input('clrFilterNumberMaxPlaceholder') public filterNumberMaxPlaceholder: string;
+  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
   get filterNumberMaxPlaceholderValue() {
     return this.filterNumberMaxPlaceholder || this.commonStrings.keys.maxValue;
   }
 
-  @Input('clrFilterNumberMinPlaceholder') public filterNumberMinPlaceholder: string;
+  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
   get filterNumberMinPlaceholderValue() {
     return this.filterNumberMinPlaceholder || this.commonStrings.keys.minValue;
   }
 
   @Input('clrFilterValue')
-  public set updateFilterValue(newValue: string | [number, number]) {
+  set updateFilterValue(newValue: string | [number, number]) {
     if (this.filter) {
       if (this.filter instanceof DatagridStringFilterImpl) {
         if (!newValue || typeof newValue !== 'string') {
@@ -431,7 +431,7 @@ export class ClrDatagridColumn<T = any>
   //
   private initFilterValue: string | [number, number];
 
-  public get filterValue() {
+  get filterValue() {
     if (this.filter instanceof DatagridStringFilterImpl || this.filter instanceof DatagridNumericFilterImpl) {
       return this.filter.value;
     }
@@ -446,7 +446,7 @@ export class ClrDatagridColumn<T = any>
    *
    * Orignial types: string | [number, number]
    */
-  public set filterValue(newValue: any) {
+  set filterValue(newValue: any) {
     if (this.filter instanceof DatagridStringFilterImpl || this.filter instanceof DatagridNumericFilterImpl) {
       this.updateFilterValue = newValue;
       this.filterValueChange.emit(this.filter.value);
@@ -461,7 +461,7 @@ export class ClrDatagridColumn<T = any>
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
 
-  public get _view() {
+  get _view() {
     return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
   }
 }

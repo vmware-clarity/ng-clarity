@@ -21,21 +21,21 @@ export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {
    * The Observable required as part of the Filter interface
    */
   private changesSubject: Subject<T> = new Subject<T>();
-  public get changes(): Observable<T> {
+  get changes(): Observable<T> {
     return this.changesSubject.asObservable();
   }
 
   /**
    * Tests if an item matches a search text
    */
-  public accepts(): boolean {
+  accepts(): boolean {
     return false;
   }
 
   /**
    * Indicates if the filter is currently active, (at least one input is set)
    */
-  public isActive(): boolean {
+  isActive(): boolean {
     return false;
   }
 }

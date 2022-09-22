@@ -60,7 +60,7 @@ let nbOptionsComponents = 0;
   },
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
-  public loading = false;
+  loading = false;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -84,14 +84,14 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     }
   }
 
-  public searchText(input: string) {
+  searchText(input: string) {
     return this.commonStrings.parse(this.commonStrings.keys.comboboxSearching, { INPUT: input });
   }
 
   /**
    * Tests if the list of options is empty, meaning it doesn't contain any items
    */
-  public get emptyOptions() {
+  get emptyOptions() {
     return !this.optionSelectionService.loading && this.items.length === 0;
   }
 

@@ -11,14 +11,14 @@ export class MockPage {
     this.id = 'this-is-my-page-id-' + pageIndex++;
   }
 
-  public id: string;
-  public disabled = false;
-  public current = false;
-  public completed = false;
-  public readyToComplete = false;
-  public hasError = false;
+  id: string;
+  disabled = false;
+  current = false;
+  completed = false;
+  readyToComplete = false;
+  hasError = false;
 
-  public reset(): void {
+  reset(): void {
     this.disabled = false;
     this.current = false;
     this.completed = false;
@@ -26,5 +26,5 @@ export class MockPage {
     this.hasError = false;
   }
 
-  public navTitle: TemplateRef<any>;
+  navTitle: TemplateRef<any>;
 }

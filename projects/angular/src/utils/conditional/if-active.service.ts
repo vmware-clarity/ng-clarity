@@ -57,7 +57,7 @@ export class IfActiveService {
    * A getter function that provides an observable for the _current Subject.
    *
    */
-  public get currentChange(): Observable<number> {
+  get currentChange(): Observable<number> {
     return this._currentChange.asObservable();
   }
 
@@ -69,7 +69,7 @@ export class IfActiveService {
    *
    * @param value
    */
-  public set current(value: number) {
+  set current(value: number) {
     if (this._current !== value) {
       this._current = value;
       this._currentChange.next(value);
@@ -82,7 +82,7 @@ export class IfActiveService {
    * A getter that returns the current value of this IfActive instance.
    * @returns
    */
-  public get current(): number {
+  get current(): number {
     return this._current;
   }
 }

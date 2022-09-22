@@ -13,17 +13,17 @@ import { DatagridRenderStep } from '../enums/render-step.enum';
 @Injectable()
 export class DatagridRenderOrganizer {
   protected _renderStep: Subject<DatagridRenderStep> = new Subject<DatagridRenderStep>();
-  public get renderStep(): Observable<DatagridRenderStep> {
+  get renderStep(): Observable<DatagridRenderStep> {
     return this._renderStep.asObservable();
   }
 
-  public filterRenderSteps(step: DatagridRenderStep) {
+  filterRenderSteps(step: DatagridRenderStep) {
     return this.renderStep.pipe(filter(testStep => step === testStep));
   }
 
   private alreadySized = false;
 
-  public resize() {
+  resize() {
     this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_ON);
     if (this.alreadySized) {
       this._renderStep.next(DatagridRenderStep.CLEAR_WIDTHS);

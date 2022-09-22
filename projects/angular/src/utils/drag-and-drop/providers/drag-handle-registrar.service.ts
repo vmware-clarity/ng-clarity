@@ -46,13 +46,13 @@ export class DragHandleRegistrarService<T> {
     return this._customHandleEl;
   }
 
-  public registerCustomHandle(el: Node) {
+  registerCustomHandle(el: Node) {
     this.dragEventListener.detachDragListeners(); // removes the existing listeners
     this._customHandleEl = el;
     this.makeElementHandle(this._customHandleEl);
   }
 
-  public unregisterCustomHandle() {
+  unregisterCustomHandle() {
     this.dragEventListener.detachDragListeners(); // removes the existing listeners
     this.renderer.removeClass(this._customHandleEl, 'drag-handle');
     delete this._customHandleEl;

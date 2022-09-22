@@ -82,7 +82,7 @@ export class ClrDatagridFilter<T = any>
   implements CustomFilter, OnDestroy
 {
   private subs: Subscription[] = [];
-  public ariaExpanded = false;
+  ariaExpanded = false;
 
   popoverId = uniqueIdFactory();
 
@@ -105,7 +105,7 @@ export class ClrDatagridFilter<T = any>
   anchor: ElementRef;
 
   // Smart Popover
-  public smartPosition: ClrPopoverPosition = {
+  smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.VERTICAL,
     side: ClrSide.AFTER,
     anchor: ClrAlignment.END,
@@ -113,12 +113,12 @@ export class ClrDatagridFilter<T = any>
   };
 
   private _open = false;
-  public get open() {
+  get open() {
     return this._open;
   }
 
   @Input('clrDgFilterOpen')
-  public set open(open: boolean) {
+  set open(open: boolean) {
     open = !!open;
     if (this.open !== open) {
       this.smartToggleService.open = open;
@@ -131,17 +131,17 @@ export class ClrDatagridFilter<T = any>
     }
   }
 
-  @Output('clrDgFilterOpenChange') public openChange = new EventEmitter<boolean>(false);
+  @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
   @Input('clrDgFilter')
-  public set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>) {
+  set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>) {
     this.setFilter(filter);
   }
 
   /**
    * Indicates if the filter is currently active
    */
-  public get active() {
+  get active() {
     return !!this.filter && this.filter.isActive();
   }
 

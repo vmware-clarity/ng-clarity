@@ -158,17 +158,17 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     }
   }
 
-  @Input('clrDgPageInputDisabled') public disableCurrentPageInput: boolean;
+  @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
 
   /**
    * Page size
    */
-  public get pageSize(): number | string {
+  get pageSize(): number | string {
     return this.page.size;
   }
 
   @Input('clrDgPageSize')
-  public set pageSize(size: number | string) {
+  set pageSize(size: number | string) {
     if (typeof size === 'number') {
       this.page.size = size as number;
     }
@@ -177,12 +177,12 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Total items (needed to guess the last page)
    */
-  public get totalItems(): number | string {
+  get totalItems(): number | string {
     return this.page.totalItems;
   }
 
   @Input('clrDgTotalItems')
-  public set totalItems(total: number | string) {
+  set totalItems(total: number | string) {
     if (typeof total === 'number') {
       this.page.totalItems = total as number;
     }
@@ -191,12 +191,12 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Last page
    */
-  public get lastPage(): number | string {
+  get lastPage(): number | string {
     return this.page.last;
   }
 
   @Input('clrDgLastPage')
-  public set lastPage(last: number | string) {
+  set lastPage(last: number | string) {
     if (typeof last === 'number') {
       this.page.last = last as number;
     }
@@ -205,12 +205,12 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Current page
    */
-  public get currentPage(): number | string {
+  get currentPage(): number | string {
     return this.page.current;
   }
 
   @Input('clrDgPage')
-  public set currentPage(page: number | string) {
+  set currentPage(page: number | string) {
     if (typeof page === 'number') {
       this.page.current = page as number;
     }
@@ -221,35 +221,35 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Moves to the previous page if it exists
    */
-  public previous() {
+  previous() {
     this.page.previous();
   }
 
   /**
    * Moves to the next page if it exists
    */
-  public next() {
+  next() {
     this.page.next();
   }
 
   /**
    * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
    */
-  public get firstItem(): number {
+  get firstItem(): number {
     return this.page.firstItem;
   }
 
   /**
    * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
    */
-  public get lastItem(): number {
+  get lastItem(): number {
     return this.page.lastItem;
   }
 
   /**
    * Conditionally adds page numbers before and after the current page
    */
-  public get middlePages(): number[] {
+  get middlePages(): number[] {
     const middlePages: number[] = [];
     if (this.page.current > 1) {
       middlePages.push(this.page.current - 1);
@@ -265,7 +265,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * We only update the pagination's current page on blur of the input field, or
    * when they press enter.
    */
-  public updateCurrentPage(event: any): void {
+  updateCurrentPage(event: any): void {
     const parsed = parseInt(event.target.value, 10);
 
     // if the input value, is not a number, we don't update the page

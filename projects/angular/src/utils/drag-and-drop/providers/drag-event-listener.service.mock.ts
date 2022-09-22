@@ -16,13 +16,13 @@ import { DragEventListenerService } from './drag-event-listener.service';
 @Injectable()
 export class MockDragEventListener {
   private listeners: (() => void)[];
-  public draggableEl: any;
-  public dragStarted: Subject<any> = new Subject<any>();
-  public dragMoved: Subject<any> = new Subject<any>();
-  public dragEnded: Subject<any> = new Subject<any>();
-  public dragStartPosition: DragPointPosition;
+  draggableEl: any;
+  dragStarted: Subject<any> = new Subject<any>();
+  dragMoved: Subject<any> = new Subject<any>();
+  dragEnded: Subject<any> = new Subject<any>();
+  dragStartPosition: DragPointPosition;
 
-  public attachDragListeners(draggableEl: any) {
+  attachDragListeners(draggableEl: any) {
     this.draggableEl = draggableEl;
     this.draggableEl.hasListener = true;
     this.draggableEl.setAttribute('hasListener', 'true');
@@ -33,7 +33,7 @@ export class MockDragEventListener {
     ];
   }
 
-  public detachDragListeners() {
+  detachDragListeners() {
     if (this.listeners) {
       this.listeners.map(event => event());
     }

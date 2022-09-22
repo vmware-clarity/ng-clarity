@@ -20,7 +20,7 @@ import { TooltipIdService } from './providers/tooltip-id.service';
   },
 })
 export class ClrTooltipTrigger {
-  public ariaDescribedBy: string;
+  ariaDescribedBy: string;
   private subs: Subscription[] = [];
   constructor(private toggleService: ClrPopoverToggleService, private tooltipIdService: TooltipIdService) {
     // The aria-described by comes from the id of content. It

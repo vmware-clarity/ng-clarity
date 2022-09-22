@@ -10,10 +10,10 @@ import { DragEventType } from '../interfaces/drag-event.interface';
 import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';
 
 export class MockDragAndDropEventBus {
-  public dragStarted: Subject<any> = new Subject<any>();
-  public dragMoved: Subject<any> = new Subject<any>();
-  public dragEnded: Subject<any> = new Subject<any>();
-  public dropped: Subject<any> = new Subject<any>();
+  dragStarted: Subject<any> = new Subject<any>();
+  dragMoved: Subject<any> = new Subject<any>();
+  dragEnded: Subject<any> = new Subject<any>();
+  dropped: Subject<any> = new Subject<any>();
 
   broadcast(event: any): void {
     switch (event.type) {

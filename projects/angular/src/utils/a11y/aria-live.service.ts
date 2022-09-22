@@ -70,7 +70,7 @@ export class ClrAriaLiveService implements OnDestroy {
    * get access to the internal HTML `id` that gonna be used for the AriaLive container.
    * @return ID of the DOM Element as string.
    */
-  public get id(): string {
+  get id(): string {
     return this._id;
   }
 
@@ -91,10 +91,7 @@ export class ClrAriaLiveService implements OnDestroy {
    * @param message - This could be simple string or HTMLElement
    * @param politeness - 'polite', 'assertive' or 'off'
    */
-  public announce(
-    message: string | HTMLElement,
-    politeness: ClrAriaLivePoliteness = ClrAriaLivePoliteness.polite
-  ): void {
+  announce(message: string | HTMLElement, politeness: ClrAriaLivePoliteness = ClrAriaLivePoliteness.polite): void {
     if (politeness === ClrAriaLivePoliteness.off) {
       return;
     }
@@ -132,7 +129,7 @@ export class ClrAriaLiveService implements OnDestroy {
    * onDestroy life cycle - must stop all active setTimeouts and remove the AriaLive
    * container from the document.
    */
-  public ngOnDestroy() {
+  ngOnDestroy() {
     clearTimeout(this.previousTimeout);
     if (isPlatformBrowser(this.platformId) && this.ariaLiveElement) {
       this.document.body.removeChild(this.ariaLiveElement);

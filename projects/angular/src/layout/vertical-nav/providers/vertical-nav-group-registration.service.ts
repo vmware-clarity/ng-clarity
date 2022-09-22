@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class VerticalNavGroupRegistrationService {
-  public navGroupCount = 0;
+  navGroupCount = 0;
 
   registerNavGroup() {
     this.navGroupCount++;

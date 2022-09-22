@@ -197,7 +197,7 @@ export default function (): void {
 }
 
 class TestFilter implements ClrDatagridFilterInterface<number> {
-  public active = true;
+  active = true;
 
   isActive(): boolean {
     return this.active;

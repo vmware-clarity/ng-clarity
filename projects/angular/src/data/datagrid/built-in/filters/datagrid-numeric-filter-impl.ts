@@ -18,7 +18,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
    */
   private _changes = new Subject<[number, number]>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get changes(): Observable<[number, number]> {
+  get changes(): Observable<[number, number]> {
     return this._changes.asObservable();
   }
 
@@ -34,11 +34,11 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
    * to the built-in string filter.
    */
 
-  public get value(): [number, number] {
+  get value(): [number, number] {
     return [this._low, this._high];
   }
 
-  public set value(vals: [number, number]) {
+  set value(vals: [number, number]) {
     const low = vals[0];
     const high = vals[1];
     if (low !== this._low || high !== this._high) {
@@ -48,20 +48,20 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     }
   }
 
-  public get low() {
+  get low() {
     return this._low;
   }
-  public set low(low: number) {
+  set low(low: number) {
     if (low !== this._low) {
       this._low = low;
       this._changes.next([this._low, this._high]);
     }
   }
 
-  public get high() {
+  get high() {
     return this._high;
   }
-  public set high(high: number) {
+  set high(high: number) {
     if (high !== this._high) {
       this._high = high;
       this._changes.next([this._low, this._high]);
@@ -71,20 +71,20 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   /**
    * Indicates if the filter is currently active, (at least one input is set)
    */
-  public isActive(): boolean {
+  isActive(): boolean {
     return this._low !== null || this.high !== null;
   }
 
   /**
    * Tests if an item matches a search text
    */
-  public accepts(item: T): boolean {
+  accepts(item: T): boolean {
     // We have a filter function in case someone wants to implement a numeric
     // filter that always passes nulls or similar
     return this.filterFn.accepts(item, this._low, this._high);
   }
 
-  public get state() {
+  get state() {
     if (this.filterFn instanceof DatagridPropertyNumericFilter) {
       return {
         property: this.filterFn.prop,
@@ -95,7 +95,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     return this;
   }
 
-  public equals(other: ClrDatagridFilterInterface<T, any>): boolean {
+  equals(other: ClrDatagridFilterInterface<T, any>): boolean {
     if (other instanceof DatagridNumericFilterImpl) {
       if (other.filterFn instanceof DatagridPropertyNumericFilter) {
         return (

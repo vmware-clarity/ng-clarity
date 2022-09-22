@@ -52,7 +52,7 @@ import { ClrCheckbox } from './checkbox';
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   private inline = false;
-  public role: string;
+  role: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
 

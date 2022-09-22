@@ -39,7 +39,7 @@ class TestComponent implements AfterContentInit {
   @ViewChild(ClrWizardPageNavTitle, { static: true })
   navTitleRef: ClrWizardPageNavTitle;
 
-  public ngAfterContentInit(): void {
+  ngAfterContentInit(): void {
     this.page.navTitle = this.navTitleRef.pageNavTitleTemplateRef;
   }
 }

@@ -16,8 +16,8 @@ let nbSelection = 0;
 
 @Injectable()
 export class Selection<T = any> {
-  public id: string;
-  public preserveSelection = false;
+  id: string;
+  preserveSelection = false;
   private prevSelectionRefs: T[] = []; // Refs of selected items
   private prevSingleSelectionRef: T; // Ref of single selected item
   private lockedRefs: T[] = []; // Ref of locked items
@@ -165,7 +165,7 @@ export class Selection<T = any> {
     this.subscriptions.push(this.valueCollector.pipe(debounceTime(0)).subscribe(() => this.emitChange()));
   }
 
-  public clearSelection(): void {
+  clearSelection(): void {
     this._current = [];
     this.prevSelectionRefs = [];
     this.prevSingleSelectionRef = null;
@@ -174,10 +174,10 @@ export class Selection<T = any> {
   }
 
   private _selectionType: SelectionType = SelectionType.None;
-  public get selectionType(): SelectionType {
+  get selectionType(): SelectionType {
     return this._selectionType;
   }
-  public set selectionType(value: SelectionType) {
+  set selectionType(value: SelectionType) {
     if (value === this.selectionType) {
       return;
     }
@@ -190,7 +190,7 @@ export class Selection<T = any> {
   }
 
   /** @deprecated since 2.0, remove in 3.0 */
-  public rowSelectionMode = false;
+  rowSelectionMode = false;
 
   private get _selectable(): boolean {
     return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
@@ -204,7 +204,7 @@ export class Selection<T = any> {
   /**
    * Cleans up our subscriptions to other providers
    */
-  public destroy() {
+  destroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -212,10 +212,10 @@ export class Selection<T = any> {
    * The current selection in single selection type
    */
   private _currentSingle: T;
-  public get currentSingle(): T {
+  get currentSingle(): T {
     return this._currentSingle;
   }
-  public set currentSingle(value: T) {
+  set currentSingle(value: T) {
     if (value === this._currentSingle) {
       return;
     }
@@ -232,24 +232,24 @@ export class Selection<T = any> {
    * The current selection
    */
   private _current: T[];
-  public get current(): T[] {
+  get current(): T[] {
     return this._current;
   }
-  public set current(value: T[]) {
+  set current(value: T[]) {
     this.updateCurrent(value, true);
   }
 
   /**
    * Last selection, for use in range selection.
    */
-  public rangeStart: T;
+  rangeStart: T;
   /**
    * Shift key state, for use in range selection.
    */
-  public shiftPressed = false;
+  shiftPressed = false;
 
   private valueCollector: Subject<T[]> = new Subject<T[]>();
-  public updateCurrent(value: T[], emit: boolean) {
+  updateCurrent(value: T[], emit: boolean) {
     this._current = value;
 
     if (emit) {
@@ -269,14 +269,14 @@ export class Selection<T = any> {
     }
   }
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<T[] | T> {
+  get change(): Observable<T[] | T> {
     return this._change.asObservable();
   }
 
   /**
    * Checks if an item is currently selected
    */
-  public isSelected(item: T): boolean {
+  isSelected(item: T): boolean {
     if (this._selectionType === SelectionType.Single) {
       return this.currentSingle === item;
     } else if (this._selectionType === SelectionType.Multi) {
@@ -313,7 +313,7 @@ export class Selection<T = any> {
   /**
    * Selects or deselects an item
    */
-  public setSelected(item: T, selected: boolean) {
+  setSelected(item: T, selected: boolean) {
     const index = this.current ? this.current.indexOf(item) : -1;
 
     switch (this._selectionType) {
@@ -337,7 +337,7 @@ export class Selection<T = any> {
   /**
    * Checks if all currently displayed items are selected
    */
-  public isAllSelected(): boolean {
+  isAllSelected(): boolean {
     if (this._selectionType !== SelectionType.Multi || !this._items.displayed) {
       return false;
     }
@@ -369,7 +369,7 @@ export class Selection<T = any> {
   /**
    * Lock and unlock item
    */
-  public lockItem(item: T, lock: boolean) {
+  lockItem(item: T, lock: boolean) {
     if (this.canItBeLocked()) {
       const ref = this._items.trackBy(
         this._items.all.findIndex(maybe => maybe === item),
@@ -388,7 +388,7 @@ export class Selection<T = any> {
   /**
    * Check is item locked or not by searcing into lockedRefs for entry
    */
-  public isLocked(item: T): boolean {
+  isLocked(item: T): boolean {
     /**
      * The check for selectionType will boost the performence by NOT searching
      * into the array when there is no need for that.
@@ -407,7 +407,7 @@ export class Selection<T = any> {
   /**
    * Selects or deselects all currently displayed items
    */
-  public toggleAll() {
+  toggleAll() {
     if (this._selectionType === SelectionType.None || this._selectionType === SelectionType.Single) {
       return;
     }

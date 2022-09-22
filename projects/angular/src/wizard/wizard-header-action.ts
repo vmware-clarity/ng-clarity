@@ -31,11 +31,11 @@ export class ClrWizardHeaderAction {
   // If our host has an ID attribute, we use this instead of our index.
   @Input('id') _id: string = (wizardHeaderActionIndex++).toString();
 
-  public get id(): string {
+  get id(): string {
     return `clr-wizard-header-action-${this._id}`;
   }
 
-  @Input('clrWizardHeaderActionDisabled') public disabled = false;
+  @Input('clrWizardHeaderActionDisabled') disabled = false;
 
   @Output('actionClicked') headerActionClicked: EventEmitter<string> = new EventEmitter(false);
 

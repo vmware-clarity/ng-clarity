@@ -54,7 +54,7 @@ import { datesAreEqual } from './utils/date-utils';
   providers: [DatepickerFocusService],
 })
 export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
-  public static ngAcceptInputType_date: Date | null | string;
+  static ngAcceptInputType_date: Date | null | string;
 
   @Input() placeholder: string;
   @Output('clrDateChange') dateChange: EventEmitter<Date> = new EventEmitter<Date>(false);

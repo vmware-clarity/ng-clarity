@@ -50,7 +50,7 @@ import { ClrWizardPage } from './wizard-page';
   },
 })
 export class ClrWizardStepnavItem {
-  @Input('page') public page: ClrWizardPage;
+  @Input('page') page: ClrWizardPage;
 
   constructor(
     public navService: WizardNavigationService,
@@ -64,36 +64,36 @@ export class ClrWizardStepnavItem {
     }
   }
 
-  public get id(): string {
+  get id(): string {
     this.pageGuard();
     return this.pageCollection.getStepItemIdForPage(this.page);
   }
 
-  public get stepAriaCurrent(): string {
+  get stepAriaCurrent(): string {
     return this.isCurrent && 'step';
   }
 
-  public get isDisabled(): boolean {
+  get isDisabled(): boolean {
     this.pageGuard();
     return this.page.disabled || this.navService.wizardStopNavigation || this.navService.wizardDisableStepnav;
   }
 
-  public get isCurrent(): boolean {
+  get isCurrent(): boolean {
     this.pageGuard();
     return this.page.current;
   }
 
-  public get isComplete(): boolean {
+  get isComplete(): boolean {
     this.pageGuard();
     return this.page.completed;
   }
 
-  public get hasError(): boolean {
+  get hasError(): boolean {
     this.pageGuard();
     return this.page.hasError && this.isComplete;
   }
 
-  public get canNavigate(): boolean {
+  get canNavigate(): boolean {
     this.pageGuard();
     return this.pageCollection.previousPageIsCompleted(this.page);
   }

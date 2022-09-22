@@ -13,7 +13,7 @@ import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
 
 @Injectable({ providedIn: 'root' })
 export class ResponsiveNavigationService {
-  public responsiveNavList: number[] = [];
+  responsiveNavList: number[] = [];
   private registerNavSubject = new ReplaySubject<number[]>();
   private controlNavSubject = new Subject<ResponsiveNavControlMessage>();
 

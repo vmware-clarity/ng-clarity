@@ -49,11 +49,11 @@ export const CUSTOM_BUTTON_TYPES: any = {
   host: { class: 'clr-wizard-btn-wrapper', '[attr.aria-hidden]': 'isHidden' },
 })
 export class ClrWizardButton {
-  @Input('type') public type = '';
+  @Input('type') type = '';
 
-  @Input('clrWizardButtonDisabled') public disabled = false;
+  @Input('clrWizardButtonDisabled') disabled = false;
 
-  @Input('clrWizardButtonHidden') public hidden = false;
+  @Input('clrWizardButtonHidden') hidden = false;
 
   // EventEmitter which is emitted when a button is clicked.
   @Output('clrWizardButtonClicked') wasClicked: EventEmitter<string> = new EventEmitter<string>(false);
@@ -70,38 +70,38 @@ export class ClrWizardButton {
     return false;
   }
 
-  public get isCancel(): boolean {
+  get isCancel(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'cancel');
   }
 
-  public get isNext(): boolean {
+  get isNext(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'next');
   }
 
-  public get isPrevious(): boolean {
+  get isPrevious(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'previous');
   }
 
-  public get isFinish(): boolean {
+  get isFinish(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'finish');
   }
 
-  public get isDanger(): boolean {
+  get isDanger(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'danger');
   }
 
-  public get isPrimaryAction(): boolean {
+  get isPrimaryAction(): boolean {
     return this.isNext || this.isDanger || this.isFinish;
   }
 
-  public get _disabledAttribute(): string | null {
+  get _disabledAttribute(): string | null {
     if (this.isDisabled) {
       return '';
     }
     return null;
   }
 
-  public get isDisabled(): boolean {
+  get isDisabled(): boolean {
     // dealing with negatives here. cognitively easier to think of it like this...
     const disabled = true;
     const nav = this.navService;
@@ -139,7 +139,7 @@ export class ClrWizardButton {
     return !disabled;
   }
 
-  public get isHidden(): boolean {
+  get isHidden(): boolean {
     // dealing with negatives here. cognitively easier to think of it like this...
     const hidden = true;
     const nav = this.navService;

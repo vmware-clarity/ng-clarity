@@ -14,11 +14,11 @@ export class ExpandableRowsCount {
 
   private expandableCount = 0;
 
-  public register() {
+  register() {
     this.expandableCount++;
   }
 
-  public unregister() {
+  unregister() {
     this.expandableCount--;
   }
 
@@ -26,7 +26,7 @@ export class ExpandableRowsCount {
    * false means no rows with action
    * check if details are on, and disable rows entirely
    */
-  public get hasExpandableRow(): boolean {
+  get hasExpandableRow(): boolean {
     return !this.detailService.enabled && this.expandableCount > 0;
   }
 }

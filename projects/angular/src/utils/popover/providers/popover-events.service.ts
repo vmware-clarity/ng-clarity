@@ -15,10 +15,10 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
 /** @dynamic */
 @Injectable()
 export class ClrPopoverEventsService implements OnDestroy {
-  public outsideClickClose = true;
-  public scrollToClose = true;
+  outsideClickClose = true;
+  scrollToClose = true;
   private documentClickListener: () => void;
-  public ignoredEvent: any;
+  ignoredEvent: any;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -44,7 +44,7 @@ export class ClrPopoverEventsService implements OnDestroy {
   }
 
   private scrollSubscription: Subscription;
-  public addScrollListener() {
+  addScrollListener() {
     if (this.scrollToClose) {
       this.documentScroller = fromEvent(this.document, 'scroll', { capture: true });
       this.scrollSubscription = this.documentScroller
@@ -63,7 +63,7 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  public removeScrollListener() {
+  removeScrollListener() {
     if (this.documentScroller) {
       this.scrollSubscription.unsubscribe();
       delete this.documentScroller;
@@ -91,7 +91,7 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  public addClickListener() {
+  addClickListener() {
     if (this.outsideClickClose) {
       this.documentClickListener = this.renderer.listen(this.document, 'click', (event: MouseEvent) => {
         if (event === this.ignoredEvent) {
@@ -107,7 +107,7 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  public removeClickListener() {
+  removeClickListener() {
     if (this.outsideClickClose) {
       delete this.ignoredEvent;
       if (this.documentClickListener) {
@@ -118,14 +118,14 @@ export class ClrPopoverEventsService implements OnDestroy {
   }
 
   private escapeListener: () => void;
-  public addEscapeListener() {
+  addEscapeListener() {
     this.escapeListener = this.renderer.listen(this.document, 'keydown.escape', () => {
       this.smartOpenService.open = false;
       this.setAnchorFocus();
     });
   }
 
-  public removeEscapeListener() {
+  removeEscapeListener() {
     if (this.escapeListener) {
       this.escapeListener();
       delete this.escapeListener;
@@ -133,34 +133,34 @@ export class ClrPopoverEventsService implements OnDestroy {
   }
 
   private _anchorButtonRef: ElementRef;
-  public set anchorButtonRef(ref: ElementRef) {
+  set anchorButtonRef(ref: ElementRef) {
     this._anchorButtonRef = ref;
   }
-  public get anchorButtonRef(): ElementRef {
+  get anchorButtonRef(): ElementRef {
     return this._anchorButtonRef;
   }
 
   private _closeButtonRef: ElementRef;
-  public set closeButtonRef(ref: ElementRef) {
+  set closeButtonRef(ref: ElementRef) {
     this._closeButtonRef = ref;
   }
-  public get closeButtonRef(): ElementRef {
+  get closeButtonRef(): ElementRef {
     return this._closeButtonRef;
   }
 
-  public setCloseFocus(): void {
+  setCloseFocus(): void {
     this._closeButtonRef.nativeElement.focus();
   }
 
-  public setAnchorFocus(): void {
+  setAnchorFocus(): void {
     this.anchorButtonRef.nativeElement.focus();
   }
 
   private _contentRef: ElementRef;
-  public set contentRef(host: ElementRef) {
+  set contentRef(host: ElementRef) {
     this._contentRef = host;
   }
-  public get contentRef(): ElementRef {
+  get contentRef(): ElementRef {
     return this._contentRef;
   }
 

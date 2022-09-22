@@ -25,14 +25,14 @@ import { LocaleHelperService } from './locale-helper.service';
 
 @Injectable()
 export class DateIOService {
-  public disabledDates: DateRange = {
+  disabledDates: DateRange = {
     // This is the default range. It approximates the beginning of time to the end of time.
     // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
     // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
-  public cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
+  cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
@@ -41,7 +41,7 @@ export class DateIOService {
     this.initializeLocaleDisplayFormat();
   }
 
-  public setMinDate(date: string): void {
+  setMinDate(date: string): void {
     // NOTE: I'm expecting consumers to pass one of four things here:
     //       A proper date string(2019-11-11), null, undefined or empty string ('')
     if (!date) {
@@ -53,7 +53,7 @@ export class DateIOService {
     }
   }
 
-  public setMaxDate(date: string): void {
+  setMaxDate(date: string): void {
     // NOTE: I'm expecting consumers to pass one of four things here:
     //       A proper date string(2019-11-11), null, undefined or empty string ('')
     if (!date) {

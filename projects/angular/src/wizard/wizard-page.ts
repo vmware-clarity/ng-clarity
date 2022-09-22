@@ -57,7 +57,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @ContentChild(ClrWizardPageTitle, { static: true })
-  public pageTitle: ClrWizardPageTitle;
+  pageTitle: ClrWizardPageTitle;
 
   /**
    * Contains a reference to the desired title for the page's step in the
@@ -70,7 +70,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @ContentChild(ClrWizardPageNavTitle, { static: true })
-  public pageNavTitle: ClrWizardPageNavTitle;
+  pageNavTitle: ClrWizardPageNavTitle;
 
   /**
    * Contains a reference to the buttons defined within the page. If not defined,
@@ -81,7 +81,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @ContentChild(ClrWizardPageButtons, { static: true })
-  public _buttons: ClrWizardPageButtons;
+  _buttons: ClrWizardPageButtons;
 
   /**
    * Contains a reference to the header actions defined within the page. If not defined,
@@ -92,7 +92,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @ContentChild(ClrWizardPageHeaderActions, { static: true })
-  public _headerActions: ClrWizardPageHeaderActions;
+  _headerActions: ClrWizardPageHeaderActions;
 
   /**
    *
@@ -115,7 +115,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get nextStepDisabled(): boolean {
+  get nextStepDisabled(): boolean {
     return this._nextStepDisabled;
   }
 
@@ -126,7 +126,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Input('clrWizardPageNextDisabled')
-  public set nextStepDisabled(val: boolean) {
+  set nextStepDisabled(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._nextStepDisabled) {
       this._nextStepDisabled = valBool;
@@ -164,7 +164,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get previousStepDisabled(): boolean {
+  get previousStepDisabled(): boolean {
     return this._previousStepDisabled;
   }
 
@@ -175,7 +175,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Input('clrWizardPagePreviousDisabled')
-  public set previousStepDisabled(val: boolean) {
+  set previousStepDisabled(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._previousStepDisabled) {
       this._previousStepDisabled = valBool;
@@ -191,7 +191,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Output('clrWizardPagePreviousDisabledChange')
-  public previousStepDisabledChange: EventEmitter<boolean> = new EventEmitter();
+  previousStepDisabledChange: EventEmitter<boolean> = new EventEmitter();
 
   /**
    *
@@ -206,7 +206,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get hasError(): boolean {
+  get hasError(): boolean {
     return this._hasError;
   }
 
@@ -219,7 +219,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Input('clrWizardPageHasError')
-  public set hasError(val: boolean) {
+  set hasError(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._hasError) {
       this._hasError = valBool;
@@ -235,7 +235,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Input('clrWizardPagePreventDefault') public preventDefault: boolean | string = false;
+  @Input('clrWizardPagePreventDefault') preventDefault: boolean | string = false;
 
   /**
    *
@@ -250,7 +250,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get stopCancel(): boolean {
+  get stopCancel(): boolean {
     return this._stopCancel;
   }
 
@@ -266,7 +266,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   @Input('clrWizardPagePreventDefaultCancel')
-  public set stopCancel(val: boolean) {
+  set stopCancel(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._stopCancel) {
       this._stopCancel = valBool;
@@ -294,7 +294,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get stopNext(): boolean {
+  get stopNext(): boolean {
     return this._stopNext;
   }
 
@@ -312,7 +312,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   @Input('clrWizardPagePreventDefaultNext')
-  public set stopNext(val: boolean) {
+  set stopNext(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._stopNext) {
       this._stopNext = valBool;
@@ -488,7 +488,7 @@ export class ClrWizardPage implements OnInit {
    *
    * @memberof ClrWizardPage
    */
-  public get id(): string {
+  get id(): string {
     // covers things like null, undefined, false, and empty string
     // while allowing zero to pass
     const idIsNonZeroFalsy = !this._id && this._id !== 0;
@@ -510,7 +510,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get readyToComplete(): boolean {
+  get readyToComplete(): boolean {
     return !this.nextStepDisabled;
   }
 
@@ -533,7 +533,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get completed(): boolean {
+  get completed(): boolean {
     return this._complete && this.readyToComplete;
 
     // FOR V2: UNWIND COMPLETED, READYTOCOMPLETE, AND ERRORS
@@ -550,7 +550,7 @@ export class ClrWizardPage implements OnInit {
    *
    * @memberof ClrWizardPage
    */
-  public set completed(value: boolean) {
+  set completed(value: boolean) {
     this._complete = value;
   }
 
@@ -560,11 +560,11 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get current(): boolean {
+  get current(): boolean {
     return this.navService.currentPage === this;
   }
 
-  public get disabled(): boolean {
+  get disabled(): boolean {
     return !this.enabled;
   }
 
@@ -579,7 +579,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get enabled(): boolean {
+  get enabled(): boolean {
     return this.current || this.completed || this.previousCompleted;
   }
 
@@ -591,7 +591,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get previousCompleted(): boolean {
+  get previousCompleted(): boolean {
     const previousPage = this.pageCollection.getPreviousPage(this);
 
     if (!previousPage) {
@@ -606,7 +606,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get title(): TemplateRef<any> {
+  get title(): TemplateRef<any> {
     return this.pageTitle.pageTitleTemplateRef;
   }
 
@@ -615,7 +615,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get navTitle(): TemplateRef<any> {
+  get navTitle(): TemplateRef<any> {
     if (this.pageNavTitle) {
       return this.pageNavTitle.pageNavTitleTemplateRef;
     }
@@ -627,7 +627,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get headerActions(): TemplateRef<any> {
+  get headerActions(): TemplateRef<any> {
     if (!this._headerActions) {
       return undefined;
     }
@@ -639,7 +639,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get hasHeaderActions(): boolean {
+  get hasHeaderActions(): boolean {
     return !!this._headerActions;
   }
 
@@ -648,7 +648,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get buttons(): TemplateRef<any> {
+  get buttons(): TemplateRef<any> {
     if (!this._buttons) {
       return undefined;
     }
@@ -664,7 +664,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get hasButtons(): boolean {
+  get hasButtons(): boolean {
     return !!this._buttons;
   }
 
@@ -679,7 +679,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public makeCurrent(): void {
+  makeCurrent(): void {
     this.navService.currentPage = this;
   }
 
@@ -689,7 +689,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const navService = this.navService;
     if (!navService.currentPage && !navService.navServiceLoaded) {
       this.makeCurrent();
@@ -705,7 +705,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  public get stepItemId(): string {
+  get stepItemId(): string {
     return this.pageCollection.getStepItemIdForPage(this);
   }
 }

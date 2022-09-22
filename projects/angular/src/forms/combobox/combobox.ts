@@ -159,7 +159,7 @@ export class ClrCombobox<T>
     return (this.optionSelectionService.selectionModel as MultiSelectComboboxModel<T>).model;
   }
 
-  public smartPosition: ClrPopoverPosition = {
+  smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.VERTICAL,
     side: ClrSide.AFTER,
     anchor: ClrAlignment.START,
@@ -252,12 +252,12 @@ export class ClrCombobox<T>
     }
   }
 
-  @Output('clrInputChange') public clrInputChange: EventEmitter<string> = new EventEmitter<string>(false);
+  @Output('clrInputChange') clrInputChange: EventEmitter<string> = new EventEmitter<string>(false);
 
-  @Output('clrOpenChange') public clrOpenChange: Observable<boolean> = this.toggleService.openChange;
+  @Output('clrOpenChange') clrOpenChange: Observable<boolean> = this.toggleService.openChange;
 
   // This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change
-  @Output('clrSelectionChange') public clrSelectionChange: Observable<ComboboxModel<T>> =
+  @Output('clrSelectionChange') clrSelectionChange: Observable<ComboboxModel<T>> =
     this.optionSelectionService.selectionChanged;
 
   private initializeSubscriptions(): void {

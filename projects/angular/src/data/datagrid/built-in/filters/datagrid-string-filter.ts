@@ -92,17 +92,17 @@ export class DatagridStringFilter<T = any>
   /**
    * Indicates if the filter dropdown is open
    */
-  public open = false;
+  open = false;
 
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input') public input: ElementRef;
+  @ViewChild('input') input: ElementRef;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
-  @ViewChild(ClrDatagridFilter) public filterContainer: ClrDatagridFilter<T>;
+  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
 
   ngAfterViewInit() {
     this.subs.push(
@@ -133,11 +133,11 @@ export class DatagridStringFilter<T = any>
   /**
    * Common setter for the input value
    */
-  public get value() {
+  get value() {
     return this.filter.value;
   }
   @Input('clrFilterValue')
-  public set value(value: string) {
+  set value(value: string) {
     if (this.filter && typeof value === 'string') {
       if (!value) {
         value = '';

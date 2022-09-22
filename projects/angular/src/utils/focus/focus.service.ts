@@ -16,7 +16,7 @@ export class FocusService {
 
   private _unlistenFuncs: (() => void)[] = [];
   private _current: FocusableItem;
-  public get current() {
+  get current() {
     return this._current;
   }
 
@@ -86,7 +86,7 @@ export class FocusService {
     return false;
   }
 
-  public detachListeners() {
+  detachListeners() {
     this._unlistenFuncs.forEach(unlisten => unlisten());
   }
 }

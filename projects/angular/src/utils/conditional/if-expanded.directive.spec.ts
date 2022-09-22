@@ -115,7 +115,7 @@ class SimpleTest {
   template: `{{ count }}`,
 })
 class TestCounter {
-  public count: number;
+  count: number;
 
   constructor(@Inject('counter') counter: { total: number }) {
     this.count = ++counter.total;

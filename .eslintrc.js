@@ -30,6 +30,12 @@ module.exports = {
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
       plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports'],
       rules: {
+        '@typescript-eslint/explicit-member-accessibility': [
+          'error',
+          {
+            accessibility: 'no-public',
+          },
+        ],
         '@typescript-eslint/no-explicit-any': 'off', // Would LOVE to turn this on
         '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/no-unused-vars': 'error',

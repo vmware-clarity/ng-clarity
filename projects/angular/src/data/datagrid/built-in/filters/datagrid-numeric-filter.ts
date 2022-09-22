@@ -106,17 +106,17 @@ export class DatagridNumericFilter<T = any>
   /**
    * Indicates if the filter dropdown is open
    */
-  public open = false;
+  open = false;
 
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input_low') public input: ElementRef;
+  @ViewChild('input_low') input: ElementRef;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
-  @ViewChild(ClrDatagridFilter) public filterContainer: ClrDatagridFilter<T>;
+  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
   ngAfterViewInit() {
     this.subscriptions.push(
       this.popoverToggleService.openChange.subscribe(openChange => {
@@ -140,12 +140,12 @@ export class DatagridNumericFilter<T = any>
   /**
    * Common setter for the input values
    */
-  public get value() {
+  get value() {
     return [this.filter.low, this.filter.high];
   }
 
   @Input('clrFilterValue')
-  public set value(values: [number, number]) {
+  set value(values: [number, number]) {
     if (this.filter && Array.isArray(values)) {
       if (values && (values[0] !== this.filter.low || values[1] !== this.filter.high)) {
         if (typeof values[0] === 'number') {
@@ -165,7 +165,7 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  public get low() {
+  get low() {
     if (typeof this.filter.low === 'number' && isFinite(this.filter.low)) {
       return this.filter.low;
     } else {
@@ -174,7 +174,7 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  public set low(low: number | string) {
+  set low(low: number | string) {
     if (typeof low === 'number' && low !== this.filter.low) {
       this.filter.low = low;
       this.filterValueChange.emit([this.filter.low, this.filter.high]);
@@ -184,7 +184,7 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  public get high() {
+  get high() {
     if (typeof this.filter.high === 'number' && isFinite(this.filter.high)) {
       return this.filter.high;
     } else {
@@ -193,7 +193,7 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  public set high(high: number | string) {
+  set high(high: number | string) {
     if (typeof high === 'number' && high !== this.filter.high) {
       this.filter.high = high;
       this.filterValueChange.emit([this.filter.low, this.filter.high]);

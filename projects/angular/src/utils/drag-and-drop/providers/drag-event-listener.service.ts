@@ -52,21 +52,21 @@ export class DragEventListenerService<T> {
   private initialPosition: DragPointPosition;
 
   // Draggable component sets these properties:
-  public dragDataTransfer?: T;
-  public group?: string | string[];
-  public dragStartDelay = 0;
+  dragDataTransfer?: T;
+  group?: string | string[];
+  dragStartDelay = 0;
 
   // DraggableGhost component sets these properties:
-  public ghostElement?: any;
-  public dropPointPosition?: DragPointPosition;
+  ghostElement?: any;
+  dropPointPosition?: DragPointPosition;
 
-  public attachDragListeners(draggableEl: Node) {
+  attachDragListeners(draggableEl: Node) {
     this.draggableEl = draggableEl;
     this.listeners.push(this.customDragEvent(this.draggableEl, 'mousedown', 'mousemove', 'mouseup'));
     this.listeners.push(this.customDragEvent(this.draggableEl, 'touchstart', 'touchmove', 'touchend'));
   }
 
-  public detachDragListeners() {
+  detachDragListeners() {
     if (this.listeners) {
       this.listeners.map(event => event());
     }

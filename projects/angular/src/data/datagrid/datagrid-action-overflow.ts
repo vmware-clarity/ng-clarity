@@ -67,7 +67,7 @@ let clrDgActionId = 0;
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
   private subscriptions: Subscription[] = [];
-  public smartPosition: ClrPopoverPosition = {
+  smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.HORIZONTAL,
     side: ClrSide.AFTER,
     anchor: ClrAlignment.CENTER,
@@ -124,12 +124,12 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   private _open = false;
-  public get open() {
+  get open() {
     return this._open;
   }
 
   @Input('clrDgActionOverflowOpen')
-  public set open(open: boolean) {
+  set open(open: boolean) {
     const openState = !!open;
     if (!!openState !== this.open) {
       // prevents chocolate mess
@@ -139,5 +139,5 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     }
   }
 
-  @Output('clrDgActionOverflowOpenChange') public openChange = new EventEmitter<boolean>(false);
+  @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 }

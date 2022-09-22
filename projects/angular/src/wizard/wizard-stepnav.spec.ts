@@ -19,7 +19,7 @@ import { ClrWizardModule } from './wizard.module';
 let mockPages: MockPage[];
 
 class StepnavPageCollection extends PageCollectionMock {
-  public get pages(): MockPage[] {
+  get pages(): MockPage[] {
     return mockPages;
   }
 }

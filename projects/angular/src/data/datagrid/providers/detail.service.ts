@@ -14,7 +14,7 @@ export class DetailService {
   private cache: any;
   private _enabled = false;
   private button: HTMLButtonElement;
-  public id: string;
+  id: string;
 
   get enabled(): boolean {
     return this._enabled;
@@ -24,7 +24,7 @@ export class DetailService {
     this._enabled = state;
   }
 
-  public get stateChange(): Observable<boolean | null> {
+  get stateChange(): Observable<boolean | null> {
     return this._state.asObservable();
   }
 

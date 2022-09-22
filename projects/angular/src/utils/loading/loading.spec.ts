@@ -105,13 +105,13 @@ describe('Loading directive without listener', function () {
 class FullTest {
   @ViewChild(ClrLoading) loadingDirective: ClrLoading;
 
-  public displayed = true;
-  public loading = false;
+  displayed = true;
+  loading = false;
 }
 
 @Injectable()
 class DummyListener implements LoadingListener {
-  public loading = false;
+  loading = false;
 
   loadingStateChange(state: ClrLoadingState): void {
     this.loading = state === ClrLoadingState.LOADING;

@@ -33,7 +33,7 @@ export class ClrDropdownItem implements AfterViewInit {
   ) {}
 
   private unlisten: () => void;
-  public setByDeprecatedDisabled = false;
+  setByDeprecatedDisabled = false;
 
   @Input('clrDisabled')
   set disabled(value: boolean | string) {

@@ -84,7 +84,7 @@ class ChocolateTest extends WillyWonka {
 class ChocolateParent extends WillyWonka {
   nbChildren = 0;
 
-  public changes = 0;
+  changes = 0;
   incrementChange() {
     this.changes++;
   }
@@ -118,7 +118,7 @@ class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
     return this.index === this.parent.nbChildren - 1;
   }
 
-  public changes = 0;
+  changes = 0;
   incrementChange() {
     this.changes++;
   }

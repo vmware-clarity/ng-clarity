@@ -43,13 +43,13 @@ class TestComponent {
   clickedHA: ClrWizardHeaderAction;
 
   private _lastClickedHeaderAction = '';
-  public get lastClickedHeaderAction(): string {
+  get lastClickedHeaderAction(): string {
     return this._lastClickedHeaderAction;
   }
 
-  public titleToUpdate = 'title to update';
+  titleToUpdate = 'title to update';
 
-  public click(clickedActionId: string) {
+  click(clickedActionId: string) {
     this._lastClickedHeaderAction = clickedActionId;
   }
 }

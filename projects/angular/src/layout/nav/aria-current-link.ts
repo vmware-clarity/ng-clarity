@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   host: { '[attr.aria-current]': 'ariaCurrent' },
 })
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {
-  public ariaCurrent: string | undefined;
+  ariaCurrent: string | undefined;
   private subscription: Subscription;
 
   constructor(private rla: RouterLinkActive) {}

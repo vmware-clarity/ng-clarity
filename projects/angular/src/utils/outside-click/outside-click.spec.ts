@@ -78,8 +78,8 @@ describe('Outside click', () => {
   `,
 })
 class FullTest {
-  public strict = false;
-  public nbClicks = 0;
+  strict = false;
+  nbClicks = 0;
 
   inc() {
     this.nbClicks++;

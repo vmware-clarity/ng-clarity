@@ -20,24 +20,24 @@ export class ClrPopoverToggleService {
   private _openEvent: Event;
   private _openEventChange: Subject<Event> = new Subject<Event>();
 
-  public get openChange(): Observable<boolean> {
+  get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
   }
 
-  public set openEvent(event: Event) {
+  set openEvent(event: Event) {
     this._openEvent = event;
     this._openEventChange.next(event);
   }
 
-  public get openEvent(): Event {
+  get openEvent(): Event {
     return this._openEvent;
   }
 
-  public getEventChange(): Observable<Event> {
+  getEventChange(): Observable<Event> {
     return this._openEventChange.asObservable();
   }
 
-  public set open(value: boolean) {
+  set open(value: boolean) {
     value = !!value;
     if (this._open !== value) {
       this._open = value;
@@ -45,7 +45,7 @@ export class ClrPopoverToggleService {
     }
   }
 
-  public get open(): boolean {
+  get open(): boolean {
     return this._open;
   }
 
@@ -58,7 +58,7 @@ export class ClrPopoverToggleService {
    * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
    * This is for instance the case of components that open on a click, but close on a click outside.
    */
-  public toggleWithEvent(event: any) {
+  toggleWithEvent(event: any) {
     preventArrowKeyScroll(event);
 
     this.openEvent = event;
@@ -67,11 +67,11 @@ export class ClrPopoverToggleService {
 
   private _popoverAligned: Subject<HTMLElement> = new Subject();
 
-  public get popoverAligned(): Observable<HTMLElement> {
+  get popoverAligned(): Observable<HTMLElement> {
     return this._popoverAligned.asObservable();
   }
 
-  public popoverAlignedEmit(popoverNode: HTMLElement) {
+  popoverAlignedEmit(popoverNode: HTMLElement) {
     this._popoverAligned.next(popoverNode);
   }
 }

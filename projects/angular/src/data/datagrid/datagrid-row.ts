@@ -58,13 +58,13 @@ let nbRow = 0;
   ],
 })
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-  public id: string;
-  public radioId: string;
-  public checkboxId: string;
-  public expandableId: string;
+  id: string;
+  radioId: string;
+  checkboxId: string;
+  expandableId: string;
 
   /* reference to the enum so that template can access */
-  public SELECTION_TYPE = SelectionType;
+  SELECTION_TYPE = SelectionType;
 
   @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
 
@@ -73,9 +73,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    */
   @Input('clrDgItem') item: T;
 
-  public replaced: boolean;
+  replaced: boolean;
 
-  public expandAnimationTrigger = false;
+  expandAnimationTrigger = false;
 
   /**
    * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
@@ -138,7 +138,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   /**
    * Indicates if the row is selected
    */
-  public get selected() {
+  get selected() {
     if (this.selection.selectionType === SelectionType.None) {
       return this._selected;
     } else {
@@ -147,7 +147,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   @Input('clrDgSelected')
-  public set selected(value: boolean | string) {
+  set selected(value: boolean | string) {
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
     } else {
@@ -162,35 +162,35 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   // By default every item is selectable; it becomes not selectable only if it's explicitly set to false
   @Input('clrDgSelectable')
-  public set clrDgSelectable(value: boolean | string) {
+  set clrDgSelectable(value: boolean | string) {
     this.selection.lockItem(this.item, value === false);
   }
 
-  public get clrDgSelectable() {
+  get clrDgSelectable() {
     return !this.selection.isLocked(this.item);
   }
 
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
 
-  public toggle(selected = !this.selected) {
+  toggle(selected = !this.selected) {
     if (selected !== this.selected) {
       this.selected = selected;
       this.selectedChanged.emit(selected);
     }
   }
 
-  public get expanded() {
+  get expanded() {
     return this.expand.expanded;
   }
 
   @Input('clrDgExpanded')
-  public set expanded(value: boolean | string) {
+  set expanded(value: boolean | string) {
     this.expand.expanded = value as boolean;
   }
 
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
-  public toggleExpand() {
+  toggleExpand() {
     if (this.expand.expandable) {
       this.expandAnimation.updateStartHeight();
       this.expanded = !this.expanded;
@@ -312,7 +312,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
-  public displayCells = false;
+  displayCells = false;
 
   @ViewChild('stickyCells', { read: ViewContainerRef })
   _stickyCells: ViewContainerRef;
@@ -328,7 +328,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
   }
 
-  public get _view() {
+  get _view() {
     return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
 }

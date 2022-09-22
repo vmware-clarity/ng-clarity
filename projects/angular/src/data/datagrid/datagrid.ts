@@ -76,7 +76,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
-  public selectAllId: string;
+  selectAllId: string;
   constructor(
     private organizer: DatagridRenderOrganizer,
     public items: Items<T>,
@@ -102,36 +102,36 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /* reference to the enum so that template can access */
-  public SELECTION_TYPE = SelectionType;
+  SELECTION_TYPE = SelectionType;
 
   /**
    * Freezes the datagrid while data is loading
    */
-  public get loading(): boolean {
+  get loading(): boolean {
     return this.items.loading;
   }
 
   @Input('clrDgLoading')
-  public set loading(value: boolean) {
+  set loading(value: boolean) {
     this.items.loading = value;
   }
 
   /**
    * Output emitted whenever the data needs to be refreshed, based on user action or external ones
    */
-  @Output('clrDgRefresh') public refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
+  @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
 
   /**
    * Public method to re-trigger the computation of displayed items manually
    */
-  public dataChanged() {
+  dataChanged() {
     this.items.refresh();
   }
 
   /**
    * We grab the smart iterator from projected content
    */
-  @ContentChild(ClrDatagridItems) public iterator: ClrDatagridItems<T>;
+  @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
 
   /**
    * Array of all selected items
@@ -189,7 +189,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Indicates if all currently displayed items are selected
    */
-  public get allSelected() {
+  get allSelected() {
     return this.selection.isAllSelected();
   }
 
@@ -197,7 +197,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Selects/deselects all currently displayed items
    * @param value
    */
-  public set allSelected(_value: boolean) {
+  set allSelected(_value: boolean) {
     /**
      * This is a setter but we ignore the value.
      * It's strange, but it lets us have an indeterminate state where only
@@ -209,12 +209,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Custom placeholder detection
    */
-  @ContentChild(ClrDatagridPlaceholder) public placeholder: ClrDatagridPlaceholder<T>;
+  @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
 
   /**
    * Hideable Column data source / detection.
    */
-  @ContentChildren(ClrDatagridColumn) public columns: QueryList<ClrDatagridColumn<T>>;
+  @ContentChildren(ClrDatagridColumn) columns: QueryList<ClrDatagridColumn<T>>;
 
   /**
    * When the datagrid is user-managed without the smart iterator, we get the items displayed

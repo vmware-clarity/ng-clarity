@@ -97,24 +97,24 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   private subscription: Subscription;
 
   // Smart Popover
-  public smartPosition: ClrPopoverPosition = {
+  smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.VERTICAL,
     side: ClrSide.BEFORE,
     anchor: ClrAlignment.START,
     content: ClrAlignment.START,
   };
-  public openState: boolean;
+  openState: boolean;
 
   @ContentChild(ClrDatagridColumnToggleTitle) customToggleTitle: ClrDatagridColumnToggleTitle;
   @ContentChild(ClrDatagridColumnToggleButton) customToggleButton: ClrDatagridColumnToggleButton;
   @ViewChild('allSelected', { read: ElementRef })
   private allSelectedElement: ElementRef<HTMLElement>;
 
-  public get allColumnsVisible(): boolean {
+  get allColumnsVisible(): boolean {
     return this._allColumnsVisible;
   }
 
-  public set allColumnsVisible(value: boolean) {
+  set allColumnsVisible(value: boolean) {
     this._allColumnsVisible = value;
   }
 

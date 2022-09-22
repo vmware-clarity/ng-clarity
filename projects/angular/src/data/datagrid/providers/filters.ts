@@ -21,7 +21,7 @@ export class FiltersProvider<T = any> {
    */
   private _change = new Subject<ClrDatagridFilterInterface<T>[]>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<ClrDatagridFilterInterface<T>[]> {
+  get change(): Observable<ClrDatagridFilterInterface<T>[]> {
     return this._change.asObservable();
   }
 
@@ -33,7 +33,7 @@ export class FiltersProvider<T = any> {
   /**
    * Tests if at least one filter is currently active
    */
-  public hasActiveFilters(): boolean {
+  hasActiveFilters(): boolean {
     // We do not use getActiveFilters() because this function will be called much more often
     // and stopping the loop early might be relevant.
     for (const { filter } of this._all) {
@@ -47,7 +47,7 @@ export class FiltersProvider<T = any> {
   /**
    * Returns a list of all currently active filters
    */
-  public getActiveFilters(): ClrDatagridFilterInterface<T>[] {
+  getActiveFilters(): ClrDatagridFilterInterface<T>[] {
     const ret: ClrDatagridFilterInterface<T>[] = [];
     for (const { filter } of this._all) {
       if (filter && filter.isActive()) {
@@ -60,7 +60,7 @@ export class FiltersProvider<T = any> {
   /**
    * Registers a filter, and returns a deregistration function
    */
-  public add<F extends ClrDatagridFilterInterface<T>>(filter: F): RegisteredFilter<T, F> {
+  add<F extends ClrDatagridFilterInterface<T>>(filter: F): RegisteredFilter<T, F> {
     const subscription = filter.changes.subscribe(() => this.resetPageAndEmitFilterChange([filter]));
     let hasUnregistered = false;
     const registered = new RegisteredFilter(filter, () => {
@@ -87,7 +87,7 @@ export class FiltersProvider<T = any> {
   /**
    * Accepts an item if it is accepted by all currently active filters
    */
-  public accepts(item: T): boolean {
+  accepts(item: T): boolean {
     for (const { filter } of this._all) {
       if (filter && filter.isActive() && !filter.accepts(item)) {
         return false;

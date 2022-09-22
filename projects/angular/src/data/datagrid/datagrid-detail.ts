@@ -34,7 +34,7 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetail {
-  @ContentChild(ClrDatagridDetailHeader) public header: ClrDatagridDetailHeader;
+  @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 

@@ -12,9 +12,9 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
 export class OptionSelectionService<T> {
-  public selectionModel: ComboboxModel<T>;
-  public loading = false;
-  public displayField: string;
+  selectionModel: ComboboxModel<T>;
+  loading = false;
+  displayField: string;
   private _currentInput = '';
   get currentInput(): string {
     return this._currentInput;

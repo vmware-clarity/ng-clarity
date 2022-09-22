@@ -19,7 +19,7 @@ export class StateDebouncer {
    */
   private _change = new Subject<void>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<void> {
+  get change(): Observable<void> {
     return this._change.asObservable();
   }
 
@@ -28,11 +28,11 @@ export class StateDebouncer {
    */
   private nbChanges = 0;
 
-  public changeStart() {
+  changeStart() {
     this.nbChanges++;
   }
 
-  public changeDone() {
+  changeDone() {
     if (--this.nbChanges === 0) {
       this._change.next();
     }

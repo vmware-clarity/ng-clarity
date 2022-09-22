@@ -42,9 +42,9 @@ export class ClrButtonGroup implements AfterContentInit {
     private destroy$: ClrDestroyService
   ) {}
 
-  public popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
+  popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
 
-  public get open() {
+  get open() {
     return this.toggleService.open;
   }
 

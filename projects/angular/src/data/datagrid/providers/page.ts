@@ -15,16 +15,16 @@ export class Page {
   constructor(private stateDebouncer: StateDebouncer) {}
 
   private preventEmit = false;
-  public activated = false;
+  activated = false;
 
   /**
    * Page size, a value of 0 means no pagination
    */
   private _size = 0;
-  public get size(): number {
+  get size(): number {
     return this._size;
   }
-  public set size(size: number) {
+  set size(size: number) {
     const oldSize = this._size;
     if (size !== oldSize) {
       if (!this.preventEmit) {
@@ -53,10 +53,10 @@ export class Page {
    * Total items (needed to guess the last page)
    */
   private _totalItems?: number;
-  public get totalItems(): number {
+  get totalItems(): number {
     return this._totalItems || 0; // remains 0 if not set to avoid breaking change
   }
-  public set totalItems(total: number) {
+  set totalItems(total: number) {
     this._totalItems = total;
     // If we have less items than before, we might need to change the current page
     if (this.current > this.last) {
@@ -68,7 +68,7 @@ export class Page {
    * Last page
    */
   private _last: number;
-  public get last(): number {
+  get last(): number {
     if (this._last) {
       return this._last;
     }
@@ -78,7 +78,7 @@ export class Page {
     }
     return 1;
   }
-  public set last(page: number) {
+  set last(page: number) {
     this._last = page;
   }
 
@@ -87,13 +87,13 @@ export class Page {
    */
   private _change = new Subject<number>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<number> {
+  get change(): Observable<number> {
     return this._change.asObservable();
   }
 
   private _sizeChange = new Subject<number>();
 
-  public get sizeChange(): Observable<number> {
+  get sizeChange(): Observable<number> {
     return this._sizeChange.asObservable();
   }
 
@@ -101,10 +101,10 @@ export class Page {
    * Current page
    */
   private _current = 1;
-  public get current(): number {
+  get current(): number {
     return this._current;
   }
-  public set current(page: number) {
+  set current(page: number) {
     if (page !== this._current) {
       this.stateDebouncer.changeStart();
       this._current = page;
@@ -116,7 +116,7 @@ export class Page {
   /**
    * Moves to the previous page if it exists
    */
-  public previous() {
+  previous() {
     if (this.current > 1) {
       this.current--;
     }
@@ -125,7 +125,7 @@ export class Page {
   /**
    * Moves to the next page if it exists
    */
-  public next() {
+  next() {
     if (this.current < this.last) {
       this.current++;
     }
@@ -134,7 +134,7 @@ export class Page {
   /**
    * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
    */
-  public get firstItem(): number {
+  get firstItem(): number {
     if (this._totalItems === 0) {
       return -1;
     }
@@ -148,7 +148,7 @@ export class Page {
   /**
    * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
    */
-  public get lastItem(): number {
+  get lastItem(): number {
     if (this._totalItems === 0) {
       return -1;
     }
@@ -166,7 +166,7 @@ export class Page {
   /**
    * Resets the page size to 0
    */
-  public resetPageSize(preventEmit = false): void {
+  resetPageSize(preventEmit = false): void {
     this.preventEmit = preventEmit;
     this.size = 0;
   }

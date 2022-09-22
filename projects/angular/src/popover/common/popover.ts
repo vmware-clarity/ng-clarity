@@ -48,7 +48,7 @@ export class Popover {
   }
 
   // TODO: need a way to account for parameters that change dynamically (positioning).
-  public anchor(
+  anchor(
     anchor: any,
     anchorAlign: Point,
     popoverAlign: Point,
@@ -242,7 +242,7 @@ export class Popover {
     return this._scroll.asObservable();
   }
 
-  public release() {
+  release() {
     this.element.style.transform = '';
     this.removeScrollEventListeners();
   }

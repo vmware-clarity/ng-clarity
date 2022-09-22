@@ -18,7 +18,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
    */
   private _changes = new Subject<string>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get changes(): Observable<string> {
+  get changes(): Observable<string> {
     return this._changes.asObservable();
   }
 
@@ -26,7 +26,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
    * Input value converted to lowercase
    */
   private _lowerCaseValue = '';
-  public get lowerCaseValue() {
+  get lowerCaseValue() {
     return this._lowerCaseValue;
   }
 
@@ -34,13 +34,13 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
    * Raw input value
    */
   private _rawValue = '';
-  public get value(): string {
+  get value(): string {
     return this._rawValue;
   }
   /**
    * Common setter for the input value
    */
-  public set value(value: string) {
+  set value(value: string) {
     if (!value) {
       value = '';
     }
@@ -54,19 +54,19 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
   /**
    * Indicates if the filter is currently active, meaning the input is not empty
    */
-  public isActive(): boolean {
+  isActive(): boolean {
     return !!this.value;
   }
 
   /**
    * Tests if an item matches a search text
    */
-  public accepts(item: T): boolean {
+  accepts(item: T): boolean {
     // We always test with the lowercase value of the input, to stay case insensitive
     return this.filterFn.accepts(item, this.lowerCaseValue);
   }
 
-  public get state() {
+  get state() {
     if (this.filterFn instanceof DatagridPropertyStringFilter) {
       return {
         property: this.filterFn.prop,
@@ -76,7 +76,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
     return this;
   }
 
-  public equals(other: ClrDatagridFilterInterface<T, any>): boolean {
+  equals(other: ClrDatagridFilterInterface<T, any>): boolean {
     if (other instanceof DatagridStringFilterImpl) {
       if (other.filterFn instanceof DatagridPropertyStringFilter) {
         return (

@@ -15,7 +15,7 @@ import { DatagridRenderOrganizer } from './render-organizer';
  */
 @Injectable()
 export class MockDatagridRenderOrganizer extends DatagridRenderOrganizer {
-  public get updateRenderStep(): Subject<DatagridRenderStep> {
+  get updateRenderStep(): Subject<DatagridRenderStep> {
     return this._renderStep;
   }
 }

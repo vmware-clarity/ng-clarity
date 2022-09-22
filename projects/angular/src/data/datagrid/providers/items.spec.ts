@@ -251,7 +251,7 @@ class TestComparator implements ClrDatagridComparatorInterface<number> {
 
 class NameFilter implements ClrDatagridFilterInterface<User> {
   private _search = '';
-  public search(value: string) {
+  search(value: string) {
     this._search = value;
     this.changes.next(value);
   }

@@ -19,7 +19,7 @@ export class NestedProperty<T = any> {
 
   // Safe getter for a deep object property, will not throw an error but return
   // undefined if one of the intermediate properties is null or undefined.
-  public getPropValue(item: T): any {
+  getPropValue(item: T): any {
     if (this.splitProp) {
       let value = item;
       for (const nestedProp of this.splitProp) {

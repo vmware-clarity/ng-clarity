@@ -40,7 +40,7 @@ import { Selection } from './providers/selection';
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   /* reference to the enum so that template can access it */
-  public SELECTION_TYPE = SelectionType;
+  SELECTION_TYPE = SelectionType;
 
   constructor(
     public selection: Selection,
@@ -57,7 +57,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     this.expand.setReplace(!!value);
   }
   private subscriptions: Subscription[] = [];
-  public replacedRow = false;
+  replacedRow = false;
 
   ngAfterContentInit() {
     this.subscriptions.push(
@@ -73,7 +73,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
 
   // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
-  public get beginningOfExpandableContentAriaText() {
+  get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
       `${
@@ -85,7 +85,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
 
   // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
   @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
-  public get endOfExpandableContentAriaText() {
+  get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
       `${this.commonStrings.keys.dategridExpandableEndOf || this.commonStrings.keys.datagridExpandableEndOf} 

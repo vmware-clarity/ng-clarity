@@ -42,15 +42,15 @@ export class TimelineIconAttributeService {
     });
   }
 
-  public getAriaLabel(step: ClrTimelineStepState): string {
+  getAriaLabel(step: ClrTimelineStepState): string {
     return this.attributeMap.get(step).ariaLabel;
   }
 
-  public getIconShape(step: ClrTimelineStepState): string {
+  getIconShape(step: ClrTimelineStepState): string {
     return this.attributeMap.get(step).iconShape;
   }
 
-  public getIconStatus(step: ClrTimelineStepState): string {
+  getIconStatus(step: ClrTimelineStepState): string {
     return this.attributeMap.get(step).iconStatus;
   }
 }
