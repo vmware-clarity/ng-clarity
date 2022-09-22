@@ -6,7 +6,6 @@
 
 import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
 
@@ -34,7 +33,6 @@ export class ClrTabContent implements OnDestroy {
   constructor(
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) public id: number,
-    private ariaService: AriaService,
     private tabsService: TabsService
   ) {
     if (!this.tabContentId) {
@@ -53,17 +51,10 @@ export class ClrTabContent implements OnDestroy {
   }
 
   get ariaLabelledBy(): string {
-    return this.ariaService.ariaLabelledBy;
+    return this.tabsService.children.find(tab => tab.tabContent === this)?.tabLink?.tabLinkId;
   }
 
-  get tabContentId(): string {
-    return this.ariaService.ariaControls;
-  }
-
-  @Input('id')
-  set tabContentId(id: string) {
-    this.ariaService.ariaControls = id;
-  }
+  @Input('id') tabContentId: string;
 
   get active() {
     return this.ifActiveService.current === this.id;

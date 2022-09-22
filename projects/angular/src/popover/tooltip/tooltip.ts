@@ -20,8 +20,6 @@ import { TooltipIdService } from './providers/tooltip-id.service';
   providers: [
     ClrPopoverToggleService,
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-    // TODO: consider centralizing the unique id string on a service that provides ariaAttributes that need it
-    // AriaService in layout/tabs/providers might be a good starting point.
     UNIQUE_ID_PROVIDER,
     TooltipIdService,
   ],

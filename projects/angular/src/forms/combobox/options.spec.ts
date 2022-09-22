@@ -9,7 +9,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -24,7 +23,6 @@ const OPTION_PROVIDERS = [
   IF_ACTIVE_ID_PROVIDER,
   UNIQUE_ID_PROVIDER,
   OptionSelectionService,
-  AriaService,
   FocusService,
   ComboboxFocusHandler,
   ClrCommonStringsService,

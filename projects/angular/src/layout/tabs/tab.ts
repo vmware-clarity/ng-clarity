@@ -6,7 +6,6 @@
 
 import { Component, ContentChild, Inject } from '@angular/core';
 
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';
@@ -15,7 +14,7 @@ import { ClrTabLink } from './tab-link.directive';
 @Component({
   selector: 'clr-tab',
   template: `<ng-content></ng-content>`,
-  providers: [IF_ACTIVE_ID_PROVIDER, AriaService],
+  providers: [IF_ACTIVE_ID_PROVIDER],
 })
 export class ClrTab {
   @ContentChild(ClrTabLink, { static: true })

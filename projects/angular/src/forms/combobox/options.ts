@@ -19,7 +19,6 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID } from '../../utils/conditional/if-active.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
@@ -67,7 +66,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
     @Inject(IF_ACTIVE_ID) public id: number,
-    private ariaService: AriaService,
     private el: ElementRef,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
@@ -97,15 +95,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     return !this.optionSelectionService.loading && this.items.length === 0;
   }
 
-  @Input('id')
-  set optionsId(id: string) {
-    this.ariaService.ariaControls = id;
-    this.ariaService.ariaOwns = id;
-  }
-
-  get optionsId(): string {
-    return this.ariaService.ariaControls;
-  }
+  @Input('id') optionsId: string;
 
   _items: QueryList<ClrOption<T>>;
   @ContentChildren(ClrOption)

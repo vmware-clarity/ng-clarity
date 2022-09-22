@@ -7,7 +7,6 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AriaService } from '../../utils/aria/aria.service';
 import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from '../../utils/conditional/if-active.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';
@@ -40,7 +39,7 @@ describe('TabContent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, TestWrapper, ClrTabContent],
-      providers: [AriaService, IfActiveService, IF_ACTIVE_ID_PROVIDER, TabsService],
+      providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER, TabsService],
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
