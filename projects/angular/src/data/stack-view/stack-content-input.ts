@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, Inject } from '@angular/core';
+import { Directive } from '@angular/core';
 
-import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 
 @Directive({
   selector: '[clrStackInput]',
@@ -16,5 +16,5 @@ import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
   },
 })
 export class ClrStackContentInput {
-  constructor(@Inject(UNIQUE_ID) public uniqueId: string) {}
+  uniqueId = uniqueIdFactory();
 }

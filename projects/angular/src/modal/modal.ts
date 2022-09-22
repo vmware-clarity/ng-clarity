@@ -10,7 +10,6 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,7 +20,7 @@ import {
 
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
 
 @Component({
@@ -48,9 +47,10 @@ import { ScrollingService } from '../utils/scrolling/scrolling-service';
       transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
     ]),
   ],
-  providers: [UNIQUE_ID_PROVIDER],
 })
 export class ClrModal implements OnChanges, OnDestroy {
+  modalId = uniqueIdFactory();
+
   @ViewChild(FocusTrapDirective) focusTrap: FocusTrapDirective;
 
   @HostBinding('class.open')
@@ -71,11 +71,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
-  constructor(
-    private _scrollingService: ScrollingService,
-    public commonStrings: ClrCommonStringsService,
-    @Inject(UNIQUE_ID) public modalId: string
-  ) {}
+  constructor(private _scrollingService: ScrollingService, public commonStrings: ClrCommonStringsService) {}
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {

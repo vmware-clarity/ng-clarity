@@ -22,7 +22,6 @@ import { filter, pairwise, tap } from 'rxjs/operators';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrAccordionPanel } from '../accordion-panel';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
@@ -35,7 +34,7 @@ import { StepperService } from './providers/stepper.service';
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
-  providers: [IfExpandService, UNIQUE_ID_PROVIDER],
+  providers: [IfExpandService],
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
@@ -61,10 +60,9 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
-    ifExpandService: IfExpandService,
-    @Inject(UNIQUE_ID) id: string
+    ifExpandService: IfExpandService
   ) {
-    super(commonStrings, stepperService, ifExpandService, id);
+    super(commonStrings, stepperService, ifExpandService);
   }
 
   override ngOnInit(): void {

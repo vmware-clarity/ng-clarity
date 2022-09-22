@@ -12,7 +12,6 @@ import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.to
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrOptions } from './options';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
@@ -21,7 +20,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
 const OPTION_PROVIDERS = [
   ClrPopoverToggleService,
   IF_ACTIVE_ID_PROVIDER,
-  UNIQUE_ID_PROVIDER,
   OptionSelectionService,
   FocusService,
   ComboboxFocusHandler,

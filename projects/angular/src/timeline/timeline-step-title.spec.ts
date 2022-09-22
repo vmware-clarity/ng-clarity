@@ -7,7 +7,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
 import { ClrTimelineStepTitle } from './timeline-step-title';
 
@@ -19,7 +18,7 @@ export default function (): void {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ClrTimelineStepTitle, TestTimelineStepTitle],
-        providers: [UNIQUE_ID_PROVIDER, TimelineStepIdService],
+        providers: [TimelineStepIdService],
       });
 
       fixture = TestBed.createComponent(TestTimelineStepTitle);

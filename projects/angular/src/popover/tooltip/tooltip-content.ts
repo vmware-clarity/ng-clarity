@@ -7,7 +7,7 @@
 import { Component, ElementRef, Inject, Injector, Input, Optional } from '@angular/core';
 
 import { assertNever } from '../../utils/assert/assert.helpers';
-import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { AbstractPopover } from '../common/abstract-popover';
 import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -37,7 +37,6 @@ export class ClrTooltipContent extends AbstractPopover {
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
-    @Inject(UNIQUE_ID) public uniqueId: string,
     private tooltipIdService: TooltipIdService
   ) {
     super(injector, parentHost);
@@ -47,7 +46,7 @@ export class ClrTooltipContent extends AbstractPopover {
     }
 
     // Set the default id in case consumer does not supply a custom id.
-    this.id = uniqueId;
+    this.id = uniqueIdFactory();
   }
 
   get id(): string {

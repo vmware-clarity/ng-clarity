@@ -9,7 +9,6 @@ import {
   ContentChild,
   EventEmitter,
   HostBinding,
-  Inject,
   Input,
   OnInit,
   Optional,
@@ -18,7 +17,7 @@ import {
 } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrStackViewLabel } from './stack-view-custom-tags';
 
 @Component({
@@ -78,7 +77,6 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     '[attr.role]': '"heading"',
     '[attr.aria-level]': 'headingLevel',
   },
-  providers: [UNIQUE_ID_PROVIDER],
 })
 export class ClrStackBlock implements OnInit {
   @HostBinding('class.stack-block-expanded')
@@ -128,6 +126,8 @@ export class ClrStackBlock implements OnInit {
     return this.parent ? '4' : '3';
   }
 
+  uniqueId = uniqueIdFactory();
+
   /**
    * Depth of the stack view starting from 1 for first level
    */
@@ -160,7 +160,6 @@ export class ClrStackBlock implements OnInit {
     @SkipSelf()
     @Optional()
     private parent: ClrStackBlock,
-    @Inject(UNIQUE_ID) public uniqueId: string,
     public commonStrings: ClrCommonStringsService
   ) {
     if (parent) {

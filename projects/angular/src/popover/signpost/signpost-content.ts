@@ -8,7 +8,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, ElementRef, Inject, Injector, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { AbstractPopover } from '../common/abstract-popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -53,9 +53,10 @@ const POSITIONS: string[] = [
     </div>
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
-  providers: [UNIQUE_ID_PROVIDER],
 })
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+  signpostContentId = uniqueIdFactory();
+
   private document: Document;
 
   constructor(
@@ -64,7 +65,6 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
     public commonStrings: ClrCommonStringsService,
-    @Inject(UNIQUE_ID) public signpostContentId: string,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -77,7 +77,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Defaults
     this.position = 'right-middle';
     this.closeOnOutsideClick = true;
-    this.signpostIdService.setId(signpostContentId);
+    this.signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
   }

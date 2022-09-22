@@ -6,7 +6,6 @@
 
 import { Component, ElementRef } from '@angular/core';
 
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -17,11 +16,6 @@ import { TooltipIdService } from './providers/tooltip-id.service';
   host: {
     '[class.tooltip]': 'true',
   },
-  providers: [
-    ClrPopoverToggleService,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-    UNIQUE_ID_PROVIDER,
-    TooltipIdService,
-  ],
+  providers: [ClrPopoverToggleService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }, TooltipIdService],
 })
 export class ClrTooltip {}

@@ -7,7 +7,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { UNIQUE_ID } from '../../id-generator/id-generator.service';
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from './basic-focusable-item.service';
 import { FocusableItem } from './focusable-item';
 
@@ -32,11 +31,11 @@ export default function (): void {
       const fixture = TestBed.createComponent(SimpleHost);
       this.el = fixture.debugElement.nativeElement;
       this.item = fixture.debugElement.injector.get(FocusableItem, null);
-      this.id = fixture.debugElement.injector.get(UNIQUE_ID, 'not_found');
+      this.id = this.item.id;
     });
 
-    it('declares a UNIQUE_ID provider', function (this: TestContext) {
-      expect(this.id).not.toBe('not_found');
+    it('declares a default id', function (this: TestContext) {
+      expect(this.id).toBeTruthy();
     });
 
     it('declares itself as a FocusableItem provider', function (this: TestContext) {

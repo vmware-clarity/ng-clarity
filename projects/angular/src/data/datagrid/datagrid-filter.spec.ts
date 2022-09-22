@@ -42,8 +42,7 @@ export default function (): void {
           filterService,
           new ClrCommonStringsService(),
           toggleService,
-          'browser' as any,
-          'clr-id-1'
+          'browser' as any
         );
       });
 

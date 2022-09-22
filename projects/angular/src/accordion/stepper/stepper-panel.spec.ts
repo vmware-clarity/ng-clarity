@@ -12,7 +12,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
@@ -60,7 +59,7 @@ describe('ClrStep Reactive Forms', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ReactiveFormsTestComponent],
-        providers: [UNIQUE_ID_PROVIDER, { provide: StepperService, useClass: MockStepperService }],
+        providers: [{ provide: StepperService, useClass: MockStepperService }],
         imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
       });
 
@@ -153,7 +152,6 @@ describe('ClrStep Template Forms', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TemplateFormsTestComponent],
-        providers: [UNIQUE_ID_PROVIDER],
         imports: [FormsModule, NoopAnimationsModule, ClrStepperModule],
       });
 

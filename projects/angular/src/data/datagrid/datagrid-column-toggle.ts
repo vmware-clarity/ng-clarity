@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
@@ -87,10 +87,12 @@ import { ColumnsService } from './providers/columns.service';
     </div>
   `,
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
-  providers: [UNIQUE_ID_PROVIDER, ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
 })
 /** @deprecated since 2.0, remove in 3.0 */
 export class ClrDatagridColumnToggle implements OnDestroy {
+  popoverId = uniqueIdFactory();
+
   private _allColumnsVisible: boolean;
   private subscription: Subscription;
 
@@ -119,7 +121,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    @Inject(UNIQUE_ID) public popoverId: string,
     popoverToggleService: ClrPopoverToggleService
   ) {
     this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));

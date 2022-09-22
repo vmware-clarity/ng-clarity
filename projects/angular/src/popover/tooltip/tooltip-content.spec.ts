@@ -6,7 +6,6 @@
 
 import { Component } from '@angular/core';
 
-import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { Point } from '../common/popover';
@@ -49,7 +48,7 @@ export default function (): void {
     describe('Template API', function (this: TooltipContext) {
       describe('handles values for custom id', function () {
         spec(ClrTooltipContent, IdTest, ClrTooltipModule, {
-          providers: [ClrPopoverToggleService, UNIQUE_ID_PROVIDER, TooltipIdService],
+          providers: [ClrPopoverToggleService, TooltipIdService],
         });
 
         beforeEach(function (this: TooltipContext) {
@@ -84,7 +83,7 @@ export default function (): void {
 
       describe('handles inputs for position and size', function () {
         spec(ClrTooltipContent, SimpleTest, ClrTooltipModule, {
-          providers: [ClrPopoverToggleService, UNIQUE_ID_PROVIDER, TooltipIdService],
+          providers: [ClrPopoverToggleService, TooltipIdService],
         });
 
         beforeEach(function (this: TooltipContext) {
@@ -134,7 +133,7 @@ export default function (): void {
 
     describe('View basics', function () {
       spec(ClrTooltipContent, SimpleTest, ClrTooltipModule, {
-        providers: [ClrPopoverToggleService, UNIQUE_ID_PROVIDER, TooltipIdService],
+        providers: [ClrPopoverToggleService, TooltipIdService],
       });
 
       beforeEach(function (this: TooltipContext) {

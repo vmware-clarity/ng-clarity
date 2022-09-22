@@ -9,7 +9,7 @@ import { AfterViewInit, Component, ElementRef, Inject, NgZone, OnDestroy, Render
 
 import { IEKeyCodes, KeyCodes } from '../../utils/enums/key-codes.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
 
@@ -39,9 +39,10 @@ const KEYBOARD_RESIZE_LENGTH = 12;
   host: {
     '[class.datagrid-column-separator]': 'true',
   },
-  providers: [UNIQUE_ID_PROVIDER],
 })
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
+  columnSeparatorId = uniqueIdFactory();
+
   @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef;
 
   private get resizeTrackerEl() {
@@ -68,8 +69,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     private ngZone: NgZone,
     private tableSizeService: TableSizeService,
     public commonString: ClrCommonStringsService,
-    @Inject(DOCUMENT) private document: any,
-    @Inject(UNIQUE_ID) public columnSeparatorId: string
+    @Inject(DOCUMENT) private document: any
   ) {}
 
   ngAfterViewInit() {

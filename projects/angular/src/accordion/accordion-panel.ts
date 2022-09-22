@@ -9,7 +9,6 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -22,7 +21,7 @@ import { tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
-import { UNIQUE_ID, UNIQUE_ID_PROVIDER } from '../utils/id-generator/id-generator.service';
+import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionDescription } from './accordion-description';
 import { AccordionStatus } from './enums/accordion-status.enum';
 import { AccordionPanelModel } from './models/accordion.model';
@@ -35,7 +34,7 @@ import { panelAnimation } from './utils/animation';
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: panelAnimation,
-  providers: [IfExpandService, UNIQUE_ID_PROVIDER],
+  providers: [IfExpandService],
 })
 export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') disabled = false;
@@ -55,11 +54,12 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     this._id = value;
   }
 
+  private _id = uniqueIdFactory();
+
   constructor(
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
-    private ifExpandService: IfExpandService,
-    @Inject(UNIQUE_ID) private _id: string
+    private ifExpandService: IfExpandService
   ) {}
 
   ngOnInit() {
