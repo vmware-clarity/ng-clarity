@@ -108,7 +108,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     return this.viewManagerService.position;
   }
 
-  public get open() {
+  get open() {
     return this.toggleService.open;
   }
 

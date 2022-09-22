@@ -16,7 +16,7 @@ export class MockDisplayModeService extends DisplayModeService {
     super(renderOrganizer);
   }
 
-  public updateView(mode: DatagridDisplayMode) {
+  updateView(mode: DatagridDisplayMode) {
     this._view.next(mode);
   }
 }

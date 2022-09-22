@@ -14,7 +14,7 @@ export class DatagridPropertyComparator<T = any> implements ClrDatagridComparato
     this.nestedProp = new NestedProperty(prop);
   }
 
-  public compare(a: T, b: T): number {
+  compare(a: T, b: T): number {
     let propA = this.nestedProp.getPropValue(a);
     let propB = this.nestedProp.getPropValue(b);
 

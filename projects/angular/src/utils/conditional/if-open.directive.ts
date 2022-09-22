@@ -24,7 +24,7 @@ import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.ser
  *
  */
 export class ClrIfOpen implements OnDestroy {
-  public static ngAcceptInputType_open: boolean | '';
+  static ngAcceptInputType_open: boolean | '';
 
   private subscription: Subscription;
 
@@ -36,7 +36,7 @@ export class ClrIfOpen implements OnDestroy {
    * @param value
    */
   @Input('clrIfOpen')
-  public set open(value: boolean | string) {
+  set open(value: boolean | string) {
     this.toggleService.open = value as boolean;
   }
 
@@ -46,7 +46,7 @@ export class ClrIfOpen implements OnDestroy {
    * A getter that returns the current ClrPopoverToggleService.open value.
    *
    */
-  public get open() {
+  get open() {
     return this.toggleService.open;
   }
 
@@ -77,7 +77,7 @@ export class ClrIfOpen implements OnDestroy {
    * Clears all views from the ViewContainerRef
    * @param value
    */
-  public updateView(value: boolean) {
+  updateView(value: boolean) {
     if (value) {
       this.container.createEmbeddedView(this.template);
     } else {

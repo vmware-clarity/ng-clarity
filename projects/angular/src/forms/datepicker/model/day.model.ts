@@ -5,7 +5,7 @@
  */
 
 export class DayModel {
-  constructor(public readonly year: number, public readonly month: number, public readonly date: number) {}
+  constructor(readonly year: number, readonly month: number, readonly date: number) {}
 
   /**
    * Checks if the passed CalendarDate is equal to itself.
@@ -47,7 +47,7 @@ export class DayModel {
     return num < 10 ? `0${num}` : `${num}`;
   }
 
-  public toDateString(): string {
+  toDateString(): string {
     return this.toDate().toLocaleDateString();
   }
 }

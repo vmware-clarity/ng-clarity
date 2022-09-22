@@ -30,20 +30,20 @@ import { ClrWizardModule } from './wizard.module';
   `,
 })
 class ViewTestComponent {
-  public show = true;
-  public btnType = '';
-  public disableBtn = false;
-  public hideBtn = false;
-  public projector = 'mundo';
+  show = true;
+  btnType = '';
+  disableBtn = false;
+  hideBtn = false;
+  projector = 'mundo';
   private _clickCount = 0;
   private _lastBtnClicked = '';
-  public get clickCount(): number {
+  get clickCount(): number {
     return this._clickCount;
   }
-  public get lastBtnClicked(): string {
+  get lastBtnClicked(): string {
     return this._lastBtnClicked;
   }
-  public doClick(btnType: string) {
+  doClick(btnType: string) {
     this._lastBtnClicked = btnType;
     this._clickCount++;
   }

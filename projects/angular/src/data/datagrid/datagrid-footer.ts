@@ -47,7 +47,7 @@ export class ClrDatagridFooter<T = any> {
   ) {}
 
   /* reference to the enum so that template can access */
-  public SELECTION_TYPE = SelectionType;
+  SELECTION_TYPE = SelectionType;
 
   @ContentChild(ClrDatagridColumnToggle) toggle: ClrDatagridColumnToggle;
 

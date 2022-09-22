@@ -67,7 +67,7 @@ export class ClrIfActive implements OnDestroy {
    * @param value
    */
   @Input('clrIfActive')
-  public set active(value: boolean | string) {
+  set active(value: boolean | string) {
     if (value) {
       this.ifActiveService.current = this.id;
     }
@@ -78,7 +78,7 @@ export class ClrIfActive implements OnDestroy {
    * @description
    * A getter that returns the current IfActiveService.active value.
    */
-  public get active() {
+  get active() {
     return this.ifActiveService.current === this.id;
   }
 
@@ -99,7 +99,7 @@ export class ClrIfActive implements OnDestroy {
    * Clears all views from the ViewContainerRef
    * @param value
    */
-  public updateView(value: boolean) {
+  updateView(value: boolean) {
     if (value) {
       this.container.createEmbeddedView(this.template);
     } else {

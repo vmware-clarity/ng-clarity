@@ -52,7 +52,7 @@ import { ClrRadio } from './radio';
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   private inline = false;
-  public role: string;
+  role: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
 

@@ -120,7 +120,7 @@ export class FocusTrapDirective implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public setPreviousFocus(): void {
+  setPreviousFocus(): void {
     if (this.previousActiveElement && this.previousActiveElement.focus) {
       this.previousActiveElement.focus();
     }

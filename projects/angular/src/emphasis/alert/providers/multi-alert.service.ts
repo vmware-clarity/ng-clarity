@@ -19,7 +19,7 @@ export class MultiAlertService {
    * The Observable that lets other classes subscribe to changes
    */
   private _change = new Subject<number>();
-  public get changes(): Observable<number> {
+  get changes(): Observable<number> {
     return this._change.asObservable();
   }
 

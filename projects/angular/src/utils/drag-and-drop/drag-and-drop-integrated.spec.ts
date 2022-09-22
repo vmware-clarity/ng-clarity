@@ -273,12 +273,12 @@ export default function (): void {
   `,
 })
 class WithDraggableTest {
-  public mockDataPayload = MOCK_DATA_PAYLOAD;
-  public dragStartDelay: number;
-  public dragStartEvent: any;
-  public dragMoveEvent: any;
-  public dragEndEvent: any;
-  public dragLeaveEvent: any;
-  public dragEnterEvent: any;
-  public dropEvent: any;
+  mockDataPayload = MOCK_DATA_PAYLOAD;
+  dragStartDelay: number;
+  dragStartEvent: any;
+  dragMoveEvent: any;
+  dragEndEvent: any;
+  dragLeaveEvent: any;
+  dragEnterEvent: any;
+  dropEvent: any;
 }

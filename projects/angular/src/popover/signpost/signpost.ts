@@ -52,7 +52,7 @@ export class ClrSignpost {
    * Flag used to determine if we need to use the default trigger or a user supplied trigger element.
    *
    */
-  public useCustomTrigger = false;
+  useCustomTrigger = false;
 
   /**********
    * @property signPostTrigger

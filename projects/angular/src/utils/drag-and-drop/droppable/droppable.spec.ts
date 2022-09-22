@@ -516,12 +516,12 @@ export default function (): void {
   `,
 })
 class BasicDroppable {
-  public dragStartEvent: any;
-  public dragMoveEvent: any;
-  public dragEndEvent: any;
-  public dragLeaveEvent: any;
-  public dragEnterEvent: any;
-  public dropEvent: any;
+  dragStartEvent: any;
+  dragMoveEvent: any;
+  dragEndEvent: any;
+  dragLeaveEvent: any;
+  dragEnterEvent: any;
+  dropEvent: any;
 }
 
 @Component({
@@ -532,8 +532,8 @@ class BasicDroppable {
   `,
 })
 class DroppableWithGroup {
-  public droppableGroup: string | string[];
-  public dragStartEvent: any;
+  droppableGroup: string | string[];
+  dragStartEvent: any;
 }
 
 @Component({
@@ -552,8 +552,8 @@ class DroppableWithGroup {
   `,
 })
 class DroppableWithTolerance {
-  public tolerance: number | ClrDropToleranceInterface;
-  public dragStartEvent: any;
-  public dragLeaveEvent: any;
-  public dragEnterEvent: any;
+  tolerance: number | ClrDropToleranceInterface;
+  dragStartEvent: any;
+  dragLeaveEvent: any;
+  dragEnterEvent: any;
 }

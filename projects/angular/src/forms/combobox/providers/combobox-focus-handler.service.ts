@@ -61,7 +61,7 @@ export class ComboboxFocusHandler<T> {
     this.addFocusOnBlurListener(el);
   }
 
-  public pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
+  pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
   private _textInput: HTMLElement;
   get textInput() {

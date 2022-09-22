@@ -11,7 +11,7 @@ import { TreeNodeModel } from './models/tree-node.model';
 
 @Injectable()
 export class TreeFocusManagerService<T> {
-  public rootNodeModels: TreeNodeModel<T>[];
+  rootNodeModels: TreeNodeModel<T>[];
 
   private focusedNodeId: string;
 

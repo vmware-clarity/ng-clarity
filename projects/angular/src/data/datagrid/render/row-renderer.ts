@@ -39,7 +39,7 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  public setColumnState() {
+  setColumnState() {
     // This method runs in four cases:
     // 1. When the initial rows appear on the first page.
     //    In this case, the method will be called in DatagridMainRenderer.

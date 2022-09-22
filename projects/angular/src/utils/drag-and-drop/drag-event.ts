@@ -9,10 +9,10 @@ import { DragEventInterface, DragPointPosition } from './interfaces/drag-event.i
 // This class is used to convert an internal event
 // to an external event to be emitted.
 export class ClrDragEvent<T> {
-  public dragPosition: DragPointPosition;
-  public group: string | string[];
-  public dragDataTransfer: T;
-  public dropPointPosition: DragPointPosition;
+  dragPosition: DragPointPosition;
+  group: string | string[];
+  dragDataTransfer: T;
+  dropPointPosition: DragPointPosition;
 
   constructor(dragEvent: DragEventInterface<T>) {
     this.dragPosition = dragEvent.dragPosition;

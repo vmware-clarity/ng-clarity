@@ -41,7 +41,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public pages: QueryList<ClrWizardPage>;
+  pages: QueryList<ClrWizardPage>;
 
   /**
    * Converts the PageCollectionService.pages QueryList to an array and returns it.
@@ -50,7 +50,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get pagesAsArray(): ClrWizardPage[] {
+  get pagesAsArray(): ClrWizardPage[] {
     return this.pages ? this.pages.toArray() : [];
   }
 
@@ -59,7 +59,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get pagesCount(): number {
+  get pagesCount(): number {
     return this.pages ? this.pages.length : 0;
   }
 
@@ -69,7 +69,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get penultimatePage(): ClrWizardPage {
+  get penultimatePage(): ClrWizardPage {
     const pageCount = this.pagesCount;
 
     if (pageCount < 2) {
@@ -85,7 +85,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get lastPage(): ClrWizardPage {
+  get lastPage(): ClrWizardPage {
     const pageCount = this.pagesCount;
 
     if (pageCount < 1) {
@@ -101,7 +101,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get firstPage(): ClrWizardPage {
+  get firstPage(): ClrWizardPage {
     if (!this.pagesCount) {
       return null;
     }
@@ -119,7 +119,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getPageById(id: string): ClrWizardPage {
+  getPageById(id: string): ClrWizardPage {
     const foundPages: ClrWizardPage[] = this.pages.filter((page: ClrWizardPage) => id === page.id);
     return this.checkResults(foundPages, id);
   }
@@ -130,7 +130,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getPageByIndex(index: number): ClrWizardPage {
+  getPageByIndex(index: number): ClrWizardPage {
     const pageCount = this.pagesCount;
     const pagesLastIndex: number = pageCount > 1 ? pageCount - 1 : 0;
 
@@ -151,7 +151,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getPageIndex(page: ClrWizardPage): number {
+  getPageIndex(page: ClrWizardPage): number {
     const index = this.pagesAsArray.indexOf(page);
 
     if (index < 0) {
@@ -185,7 +185,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public pageRange(start: number, end: number): ClrWizardPage[] {
+  pageRange(start: number, end: number): ClrWizardPage[] {
     let pages: ClrWizardPage[] = [];
 
     if (start < 0 || end < 0) {
@@ -228,7 +228,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getPageRangeFromPages(page: ClrWizardPage, otherPage: ClrWizardPage): ClrWizardPage[] {
+  getPageRangeFromPages(page: ClrWizardPage, otherPage: ClrWizardPage): ClrWizardPage[] {
     const pageIndex = this.getPageIndex(page);
     const otherPageIndex = this.getPageIndex(otherPage);
     let startIndex: number;
@@ -251,7 +251,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getPreviousPage(page: ClrWizardPage) {
+  getPreviousPage(page: ClrWizardPage) {
     const myPageIndex = this.getPageIndex(page);
     const previousPageIndex = myPageIndex - 1;
     if (previousPageIndex < 0) {
@@ -266,7 +266,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public previousPageIsCompleted(page: ClrWizardPage) {
+  previousPageIsCompleted(page: ClrWizardPage) {
     if (!page) {
       return false;
     }
@@ -288,7 +288,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getNextPage(page: ClrWizardPage) {
+  getNextPage(page: ClrWizardPage) {
     const myPageIndex = this.getPageIndex(page);
     const nextPageIndex = myPageIndex + 1;
 
@@ -304,7 +304,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public getStepItemIdForPage(page: ClrWizardPage) {
+  getStepItemIdForPage(page: ClrWizardPage) {
     const pageId = page.id;
     const pageIdParts = pageId.split('-').reverse();
 
@@ -320,7 +320,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public commitPage(page: ClrWizardPage) {
+  commitPage(page: ClrWizardPage) {
     const pageHasOverrides = page.stopNext || page.preventDefault;
     page.completed = true;
 
@@ -348,7 +348,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public get pagesReset(): Observable<boolean> {
+  get pagesReset(): Observable<boolean> {
     return this._pagesReset.asObservable();
   }
 
@@ -358,7 +358,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public reset() {
+  reset() {
     this.pagesAsArray.forEach((page: ClrWizardPage) => {
       page.completed = false;
     });
@@ -373,7 +373,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public updateCompletedStates(): void {
+  updateCompletedStates(): void {
     const firstIncompleteIndex = this.findFirstIncompletePageIndex();
 
     if (firstIncompleteIndex === this.pagesAsArray.length - 1) {
@@ -393,7 +393,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  public findFirstIncompletePageIndex(): number {
+  findFirstIncompletePageIndex(): number {
     let returnIndex: number = null;
     this.pagesAsArray.forEach((page: ClrWizardPage, index: number) => {
       if (null === returnIndex && false === page.completed) {
@@ -409,7 +409,7 @@ export class PageCollectionService {
     return returnIndex;
   }
 
-  public findFirstIncompletePage(): ClrWizardPage {
+  findFirstIncompletePage(): ClrWizardPage {
     const myIncompleteIndex = this.findFirstIncompletePageIndex();
     return this.pagesAsArray[myIncompleteIndex];
   }

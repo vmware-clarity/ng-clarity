@@ -50,15 +50,15 @@ export class ClrDay {
    */
 
   @Input('clrDayView')
-  public set dayView(day: DayViewModel) {
+  set dayView(day: DayViewModel) {
     this._dayView = day;
   }
 
-  public get dayView(): DayViewModel {
+  get dayView(): DayViewModel {
     return this._dayView;
   }
 
-  public get dayString(): string {
+  get dayString(): string {
     return this.dayView.isSelected
       ? this.commonStrings.parse(this.commonStrings.keys.datepickerSelectedLabel, {
           FULL_DATE: this._dayView.dayModel.toDateString(),

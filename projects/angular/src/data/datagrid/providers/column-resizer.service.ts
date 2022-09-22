@@ -22,36 +22,36 @@ export class ColumnResizerService {
 
   private _resizedBy = 0;
 
-  public get resizedBy() {
+  get resizedBy() {
     return this._resizedBy;
   }
 
   // is it within the maximum resize range to the left
-  public isWithinMaxResizeRange: boolean;
+  isWithinMaxResizeRange: boolean;
 
-  public get minColumnWidth() {
+  get minColumnWidth() {
     return this.domAdapter.minWidth(this.el.nativeElement) || MIN_COLUMN_WIDTH;
   }
 
-  public get maxResizeRange() {
+  get maxResizeRange() {
     return this.widthBeforeResize - this.minColumnWidth;
   }
 
-  public startResize(): void {
+  startResize(): void {
     this._resizedBy = 0;
     this.isWithinMaxResizeRange = true;
     this.widthBeforeResize = this.domAdapter.clientRect(this.el.nativeElement).width;
   }
 
-  public endResize(): void {
+  endResize(): void {
     this.organizer.resize();
   }
 
-  public get widthAfterResize(): number {
+  get widthAfterResize(): number {
     return this.widthBeforeResize + this._resizedBy;
   }
 
-  public calculateResize(resizedBy: number): void {
+  calculateResize(resizedBy: number): void {
     // calculates the resize amount within the allowed range
     if (resizedBy < -this.maxResizeRange) {
       this._resizedBy = -this.maxResizeRange;

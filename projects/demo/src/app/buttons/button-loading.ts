@@ -13,16 +13,16 @@ import { ClrLoadingState } from '@clr/angular';
   styleUrls: ['./buttons.demo.scss'],
 })
 export class ButtonLoadingDemo {
-  public validateState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  public submitState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  public disabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  public enabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  public disabledStateDisabled = false;
-  public enabledStateDisabled = false;
+  validateState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  submitState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  disabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  enabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  disabledStateDisabled = false;
+  enabledStateDisabled = false;
 
-  public validateSmState = false;
-  public submitSmState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  public validateFalsyState: any;
+  validateSmState = false;
+  submitSmState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  validateFalsyState: any;
 
   disabledDemo() {
     this.disabledState = ClrLoadingState.LOADING;

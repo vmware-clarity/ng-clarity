@@ -34,7 +34,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private differ: IterableDiffer<T> | null = null;
 
   @Input('clrOptionItemsOf')
-  public set rawItems(items: T[]) {
+  set rawItems(items: T[]) {
     this._rawItems = items ? items : [];
     this.updateItems();
   }
@@ -45,7 +45,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   }
 
   @Input('clrOptionItemsField')
-  public set field(field: string) {
+  set field(field: string) {
     this._filterField = field;
     this.optionService.displayField = field;
   }

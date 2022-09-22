@@ -14,19 +14,19 @@ import { ClrWizard } from '@clr/angular';
 export class WizardResetDemo implements OnInit {
   @ViewChild('wizard') wizard: ClrWizard;
 
-  public open = false;
+  open = false;
 
-  public model: any;
+  model: any;
 
-  public ngOnInit() {
+  ngOnInit() {
     this.model = { forceReset: false, favoriteColor: '', luckyNumber: '', flavorOfIceCream: '' };
   }
 
-  public doFinish(): void {
+  doFinish(): void {
     this.doReset();
   }
 
-  public doReset(): void {
+  doReset(): void {
     if (this.model.forceReset) {
       this.model.forceReset = false;
       this.model.favoriteColor = '';

@@ -266,8 +266,8 @@ export default function () {
   `,
 })
 class TestComponent {
-  @ViewChild(ClrAlerts) public alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) public alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
 
   currentAlertIndex = 0;
 }
@@ -299,10 +299,10 @@ class TestComponent {
   `,
 })
 class TestAlertInstance {
-  @ViewChild(ClrAlerts) public alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) public alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
 
-  public currentAlert: ClrAlert;
+  currentAlert: ClrAlert;
 }
 
 @Component({
@@ -319,8 +319,8 @@ class TestAlertInstance {
   `,
 })
 class DynamicAlerts {
-  @ViewChild(ClrAlerts) public alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) public alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
 
   dynamicAlerts: Array<any>;
 

@@ -9,21 +9,21 @@ import { Subject } from 'rxjs';
 
 export class PageCollectionMock {
   private _pagesReset = new Subject<boolean>();
-  public get pagesReset(): Observable<boolean> {
+  get pagesReset(): Observable<boolean> {
     return this._pagesReset.asObservable();
   }
 
   private _stepItemIdWasCalled = false;
-  public getStepItemIdForPage(): string {
+  getStepItemIdForPage(): string {
     this._stepItemIdWasCalled = true;
     return 'mock-id';
   }
 
-  public get stepItemIdWasCalled(): boolean {
+  get stepItemIdWasCalled(): boolean {
     return this._stepItemIdWasCalled;
   }
 
-  public _previousPageIsCompleted = true;
+  _previousPageIsCompleted = true;
 
   // eslint-disable-next-line
   public previousPageIsCompleted(_page: any = null): boolean {

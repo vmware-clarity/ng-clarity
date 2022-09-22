@@ -29,7 +29,7 @@ export class ContainerIdService {
   }
 
   private _idChange: BehaviorSubject<string> = new BehaviorSubject(this._id);
-  public get idChange(): Observable<string> {
+  get idChange(): Observable<string> {
     return this._idChange.asObservable();
   }
 }

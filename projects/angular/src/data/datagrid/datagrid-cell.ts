@@ -38,7 +38,7 @@ export class ClrDatagridCell implements OnInit {
     this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
   }
 
-  public get _view() {
+  get _view() {
     return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;
   }
 }

@@ -109,7 +109,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
    * Until https://github.com/angular/angular/issues/8785 is supported, we don't have any way to instantiate
    * a separate directive on the host. So let's do dirty but performant for now.
    */
-  public closeOnOutsideClick = false;
+  closeOnOutsideClick = false;
   private documentESCListener: VoidFunction | null = null;
 
   private attachESCListener(): void {

@@ -56,5 +56,5 @@ import { APP_ROUTES } from './app.routing';
   `,
 })
 export class AppContentContainerComponent {
-  public routes: Route[] = APP_ROUTES;
+  routes: Route[] = APP_ROUTES;
 }

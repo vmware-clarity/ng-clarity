@@ -16,13 +16,13 @@ export abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInte
   /**
    * @NOTEe Type `any` is set here to be able to pass templateStrictMode
    */
-  public registered: any;
+  registered: any;
 
-  public get filter(): F {
+  get filter(): F {
     return this.registered && this.registered.filter;
   }
 
-  public setFilter(filter: F | RegisteredFilter<T, F>) {
+  setFilter(filter: F | RegisteredFilter<T, F>) {
     // If we previously had another filter, we unregister it
     this.deleteFilter();
     if (filter instanceof RegisteredFilter) {
@@ -32,14 +32,14 @@ export abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInte
     }
   }
 
-  public deleteFilter() {
+  deleteFilter() {
     if (this.registered) {
       this.registered.unregister();
       delete this.registered;
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.deleteFilter();
   }
 }

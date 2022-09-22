@@ -97,7 +97,7 @@ export class DatagridHeaderRenderer implements OnDestroy {
     return width;
   }
 
-  public getColumnWidthState(): Partial<ColumnState> {
+  getColumnWidthState(): Partial<ColumnState> {
     const strictWidth = this.detectStrictWidth();
     return {
       width: this.computeWidth(strictWidth),
@@ -105,7 +105,7 @@ export class DatagridHeaderRenderer implements OnDestroy {
     };
   }
 
-  public setColumnState(index: number) {
+  setColumnState(index: number) {
     this.columnsService.columns[index] = this.columnState;
   }
 

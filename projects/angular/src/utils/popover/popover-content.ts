@@ -35,7 +35,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Input('clrPopoverContent')
-  public set open(value: boolean) {
+  set open(value: boolean) {
     this.smartOpenService.open = !!value;
   }
 

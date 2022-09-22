@@ -28,7 +28,7 @@ import { APP_ROUTES } from './app.routing';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  public routes: Route[] = APP_ROUTES;
+  routes: Route[] = APP_ROUTES;
 
   constructor() {
     loadChartIconSet();

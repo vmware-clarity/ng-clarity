@@ -18,11 +18,11 @@ export class DraggableSnapshotService<T> {
   private draggableElClientRect: ClientRect;
   private snapshotDragEvent: DragEventInterface<T>;
 
-  public capture(el: Node, event: DragEventInterface<T>): void {
+  capture(el: Node, event: DragEventInterface<T>): void {
     this.draggableElClientRect = this.domAdapter.clientRect(el);
     this.snapshotDragEvent = event;
   }
-  public discard(): void {
+  discard(): void {
     delete this.draggableElClientRect;
     delete this.snapshotDragEvent;
   }

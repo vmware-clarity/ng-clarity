@@ -19,10 +19,10 @@ export class Sort<T = any> {
    * Currently active comparator
    */
   private _comparator: ClrDatagridComparatorInterface<T>;
-  public get comparator(): ClrDatagridComparatorInterface<T> {
+  get comparator(): ClrDatagridComparatorInterface<T> {
     return this._comparator;
   }
-  public set comparator(value: ClrDatagridComparatorInterface<T>) {
+  set comparator(value: ClrDatagridComparatorInterface<T>) {
     this.stateDebouncer.changeStart();
     this._comparator = value;
     this.emitChange();
@@ -33,10 +33,10 @@ export class Sort<T = any> {
    * Ascending order if false, descending if true
    */
   private _reverse = false;
-  public get reverse(): boolean {
+  get reverse(): boolean {
     return this._reverse;
   }
-  public set reverse(value: boolean) {
+  set reverse(value: boolean) {
     this.stateDebouncer.changeStart();
     this._reverse = value;
     this.emitChange();
@@ -51,7 +51,7 @@ export class Sort<T = any> {
     this._change.next(this);
   }
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<Sort<T>> {
+  get change(): Observable<Sort<T>> {
     return this._change.asObservable();
   }
 
@@ -62,7 +62,7 @@ export class Sort<T = any> {
    *
    * @memberof Sort
    */
-  public toggle(sortBy: ClrDatagridComparatorInterface<T>, forceReverse?: boolean) {
+  toggle(sortBy: ClrDatagridComparatorInterface<T>, forceReverse?: boolean) {
     this.stateDebouncer.changeStart();
     // We modify private properties directly, to batch the change event
     if (this.comparator === sortBy) {
@@ -78,14 +78,14 @@ export class Sort<T = any> {
   /**
    * Clears the current sorting order
    */
-  public clear() {
+  clear() {
     this.comparator = null;
   }
 
   /**
    * Compares two objects according to the current comparator
    */
-  public compare(a: T, b: T): number {
+  compare(a: T, b: T): number {
     return (this.reverse ? -1 : 1) * this.comparator.compare(a, b);
   }
 }

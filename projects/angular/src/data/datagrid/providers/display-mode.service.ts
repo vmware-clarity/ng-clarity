@@ -32,7 +32,7 @@ export class DisplayModeService implements OnDestroy {
     );
   }
 
-  public get view(): Observable<DatagridDisplayMode> {
+  get view(): Observable<DatagridDisplayMode> {
     return this._view.asObservable();
   }
 

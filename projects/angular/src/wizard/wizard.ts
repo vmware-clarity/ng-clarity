@@ -213,23 +213,23 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
   @ViewChild('wizardTitle') wizardTitle: ElementRef;
 
-  public get currentPage(): ClrWizardPage {
+  get currentPage(): ClrWizardPage {
     return this.navService.currentPage;
   }
 
-  public set currentPage(page: ClrWizardPage) {
+  set currentPage(page: ClrWizardPage) {
     this.navService.goTo(page, true);
   }
 
-  public get isLast(): boolean {
+  get isLast(): boolean {
     return this.navService.currentPageIsLast;
   }
 
-  public get isFirst(): boolean {
+  get isFirst(): boolean {
     return this.navService.currentPageIsFirst;
   }
 
-  public get isStatic(): boolean {
+  get isStatic(): boolean {
     return (this.elementRef.nativeElement as HTMLElement).classList.contains('clr-wizard--inline');
   }
 
@@ -258,17 +258,17 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     this.differ = differs.find([]).create(null);
   }
 
-  public ngAfterContentInit(): void {
+  ngAfterContentInit(): void {
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
     this.initializeButtons();
   }
 
-  public ngDoCheck(): void {
+  ngDoCheck(): void {
     this.updateNavOnPageChanges();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
@@ -282,7 +282,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * navigation where event emissions have already been done and firing them again
    * may cause an event loop.
    */
-  public finish(skipChecksAndEmits = true): void {
+  finish(skipChecksAndEmits = true): void {
     if (skipChecksAndEmits) {
       this.forceFinish();
     } else {
@@ -295,7 +295,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Good for a last step in an alternate workflow. Does the same thing as
    * calling `ClrWizard.finish(true)` or `ClrWizard.finish()` without a parameter.
    */
-  public forceFinish(): void {
+  forceFinish(): void {
     if (this.stopNavigation) {
       return;
     }
@@ -306,7 +306,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
    * Opens the wizard. If there is no current page defined, sets the first page in the wizard to be current.
    */
-  public open(): void {
+  open(): void {
     this._open = true;
 
     if (!this.currentPage) {
@@ -322,7 +322,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
    * Closes the wizard. Call this directly instead of `cancel()` to implement alternative cancel functionality.
    */
-  public close(): void {
+  close(): void {
     if (this.stopNavigation) {
       return;
     }
@@ -336,7 +336,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * close if invoked with no parameter. If parameter is true wizard will open
    * else if false will close.
    */
-  public toggle(open: boolean): void {
+  toggle(open: boolean): void {
     if (open) {
       this.open();
     } else {
@@ -347,7 +347,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
    * Moves the wizard to the previous page.
    */
-  public previous(): void {
+  previous(): void {
     this.navService.previous();
   }
 
@@ -365,7 +365,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * It is another way to navigate without having to rewrite the wizard’s default
    * functionality from scratch.
    */
-  public next(skipChecksAndEmits = true): void {
+  next(skipChecksAndEmits = true): void {
     if (skipChecksAndEmits) {
       this.forceNext();
     } else {
@@ -378,7 +378,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Good for a last step in an alternate workflow.
    * Alias for `ClrWizard.next(true)` or `ClrWizard.next()`
    */
-  public forceNext(): void {
+  forceNext(): void {
     this.navService.forceNext();
   }
 
@@ -388,7 +388,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * or `[clrWizardPagePreventDefault]` because it will initiate the same checks
    * and event emissions that invoked your event handler. Use `ClrWizard.close()` instead.
    */
-  public cancel(): void {
+  cancel(): void {
     this.navService.cancel();
   }
 
@@ -396,7 +396,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Overrides behavior of the underlying modal to avoid collisions with
    * alternative cancel functionality. In most cases, use `ClrWizard.cancel()` instead.
    */
-  public modalCancel(): void {
+  modalCancel(): void {
     if (this.closable) {
       this.checkAndCancel();
     }
@@ -407,7 +407,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * wizard level. Performs a canceled if not. Emits events that initiate
    * the alternative cancel outputs `(clrWizardPageOnCancel)` and `(clrWizardOnCancel)`.
    */
-  public checkAndCancel(): void {
+  checkAndCancel(): void {
     const currentPage = this.currentPage;
     const currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
 
@@ -433,7 +433,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * ClrWizardPage.id getter, usually prefixed with `clr-wizard-page-` and then either a
    * numeric ID or the ID specified for the `ClrWizardPage` component’s `id` input.
    */
-  public goTo(pageId: string): void {
+  goTo(pageId: string): void {
     if (!pageId) {
       return;
     }
@@ -445,7 +445,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * be the current page, resetting the wizard navigation.
    * Use `(clrWizardOnReset)` event to reset the data or model of your wizard.
    */
-  public reset(): void {
+  reset(): void {
     this.pageCollection.reset();
     this.onReset.next();
   }

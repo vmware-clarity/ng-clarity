@@ -35,7 +35,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     this.skip = false;
   }
 
-  @Output('clrIfDetailChange') public stateChange = new EventEmitter<any>(null);
+  @Output('clrIfDetailChange') stateChange = new EventEmitter<any>(null);
 
   constructor(
     private templateRef: TemplateRef<any>,

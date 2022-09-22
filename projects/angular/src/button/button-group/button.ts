@@ -133,7 +133,7 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  public loading: boolean;
+  loading: boolean;
 
   loadingStateChange(state: ClrLoadingState): void {
     this.loading = state === ClrLoadingState.LOADING;

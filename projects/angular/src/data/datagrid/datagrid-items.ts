@@ -30,7 +30,7 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Input('clrDgItemsOf')
-  public set rawItems(items: T[]) {
+  set rawItems(items: T[]) {
     this._rawItems = items ? items : []; // local copy for ngOnChange diffing
   }
 

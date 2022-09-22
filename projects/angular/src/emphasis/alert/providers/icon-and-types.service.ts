@@ -45,7 +45,7 @@ export class AlertIconAndTypesService {
     return this.iconInfoFromType(this._alertType).title;
   }
 
-  public iconInfoFromType(type: string): AlertInfoObject {
+  iconInfoFromType(type: string): AlertInfoObject {
     const returnObj = { shape: '', cssClass: '', title: '' };
 
     switch (type) {

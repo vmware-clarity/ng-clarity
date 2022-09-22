@@ -20,13 +20,13 @@ export class Items<T = any> {
   /**
    * Indicates if the data is currently loading
    */
-  public loading = false;
+  loading = false;
 
   // TODO: Verify that trackBy is registered for the *ngFor case too
   /**
    * Tracking function to identify objects. Default is reference equality.
    */
-  public trackBy: TrackByFunction<T> = (_index: number, item: T) => item;
+  trackBy: TrackByFunction<T> = (_index: number, item: T) => item;
 
   /**
    * Subscriptions to the other providers changes.
@@ -37,7 +37,7 @@ export class Items<T = any> {
   /**
    * Cleans up our subscriptions to other providers
    */
-  public destroy() {
+  destroy() {
     if (this._filtersSub) {
       this._filtersSub.unsubscribe();
     }
@@ -54,10 +54,10 @@ export class Items<T = any> {
    * everything.
    */
   private _smart = false;
-  public get smart(): boolean {
+  get smart(): boolean {
     return this._smart;
   }
-  public smartenUp() {
+  smartenUp() {
     this._smart = true;
     /*
      * These observers trigger a chain of function: filter -> sort -> paginate
@@ -80,10 +80,10 @@ export class Items<T = any> {
    * List of all items in the datagrid
    */
   private _all: T[];
-  public get all() {
+  get all() {
     return this._all;
   }
-  public set all(items: T[]) {
+  set all(items: T[]) {
     this._all = items;
     this.emitAllChanges(items);
     if (this.smart) {
@@ -97,7 +97,7 @@ export class Items<T = any> {
   /**
    * Manually recompute the list of displayed items
    */
-  public refresh() {
+  refresh() {
     if (this.smart) {
       this._filterItems();
     }
@@ -112,7 +112,7 @@ export class Items<T = any> {
    * List of items currently displayed
    */
   private _displayed: T[] = [];
-  public get displayed(): T[] {
+  get displayed(): T[] {
     // Ideally we could return an immutable array, but we don't have it in Clarity yet.
     return this._displayed;
   }
@@ -125,7 +125,7 @@ export class Items<T = any> {
     this._change.next(this.displayed);
   }
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  public get change(): Observable<T[]> {
+  get change(): Observable<T[]> {
     return this._change.asObservable();
   }
 
@@ -134,7 +134,7 @@ export class Items<T = any> {
     this._allChanges.next(items);
   }
 
-  public get allChanges(): Observable<T[]> {
+  get allChanges(): Observable<T[]> {
     return this._allChanges.asObservable();
   }
 

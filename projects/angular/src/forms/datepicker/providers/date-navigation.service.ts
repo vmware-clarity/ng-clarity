@@ -52,7 +52,7 @@ export class DateNavigationService {
     return this._today;
   }
 
-  public selectedDay: DayModel;
+  selectedDay: DayModel;
 
   private _selectedDayChange: Subject<DayModel> = new Subject<DayModel>();
 
@@ -69,7 +69,7 @@ export class DateNavigationService {
     this._selectedDayChange.next(dayModel);
   }
 
-  public focusedDay: DayModel;
+  focusedDay: DayModel;
 
   /**
    * Initializes the calendar based on the selected day.

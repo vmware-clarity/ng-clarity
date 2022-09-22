@@ -24,7 +24,7 @@ export class ClrDatagridPlaceholder<T = any> {
   /**
    * Tests if the datagrid is empty, meaning it doesn't contain any items
    */
-  public get emptyDatagrid() {
+  get emptyDatagrid() {
     return !this.items.loading && (!this.items.displayed || this.items.displayed.length === 0);
   }
 }

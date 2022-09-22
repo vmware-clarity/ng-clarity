@@ -44,13 +44,13 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
    * Input/Output to support two way binding on current alert index
    */
   @Input('clrCurrentAlertIndex')
-  public set _inputCurrentIndex(index: number) {
+  set _inputCurrentIndex(index: number) {
     if (Number.isInteger(index) && index >= 0) {
       this.multiAlertService.current = index;
     }
   }
 
-  @Output('clrCurrentAlertIndexChange') public currentAlertIndexChange = new EventEmitter<number>(false);
+  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
 
   set currentAlertIndex(index: number) {
     this.multiAlertService.current = index;
@@ -71,7 +71,7 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
   get currentAlert() {
     return this.multiAlertService.currentAlert;
   }
-  @Output('clrCurrentAlertChange') public currentAlertChange = new EventEmitter<ClrAlert>(false);
+  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
 
   /**
    * Ensure we are only dealing with alerts that have not been closed yet

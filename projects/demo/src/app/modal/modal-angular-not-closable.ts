@@ -12,5 +12,5 @@ import { Component } from '@angular/core';
 })
 export class ModalAngularNotClosableDemo {
   // Booleans to open each example modal
-  public closable = false;
+  closable = false;
 }

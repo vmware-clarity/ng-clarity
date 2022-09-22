@@ -21,14 +21,14 @@ export abstract class ClrAbstractControl {
   /**
    * Hold the suffix for the ID
    */
-  public controlIdSuffix = 'abstract';
+  controlIdSuffix = 'abstract';
 
   constructor(
     @Optional() protected controlIdService: ControlIdService,
     @Optional() protected containerIdService: ContainerIdService
   ) {}
 
-  public get id(): string {
+  get id(): string {
     /**
      * The order of witch the id will be pick is:
      *   - Container ID  (Wrapper arround multiple Controls like, Checkbox, Radio, ...)

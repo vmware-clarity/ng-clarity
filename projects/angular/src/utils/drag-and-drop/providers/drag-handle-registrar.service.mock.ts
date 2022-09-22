@@ -13,11 +13,11 @@ export class MockDragHandleRegistrar {
     return this._customHandleEl;
   }
 
-  public registerCustomHandle(handleElement: Node) {
+  registerCustomHandle(handleElement: Node) {
     this._customHandleEl = handleElement;
   }
 
-  public unregisterCustomHandle() {
+  unregisterCustomHandle() {
     delete this._customHandleEl;
   }
 }

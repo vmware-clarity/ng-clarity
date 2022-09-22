@@ -38,16 +38,16 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true })
   content: ClrPopoverContent;
-  public smartPosition: ClrPopoverPosition = {
+  smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.VERTICAL,
     side: ClrSide.BEFORE,
     anchor: ClrAlignment.START,
     content: ClrAlignment.START,
   };
-  public openState = false;
-  public closeClick = true;
-  public closeScroll = true;
-  public changeCount = 0;
+  openState = false;
+  closeClick = true;
+  closeScroll = true;
+  changeCount = 0;
   changeCounter() {
     this.changeCount += 1;
   }

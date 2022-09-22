@@ -38,7 +38,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
-  public stepTitleText: string;
+  stepTitleText: string;
   @ContentChild(ClrTimelineStepTitle, { read: ElementRef })
   stepTitle: ElementRef;
 

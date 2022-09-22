@@ -20,7 +20,7 @@ import { Subject } from 'rxjs';
 export class WillyWonka implements AfterViewChecked {
   private _chocolate = new Subject<string>();
 
-  public get chocolate(): Observable<string> {
+  get chocolate(): Observable<string> {
     return this._chocolate.asObservable();
   }
 

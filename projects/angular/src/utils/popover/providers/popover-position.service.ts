@@ -38,7 +38,7 @@ export class ClrPopoverPositionService {
 
   constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {}
 
-  public alignContent(content: HTMLElement): ClrPopoverContentOffset {
+  alignContent(content: HTMLElement): ClrPopoverContentOffset {
     if (!isPlatformBrowser(this.platformId)) {
       // Only position when in a browser.
       // Default to the browser origin and prevent getBoundingClientRect from running.

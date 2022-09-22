@@ -133,7 +133,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     return false;
   }
 
-  public toggleDetailPane(state: boolean) {
+  toggleDetailPane(state: boolean) {
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();

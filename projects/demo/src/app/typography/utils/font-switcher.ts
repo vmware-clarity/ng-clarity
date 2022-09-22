@@ -41,7 +41,7 @@ export class FontSwitcher {
     this.switchFont(val);
   }
 
-  public handleSwitchFont(event: Event) {
+  handleSwitchFont(event: Event) {
     this.switchFont((event.target as HTMLInputElement).value);
   }
 

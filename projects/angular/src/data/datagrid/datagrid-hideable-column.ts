@@ -81,7 +81,7 @@ export class ClrDatagridHideableColumn implements OnDestroy {
     });
   }
 
-  @Output('clrDgHiddenChange') public hiddenChange = new EventEmitter<boolean>();
+  @Output('clrDgHiddenChange') hiddenChange = new EventEmitter<boolean>();
 
   constructor(
     private titleTemplateRef: TemplateRef<any>,

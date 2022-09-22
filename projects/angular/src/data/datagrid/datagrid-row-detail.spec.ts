@@ -91,6 +91,6 @@ export default function (): void {
   `,
 })
 class FullTest {
-  public replace = false;
-  public cell = false;
+  replace = false;
+  cell = false;
 }

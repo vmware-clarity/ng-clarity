@@ -16,9 +16,9 @@ export class HeaderActionService {
 
   constructor(public navService: WizardNavigationService) {}
 
-  public wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+  wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
 
-  public get wizardHasHeaderActions(): boolean {
+  get wizardHasHeaderActions(): boolean {
     const wizardHdrActions = this.wizardHeaderActions;
     if (!wizardHdrActions) {
       return false;
@@ -26,15 +26,15 @@ export class HeaderActionService {
     return wizardHdrActions.toArray().length > 0;
   }
 
-  public get currentPageHasHeaderActions(): boolean {
+  get currentPageHasHeaderActions(): boolean {
     return this.navService.currentPage ? this.navService.currentPage.hasHeaderActions : false;
   }
 
-  public get showWizardHeaderActions(): boolean {
+  get showWizardHeaderActions(): boolean {
     return !this.currentPageHasHeaderActions && this.wizardHasHeaderActions;
   }
 
-  public get displayHeaderActionsWrapper(): boolean {
+  get displayHeaderActionsWrapper(): boolean {
     return this.currentPageHasHeaderActions || this.wizardHasHeaderActions;
   }
 }

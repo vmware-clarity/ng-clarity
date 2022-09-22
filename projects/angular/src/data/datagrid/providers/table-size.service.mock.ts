@@ -13,7 +13,7 @@ import { TableSizeService } from './table-size.service';
 export class MockTableSizeService {
   // Currently only this property needed.
   // We could add more properties if necessary in the future
-  public getColumnDragHeight(): string {
+  getColumnDragHeight(): string {
     return '500px';
   }
 }

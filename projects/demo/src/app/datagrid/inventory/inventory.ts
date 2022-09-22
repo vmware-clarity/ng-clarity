@@ -11,8 +11,8 @@ import { COLORS, NAMES, POKEMONS } from './values';
 
 @Injectable()
 export class Inventory {
-  public size = 100;
-  public latency = 0;
+  size = 100;
+  latency = 0;
 
   private _all: User[];
   private _currentQuery: User[];

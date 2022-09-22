@@ -92,21 +92,21 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     return `${this.columnSeparatorId}-aria-describedby`;
   }
 
-  public showTracker(): void {
+  showTracker(): void {
     this.columnResizerService.startResize();
     const tableHeight = this.tableSizeService.getColumnDragHeight();
     this.renderer.setStyle(this.resizeTrackerEl, 'height', tableHeight);
     this.renderer.setStyle(this.resizeTrackerEl, 'display', 'block');
   }
 
-  public moveTracker(movedBy: number): void {
+  moveTracker(movedBy: number): void {
     this.columnResizerService.calculateResize(movedBy);
     this.renderer.setStyle(this.resizeTrackerEl, 'transform', `translateX(${this.columnResizerService.resizedBy}px)`);
     this.renderer.setStyle(this.document.body, 'cursor', 'col-resize');
     this.redFlagTracker();
   }
 
-  public hideTracker(): void {
+  hideTracker(): void {
     this.columnResizerService.endResize();
     this.renderer.setStyle(this.resizeTrackerEl, 'display', 'none');
     this.renderer.setStyle(this.resizeTrackerEl, 'transform', `translateX(0px)`);

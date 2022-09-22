@@ -10,39 +10,39 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class ButtonHubService {
-  public buttonsReady = false;
+  buttonsReady = false;
 
   private _previousBtnClicked = new Subject<any>();
-  public get previousBtnClicked(): Observable<any> {
+  get previousBtnClicked(): Observable<any> {
     return this._previousBtnClicked.asObservable();
   }
 
   private _nextBtnClicked = new Subject<any>();
-  public get nextBtnClicked(): Observable<any> {
+  get nextBtnClicked(): Observable<any> {
     return this._nextBtnClicked.asObservable();
   }
 
   private _dangerBtnClicked = new Subject<any>();
-  public get dangerBtnClicked(): Observable<any> {
+  get dangerBtnClicked(): Observable<any> {
     return this._dangerBtnClicked.asObservable();
   }
 
   private _cancelBtnClicked = new Subject<any>();
-  public get cancelBtnClicked(): Observable<any> {
+  get cancelBtnClicked(): Observable<any> {
     return this._cancelBtnClicked.asObservable();
   }
 
   private _finishBtnClicked = new Subject<any>();
-  public get finishBtnClicked(): Observable<any> {
+  get finishBtnClicked(): Observable<any> {
     return this._finishBtnClicked.asObservable();
   }
 
   private _customBtnClicked = new Subject<any>();
-  public get customBtnClicked(): Observable<any> {
+  get customBtnClicked(): Observable<any> {
     return this._customBtnClicked.asObservable();
   }
 
-  public buttonClicked(buttonType: string): void {
+  buttonClicked(buttonType: string): void {
     if ('previous' === buttonType) {
       this._previousBtnClicked.next();
     } else if ('next' === buttonType) {

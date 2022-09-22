@@ -23,7 +23,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
   },
 })
 export class ClrDropdownTrigger {
-  public isRootLevelToggle = true;
+  isRootLevelToggle = true;
 
   constructor(
     dropdown: ClrDropdown,

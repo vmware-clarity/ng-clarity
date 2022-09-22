@@ -23,9 +23,9 @@ import { MockPage } from './wizard-page.mock';
 import { ClrWizardModule } from './wizard.module';
 
 class MyPageCollectionMock extends PageCollectionMock {
-  public previousPage: MockPage;
+  previousPage: MockPage;
 
-  public getPreviousPage(): MockPage {
+  getPreviousPage(): MockPage {
     if (this.previousPage) {
       return this.previousPage;
     }
@@ -79,14 +79,14 @@ class TemplateTestComponent {
   @ViewChild('lifecycle') lifecycleTemplateTester: ClrWizardPage;
   @ViewChild('other') otherTemplateTester: ClrWizardPage;
 
-  public navTwoWayBindingPassed = false;
-  public testId = 'ohai';
+  navTwoWayBindingPassed = false;
+  testId = 'ohai';
 
   private _navTestNextDisabled = false;
-  public get navTestNextDisabled(): boolean {
+  get navTestNextDisabled(): boolean {
     return this._navTestNextDisabled;
   }
-  public set navTestNextDisabled(val: boolean) {
+  set navTestNextDisabled(val: boolean) {
     if (val !== this._navTestNextDisabled) {
       this.navTwoWayBindingPassed = true;
       this._navTestNextDisabled = val;
@@ -94,10 +94,10 @@ class TemplateTestComponent {
   }
 
   private _navTestPreviousDisabled = true;
-  public get navTestPreviousDisabled(): boolean {
+  get navTestPreviousDisabled(): boolean {
     return this._navTestPreviousDisabled;
   }
-  public set navTestPreviousDisabled(val: boolean) {
+  set navTestPreviousDisabled(val: boolean) {
     if (val !== this._navTestPreviousDisabled) {
       this.navTwoWayBindingPassed = true;
       this._navTestPreviousDisabled = val;
@@ -105,16 +105,16 @@ class TemplateTestComponent {
   }
 
   private _navStopCancel = false;
-  public get navStopCancel(): boolean {
+  get navStopCancel(): boolean {
     return this._navStopCancel;
   }
-  public set navStopCancel(val: boolean) {
+  set navStopCancel(val: boolean) {
     this.navTwoWayBindingPassed = true;
     this._navStopCancel = val;
   }
 
-  public loadedPageId = '';
-  public onLoadCheck(pageId: string): void {
+  loadedPageId = '';
+  onLoadCheck(pageId: string): void {
     this.loadedPageId = pageId;
   }
 }
@@ -200,23 +200,23 @@ class ViewTestComponent {
   @ViewChild('wizardCancelBtn') wizardCancelBtn: ClrWizardButton;
   @ViewChild('pageCancelBtn') pageCancelBtn: ClrWizardButton;
 
-  public projector = 'my projected content';
-  public innerProjector = 12;
-  public asyncLoaded = false;
-  public asyncContent = '';
+  projector = 'my projected content';
+  innerProjector = 12;
+  asyncLoaded = false;
+  asyncContent = '';
   // wizard has to init to open or all the pages are hidden inside modal
-  public open = true;
-  public loadAsync(): void {
+  open = true;
+  loadAsync(): void {
     setTimeout(() => {
       this.asyncLoaded = true;
       this.asyncContent = 'better late than never';
     }, 100);
   }
-  public testId = 'ohai';
-  public disablePrevious = false;
-  public preventCancel = false;
-  public altCancelRan = false;
-  public altCancel() {
+  testId = 'ohai';
+  disablePrevious = false;
+  preventCancel = false;
+  altCancelRan = false;
+  altCancel() {
     this.altCancelRan = true;
   }
 }

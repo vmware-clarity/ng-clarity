@@ -12,5 +12,5 @@ import { Component } from '@angular/core';
 })
 export class ModalAngularStaticBackdropDemo {
   // Booleans to open each example modal
-  public static = false;
+  static = false;
 }
