@@ -123,7 +123,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,
     @Inject(UNIQUE_ID) public popoverId: string,
-    private popoverToggleService: ClrPopoverToggleService
+    popoverToggleService: ClrPopoverToggleService
   ) {
     this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
   }
