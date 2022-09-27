@@ -10,11 +10,11 @@ import { ClarityModule } from '@clr/angular';
 
 import { LayoutAdditionalSectionsDemo } from './layout-additional-sections';
 import { LayoutAllDemo } from './layout-all';
-import { LayoutNoSidenavDemo } from './layout-no-sidenav';
 import { LayoutNoSubnavDemo } from './layout-no-subnav';
+import { LayoutNoVerticalNavDemo } from './layout-no-vertical-nav';
 import { LayoutOnlyHeaderDemo } from './layout-only-header';
-import { LayoutSidenavPrimaryDemo } from './layout-sidenav-primary';
 import { LayoutSubnavPrimaryDemo } from './layout-subnav-primary';
+import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 import { LayoutDemo } from './layout.demo';
 import { ROUTING } from './layout.demo.routing';
 
@@ -24,20 +24,20 @@ import { ROUTING } from './layout.demo.routing';
     LayoutDemo,
     LayoutAllDemo,
     LayoutNoSubnavDemo,
-    LayoutNoSidenavDemo,
+    LayoutNoVerticalNavDemo,
     LayoutOnlyHeaderDemo,
     LayoutSubnavPrimaryDemo,
-    LayoutSidenavPrimaryDemo,
+    LayoutVerticalNavPrimaryDemo,
     LayoutAdditionalSectionsDemo,
   ],
   exports: [
     LayoutDemo,
     LayoutAllDemo,
     LayoutNoSubnavDemo,
-    LayoutNoSidenavDemo,
+    LayoutNoVerticalNavDemo,
     LayoutOnlyHeaderDemo,
     LayoutSubnavPrimaryDemo,
-    LayoutSidenavPrimaryDemo,
+    LayoutVerticalNavPrimaryDemo,
     LayoutAdditionalSectionsDemo,
   ],
 })

@@ -7,8 +7,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-layout-no-sidenav-demo',
-  templateUrl: './layout-no-sidenav.html',
+  selector: 'clr-layout-no-vertical-nav-demo',
+  templateUrl: './layout-no-vertical-nav.html',
   styleUrls: ['./layout.demo.scss'],
 })
-export class LayoutNoSidenavDemo {}
+export class LayoutNoVerticalNavDemo {}

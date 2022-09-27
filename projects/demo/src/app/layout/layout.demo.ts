@@ -12,10 +12,10 @@ import { Component } from '@angular/core';
     <ul>
       <li><a [routerLink]="['./layout-all']">Layout - All</a></li>
       <li><a [routerLink]="['./layout-no-subnav']">Layout - No Subnav</a></li>
-      <li><a [routerLink]="['./layout-no-sidenav']">Layout - No Sidenav</a></li>
+      <li><a [routerLink]="['./layout-no-vertical-nav']">Layout - No Vertical Nav</a></li>
       <li><a [routerLink]="['./layout-only-header']">Layout - Only Header</a></li>
       <li><a [routerLink]="['./layout-subnav-primary']">Layout - Subnav as Primary Navigation</a></li>
-      <li><a [routerLink]="['./layout-sidenav-primary']">Layout - Sidenav as Primary Navigation</a></li>
+      <li><a [routerLink]="['./layout-vertical-nav-primary']">Layout - Vertical Nav as Primary Navigation</a></li>
       <li><a [routerLink]="['./layout-additional-sections']">Layout - Additional Sections</a></li>
     </ul>
     <router-outlet></router-outlet>
