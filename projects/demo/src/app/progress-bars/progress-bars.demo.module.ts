@@ -16,7 +16,6 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
 import { ProgressBarInlineDemo } from './progress-bar-inline';
 import { ProgressBarInlineCardsDemo } from './progress-bar-inline-cards';
 import { ProgressBarLoopDemo } from './progress-bar-loop';
-import { ProgressBarSidenavDemo } from './progress-bar-sidenav';
 import { ProgressBarStaticDemo } from './progress-bar-static';
 import { ProgressBarStaticCardsDemo } from './progress-bar-static-cards';
 import { ProgressBarsDemo } from './progress-bars.demo';
@@ -29,7 +28,6 @@ import { ROUTING } from './progress-bars.demo.routing';
     ProgressBarColorsDemo,
     ProgressBarAnimationsDemo,
     ProgressBarCardsDemo,
-    ProgressBarSidenavDemo,
     ProgressBarLoopDemo,
     ProgressBarsDemo,
     ProgressBarStaticDemo,
@@ -43,7 +41,6 @@ import { ROUTING } from './progress-bars.demo.routing';
     ProgressBarColorsDemo,
     ProgressBarAnimationsDemo,
     ProgressBarCardsDemo,
-    ProgressBarSidenavDemo,
     ProgressBarLoopDemo,
     ProgressBarsDemo,
     ProgressBarStaticDemo,

@@ -15,7 +15,6 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
 import { ProgressBarInlineDemo } from './progress-bar-inline';
 import { ProgressBarInlineCardsDemo } from './progress-bar-inline-cards';
 import { ProgressBarLoopDemo } from './progress-bar-loop';
-import { ProgressBarSidenavDemo } from './progress-bar-sidenav';
 import { ProgressBarStaticDemo } from './progress-bar-static';
 import { ProgressBarStaticCardsDemo } from './progress-bar-static-cards';
 import { ProgressBarsDemo } from './progress-bars.demo';
@@ -30,7 +29,6 @@ const ROUTES: Routes = [
       { path: 'progress-bar-colors', component: ProgressBarColorsDemo },
       { path: 'progress-bar-animations', component: ProgressBarAnimationsDemo },
       { path: 'progress-bar-cards', component: ProgressBarCardsDemo },
-      { path: 'progress-bar-sidenav', component: ProgressBarSidenavDemo },
       { path: 'progress-bar-loop', component: ProgressBarLoopDemo },
       { path: 'progress-bar-static', component: ProgressBarStaticDemo },
       { path: 'progress-bar-static-cards', component: ProgressBarStaticCardsDemo },
