@@ -30,7 +30,6 @@ import { SamsTownDemo } from './routing/the-killers/sams-town';
 import { KillersDemo } from './routing/the-killers/the-killers';
 import { VerticalNavRoutingDemo } from './routing/vertical-nav-routing';
 import { WikipediaDemo } from './routing/wikipedia';
-import { VerticalNavStaticDemo } from './static/vertical-nav-static.demo';
 import { AbbeyRoad2Demo } from './unstructured-routes/beatles/abbey-road';
 import { Beatles2Demo } from './unstructured-routes/beatles/beatles';
 import { Revolver2Demo } from './unstructured-routes/beatles/revolver';
@@ -59,7 +58,6 @@ import { WithoutExpandedDirectiveDemo } from './without-expanded-directive/witho
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING],
   declarations: [
     VerticalNavDemo,
-    VerticalNavStaticDemo,
     VerticalNavBasicDemo,
     VerticalNavCollapsibleDemo,
     VerticalNavDirectIconDemo,
@@ -104,7 +102,6 @@ import { WithoutExpandedDirectiveDemo } from './without-expanded-directive/witho
   ],
   exports: [
     VerticalNavDemo,
-    VerticalNavStaticDemo,
     VerticalNavBasicDemo,
     VerticalNavCollapsibleDemo,
     VerticalNavDirectIconDemo,

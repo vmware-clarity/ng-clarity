@@ -28,7 +28,6 @@ import { SamsTownDemo } from './routing/the-killers/sams-town';
 import { KillersDemo } from './routing/the-killers/the-killers';
 import { VerticalNavRoutingDemo } from './routing/vertical-nav-routing';
 import { WikipediaDemo } from './routing/wikipedia';
-import { VerticalNavStaticDemo } from './static/vertical-nav-static.demo';
 import { AbbeyRoad2Demo } from './unstructured-routes/beatles/abbey-road';
 import { Beatles2Demo } from './unstructured-routes/beatles/beatles';
 import { Revolver2Demo } from './unstructured-routes/beatles/revolver';
@@ -56,8 +55,7 @@ const ROUTES: Routes = [
     path: '',
     component: VerticalNavDemo,
     children: [
-      { path: '', redirectTo: 'static', pathMatch: 'full' },
-      { path: 'static', component: VerticalNavStaticDemo },
+      { path: '', redirectTo: 'basic', pathMatch: 'full' },
       { path: 'basic', component: VerticalNavBasicDemo },
       { path: 'header-and-divider', component: VerticalNavHeaderAndDividerDemo },
       { path: 'collapsible', component: VerticalNavCollapsibleDemo },

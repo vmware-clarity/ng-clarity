@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
   template: `
     <h2>Vertical Navigation</h2>
     <ul>
-      <li><a [routerLink]="['./static']">Static</a></li>
       <li><a [routerLink]="['./basic']">Basic</a></li>
       <li><a [routerLink]="['./header-and-divider']">Header and Divider</a></li>
       <li><a [routerLink]="['./collapsible']">Collapsible</a></li>
