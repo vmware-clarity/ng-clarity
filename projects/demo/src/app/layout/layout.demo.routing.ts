@@ -9,11 +9,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutAdditionalSectionsDemo } from './layout-additional-sections';
 import { LayoutAllDemo } from './layout-all';
-import { LayoutNoSidenavDemo } from './layout-no-sidenav';
 import { LayoutNoSubnavDemo } from './layout-no-subnav';
+import { LayoutNoVerticalNavDemo } from './layout-no-vertical-nav';
 import { LayoutOnlyHeaderDemo } from './layout-only-header';
-import { LayoutSidenavPrimaryDemo } from './layout-sidenav-primary';
 import { LayoutSubnavPrimaryDemo } from './layout-subnav-primary';
+import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 import { LayoutDemo } from './layout.demo';
 
 const ROUTES: Routes = [
@@ -24,10 +24,10 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'layout-all', pathMatch: 'full' },
       { path: 'layout-all', component: LayoutAllDemo },
       { path: 'layout-no-subnav', component: LayoutNoSubnavDemo },
-      { path: 'layout-no-sidenav', component: LayoutNoSidenavDemo },
+      { path: 'layout-no-vertical-nav', component: LayoutNoVerticalNavDemo },
       { path: 'layout-only-header', component: LayoutOnlyHeaderDemo },
       { path: 'layout-subnav-primary', component: LayoutSubnavPrimaryDemo },
-      { path: 'layout-sidenav-primary', component: LayoutSidenavPrimaryDemo },
+      { path: 'layout-vertical-nav-primary', component: LayoutVerticalNavPrimaryDemo },
       { path: 'layout-additional-sections', component: LayoutAdditionalSectionsDemo },
     ],
   },
