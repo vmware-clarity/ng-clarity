@@ -16,7 +16,6 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./progress-bar-colors']">Progress Bar Colors</a></li>
       <li><a [routerLink]="['./progress-bar-animations']">Progress Bar Animations</a></li>
       <li><a [routerLink]="['./progress-bar-cards']">Progress Bars in Cards</a></li>
-      <li><a [routerLink]="['./progress-bar-sidenav']">Progress Bars in Sidenav</a></li>
       <li><a [routerLink]="['./progress-bar-loop']">Indeterminate Progress Bar</a></li>
       <li><a [routerLink]="['./progress-bar-static']">Static Progress Bar</a></li>
       <li><a [routerLink]="['./progress-bar-static-cards']">Static Progress Bar in Cards</a></li>
