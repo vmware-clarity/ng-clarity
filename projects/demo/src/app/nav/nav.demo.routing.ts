@@ -13,9 +13,6 @@ import { HeaderTypesOldDemo } from './header-types-old';
 import { HeadersDemo } from './headers';
 import { NavDemo } from './nav.demo';
 import { NavsDemo } from './navs';
-import { ResponsiveNav1Demo } from './responsive-nav1';
-import { ResponsiveNav2Demo } from './responsive-nav2';
-import { SidenavDemo } from './sidenav';
 import { SubNavDemo } from './sub-nav';
 
 const ROUTES: Routes = [
@@ -35,10 +32,7 @@ const ROUTES: Routes = [
         ],
       },
       { path: 'nav-tabs', component: NavsDemo },
-      { path: 'sidenav', component: SidenavDemo },
       { path: 'subnav', component: SubNavDemo },
-      { path: 'responsive-nav1', component: ResponsiveNav1Demo },
-      { path: 'responsive-nav2', component: ResponsiveNav2Demo },
     ],
   },
 ];
