@@ -11,23 +11,23 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
-  <div>
-    Unordered List
-    <ul [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
-      <li *ngFor="let _ of createArray(itemCount); let i = index">
-        Item {{i + 1}}
-      </li>
-    </ul>
-  </div>
+    <div>
+      Unordered List
+      <ul [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">
+          Item {{i + 1}}
+        </li>
+      </ul>
+    </div>
 
-  <div style="margin-top: 20px;">
-    Ordered List
-    <ol [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
-      <li *ngFor="let _ of createArray(itemCount); let i = index">
-        Item {{i + 1}}
-      </li>
-    </ol>
-  </div>
+    <div style="margin-top: 20px;">
+      Ordered List
+      <ol [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled, compact }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">
+          Item {{i + 1}}
+        </li>
+      </ol>
+    </div>
   `,
   props: { ...args },
 });
