@@ -197,7 +197,7 @@
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, md)) {
+  @media screen and (max-width: map-get($clr-grid-breakpoints, lg)) {
     .main-container {
       .header-hamburger-trigger,
       .header-overflow-trigger {
