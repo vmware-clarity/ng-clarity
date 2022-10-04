@@ -42,6 +42,7 @@ export const globalTypes = {
         { value: '', title: 'None' },
         { value: 'light', title: 'Core Light Theme' },
         { value: 'dark', title: 'Core Dark Theme' },
+        { value: 'high-contrast', title: 'Core High Contrast Theme' },
       ],
     },
   },

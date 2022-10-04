@@ -18,6 +18,7 @@ export const cdsThemeAttribute = 'cds-theme';
         <option value="">None</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
+        <option value="high-contrast">High Contrast</option>
       </select>
     </clr-select-container>
   `,
