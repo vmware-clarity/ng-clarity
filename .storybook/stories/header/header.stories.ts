@@ -12,47 +12,47 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
-  <clr-main-container>
-    <clr-header>
-      <div class="branding">
-        <a href="javascript://" class="nav-link">
-          <cds-icon shape="vm-bug"></cds-icon>
-          <span class="title">Project Clarity</span>
-        </a>
-      </div>
-      <form class="search">
-        <label for="search_input">
-            <input id="search_input" type="text" placeholder="Search for keywords...">
-        </label>
-      </form>
-      <div class="header-nav">
-        <a href="javascript://" class="nav-link nav-text">Home</a>
-        <a href="javascript://" class="nav-link nav-text">About</a>
-        <a href="javascript://" class="nav-link nav-text">Services</a>
-      </div>
-      <div class="header-actions">
-        <a href="javascript://" class="nav-link">
-          <cds-icon shape="cog"></cds-icon>
-        </a>
-      </div>
-    </clr-header>
-    <nav class="subnav">
-      <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="javascript://">Management</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="javascript://">Cloud</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="javascript://">Tenants</a>
-        </li>
-      </ul>
-    </nav>
-  </clr-main-container>
+    <clr-main-container>
+      <clr-header>
+        <div class="branding">
+          <a href="javascript://" class="nav-link">
+            <cds-icon shape="vm-bug"></cds-icon>
+            <span class="title">Project Clarity</span>
+          </a>
+        </div>
+        <form class="search">
+          <label for="search_input">
+              <input id="search_input" type="text" placeholder="Search for keywords...">
+          </label>
+        </form>
+        <div class="header-nav">
+          <a href="javascript://" class="nav-link nav-text">Home</a>
+          <a href="javascript://" class="nav-link nav-text">About</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+        </div>
+        <div class="header-actions">
+          <a href="javascript://" class="nav-link">
+            <cds-icon shape="cog"></cds-icon>
+          </a>
+        </div>
+      </clr-header>
+      <nav class="subnav">
+        <ul class="nav">
+          <li class="nav-item">
+              <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Management</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Cloud</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+        </ul>
+      </nav>
+    </clr-main-container>
   `,
   props: { ...args },
 });
