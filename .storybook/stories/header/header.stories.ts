@@ -20,11 +20,6 @@ const defaultStory: Story = args => ({
             <span class="title">Project Clarity</span>
           </a>
         </div>
-        <form class="search">
-          <label for="search_input">
-              <input id="search_input" type="text" placeholder="Search for keywords...">
-          </label>
-        </form>
         <div class="header-nav">
           <a href="javascript://" class="nav-link nav-text">Home</a>
           <a href="javascript://" class="nav-link nav-text">About</a>
