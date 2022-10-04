@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrHeader, ClrNavigationModule } from '@clr/angular';
+import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
@@ -20,7 +20,7 @@ const defaultStory: Story = args => ({
             <span class="title">Project Clarity</span>
           </a>
         </div>
-        <div class="header-nav">
+        <div class="header-nav" [clr-nav-level]="1">
           <a href="javascript://" class="nav-link nav-text">Home</a>
           <a href="javascript://" class="nav-link nav-text">About</a>
           <a href="javascript://" class="nav-link nav-text">Services</a>
@@ -31,7 +31,7 @@ const defaultStory: Story = args => ({
           </a>
         </div>
       </clr-header>
-      <nav class="subnav">
+      <nav class="subnav" [clr-nav-level]="2">
         <ul class="nav">
           <li class="nav-item">
               <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
@@ -69,4 +69,4 @@ const defaultParameters: Parameters = {
 
 const variants: Parameters[] = [];
 
-setupStorybook(ClrNavigationModule, defaultStory, defaultParameters, variants);
+setupStorybook([ClrMainContainerModule, ClrNavigationModule], defaultStory, defaultParameters, variants);
