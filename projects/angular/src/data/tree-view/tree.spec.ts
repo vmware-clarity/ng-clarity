@@ -9,7 +9,6 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClrForTypeAheadModule } from '../../utils/for-type-ahead/for-type-ahead.module';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
@@ -35,18 +34,18 @@ class TestComponent {
 @Component({
   template: `
     <clr-tree>
-      <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+      <clr-tree-node [clrExpanded]="true">
         California
-        <clr-tree-node clrForTypeAhead>San Francisco</clr-tree-node>
-        <clr-tree-node clrForTypeAhead>Los Angeles</clr-tree-node>
+        <clr-tree-node>San Francisco</clr-tree-node>
+        <clr-tree-node>Los Angeles</clr-tree-node>
       </clr-tree-node>
-      <clr-tree-node clrForTypeAhead [clrExpanded]="true">
+      <clr-tree-node [clrExpanded]="true">
         Washington
-        <clr-tree-node clrForTypeAhead>Seattle</clr-tree-node>
+        <clr-tree-node>Seattle</clr-tree-node>
       </clr-tree-node>
-      <clr-tree-node clrForTypeAhead [clrExpanded]="false">
+      <clr-tree-node [clrExpanded]="false">
         Vermont
-        <clr-tree-node clrForTypeAhead>Burlington</clr-tree-node>
+        <clr-tree-node>Burlington</clr-tree-node>
       </clr-tree-node>
     </clr-tree>
   `,
@@ -122,7 +121,7 @@ export default function (): void {
     let forTypeAheadDirectiveDEs: DebugElement[];
     let forTypeAheadDirectives: ClrTreeNode<any>[];
 
-    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule, ClrForTypeAheadModule] });
+    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
 
     beforeEach(function (this: Context) {
       forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));

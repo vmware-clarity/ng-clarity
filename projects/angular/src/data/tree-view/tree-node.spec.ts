@@ -81,21 +81,21 @@ export default function (): void {
         this.parent = new ClrTreeNode(
           platformID,
           undefined,
-          undefined,
           this.featureService,
           this.expandService,
           stringsService,
           this.focusManagerService,
+          { nativeElement: document.createElement('div') },
           null
         );
         this.node = new ClrTreeNode(
           platformID,
           this.parent,
-          undefined,
           this.featureService,
           this.expandService,
           stringsService,
           this.focusManagerService,
+          { nativeElement: document.createElement('div') },
           null
         );
       });
