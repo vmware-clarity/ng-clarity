@@ -21,7 +21,6 @@ import {
   Output,
   PLATFORM_ID,
   QueryList,
-  Self,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
@@ -31,7 +30,6 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { isKeyEitherLetterOrNumber, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
-import { ForTypeAheadProvider } from '../../utils/for-type-ahead/for-type-ahead.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
@@ -79,11 +77,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     @Optional()
     @SkipSelf()
     parent: ClrTreeNode<T>,
-    @Optional() @Self() private forTypeAheadProvider: ForTypeAheadProvider,
     public featuresService: TreeFeaturesService<T>,
     public expandService: IfExpandService,
     public commonStrings: ClrCommonStringsService,
     private focusManager: TreeFocusManagerService<T>,
+    private elementRef: ElementRef<HTMLElement>,
     injector: Injector
   ) {
     if (this.featuresService.recursion) {
@@ -166,6 +164,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this.expandService.expanded = value;
   }
 
+  @Input('clrForTypeAhead')
+  set clrForTypeAhead(value: string) {
+    this._model.textContent = trimAndLowerCase(value || this.elementRef.nativeElement.textContent);
+  }
+
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 
   private subscriptions: Subscription[] = [];
@@ -204,17 +207,17 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit() {
-    if (this.forTypeAheadProvider) {
-      this._model.textContent = this.forTypeAheadProvider.textContent;
-
-      this.subscriptions.push(
-        this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
-          this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
-          // reset once bufferedKeys are used
-          this.typeAheadKeyBuffer = '';
-        })
-      );
+    if (!this._model.textContent) {
+      this._model.textContent = trimAndLowerCase(this.elementRef.nativeElement.textContent);
     }
+
+    this.subscriptions.push(
+      this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
+        this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
+        // reset once bufferedKeys are used
+        this.typeAheadKeyBuffer = '';
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -350,4 +353,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
       }
     }
   }
+}
+
+function trimAndLowerCase(value: string) {
+  return value.toLocaleLowerCase().trim();
 }

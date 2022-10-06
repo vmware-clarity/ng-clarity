@@ -18,7 +18,6 @@ import { TreeNodeRoutingAbbeyRoadDemo } from './tree-node-routing/tree-node-rout
 import { TreeNodeRoutingRevolverDemo } from './tree-node-routing/tree-node-routing-revolver';
 import { TreeNodeRoutingRubberSoulDemo } from './tree-node-routing/tree-node-routing-rubber-soul';
 import { TreeViewDemo } from './tree-view.demo';
-import { TypeAheadTreeViewDemo } from './type-ahead/tree-view-type-ahead';
 
 const ROUTES: Routes = [
   {
@@ -41,7 +40,6 @@ const ROUTES: Routes = [
         ],
       },
       { path: 'pre-selection', component: PreSelectionDemo },
-      { path: 'type-ahead', component: TypeAheadTreeViewDemo },
     ],
   },
 ];

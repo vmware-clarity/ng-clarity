@@ -20,7 +20,6 @@ import { ClrSpinnerModule } from './progress/spinner/spinner.module';
 import { ClrTimelineModule } from './timeline/timeline.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
-import { ClrForTypeAheadModule } from './utils/for-type-ahead/for-type-ahead.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
 import { ClrPopoverModuleNext } from './utils/popover/popover.module';
 import { ClrWizardModule } from './wizard/wizard.module';
@@ -37,7 +36,6 @@ import '@cds/core/icon/register';
     ClrLoadingModule,
     ClrConditionalModule,
     ClrFocusOnViewInitModule,
-    ClrForTypeAheadModule,
     ClrButtonModule,
     ClrFormsModule,
     ClrLayoutModule,
