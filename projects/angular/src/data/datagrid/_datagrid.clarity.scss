@@ -1647,7 +1647,7 @@
     min-width: $clr_baselineRem_10;
   }
 
-  .datagrid-detail-open {
+  .datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
     div.datagrid-table-wrapper {
       /**
          * So the content with no spaces in the cell doesn't get cut when and the row selected indicator is not hidden

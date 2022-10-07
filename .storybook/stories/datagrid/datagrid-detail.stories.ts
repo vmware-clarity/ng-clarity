@@ -62,7 +62,36 @@ const defaultStory: Story = args => {
 
         <clr-dg-detail [ngClass]="{ highlight }" *clrIfDetail="let element">
           <clr-dg-detail-header>{{element.name}}</clr-dg-detail-header>
-          <clr-dg-detail-body>{{element | json}}</clr-dg-detail-body>
+          <clr-dg-detail-body [ngSwitch]="detailContentType">
+            <ng-container *ngSwitchCase="'json'">
+              {{element | json}}
+            </ng-container>
+          
+            <clr-datagrid *ngSwitchCase="'datagrid'">
+              <clr-dg-column>Key</clr-dg-column>
+              <clr-dg-column>Value</clr-dg-column>
+
+              <clr-dg-row>
+                <clr-dg-cell>Name</clr-dg-cell>
+                <clr-dg-cell>{{element.name}}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-row>
+                <clr-dg-cell>Symbol</clr-dg-cell>
+                <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-row>
+                <clr-dg-cell>Number</clr-dg-cell>
+                <clr-dg-cell>{{element.number}}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-row>
+                <clr-dg-cell>Electronegativity</clr-dg-cell>
+                <clr-dg-cell>{{element.electronegativity}}</clr-dg-cell>
+              </clr-dg-row>
+            </clr-datagrid>
+          </clr-dg-detail-body>
         </clr-dg-detail>
         
         <clr-dg-footer>
@@ -85,10 +114,12 @@ const defaultParameters: Parameters = {
     closeCheck: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    detailContentType: { control: { type: 'inline-radio', options: ['json', 'datagrid'] } },
   },
   args: {
     // story helpers
     elements,
+    detailContentType: 'json',
     showLongContent: false,
     highlight: true,
     singleSelectable: false,
