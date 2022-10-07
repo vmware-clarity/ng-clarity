@@ -1648,37 +1648,35 @@
   }
 
   .datagrid-detail-open {
-    & {
-      div.datagrid-table-wrapper {
-        /**
+    div.datagrid-table-wrapper {
+      /**
          * So the content with no spaces in the cell doesn't get cut when and the row selected indicator is not hidden
          * e.g. Helloworldthisisaveryveryveryveryverylongcontent
          */
-        display: block;
-        /**
+      display: block;
+      /**
          * To get rid of detail-pane overlapping the content inside the rows
          */
-        overflow: hidden;
-      }
+      overflow: hidden;
+    }
 
-      clr-dg-cell {
-        /**
+    clr-dg-cell {
+      /**
            * Since we use inline width of each column in order to maintain manual resizing,
            * we need to use !important to override the inline width.
            */
-        width: 100% !important;
-      }
+      width: 100% !important;
+    }
 
-      /**
+    /**
        * Needed to prevent hidding the sorting and filtering icons
        */
-      clr-dg-column:first-child {
-        /**
+    clr-dg-column:first-child {
+      /**
            * Since we use inline width of each column in order to maintain manual resizing,
            * we need to use !important to override the inline width.
            */
-        width: auto !important;
-      }
+      width: auto !important;
     }
 
     .datagrid {
