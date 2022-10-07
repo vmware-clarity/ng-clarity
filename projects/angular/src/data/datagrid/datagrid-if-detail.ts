@@ -6,6 +6,7 @@
 
 import {
   Directive,
+  EmbeddedViewRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -24,6 +25,7 @@ import { DetailService } from './providers/detail.service';
 export class ClrIfDetail implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private skip = false; // This keeps us from resetting the input and calling the toggle twice
+  private embeddedViewRef: EmbeddedViewRef<any>;
 
   @Input('clrIfDetail')
   set state(model: any) {
@@ -57,11 +59,21 @@ export class ClrIfDetail implements OnInit, OnDestroy {
 
   private togglePanel(showPanel: boolean) {
     let stateChangeParams = null;
-    this.viewContainer.clear();
+
     if (showPanel === true) {
-      this.viewContainer.createEmbeddedView(this.templateRef, { $implicit: this.detailService.state });
+      const embeddedViewContext = { $implicit: this.detailService.state };
+
+      if (this.embeddedViewRef) {
+        this.embeddedViewRef.context = embeddedViewContext;
+      } else {
+        this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, embeddedViewContext);
+      }
+
       this.skip = true;
       stateChangeParams = this.detailService.state;
+    } else {
+      this.viewContainer.clear();
+      this.embeddedViewRef = null;
     }
 
     this.stateChange.emit(stateChangeParams);
