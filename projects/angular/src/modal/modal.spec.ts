@@ -61,8 +61,8 @@ class TestDefaultsComponent {
 }
 
 describe('Modal', () => {
-  let fixture: ComponentFixture<any>;
-  let compiled: any;
+  let fixture: ComponentFixture<TestComponent>;
+  let compiled: HTMLElement;
   const commonStrings = new ClrCommonStringsService();
 
   beforeEach(async(() => {
@@ -280,7 +280,7 @@ describe('Modal', () => {
     // are entering and leaving modal content.
     getModalInstance(fixture).open();
     fixture.detectChanges();
-    const messages = compiled.querySelectorAll('.clr-sr-only');
+    const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
     expect(messages[1].innerText).toBe('End of Modal Content');
   }));
