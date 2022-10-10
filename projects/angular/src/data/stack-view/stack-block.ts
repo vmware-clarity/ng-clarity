@@ -24,11 +24,14 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
 @Component({
   selector: 'clr-stack-block',
   template: `
+    <!-- The 'preventDefault' for the space keydown event prevents the page
+         from scrolling when a stack block is toggled via the space key. -->
     <div
       class="stack-block-label"
       (click)="toggleExpand()"
       (keyup.enter)="toggleExpand()"
       (keyup.space)="toggleExpand()"
+      (keydown.space)="$event.preventDefault()"
       (focus)="focused = true"
       (blur)="focused = false"
       [id]="uniqueId"
