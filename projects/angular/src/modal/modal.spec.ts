@@ -21,6 +21,7 @@ import { ClrModalModule } from './modal.module';
     <clr-modal
       [(clrModalOpen)]="opened"
       [clrModalClosable]="closable"
+      [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
       [clrModalSize]="size"
       [clrModalStaticBackdrop]="staticBackdrop"
     >
@@ -39,6 +40,7 @@ class TestComponent {
 
   opened = true;
   closable = true;
+  closeButtonAriaLabel: string = undefined;
   size = '';
   staticBackdrop = false;
 }
@@ -257,8 +259,15 @@ describe('Modal', () => {
     expect(focusable).toBeDefined();
   });
 
-  it('close button should have attribute aria-label', () => {
+  it('close button should have default aria-label', () => {
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStrings.keys.close);
+  });
+
+  it('close button should have customizable aria-label', () => {
+    fixture.componentInstance.closeButtonAriaLabel = 'custom close label';
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
 
   it('should add expected aria-labelledby', () => {

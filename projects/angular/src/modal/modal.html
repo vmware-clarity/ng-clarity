@@ -30,7 +30,7 @@
           </div>
           <button
             type="button"
-            [attr.aria-label]="commonStrings.keys.close"
+            [attr.aria-label]="closeButtonAriaLabel || commonStrings.keys.close"
             class="close"
             *ngIf="closable"
             (click)="close()"
