@@ -6,7 +6,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -65,18 +65,16 @@ describe('Modal', () => {
   let compiled: HTMLElement;
   const commonStrings = new ClrCommonStringsService();
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrModalModule, NoopAnimationsModule, ClrFocusTrapModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
-    return TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-      compiled = fixture.nativeElement;
-    });
-  }));
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    compiled = fixture.nativeElement;
+  });
 
   function getModalInstance(componentFixture: ComponentFixture<any>): ClrModal {
     return componentFixture.componentInstance.modalInstance;
