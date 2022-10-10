@@ -63,6 +63,7 @@ class TestDefaultsComponent {
 describe('Modal', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
+  let modal: ClrModal;
   const commonStrings = new ClrCommonStringsService();
 
   beforeEach(() => {
@@ -74,11 +75,8 @@ describe('Modal', () => {
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     compiled = fixture.nativeElement;
+    modal = fixture.componentInstance.modalInstance;
   });
-
-  function getModalInstance(componentFixture: ComponentFixture<any>): ClrModal {
-    return componentFixture.componentInstance.modalInstance;
-  }
 
   function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean): void {
     componentFixture.detectChanges();
@@ -103,7 +101,7 @@ describe('Modal', () => {
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
-    getModalInstance(fixture).open();
+    modal.open();
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   }));
@@ -117,17 +115,17 @@ describe('Modal', () => {
   }));
 
   it('exposes open() and close() methods', fakeAsync(() => {
-    getModalInstance(fixture).close();
+    modal.close();
     flushAndExpectOpen(fixture, false);
 
-    getModalInstance(fixture).open();
+    modal.open();
     flushAndExpectOpen(fixture, true);
   }));
 
   it('should not open if already opened', fakeAsync(() => {
-    spyOn(getModalInstance(fixture)._openChanged, 'emit');
-    getModalInstance(fixture).open();
-    expect(getModalInstance(fixture)._openChanged.emit).not.toHaveBeenCalled();
+    spyOn(modal._openChanged, 'emit');
+    modal.open();
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
   }));
 
   it('should not emit clrModalOpenChange - animation will do that for us', fakeAsync(() => {
@@ -144,16 +142,16 @@ describe('Modal', () => {
       disabled: false,
     };
 
-    spyOn(getModalInstance(fixture)._openChanged, 'emit');
-    getModalInstance(fixture).close();
-    getModalInstance(fixture).fadeDone(fakeAnimationEvent);
-    expect(getModalInstance(fixture)._openChanged.emit).toHaveBeenCalledTimes(1);
+    spyOn(modal._openChanged, 'emit');
+    modal.close();
+    modal.fadeDone(fakeAnimationEvent);
+    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
   }));
 
   it('should not close when already closed', fakeAsync(() => {
     fixture.componentInstance.opened = false;
-    spyOn(getModalInstance(fixture), 'close');
-    expect(getModalInstance(fixture).close).not.toHaveBeenCalled();
+    spyOn(modal, 'close');
+    expect(modal.close).not.toHaveBeenCalled();
   }));
 
   it('should not throw an error when close is called on an already closed modal', fakeAsync(() => {
@@ -169,7 +167,7 @@ describe('Modal', () => {
 
   it('offers two-way binding on clrModalOpen', fakeAsync(() => {
     expect(fixture.componentInstance.opened).toBe(true);
-    getModalInstance(fixture).close();
+    modal.close();
     fixture.detectChanges();
 
     // We make sure to wait for the animation to be over before emitting the output
@@ -207,14 +205,14 @@ describe('Modal', () => {
 
     expect(compiled.querySelector('.close')).toBeNull();
 
-    getModalInstance(fixture).close();
+    modal.close();
     flushAndExpectOpen(fixture, true);
 
     fixture.componentInstance.closable = true;
     fixture.detectChanges();
 
     expect(compiled.querySelector('.close')).not.toBeNull();
-    getModalInstance(fixture).close();
+    modal.close();
     fixture.detectChanges();
 
     flushAndExpectOpen(fixture, false);
@@ -265,18 +263,16 @@ describe('Modal', () => {
 
   it('should add expected aria-labelledby', () => {
     // open modal
-    getModalInstance(fixture).open();
+    modal.open();
     fixture.detectChanges();
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(
-      getModalInstance(fixture).modalId
-    );
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 
   it('should have text based boundaries for screen readers', fakeAsync(() => {
     // MacOS + Voice Over does not properly isolate modal content so
     // we must give screen reader users text based warnings when they
     // are entering and leaving modal content.
-    getModalInstance(fixture).open();
+    modal.open();
     fixture.detectChanges();
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
