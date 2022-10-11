@@ -2,6 +2,9 @@ name: Accept Merged Visual Changes
 on:
   push:
     branches: main
+concurrency:
+  group: accept-merged-visual-changes
+  cancel-in-progress: true
 jobs:
   accept-merged-visual-changes:
     timeout-minutes: 10
