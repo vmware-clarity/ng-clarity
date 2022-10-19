@@ -278,6 +278,7 @@
     .nav-link {
       //Display
       display: flex;
+      text-decoration: none;
 
       //Others
       @include vertical-nav-link-colors();

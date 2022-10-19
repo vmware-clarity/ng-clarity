@@ -70,13 +70,6 @@ $clr-outline-spread: $clr_baselineRem_2px;
   margin: 0 0 $clr_baselineRem_-1px 0 !important;
 }
 
-@mixin remove-text-decoration() {
-  &:hover,
-  &:active {
-    text-decoration: none;
-  }
-}
-
 @mixin focus-within() {
   &:focus-within,
   &.focus-within {

@@ -167,6 +167,10 @@
       @include generate-dropdown-item-height();
     }
 
+    a.dropdown-item {
+      text-decoration: none;
+    }
+
     .dropdown-divider {
       font-size: $clr-dropdown-header-font-size;
       @include css-var(
