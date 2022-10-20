@@ -352,14 +352,14 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
       });
 
-      it('adds the aria-describedby for error messages', function (this: TestContext) {
+      it('adds the aria-describedby for error messages', fakeAsync(function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
         this.input.blur();
         this.fixture.detectChanges();
-
+        tick();
         expect(this.input.getAttribute('aria-describedby')).toContain('-error');
-      });
+      }));
 
       it('does not set aria-describedby unless error helper is present', function () {
         setupTest(this, WithControl, TestControl3);
