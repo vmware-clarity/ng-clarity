@@ -6,6 +6,7 @@
 
 export * from './date-container';
 export * from './date-input';
+export * from './date-input.validator';
 export * from './datepicker-view-manager';
 export * from './daypicker';
 export * from './monthpicker';

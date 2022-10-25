@@ -24,6 +24,7 @@ import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-input';
+import { ClrDateInputValidator } from './date-input.validator';
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { ClrDay } from './day';
 import { ClrDaypicker } from './daypicker';
@@ -34,6 +35,7 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ClrDay,
   ClrDateContainer,
   ClrDateInput,
+  ClrDateInputValidator,
   ClrDatepickerViewManager,
   ClrMonthpicker,
   ClrYearpicker,
