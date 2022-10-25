@@ -8,6 +8,7 @@ import { addHelpers } from '../../data/datagrid/helpers.spec';
 import CalendarSpecs from './calendar.spec';
 import DateContainerSpecs from './date-container.spec';
 import DateInputSpecs from './date-input.spec';
+import DateInputValidatorSpecs from './date-input.validator.spec';
 import DatepickerViewManagerSpecs from './datepicker-view-manager.spec';
 import DayComponentSpecs from './day.spec';
 import DaypickerSpecs from './daypicker.spec';
@@ -54,5 +55,6 @@ describe('Datepicker', function () {
     YearpickerSpecs();
     CalendarSpecs();
     DateInputSpecs();
+    DateInputValidatorSpecs();
   });
 });
