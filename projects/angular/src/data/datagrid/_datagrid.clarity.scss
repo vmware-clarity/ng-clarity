@@ -758,14 +758,6 @@
         @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
         font-weight: normal;
 
-        .datagrid-filter-close-wrapper {
-          text-align: right;
-
-          .close {
-            float: none;
-          }
-        }
-
         // FIXME: remove
         .datagrid-filter-apply {
           margin-bottom: 0;
@@ -795,14 +787,6 @@
         @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
         font-weight: normal;
 
-        .datagrid-filter-close-wrapper {
-          text-align: right;
-
-          .close {
-            float: none;
-          }
-        }
-
         // FIXME: remove
         .datagrid-filter-apply {
           margin-bottom: 0;
@@ -831,14 +815,6 @@
         @include clr-datagrid-popover-shadows;
         @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
         font-weight: normal;
-
-        .datagrid-filter-close-wrapper {
-          text-align: right;
-
-          .close {
-            float: none;
-          }
-        }
 
         // FIXME: remove
         .datagrid-filter-apply {
@@ -2008,14 +1984,6 @@
     @include clr-datagrid-popover-shadows;
     @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
     font-weight: normal;
-
-    .datagrid-filter-close-wrapper {
-      text-align: right;
-
-      .close {
-        float: none;
-      }
-    }
 
     // FIXME: remove
     .datagrid-filter-apply {
