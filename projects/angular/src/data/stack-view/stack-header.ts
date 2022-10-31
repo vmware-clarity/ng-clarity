@@ -11,8 +11,8 @@ import { ClrStackView } from './stack-view';
 @Component({
   selector: 'clr-stack-header',
   template: `
-    <h4 class="stack-header">
-      <span class="stack-title"><ng-content></ng-content></span>
+    <div class="stack-header">
+      <h4 class="stack-title"><ng-content></ng-content></h4>
 
       <span class="stack-actions">
         <ng-content select=".stack-action"></ng-content>
@@ -27,7 +27,7 @@ import { ClrStackView } from './stack-view';
         </button>
         <!-- End of undocumented experimental feature. -->
       </span>
-    </h4>
+    </div>
   `,
   // Custom elements are inline by default
   styles: [
