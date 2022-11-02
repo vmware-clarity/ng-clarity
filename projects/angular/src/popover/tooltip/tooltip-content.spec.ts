@@ -16,6 +16,17 @@ import { ClrTooltipModule } from './tooltip.module';
 @Component({
   template: `
     <clr-tooltip>
+      <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
+    </clr-tooltip>
+  `,
+})
+class IdTest {
+  idValue;
+}
+
+@Component({
+  template: `
+    <clr-tooltip>
       <clr-tooltip-content [clrPosition]="position" [clrSize]="size">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
@@ -23,17 +34,6 @@ import { ClrTooltipModule } from './tooltip.module';
 class SimpleTest {
   position: string;
   size: string;
-}
-
-@Component({
-  template: `
-    <clr-tooltip>
-      <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
-    </clr-tooltip>
-  `,
-})
-class IdTest {
-  idValue;
 }
 
 interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
