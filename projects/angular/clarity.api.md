@@ -4381,12 +4381,14 @@ export class ClrTooltip {
 }
 
 // @public (undocumented)
-export class ClrTooltipContent extends AbstractPopover {
+export class ClrTooltipContent extends AbstractPopover implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
     constructor(injector: Injector, parentHost: ElementRef, tooltipIdService: TooltipIdService);
     // (undocumented)
     get id(): string;
     set id(value: string);
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     get position(): string;
     set position(value: string);
