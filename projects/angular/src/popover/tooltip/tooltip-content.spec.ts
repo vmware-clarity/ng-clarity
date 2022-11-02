@@ -43,7 +43,7 @@ interface TooltipContext extends TestContext<ClrTooltipContent, SimpleTest> {
 
 export default function (): void {
   describe('TooltipContent component', function () {
-    describe('Template API', function (this: TooltipContext) {
+    describe('Template API', function () {
       describe('handles values for custom id', function () {
         spec(ClrTooltipContent, IdTest, ClrTooltipModule, {
           providers: [ClrPopoverToggleService, TooltipIdService],
