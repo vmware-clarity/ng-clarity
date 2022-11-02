@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Inject, Injector, Input, Optional } from '@angular/core';
+import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
 
 import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -31,7 +31,7 @@ const defaultSize = 'sm';
     '[id]': 'id',
   },
 })
-export class ClrTooltipContent extends AbstractPopover {
+export class ClrTooltipContent extends AbstractPopover implements OnInit {
   constructor(
     injector: Injector,
     @Optional()
@@ -62,7 +62,7 @@ export class ClrTooltipContent extends AbstractPopover {
   }
   private _id: string;
 
-  private _position = defaultPosition;
+  private _position: string;
 
   get position() {
     return this._position;
@@ -107,7 +107,7 @@ export class ClrTooltipContent extends AbstractPopover {
     }
   }
 
-  private _size = defaultSize;
+  private _size: string;
 
   get size() {
     return this._size;
@@ -120,6 +120,11 @@ export class ClrTooltipContent extends AbstractPopover {
 
     this._size = newSize;
     this.updateCssClass({ oldClass: `tooltip-${oldSize}`, newClass: `tooltip-${newSize}` });
+  }
+
+  ngOnInit() {
+    this.size = this.size || defaultSize;
+    this.position = this.position || defaultPosition;
   }
 
   private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {

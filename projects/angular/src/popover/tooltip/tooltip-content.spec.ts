@@ -16,6 +16,15 @@ import { ClrTooltipModule } from './tooltip.module';
 @Component({
   template: `
     <clr-tooltip>
+      <clr-tooltip-content>Hello world</clr-tooltip-content>
+    </clr-tooltip>
+  `,
+})
+class DefaultTest {}
+
+@Component({
+  template: `
+    <clr-tooltip>
       <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
@@ -44,6 +53,24 @@ interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
 export default function (): void {
   describe('TooltipContent component', function () {
     describe('Template API', function () {
+      describe('defaults', function () {
+        spec(ClrTooltipContent, DefaultTest, ClrTooltipModule, {
+          providers: [ClrPopoverToggleService, TooltipIdService],
+        });
+
+        beforeEach(function (this: TooltipContext<DefaultTest>) {
+          this.getClarityProvider(ClrPopoverToggleService).open = true;
+          this.tooltipIdService = this.getClarityProvider(TooltipIdService);
+          this.detectChanges();
+        });
+
+        it('sets the correct default classes', function (this: TooltipContext<DefaultTest>) {
+          expect(this.clarityElement.classList).toContain('tooltip-content');
+          expect(this.clarityElement.classList).toContain('tooltip-sm');
+          expect(this.clarityElement.classList).toContain('tooltip-right');
+        });
+      });
+
       describe('handles values for custom id', function () {
         spec(ClrTooltipContent, IdTest, ClrTooltipModule, {
           providers: [ClrPopoverToggleService, TooltipIdService],
