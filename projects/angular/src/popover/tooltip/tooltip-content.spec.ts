@@ -36,7 +36,7 @@ class IdTest {
   idValue;
 }
 
-interface TooltipContext extends TestContext<ClrTooltipContent, SimpleTest> {
+interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
   toggleService: ClrPopoverToggleService;
   tooltipIdService: TooltipIdService;
 }
@@ -49,7 +49,7 @@ export default function (): void {
           providers: [ClrPopoverToggleService, TooltipIdService],
         });
 
-        beforeEach(function (this: TooltipContext) {
+        beforeEach(function (this: TooltipContext<IdTest>) {
           this.getClarityProvider(ClrPopoverToggleService).open = true;
           this.tooltipIdService = this.getClarityProvider(TooltipIdService);
           this.detectChanges();
@@ -84,7 +84,7 @@ export default function (): void {
           providers: [ClrPopoverToggleService, TooltipIdService],
         });
 
-        beforeEach(function (this: TooltipContext) {
+        beforeEach(function (this: TooltipContext<SimpleTest>) {
           this.getClarityProvider(ClrPopoverToggleService).open = true;
           this.tooltipIdService = this.getClarityProvider(TooltipIdService);
           this.detectChanges();
@@ -94,7 +94,7 @@ export default function (): void {
           expect(this.clarityDirective.id).toEqual(this.clarityElement.getAttribute('id'));
         });
 
-        it('accepts a [clrPosition] input', function (this: TooltipContext) {
+        it('accepts a [clrPosition] input', function (this: TooltipContext<SimpleTest>) {
           // Default is right
           expect((this.clarityDirective as any).anchorPoint).toEqual(Point.RIGHT_CENTER);
           expect((this.clarityDirective as any).popoverPoint).toEqual(Point.LEFT_TOP);
@@ -115,7 +115,7 @@ export default function (): void {
           expect(this.clarityElement.classList).toContain('tooltip-top-left');
         });
 
-        it('accepts a [clrSize] input', function (this: TooltipContext) {
+        it('accepts a [clrSize] input', function (this: TooltipContext<SimpleTest>) {
           // Default is small
           expect(this.clarityDirective.size).toEqual('sm');
           expect(this.clarityElement.classList).toContain('tooltip-sm');
@@ -134,17 +134,17 @@ export default function (): void {
         providers: [ClrPopoverToggleService, TooltipIdService],
       });
 
-      beforeEach(function (this: TooltipContext) {
+      beforeEach(function (this: TooltipContext<SimpleTest>) {
         this.getClarityProvider(ClrPopoverToggleService).open = true;
         this.tooltipIdService = this.getClarityProvider(TooltipIdService);
         this.detectChanges();
       });
 
-      it('projects content', function (this: TooltipContext) {
+      it('projects content', function (this: TooltipContext<SimpleTest>) {
         expect(this.clarityElement.textContent.trim()).toMatch('Hello world');
       });
 
-      it('adds the .tooltip-content class to the host', function (this: TooltipContext) {
+      it('adds the .tooltip-content class to the host', function (this: TooltipContext<SimpleTest>) {
         expect(this.clarityElement.classList).toContain('tooltip-content');
       });
 
