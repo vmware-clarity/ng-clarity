@@ -23,8 +23,6 @@ import { ClrTooltipModule } from './tooltip.module';
 class SimpleTest {
   position: string;
   size: string;
-  idValue;
-  idTest = false;
 }
 
 @Component({
