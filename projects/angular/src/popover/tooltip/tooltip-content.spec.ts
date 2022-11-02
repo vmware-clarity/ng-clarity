@@ -55,24 +55,24 @@ export default function (): void {
           this.detectChanges();
         });
 
-        it('accepts an [id] when an undefined id is provided', function () {
+        it('accepts an [id] when an undefined id is provided', function (this: TooltipContext<IdTest>) {
           // IdTest component starts with idValue undefined
           expect(this.clarityElement.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when a null id is provided', function () {
+        it('accepts an [id] when a null id is provided', function (this: TooltipContext<IdTest>) {
           this.hostComponent.idValue = null;
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when an empty string id is provided', function () {
+        it('accepts an [id] when an empty string id is provided', function (this: TooltipContext<IdTest>) {
           this.hostComponent.idValue = '';
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when an custom string id is provided', function () {
+        it('accepts an [id] when an custom string id is provided', function (this: TooltipContext<IdTest>) {
           this.hostComponent.idValue = 'custom-id';
           this.detectChanges();
           expect(this.clarityElement.getAttribute('id')).toEqual('custom-id');
@@ -90,7 +90,7 @@ export default function (): void {
           this.detectChanges();
         });
 
-        it('sets an id when no id is provided', function () {
+        it('sets an id when no id is provided', function (this: TooltipContext<SimpleTest>) {
           expect(this.clarityDirective.id).toEqual(this.clarityElement.getAttribute('id'));
         });
 
@@ -148,11 +148,11 @@ export default function (): void {
         expect(this.clarityElement.classList).toContain('tooltip-content');
       });
 
-      it('has the correct role', function () {
+      it('has the correct role', function (this: TooltipContext<SimpleTest>) {
         expect(this.clarityElement.getAttribute('role')).toBe('tooltip');
       });
 
-      it('has an id', function () {
+      it('has an id', function (this: TooltipContext<SimpleTest>) {
         expect(this.clarityElement.getAttribute('id')).toBeTruthy();
       });
     });
