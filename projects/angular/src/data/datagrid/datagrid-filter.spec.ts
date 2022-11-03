@@ -113,6 +113,7 @@ export default function (): void {
         filter = new TestFilter();
         context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
         context.testComponent.filter = filter;
+        context.detectChanges();
       });
 
       afterEach(function () {
