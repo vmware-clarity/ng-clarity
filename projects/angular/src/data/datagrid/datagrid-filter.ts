@@ -11,6 +11,7 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnChanges,
   OnDestroy,
   Output,
   PLATFORM_ID,
@@ -44,7 +45,7 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
       class="datagrid-filter-toggle"
       type="button"
       #anchor
-      [attr.aria-label]="commonStrings.keys.datagridFilterAriaLabel"
+      [attr.aria-label]="toggleButtonAriaLabel"
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
       clrPopoverAnchor
@@ -79,7 +80,7 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
-  implements CustomFilter, OnDestroy
+  implements CustomFilter, OnChanges, OnDestroy
 {
   private subs: Subscription[] = [];
   ariaExpanded = false;
@@ -90,7 +91,8 @@ export class ClrDatagridFilter<T = any>
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private elementRef: ElementRef<HTMLElement>
   ) {
     super(_filters);
     this.subs.push(
@@ -145,8 +147,29 @@ export class ClrDatagridFilter<T = any>
     return !!this.filter && this.filter.isActive();
   }
 
+  toggleButtonAriaLabel: string;
+
+  ngOnChanges() {
+    this.setToggleButtonAriaLabel();
+  }
+
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  /**
+   * This is not in a getter to prevent "expression has changed after it was checked" errors.
+   * And it's more performant this way since it only runs on change.
+   */
+  private setToggleButtonAriaLabel() {
+    const columnElement = this.elementRef.nativeElement?.closest('clr-dg-column');
+    const columnTitleElement = columnElement?.querySelector('.datagrid-column-title');
+
+    const columnTitle = columnTitleElement?.textContent.trim().toLocaleLowerCase();
+
+    this.toggleButtonAriaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
+      COLUMN: columnTitle || '',
+    });
   }
 }

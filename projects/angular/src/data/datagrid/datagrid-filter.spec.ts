@@ -42,7 +42,8 @@ export default function (): void {
           filterService,
           new ClrCommonStringsService(),
           toggleService,
-          'browser' as any
+          'browser' as any,
+          undefined
         );
       });
 
@@ -136,11 +137,9 @@ export default function (): void {
         expect(toggle.getAttribute('aria-expanded')).toBe('true');
       });
 
-      it('has a button with the correct common string for datagridFilterAriaLabel', function () {
+      it('has a button with the correct aria-label', function () {
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
-        const commonStrings: ClrCommonStringsService =
-          context.fixture.debugElement.injector.get(ClrCommonStringsService);
-        expect(toggle.getAttribute('aria-label')).toBe(commonStrings.keys.datagridFilterAriaLabel);
+        expect(toggle.getAttribute('aria-label')).toBe('Toggle user filter');
       });
 
       it('has role and label on the filter dialog', function () {
