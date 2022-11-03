@@ -12,7 +12,7 @@ import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-e
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridFilter } from './datagrid-filter';
-import { TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
@@ -80,12 +80,7 @@ export default function (): void {
 
       beforeEach(function (this: any) {
         filter = new TestFilter();
-        context = this.create(ClrDatagridFilter, FullTest, [
-          FiltersProvider,
-          Page,
-          StateDebouncer,
-          ClrPopoverToggleService,
-        ]);
+        context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
         toggleService = context.getClarityProvider(ClrPopoverToggleService);
       });
 
@@ -116,12 +111,7 @@ export default function (): void {
 
       beforeEach(function (this: any) {
         filter = new TestFilter();
-        context = this.create(ClrDatagridFilter, FullTest, [
-          FiltersProvider,
-          Page,
-          StateDebouncer,
-          ClrPopoverToggleService,
-        ]);
+        context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
         context.testComponent.filter = filter;
       });
 
@@ -213,13 +203,16 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
 
 @Component({
   template: `
-    <clr-dg-filter
-      [clrDgFilter]="filter"
-      [clrDgFilterOpen]="open"
-      (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
-    >
-      Filter content
-    </clr-dg-filter>
+    <clr-dg-column>
+      User
+      <clr-dg-filter
+        [clrDgFilter]="filter"
+        [clrDgFilterOpen]="open"
+        (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
+      >
+        Filter content
+      </clr-dg-filter>
+    </clr-dg-column>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
