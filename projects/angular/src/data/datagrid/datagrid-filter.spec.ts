@@ -170,7 +170,7 @@ export default function (): void {
         openBtn.click();
         context.detectChanges();
         const popoverContent = document.querySelector('.clr-popover-content');
-        expect(popoverContent.textContent.trim()).toMatch('Hello world');
+        expect(popoverContent.textContent.trim()).toMatch('Filter content');
       });
 
       it('opens and closes the dropdown when the toggle is clicked', function () {
@@ -218,7 +218,7 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       [clrDgFilterOpen]="open"
       (clrDgFilterOpenChange)="clrDgFilterOpenChangeFn($event)"
     >
-      Hello world
+      Filter content
     </clr-dg-filter>
   `,
   providers: [ClrPopoverEventsService, ClrPopoverPositionService],
