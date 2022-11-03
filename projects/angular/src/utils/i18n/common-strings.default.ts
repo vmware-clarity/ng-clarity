@@ -49,8 +49,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   singleSelectionAriaLabel: 'Single selection header',
   singleActionableAriaLabel: 'Single actionable header',
   detailExpandableAriaLabel: 'Toggle more row content',
-  datagridFilterAriaLabel: 'Filter dialog',
-  datagridFilterDialogAriaLabel: 'Toggle column filter',
+  datagridFilterAriaLabel: 'Toggle column filter',
+  datagridFilterDialogAriaLabel: 'Filter dialog',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
   // Alert
