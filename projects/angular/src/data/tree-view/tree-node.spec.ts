@@ -344,14 +344,14 @@ export default function (): void {
         this.clarityDirective.selected = ClrSelectedState.SELECTED;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('true');
-        expect(contentContainer.textContent.trim()).toBe('Hello world selected');
+        expect(contentContainer.textContent.trim().replace(/\s+/g, ' ')).toBe('Hello world selected');
       });
 
       it('adds the aria-selected attribute and screen reader text to unselected tree nodes', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('false');
-        expect(contentContainer.textContent.trim()).toBe('Hello world unselected');
+        expect(contentContainer.textContent.trim().replace(/\s+/g, ' ')).toBe('Hello world unselected');
       });
 
       it('does not add the aria-selected attribute or screen reader text to non-selectable tree nodes', function (this: Context) {
