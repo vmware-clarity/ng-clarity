@@ -10,7 +10,11 @@ import { Directive, ElementRef } from '@angular/core';
   selector: '.clr-treenode-link',
 })
 export class ClrTreeNodeLink {
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef<HTMLElement>) {}
+
+  get active() {
+    return this.el.nativeElement.classList.contains('active');
+  }
 
   activate() {
     if (this.el.nativeElement && this.el.nativeElement.click) {

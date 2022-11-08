@@ -37,6 +37,17 @@ class TestComponent {
   expandable: boolean | undefined;
 }
 
+@Component({
+  template: `
+    <clr-tree-node>
+      <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
+    </clr-tree-node>
+  `,
+})
+class LinkTestComponent {
+  active: boolean | undefined;
+}
+
 interface TsApiContext {
   node: ClrTreeNode<void>;
   parent: ClrTreeNode<void>;
@@ -487,6 +498,35 @@ export default function (): void {
         spyOn(focusManager, 'focusParent');
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
         expect(focusManager.focusParent).toHaveBeenCalledWith(this.clarityDirective._model);
+      });
+    });
+
+    describe('Ally with link nodes', function () {
+      type Context = TestContext<ClrTreeNode<void>, LinkTestComponent>;
+
+      spec(ClrTreeNode, LinkTestComponent, ClrTreeViewModule, {
+        imports: [NoopAnimationsModule, ClrIconModule],
+        providers: [TreeFocusManagerService],
+      });
+
+      let contentContainer: HTMLElement;
+
+      beforeEach(function () {
+        contentContainer = this.clarityElement.querySelector('.clr-tree-node-content-container');
+      });
+
+      it('adds the aria-selected attribute and screen reader text for active tree node links', function (this: Context) {
+        this.hostComponent.active = true;
+        this.detectChanges();
+        expect(contentContainer.getAttribute('aria-selected')).toBe('true');
+        expect(contentContainer.textContent.trim().replace(/\s+/g, ' ')).toBe('Hello world selected');
+      });
+
+      it('does not add the aria-selected attribute or screen reader text for inactive tree node links', function (this: Context) {
+        this.hostComponent.active = false;
+        this.detectChanges();
+        expect(contentContainer.getAttribute('aria-selected')).toBeNull();
+        expect(contentContainer.textContent.trim()).toBe('Hello world');
       });
     });
   });

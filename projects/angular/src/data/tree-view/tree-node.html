@@ -48,7 +48,7 @@
   </div>
   <div class="clr-treenode-content" (mousedown)="focusTreeNode()">
     <ng-content></ng-content>
-    <div class="clr-sr-only" *ngIf="featuresService.selectable">
+    <div class="clr-sr-only" *ngIf="featuresService.selectable || ariaSelected">
       <span *ngIf="ariaSelected"> selected</span>
       <span *ngIf="!ariaSelected"> unselected</span>
     </div>
