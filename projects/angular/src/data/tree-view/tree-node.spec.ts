@@ -340,22 +340,25 @@ export default function (): void {
         expect(contentContainer.getAttribute('role')).toBe('treeitem');
       });
 
-      it('adds the aria-selected attribute to selected tree nodes', function (this: Context) {
+      it('adds the aria-selected attribute and screen reader text to selected tree nodes', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.SELECTED;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('true');
+        expect(contentContainer.textContent.trim()).toBe('Hello world selected');
       });
 
-      it('adds the aria-selected attribute to unselected tree nodes', function (this: Context) {
+      it('adds the aria-selected attribute and screen reader text to unselected tree nodes', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('false');
+        expect(contentContainer.textContent.trim()).toBe('Hello world unselected');
       });
 
-      it('does not add the aria-selected attribute to non-selectable tree nodes', function (this: Context) {
+      it('does not add the aria-selected attribute or screen reader text to non-selectable tree nodes', function (this: Context) {
         this.getClarityProvider(TreeFeaturesService).selectable = false;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBeNull();
+        expect(contentContainer.textContent.trim()).toBe('Hello world');
       });
 
       it('focuses on node content container', function (this: Context) {
