@@ -340,11 +340,19 @@ export default function (): void {
         expect(contentContainer.getAttribute('role')).toBe('treeitem');
       });
 
-      it('adds the aria-selected attribute to all nodes when the tree is selectable', function (this: Context) {
-        expect(contentContainer.getAttribute('aria-selected')).toBe('false');
+      it('adds the aria-selected attribute to selected tree nodes', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.SELECTED;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBe('true');
+      });
+
+      it('adds the aria-selected attribute to unselected tree nodes', function (this: Context) {
+        this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
+        this.detectChanges();
+        expect(contentContainer.getAttribute('aria-selected')).toBe('false');
+      });
+
+      it('does not add the aria-selected attribute to non-selectable tree nodes', function (this: Context) {
         this.getClarityProvider(TreeFeaturesService).selectable = false;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBeNull();
