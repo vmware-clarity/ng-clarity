@@ -4515,9 +4515,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrTreeNodeLink {
-    constructor(el: ElementRef);
+    constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
     activate(): void;
+    // (undocumented)
+    get active(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never>;
     // (undocumented)

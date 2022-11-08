@@ -142,7 +142,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
 
   get ariaSelected(): boolean {
-    return this.isSelectable() ? this._model.selected.value === ClrSelectedState.SELECTED : null;
+    if (this.isSelectable()) {
+      return this._model.selected.value === ClrSelectedState.SELECTED;
+    } else if (this.treeNodeLink?.active) {
+      return true;
+    } else {
+      return null;
+    }
   }
 
   // Allows the consumer to override our logic deciding if a node is expandable.
