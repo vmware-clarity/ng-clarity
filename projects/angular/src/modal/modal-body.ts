@@ -59,7 +59,7 @@ export class ClrModalBody implements OnDestroy {
   private addOrRemoveTabIndex() {
     const modalBody = this.host.nativeElement.parentElement;
 
-    if (modalBody.clientHeight < modalBody.scrollHeight) {
+    if (modalBody && modalBody.clientHeight < modalBody.scrollHeight) {
       this.addTabIndex();
     } else {
       this.removeTabIndex();
