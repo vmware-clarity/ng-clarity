@@ -24,7 +24,7 @@ const COLLAPSED_STATE = 'collapsed';
   animations: [
     trigger('clrExpand', [
       state(EXPANDED_STATE, style({ height: '*' })),
-      state(COLLAPSED_STATE, style({ height: 0, 'overflow-y': 'hidden', visibility: 'hidden' })),
+      state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
       transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
     ]),
   ],
