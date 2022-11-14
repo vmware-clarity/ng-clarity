@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import 'utils/mixins.clarity';
+@import './utils/mixins.clarity';
 @import './properties.progress-bars';
 
 @include exports('progress-bars.clarity') {
