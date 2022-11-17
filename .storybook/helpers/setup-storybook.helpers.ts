@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Parameters } from '@storybook/addons';
 import { moduleMetadata, storiesOf, Story } from '@storybook/angular';
-import { NgLetModule } from 'ng-let';
 
 export function setupStorybook(
   ngModules: Type<any> | Type<any>[],
@@ -27,7 +26,6 @@ export function setupStorybook(
           BrowserAnimationsModule,
           FormsModule,
           ReactiveFormsModule,
-          NgLetModule,
           ...(Array.isArray(ngModules) ? ngModules : [ngModules]),
         ],
       })
@@ -47,11 +45,11 @@ export function setupStorybook(
 function combineStories(defaultStory: Story, variants: Parameters[]): Story {
   return (args, context) => ({
     template: variants
-      .map(variant => {
+      .map((variant, variantIndex) => {
         const story = defaultStory({ ...args, ...variant }, context);
 
         return Object.entries(variant).reduce(
-          (template, [key, value]) => wrapTemplate(template, { key, value }),
+          (template, [key, value]) => wrapTemplate(template, { key, value, variantIndex }),
           story.template
         );
       })
@@ -60,12 +58,18 @@ function combineStories(defaultStory: Story, variants: Parameters[]): Story {
   });
 }
 
-function wrapTemplate(template: string, { key, value }: { key: string; value: any }) {
+function wrapTemplate(
+  template: string,
+  { key, value, variantIndex }: { key: string; value: any; variantIndex: number }
+) {
+  const templateName = `${key}Template${variantIndex}`;
   const expression = typeof value === 'string' ? `'${value}'` : JSON.stringify(value);
 
   return `
-    <ng-container *ngLet="${expression}; let ${key}"}>
+    <ng-container *ngIf="${expression}; then ${templateName}; else ${templateName}"></ng-container>
+
+    <ng-template #${templateName} let-${key}>
       ${template}
-    </ng-container>
+    </ng-template>
   `;
 }
