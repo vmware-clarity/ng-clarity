@@ -84,12 +84,6 @@
               "browserTarget": "clr-demo:build:dark"
             }
           }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "clr-demo:build"
-          }
         }
       }
     },
