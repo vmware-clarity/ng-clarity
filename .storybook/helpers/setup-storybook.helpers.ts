@@ -63,5 +63,7 @@ function combineStories(defaultStory: Story, variants: Parameters[]): Story {
 }
 
 function ngLet({ key, value }: { key: string; value: any }) {
-  return `*ngLet="${typeof value === 'string' ? `'${value}'` : JSON.stringify(value)}; let ${key}"`;
+  const expression = typeof value === 'string' ? `'${value}'` : JSON.stringify(value);
+
+  return `*ngLet="${expression}; let ${key}"`;
 }
