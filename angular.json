@@ -5,7 +5,6 @@
   },
   "version": 1,
   "newProjectRoot": "projects",
-  "defaultProject": "clr-angular",
   "projects": {
     "clr-demo": {
       "projectType": "application",
