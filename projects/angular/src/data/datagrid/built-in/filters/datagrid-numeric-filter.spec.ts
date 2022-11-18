@@ -11,6 +11,7 @@ import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
 import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
+import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
 import { CustomFilter } from '../../providers/custom-filter';
@@ -127,8 +128,7 @@ export default function (): void {
       const input: HTMLInputElement = document.querySelector("input[type='number']");
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();
-      // The `requestAnimationFrame` is mocked through `setTimeout(fn, 16)`.
-      tick(16);
+      animationFrameTick();
       expect(input.focus).toHaveBeenCalled();
     }));
 
