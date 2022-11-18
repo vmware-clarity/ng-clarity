@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 
 import { NgControlService } from '../providers/ng-control.service';
@@ -29,16 +30,17 @@ export default function (): void {
       expect(() => service.triggerStatusChange()).not.toThrowError();
     });
 
-    it('provides observable for statusChanges, return valid when touched and no rules added', () => {
+    it('provides observable for statusChanges, return valid when touched and no rules added', fakeAsync(() => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       ngControlService.setControl(testControl);
       // Change the state of the input to trigger statusChange
       testControl.markAsTouched();
       testControl.updateValueAndValidity();
+      tick();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
       sub.unsubscribe();
-    });
+    }));
 
     it('should allow a manual trigger of status observable, return NONE', () => {
       const cb = jasmine.createSpy('cb');
@@ -91,7 +93,7 @@ export default function (): void {
       sub.unsubscribe();
     });
 
-    it('should return state INVALID', () => {
+    it('should return state INVALID', fakeAsync(() => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
@@ -107,11 +109,12 @@ export default function (): void {
       };
       ngControlService.setControl(fakeControl);
       service.triggerStatusChange();
+      tick();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.INVALID);
       sub.unsubscribe();
-    });
+    }));
 
-    it('should return state VALID', () => {
+    it('should return state VALID', fakeAsync(() => {
       const cb = jasmine.createSpy('cb');
       const sub = service.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
       const fakeControl = {
@@ -127,8 +130,9 @@ export default function (): void {
       };
       ngControlService.setControl(fakeControl);
       service.triggerStatusChange();
+      tick();
       expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
       sub.unsubscribe();
-    });
+    }));
   });
 }

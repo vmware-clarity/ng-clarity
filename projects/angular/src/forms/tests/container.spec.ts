@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { async, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -194,14 +194,15 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(container.controlClass()).not.toContain('clr-col-12');
     });
 
-    it('tracks the validity of the form control', () => {
+    it('tracks the validity of the form control', fakeAsync(() => {
       expect(container.showInvalid).toBeFalse();
       markControlService.markAsTouched();
       fixture.detectChanges();
+      tick();
       expect(container.showInvalid).toBeTrue();
-    });
+    }));
 
-    it('tracks the disabled state', async(() => {
+    it('tracks the disabled state', waitForAsync(() => {
       const test = fixture.debugElement.componentInstance;
       test.disabled = true;
       fixture.detectChanges();
