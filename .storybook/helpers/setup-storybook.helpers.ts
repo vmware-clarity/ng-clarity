@@ -48,22 +48,24 @@ function combineStories(defaultStory: Story, variants: Parameters[]): Story {
   return (args, context) => ({
     template: variants
       .map(variant => {
-        const containers = Object.entries(variant).map(([key, value]) => `<ng-container ${ngLet({ key, value })}>`);
-        const prefix = containers.join('');
-        const suffix = containers.map(() => '</ng-container>').join('');
-
         const story = defaultStory({ ...args, ...variant }, context);
-        const template = story.template;
 
-        return `${prefix}${template}${suffix}`;
+        return Object.entries(variant).reduce(
+          (template, [key, value]) => wrapTemplate(template, { key, value }),
+          story.template
+        );
       })
       .join('<br />'),
     props: { ...args },
   });
 }
 
-function ngLet({ key, value }: { key: string; value: any }) {
+function wrapTemplate(template: string, { key, value }: { key: string; value: any }) {
   const expression = typeof value === 'string' ? `'${value}'` : JSON.stringify(value);
 
-  return `*ngLet="${expression}; let ${key}"`;
+  return `
+    <ng-container *ngLet="${expression}; let ${key}"}>
+      ${template}
+    </ng-container>
+  `;
 }
