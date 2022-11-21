@@ -22,7 +22,6 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       [attr.aria-label]="
         openNavLevel !== responsiveNavCodes.NAV_LEVEL_1 ? commonStrings.keys.open : commonStrings.keys.close
       "
-      (click)="toggleNav(responsiveNavCodes.NAV_LEVEL_1)"
       [attr.aria-expanded]="openNavLevel === 1 ? 'true' : 'false'"
       (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
     >
