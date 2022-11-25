@@ -508,6 +508,11 @@
 
     .datagrid-select {
       min-width: $clr_baselineRem_0_375 - $clr-table-borderwidth; // This fixed an issue that made the cell too wide.
+      align-items: center;
+      .clr-checkbox-wrapper {
+        // compensate for the default checkbox margin, defined in its ::before section
+        margin-top: -1 * $clr_baselineRem_0_25;
+      }
     }
 
     .datagrid-signpost-trigger .signpost {
@@ -687,6 +692,7 @@
         display: flex;
         order: 99;
         margin-left: auto;
+        align-items: center;
       }
 
       .datagrid-filter-input-spacer {
