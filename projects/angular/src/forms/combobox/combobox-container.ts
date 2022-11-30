@@ -4,19 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ElementRef,
-  Optional,
-  ViewChild,
-} from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Optional, ViewChild } from '@angular/core';
 
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
-import { ClrLabel } from '../common/label';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -59,7 +50,6 @@ import { ComboboxContainerService } from './providers/combobox-container.service
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef;
-  @ContentChild(ClrLabel) override label: ClrLabel;
 
   constructor(
     ifControlStateService: IfControlStateService,

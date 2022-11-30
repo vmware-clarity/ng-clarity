@@ -838,13 +838,11 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     controlContainer: ElementRef;
     // (undocumented)
-    label: ClrLabel;
-    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, ["label"], ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [null, { optional: true; }, null, null, null, null]>;
 }
