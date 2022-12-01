@@ -1,12 +1,12 @@
 {
   "extends": "../projects/angular/tsconfig.lib.json",
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
       "@clr/angular": ["./../projects/angular/src/public-api.ts"]
     },
-    "types": ["node"],
-    "allowSyntheticDefaultImports": true
+    "types": ["node"]
   },
   "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
   "include": ["./stories/**/*.stories.ts"],
