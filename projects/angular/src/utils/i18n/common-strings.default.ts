@@ -24,7 +24,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   warning: 'Warning',
   danger: 'Error',
   rowActions: 'Available actions',
-  pickColumns: 'Show or hide columns',
+  pickColumns: 'Manage Columns',
   showColumns: 'Show Columns',
   sortColumn: 'Sort Column',
   firstPage: 'First Page',

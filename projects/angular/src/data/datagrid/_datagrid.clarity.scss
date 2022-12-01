@@ -1207,31 +1207,71 @@
       display: flex;
       align-items: center;
 
-      &.active {
-        .column-toggle--action {
-          cds-icon,
-          clr-icon {
-            @include css-var(color, clr-color-action-600, $clr-color-action-600, $clr-use-custom-properties);
-          }
-        }
-      }
-
       .column-toggle--action {
         // I'm overriding .btn/.btn-link here but am not confident this is the correct way to do it.
         min-width: $clr_baselineRem_0_75;
-        padding-left: 0;
-        padding-right: 0;
-
-        cds-icon,
-        clr-icon {
-          @include css-var(color, clr-color-neutral-600, $clr-color-neutral-600, $clr-use-custom-properties);
-        }
+        padding-left: $clr_baselineRem_6px;
+        padding-right: $clr_baselineRem_6px;
+        text-transform: capitalize;
+        @include css-var(
+          border-color,
+          clr-datagrid-column-toggle-border-color,
+          $clr-datagrid-column-toggle-border-color,
+          $clr-use-custom-properties
+        );
+        @include css-var(
+          background-color,
+          clr-datagrid-column-toggle-fill-color,
+          $clr-datagrid-column-toggle-fill-color,
+          $clr-use-custom-properties
+        );
+        @include css-var(
+          color,
+          clr-datagrid-column-toggle-text-color,
+          $clr-datagrid-column-toggle-text-color,
+          $clr-use-custom-properties
+        );
 
         &:hover {
-          cds-icon,
-          clr-icon {
-            @include css-var(color, clr-color-action-600, $clr-color-action-600, $clr-use-custom-properties);
-          }
+          @include css-var(
+            border-color,
+            clr-datagrid-column-toggle-border-hover-color,
+            $clr-datagrid-column-toggle-border-hover-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            background-color,
+            clr-datagrid-column-toggle-fill-hover-color,
+            $clr-datagrid-column-toggle-fill-hover-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            color,
+            clr-datagrid-column-toggle-text-hover-color,
+            $clr-datagrid-column-toggle-text-hover-color,
+            $clr-use-custom-properties
+          );
+        }
+        &:active {
+          box-shadow: none;
+          @include css-var(
+            border-color,
+            clr-datagrid-column-toggle-border-active-color,
+            $clr-datagrid-column-toggle-border-active-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            background-color,
+            clr-datagrid-column-toggle-fill-active-color,
+            $clr-datagrid-column-toggle-fill-active-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            color,
+            clr-datagrid-column-toggle-text-active-color,
+            $clr-datagrid-column-toggle-text-active-color,
+            $clr-use-custom-properties
+          );
         }
       }
 
