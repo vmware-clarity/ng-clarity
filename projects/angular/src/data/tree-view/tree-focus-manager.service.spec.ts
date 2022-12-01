@@ -10,7 +10,6 @@ import { TreeNodeModel } from './models/tree-node.model';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 
 class TreeNodeModelMock extends TreeNodeModel<void> {
-  nodeId: string;
   parent: TreeNodeModel<void> | null;
   children: TreeNodeModel<void>[];
   expanded = false;
