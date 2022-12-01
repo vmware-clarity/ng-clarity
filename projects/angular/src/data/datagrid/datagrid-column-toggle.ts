@@ -28,15 +28,14 @@ import { ColumnsService } from './providers/columns.service';
     <button
       role="button"
       type="button"
-      class="btn btn-sm btn-link column-toggle--action"
+      class="btn btn-sm column-toggle--action"
       clrPopoverAnchor
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-owns]="popoverId"
       [attr.aria-expanded]="openState"
     >
-      <cds-icon shape="view-columns" aria-hidden="true" [attr.title]="commonStrings.keys.pickColumns"></cds-icon>
-      <span class="clr-sr-only">{{ commonStrings.keys.pickColumns }}</span>
+      {{ commonStrings.keys.pickColumns }}
     </button>
     <div
       class="column-switch"
