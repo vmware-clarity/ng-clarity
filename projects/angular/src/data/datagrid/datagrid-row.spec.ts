@@ -98,7 +98,7 @@ export default function (): void {
         TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
-      it('should toggle when clrDgSelectable is false for type  SelectionType.Multi', () => {
+      it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
@@ -146,7 +146,7 @@ export default function (): void {
         expect(radio.getAttribute('aria-label')).toBeString('uniq aria-label');
       }));
 
-      it('should toggle when clrDgSelectable is false for type  SelectionType.Multi', () => {
+      it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
