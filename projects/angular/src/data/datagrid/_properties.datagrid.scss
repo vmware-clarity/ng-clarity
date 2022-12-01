@@ -39,6 +39,16 @@
       --clr-datagrid-placeholder-font-size: #{$clr-h5-font-size};
 
       --clr-datagrid-pagination-btn-disabled-opacity: #{$clr-datagrid-pagination-btn-disabled-opacity};
+
+      --clr-datagrid-column-toggle-border-color: var(--clr-color-neutral-600);
+      --clr-datagrid-column-toggle-fill-color: var(--clr-color-neutral-50);
+      --clr-datagrid-column-toggle-text-color: var(--clr-color-neutral-700);
+      --clr-datagrid-column-toggle-border-hover-color: var(--clr-color-neutral-700);
+      --clr-datagrid-column-toggle-fill-hover-color: var(--clr-color-neutral-0);
+      --clr-datagrid-column-toggle-text-hover-color: var(--clr-color-neutral-1000);
+      --clr-datagrid-column-toggle-border-active-color: var(--clr-color-neutral-700);
+      --clr-datagrid-column-toggle-fill-active-color: var(--clr-color-neutral-100);
+      --clr-datagrid-column-toggle-text-active-color: var(--clr-color-neutral-700);
     }
   }
 }
