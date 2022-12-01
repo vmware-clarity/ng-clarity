@@ -3,23 +3,23 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": {
-      "@clr/angular": ["./../angular/src/public-api.ts"]
-    },
-    "outDir": "./dist/out-tsc",
-    "forceConsistentCasingInFileNames": true,
-    "strict": false, // TURN BACK ON
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "target": "es2015",
+    "lib": ["es2018", "dom"],
     "module": "es2020",
-    "lib": ["es2018", "dom"]
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "outDir": "./dist/out-tsc",
+    "paths": {
+      "@clr/angular": ["./../angular/src/public-api.ts"]
+    },
+    "sourceMap": true,
+    "strict": false, // TURN BACK ON
+    "target": "es2015"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
