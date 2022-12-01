@@ -100,6 +100,7 @@ export default function (): void {
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
+        context.detectChanges();
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
@@ -148,6 +149,7 @@ export default function (): void {
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
+        context.detectChanges();
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
