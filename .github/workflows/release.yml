@@ -9,6 +9,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check if main is merged
+        run: |
+          git log HEAD..origin/main
+          [[ "$(git rev-parse --abbrev-ref HEAD)" != "beta" || "$(git log HEAD..origin/main)" == "" ]] || exit 1
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
