@@ -24,7 +24,7 @@
     "start": "npm run clean && npm-run-all --parallel docs:json:watch _build:ui:css:watch _start:storybook",
     "start:demo": "npm run clean && ng serve clr-demo",
     "test": "ng test clr-angular --source-map=false --watch=false",
-    "test:watch": "npm run --silent test -- --watch",
+    "test:watch": "ng test clr-angular --source-map=false --watch",
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/docs",
