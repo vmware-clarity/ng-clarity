@@ -230,7 +230,6 @@ export interface ClrCommonStrings {
   responsiveNavOverflowClose: string;
   // Vertical Nav
   verticalNavToggle: string;
-  verticalNavGroupToggle: string;
   /**
    * Timeline Steps
    */

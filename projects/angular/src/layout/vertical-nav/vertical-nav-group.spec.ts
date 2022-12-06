@@ -150,36 +150,6 @@ export default function (): void {
       });
     });
 
-    describe('Nav Group Internals with clrVerticalNavGroupLabel', () => {
-      let navGroup: ClrVerticalNavGroup;
-      let toggleBtn: HTMLButtonElement;
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(IfExpandedTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        navGroup = fixture.componentInstance.navGroup;
-        toggleBtn = compiled.querySelector('.nav-group-trigger');
-      });
-
-      afterEach(() => {
-        fixture.destroy();
-      });
-
-      it('defaults aria-label of nav group toggle button to common strings', () => {
-        expect(toggleBtn.hasAttribute('aria-label')).toBe(true);
-        expect(toggleBtn.getAttribute('aria-label')).toBe(navGroup.commonStrings.keys.verticalNavGroupToggle);
-      });
-
-      it('overrides default aria-label if clrVerticalNavGroup is set', fakeAsync(function () {
-        navGroup.groupLabel = 'ohai';
-        fixture.detectChanges();
-        tick();
-        expect(toggleBtn.hasAttribute('aria-label')).toBe(true);
-        expect(toggleBtn.getAttribute('aria-label')).toBe('ohai');
-      }));
-    });
-
     describe('Template API', () => {
       let navGroup: ClrVerticalNavGroup;
       let expandService: IfExpandService;

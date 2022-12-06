@@ -27,10 +27,7 @@
     <div class="content-container partial-nested-icon-menu">
       <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
         <ng-container *ngFor="let item of case.items">
-          <clr-vertical-nav-group
-            *ngIf="item['children']"
-            [clrVerticalNavGroupLabel]="'Toggle ' + item.label.toLowerCase() + ' nav group'"
-          >
+          <clr-vertical-nav-group *ngIf="item['children']">
             <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
             {{item.label}}
             <clr-vertical-nav-group-children *clrIfExpanded>

@@ -39,10 +39,7 @@
           </a>
 
           <ng-container *ngIf="item['children']">
-            <clr-vertical-nav-group
-              *ngIf="item['children']"
-              [clrVerticalNavGroupLabel]="'Toggle ' + item.label.toLowerCase() + ' nav group'"
-            >
+            <clr-vertical-nav-group *ngIf="item['children']">
               <a
                 href="javascript://"
                 clrVerticalNavLink

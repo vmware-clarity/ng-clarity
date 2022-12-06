@@ -980,8 +980,6 @@ export interface ClrCommonStrings {
     timelineStepSuccess: string;
     totalPages: string;
     // (undocumented)
-    verticalNavGroupToggle: string;
-    // (undocumented)
     verticalNavToggle: string;
     warning: string;
     wizardStepError: string;
@@ -4203,8 +4201,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // (undocumented)
     expandGroup(): void;
     // (undocumented)
-    groupLabel: string;
-    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
@@ -4213,7 +4209,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // (undocumented)
     set userExpandedInput(value: boolean | string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "groupLabel": "clrVerticalNavGroupLabel"; "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": "clrVerticalNavGroupExpanded"; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
 }
