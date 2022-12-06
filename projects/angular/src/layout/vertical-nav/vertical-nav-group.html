@@ -6,13 +6,7 @@
 
 <div class="nav-group-content">
   <ng-content select="[clrVerticalNavLink]"></ng-content>
-  <button
-    class="nav-group-trigger"
-    type="button"
-    [attr.aria-expanded]="expanded"
-    [attr.aria-label]="groupLabel"
-    (click)="toggleExpand()"
-  >
+  <button class="nav-group-trigger" type="button" [attr.aria-expanded]="expanded" (click)="toggleExpand()">
     <ng-content select="[clrVerticalNavIcon]"></ng-content>
     <div class="nav-group-text">
       <ng-content></ng-content>

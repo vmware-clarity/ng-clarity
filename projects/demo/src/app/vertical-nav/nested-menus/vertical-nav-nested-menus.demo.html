@@ -28,10 +28,7 @@
     <div class="content-container nested-menus-text">
       <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
         <ng-container *ngFor="let item of case.items">
-          <clr-vertical-nav-group
-            *ngIf="item['children']"
-            [clrVerticalNavGroupLabel]="'Toggle ' + item.label.toLowerCase() + ' nav group'"
-          >
+          <clr-vertical-nav-group *ngIf="item['children']">
             <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
             {{item.label}}
 
@@ -85,10 +82,7 @@
     <div class="content-container nested-menus-links">
       <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
         <ng-container *ngFor="let item of case.items">
-          <clr-vertical-nav-group
-            *ngIf="item['children']"
-            [clrVerticalNavGroupLabel]="'Toggle ' + item.label.toLowerCase() + ' nav group'"
-          >
+          <clr-vertical-nav-group *ngIf="item['children']">
             <a href="javascript://" clrVerticalNavLink>
               <cds-icon [attr.shape]="item.icon" *ngIf="item['icon']" clrVerticalNavIcon></cds-icon>
               {{item.label}}

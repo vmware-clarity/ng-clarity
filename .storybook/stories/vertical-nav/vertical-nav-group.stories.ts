@@ -27,7 +27,6 @@ const defaultStory: Story = args => ({
     <div class="main-container">
       <clr-vertical-nav [clrVerticalNavCollapsible]="true">
         <clr-vertical-nav-group
-          [clrVerticalNavGroupLabel]="clrVerticalNavGroupLabel"
           [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
           (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
         >
@@ -56,7 +55,6 @@ const defaultParameters: Parameters = {
   component: ClrVerticalNavGroup,
   argTypes: {
     // inputs
-    clrVerticalNavGroupLabel: { defaultValue: 'Toggle vertical navigation group', control: { type: 'text' } },
     clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
