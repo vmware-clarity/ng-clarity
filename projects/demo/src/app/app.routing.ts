@@ -45,10 +45,6 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./datalist/datalist.demo.module').then(m => m.DatalistDemoModule),
   },
   {
-    path: 'drag-and-drop',
-    loadChildren: () => import('./drag-and-drop/drag-and-drop.demo.module').then(m => m.DragAndDropDemoModule),
-  },
-  {
     path: 'datepicker',
     loadChildren: () => import('./datepicker/datepicker.demo.module').then(m => m.DatepickerDemoModule),
   },
