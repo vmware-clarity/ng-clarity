@@ -24,11 +24,11 @@ const KEYBOARD_RESIZE_LENGTH = 12;
       class="datagrid-column-handle"
       [attr.aria-label]="commonString.keys.columnSeparatorAriaLabel"
       [attr.aria-describedby]="descriptionId"
-      clrDraggable
-      [clrGroup]="columnSeparatorId"
-      (clrDragStart)="showTracker()"
-      (clrDragMove)="moveTracker($event.dragPosition.moveX)"
-      (clrDragEnd)="hideTracker()"
+      cdkDrag
+      cdkDragLockAxis="x"
+      (cdkDragStarted)="showTracker()"
+      (cdkDragMoved)="moveTracker($event.distance.x)"
+      (cdkDragEnded)="hideTracker(); $event.source._dragRef.reset()"
       #columnHandle
     ></button>
     <span class="clr-sr-only" [attr.id]="descriptionId">
@@ -61,8 +61,6 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
   private unlisteners: (() => void)[] = [];
 
-  // Every column draggable separator should have its own unique ID
-  // in order to not conflict with other draggables/droppables.
   constructor(
     private columnResizerService: ColumnResizerService,
     private renderer: Renderer2,
@@ -110,6 +108,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     this.columnResizerService.endResize();
     this.renderer.setStyle(this.resizeTrackerEl, 'display', 'none');
     this.renderer.setStyle(this.resizeTrackerEl, 'transform', `translateX(0px)`);
+    this.renderer.setStyle(this.columnHandleEl, 'transform', `translateX(0px)`);
     this.renderer.setStyle(this.document.body, 'cursor', 'auto');
   }
 
@@ -123,8 +122,10 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
   private moveTrackerOnKeyDown(event: KeyboardEvent): void {
     if (this.isArrowLeftKeyEvent(event)) {
+      event.stopPropagation();
       this.moveTracker(this.columnResizerService.resizedBy - KEYBOARD_RESIZE_LENGTH);
     } else if (this.isArrowRightKeyEvent(event)) {
+      event.stopPropagation();
       this.moveTracker(this.columnResizerService.resizedBy + KEYBOARD_RESIZE_LENGTH);
     }
   }

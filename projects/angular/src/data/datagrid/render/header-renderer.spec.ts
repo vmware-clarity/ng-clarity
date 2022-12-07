@@ -10,10 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '../../../utils/dom-adapter/dom-adapter.mock';
-import { ClrDragEvent } from '../../../utils/drag-and-drop/drag-event';
-import { ClrDraggable } from '../../../utils/drag-and-drop/draggable/draggable';
-import { DragEventType } from '../../../utils/drag-and-drop/interfaces/drag-event.interface';
 import { ClrDatagrid } from '../datagrid';
+import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { TestContext } from '../helpers.spec';
@@ -165,21 +163,15 @@ export default function (): void {
     let columnHeader2ResizerService: ColumnResizerService;
     let columnHeader3ResizerService: ColumnResizerService;
     let columnHeader4ResizerService: ColumnResizerService;
-    let columnHeader1DraggableDebugElement: DebugElement;
-    let columnHeader3DraggableDebugElement: DebugElement;
-    let columnHeader1DraggableDirective: ClrDraggable<any>;
-    let columnHeader3DraggableDirective: ClrDraggable<any>;
+    let columnHeader1ColumnSeparatorDebugElement: DebugElement;
+    let columnHeader3ColumnSeparatorDebugElement: DebugElement;
     const widthOf = (el: HTMLElement): number => {
       return Math.round(el.getBoundingClientRect().width);
     };
-    const emulateResizeOnColumn = (moveX: number, columnDraggable: ClrDraggable<any>): void => {
-      const moveEvent = new ClrDragEvent({
-        type: DragEventType.DRAG_MOVE,
-        dragPosition: { pageX: 0, pageY: 0, moveX: moveX, moveY: 0 },
-      });
-      columnDraggable.dragStartEmitter.emit();
-      columnDraggable.dragMoveEmitter.emit(moveEvent);
-      columnDraggable.dragEndEmitter.emit();
+    const emulateResizeOnColumn = (moveX: number, columnSeparator: ClrDatagridColumnSeparator): void => {
+      columnSeparator.showTracker();
+      columnSeparator.moveTracker(moveX);
+      columnSeparator.hideTracker();
     };
 
     beforeEach(function () {
@@ -200,10 +192,12 @@ export default function (): void {
       column2InitialWidth = widthOf(columnHeader2Element);
       column3InitialWidth = widthOf(columnHeader3Element);
       column4InitialWidth = widthOf(columnHeader4Element);
-      columnHeader1DraggableDebugElement = context.fixture.debugElement.queryAll(By.directive(ClrDraggable))[0];
-      columnHeader3DraggableDebugElement = context.fixture.debugElement.queryAll(By.directive(ClrDraggable))[2];
-      columnHeader1DraggableDirective = columnHeader1DraggableDebugElement.injector.get(ClrDraggable);
-      columnHeader3DraggableDirective = columnHeader3DraggableDebugElement.injector.get(ClrDraggable);
+      columnHeader1ColumnSeparatorDebugElement = context.fixture.debugElement.queryAll(
+        By.directive(ClrDatagridColumnSeparator)
+      )[0];
+      columnHeader3ColumnSeparatorDebugElement = context.fixture.debugElement.queryAll(
+        By.directive(ClrDatagridColumnSeparator)
+      )[2];
     });
 
     it('each header should have min-width', function () {
@@ -229,7 +223,7 @@ export default function (): void {
 
     it('expands other flexible headers if header width shrinks', function () {
       const resizeBy = -20;
-      emulateResizeOnColumn(resizeBy, columnHeader1DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBeGreaterThan(column2InitialWidth);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -242,13 +236,13 @@ export default function (): void {
     it('resized header should have fixed width class', function () {
       expect(columnHeader1Element.classList.contains(STRICT_WIDTH_CLASS)).toBeFalse();
       const resizeBy = -20;
-      emulateResizeOnColumn(resizeBy, columnHeader1DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(columnHeader1Element.classList.contains(STRICT_WIDTH_CLASS)).toBeTrue();
     });
 
     it('shrinks other flexible headers if header width expands', function () {
       const resizeBy = 20;
-      emulateResizeOnColumn(resizeBy, columnHeader1DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBeLessThan(column2InitialWidth);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -260,7 +254,7 @@ export default function (): void {
 
     it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", function () {
       const resizeBy = 1000;
-      emulateResizeOnColumn(resizeBy, columnHeader1DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBe(120);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -272,14 +266,14 @@ export default function (): void {
 
     it('gives header its min-width if a user tried to drag too much to left', function () {
       const resizeBy = -1000;
-      emulateResizeOnColumn(resizeBy, columnHeader1DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
       expect(widthOf(columnHeader1Element)).toBe(96);
     });
 
     it('emits new header width once resizing ends', function () {
       expect(context.testComponent.newWidth).toBeUndefined();
       const resizeBy = 20;
-      emulateResizeOnColumn(resizeBy, columnHeader3DraggableDirective);
+      emulateResizeOnColumn(resizeBy, columnHeader3ColumnSeparatorDebugElement.componentInstance);
       expect(context.testComponent.newWidth).toBe(column3InitialWidth + resizeBy);
     });
   });
