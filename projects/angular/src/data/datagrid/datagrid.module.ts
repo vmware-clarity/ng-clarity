@@ -24,8 +24,8 @@ import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
+import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrDragAndDropModule } from '../../utils/drag-and-drop/drag-and-drop.module';
 import { ClrFocusTrapModule } from '../../utils/focus-trap/focus-trap.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
@@ -118,6 +118,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
 @NgModule({
   imports: [
     CommonModule,
+    CdkDragModule,
     ClrIconModule,
     ClrFormsModule,
     FormsModule,
@@ -125,7 +126,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
     ClrConditionalModule,
     ClrOutsideClickModule,
     ClrExpandableAnimationModule,
-    ClrDragAndDropModule,
     ClrSpinnerModule,
     ClrPopoverModuleNext,
     ClrKeyFocusModule,

@@ -54,6 +54,7 @@
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
     "@angular-devkit/build-angular": "15.0.2",
     "@angular/animations": "15.0.2",
+    "@angular/cdk": "15.0.2",
     "@angular/cli": "15.0.2",
     "@angular/common": "15.0.2",
     "@angular/compiler": "15.0.2",
