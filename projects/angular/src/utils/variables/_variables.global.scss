@@ -260,7 +260,6 @@ $clr-close-color--hover-opacity: 0.5 !default;
 $clr-popover-box-shadow-color: rgba(140, 140, 140, 0.25) !default;
 
 // All z-indexes should come from here, to have a centralized file to reorganize them if needed
-// draggable-ghost is maximum possible value for z-index across all browsers
 $clr-layers: (
   content: 0,
   select-box: 2,
@@ -278,5 +277,4 @@ $clr-layers: (
   column-switch: 1050,
   tooltips: 1050,
   smart-popover: 1050,
-  draggable-ghost: 2147483647,
 ) !default;
