@@ -81,20 +81,6 @@ describe('ClrStep Reactive Forms', () => {
       expect(stepperPanelElement.classList.contains('clr-accordion-panel')).toBe(true);
     });
 
-    it('should show the appropriate aria-live message based on form state', () => {
-      const mockStep = new AccordionPanelModel('groupName', 0);
-      const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
-      let liveSection: HTMLElement = fixture.nativeElement.querySelector('[aria-live="assertive"]');
-      expect(liveSection).toBe(null);
-
-      mockStep.status = AccordionStatus.Error;
-      (stepperService as MockStepperService).step.next(mockStep);
-      fixture.detectChanges();
-      liveSection = fixture.nativeElement.querySelector('[aria-live="assertive"]');
-      expect(liveSection).toBeTruthy();
-      expect(liveSection.innerText.trim()).toBe('Error');
-    });
-
     it('should show appropriate screen reader only status in button based on form state', () => {
       const mockStep = new AccordionPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
