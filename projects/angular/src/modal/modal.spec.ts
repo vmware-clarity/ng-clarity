@@ -254,9 +254,9 @@ describe('Modal', () => {
 
   it('traps user focus', () => {
     fixture.detectChanges();
-    const focusable = fixture.debugElement.query(By.directive(FocusTrapDirective));
+    const focusTrap = fixture.debugElement.query(By.directive(FocusTrapDirective));
 
-    expect(focusable).toBeTruthy();
+    expect(focusTrap).toBeTruthy();
   });
 
   it('close button should have default aria-label', () => {
