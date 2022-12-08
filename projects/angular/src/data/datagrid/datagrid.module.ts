@@ -25,8 +25,8 @@ import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
+import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
-import { ClrFocusTrapModule } from '../../utils/focus-trap/focus-trap.module';
 import { ClrFocusOnViewInitModule } from '../../utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrKeyFocusModule } from '../../utils/focus/key-focus/key-focus.module';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
@@ -119,6 +119,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   imports: [
     CommonModule,
     CdkDragModule,
+    CdkTrapFocusModule,
     ClrIconModule,
     ClrFormsModule,
     FormsModule,
@@ -129,7 +130,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
     ClrSpinnerModule,
     ClrPopoverModuleNext,
     ClrKeyFocusModule,
-    ClrFocusTrapModule,
     ClrFocusOnViewInitModule,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES],

@@ -57,7 +57,7 @@ let clrDgActionId = 0;
       [attr.aria-hidden]="!open"
       [attr.id]="popoverId"
       clrKeyFocus
-      clrFocusTrap
+      cdkTrapFocus
       (click)="closeOverflowContent($event)"
       *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
     >

@@ -10,8 +10,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
-import { ClrFocusTrapModule } from '../utils/focus-trap/focus-trap.module';
+import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
@@ -70,7 +69,7 @@ describe('Modal', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrModalModule, NoopAnimationsModule, ClrFocusTrapModule],
+      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -254,7 +253,7 @@ describe('Modal', () => {
 
   it('traps user focus', () => {
     fixture.detectChanges();
-    const focusTrap = fixture.debugElement.query(By.directive(FocusTrapDirective));
+    const focusTrap = fixture.debugElement.query(By.directive(CdkTrapFocusModule_CdkTrapFocus));
 
     expect(focusTrap).toBeTruthy();
   });

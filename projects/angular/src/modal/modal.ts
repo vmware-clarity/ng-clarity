@@ -15,10 +15,8 @@ import {
   OnDestroy,
   Output,
   SimpleChange,
-  ViewChild,
 } from '@angular/core';
 
-import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
@@ -50,8 +48,6 @@ import { ScrollingService } from '../utils/scrolling/scrolling-service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
-
-  @ViewChild(FocusTrapDirective) focusTrap: FocusTrapDirective;
 
   @HostBinding('class.open')
   @Input('clrModalOpen')
@@ -104,8 +100,6 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
-    // SPECME
-    this.focusTrap.setPreviousFocus(); // Handles moving focus back to the element that had it before.
   }
 
   fadeDone(e: AnimationEvent) {

@@ -35,7 +35,7 @@ This is what it looks like from the implementing component perspective:
 <div
   [id]="popoverId"
   role="dialog"
-  clrFocusTrap
+  cdkTrapFocus
   *clrPopoverContent="openState at contentPosition; outsideClickToClose: true; scrollToClose: true"
 >
   <header class="header-4" role="heading">

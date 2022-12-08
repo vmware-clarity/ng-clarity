@@ -42,7 +42,7 @@ import { ColumnsService } from './providers/columns.service';
       role="dialog"
       [attr.aria-label]="commonStrings.keys.showColumnsMenuDescription"
       [id]="popoverId"
-      clrFocusTrap
+      cdkTrapFocus
       *clrPopoverContent="openState; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
     >
       <div class="switch-header">
