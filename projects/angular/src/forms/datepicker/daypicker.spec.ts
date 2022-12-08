@@ -138,9 +138,7 @@ export default function () {
       });
 
       it('should have text based boundaries for screen readers', () => {
-        const srOnlyElements: HTMLDivElement[] = context.clarityElement.querySelectorAll(
-          '.clr-sr-only:not([aria-live])'
-        );
+        const srOnlyElements: HTMLDivElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
 
         expect(srOnlyElements[0].innerText).toBe('Beginning of Modal Content');
         expect(srOnlyElements[1].innerText).toBe('End of Modal Content');
