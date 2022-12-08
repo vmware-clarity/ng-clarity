@@ -19,7 +19,6 @@ import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.modu
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
 import { ClrTimelineModule } from './timeline/timeline.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
-import { ClrFocusTrapModule } from './utils/focus-trap/focus-trap.module';
 import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrForTypeAheadModule } from './utils/for-type-ahead/for-type-ahead.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
@@ -37,7 +36,6 @@ import '@cds/core/icon/register';
     ClrModalModule,
     ClrLoadingModule,
     ClrConditionalModule,
-    ClrFocusTrapModule,
     ClrFocusOnViewInitModule,
     ClrForTypeAheadModule,
     ClrButtonModule,
