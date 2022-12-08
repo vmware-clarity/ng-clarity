@@ -49,7 +49,7 @@ import { ViewManagerService } from './providers/view-manager.service';
           </button>
           <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
-            clrFocusTrap
+            cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
         <cds-icon

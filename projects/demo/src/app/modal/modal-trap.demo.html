@@ -6,7 +6,7 @@
 
 <p>
   For accessibility purposes, you may want to trap user focus to within the modal. You can use the
-  <code>clrFocusTrap</code> directive to keep the user tabbing from within the modal. This is not needed when using the
+  <code>cdkTrapFocus</code> directive to keep the user tabbing from within the modal. This is not needed when using the
   <code>clr-modal</code> component because the component includes this by default.
 </p>
 
@@ -14,7 +14,7 @@
   <div class="backdrop-example-container">
     <div class="modal static">
       <div class="modal-dialog" role="dialog" aria-hidden="true">
-        <div clrFocusTrap class="modal-content">
+        <div cdkTrapFocus class="modal-content">
           <div class="modal-header">
             <button aria-label="Close" class="close" type="button">
               <cds-icon aria-hidden="true" shape="window-close"></cds-icon>

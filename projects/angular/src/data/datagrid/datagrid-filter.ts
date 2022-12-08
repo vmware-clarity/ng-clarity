@@ -63,7 +63,7 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
     <div
       class="datagrid-filter"
       [id]="popoverId"
-      clrFocusTrap
+      cdkTrapFocus
       *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
       role="dialog"
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"

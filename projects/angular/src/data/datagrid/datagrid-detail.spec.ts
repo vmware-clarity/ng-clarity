@@ -65,13 +65,13 @@ export default function (): void {
       }));
 
       it('conditionally enables focus trap when opened', () => {
-        expect(context.clarityElement.innerHTML).not.toContain('clrfocustrap');
+        expect(context.clarityElement.innerHTML).not.toContain('cdkfocustrap');
         detailService.open({});
         context.detectChanges();
-        expect(context.clarityElement.innerHTML).toContain('clrfocustrap');
+        expect(context.clarityElement.innerHTML).toContain('cdkfocustrap');
         detailService.close();
         context.detectChanges();
-        expect(context.clarityElement.innerHTML).not.toContain('clrfocustrap');
+        expect(context.clarityElement.innerHTML).not.toContain('cdkfocustrap');
       });
 
       it('should have text based boundaries for screen readers', () => {

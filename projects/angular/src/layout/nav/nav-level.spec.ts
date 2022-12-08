@@ -85,6 +85,11 @@ describe('NavLevelDirective', function () {
     expect(this.clarityDirective.isOpen).toBe(false);
   });
 
+  it('should disable focus trap by default', function () {
+    const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
+    expect(cdkTrapFocus.enabled).toBe(false);
+  });
+
   describe('ResponsiveNavLevel intergration:', function () {
     it('#registers nav on init. sends the registration code on registerNavSubject in the service', function () {
       const service = new ResponsiveNavigationService();
@@ -140,10 +145,10 @@ describe('NavLevelDirective', function () {
         expect(this.clarityDirective.showNavigation).toHaveBeenCalled();
       });
 
-      it('should call enableFocusTrap()', function () {
-        spyOn(this.clarityDirective, 'enableFocusTrap');
+      it('should enable focus trap', function () {
+        const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
         this.clarityDirective.open();
-        expect(this.clarityDirective.enableFocusTrap).toHaveBeenCalled();
+        expect(cdkTrapFocus.enabled).toBe(true);
       });
 
       it('should call showCloseButton()', function () {
@@ -170,9 +175,9 @@ describe('NavLevelDirective', function () {
       });
 
       it('should call removeFocusTrap()', function () {
-        const spy = spyOn(this.clarityDirective, 'removeFocusTrap');
+        const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
         this.clarityDirective.close();
-        expect(spy).toHaveBeenCalled();
+        expect(cdkTrapFocus.enabled).toBeFalse();
       });
 
       it('should call hideCloseButton()', function () {
@@ -203,3 +208,7 @@ describe('NavLevelDirective', function () {
     });
   });
 });
+
+function getCdkTrapFocus(clrNavLevel: ClrNavLevel) {
+  return (clrNavLevel as any).cdkTrapFocus;
+}

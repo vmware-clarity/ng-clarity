@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Directive,
@@ -21,9 +22,9 @@ import { filter } from 'rxjs/operators';
 
 import { commonStringsDefault } from '../../utils';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
-import { FocusTrap, FocusTrapElement } from '../../utils/focus-trap/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+
 import '@cds/core/internal-components/close-button/register.js';
 
 const createCdsCloseButton = (document: Document, ariaLabel: string) => {
@@ -41,9 +42,15 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
 };
 
 @Directive({
-  selector: '[clr-nav-level]',
+  standalone: true,
 })
-export class ClrNavLevel extends FocusTrap implements OnInit {
+class StandaloneCdkTrapFocus extends CdkTrapFocus {}
+
+@Directive({
+  selector: '[clr-nav-level]',
+  hostDirectives: [StandaloneCdkTrapFocus],
+})
+export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;
   @Input('closeAriaLabel')
   closeButtonAriaLabel: string;
@@ -51,16 +58,16 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
   private _subscription: Subscription;
 
   private _isOpen = false;
+  private _document: Document;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,
+    private cdkTrapFocus: StandaloneCdkTrapFocus,
     private responsiveNavService: ResponsiveNavigationService,
-    private elementRef: ElementRef<FocusTrapElement>,
-    renderer: Renderer2,
+    private elementRef: ElementRef<HTMLElement>,
+    private renderer: Renderer2,
     injector: Injector
   ) {
-    super(renderer, injector, platformId, elementRef.nativeElement);
-
     if (isPlatformBrowser(platformId)) {
       this._document = injector.get(DOCUMENT);
     }
@@ -91,6 +98,8 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
   }
 
   ngOnInit() {
+    this.cdkTrapFocus.enabled = false;
+
     if (!this.closeButtonAriaLabel) {
       this.closeButtonAriaLabel =
         this._level === ResponsiveNavCodes.NAV_LEVEL_1
@@ -159,7 +168,7 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
   open(): void {
     this._isOpen = true;
     this.showNavigation();
-    this.enableFocusTrap();
+    this.cdkTrapFocus.enabled = true;
     this.showCloseButton();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, this.level);
   }
@@ -167,7 +176,7 @@ export class ClrNavLevel extends FocusTrap implements OnInit {
   close(): void {
     this._isOpen = false;
     this.hideNavigation();
-    this.removeFocusTrap();
+    this.cdkTrapFocus.enabled = false;
     this.hideCloseButton();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, this.level);
   }

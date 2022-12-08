@@ -15,11 +15,12 @@ import { DetailService } from './providers/detail.service';
   host: {
     '[class.datagrid-detail-pane]': 'true',
   },
-  // We put the *ngIf on the clrFocusTrap so it doesn't always exist on the page
+  // We put the *ngIf on the cdkTrapFocus so it doesn't always exist on the page
   // have to test for presence of header for aria-describedby because it was causing unit tests to crash
   template: `
     <div
-      [clrFocusTrap]="{ strict: false }"
+      cdkTrapFocus
+      [cdkTrapFocusAutoCapture]="true"
       class="datagrid-detail-pane-content"
       *ngIf="detailService.isOpen"
       role="dialog"
