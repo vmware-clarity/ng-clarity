@@ -32,6 +32,12 @@ describe('NavLevelDirective', function () {
     expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_1);
   });
 
+  it('#level is set to 2', fakeAsync(function () {
+    const navLevel = this.clarityDirective;
+    navLevel._level = 2;
+    expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_2);
+  }));
+
   it('should set [attr.hidden] when called hideNavigation()', function () {
     const navLevel = this.clarityDirective;
     navLevel.hideNavigation();
@@ -78,12 +84,6 @@ describe('NavLevelDirective', function () {
 
     expect(this.clarityDirective.isOpen).toBe(false);
   });
-
-  it('#level is set to 2', fakeAsync(function () {
-    const navLevel = this.clarityDirective;
-    navLevel._level = 2;
-    expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_2);
-  }));
 
   describe('ResponsiveNavLevel intergration:', function () {
     it('#registers nav on init. sends the registration code on registerNavSubject in the service', function () {
