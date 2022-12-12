@@ -70,34 +70,5 @@ export default function (): void {
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(false);
     });
-
-    /*
-     * @deprecated since 3.0, remove in 4.0. tests for the deprecated [disabled] attribute
-     */
-    it('sets the disabled attribute if set by input', function (this: Context) {
-      expect(this.clarityElement.getAttribute('disabled')).toBeNull();
-      this.hostComponent.disabledDeprecated = true;
-      this.detectChanges();
-      expect(this.clarityElement.getAttribute('disabled')).toBe('');
-    });
-
-    it('sets aria-disabled to true if the FocusableItem is disabled', function (this: Context) {
-      expect(this.clarityElement.getAttribute('aria-disabled')).toBe('false');
-      this.hostComponent.disabledDeprecated = true;
-      this.detectChanges();
-      expect(this.clarityElement.getAttribute('aria-disabled')).toBe('true');
-    });
-
-    it('updates the disabled property of the FocusableItem', function (this: Context) {
-      this.hostComponent.disabledDeprecated = true;
-      this.detectChanges();
-      expect(this.getClarityProvider(FocusableItem).disabled).toBe(true);
-      this.hostComponent.disabledDeprecated = false;
-      this.detectChanges();
-      expect(this.getClarityProvider(FocusableItem).disabled).toBe(false);
-    });
-    /*
-     * End @deprecated section
-     */
   });
 }

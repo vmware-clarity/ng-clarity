@@ -18,7 +18,6 @@ import { RootDropdownService } from './providers/dropdown.service';
     '[class.dropdown-item]': 'true',
     '[attr.role]': '"menuitem"',
     '[attr.aria-disabled]': 'disabled',
-    '[attr.disabled]': "(disabled && setByDeprecatedDisabled)? '' : null",
     '[attr.id]': 'dropdownItemId',
   },
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
@@ -30,8 +29,6 @@ export class ClrDropdownItem {
     private focusableItem: FocusableItem
   ) {}
 
-  setByDeprecatedDisabled = false;
-
   @Input('clrDisabled')
   set disabled(value: boolean | string) {
     // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
@@ -39,20 +36,6 @@ export class ClrDropdownItem {
   }
 
   get disabled() {
-    return this.focusableItem.disabled;
-  }
-
-  /*
-   * @deprecated since 3.0, remove in 4.0. the presence of this attribute makes it not-focusable in IE11. Use [clrDisabled] input instead.
-   */
-  @Input('disabled')
-  set disabledDeprecated(value: boolean | string) {
-    // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
-    this.focusableItem.disabled = !!value || value === '';
-    this.setByDeprecatedDisabled = true;
-  }
-
-  get disabledDeprecated() {
     return this.focusableItem.disabled;
   }
 
