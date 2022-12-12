@@ -76,4 +76,20 @@ export class ClrDropdownItem {
       }
     });
   }
+
+  @HostListener('keydown.space', ['$event'])
+  private onSpaceKeydown($event: KeyboardEvent) {
+    this.stopImmediatePropagationIfDisabled($event);
+  }
+
+  @HostListener('keydown.enter', ['$event'])
+  private onEnterKeydown($event: KeyboardEvent) {
+    this.stopImmediatePropagationIfDisabled($event);
+  }
+
+  private stopImmediatePropagationIfDisabled($event: Event) {
+    if (this.disabled) {
+      $event.stopImmediatePropagation();
+    }
+  }
 }
