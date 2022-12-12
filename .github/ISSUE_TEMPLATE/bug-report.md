@@ -33,13 +33,6 @@ _A clear and concise description of what you expected to happen._
 - [ ] v13.x
 - [ ] Other:
 
-**Framework:**
-
-- [ ] Angular
-- [ ] React
-- [ ] Vue
-- [ ] Other:
-
 **Framework version:**
 _ie: Angular 11_
 
