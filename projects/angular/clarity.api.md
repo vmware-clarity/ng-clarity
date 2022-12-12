@@ -2240,9 +2240,9 @@ export class ClrDropdown implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrDropdownItem implements AfterViewInit {
+export class ClrDropdownItem {
     // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point index.d.ts
-    constructor(dropdown: ClrDropdown, el: ElementRef<HTMLElement>, _dropdownService: RootDropdownService, renderer: Renderer2, focusableItem: FocusableItem);
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem);
     set disabled(value: boolean | string);
     // (undocumented)
     get disabled(): boolean | string;
@@ -2252,10 +2252,6 @@ export class ClrDropdownItem implements AfterViewInit {
     set dropdownItemId(value: string);
     // (undocumented)
     get dropdownItemId(): string;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     setByDeprecatedDisabled: boolean;
     // (undocumented)
