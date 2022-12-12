@@ -2112,16 +2112,11 @@ export class ClrDropdownItem {
     set disabled(value: boolean | string);
     // (undocumented)
     get disabled(): boolean | string;
-    set disabledDeprecated(value: boolean | string);
-    // (undocumented)
-    get disabledDeprecated(): boolean | string;
     set dropdownItemId(value: string);
     // (undocumented)
     get dropdownItemId(): string;
     // (undocumented)
-    setByDeprecatedDisabled: boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "disabledDeprecated": "disabled"; "dropdownItemId": "id"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "dropdownItemId": "id"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
 }
