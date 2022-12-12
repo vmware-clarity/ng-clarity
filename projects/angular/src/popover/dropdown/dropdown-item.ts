@@ -75,7 +75,7 @@ export class ClrDropdownItem implements AfterViewInit {
   }
 
   onDropdownItemClick(): void {
-    if (this.dropdown.isMenuClosable && !this.el.nativeElement.classList.contains('disabled')) {
+    if (this.dropdown.isMenuClosable && !this.disabled) {
       this._dropdownService.closeMenus();
     }
   }
