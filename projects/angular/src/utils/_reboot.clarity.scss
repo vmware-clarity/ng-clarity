@@ -423,12 +423,10 @@
 
   a:link {
     @include css-var(color, clr-link-color, $clr-link-color, $clr-use-custom-properties);
-    text-decoration: none;
   }
 
   a:visited {
     @include css-var(color, clr-link-visited-color, $clr-link-visited-color, $clr-use-custom-properties);
-    text-decoration: none;
     &:hover {
       @include css-var(color, clr-link-visited-color-hover, $clr-link-visited-color, $clr-use-custom-properties);
     }
@@ -436,11 +434,9 @@
 
   a:hover {
     @include css-var(color, clr-link-hover-color, $clr-link-hover-color, $clr-use-custom-properties);
-    text-decoration: underline;
   }
 
   a:active {
     @include css-var(color, clr-link-active-color, $clr-link-active-color, $clr-use-custom-properties);
-    text-decoration: underline;
   }
 }

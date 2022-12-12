@@ -381,6 +381,17 @@ $clr-datagrid-pagination-input-border-focus-color: hsl(198, 65%, 57%);
 $clr-datagrid-popover-border-color: hsl(0, 0%, 0%);
 $clr-datagrid-action-popover-hover-color: $clr-datagrid-row-hover;
 $clr-datagrid-loading-background: rgba(0, 0, 0, 0.5);
+
+$clr-datagrid-column-toggle-border-color: hsl(208, 16%, 34%);
+$clr-datagrid-column-toggle-fill-color: hsl(201, 30%, 15%);
+$clr-datagrid-column-toggle-text-color: hsl(203, 16%, 72%);
+$clr-datagrid-column-toggle-border-hover-color: hsl(208, 14%, 39%);
+$clr-datagrid-column-toggle-fill-hover-color: hsl(198, 28%, 18%);
+$clr-datagrid-column-toggle-text-hover-color: hsl(0, 0%, 100%);
+$clr-datagrid-column-toggle-border-active-color: hsl(208, 14%, 39%);
+$clr-datagrid-column-toggle-fill-active-color: hsl(201, 30%, 13%);
+$clr-datagrid-column-toggle-text-active-color: hsl(203, 16%, 72%);
+
 // END: Datagrid
 
 /*********

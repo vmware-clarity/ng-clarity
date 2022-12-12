@@ -66,6 +66,15 @@
                   "maximumError": "8kb"
                 }
               ]
+            },
+            "dark": {
+              "styles": ["projects/angular/src/dark-theme.scss", "projects/demo/src/styles.scss"],
+              "fileReplacements": [
+                {
+                  "replace": "projects/demo/src/environments/environment.ts",
+                  "with": "projects/demo/src/environments/environment.dark.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": ""

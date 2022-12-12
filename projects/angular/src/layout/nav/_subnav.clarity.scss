@@ -26,6 +26,11 @@
       padding-left: $clr_baselineRem_1;
     }
 
+    .nav-item,
+    .nav-item a {
+      text-decoration: none;
+    }
+
     aside {
       flex: 0 0 auto;
       display: flex;

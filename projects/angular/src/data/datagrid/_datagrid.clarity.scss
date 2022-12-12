@@ -1207,31 +1207,71 @@
       display: flex;
       align-items: center;
 
-      &.active {
-        .column-toggle--action {
-          cds-icon,
-          clr-icon {
-            @include css-var(color, clr-color-action-600, $clr-color-action-600, $clr-use-custom-properties);
-          }
-        }
-      }
-
       .column-toggle--action {
         // I'm overriding .btn/.btn-link here but am not confident this is the correct way to do it.
         min-width: $clr_baselineRem_0_75;
-        padding-left: 0;
-        padding-right: 0;
-
-        cds-icon,
-        clr-icon {
-          @include css-var(color, clr-color-neutral-600, $clr-color-neutral-600, $clr-use-custom-properties);
-        }
+        padding-left: $clr_baselineRem_6px;
+        padding-right: $clr_baselineRem_6px;
+        text-transform: capitalize;
+        @include css-var(
+          border-color,
+          clr-datagrid-column-toggle-border-color,
+          $clr-datagrid-column-toggle-border-color,
+          $clr-use-custom-properties
+        );
+        @include css-var(
+          background-color,
+          clr-datagrid-column-toggle-fill-color,
+          $clr-datagrid-column-toggle-fill-color,
+          $clr-use-custom-properties
+        );
+        @include css-var(
+          color,
+          clr-datagrid-column-toggle-text-color,
+          $clr-datagrid-column-toggle-text-color,
+          $clr-use-custom-properties
+        );
 
         &:hover {
-          cds-icon,
-          clr-icon {
-            @include css-var(color, clr-color-action-600, $clr-color-action-600, $clr-use-custom-properties);
-          }
+          @include css-var(
+            border-color,
+            clr-datagrid-column-toggle-border-hover-color,
+            $clr-datagrid-column-toggle-border-hover-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            background-color,
+            clr-datagrid-column-toggle-fill-hover-color,
+            $clr-datagrid-column-toggle-fill-hover-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            color,
+            clr-datagrid-column-toggle-text-hover-color,
+            $clr-datagrid-column-toggle-text-hover-color,
+            $clr-use-custom-properties
+          );
+        }
+        &:active {
+          box-shadow: none;
+          @include css-var(
+            border-color,
+            clr-datagrid-column-toggle-border-active-color,
+            $clr-datagrid-column-toggle-border-active-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            background-color,
+            clr-datagrid-column-toggle-fill-active-color,
+            $clr-datagrid-column-toggle-fill-active-color,
+            $clr-use-custom-properties
+          );
+          @include css-var(
+            color,
+            clr-datagrid-column-toggle-text-active-color,
+            $clr-datagrid-column-toggle-text-active-color,
+            $clr-use-custom-properties
+          );
         }
       }
 
@@ -1653,36 +1693,38 @@
     min-width: $clr_baselineRem_10;
   }
 
-  .datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
-    div.datagrid-table-wrapper {
-      /**
+  .datagrid-detail-open {
+    & > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
+      div.datagrid-table-wrapper {
+        /**
          * So the content with no spaces in the cell doesn't get cut when and the row selected indicator is not hidden
          * e.g. Helloworldthisisaveryveryveryveryverylongcontent
          */
-      display: block;
-      /**
+        display: block;
+        /**
          * To get rid of detail-pane overlapping the content inside the rows
          */
-      overflow: hidden;
-    }
+        overflow: hidden;
+      }
 
-    clr-dg-cell {
+      clr-dg-cell {
+        /**
+         * Since we use inline width of each column in order to maintain manual resizing,
+         * we need to use !important to override the inline width.
+         */
+        width: 100% !important;
+      }
+
       /**
-           * Since we use inline width of each column in order to maintain manual resizing,
-           * we need to use !important to override the inline width.
-           */
-      width: 100% !important;
-    }
-
-    /**
        * Needed to prevent hidding the sorting and filtering icons
        */
-    clr-dg-column:first-child {
-      /**
-           * Since we use inline width of each column in order to maintain manual resizing,
-           * we need to use !important to override the inline width.
-           */
-      width: auto !important;
+      clr-dg-column:first-child {
+        /**
+          * Since we use inline width of each column in order to maintain manual resizing,
+          * we need to use !important to override the inline width.
+          */
+        width: auto !important;
+      }
     }
 
     .datagrid {
