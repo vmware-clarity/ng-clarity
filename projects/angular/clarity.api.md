@@ -2257,8 +2257,6 @@ export class ClrDropdownItem implements AfterViewInit {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    onDropdownItemClick(): void;
-    // (undocumented)
     setByDeprecatedDisabled: boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "disabledDeprecated": "disabled"; "dropdownItemId": "id"; }, {}, never>;

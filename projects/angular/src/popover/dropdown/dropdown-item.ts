@@ -74,7 +74,7 @@ export class ClrDropdownItem implements AfterViewInit {
     this.unlisten = this.renderer.listen(this.el.nativeElement, 'click', () => this.onDropdownItemClick());
   }
 
-  onDropdownItemClick(): void {
+  private onDropdownItemClick(): void {
     if (this.dropdown.isMenuClosable && !this.disabled) {
       this._dropdownService.closeMenus();
     }
