@@ -12,7 +12,7 @@ import { Page } from './providers/page';
 @Component({
   selector: 'clr-dg-page-size',
   template: `
-    <ng-content></ng-content>
+    <label [for]="pageSizeOptionsId"><ng-content></ng-content></label>
     <div class="clr-select-wrapper">
       <select [id]="pageSizeOptionsId" [class.clr-page-size-select]="true" [(ngModel)]="page.size">
         <option *ngFor="let option of pageSizeOptions" [ngValue]="option">{{ option }}</option>
