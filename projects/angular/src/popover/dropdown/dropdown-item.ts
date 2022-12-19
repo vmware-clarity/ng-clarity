@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from '../../utils/focus/focusable-item/basic-focusable-item.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
@@ -23,16 +23,13 @@ import { RootDropdownService } from './providers/dropdown.service';
   },
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
 })
-export class ClrDropdownItem implements AfterViewInit {
+export class ClrDropdownItem {
   constructor(
     private dropdown: ClrDropdown,
-    private el: ElementRef<HTMLElement>,
     private _dropdownService: RootDropdownService,
-    private renderer: Renderer2,
     private focusableItem: FocusableItem
   ) {}
 
-  private unlisten: () => void;
   setByDeprecatedDisabled = false;
 
   @Input('clrDisabled')
@@ -70,19 +67,29 @@ export class ClrDropdownItem implements AfterViewInit {
     return this.focusableItem.id;
   }
 
-  ngAfterViewInit() {
-    this.unlisten = this.renderer.listen(this.el.nativeElement, 'click', () => this.onDropdownItemClick());
+  @HostListener('click')
+  private onDropdownItemClick(): void {
+    // Ensure that the dropdown is closed after custom dropdown item click event handlers have run.
+    setTimeout(() => {
+      if (this.dropdown.isMenuClosable && !this.disabled) {
+        this._dropdownService.closeMenus();
+      }
+    });
   }
 
-  onDropdownItemClick(): void {
-    if (this.dropdown.isMenuClosable && !this.el.nativeElement.classList.contains('disabled')) {
-      this._dropdownService.closeMenus();
-    }
+  @HostListener('keydown.space', ['$event'])
+  private onSpaceKeydown($event: KeyboardEvent) {
+    this.stopImmediatePropagationIfDisabled($event);
   }
 
-  ngOnDestroy() {
-    if (this.unlisten) {
-      this.unlisten();
+  @HostListener('keydown.enter', ['$event'])
+  private onEnterKeydown($event: KeyboardEvent) {
+    this.stopImmediatePropagationIfDisabled($event);
+  }
+
+  private stopImmediatePropagationIfDisabled($event: Event) {
+    if (this.disabled) {
+      $event.stopImmediatePropagation();
     }
   }
 }

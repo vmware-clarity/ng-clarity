@@ -129,7 +129,7 @@ export default function (): void {
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
     }));
 
-    it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', () => {
+    it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', fakeAsync(() => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -137,6 +137,7 @@ export default function (): void {
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
 
       dropdownItem.click();
+      tick();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
 
@@ -146,11 +147,12 @@ export default function (): void {
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
+      tick();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
-    });
+    }));
 
-    it('closes all dropdown menus when clrMenuClosable is true', () => {
+    it('closes all dropdown menus when clrMenuClosable is true', fakeAsync(() => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -162,14 +164,15 @@ export default function (): void {
 
       const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
       nestedItem.click();
+      tick();
 
       fixture.detectChanges();
 
       const items: HTMLElement = compiled.querySelector('.dropdown-item');
       expect(items).toBeNull();
-    });
+    }));
 
-    it('does not close the menu when a disabled item is clicked', () => {
+    it('does not close the menu when a disabled item is clicked', fakeAsync(() => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
       fixture.detectChanges();
@@ -178,15 +181,17 @@ export default function (): void {
       const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
 
       disabledDropdownItem.click();
+      tick();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
+      tick();
       fixture.detectChanges();
       expect(compiled.querySelector('.dropdown-item')).toBeNull();
-    });
+    }));
 
-    it("doesn't close before custom click events have triggered", function () {
+    it("doesn't close before custom click events have triggered", fakeAsync(function () {
       const toggleService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverToggleService);
 
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
@@ -203,11 +208,12 @@ export default function (): void {
 
       const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
       nestedItem.click();
+      tick();
       fixture.detectChanges();
 
       // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
       expect(toggleService.open).toBe(false);
-    });
+    }));
 
     it('declares a FocusService provider', () => {
       const focusService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(FocusService, null);
