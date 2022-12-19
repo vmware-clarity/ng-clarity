@@ -1,5 +1,5 @@
 diff --git a/node_modules/@semantic-release/release-notes-generator/index.js b/node_modules/@semantic-release/release-notes-generator/index.js
-index 8cbd5f8..a1326ba 100644
+index 8cbd5f8..111d9fa 100644
 --- a/node_modules/@semantic-release/release-notes-generator/index.js
 +++ b/node_modules/@semantic-release/release-notes-generator/index.js
 @@ -55,6 +55,10 @@ async function generateNotes(pluginConfig, context) {
@@ -13,7 +13,7 @@ index 8cbd5f8..a1326ba 100644
    );
    const previousTag = lastRelease.gitTag || lastRelease.gitHead;
    const currentTag = nextRelease.gitTag || nextRelease.gitHead;
-@@ -86,7 +90,16 @@ async function generateNotes(pluginConfig, context) {
+@@ -86,7 +90,20 @@ async function generateNotes(pluginConfig, context) {
    debug('issue: %o', changelogContext.issue);
    debug('commit: %o', changelogContext.commit);
  
@@ -27,7 +27,11 @@ index 8cbd5f8..a1326ba 100644
 +
 +function fixCommitNote({ title, text }) {
 +  text = text
-+    .replace(/signed-off-by:.+(\n|$)/i, '');
++    .replace(/signed-off-by:.+(\n|$)/i, '')
++    .replace(/(^|\n+)-\s+/g, '--newline--• ')
++    .replace(/\n/g, ' ')
++    .replace(/--newline--/g, '\n')
++    .replace(/ +/g, ' ');
 +
 +  return { title, text };
 +}
