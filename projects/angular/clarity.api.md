@@ -914,8 +914,6 @@ export interface ClrCommonStrings {
     // (undocumented)
     datepickerSelectYearText: string;
     // (undocumented)
-    datepickerToggle: string;
-    // (undocumented)
     datepickerToggleChangeDateLabel: string;
     // (undocumented)
     datepickerToggleChooseDateLabel: string;

@@ -187,13 +187,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     if (day) {
       const formattedDate = this.dateIOService.toLocaleDisplayFormatString(day.toDate());
 
-      return (
-        this.commonStrings.parse(this.commonStrings.keys.datepickerToggleChangeDateLabel, {
-          SELECTED_DATE: formattedDate,
-        }) || this.commonStrings.keys.datepickerToggle
-      );
+      return this.commonStrings.parse(this.commonStrings.keys.datepickerToggleChangeDateLabel, {
+        SELECTED_DATE: formattedDate,
+      });
     }
-    return this.commonStrings.keys.datepickerToggleChooseDateLabel || this.commonStrings.keys.datepickerToggle;
+    return this.commonStrings.keys.datepickerToggleChooseDateLabel;
   }
 
   private listenForDateChanges() {
