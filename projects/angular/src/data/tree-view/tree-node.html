@@ -44,15 +44,21 @@
       (focus)="focusTreeNode()"
       tabindex="-1"
     />
-    <label for="{{nodeId}}-check" class="clr-control-label"></label>
+    <label for="{{nodeId}}-check">
+      <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
+    </label>
   </div>
-  <div class="clr-treenode-content" (mousedown)="focusTreeNode()">
+  <div class="clr-treenode-content" (mousedown)="focusTreeNode()" *ngIf="!featuresService.selectable">
+    <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
+  </div>
+
+  <ng-template #treenodeContent>
     <ng-content></ng-content>
     <div class="clr-sr-only" *ngIf="featuresService.selectable || ariaSelected">
       <span *ngIf="ariaSelected"> selected</span>
       <span *ngIf="!ariaSelected"> unselected</span>
     </div>
-  </div>
+  </ng-template>
 </div>
 <div
   class="clr-treenode-children"

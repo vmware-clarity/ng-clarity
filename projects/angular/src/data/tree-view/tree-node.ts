@@ -8,6 +8,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
   ContentChildren,
   ElementRef,
@@ -62,7 +63,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
     '[class.clr-tree-node]': 'true',
   },
 })
-export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
+export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   STATES = ClrSelectedState;
   private skipEmitChange = false;
   isModelLoading = false;
@@ -207,10 +208,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit() {
-    if (!this._model.textContent) {
-      this._model.textContent = trimAndLowerCase(this.elementRef.nativeElement.textContent);
-    }
-
     this.subscriptions.push(
       this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
         this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
@@ -218,6 +215,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
         this.typeAheadKeyBuffer = '';
       })
     );
+  }
+
+  ngAfterViewInit() {
+    if (!this._model.textContent) {
+      this._model.textContent = trimAndLowerCase(this.elementRef.nativeElement.textContent);
+    }
   }
 
   ngOnDestroy() {

@@ -4033,7 +4033,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
+export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
     constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
     // (undocumented)
     get ariaSelected(): boolean;
@@ -4068,6 +4068,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     _model: TreeNodeModel<T>;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
