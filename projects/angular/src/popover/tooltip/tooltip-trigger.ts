@@ -22,6 +22,7 @@ import { TooltipIdService } from './providers/tooltip-id.service';
 export class ClrTooltipTrigger {
   ariaDescribedBy: string;
   private subs: Subscription[] = [];
+
   constructor(private toggleService: ClrPopoverToggleService, private tooltipIdService: TooltipIdService) {
     // The aria-described by comes from the id of content. It
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
