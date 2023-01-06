@@ -28,6 +28,10 @@ export class ClrTooltipTrigger {
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
   }
 
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
   @HostListener('mouseenter')
   @HostListener('focus')
   showTooltip(): void {
@@ -38,9 +42,5 @@ export class ClrTooltipTrigger {
   @HostListener('blur')
   hideTooltip(): void {
     this.toggleService.open = false;
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
   }
 }
