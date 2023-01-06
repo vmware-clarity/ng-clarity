@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -23,7 +24,11 @@ export class ClrTooltipTrigger {
   ariaDescribedBy: string;
   private subs: Subscription[] = [];
 
-  constructor(private toggleService: ClrPopoverToggleService, private tooltipIdService: TooltipIdService) {
+  constructor(
+    private toggleService: ClrPopoverToggleService,
+    private tooltipIdService: TooltipIdService,
+    private tooltipMouseService: TooltipMouseService
+  ) {
     // The aria-described by comes from the id of content. It
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
   }
@@ -32,15 +37,23 @@ export class ClrTooltipTrigger {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  @HostListener('mouseenter')
   @HostListener('focus')
   showTooltip(): void {
     this.toggleService.open = true;
   }
 
-  @HostListener('mouseleave')
   @HostListener('blur')
   hideTooltip(): void {
     this.toggleService.open = false;
+  }
+
+  @HostListener('mouseenter')
+  private onMouseEnter() {
+    this.tooltipMouseService.onMouseEnterTrigger();
+  }
+
+  @HostListener('mouseleave')
+  private onMouseLeave() {
+    this.tooltipMouseService.onMouseLeaveTrigger();
   }
 }

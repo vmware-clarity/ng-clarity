@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { TooltipMouseService } from './providers/tooltip-mouse.service';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
 
@@ -27,7 +28,7 @@ interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
 export default function (): void {
   describe('TooltipTrigger component', function (this: TooltipContext) {
     spec(ClrTooltipTrigger, SimpleTest, ClrTooltipModule, {
-      providers: [ClrPopoverToggleService, TooltipIdService],
+      providers: [ClrPopoverToggleService, TooltipIdService, TooltipMouseService],
     });
 
     beforeEach(function () {
