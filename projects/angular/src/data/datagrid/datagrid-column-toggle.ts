@@ -13,8 +13,7 @@ import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
 import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
@@ -86,7 +85,7 @@ import { ColumnsService } from './providers/columns.service';
     </div>
   `,
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  hostDirectives: [PopoverHostDirective],
 })
 /** @deprecated since 2.0, remove in 3.0 */
 export class ClrDatagridColumnToggle implements OnDestroy {

@@ -23,9 +23,7 @@ import { Subscription } from 'rxjs';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -84,7 +82,7 @@ import { WrappedColumn } from './wrapped-column';
       <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
     </div>
   `,
-  providers: [ClrPopoverPositionService, ClrPopoverEventsService, ClrPopoverToggleService],
+  hostDirectives: [PopoverHostDirective],
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',

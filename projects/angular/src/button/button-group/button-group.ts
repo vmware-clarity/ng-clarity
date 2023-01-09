@@ -12,8 +12,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
@@ -21,13 +20,8 @@ import { ClrButton } from './button';
 @Component({
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
-  providers: [
-    ButtonInGroupService,
-    ClrPopoverToggleService,
-    ClrPopoverEventsService,
-    ClrPopoverPositionService,
-    ClrDestroyService,
-  ],
+  providers: [ButtonInGroupService, ClrDestroyService],
+  hostDirectives: [PopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
 })
 export class ClrButtonGroup implements AfterContentInit {

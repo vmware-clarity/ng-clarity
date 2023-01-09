@@ -4,10 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
@@ -17,11 +16,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   host: {
     '[class.tooltip]': 'true',
   },
-  providers: [
-    ClrPopoverToggleService,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-    TooltipIdService,
-    TooltipMouseService,
-  ],
+  providers: [TooltipIdService, TooltipMouseService],
+  hostDirectives: [PopoverHostDirective],
 })
 export class ClrTooltip {}

@@ -25,8 +25,7 @@ import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { RowActionService } from './providers/row-action-service';
 
@@ -34,7 +33,7 @@ let clrDgActionId = 0;
 
 @Component({
   selector: 'clr-dg-action-overflow',
-  providers: [ClrPopoverToggleService, ClrPopoverEventsService, ClrPopoverPositionService],
+  hostDirectives: [PopoverHostDirective],
   template: `
     <button
       class="datagrid-action-toggle"
