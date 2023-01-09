@@ -10,6 +10,7 @@ import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.to
 import { ClrPopoverEventsService } from './providers/popover-events.service';
 import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { StopEscapePropagationDirective } from './stop-escape-propagation.directive';
 
 @Directive({
   standalone: true,
@@ -19,5 +20,6 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
     ClrPopoverPositionService,
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
   ],
+  hostDirectives: [StopEscapePropagationDirective],
 })
 export class PopoverHostDirective {}
