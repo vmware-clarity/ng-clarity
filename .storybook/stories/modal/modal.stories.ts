@@ -17,7 +17,7 @@ const defaultStory: Story = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
     <div>
-      This list is provided to demonstrate scrolling capabillity when modal is open.
+      This list is provided to demonstrate scrolling capability when modal is open.
       <ul>
         <li *ngFor="let _ of createArray(100); let i = index">{{i + 1}}</li>
       </ul>
