@@ -33,7 +33,7 @@ const defaultStory: Story = args => ({
       [clrModalSkipAnimation]="clrModalSkipAnimation"
       [clrModalStaticBackdrop]="clrModalStaticBackdrop"
       (clrModalAlternateClose)="clrModalAlternateClose($event)"
-      (clrModalOpenChange)="clrModalOpenChange($event)"
+      (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
     >
       <h3 class="modal-title">{{title}}</h3>
       <div class="modal-body">
