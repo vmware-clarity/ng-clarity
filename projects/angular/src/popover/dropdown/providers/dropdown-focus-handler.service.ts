@@ -122,7 +122,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       // popup and moves up to its parent. Here, we stop propagation so that the parent container
       // doesn't receive the esc keydown
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.esc', event => {
+        this.renderer.listen(el, 'keydown.escape', event => {
           this.focusService.move(ArrowKeyDirection.LEFT);
           event.stopPropagation();
         })
@@ -133,7 +133,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
       // The root container will simply close the container when esc key is pressed
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.esc', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.escape', event => this.toggleService.toggleWithEvent(event))
       );
 
       // When the user moves focus outside of the menu, we close the dropdown

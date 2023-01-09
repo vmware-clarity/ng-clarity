@@ -77,7 +77,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
           <!--tab links in overflow menu-->
           <clr-tab-overflow-content
             *ngIf="toggleService.open"
-            (document:keydown.esc)="closeOnEscapeKey()"
+            (document:keydown.escape)="closeOnEscapeKey()"
             (document:click)="closeOnOutsideClick($event, tabOverflowTrigger)"
             (focusout)="closeOnFocusOut($event)"
           >
