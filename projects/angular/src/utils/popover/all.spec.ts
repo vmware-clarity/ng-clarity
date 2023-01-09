@@ -12,6 +12,7 @@ import { ClrAlignmentSpec, ClrPositionTransformSpec, ClrViewportValidationSpec }
 import EventServiceSpec from './providers/popover-events.service.spec';
 import PositionServiceSpec from './providers/popover-position.service.spec';
 import ToggleServiceSpec from './providers/popover-toggle.service.spec';
+import StopEscapePropagationDirectiveSpec from './stop-escape-propagation.directive.spec';
 
 describe('ClrPopover', () => {
   describe('ClrPositionOperator functions', () => {
@@ -31,5 +32,6 @@ describe('ClrPopover', () => {
     ClrPopoverOpenCloseButtonSpec();
     ClrPopoverCloseButtonSpec();
     ClrPopoverContentSpec();
+    StopEscapePropagationDirectiveSpec();
   });
 });
