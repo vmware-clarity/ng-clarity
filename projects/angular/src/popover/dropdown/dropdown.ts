@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
 
@@ -20,13 +20,8 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
     '[class.dropdown]': 'true',
     '[class.open]': 'toggleService.open',
   },
-  providers: [
-    ROOT_DROPDOWN_PROVIDER,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-    FOCUS_SERVICE_PROVIDER,
-    ClrPopoverToggleService,
-    DROPDOWN_FOCUS_HANDLER_PROVIDER,
-  ],
+  providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  hostDirectives: [PopoverHostDirective],
 })
 export class ClrDropdown implements OnDestroy {
   private subscriptions: Subscription[] = [];

@@ -4,11 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef } from '@angular/core';
+import { Component, ContentChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
@@ -25,12 +24,8 @@ import { ClrSignpostTrigger } from './signpost-trigger';
     <ng-content></ng-content>
   `,
   host: { '[class.signpost]': 'true' },
-  providers: [
-    ClrPopoverToggleService,
-    SignpostFocusManager,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-    SignpostIdService,
-  ],
+  providers: [SignpostFocusManager, SignpostIdService],
+  hostDirectives: [PopoverHostDirective],
 })
 
 /*********

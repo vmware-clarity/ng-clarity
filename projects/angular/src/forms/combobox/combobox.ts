@@ -27,7 +27,6 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -38,7 +37,7 @@ import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -57,17 +56,13 @@ import { OptionSelectionService } from './providers/option-selection.service';
   selector: 'clr-combobox',
   templateUrl: './combobox.html',
   providers: [
-    ClrPopoverToggleService,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
     OptionSelectionService,
     { provide: LoadingListener, useExisting: ClrCombobox },
     IF_ACTIVE_ID_PROVIDER,
     FOCUS_SERVICE_PROVIDER,
     COMBOBOX_FOCUS_HANDLER_PROVIDER,
-    ClrPopoverToggleService,
-    ClrPopoverEventsService,
-    ClrPopoverPositionService,
   ],
+  hostDirectives: [PopoverHostDirective],
   host: {
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
