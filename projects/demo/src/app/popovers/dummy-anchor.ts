@@ -41,7 +41,7 @@ export class DummyAnchor {
 
   // This needs to be added to handle the case where:
   // 1. The user focuses on the input and the menu opens,
-  // 2. user hits on ESC but is still focused on the menu,
+  // 2. user hits on escape but is still focused on the menu,
   // 3. and then clicks on the Input again.
   // Without this, the last step of clicking on the Input while it is focused
   // to open the menu wouldn't work.
