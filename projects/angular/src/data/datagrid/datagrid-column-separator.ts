@@ -7,7 +7,7 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, NgZone, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 
-import { IEKeyCodes, KeyCodes } from '../../utils/enums/key-codes.enum';
+import { IEKeys, Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ColumnResizerService } from './providers/column-resizer.service';
@@ -150,11 +150,11 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   }
 
   private isArrowLeftKeyEvent(event: KeyboardEvent) {
-    return event.key === KeyCodes.ArrowLeft || event.key === IEKeyCodes.ArrowLeft;
+    return event.key === Keys.ArrowLeft || event.key === IEKeys.ArrowLeft;
   }
 
   private isArrowRightKeyEvent(event: KeyboardEvent) {
-    return event.key === KeyCodes.ArrowRight || event.key === IEKeyCodes.ArrowRight;
+    return event.key === Keys.ArrowRight || event.key === IEKeys.ArrowRight;
   }
 
   ngOnDestroy() {

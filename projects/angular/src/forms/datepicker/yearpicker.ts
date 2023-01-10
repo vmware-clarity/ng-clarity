@@ -6,7 +6,7 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { keyValidator } from '../../utils/focus/key-focus/util';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { YearRangeModel } from './model/year-range.model';
@@ -166,16 +166,16 @@ export class ClrYearpicker implements AfterViewInit {
     // to create extra observables just to move this logic to the service.
     if (event) {
       const key = keyValidator(event.key);
-      if (key === KeyCodes.ArrowUp) {
+      if (key === Keys.ArrowUp) {
         event.preventDefault();
         this.incrementFocusYearBy(-1);
-      } else if (key === KeyCodes.ArrowDown) {
+      } else if (key === Keys.ArrowDown) {
         event.preventDefault();
         this.incrementFocusYearBy(1);
-      } else if (key === KeyCodes.ArrowRight) {
+      } else if (key === Keys.ArrowRight) {
         event.preventDefault();
         this.incrementFocusYearBy(5);
-      } else if (key === KeyCodes.ArrowLeft) {
+      } else if (key === Keys.ArrowLeft) {
         event.preventDefault();
         this.incrementFocusYearBy(-5);
       }

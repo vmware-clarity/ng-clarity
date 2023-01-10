@@ -4,21 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { IEKeyCodes, KeyCodes } from '../../enums/key-codes.enum';
+import { IEKeys, Keys } from '../../enums/keys.enum';
 
 export function keyValidator(key: string) {
-  if (key === KeyCodes.ArrowUp || key === IEKeyCodes.ArrowUp) {
-    return KeyCodes.ArrowUp;
-  } else if (key === KeyCodes.ArrowDown || key === IEKeyCodes.ArrowDown) {
-    return KeyCodes.ArrowDown;
-  } else if (key === KeyCodes.ArrowRight || key === IEKeyCodes.ArrowRight) {
-    return KeyCodes.ArrowRight;
-  } else if (key === KeyCodes.ArrowLeft || key === IEKeyCodes.ArrowLeft) {
-    return KeyCodes.ArrowLeft;
-  } else if (key === KeyCodes.Space || key === IEKeyCodes.Space) {
-    return KeyCodes.Space;
-  } else if (key === KeyCodes.Escape || key === IEKeyCodes.Escape) {
-    return KeyCodes.Escape;
+  if (key === Keys.ArrowUp || key === IEKeys.ArrowUp) {
+    return Keys.ArrowUp;
+  } else if (key === Keys.ArrowDown || key === IEKeys.ArrowDown) {
+    return Keys.ArrowDown;
+  } else if (key === Keys.ArrowRight || key === IEKeys.ArrowRight) {
+    return Keys.ArrowRight;
+  } else if (key === Keys.ArrowLeft || key === IEKeys.ArrowLeft) {
+    return Keys.ArrowLeft;
+  } else if (key === Keys.Space || key === IEKeys.Space) {
+    return Keys.Space;
+  } else if (key === Keys.Escape || key === IEKeys.Escape) {
+    return Keys.Escape;
   } else {
     return key;
   }
@@ -28,10 +28,10 @@ export function preventArrowKeyScroll(event: KeyboardEvent) {
   const validKey = keyValidator(event.key);
 
   if (
-    validKey === KeyCodes.ArrowUp ||
-    validKey === KeyCodes.ArrowDown ||
-    validKey === KeyCodes.ArrowLeft ||
-    validKey === KeyCodes.ArrowRight
+    validKey === Keys.ArrowUp ||
+    validKey === Keys.ArrowDown ||
+    validKey === Keys.ArrowLeft ||
+    validKey === Keys.ArrowRight
   ) {
     // prevent element container scroll
     // MDN references this is really the only way to prevent native browser interactions

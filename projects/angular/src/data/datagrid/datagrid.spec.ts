@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
@@ -817,15 +817,15 @@ export default function (): void {
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowRight }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         // second time, to avoid cycling over cells with radios
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowRight }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         expect(document.activeElement).toBe(cells[2]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         expect(document.activeElement).toBe(cells[5]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowLeft }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
         expect(document.activeElement).toBe(cells[4]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowUp }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowUp }));
         expect(document.activeElement).toBe(cells[1]);
       });
 
@@ -834,7 +834,7 @@ export default function (): void {
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         expect(document.activeElement).toEqual(cells[3].querySelector('[type=radio]'));
       });
 
@@ -843,12 +843,12 @@ export default function (): void {
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
         // we're at the edge, then we click once more to get to the placeholder
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: KeyCodes.ArrowDown }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
       });
 

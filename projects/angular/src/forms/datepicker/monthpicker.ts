@@ -6,7 +6,7 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { keyValidator } from '../../utils/focus/key-focus/util';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -88,19 +88,19 @@ export class ClrMonthpicker implements AfterViewInit {
     // to create extra observables just to move this logic to the service.
     if (event) {
       const key = keyValidator(event.key);
-      if (key === KeyCodes.ArrowUp && this._focusedMonthIndex > 0) {
+      if (key === Keys.ArrowUp && this._focusedMonthIndex > 0) {
         event.preventDefault();
         this._focusedMonthIndex--;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === KeyCodes.ArrowDown && this._focusedMonthIndex < 11) {
+      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 11) {
         event.preventDefault();
         this._focusedMonthIndex++;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === KeyCodes.ArrowRight && this._focusedMonthIndex < 6) {
+      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 6) {
         event.preventDefault();
         this._focusedMonthIndex = this._focusedMonthIndex + 6;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === KeyCodes.ArrowLeft && this._focusedMonthIndex > 5) {
+      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 5) {
         event.preventDefault();
         this._focusedMonthIndex = this._focusedMonthIndex - 6;
         this._datepickerFocusService.focusCell(this._elRef);

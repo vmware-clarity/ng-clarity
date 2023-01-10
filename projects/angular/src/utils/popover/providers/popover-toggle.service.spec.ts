@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 
-import { KeyCodes } from '../../enums/key-codes.enum';
+import { Keys } from '../../enums/keys.enum';
 import { ClrPopoverEventsService } from './popover-events.service';
 import { ClrPopoverPositionService } from './popover-position.service';
 import { ClrPopoverToggleService } from './popover-toggle.service';
@@ -106,7 +106,7 @@ export default function (): void {
        * and
        * skip `event.preventDefault` for non arrow key events
        */
-      Object.keys(KeyCodes).forEach(key => {
+      Object.keys(Keys).forEach(key => {
         const arrowKeyEvent = new KeyboardEvent(key, { key });
         if (key.search('Arrow') > -1) {
           // Arrow keys are ignored to prevent content from closing the popover content
