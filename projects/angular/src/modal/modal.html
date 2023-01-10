@@ -4,7 +4,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<div cdkTrapFocus class="modal" *ngIf="_open">
+<div cdkTrapFocus [cdkTrapFocusAutoCapture]="true" class="modal" *ngIf="_open">
   <!--fixme: revisit when ngClass works with exit animation-->
   <div
     [@fadeDown]="skipAnimation"
