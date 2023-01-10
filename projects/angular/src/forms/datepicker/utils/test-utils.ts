@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export function createKeyboardEvent(code: number, type: string): KeyboardEvent {
+export function createKeyboardEvent(key: string, type: string): KeyboardEvent {
   const event: KeyboardEvent = new KeyboardEvent(type);
-  Object.defineProperties(event, { keyCode: { get: () => code } });
+  Object.defineProperties(event, { key: { get: () => key } });
   return event;
 }
 
