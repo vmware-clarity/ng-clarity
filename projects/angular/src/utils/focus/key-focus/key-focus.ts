@@ -20,7 +20,7 @@ import { Keys } from '../../enums/keys.enum';
 import { ClrFocusDirection } from './enums/focus-direction.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocusItem } from './key-focus-item';
-import { keyValidator, preventArrowKeyScroll } from './util';
+import { normalizeKey, preventArrowKeyScroll } from './util';
 
 @Component({
   selector: '[clrKeyFocus]',
@@ -180,7 +180,7 @@ export class ClrKeyFocus {
   }
 
   protected nextKeyPressed(event: KeyboardEvent) {
-    const key = keyValidator(event.key);
+    const key = normalizeKey(event.key);
 
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
@@ -195,7 +195,7 @@ export class ClrKeyFocus {
   }
 
   protected prevKeyPressed(event: KeyboardEvent) {
-    const key = keyValidator(event.key);
+    const key = normalizeKey(event.key);
 
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
