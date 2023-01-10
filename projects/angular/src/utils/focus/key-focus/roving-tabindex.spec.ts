@@ -8,7 +8,7 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { Keys } from '../../../utils/enums/keys.enum';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
 import { ClrRovingTabindex } from './roving-tabindex';
@@ -102,11 +102,11 @@ describe('RovingTabindex directive', () => {
     it('read current position', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(1);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(clarityDirective.current).toBe(1);
     });
 
@@ -115,7 +115,7 @@ describe('RovingTabindex directive', () => {
       // Initial focus notification
       expect(component.changed).toBe(true);
       // Test with arrow
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(component.changed).toBe(true);
       // Test with position
       component.changed = false;
@@ -123,7 +123,7 @@ describe('RovingTabindex directive', () => {
       expect(component.changed).toBe(true);
       // Test arrow at border, no rotation
       component.changed = false;
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(component.changed).toBe(false);
     });
 
@@ -136,20 +136,20 @@ describe('RovingTabindex directive', () => {
     it('current value updates with keys', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.Home);
+      keyPress(Keys.Home);
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(clarityDirective.current).toBe(0);
     });
 
     it('current value updates, when elements are being removed', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(clarityDirective.current).toBe(2);
       component.showLast = false;
       fixture.detectChanges();
@@ -158,7 +158,7 @@ describe('RovingTabindex directive', () => {
     it('checks if keyboard event comes focused current', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowUp, component.keyFocusItems.last.nativeElement);
+      keyPress(Keys.ArrowUp, component.keyFocusItems.last.nativeElement);
       expect(clarityDirective.current).toBe(1);
     });
   });
@@ -237,10 +237,10 @@ describe('RovingTabindex directive', () => {
       openMenu();
       expect(document.activeElement.textContent).toBe('Button 1');
       verifyTabindices(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
       verifyTabindices(2);
-      keyPress(KeyCodes.Home);
+      keyPress(Keys.Home);
       expect(document.activeElement.textContent).toBe('Button 1');
       verifyTabindices(0);
     });
@@ -249,13 +249,13 @@ describe('RovingTabindex directive', () => {
       openMenu();
       expect(document.activeElement.textContent).toBe('Button 1');
       verifyTabindices(0);
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(document.activeElement.textContent).toBe('Button 1');
       verifyTabindices(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
       verifyTabindices(2);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(document.activeElement.textContent).toBe('Button 3');
       verifyTabindices(2);
     });
@@ -266,18 +266,18 @@ describe('RovingTabindex directive', () => {
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
         // Arrow down
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Make sure it's only ArrowDown/Up
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Arrow up
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
@@ -293,18 +293,18 @@ describe('RovingTabindex directive', () => {
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
         // Arrow right
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Make sure it's only ArrowRight/Left
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Arrow up
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
@@ -319,16 +319,16 @@ describe('RovingTabindex directive', () => {
         openMenu();
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 3');
         verifyTabindices(2);
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 2');
         verifyTabindices(1);
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
@@ -364,7 +364,7 @@ describe('RovingTabindex directive', () => {
       fixture.detectChanges();
       expect(document.activeElement.textContent).toBe('Button 1');
       verifyTabindices(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
       verifyTabindices(2);
       domComponent.showLast = false;

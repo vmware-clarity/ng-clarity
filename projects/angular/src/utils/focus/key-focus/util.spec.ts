@@ -4,21 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { IEKeyCodes, KeyCodes } from '../../enums/key-codes.enum';
+import { IEKeys, Keys } from '../../enums/keys.enum';
 import { preventArrowKeyScroll } from './util';
 
 describe('preventArrowKeyScroll', () => {
   it('should prevent scroll on element based on key event', () => {
     const mockEvent = {
-      key: KeyCodes.ArrowDown,
-      code: KeyCodes.ArrowDown,
+      key: Keys.ArrowDown,
+      code: Keys.ArrowDown,
       preventDefault: () => {
         // Do nothing
       },
     };
 
     const mockIncorrectKeyCodeEvent = {
-      key: KeyCodes.Space,
+      key: Keys.Space,
       code: 'Space',
       preventDefault: () => {
         // Do nothing
@@ -36,7 +36,7 @@ describe('preventArrowKeyScroll', () => {
 
   it('should prevent scroll for IE', () => {
     const mockEvent = {
-      key: IEKeyCodes.ArrowDown,
+      key: IEKeys.ArrowDown,
       code: undefined,
       preventDefault: () => {
         // Do nothing

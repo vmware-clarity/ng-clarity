@@ -7,7 +7,7 @@
 import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayModel } from './model/day.model';
@@ -102,7 +102,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const upArrowEvent: KeyboardEvent = createKeyboardEvent(KeyCodes.ArrowUp, 'keydown');
+        const upArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowUp, 'keydown');
 
         context.clarityDirective.onKeyDown(upArrowEvent);
 
@@ -118,7 +118,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
 
-        const downArrowEvent: KeyboardEvent = createKeyboardEvent(KeyCodes.ArrowDown, 'keydown');
+        const downArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowDown, 'keydown');
 
         context.clarityDirective.onKeyDown(downArrowEvent);
 
@@ -134,7 +134,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const leftArrowEvent: KeyboardEvent = createKeyboardEvent(KeyCodes.ArrowLeft, 'keydown');
+        const leftArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowLeft, 'keydown');
 
         context.clarityDirective.onKeyDown(leftArrowEvent);
 
@@ -150,7 +150,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
 
-        const rightArrowEvent: KeyboardEvent = createKeyboardEvent(KeyCodes.ArrowRight, 'keydown');
+        const rightArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowRight, 'keydown');
 
         context.clarityDirective.onKeyDown(rightArrowEvent);
 
