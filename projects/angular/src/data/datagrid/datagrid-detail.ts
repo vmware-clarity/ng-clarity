@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, HostListener } from '@angular/core';
+import { Component, ContentChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -39,7 +39,6 @@ export class ClrDatagridDetail {
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
-  @HostListener('document:keyup.escape')
   close(): void {
     this.detailService.close();
   }

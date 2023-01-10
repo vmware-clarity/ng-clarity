@@ -5,21 +5,12 @@
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import {
-  Component,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChange,
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
+import { ModalStackService } from './modal-stack.service';
 
 @Component({
   selector: 'clr-modal',
@@ -65,13 +56,18 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
-  constructor(private _scrollingService: ScrollingService, public commonStrings: ClrCommonStringsService) {}
+  constructor(
+    private _scrollingService: ScrollingService,
+    public commonStrings: ClrCommonStringsService,
+    private modalStackService: ModalStackService
+  ) {}
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
         this._scrollingService.stopScrolling();
+        this.modalStackService.trackModalOpen(this);
       } else {
         this._scrollingService.resumeScrolling();
       }
@@ -88,9 +84,9 @@ export class ClrModal implements OnChanges, OnDestroy {
     }
     this._open = true;
     this._openChanged.emit(true);
+    this.modalStackService.trackModalOpen(this);
   }
 
-  @HostListener('body:keyup.escape')
   close(): void {
     if (this.stopClose) {
       this.altClose.emit(false);
@@ -106,6 +102,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     if (e.toState === 'void') {
       // TODO: Investigate if we can decouple from animation events
       this._openChanged.emit(false);
+      this.modalStackService.trackModalClose(this);
     }
   }
 }

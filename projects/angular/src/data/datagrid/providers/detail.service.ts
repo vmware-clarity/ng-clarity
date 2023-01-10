@@ -7,6 +7,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+import { ModalStackService } from '../../../modal/modal-stack.service';
+
 @Injectable()
 export class DetailService {
   private toggleState = false;
@@ -28,9 +30,12 @@ export class DetailService {
     return this._state.asObservable();
   }
 
+  constructor(private readonly modalStackService: ModalStackService) {}
+
   close() {
     this.toggleState = false;
     this._state.next(this.toggleState);
+    this.modalStackService.trackModalClose(this);
     if (this.button) {
       this.button.focus();
       this.button = null;
@@ -42,6 +47,7 @@ export class DetailService {
     this.button = button;
     this.toggleState = true;
     this._state.next(this.toggleState);
+    this.modalStackService.trackModalOpen(this);
   }
 
   toggle(item: any, button?: HTMLButtonElement) {
