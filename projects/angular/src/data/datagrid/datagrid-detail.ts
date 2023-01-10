@@ -40,7 +40,7 @@ export class ClrDatagridDetail {
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
   @HostListener('document:keyup.esc')
-  closeCheck(): void {
+  close(): void {
     this.detailService.close();
   }
 }

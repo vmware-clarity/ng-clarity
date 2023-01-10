@@ -111,7 +111,7 @@ const defaultParameters: Parameters = {
   component: ClrDatagridDetail,
   argTypes: {
     // methods
-    closeCheck: { control: { disable: true } },
+    close: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     detailContentType: { control: { type: 'inline-radio', options: ['json', 'datagrid'] } },
