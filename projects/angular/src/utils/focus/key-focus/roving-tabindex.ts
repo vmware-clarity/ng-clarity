@@ -6,7 +6,7 @@
 
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { Keys } from '../../../utils/enums/keys.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocus } from './key-focus';
 
@@ -44,9 +44,9 @@ export class ClrRovingTabindex extends ClrKeyFocus {
       this.updateTabindex(this.current - 1);
     } else if (this.nextKeyPressed(event) && this.currentFocusIsNotLastItem()) {
       this.updateTabindex(this.current + 1);
-    } else if (event.code === KeyCodes.Home) {
+    } else if (event.code === Keys.Home) {
       this.updateTabindex(0);
-    } else if (event.code === KeyCodes.End) {
+    } else if (event.code === Keys.End) {
       this.updateTabindex(this.focusableItems.length - 1);
     }
     super.handleKeyboardEvent(event);

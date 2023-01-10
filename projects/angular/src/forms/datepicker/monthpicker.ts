@@ -6,7 +6,8 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
-import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
@@ -86,20 +87,20 @@ export class ClrMonthpicker implements AfterViewInit {
     // the logic is fairly simple and it didn't make sense for me
     // to create extra observables just to move this logic to the service.
     if (event) {
-      const keyCode: number = event.keyCode;
-      if (keyCode === UP_ARROW && this._focusedMonthIndex > 0) {
+      const key = normalizeKey(event.key);
+      if (key === Keys.ArrowUp && this._focusedMonthIndex > 0) {
         event.preventDefault();
         this._focusedMonthIndex--;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (keyCode === DOWN_ARROW && this._focusedMonthIndex < 11) {
+      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 11) {
         event.preventDefault();
         this._focusedMonthIndex++;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (keyCode === RIGHT_ARROW && this._focusedMonthIndex < 6) {
+      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 6) {
         event.preventDefault();
         this._focusedMonthIndex = this._focusedMonthIndex + 6;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (keyCode === LEFT_ARROW && this._focusedMonthIndex > 5) {
+      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 5) {
         event.preventDefault();
         this._focusedMonthIndex = this._focusedMonthIndex - 6;
         this._datepickerFocusService.focusCell(this._elRef);

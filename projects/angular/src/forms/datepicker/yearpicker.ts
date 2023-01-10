@@ -6,8 +6,9 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
 import { YearRangeModel } from './model/year-range.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -164,17 +165,17 @@ export class ClrYearpicker implements AfterViewInit {
     // the logic is fairly simple and it didn't make sense for me
     // to create extra observables just to move this logic to the service.
     if (event) {
-      const keyCode: number = event.keyCode;
-      if (keyCode === UP_ARROW) {
+      const key = normalizeKey(event.key);
+      if (key === Keys.ArrowUp) {
         event.preventDefault();
         this.incrementFocusYearBy(-1);
-      } else if (keyCode === DOWN_ARROW) {
+      } else if (key === Keys.ArrowDown) {
         event.preventDefault();
         this.incrementFocusYearBy(1);
-      } else if (keyCode === RIGHT_ARROW) {
+      } else if (key === Keys.ArrowRight) {
         event.preventDefault();
         this.incrementFocusYearBy(5);
-      } else if (keyCode === LEFT_ARROW) {
+      } else if (key === Keys.ArrowLeft) {
         event.preventDefault();
         this.incrementFocusYearBy(-5);
       }

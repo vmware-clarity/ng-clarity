@@ -1695,12 +1695,12 @@
 
   .datagrid-detail-open {
     & > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
-      div.datagrid-table-wrapper {
+      div.datagrid-table {
         /**
          * So the content with no spaces in the cell doesn't get cut when and the row selected indicator is not hidden
          * e.g. Helloworldthisisaveryveryveryveryverylongcontent
          */
-        display: block;
+        max-width: 100%;
         /**
          * To get rid of detail-pane overlapping the content inside the rows
          */

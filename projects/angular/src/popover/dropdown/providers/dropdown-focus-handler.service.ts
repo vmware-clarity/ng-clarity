@@ -118,11 +118,11 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     );
 
     if (this.parent) {
-      // if it's a nested container, pressing esc has the same effect as pressing left key, which closes the current
+      // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
       // popup and moves up to its parent. Here, we stop propagation so that the parent container
-      // doesn't receive the esc keydown
+      // doesn't receive the escape keydown
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.esc', event => {
+        this.renderer.listen(el, 'keydown.escape', event => {
           this.focusService.move(ArrowKeyDirection.LEFT);
           event.stopPropagation();
         })
@@ -131,9 +131,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       // The root container is the only one we register to the focus service, others do not need focus
       this.focusService.registerContainer(el);
 
-      // The root container will simply close the container when esc key is pressed
+      // The root container will simply close the container when escape key is pressed
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.esc', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.escape', event => this.toggleService.toggleWithEvent(event))
       );
 
       // When the user moves focus outside of the menu, we close the dropdown

@@ -7,7 +7,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { Keys } from '../../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
@@ -77,19 +77,19 @@ export default function (): void {
     });
 
     it('can open a listbox and set focus', function (this: TestContext) {
-      const event = new KeyboardEvent('keydown', { key: KeyCodes.ArrowDown });
+      const event = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.toggleService.open).toBeTrue();
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('1', 'one'));
     });
 
     it('moves focus with keys', function (this: TestContext) {
-      const event = new KeyboardEvent('keydown', { key: KeyCodes.ArrowDown });
+      const event = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('1', 'one'));
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('2', 'two'));
-      const upEvent = new KeyboardEvent('keydown', { key: KeyCodes.ArrowUp });
+      const upEvent = new KeyboardEvent('keydown', { key: Keys.ArrowUp });
       this.testComponent.textInput.nativeElement.dispatchEvent(upEvent);
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('1', 'one'));
     });
@@ -146,7 +146,7 @@ export default function (): void {
 
     it('does submit on Enter when dialog is closed', function (this: TestContext) {
       spyOn(this.testComponent, 'onSubmit');
-      const event = new KeyboardEvent('keydown', { key: KeyCodes.Enter });
+      const event = new KeyboardEvent('keydown', { key: Keys.Enter });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.testComponent.onSubmit).not.toHaveBeenCalled();
     });
@@ -154,7 +154,7 @@ export default function (): void {
     it('does not submit on Enter when dialog is open', function (this: TestContext) {
       spyOn(this.testComponent, 'onSubmit');
       this.toggleService.open = true;
-      const event = new KeyboardEvent('keydown', { key: KeyCodes.Enter });
+      const event = new KeyboardEvent('keydown', { key: Keys.Enter });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.testComponent.onSubmit).not.toHaveBeenCalled();
     });

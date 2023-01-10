@@ -8,10 +8,10 @@ import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
-import { ELement, elements } from '../../helpers/elements.data';
+import { Element, elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const longContentElement: ELement = {
+const longContentElement: Element = {
   name: 'A really really really really really really really really really long content in the cell',
   symbol: 'Ac',
   number: 89,

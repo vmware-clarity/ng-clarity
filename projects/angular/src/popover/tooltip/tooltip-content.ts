@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
 
 import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -12,6 +12,7 @@ import { AbstractPopover } from '../common/abstract-popover';
 import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
 type Position = typeof POSITIONS[number];
@@ -37,7 +38,8 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
-    private tooltipIdService: TooltipIdService
+    private tooltipIdService: TooltipIdService,
+    private tooltipMouseService: TooltipMouseService
   ) {
     super(injector, parentHost);
 
@@ -125,6 +127,16 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
   ngOnInit() {
     this.size = this.size || defaultSize;
     this.position = this.position || defaultPosition;
+  }
+
+  @HostListener('mouseenter')
+  private onMouseEnter() {
+    this.tooltipMouseService.onMouseEnterContent();
+  }
+
+  @HostListener('mouseleave')
+  private onMouseLeave() {
+    this.tooltipMouseService.onMouseLeaveContent();
   }
 
   private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {

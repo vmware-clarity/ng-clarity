@@ -29,8 +29,8 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
-import { isKeyEitherLetterOrNumber, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
+import { Keys } from '../../utils/enums/keys.enum';
+import { isKeyEitherLetterOrNumber, normalizeKey, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { LoadingListener } from '../../utils/loading/loading-listener';
@@ -269,32 +269,32 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     preventArrowKeyScroll(event);
 
     // https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard-interaction-22
-    switch (keyValidator(event.key)) {
-      case KeyCodes.ArrowUp:
+    switch (normalizeKey(event.key)) {
+      case Keys.ArrowUp:
         this.focusManager.focusNodeAbove(this._model);
         break;
-      case KeyCodes.ArrowDown:
+      case Keys.ArrowDown:
         this.focusManager.focusNodeBelow(this._model);
         break;
-      case KeyCodes.ArrowRight:
+      case Keys.ArrowRight:
         this.expandOrFocusFirstChild();
         break;
-      case KeyCodes.ArrowLeft:
+      case Keys.ArrowLeft:
         this.collapseOrFocusParent();
         break;
-      case KeyCodes.Home:
+      case Keys.Home:
         event.preventDefault();
         this.focusManager.focusFirstVisibleNode();
         break;
-      case KeyCodes.End:
+      case Keys.End:
         event.preventDefault();
         this.focusManager.focusLastVisibleNode();
         break;
-      case KeyCodes.Enter:
+      case Keys.Enter:
         this.toggleExpandOrTriggerDefault();
         break;
-      case KeyCodes.Space:
-      case KeyCodes.Spacebar:
+      case Keys.Space:
+      case Keys.Spacebar:
         // to prevent scrolling on space key in this specific case
         event.preventDefault();
         this.toggleExpandOrTriggerDefault();

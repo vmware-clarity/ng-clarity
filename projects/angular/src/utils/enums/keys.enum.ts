@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export enum KeyCodes {
+export enum Keys {
   ArrowLeft = 'ArrowLeft',
   ArrowUp = 'ArrowUp',
   ArrowRight = 'ArrowRight',
@@ -19,15 +19,11 @@ export enum KeyCodes {
   End = 'End',
 }
 
-export enum IEKeyCodes {
+export enum IEKeys {
   ArrowUp = 'Up',
   ArrowDown = 'Down',
   ArrowRight = 'Right',
   ArrowLeft = 'Left',
   Space = 'Spacebar',
   Escape = 'Esc',
-  Home = 'Home',
-  End = 'End',
-  Enter = 'Enter',
-  Tab = 'Tab',
 }

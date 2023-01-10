@@ -3961,7 +3961,8 @@ export class ClrTooltip {
 // @public (undocumented)
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef, tooltipIdService: TooltipIdService);
+    // Warning: (ae-forgotten-export) The symbol "TooltipMouseService" needs to be exported by the entry point index.d.ts
+    constructor(injector: Injector, parentHost: ElementRef, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -3976,7 +3977,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": "id"; "position": "clrPosition"; "size": "clrSize"; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [null, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -3995,7 +3996,7 @@ export class ClrTooltipModule {
 
 // @public (undocumented)
 export class ClrTooltipTrigger {
-    constructor(toggleService: ClrPopoverToggleService, tooltipIdService: TooltipIdService);
+    constructor(toggleService: ClrPopoverToggleService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
     // (undocumented)
     ariaDescribedBy: string;
     // (undocumented)

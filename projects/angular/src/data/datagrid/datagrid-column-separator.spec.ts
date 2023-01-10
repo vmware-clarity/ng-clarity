@@ -9,7 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
@@ -96,41 +96,41 @@ export default function (): void {
 
     it('shows resize tracker on first arrow right key down event', function () {
       expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
       expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
     });
 
     it('shows resize tracker on first arrow left key down event', function () {
       expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
       expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
     });
 
     it('moves resize tracker on horizontal arrow key down events', function () {
       expect(resizeTrackerEl.style.transform).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
       expect(resizeTrackerEl.style.transform).toBe('translateX(-36px)');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
       expect(resizeTrackerEl.style.transform).toBe('translateX(-12px)');
     });
 
     it('hides resize tracker on horizontal arrow key up events', function () {
       expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
       expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: KeyCodes.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
       expect(resizeTrackerEl.style.display).toBe('none');
       expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
     });
 
     it('focuses column handle after arrow key up events', function () {
       expect(document.activeElement).not.toBe(columnHandleEl);
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
       expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: KeyCodes.ArrowRight }));
+      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
       expect(document.activeElement).toBe(columnHandleEl);
     });
   });

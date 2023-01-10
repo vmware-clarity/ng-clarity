@@ -8,10 +8,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { take } from 'rxjs/operators';
 
-import { KeyCodes } from '../../../utils/enums/key-codes.enum';
+import { Keys } from '../../../utils/enums/keys.enum';
 import { ArrowKeyDirection } from '../../../utils/focus/arrow-key-direction.enum';
 import { customFocusableItemProvider } from '../../../utils/focus/focusable-item/custom-focusable-item-provider';
-import { keyValidator } from '../../../utils/focus/key-focus/util';
+import { normalizeKey } from '../../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
 import { OptionSelectionService } from './option-selection.service';
@@ -110,10 +110,10 @@ export class ComboboxFocusHandler<T> {
   // this service is only interested in keys that may move the focus
   private handleTextInput(event: KeyboardEvent): boolean {
     let preventDefault = false;
-    const key = keyValidator(event.key);
+    const key = normalizeKey(event.key);
     if (event) {
       switch (key) {
-        case KeyCodes.Enter:
+        case Keys.Enter:
           if (this.toggleService.open && this.pseudoFocus.model) {
             if (this.selectionService.multiselectable) {
               this.selectionService.toggle(this.pseudoFocus.model.value);
@@ -123,18 +123,18 @@ export class ComboboxFocusHandler<T> {
             preventDefault = true;
           }
           break;
-        case KeyCodes.Space:
+        case Keys.Space:
           if (!this.toggleService.open) {
             this.toggleService.open = true;
             preventDefault = true;
           }
           break;
-        case KeyCodes.ArrowUp:
+        case Keys.ArrowUp:
           this.preventViewportScrolling(event);
           this.openAndMoveTo(ArrowKeyDirection.UP);
           preventDefault = true;
           break;
-        case KeyCodes.ArrowDown:
+        case Keys.ArrowDown:
           this.preventViewportScrolling(event);
           this.openAndMoveTo(ArrowKeyDirection.DOWN);
           preventDefault = true;
@@ -142,9 +142,9 @@ export class ComboboxFocusHandler<T> {
         default:
           // Any other keypress
           if (
-            event.key !== KeyCodes.Tab &&
-            !(this.selectionService.multiselectable && event.key === KeyCodes.Backspace) &&
-            !(event.key === KeyCodes.Escape) &&
+            event.key !== Keys.Tab &&
+            !(this.selectionService.multiselectable && event.key === Keys.Backspace) &&
+            !(event.key === Keys.Escape) &&
             !this.toggleService.open
           ) {
             this.toggleService.open = true;

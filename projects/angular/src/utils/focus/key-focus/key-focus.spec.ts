@@ -8,7 +8,7 @@ import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@an
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { KeyCodes } from '../../enums/key-codes.enum';
+import { Keys } from '../../enums/keys.enum';
 import { ClrKeyFocus } from './key-focus';
 import { ClrKeyFocusItem } from './key-focus-item';
 import { ClrKeyFocusModule } from './key-focus.module';
@@ -89,11 +89,11 @@ describe('KeyFocus directive', () => {
     it('read current position', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(1);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(clarityDirective.current).toBe(1);
     });
 
@@ -102,7 +102,7 @@ describe('KeyFocus directive', () => {
       // Initial focus notification
       expect(component.changed).toBe(true);
       // Test with arrow
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(component.changed).toBe(true);
       // Test with position
       component.changed = false;
@@ -110,7 +110,7 @@ describe('KeyFocus directive', () => {
       expect(component.changed).toBe(true);
       // Test arrow at border, no rotation
       component.changed = false;
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(component.changed).toBe(false);
     });
 
@@ -123,20 +123,20 @@ describe('KeyFocus directive', () => {
     it('current value updates with keys', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(clarityDirective.current).toBe(2);
-      keyPress(KeyCodes.Home);
+      keyPress(Keys.Home);
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(clarityDirective.current).toBe(0);
     });
 
     it('current value updates, when elements are being removed', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(clarityDirective.current).toBe(2);
       component.showLast = false;
       fixture.detectChanges();
@@ -145,7 +145,7 @@ describe('KeyFocus directive', () => {
     it('checks if keyboard event comes focused current', () => {
       openMenu();
       expect(clarityDirective.current).toBe(0);
-      keyPress(KeyCodes.ArrowUp, component.keyFocusItems.last.nativeElement);
+      keyPress(Keys.ArrowUp, component.keyFocusItems.last.nativeElement);
       expect(clarityDirective.current).toBe(1);
     });
   });
@@ -211,20 +211,20 @@ describe('KeyFocus directive', () => {
     it('moves focus with home/end keys', () => {
       openMenu();
       expect(document.activeElement.textContent).toBe('Button 1');
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
-      keyPress(KeyCodes.Home);
+      keyPress(Keys.Home);
       expect(document.activeElement.textContent).toBe('Button 1');
     });
 
     it('prevents focus rotation', () => {
       openMenu();
       expect(document.activeElement.textContent).toBe('Button 1');
-      keyPress(KeyCodes.ArrowUp);
+      keyPress(Keys.ArrowUp);
       expect(document.activeElement.textContent).toBe('Button 1');
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
-      keyPress(KeyCodes.ArrowDown);
+      keyPress(Keys.ArrowDown);
       expect(document.activeElement.textContent).toBe('Button 3');
     });
 
@@ -233,15 +233,15 @@ describe('KeyFocus directive', () => {
         openMenu();
         expect(document.activeElement.textContent).toBe('Button 1');
         // Arrow down
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 2');
         // Make sure it's only ArrowDown/Up
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 2');
         // Arrow up
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 1');
       });
     });
@@ -255,15 +255,15 @@ describe('KeyFocus directive', () => {
         openMenu();
         expect(document.activeElement.textContent).toBe('Button 1');
         // Arrow right
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
         // Make sure it's only ArrowRight/Left
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 2');
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 2');
         // Arrow up
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 1');
       });
     });
@@ -276,13 +276,13 @@ describe('KeyFocus directive', () => {
       it('move focus with all arrow keys', () => {
         openMenu();
         expect(document.activeElement.textContent).toBe('Button 1');
-        keyPress(KeyCodes.ArrowRight);
+        keyPress(Keys.ArrowRight);
         expect(document.activeElement.textContent).toBe('Button 2');
-        keyPress(KeyCodes.ArrowDown);
+        keyPress(Keys.ArrowDown);
         expect(document.activeElement.textContent).toBe('Button 3');
-        keyPress(KeyCodes.ArrowUp);
+        keyPress(Keys.ArrowUp);
         expect(document.activeElement.textContent).toBe('Button 2');
-        keyPress(KeyCodes.ArrowLeft);
+        keyPress(Keys.ArrowLeft);
         expect(document.activeElement.textContent).toBe('Button 1');
       });
     });
@@ -316,7 +316,7 @@ describe('KeyFocus directive', () => {
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
       fixture.detectChanges();
       expect(document.activeElement.textContent).toBe('Button 1');
-      keyPress(KeyCodes.End);
+      keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
       domComponent.showLast = false;
       fixture.detectChanges();

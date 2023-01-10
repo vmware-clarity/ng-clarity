@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export interface ELement {
+export interface Element {
   name: string;
   symbol: string;
   number: number;
   electronegativity: number;
 }
 
-export const elements: ELement[] = [
+export const elements: Element[] = [
   { name: 'Actinium', symbol: 'Ac', number: 89, electronegativity: 1.1 },
   { name: 'Aluminum', symbol: 'Al', number: 13, electronegativity: 1.61 },
   { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },

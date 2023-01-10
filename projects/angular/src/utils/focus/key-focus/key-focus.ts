@@ -16,11 +16,11 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { KeyCodes } from '../../enums/key-codes.enum';
+import { Keys } from '../../enums/keys.enum';
 import { ClrFocusDirection } from './enums/focus-direction.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocusItem } from './key-focus-item';
-import { keyValidator, preventArrowKeyScroll } from './util';
+import { normalizeKey, preventArrowKeyScroll } from './util';
 
 @Component({
   selector: '[clrKeyFocus]',
@@ -119,9 +119,9 @@ export class ClrKeyFocus {
       this.moveTo(this.current - 1);
     } else if (this.nextKeyPressed(event) && this.currentFocusIsNotLastItem()) {
       this.moveTo(this.current + 1);
-    } else if (event.code === KeyCodes.Home) {
+    } else if (event.code === Keys.Home) {
       this.moveTo(0);
-    } else if (event.code === KeyCodes.End) {
+    } else if (event.code === Keys.End) {
       this.moveTo(this.focusableItems.length - 1);
     }
 
@@ -180,30 +180,30 @@ export class ClrKeyFocus {
   }
 
   protected nextKeyPressed(event: KeyboardEvent) {
-    const key = keyValidator(event.key);
+    const key = normalizeKey(event.key);
 
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
-        return key === KeyCodes.ArrowDown;
+        return key === Keys.ArrowDown;
       case ClrFocusDirection.HORIZONTAL:
-        return key === KeyCodes.ArrowRight;
+        return key === Keys.ArrowRight;
       case ClrFocusDirection.BOTH:
-        return key === KeyCodes.ArrowDown || key === KeyCodes.ArrowRight;
+        return key === Keys.ArrowDown || key === Keys.ArrowRight;
       default:
         return false;
     }
   }
 
   protected prevKeyPressed(event: KeyboardEvent) {
-    const key = keyValidator(event.key);
+    const key = normalizeKey(event.key);
 
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
-        return key === KeyCodes.ArrowUp;
+        return key === Keys.ArrowUp;
       case ClrFocusDirection.HORIZONTAL:
-        return key === KeyCodes.ArrowLeft;
+        return key === Keys.ArrowLeft;
       case ClrFocusDirection.BOTH:
-        return key === KeyCodes.ArrowUp || key === KeyCodes.ArrowLeft;
+        return key === Keys.ArrowUp || key === Keys.ArrowLeft;
       default:
         return false;
     }

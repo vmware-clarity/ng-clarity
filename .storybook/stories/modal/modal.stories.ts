@@ -17,7 +17,7 @@ const defaultStory: Story = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
     <div>
-      This list is provided to demonstrate scrolling capabillity when modal is open.
+      This list is provided to demonstrate scrolling capability when modal is open.
       <ul>
         <li *ngFor="let _ of createArray(100); let i = index">{{i + 1}}</li>
       </ul>
@@ -32,7 +32,8 @@ const defaultStory: Story = args => ({
       [clrModalSkipAnimation]="clrModalSkipAnimation"
       [clrModalStaticBackdrop]="clrModalStaticBackdrop"
       (clrModalAlternateClose)="clrModalAlternateClose($event)"
-      (clrModalOpenChange)="clrModalOpenChange($event)">
+      (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
+    >
       <h3 class="modal-title">{{title}}</h3>
       <div class="modal-body">
         {{body}}

@@ -7,7 +7,7 @@
 import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '../../utils/key-codes/key-codes';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCalendar } from './calendar';
 import { DayModel } from './model/day.model';
@@ -17,7 +17,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { createKeyboardEvent } from './utils/test-utils';
 
 export default function () {
   describe('Calendar Component', () => {
@@ -102,7 +101,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const upArrowEvent: KeyboardEvent = createKeyboardEvent(UP_ARROW, 'keydown');
+        const upArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowUp });
 
         context.clarityDirective.onKeyDown(upArrowEvent);
 
@@ -118,7 +117,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
 
-        const downArrowEvent: KeyboardEvent = createKeyboardEvent(DOWN_ARROW, 'keydown');
+        const downArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
 
         context.clarityDirective.onKeyDown(downArrowEvent);
 
@@ -134,7 +133,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const leftArrowEvent: KeyboardEvent = createKeyboardEvent(LEFT_ARROW, 'keydown');
+        const leftArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowLeft });
 
         context.clarityDirective.onKeyDown(leftArrowEvent);
 
@@ -150,7 +149,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
 
-        const rightArrowEvent: KeyboardEvent = createKeyboardEvent(RIGHT_ARROW, 'keydown');
+        const rightArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowRight });
 
         context.clarityDirective.onKeyDown(rightArrowEvent);
 

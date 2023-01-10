@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
-import { KeyCodes } from '../../utils/enums/key-codes.enum';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
@@ -422,42 +422,42 @@ export default function (): void {
       it('takes default action which is toggling selection state on Enter key if node is selectable', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
         expect(this.clarityDirective.selected as ClrSelectedState).toEqual(ClrSelectedState.UNSELECTED);
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.Enter }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Enter }));
         expect(this.clarityDirective.selected as ClrSelectedState).toEqual(ClrSelectedState.SELECTED);
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.Enter }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Enter }));
         expect(this.clarityDirective.selected as ClrSelectedState).toEqual(ClrSelectedState.UNSELECTED);
       });
 
       it('takes default action which is toggling selection state on Space key if node is selectable', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
         expect(this.clarityDirective.selected as ClrSelectedState).toBe(ClrSelectedState.UNSELECTED);
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.Space }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Space }));
         expect(this.clarityDirective.selected as ClrSelectedState).toBe(ClrSelectedState.SELECTED);
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.Space }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Space }));
         expect(this.clarityDirective.selected as ClrSelectedState).toBe(ClrSelectedState.UNSELECTED);
       });
 
       it('calls focusManager.focusFirstVisibleNode on Home key', function (this: Context) {
         spyOn(focusManager, 'focusFirstVisibleNode');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.Home }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Home }));
         expect(focusManager.focusFirstVisibleNode).toHaveBeenCalled();
       });
 
       it('calls focusManager.focusLastVisibleNode on End key', function (this: Context) {
         spyOn(focusManager, 'focusLastVisibleNode');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.End }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End }));
         expect(focusManager.focusLastVisibleNode).toHaveBeenCalled();
       });
 
       it('calls focusManager.focusNodeAbove on ArrowUp key', function (this: Context) {
         spyOn(focusManager, 'focusNodeAbove');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowUp }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expect(focusManager.focusNodeAbove).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
       it('calls focusManager.focusNodeBelow on ArrowDown key', function (this: Context) {
         spyOn(focusManager, 'focusNodeBelow');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowDown }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
@@ -465,7 +465,7 @@ export default function (): void {
         this.clarityDirective._model.children = [null]; // children array needs to have something
         expect(this.clarityDirective.expanded).toBeFalse();
         expect(this.clarityDirective.isExpandable()).toBeTrue();
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(this.clarityDirective.expanded).toBeTrue();
       });
 
@@ -473,7 +473,7 @@ export default function (): void {
         this.clarityDirective._model.children = [null]; // children array needs to have something
         expect(this.clarityDirective.expanded).toBeFalse();
         expect(contentContainer.getAttribute('aria-expanded')).toBe('false');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(this.clarityDirective.expanded).toBeTrue();
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-expanded')).toBe('true');
@@ -483,20 +483,20 @@ export default function (): void {
         this.clarityDirective._model.children = [null]; // children array needs to have something
         this.clarityDirective.expanded = true;
         spyOn(focusManager, 'focusNodeBelow');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowRight }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
       it('collapses expanded node on ArrowLeft key', function (this: Context) {
         this.clarityDirective._model.children = [null]; // children array needs to have something
         this.clarityDirective.expanded = true;
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(this.clarityDirective.expanded).toBeFalse();
       });
 
       it('calls focusManager.focusParent if node is already collapsed or not expandable on ArrowLeft key', function (this: Context) {
         spyOn(focusManager, 'focusParent');
-        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: KeyCodes.ArrowLeft }));
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(focusManager.focusParent).toHaveBeenCalledWith(this.clarityDirective._model);
       });
     });

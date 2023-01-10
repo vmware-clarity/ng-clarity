@@ -18,11 +18,12 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { Keys } from '../../utils/enums/keys.enum';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 
-// Literally any annotation would work here, but writing our own @HoneyBadger annotation feels overkill.
 @Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef) {
@@ -120,7 +121,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.documentESCListener = this.renderer.listen('document', 'keydown', event => {
         if (event && event.key) {
-          if (event.key === 'Escape' || event.key === 'Esc') {
+          if (normalizeKey(event.key) === Keys.Escape) {
             this.ngZone.run(() => {
               this.toggleService.open = false;
               this.ref.markForCheck();
