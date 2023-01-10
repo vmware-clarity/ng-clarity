@@ -2626,7 +2626,8 @@ export class ClrMainContainerModule {
 // @public (undocumented)
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
