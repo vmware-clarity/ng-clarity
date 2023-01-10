@@ -29,9 +29,9 @@ import { Observable } from 'rxjs';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
+import { KeyCodes } from '../../utils/enums/key-codes.enum';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { BACKSPACE } from '../../utils/key-codes/key-codes';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
@@ -242,7 +242,7 @@ export class ClrCombobox<T>
   @HostListener('keydown', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     // if BACKSPACE in multiselect mode, delete the last pill if text is empty
-    if (event.keyCode === BACKSPACE && this.multiSelect && this._searchText.length === 0) {
+    if (event.key === KeyCodes.Backspace && this.multiSelect && this._searchText.length === 0) {
       const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
       if (multiModel && multiModel.length > 0) {
         const lastItem: T = multiModel[multiModel.length - 1];
