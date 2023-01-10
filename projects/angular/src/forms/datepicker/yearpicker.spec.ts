@@ -15,7 +15,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { createKeyboardEvent } from './utils/test-utils';
 import { ClrYearpicker } from './yearpicker';
 
 export default function () {
@@ -140,25 +139,25 @@ export default function () {
 
         expect(buttons[3].tabIndex).toBe(0);
 
-        context.clarityElement.dispatchEvent(createKeyboardEvent(Keys.ArrowDown, 'keydown'));
+        context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         context.detectChanges();
 
         expect(buttons[3].tabIndex).toBe(-1);
         expect(buttons[4].tabIndex).toBe(0);
 
-        context.clarityElement.dispatchEvent(createKeyboardEvent(Keys.ArrowUp, 'keydown'));
+        context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         context.detectChanges();
 
         expect(buttons[4].tabIndex).toBe(-1);
         expect(buttons[3].tabIndex).toBe(0);
 
-        context.clarityElement.dispatchEvent(createKeyboardEvent(Keys.ArrowRight, 'keydown'));
+        context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         context.detectChanges();
 
         expect(buttons[3].tabIndex).toBe(-1);
         expect(buttons[8].tabIndex).toBe(0);
 
-        context.clarityElement.dispatchEvent(createKeyboardEvent(Keys.ArrowLeft, 'keydown'));
+        context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         context.detectChanges();
 
         expect(buttons[8].tabIndex).toBe(-1);
@@ -294,7 +293,7 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2009)).toBe(false);
 
         for (let i = 2009; i >= 2000; i--) {
-          context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowUp, 'keydown'));
+          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
           expect(context.clarityDirective.getTabIndex(i)).toBe(0);
         }
 
@@ -309,7 +308,7 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(false);
 
         for (let i = 2010; i <= 2019; i++) {
-          context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowDown, 'keydown'));
+          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
           expect(context.clarityDirective.getTabIndex(i)).toBe(0);
         }
 
@@ -319,12 +318,12 @@ export default function () {
       it('handles right arrow', function () {
         createYearPicker(this, 2001);
         expect(context.clarityDirective.getTabIndex(2001)).toBe(0);
-        context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowRight, 'keydown'));
+        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(context.clarityDirective.getTabIndex(2006)).toBe(0);
 
         // Boundary
         expect(context.clarityDirective.yearRangeModel.inRange(2011)).toBe(false);
-        context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowRight, 'keydown'));
+        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(context.clarityDirective.yearRangeModel.inRange(2011)).toBe(true);
         expect(context.clarityDirective.getTabIndex(2011)).toBe(0);
       });
@@ -332,12 +331,12 @@ export default function () {
       it('handles left arrow', function () {
         createYearPicker(this, 2005);
         expect(context.clarityDirective.getTabIndex(2005)).toBe(0);
-        context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowLeft, 'keydown'));
+        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(context.clarityDirective.getTabIndex(2000)).toBe(0);
 
         // Boundary
         expect(context.clarityDirective.yearRangeModel.inRange(1995)).toBe(false);
-        context.clarityDirective.onKeyDown(createKeyboardEvent(Keys.ArrowLeft, 'keydown'));
+        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(context.clarityDirective.yearRangeModel.inRange(1995)).toBe(true);
         expect(context.clarityDirective.getTabIndex(1995)).toBe(0);
       });

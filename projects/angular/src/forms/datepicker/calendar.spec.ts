@@ -17,7 +17,6 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { createKeyboardEvent } from './utils/test-utils';
 
 export default function () {
   describe('Calendar Component', () => {
@@ -102,7 +101,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const upArrowEvent = createKeyboardEvent(Keys.ArrowUp, 'keydown');
+        const upArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowUp });
 
         context.clarityDirective.onKeyDown(upArrowEvent);
 
@@ -118,7 +117,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
 
-        const downArrowEvent = createKeyboardEvent(Keys.ArrowDown, 'keydown');
+        const downArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
 
         context.clarityDirective.onKeyDown(downArrowEvent);
 
@@ -134,7 +133,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const leftArrowEvent = createKeyboardEvent(Keys.ArrowLeft, 'keydown');
+        const leftArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowLeft });
 
         context.clarityDirective.onKeyDown(leftArrowEvent);
 
@@ -150,7 +149,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
 
-        const rightArrowEvent = createKeyboardEvent(Keys.ArrowRight, 'keydown');
+        const rightArrowEvent = new KeyboardEvent('keydown', { key: Keys.ArrowRight });
 
         context.clarityDirective.onKeyDown(rightArrowEvent);
 
