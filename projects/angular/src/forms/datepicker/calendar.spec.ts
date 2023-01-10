@@ -102,7 +102,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const upArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowUp, 'keydown');
+        const upArrowEvent = createKeyboardEvent(Keys.ArrowUp, 'keydown');
 
         context.clarityDirective.onKeyDown(upArrowEvent);
 
@@ -118,7 +118,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 25);
 
-        const downArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowDown, 'keydown');
+        const downArrowEvent = createKeyboardEvent(Keys.ArrowDown, 'keydown');
 
         context.clarityDirective.onKeyDown(downArrowEvent);
 
@@ -134,7 +134,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2015, 0, 2);
 
-        const leftArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowLeft, 'keydown');
+        const leftArrowEvent = createKeyboardEvent(Keys.ArrowLeft, 'keydown');
 
         context.clarityDirective.onKeyDown(leftArrowEvent);
 
@@ -150,7 +150,7 @@ export default function () {
         dateNavigationService.initializeCalendar();
         dateNavigationService.focusedDay = new DayModel(2014, 11, 31);
 
-        const rightArrowEvent: KeyboardEvent = createKeyboardEvent(Keys.ArrowRight, 'keydown');
+        const rightArrowEvent = createKeyboardEvent(Keys.ArrowRight, 'keydown');
 
         context.clarityDirective.onKeyDown(rightArrowEvent);
 
