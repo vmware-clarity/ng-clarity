@@ -7,7 +7,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
 import { Keys } from '../../utils/enums/keys.enum';
-import { keyValidator } from '../../utils/focus/key-focus/util';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
@@ -87,7 +87,7 @@ export class ClrMonthpicker implements AfterViewInit {
     // the logic is fairly simple and it didn't make sense for me
     // to create extra observables just to move this logic to the service.
     if (event) {
-      const key = keyValidator(event.key);
+      const key = normalizeKey(event.key);
       if (key === Keys.ArrowUp && this._focusedMonthIndex > 0) {
         event.preventDefault();
         this._focusedMonthIndex--;

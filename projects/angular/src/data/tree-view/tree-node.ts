@@ -30,7 +30,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { Keys } from '../../utils/enums/keys.enum';
-import { isKeyEitherLetterOrNumber, keyValidator, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
+import { isKeyEitherLetterOrNumber, normalizeKey, preventArrowKeyScroll } from '../../utils/focus/key-focus/util';
 import { ForTypeAheadProvider } from '../../utils/for-type-ahead/for-type-ahead.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -263,7 +263,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     preventArrowKeyScroll(event);
 
     // https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard-interaction-22
-    switch (keyValidator(event.key)) {
+    switch (normalizeKey(event.key)) {
       case Keys.ArrowUp:
         this.focusManager.focusNodeAbove(this._model);
         break;

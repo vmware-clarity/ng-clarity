@@ -8,7 +8,7 @@ import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
-import { keyValidator } from '../../utils/focus/key-focus/util';
+import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { ClrDayOfWeek } from './interfaces/day-of-week.interface';
 import { CalendarViewModel } from './model/calendar-view.model';
 import { CalendarModel } from './model/calendar.model';
@@ -110,7 +110,7 @@ export class ClrCalendar implements OnDestroy {
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event && this.focusedDay) {
-      switch (keyValidator(event.key)) {
+      switch (normalizeKey(event.key)) {
         case Keys.ArrowUp:
           event.preventDefault();
           this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);

@@ -6,7 +6,7 @@
 
 import { IEKeys, Keys } from '../../enums/keys.enum';
 
-export function keyValidator(key: string) {
+export function normalizeKey(key: string) {
   if (key === Keys.ArrowUp || key === IEKeys.ArrowUp) {
     return Keys.ArrowUp;
   } else if (key === Keys.ArrowDown || key === IEKeys.ArrowDown) {
@@ -25,14 +25,9 @@ export function keyValidator(key: string) {
 }
 
 export function preventArrowKeyScroll(event: KeyboardEvent) {
-  const validKey = keyValidator(event.key);
+  const key = normalizeKey(event.key);
 
-  if (
-    validKey === Keys.ArrowUp ||
-    validKey === Keys.ArrowDown ||
-    validKey === Keys.ArrowLeft ||
-    validKey === Keys.ArrowRight
-  ) {
+  if (key === Keys.ArrowUp || key === Keys.ArrowDown || key === Keys.ArrowLeft || key === Keys.ArrowRight) {
     // prevent element container scroll
     // MDN references this is really the only way to prevent native browser interactions
     // https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
