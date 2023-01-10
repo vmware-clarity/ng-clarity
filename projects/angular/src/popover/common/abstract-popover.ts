@@ -22,7 +22,6 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
 import { Point, Popover } from './popover';
 import { PopoverOptions } from './popover-options.interface';
 
-// Literally any annotation would work here, but writing our own @HoneyBadger annotation feels overkill.
 @Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
   constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef) {
