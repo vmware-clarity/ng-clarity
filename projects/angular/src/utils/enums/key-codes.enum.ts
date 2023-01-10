@@ -26,8 +26,4 @@ export enum IEKeyCodes {
   ArrowLeft = 'Left',
   Space = 'Spacebar',
   Escape = 'Esc',
-  Home = 'Home',
-  End = 'End',
-  Enter = 'Enter',
-  Tab = 'Tab',
 }
