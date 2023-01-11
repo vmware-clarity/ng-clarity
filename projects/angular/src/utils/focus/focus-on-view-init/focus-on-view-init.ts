@@ -21,6 +21,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
 
+const enum FocusType {
+  AlreadyFocused,
+  Direct,
+  TabIndex,
+}
+
 /*  This directive is for guiding the document focus to the newly added content when its view is initialized
     so that assistive technologies can read its content. */
 @Directive({
@@ -43,7 +49,7 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
       fromEvent(el.nativeElement, 'focusout')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          if (!this.directFocus) {
+          if (this.focusType === FocusType.TabIndex) {
             // manually set attributes and styles should be removed
             this.renderer.removeAttribute(this.el.nativeElement, 'tabindex');
             this.renderer.setStyle(this.el.nativeElement, 'outline', null);
@@ -52,7 +58,7 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     );
   }
 
-  private directFocus = true; // true if the element gets focused without need to set tabindex;
+  private focusType: FocusType;
 
   private _isEnabled: boolean;
   @Input('clrFocusOnViewInit')
@@ -63,30 +69,32 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.focus();
+    if (isPlatformBrowser(this.platformId) && this._isEnabled) {
+      this.focusType = focusElement(this.document, this.renderer, this.el.nativeElement);
+    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
   }
+}
 
-  private focus() {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    if (!this._isEnabled) {
-      return;
-    }
-    if (this.document && this.document.activeElement !== this.el.nativeElement) {
-      this.el.nativeElement.focus();
-      if (this.document.activeElement !== this.el.nativeElement) {
-        // if it's not directly focused now, it means it was a non-interactive element
-        // so we need to give it a tabindex.
-        this.directFocus = false;
-        this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '-1');
-        this.renderer.setStyle(this.el.nativeElement, 'outline', 'none');
-        this.el.nativeElement.focus();
-      }
-    }
+function focusElement(document: Document, renderer: Renderer2, element: HTMLElement) {
+  if (document.activeElement === element) {
+    return FocusType.AlreadyFocused;
+  }
+
+  element.focus();
+
+  if (document.activeElement === element) {
+    return FocusType.Direct;
+  } else {
+    // if it's not directly focused now, it means it was a non-interactive element
+    // so we need to give it a tabindex.
+    renderer.setAttribute(element, 'tabindex', '-1');
+    renderer.setStyle(element, 'outline', 'none');
+    element.focus();
+
+    return FocusType.TabIndex;
   }
 }
