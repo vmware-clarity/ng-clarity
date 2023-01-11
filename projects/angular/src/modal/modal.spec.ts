@@ -5,7 +5,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +18,8 @@ import { ClrModalModule } from './modal.module';
 
 @Component({
   template: `
+    <button #button></button>
+
     <clr-modal
       [(clrModalOpen)]="opened"
       [clrModalClosable]="closable"
@@ -36,6 +38,7 @@ import { ClrModalModule } from './modal.module';
   `,
 })
 class TestComponent {
+  @ViewChild('button') button: ElementRef<HTMLButtonElement>;
   @ViewChild(ClrModal) modalInstance: ClrModal;
 
   opened = true;
@@ -183,6 +186,22 @@ describe('Modal', () => {
   it('focuses on the title when opened', fakeAsync(() => {
     expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
+
+  it('restores focus the previously-focused element when closed', () => {
+    fixture.componentInstance.opened = false;
+    fixture.detectChanges();
+
+    fixture.componentInstance.button.nativeElement.focus();
+    fixture.detectChanges();
+
+    fixture.componentInstance.opened = true;
+    fixture.detectChanges();
+
+    fixture.componentInstance.opened = false;
+    fixture.detectChanges();
+
+    expect(document.activeElement).toEqual(fixture.componentInstance.button.nativeElement);
+  });
 
   it('supports a clrModalSize option', fakeAsync(() => {
     expect(compiled.querySelector('.modal-sm')).toBeNull();

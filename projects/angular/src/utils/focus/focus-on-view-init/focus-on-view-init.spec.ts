@@ -17,10 +17,10 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
   template: `
     <button #dummyButton>dummy button</button>
     <div *ngIf="displayNoExistingTabindex">
-      <h1 clrFocusOnViewInit>Title</h1>
+      <h1 clrFocusOnViewInit [clrFocusOnViewInitRestoreFocusOnDestroy]="restoreFocusOnDestroy">Title</h1>
     </div>
     <div *ngIf="displayExistingTabindex">
-      <h1 clrFocusOnViewInit tabindex="5">Title</h1>
+      <h1 clrFocusOnViewInit [clrFocusOnViewInitRestoreFocusOnDestroy]="restoreFocusOnDestroy" tabindex="5">Title</h1>
     </div>
     <div *ngIf="displayDisabled">
       <h1 [clrFocusOnViewInit]="false">Title</h1>
@@ -28,6 +28,7 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
   `,
 })
 class TestComponent {
+  restoreFocusOnDestroy = false;
   displayNoExistingTabindex = false;
   displayExistingTabindex = false;
   displayDisabled = false;
@@ -118,6 +119,44 @@ describe('ClrFocusOnViewInit', () => {
       component.displayDisabled = true;
       fixture.detectChanges();
       expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+    });
+
+    it('should restore focus if option enabled', () => {
+      // enable restore focus
+      component.restoreFocusOnDestroy = true;
+
+      // focus button
+      component.buttonElRef.nativeElement.focus();
+      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+
+      // focus title
+      component.displayNoExistingTabindex = true;
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(component.focusOnItElRef.nativeElement);
+
+      // remove title, focus should return to button
+      component.displayNoExistingTabindex = false;
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+    });
+
+    it('should not restore focus if option not enabled', () => {
+      // disable restore focus
+      component.restoreFocusOnDestroy = false;
+
+      // focus button
+      component.buttonElRef.nativeElement.focus();
+      expect(document.activeElement).toBe(component.buttonElRef.nativeElement);
+
+      // focus title
+      component.displayNoExistingTabindex = true;
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(component.focusOnItElRef.nativeElement);
+
+      // remove title, focus should default to body
+      component.displayNoExistingTabindex = false;
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(document.body);
     });
   });
 

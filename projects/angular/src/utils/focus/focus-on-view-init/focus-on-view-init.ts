@@ -68,14 +68,24 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     }
   }
 
+  @Input('clrFocusOnViewInitRestoreFocusOnDestroy') restoreFocusOnDestroy = false;
+
+  private previouslyFocusedElement: HTMLElement;
+
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId) && this._isEnabled) {
+      this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
+
       this.focusType = focusElement(this.document, this.renderer, this.el.nativeElement);
     }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
+
+    if (this.restoreFocusOnDestroy && this.previouslyFocusedElement) {
+      focusElement(this.document, this.renderer, this.previouslyFocusedElement);
+    }
   }
 }
 

@@ -2415,7 +2415,9 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": "clrFocusOnViewInit"; }, {}, never>;
+    restoreFocusOnDestroy: boolean;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": "clrFocusOnViewInit"; "restoreFocusOnDestroy": "clrFocusOnViewInitRestoreFocusOnDestroy"; }, {}, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
 }

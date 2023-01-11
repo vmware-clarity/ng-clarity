@@ -127,7 +127,9 @@ export class FocusTrapDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    // We need to preserve the currently-focused element so that `clrFocusOnViewInit` can restore focus if needed.
+    // otherwise; focus the host element.
+    if (isPlatformBrowser(this.platformId) && !this.el.nativeElement.querySelector('[clrFocusOnViewInit]')) {
       this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '-1');
       this.el.nativeElement.focus();
     }
