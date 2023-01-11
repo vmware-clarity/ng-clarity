@@ -33,17 +33,11 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     private el: ElementRef,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(FOCUS_ON_VIEW_INIT) private focusOnViewInit: boolean,
-    @Inject(DOCUMENT) document: any,
+    @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     ngZone: NgZone
   ) {
     this._isEnabled = this.focusOnViewInit;
-
-    // Angular compiler doesn't understand the type Document
-    // when working out the metadata for injectable parameters,
-    // even though it understands the injection token DOCUMENT
-    // https://github.com/angular/angular/issues/20351
-    this.document = document;
 
     ngZone.runOutsideAngular(() =>
       fromEvent(el.nativeElement, 'focusout')
@@ -58,7 +52,6 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     );
   }
 
-  private document: Document;
   private directFocus = true; // true if the element gets focused without need to set tabindex;
 
   private _isEnabled: boolean;

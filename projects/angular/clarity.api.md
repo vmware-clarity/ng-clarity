@@ -2407,7 +2407,7 @@ class ClrExpandableAnimationModule {
 
 // @public (undocumented)
 export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
-    constructor(el: ElementRef, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
+    constructor(el: ElementRef, platformId: any, focusOnViewInit: boolean, document: Document, renderer: Renderer2, ngZone: NgZone);
     // (undocumented)
     set isEnabled(value: boolean | string);
     // (undocumented)
