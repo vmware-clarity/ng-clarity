@@ -23,11 +23,13 @@ export default function (): void {
         let wizard: ClrWizard;
         let component: UnopenedWizardTestComponent;
 
-        beforeEach(function () {
+        beforeEach(async function () {
           context = this.create(ClrWizard, UnopenedWizardTestComponent);
           wizard = context.clarityDirective;
           component = context.hostComponent;
           context.detectChanges();
+
+          await context.fixture.whenStable();
         });
 
         describe('open', () => {
@@ -105,12 +107,14 @@ export default function (): void {
         let pageCollectionService: PageCollectionService;
         let wizard: ClrWizard;
 
-        beforeEach(function () {
+        beforeEach(async function () {
           context = this.create(ClrWizard, BasicWizardTestComponent);
           wizardNavigationService = context.getClarityProvider(WizardNavigationService);
           pageCollectionService = context.getClarityProvider(PageCollectionService);
           wizard = context.clarityDirective;
           context.detectChanges();
+
+          await context.fixture.whenStable();
         });
 
         describe('currentPage', () => {
@@ -234,10 +238,12 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(function () {
+      beforeEach(async function () {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
+
+        await context.fixture.whenStable();
       });
 
       describe('Current page onchange', () => {
@@ -616,10 +622,12 @@ export default function (): void {
       let context: TestContext<ClrWizard, DynamicWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(function () {
+      beforeEach(async function () {
         context = this.create(ClrWizard, DynamicWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
+
+        await context.fixture.whenStable();
       });
 
       it('pages can be added via an ngFor', () => {
@@ -726,10 +734,12 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(function () {
+      beforeEach(async function () {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
+
+        await context.fixture.whenStable();
       });
 
       describe('Page title focus', () => {
@@ -746,10 +756,12 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(function () {
+      beforeEach(async function () {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
+
+        await context.fixture.whenStable();
       });
 
       describe('aria-labelledby', () => {
