@@ -37,7 +37,6 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
     <ul
       class="nav"
       role="tablist"
-      [attr.aria-owns]="tabIds"
       [clrKeyFocus]="tabLinkElements"
       clrDirection="both"
       (clrFocusChange)="toggleOverflowOnPosition($event)"
@@ -149,10 +148,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   get activeTabPosition() {
     return this._tabLinkDirectives.findIndex(link => link.active);
-  }
-
-  get tabIds() {
-    return this.tabsService.children.map(tab => tab.tabLink.tabLinkId).join(' ');
   }
 
   get isCurrentInOverflow() {
