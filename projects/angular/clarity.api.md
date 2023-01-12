@@ -2691,7 +2691,7 @@ export class ClrModalModule {
     // Warning: (ae-forgotten-export) The symbol "i2_23" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_30.ClrModal, typeof i2_23.ClrModalBody], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_30.ClrModal, typeof i2_23.ClrModalBody, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_30.ClrModal, typeof i2_23.ClrModalBody], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_30.ClrModal, typeof i2_23.ClrModalBody, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
