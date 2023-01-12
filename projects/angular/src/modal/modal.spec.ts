@@ -67,7 +67,7 @@ describe('Modal', () => {
   let modal: ClrModal;
   const commonStrings = new ClrCommonStringsService();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
       declarations: [TestComponent, TestDefaultsComponent],
@@ -77,6 +77,8 @@ describe('Modal', () => {
     fixture.detectChanges();
     compiled = fixture.nativeElement;
     modal = fixture.componentInstance.modalInstance;
+
+    await fixture.whenStable();
   });
 
   function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean): void {
