@@ -4179,8 +4179,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     resetKeyFocusCurrentToActive(event: FocusEvent): void;
     // (undocumented)
-    get tabIds(): string;
-    // (undocumented)
     get tabLinkDirectives(): ClrTabLink[];
     // (undocumented)
     tabLinkElements: HTMLElement[];
