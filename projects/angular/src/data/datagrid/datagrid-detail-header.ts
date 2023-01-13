@@ -15,7 +15,7 @@ import { DetailService } from './providers/detail.service';
     '[class.datagrid-detail-header]': 'true',
   },
   template: `
-    <div class="datagrid-detail-header-title" clrFocusOnViewInit [id]="titleId">
+    <div class="datagrid-detail-header-title" cdkFocusInitial tabindex="-1" [id]="titleId">
       <ng-content></ng-content>
     </div>
     <div class="datagrid-detail-pane-close">
