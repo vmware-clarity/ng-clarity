@@ -34,12 +34,13 @@
   pokemon they are interested in.
 </p>
 
-<h4>Numeric filter</h4>
+<h4>Numeric and date filter</h4>
 
 <p>
-  The ID column demonstrates a built-in numeric filter. You provide the function logic and the user can optionally enter
-  high and low limits for elements in the column. In this case, pass a
-  <code class="clr-code">&lt;clr-dg-numeric-filter&gt;</code> component.
+  The ID and created columns demonstrate the built-in numeric and date filters. You provide the function logic and the
+  user can optionally enter high and low limits for elements in the column. In this case, pass a
+  <code class="clr-code">&lt;clr-dg-numeric-filter&gt;</code> or
+  <code class="clr-code">&lt;clr-dg-date-filter&gt;</code> component.
 </p>
 
 <clr-datagrid>
@@ -48,7 +49,10 @@
     User ID
     <clr-dg-numeric-filter [clrDgNumericFilter]="idFilter"></clr-dg-numeric-filter>
   </clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>
+    Creation date
+    <clr-dg-date-filter [clrDgDateFilter]="creationFilter"></clr-dg-date-filter>
+  </clr-dg-column>
   <clr-dg-column>
     Pokemon
     <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter"></clr-dg-string-filter>
