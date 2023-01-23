@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2022 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -38,7 +38,6 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
     <ul
       class="nav"
       role="tablist"
-      [attr.aria-owns]="tabIds"
       [clrKeyFocus]="tabLinkElements"
       clrDirection="both"
       (clrFocusChange)="toggleOverflowOnPosition($event)"
@@ -151,10 +150,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   get activeTabPosition() {
     return this._tabLinkDirectives.findIndex(link => link.active);
-  }
-
-  get tabIds() {
-    return this.tabsService.children.map(tab => tab.tabLink.tabLinkId).join(' ');
   }
 
   get isCurrentInOverflow() {
