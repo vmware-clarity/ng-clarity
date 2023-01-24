@@ -21,7 +21,9 @@
   ></cds-icon>
 </button>
 <div class="nav-content">
-  <ng-content></ng-content>
+  <div role="list">
+    <ng-content></ng-content>
+  </div>
   <button
     (click)="collapsed = false"
     class="nav-btn"
