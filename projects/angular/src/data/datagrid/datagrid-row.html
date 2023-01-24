@@ -61,8 +61,8 @@
         <div
           *ngIf="selection.selectionType === SELECTION_TYPE.Single"
           class="datagrid-select datagrid-fixed-column datagrid-cell"
-          role="gridcell"
           [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
+          role="gridcell"
         >
           <!-- TODO: it would be better if in addition to the generic "Select" label, we could add aria-labelledby
           to label the radio by the first cell in the row (typically an id or name).
