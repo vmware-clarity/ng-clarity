@@ -203,10 +203,12 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     return this.dateNavigationService.selectedDayChange
       .pipe(startWith(this.dateNavigationService.selectedDay))
       .subscribe(day => {
-        const label = this.getToggleButtonLabel(day);
-        const toggleEl = this.toggleButton.nativeElement;
-        this.renderer.setAttribute(toggleEl, 'aria-label', label);
-        this.renderer.setAttribute(toggleEl, 'title', label);
+        if (this.isEnabled) {
+          const label = this.getToggleButtonLabel(day);
+          const toggleEl = this.toggleButton.nativeElement;
+          this.renderer.setAttribute(toggleEl, 'aria-label', label);
+          this.renderer.setAttribute(toggleEl, 'title', label);
+        }
       });
   }
 
