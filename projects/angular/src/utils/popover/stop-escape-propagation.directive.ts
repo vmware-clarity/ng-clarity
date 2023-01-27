@@ -25,7 +25,7 @@ export class StopEscapePropagationDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   @HostListener('keyup.escape', ['$event'])
