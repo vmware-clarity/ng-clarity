@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { ClrDragEvent } from '@clr/angular';
 
 const FILES = [
@@ -18,7 +18,7 @@ const FILES = [
   styleUrls: ['./drag-and-drop.demo.scss'],
   templateUrl: './grouping.demo.html',
 })
-export class GroupingDemo {
+export class GroupingDemo implements OnDestroy {
   files: any[];
 
   droppedImages: any[] = [];
@@ -56,6 +56,13 @@ export class GroupingDemo {
       this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedMovies);
     } else if (this.droppedImages.indexOf(dragEvent.dragDataTransfer) > -1) {
       this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedImages);
+    }
+  }
+
+  @HostListener('unloaded')
+  ngOnDestroy(): void {
+    if (FILES && FILES.length) {
+      FILES.splice(0, FILES.length);
     }
   }
 }
