@@ -18,7 +18,10 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
       <ng-content></ng-content>
     </span>
   `,
-  host: { class: 'nav-link' },
+  host: {
+    class: 'nav-link',
+    role: 'listitem',
+  },
 })
 export class ClrVerticalNavLink implements OnDestroy {
   private destroy$ = new Subject<void>();

@@ -60,6 +60,7 @@ import { ClrDatagridPagination } from './datagrid-pagination';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
+import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
@@ -73,45 +74,46 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagrid,
   ClrDatagridActionBar,
   ClrDatagridActionOverflow,
+  ClrDatagridCell,
   ClrDatagridColumn,
   ClrDatagridColumnSeparator,
   ClrDatagridColumnToggle,
-  ClrDatagridHideableColumn,
-  ClrDatagridFilter,
-  ClrDatagridItems,
-  ClrDatagridItemsTrackBy,
-  ClrDatagridRow,
-  ClrDatagridRowDetail,
-  DatagridDetailRegisterer,
-  ClrDatagridCell,
-  ClrDatagridFooter,
-  ClrDatagridPagination,
-  ClrDatagridPageSize,
-  ClrDatagridPlaceholder,
   ClrDatagridColumnToggleButton,
   ClrDatagridColumnToggleTitle,
   ClrDatagridDetail,
-  ClrIfDetail,
-  ClrDatagridDetailHeader,
   ClrDatagridDetailBody,
+  ClrDatagridDetailHeader,
+  ClrDatagridFilter,
+  ClrDatagridFooter,
+  ClrDatagridHideableColumn,
+  ClrDatagridItems,
+  ClrDatagridItemsTrackBy,
+  ClrDatagridPageSize,
+  ClrDatagridPagination,
+  ClrDatagridPlaceholder,
+  ClrDatagridRow,
+  ClrDatagridRowDetail,
+  ClrDatagridSelectionCellDirective,
+  ClrIfDetail,
+  DatagridDetailRegisterer,
   WrappedCell,
   WrappedColumn,
   WrappedRow,
 
   // Renderers
-  DatagridMainRenderer,
-  DatagridHeaderRenderer,
-  DatagridRowRenderer,
   DatagridCellRenderer,
+  DatagridHeaderRenderer,
+  DatagridMainRenderer,
+  DatagridRowRenderer,
 
   // Chocolate
-  DatagridWillyWonka,
   ActionableOompaLoompa,
+  DatagridWillyWonka,
   ExpandableOompaLoompa,
 
   // Built-in shortcuts
-  DatagridStringFilter,
   DatagridNumericFilter,
+  DatagridStringFilter,
 ];
 
 @NgModule({

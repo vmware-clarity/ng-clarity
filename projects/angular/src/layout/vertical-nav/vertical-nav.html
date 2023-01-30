@@ -20,9 +20,10 @@
     [attr.title]="(this.collapsed) ? commonStrings.keys.expand : commonStrings.keys.collapse"
   ></cds-icon>
 </button>
-<!-- Click handler on .nav-content is bad but required :-( -->
 <div class="nav-content">
-  <ng-content></ng-content>
+  <div role="list">
+    <ng-content></ng-content>
+  </div>
   <button
     (click)="collapsed = false"
     class="nav-btn"
