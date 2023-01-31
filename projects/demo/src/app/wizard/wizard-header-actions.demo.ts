@@ -19,9 +19,9 @@ export class WizardHeaderActionsDemo {
 
   headerActionClicked(actionId: string) {
     if ('search' === actionId) {
-      window.open('https://www.google.com/#q=what+is+the+meaning+of+life&*', '_blank');
+      window.open('https://www.google.com?q=what+is+the+meaning+of+life', '_blank');
     } else if ('info' === actionId) {
-      window.open('http://vmware.github.com/clarity', '_blank');
+      window.open('https://clarity.design', '_blank');
     } else {
       this.userActive = !this.userActive;
     }
