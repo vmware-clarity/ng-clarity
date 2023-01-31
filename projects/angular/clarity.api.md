@@ -2642,6 +2642,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     fadeDone(e: AnimationEvent_2): void;
     // (undocumented)
+    initiallyFocusTitle: boolean;
+    // (undocumented)
     labelledBy: string;
     // (undocumented)
     modalId: string;
@@ -2666,7 +2668,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; "initiallyFocusTitle": "clrModalInitiallyFocusTitle"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-title", ".modal-header-actions", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
@@ -4249,6 +4251,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get currentPage(): ClrWizardPage;
     set currentPage(page: ClrWizardPage);
     currentPageChanged: EventEmitter<any>;
+    // (undocumented)
+    currentPageTitle: ElementRef;
     set disableStepnav(value: boolean);
     // (undocumented)
     get disableStepnav(): boolean;
@@ -4311,8 +4315,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     wizardFinished: EventEmitter<any>;
     // (undocumented)
     wizardId: string;
-    // (undocumented)
-    wizardTitle: ElementRef;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
     // (undocumented)

@@ -22,14 +22,23 @@
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <div class="modal-content-wrapper">
-      <!-- only used in wizards -->
-      <ng-content select=".modal-nav"></ng-content>
-
       <div class="modal-content">
         <div class="modal-header--accessible">
-          <div class="modal-title-wrapper" id="{{modalId}}" cdkFocusInitial tabindex="-1">
-            <ng-content select=".modal-title"></ng-content>
-          </div>
+          <ng-container
+            *ngIf="initiallyFocusTitle; then modalTitleWrapperWithInitialFocus; else modalTitleWrapper"
+          ></ng-container>
+
+          <ng-template #modalTitleWrapperWithInitialFocus>
+            <div cdkFocusInitial tabindex="-1">
+              <ng-container *ngTemplateOutlet="modalTitleWrapper"></ng-container>
+            </div>
+          </ng-template>
+
+          <ng-template #modalTitleWrapper>
+            <div class="modal-title-wrapper" id="{{modalId}}">
+              <ng-content select=".modal-title"></ng-content>
+            </div>
+          </ng-template>
 
           <!-- only used in wizards -->
           <ng-content select=".modal-header-actions"></ng-content>

@@ -28,19 +28,6 @@
     }
 
     .modal-content {
-      border-radius: 0;
-      @include css-var(
-        border-top-right-radius,
-        clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
-      );
-      @include css-var(
-        border-bottom-right-radius,
-        clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
-      );
       box-shadow: none;
       padding: 0;
       flex: 2 2 auto;
@@ -56,12 +43,17 @@
       flex: 0 0 auto;
       width: 100%;
       // right padding nudged a bit to better align icons
-      padding: $clr-wizard-default-space ($clr-wizard-default-space - $clr_baselineRem_5px) $clr_baselineRem_0_25
+      padding: $clr_baselineRem_0_8 ($clr-wizard-default-space - $clr_baselineRem_5px) $clr_baselineRem_0_8
         $clr-wizard-default-space;
     }
 
     .modal-title {
       @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
+      font-size: $clr_baselineRem_0_65 !important;
+    }
+
+    .modal-title-wrapper {
+      margin-top: $clr_baselineRem_0_1;
     }
 
     .modal-header-actions {
@@ -80,6 +72,7 @@
     }
 
     .modal-body {
+      display: flex;
       flex: 1 1 auto;
       @include css-var(color, clr-wizard-main-textColor, $clr-wizard-main-textColor, $clr-use-custom-properties);
       width: 100%;
@@ -167,19 +160,6 @@
         background-color,
         clr-wizard-stepnav-bgcolor,
         $clr-wizard-stepnav-bgcolor,
-        $clr-use-custom-properties
-      );
-      border-radius: 0;
-      @include css-var(
-        border-top-left-radius,
-        clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
-      );
-      @include css-var(
-        border-bottom-left-radius,
-        clr-wizard-border-radius,
-        $clr-wizard-border-radius,
         $clr-use-custom-properties
       );
     }
@@ -298,16 +278,14 @@
       }
     }
 
+    .clr-wizard-title-divider {
+      margin-left: 12px;
+      margin-right: 12px;
+      border-left: 1px solid black;
+    }
+
     .clr-wizard-title {
-      @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
-      margin-top: 0;
-      padding-top: $clr-wizard-default-space;
-      padding-left: $clr-wizard-default-space;
-      padding-right: $clr-wizard-default-space * 0.5;
-      padding-bottom: $clr-wizard-default-space;
-      flex: 0 0 auto;
-      font-size: $clr-modal-title-font-size;
-      line-height: $clr-modal-title-line-height;
+      @include css-var(font-weight, clr-font-weight-regular, $clr-font-weight-regular, $clr-use-custom-properties);
     }
 
     // normal modal ignores this. wizard needs it so the nav and content
@@ -319,16 +297,16 @@
       @include equilateral(100%);
       // firefox fix
       max-height: 100%;
+    }
 
-      // edge fix, related to the firefox fix above
-      .modal-nav {
-        height: auto;
-      }
+    .clr-wizard-footer {
+      position: absolute;
+      bottom: $clr-wizard-default-space;
+      right: $clr-wizard-default-space;
     }
 
     .clr-wizard-footer-buttons {
       text-align: right;
-      padding-right: $clr-wizard-default-space;
       margin: 0;
     }
 
@@ -356,12 +334,28 @@
 
     .clr-wizard-content {
       display: block;
+      overflow-y: auto;
+
+      // space for footer buttons
+      margin-bottom: 5.2em;
     }
 
+    .clr-wizard-page-title,
     .clr-wizard-page:not([aria-hidden='true']) {
       padding: $clr-wizard-default-space;
       padding-top: $clr_baselineRem_0_75;
       display: block;
+    }
+
+    .clr-wizard-page-title {
+      margin: 0;
+      padding-bottom: 0;
+      font-size: $clr_baselineRem_0_65;
+      @include css-var(font-weight, clr-font-weight-semibold, $clr-font-weight-semibold, $clr-use-custom-properties);
+    }
+
+    .clr-wizard-current-page-title {
+      @include css-var(font-weight, clr-font-weight-bold, $clr-font-weight-bold, $clr-use-custom-properties);
     }
   }
 
@@ -377,6 +371,16 @@
       display: flex;
       flex-grow: 1;
       width: 100%;
+      padding: 0;
+
+      @include css-var(border-top-width, clr-global-borderwidth, $clr-global-borderwidth, $clr-use-custom-properties);
+      border-top-style: solid;
+      @include css-var(
+        border-top-color,
+        clr-wizard-step-nav-border-color,
+        $clr-wizard-step-nav-border-color,
+        $clr-use-custom-properties
+      );
     }
 
     &.wizard-md {
@@ -385,8 +389,7 @@
         max-height: $clr-wizard-md-dialog-max-height;
       }
 
-      .modal-content,
-      .clr-wizard-stepnav-wrapper {
+      .modal-content {
         max-height: $clr-wizard-md-dialog-max-height;
       }
 
@@ -402,8 +405,7 @@
         max-height: $clr-wizard-lg-dialog-max-height;
       }
 
-      .modal-content,
-      .clr-wizard-stepnav-wrapper {
+      .modal-content {
         max-height: $clr-wizard-lg-dialog-max-height;
       }
 

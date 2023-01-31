@@ -56,6 +56,8 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
+  @Input('clrModalInitiallyFocusTitle') initiallyFocusTitle = true;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,

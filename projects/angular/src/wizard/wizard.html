@@ -12,15 +12,19 @@
   [clrModalPreventClose]="true"
   (clrModalAlternateClose)="modalCancel()"
   [clrModalLabelledById]="wizardId"
+  [clrModalInitiallyFocusTitle]="false"
 >
-  <nav class="modal-nav clr-wizard-stepnav-wrapper">
-    <h1 class="clr-wizard-title" id="{{wizardId}}"><ng-content select="clr-wizard-title"></ng-content></h1>
-    <clr-wizard-stepnav></clr-wizard-stepnav>
-  </nav>
-
-  <h2 class="modal-title" tabindex="-1" #wizardTitle>
-    <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
-  </h2>
+  <div class="modal-title">
+    <div>
+      <span cdkFocusInitial tabindex="-1" #currentPageTitle class="clr-wizard-current-page-title">
+        <ng-template [ngTemplateOutlet]="navService.currentPageNavTitle"></ng-template>
+      </span>
+      <span class="clr-wizard-title-divider"></span>
+      <span class="clr-wizard-title">
+        <ng-content select="clr-wizard-title"></ng-content>
+      </span>
+    </div>
+  </div>
 
   <div class="modal-header-actions" *ngIf="headerActionService.displayHeaderActionsWrapper">
     <div *ngIf="headerActionService.showWizardHeaderActions">
@@ -32,23 +36,29 @@
   </div>
 
   <div class="modal-body">
+    <nav class="clr-wizard-stepnav-wrapper">
+      <clr-wizard-stepnav></clr-wizard-stepnav>
+    </nav>
     <main clr-wizard-pages-wrapper class="clr-wizard-content">
+      <h3 *ngIf="navService.currentPage.pageNavTitle" class="clr-wizard-page-title">
+        <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
+      </h3>
       <ng-content></ng-content>
     </main>
-  </div>
-  <div class="modal-footer clr-wizard-footer">
-    <div class="clr-wizard-footer-buttons">
-      <div
-        *ngIf="navService.currentPage && !navService.currentPage.hasButtons"
-        class="clr-wizard-footer-buttons-wrapper"
-      >
-        <ng-content select="clr-wizard-button"></ng-content>
-      </div>
-      <div
-        *ngIf="navService.currentPage && navService.currentPage.hasButtons"
-        class="clr-wizard-footer-buttons-wrapper"
-      >
-        <ng-template [ngTemplateOutlet]="navService.currentPage.buttons"></ng-template>
+    <div class="clr-wizard-footer">
+      <div class="clr-wizard-footer-buttons">
+        <div
+          *ngIf="navService.currentPage && !navService.currentPage.hasButtons"
+          class="clr-wizard-footer-buttons-wrapper"
+        >
+          <ng-content select="clr-wizard-button"></ng-content>
+        </div>
+        <div
+          *ngIf="navService.currentPage && navService.currentPage.hasButtons"
+          class="clr-wizard-footer-buttons-wrapper"
+        >
+          <ng-template [ngTemplateOutlet]="navService.currentPage.buttons"></ng-template>
+        </div>
       </div>
     </div>
   </div>

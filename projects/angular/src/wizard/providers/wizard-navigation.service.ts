@@ -209,6 +209,17 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
+   * @memberof WizardNavigationService
+   */
+  get currentPageNavTitle(): TemplateRef<any> {
+    // when the querylist of pages is empty. this is the first place it fails...
+    if (!this.currentPage) {
+      return null;
+    }
+    return this.currentPage.navTitle;
+  }
+
+  /**
    * Returns a Boolean that tells you whether or not the current page is the first
    * page in the Wizard.
    *
