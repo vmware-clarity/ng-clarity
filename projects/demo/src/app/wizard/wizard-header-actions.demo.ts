@@ -14,7 +14,7 @@ import { ClrWizard } from '@clr/angular';
 export class WizardHeaderActionsDemo {
   @ViewChild('wizard') wizard: ClrWizard;
 
-  open = false;
+  open = true;
   userActive = true;
 
   headerActionClicked(actionId: string) {
