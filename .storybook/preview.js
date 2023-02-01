@@ -17,7 +17,7 @@ import layoutStyles from 'raw-loader!../node_modules/@cds/core/styles/module.lay
 import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module.typography.min.css';
 import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
 import highContrastThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.high-contrast.min.css';
-import shimStyles from 'raw-loader!../node_modules/@cds/core/styles/shim.clr-ui.min.css';
+import shimStyles from 'raw-loader!../dist/clr-ui/shim.cds-core.css';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
