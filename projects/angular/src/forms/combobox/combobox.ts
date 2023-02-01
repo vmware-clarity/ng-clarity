@@ -137,10 +137,16 @@ export class ClrCombobox<T>
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
+      if (this.toggleService.open) {
+        this.optionSelectionService.showAllOptions = false;
+      }
       this._searchText = text;
       this.clrInputChange.emit(this.searchText);
-      this.optionSelectionService.currentInput = this.searchText;
     }
+    // We need to trigger this even if unchanged, so the option-items directive will update its list
+    // based on the "showAllOptions" variable which may have changed in the openChange subscription below.
+    // The option-items directive does not listen to openChange, but it listens to currentInput changes.
+    this.optionSelectionService.currentInput = this.searchText;
   }
 
   get searchText(): string {
@@ -273,6 +279,8 @@ export class ClrCombobox<T>
       this.toggleService.openChange.subscribe(open => {
         if (open) {
           this.focusFirstActive();
+        } else {
+          this.optionSelectionService.showAllOptions = true;
         }
         if (this.multiSelect) {
           this.searchText = '';

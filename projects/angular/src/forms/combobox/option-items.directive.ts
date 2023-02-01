@@ -70,7 +70,9 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     if (!this._rawItems || this.filter === undefined || this.filter === null) {
       return;
     }
-    if (this._filterField) {
+    if (this.optionService.showAllOptions) {
+      this.filteredItems = this._rawItems;
+    } else if (this._filterField) {
       this.filteredItems = this._rawItems.filter(item => {
         const objValue = (item as any)[this._filterField];
         return objValue ? objValue.toString().toLowerCase().indexOf(this.filter.toLowerCase().toString()) > -1 : false;
