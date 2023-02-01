@@ -48,14 +48,14 @@
   //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
   --clr-h5-color: var(--cds-global-typography-color-400);
 
-  //H6 - sidenav_sectionHeader, toc_header
+  //H6 - toc_header
   --clr-h6-color: var(--cds-global-typography-color-400);
 
   // Non-header text styles
   //P0 - Intro text
   --clr-p0-color: var(--cds-global-typography-color-500);
 
-  //P1 - card text, dropdown_text, page_bodyText, sidenav_text, tab_text, toc_text
+  //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
   --clr-p1-color: var(--cds-global-typography-color-500);
 
   //P2 - form_label, stackview_header
@@ -553,17 +553,6 @@
   --clr-responsive-nav-hover-bg: var(--cds-global-color-gray-0); // var(--clr-color-neutral-0);
   --clr-responsive-nav-trigger-bg-color: var(--cds-global-color-gray-0); // var(--clr-color-neutral-0);
   --clr-responsive-nav-header-backdrop-bg-color: var(--cds-global-color-gray-1000); // var(--clr-color-neutral-1000);
-
-  /* Sidenav */
-
-  --clr-sidenav-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
-  --clr-sidenav-link-hover-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
-
-  --clr-sidenav-link-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-1000);
-  --clr-sidenav-link-active-bg-color: var(--clr-global-selection-color); // indirectly mapped
-
-  --clr-sidenav-header-color: var(--clr-h6-color);
-  --clr-sidenav-color: var(--clr-p1-color);
 
   /* Signpost */
 
