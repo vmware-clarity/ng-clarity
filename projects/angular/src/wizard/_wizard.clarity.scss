@@ -166,8 +166,8 @@
       border-right-style: solid;
       @include css-var(
         border-right-color,
-        clr-wizard-step-nav-border-color,
-        $clr-wizard-step-nav-border-color,
+        clr-wizard-stepnav-border-color,
+        $clr-wizard-stepnav-border-color,
         $clr-use-custom-properties
       );
       height: 100%;
@@ -215,9 +215,9 @@
     .clr-wizard-stepnav-item {
       display: block;
       // IE/OldEdge
-      box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-border-color inset;
+      box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-item-border-color inset;
       @if $clr-use-custom-properties == true {
-        box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-border-color) inset;
+        box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-item-border-color) inset;
       }
       margin: 0 0 (-1 * $clr-global-borderwidth) 0;
       padding: $clr_baselineRem_0_25 0;
@@ -259,9 +259,13 @@
 
       &.complete {
         // IE/OldEdge
-        box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-border-color--active inset;
+        box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-item-border-color--active inset;
         @if $clr-use-custom-properties == true {
-          box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-border-color--active) inset;
+          box-shadow: var(--clr-wizard-stepnav-border-size)
+            0
+            0
+            var(--clr-wizard-stepnav-item-border-color--active)
+            inset;
         }
         transition: box-shadow 0.2s ease-in;
       }

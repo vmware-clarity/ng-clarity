@@ -652,13 +652,13 @@
   --clr-wizard-sidenav-text: var(--cds-global-typography-color-500); // var(--clr-color-neutral-900);
   --clr-wizard-sidenav-text--active: var(--clr-global-on-selection-color); // indirectly mapped
   --clr-wizard-title-text: var(--cds-global-typography-color-500); // var(--clr-color-neutral-1000);
-  --clr-wizard-stepnav-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
-  --clr-wizard-stepnav-border-color--active: var(--cds-alias-status-success); // var(--clr-color-success-400);
+  --clr-wizard-stepnav-item-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
+  --clr-wizard-stepnav-item-border-color--active: var(--cds-alias-status-success); // var(--clr-color-success-400);
   --clr-wizard-stepnav-active-bgcolor: var(--clr-global-selection-color); // indirectly mapped
   --clr-wizard-header-action-color: var(--cds-global-color-gray-600); // wth? var(--clr-color-neutral-600);
   --clr-wizard-header-action-color--hovered: var(--cds-global-color-gray-1000); // wth? var(--clr-color-neutral-1000);
 
-  --clr-wizard-step-nav-border-color: var(--cds-alias-object-border-color);
+  --clr-wizard-stepnav-border-color: var(--cds-alias-object-border-color);
   --clr-wizard-box-shadow-color: rgba(0, 0, 0, 0.2);
 
   /* Tree View */
