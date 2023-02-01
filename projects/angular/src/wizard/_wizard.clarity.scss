@@ -62,9 +62,18 @@
 
     .modal-title {
       @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
-      display: flex;
-      flex-direction: row;
-      width: 100%;
+    }
+
+    .modal-header-actions {
+      // override the `display: none` in the modal styles
+      display: block;
+
+      padding-left: $clr_baselineRem_0_5;
+      padding-right: $clr_baselineRem_4px;
+    }
+
+    .modal-title,
+    .modal-header-actions {
       // align focus style across modal title
       line-height: $clr_baselineRem_1_13;
       margin-top: -1 * $clr_baselineRem_0_13;
@@ -91,23 +100,6 @@
       margin: 0;
       max-width: 100%;
       display: block;
-    }
-
-    .modal-title-text {
-      display: inline-block;
-      flex: 0 1 auto;
-      width: 100%;
-      outline: none;
-    }
-
-    .modal-title-wrapper {
-      width: 100%;
-    }
-
-    .modal-header-actions-wrapper {
-      flex: 1 0 auto;
-      padding-left: $clr_baselineRem_0_5;
-      padding-right: $clr_baselineRem_4px;
     }
 
     .clr-wizard-header-action {

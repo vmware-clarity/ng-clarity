@@ -18,20 +18,18 @@
     <clr-wizard-stepnav></clr-wizard-stepnav>
   </nav>
 
-  <h2 class="modal-title">
-    <span tabindex="-1" #wizardTitle class="modal-title-text">
-      <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
-    </span>
-
-    <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
-      <div *ngIf="headerActionService.showWizardHeaderActions">
-        <ng-content select="clr-wizard-header-action"></ng-content>
-      </div>
-      <div *ngIf="headerActionService.currentPageHasHeaderActions">
-        <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
-      </div>
-    </div>
+  <h2 class="modal-title" tabindex="-1" #wizardTitle>
+    <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
   </h2>
+
+  <div class="modal-header-actions" *ngIf="headerActionService.displayHeaderActionsWrapper">
+    <div *ngIf="headerActionService.showWizardHeaderActions">
+      <ng-content select="clr-wizard-header-action"></ng-content>
+    </div>
+    <div *ngIf="headerActionService.currentPageHasHeaderActions">
+      <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
+    </div>
+  </div>
 
   <div class="modal-body">
     <main clr-wizard-pages-wrapper class="clr-wizard-content">

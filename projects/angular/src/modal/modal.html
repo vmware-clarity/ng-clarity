@@ -30,6 +30,10 @@
           <div class="modal-title-wrapper" id="{{modalId}}" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
+
+          <!-- only used in wizards -->
+          <ng-content select=".modal-header-actions"></ng-content>
+
           <button
             type="button"
             [attr.aria-label]="closeButtonAriaLabel || commonStrings.keys.close"

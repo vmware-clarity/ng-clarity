@@ -189,8 +189,9 @@
     z-index: map-get($clr-layers, modal-bg);
   }
 
-  // modal-nav is only used in wizards
-  .modal .modal-nav {
+  // only used in wizards
+  .modal .modal-nav,
+  .modal .modal-header-actions {
     display: none;
   }
 }

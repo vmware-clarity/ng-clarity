@@ -309,19 +309,19 @@ export default function (): void {
         });
 
         it('content title should reflect current page and changes with it', () => {
-          let val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
+          let val = context.hostElement.querySelector('.modal-title').textContent.trim();
           expect(val).toBe('Longer Title for Page 1', 'inits as expected');
 
           wizard.next();
           context.detectChanges();
 
-          val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
+          val = context.hostElement.querySelector('.modal-title').textContent.trim();
           expect(val).toBe(context.hostComponent.projectedPageTitle, 'projects as expected');
 
           context.hostComponent.projectedPageTitle = 'OHAI';
           context.detectChanges();
 
-          val = context.hostElement.querySelector('.modal-title-text').textContent.trim();
+          val = context.hostElement.querySelector('.modal-title').textContent.trim();
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
