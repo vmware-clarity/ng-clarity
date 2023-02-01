@@ -15,6 +15,9 @@ export class OptionSelectionService<T> {
   selectionModel: ComboboxModel<T>;
   loading = false;
   displayField: string;
+  // Display all options on first open, even if filter text exists.
+  // https://github.com/vmware-clarity/ng-clarity/issues/386
+  showAllOptions = true;
   private _currentInput = '';
   get currentInput(): string {
     return this._currentInput;

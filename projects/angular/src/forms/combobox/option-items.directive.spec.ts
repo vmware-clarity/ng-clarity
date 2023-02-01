@@ -84,18 +84,7 @@ export default function (): void {
         this.fixture.detectChanges();
         const updatedContent = this.fixture.elementRef.nativeElement.textContent;
 
-        /* This took me quite some time to research, so it needs a detailed explanation.
-           The data not updating immediately does not mean that the new value will not be added to the combobox.
-           It only means that it won't be added to the currently open popover. Which we do not want anyway, as:
-           - it will cause flickering and focus loss/mess issues;
-           - for performance reasons we're only updating the iterator on input change (replace, pushing does not
-             count) and on filter change;
-           - the user still has the workaround to replace the input reference instead of pushing.
-           Based on the above, I prefer to avoid complicating the iterator, unless we have a real scenario for it.
-        */
-        // Deprecated check:
-        // expect(updatedContent.trim()).toEqual('01236');
-        expect(updatedContent.trim()).toEqual('0123');
+        expect(updatedContent.trim()).toEqual('01236');
       });
 
       it('handles a null input for the array of items', function () {
@@ -110,9 +99,19 @@ export default function (): void {
         expect(this.clarityDirective._rawItems).toEqual([]);
       });
 
+      it('will not filter on first open', function () {
+        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
+        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        this.testComponent.numbers.push(12);
+        optionService.currentInput = '1';
+        this.fixture.detectChanges();
+        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3, 12]);
+      });
+
       it('can filter out items based on the option service currentInput field', function () {
         expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
         const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        optionService.showAllOptions = false;
         this.testComponent.numbers.push(12);
         optionService.currentInput = '1';
         this.fixture.detectChanges();
@@ -121,6 +120,7 @@ export default function (): void {
 
       it('has case insensive filter', function () {
         const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        optionService.showAllOptions = false;
         this.testComponent.numbers.push('Room', 'Broom');
         optionService.currentInput = 'ro';
         this.fixture.detectChanges();
