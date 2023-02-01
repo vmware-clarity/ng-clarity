@@ -7,7 +7,7 @@
 @include exports('subnav.properties') {
   @if $clr-use-custom-properties == true {
     :root {
-      // Usage: ../layout/main-container/_sidenav.clarity.scss
+      // Usage: ../layout/nav/_subnav.clarity.scss
       --clr-subnav-bg-color: var(--clr-color-neutral-0);
 
       // Usage: ../layout/nav/_subnav.clarity.scss
