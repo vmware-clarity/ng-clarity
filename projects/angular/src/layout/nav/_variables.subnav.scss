@@ -4,11 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Usage: ../layout/main-container/_sidenav.clarity.scss
+// Usage: ../layout/nav/_subnav.clarity.scss
 // TODO: would be nice to key text color in subnav off of the bgColor...
 $clr-subnav-bgColor: $clr-color-neutral-0 !default;
 
-// Usage: ../layout/main-container/_sidenav.clarity.scss
 // Usage: ../layout/nav/_subnav.clarity.scss
 // Usage: ../layout/nav/_nav.clarity.scss
 $clr-subnav-height: $clr_baselineRem_1_5 !default;
