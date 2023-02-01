@@ -77,7 +77,6 @@ $clr-global-app-background: hsl(201, 30%, 15%);
   * Usages:
   * - _layout.clarity.scss
   * - _datagrid.clarity.scss
-  * - _sidenav.clarity.scss
   *
   * Component's with variables affected in the dark theme (this file)
   * - Stack View
@@ -606,7 +605,6 @@ $clr-modal-backdrop-color: hsla(0, 0%, 0%, 0.85);
   *
   * Usage:
   * - ../layout/nav/_responsive-nav.clarity.scss
-  * - ../layout/nav/_sidenav-nav.clarity.scss
   * - ../layout/nav/_subnav.clarity.scss
   */
 // $clr-sliding-panel-width: $clr_baselineRem_15;
