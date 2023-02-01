@@ -13,4 +13,12 @@ module.exports = {
   trailingComma: 'es5',
   bracketSpacing: true,
   arrowParens: 'avoid',
+  overrides: [
+    {
+      files: 'projects/ui/src/shim.cds-core.scss',
+      options: {
+        printWidth: 200,
+      },
+    },
+  ],
 };

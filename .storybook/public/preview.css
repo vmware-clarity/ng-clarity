@@ -11,4 +11,4 @@
 @import '@cds/core/styles/module.typography.min.css';
 @import '@cds/core/styles/theme.dark.min.css';
 @import '@cds/core/styles/theme.high-contrast.min.css';
-@import '@cds/core/styles/shim.clr-ui.min.css';
+@import '../../dist/clr-ui/shim.cds-core.css';
