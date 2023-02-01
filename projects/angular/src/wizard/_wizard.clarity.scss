@@ -173,8 +173,8 @@
       height: 100%;
       @include css-var(
         background-color,
-        clr-wizard-sidenav-bgcolor,
-        $clr-wizard-sidenav-bgcolor,
+        clr-wizard-stepnav-bgcolor,
+        $clr-wizard-stepnav-bgcolor,
         $clr-use-custom-properties
       );
       border-radius: 0;
@@ -196,7 +196,7 @@
       padding-left: $clr-wizard-default-space;
       display: block;
       font-size: $clr_baselineRem_0_583;
-      @include css-var(color, clr-wizard-sidenav-text, $clr-wizard-sidenav-text, $clr-use-custom-properties);
+      @include css-var(color, clr-wizard-stepnav-text, $clr-wizard-stepnav-text, $clr-use-custom-properties);
       width: 100%;
       flex: 1 1 auto;
     }
@@ -222,14 +222,14 @@
       margin: 0 0 (-1 * $clr-global-borderwidth) 0;
       padding: $clr_baselineRem_0_25 0;
       padding-left: $clr_baselineRem_8px;
-      @include css-var(color, clr-wizard-sidenav-text, $clr-wizard-sidenav-text, $clr-use-custom-properties);
+      @include css-var(color, clr-wizard-stepnav-text, $clr-wizard-stepnav-text, $clr-use-custom-properties);
       @include css-var(font-weight, clr-font-weight-regular, $clr-font-weight-regular, $clr-use-custom-properties);
 
       &.active {
         @include css-var(
           color,
-          unquote('clr-wizard-sidenav-text--active'),
-          $clr-wizard-sidenav-text--active,
+          unquote('clr-wizard-stepnav-text--active'),
+          $clr-wizard-stepnav-text--active,
           $clr-use-custom-properties
         );
         @include css-var(font-weight, clr-font-weight-semibold, $clr-font-weight-semibold, $clr-use-custom-properties);
