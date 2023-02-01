@@ -645,12 +645,10 @@
   /* Wizard */
 
   --clr-wizard-main-bgcolor: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
-  --clr-wizard-sidenav-bgcolor: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
-  // deprecated in 3.0
-  // should become --clr-wizard-main-text-color
+  --clr-wizard-stepnav-bgcolor: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
   --clr-wizard-main-text-color: var(--cds-global-typography-color-500); // var(--clr-color-on-neutral-0);
-  --clr-wizard-sidenav-text: var(--cds-global-typography-color-500); // var(--clr-color-neutral-900);
-  --clr-wizard-sidenav-text--active: var(--clr-global-on-selection-color); // indirectly mapped
+  --clr-wizard-stepnav-text: var(--cds-global-typography-color-500); // var(--clr-color-neutral-900);
+  --clr-wizard-stepnav-text--active: var(--clr-global-on-selection-color); // indirectly mapped
   --clr-wizard-title-text: var(--cds-global-typography-color-500); // var(--clr-color-neutral-1000);
   --clr-wizard-stepnav-item-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
   --clr-wizard-stepnav-item-border-color--active: var(--cds-alias-status-success); // var(--clr-color-success-400);
