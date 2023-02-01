@@ -819,13 +819,13 @@ $clr-vertical-nav-trigger-divider-border-color: hsl(199, 19%, 17%);
   *
   * Usage: ../wizard/_wizard.clarity.scss
   */
-$clr-wizard-sidenav-bgcolor: hsl(201, 30%, 15%);
-$clr-wizard-sidenav-text--active: hsl(0, 0%, 100%);
+$clr-wizard-stepnav-bgcolor: hsl(201, 30%, 15%);
+$clr-wizard-stepnav-text--active: hsl(0, 0%, 100%);
 $clr-wizard-stepnav-active-bgcolor: hsl(203, 32%, 29%);
 $clr-wizard-stepnav-item-border-color: hsl(201, 14%, 27%);
 $clr-wizard-stepnav-item-border-color--active: hsl(92, 79%, 40%);
 $clr-wizard-stepnav-border-color: hsl(200, 30%, 12%);
-$clr-wizard-sidenav-text: hsl(203, 16%, 72%);
+$clr-wizard-stepnav-text: hsl(203, 16%, 72%);
 $clr-wizard-title-text: hsl(210, 16%, 93%);
 $clr-wizard-main-text-color: hsl(203, 16%, 72%);
 $clr-wizard-stepnav-error-color: hsl(3, 90%, 62%);
