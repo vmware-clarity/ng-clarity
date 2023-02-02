@@ -4,10 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils';
-import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { SelectionType } from './enums/selection-type';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -26,8 +25,7 @@ import { Selection } from './providers/selection';
       </div>
     </ng-container>
     <ng-container *ngIf="!detailService.isOpen">
-      <ng-content select="clr-dg-column-toggle"></ng-content>
-      <clr-dg-column-toggle *ngIf="hasHideableColumns && !toggle"></clr-dg-column-toggle>
+      <clr-dg-column-toggle *ngIf="hasHideableColumns"></clr-dg-column-toggle>
       <div class="datagrid-footer-description">
         <ng-content></ng-content>
       </div>
@@ -48,8 +46,6 @@ export class ClrDatagridFooter<T = any> {
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
-
-  @ContentChild(ClrDatagridColumnToggle) toggle: ClrDatagridColumnToggle;
 
   get hasHideableColumns(): boolean {
     return this.columnsService.hasHideableColumns;

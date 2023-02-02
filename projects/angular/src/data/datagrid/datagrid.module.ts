@@ -44,7 +44,6 @@ import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
-import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
 import { ClrDatagridDetail } from './datagrid-detail';
 import { ClrDatagridDetailBody } from './datagrid-detail-body';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -77,9 +76,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridCell,
   ClrDatagridColumn,
   ClrDatagridColumnSeparator,
-  ClrDatagridColumnToggle,
-  ClrDatagridColumnToggleButton,
-  ClrDatagridColumnToggleTitle,
   ClrDatagridDetail,
   ClrDatagridDetailBody,
   ClrDatagridDetailHeader,
@@ -116,6 +112,8 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridStringFilter,
 ];
 
+const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
+
 @NgModule({
   imports: [
     CommonModule,
@@ -132,7 +130,7 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
     ClrPopoverModuleNext,
     ClrKeyFocusModule,
   ],
-  declarations: [CLR_DATAGRID_DIRECTIVES],
+  declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
   exports: [CLR_DATAGRID_DIRECTIVES],
 })
 export class ClrDatagridModule {

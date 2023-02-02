@@ -9,7 +9,6 @@ export * from './datagrid-action-bar';
 export * from './datagrid-action-overflow';
 export * from './datagrid-column';
 export * from './datagrid-column-toggle';
-export * from './datagrid-column-toggle-title';
 export * from './datagrid-column-toggle-button';
 export * from './datagrid-column-separator';
 export * from './datagrid-detail';

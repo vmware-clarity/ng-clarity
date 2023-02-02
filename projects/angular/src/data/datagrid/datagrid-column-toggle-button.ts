@@ -7,6 +7,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
@@ -20,13 +21,12 @@ import { ColumnsService } from './providers/columns.service';
       [disabled]="allHideablesVisible"
       type="button"
     >
-      <ng-content></ng-content>
+      {{ commonStrings.keys.selectAll }}
     </button>
   `,
 })
-/** @deprecated since 2.0, remove in 3.0 */
 export class ClrDatagridColumnToggleButton {
-  constructor(private columnsService: ColumnsService) {}
+  constructor(public commonStrings: ClrCommonStringsService, private columnsService: ColumnsService) {}
 
   private allSelected: Subject<boolean> = new EventEmitter();
 

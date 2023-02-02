@@ -5,10 +5,13 @@
  */
 
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridFooter } from './datagrid-footer';
 import { SelectionType } from './enums/selection-type';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { ColumnsService } from './providers/columns.service';
+import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
 import { DetailService } from './providers/detail.service';
 
 export default function (): void {
@@ -76,28 +79,20 @@ export default function (): void {
       });
     });
 
-    describe('View with Custom Toggle Buttons', function () {
-      let context: TestContext<ClrDatagridFooter<void>, ColumnTogglerTest>;
-
-      beforeEach(function () {
-        context = this.create(ClrDatagridFooter, ColumnTogglerTest, DATAGRID_SPEC_PROVIDERS);
-      });
-
-      it('projects custom column toggler', function () {
-        context.clarityElement.querySelector('.column-toggle--action').click();
-        context.detectChanges();
-        const titleText: HTMLElement = document.body.querySelector('clr-dg-column-toggle-title');
-        const footerSwitch: HTMLElement = document.body.querySelector('.switch-footer clr-dg-column-toggle-button');
-        expect(titleText.innerText).toMatch('Custom Title');
-        expect(footerSwitch.innerText).toMatch('OK!!!');
-      });
-    });
-
     describe('View with Detail Pane open', function () {
-      let context: TestContext<ClrDatagridFooter<void>, ColumnTogglerTest>;
+      let context: TestContext<ClrDatagridFooter<void>, SimpleTest>;
 
       beforeEach(function () {
-        context = this.create(ClrDatagridFooter, ColumnTogglerTest, DATAGRID_SPEC_PROVIDERS);
+        context = this.create(ClrDatagridFooter, SimpleTest, [
+          ...DATAGRID_SPEC_PROVIDERS,
+          MOCK_COLUMN_SERVICE_PROVIDER,
+        ]);
+
+        // mock a hideable column
+        const columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;
+        columnsService.columns.push(new BehaviorSubject({} as any));
+        columnsService.mockAllHideable();
+
         context.detectChanges();
       });
 
@@ -115,17 +110,3 @@ export default function (): void {
   template: `<clr-dg-footer>Hello world</clr-dg-footer>`,
 })
 class SimpleTest {}
-
-@Component({
-  template: `
-    <clr-dg-footer>
-      <clr-dg-column-toggle>
-        <clr-dg-column-toggle-title>Custom Title</clr-dg-column-toggle-title>
-        <clr-dg-column-toggle-button type="ok">OK!!!</clr-dg-column-toggle-button>
-        <clr-dg-column-toggle-button type="selectAll">Select All!!!</clr-dg-column-toggle-button>
-      </clr-dg-column-toggle>
-      Hello world
-    </clr-dg-footer>
-  `,
-})
-class ColumnTogglerTest {}
