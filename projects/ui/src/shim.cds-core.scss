@@ -719,14 +719,9 @@
   --clr-datagrid-font-color: var(--cds-global-typography-color-500);
   --clr-datagrid-default-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-datagrid-icon-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
-
-  // deprecated in 3.0
-  // should become --clr-datagrid-row-hover-color
-  --clr-datagrid-row-hover: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
+  --clr-datagrid-row-hover-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
   --clr-datagrid-row-hover-font-color: var(--cds-global-typography-color-500); // var(--clr-color-neutral-1000);
-  // deprecated in 3.0
-  // should become --clr-datagrid-action-toggle-color
-  --clr-datagrid-action-toggle: var(--cds-alias-object-interaction-background-active); // var(--cds-global-color-gray-700); // var(--clr-color-neutral-700);
+  --clr-datagrid-action-toggle-color: var(--cds-alias-object-interaction-background-active); // var(--cds-global-color-gray-700); // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-disabled-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-datagrid-pagination-input-border-color: var(--cds-alias-object-border-color); // indirectly mapped;

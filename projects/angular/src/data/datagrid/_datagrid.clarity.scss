@@ -98,10 +98,20 @@
     }
 
     &:hover {
-      @include css-var(background-color, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+      @include css-var(
+        background-color,
+        clr-datagrid-row-hover-color,
+        $clr-datagrid-row-hover-color,
+        $clr-use-custom-properties
+      );
 
       .datagrid-row-sticky {
-        @include css-var(background-color, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+        @include css-var(
+          background-color,
+          clr-datagrid-row-hover-color,
+          $clr-datagrid-row-hover-color,
+          $clr-use-custom-properties
+        );
       }
     }
 
@@ -214,7 +224,12 @@
         }
 
         &.active {
-          @include css-var(background, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+          @include css-var(
+            background,
+            clr-datagrid-row-hover-color,
+            $clr-datagrid-row-hover-color,
+            $clr-use-custom-properties
+          );
           @include css-var(color, clr-color-neutral-1000, $clr-color-neutral-1000, $clr-use-custom-properties);
         }
 
@@ -338,7 +353,12 @@
         }
 
         &.active {
-          @include css-var(background, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+          @include css-var(
+            background,
+            clr-datagrid-row-hover-color,
+            $clr-datagrid-row-hover-color,
+            $clr-use-custom-properties
+          );
           @include css-var(color, clr-color-neutral-1000, $clr-color-neutral-1000, $clr-use-custom-properties);
         }
 
@@ -454,7 +474,12 @@
         }
 
         &.active {
-          @include css-var(background, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+          @include css-var(
+            background,
+            clr-datagrid-row-hover-color,
+            $clr-datagrid-row-hover-color,
+            $clr-use-custom-properties
+          );
           @include css-var(
             color,
             clr-datagrid-row-hover-font-color,
@@ -1029,8 +1054,8 @@
             // Fixed active state on this button for Safari.
             @include css-var(
               color,
-              clr-datagrid-action-toggle,
-              $clr-datagrid-action-toggle,
+              clr-datagrid-action-toggle-color,
+              $clr-datagrid-action-toggle-color,
               $clr-use-custom-properties
             );
           }
@@ -2159,7 +2184,12 @@
       }
 
       &.active {
-        @include css-var(background-color, clr-datagrid-row-hover, $clr-datagrid-row-hover, $clr-use-custom-properties);
+        @include css-var(
+          background-color,
+          clr-datagrid-row-hover-color,
+          $clr-datagrid-row-hover-color,
+          $clr-use-custom-properties
+        );
         @include css-var(
           color,
           clr-datagrid-row-hover-font-color,
