@@ -72,7 +72,7 @@
 
     .modal-body {
       flex: 1 1 auto;
-      @include css-var(color, clr-wizard-main-textColor, $clr-wizard-main-textColor, $clr-use-custom-properties);
+      @include css-var(color, clr-wizard-main-text-color, $clr-wizard-main-text-color, $clr-use-custom-properties);
       width: 100%;
     }
 
