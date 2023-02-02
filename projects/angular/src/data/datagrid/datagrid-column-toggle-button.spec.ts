@@ -24,7 +24,12 @@ export default function (): void {
     };
 
     beforeEach(function () {
-      context = this.create(ClrDatagridColumnToggleButton, ButtonTest, [MOCK_COLUMN_SERVICE_PROVIDER]);
+      context = this.create(
+        ClrDatagridColumnToggleButton,
+        ButtonTest,
+        [MOCK_COLUMN_SERVICE_PROVIDER],
+        [ClrDatagridColumnToggleButton]
+      );
       columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;
       toggleButton = context.clarityDirective;
       columnsService.mockColumns(3);

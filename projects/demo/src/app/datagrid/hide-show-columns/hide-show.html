@@ -101,10 +101,6 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <clr-dg-column-toggle>
-      <clr-dg-column-toggle-title>Kolumne Herauschauen!</clr-dg-column-toggle-title>
-      <clr-dg-column-toggle-button>Alle auswählen!</clr-dg-column-toggle-button>
-    </clr-dg-column-toggle>
     {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
     <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
   </clr-dg-footer>

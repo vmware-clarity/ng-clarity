@@ -18,10 +18,7 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
   template: `
     <ng-template>Template Content</ng-template>
     <!--The above ng-template is required/used as a hideable column template-->
-    <clr-dg-column-toggle>
-      <clr-dg-column-toggle-title *ngIf="hasCustomToggleTitle">Custom Toggle Title</clr-dg-column-toggle-title>
-      <clr-dg-column-toggle-button *ngIf="hasCustomToggleButton">Custom Toggle Button</clr-dg-column-toggle-button>
-    </clr-dg-column-toggle>
+    <clr-dg-column-toggle></clr-dg-column-toggle>
   `,
 })
 class ColumnToggleTest {
@@ -35,9 +32,6 @@ class ColumnToggleTest {
   constructor(columnsService: ColumnsService) {
     this.mockColumnsService = columnsService as MockColumnsService;
   }
-
-  hasCustomToggleTitle = false;
-  hasCustomToggleButton = false;
 }
 
 export default function (): void {
@@ -45,15 +39,15 @@ export default function (): void {
     let context: TestContext<ClrDatagridColumnToggle, ColumnToggleTest>;
     let columnsService: MockColumnsService;
     let columnToggle: ClrDatagridColumnToggle;
-    let testComponent: ColumnToggleTest;
 
     beforeEach(function () {
-      context = this.create(ClrDatagridColumnToggle, ColumnToggleTest, [
-        MOCK_COLUMN_SERVICE_PROVIDER,
-        ClrPopoverToggleService,
-      ]);
+      context = this.create(
+        ClrDatagridColumnToggle,
+        ColumnToggleTest,
+        [MOCK_COLUMN_SERVICE_PROVIDER, ClrPopoverToggleService],
+        [ClrDatagridColumnToggle]
+      );
       columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;
-      testComponent = context.testComponent;
       columnToggle = context.clarityDirective;
       columnsService.mockColumns(3);
     });
@@ -244,14 +238,6 @@ export default function (): void {
         expect(document.querySelector('.switch-header').textContent).toMatch(/Show Columns/);
       });
 
-      it('can show custom title in switch panel', function () {
-        testComponent.hasCustomToggleTitle = true;
-        columnsService.mockAllHideable();
-        columnToggle.openState = true;
-        context.fixture.detectChanges();
-        expect(document.querySelector('.switch-header').textContent).toMatch(/Custom Toggle Title/);
-      });
-
       it('shows toggle button in switch panel', function () {
         columnsService.mockAllHideable();
         columnToggle.openState = true;
@@ -274,14 +260,6 @@ export default function (): void {
         context.fixture.detectChanges();
         const toggleButton: HTMLButtonElement = document.querySelector('button.switch-button');
         expect(toggleButton.disabled).toBeFalsy();
-      });
-
-      it('can show custom toggle button in switch panel', function () {
-        testComponent.hasCustomToggleButton = true;
-        columnsService.mockAllHideable();
-        columnToggle.openState = true;
-        context.fixture.detectChanges();
-        expect(document.querySelector('button.switch-button').textContent).toMatch(/Custom Toggle Button/);
       });
     });
   });

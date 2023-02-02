@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -15,8 +15,6 @@ import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
-import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
@@ -46,10 +44,7 @@ import { ColumnsService } from './providers/columns.service';
     >
       <div class="switch-header">
         <div class="clr-sr-only" tabindex="-1" #allSelected>{{ commonStrings.keys.allColumnsSelected }}</div>
-        <ng-container *ngIf="!customToggleTitle">
-          <h2>{{ commonStrings.keys.showColumns }}</h2>
-        </ng-container>
-        <ng-content select="clr-dg-column-toggle-title"></ng-content>
+        <h2>{{ commonStrings.keys.showColumns }}</h2>
         <button
           class="btn btn-sm btn-link toggle-switch-close-button"
           clrPopoverCloseButton
@@ -77,17 +72,13 @@ import { ColumnsService } from './providers/columns.service';
         </li>
       </ul>
       <div class="switch-footer">
-        <ng-content select="clr-dg-column-toggle-button"></ng-content>
-        <clr-dg-column-toggle-button *ngIf="!customToggleButton" (clrAllSelected)="allColumnsSelected()">
-          {{ commonStrings.keys.selectAll }}
-        </clr-dg-column-toggle-button>
+        <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
       </div>
     </div>
   `,
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
   hostDirectives: [PopoverHostDirective],
 })
-/** @deprecated since 2.0, remove in 3.0 */
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
 
@@ -103,8 +94,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   };
   openState: boolean;
 
-  @ContentChild(ClrDatagridColumnToggleTitle) customToggleTitle: ClrDatagridColumnToggleTitle;
-  @ContentChild(ClrDatagridColumnToggleButton) customToggleButton: ClrDatagridColumnToggleButton;
   @ViewChild('allSelected', { read: ElementRef })
   private allSelectedElement: ElementRef<HTMLElement>;
 
