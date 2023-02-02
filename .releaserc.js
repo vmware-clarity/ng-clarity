@@ -5,7 +5,7 @@
  */
 
 module.exports = {
-  branches: ['main', '+([0-9]).x', { name: 'beta', prerelease: true }],
+  branches: ['main', '+([0-9]).x', { name: 'beta', prerelease: true }, { name: 'rc', prerelease: true }],
   plugins: [
     [
       '@semantic-release/commit-analyzer',
