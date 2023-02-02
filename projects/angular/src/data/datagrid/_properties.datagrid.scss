@@ -11,13 +11,9 @@
       --clr-datagrid-default-border-color: var(--clr-color-neutral-400);
       --clr-datagrid-icon-color: var(--clr-color-neutral-600);
 
-      // deprecated in 3.0
-      // should become --clr-datagrid-row-hover-color
-      --clr-datagrid-row-hover: var(--clr-color-neutral-200);
+      --clr-datagrid-row-hover-color: var(--clr-color-neutral-200);
       --clr-datagrid-row-hover-font-color: var(--clr-color-neutral-1000);
-      // deprecated in 3.0
-      // should become --clr-datagrid-action-toggle-color
-      --clr-datagrid-action-toggle: var(--clr-color-neutral-700);
+      --clr-datagrid-action-toggle-color: var(--clr-color-neutral-700);
       --clr-datagrid-pagination-btn-color: var(--clr-color-neutral-700);
       --clr-datagrid-pagination-btn-disabled-color: var(--clr-color-neutral-600);
       --clr-datagrid-pagination-input-border-color: var(--clr-datagrid-default-border-color);
