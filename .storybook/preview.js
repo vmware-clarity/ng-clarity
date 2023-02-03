@@ -11,6 +11,7 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
 import clrUiStyles from '../dist/clr-ui/clr-ui.css';
+import clrUiDarkStyles from '../dist/clr-ui/clr-ui-dark.css';
 import cdsCoreAndShimStyles from './public/cds-core-and-shim.css';
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
 
@@ -42,6 +43,7 @@ export const globalTypes = {
       showName: true,
       items: [
         { value: '', title: '@clr/ui Light Theme' },
+        { value: 'clr-ui-dark', title: '@clr/ui Dark Theme' },
         { value: 'light', title: '@cds/core Light Theme' },
         { value: 'dark', title: '@cds/core Dark Theme' },
         { value: 'high-contrast', title: '@cds/core High Contrast Theme' },
@@ -53,14 +55,22 @@ export const globalTypes = {
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
-  if (theme) {
-    styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles}`;
-    document.body.setAttribute(cdsThemeAttribute, theme);
-    document.body.style.backgroundColor = null;
-  } else {
-    styleElement.textContent = clrUiStyles;
-    document.body.removeAttribute(cdsThemeAttribute);
-    document.body.style.backgroundColor = getClrUiAppBackgroundColor();
+  switch (theme) {
+    case '':
+      styleElement.textContent = clrUiStyles;
+      document.body.removeAttribute(cdsThemeAttribute);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      break;
+    case 'clr-ui-dark':
+      styleElement.textContent = clrUiDarkStyles;
+      document.body.removeAttribute(cdsThemeAttribute);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      break;
+    default:
+      styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles}`;
+      document.body.setAttribute(cdsThemeAttribute, theme);
+      document.body.style.backgroundColor = null;
+      break;
   }
 
   return story();

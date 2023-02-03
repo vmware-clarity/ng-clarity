@@ -4,10 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-let clrUiAppBackgroundColorCache;
+const clrUiAppBackgroundColorCache = {};
 
-export function getClrUiAppBackgroundColor() {
-  return clrUiAppBackgroundColorCache || (clrUiAppBackgroundColorCache = computeClrUiAppBackgroundColor());
+export function getClrUiAppBackgroundColor(themeKey) {
+  return (
+    clrUiAppBackgroundColorCache[themeKey] ||
+    (clrUiAppBackgroundColorCache[themeKey] = computeClrUiAppBackgroundColor())
+  );
 
   function computeClrUiAppBackgroundColor() {
     const mainContainerElement = document.createElement('div');
