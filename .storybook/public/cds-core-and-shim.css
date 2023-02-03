@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../../dist/clr-ui/clr-ui.css';
 @import '@cds/core/styles/module.reset.min.css';
 @import '@cds/core/styles/module.tokens.min.css';
 @import '@cds/core/styles/module.layout.min.css';
