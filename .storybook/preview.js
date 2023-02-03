@@ -10,13 +10,14 @@ import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
-import styles from './public/preview.css';
+import clrUiStyles from '../dist/clr-ui/clr-ui.css';
+import cdsCoreAndShimStyles from './public/cds-core-and-shim.css';
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
+const styleElement = addStyleElement();
 
-addStyles();
 loadIcons();
 addDocs(docs);
 
@@ -53,9 +54,11 @@ const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
   if (theme) {
+    styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles}`;
     document.body.setAttribute(cdsThemeAttribute, theme);
     document.body.style.backgroundColor = null;
   } else {
+    styleElement.textContent = clrUiStyles;
     document.body.removeAttribute(cdsThemeAttribute);
     document.body.style.backgroundColor = getClrUiAppBackgroundColor();
   }
@@ -65,10 +68,11 @@ const themeDecorator = (story, { globals }) => {
 
 export const decorators = [themeDecorator];
 
-function addStyles() {
+function addStyleElement() {
   const styleElement = document.createElement('style');
-  styleElement.textContent = styles;
   window.document.head.append(styleElement);
+
+  return styleElement;
 }
 
 function loadIcons() {
