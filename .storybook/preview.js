@@ -11,6 +11,7 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
 import styles from './public/preview.css';
+import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
@@ -53,8 +54,10 @@ const themeDecorator = (story, { globals }) => {
 
   if (theme) {
     document.body.setAttribute(cdsThemeAttribute, theme);
+    document.body.style.backgroundColor = null;
   } else {
     document.body.removeAttribute(cdsThemeAttribute);
+    document.body.style.backgroundColor = getClrUiAppBackgroundColor();
   }
 
   return story();
