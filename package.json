@@ -65,7 +65,7 @@
     "@angular/platform-browser": "13.3.11",
     "@angular/platform-browser-dynamic": "13.3.11",
     "@angular/router": "13.3.11",
-    "@cds/core": "6.0.1",
+    "@cds/core": "6.2.5",
     "@commitlint/cz-commitlint": "16.2.3",
     "@compodoc/compodoc": "1.1.19",
     "@microsoft/api-extractor": "7.19.4",
