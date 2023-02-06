@@ -11,6 +11,7 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 
 import docs from '../documentation.json';
 import clrUiStyles from 'raw-loader!../dist/clr-ui/clr-ui.css';
+import clrUiDarkStyles from 'raw-loader!../dist/clr-ui/clr-ui-dark.css';
 import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
 import tokensStyles from 'raw-loader!../node_modules/@cds/core/styles/module.tokens.min.css';
 import layoutStyles from 'raw-loader!../node_modules/@cds/core/styles/module.layout.min.css';
@@ -18,12 +19,13 @@ import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module
 import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
 import highContrastThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.high-contrast.min.css';
 import shimStyles from 'raw-loader!../dist/clr-ui/shim.cds-core.css';
+import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
+const styleElement = addStyleElement();
 
-const styles = [
-  clrUiStyles,
+const cdsCoreAndShimStyles = [
   resetStyles,
   tokensStyles,
   layoutStyles,
@@ -33,7 +35,6 @@ const styles = [
   shimStyles,
 ];
 
-addStyles();
 loadIcons();
 addDocs(docs);
 
@@ -57,10 +58,11 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: '', title: 'None' },
-        { value: 'light', title: 'Core Light Theme' },
-        { value: 'dark', title: 'Core Dark Theme' },
-        { value: 'high-contrast', title: 'Core High Contrast Theme' },
+        { value: '', title: '@clr/ui Light Theme' },
+        { value: 'clr-ui-dark', title: '@clr/ui Dark Theme' },
+        { value: 'light', title: '@cds/core Light Theme' },
+        { value: 'dark', title: '@cds/core Dark Theme' },
+        { value: 'high-contrast', title: '@cds/core High Contrast Theme' },
       ],
     },
   },
@@ -69,10 +71,22 @@ export const globalTypes = {
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
-  if (theme) {
-    document.body.setAttribute(cdsThemeAttribute, theme);
-  } else {
-    document.body.removeAttribute(cdsThemeAttribute);
+  switch (theme) {
+    case '':
+      styleElement.textContent = clrUiStyles;
+      document.body.removeAttribute(cdsThemeAttribute);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      break;
+    case 'clr-ui-dark':
+      styleElement.textContent = clrUiDarkStyles;
+      document.body.removeAttribute(cdsThemeAttribute);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      break;
+    default:
+      styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles.join('')}`;
+      document.body.setAttribute(cdsThemeAttribute, theme);
+      document.body.style.backgroundColor = null;
+      break;
   }
 
   return story();
@@ -80,10 +94,11 @@ const themeDecorator = (story, { globals }) => {
 
 export const decorators = [themeDecorator];
 
-function addStyles() {
+function addStyleElement() {
   const styleElement = document.createElement('style');
-  styleElement.textContent = styles.join('');
   window.document.head.append(styleElement);
+
+  return styleElement;
 }
 
 function loadIcons() {

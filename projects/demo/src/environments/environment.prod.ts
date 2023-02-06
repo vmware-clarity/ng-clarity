@@ -6,4 +6,5 @@
 
 export const environment = {
   production: true,
+  dark: false,
 };

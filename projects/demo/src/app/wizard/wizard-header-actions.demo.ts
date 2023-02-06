@@ -18,12 +18,16 @@ export class WizardHeaderActionsDemo {
   userActive = true;
 
   headerActionClicked(actionId: string) {
-    if ('clr-wizard-header-action-search' === actionId) {
-      window.open('https://www.google.com/#q=what+is+the+meaning+of+life&*', '_blank');
-    } else if ('clr-wizard-header-action-info' === actionId) {
-      window.open('http://vmware.github.com/clarity', '_blank');
-    } else {
-      this.userActive = !this.userActive;
+    switch (actionId) {
+      case 'search':
+        window.open('https://www.google.com?q=what+is+the+meaning+of+life', '_blank');
+        break;
+      case 'info':
+        window.open('https://clarity.design', '_blank');
+        break;
+      case 'user':
+        this.userActive = !this.userActive;
+        break;
     }
   }
 }
