@@ -17,7 +17,7 @@ export class TestContext<C, H> {
    */
   clarityDirectiveType: Type<C>;
   hostType: Type<H>;
-  testingModule: TestBedStatic;
+  testingModule: TestBed | TestBedStatic;
 
   /*
    * Objects instantiated for one test

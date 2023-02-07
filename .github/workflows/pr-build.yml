@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         cds-core: ['', '@cds/core@^5.6.0']
+        angular: ['Angular v13', 'Angular v14']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,23 +22,32 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
         run: npm ci
+      - name: Update to Angular v14
+        if: ${{matrix.angular == 'Angular v14'}}
+        run: |
+          npx ng update @angular/core@14 @angular/cli@14
+          git checkout projects/*
       - name: Install Alternate @cds/core Version
         if: ${{matrix.cds-core != ''}}
         run: npm install ${{matrix.cds-core}}
-      - name: Disable Docs Build
+      - name: Disable Demo Build
         if: ${{matrix.cds-core != ''}}
-        run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
+        run: node ./scripts/clear-npm-script.js _build:demo
+      - name: Disable Storybook Build
+        if: ${{matrix.cds-core != '' || matrix.angular != 'Angular v13'}}
+        run: node ./scripts/clear-npm-script.js _build:storybook
       - name: Lint
-        if: ${{matrix.cds-core == ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v13'}}
         run: npm run lint
       - name: Build
         run: npm run build
       - name: Test
         run: npm run test
       - name: Public Api Check
+        if: ${{matrix.angular == 'Angular v13'}}
         run: npm run public-api:check
       - name: Upload Docs Artifact
-        if: ${{matrix.cds-core == ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v13'}}
         uses: actions/upload-artifact@v3
         with:
           name: docs
