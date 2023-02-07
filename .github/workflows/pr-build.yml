@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         cds-core: ['', '@cds/core@^5.6.0']
-        angular: ['Angular v13', 'Angular v14']
+        angular: ['Angular v13', 'Angular v14', 'Angular v15']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,10 +23,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Update to Angular v14
-        if: ${{matrix.angular == 'Angular v14'}}
+        if: ${{matrix.angular == 'Angular v14' || matrix.angular == 'Angular v15'}}
         run: |
           npx ng update @angular/core@14 @angular/cli@14
           git checkout projects/*
+      - name: Update to Angular v15
+        if: ${{matrix.angular == 'Angular v15'}}
+        run: |
+          npx ng update @angular/core@15 @angular/cli@15 --allow-dirty
       - name: Install Alternate @cds/core Version
         if: ${{matrix.cds-core != ''}}
         run: npm install ${{matrix.cds-core}}
