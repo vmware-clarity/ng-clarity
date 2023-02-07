@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         cds-core: ['', '@cds/core@^5.6.0']
+        angular: ['13', '14', '15']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,10 +23,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Install Alternate @cds/core Version
-        if: ${{matrix.cds-core != ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == '13'}}
         run: npm install ${{matrix.cds-core}}
+      - name: Install ng 14
+        if: ${{matrix.cds-core == '' && matrix.angular == '14'}}
+        run: npm install @angular/core@^14.2.12 @angular/common@^14.2.12
+      - name: Install ng 15
+        if: ${{matrix.cds-core == '' && matrix.angular == '15'}}
+        run: npm install @angular/core@^15.1.3 @angular/common@^15.1.3
       - name: Disable Docs Build
-        if: ${{matrix.cds-core != ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == '13'}}
         run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
       - name: Lint
         run: npm run lint
@@ -36,7 +43,7 @@ jobs:
       - name: Public Api Check
         run: npm run public-api:check
       - name: Upload Docs Artifact
-        if: ${{matrix.cds-core == ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == '13'}}
         uses: actions/upload-artifact@v3
         with:
           name: docs
