@@ -67,7 +67,10 @@ export default function () {
     });
 
     it('should not allow a date greater than the max date', () => {
-      fixture.componentInstance.formControl.setValue('1/1/2023');
+      // Using the short syntax like below causes ExpressionChangedAfterItHasBeenCheckedError.
+      // Our datepicker automatically updates short syntax to the full one, with leading zeros,
+      // so testing with the latter is acceptable.
+      fixture.componentInstance.formControl.setValue('01/01/2023');
       fixture.detectChanges();
 
       const expectedErrors = {
