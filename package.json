@@ -17,6 +17,7 @@
     "lint:fix": "npm-run-all _lint:code:fix _lint:styles:fix _lint:format:fix",
     "lint:changed": "npm-run-all _lint:code:changed _lint:styles:changed _lint:format:changed",
     "lint:changed:fix": "npm-run-all _lint:code:changed:fix _lint:styles:changed:fix _lint:format:changed:fix",
+    "ng": "ng",
     "prepare": "husky install && patch-package",
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
@@ -28,7 +29,7 @@
     "test:watch": "npm run --silent test -- --watch",
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:demo": "ng build clr-demo --configuration production",
-    "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/docs",
+    "_build:storybook": "npm run docs:json && STORYBOOK_ANGULAR_PROJECT=clr-angular build-storybook --output-dir ./dist/docs",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "_build:ui:css:watch": "npm run --silent _build:ui:css -- --watch --load-path=projects",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer --dir ./dist/clr-ui",
@@ -50,7 +51,7 @@
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
     "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start:storybook": "wait-on ./documentation.json ./dist/clr-ui/clr-ui.css && start-storybook -p 6006"
+    "_start:storybook": "wait-on ./documentation.json ./dist/clr-ui/clr-ui.css && STORYBOOK_ANGULAR_PROJECT=clr-angular start-storybook -p 6006"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
@@ -68,20 +69,20 @@
     "@cds/core": "6.2.5",
     "@commitlint/cz-commitlint": "16.2.3",
     "@compodoc/compodoc": "1.1.19",
-    "@microsoft/api-extractor": "7.19.4",
+    "@microsoft/api-extractor": "7.33.6",
     "@storybook/addon-a11y": "6.5.10",
     "@storybook/addon-essentials": "6.5.10",
     "@storybook/angular": "6.5.10",
     "@storybook/builder-webpack5": "6.5.10",
     "@storybook/manager-webpack5": "6.5.10",
     "@types/jasmine": "3.6.11",
-    "@typescript-eslint/eslint-plugin": "5.19.0",
-    "@typescript-eslint/parser": "5.19.0",
+    "@typescript-eslint/eslint-plugin": "5.41.0",
+    "@typescript-eslint/parser": "5.41.0",
     "commitizen": "4.2.4",
     "commitlint": "16.2.3",
     "cpy-cli": "3.1.1",
     "csso-cli": "3.0.0",
-    "eslint": "8.13.0",
+    "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jasmine": "4.1.3",
@@ -117,6 +118,6 @@
     "tslib": "2.3.1",
     "typescript": "4.4.4",
     "wait-on": "6.0.1",
-    "zone.js": "0.11.5"
+    "zone.js": "0.11.8"
   }
 }

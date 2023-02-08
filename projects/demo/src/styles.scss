@@ -4,12 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '@cds/core/styles/module.reset.min.css';
-@import '@cds/core/styles/module.tokens.min.css';
-@import '@cds/core/styles/module.layout.min.css';
-@import '@cds/core/styles/module.typography.min.css';
-@import '@cds/core/styles/theme.dark.min.css';
-@import '@cds/core/styles/theme.high-contrast.min.css';
+@import '../../../node_modules/@cds/core/styles/module.reset.min.css';
+@import '../../../node_modules/@cds/core/styles/module.tokens.min.css';
+@import '../../../node_modules/@cds/core/styles/module.layout.min.css';
+@import '../../../node_modules/@cds/core/styles/module.typography.min.css';
+@import '../../../node_modules/@cds/core/styles/theme.dark.min.css';
+@import '../../../node_modules/@cds/core/styles/theme.high-contrast.min.css';
+@import '../../../node_modules/@cds/core/styles/shim.clr-ui.min.css';
 @import './../../ui/src/shim.cds-core';
 @import './app/_utils/clarity-variables';
 @import '../../angular/src/utils/variables/variables';

@@ -17,7 +17,7 @@ export class TestContext<C, H> {
    */
   clarityDirectiveType: Type<C>;
   hostType: Type<H>;
-  testingModule: TestBedStatic;
+  testingModule: TestBed | TestBedStatic;
 
   /*
    * Objects instantiated for one test
@@ -47,7 +47,7 @@ export class TestContext<C, H> {
   }
 
   getProvider<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
-    return TestBed.get(token, notFoundValue);
+    return TestBed.inject<T>(token, notFoundValue);
   }
 
   // The Function type here is just to tell Typescript to be nice with abstract classes. Weird.

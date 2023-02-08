@@ -144,7 +144,9 @@ export default function () {
     it('returns the locale date format', () => {
       expect(localeHelperServiceUS.localeDateFormat).toBe('M/d/yy');
       expect(localeHelperServiceFr.localeDateFormat).toBe('dd/MM/y');
-      expect(localeHelperServicePl.localeDateFormat).toBe('dd.MM.y');
+      // The poland locale format code changed in angular v14 due to underlying unicode cldr changes
+      // https://github.com/papandreou/node-cldr/commit/6226a7d40c744ab920a27731197c866faa1e776b#diff-523c05189226bf04cdba5b3af39abcc1706bbcf9c0784b51516779b0b07042a0L2006
+      expect(['dd.MM.y', 'd.MM.y']).toContain(localeHelperServicePl.localeDateFormat);
     });
 
     it(
