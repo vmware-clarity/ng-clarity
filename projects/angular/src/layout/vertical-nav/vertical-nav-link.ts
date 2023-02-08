@@ -20,7 +20,6 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
   `,
   host: {
     class: 'nav-link',
-    role: 'listitem',
   },
 })
 export class ClrVerticalNavLink implements OnDestroy {
