@@ -28,6 +28,7 @@ jobs:
         if: ${{matrix.cds-core != ''}}
         run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
       - name: Lint
+        if: ${{matrix.cds-core == ''}}
         run: npm run lint
       - name: Build
         run: npm run build
