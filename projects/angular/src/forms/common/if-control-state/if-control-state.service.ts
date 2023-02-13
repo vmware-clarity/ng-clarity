@@ -51,14 +51,7 @@ export class IfControlStateService implements OnDestroy {
       // These status values are mutually exclusive, so a control
       // cannot be both valid AND invalid or invalid AND disabled.
       const status = CONTROL_STATE[this.control.status];
-      // At some point, with Angular 14, we started receiving the update for the control.touched
-      // later than this moment in code. It depends on the order of imports of ClarityModule and
-      // the FormsModule. This delay makes sure the touched state is properly updated.
-      setTimeout(() => {
-        this._statusChanges.next(
-          this.control.touched && ['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE
-        );
-      });
+      this._statusChanges.next(['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE);
     }
   }
 

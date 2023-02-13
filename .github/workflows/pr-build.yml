@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         cds-core: ['', '@cds/core@^5.6.0']
+        angular: ['Angular v15']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,19 +25,24 @@ jobs:
       - name: Install Alternate @cds/core Version
         if: ${{matrix.cds-core != ''}}
         run: npm install ${{matrix.cds-core}}
-      - name: Disable Docs Build
+      - name: Disable Demo Build
         if: ${{matrix.cds-core != ''}}
-        run: node ./scripts/clear-npm-script.js _build:demo _build:storybook
+        run: node ./scripts/clear-npm-script.js _build:demo
+      - name: Disable Storybook Build
+        if: ${{matrix.cds-core != '' || matrix.angular != 'Angular v15'}}
+        run: node ./scripts/clear-npm-script.js _build:storybook
       - name: Lint
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
         run: npm run lint
       - name: Build
         run: npm run build
       - name: Test
         run: npm run test
       - name: Public Api Check
+        if: ${{matrix.angular == 'Angular v15'}}
         run: npm run public-api:check
       - name: Upload Docs Artifact
-        if: ${{matrix.cds-core == ''}}
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
         uses: actions/upload-artifact@v3
         with:
           name: docs
