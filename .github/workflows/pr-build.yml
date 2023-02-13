@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cds-core: ['', '@cds/core@^5.6.0']
         angular: ['Angular v13', 'Angular v14', 'Angular v15']
+        cds-core: ['', '@cds/core@^5.6.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
