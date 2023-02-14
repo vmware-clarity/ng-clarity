@@ -362,7 +362,7 @@ export class Selection<T = any> {
    *
    */
   private canItBeLocked(): boolean {
-    // We depend on the trackBy and all so there are part of the requirment of is item could be locked
+    // We depend on the trackBy and all so there are part of the requirement of is item could be locked
     return this._selectionType !== SelectionType.None && Array.isArray(this._items.all);
   }
 
@@ -386,11 +386,11 @@ export class Selection<T = any> {
   }
 
   /**
-   * Check is item locked or not by searcing into lockedRefs for entry
+   * Check is item locked or not by searching into lockedRefs for entry
    */
   isLocked(item: T): boolean {
     /**
-     * The check for selectionType will boost the performence by NOT searching
+     * The check for selectionType will boost the performance by NOT searching
      * into the array when there is no need for that.
      */
     if (this.canItBeLocked()) {
