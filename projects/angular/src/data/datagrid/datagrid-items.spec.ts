@@ -42,8 +42,7 @@ class TrackByIndexTest {
 
   numbers = [1, 2, 3, 4, 5];
 
-  // eslint-disable-next-line
-  trackBy = (index, _item) => index;
+  trackBy = index => index;
 }
 
 export default function (): void {
