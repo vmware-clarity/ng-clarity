@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrDatagridItems } from './datagrid-items';
@@ -54,5 +54,5 @@ class FullTest {
 
   numbers = [1, 2, 3, 4, 5];
 
-  trackBy: (index: number, item: number) => any;
+  trackBy: TrackByFunction<number>;
 }

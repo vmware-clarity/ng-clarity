@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, TrackByFunction } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -46,7 +46,7 @@ export class Selection<T = any> {
 
           case SelectionType.Single: {
             let newSingle: any;
-            const trackBy: TrackByFunction<T> = this._items.trackBy;
+            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
@@ -91,7 +91,7 @@ export class Selection<T = any> {
 
           case SelectionType.Multi: {
             let leftOver: any[] = this.current.slice();
-            const trackBy: TrackByFunction<any> = this._items.trackBy;
+            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the current has been set before data was loaded, we look up and save the ref from current data set

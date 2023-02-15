@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, OnDestroy, TrackByFunction, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -117,6 +117,10 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     this._allColumnsVisible = value;
   }
 
+  // Without tracking the checkboxes get rerendered on model update, which leads
+  // to loss of focus after checkbox toggle.
+  trackByFn: TrackByFunction<ColumnState> = index => index;
+
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
@@ -156,11 +160,5 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
   allColumnsSelected() {
     this.allSelectedElement.nativeElement.focus();
-  }
-
-  // Without tracking the checkboxes get rerendered on model update, which leads
-  // to loss of focus after checkbox toggle.
-  trackByFn(index: number) {
-    return index;
   }
 }
