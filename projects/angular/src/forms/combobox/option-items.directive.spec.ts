@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
@@ -25,7 +25,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
 class FullTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
   numbers = [0, 1, 2, 3];
-  trackBy: (index: number, item: number) => any;
+  trackBy: TrackByFunction<number>;
 }
 
 @Component({
@@ -39,7 +39,7 @@ class FullTest {
 class TrackByIndexTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
   numbers = [0, 1, 2, 3];
-  trackBy = (index: number) => index;
+  trackBy: TrackByFunction<number> = index => index;
 }
 
 @Component({
@@ -53,7 +53,7 @@ class TrackByIndexTest {
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
   numbers = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
-  trackBy = (index: number) => index;
+  trackBy: TrackByFunction<number> = index => index;
 }
 
 const OPTION_ITEM_PROVIDERS = [OptionSelectionService, ClrPopoverToggleService];

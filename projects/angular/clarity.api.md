@@ -1370,8 +1370,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     customToggleTitle: ClrDatagridColumnToggleTitle;
     // (undocumented)
     get hasOnlyOneVisibleColumn(): boolean;
-    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     get hideableColumnStates(): ColumnState[];
     // (undocumented)
@@ -1386,8 +1384,10 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
     toggleSwitchPanel(): void;
+    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    trackByFn(index: number): number;
+    trackByFn: TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, ["customToggleTitle", "customToggleButton"], ["clr-dg-column-toggle-title", "clr-dg-column-toggle-button"]>;
     // (undocumented)
