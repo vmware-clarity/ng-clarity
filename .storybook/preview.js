@@ -20,6 +20,7 @@ import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.d
 import highContrastThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.high-contrast.min.css';
 import shimStyles from 'raw-loader!../dist/clr-ui/shim.cds-core.css';
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
+import { THEMES } from './helpers/constants';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
@@ -58,33 +59,36 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: '', title: '@clr/ui Light Theme' },
-        { value: 'clr-ui-dark', title: '@clr/ui Dark Theme' },
-        { value: 'light', title: '@cds/core Light Theme' },
-        { value: 'dark', title: '@cds/core Dark Theme' },
-        { value: 'high-contrast', title: '@cds/core High Contrast Theme' },
+        { value: THEMES.NG_LIGHT, title: '@clr/ui Light Theme' },
+        { value: THEMES.NG_DARK, title: '@clr/ui Dark Theme' },
+        { value: THEMES.CORE_LIGHT, title: '@cds/core Light Theme' },
+        { value: THEMES.CORE_DARK, title: '@cds/core Dark Theme' },
+        { value: THEMES.HIGH_CONTRAST, title: '@cds/core High Contrast Theme' },
       ],
     },
   },
 };
 
-const themeDecorator = (story, { globals }) => {
+const themeDecorator = (story, { globals, parameters }) => {
   const { theme } = globals;
+  const { themeOverride } = parameters;
 
-  switch (theme) {
-    case '':
+  const currentTheme = themeOverride || theme;
+
+  switch (currentTheme) {
+    case THEMES.NG_LIGHT:
       styleElement.textContent = clrUiStyles;
       document.body.removeAttribute(cdsThemeAttribute);
-      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
       break;
-    case 'clr-ui-dark':
+    case THEMES.NG_DARK:
       styleElement.textContent = clrUiDarkStyles;
       document.body.removeAttribute(cdsThemeAttribute);
-      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
       break;
     default:
       styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles.join('')}`;
-      document.body.setAttribute(cdsThemeAttribute, theme);
+      document.body.setAttribute(cdsThemeAttribute, currentTheme);
       document.body.style.backgroundColor = null;
       break;
   }
