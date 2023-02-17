@@ -17,7 +17,7 @@ export class ClrDatagridItemsTrackBy<T = any> {
   @Input('ngForTrackBy')
   set trackBy(value: TrackByFunction<T>) {
     if (this._items) {
-      this._items.trackBy = value;
+      this._items.iteratorTrackBy = value;
     }
   }
 }

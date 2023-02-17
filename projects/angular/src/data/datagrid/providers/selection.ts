@@ -46,19 +46,17 @@ export class Selection<T = any> {
 
           case SelectionType.Single: {
             let newSingle: any;
-            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
             if (this.currentSingle && !this.prevSingleSelectionRef) {
-              if (this._items.all && this._items.trackBy) {
-                const lookup = this._items.all.findIndex(maybe => maybe === this.currentSingle);
-                this.prevSingleSelectionRef = this._items.trackBy(lookup, this.currentSingle);
+              if (this._items.canTrackBy()) {
+                this.prevSingleSelectionRef = this._items.trackBy(this.currentSingle);
               }
             }
 
             updatedItems.forEach((item, index) => {
-              const ref = trackBy(index, item);
+              const ref = this._items.trackBy(item, index);
               // If one of the updated items is the previously selectedSingle, set it as the new one
               if (this.prevSingleSelectionRef === ref) {
                 newSingle = item;
@@ -91,16 +89,14 @@ export class Selection<T = any> {
 
           case SelectionType.Multi: {
             let leftOver: any[] = this.current.slice();
-            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the current has been set before data was loaded, we look up and save the ref from current data set
             if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
-              if (this._items.all && this._items.trackBy) {
+              if (this._items.canTrackBy()) {
                 this.prevSelectionRefs = [];
                 this.current.forEach(item => {
-                  const lookup = this._items.all.findIndex(maybe => maybe === item);
-                  this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
+                  this.prevSelectionRefs.push(this._items.trackBy(item));
                 });
               }
             }
@@ -111,7 +107,7 @@ export class Selection<T = any> {
             //
             // The both loops below that goes over updatedItems could be combined into one.
             updatedItems.forEach((item, index) => {
-              const ref = trackBy(index, item);
+              const ref = this._items.trackBy(item, index);
               if (this.lockedRefs.indexOf(ref) > -1) {
                 updateLockedRef.push(ref);
               }
@@ -122,7 +118,7 @@ export class Selection<T = any> {
             // the if statement below results in broken behavior.
             if (leftOver.length > 0) {
               updatedItems.forEach((item, index) => {
-                const ref = trackBy(index, item);
+                const ref = this._items.trackBy(item, index);
                 // Look in current selected refs array if item is selected, and update actual value
                 const selectedIndex = this.prevSelectionRefs.indexOf(ref);
                 if (selectedIndex > -1) {
@@ -221,9 +217,8 @@ export class Selection<T = any> {
     }
 
     this._currentSingle = value;
-    if (this._items.all && this._items.trackBy && value) {
-      const lookup = this._items.all.findIndex(maybe => maybe === value);
-      this.prevSingleSelectionRef = this._items.trackBy(lookup, value);
+    if (this._items.canTrackBy() && value) {
+      this.prevSingleSelectionRef = this._items.trackBy(value);
     }
     this.emitChange();
   }
@@ -290,10 +285,9 @@ export class Selection<T = any> {
    */
   private selectItem(item: T): void {
     this.current = this.current.concat(item);
-    if (this._items.trackBy && this._items.all) {
+    if (this._items.canTrackBy()) {
       // Push selected ref onto array
-      const lookup = this._items.all.findIndex(maybe => maybe === item);
-      this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
+      this.prevSelectionRefs.push(this._items.trackBy(item));
     }
   }
 
@@ -302,7 +296,7 @@ export class Selection<T = any> {
    */
   private deselectItem(indexOfItem: number): void {
     this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
-    if (this._items.trackBy && indexOfItem < this.prevSelectionRefs.length) {
+    if (indexOfItem < this.prevSelectionRefs.length) {
       // Keep selected refs array in sync
       const removedItems = this.prevSelectionRefs.splice(indexOfItem, 1);
       // locked reference is no longer needed (if any)
@@ -356,14 +350,9 @@ export class Selection<T = any> {
 
   /**
    * Make sure that it could be locked
-   *
-   * @remark
-   * Check also is items.all an array, if not there is no nothing to lock or compare to
-   *
    */
   private canItBeLocked(): boolean {
-    // We depend on the trackBy and all so there are part of the requirement of is item could be locked
-    return this._selectionType !== SelectionType.None && Array.isArray(this._items.all);
+    return this._selectionType !== SelectionType.None && this._items.canTrackBy();
   }
 
   /**
@@ -371,10 +360,7 @@ export class Selection<T = any> {
    */
   lockItem(item: T, lock: boolean) {
     if (this.canItBeLocked()) {
-      const ref = this._items.trackBy(
-        this._items.all.findIndex(maybe => maybe === item),
-        item
-      );
+      const ref = this._items.trackBy(item);
       if (lock === true) {
         // Add to lockedRef
         this.lockedRefs.push(ref);
@@ -394,10 +380,7 @@ export class Selection<T = any> {
      * into the array when there is no need for that.
      */
     if (this.canItBeLocked()) {
-      const ref = this._items.trackBy(
-        this._items.all.findIndex(maybe => maybe === item),
-        item
-      );
+      const ref = this._items.trackBy(item);
       return this.lockedRefs.indexOf(ref) > -1;
     }
 
