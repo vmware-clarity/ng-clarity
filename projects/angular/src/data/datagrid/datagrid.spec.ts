@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction, Type } from '@angular/core';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
@@ -25,7 +25,7 @@ import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { Items } from './providers/items';
+import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
 import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -448,11 +448,48 @@ class TabsIntegrationTest {
     </clr-datagrid>
   `,
 })
-class PanelTrackByTest {
+class PanelIteratorTrackByTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
   trackById: TrackByFunction<{ id: number }> = (index, item) => item.id;
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgItemsTrackBy]="trackById">
+      <clr-dg-column>Item</clr-dg-column>
+      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-detail *clrIfDetail></clr-dg-detail>
+    </clr-datagrid>
+  `,
+})
+class PanelDatagridTrackByTest {
+  items = Array.from(Array(3), (v, i) => {
+    return { name: v, id: i };
+  });
+  trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgItemsTrackBy]="datagridTrackById">
+      <clr-dg-column>Item</clr-dg-column>
+      <clr-dg-row *ngFor="let item of items; trackBy: iteratorTrackBy" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-detail *clrIfDetail></clr-dg-detail>
+    </clr-datagrid>
+  `,
+})
+class PanelDatagridAndIteratorTrackByTest {
+  items = Array.from(Array(3), (v, i) => {
+    return { name: v, id: i };
+  });
+  datagridTrackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
+  iteratorTrackBy: TrackByFunction<{ id: number }> = () => Math.random(); // detail pane tracking won't work correctly if this function is used
 }
 
 export default function (): void {
@@ -1232,36 +1269,54 @@ export default function (): void {
       });
     });
 
-    describe('detail pane and track by', function () {
-      let context: TestContext<ClrDatagrid, PanelTrackByTest>;
-      let detailService;
+    interface AbstractDetailPaneTrackByTestComponent {
+      items: { name: any; id: number }[];
+    }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
-        detailService = context.getClarityProvider(DetailService) as DetailService;
+    function testDetailPaneTrackBy(
+      description: string,
+      testComponentType: Type<AbstractDetailPaneTrackByTestComponent>
+    ) {
+      describe(description, function () {
+        let context: TestContext<ClrDatagrid, AbstractDetailPaneTrackByTestComponent>;
+        let detailService;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagrid, testComponentType, DATAGRID_SPEC_PROVIDERS);
+          detailService = context.getClarityProvider(DetailService) as DetailService;
+        });
+
+        it('should keep open the panel', () => {
+          /**
+           * trackBy function is defined inside the testComponent and
+           * it is tracking by `id` so unless the id is not changed the
+           * item must stay the same.
+           */
+          /* Open second detail pane */
+          const detailButton = context.clarityElement.querySelectorAll('.datagrid-detail-caret-button')[1];
+          detailService.open(context.testComponent.items[1], detailButton);
+          context.detectChanges();
+
+          /* make sure that the state is set */
+          expect(detailService.state).toEqual(context.testComponent.items[1]);
+
+          /* update the name of the second pane */
+          context.testComponent.items[1].name = 'changed';
+          context.detectChanges();
+
+          /* make sure that the same item is still selected */
+          expect(detailService.state).toEqual(context.testComponent.items[1]);
+        });
       });
+    }
 
-      it('should keep open the panel', () => {
-        /**
-         * trackBy function is defined inside the testComponent and
-         * it is tracking by `id` so unless the id is not changed the
-         * item must stay the same.
-         */
-        /* Open second detail pane */
-        const detailButton = context.clarityElement.querySelectorAll('.datagrid-detail-caret-button')[1];
-        detailService.open(context.testComponent.items[1], detailButton);
-        context.detectChanges();
+    testDetailPaneTrackBy('detail pane and iteratorTrackBy', PanelIteratorTrackByTest);
 
-        /* make sure that the state is set */
-        expect(detailService.state).toEqual(context.testComponent.items[1]);
+    testDetailPaneTrackBy('detail pane and datagridTrackBy', PanelDatagridTrackByTest);
 
-        /* update the name of the second pane */
-        context.testComponent.items[1].name = 'changed';
-        context.detectChanges();
-
-        /* make sure that the same item is still selected */
-        expect(detailService.state).toEqual(context.testComponent.items[1]);
-      });
-    });
+    testDetailPaneTrackBy(
+      'detail pane and datagridTrackBy (and not iteratorTrackBy)',
+      PanelDatagridAndIteratorTrackByTest
+    );
   });
 }

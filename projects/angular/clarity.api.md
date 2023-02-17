@@ -1165,7 +1165,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -1528,6 +1530,9 @@ export class ClrDatagridItemsTrackBy<T = any> {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItemsTrackBy<any>, [{ optional: true; }]>;
 }
+
+// @public (undocumented)
+export type ClrDatagridItemsTrackByFunction<T> = (item: T) => any;
 
 // @public (undocumented)
 export class ClrDatagridModule {

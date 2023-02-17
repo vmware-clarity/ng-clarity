@@ -39,7 +39,7 @@ import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { Items } from './providers/items';
+import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
 import { Page } from './providers/page';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -186,6 +186,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.selection.rowSelectionMode = value;
   }
 
+  @Input('clrDgItemsTrackBy')
+  set trackBy(value: ClrDatagridItemsTrackByFunction<T>) {
+    this.items.datagridTrackBy = value;
+  }
+
   /**
    * Indicates if all currently displayed items are selected
    */
@@ -252,9 +257,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
         // Try to update only when there is something cached and its open.
         if (this.detailService.state && this.detailService.isOpen) {
-          const row = this.rows.find((row, index) => {
-            return this.items.trackBy(index, row.item) === this.items.trackBy(index, this.detailService.state);
-          });
+          const row = this.items.canTrackBy()
+            ? this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state))
+            : undefined;
 
           /**
            * Reopen updated row or close it

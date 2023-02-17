@@ -42,6 +42,8 @@ export * from './built-in/comparators/datagrid-property-comparator';
 
 export * from './datagrid.module';
 
+export { ClrDatagridItemsTrackByFunction } from './providers/items';
+
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer } from './datagrid-detail-registerer';
 export { WrappedCell as ÇlrWrappedCell } from './wrapped-cell';

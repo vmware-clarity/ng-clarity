@@ -136,7 +136,7 @@ export default function (): void {
       });
 
       it('items receive the provided trackBy option', function () {
-        expect(this.clarityDirective.items.trackBy).toBe(this.testComponent.trackBy);
+        expect(this.clarityDirective.items.iteratorTrackBy).toBe(this.testComponent.trackBy);
       });
 
       it('correctly mutates and resets an array with trackBy', function () {
