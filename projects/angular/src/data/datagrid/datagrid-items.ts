@@ -56,6 +56,17 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     );
   }
 
+  /**
+   * Asserts the correct type of the template context that the directive will render.
+   * See https://angular.io/guide/structural-directives#typing-the-directives-context
+   *
+   * The presence of this method is a signal to the Ivy template type-check compiler that the
+   * structural directive renders its template with a specific context type.
+   */
+  static ngTemplateContextGuard<T>(_dir: ClrDatagridItems<T>, _ctx: unknown): _ctx is NgForOfContext<T> {
+    return true;
+  }
+
   ngDoCheck() {
     if (!this.differ) {
       this.differ = this.differs.find(this._rawItems).create(this.iterableProxy.ngForTrackBy);

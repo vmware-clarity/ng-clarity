@@ -1562,6 +1562,7 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
     // (undocumented)
     set rawItems(items: T[]);
     // (undocumented)
