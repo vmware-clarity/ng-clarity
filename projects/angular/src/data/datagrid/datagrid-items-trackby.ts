@@ -29,7 +29,7 @@ export class ClrDatagridItemsTrackBy<T = any> {
     }
 
     if (this._items) {
-      this._items.trackBy = value;
+      this._items.iteratorTrackBy = value;
     }
   }
 }

@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TrackByFunction } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
@@ -504,9 +503,9 @@ export default function (): void {
           expect(selectionInstance.current).toEqual([items[2]]);
         });
 
-        function testTrackBy(trackBy: TrackByFunction<{ id: number }>) {
+        function testTrackBy(setTrackBy: () => void) {
           return fakeAsync(function () {
-            itemsInstance.trackBy = trackBy;
+            setTrackBy();
             selectionInstance.setSelected(items[2], true);
             const clones = cloneItems();
             itemsInstance.all = clones;
@@ -517,13 +516,35 @@ export default function (): void {
         }
 
         it(
-          'should support trackBy item',
-          testTrackBy((_index, item) => item.id)
+          'should support iteratorTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
         );
 
         it(
-          'should support trackBy index',
-          testTrackBy(index => index)
+          'should support iteratorTrackBy index',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = index => index;
+          })
+        );
+
+        it(
+          'should support datagridTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'should use datagridTrackBy instead of iteratorTrackBy',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
         );
       });
 
@@ -551,21 +572,21 @@ export default function (): void {
           expect(selectionInstance.currentSingle).toBe(undefined);
         }));
 
-        it('does not apply trackBy to single selection with no items', () => {
+        it('does not apply iteratorTrackBy to single selection with no items', () => {
           const emptyItems = new Items(filtersInstance, sortInstance, pageInstance);
           const selection = new Selection(emptyItems, filtersInstance);
 
-          spyOn(emptyItems, 'trackBy');
+          spyOn(emptyItems, 'iteratorTrackBy');
 
           expect(selection.currentSingle).toBeUndefined();
           selection.currentSingle = items[2];
 
-          expect(emptyItems.trackBy).not.toHaveBeenCalled();
+          expect(emptyItems.iteratorTrackBy).not.toHaveBeenCalled();
         });
 
-        function testTrackBy(trackBy: TrackByFunction<{ id: number }>) {
+        function testTrackBy(setTrackBy: () => void) {
           return fakeAsync(function () {
-            itemsInstance.trackBy = trackBy;
+            setTrackBy();
             selectionInstance.currentSingle = items[2];
             const clones = cloneItems();
             itemsInstance.all = clones;
@@ -575,13 +596,35 @@ export default function (): void {
         }
 
         it(
-          'should support trackBy item',
-          testTrackBy((_index, item) => item.id)
+          'should support iteratorTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
         );
 
         it(
-          'should support trackBy index',
-          testTrackBy(index => index)
+          'should support iteratorTrackBy index',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = index => index;
+          })
+        );
+
+        it(
+          'should support datagridTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'should use datagridTrackBy instead of iteratorTrackBy',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
         );
       });
     });
@@ -635,67 +678,176 @@ export default function (): void {
           selectionInstance.selectionType = SelectionType.Multi;
         });
         // We don't support server-driven, multi-selection without trackBy.
-        // We don't support server-driven, multi-selection, trackBy index.
-        it('should support trackBy item', fakeAsync(() => {
-          itemsInstance.trackBy = (_index, item) => item.id;
-          itemsInstance.all = itemsA;
-          tick();
-          selectionInstance.setSelected(itemsA[0], true);
-          testSelection(true, false, false);
-          itemsInstance.all = itemsB;
-          tick();
-          testSelection(true, false, false);
-          itemsInstance.all = itemsC;
-          tick();
-          testSelection(false, false, true);
-          expect(selectionInstance.current[0].modified).toEqual(true);
-        }));
+        // We don't support server-driven, multi-selection, iteratorTrackBy index.
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', fakeAsync(() => {
-          itemsInstance.trackBy = (_index, item) => item.id;
-          selectionInstance.current = [{ id: 1 }, { id: 2 }, { id: 3 }];
-          tick();
-          itemsInstance.all = itemsA;
-          tick();
-          itemsA.forEach(item => {
-            expect(selectionInstance.isSelected(item)).toBe(true);
+        function testTrackBy(setTrackBy: () => void) {
+          return fakeAsync(function () {
+            setTrackBy();
+            itemsInstance.all = itemsA;
+            tick();
+            selectionInstance.setSelected(itemsA[0], true);
+            testSelection(true, false, false);
+            itemsInstance.all = itemsB;
+            tick();
+            testSelection(true, false, false);
+            itemsInstance.all = itemsC;
+            tick();
+            testSelection(false, false, true);
+            expect(selectionInstance.current[0].modified).toEqual(true);
           });
-        }));
+        }
 
-        it('should support toggleAll selection on page change', fakeAsync(() => {
-          itemsInstance.trackBy = (_index, item) => item.id;
-          itemsInstance.all = itemsA;
-          pageInstance.size = 3;
-          pageInstance.current = 1;
-          tick();
-          selectionInstance.toggleAll();
-          testToggleAllSelection(true, false, false);
-          itemsInstance.all = itemsB;
-          pageInstance.current = 2;
-          tick();
-          testToggleAllSelection(true, false, false);
-          itemsInstance.all = itemsC;
-          pageInstance.current = 1;
-          tick();
-          testToggleAllSelection(false, false, true);
-          expect(selectionInstance.current[0].modified).toEqual(true);
-        }));
+        it(
+          'should support iteratorTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
+        );
 
-        it('should not clear selection when filter applied and clrDgPreserveSelection is true', fakeAsync(() => {
-          const evenFilter: ItemEvenFilter = new ItemEvenFilter();
-          itemsInstance.trackBy = (_index, item) => item.id;
-          itemsInstance.all = itemsA;
-          tick();
-          selectionInstance.setSelected(itemsA[0], true);
-          selectionInstance.preserveSelection = true;
+        it(
+          'should support datagridTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
 
-          filtersInstance.add(evenFilter as ClrDatagridFilterInterface<Item>);
-          evenFilter.toggle();
-          tick();
+        it(
+          'should use datagridTrackBy instead of iteratorTrackBy',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
 
-          expect(selectionInstance.current.length).toBe(1);
-          expect(selectionInstance.isSelected(itemsA[0])).toBeTruthy();
-        }));
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        function testTrackByPreselectedItems(setTrackBy: () => void) {
+          return fakeAsync(function () {
+            setTrackBy();
+            selectionInstance.current = [{ id: 1 }, { id: 2 }, { id: 3 }];
+            tick();
+            itemsInstance.all = itemsA;
+            tick();
+            itemsA.forEach(item => {
+              expect(selectionInstance.isSelected(item)).toBe(true);
+            });
+          });
+        }
+
+        it(
+          'accepts pre-selected items with iteratorTrackBy when `all` has not been defined',
+          testTrackByPreselectedItems(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
+        );
+
+        it(
+          'accepts pre-selected items with datagridTrackBy when `all` has not been defined',
+          testTrackByPreselectedItems(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'accepts pre-selected items with datagridTrackBy (and not iteratorTrackBy) when `all` has not been defined',
+          testTrackByPreselectedItems(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        function testTrackByToggleAll(setTrackBy: () => void) {
+          return fakeAsync(function () {
+            setTrackBy();
+            itemsInstance.all = itemsA;
+            pageInstance.size = 3;
+            pageInstance.current = 1;
+            tick();
+            selectionInstance.toggleAll();
+            testToggleAllSelection(true, false, false);
+            itemsInstance.all = itemsB;
+            pageInstance.current = 2;
+            tick();
+            testToggleAllSelection(true, false, false);
+            itemsInstance.all = itemsC;
+            pageInstance.current = 1;
+            tick();
+            testToggleAllSelection(false, false, true);
+            expect(selectionInstance.current[0].modified).toEqual(true);
+          });
+        }
+
+        it(
+          'should support toggleAll selection on page change with iteratorTrackBy',
+          testTrackByToggleAll(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
+        );
+
+        it(
+          'should support toggleAll selection on page change with datagridTrackBy',
+          testTrackByToggleAll(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'should support toggleAll selection on page change with datagridTrackBy (and not iteratorTrackBy)',
+          testTrackByToggleAll(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        function testTrackByPreserveSelection(setTrackBy: () => void) {
+          return fakeAsync(function () {
+            setTrackBy();
+            const evenFilter: ItemEvenFilter = new ItemEvenFilter();
+            itemsInstance.all = itemsA;
+            tick();
+            selectionInstance.setSelected(itemsA[0], true);
+            selectionInstance.preserveSelection = true;
+
+            filtersInstance.add(evenFilter as ClrDatagridFilterInterface<Item>);
+            evenFilter.toggle();
+            tick();
+
+            expect(selectionInstance.current.length).toBe(1);
+            expect(selectionInstance.isSelected(itemsA[0])).toBeTruthy();
+          });
+        }
+
+        it(
+          'should not clear selection when filter applied and clrDgPreserveSelection is true with iteratorTrackBy',
+          testTrackByPreserveSelection(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
+        );
+
+        it(
+          'should not clear selection when filter applied and clrDgPreserveSelection is true with datagridTrackBy',
+          testTrackByPreserveSelection(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'should not clear selection when filter applied and clrDgPreserveSelection is true with datagridTrackBy (and not iteratorTrackBy)',
+          testTrackByPreserveSelection(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
       });
 
       describe('single selection', function () {
@@ -703,24 +855,59 @@ export default function (): void {
           selectionInstance.selectionType = SelectionType.Single;
         });
         // We don't support server-driven, multi-selection without trackBy.
-        // We don't support server-driven, multi-selection, trackBy index.
-        it('should support trackBy item', fakeAsync(() => {
-          itemsInstance.trackBy = (_index, item) => item.id;
-          itemsInstance.all = itemsA;
-          tick();
-          selectionInstance.currentSingle = itemsA[0];
-          testSelection(true, false, false);
-          itemsInstance.all = itemsB;
-          tick();
-          testSelection(true, false, false);
-          // itemsInstance.all = itemsC;
-          // tick();
-          // testSelection(false, false, true);
-          // expect(selectionInstance.currentSingle.modified).toEqual(true);
-        }));
+        // We don't support server-driven, multi-selection, iteratorTrackBy index.
 
-        it('accepts pre-selected items with trackBy when `all` has not been defined', fakeAsync(() => {
-          itemsInstance.trackBy = (_index, item) => item.id;
+        function testTrackBy(setTrackBy: () => void) {
+          return fakeAsync(function () {
+            setTrackBy();
+            itemsInstance.all = itemsA;
+            tick();
+            selectionInstance.currentSingle = itemsA[0];
+            testSelection(true, false, false);
+            itemsInstance.all = itemsB;
+            tick();
+            testSelection(true, false, false);
+            // itemsInstance.all = itemsC;
+            // tick();
+            // testSelection(false, false, true);
+            // expect(selectionInstance.currentSingle.modified).toEqual(true);
+          });
+        }
+
+        it(
+          'should support iteratorTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = (_index, item) => item.id;
+          })
+        );
+
+        it(
+          'should support iteratorTrackBy index',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = index => index;
+          })
+        );
+
+        it(
+          'should support datagridTrackBy item id',
+          testTrackBy(() => {
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it(
+          'should use datagridTrackBy instead of iteratorTrackBy',
+          testTrackBy(() => {
+            itemsInstance.iteratorTrackBy = jasmine
+              .createSpy('iteratorTrackBy')
+              .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+            itemsInstance.datagridTrackBy = item => item.id;
+          })
+        );
+
+        it('accepts pre-selected items with iteratorTrackBy when `all` has not been defined', fakeAsync(() => {
+          itemsInstance.iteratorTrackBy = (_index, item) => item.id;
           selectionInstance.currentSingle = { id: 1 };
           tick();
           itemsInstance.all = itemsA;
@@ -837,23 +1024,78 @@ export default function (): void {
         expect(selectionInstance.isLocked(6)).toBe(false);
       });
 
-      it('should use trackBy to find already locked items when the list is replaced (integer)', function () {
-        selectionInstance.selectionType = SelectionType.Multi;
-        selectionInstance.lockItem(2, true);
-        // Create new list of items
-        itemsInstance.all = [2, 5, 6, 7];
-        expect(selectionInstance.isLocked(2)).toBe(true);
-      });
+      function testTrackByInteger(setTrackBy: () => void) {
+        return fakeAsync(function () {
+          setTrackBy();
+          selectionInstance.selectionType = SelectionType.Multi;
+          selectionInstance.lockItem(2, true);
+          // Create new list of items
+          itemsInstance.all = [2, 5, 6, 7];
+          expect(selectionInstance.isLocked(2)).toBe(true);
+        });
+      }
 
-      it('should use trackBy to find already locked items when the list is replaced (object)', function () {
-        itemsInstance.trackBy = (_index, { id }) => id;
-        selectionInstance.selectionType = SelectionType.Multi;
-        itemsInstance.all = [{ id: 1 }, { id: 2 }];
-        selectionInstance.lockItem({ id: 2 }, true);
-        // Create new list of items
-        itemsInstance.all = [{ id: 1 }, { id: 2 }];
-        expect(selectionInstance.isLocked({ id: 2 })).toBe(true);
-      });
+      it(
+        'should use iteratorTrackBy to find already locked items when the list is replaced (integer)',
+        testTrackByInteger(() => {
+          itemsInstance.iteratorTrackBy = (_index, item) => item;
+        })
+      );
+
+      it(
+        'should use datagridTrackBy to find already locked items when the list is replaced (integer)',
+        testTrackByInteger(() => {
+          itemsInstance.datagridTrackBy = item => item;
+        })
+      );
+
+      it(
+        'should use datagridTrackBy (and not iteratorTrackBy) to find already locked items when the list is replaced (integer)',
+        testTrackByInteger(() => {
+          itemsInstance.iteratorTrackBy = jasmine
+            .createSpy('iteratorTrackBy')
+            .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+          itemsInstance.datagridTrackBy = item => item;
+        })
+      );
+
+      function testTrackByObject(setTrackBy: () => void) {
+        return fakeAsync(function () {
+          setTrackBy();
+          selectionInstance.selectionType = SelectionType.Multi;
+          itemsInstance.all = [{ id: 1 }, { id: 2 }];
+          selectionInstance.lockItem({ id: 2 }, true);
+          // Create new list of items
+          itemsInstance.all = [{ id: 1 }, { id: 2 }];
+          expect(selectionInstance.isLocked({ id: 2 })).toBe(true);
+        });
+      }
+
+      it(
+        'should use iteratorTrackBy to find already locked items when the list is replaced (object)',
+        testTrackByObject(() => {
+          itemsInstance.iteratorTrackBy = (_index, { id }) => id;
+        })
+      );
+
+      it(
+        'should use datagridTrackBy to find already locked items when the list is replaced (object)',
+        testTrackByObject(() => {
+          itemsInstance.datagridTrackBy = ({ id }) => id;
+        })
+      );
+
+      it(
+        'should use datagridTrackBy (and not iteratorTrackBy) to find already locked items when the list is replaced (object)',
+        testTrackByObject(() => {
+          itemsInstance.iteratorTrackBy = jasmine
+            .createSpy('iteratorTrackBy')
+            .and.throwError('iteratorTrackBy should not be called when datagridTrackBy is provided');
+
+          itemsInstance.datagridTrackBy = ({ id }) => id;
+        })
+      );
     });
   });
 }
