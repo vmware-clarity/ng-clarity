@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, TrackByFunction } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 
 import { FetchResult, Inventory } from '../inventory/inventory';
@@ -40,6 +40,9 @@ export class DatagridPreserveSelectionDemo {
   preserveFilteringTrackByIndex = false;
   preserveFilteringTrackByIdUsers = false;
   preserveFilteringServerTrackBy = false;
+
+  trackByIndex: TrackByFunction<User> = index => index;
+  trackById: TrackByFunction<User> = (_index, item) => item.id;
 
   constructor(private inventory: Inventory) {
     this.inventory.size = this.total;
@@ -81,13 +84,5 @@ export class DatagridPreserveSelectionDemo {
       this.users = this.backUpUsers;
       this.backUpUsers = [];
     }
-  }
-
-  trackByIndex(index: number) {
-    return index;
-  }
-
-  trackById(_index: number, item: User) {
-    return item.id;
   }
 }

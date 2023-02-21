@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrDatagridItems } from './datagrid-items';
@@ -42,8 +42,7 @@ class TrackByIndexTest {
 
   numbers = [1, 2, 3, 4, 5];
 
-  // eslint-disable-next-line
-  trackBy = (index, _item) => index;
+  trackBy: TrackByFunction<number> = index => index;
 }
 
 export default function (): void {

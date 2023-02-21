@@ -1321,8 +1321,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get hasOnlyOneVisibleColumn(): boolean;
-    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     get hideableColumnStates(): ColumnState[];
     // (undocumented)
@@ -1337,8 +1335,10 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
     toggleSwitchPanel(): void;
+    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    trackByFn(index: number): number;
+    trackByFn: TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -1505,6 +1505,7 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
     // (undocumented)
     set rawItems(items: T[]);
     // (undocumented)

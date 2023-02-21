@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
@@ -452,7 +452,7 @@ class PanelTrackByTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
-  trackById = (index, item) => item.id;
+  trackById: TrackByFunction<{ id: number }> = (index, item) => item.id;
 }
 
 export default function (): void {

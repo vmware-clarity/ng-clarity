@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, TrackByFunction } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -46,7 +46,7 @@ export class Selection<T = any> {
 
           case SelectionType.Single: {
             let newSingle: any;
-            const trackBy: TrackByFunction<T> = this._items.trackBy;
+            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
@@ -91,7 +91,7 @@ export class Selection<T = any> {
 
           case SelectionType.Multi: {
             let leftOver: any[] = this.current.slice();
-            const trackBy: TrackByFunction<any> = this._items.trackBy;
+            const trackBy = this._items.trackBy;
             let selectionUpdated = false;
 
             // if the current has been set before data was loaded, we look up and save the ref from current data set
@@ -362,7 +362,7 @@ export class Selection<T = any> {
    *
    */
   private canItBeLocked(): boolean {
-    // We depend on the trackBy and all so there are part of the requirment of is item could be locked
+    // We depend on the trackBy and all so there are part of the requirement of is item could be locked
     return this._selectionType !== SelectionType.None && Array.isArray(this._items.all);
   }
 
@@ -386,11 +386,11 @@ export class Selection<T = any> {
   }
 
   /**
-   * Check is item locked or not by searcing into lockedRefs for entry
+   * Check is item locked or not by searching into lockedRefs for entry
    */
   isLocked(item: T): boolean {
     /**
-     * The check for selectionType will boost the performence by NOT searching
+     * The check for selectionType will boost the performance by NOT searching
      * into the array when there is no need for that.
      */
     if (this.canItBeLocked()) {

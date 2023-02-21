@@ -22,11 +22,10 @@ export class Items<T = any> {
    */
   loading = false;
 
-  // TODO: Verify that trackBy is registered for the *ngFor case too
   /**
    * Tracking function to identify objects. Default is reference equality.
    */
-  trackBy: TrackByFunction<T> = (_index: number, item: T) => item;
+  trackBy: TrackByFunction<T> = (_index, item) => item;
 
   /**
    * Subscriptions to the other providers changes.
