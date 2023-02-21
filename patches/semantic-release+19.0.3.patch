@@ -1,5 +1,5 @@
 diff --git a/node_modules/semantic-release/lib/get-next-version.js b/node_modules/semantic-release/lib/get-next-version.js
-index 8734922..2fee533 100644
+index 8734922..1832caa 100644
 --- a/node_modules/semantic-release/lib/get-next-version.js
 +++ b/node_modules/semantic-release/lib/get-next-version.js
 @@ -5,7 +5,11 @@ const {isSameChannel, getLatestVersion, tagsToVersions, highest} = require('./ut
@@ -9,7 +9,7 @@ index 8734922..2fee533 100644
 -    const {major, minor, patch} = semver.parse(lastRelease.version);
 +    let {major, minor, patch} = semver.parse(lastRelease.version);
 +
-+    if (major == 13 && type == 'major') {
++    if (major === 13 && type === 'major') {
 +      major = 14;
 +    }
  
