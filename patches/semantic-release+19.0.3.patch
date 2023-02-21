@@ -1,8 +1,8 @@
 diff --git a/node_modules/semantic-release/lib/get-next-version.js b/node_modules/semantic-release/lib/get-next-version.js
-index 8734922..1832caa 100644
+index 8734922..b182d81 100644
 --- a/node_modules/semantic-release/lib/get-next-version.js
 +++ b/node_modules/semantic-release/lib/get-next-version.js
-@@ -5,7 +5,11 @@ const {isSameChannel, getLatestVersion, tagsToVersions, highest} = require('./ut
+@@ -5,7 +5,14 @@ const {isSameChannel, getLatestVersion, tagsToVersions, highest} = require('./ut
  module.exports = ({branch, nextRelease: {type, channel}, lastRelease, logger}) => {
    let version;
    if (lastRelease.version) {
@@ -10,7 +10,10 @@ index 8734922..1832caa 100644
 +    let {major, minor, patch} = semver.parse(lastRelease.version);
 +
 +    if (major === 13 && type === 'major') {
++      lastRelease.version = '14.0.0';
 +      major = 14;
++      minor = 0;
++      patch = 0;
 +    }
  
      if (branch.type === 'prerelease') {
