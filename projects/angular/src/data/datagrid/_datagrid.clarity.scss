@@ -1265,7 +1265,8 @@
             $clr-use-custom-properties
           );
         }
-        &:active {
+        &:active,
+        &:focus {
           box-shadow: none;
           @include css-var(
             border-color,
