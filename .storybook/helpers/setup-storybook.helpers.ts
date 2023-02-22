@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Parameters } from '@storybook/addons';
 import { moduleMetadata, storiesOf, Story } from '@storybook/angular';
-import isChromatic from 'chromatic/isChromatic';
 
 import { THEMES } from './constants';
 
@@ -45,15 +44,11 @@ export function setupStorybook(
       previewTabs: { 'storybook/docs/panel': { hidden: true } },
       chromatic: { disableSnapshot: false },
     };
-    if (isChromatic()) {
-      for (const [themeKey, theme] of Object.entries(THEMES)) {
-        storyApi.add(`Variants - ${themeKey}`, combinedStories, {
-          ...defaultVariantParameters,
-          themeOverride: theme,
-        });
-      }
-    } else {
-      storyApi.add('Variants', combinedStories, defaultVariantParameters);
+    for (const [themeKey, theme] of Object.entries(THEMES)) {
+      storyApi.add(`Variants - ${themeKey}`, combinedStories, {
+        ...defaultVariantParameters,
+        themeOverride: theme,
+      });
     }
   }
 }
