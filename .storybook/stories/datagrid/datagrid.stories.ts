@@ -59,7 +59,7 @@ const defaultStory: Story = args => ({
           <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
-      
+
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
           <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>
@@ -112,6 +112,13 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const variants: Parameters[] = [
+  {
+    hidableColumns: false,
+  },
+  {
+    hidableColumns: true,
+  },
+];
 
 setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
