@@ -21,7 +21,7 @@
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
     "public-api:update": "api-extractor run --local",
-    "start": "npm run clean && npm-run-all --parallel docs:json:watch _build:ui:css:watch _start:storybook",
+    "start": "npm run clean && npm-run-all --parallel docs:json:watch _start:storybook",
     "start:demo": "npm run clean && ng serve clr-demo",
     "start:demo:dark": "npm run start:demo -- -c dark",
     "test": "ng test clr-angular --source-map=false --watch=false",
@@ -30,7 +30,6 @@
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:storybook": "npm run docs:json && STORYBOOK_ANGULAR_PROJECT=clr-angular build-storybook --output-dir ./dist/docs --webpack-stats-json",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
-    "_build:ui:css:watch": "npm run --silent _build:ui:css -- --watch --load-path=projects",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer --dir ./dist/clr-ui",
     "_build:ui:optimize": "npm-run-all _build:ui:optimize:*",
     "_build:ui:optimize:clr-ui": "csso ./dist/clr-ui/clr-ui.css --output ./dist/clr-ui/clr-ui.min.css --source-map file --no-restructure",
@@ -51,7 +50,7 @@
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
     "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start:storybook": "wait-on ./documentation.json ./dist/clr-ui/clr-ui.css && STORYBOOK_ANGULAR_PROJECT=clr-angular start-storybook -p 6006"
+    "_start:storybook": "wait-on ./documentation.json && STORYBOOK_ANGULAR_PROJECT=clr-angular start-storybook -p 6006"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
