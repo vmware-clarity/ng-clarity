@@ -35,6 +35,7 @@
     "_build:ui:optimize": "npm-run-all _build:ui:optimize:*",
     "_build:ui:optimize:clr-ui": "csso ./dist/clr-ui/clr-ui.css --output ./dist/clr-ui/clr-ui.min.css --source-map file --no-restructure",
     "_build:ui:optimize:clr-ui-dark": "csso ./dist/clr-ui/clr-ui-dark.css --output ./dist/clr-ui/clr-ui-dark.min.css --source-map file --no-restructure",
+    "_build:ui:optimize:cds-core-shim": "csso ./dist/clr-ui/shim.cds-core.css --output ./dist/clr-ui/shim.cds-core.min.css --source-map file --no-restructure",
     "_build:ui:src": "cpy \"**/*.scss\" ./../../dist/clr-ui --cwd=./projects/angular --parents",
     "_build:ui:package": "cpy ./projects/ui/package.json ./projects/ui/README.md ./dist/clr-ui",
     "_build:ui": "npm-run-all _build:ui:css _build:ui:prefix _build:ui:optimize _build:ui:src _build:ui:package",
