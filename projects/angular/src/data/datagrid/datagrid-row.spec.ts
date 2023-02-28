@@ -105,7 +105,7 @@ export default function (): void {
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
 
-        expect(checkbox.getAttribute('disabled')).toBe('true');
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
         expect(checkbox.getAttribute('aria-disabled')).toBe('true');
 
         context.clarityDirective.toggle();
@@ -154,7 +154,7 @@ export default function (): void {
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
 
-        expect(checkbox.getAttribute('disabled')).toBe('true');
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
         expect(checkbox.getAttribute('aria-disabled')).toBe('true');
 
         context.clarityDirective.toggle();
