@@ -48,7 +48,7 @@
               [ngModel]="selected"
               (ngModelChange)="toggle($event)"
               [id]="checkboxId"
-              [attr.disabled]="clrDgSelectable ? null : true"
+              [disabled]="clrDgSelectable ? null : true"
               [attr.aria-disabled]="clrDgSelectable ? null : true"
               [attr.aria-label]="clrDgRowAriaLabel"
             />
@@ -76,7 +76,7 @@
             [value]="item"
             [(ngModel)]="selection.currentSingle"
             [checked]="selection.currentSingle === item"
-            [attr.disabled]="clrDgSelectable ? null : true"
+            [disabled]="clrDgSelectable ? null : true"
             [attr.aria-disabled]="clrDgSelectable ? null : true"
             [attr.aria-label]="clrDgRowAriaLabel"
           />
