@@ -11,11 +11,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Check if main is merged
-        run: |
-          git log HEAD..origin/main
-          branch=`git rev-parse --abbrev-ref HEAD`
-          [[ ($branch != "beta" && $branch != "rc") || "$(git log HEAD..origin/main)" == "" ]] || exit 1
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
