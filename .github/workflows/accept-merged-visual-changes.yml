@@ -26,4 +26,4 @@ jobs:
         timeout-minutes: 5
         env:
           CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
-        run: npx chromatic --only-changed --storybook-build-dir ./dist/docs --auto-accept-changes main
+        run: npx chromatic --only-changed --externals "*.scss" --externals "package-lock.json" --storybook-build-dir ./dist/docs --auto-accept-changes main
