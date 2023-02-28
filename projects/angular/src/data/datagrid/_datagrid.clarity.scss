@@ -519,6 +519,13 @@
       input {
         cursor: pointer;
       }
+
+      &.clr-form-control-disabled {
+        &,
+        input {
+          cursor: not-allowed;
+        }
+      }
     }
 
     .datagrid-signpost-trigger .signpost {
