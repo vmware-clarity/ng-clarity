@@ -49,13 +49,14 @@ const defaultParameters: Parameters = {
     // methods
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    buttonType: {
-      defaultValue: 'primary',
-      control: { type: 'radio', options: buttonTypes },
-    },
     buttonStyle: {
       defaultValue: 'outline',
       control: { type: 'radio', options: buttonStyles },
+    },
+    buttonType: {
+      defaultValue: 'primary',
+      control: { type: 'radio', options: buttonTypes },
+      if: { arg: 'buttonStyle', neq: 'flat' },
     },
   },
   args: {
