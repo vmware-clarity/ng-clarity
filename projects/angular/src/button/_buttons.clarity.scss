@@ -61,6 +61,14 @@
     @return lookupFromDangerOutlineButtonColors($property);
   }
 
+  @if $type == warning {
+    @return lookupFromWarningButtonColors($property);
+  }
+
+  @if $type == warning-outline {
+    @return lookupFromWarningOutlineButtonColors($property);
+  }
+
   @if $type == link {
     @return lookupFromLinkButtonColors($property);
   }
