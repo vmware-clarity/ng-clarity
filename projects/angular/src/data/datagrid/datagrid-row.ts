@@ -68,10 +68,19 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
 
+  private _item: T;
   /**
    * Model of the row, to use for selection
    */
-  @Input('clrDgItem') item: T;
+  @Input('clrDgItem')
+  set item(item: T) {
+    this._item = item;
+    this.clrDgSelectable = this._selectable;
+  }
+
+  get item(): T {
+    return this._item;
+  }
 
   replaced: boolean;
 
@@ -160,10 +169,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
-  // By default every item is selectable; it becomes not selectable only if it's explicitly set to false
+  // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
+  private _selectable: boolean | string = true;
   @Input('clrDgSelectable')
   set clrDgSelectable(value: boolean | string) {
-    this.selection.lockItem(this.item, value === false);
+    if (this.item) {
+      this.selection.lockItem(this.item, value === 'false' || value === false);
+    }
+    // Store this value locally, to be initialized when item is initialized
+    this._selectable = value;
   }
 
   get clrDgSelectable() {

@@ -1704,7 +1704,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    item: T;
+    set item(item: T);
+    // (undocumented)
+    get item(): T;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
