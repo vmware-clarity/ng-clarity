@@ -134,6 +134,20 @@ export default function (): void {
         TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
+      it('renders correctly if item is set after clrDgSelectable', fakeAsync(function () {
+        selectionProvider.selectionType = SelectionType.Multi;
+        const tempItem = context.testComponent.item;
+        context.testComponent.item = undefined;
+        context.detectChanges();
+        context.testComponent.clrDgSelectable = false;
+        context.testComponent.item = tempItem;
+        context.detectChanges();
+        checkbox = context.clarityElement.querySelector("input[type='checkbox']");
+
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
+        expect(checkbox.getAttribute('aria-disabled')).toBe('true');
+      }));
+
       it('should provide a selection input aria-labels', fakeAsync(function () {
         // Test multi select rows
         selectionProvider.selectionType = SelectionType.Multi;
@@ -149,7 +163,6 @@ export default function (): void {
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
-        context.detectChanges();
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
