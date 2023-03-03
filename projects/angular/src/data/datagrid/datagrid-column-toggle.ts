@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, OnDestroy, TrackByFunction, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -18,6 +18,7 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
 import { ClrDatagridColumnToggleTitle } from './datagrid-column-toggle-title';
+import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
 import { ColumnsService } from './providers/columns.service';
@@ -119,7 +120,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
   // Without tracking the checkboxes get rerendered on model update, which leads
   // to loss of focus after checkbox toggle.
-  trackByFn: TrackByFunction<ColumnState> = index => index;
+  readonly trackByFn = columnToggleTrackByFn;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
