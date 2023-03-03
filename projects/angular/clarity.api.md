@@ -1338,7 +1338,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    trackByFn: TrackByFunction<ColumnState>;
+    readonly trackByFn: TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
