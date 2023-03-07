@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, TrackByFunction } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -21,11 +21,6 @@ export class Items<T = any> {
    * Indicates if the data is currently loading
    */
   loading = false;
-
-  /**
-   * New tracking function to identify objects. If provided, this will be used instead of `iteratorTrackBy`.
-   */
-  datagridTrackBy: ClrDatagridItemsTrackByFunction<T>;
 
   /**
    * Subscriptions to the other providers changes.
@@ -104,11 +99,9 @@ export class Items<T = any> {
   }
 
   /**
-   * Tracking function to identify objects. Default is reference equality.
-   *
-   * @deprecated in v15 and scheduled for removal in v17 (CDE-71)
+   * Tracking function to identify objects.
    */
-  iteratorTrackBy: TrackByFunction<T> = (_index, item) => item;
+  trackBy: ClrDatagridItemsTrackByFunction<T> = item => item;
 
   /**
    * Cleans up our subscriptions to other providers
@@ -150,22 +143,6 @@ export class Items<T = any> {
   refresh() {
     if (this.smart) {
       this._filterItems();
-    }
-  }
-
-  canTrackBy(): boolean {
-    // all items are needed unless `datagridTrackBy` is set because `iteratorTrackBy` requires the item's index
-    return !!this.datagridTrackBy || Array.isArray(this.all);
-  }
-
-  trackBy(item: T, index?: number) {
-    if (this.datagridTrackBy) {
-      return this.datagridTrackBy(item);
-    } else if (Array.isArray(this.all)) {
-      index = index ?? this.all.indexOf(item);
-      return this.iteratorTrackBy(index, item);
-    } else {
-      throw new Error('improper call to Items#trackBy');
     }
   }
 

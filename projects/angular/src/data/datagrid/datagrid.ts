@@ -212,7 +212,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   @Input('clrDgItemsTrackBy')
   set trackBy(value: ClrDatagridItemsTrackByFunction<T>) {
-    this.items.datagridTrackBy = value;
+    this.items.trackBy = value;
   }
 
   /**
@@ -266,9 +266,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
         // Try to update only when there is something cached and its open.
         if (this.detailService.state && this.detailService.isOpen) {
-          const row = this.items.canTrackBy()
-            ? this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state))
-            : undefined;
+          const row = this.rows.find(
+            row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state)
+          );
 
           /**
            * Reopen updated row or close it

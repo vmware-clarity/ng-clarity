@@ -53,7 +53,6 @@ import { ClrDatagridFooter } from './datagrid-footer';
 import { ClrDatagridHideableColumn } from './datagrid-hideable-column';
 import { ClrIfDetail } from './datagrid-if-detail';
 import { ClrDatagridItems } from './datagrid-items';
-import { ClrDatagridItemsTrackBy } from './datagrid-items-trackby';
 import { ClrDatagridPageSize } from './datagrid-page-size';
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
@@ -83,7 +82,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridFooter,
   ClrDatagridHideableColumn,
   ClrDatagridItems,
-  ClrDatagridItemsTrackBy,
   ClrDatagridPageSize,
   ClrDatagridPagination,
   ClrDatagridPlaceholder,
