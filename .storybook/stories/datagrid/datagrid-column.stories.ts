@@ -113,7 +113,6 @@ const defaultParameters: Parameters = {
   },
   args: {
     // outputs
-    clrDgSortedChange: action('clrDgSortedChange'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),
     clrFilterValueChange: action('clrFilterValueChange'),
     // story helpers
