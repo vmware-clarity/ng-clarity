@@ -540,8 +540,9 @@ export class ClrButton implements LoadingListener {
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterContentInit {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -549,6 +550,10 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
+    // Warning: (ae-forgotten-export) The symbol "InitialFocus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    InitialFocus: typeof InitialFocus;
     // (undocumented)
     initializeButtons(): void;
     // (undocumented)
@@ -560,7 +565,11 @@ export class ClrButtonGroup implements AfterContentInit {
     set menuPosition(pos: string);
     ngAfterContentInit(): void;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     get open(): boolean;
+    // (undocumented)
+    openButtonGroupMenu(event: any, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -5070,7 +5079,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/button/button-group/button-group.d.ts:53:161 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/button/button-group/button-group.d.ts:62:161 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
