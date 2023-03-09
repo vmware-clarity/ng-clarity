@@ -29,9 +29,9 @@ import { FormsLayoutHorizontalGridDemo } from './layout/layout-horizontal-grid';
 import { FormsLayoutModalDemo } from './layout/layout-modal';
 import { FormsLayoutVerticalDemo } from './layout/layout-vertical';
 import { FormsLayoutVerticalGridDemo } from './layout/layout-vertical-grid';
-import { FormsReactiveDemo } from './reactive/reactive';
+import { FormsReactiveDemo, FormsReactiveOnPushDemo } from './reactive/reactive';
 import { FormsResetDemo } from './reset/reset';
-import { FormsTemplateDrivenDemo } from './template-driven/template-driven';
+import { FormsTemplateDrivenDemo, FormsTemplateDrivenOnPushDemo } from './template-driven/template-driven';
 import { FormsValidationDemo } from './validation/validation';
 
 const ROUTES: Routes = [
@@ -60,7 +60,9 @@ const ROUTES: Routes = [
       { path: 'text', component: FormsTextDemo },
       { path: 'textarea', component: FormsTextareaDemo },
       { path: 'template-driven', component: FormsTemplateDrivenDemo },
+      { path: 'template-driven-onpush', component: FormsTemplateDrivenOnPushDemo },
       { path: 'reactive', component: FormsReactiveDemo },
+      { path: 'reactive-onpush', component: FormsReactiveOnPushDemo },
       { path: 'reset', component: FormsResetDemo },
       { path: 'a11y', component: FormsA11yDemo },
       { path: 'generic-container', component: FormsGenericContainerDemo },

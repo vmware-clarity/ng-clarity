@@ -73,6 +73,11 @@ export default function () {
       container = context.clarityDirective;
     });
 
+    function setValid(valid: boolean) {
+      dateFormControlService.markAsTouched();
+      container.state = valid ? CONTROL_STATE.VALID : CONTROL_STATE.INVALID;
+    }
+
     // @deprecated these tests refer to the old forms layout only and can be removed when its removed
     describe('View Basics', () => {
       beforeEach(() => {
@@ -182,13 +187,13 @@ export default function () {
 
       it('should add/remove success icon and text', () => {
         /* valid */
-        container.state = CONTROL_STATE.VALID;
+        setValid(true);
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeTruthy();
         expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeTruthy();
 
         /* invalid */
-        container.state = CONTROL_STATE.INVALID;
+        setValid(false);
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeNull();
         expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeNull();
@@ -206,12 +211,12 @@ export default function () {
         expect(context.clarityDirective.controlClass()).toContain('clr-col-md-10');
         expect(context.clarityDirective.controlClass()).toContain('clr-col-12');
         expect(context.clarityDirective.controlClass()).not.toContain('clr-error');
-        container.state = CONTROL_STATE.INVALID;
+        setValid(false);
         expect(context.clarityDirective.controlClass()).toContain('clr-error');
         const controlClassService = context.getClarityProvider(ControlClassService);
         const layoutService = context.getClarityProvider(LayoutService);
         layoutService.layout = ClrFormLayout.VERTICAL;
-        container.state = CONTROL_STATE.VALID;
+        setValid(true);
         expect(context.clarityDirective.controlClass()).not.toContain('clr-error');
         expect(context.clarityDirective.controlClass()).not.toContain('clr-col-md-10');
         controlClassService.className = 'clr-col-2';

@@ -51,7 +51,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 
     return (
       /* Helper Component exist and the state of the form is NONE (not touched) */
-      (!!this.controlHelperComponent && this.state === CONTROL_STATE.NONE) ||
+      (!!this.controlHelperComponent && (!this.touched || this.state === CONTROL_STATE.NONE)) ||
       /* or there is no success component but the state of the form is VALID - show helper information */
       (!!this.controlSuccessComponent === false && this.state === CONTROL_STATE.VALID) ||
       /* or there is no error component but the state of the form is INVALID - show helper information */
@@ -60,11 +60,11 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   }
 
   get showValid(): boolean {
-    return this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
+    return this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
   }
 
   get showInvalid(): boolean {
-    return this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
+    return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
   }
 
   constructor(
@@ -106,7 +106,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
      *   - container is valid but no success component is implemented - use helper class
      *   - container is valid and success component is implemented - use success class
      */
-    if (!this.controlSuccessComponent && this.state === CONTROL_STATE.VALID) {
+    if ((!this.controlSuccessComponent && this.state === CONTROL_STATE.VALID) || !this.touched) {
       return this.controlClassService.controlClass(CONTROL_STATE.NONE, this.addGrid());
     }
     /**
@@ -128,5 +128,9 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
         showValid: this.showValid,
       });
     }
+  }
+
+  private get touched() {
+    return this.control?.touched;
   }
 }

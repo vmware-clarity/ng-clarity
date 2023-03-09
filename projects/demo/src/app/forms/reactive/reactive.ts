@@ -4,13 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-@Component({
-  templateUrl: './reactive.html',
-})
-export class FormsReactiveDemo {
+class BasicReactiveDemo {
   model = new FormGroup({
     basic: new FormControl(''),
     container: new FormControl(''),
@@ -21,3 +18,14 @@ export class FormsReactiveDemo {
     console.log(this);
   }
 }
+
+@Component({
+  templateUrl: './reactive.html',
+})
+export class FormsReactiveDemo extends BasicReactiveDemo {}
+
+@Component({
+  templateUrl: './reactive.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FormsReactiveOnPushDemo extends BasicReactiveDemo {}
