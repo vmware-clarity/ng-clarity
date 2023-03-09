@@ -69,7 +69,7 @@ export default function (): void {
 
     it('provides a toDateString method that returns the local date string', () => {
       const testString = dayModel1.toDateString();
-      expect(testString).toEqual('1/1/2018');
+      expect(testString).toEqual('Monday, January 1, 2018');
     });
 
     it('provides a toComparisonString method to compare dates', () => {

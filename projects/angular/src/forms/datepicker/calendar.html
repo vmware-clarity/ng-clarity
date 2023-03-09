@@ -1,7 +1,7 @@
 <table class="calendar-table">
   <tr class="calendar-row weekdays">
-    <th *ngFor="let day of localeDays" class="calendar-cell weekday" role="heading" [attr.aria-label]="day.day">
-      {{day.narrow}}
+    <th *ngFor="let day of localeDays" class="calendar-cell weekday">
+      <span role="text" [attr.aria-label]="day.day">{{day.narrow}}</span>
     </th>
   </tr>
   <tr class="calendar-row" *ngFor="let row of calendarViewModel.calendarView">
