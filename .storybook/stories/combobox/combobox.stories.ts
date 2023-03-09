@@ -30,7 +30,7 @@ const defaultStory: Story = args => ({
           {{selected}}
         </ng-container>
         <clr-options>
-          <clr-option *ngFor="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
+          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
         </clr-options>
       </clr-combobox>
     </clr-combobox-container>
