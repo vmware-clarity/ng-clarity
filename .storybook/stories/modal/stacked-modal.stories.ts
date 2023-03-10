@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComboboxModule, ClrDropdownModule, ClrModalModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
+import { ClrComboboxModule, ClrDropdownModule, ClrModalModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const story: Story = args => ({

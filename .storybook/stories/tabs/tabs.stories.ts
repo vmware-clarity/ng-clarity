@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrTabs, ClrTabsModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrTabs, ClrTabsModule } from '../../../projects/angular/src';
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 

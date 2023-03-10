@@ -4,12 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrTree, ClrTreeViewModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 import { of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
+import { ClrTree, ClrTreeViewModule } from '../../../projects/angular/src';
 import { filesRoot } from '../../helpers/files.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 

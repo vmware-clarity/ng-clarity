@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '../../../projects/angular/src';
 import { Element, elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
@@ -66,7 +66,7 @@ const defaultStory: Story = args => {
             <ng-container *ngSwitchCase="'json'">
               {{element | json}}
             </ng-container>
-          
+
             <clr-datagrid *ngSwitchCase="'datagrid'">
               <clr-dg-column>Key</clr-dg-column>
               <clr-dg-column>Value</clr-dg-column>
@@ -93,7 +93,7 @@ const defaultStory: Story = args => {
             </clr-datagrid>
           </clr-dg-detail-body>
         </clr-dg-detail>
-        
+
         <clr-dg-footer>
           <clr-dg-pagination #pagination>
             <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>

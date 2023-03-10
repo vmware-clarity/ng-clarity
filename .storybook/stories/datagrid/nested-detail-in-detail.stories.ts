@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
+import { ClrDatagridModule, ClrModalModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const story: Story = args => ({
@@ -68,7 +68,7 @@ const story: Story = args => ({
           </clr-datagrid>
         </clr-dg-detail-body>
       </clr-dg-detail>
-      
+
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
           <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>

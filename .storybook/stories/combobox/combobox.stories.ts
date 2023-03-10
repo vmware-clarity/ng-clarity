@@ -5,11 +5,11 @@
  */
 
 import { FormControl } from '@angular/forms';
-import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrCombobox, ClrComboboxModule } from '../../../projects/angular/src';
 import { elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 

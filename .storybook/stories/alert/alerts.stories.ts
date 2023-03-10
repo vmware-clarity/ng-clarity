@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAlertModule, ClrAlerts } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrAlertModule, ClrAlerts } from '../../../projects/angular/src';
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 

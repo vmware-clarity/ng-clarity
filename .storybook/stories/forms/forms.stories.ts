@@ -5,10 +5,10 @@
  */
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const formMappingKey = 'form-mapping-key';

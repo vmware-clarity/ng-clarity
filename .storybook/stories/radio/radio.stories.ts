@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrRadio, ClrRadioModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrRadio, ClrRadioModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-radio-wrapper>
       <input type="radio" clrRadio value="i + 1" [checked]="checked" [disabled]="disabled" />
       <label>{{label}}</label>

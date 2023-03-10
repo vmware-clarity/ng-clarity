@@ -5,11 +5,11 @@
  */
 
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const formMappingKey = 'form-mapping-key';

@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPagination } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPagination } from '../../../projects/angular/src';
 import { elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
@@ -50,7 +50,7 @@ const defaultStory: Story = args => ({
           <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
-      
+
       <clr-dg-footer>
         <clr-dg-pagination
           #pagination

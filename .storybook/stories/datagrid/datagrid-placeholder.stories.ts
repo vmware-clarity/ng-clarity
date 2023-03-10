@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPlaceholder } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPlaceholder } from '../../../projects/angular/src';
 import { elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
@@ -35,7 +35,7 @@ const defaultStory: Story = args => ({
       </clr-dg-column>
 
       <clr-dg-placeholder [ngClass]="{ highlight }">{{ content }}</clr-dg-placeholder>
-      
+
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
           <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>

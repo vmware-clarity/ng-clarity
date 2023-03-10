@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrRangeContainer, ClrRangeModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrRangeContainer, ClrRangeModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-range-container [clrRangeHasProgress]="clrRangeHasProgress">
       <label>{{label}}</label>
       <input type="range" clrRange [value]="value" [disabled]="disabled" />

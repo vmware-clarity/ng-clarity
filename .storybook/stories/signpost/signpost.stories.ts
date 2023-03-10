@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
+import { ClrSignpostContent, ClrSignpostModule } from '../../../projects/angular/src';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const positions: string[] = [
@@ -26,7 +26,7 @@ const positions: string[] = [
 ];
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <div style="margin-top: 100px; text-align: center;">
       <clr-signpost>
         <clr-signpost-content [clrPosition]="clrPosition">

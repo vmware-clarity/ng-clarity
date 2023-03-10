@@ -3,9 +3,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "paths": {
-      "@clr/angular": ["./../projects/angular/src/index.ts"]
-    },
     "types": ["node"]
   },
   "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
