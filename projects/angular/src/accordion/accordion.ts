@@ -27,8 +27,8 @@ import { AccordionService } from './providers/accordion.service';
   selector: 'clr-accordion',
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-accordion]': 'true' },
-  providers: [AccordionService],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AccordionService],
 })
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
