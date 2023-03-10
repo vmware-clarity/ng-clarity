@@ -38,6 +38,12 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test
+      - name: Install Playwright Browsers
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
+        run: npx playwright install --with-deps chromium
+      - name: Run Visual Regression Tests
+        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
+        run: npm run test:vrt
       - name: Public Api Check
         if: ${{matrix.angular == 'Angular v15'}}
         run: npm run public-api:check
