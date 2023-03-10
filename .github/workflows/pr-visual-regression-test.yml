@@ -1,0 +1,44 @@
+name: PR Visual Regression Test
+on:
+  pull_request:
+concurrency:
+  group: pr-visual-regression-test-${{github.event.pull_request.number}}
+  cancel-in-progress: true
+jobs:
+  pr-visual-regression-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build Storybook
+        run: npm run _build:ui:css && npm run _build:storybook
+      - name: Update VRT Snapshots
+        run: npm run test:vrt:update
+      # https://github.com/marketplace/actions/create-pull-request#action-behaviour
+      - name: Open Pull Request if Changes Needed
+        id: open-pull-request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          base: ${{github.event.pull_request.head.ref}}
+          branch: vrt-update/pr-${{github.event.pull_request.number}}
+          commit-message: |
+            chore: update vrt snapshots for `${{github.event.pull_request.head.ref}}`
+          title: |
+            chore: update vrt snapshots for `${{github.event.pull_request.head.ref}}`
+          body: |
+            This PR contains updated vrt snapshots for #${{github.event.pull_request.number}}.
+            If these changes are intended and correct, merge this PR into `${{github.event.pull_request.head.ref}}`.
+          delete-branch: true
+      - name: Fail if Changes Needed
+        if: ${{steps.open-pull-request.outputs.pull-request-operation == 'created' || steps.open-pull-request.outputs.pull-request-operation == 'updated'}}
+        run: |
+          echo "Check ${{steps.open-pull-request.outputs.pull-request-url}} for visual snapshot changes."
+          exit 1

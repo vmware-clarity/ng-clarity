@@ -1,0 +1,42 @@
+diff --git a/node_modules/@playwright/test/lib/cli.js b/node_modules/@playwright/test/lib/cli.js
+index 7bf7a49..20dbb7a 100755
+--- a/node_modules/@playwright/test/lib/cli.js
++++ b/node_modules/@playwright/test/lib/cli.js
+@@ -161,6 +161,25 @@ async function runTests(args, opts) {
+   const status = process.env.PWTEST_WATCH ? await runner.watchAllTests() : await runner.runAllTests();
+   await (0, _profiler.stopProfiling)(undefined);
+   if (status === 'interrupted') process.exit(130);
++
++  const fs = require('fs');
++  const path = require('path');
++  const { globSync } = require('glob');
++  const allScreenshotPaths = globSync('./tests/**/*.png').map(screenshotPath => path.resolve(screenshotPath));
++  const usedScreenshotPaths = fs.readFileSync('./test-results/used-screenshot-paths.txt').toString().split('\n');
++  const unusedScreenshotPaths = allScreenshotPaths.filter(screenshotPath => !usedScreenshotPaths.includes(screenshotPath));
++
++  if (unusedScreenshotPaths.length) {
++    if (config.updateSnapshots === 'all') {
++      for (const screenshotPath of unusedScreenshotPaths) {
++        fs.unlinkSync(screenshotPath);
++      }
++    } else {
++      console.log('unused screenshots:', unusedScreenshotPaths);
++      process.exit(1);
++    }
++  }
++
+   process.exit(status === 'passed' ? 0 : 1);
+ }
+ async function listTestFiles(opts) {
+diff --git a/node_modules/@playwright/test/lib/matchers/toMatchSnapshot.js b/node_modules/@playwright/test/lib/matchers/toMatchSnapshot.js
+index 8cd8291..876a04c 100644
+--- a/node_modules/@playwright/test/lib/matchers/toMatchSnapshot.js
++++ b/node_modules/@playwright/test/lib/matchers/toMatchSnapshot.js
+@@ -269,6 +269,7 @@ async function toHaveScreenshot(pageOrLocator, nameOrOptions = {}, optOptions =
+     maxDiffPixelRatio: config === null || config === void 0 ? void 0 : config.maxDiffPixelRatio,
+     threshold: config === null || config === void 0 ? void 0 : config.threshold
+   }, nameOrOptions, optOptions);
++  require('fs').appendFileSync('./test-results/used-screenshot-paths.txt', `${helper.snapshotPath}\n`);
+   if (!helper.snapshotPath.toLowerCase().endsWith('.png')) throw new Error(`Screenshot name "${_path.default.basename(helper.snapshotPath)}" must have '.png' extension`);
+   (0, _util.expectTypes)(pageOrLocator, ['Page', 'Locator'], 'toHaveScreenshot');
+   const [page, locator] = pageOrLocator.constructor.name === 'Page' ? [pageOrLocator, undefined] : [pageOrLocator.page(), pageOrLocator];
