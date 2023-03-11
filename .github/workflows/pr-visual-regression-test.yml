@@ -25,10 +25,15 @@ jobs:
       # https://github.com/marketplace/actions/create-pull-request#action-behaviour
       - name: Open Pull Request if Changes Needed
         id: open-pull-request
-        uses: peter-evans/create-pull-request@v4
+        uses: kevinbuhmann/create-pull-request@cb561e06080c97012adbabe02ef480f898336148 # fork of peter-evans/create-pull-request
         with:
           base: ${{github.event.pull_request.head.ref}}
+          baseRepo: ${{github.event.pull_request.head.repo.clone_url}}
           branch: vrt-update/pr-${{github.event.pull_request.number}}
+          author: GitHub <noreply@github.com>
+          committer: GitHub <noreply@github.com>
+          push-to-fork: ${{github.event.pull_request.head.repo.full_name}}
+          delete-branch: true
           commit-message: |
             chore: update vrt snapshots for `${{github.event.pull_request.head.ref}}`
           title: |
@@ -36,7 +41,6 @@ jobs:
           body: |
             This PR contains updated vrt snapshots for #${{github.event.pull_request.number}}.
             If these changes are intended and correct, merge this PR into `${{github.event.pull_request.head.ref}}`.
-          delete-branch: true
       - name: Fail if Changes Needed
         if: ${{steps.open-pull-request.outputs.pull-request-operation == 'created' || steps.open-pull-request.outputs.pull-request-operation == 'updated'}}
         run: |
