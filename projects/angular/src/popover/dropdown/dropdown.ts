@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DROPDOWN_FOCUS_HANDLER_PROVIDER } from './providers/dropdown-focus-handler.service';
+import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
 
 @Component({
@@ -31,6 +31,7 @@ export class ClrDropdown implements OnDestroy {
     @Optional()
     public parent: ClrDropdown,
     public toggleService: ClrPopoverToggleService,
+    public focusHandler: DropdownFocusHandler,
     private cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
