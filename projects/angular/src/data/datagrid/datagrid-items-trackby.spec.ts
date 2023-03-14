@@ -7,6 +7,7 @@
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridModule } from './datagrid.module';
 import { FiltersProvider } from './providers/filters';
@@ -38,10 +39,17 @@ export default function (): void {
     });
 
     it('receives an input for the trackBy option', function () {
-      expect(this.itemsProvider.trackBy).toBeUndefined();
+      expect(this.itemsProvider.iteratorTrackBy).toBeUndefined();
       this.testComponent.trackBy = (index: number) => index;
       this.fixture.detectChanges();
-      expect(this.itemsProvider.trackBy).toBe(this.testComponent.trackBy);
+      expect(this.itemsProvider.iteratorTrackBy).toBe(this.testComponent.trackBy);
+    });
+
+    it('ignores the column toggle trackBy function', function () {
+      const initialTrackByFn = this.itemsProvider.trackBy;
+      this.testComponent.trackBy = columnToggleTrackByFn;
+      this.fixture.detectChanges();
+      expect(this.itemsProvider.trackBy).toBe(initialTrackByFn);
     });
   });
 }

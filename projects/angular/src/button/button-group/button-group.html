@@ -10,16 +10,21 @@
 <ng-container *ngIf="menuButtons.length > 0">
   <div class="btn-group-overflow open" [ngClass]="menuPosition" #anchor>
     <button
+      #buttonGroupToggle
       class="btn dropdown-toggle"
       clrPopoverAnchor
       clrPopoverOpenCloseButton
+      (keydown.arrowup)="openButtonGroupMenu($event, InitialFocus.LAST_ITEM)"
+      (keydown.arrowdown)="openButtonGroupMenu($event, InitialFocus.FIRST_ITEM)"
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="commonStrings.keys.rowActions"
+      aria-haspopup="true"
     >
       <cds-icon shape="ellipsis-horizontal" [attr.title]="commonStrings.keys.more"></cds-icon>
     </button>
     <div
+      #buttonGroupMenu
       role="menu"
       class="dropdown-menu clr-button-group-menu"
       [id]="popoverId"

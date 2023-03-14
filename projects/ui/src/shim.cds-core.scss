@@ -521,7 +521,7 @@
   --clr-dropdown-selection-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
   --clr-dropdown-box-shadow: var(--clr-popover-box-shadow-color);
 
-  --clr-dropdown-text-color: var(--clr-p1-color);
+  --clr-dropdown-text-color: var(--clr-global-font-color);
   --clr-dropdown-header-color: var(--cds-global-typography-color-400); // var(--clr-color-neutral-900);
   --clr-dropdown-item-color: var(--cds-global-typography-color-300); // var(--clr-color-neutral-700);
 
@@ -726,7 +726,7 @@
   --clr-datagrid-pagination-input-border-focus-color: var(--clr-color-action-400);
   --clr-datagrid-popover-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
   --clr-datagrid-popover-border-color: var(--cds-alias-object-border-color); // indirectly mapped;
-  --clr-datagrid-action-popover-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-neutral-200);
+  --clr-datagrid-action-popover-hover-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
   --clr-datagrid-row-selected: var(--cds-global-typography-color-500); // var(--clr-color-neutral-1000);
 
   --clr-datagrid-column-switch-header-font-color: var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
@@ -738,6 +738,18 @@
   --clr-datagrid-placeholder-color: var(--cds-global-color-gray-700); // var(--clr-color-neutral-700);
 
   --clr-datagrid-loading-background: var(--cds-alias-object-opacity-100); // #{$clr-datagrid-loading-background}; // hsla(0, 0%, 100%, 0.6);
+
+  --clr-datagrid-column-toggle-border-color: var(--cds-alias-object-border-color);
+  --clr-datagrid-column-toggle-fill-color: var(--clr-btn-outline-bg-color);
+  --clr-datagrid-column-toggle-text-color: var(--cds-global-typography-color-400);
+
+  --clr-datagrid-column-toggle-border-hover-color: var(--cds-alias-object-interaction-border-color);
+  --clr-datagrid-column-toggle-fill-hover-color: var(--cds-alias-object-interaction-background-hover);
+  --clr-datagrid-column-toggle-text-hover-color: var(--cds-global-typography-color-500);
+
+  --clr-datagrid-column-toggle-border-active-color: var(--cds-alias-object-interaction-border-color);
+  --clr-datagrid-column-toggle-fill-active-color: var(--cds-alias-object-interaction-background-selected);
+  --clr-datagrid-column-toggle-text-active-color: var(--cds-global-typography-color-500);
 
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere

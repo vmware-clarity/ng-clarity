@@ -4,6 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-a[id*='--variants'] {
-  display: none;
-}
+export const THEMES = {
+  NG_LIGHT: '',
+  NG_DARK: 'clr-ui-dark',
+  CORE_LIGHT: 'light',
+  CORE_DARK: 'dark',
+  HIGH_CONTRAST: 'high-contrast',
+};

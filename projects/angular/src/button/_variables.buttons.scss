@@ -475,6 +475,128 @@ $clr-btn-danger-outline-checked-color: $clr-color-neutral-0 !default;
   @return null;
 }
 
+// Warning button colors
+$clr-btn-warning-color: $clr-color-neutral-0 !default;
+$clr-btn-warning-bg-color: $clr-color-danger-700 !default;
+$clr-btn-warning-border-color: $clr-btn-danger-bg-color !default;
+$clr-btn-warning-hover-bg-color: $clr-color-danger-800 !default;
+$clr-btn-warning-hover-color: $clr-btn-danger-color !default;
+$clr-btn-warning-box-shadow-color: $clr-color-danger-900 !default;
+$clr-btn-warning-disabled-color: $clr-color-neutral-700 !default;
+$clr-btn-warning-disabled-bg-color: $clr-color-neutral-400 !default;
+$clr-btn-warning-disabled-border-color: $clr-btn-danger-disabled-color !default;
+$clr-btn-warning-checked-bg-color: $clr-color-danger-800 !default;
+$clr-btn-warning-checked-color: $clr-btn-danger-color !default;
+
+@function lookupFromWarningButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-warning-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-warning-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-warning-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-warning-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-warning-hover-color;
+  }
+
+  @if $property == box-shadow-color {
+    @return $clr-btn-warning-box-shadow-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-warning-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-warning-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-warning-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-warning-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-warning-checked-color;
+  }
+
+  @return null;
+}
+
+// Warning outline button colors
+$clr-btn-warning-outline-color: $clr-color-danger-700 !default;
+$clr-btn-warning-outline-bg-color: transparent !default;
+$clr-btn-warning-outline-border-color: $clr-color-danger-800 !default;
+$clr-btn-warning-outline-hover-bg-color: $clr-color-danger-100 !default;
+$clr-btn-warning-outline-hover-color: $clr-color-danger-900 !default;
+$clr-btn-warning-outline-box-shadow-color: $clr-color-danger-200 !default;
+$clr-btn-warning-outline-disabled-color: $clr-color-neutral-700 !default;
+$clr-btn-warning-outline-disabled-bg-color: $clr-btn-danger-outline-bg-color !default;
+$clr-btn-warning-outline-disabled-border-color: $clr-btn-danger-outline-disabled-color !default;
+$clr-btn-warning-outline-checked-bg-color: $clr-color-danger-800 !default;
+$clr-btn-warning-outline-checked-color: $clr-color-neutral-0 !default;
+
+@function lookupFromWarningOutlineButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-warning-outline-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-warning-outline-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-warning-outline-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-warning-outline-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-warning-outline-hover-color;
+  }
+
+  @if $property == box-shadow-color {
+    @return $clr-btn-warning-outline-box-shadow-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-warning-outline-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-warning-outline-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-warning-outline-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-warning-outline-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-warning-outline-checked-color;
+  }
+
+  @return null;
+}
+
 // Link button colors
 $clr-btn-link-color: $clr-color-action-600 !default;
 $clr-btn-link-bg-color: transparent !default;

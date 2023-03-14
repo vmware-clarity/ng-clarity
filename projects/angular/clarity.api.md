@@ -540,8 +540,9 @@ export class ClrButton implements LoadingListener {
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterContentInit {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -549,6 +550,10 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
+    // Warning: (ae-forgotten-export) The symbol "InitialFocus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    InitialFocus: typeof InitialFocus;
     // (undocumented)
     initializeButtons(): void;
     // (undocumented)
@@ -560,7 +565,11 @@ export class ClrButtonGroup implements AfterContentInit {
     set menuPosition(pos: string);
     ngAfterContentInit(): void;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     get open(): boolean;
+    // (undocumented)
+    openButtonGroupMenu(event: any, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -1165,7 +1174,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "refresh": "clrDgRefresh"; "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -1338,7 +1349,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    trackByFn: TrackByFunction<ColumnState>;
+    readonly trackByFn: TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -1530,6 +1541,9 @@ export class ClrDatagridItemsTrackBy<T = any> {
 }
 
 // @public (undocumented)
+export type ClrDatagridItemsTrackByFunction<T> = (item: T) => any;
+
+// @public (undocumented)
 export class ClrDatagridModule {
     constructor();
     // (undocumented)
@@ -1704,7 +1718,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    item: T;
+    set item(item: T);
+    // (undocumented)
+    get item(): T;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -5063,7 +5079,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/button/button-group/button-group.d.ts:53:161 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/button/button-group/button-group.d.ts:62:161 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

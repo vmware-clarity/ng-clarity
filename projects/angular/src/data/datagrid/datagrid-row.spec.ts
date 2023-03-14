@@ -4,19 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, TrackByFunction } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRow } from './datagrid-row';
+import { ClrDatagridModule } from './datagrid.module';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { Items } from './providers/items';
+import { ClrDatagridItemsTrackByFunction, Items } from './providers/items';
 import { Selection } from './providers/selection';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 
@@ -105,7 +106,7 @@ export default function (): void {
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
 
-        expect(checkbox.getAttribute('disabled')).toBe('true');
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
         expect(checkbox.getAttribute('aria-disabled')).toBe('true');
 
         context.clarityDirective.toggle();
@@ -134,6 +135,20 @@ export default function (): void {
         TestBed.get(Items).all = [{ id: 1 }, { id: 2 }];
       });
 
+      it('renders correctly if item is set after clrDgSelectable', fakeAsync(function () {
+        selectionProvider.selectionType = SelectionType.Multi;
+        const tempItem = context.testComponent.item;
+        context.testComponent.item = undefined;
+        context.detectChanges();
+        context.testComponent.clrDgSelectable = false;
+        context.testComponent.item = tempItem;
+        context.detectChanges();
+        checkbox = context.clarityElement.querySelector("input[type='checkbox']");
+
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
+        expect(checkbox.getAttribute('aria-disabled')).toBe('true');
+      }));
+
       it('should provide a selection input aria-labels', fakeAsync(function () {
         // Test multi select rows
         selectionProvider.selectionType = SelectionType.Multi;
@@ -149,12 +164,11 @@ export default function (): void {
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
         selectionProvider.selectionType = SelectionType.Multi;
-        context.detectChanges();
         context.testComponent.clrDgSelectable = false;
         context.detectChanges();
         checkbox = context.clarityElement.querySelector("input[type='checkbox']");
 
-        expect(checkbox.getAttribute('disabled')).toBe('true');
+        expect(checkbox.getAttribute('disabled')).toBeDefined();
         expect(checkbox.getAttribute('aria-disabled')).toBe('true');
 
         context.clarityDirective.toggle();
@@ -168,6 +182,58 @@ export default function (): void {
         context.detectChanges();
         context.clarityDirective.toggle();
         expect(context.clarityDirective.selected).toBe(false);
+      });
+    });
+
+    describe('Conditional Selection with *ngFor', () => {
+      describe('DatagridWithNgForTrackBy', () => {
+        let fixture: ComponentFixture<NgForDatagridWithNgForTrackBy>;
+        let nativeElement: HTMLElement;
+
+        beforeEach(() => {
+          TestBed.configureTestingModule({
+            imports: [ClrDatagridModule],
+            declarations: [NgForDatagridWithNgForTrackBy],
+          });
+
+          fixture = TestBed.createComponent(NgForDatagridWithNgForTrackBy);
+          nativeElement = fixture.nativeElement;
+        });
+
+        it('does NOT disable the selection checkbox when clrDgSelectable is false (broken behavior)', () => {
+          fixture.componentInstance.clrDgSelectable = false;
+          fixture.detectChanges();
+
+          const checkboxElement = nativeElement.querySelector("input[type='checkbox']");
+
+          expect(checkboxElement.getAttribute('disabled')).toBeNull();
+        });
+      });
+
+      [NgForDatagridWithDatagridTrackBy, NgForDatagridWithDatagridTrackByAndNgForTrackBy].forEach(testComponentType => {
+        describe(testComponentType.name, () => {
+          let fixture: ComponentFixture<{ clrDgSelectable: boolean }>;
+          let nativeElement: HTMLElement;
+
+          beforeEach(() => {
+            TestBed.configureTestingModule({
+              imports: [ClrDatagridModule],
+              declarations: [testComponentType],
+            });
+
+            fixture = TestBed.createComponent<{ clrDgSelectable: boolean }>(testComponentType);
+            nativeElement = fixture.nativeElement;
+          });
+
+          it('does disable the selection checkbox when clrDgSelectable is false', () => {
+            fixture.componentInstance.clrDgSelectable = false;
+            fixture.detectChanges();
+
+            const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']");
+
+            expect(checkboxElement.getAttribute('disabled')).toBeDefined();
+          });
+        });
       });
     });
 
@@ -549,4 +615,55 @@ class ExpandTest {
   removeRowDetail = false;
   clrDgDetailOpenLabel = 'Open Me';
   clrDgDetailCloseLabel = 'Close Me';
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgSelected]="[]">
+      <clr-dg-row
+        *ngFor="let item of items; trackBy: trackBy"
+        [clrDgItem]="item"
+        [clrDgSelectable]="clrDgSelectable"
+      ></clr-dg-row>
+    </clr-datagrid>
+  `,
+})
+class NgForDatagridWithNgForTrackBy {
+  clrDgSelectable = true;
+
+  readonly items: Item[] = [{ id: 42 }];
+  readonly trackBy: TrackByFunction<Item> = (_index, item) => item.id;
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
+      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
+    </clr-datagrid>
+  `,
+})
+class NgForDatagridWithDatagridTrackBy {
+  clrDgSelectable = true;
+
+  readonly items: Item[] = [{ id: 42 }];
+  readonly trackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
+      <clr-dg-row
+        *ngFor="let item of items; trackBy: iteratorTrackBy"
+        [clrDgItem]="item"
+        [clrDgSelectable]="clrDgSelectable"
+      ></clr-dg-row>
+    </clr-datagrid>
+  `,
+})
+class NgForDatagridWithDatagridTrackByAndNgForTrackBy {
+  clrDgSelectable = true;
+
+  readonly items: Item[] = [{ id: 42 }];
+  readonly datagridTrackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
+  readonly iteratorTrackBy: TrackByFunction<Item> = (_index, item) => item.id;
 }

@@ -544,6 +544,13 @@
       input {
         cursor: pointer;
       }
+
+      &.clr-form-control-disabled {
+        &,
+        input {
+          cursor: not-allowed;
+        }
+      }
     }
 
     .datagrid-signpost-trigger .signpost {
@@ -1283,7 +1290,8 @@
             $clr-use-custom-properties
           );
         }
-        &:active {
+        &:active,
+        &:focus {
           box-shadow: none;
           @include css-var(
             border-color,

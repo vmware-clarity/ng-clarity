@@ -19,12 +19,12 @@ const patterns = {
 };
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
       <clr-input-container>
         <label>Name</label>
-        <input clrInput formControlName="name" required />
+        <input clrInput formControlName="name" required [placeholder]="namePlaceholder"/>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -87,10 +87,22 @@ const defaultParameters: Parameters = {
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
     form: formMappingKey,
+    namePlaceholder: '',
   },
 };
 
-const variants: Parameters[] = [];
+const variants: Parameters[] = [
+  {},
+  {
+    namePlaceholder: 'Test placeholder',
+  },
+  {
+    clrLayout: ClrFormLayout.VERTICAL,
+  },
+  {
+    clrLayout: ClrFormLayout.COMPACT,
+  },
+];
 
 setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
 

@@ -36,13 +36,12 @@ const defaultStory: Story = args => ({
         [clrDgColType]="clrDgColType"
         clrDgField="name"
         [clrDgSortBy]="clrDgSortBy"
-        [clrDgSorted]="clrDgSorted"
         [clrDgSortOrder]="ClrDatagridSortOrder[clrDgSortOrder]"
         [clrFilterNumberMaxPlaceholder]="clrFilterNumberMaxPlaceholder"
         [clrFilterNumberMinPlaceholder]="clrFilterNumberMinPlaceholder"
         [clrFilterStringPlaceholder]="clrFilterStringPlaceholder"
         [clrFilterValue]="clrFilterValue"
-        (clrDgSortedChange)="clrDgSortedChange($event)"
+        (clrDgColumnResize)="clrDgColumnResize($event)"
         (clrDgSortOrderChange)="clrDgSortOrderChange($event)"
         (clrFilterValueChange)="clrFilterValueChange($event)"
       >
@@ -93,7 +92,6 @@ const defaultParameters: Parameters = {
     clrDgColType: { defaultValue: 'string' },
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
-    clrDgSorted: { defaultValue: false, control: { type: 'boolean' } },
     clrDgSortOrder: {
       defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
       control: {
@@ -106,7 +104,7 @@ const defaultParameters: Parameters = {
     clrFilterStringPlaceholder: { defaultValue: commonStringsService.keys.filterItems },
     clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
-    clrDgSortedChange: { control: { disable: true } },
+    clrDgColumnResize: { control: { disable: true } },
     clrDgSortOrderChange: { control: { disable: true } },
     clrFilterValueChange: { control: { disable: true } },
     // methods
@@ -117,7 +115,7 @@ const defaultParameters: Parameters = {
   },
   args: {
     // outputs
-    clrDgSortedChange: action('clrDgSortedChange'),
+    clrDgColumnResize: action('clrDgColumnResize'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),
     clrFilterValueChange: action('clrFilterValueChange'),
     // story helpers
