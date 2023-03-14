@@ -6,9 +6,11 @@
 
 import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
 
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ButtonGroupNavigationHandler } from '../providers/button-group-navigation-handler.service';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
@@ -17,10 +19,13 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
     <ng-template #buttonProjectedRef>
       <button
         [class]="classNames"
+        [class.clr-focus]="focusClass"
         (click)="emitClick($event)"
         [attr.type]="type"
         [attr.name]="name"
         [attr.disabled]="disabled"
+        [attr.tabindex]="tabIndex"
+        [attr.role]="role"
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
@@ -40,8 +45,22 @@ export class ClrButton implements LoadingListener {
     @SkipSelf()
     @Optional()
     public buttonInGroupService: ButtonInGroupService,
-    private toggleService: ClrPopoverToggleService
+    private toggleService: ClrPopoverToggleService,
+    @Optional()
+    private navigationHandler: ButtonGroupNavigationHandler
   ) {}
+
+  get role(): string {
+    return this.inMenu ? 'menuitem' : null;
+  }
+
+  get focusClass() {
+    return this.navigationHandler && this.navigationHandler.isCurrent(this.id);
+  }
+
+  get tabIndex(): string {
+    return this.inMenu ? '-1' : null;
+  }
 
   private _inMenu = false;
 
@@ -146,6 +165,12 @@ export class ClrButton implements LoadingListener {
       this.toggleService.toggleWithEvent($event);
     }
     this._click.emit(true);
+  }
+
+  ngOnInit() {
+    if (this.inMenu && !this.id) {
+      this.id = uniqueIdFactory();
+    }
   }
 
   ngAfterViewInit() {

@@ -107,7 +107,7 @@ export default function (): void {
 
       it('supports a id input', () => {
         expect(componentInstance.button1.id).toBe('button1');
-        expect(componentInstance.button2.id).toBeNull();
+        expect(componentInstance.button2.id).toBeTruthy();
         expect(componentInstance.button3.id).toBeNull();
       });
 

@@ -4,7 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export enum InitialFocus {
-  FIRST_ITEM = 'first', // Focus first item
-  LAST_ITEM = 'last', // Focus last item
+import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
+
+export abstract class ButtonGroupNavigationItem extends FocusableItem {
+  abstract click?(): void;
 }

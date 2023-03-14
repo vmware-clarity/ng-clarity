@@ -17,7 +17,6 @@ import {
 import { delay, takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
-import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
@@ -25,34 +24,34 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import {
-  BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
-  ButtonGroupFocusHandler,
-} from '../providers/button-group-focus-handler.service';
-import { InitialFocus } from '../providers/button-group-focus.enum';
+  BUTTON_GROUP_NAVIGATION_HANDLER_PROVIDER,
+  ButtonGroupNavigationHandler,
+} from '../providers/button-group-navigation-handler.service';
+import { InitialItem } from '../providers/button-group-navigation.enum';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
 
 @Component({
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
-  providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
+  providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_NAVIGATION_HANDLER_PROVIDER],
   hostDirectives: [PopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
-  @ViewChild('buttonGroupToggle') private buttonGroupToggle: ElementRef;
-  @ViewChild('buttonGroupMenu') private buttonGroupMenu: ElementRef;
+  @ViewChild('menuToggle') menuToggle: ElementRef;
+  @ViewChild('menu') menu: ElementRef;
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   popoverId = uniqueIdFactory();
-  InitialFocus = InitialFocus;
+  InitialItem = InitialItem;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
-    private focusHandler: ButtonGroupFocusHandler
+    private navigationHandler: ButtonGroupNavigationHandler
   ) {}
 
   popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
@@ -107,9 +106,11 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     }
   }
 
-  openButtonGroupMenu(event, initialFocus: InitialFocus) {
-    this.focusHandler.setInitialFocus(initialFocus);
-    this.toggleService.toggleWithEvent(event);
+  openMenu(event, initialItem: InitialItem) {
+    this.navigationHandler.setInitialItem(initialItem);
+    if (!this.toggleService.open) {
+      this.toggleService.toggleWithEvent(event);
+    }
   }
 
   /**
@@ -164,9 +165,9 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   private handleFocusOnMenuOpen() {
     return this.toggleService.openChange.pipe(delay(0), takeUntil(this.destroy$)).subscribe(isOpened => {
-      this.focusHandler.menuToggle = this.buttonGroupToggle?.nativeElement;
-      this.focusHandler.buttonsContainer = this.buttonGroupMenu?.nativeElement;
-      this.focusHandler.menuOpened = isOpened;
+      this.navigationHandler.menuToggle = this.menuToggle?.nativeElement;
+      this.navigationHandler.menu = this.menu?.nativeElement;
+      this.navigationHandler.menuOpened = isOpened;
     });
   }
 }
