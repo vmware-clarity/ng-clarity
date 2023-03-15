@@ -16,7 +16,7 @@
       @include checkbox-radio-input-styles($clr-forms-radio-size);
     }
 
-    label {
+    .clr-control-label {
       @include checkbox-radio-label-styles(
         $clr-forms-radio-label-height,
         $clr-forms-radio-padding-left,
@@ -25,12 +25,12 @@
       );
     }
 
-    label:empty {
+    .clr-control-label:empty {
       padding-left: 0;
     }
 
     //Radio button base
-    input[type='radio'] + label::before {
+    input[type='radio'] + .clr-control-label::before {
       @include checkbox-radio-shared-inactive(
         $clr-forms-radio-height,
         $clr-forms-radio-top,
@@ -42,7 +42,7 @@
     }
 
     //Checked Radio Styles
-    input[type='radio']:checked + label::before {
+    input[type='radio']:checked + .clr-control-label::before {
       @include css-var(
         box-shadow,
         clr-forms-radio-selected-shadow,
@@ -53,16 +53,16 @@
     }
 
     //Outline color for unchecked radios
-    input[type='radio']:focus + label::before {
+    input[type='radio']:focus + .clr-control-label::before {
       @include include-outline-style-form-fields();
     }
 
     //Outline color for checked radios
-    input[type='radio']:focus:checked + label::before {
+    input[type='radio']:focus:checked + .clr-control-label::before {
       @include include-outline-style-form-fields();
     }
 
-    input[type='radio']:disabled + label::before {
+    input[type='radio']:disabled + .clr-control-label::before {
       border: 0;
       //background-color around the dot
       @include css-var(
@@ -73,7 +73,7 @@
       );
     }
 
-    input[type='radio']:checked:disabled + label::before {
+    input[type='radio']:checked:disabled + .clr-control-label::before {
       @include css-var(
         background-color,
         clr-forms-radio-disabled-background-color,
@@ -91,12 +91,12 @@
   }
 
   .clr-form-control-disabled .clr-radio-wrapper {
-    label {
+    .clr-control-label {
       cursor: not-allowed;
     }
   }
 
-  .clr-error .clr-radio-wrapper input[type='radio'] + label::before {
+  .clr-error .clr-radio-wrapper input[type='radio'] + .clr-control-label::before {
     @include css-var(border-color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
   }
 

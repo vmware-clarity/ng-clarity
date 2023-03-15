@@ -160,9 +160,13 @@
     @include equilateral($clr-tree-node-touch-target);
     padding-top: $clr-tree-checkbox-padding-top;
     padding-left: $clr-tree-checkbox-padding-left;
-  }
 
-  .clr-tree-node-content-container > .clr-checkbox-wrapper:first-child {
-    margin-left: $clr-tree-node-touch-target;
+    &:first-child {
+      margin-left: $clr-tree-node-touch-target;
+    }
+
+    .clr-control-label {
+      font-size: $clr-tree-node-checkbox-label-font-size;
+    }
   }
 }

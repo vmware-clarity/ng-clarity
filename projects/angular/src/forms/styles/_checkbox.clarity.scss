@@ -12,13 +12,7 @@
     @include form-flatten-validate-text();
     position: relative;
 
-    //Hide the default checkbox behind the pseudo elements
-    //Opacity is set to 0 so that the input remains accessible
-    input[type='checkbox'] {
-      @include checkbox-radio-input-styles($clr-forms-checkbox-size);
-    }
-
-    label {
+    .clr-control-label {
       @include checkbox-radio-label-styles(
         $clr-forms-checkbox-label-height,
         $clr-forms-checkbox-padding-left,
@@ -27,8 +21,14 @@
       );
     }
 
+    //Hide the default checkbox behind the pseudo elements
+    //Opacity is set to 0 so that the input remains accessible
+    input[type='checkbox'] {
+      @include checkbox-radio-input-styles($clr-forms-checkbox-size);
+    }
+
     //Checkbox base
-    input[type='checkbox'] + label::before {
+    input[type='checkbox'] + .clr-control-label::before {
       @include checkbox-radio-shared-inactive(
         $clr-forms-checkbox-height,
         $clr-forms-checkbox-top,
@@ -44,12 +44,12 @@
       );
     }
 
-    input[type='checkbox']:focus + label::before {
+    input[type='checkbox']:focus + .clr-control-label::before {
       @include include-outline-style-form-fields();
     }
 
     //Checkmark
-    input[type='checkbox'] + label::after {
+    input[type='checkbox'] + .clr-control-label::after {
       position: absolute;
       content: '';
       display: none;
@@ -68,7 +68,7 @@
       transform: translate(0, $mark-half-size) rotate(-45deg);
     }
 
-    input[type='checkbox']:checked + label::before {
+    input[type='checkbox']:checked + .clr-control-label::before {
       @include css-var(
         background,
         clr-forms-checkbox-background-color,
@@ -78,20 +78,20 @@
       border: none;
     }
 
-    input[type='checkbox']:checked + label::after {
+    input[type='checkbox']:checked + .clr-control-label::after {
       display: inline-block;
     }
 
     $indetermSassBrdrColorVar: $clr-forms-checkbox-indeterminate-border-color;
     $indetermCssBrdrColorVar: clr-forms-checkbox-indeterminate-border-color;
-    input[type='checkbox'].clr-indeterminate + label::before,
-    input[type='checkbox']:indeterminate + label::before {
+    input[type='checkbox'].clr-indeterminate + .clr-control-label::before,
+    input[type='checkbox']:indeterminate + .clr-control-label::before {
       border: $clr-global-borderwidth solid;
       @include css-var(border-color, $indetermCssBrdrColorVar, $indetermSassBrdrColorVar, $clr-use-custom-properties);
     }
 
-    input[type='checkbox'].clr-indeterminate + label::after,
-    input[type='checkbox']:indeterminate + label::after {
+    input[type='checkbox'].clr-indeterminate + .clr-control-label::after,
+    input[type='checkbox']:indeterminate + .clr-control-label::after {
       border-left: none;
       @include css-var(
         border-bottom-color,
@@ -108,17 +108,24 @@
     }
   }
 
-  .clr-error .clr-checkbox-wrapper input[type='checkbox'] + label::before {
+  .clr-error .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before {
     @include css-var(border-color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
-    label {
+    .clr-control-label {
       cursor: not-allowed;
+
+      @include css-var(
+        color,
+        clr-forms-label-disabled-color,
+        $clr-forms-label-disabled-color,
+        $clr-use-custom-properties
+      );
     }
 
-    input[type='checkbox'] + label::before,
-    input[type='checkbox']:checked + label::before {
+    input[type='checkbox'] + .clr-control-label::before,
+    input[type='checkbox']:checked + .clr-control-label::before {
       @include css-var(
         background-color,
         clr-forms-checkbox-disabled-background-color,
@@ -128,7 +135,7 @@
       border: none;
     }
 
-    input[type='checkbox']:checked + label::after {
+    input[type='checkbox']:checked + .clr-control-label::after {
       $sassVar: $clr-forms-checkbox-disabled-mark-color;
       $cssVar: clr-forms-checkbox-disabled-mark-color;
       $disabled-border-style: ($clr-forms-checkbox-height * 0.125) solid;
@@ -138,8 +145,8 @@
       @include css-var(border-bottom-color, $cssVar, $sassVar, $clr-use-custom-properties);
     }
 
-    input[type='checkbox']:checked.clr-indeterminate + label::after,
-    input[type='checkbox']:checked:indeterminate + label::after {
+    input[type='checkbox']:checked.clr-indeterminate + .clr-control-label::after,
+    input[type='checkbox']:checked:indeterminate + .clr-control-label::after {
       border-left: none;
     }
   }
