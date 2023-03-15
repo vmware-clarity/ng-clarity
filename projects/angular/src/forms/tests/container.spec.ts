@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -106,6 +106,14 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       fixture.detectChanges();
     });
 
+    function setValid(valid: boolean) {
+      // NOTE The order of these two events should in theory be insignificant, but it's not.
+      // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
+      // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
+      markControlService.markAsTouched();
+      container.state = valid ? CONTROL_STATE.VALID : CONTROL_STATE.INVALID;
+    }
+
     it('injects the layoutService', () => {
       expect(layoutService).toBeTruthy();
       expect(layoutService.layout).toEqual(ClrFormLayout.HORIZONTAL);
@@ -132,7 +140,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it("doesn't display the helper text when invalid", () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
-      container.state = CONTROL_STATE.INVALID;
+      setValid(false);
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-helper')).toBeFalsy();
     });
@@ -140,7 +148,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('sets error classes and displays the icon when invalid', () => {
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeFalse();
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
-      container.state = CONTROL_STATE.INVALID;
+      setValid(false);
       fixture.detectChanges();
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeTrue();
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
@@ -148,13 +156,13 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('projects the error helper when invalid', () => {
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
-      container.state = CONTROL_STATE.INVALID;
+      setValid(false);
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-error')).toBeTruthy();
     });
 
     it('projects the success content when valid', () => {
-      container.state = CONTROL_STATE.VALID;
+      setValid(true);
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-helper')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
@@ -162,7 +170,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('should have the success icon when valid', () => {
-      container.state = CONTROL_STATE.VALID;
+      setValid(true);
       fixture.detectChanges();
       const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=check-circle]');
       expect(icon).toBeTruthy();
@@ -184,7 +192,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('adds the error class for the control container', () => {
       expect(container.controlClass()).not.toContain('clr-error');
-      container.state = CONTROL_STATE.INVALID;
+      setValid(false);
       expect(container.controlClass()).toContain('clr-error');
     });
 
@@ -194,13 +202,12 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(container.controlClass()).not.toContain('clr-col-12');
     });
 
-    it('tracks the validity of the form control', fakeAsync(() => {
+    it('tracks the validity of the form control', () => {
       expect(container.showInvalid).toBeFalse();
       markControlService.markAsTouched();
       fixture.detectChanges();
-      tick();
       expect(container.showInvalid).toBeTrue();
-    }));
+    });
 
     it('tracks the disabled state', waitForAsync(() => {
       const test = fixture.debugElement.componentInstance;
