@@ -52,10 +52,17 @@
               [attr.aria-disabled]="clrDgSelectable ? null : true"
               [attr.aria-label]="clrDgRowAriaLabel"
             />
-            <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
-            <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
-              <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
-            </label>
+            <ng-container *ngIf="!selection.rowSelectionMode; else noLabel">
+              <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
+              <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
+                <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
+              </label>
+            </ng-container>
+            <ng-template #noLabel>
+              <span class="clr-control-label clr-col-null" (click)="clearRanges($event)">
+                <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
+              </span>
+            </ng-template>
           </div>
         </div>
         <div
