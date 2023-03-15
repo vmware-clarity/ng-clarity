@@ -33,9 +33,9 @@ import { FormsLayoutHorizontalGridDemo } from './layout/layout-horizontal-grid';
 import { FormsLayoutModalDemo } from './layout/layout-modal';
 import { FormsLayoutVerticalDemo } from './layout/layout-vertical';
 import { FormsLayoutVerticalGridDemo } from './layout/layout-vertical-grid';
-import { FormsReactiveDemo } from './reactive/reactive';
+import { FormsReactiveDemo, FormsReactiveOnPushDemo } from './reactive/reactive';
 import { FormsResetDemo } from './reset/reset';
-import { FormsTemplateDrivenDemo } from './template-driven/template-driven';
+import { FormsTemplateDrivenDemo, FormsTemplateDrivenOnPushDemo } from './template-driven/template-driven';
 import { FormsValidationDemo } from './validation/validation';
 
 @NgModule({
@@ -62,7 +62,9 @@ import { FormsValidationDemo } from './validation/validation';
     FormsSelectDemo,
     FormsTextareaDemo,
     FormsTemplateDrivenDemo,
+    FormsTemplateDrivenOnPushDemo,
     FormsReactiveDemo,
+    FormsReactiveOnPushDemo,
     FormsResetDemo,
     FormsA11yDemo,
     FormsGenericContainerDemo,
@@ -88,7 +90,9 @@ import { FormsValidationDemo } from './validation/validation';
     FormsSelectDemo,
     FormsTextareaDemo,
     FormsTemplateDrivenDemo,
+    FormsTemplateDrivenOnPushDemo,
     FormsReactiveDemo,
+    FormsReactiveOnPushDemo,
     FormsResetDemo,
     FormsA11yDemo,
     FormsGenericContainerDemo,

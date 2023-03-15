@@ -4,12 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-@Component({
-  templateUrl: './template-driven.html',
-})
-export class FormsTemplateDrivenDemo {
+class BasicTemplateDrivenDemo {
   model = {
     basic: '',
     container: '',
@@ -20,3 +17,14 @@ export class FormsTemplateDrivenDemo {
     console.log(this);
   }
 }
+
+@Component({
+  templateUrl: './template-driven.html',
+})
+export class FormsTemplateDrivenDemo extends BasicTemplateDrivenDemo {}
+
+@Component({
+  templateUrl: './template-driven.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FormsTemplateDrivenOnPushDemo extends BasicTemplateDrivenDemo {}

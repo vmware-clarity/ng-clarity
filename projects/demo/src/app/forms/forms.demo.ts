@@ -39,7 +39,9 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./textarea']">Textarea</a></li>
       <li><a [routerLink]="['./select']">Select</a></li>
       <li><a [routerLink]="['./template-driven']">Template Driven</a></li>
+      <li><a [routerLink]="['./template-driven-onpush']">Template Driven (OnPush)</a></li>
       <li><a [routerLink]="['./reactive']">Reactive</a></li>
+      <li><a [routerLink]="['./reactive-onpush']">Reactive (OnPush)</a></li>
       <li><a [routerLink]="['./reset']">Reset</a></li>
       <li><a [routerLink]="['./a11y']">a11y</a></li>
       <li><a [routerLink]="['./generic-container']">Generic Container</a></li>

@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
@@ -20,11 +19,11 @@ const patterns = {
 
 const defaultStory: Story = args => ({
   template: ` 
-    <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
+    <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
       <clr-input-container>
         <label>Name</label>
-        <input clrInput formControlName="name" required />
+        <input clrInput [(ngModel)]="data.name" required name="name"/>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -33,7 +32,7 @@ const defaultStory: Story = args => ({
       </clr-input-container>
       <clr-input-container>
         <label>Age</label>
-        <input clrInput formControlName="age" type="number" min="0" required />
+        <input clrInput [(ngModel)]="data.age" type="number" min="0" required name="age"/>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Age is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
@@ -42,7 +41,7 @@ const defaultStory: Story = args => ({
       </clr-input-container>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword formControlName="password" required />
+        <input clrPassword [(ngModel)]="data.password" required name="password"/>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Password is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
@@ -57,7 +56,7 @@ const defaultStory: Story = args => ({
       </clr-password-container>
       <clr-textarea-container>
         <label>Description</label>
-        <textarea clrTextarea formControlName="description" required></textarea>
+        <textarea clrTextarea [(ngModel)]="data.description" required name="description"></textarea>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Description is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Description is required</clr-control-error>
@@ -70,13 +69,13 @@ const defaultStory: Story = args => ({
 });
 
 const defaultParameters: Parameters = {
-  title: 'Forms/Form',
+  title: 'Forms/Template Driven',
   argTypes: {
     // inputs
     clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
-    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     clrLayout: {
       control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
     },
@@ -86,7 +85,7 @@ const defaultParameters: Parameters = {
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
-    form: formMappingKey,
+    data: formMappingKey,
   },
 };
 
@@ -95,15 +94,10 @@ const variants: Parameters[] = [];
 setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
 
 function getForm() {
-  return new FormGroup({
-    name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-    age: new FormControl(null, [Validators.min(5), Validators.max(99)]),
-    password: new FormControl(null, [
-      Validators.minLength(8),
-      Validators.pattern(patterns.alphaNumeric),
-      Validators.pattern(patterns.letters),
-      Validators.pattern(patterns.numbers),
-    ]),
-    description: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-  });
+  return {
+    name: '',
+    age: null,
+    password: '',
+    description: '',
+  };
 }
