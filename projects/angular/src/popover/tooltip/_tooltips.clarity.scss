@@ -55,6 +55,8 @@
     }
     border-#{$dirB}: $arrow-height solid transparent;
     border-#{$oppA}: $arrow-width solid transparent;
+
+    pointer-events: none;
   }
 }
 
@@ -89,6 +91,8 @@
     }
     border-bottom: $arrow-height solid transparent;
     border-#{$oppA}: $arrow-width solid transparent;
+
+    pointer-events: none;
   }
 }
 
