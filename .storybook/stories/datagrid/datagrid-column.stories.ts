@@ -42,6 +42,7 @@ const defaultStory: Story = args => ({
         [clrFilterNumberMinPlaceholder]="clrFilterNumberMinPlaceholder"
         [clrFilterStringPlaceholder]="clrFilterStringPlaceholder"
         [clrFilterValue]="clrFilterValue"
+        (clrDgColumnResize)="clrDgColumnResize($event)"
         (clrDgSortedChange)="clrDgSortedChange($event)"
         (clrDgSortOrderChange)="clrDgSortOrderChange($event)"
         (clrFilterValueChange)="clrFilterValueChange($event)"
@@ -106,6 +107,7 @@ const defaultParameters: Parameters = {
     clrFilterStringPlaceholder: { defaultValue: commonStringsService.keys.filterItems },
     clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
+    clrDgColumnResize: { control: { disable: true } },
     clrDgSortedChange: { control: { disable: true } },
     clrDgSortOrderChange: { control: { disable: true } },
     clrFilterValueChange: { control: { disable: true } },
@@ -117,6 +119,7 @@ const defaultParameters: Parameters = {
   },
   args: {
     // outputs
+    clrDgColumnResize: action('clrDgColumnResize'),
     clrDgSortedChange: action('clrDgSortedChange'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),
     clrFilterValueChange: action('clrFilterValueChange'),
