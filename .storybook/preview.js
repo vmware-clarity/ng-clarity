@@ -9,6 +9,7 @@ import '@cds/core/icon/register.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
+import previewStyles from 'raw-loader!./public/preview.css';
 import docs from '../documentation.json';
 import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
 import tokensStyles from 'raw-loader!../node_modules/@cds/core/styles/module.tokens.min.css';
@@ -30,6 +31,7 @@ const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
 const cdsCoreAndShimStyles = [
+  previewStyles,
   resetStyles,
   tokensStyles,
   layoutStyles,
@@ -81,16 +83,19 @@ const themeDecorator = (story, { globals, parameters }) => {
   switch (currentTheme) {
     case THEMES.NG_LIGHT:
       styleElement.textContent = clrUiStyles;
+      document.body.removeAttribute('cds-text');
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
       break;
     case THEMES.NG_DARK:
       styleElement.textContent = clrUiDarkStyles;
+      document.body.removeAttribute('cds-text');
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
       break;
     default:
       styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles.join('')}`;
+      document.body.setAttribute('cds-text', 'body');
       document.body.setAttribute(cdsThemeAttribute, currentTheme);
       document.body.style.backgroundColor = null;
       break;
