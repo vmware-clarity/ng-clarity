@@ -4,22 +4,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subscription } from 'rxjs';
 
+import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDropdown } from './dropdown';
+import { ClrDropdownItem } from './dropdown-item';
+import { ClrDropdownTrigger } from './dropdown-trigger';
 import { ClrDropdownModule } from './dropdown.module';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
 export default function (): void {
   describe('Dropdown', () => {
-    let fixture: ComponentFixture<any>;
-    let compiled: any;
+    let fixture: ComponentFixture<TestComponent>;
+    let compiled: HTMLElement;
     let subscription: Subscription;
 
     beforeEach(() => {
@@ -215,6 +219,44 @@ export default function (): void {
       expect(toggleService.open).toBe(false);
     }));
 
+    it('puts focus back on the trigger when a dropdown item is clicked', fakeAsync(() => {
+      const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
+
+      dropdownToggle.click();
+      tick();
+      fixture.detectChanges();
+
+      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      expect(document.activeElement).toBe(dropdownItem);
+
+      dropdownItem.click();
+      tick();
+      fixture.detectChanges();
+
+      expect(document.activeElement).toBe(dropdownToggle);
+    }));
+
+    it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', fakeAsync(() => {
+      // set [clrCloseMenuOnItemClick]="false"
+      fixture.componentInstance.dropdownInstance.isMenuClosable = false;
+      fixture.detectChanges();
+
+      const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
+
+      dropdownToggle.click();
+      tick();
+      fixture.detectChanges();
+
+      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      expect(document.activeElement).toBe(dropdownItem);
+
+      dropdownItem.click();
+      tick();
+      fixture.detectChanges();
+
+      expect(document.activeElement).toBe(dropdownItem);
+    }));
+
     it('declares a FocusService provider', () => {
       const focusService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(FocusService, null);
       expect(focusService).not.toBeNull();
@@ -226,6 +268,52 @@ export default function (): void {
       expect(focusHandler).not.toBeNull();
       expect(injector.get(FocusableItem, null)).toBe(focusHandler);
     });
+  });
+
+  describe('Dropdown item that opens a modal', () => {
+    let fixture: ComponentFixture<DropdownItemThatOpensModalTestComponent>;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule],
+        declarations: [DropdownItemThatOpensModalTestComponent],
+      });
+
+      fixture = TestBed.createComponent(DropdownItemThatOpensModalTestComponent);
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    it('manages focus correctly when a modal is opened from a dropdown item', async () => {
+      // Click the dropdown trigger button.
+      await clickButton(fixture.componentInstance.dropdownTriggerButtonElementRef);
+
+      // The dropdown item button should be focused.
+      expect(document.activeElement).toBe(fixture.componentInstance.dropdownItemButtonElementRef.nativeElement);
+
+      // Click the dropdown item button.
+      await clickButton(fixture.componentInstance.dropdownItemButtonElementRef);
+
+      // The modal title should be focused.
+      expect(document.activeElement).toBe(
+        fixture.componentInstance.elementRef.nativeElement.querySelector('.modal-title-wrapper')
+      );
+
+      // Click the close modal button.
+      await clickButton(fixture.componentInstance.modalCloseButtonElementRef);
+
+      // Focus should be returned to the dropdown trigger. (This expectation tests behavior implemented in the dropdown AND modal components.)
+      expect(document.activeElement).toBe(fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement);
+    });
+
+    async function clickButton(buttonElementRef: ElementRef<HTMLButtonElement>) {
+      buttonElementRef.nativeElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+    }
   });
 }
 
@@ -267,4 +355,38 @@ class TestComponent {
   customClickHandler() {
     this.customClickHandlerDone = true;
   }
+}
+
+@Component({
+  template: `
+    <clr-dropdown>
+      <button class="btn btn-primary" type="button" clrDropdownTrigger>
+        Dropdown
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen>
+        <button clrDropdownItem (click)="modalOpen = true">Open Modal</button>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+
+    <clr-modal [clrModalOpen]="modalOpen">
+      <h3 class="modal-title">Modal Title</h3>
+      <div class="modal-body">This is a modal.</div>
+      <div class="modal-footer">
+        <button #modalCloseButton type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
+      </div>
+    </clr-modal>
+  `,
+})
+class DropdownItemThatOpensModalTestComponent {
+  modalOpen = false;
+
+  @ViewChild(ClrDropdownTrigger, { read: ElementRef })
+  readonly dropdownTriggerButtonElementRef: ElementRef<HTMLButtonElement>;
+  @ViewChild(ClrDropdownItem, { read: ElementRef })
+  readonly dropdownItemButtonElementRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('modalCloseButton', { read: ElementRef })
+  readonly modalCloseButtonElementRef: ElementRef<HTMLButtonElement>;
+
+  constructor(readonly elementRef: ElementRef<HTMLElement>) {}
 }

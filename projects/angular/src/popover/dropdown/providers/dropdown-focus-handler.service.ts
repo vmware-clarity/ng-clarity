@@ -62,7 +62,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     this._unlistenFuncs.push(() => subscription.unsubscribe());
   }
 
-  private focusBackOnTrigger = false;
+  focusBackOnTriggerWhenClosed = false;
 
   /**
    * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
@@ -73,11 +73,11 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
         // We reset the state of the focus service both on initialization and when closing.
         this.focusService.reset(this);
         // But we only actively focus the trigger when closing, not on initialization.
-        if (this.focusBackOnTrigger) {
+        if (this.focusBackOnTriggerWhenClosed) {
           this.focus();
         }
       }
-      this.focusBackOnTrigger = open;
+      this.focusBackOnTriggerWhenClosed = open;
     });
 
     this._unlistenFuncs.push(() => subscription.unsubscribe());
@@ -156,7 +156,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
             }
           }
           // We let the user move focus to where the want, we don't force the focus back on the trigger
-          this.focusBackOnTrigger = false;
+          this.focusBackOnTriggerWhenClosed = false;
           this.toggleService.open = false;
         })
       );
