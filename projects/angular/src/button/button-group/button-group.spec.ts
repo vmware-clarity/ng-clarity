@@ -94,6 +94,11 @@ export default function (): void {
         expect(testBtnGroup.menuButtons.length).toBe(3);
       });
 
+      it('should be able to set toggle button aria-label text', async () => {
+        const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
+        expect(dropdownToggle.getAttribute('aria-label')).toBe('Button Group Menu Toggle');
+      });
+
       it('overflow is visible when atleast one button exists in the menu', () => {
         const overflow: HTMLElement = compiled.querySelector('.btn-group-overflow');
         expect(overflow).not.toBeNull();
@@ -492,7 +497,7 @@ class BtnGroupInlineViewContainer {
 
 @Component({
   template: `
-    <clr-button-group>
+    <clr-button-group [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
       <clr-button>Button 1</clr-button>
       <clr-button>Button 2</clr-button>
       <clr-button [clrInMenu]="true">Button 3</clr-button>
@@ -503,6 +508,8 @@ class BtnGroupInlineViewContainer {
 })
 class BtnGroupBothViewContainersTest {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+
+  clrToggleButtonAriaLabel = 'Button Group Menu Toggle';
 }
 
 @Component({

@@ -547,6 +547,8 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     buttons: QueryList<ClrButton>;
     // (undocumented)
+    clrToggleButtonAriaLabel: string;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
     // (undocumented)
@@ -567,7 +569,7 @@ export class ClrButtonGroup implements AfterContentInit {
     popoverPosition: ClrPopoverPosition;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never, false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": "clrToggleButtonAriaLabel"; "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never, false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
 }
@@ -5070,7 +5072,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/button/button-group/button-group.d.ts:53:161 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/button/button-group/button-group.d.ts:54:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
