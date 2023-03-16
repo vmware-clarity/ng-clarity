@@ -2086,7 +2086,11 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point index.d.ts
-    constructor(parent: ClrDropdown, toggleService: ClrPopoverToggleService, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    constructor(parent: ClrDropdown, toggleService: ClrPopoverToggleService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    focusHandler: DropdownFocusHandler;
     // (undocumented)
     isMenuClosable: boolean;
     // (undocumented)
@@ -2098,7 +2102,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": "clrCloseMenuOnItemClick"; }, {}, never, ["*"], false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -2121,7 +2125,6 @@ export class ClrDropdownItem {
 //
 // @public (undocumented)
 export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point index.d.ts
     constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler);
     // (undocumented)
     items: QueryList<FocusableItem>;
