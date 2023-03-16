@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule } from '@clr/angular';
+import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, ClrCommonStringsService } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
@@ -13,7 +13,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <div style="margin-top: 200px; text-align: center;">
-      <clr-button-group [clrMenuPosition]="clrMenuPosition">
+      <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
         <clr-button
           *ngFor="let _ of createArray(buttonCount); let i = index"
           [clrInMenu]="false"
@@ -32,12 +32,15 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
+const commonStringsService = new ClrCommonStringsService();
+
 const defaultParameters: Parameters = {
   title: 'Button/Button Group',
   component: ClrButtonGroup,
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrToggleButtonAriaLabel: { defaultValue: commonStringsService.keys.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },

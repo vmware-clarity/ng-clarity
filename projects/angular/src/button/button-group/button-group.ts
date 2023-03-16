@@ -33,6 +33,9 @@ import { ClrButton } from './button';
 export class ClrButtonGroup implements AfterContentInit {
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
+  // Aria
+  @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
+
   popoverId = uniqueIdFactory();
 
   constructor(
