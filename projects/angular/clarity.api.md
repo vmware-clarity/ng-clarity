@@ -529,6 +529,10 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    get role(): string;
+    // (undocumented)
+    get tabIndex(): string;
+    // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
     get type(): string;
@@ -540,8 +544,9 @@ export class ClrButton implements LoadingListener {
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterContentInit {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    // Warning: (ae-forgotten-export) The symbol "ButtonGroupNavigationHandler" needs to be exported by the entry point index.d.ts
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, navigationHandler: ButtonGroupNavigationHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -551,18 +556,30 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
+    // Warning: (ae-forgotten-export) The symbol "InitialItem" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    InitialItem: typeof InitialItem;
     // (undocumented)
     initializeButtons(): void;
     // (undocumented)
     inlineButtons: ClrButton[];
     // (undocumented)
+    menu: ElementRef;
+    // (undocumented)
     menuButtons: ClrButton[];
     // (undocumented)
     get menuPosition(): string;
     set menuPosition(pos: string);
+    // (undocumented)
+    menuToggle: ElementRef;
     ngAfterContentInit(): void;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     get open(): boolean;
+    // (undocumented)
+    openMenu(event: any, initialItem: InitialItem): void;
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -5072,7 +5089,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/button/button-group/button-group.d.ts:54:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/button/button-group/button-group.d.ts:63:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

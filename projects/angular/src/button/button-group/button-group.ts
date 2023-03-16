@@ -4,8 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
+import { delay, takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -14,29 +23,43 @@ import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import {
+  BUTTON_GROUP_NAVIGATION_HANDLER_PROVIDER,
+  ButtonGroupNavigationHandler,
+} from '../providers/button-group-navigation-handler.service';
+import { InitialItem } from '../providers/button-group-navigation.enum';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
 
 @Component({
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
-  providers: [ButtonInGroupService, ClrDestroyService],
+  providers: [
+    ButtonInGroupService,
+    ClrDestroyService,
+    BUTTON_GROUP_NAVIGATION_HANDLER_PROVIDER,
+    ClrPopoverToggleService,
+  ],
   hostDirectives: [PopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
 })
-export class ClrButtonGroup implements AfterContentInit {
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+  @ViewChild('menuToggle') menuToggle: ElementRef;
+  @ViewChild('menu') menu: ElementRef;
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   // Aria
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
 
   popoverId = uniqueIdFactory();
+  InitialItem = InitialItem;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService,
     public commonStrings: ClrCommonStringsService,
-    private destroy$: ClrDestroyService
+    private destroy$: ClrDestroyService,
+    private navigationHandler: ButtonGroupNavigationHandler
   ) {}
 
   popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
@@ -59,6 +82,10 @@ export class ClrButtonGroup implements AfterContentInit {
     this.buttons.changes.subscribe(() => {
       this.initializeButtons();
     });
+  }
+
+  ngAfterViewInit() {
+    this.handleFocusOnMenuOpen();
   }
 
   /**
@@ -84,6 +111,13 @@ export class ClrButtonGroup implements AfterContentInit {
       if (moveIndex <= toView.length) {
         toView.splice(moveIndex, 0, button);
       }
+    }
+  }
+
+  openMenu(event, initialItem: InitialItem) {
+    this.navigationHandler.setInitialItem(initialItem);
+    if (!this.toggleService.open) {
+      this.toggleService.toggleWithEvent(event);
     }
   }
 
@@ -135,5 +169,15 @@ export class ClrButtonGroup implements AfterContentInit {
     }
 
     this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
+  }
+
+  private handleFocusOnMenuOpen() {
+    if (this.menuButtons.length) {
+      this.toggleService.openChange.pipe(delay(0), takeUntil(this.destroy$)).subscribe(isOpened => {
+        this.navigationHandler.menuToggle = this.menuToggle?.nativeElement;
+        this.navigationHandler.menu = this.menu?.nativeElement;
+        this.navigationHandler.menuOpened = isOpened;
+      });
+    }
   }
 }

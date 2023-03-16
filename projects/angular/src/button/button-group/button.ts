@@ -6,6 +6,7 @@
 
 import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
 
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -21,6 +22,8 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
         [attr.type]="type"
         [attr.name]="name"
         [attr.disabled]="disabled"
+        [attr.tabindex]="tabIndex"
+        [attr.role]="role"
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
@@ -42,6 +45,14 @@ export class ClrButton implements LoadingListener {
     public buttonInGroupService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService
   ) {}
+
+  get role(): string {
+    return this.inMenu ? 'menuitem' : null;
+  }
+
+  get tabIndex(): string {
+    return this.inMenu ? '-1' : null;
+  }
 
   private _inMenu = false;
 
@@ -105,7 +116,7 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  private _id: string = null;
+  private _id: string = uniqueIdFactory();
 
   get id(): string {
     return this._id;

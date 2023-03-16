@@ -107,8 +107,6 @@ export default function (): void {
 
       it('supports a id input', () => {
         expect(componentInstance.button1.id).toBe('button1');
-        expect(componentInstance.button2.id).toBeNull();
-        expect(componentInstance.button3.id).toBeNull();
       });
 
       it('supports a disabled input which is set to an empty string when the user passes a value', () => {
@@ -234,8 +232,6 @@ export default function (): void {
       });
 
       it('sets the id correctly', () => {
-        expect(buttons[0].id).toBe('');
-        expect(buttons[1].id).toBe('');
         expect(buttons[2].id).toBe('button3');
       });
 
