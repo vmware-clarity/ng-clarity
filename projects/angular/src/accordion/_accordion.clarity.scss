@@ -77,13 +77,17 @@
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
-    flex: 1 1 0%;
+    align-content: center;
+    align-items: center;
+    flex: 1 1 0;
     width: 100%;
     border: 0;
     padding: $clr-accordion-padding;
     background: transparent;
     text-align: left;
     cursor: pointer;
+    gap: var(--clr-accordion-header-gap, 0);
+    @include css-var(gap, clr-accordion-header-gap, 0, $clr-use-custom-properties);
     @include css-var(color, clr-accordion-text-color, $clr-accordion-text-color, $clr-use-custom-properties);
 
     @media (min-width: $clr-accordion-responsive-breakpoint) {
@@ -299,7 +303,13 @@
         $clr_baselineRem_0_5,
         $clr-use-custom-properties
       );
-      padding: $clr_baselineRem_0_25 $clr_baselineRem_0_5;
+      @include css-var(
+        padding,
+        clr-accordion-header-button-padding,
+        $clr_baselineRem_0_25 $clr_baselineRem_0_5,
+        $clr-use-custom-properties
+      );
+      @include css-var(line-height, clr-accordion-button-line-height, $clr_baselineRem_1, $clr-use-custom-properties);
     }
 
     .clr-accordion-content {
@@ -307,11 +317,16 @@
     }
 
     .clr-accordion-inner-content {
-      padding: $clr_baselineRem_0_25 $clr_baselineRem_1_4583;
+      @include css-var(
+        padding,
+        clr-accordion-content-padding,
+        $clr_baselineRem_0_25 $clr_baselineRem_1_4583,
+        $clr-use-custom-properties
+      );
     }
 
     .clr-accordion-status {
-      width: $clr_baselineRem_0_8;
+      @include css-var(width, clr-accordion-status-icon-width, $clr_baselineRem_0_8, $clr-use-custom-properties);
 
       cds-icon,
       clr-icon {
