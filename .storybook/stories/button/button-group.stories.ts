@@ -40,6 +40,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrToggleButtonAriaLabel: { defaultValue: commonStringsService.keys.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -49,8 +50,6 @@ const defaultParameters: Parameters = {
     createArray: { control: { disable: true }, table: { disable: true } },
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
-    // aria
-    clrToggleButtonAriaLabel: { defaultValue: commonStringsService.keys.rowActions },
   },
   args: {
     // story helpers
