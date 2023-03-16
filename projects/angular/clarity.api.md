@@ -573,6 +573,8 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     buttons: QueryList<ClrButton>;
     // (undocumented)
+    clrToggleButtonAriaLabel: string;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
     // (undocumented)
@@ -593,7 +595,7 @@ export class ClrButtonGroup implements AfterContentInit {
     popoverPosition: ClrPopoverPosition;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": "clrToggleButtonAriaLabel"; "menuPosition": "clrMenuPosition"; }, {}, ["buttons"], never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
 }
