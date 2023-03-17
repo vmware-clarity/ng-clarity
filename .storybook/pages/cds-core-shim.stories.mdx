@@ -11,9 +11,9 @@ themes. The shim maps colors to the `@cds/core` design token system. Typography 
 not affected. If your application does not use `@clr/ui`, this shim is not needed.
 
 Follow the [Getting Started](https://storybook.core.clarity.design/?path=/story/documentation-getting-started--page)
-directions for Clarity Core, including loading the relevant CSS files and setting the `cds-theme`
-attribute on the body tag. The shim will not be applied to `@clr/ui` or `@clr/angular` components
-without this attribute.
+directions for Clarity Core, including loading the relevant CSS files, setting the `cds-theme` and `cds-text="body"`
+attributes on the body tag. The shim will not be applied to `@clr/ui` or `@clr/angular` components properly
+without these attributes.
 
 Import and load the CSS shim file last after `@clr/ui` global CSS. This will ensure that the shim can
 override the `@clr/ui` values appropriately.
