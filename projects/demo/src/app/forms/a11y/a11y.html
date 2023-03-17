@@ -38,7 +38,14 @@
 
   <clr-password-container>
     <label>Password</label>
-    <input type="password" clrPassword required formControlName="password" name="password" />
+    <input
+      type="password"
+      autocomplete="current-password"
+      clrPassword
+      required
+      formControlName="password"
+      name="password"
+    />
   </clr-password-container>
 
   <clr-select-container>
@@ -57,7 +64,7 @@
 
   <clr-date-container>
     <label>Date picker</label>
-    <input clrDate formControlName="date" name="date" required />
+    <input clrDate autocomplete="off" formControlName="date" name="date" required />
   </clr-date-container>
 
   <clr-toggle-container clrInline>

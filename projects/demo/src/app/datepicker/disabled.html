@@ -8,7 +8,7 @@
   <h6>ngModel Wrapper Explicit</h6>
   <p></p>
   <clr-date-container>
-    <input type="date" [(ngModel)]="model" clrDate [disabled]="disabled" />
+    <input type="date" autocomplete="off" [(ngModel)]="model" clrDate [disabled]="disabled" />
   </clr-date-container>
 </div>
 
@@ -34,7 +34,7 @@
 <h6>Control Disabled & Enabled</h6>
 <clr-date-container>
   <label>Disabled Date Picker</label>
-  <input type="date" [(clrDate)]="date" [disabled]="disabled" />
+  <input type="date" autocomplete="off" [(clrDate)]="date" [disabled]="disabled" />
 </clr-date-container>
 
 <div>
@@ -44,5 +44,5 @@
 <h6>Disabled and will stay that way</h6>
 <clr-date-container>
   <label>Disabled Date Picker</label>
-  <input type="date" [(clrDate)]="date" disabled />
+  <input type="date" autocomplete="off" [(clrDate)]="date" disabled />
 </clr-date-container>

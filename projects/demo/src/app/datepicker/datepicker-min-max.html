@@ -9,7 +9,7 @@
   <p></p>
   <clr-date-container>
     <label>Date</label>
-    <input type="date" [(ngModel)]="model" clrDate [min]="minDate" [max]="maxDate" />
+    <input type="date" autocomplete="off" [(ngModel)]="model" clrDate [min]="minDate" [max]="maxDate" />
     <clr-control-error *clrIfError="'min'">Value must be on or after min date</clr-control-error>
     <clr-control-error *clrIfError="'max'">Value must be on or before max date</clr-control-error>
   </clr-date-container>

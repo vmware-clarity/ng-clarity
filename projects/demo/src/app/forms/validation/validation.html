@@ -32,7 +32,7 @@
 
     <clr-date-container>
       <label>Date Picker</label>
-      <input type="date" clrDate name="date" formControlName="date" />
+      <input type="date" autocomplete="off" clrDate name="date" formControlName="date" />
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-error *clrIfError="'required'">We require date</clr-control-error>
       <clr-control-success *clrIfSuccess>The date was set</clr-control-success>
@@ -40,13 +40,13 @@
 
     <clr-date-container>
       <label>Date Picker (Only Helper)</label>
-      <input type="date" clrDate name="date-helper" formControlName="date-helper" />
+      <input type="date" autocomplete="off" clrDate name="date-helper" formControlName="date-helper" />
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-date-container>
 
     <clr-date-container>
       <label>Date Picker (Only Success)</label>
-      <input type="date" clrDate name="date-helper" formControlName="date-helper" />
+      <input type="date" autocomplete="off" clrDate name="date-helper" formControlName="date-helper" />
       <clr-control-success *clrIfSuccess>The date was set</clr-control-success>
     </clr-date-container>
 
@@ -62,7 +62,13 @@
 
     <clr-password-container>
       <label>Password</label>
-      <input clrPassword placeholder="Password please!" name="password" formControlName="password" />
+      <input
+        clrPassword
+        autocomplete="current-password"
+        placeholder="Password please!"
+        name="password"
+        formControlName="password"
+      />
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
       <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>

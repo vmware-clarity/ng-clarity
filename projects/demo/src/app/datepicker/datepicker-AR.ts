@@ -11,7 +11,7 @@ import { Component, LOCALE_ID } from '@angular/core';
   styleUrls: ['./datepicker.demo.scss'],
   template: `
     <div clrForm>
-      <input type="date" clrDate />
+      <input type="date" autocomplete="off" clrDate />
     </div>
   `,
   providers: [{ provide: LOCALE_ID, useValue: 'ar-AE' }],

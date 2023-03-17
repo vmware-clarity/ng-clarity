@@ -62,12 +62,12 @@
     <clr-step-content *clrIfExpanded>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword formControlName="password" />
+        <input clrPassword autocomplete="current-password" formControlName="password" />
       </clr-password-container>
 
       <clr-password-container>
         <label>Confirm Password</label>
-        <input clrPassword formControlName="confirm" />
+        <input clrPassword autocomplete="current-password" formControlName="confirm" />
       </clr-password-container>
 
       <button clrStepButton="submit">submit</button>
@@ -129,12 +129,12 @@
     <clr-step-content>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword [ngModel]="templateForm.password.password" name="password" />
+        <input clrPassword autocomplete="current-password" [ngModel]="templateForm.password.password" name="password" />
       </clr-password-container>
 
       <clr-password-container>
         <label>Confirm Password</label>
-        <input clrPassword [ngModel]="templateForm.password.confirm" name="confirm" />
+        <input clrPassword autocomplete="current-password" [ngModel]="templateForm.password.confirm" name="confirm" />
       </clr-password-container>
 
       <button clrStepButton="submit">submit</button>
@@ -197,12 +197,12 @@
     <clr-step-content *clrIfExpanded>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword formControlName="password" />
+        <input clrPassword autocomplete="current-password" formControlName="password" />
       </clr-password-container>
 
       <clr-password-container>
         <label>Confirm Password</label>
-        <input clrPassword formControlName="confirm" />
+        <input clrPassword autocomplete="current-password" formControlName="confirm" />
       </clr-password-container>
 
       <button clrStepButton="submit">submit</button>
