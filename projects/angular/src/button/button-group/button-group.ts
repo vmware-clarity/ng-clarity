@@ -4,39 +4,58 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
+import { delay, takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
+import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import {
+  BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
+  ButtonGroupFocusHandler,
+} from '../providers/button-group-focus-handler.service';
+import { InitialFocus } from '../providers/button-group-focus.enum';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
 
 @Component({
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
-  providers: [ButtonInGroupService, ClrDestroyService],
+  providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
   hostDirectives: [PopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
 })
-export class ClrButtonGroup implements AfterContentInit {
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+  @ViewChild('menuToggle') menuToggle: ElementRef;
+  @ViewChild('menu') menu: ElementRef;
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   // Aria
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
 
   popoverId = uniqueIdFactory();
+  InitialFocus = InitialFocus;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
     private toggleService: ClrPopoverToggleService,
     public commonStrings: ClrCommonStringsService,
-    private destroy$: ClrDestroyService
+    private destroy$: ClrDestroyService,
+    private focusHandler: ButtonGroupFocusHandler
   ) {}
 
   popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
@@ -59,6 +78,10 @@ export class ClrButtonGroup implements AfterContentInit {
     this.buttons.changes.subscribe(() => {
       this.initializeButtons();
     });
+  }
+
+  ngAfterViewInit() {
+    this.handleFocusOnMenuOpen();
   }
 
   /**
@@ -84,6 +107,13 @@ export class ClrButtonGroup implements AfterContentInit {
       if (moveIndex <= toView.length) {
         toView.splice(moveIndex, 0, button);
       }
+    }
+  }
+
+  openMenu(event: KeyboardEvent, initialFocus: InitialFocus) {
+    this.focusHandler.setInitialFocus(initialFocus);
+    if (!this.toggleService.open) {
+      this.toggleService.toggleWithEvent(event);
     }
   }
 
@@ -135,5 +165,15 @@ export class ClrButtonGroup implements AfterContentInit {
     }
 
     this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
+  }
+
+  private handleFocusOnMenuOpen() {
+    if (this.menuButtons.length) {
+      this.toggleService.openChange.pipe(delay(0), takeUntil(this.destroy$)).subscribe(isOpened => {
+        this.focusHandler.menuToggle = this.menuToggle?.nativeElement;
+        this.focusHandler.menu = this.menu?.nativeElement;
+        this.focusHandler.menuOpened = isOpened;
+      });
+    }
   }
 }
