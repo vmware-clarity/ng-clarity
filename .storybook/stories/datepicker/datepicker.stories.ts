@@ -24,6 +24,7 @@ const defaultStory: Story = args => ({
         [disabled]="disabled"
         [placeholder]="placeholder"
         (clrDateChange)="clrDateChange($event)"
+        autocomplete="off"
       />
     </clr-date-container>
   `,

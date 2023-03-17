@@ -7,7 +7,7 @@
 <div clrForm>
   <h6>[(clrDate)]</h6>
   <p></p>
-  <input type="date" [(clrDate)]="date" />
+  <input type="date" autocomplete="off" [(clrDate)]="date" />
 </div>
 <div class="clr-row">
   <div class="clr-col-12 clr-col-md-10 clr-col-lg-5">
@@ -32,7 +32,7 @@
 <div clrForm>
   <h6>clrDateChange</h6>
   <p></p>
-  <input type="date" clrDate (clrDateChange)="dateChanged($event)" />
+  <input type="date" autocomplete="off" clrDate (clrDateChange)="dateChanged($event)" />
 </div>
 <div class="clr-row" style="margin-bottom: 400px">
   <div class="clr-col-12 clr-col-md-10 clr-col-lg-5">

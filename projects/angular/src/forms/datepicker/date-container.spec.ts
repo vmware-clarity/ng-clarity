@@ -198,6 +198,10 @@ export default function () {
         expect(context.clarityElement.querySelector('clr-control-success')).toBeNull();
         expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeNull();
       });
+      it('autocomplete on input is set to off', () => {
+        const input = context.clarityElement.querySelector('input');
+        expect(input.getAttribute('autocomplete')).toEqual('off');
+      });
     });
 
     describe('Typescript API', () => {
@@ -230,7 +234,7 @@ export default function () {
 @Component({
   template: `
     <clr-date-container [clrPosition]="position">
-      <input type="date" clrDate [(ngModel)]="model" [disabled]="disabled" />
+      <input type="date" clrDate [(ngModel)]="model" [disabled]="disabled" autocomplete="off" />
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
