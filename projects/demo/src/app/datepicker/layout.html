@@ -12,15 +12,23 @@
 <h4>Vertical</h4>
 
 <form clrForm clrLayout="vertical">
-  <input clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="vertical.one" />
+  <input autocomplete="off" clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="vertical.one" />
 
   <clr-date-container>
-    <input clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="vertical.two" />
+    <input autocomplete="off" clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="vertical.two" />
   </clr-date-container>
 
   <clr-date-container>
     <label>Full example</label>
-    <input type="text" placeholder="Full example" clrDate [(ngModel)]="vertical.three" name="three" required />
+    <input
+      type="text"
+      placeholder="Full example"
+      autocomplete="off"
+      clrDate
+      [(ngModel)]="vertical.three"
+      name="three"
+      required
+    />
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
   </clr-date-container>
@@ -30,6 +38,7 @@
     <input
       type="text"
       placeholder="Full example"
+      autocomplete="off"
       clrDate
       [(ngModel)]="vertical.four"
       name="four"
@@ -44,15 +53,23 @@
 <h4>Horizontal</h4>
 
 <form clrForm clrLayout="horizontal">
-  <input clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="horizontal.one" />
+  <input autocomplete="off" clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="horizontal.one" />
 
   <clr-date-container>
-    <input clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="horizontal.two" />
+    <input autocomplete="off" clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="horizontal.two" />
   </clr-date-container>
 
   <clr-date-container>
     <label>Full example</label>
-    <input type="text" placeholder="Full example" clrDate [(ngModel)]="horizontal.three" name="three" required />
+    <input
+      type="text"
+      placeholder="Full example"
+      autocomplete="off"
+      clrDate
+      [(ngModel)]="horizontal.three"
+      name="three"
+      required
+    />
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
   </clr-date-container>
@@ -62,6 +79,7 @@
     <input
       type="text"
       placeholder="Full example"
+      autocomplete="off"
       clrDate
       [(ngModel)]="horizontal.four"
       name="four"
@@ -76,15 +94,23 @@
 <h4>Compact</h4>
 
 <form clrForm clrLayout="compact">
-  <input clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="compact.one" />
+  <input autocomplete="off" clrDate placeholder="No label, no wrapper" name="one" [(ngModel)]="compact.one" />
 
   <clr-date-container>
-    <input clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="compact.two" />
+    <input autocomplete="off" clrDate placeholder="No label, wrapper" name="two" [(ngModel)]="compact.two" />
   </clr-date-container>
 
   <clr-date-container>
     <label>Full example</label>
-    <input type="text" placeholder="Full example" clrDate [(ngModel)]="compact.three" name="three" required />
+    <input
+      type="text"
+      placeholder="Full example"
+      autocomplete="off"
+      clrDate
+      [(ngModel)]="compact.three"
+      name="three"
+      required
+    />
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
   </clr-date-container>
@@ -94,6 +120,7 @@
     <input
       type="text"
       placeholder="Full example"
+      autocomplete="off"
       clrDate
       [(ngModel)]="compact.four"
       name="four"
@@ -114,6 +141,7 @@
       class="clr-col-12 clr-col-md-8"
       type="text"
       placeholder="Name"
+      autocomplete="off"
       clrDate
       [(ngModel)]="override"
       name="three"

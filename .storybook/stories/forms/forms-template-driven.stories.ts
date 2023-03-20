@@ -41,7 +41,7 @@ const defaultStory: Story = args => ({
       </clr-input-container>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword [(ngModel)]="data.password" required name="password"/>
+        <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password"/>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Password is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
