@@ -7,13 +7,13 @@ import { Meta } from '@storybook/addon-docs';
 Clarity provides a theme the enables `@clr/ui` applications to consume the Clarity Core design
 tokens and theme system. Once installed, `@clr/ui` applications will be able to use all Clarity Core
 color themes available today, in particular the color contrast adjustments in the light and dark
-themes. The shim maps colors to the `@cds/core` design token system. Typography and spacing are
-not affected. If your application does not use `@clr/ui`, this shim is not needed.
+themes. The shim maps colors, spacing and typography values to the `@cds/core` design token system.
+If your application does not use `@clr/ui`, this shim is not needed.
 
 Follow the [Getting Started](https://storybook.core.clarity.design/?path=/story/documentation-getting-started--page)
-directions for Clarity Core, including loading the relevant CSS files and setting the `cds-theme`
-attribute on the body tag. The shim will not be applied to `@clr/ui` or `@clr/angular` components
-without this attribute.
+directions for Clarity Core, including loading the relevant CSS files, setting the `cds-theme` and `cds-text="body"`
+attributes on the body tag. The shim will not be applied to `@clr/ui` or `@clr/angular` components properly
+without these attributes.
 
 Import and load the CSS shim file last after `@clr/ui` global CSS. This will ensure that the shim can
 override the `@clr/ui` values appropriately.
@@ -35,7 +35,7 @@ dark mode file from the source code and toggle dark mode by changing the `cds-th
 
 We fully support the `@cds/core` shim as the path forward for ng-clarity. But we need your help. The
 shim is currently optional, but the only way to improve the Shim is to get feedback from teams as
-they adopt it in their projects/products. We recomend new projects to use the shim from the start.
+they adopt it in their projects/products. We recommend new projects to use the shim from the start.
 For existing projects, we ask teams to start adopting it to help us test it and provide feedback.
 
 Our goal is mature the shim to a point where it can be the default (and later the only) option for
