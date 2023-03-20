@@ -40,8 +40,8 @@ import { ClrButton } from './button';
   host: { '[class.btn-group]': 'true' },
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
-  @ViewChild('menuToggle') menuToggle: ElementRef;
-  @ViewChild('menu') menu: ElementRef;
+  @ViewChild('menuToggle') menuToggle: ElementRef<HTMLElement>;
+  @ViewChild('menu') menu: ElementRef<HTMLElement>;
   @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   // Aria
@@ -110,8 +110,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     }
   }
 
-  openMenu(event: KeyboardEvent, initialFocus: InitialFocus) {
-    this.focusHandler.setInitialFocus(initialFocus);
+  openMenu(event: Event, initialFocus: InitialFocus) {
+    this.focusHandler.initialFocus = initialFocus;
     if (!this.toggleService.open) {
       this.toggleService.toggleWithEvent(event);
     }
@@ -170,9 +170,12 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   private handleFocusOnMenuOpen() {
     if (this.menuButtons.length) {
       this.toggleService.openChange.pipe(delay(0), takeUntil(this.destroy$)).subscribe(isOpened => {
-        this.focusHandler.menuToggle = this.menuToggle?.nativeElement;
-        this.focusHandler.menu = this.menu?.nativeElement;
-        this.focusHandler.menuOpened = isOpened;
+        if (isOpened) {
+          this.focusHandler.initialize({
+            menu: this.menu.nativeElement,
+            menuToggle: this.menuToggle.nativeElement,
+          });
+        }
       });
     }
   }

@@ -14,23 +14,12 @@ import { InitialFocus } from './button-group-focus.enum';
 
 @Injectable()
 export class ButtonGroupFocusHandler {
-  private initialFocus: InitialFocus = InitialFocus.FIRST_ITEM;
-  private _unlistenFuncs: (() => void)[] = [];
-  private _menuOpened: boolean;
+  initialFocus: InitialFocus = InitialFocus.FIRST_ITEM;
+
+  private menu: HTMLElement;
+  private menuToggle: HTMLElement;
   private buttons: FocusableItem[];
-  menuToggle: HTMLElement;
-  menu: HTMLElement;
-
-  get menuOpened(): boolean {
-    return this._menuOpened;
-  }
-
-  set menuOpened(value: boolean) {
-    this._menuOpened = value;
-    if (this._menuOpened) {
-      this.initialize();
-    }
-  }
+  private _unlistenFuncs: (() => void)[] = [];
 
   constructor(
     private focusService: FocusService,
@@ -38,14 +27,14 @@ export class ButtonGroupFocusHandler {
     private renderer: Renderer2
   ) {}
 
-  setInitialFocus(initialFocus: InitialFocus) {
-    this.initialFocus = initialFocus;
-  }
+  initialize({ menu, menuToggle }: { menu: HTMLElement; menuToggle: HTMLElement }) {
+    this.menu = menu;
+    this.menuToggle = menuToggle;
 
-  initialize() {
     this.focusService.registerContainer(this.menu, '-1');
     this.listenToKeys();
     this.linkButtons();
+
     switch (this.initialFocus) {
       case InitialFocus.LAST_ITEM:
         this.focusLastItem();
@@ -56,7 +45,7 @@ export class ButtonGroupFocusHandler {
     }
   }
 
-  resetButtonsFocus() {
+  private resetButtonsFocus() {
     this.buttons.forEach(button => {
       button.blur();
     });
@@ -102,14 +91,14 @@ export class ButtonGroupFocusHandler {
     if (this.buttons.length) {
       this.focusService.moveTo(this.buttons[0]);
     }
-    this.setInitialFocus(InitialFocus.FIRST_ITEM);
+    this.initialFocus = InitialFocus.FIRST_ITEM;
   }
 
   private focusLastItem(): void {
     if (this.buttons.length) {
       this.focusService.moveTo(this.buttons[this.buttons.length - 1]);
     }
-    this.setInitialFocus(InitialFocus.FIRST_ITEM);
+    this.initialFocus = InitialFocus.FIRST_ITEM;
   }
 
   ngOnDestroy() {

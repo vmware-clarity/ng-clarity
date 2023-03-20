@@ -5,6 +5,6 @@
  */
 
 export enum InitialFocus {
-  FIRST_ITEM = 'first', // Focus first item
-  LAST_ITEM = 'last', // Focus last item
+  FIRST_ITEM = 'first',
+  LAST_ITEM = 'last',
 }

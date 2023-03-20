@@ -563,21 +563,21 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // (undocumented)
     inlineButtons: ClrButton[];
     // (undocumented)
-    menu: ElementRef;
+    menu: ElementRef<HTMLElement>;
     // (undocumented)
     menuButtons: ClrButton[];
     // (undocumented)
     get menuPosition(): string;
     set menuPosition(pos: string);
     // (undocumented)
-    menuToggle: ElementRef;
+    menuToggle: ElementRef<HTMLElement>;
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     get open(): boolean;
     // (undocumented)
-    openMenu(event: KeyboardEvent, initialFocus: InitialFocus): void;
+    openMenu(event: Event, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
     // (undocumented)

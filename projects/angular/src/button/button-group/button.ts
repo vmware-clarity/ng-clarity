@@ -17,7 +17,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
     <ng-template #buttonProjectedRef>
       <button
         [class]="classNames"
-        (click)="emitClick($event)"
+        (click)="emitClick()"
         [attr.type]="type"
         [attr.name]="name"
         [attr.disabled]="disabled"
