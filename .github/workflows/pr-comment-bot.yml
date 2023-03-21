@@ -9,20 +9,20 @@ jobs:
     steps:
       - name: Get PR Event
         id: get-pr-event
-        uses: potiuk/get-workflow-origin@v1_3
+        uses: potiuk/get-workflow-origin@v1_5
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Find Comment
         id: find-comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         with:
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
           comment-author: 'github-actions[bot]'
           body-includes: 🤖 Clarity Release Bot
       - name: Build Started PR Comment
         if: ${{github.event.action == 'requested'}}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
@@ -39,7 +39,7 @@ jobs:
           edit-mode: replace
       - name: Build Succeeded PR Comment
         if: ${{github.event.workflow_run.conclusion == 'success'}}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
@@ -58,7 +58,7 @@ jobs:
           edit-mode: replace
       - name: Build Failed PR Comment
         if: ${{github.event.workflow_run.conclusion == 'failure'}}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
