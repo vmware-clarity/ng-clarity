@@ -13,18 +13,18 @@ jobs:
       - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
-        uses: potiuk/get-workflow-origin@v1_3
+        uses: potiuk/get-workflow-origin@v1_5
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Checkout
         if: ${{steps.get-pr-event.outputs.targetBranch == 'main'}}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Setup Node.js
         if: ${{steps.get-pr-event.outputs.targetBranch == 'main'}}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
