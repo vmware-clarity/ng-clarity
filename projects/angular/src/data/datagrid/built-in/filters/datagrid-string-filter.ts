@@ -35,6 +35,7 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
       <input
         #input
         type="text"
+        autocomplete="off"
         name="search"
         [(ngModel)]="value"
         class="clr-input"
