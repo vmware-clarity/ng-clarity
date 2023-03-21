@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
+import { Component, ContentChild, Inject, InjectionToken, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
@@ -22,7 +22,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
+    <label *ngIf="!isLabelProvided && !label"></label>
   `,
   host: {
     '[class.clr-checkbox-wrapper]': '!toggle',
@@ -37,6 +37,8 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
   _dynamic = false;
   @ContentChild(ClrLabel, { static: true })
   label: ClrLabel;
+  @Input()
+  isLabelProvided = false;
   toggle = false;
   private subscriptions: Subscription[] = [];
 

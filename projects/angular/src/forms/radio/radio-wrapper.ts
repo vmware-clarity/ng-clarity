@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit } from '@angular/core';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
@@ -15,7 +15,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
   template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
+    <label *ngIf="!isLabelProvided && !label"></label>
   `,
   host: {
     '[class.clr-radio-wrapper]': 'true',
@@ -29,6 +29,8 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
   _dynamic = false;
   @ContentChild(ClrLabel, { static: true })
   label: ClrLabel;
+  @Input()
+  isLabelProvided = false;
 
   ngOnInit() {
     if (this.label) {

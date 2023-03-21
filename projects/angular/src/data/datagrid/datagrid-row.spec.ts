@@ -390,6 +390,24 @@ export default function (): void {
         expect(selectionProvider.current).toEqual([]);
       });
 
+      it('verifies a label is not nested within a label when `rowSelectionMode` is enabled', function () {
+        selectionProvider.selectionType = SelectionType.Single;
+        context.testComponent.item = { id: 1 };
+        context.detectChanges();
+        const row = context.clarityElement;
+        selectionProvider.rowSelectionMode = true;
+        expect(row.querySelectorAll('label label').length).toBe(0);
+      });
+
+      it('verifies a label is not nested within a label when `rowSelectionMode` is enabled (multi-select)', function () {
+        selectionProvider.selectionType = SelectionType.Multi;
+        context.testComponent.item = { id: 1 };
+        context.detectChanges();
+        const row = context.clarityElement;
+        selectionProvider.rowSelectionMode = true;
+        expect(row.querySelectorAll('label label').length).toBe(0);
+      });
+
       function flushAndAssertSelected(selected: boolean) {
         context.detectChanges();
         // ngModel is asynchronous, we need an extra change detection

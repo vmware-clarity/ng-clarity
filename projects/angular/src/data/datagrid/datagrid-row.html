@@ -42,9 +42,10 @@
           [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
           role="gridcell"
         >
-          <div class="clr-checkbox-wrapper">
+          <clr-checkbox-wrapper isLabelProvided="true">
             <input
               type="checkbox"
+              clrCheckbox
               [ngModel]="selected"
               (ngModelChange)="toggle($event)"
               [id]="checkboxId"
@@ -52,18 +53,24 @@
               [attr.aria-disabled]="clrDgSelectable ? null : true"
               [attr.aria-label]="clrDgRowAriaLabel"
             />
-            <ng-container *ngIf="!selection.rowSelectionMode; else noLabel">
-              <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
-              <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
-                <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
-              </label>
-            </ng-container>
-            <ng-template #noLabel>
-              <span class="clr-control-label clr-col-null" (click)="clearRanges($event)">
-                <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
-              </span>
-            </ng-template>
-          </div>
+            <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
+            <label
+              *ngIf="!selection.rowSelectionMode"
+              [for]="checkboxId"
+              class="clr-control-label clr-col-null"
+              (click)="clearRanges($event)"
+            >
+              <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
+            </label>
+            <span
+              *ngIf="selection.rowSelectionMode"
+              class="clr-control-label clr-col-null"
+              (click)="clearRanges($event)"
+              ngProjectAs="label"
+            >
+              <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
+            </span>
+          </clr-checkbox-wrapper>
         </div>
         <div
           *ngIf="selection.selectionType === SELECTION_TYPE.Single"
@@ -75,18 +82,23 @@
           to label the radio by the first cell in the row (typically an id or name).
           It's pretty easy to label it with the whole row since we already have an id for it, but in most
           cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->
-          <input
-            type="radio"
-            clrRadio
-            [id]="radioId"
-            [name]="selection.id + '-radio'"
-            [value]="item"
-            [(ngModel)]="selection.currentSingle"
-            [checked]="selection.currentSingle === item"
-            [disabled]="clrDgSelectable ? null : true"
-            [attr.aria-disabled]="clrDgSelectable ? null : true"
-            [attr.aria-label]="clrDgRowAriaLabel"
-          />
+          <clr-radio-wrapper [isLabelProvided]="selection.rowSelectionMode">
+            <input
+              type="radio"
+              clrRadio
+              [id]="radioId"
+              [name]="selection.id + '-radio'"
+              [value]="item"
+              [(ngModel)]="selection.currentSingle"
+              [checked]="selection.currentSingle === item"
+              [disabled]="clrDgSelectable ? null : true"
+              [attr.aria-disabled]="clrDgSelectable ? null : true"
+              [attr.aria-label]="clrDgRowAriaLabel"
+            />
+            <span *ngIf="selection.rowSelectionMode" class="clr-control-label clr-col-null" ngProjectAs="label">
+              <span class="clr-sr-only">{{commonStrings.keys.select}}</span>
+            </span>
+          </clr-radio-wrapper>
         </div>
         <div
           *ngIf="rowActionService.hasActionableRow"
