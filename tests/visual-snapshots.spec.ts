@@ -8,6 +8,7 @@ import { expect, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { THEMES } from '../.storybook/helpers/constants';
 import { handleUnusedScreenshots } from './helpers/handle-unused-screenshots';
 import { Story } from './helpers/story.interface';
 
@@ -22,25 +23,30 @@ for (const { storyId, component } of stories) {
 
   const storyName = storyId.replace(`${component}-`, '');
 
-  const screenshotPath = path.join(component, `${storyName}.png`);
-  usedScreenshotPaths.push(screenshotPath);
+  for (const [themeKey, theme] of Object.entries(THEMES)) {
+    const normalizedThemeKey = themeKey.toLowerCase().replace(/_/g, '-');
 
-  test(screenshotPath, async ({ page }) => {
-    const storyParams = new URLSearchParams({
-      id: storyId,
-      args: 'highlight:false',
-      viewMode: 'story',
+    const screenshotPath = path.join(component, `${storyName}-${normalizedThemeKey}.png`);
+    usedScreenshotPaths.push(screenshotPath);
+
+    test(screenshotPath, async ({ page }) => {
+      const storyParams = new URLSearchParams({
+        id: storyId,
+        args: 'highlight:false',
+        globals: `theme:${theme}`,
+        viewMode: 'story',
+      });
+
+      await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
+
+      await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
+        animations: 'disabled',
+        caret: 'hide',
+        fullPage: true,
+        threshold: 0,
+      });
     });
-
-    await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
-
-    await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
-      animations: 'disabled',
-      caret: 'hide',
-      fullPage: true,
-      threshold: 0,
-    });
-  });
+  }
 }
 
 handleUnusedScreenshots(usedScreenshotPaths);

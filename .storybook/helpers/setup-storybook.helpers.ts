@@ -11,8 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Parameters } from '@storybook/addons';
 import { moduleMetadata, storiesOf, Story } from '@storybook/angular';
 
-import { THEMES } from './constants';
-
 export function setupStorybook(
   ngModules: Type<any> | Type<any>[],
   defaultStory: Story,
@@ -36,20 +34,12 @@ export function setupStorybook(
   storyApi.add('Default', defaultStory, defaultParameters);
 
   if (variants) {
-    const combinedStories = variants.length ? combineStories(defaultStory, variants) : defaultStory;
-    const defaultVariantParameters = {
+    storyApi.add('Variants', variants.length ? combineStories(defaultStory, variants) : defaultStory, {
       a11y: { disable: true },
       actions: { disable: true },
       controls: { disable: true },
       previewTabs: { 'storybook/docs/panel': { hidden: true } },
-      chromatic: { disableSnapshot: false },
-    };
-    for (const [themeKey, theme] of Object.entries(THEMES)) {
-      storyApi.add(`Variants - ${themeKey}`, combinedStories, {
-        ...defaultVariantParameters,
-        themeOverride: theme,
-      });
-    }
+    });
   }
 }
 
