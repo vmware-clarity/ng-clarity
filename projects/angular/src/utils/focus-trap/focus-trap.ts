@@ -5,7 +5,7 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Injectable, Injector, Renderer2 } from '@angular/core';
+import { Injector, Renderer2 } from '@angular/core';
 import { createId, FocusTrapTrackerService, isFocusable, isHTMLElement } from '@cds/core/internal';
 
 export interface FocusTrapElement extends HTMLElement {
@@ -106,7 +106,6 @@ export function castHtmlElementToFocusTrapElement(el: HTMLElement): FocusTrapEle
   return el as FocusTrapElement;
 }
 
-@Injectable()
 export class FocusTrap {
   focusTrapElement: FocusTrapElement;
   private previousFocus: HTMLElement;
