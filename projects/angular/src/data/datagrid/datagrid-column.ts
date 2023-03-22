@@ -67,8 +67,8 @@ import { WrappedColumn } from './wrapped-column';
 
       <clr-dg-numeric-filter
         *ngIf="field && !customFilter && colType == 'number'"
-        [clrFilterMaxPlaceholder]="filterMaxPlaceholderValue"
-        [clrFilterMinPlaceholder]="filterMinPlaceholderValue"
+        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholderValue"
+        [clrFilterMinPlaceholder]="filterNumberMinPlaceholderValue"
         [clrDgNumericFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-numeric-filter>
