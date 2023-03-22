@@ -1226,14 +1226,12 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
     get colType(): 'string' | 'number';
     set colType(value: 'string' | 'number');
-    // (undocumented)
-    commonStrings: ClrCommonStringsService;
     customFilter: boolean;
     // (undocumented)
     get field(): string;
@@ -1241,14 +1239,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     filterNumberMaxPlaceholder: string;
     // (undocumented)
-    get filterNumberMaxPlaceholderValue(): string;
-    // (undocumented)
     filterNumberMinPlaceholder: string;
-    // (undocumented)
-    get filterNumberMinPlaceholderValue(): string;
     filterStringPlaceholder: string;
-    // (undocumented)
-    get filterStringPlaceholderValue(): string;
     // (undocumented)
     get filterValue(): any;
     set filterValue(newValue: any);
