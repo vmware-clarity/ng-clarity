@@ -47,3 +47,49 @@ jobs:
         with:
           name: docs
           path: dist/docs/
+
+  pr-visual-regression-test:
+    name: PR Visual Regression Test
+    timeout-minutes: 30
+    # This job intentionally does not use the `ubuntu-latest` image.
+    # An updated image could generate different snapshots, so we should explicitly update the image version.
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build Storybook
+        run: npm run _build:storybook
+      - name: Discover Stories
+        run: npm run ts-node -- ./scripts/write-story-list.ts
+      - name: Update Visual Snapshots
+        run: npx playwright test --update-snapshots
+      - name: Check for Changes
+        id: diff
+        run: |
+          git add .
+
+          if git diff-index --quiet HEAD
+          then
+            echo "status=clean" >> $GITHUB_OUTPUT
+          else
+            git diff --cached --binary > visual-snapshot-changes.diff
+
+            echo "status=dirty" >> $GITHUB_OUTPUT
+          fi
+      - name: Upload Changes
+        if: ${{steps.diff.outputs.status == 'dirty'}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual-snapshot-changes.diff
+          path: visual-snapshot-changes.diff
+      - name: Fail if Visual Snapshots Changed
+        if: ${{steps.diff.outputs.status == 'dirty'}}
+        run: exit 1
