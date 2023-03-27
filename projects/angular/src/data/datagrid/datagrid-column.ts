@@ -22,7 +22,6 @@ import {
 import { Subscription } from 'rxjs';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
@@ -58,15 +57,15 @@ import { WrappedColumn } from './wrapped-column';
 
       <clr-dg-string-filter
         *ngIf="field && !customFilter && colType == 'string'"
-        [clrFilterPlaceholder]="filterStringPlaceholderValue"
+        [clrFilterPlaceholder]="filterStringPlaceholder"
         [clrDgStringFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-string-filter>
 
       <clr-dg-numeric-filter
         *ngIf="field && !customFilter && colType == 'number'"
-        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholderValue"
-        [clrFilterMinPlaceholder]="filterNumberMinPlaceholderValue"
+        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
+        [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
         [clrDgNumericFilter]="registered"
         [(clrFilterValue)]="filterValue"
       ></clr-dg-numeric-filter>
@@ -99,8 +98,7 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef,
-    public commonStrings: ClrCommonStringsService
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -335,19 +333,8 @@ export class ClrDatagridColumn<T = any>
    * Help with accessibility for screen readers by providing custom placeholder text inside internal filters
    */
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
-  get filterStringPlaceholderValue() {
-    return this.filterStringPlaceholder || this.commonStrings.keys.filterItems;
-  }
-
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
-  get filterNumberMaxPlaceholderValue() {
-    return this.filterNumberMaxPlaceholder || this.commonStrings.keys.maxValue;
-  }
-
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
-  get filterNumberMinPlaceholderValue() {
-    return this.filterNumberMinPlaceholder || this.commonStrings.keys.minValue;
-  }
 
   @Input('clrFilterValue')
   set updateFilterValue(newValue: string | [number, number]) {
