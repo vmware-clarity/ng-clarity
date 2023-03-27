@@ -41,3 +41,8 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Playwright
+/playwright-report/
+/playwright/.cache/
+/test-results/
