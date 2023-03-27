@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          repo: ${{github.event.workflow_run.head_repository.full_name}}
+          ref: ${{github.event.workflow_run.head_sha}}
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
