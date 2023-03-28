@@ -9,6 +9,6 @@
     "types": ["node"]
   },
   "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
-  "include": ["./stories/**/*.stories.ts"],
+  "include": ["./stories/**/*.stories.ts", "./helpers/**/*.ts"],
   "files": ["./typings.d.ts"]
 }

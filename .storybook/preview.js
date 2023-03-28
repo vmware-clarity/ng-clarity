@@ -14,6 +14,7 @@ import clrUiStyles from '../dist/clr-ui/clr-ui.css';
 import clrUiDarkStyles from '../dist/clr-ui/clr-ui-dark.css';
 import cdsCoreAndShimStyles from './public/cds-core-and-shim.css';
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
+import { THEMES } from './helpers/constants';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
@@ -42,11 +43,11 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: '', title: '@clr/ui Light Theme' },
-        { value: 'clr-ui-dark', title: '@clr/ui Dark Theme' },
-        { value: 'light', title: '@cds/core Light Theme' },
-        { value: 'dark', title: '@cds/core Dark Theme' },
-        { value: 'high-contrast', title: '@cds/core High Contrast Theme' },
+        { value: THEMES.NG_LIGHT, title: '@clr/ui Light Theme' },
+        { value: THEMES.NG_DARK, title: '@clr/ui Dark Theme' },
+        { value: THEMES.CORE_LIGHT, title: '@cds/core Light Theme' },
+        { value: THEMES.CORE_DARK, title: '@cds/core Dark Theme' },
+        { value: THEMES.HIGH_CONTRAST, title: '@cds/core High Contrast Theme' },
       ],
     },
   },
@@ -56,12 +57,12 @@ const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
   switch (theme) {
-    case '':
+    case THEMES.NG_LIGHT:
       styleElement.textContent = clrUiStyles;
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
       break;
-    case 'clr-ui-dark':
+    case THEMES.NG_DARK:
       styleElement.textContent = clrUiDarkStyles;
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
