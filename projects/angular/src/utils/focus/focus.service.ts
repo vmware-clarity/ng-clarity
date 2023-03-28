@@ -33,8 +33,8 @@ export class FocusService {
     this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowright', () => !this.move(ArrowKeyDirection.RIGHT)));
   }
 
-  registerContainer(el: HTMLElement) {
-    this.renderer.setAttribute(el, 'tabindex', '0');
+  registerContainer(el: HTMLElement, tabIndex = '0') {
+    this.renderer.setAttribute(el, 'tabindex', tabIndex);
     this.listenToArrowKeys(el);
     // The following listeners return false when there was an action to take for the key pressed,
     // in order to prevent the default behavior of that key.
