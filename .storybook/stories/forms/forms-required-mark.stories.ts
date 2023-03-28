@@ -22,7 +22,7 @@ const defaultStory: Story = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
-      <div class="clr-required-mark">Required information</div>
+      <span class="clr-required-mark">Required information</span>
       <clr-input-container>
         <label class="clr-required-mark">Name</label>
         <input clrInput formControlName="name" [placeholder]="namePlaceholder" required/>
