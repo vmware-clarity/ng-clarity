@@ -7,6 +7,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -60,9 +61,10 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
-    ifExpandService: IfExpandService
+    ifExpandService: IfExpandService,
+    cdr: ChangeDetectorRef
   ) {
-    super(commonStrings, stepperService, ifExpandService);
+    super(commonStrings, stepperService, ifExpandService, cdr);
   }
 
   override ngOnInit(): void {

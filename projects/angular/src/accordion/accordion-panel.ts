@@ -6,6 +6,7 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
@@ -55,11 +56,13 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   }
 
   private _id = uniqueIdFactory();
+  private _panelIndex: number;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
     private accordionService: AccordionService,
-    private ifExpandService: IfExpandService
+    private ifExpandService: IfExpandService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -77,6 +80,10 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     if (this.panel && changes.disabled && changes.disabled.currentValue !== changes.disabled.previousValue) {
       this.accordionService.disablePanel(this.id, changes.disabled.currentValue);
     }
+  }
+
+  get panelNumber() {
+    return this._panelIndex + 1;
   }
 
   togglePanel() {
@@ -102,6 +109,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
   }
 
   private emitPanelChange(panel: AccordionPanelModel) {
+    if (panel.index !== this._panelIndex) {
+      this._panelIndex = panel.index;
+      // The whole chain of updates leading to this line starts in a ngAfterViewInit subscription in accordion.ts,
+      // listening for DOM changes. It seems to only fails in tests, but as this is not a frequently called code,
+      // I prefer to stay on the safe side and initiate a detection cycle here.
+      this.cdr.detectChanges();
+    }
+
     if (panel.open !== this.panelOpen) {
       this.panelOpenChange.emit(panel.open);
       /**
