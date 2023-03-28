@@ -9,7 +9,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 import { ClrButton } from './button';
 import { ClrButtonGroupModule } from './button-group.module';
@@ -59,7 +58,6 @@ export default function (): void {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
     let componentInstance: any;
-    let toggleService: ClrPopoverToggleService;
     let buttons: HTMLButtonElement[];
 
     describe('Typescript API', () => {
@@ -67,13 +65,12 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrButtonGroupModule],
           declarations: [TestButtonComponent],
-          providers: [ButtonInGroupService, ClrPopoverToggleService],
+          providers: [ButtonInGroupService],
         });
 
         fixture = TestBed.createComponent(TestButtonComponent);
         fixture.detectChanges();
         debugEl = fixture.debugElement;
-        toggleService = debugEl.injector.get(ClrPopoverToggleService);
         componentInstance = debugEl.componentInstance;
       });
 
@@ -107,8 +104,8 @@ export default function (): void {
 
       it('supports a id input', () => {
         expect(componentInstance.button1.id).toBe('button1');
-        expect(componentInstance.button2.id).toBeNull();
-        expect(componentInstance.button3.id).toBeNull();
+        expect(componentInstance.button2.id).toBeTruthy();
+        expect(componentInstance.button3.id).toBeTruthy();
       });
 
       it('supports a disabled input which is set to an empty string when the user passes a value', () => {
@@ -127,15 +124,6 @@ export default function (): void {
         componentInstance.button1.emitClick();
 
         expect(componentInstance.flag).toBe(false);
-      });
-
-      it('calls toggle service only on buttons in menu', () => {
-        spyOn(toggleService, 'toggleWithEvent');
-        expect(componentInstance.flag).toBe(false);
-        componentInstance.button1.emitClick();
-        expect(toggleService.toggleWithEvent).not.toHaveBeenCalled();
-        componentInstance.button2.emitClick();
-        expect(toggleService.toggleWithEvent).toHaveBeenCalled();
       });
 
       it('implements LoadingListener', () => {
@@ -201,7 +189,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrButtonGroupModule, ClrLoadingModule],
           declarations: [ButtonViewTestComponent],
-          providers: [ButtonInGroupService, ClrPopoverToggleService],
+          providers: [ButtonInGroupService],
         });
 
         fixture = TestBed.createComponent(ButtonViewTestComponent);
@@ -234,8 +222,8 @@ export default function (): void {
       });
 
       it('sets the id correctly', () => {
-        expect(buttons[0].id).toBe('');
-        expect(buttons[1].id).toBe('');
+        expect(buttons[0].id).toBeTruthy();
+        expect(buttons[1].id).toBeTruthy();
         expect(buttons[2].id).toBe('button3');
       });
 
