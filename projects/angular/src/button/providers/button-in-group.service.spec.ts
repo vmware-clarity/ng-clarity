@@ -21,7 +21,7 @@ export default function (): void {
         testButton = button;
       });
 
-      const mockButton: ClrButton = new ClrButton(null, null);
+      const mockButton: ClrButton = new ClrButton(null);
       mockButton.inMenu = true;
 
       buttonInGroupService.updateButtonGroup(mockButton);
