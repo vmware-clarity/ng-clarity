@@ -498,7 +498,7 @@ export enum ClrAxis {
 
 // @public (undocumented)
 export class ClrButton implements LoadingListener {
-    constructor(buttonInGroupService: ButtonInGroupService, toggleService: ClrPopoverToggleService);
+    constructor(buttonInGroupService: ButtonInGroupService);
     // Warning: (ae-forgotten-export) The symbol "ButtonInGroupService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -512,7 +512,7 @@ export class ClrButton implements LoadingListener {
     get disabled(): any;
     set disabled(value: any);
     // (undocumented)
-    emitClick($event: Event): void;
+    emitClick(): void;
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -529,6 +529,8 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    get role(): string;
+    // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
     get type(): string;
@@ -536,12 +538,13 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "inMenu": "clrInMenu"; "classNames": "class"; "name": "name"; "type": "type"; "id": "id"; "disabled": "disabled"; }, { "_click": "click"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; skipSelf: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; skipSelf: true; }]>;
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterContentInit {
-    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService);
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+    // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
+    constructor(buttonGroupNewService: ButtonInGroupService, toggleService: ClrPopoverToggleService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -551,18 +554,30 @@ export class ClrButtonGroup implements AfterContentInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     getMoveIndex(buttonToMove: ClrButton): number;
+    // Warning: (ae-forgotten-export) The symbol "InitialFocus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    InitialFocus: typeof InitialFocus;
     // (undocumented)
     initializeButtons(): void;
     // (undocumented)
     inlineButtons: ClrButton[];
     // (undocumented)
+    menu: ElementRef<HTMLElement>;
+    // (undocumented)
     menuButtons: ClrButton[];
     // (undocumented)
     get menuPosition(): string;
     set menuPosition(pos: string);
+    // (undocumented)
+    menuToggle: ElementRef<HTMLElement>;
     ngAfterContentInit(): void;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     get open(): boolean;
+    // (undocumented)
+    openMenu(event: Event, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -5067,7 +5082,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/button/button-group/button-group.d.ts:54:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/button/button-group/button-group.d.ts:63:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
