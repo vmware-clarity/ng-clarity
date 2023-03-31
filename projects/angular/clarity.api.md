@@ -430,6 +430,8 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
 export class ClrAlertsPager implements OnInit, OnDestroy {
     constructor(multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
     // (undocumented)
+    get alertsCurrentPageAriaLabel(): string;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     set currentAlert(alert: ClrAlert);
     // (undocumented)
@@ -884,6 +886,9 @@ export class ClrCommonFormsModule {
 // @public (undocumented)
 export interface ClrCommonStrings {
     alertCloseButtonAriaLabel: string;
+    alertCurrentAlertAriaLabel: string;
+    alertNextAlertAriaLabel: string;
+    alertPreviousAlertAriaLabel: string;
     allColumnsSelected: string;
     close: string;
     collapse: string;

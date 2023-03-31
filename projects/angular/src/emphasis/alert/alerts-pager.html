@@ -6,14 +6,28 @@
 
 <div class="alerts-pager-control">
   <div class="alerts-page-down">
-    <button class="alerts-pager-button" (click)="pageDown()">
-      <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.previous"></cds-icon>
+    <button
+      class="alerts-pager-button"
+      type="button"
+      (click)="pageDown()"
+      [attr.aria-label]="commonStrings.keys.alertPreviousAlertAriaLabel"
+      aria-describedby="current-alert"
+    >
+      <cds-icon shape="angle" direction="left"></cds-icon>
     </button>
   </div>
-  <div class="alerts-pager-text">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>
+  <div class="alerts-pager-text" id="alerts-pager" [attr.aria-label]="alertsCurrentPageAriaLabel" aria-current="true">
+    {{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}
+  </div>
   <div class="alerts-page-up">
-    <button class="alerts-pager-button" (click)="pageUp()">
-      <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.next"></cds-icon>
+    <button
+      class="alerts-pager-button"
+      type="button"
+      (click)="pageUp()"
+      [attr.aria-label]="commonStrings.keys.alertNextAlertAriaLabel"
+      aria-describedby="alerts-pager"
+    >
+      <cds-icon shape="angle" direction="right"></cds-icon>
     </button>
   </div>
 </div>

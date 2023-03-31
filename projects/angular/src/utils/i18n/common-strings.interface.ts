@@ -199,9 +199,24 @@ export interface ClrCommonStrings {
   detailExpandableAriaLabel: string;
 
   /**
+   * Alert: Next Alert button
+   */
+  alertCurrentAlertAriaLabel: string;
+
+  /**
    * Alert: Close alert button
    */
   alertCloseButtonAriaLabel: string;
+
+  /**
+   * Alert: Next Alert button
+   */
+  alertNextAlertAriaLabel: string;
+
+  /**
+   * Alert: Previous Alert button
+   */
+  alertPreviousAlertAriaLabel: string;
 
   /**
    * Datepicker UI labels

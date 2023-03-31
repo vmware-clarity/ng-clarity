@@ -45,6 +45,12 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     return this.multiAlertService.current;
   }
 
+  get alertsCurrentPageAriaLabel() {
+    return `${this.commonStrings.keys.alertCurrentAlertAriaLabel}, ${this.multiAlertService.current + 1} of ${
+      this.multiAlertService.count
+    }`;
+  }
+
   @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>();
 
   constructor(public multiAlertService: MultiAlertService, public commonStrings: ClrCommonStringsService) {}
