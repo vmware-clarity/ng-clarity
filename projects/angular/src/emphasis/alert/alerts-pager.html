@@ -11,12 +11,12 @@
       type="button"
       (click)="pageDown()"
       [attr.aria-label]="commonStrings.keys.alertPreviousAlertAriaLabel"
-      aria-describedby="current-alert"
+      aria-describedby="alerts-pager"
     >
       <cds-icon shape="angle" direction="left"></cds-icon>
     </button>
   </div>
-  <div class="alerts-pager-text" id="alerts-pager" [attr.aria-label]="alertsCurrentPageAriaLabel" aria-current="true">
+  <div class="alerts-pager-text" id="alerts-pager" [attr.aria-label]="alertsCurrentPageAriaLabel">
     {{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}
   </div>
   <div class="alerts-page-up">

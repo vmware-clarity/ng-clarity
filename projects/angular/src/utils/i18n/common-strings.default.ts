@@ -54,7 +54,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
   // Alert
-  alertCurrentAlertAriaLabel: 'Current alert',
+  alertCurrentAlertAriaLabel: 'Current alert, {CURRENT} of {COUNT}',
   alertCloseButtonAriaLabel: 'Close alert',
   alertNextAlertAriaLabel: 'Next alert',
   alertPreviousAlertAriaLabel: 'Previous alert',
