@@ -1062,6 +1062,7 @@
 
     .datagrid-placeholder {
       @include css-var(background, clr-table-bgcolor, $clr-table-bgcolor, $clr-use-custom-properties);
+      display: none;
       width: 100%;
 
       &.datagrid-empty {
