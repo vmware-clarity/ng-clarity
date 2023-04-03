@@ -415,8 +415,8 @@ class TestLocalModalComponent {
     <input id="input" type="text" />
     <div [clrFocusTrap]="trapConfig" id="focus-trap">
       <button type="button" disabled>disabled</button>
-      <button type="button" style="display: 'none'">display-none button</button>
-      <button type="button" style="visibility: 'hidden'">hidden button</button>
+      <button type="button" style="display: none">display-none button</button>
+      <button type="button" style="visibility: hidden">hidden button</button>
       <button type="button" class="display-none">display-none button</button>
       <button type="button" tabindex="-1">not in tabbable</button>
       <button type="button" class="hidden">display-none button</button>
@@ -427,10 +427,10 @@ class TestLocalModalComponent {
       <button type="button" hidden>focusable</button>
       <button type="button" tabindex="-1">not in tabbable</button>
       <button type="button" disabled>disabled</button>
-      <button type="button" style="display: 'none'">display-none button</button>
+      <button type="button" style="display: none">display-none button</button>
       <button type="button" class="display-none">display-none button</button>
 
-      <button type="button" style="visibility: 'hidden'">hidden button</button>
+      <button type="button" style="visibility: hidden">hidden button</button>
       <button type="button" class="hidden">display-none button</button>
     </div>
   `,
