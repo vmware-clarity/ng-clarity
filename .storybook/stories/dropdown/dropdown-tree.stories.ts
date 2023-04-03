@@ -48,6 +48,4 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDropdownModule, ClrTreeViewModule], defaultStory, defaultParameters, variants);
+setupStorybook([ClrDropdownModule, ClrTreeViewModule], defaultStory, defaultParameters);

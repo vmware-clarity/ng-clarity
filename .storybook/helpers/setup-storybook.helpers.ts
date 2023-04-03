@@ -15,7 +15,7 @@ export function setupStorybook(
   ngModules: Type<any> | Type<any>[],
   defaultStory: Story,
   defaultParameters: Parameters,
-  variants: Parameters[]
+  variants: Parameters[] | null = null
 ) {
   const storyApi = storiesOf(defaultParameters.title, module)
     .addParameters(defaultParameters)
