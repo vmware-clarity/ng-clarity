@@ -43,11 +43,11 @@ let clrDgActionId = 0;
       #anchor
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
-      [attr.aria-label]="commonStrings.keys.rowActions"
+      [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
       clrPopoverAnchor
       clrPopoverOpenCloseButton
     >
-      <cds-icon shape="ellipsis-vertical" [attr.title]="commonStrings.keys.rowActions"></cds-icon>
+      <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
     </button>
 
     <div
@@ -139,4 +139,6 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
+
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
 }
