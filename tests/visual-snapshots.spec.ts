@@ -32,6 +32,7 @@ for (const { storyId, component } of stories) {
     test(screenshotPath, async ({ page }) => {
       const storyParams = new URLSearchParams({
         id: storyId,
+        args: 'highlight:false',
         globals: `theme:${theme}`,
         viewMode: 'story',
       });
