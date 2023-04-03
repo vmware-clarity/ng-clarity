@@ -157,7 +157,6 @@
 
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
     //Dimensions
-    @include equilateral($clr-tree-node-touch-target);
     padding-top: $clr-tree-checkbox-padding-top;
     padding-left: $clr-tree-checkbox-padding-left;
 
