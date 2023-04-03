@@ -30,7 +30,13 @@ for (const { storyId, component } of stories) {
     usedScreenshotPaths.push(screenshotPath);
 
     test(screenshotPath, async ({ page }) => {
-      await page.goto(`http://localhost:8080/iframe.html?id=${storyId}&globals=theme:${theme}&viewMode=story`);
+      const storyParams = new URLSearchParams({
+        id: storyId,
+        globals: `theme:${theme}`,
+        viewMode: 'story',
+      });
+
+      await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
       await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
