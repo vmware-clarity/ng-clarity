@@ -89,9 +89,7 @@ export class ComboboxFocusHandler<T> {
       }
     }
     this.pseudoFocus.select(this.optionData[index]);
-    if (this.pseudoFocus.model && this.pseudoFocus.model.el) {
-      this.pseudoFocus.model.el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-    }
+    this.scrollIntoSelectedModel();
   }
 
   private openAndMoveTo(direction: ArrowKeyDirection) {
@@ -155,6 +153,12 @@ export class ComboboxFocusHandler<T> {
     return preventDefault;
   }
 
+  private scrollIntoSelectedModel(behavior: ScrollBehavior = 'smooth') {
+    if (this.pseudoFocus.model && this.pseudoFocus.model.el) {
+      this.pseudoFocus.model.el.scrollIntoView({ behavior, block: 'center', inline: 'nearest' });
+    }
+  }
+
   private preventViewportScrolling(event: KeyboardEvent) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -206,6 +210,7 @@ export class ComboboxFocusHandler<T> {
           // we have active element, but it's filtered out
           this.pseudoFocus.select(this.optionData[0]);
         }
+        this.scrollIntoSelectedModel('auto');
       }
     }
   }
