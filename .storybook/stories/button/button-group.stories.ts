@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, ClrCommonStringsService } from '@clr/angular';
+import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, commonStringsDefault } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
@@ -32,15 +32,13 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const commonStringsService = new ClrCommonStringsService();
-
 const defaultParameters: Parameters = {
   title: 'Button/Button Group',
   component: ClrButtonGroup,
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
-    clrToggleButtonAriaLabel: { defaultValue: commonStringsService.keys.rowActions },
+    clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },

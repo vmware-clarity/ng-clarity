@@ -5,11 +5,11 @@
  */
 
 import {
-  ClrCommonStringsService,
   ClrConditionalModule,
   ClrDatagridColumn,
   ClrDatagridModule,
   ClrDatagridSortOrder,
+  commonStringsDefault,
 } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
@@ -82,8 +82,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const commonStringsService = new ClrCommonStringsService();
-
 const defaultParameters: Parameters = {
   title: 'Datagrid/Column',
   component: ClrDatagridColumn,
@@ -99,9 +97,9 @@ const defaultParameters: Parameters = {
         options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
       },
     },
-    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsService.keys.maxValue },
-    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsService.keys.minValue },
-    clrFilterStringPlaceholder: { defaultValue: commonStringsService.keys.filterItems },
+    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
+    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
+    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
     clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
     clrDgColumnResize: { control: { disable: true } },
