@@ -6,9 +6,9 @@
 
 import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
 
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
@@ -17,10 +17,11 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
     <ng-template #buttonProjectedRef>
       <button
         [class]="classNames"
-        (click)="emitClick($event)"
+        (click)="emitClick()"
         [attr.type]="type"
         [attr.name]="name"
         [attr.disabled]="disabled"
+        [attr.role]="role"
         [attr.id]="id"
       >
         <span class="spinner spinner-inline" *ngIf="loading"></span>
@@ -39,9 +40,12 @@ export class ClrButton implements LoadingListener {
   constructor(
     @SkipSelf()
     @Optional()
-    public buttonInGroupService: ButtonInGroupService,
-    private toggleService: ClrPopoverToggleService
+    public buttonInGroupService: ButtonInGroupService
   ) {}
+
+  get role(): string {
+    return this.inMenu ? 'menuitem' : null;
+  }
 
   private _inMenu = false;
 
@@ -105,7 +109,7 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  private _id: string = null;
+  private _id: string = uniqueIdFactory();
 
   get id(): string {
     return this._id;
@@ -141,10 +145,7 @@ export class ClrButton implements LoadingListener {
 
   @Output('click') _click: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  emitClick($event: Event): void {
-    if (this.inMenu) {
-      this.toggleService.toggleWithEvent($event);
-    }
+  emitClick(): void {
     this._click.emit(true);
   }
 
