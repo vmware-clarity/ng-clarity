@@ -199,11 +199,6 @@ export interface ClrCommonStrings {
   detailExpandableAriaLabel: string;
 
   /**
-   * Alert: Next Alert button
-   */
-  alertCurrentAlertAriaLabel: string;
-
-  /**
    * Alert: Close alert button
    */
   alertCloseButtonAriaLabel: string;

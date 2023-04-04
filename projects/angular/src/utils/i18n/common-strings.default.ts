@@ -54,10 +54,9 @@ export const commonStringsDefault: ClrCommonStrings = {
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
   // Alert
-  alertCurrentAlertAriaLabel: 'Current alert, {CURRENT} of {COUNT}',
   alertCloseButtonAriaLabel: 'Close alert',
-  alertNextAlertAriaLabel: 'Next alert',
-  alertPreviousAlertAriaLabel: 'Previous alert',
+  alertNextAlertAriaLabel: 'Next alert message, {CURRENT} of {COUNT}',
+  alertPreviousAlertAriaLabel: 'Previous alert message, {CURRENT} of {COUNT}',
   // Date Picker
   datepickerDialogLabel: 'Choose date',
   datepickerToggleChooseDateLabel: 'Choose date',
