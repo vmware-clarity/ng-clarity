@@ -3,7 +3,7 @@
   Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.
 -->
 <div
-  class="datagrid-row-clickable clr-col-null"
+  class="datagrid-row-clickable"
   *ngIf="selection.rowSelectionMode"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected)"
