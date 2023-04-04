@@ -6,7 +6,7 @@
   class="datagrid-row-clickable clr-col-null"
   *ngIf="selection.rowSelectionMode"
   (mousedown)="clearRanges($event)"
-  (click)="rowSelected(!selected)"
+  (click)="selectRow(!selected)"
 >
   <clr-expandable-animation [clrExpandTrigger]="expandAnimationTrigger" *ngIf="expand.expandable">
     <ng-template [ngTemplateOutlet]="rowContent"></ng-template>

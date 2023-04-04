@@ -196,7 +196,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  rowSelected(selected = !this.selected) {
+  protected selectRow(selected = !this.selected) {
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
       this.selection.currentSingle = this.item;
     } else {
