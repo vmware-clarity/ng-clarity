@@ -6,7 +6,7 @@
 
 import { Component } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
@@ -51,21 +51,20 @@ export default function (): void {
     });
 
     it('should add helper text', function () {
-      const commonStrings = new ClrCommonStringsService();
       const rows: HTMLElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
 
       // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
       const first = [
-        commonStrings.keys.dategridExpandableBeginningOf,
-        commonStrings.keys.dategridExpandableRowContent,
-        commonStrings.keys.dategridExpandableRowsHelperText,
-        commonStrings.keys.dategridExpandableBeginningOf || commonStrings.keys.datagridExpandableBeginningOf,
-        commonStrings.keys.dategridExpandableRowContent || commonStrings.keys.datagridExpandableRowContent,
-        commonStrings.keys.dategridExpandableRowsHelperText || commonStrings.keys.datagridExpandableRowsHelperText,
+        commonStringsDefault.dategridExpandableBeginningOf,
+        commonStringsDefault.dategridExpandableRowContent,
+        commonStringsDefault.dategridExpandableRowsHelperText,
+        commonStringsDefault.dategridExpandableBeginningOf || commonStringsDefault.datagridExpandableBeginningOf,
+        commonStringsDefault.dategridExpandableRowContent || commonStringsDefault.datagridExpandableRowContent,
+        commonStringsDefault.dategridExpandableRowsHelperText || commonStringsDefault.datagridExpandableRowsHelperText,
       ];
       const last = [
-        commonStrings.keys.dategridExpandableEndOf || commonStrings.keys.datagridExpandableEndOf,
-        commonStrings.keys.dategridExpandableRowContent || commonStrings.keys.datagridExpandableRowContent,
+        commonStringsDefault.dategridExpandableEndOf || commonStringsDefault.datagridExpandableEndOf,
+        commonStringsDefault.dategridExpandableRowContent || commonStringsDefault.datagridExpandableRowContent,
       ];
 
       expect(rows[0].innerText.trim()).toBe(first.join(' ').trim());
