@@ -4,13 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { commonStringsDefault } from '../../../utils/i18n/common-strings.default';
 import { ClrCommonStringsService } from '../../../utils/i18n/common-strings.service';
 import { AlertIconAndTypesService } from './icon-and-types.service';
 
 export default function (): void {
   describe('Alert Icon and Types Service', function () {
     let testMe: AlertIconAndTypesService;
-    let commonStrings: ClrCommonStringsService;
 
     function testShape(alertType: string): string {
       return testMe.iconInfoFromType(alertType).shape;
@@ -25,8 +25,7 @@ export default function (): void {
     }
 
     beforeEach(() => {
-      commonStrings = new ClrCommonStringsService();
-      testMe = new AlertIconAndTypesService(commonStrings);
+      testMe = new AlertIconAndTypesService(new ClrCommonStringsService());
     });
 
     afterEach(() => {
@@ -75,7 +74,7 @@ export default function (): void {
       it('returns title based on alertType', function () {
         testMe.alertType = 'warning';
         expect(testMe.alertType).toBe('warning');
-        expect(testMe.alertIconTitle).toBe(commonStrings.keys.warning);
+        expect(testMe.alertIconTitle).toBe(commonStringsDefault.warning);
       });
     });
 
@@ -91,8 +90,8 @@ export default function (): void {
       });
 
       it('returns info title as fallthrough', function () {
-        expect(testTitle(null)).toBe(commonStrings.keys.info);
-        expect(testTitle('ohai')).toBe(commonStrings.keys.info);
+        expect(testTitle(null)).toBe(commonStringsDefault.info);
+        expect(testTitle('ohai')).toBe(commonStringsDefault.info);
       });
 
       it('returns warning icon', function () {
@@ -104,7 +103,7 @@ export default function (): void {
       });
 
       it('returns warning title', function () {
-        expect(testTitle('warning')).toBe(commonStrings.keys.warning);
+        expect(testTitle('warning')).toBe(commonStringsDefault.warning);
       });
 
       it('returns danger icon', function () {
@@ -116,7 +115,7 @@ export default function (): void {
       });
 
       it('returns danger title', function () {
-        expect(testTitle('danger')).toBe(commonStrings.keys.danger);
+        expect(testTitle('danger')).toBe(commonStringsDefault.danger);
       });
 
       it('returns success icon', function () {
@@ -128,7 +127,7 @@ export default function (): void {
       });
 
       it('returns success title', function () {
-        expect(testTitle('success')).toBe(commonStrings.keys.success);
+        expect(testTitle('success')).toBe(commonStringsDefault.success);
       });
 
       it('returns info icon', function () {
@@ -140,7 +139,7 @@ export default function (): void {
       });
 
       it('returns info title', function () {
-        expect(testTitle('info')).toBe(commonStrings.keys.info);
+        expect(testTitle('info')).toBe(commonStringsDefault.info);
       });
     });
   });

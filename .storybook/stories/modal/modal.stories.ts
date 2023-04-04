@@ -4,14 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCommonStringsService, ClrModal, ClrModalModule } from '@clr/angular';
+import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const commonStringsService = new ClrCommonStringsService();
 
 const defaultStory: Story = args => ({
   template: `
@@ -52,7 +50,7 @@ const defaultParameters: Parameters = {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsService.keys.close },
+    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
     clrModalLabelledById: { defaultValue: '' },
     clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
     clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },

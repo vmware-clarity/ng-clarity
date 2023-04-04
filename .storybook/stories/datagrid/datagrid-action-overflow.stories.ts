@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridActionOverflow, ClrDatagridModule } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridActionOverflow, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
@@ -41,6 +41,7 @@ const defaultStory: Story = args => ({
         <clr-dg-action-overflow
           [ngClass]="{ highlight: highlight && index === 0 }"
           [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
+          [clrDgActionOverflowButtonLabel]="clrDgActionOverflowButtonLabel"
           (clrDgActionOverflowOpenChange)="index === 0 && clrDgActionOverflowOpenChange($event)"
         >
           <button class="action-item">Edit</button>
@@ -76,6 +77,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrDgActionOverflowOpen: { defaultValue: false },
+    clrDgActionOverflowButtonLabel: { defaultValue: commonStringsDefault.rowActions },
     // outputs
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods

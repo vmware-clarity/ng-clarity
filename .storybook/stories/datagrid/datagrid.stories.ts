@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrCommonStringsService, ClrConditionalModule, ClrDatagrid, ClrDatagridModule } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
@@ -71,21 +71,19 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const commonStringsService = new ClrCommonStringsService();
-
 const defaultParameters: Parameters = {
   title: 'Datagrid/Datagrid',
   component: ClrDatagrid,
   argTypes: {
     // inputs
-    clrDetailExpandableAriaLabel: { defaultValue: commonStringsService.keys.detailExpandableAriaLabel },
+    clrDetailExpandableAriaLabel: { defaultValue: commonStringsDefault.detailExpandableAriaLabel },
     clrDgLoading: { defaultValue: false },
     clrDgPreserveSelection: { defaultValue: false },
     clrDgRowSelection: { defaultValue: false },
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsService.keys.singleActionableAriaLabel },
+    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsDefault.singleActionableAriaLabel },
     clrDgSingleSelected: { control: { disable: true } },
-    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsService.keys.singleSelectionAriaLabel },
+    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsDefault.singleSelectionAriaLabel },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
