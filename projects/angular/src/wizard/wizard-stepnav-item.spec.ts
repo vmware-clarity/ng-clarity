@@ -8,7 +8,7 @@ import { AfterContentInit, Component, DebugElement, ViewChild } from '@angular/c
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrCommonStringsService } from '../utils';
+import { commonStringsDefault } from '../utils/i18n/common-strings.default';
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { PageCollectionMock } from './providers/page-collection.service.mock';
@@ -483,20 +483,18 @@ export default function (): void {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          const commonStrings = new ClrCommonStringsService();
           const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
           expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual(commonStrings.keys.wizardStepError);
+          expect(spans[0].textContent).toEqual(commonStringsDefault.wizardStepError);
         });
 
         it('should have a span with text "Completed" when page is completed', () => {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = false;
           fixture.detectChanges();
-          const commonStrings = new ClrCommonStringsService();
           const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
           expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual(commonStrings.keys.wizardStepSuccess);
+          expect(spans[0].textContent).toEqual(commonStringsDefault.wizardStepSuccess);
         });
       });
 

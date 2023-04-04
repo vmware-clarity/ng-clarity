@@ -269,7 +269,7 @@ export class ClrAccordionModule {
 // @public (undocumented)
 export class ClrAccordionPanel implements OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point index.d.ts
-    constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService);
+    constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
@@ -301,6 +301,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     //
     // (undocumented)
     panel: Observable<AccordionPanelModel>;
+    // (undocumented)
+    get panelNumber(): number;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)
@@ -3637,7 +3639,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -3656,7 +3658,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
