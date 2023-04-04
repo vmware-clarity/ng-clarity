@@ -3664,6 +3664,21 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 }
 
 // @public (undocumented)
+export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
+    constructor(toggleService: ClrPopoverToggleService);
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onEscapeKey(event: KeyboardEvent): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
+}
+
+// @public (undocumented)
 export class ClrTab {
     // Warning: (ae-forgotten-export) The symbol "TabsService" needs to be exported by the entry point index.d.ts
     constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
