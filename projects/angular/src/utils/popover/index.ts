@@ -13,6 +13,7 @@ export * from './providers/popover-position.service';
 export * from './providers/popover-toggle.service';
 export * from './popover-anchor';
 export * from './popover-content';
+export * from './stop-escape-propagation.directive';
 
 export { ClrPopoverModuleNext as ÇlrClrPopoverModuleNext } from './popover.module';
 export { ClrPopoverCloseButton as ÇlrClrPopoverCloseButton } from './popover-close-button';
