@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
@@ -535,7 +535,6 @@ export default function (): void {
 
     describe('Accessibility', () => {
       let vertNavService: VerticalNavService;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
@@ -543,7 +542,6 @@ export default function (): void {
 
         compiled = fixture.nativeElement;
         vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-        commonStrings = new ClrCommonStringsService();
       });
 
       afterEach(() => {
@@ -556,7 +554,7 @@ export default function (): void {
 
         fixture.detectChanges();
 
-        const verticalNavToggleString = commonStrings.keys.verticalNavToggle;
+        const verticalNavToggleString = commonStringsDefault.verticalNavToggle;
 
         const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
         const navBtn: HTMLElement = compiled.querySelector('.nav-btn');
