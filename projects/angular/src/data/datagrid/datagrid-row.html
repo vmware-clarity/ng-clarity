@@ -2,12 +2,17 @@
   We need to wrap the #rowContent in label element if we are in rowSelectionMode.
   Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.
 -->
-<label class="datagrid-row-clickable clr-col-null" *ngIf="selection.rowSelectionMode" (mousedown)="clearRanges($event)">
+<div
+  class="datagrid-row-clickable"
+  *ngIf="selection.rowSelectionMode"
+  (mousedown)="clearRanges($event)"
+  (click)="selectRow(!selected)"
+>
   <clr-expandable-animation [clrExpandTrigger]="expandAnimationTrigger" *ngIf="expand.expandable">
     <ng-template [ngTemplateOutlet]="rowContent"></ng-template>
   </clr-expandable-animation>
   <ng-template [ngTemplateOutlet]="rowContent" *ngIf="!expand.expandable"></ng-template>
-</label>
+</div>
 
 <clr-expandable-animation
   *ngIf="!selection.rowSelectionMode && expand.expandable"
