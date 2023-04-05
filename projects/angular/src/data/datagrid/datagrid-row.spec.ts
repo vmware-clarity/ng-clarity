@@ -127,7 +127,6 @@ export default function (): void {
       let context: TestContext<ClrDatagridRow, SelectableRowOrder>;
       let selectionProvider: Selection;
       let checkbox: HTMLElement;
-      let radio: HTMLInputElement;
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRowOrder, DATAGRID_SPEC_PROVIDERS);
@@ -153,13 +152,13 @@ export default function (): void {
         // Test multi select rows
         selectionProvider.selectionType = SelectionType.Multi;
         context.detectChanges();
-        checkbox = context.clarityElement.querySelector("input[type='checkbox']");
-        expect(checkbox.getAttribute('aria-label')).toBeString('uniq aria-label');
+        const checkboxLabel = context.clarityElement.querySelector('label');
+        expect(checkboxLabel.textContent).toBeString('uniq aria-label');
         // Test single select row
         selectionProvider.selectionType = SelectionType.Single;
         context.detectChanges();
-        radio = context.clarityElement.querySelector("input[type='radio']");
-        expect(radio.getAttribute('aria-label')).toBeString('uniq aria-label');
+        const radioLabel = context.clarityElement.querySelector('label');
+        expect(radioLabel.textContent).toBeString('uniq aria-label');
       }));
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {

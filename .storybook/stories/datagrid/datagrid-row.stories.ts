@@ -45,6 +45,7 @@ const defaultStory: Story = args => ({
         [clrDgDetailOpenLabel]="clrDgDetailOpenLabel"
         [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
         [clrDgItem]="element"
+        [clrDgRowAriaLabel]="clrDgRowAriaLabel"
         [ngClass]="{ highlight: highlight && index === 0 }"
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
