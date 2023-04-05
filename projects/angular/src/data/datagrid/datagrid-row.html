@@ -63,10 +63,6 @@
           [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
           role="gridcell"
         >
-          <!-- TODO: it would be better if in addition to the generic "Select" label, we could add aria-labelledby
-          to label the radio by the first cell in the row (typically an id or name).
-          It's pretty easy to label it with the whole row since we already have an id for it, but in most
-          cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->
           <clr-radio-wrapper>
             <input
               type="radio"
@@ -79,7 +75,7 @@
               [disabled]="clrDgSelectable ? null : true"
               [attr.aria-disabled]="clrDgSelectable ? null : true"
             />
-            <label class="clr-control-label clr-col-null">
+            <label class="clr-control-label clr-col-null" [for]="radioId">
               <span class="clr-sr-only">{{ clrDgRowAriaLabel || commonStrings.keys.select }}</span>
             </label>
           </clr-radio-wrapper>
