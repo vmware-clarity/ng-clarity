@@ -5,9 +5,10 @@
  */
 
 import { Component, QueryList, Type, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrEmphasisModule } from '../../emphasis/emphasis.module';
+import { commonStringsDefault } from '../../utils';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAlert } from './alert';
 import { ClrAlertsPager } from './alerts-pager';
@@ -99,6 +100,55 @@ export default function () {
         expect(this.fixture.componentInstance.currentAlert).toEqual(this.alert);
       });
     });
+
+    describe('View Basics', function () {
+      let fixture: ComponentFixture<TestBasics>;
+      let pagerInstance: ClrAlertsPager;
+      let commonStrings: ClrCommonStringsService;
+      const testNextAriaLabel = (current: number, count: number) => {
+        return commonStrings.parse(commonStringsDefault.alertNextAlertAriaLabel, {
+          CURRENT: current.toString(),
+          COUNT: count.toString(),
+        });
+      };
+      const testPreviousAriaLabel = (current: number, count: number) => {
+        return commonStrings.parse(commonStringsDefault.alertPreviousAlertAriaLabel, {
+          CURRENT: current.toString(),
+          COUNT: count.toString(),
+        });
+      };
+
+      beforeEach(() => {
+        const service = new MultiAlertService();
+        const queryList = new QueryList<ClrAlert>();
+        TestBed.configureTestingModule({
+          imports: [ClrEmphasisModule],
+          declarations: [TestBasics],
+          providers: [{ provide: MultiAlertService, useValue: service }],
+        });
+        fixture = TestBed.createComponent(TestBasics);
+        queryList.reset(Array(4).fill(TestBed.createComponent(ClrAlert).componentInstance));
+        service.manage(queryList);
+        fixture.detectChanges();
+        pagerInstance = fixture.componentInstance.pagerInstance;
+        commonStrings = pagerInstance.commonStrings;
+      });
+
+      afterEach(function () {
+        fixture.destroy();
+      });
+
+      it('next alert aria-label is correct after page change', function () {
+        expect(pagerInstance.nextAlertAriaLabel).toBe(testNextAriaLabel(2, 4));
+        pagerInstance.pageUp();
+        expect(pagerInstance.nextAlertAriaLabel).toBe(testNextAriaLabel(3, 4));
+      });
+      it('previous alert aria-label is correct after page change', function () {
+        expect(pagerInstance.previousAlertAriaLabel).toBe(testPreviousAriaLabel(4, 4));
+        pagerInstance.pageUp();
+        expect(pagerInstance.previousAlertAriaLabel).toBe(testPreviousAriaLabel(1, 4));
+      });
+    });
   });
 }
 
@@ -116,4 +166,10 @@ export class TestIndex {
 export class TestInstance {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
   currentAlert: ClrAlert;
+}
+@Component({
+  template: `<clr-alerts-pager></clr-alerts-pager>`,
+})
+export class TestBasics {
+  @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
 }
