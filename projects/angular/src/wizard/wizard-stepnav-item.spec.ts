@@ -8,7 +8,6 @@ import { AfterContentInit, Component, DebugElement, ViewChild } from '@angular/c
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { commonStringsDefault } from '../utils/i18n/common-strings.default';
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { PageCollectionMock } from './providers/page-collection.service.mock';
@@ -485,7 +484,7 @@ export default function (): void {
           fixture.detectChanges();
           const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
           expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual(commonStringsDefault.wizardStepError);
+          expect(spans[0].textContent).toEqual('Error');
         });
 
         it('should have a span with text "Completed" when page is completed', () => {
@@ -494,7 +493,7 @@ export default function (): void {
           fixture.detectChanges();
           const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
           expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual(commonStringsDefault.wizardStepSuccess);
+          expect(spans[0].textContent).toEqual('Completed');
         });
       });
 
