@@ -6,6 +6,7 @@
 
 import { Component } from '@angular/core';
 
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { TestContext } from './helpers.spec';
@@ -18,12 +19,10 @@ export default function (): void {
     describe('Typescript API', function () {
       let pageService: Page;
       let component: ClrDatagridPagination;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(function () {
         pageService = new Page(new StateDebouncer());
-        commonStrings = new ClrCommonStringsService();
-        component = new ClrDatagridPagination(pageService, commonStrings, null);
+        component = new ClrDatagridPagination(pageService, new ClrCommonStringsService(), null);
         component.ngOnInit(); // For the subscription that will get destroyed.
       });
 
@@ -353,11 +352,9 @@ export default function (): void {
     describe('Accessibility', function () {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridPagination, FullTest>;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(function (this: any) {
         context = this.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
-        commonStrings = new ClrCommonStringsService();
 
         context.testComponent.size = 10;
         context.testComponent.total = 100;
@@ -367,23 +364,23 @@ export default function (): void {
 
       it('expect buttons to have the correct aria-label from ClrCommonStringsService', function () {
         expect(context.clarityElement.querySelector('.pagination-first').attributes['aria-label'].value).toBe(
-          commonStrings.keys.firstPage
+          commonStringsDefault.firstPage
         );
         expect(context.clarityElement.querySelector('.pagination-last').attributes['aria-label'].value).toBe(
-          commonStrings.keys.lastPage
+          commonStringsDefault.lastPage
         );
         expect(context.clarityElement.querySelector('.pagination-previous').attributes['aria-label'].value).toBe(
-          commonStrings.keys.previousPage
+          commonStringsDefault.previousPage
         );
         expect(context.clarityElement.querySelector('.pagination-next').attributes['aria-label'].value).toBe(
-          commonStrings.keys.nextPage
+          commonStringsDefault.nextPage
         );
         expect(context.clarityElement.querySelector('.pagination-current').attributes['aria-label'].value).toBe(
-          commonStrings.keys.currentPage
+          commonStringsDefault.currentPage
         );
         expect(
           context.clarityElement.querySelector('.pagination-list span:not(.clr-sr-only)').attributes['aria-label'].value
-        ).toBe(commonStrings.keys.totalPages);
+        ).toBe(commonStringsDefault.totalPages);
       });
     });
   });

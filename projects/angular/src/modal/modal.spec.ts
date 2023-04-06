@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrFocusTrapModule } from '../utils/focus-trap/focus-trap.module';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
+import { commonStringsDefault } from '../utils/i18n/common-strings.default';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 
@@ -66,7 +66,6 @@ describe('Modal', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
   let modal: ClrModal;
-  const commonStrings = new ClrCommonStringsService();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -260,7 +259,7 @@ describe('Modal', () => {
   });
 
   it('close button should have default aria-label', () => {
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStrings.keys.close);
+    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStringsDefault.close);
   });
 
   it('close button should have customizable aria-label', () => {
