@@ -6,7 +6,6 @@
 
 import { Component } from '@angular/core';
 
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridPagination } from './datagrid-pagination';
 import { TestContext } from './helpers.spec';
@@ -362,25 +361,25 @@ export default function (): void {
         context.detectChanges();
       });
 
-      it('expect buttons to have the correct aria-label from ClrCommonStringsService', function () {
+      it('expect buttons to have the correct aria-label', function () {
         expect(context.clarityElement.querySelector('.pagination-first').attributes['aria-label'].value).toBe(
-          commonStringsDefault.firstPage
+          'First Page'
         );
         expect(context.clarityElement.querySelector('.pagination-last').attributes['aria-label'].value).toBe(
-          commonStringsDefault.lastPage
+          'Last Page'
         );
         expect(context.clarityElement.querySelector('.pagination-previous').attributes['aria-label'].value).toBe(
-          commonStringsDefault.previousPage
+          'Previous Page'
         );
         expect(context.clarityElement.querySelector('.pagination-next').attributes['aria-label'].value).toBe(
-          commonStringsDefault.nextPage
+          'Next Page'
         );
         expect(context.clarityElement.querySelector('.pagination-current').attributes['aria-label'].value).toBe(
-          commonStringsDefault.currentPage
+          'Current Page'
         );
         expect(
           context.clarityElement.querySelector('.pagination-list span:not(.clr-sr-only)').attributes['aria-label'].value
-        ).toBe(commonStringsDefault.totalPages);
+        ).toBe('Total Pages');
       });
     });
   });

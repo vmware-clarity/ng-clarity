@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { commonStringsDefault } from '../../../utils/i18n/common-strings.default';
 import { ClrCommonStringsService } from '../../../utils/i18n/common-strings.service';
 import { AlertIconAndTypesService } from './icon-and-types.service';
 
@@ -74,7 +73,7 @@ export default function (): void {
       it('returns title based on alertType', function () {
         testMe.alertType = 'warning';
         expect(testMe.alertType).toBe('warning');
-        expect(testMe.alertIconTitle).toBe(commonStringsDefault.warning);
+        expect(testMe.alertIconTitle).toBe('Warning');
       });
     });
 
@@ -90,8 +89,8 @@ export default function (): void {
       });
 
       it('returns info title as fallthrough', function () {
-        expect(testTitle(null)).toBe(commonStringsDefault.info);
-        expect(testTitle('ohai')).toBe(commonStringsDefault.info);
+        expect(testTitle(null)).toBe('Info');
+        expect(testTitle('ohai')).toBe('Info');
       });
 
       it('returns warning icon', function () {
@@ -103,7 +102,7 @@ export default function (): void {
       });
 
       it('returns warning title', function () {
-        expect(testTitle('warning')).toBe(commonStringsDefault.warning);
+        expect(testTitle('warning')).toBe('Warning');
       });
 
       it('returns danger icon', function () {
@@ -115,7 +114,7 @@ export default function (): void {
       });
 
       it('returns danger title', function () {
-        expect(testTitle('danger')).toBe(commonStringsDefault.danger);
+        expect(testTitle('danger')).toBe('Error');
       });
 
       it('returns success icon', function () {
@@ -127,7 +126,7 @@ export default function (): void {
       });
 
       it('returns success title', function () {
-        expect(testTitle('success')).toBe(commonStringsDefault.success);
+        expect(testTitle('success')).toBe('Success');
       });
 
       it('returns info icon', function () {
@@ -139,7 +138,7 @@ export default function (): void {
       });
 
       it('returns info title', function () {
-        expect(testTitle('info')).toBe(commonStringsDefault.info);
+        expect(testTitle('info')).toBe('Info');
       });
     });
   });
