@@ -29,7 +29,7 @@
     "ts-node": "ts-node --project ./tsconfig-ts-node.json",
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:demo": "ng build clr-demo --configuration production",
-    "_build:storybook": "npm run docs:json && STORYBOOK_ANGULAR_PROJECT=clr-angular build-storybook --output-dir ./dist/docs --webpack-stats-json",
+    "_build:storybook": "npm run docs:json && build-storybook --output-dir ./dist/docs --webpack-stats-json",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css ./dist/clr-ui/clr-ui-dark.css --use autoprefixer --dir ./dist/clr-ui",
     "_build:ui:optimize": "npm-run-all _build:ui:optimize:*",
@@ -51,7 +51,7 @@
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
     "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start:storybook": "wait-on ./documentation.json && STORYBOOK_ANGULAR_PROJECT=clr-angular start-storybook -p 6006"
+    "_start:storybook": "wait-on ./documentation.json && start-storybook -p 6006"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",

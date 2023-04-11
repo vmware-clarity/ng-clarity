@@ -7,7 +7,6 @@
 import { Component } from '@angular/core';
 import { async } from '@angular/core/testing';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetail } from './datagrid-detail';
 import { TestContext } from './helpers.spec';
 import { DetailService } from './providers/detail.service';
@@ -75,12 +74,11 @@ export default function (): void {
       });
 
       it('should have text based boundaries for screen readers', () => {
-        const commonStrings = context.getClarityProvider(ClrCommonStringsService);
         detailService.open({});
         context.detectChanges();
         const messages = context.testElement.querySelectorAll('.clr-sr-only');
-        expect(messages[0].innerText).toBe(commonStrings.keys.detailPaneStart);
-        expect(messages[1].innerText).toBe(commonStrings.keys.detailPaneEnd);
+        expect(messages[0].innerText).toBe('Start of row details');
+        expect(messages[1].innerText).toBe('End of row details');
       });
     });
   });

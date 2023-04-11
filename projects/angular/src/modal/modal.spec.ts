@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { commonStringsDefault } from '../utils/i18n/common-strings.default';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 
@@ -260,7 +259,7 @@ describe('Modal', () => {
   });
 
   it('close button should have default aria-label', () => {
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStringsDefault.close);
+    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('Close');
   });
 
   it('close button should have customizable aria-label', () => {
