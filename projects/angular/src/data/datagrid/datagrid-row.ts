@@ -243,6 +243,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   private _rowAriaLabel = '';
+  // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
   set clrDgRowAriaLabel(label: string) {
     this._rowAriaLabel = label;
