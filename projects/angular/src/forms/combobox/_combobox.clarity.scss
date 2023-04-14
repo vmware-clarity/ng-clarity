@@ -212,6 +212,11 @@
     .clr-combobox-options-empty-text {
       padding: 0 density.$clr-base-horizontal-offset-l;
     }
+
+    .clr-option-group-label {
+      padding-left: density.$clr-base-horizontal-offset-l;
+      font-weight: bold;
+    }
   }
 
   .clr-combobox-option {

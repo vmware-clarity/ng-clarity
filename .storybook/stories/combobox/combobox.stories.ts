@@ -44,6 +44,7 @@ export default {
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    optionGroups: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
     updateOn: { control: 'radio', options: ['change', 'blur', 'submit'] },
   },
@@ -68,38 +69,47 @@ export default {
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
     label: 'Combobox',
+    optionGroups: [...elements]
+      .sort((a, b) => a.number - b.number)
+      .reduce<{ groupName: string; options: string[] }[]>((groups, element) => {
+        const x = Math.floor(element.number / 10);
+        const groupName = `Elements ${x * 10} to ${x * 10 + 9}`;
+        let group = groups.find(group => group.groupName === groupName);
+
+        if (!group) {
+          group = { groupName, options: [] };
+          groups.push(group);
+        }
+
+        group.options.push(`${element.name} (#${element.number})`);
+
+        return groups;
+      }, []),
   },
 };
 
 const ComboboxTemplate: StoryFn = args => ({
   template: `
     <clr-combobox-container>
-      <label>{{ label }}</label>
-      <clr-combobox
-        [id]="id"
-        [clrMulti]="clrMulti"
-        [ngModel]="clrMulti ? multiModel : singleModel"
-        [ngModelOptions]="{ updateOn: updateOn }"
-        [placeholder]="placeholder"
-        (clrInputChange)="clrInputChange($event)"
-        (clrOpenChange)="clrOpenChange($event)"
-        (clrSelectionChange)="clrSelectionChange($event)"
-        [clrLoading]="clrLoading"
-        [disabled]="controlDisabled"
-        name="combo"
-        [required]="controlRequired"
-      >
+      <label>Options:</label>
+      <clr-combobox [clrMulti]="clrMulti">
         <ng-container *clrOptionSelected="let selected">
-          {{ selected }}
+          {{selected}}
         </ng-container>
         <clr-options>
-          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">
-            {{ element.name }}
-          </clr-option>
+          <clr-option-group
+            *ngFor="let optionGroup of optionGroups"
+            [clrOptionGroupLabel]="optionGroup.groupName"
+          >
+            <clr-option
+              *clrOptionItems="let option of optionGroup.options"
+              [clrValue]="option"
+            >
+              {{option}}
+            </clr-option>
+          </clr-option-group>
         </clr-options>
       </clr-combobox>
-      <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
-      <clr-control-error *ngIf="controlRequired">There was an error</clr-control-error>
     </clr-combobox-container>
   `,
   props: { ...args },
