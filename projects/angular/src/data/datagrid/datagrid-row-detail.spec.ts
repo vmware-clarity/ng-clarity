@@ -6,7 +6,6 @@
 
 import { Component } from '@angular/core';
 
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
@@ -53,15 +52,10 @@ export default function (): void {
     it('should add helper text', function () {
       const rows: HTMLElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
 
-      const first = [
-        commonStringsDefault.datagridExpandableBeginningOf,
-        commonStringsDefault.datagridExpandableRowContent,
-        commonStringsDefault.datagridExpandableRowsHelperText,
-      ];
-      const last = [commonStringsDefault.datagridExpandableEndOf, commonStringsDefault.datagridExpandableRowContent];
-
-      expect(rows[0].innerText.trim()).toBe(first.join(' ').trim());
-      expect(rows[1].innerText.trim()).toBe(last.join(' ').trim());
+      expect(rows[0].innerText.trim()).toBe(
+        "Beginning of Expandable row content Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button"
+      );
+      expect(rows[1].innerText.trim()).toBe('End of Expandable row content');
     });
 
     it('should add id to the root element', function () {
