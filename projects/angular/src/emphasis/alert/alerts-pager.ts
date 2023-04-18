@@ -45,7 +45,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     return this.multiAlertService.current;
   }
 
-  get previousAlertAriaLabel() {
+  protected get previousAlertAriaLabel() {
     const CURRENT = this.currentAlertIndex + 1;
     return this.commonStrings.parse(this.commonStrings.keys.alertPreviousAlertAriaLabel, {
       CURRENT: (CURRENT === 1 ? this.multiAlertService.count : CURRENT - 1).toString(),
@@ -53,7 +53,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     });
   }
 
-  get nextAlertAriaLabel() {
+  protected get nextAlertAriaLabel() {
     const CURRENT = this.currentAlertIndex + 1;
     return this.commonStrings.parse(this.commonStrings.keys.alertNextAlertAriaLabel, {
       CURRENT: (CURRENT === this.multiAlertService.count ? 1 : CURRENT + 1).toString(),

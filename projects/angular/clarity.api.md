@@ -444,7 +444,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     // (undocumented)
     multiAlertService: MultiAlertService;
     // (undocumented)
-    get nextAlertAriaLabel(): string;
+    protected get nextAlertAriaLabel(): string;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -454,7 +454,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     // (undocumented)
     pageUp(): void;
     // (undocumented)
-    get previousAlertAriaLabel(): string;
+    protected get previousAlertAriaLabel(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": "clrCurrentAlert"; "currentAlertIndex": "clrCurrentAlertIndex"; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false, never>;
     // (undocumented)
