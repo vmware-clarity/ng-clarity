@@ -15,7 +15,7 @@ export function setupStorybook(
   ngModules: Type<any> | Type<any>[],
   defaultStory: Story,
   defaultParameters: Parameters,
-  variants: Parameters[]
+  variants: Parameters[] = null
 ) {
   const storyApi = storiesOf(defaultParameters.title, module)
     .addParameters(defaultParameters)
@@ -33,13 +33,15 @@ export function setupStorybook(
 
   storyApi.add('Default', defaultStory, defaultParameters);
 
-  storyApi.add('Variants', variants.length ? combineStories(defaultStory, variants) : defaultStory, {
-    a11y: { disable: true },
-    actions: { disable: true },
-    controls: { disable: true },
-    previewTabs: { 'storybook/docs/panel': { hidden: true } },
-    chromatic: { disableSnapshot: false },
-  });
+  if (variants) {
+    storyApi.add('Variants', variants.length ? combineStories(defaultStory, variants) : defaultStory, {
+      a11y: { disable: true },
+      actions: { disable: true },
+      controls: { disable: true },
+      previewTabs: { 'storybook/docs/panel': { hidden: true } },
+      chromatic: { disableSnapshot: false },
+    });
+  }
 }
 
 function combineStories(defaultStory: Story, variants: Parameters[]): Story {

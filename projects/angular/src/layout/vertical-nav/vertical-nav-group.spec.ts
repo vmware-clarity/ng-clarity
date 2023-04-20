@@ -168,7 +168,7 @@ export default function (): void {
 
       it('defaults aria-label of nav group toggle button to common strings', () => {
         expect(toggleBtn.hasAttribute('aria-label')).toBe(true);
-        expect(toggleBtn.getAttribute('aria-label')).toBe(navGroup.commonStrings.keys.verticalNavGroupToggle);
+        expect(toggleBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation group');
       });
 
       it('overrides default aria-label if clrVerticalNavGroup is set', fakeAsync(function () {

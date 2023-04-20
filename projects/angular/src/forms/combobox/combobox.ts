@@ -170,9 +170,7 @@ export class ClrCombobox<T>
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
     this.positionService.realign();
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        this.focusFirstActive();
-      });
+      this.focusFirstActive();
     }
   }
 
@@ -311,7 +309,9 @@ export class ClrCombobox<T>
   }
 
   focusFirstActive() {
-    this.focusHandler.focusFirstActive();
+    setTimeout(() => {
+      this.focusHandler.focusFirstActive();
+    });
   }
 
   private updateInputValue(model: ComboboxModel<T>) {
