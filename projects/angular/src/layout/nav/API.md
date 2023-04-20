@@ -4,11 +4,11 @@
 
 | CSS Variable Name              | Description                                                                              |
 | ------------------------------ | ---------------------------------------------------------------------------------------- |
-| --clr-link-active-color        | The text color will be utilised when the link is active.                                 |
-| --clr-link-color               | For link text, the color will be applied.                                                |
-| --clr-link-hover-color         | When a user hovers their cursor over the link text, the color will be applied.           |
-| --clr-link-visited-color       | If you clicked the link to the page, the text color will be used.                        |
-| --clr-custom-links-hover-color | A neutral color will be applied to the link text when a user moves their cursor over it. |
+| --clr-link-active-color        | Changes the text color when the link is active.                                 |
+| --clr-link-color               | Changes the link text color.                                                |
+| --clr-link-hover-color         | Changes the text color when user hovers on element.           |
+| --clr-link-visited-color       | Changes the text color when user clicked the link.                      |
+| --clr-custom-links-hover-color | Changes the neutral color of the link text when user hovers on element.  |
 
 ## Class names
 
@@ -22,22 +22,22 @@
 
 | CSS Variable Name                             | Description                                                                                     |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| --clr-sliding-panel-text-color                | It is changing the side panel's text color.                                                     |
-| --clr-nav-background-color                    | the background color of the left side section is being applied.                                 |
-| --clr-responsive-nav-hover-bg                 | In responsive mode, background color is being applied.                                          |
-| --clr-responsive-nav-trigger-bg-color         | The color of the hamburger menu's horizontal lines will be used.                                |
-| --clr-responsive-nav-trigger-border-radius    | It will use the horizontal hamburger menu border radius.                                        |
-| --clr-responsive-nav-hamburger-border-radius  | It will use the hamburger menu's border radius in the left side panel.                          |
-| --clr-responsive-nav-overflow-border-radius   | For the close icon, border radius will be applied to overflow.                                  |
-| --clr-responsive-nav-header-backdrop-bg-color | It is putting the header section's background color into effect.                                |
-| --clr-responsive-nav-header-backdrop-opacity  | The backdrop-filter property must have a higher z-index than the element it applies to. Z-index |
+| --clr-sliding-panel-text-color                | Changes the text color side panel's when expanded.                                                     |
+| --clr-nav-background-color                    | Changes the background color of the left nav section when expanded.                                 |
+| --clr-responsive-nav-hover-bg                 | Changes the background color when user hovers on nav element.                                          |
+| --clr-responsive-nav-trigger-bg-color         | Changes the color of the hamburger menu's horizontal lines.                                |
+| --clr-responsive-nav-trigger-border-radius    | Changes the border radius of horizontal hamburger menu.                                        |
+| --clr-responsive-nav-hamburger-border-radius  | Changes the border radius of hamburger menu.                          |
+| --clr-responsive-nav-overflow-border-radius   | Changes the border radius of close icon when overflow.                                  |
+| --clr-responsive-nav-header-backdrop-bg-color | Changes the background color of backdrop header when expanded panel. |
+| --clr-responsive-nav-header-backdrop-opacity  | Changes the backdrop opacity (z-index) when expanded panel. |
 
 ## Class names
 
 | Class name        | Description                                                                                                                         |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| clr-sliding-panel | The left navigation panel of a user interface is usually a menu or list of links. It allows quick access to a website's main pages. |
-| clr-responsive    | Responsive mode allows websites and apps to provide the best experience on any device.                                              |
+| clr-sliding-panel | It allows quick access to a website's main pages. |
+| clr-responsive    | Changes the responsive mode to allows websites and apps to provide the best experience. |
 
 # Subnav - Style API
 
@@ -45,12 +45,12 @@
 
 | CSS Variable Name          | Description                                                   |
 | -------------------------- | ------------------------------------------------------------- |
-| --clr-subnav-bg-color      | It will give the sub navs the background color you specified. |
-| --clr-nav-background-color | It will give the nav background color you specified.          |
+| --clr-subnav-bg-color      | Changes the background color of sub navigations. |
+| --clr-nav-background-color | Changes the background color of first level navigations.          |
 
 ## Class names
 
 | Class name | Description                                                                                           |
 | ---------- | ----------------------------------------------------------------------------------------------------- |
-| clr-subnav | A secondary menu or list of links within the main navigation of a website is known as sub navigation. |
-| clr-nav    | Users can navigate the website or app by clicking text or icons in the main or sub navigation menus.  |
+| clr-subnav | A list of links within the main navigation of a website is known as sub navigation. |
+| clr-nav    | Users can navigate the website or app by clicking text or icons in the side menu.  |
