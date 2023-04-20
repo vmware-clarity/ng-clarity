@@ -1,0 +1,34 @@
+# Header-clarity - Style API
+
+| CSS Variable Name          | Description                                                        |
+| -------------------------- | ------------------------------------------------------------------ |
+| --clr-header-bg-color | Changes the background color of the first header in the header's colors.
+| --clr-header-divider-opacity | Changes the transparency of the header element
+| --clr-header-nav-opacity | Changes the header's transparency and applies the change to the top header of the page.
+| --clr-header-nav-hover-opacity | changes the header's transparency when the mouse is over it.
+| --clr-header-2-bg-color | Changes the background color of the second header in the header's colors.
+| --clr-header-3-bg-color | Changes the background color of the third header in the header's colors.
+|  --clr-header-4-bg-color | Changes the background color of the fourth header in the header's colors.
+|  --clr-header-5-bg-color | Changes the background color of the fifth header in the header's colors.
+|  --clr-header-6-bg-color | Changes the background color of the sixth header in the header's colors.
+|  --clr-header-7-bg-color | Changes the background color of the seventh header in the header's colors.
+|  --clr-header-8-bg-color | Changes the background color of the eighth header in the header's colors.
+| --clr-header-font-color | Changes the color of the text inside the header element and is applied to all headers in the header's color.
+| --clr-header-title-color | Changes the color of the header's title text and is applied to all headers in the header's colors.
+| --clr-header-title-font-weight | Changes the thickness of the text in the header element and is applied to all text in the header class.
+| --clr-header-title-font-family |changes the font type for an element and is applied to all fonts in the header element.
+
+## Class names
+
+| Class name    | Description                              |
+| ------------- | ---------------------------------------- |
+| clr-header | The header class includes header elements. A header element usually contains one or more heading elements, such as a logo or an icon. |
+
+
+
+
+
+
+
+
+
