@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 
@@ -65,7 +64,6 @@ describe('Modal', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
   let modal: ClrModal;
-  const commonStrings = new ClrCommonStringsService();
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
@@ -261,7 +259,7 @@ describe('Modal', () => {
   });
 
   it('close button should have default aria-label', () => {
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStrings.keys.close);
+    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('Close');
   });
 
   it('close button should have customizable aria-label', () => {

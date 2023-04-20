@@ -45,7 +45,6 @@ loadIcons();
 addDocs(docs);
 
 export const parameters = {
-  chromatic: { disableSnapshot: true },
   docs: { inlineStories: true },
   options: {
     storySort: {
@@ -74,26 +73,23 @@ export const globalTypes = {
   },
 };
 
-const themeDecorator = (story, { globals, parameters }) => {
+const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
-  const { themeOverride } = parameters;
 
-  const currentTheme = themeOverride || theme;
-
-  switch (currentTheme) {
+  switch (theme) {
     case THEMES.NG_LIGHT:
       styleElement.textContent = clrUiStyles;
       document.body.removeAttribute(cdsThemeAttribute);
-      document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
       break;
     case THEMES.NG_DARK:
       styleElement.textContent = clrUiDarkStyles;
       document.body.removeAttribute(cdsThemeAttribute);
-      document.body.style.backgroundColor = getClrUiAppBackgroundColor(currentTheme);
+      document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
       break;
     default:
       styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles.join('')}`;
-      document.body.setAttribute(cdsThemeAttribute, currentTheme);
+      document.body.setAttribute(cdsThemeAttribute, theme);
       document.body.style.backgroundColor = null;
       break;
   }

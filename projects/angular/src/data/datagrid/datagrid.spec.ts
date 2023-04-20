@@ -9,7 +9,6 @@ import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -530,15 +529,9 @@ export default function (): void {
       });
 
       it('should cretae default values for clrDgSingleSelectionAriaLabel, clrDgSingleActionableAriaLabel, clrDetailExpandableAriaLabel', function () {
-        expect(context.clarityDirective.clrDgSingleSelectionAriaLabel).toBe(
-          commonStringsDefault.singleSelectionAriaLabel
-        );
-        expect(context.clarityDirective.clrDgSingleActionableAriaLabel).toBe(
-          commonStringsDefault.singleActionableAriaLabel
-        );
-        expect(context.clarityDirective.clrDetailExpandableAriaLabel).toBe(
-          commonStringsDefault.detailExpandableAriaLabel
-        );
+        expect(context.clarityDirective.clrDgSingleSelectionAriaLabel).toBe('Single selection header');
+        expect(context.clarityDirective.clrDgSingleActionableAriaLabel).toBe('Single actionable header');
+        expect(context.clarityDirective.clrDetailExpandableAriaLabel).toBe('Toggle more row content');
       });
 
       it('receives an input for the loading state', function () {

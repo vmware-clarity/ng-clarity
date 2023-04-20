@@ -18,12 +18,10 @@ export default function (): void {
     describe('Typescript API', function () {
       let pageService: Page;
       let component: ClrDatagridPagination;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(function () {
         pageService = new Page(new StateDebouncer());
-        commonStrings = new ClrCommonStringsService();
-        component = new ClrDatagridPagination(pageService, commonStrings, null);
+        component = new ClrDatagridPagination(pageService, new ClrCommonStringsService(), null);
         component.ngOnInit(); // For the subscription that will get destroyed.
       });
 
@@ -379,11 +377,9 @@ export default function (): void {
     describe('Accessibility', function () {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridPagination, FullTest>;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(function (this: any) {
         context = this.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
-        commonStrings = new ClrCommonStringsService();
 
         context.testComponent.size = 10;
         context.testComponent.total = 100;
@@ -391,25 +387,25 @@ export default function (): void {
         context.detectChanges();
       });
 
-      it('expect buttons to have the correct aria-label from ClrCommonStringsService', function () {
+      it('expect buttons to have the correct aria-label', function () {
         expect(context.clarityElement.querySelector('.pagination-first').attributes['aria-label'].value).toBe(
-          commonStrings.keys.firstPage
+          'First Page'
         );
         expect(context.clarityElement.querySelector('.pagination-last').attributes['aria-label'].value).toBe(
-          commonStrings.keys.lastPage
+          'Last Page'
         );
         expect(context.clarityElement.querySelector('.pagination-previous').attributes['aria-label'].value).toBe(
-          commonStrings.keys.previousPage
+          'Previous Page'
         );
         expect(context.clarityElement.querySelector('.pagination-next').attributes['aria-label'].value).toBe(
-          commonStrings.keys.nextPage
+          'Next Page'
         );
         expect(context.clarityElement.querySelector('.pagination-current').attributes['aria-label'].value).toBe(
-          commonStrings.keys.currentPage
+          'Current Page'
         );
         expect(
           context.clarityElement.querySelector('.pagination-list span:not(.clr-sr-only)').attributes['aria-label'].value
-        ).toBe(commonStrings.keys.totalPages);
+        ).toBe('Total Pages');
       });
     });
   });

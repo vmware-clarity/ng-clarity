@@ -1203,6 +1203,8 @@ export class ClrDatagridActionBar {
 export class ClrDatagridActionOverflow implements OnDestroy {
     constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, zone: NgZone, smartToggleService: ClrPopoverToggleService);
     // (undocumented)
+    buttonLabel: string;
+    // (undocumented)
     closeOverflowContent(event: Event): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -1218,7 +1220,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "open": "clrDgActionOverflowOpen"; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "open": "clrDgActionOverflowOpen"; "buttonLabel": "clrDgActionOverflowButtonLabel"; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1_6.PopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
 }
@@ -1747,6 +1749,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     selection: Selection_2<T>;
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
+    // @deprecated (undocumented)
+    protected selectRow(selected?: boolean): void;
     // (undocumented)
     _stickyCells: ViewContainerRef;
     // (undocumented)
@@ -3657,6 +3661,21 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+}
+
+// @public (undocumented)
+export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
+    constructor(toggleService: ClrPopoverToggleService);
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onEscapeKey(event: KeyboardEvent): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStopEscapePropagationDirective, never, never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStopEscapePropagationDirective, never>;
 }
 
 // @public (undocumented)
