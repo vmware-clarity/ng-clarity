@@ -444,6 +444,8 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     // (undocumented)
     multiAlertService: MultiAlertService;
     // (undocumented)
+    protected get nextAlertAriaLabel(): string;
+    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
@@ -451,6 +453,8 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     pageDown(): void;
     // (undocumented)
     pageUp(): void;
+    // (undocumented)
+    protected get previousAlertAriaLabel(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": "clrCurrentAlert"; "currentAlertIndex": "clrCurrentAlertIndex"; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false, never>;
     // (undocumented)
@@ -884,6 +888,8 @@ export class ClrCommonFormsModule {
 // @public (undocumented)
 export interface ClrCommonStrings {
     alertCloseButtonAriaLabel: string;
+    alertNextAlertAriaLabel: string;
+    alertPreviousAlertAriaLabel: string;
     allColumnsSelected: string;
     close: string;
     collapse: string;

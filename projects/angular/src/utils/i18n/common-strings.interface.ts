@@ -204,6 +204,16 @@ export interface ClrCommonStrings {
   alertCloseButtonAriaLabel: string;
 
   /**
+   * Alert: Next Alert button
+   */
+  alertNextAlertAriaLabel: string;
+
+  /**
+   * Alert: Previous Alert button
+   */
+  alertPreviousAlertAriaLabel: string;
+
+  /**
    * Datepicker UI labels
    */
   datepickerDialogLabel: string;
