@@ -5,7 +5,7 @@
  */
 
 import { Component, QueryList, Type, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrEmphasisModule } from '../../emphasis/emphasis.module';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -99,6 +99,46 @@ export default function () {
         expect(this.fixture.componentInstance.currentAlert).toEqual(this.alert);
       });
     });
+
+    describe('View Basics', function () {
+      let fixture: ComponentFixture<TestBasics>;
+      let pagerInstance: ClrAlertsPager;
+
+      beforeEach(() => {
+        const service = new MultiAlertService();
+        const queryList = new QueryList<ClrAlert>();
+        TestBed.configureTestingModule({
+          imports: [ClrEmphasisModule],
+          declarations: [TestBasics],
+          providers: [{ provide: MultiAlertService, useValue: service }],
+        });
+        fixture = TestBed.createComponent(TestBasics);
+        queryList.reset(Array(4).fill(TestBed.createComponent(ClrAlert).componentInstance));
+        service.manage(queryList);
+        fixture.detectChanges();
+        pagerInstance = fixture.componentInstance.pagerInstance;
+      });
+
+      afterEach(function () {
+        fixture.destroy();
+      });
+
+      it('next alert aria-label is correct after page change', function () {
+        const button = fixture.nativeElement.querySelector('.alerts-page-up button');
+        expect(button.getAttribute('aria-label')).toBe('Next alert message, 2 of 4');
+        pagerInstance.pageUp();
+        fixture.detectChanges();
+        expect(button.getAttribute('aria-label')).toBe('Next alert message, 3 of 4');
+      });
+
+      it('previous alert aria-label is correct after page change', function () {
+        const button = fixture.nativeElement.querySelector('.alerts-page-down button');
+        expect(button.getAttribute('aria-label')).toBe('Previous alert message, 4 of 4');
+        pagerInstance.pageUp();
+        fixture.detectChanges();
+        expect(button.getAttribute('aria-label')).toBe('Previous alert message, 1 of 4');
+      });
+    });
   });
 }
 
@@ -116,4 +156,11 @@ export class TestIndex {
 export class TestInstance {
   @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
   currentAlert: ClrAlert;
+}
+
+@Component({
+  template: `<clr-alerts-pager></clr-alerts-pager>`,
+})
+export class TestBasics {
+  @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
 }
