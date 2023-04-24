@@ -23,18 +23,3 @@
 | clr-timeline-step-header | Class that displays content above the timeline in horizontal mode and to the left of the timeline in vertical mode |
 | clr-timeline-step-body | Class that displays content below the timeline in horizontal mode and to the right of the timeline in vertical mode |
 | clr-timeline clr-timeline-vertical | The class containing the vertical timeline |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

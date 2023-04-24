@@ -18,12 +18,3 @@
 | --clr-close-color--hover | It sets the colour of the close icon when the mouse cursor is over it
 | --clr-close-color--hover-opacity | sets how transparent an element is when the mouse is over it.
 | --clr-popover-box-shadow-color | It changes one or more shadows on an element and used globally.
-
-
-
-
-
-
-
-
-

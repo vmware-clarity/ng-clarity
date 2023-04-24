@@ -22,19 +22,9 @@
 
 | Class name    | Description                              |
 | ------------- | ---------------------------------------- |
-| header | The header class includes header elements. A header element usually contains one or more heading elements, such as a logo or an icon. |
+| clr-header | The header class includes header elements. A header element usually contains one or more heading elements, such as a logo or an icon. |
 | header-hamburger-trigger | Class is used to toggle the visibility of the navigation bar |
 |  header-actions | In the header section, the class contains the dropdown, and the dropdown contains link items. |
-| clr-nav-demo | This is a container class.The purpose of container class is to contain, pad, and (occasionally) centre their contents. |
+| clr-nav-demo | This is a container class.The purpose of container class is to contain, pad,   and (occasionally) centre their contents. |
 | clr-nav-demo-headers | Container class for various types of header and navigation bar |
-| clr-nav-demo | Class that encapsulates header types. |
-
-
-
-
-
-
-
-
-
-
+| clr-nav-demo         | Class that encapsulates header types. |

@@ -34,14 +34,3 @@
 | clr-wizard-footer | Contains the wizard's footer section. |
 | clr-wizard-header-actions | Class let the client and the server pass additional information with an HTTP request or response. |
 | clr-wizard-stepnav |side navigation bar with links and menu items. |
-
-
-
-
-
-
-
-
-
-
-

@@ -25,17 +25,3 @@
 | clr-combobox-input-wrapper | Class Input Wrapper is used to wrap input elements. |
 | clr-combobox-input | Class includes the input element. |
 | clr-combobox-trigger | Class includes a button with an icon for opening and closing. |
-
-
-
-
-
-
-
-
-
-
-
-
-
-

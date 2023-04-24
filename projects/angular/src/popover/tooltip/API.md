@@ -16,14 +16,3 @@
 | clr-tooltips-sizes-demo | Class contains the various sizes of tooltips. |
 | tooltip | Class includes tooltip element. When the user moves the mouse pointer over an tooltip element, extra information about that element is specified. |
 | tooltip-content | Class displays the text in the tooltip |
-
-
-
-
-
-
-
-
-
-
-
