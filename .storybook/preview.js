@@ -24,7 +24,6 @@ loadIcons();
 addDocs(docs);
 
 export const parameters = {
-  chromatic: { disableSnapshot: true },
   docs: { inlineStories: true },
   options: {
     storySort: {
