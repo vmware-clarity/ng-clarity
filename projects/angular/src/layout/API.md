@@ -12,8 +12,8 @@
 | --clr-card-border-radius               | Changes the border radius of card.                             |
 | --clr-card-border-color                | Changes the border color of the card.                          |
 | --clr-card-box-shadow-color            | Changes the background shadow color of card.                   |
-| --clr-card-clickable-border-color      |  Changes the background color of card when clicked.            |
-| --clr-card-clickable-box-shadow-color  | Changes the background shadow color of card when clicked.      |
+| --clr-card-clickable-border-color      | Changes the background color of clickable card.                |
+| --clr-card-clickable-box-shadow-color  | Changes the background shadow color of clickable card.         |
 
 
 ## Class names
@@ -43,8 +43,8 @@
 | --clr-login-subtitle-font-weight       | Changes the thickness of the login page sub title.              |
 | --clr-login-subtitle-font-family       | Changes the style of the login page sub title.                  |
 | --clr-login-background-color           | Changes the background color of the login page.                 |
-| --clr-login-error-background-color     | Changes the background color of login page's to indicate errors.|
-| --clr-login-error-border-radius        | Changes the border radius of login page when get the errors.    |
+| --clr-login-error-background-color     | Changes the background color of the error message.              |
+| --clr-login-error-border-radius        | Changes the border radius of the error message.                 |
 | --clr-login-panel-line-color           | Changes the color of the divider line in login page.            |
 | --clr-login-panel-line-opacity         | Changes the opacity to the divider line on the login page.      |
 
