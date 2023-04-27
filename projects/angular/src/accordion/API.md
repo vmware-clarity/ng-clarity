@@ -11,8 +11,8 @@
 | --clr-accordion-header-hover-background-color | Changes the background color of the accordion panel header on mouse hover. |
 | --clr-accordion-header-font-size              | Changes the font size of the accordion panel header.                       |
 | --clr-accordion-header-button-font-size       | Changes the height of accordion panel header.                              |
-| --clr-accordion-title-font-weight             | Changes the thickness of accordion panel header.                           |
-| --clr-accordion-title-font-size               | Changes font size of the accordion title to suit their preferences.        |
+| --clr-accordion-title-font-weight             | Changes the font weight of accordion panel header.                         |
+| --clr-accordion-title-font-size               | Changes font size of the accordion title.                                  |
 | --clr-accordion-error-color                   | Changes the text color when error occurs in the accordion.                 |
 | -clr-accordion-complete-color                 | Changes the color When the accordion is completed.                         |
 
