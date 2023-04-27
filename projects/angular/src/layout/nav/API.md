@@ -6,9 +6,9 @@
 | ------------------------------ | ------------------------------------------------------------------------------- |
 | --clr-link-active-color        | Changes the text color when the link is active.                                 |
 | --clr-link-color               | Changes the link text color.                                                    |
-| --clr-link-hover-color         | Changes the text color when user hovers on element.                             |
-| --clr-link-visited-color       | Changes the text color when user clicked the link.                              |
-| --clr-custom-links-hover-color | Changes the neutral color of the link text when user hovers on element.         |
+| --clr-link-hover-color         | Changes the text color when user hovers over element.                           |
+| --clr-link-visited-color       | Changes the text color for the visited links.                                   |
+| --clr-custom-links-hover-color | Changes the neutral color of the link text when hovers over element.            |
 
 ## Class names
 
@@ -24,9 +24,9 @@
 
 | CSS Variable Name                             |   Description                                                            |
 | --------------------------------------------- | -----------------------------------------------------------------------  |
-| --clr-sliding-panel-text-color                | Changes the text color side panel's when expanded.                       |
-| --clr-nav-background-color                    | Changes the background color of the left nav section when expanded.      |
-| --clr-responsive-nav-hover-bg                 | Changes the background color when user hovers on nav element.            |
+| --clr-sliding-panel-text-color                | Changes the text color of left side nav panel.                           |
+| --clr-nav-background-color                    | Changes the background color of the left nav section.                    |
+| --clr-responsive-nav-hover-bg                 | Changes the background color when user hovers over nav element.          |
 | --clr-responsive-nav-trigger-bg-color         | Changes the color of the hamburger menu's horizontal lines.              |
 | --clr-responsive-nav-trigger-border-radius    | Changes the border radius of horizontal hamburger menu.                  |
 | --clr-responsive-nav-hamburger-border-radius  | Changes the border radius of hamburger menu.                             |
