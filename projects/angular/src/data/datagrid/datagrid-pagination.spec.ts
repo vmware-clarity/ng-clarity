@@ -131,6 +131,12 @@ export default function (): void {
         expect(context.clarityDirective.disableCurrentPageInput).toBe(true);
       });
 
+      it('shows the skip buttons for first/last page', function () {
+        context.testComponent.showSkipButtons = false;
+        context.detectChanges();
+        expect(context.clarityDirective.showSkipButtons).toBe(false);
+      });
+
       it('enables the current page input', function () {
         context.testComponent.disableCurrentPageInput = false;
         context.detectChanges();
@@ -175,6 +181,21 @@ export default function (): void {
         last.click();
         context.detectChanges();
         expect(context.testComponent.current).toBe(10);
+      });
+
+      it('hides skip buttons', function () {
+        const firstButton = () => context.clarityElement.querySelector('.pagination-first');
+        const lastButton = () => context.clarityElement.querySelector('.pagination-last');
+        context.testComponent.size = 10;
+        context.testComponent.total = 100;
+        context.testComponent.current = 1;
+        context.detectChanges();
+        expect(firstButton()).not.toBeNull();
+        expect(lastButton()).not.toBeNull();
+        context.testComponent.showSkipButtons = false;
+        context.detectChanges();
+        expect(firstButton()).toBeNull();
+        expect(lastButton()).toBeNull();
       });
 
       it('disables the next button on the last page', function () {
@@ -419,6 +440,7 @@ export default function (): void {
       [clrDgTotalItems]="total"
       [clrDgLastPage]="last"
       [clrDgPageInputDisabled]="disableCurrentPageInput"
+      [clrDgShowSkipButtons]="showSkipButtons"
     ></clr-dg-pagination>
   `,
 })
@@ -430,4 +452,5 @@ class FullTest {
   total: number;
   last: number;
   disableCurrentPageInput: boolean;
+  showSkipButtons = true;
 }

@@ -55,6 +55,7 @@ const defaultStory: Story = args => ({
         <clr-dg-pagination
           #pagination
           [ngClass]="{ highlight }"
+          [clrDgShowSkipButtons]="false"
           [clrDgPageInputDisabled]="clrDgPageInputDisabled"
           [clrDgPageSize]="clrDgPageSize"
           [clrDgPage]="clrDgPage"

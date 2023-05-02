@@ -34,6 +34,7 @@ import { Page } from './providers/page';
       </div>
       <div class="pagination-list" *ngIf="page.last > 1">
         <button
+          *ngIf="showSkipButtons"
           type="button"
           class="pagination-first"
           [disabled]="page.current <= 1"
@@ -80,6 +81,7 @@ import { Page } from './providers/page';
           <cds-icon shape="angle" direction="right"></cds-icon>
         </button>
         <button
+          *ngIf="showSkipButtons"
           type="button"
           class="pagination-last"
           [disabled]="page.current >= page.last"
@@ -159,6 +161,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   }
 
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
+
+  @Input('clrDgShowSkipButtons') showSkipButtons = true;
 
   /**
    * Page size
