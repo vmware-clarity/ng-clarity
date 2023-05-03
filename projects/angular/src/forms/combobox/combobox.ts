@@ -229,6 +229,10 @@ export class ClrCombobox<T>
 
   onFocus() {
     this.focused = true;
+
+    // fix for "expression changed" error when focus is returned to a combobox after a modal is closed
+    // https://github.com/vmware-clarity/ng-clarity/issues/663
+    this.cdr.detectChanges();
   }
 
   getSelectionAriaLabel() {
