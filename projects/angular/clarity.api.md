@@ -4397,7 +4397,7 @@ export class ClrWizardButton {
 // @public (undocumented)
 export class ClrWizardCustomTags {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title, clr-wizard-pagetitle", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardCustomTags, never>;
 }
