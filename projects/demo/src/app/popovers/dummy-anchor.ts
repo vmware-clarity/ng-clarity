@@ -6,7 +6,7 @@
 
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { PopoverHostDirective } from '../../../../angular/src/utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../../../angular/src/utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/providers/popover-toggle.service';
 
 @Component({
@@ -26,7 +26,7 @@ import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/p
     <button class="btn" *ngIf="!openOnFocus" (click)="onClick($event)">Click Trigger</button>
     <ng-content></ng-content>
   `,
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
 })
 export class DummyAnchor {
   @ViewChild('ignore') ignore: ElementRef;

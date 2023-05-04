@@ -22,4 +22,4 @@ import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.dir
   ],
   hostDirectives: [ClrStopEscapePropagationDirective],
 })
-export class PopoverHostDirective {}
+export class ClrPopoverHostDirective {}

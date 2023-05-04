@@ -10,7 +10,7 @@ import { startWith } from 'rxjs/operators';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -84,7 +84,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     ViewManagerService,
     IfControlStateService,
   ],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
   host: {
     '[class.clr-date-container]': 'true',
     '[class.clr-form-control-disabled]': 'isInputDateDisabled',
