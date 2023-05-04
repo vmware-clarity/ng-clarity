@@ -8,7 +8,7 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } fr
 import { Subscription } from 'rxjs';
 
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
@@ -21,7 +21,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
     '[class.open]': 'toggleService.open',
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
 })
 export class ClrDropdown implements OnDestroy {
   private subscriptions: Subscription[] = [];

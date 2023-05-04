@@ -22,7 +22,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import {
   BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
@@ -36,7 +36,7 @@ import { ClrButton } from './button';
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
   providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {

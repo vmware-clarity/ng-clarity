@@ -7,7 +7,7 @@
 import { Component, ContentChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostTrigger } from './signpost-trigger';
@@ -25,7 +25,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   `,
   host: { '[class.signpost]': 'true' },
   providers: [SignpostFocusManager, SignpostIdService],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
 })
 
 /*********

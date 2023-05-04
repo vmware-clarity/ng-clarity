@@ -23,7 +23,7 @@ import { startWith } from 'rxjs/operators';
 import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { ClrKeyFocus } from '../../utils/focus/key-focus/key-focus';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
@@ -94,7 +94,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
     <ng-container #tabContentViewContainer></ng-container>
   `,
   providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
 })
 export class ClrTabs implements AfterContentInit, OnDestroy {
   private subscriptions: Subscription[] = [];
