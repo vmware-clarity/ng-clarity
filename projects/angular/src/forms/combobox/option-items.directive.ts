@@ -50,6 +50,11 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.optionService.displayField = field;
   }
 
+  get hasResults() {
+    // explicity return `undefined` instead of `false` if the answer is not known
+    return this.filteredItems ? this.filteredItems.length : undefined;
+  }
+
   constructor(
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,

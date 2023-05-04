@@ -210,6 +210,11 @@
     .clr-combobox-options-empty-text {
       padding-left: $clr_baselineRem_0_5;
     }
+
+    .clr-option-group-label {
+      padding-left: $clr_baselineRem_0_5;
+      font-weight: $clr-font-weight-bold;
+    }
   }
 
   .clr-combobox-option {

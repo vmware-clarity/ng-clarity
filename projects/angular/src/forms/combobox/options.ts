@@ -98,7 +98,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   @Input('id') optionsId: string;
 
   _items: QueryList<ClrOption<T>>;
-  @ContentChildren(ClrOption)
+  @ContentChildren(ClrOption, { descendants: true })
   set items(items: QueryList<ClrOption<T>>) {
     this._items = items;
     this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
