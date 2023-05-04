@@ -367,16 +367,6 @@
       display: block;
     }
 
-    .clr-wizard-page-title {
-      @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      font-size: $clr-modal-title-font-size;
-      line-height: $clr_baselineRem_1_13;
-      margin-top: 0;
-    }
-
     .clr-wizard-page:not([aria-hidden='true']) {
       padding: $clr-wizard-default-space;
       padding-top: $clr_baselineRem_0_75;

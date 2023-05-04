@@ -24,6 +24,7 @@
     <span tabindex="-1" #pageTitle class="modal-title-text">
       <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
     </span>
+
     <div class="modal-header-actions-wrapper" *ngIf="headerActionService.displayHeaderActionsWrapper">
       <div *ngIf="headerActionService.showWizardHeaderActions">
         <ng-content select="clr-wizard-header-action"></ng-content>

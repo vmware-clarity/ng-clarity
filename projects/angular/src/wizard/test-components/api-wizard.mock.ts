@@ -6,6 +6,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 
+import { HeadingLevel } from '../heading-level';
 import { ClrWizard } from '../wizard';
 
 @Component({
@@ -22,7 +23,7 @@ import { ClrWizard } from '../wizard';
       (clrWizardOnFinish)="handleOnFinish()"
       [clrWizardPreventDefaultCancel]="stopCancel"
     >
-      <clr-wizard-title>{{ projectedTitle }}</clr-wizard-title>
+      <clr-wizard-title [clrHeadingLevel]="titleHeadingLevel">{{ projectedTitle }}</clr-wizard-title>
 
       <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
       <clr-wizard-button [type]="'previous'">{{ projectedButton }}</clr-wizard-button>
@@ -30,19 +31,19 @@ import { ClrWizard } from '../wizard';
       <clr-wizard-button [type]="'finish'">Fait Accompli</clr-wizard-button>
 
       <clr-wizard-page (clrWizardPageOnLoad)="firstPageLoad()">
-        <ng-template clrPageTitle>Longer Title for Page 1</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">Longer Title for Page 1</ng-template>
         <p>Content for step 1</p>
       </clr-wizard-page>
       <clr-wizard-page (clrWizardPageOnLoad)="handleOnLoad()">
-        <ng-template clrPageTitle>{{ projectedPageTitle }}</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">{{ projectedPageTitle }}</ng-template>
         <p class="lazy-content">{{ lazyLoadContent }}</p>
       </clr-wizard-page>
       <clr-wizard-page *ngIf="showExtraPage">
-        <ng-template clrPageTitle>Sneaksy Extra Pages!</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">Sneaksy Extra Pages!</ng-template>
         <p>Extra page!</p>
       </clr-wizard-page>
       <clr-wizard-page (clrWizardPageCustomButton)="customFinish()">
-        <ng-template clrPageTitle>Title for Page 3</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="pageTitleHeadingLevel">Title for Page 3</ng-template>
         <p>{{ projectedContent }}</p>
         <ng-template clrPageButtons>
           <clr-wizard-button [type]="'custom-finish'">{{ projectedCustomButton }}</clr-wizard-button>
@@ -57,6 +58,8 @@ export class TemplateApiWizardTestComponent {
   mySize: string;
   projectedTitle = 'My Great Title';
   projectedPageTitle = 'Title for Page 2';
+  titleHeadingLevel: HeadingLevel;
+  pageTitleHeadingLevel: HeadingLevel;
   open = true;
   lazyLoadContent = 'Loading';
   projectedContent = 'Projection Projection';
