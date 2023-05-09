@@ -1756,7 +1756,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected?: boolean): void;
+    protected selectRow(selected: boolean, $event: any): void;
     // (undocumented)
     _stickyCells: ViewContainerRef;
     // (undocumented)
