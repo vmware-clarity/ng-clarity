@@ -202,7 +202,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  selectRow(selected = !this.selected) {
+  selectRow(selected = !this.selected, $event) {
+    // The label also captures clicks that bubble up to the row event listener, causing
+    // this handler to run twice. This exits early to prevent toggling the checkbox twice.
+    if ($event.target.tagName === 'LABEL') {
+      return;
+    }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
       this.selection.currentSingle = this.item;
     } else {
@@ -249,6 +254,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   private _rowAriaLabel = '';
+  // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
   set clrDgRowAriaLabel(label: string) {
     this._rowAriaLabel = label;
