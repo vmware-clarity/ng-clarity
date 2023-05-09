@@ -31,7 +31,7 @@ const defaultStory: Story = args => ({
       (clrWizardOnFinish)="clrWizardOnFinish($event)"
       (clrWizardOnReset)="clrWizardOnReset($event)"
     >
-      <clr-wizard-title>Wizard</clr-wizard-title>
+      <clr-wizard-title [clrHeadingLevel]="clrHeadingLevel">Wizard</clr-wizard-title>
 
       <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
       <clr-wizard-button type="previous">Previous</clr-wizard-button>
@@ -52,6 +52,7 @@ const defaultParameters: Parameters = {
   component: ClrWizard,
   argTypes: {
     // inputs
+    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
     clrWizardOpen: { defaultValue: true }, // the default value is really false, but that doesn't really work for the story
     clrWizardClosable: { defaultValue: true },
     clrWizardDisableStepnav: { defaultValue: false },

@@ -14,11 +14,13 @@
   [clrModalLabelledById]="wizardId"
 >
   <nav class="modal-nav clr-wizard-stepnav-wrapper">
-    <h1 class="clr-wizard-title" id="{{wizardId}}"><ng-content select="clr-wizard-title"></ng-content></h1>
+    <div class="clr-wizard-title" id="{{wizardId}}" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
+      <ng-content select="clr-wizard-title"></ng-content>
+    </div>
     <clr-wizard-stepnav></clr-wizard-stepnav>
   </nav>
 
-  <h2 class="modal-title">
+  <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage.pageTitle.headingLevel || 2">
     <span tabindex="-1" #pageTitle class="modal-title-text">
       <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
     </span>
@@ -31,7 +33,7 @@
         <ng-template [ngTemplateOutlet]="navService.currentPage.headerActions"></ng-template>
       </div>
     </div>
-  </h2>
+  </div>
 
   <div class="modal-body">
     <main clr-wizard-pages-wrapper class="clr-wizard-content">

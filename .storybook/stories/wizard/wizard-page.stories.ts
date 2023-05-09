@@ -46,7 +46,7 @@ const defaultStory: Story = args => ({
         (clrWizardPagePreviousDisabledChange)="clrWizardPagePreviousDisabledChange($event)"
         (clrWizardPagePrimary)="clrWizardPagePrimary($event)"
       >
-        <ng-template clrPageTitle>Story Page</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">Story Page</ng-template>
         <p>Content for story page.</p>
       </clr-wizard-page>
 
@@ -64,6 +64,7 @@ const defaultParameters: Parameters = {
   component: ClrWizardPage,
   argTypes: {
     // inputs
+    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
     clrWizardPageHasError: { defaultValue: false },
     clrWizardPageNextDisabled: { defaultValue: false },
     clrWizardPagePreventDefault: { defaultValue: false, control: { type: 'boolean' } },
