@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   Component,
+  ContentChild,
   ContentChildren,
   DoCheck,
   ElementRef,
@@ -31,6 +32,7 @@ import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
+import { ClrWizardTitle } from './wizard-title';
 
 @Component({
   selector: 'clr-wizard',
@@ -200,7 +202,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @ContentChildren(ClrWizardPage, { descendants: true })
   pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
-  @ViewChild('wizardTitle') wizardTitle: ElementRef;
+
+  @ViewChild('pageTitle') pageTitle: ElementRef;
+
+  @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
 
   get currentPage(): ClrWizardPage {
     return this.navService.currentPage;
@@ -436,14 +441,14 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private listenForNextPageChanges(): Subscription {
     return this.navService.movedToNextPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
       this.onMoveNext.emit();
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
     });
   }
 
   private listenForPreviousPageChanges(): Subscription {
     return this.navService.movedToPreviousPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
       this.onMovePrevious.emit();
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
     });
   }
 
@@ -460,7 +465,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       // Added to address VPAT-749:
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
       this.currentPageChanged.emit();
     });
   }

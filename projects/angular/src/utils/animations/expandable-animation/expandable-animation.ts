@@ -16,13 +16,14 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
     `
       :host {
         display: block;
+        overflow: hidden;
       }
     `,
   ],
   animations: [
     trigger('expandAnimation', [
       transition('true <=> false', [
-        style({ height: '{{startHeight}}px', overflow: 'hidden' }),
+        style({ height: '{{startHeight}}px' }),
         animate('0.2s ease-in-out', style({ height: '*' })),
       ]),
     ]),

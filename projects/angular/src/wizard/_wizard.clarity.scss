@@ -308,6 +308,7 @@
 
     .clr-wizard-title {
       @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
+      @include css-var(font-weight, clr-h1-font-weight, $clr-h1-font-weight, $clr-use-custom-properties);
       margin-top: 0;
       padding-top: $clr-wizard-default-space;
       padding-left: $clr-wizard-default-space;

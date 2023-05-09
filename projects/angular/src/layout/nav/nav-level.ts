@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Directive,
@@ -22,6 +21,7 @@ import { filter } from 'rxjs/operators';
 
 import { commonStringsDefault } from '../../utils';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
+import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
@@ -42,13 +42,8 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
 };
 
 @Directive({
-  standalone: true,
-})
-class StandaloneCdkTrapFocus extends CdkTrapFocus {}
-
-@Directive({
   selector: '[clr-nav-level]',
-  hostDirectives: [StandaloneCdkTrapFocus],
+  hostDirectives: [ClrStandaloneCdkTrapFocus],
 })
 export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;
@@ -62,7 +57,7 @@ export class ClrNavLevel implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,
-    private cdkTrapFocus: StandaloneCdkTrapFocus,
+    private cdkTrapFocus: ClrStandaloneCdkTrapFocus,
     private responsiveNavService: ResponsiveNavigationService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,

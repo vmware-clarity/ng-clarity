@@ -4,11 +4,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, Input, TemplateRef } from '@angular/core';
+
+import { HeadingLevel } from './heading-level';
 
 @Directive({
   selector: '[clrPageTitle]',
 })
 export class ClrWizardPageTitle {
+  @Input('clrHeadingLevel') headingLevel: HeadingLevel;
+
   constructor(public pageTitleTemplateRef: TemplateRef<any>) {}
 }
