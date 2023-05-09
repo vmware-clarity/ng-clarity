@@ -21,7 +21,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrExpandableAnimation } from '../../utils/animations/expandable-animation/expandable-animation';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -75,12 +75,18 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @Input('clrDgItem')
   set item(item: T) {
     this._item = item;
+    this.itemChanges.next(item);
     this.clrDgSelectable = this._selectable;
   }
 
   get item(): T {
     return this._item;
   }
+
+  /**
+   * @internal
+   */
+  itemChanges = new ReplaySubject<T>(1);
 
   replaced: boolean;
 
