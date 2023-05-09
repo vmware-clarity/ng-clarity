@@ -12,7 +12,6 @@ import { ClrAlertModule } from '../emphasis/alert/alert.module';
 import { ClrModalModule } from '../modal/modal.module';
 import { ClrWizard } from './wizard';
 import { ClrWizardButton } from './wizard-button';
-import { ClrWizardCustomTags } from './wizard-custom-tags';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
 import { ClrWizardPageButtons } from './wizard-page-buttons';
@@ -21,6 +20,7 @@ import { ClrWizardPageNavTitle } from './wizard-page-navtitle';
 import { ClrWizardPageTitle } from './wizard-page-title';
 import { ClrWizardStepnav } from './wizard-stepnav';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
+import { ClrWizardTitle } from './wizard-title';
 
 export const CLR_WIZARD_DIRECTIVES: any[] = [
   ClrWizard,
@@ -29,7 +29,7 @@ export const CLR_WIZARD_DIRECTIVES: any[] = [
   ClrWizardStepnavItem,
   ClrWizardButton,
   ClrWizardHeaderAction,
-  ClrWizardCustomTags,
+  ClrWizardTitle,
   ClrWizardPageTitle,
   ClrWizardPageNavTitle,
   ClrWizardPageButtons,

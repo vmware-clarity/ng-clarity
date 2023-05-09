@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   Component,
+  ContentChild,
   ContentChildren,
   DoCheck,
   ElementRef,
@@ -31,6 +32,7 @@ import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
+import { ClrWizardTitle } from './wizard-title';
 
 @Component({
   selector: 'clr-wizard',
@@ -211,7 +213,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @ContentChildren(ClrWizardPage, { descendants: true })
   pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
+
   @ViewChild('pageTitle') pageTitle: ElementRef;
+
+  @ContentChild(ClrWizardTitle) wizardTitle: ClrWizardTitle;
 
   get currentPage(): ClrWizardPage {
     return this.navService.currentPage;
