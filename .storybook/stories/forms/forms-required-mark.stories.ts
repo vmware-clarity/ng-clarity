@@ -28,7 +28,7 @@ const defaultStory: Story = args => ({
         <input clrInput formControlName="name" [placeholder]="namePlaceholder" required/>
       </clr-input-container>
       <clr-input-container>
-        <label class="clr-required-mark">Age</label>
+        <label>Age</label>
         <input clrInput formControlName="age" type="number" min="0" required/>
       </clr-input-container>
       <clr-password-container>
@@ -55,11 +55,11 @@ const defaultStory: Story = args => ({
         <label class="clr-required-mark">Checkbox</label>
         <clr-checkbox-wrapper>
           <input type="checkbox" formControlName="checkbox" clrCheckbox value="option1" name="options1" required/>
-          <label class="clr-required-mark">Option 1</label>
+          <label>Option 1</label>
         </clr-checkbox-wrapper>
         <clr-checkbox-wrapper>
           <input type="checkbox" formControlName="checkbox" clrCheckbox value="option2" name="options2" />
-          <label class="clr-required-mark">Option 2</label>
+          <label>Option 2</label>
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
       <clr-combobox-container>
@@ -89,11 +89,11 @@ const defaultStory: Story = args => ({
         <label class="clr-required-mark">Radio</label>
         <clr-radio-wrapper>
           <input type="radio" clrRadio value="option1" formControlName="radio" required/>
-          <label class="clr-required-mark">Option 1</label>
+          <label>Option 1</label>
         </clr-radio-wrapper>
         <clr-radio-wrapper>
           <input type="radio" clrRadio value="option2" formControlName="radio" />
-          <label class="clr-required-mark">Option 2</label>
+          <label>Option 2</label>
         </clr-radio-wrapper>
       </clr-radio-container>
       <clr-range-container>
