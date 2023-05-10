@@ -17,9 +17,15 @@ import { DatagridRenderOrganizer } from './render-organizer';
   selector: 'clr-dg-cell',
 })
 export class DatagridCellRenderer implements OnDestroy {
-  private stateSubscription: Subscription;
-
   private runAllChanges: DatagridColumnChanges[];
+  private stateSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
+
+  constructor(private el: ElementRef, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
+    this.subscriptions.push(
+      organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
+    );
+  }
 
   // @TODO(JEREMY) Work out how to dedupe some of this code between header and cell renderers
   set columnState(columnState: BehaviorSubject<ColumnState>) {
@@ -30,14 +36,6 @@ export class DatagridCellRenderer implements OnDestroy {
     this.runAllChanges = ALL_COLUMN_CHANGES;
     this.stateSubscription = columnState.subscribe(state => this.stateChanges(state));
   }
-
-  constructor(private el: ElementRef, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
-    this.subscriptions.push(
-      organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
-    );
-  }
-
-  private subscriptions: Subscription[] = [];
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

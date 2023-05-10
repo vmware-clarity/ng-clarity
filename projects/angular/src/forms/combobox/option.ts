@@ -29,6 +29,17 @@ export class ClrOption<T> implements OnInit {
   optionProxy: OptionProxy<T> = new OptionProxy(null, null);
 
   private _id: string;
+  private _value: T;
+
+  constructor(
+    public elRef: ElementRef,
+    public commonStrings: ClrCommonStringsService,
+    private focusHandler: ComboboxFocusHandler<T>,
+    private optionSelectionService: OptionSelectionService<T>
+  ) {
+    this.optionProxy.el = this.elRef.nativeElement;
+  }
+
   @Input('id')
   get optionId() {
     return this._id;
@@ -38,7 +49,6 @@ export class ClrOption<T> implements OnInit {
     this.optionProxy.id = this._id;
   }
 
-  private _value: T;
   @Input('clrValue')
   get value(): T {
     return this._value;
@@ -55,13 +65,9 @@ export class ClrOption<T> implements OnInit {
     );
   }
 
-  constructor(
-    public elRef: ElementRef,
-    public commonStrings: ClrCommonStringsService,
-    private focusHandler: ComboboxFocusHandler<T>,
-    private optionSelectionService: OptionSelectionService<T>
-  ) {
-    this.optionProxy.el = this.elRef.nativeElement;
+  @HostBinding('class.clr-focus')
+  get focusClass() {
+    return this.focusHandler.pseudoFocus.containsItem(this.optionProxy);
   }
 
   ngOnInit() {
@@ -83,10 +89,5 @@ export class ClrOption<T> implements OnInit {
     // - do not lose focus
     // - we're still able to use onBlur for "outside-click" handling
     this.focusHandler.focusInput();
-  }
-
-  @HostBinding('class.clr-focus')
-  get focusClass() {
-    return this.focusHandler.pseudoFocus.containsItem(this.optionProxy);
   }
 }

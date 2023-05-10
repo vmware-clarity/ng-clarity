@@ -26,22 +26,6 @@ import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.ser
 export class ClrIfOpen implements OnDestroy {
   static ngAcceptInputType_open: boolean | '';
 
-  private subscription: Subscription;
-
-  /*********
-   *
-   * @description
-   * A property that gets/sets ClrPopoverToggleService.open with value.
-   *
-   */
-  @Input('clrIfOpen')
-  get open() {
-    return this.toggleService.open;
-  }
-  set open(value: boolean | string) {
-    this.toggleService.open = value as boolean;
-  }
-
   /**********
    * @property openChange
    *
@@ -50,6 +34,8 @@ export class ClrIfOpen implements OnDestroy {
    * used with de-structured / de-sugared syntax.
    */
   @Output('clrIfOpenChange') openChange = new EventEmitter<boolean>(false);
+
+  private subscription: Subscription;
 
   constructor(
     private toggleService: ClrPopoverToggleService,
@@ -62,11 +48,27 @@ export class ClrIfOpen implements OnDestroy {
     });
   }
 
-  /*********
-   *
+  /**
+   * @description
+   * A property that gets/sets ClrPopoverToggleService.open with value.
+   */
+  @Input('clrIfOpen')
+  get open() {
+    return this.toggleService.open;
+  }
+  set open(value: boolean | string) {
+    this.toggleService.open = value as boolean;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  /**
    * @description
    * Function that takes a boolean value and either created an embedded view for the associated ViewContainerRef or,
    * Clears all views from the ViewContainerRef
+   *
    * @param value
    */
   updateView(value: boolean) {
@@ -75,9 +77,5 @@ export class ClrIfOpen implements OnDestroy {
     } else {
       this.container.clear();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

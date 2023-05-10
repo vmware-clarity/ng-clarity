@@ -19,45 +19,48 @@ import { DayModel } from '../model/day.model';
  */
 @Injectable()
 export class DateNavigationService {
+  selectedDay: DayModel;
+  focusedDay: DayModel;
+
   private _displayedCalendar: CalendarModel;
-
-  get displayedCalendar(): CalendarModel {
-    return this._displayedCalendar;
-  }
-
-  // not a setter because i want this to remain private
-  private setDisplayedCalendar(value: CalendarModel) {
-    if (!this._displayedCalendar.isEqual(value)) {
-      this._displayedCalendar = value;
-      this._displayedCalendarChange.next();
-    }
-  }
-
-  /**
-   * Variable to store today's date.
-   */
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
-
-  private initializeTodaysDate(): void {
-    this._todaysFullDate = new Date();
-    this._today = new DayModel(
-      this._todaysFullDate.getFullYear(),
-      this._todaysFullDate.getMonth(),
-      this._todaysFullDate.getDate()
-    );
-  }
+  private _selectedDayChange = new Subject<DayModel>();
+  private _displayedCalendarChange = new Subject<void>();
+  private _focusOnCalendarChange = new Subject<void>();
+  private _focusedDayChange = new Subject<DayModel>();
 
   get today(): DayModel {
     return this._today;
   }
 
-  selectedDay: DayModel;
-
-  private _selectedDayChange = new Subject<DayModel>();
+  get displayedCalendar(): CalendarModel {
+    return this._displayedCalendar;
+  }
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
+  }
+
+  /**
+   * This observable lets the subscriber know that the displayed calendar has changed.
+   */
+  get displayedCalendarChange(): Observable<void> {
+    return this._displayedCalendarChange.asObservable();
+  }
+
+  /**
+   * This observable lets the subscriber know that the focus should be applied on the calendar.
+   */
+  get focusOnCalendarChange(): Observable<void> {
+    return this._focusOnCalendarChange.asObservable();
+  }
+
+  /**
+   * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
+   */
+  get focusedDayChange(): Observable<DayModel> {
+    return this._focusedDayChange.asObservable();
   }
 
   /**
@@ -68,8 +71,6 @@ export class DateNavigationService {
     this.selectedDay = dayModel;
     this._selectedDayChange.next(dayModel);
   }
-
-  focusedDay: DayModel;
 
   /**
    * Initializes the calendar based on the selected day.
@@ -126,30 +127,20 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
-  private _displayedCalendarChange = new Subject<void>();
-
-  /**
-   * This observable lets the subscriber know that the displayed calendar has changed.
-   */
-  get displayedCalendarChange(): Observable<void> {
-    return this._displayedCalendarChange.asObservable();
+  // not a setter because i want this to remain private
+  private setDisplayedCalendar(value: CalendarModel) {
+    if (!this._displayedCalendar.isEqual(value)) {
+      this._displayedCalendar = value;
+      this._displayedCalendarChange.next();
+    }
   }
 
-  private _focusOnCalendarChange = new Subject<void>();
-
-  /**
-   * This observable lets the subscriber know that the focus should be applied on the calendar.
-   */
-  get focusOnCalendarChange(): Observable<void> {
-    return this._focusOnCalendarChange.asObservable();
-  }
-
-  private _focusedDayChange = new Subject<DayModel>();
-
-  /**
-   * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
-   */
-  get focusedDayChange(): Observable<DayModel> {
-    return this._focusedDayChange.asObservable();
+  private initializeTodaysDate(): void {
+    this._todaysFullDate = new Date();
+    this._today = new DayModel(
+      this._todaysFullDate.getFullYear(),
+      this._todaysFullDate.getMonth(),
+      this._todaysFullDate.getDate()
+    );
   }
 }

@@ -66,7 +66,8 @@ let clrDgActionId = 0;
   `,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+  @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
+
   smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.HORIZONTAL,
     side: ClrSide.AFTER,
@@ -77,6 +78,9 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   popoverId = uniqueIdFactory();
 
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
+
+  private _open = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private rowActionService: RowActionService,
@@ -95,6 +99,20 @@ export class ClrDatagridActionOverflow implements OnDestroy {
       })
     );
     this.popoverId = 'clr-action-menu' + clrDgActionId++;
+  }
+
+  @Input('clrDgActionOverflowOpen')
+  get open() {
+    return this._open;
+  }
+  set open(open: boolean) {
+    const openState = !!open;
+    if (!!openState !== this.open) {
+      // prevents chocolate mess
+      this.smartToggleService.open = openState;
+      this.openChange.emit(openState);
+      this._open = openState;
+    }
   }
 
   ngOnDestroy() {
@@ -122,22 +140,4 @@ export class ClrDatagridActionOverflow implements OnDestroy {
       });
     }
   }
-
-  private _open = false;
-
-  @Input('clrDgActionOverflowOpen')
-  get open() {
-    return this._open;
-  }
-  set open(open: boolean) {
-    const openState = !!open;
-    if (!!openState !== this.open) {
-      // prevents chocolate mess
-      this.smartToggleService.open = openState;
-      this.openChange.emit(openState);
-      this._open = openState;
-    }
-  }
-
-  @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 }

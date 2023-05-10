@@ -14,8 +14,13 @@ import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
 @Injectable({ providedIn: 'root' })
 export class ResponsiveNavigationService {
   responsiveNavList: number[] = [];
+
   private registerNavSubject = new ReplaySubject<number[]>();
   private controlNavSubject = new Subject<ResponsiveNavControlMessage>();
+
+  constructor() {
+    this.closeAllNavs(); // We start with all navs closed
+  }
 
   get registeredNavs(): Observable<number[]> {
     return this.registerNavSubject.asObservable();
@@ -23,10 +28,6 @@ export class ResponsiveNavigationService {
 
   get navControl(): Observable<ResponsiveNavControlMessage> {
     return this.controlNavSubject.asObservable();
-  }
-
-  constructor() {
-    this.closeAllNavs(); // We start with all navs closed
   }
 
   registerNav(navLevel: number): void {

@@ -30,15 +30,15 @@ export class ClrDatagridCell implements OnInit {
    */
   @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
 
-  constructor(private vcr: ViewContainerRef) {}
-
   private wrappedInjector: Injector;
 
-  ngOnInit() {
-    this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
-  }
+  constructor(private vcr: ViewContainerRef) {}
 
   get _view() {
     return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;
+  }
+
+  ngOnInit() {
+    this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
   }
 }

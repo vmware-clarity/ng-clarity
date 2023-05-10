@@ -80,48 +80,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
 })
 export class ClrStackBlock implements OnInit {
   @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;
-
-  @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrSbExpandable') @HostBinding('class.stack-block-expandable') expandable = false;
-
-  @ContentChild(ClrStackViewLabel) stackBlockTitle: any;
-
-  focused = false;
-  private _changedChildren = 0;
-  private _fullyInitialized = false;
-  private _changed = false;
-
-  @HostBinding('class.stack-block-changed')
-  get getChangedValue(): boolean {
-    return this._changed || (this._changedChildren > 0 && !this.expanded);
-  }
-
-  @Input('clrSbNotifyChange')
-  set setChangedValue(value: boolean) {
-    this._changed = value;
-
-    if (this.parent && this._fullyInitialized) {
-      if (value) {
-        this.parent._changedChildren++;
-      } else {
-        this.parent._changedChildren--;
-      }
-    }
-  }
-
-  get labelledById() {
-    return this.stackBlockTitle.id;
-  }
-
-  get headingLevel() {
-    if (this.ariaLevel) {
-      return this.ariaLevel + '';
-    }
-
-    return this.parent ? '4' : '3';
-  }
-
-  uniqueId = uniqueIdFactory();
 
   /**
    * Depth of the stack view starting from 1 for first level
@@ -146,6 +105,17 @@ export class ClrStackBlock implements OnInit {
    */
   @Input('clrStackViewPosinset') ariaPosinset: number;
 
+  @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
+
+  @ContentChild(ClrStackViewLabel) stackBlockTitle: any;
+
+  focused = false;
+  uniqueId = uniqueIdFactory();
+
+  private _changedChildren = 0;
+  private _fullyInitialized = false;
+  private _changed = false;
+
   /*
    * This would be more efficient with @ContentChildren, with the parent ClrStackBlock
    * querying for children StackBlocks, but this feature is not available when downgrading
@@ -159,6 +129,61 @@ export class ClrStackBlock implements OnInit {
   ) {
     if (parent) {
       parent.addChild();
+    }
+  }
+
+  @Input('clrSbNotifyChange')
+  set setChangedValue(value: boolean) {
+    this._changed = value;
+
+    if (this.parent && this._fullyInitialized) {
+      if (value) {
+        this.parent._changedChildren++;
+      } else {
+        this.parent._changedChildren--;
+      }
+    }
+  }
+
+  @HostBinding('class.stack-block-changed')
+  get getChangedValue(): boolean {
+    return this._changed || (this._changedChildren > 0 && !this.expanded);
+  }
+
+  @HostBinding('class.on-focus')
+  get onStackLabelFocus(): boolean {
+    return this.expandable && !this.expanded && this.focused;
+  }
+
+  get labelledById() {
+    return this.stackBlockTitle.id;
+  }
+
+  get headingLevel() {
+    if (this.ariaLevel) {
+      return this.ariaLevel + '';
+    }
+
+    return this.parent ? '4' : '3';
+  }
+
+  get caretDirection(): string {
+    return this.expanded ? 'down' : 'right';
+  }
+
+  get role(): string {
+    return this.expandable ? 'button' : null;
+  }
+
+  get tabIndex(): string {
+    return this.expandable ? '0' : null;
+  }
+
+  get ariaExpanded(): string {
+    if (!this.expandable) {
+      return null;
+    } else {
+      return this.expanded ? 'true' : 'false';
     }
   }
 
@@ -176,31 +201,6 @@ export class ClrStackBlock implements OnInit {
     if (this.expandable) {
       this.expanded = !this.expanded;
       this.expandedChange.emit(this.expanded);
-    }
-  }
-
-  get caretDirection(): string {
-    return this.expanded ? 'down' : 'right';
-  }
-
-  get role(): string {
-    return this.expandable ? 'button' : null;
-  }
-
-  get tabIndex(): string {
-    return this.expandable ? '0' : null;
-  }
-
-  @HostBinding('class.on-focus')
-  get onStackLabelFocus(): boolean {
-    return this.expandable && !this.expanded && this.focused;
-  }
-
-  get ariaExpanded(): string {
-    if (!this.expandable) {
-      return null;
-    } else {
-      return this.expanded ? 'true' : 'false';
     }
   }
 

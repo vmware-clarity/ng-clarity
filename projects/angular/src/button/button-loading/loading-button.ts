@@ -62,12 +62,12 @@ const MIN_BUTTON_WIDTH = 42;
   host: { '[attr.disabled]': "disabled? '' : null" },
 })
 export class ClrLoadingButton implements LoadingListener {
-  buttonState = ClrLoadingState;
-  state: ClrLoadingState = ClrLoadingState.DEFAULT;
-
   @Input('disabled') disabled: boolean;
 
   @Output('clrLoadingChange') clrLoadingChange = new EventEmitter<ClrLoadingState>(false);
+
+  buttonState = ClrLoadingState;
+  state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
   constructor(public el: ElementRef, private renderer: Renderer2) {}
 

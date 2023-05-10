@@ -42,10 +42,17 @@ import { GlobalDragModeService } from '../providers/global-drag-mode.service';
   host: { '[class.draggable]': 'true', '[class.being-dragged]': 'dragOn' },
 })
 export class ClrDraggable<T> implements AfterContentInit, OnDestroy {
+  @Output('clrDragStart') dragStartEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragMove') dragMoveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragEnd') dragEndEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+
+  @ContentChild(ClrIfDragged) customGhost: ClrIfDragged<T>;
+
+  dragOn = false;
+
   private draggableEl: any;
   private subscriptions: Subscription[] = [];
   private componentFactory: ComponentFactory<ClrDraggableGhost<T>>;
-  dragOn = false;
 
   constructor(
     private el: ElementRef,
@@ -60,8 +67,6 @@ export class ClrDraggable<T> implements AfterContentInit, OnDestroy {
     this.draggableEl = this.el.nativeElement;
     this.componentFactory = this.cfr.resolveComponentFactory<ClrDraggableGhost<T>>(ClrDraggableGhost);
   }
-
-  @ContentChild(ClrIfDragged) customGhost: ClrIfDragged<T>;
 
   @Input('clrDraggable')
   set dataTransfer(value: T) {
@@ -81,24 +86,6 @@ export class ClrDraggable<T> implements AfterContentInit, OnDestroy {
       this.dragEventListener.dragStartDelay = parseInt(value, 10) || 0;
     }
   }
-
-  private createDefaultGhost(event: DragEventInterface<T>) {
-    this.draggableSnapshot.capture(this.draggableEl, event);
-    // NOTE: The default ghost element will appear
-    // next to the clrDraggable in the DOM as a sibling element.
-    this.viewContainerRef.createComponent(this.componentFactory, 0, this.injector, [
-      [this.draggableEl.cloneNode(true)],
-    ]);
-  }
-
-  private destroyDefaultGhost() {
-    this.viewContainerRef.clear();
-    this.draggableSnapshot.discard();
-  }
-
-  @Output('clrDragStart') dragStartEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragMove') dragMoveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragEnd') dragEndEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
 
   ngAfterContentInit() {
     this.dragHandleRegistrar.defaultHandleEl = this.draggableEl;
@@ -134,5 +121,19 @@ export class ClrDraggable<T> implements AfterContentInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.dragEventListener.detachDragListeners();
+  }
+
+  private createDefaultGhost(event: DragEventInterface<T>) {
+    this.draggableSnapshot.capture(this.draggableEl, event);
+    // NOTE: The default ghost element will appear
+    // next to the clrDraggable in the DOM as a sibling element.
+    this.viewContainerRef.createComponent(this.componentFactory, 0, this.injector, [
+      [this.draggableEl.cloneNode(true)],
+    ]);
+  }
+
+  private destroyDefaultGhost() {
+    this.viewContainerRef.clear();
+    this.draggableSnapshot.discard();
   }
 }

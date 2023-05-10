@@ -24,6 +24,21 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   },
 })
 export class ClrVerticalNav implements OnDestroy {
+  @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
+
+  private _sub: Subscription;
+
+  constructor(
+    private _navService: VerticalNavService,
+    private _navIconService: VerticalNavIconService,
+    private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
+    public commonStrings: ClrCommonStringsService
+  ) {
+    this._sub = this._navService.collapsedChanged.subscribe(value => {
+      this._collapsedChanged.emit(value);
+    });
+  }
+
   @Input('clrVerticalNavCollapsible')
   get collapsible(): boolean | string {
     return this._navService.collapsible;
@@ -40,8 +55,6 @@ export class ClrVerticalNav implements OnDestroy {
     this._navService.collapsed = value as boolean;
   }
 
-  @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
-
   get hasNavGroups(): boolean {
     return this._navGroupRegistrationService.navGroupCount > 0;
   }
@@ -57,24 +70,11 @@ export class ClrVerticalNav implements OnDestroy {
     return !this.collapsed ? 'true' : 'false';
   }
 
-  private _sub: Subscription;
-
-  constructor(
-    private _navService: VerticalNavService,
-    private _navIconService: VerticalNavIconService,
-    private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
-    public commonStrings: ClrCommonStringsService
-  ) {
-    this._sub = this._navService.collapsedChanged.subscribe(value => {
-      this._collapsedChanged.emit(value);
-    });
+  ngOnDestroy() {
+    this._sub.unsubscribe();
   }
 
   toggleByButton() {
     this.collapsed = !this.collapsed;
-  }
-
-  ngOnDestroy() {
-    this._sub.unsubscribe();
   }
 }

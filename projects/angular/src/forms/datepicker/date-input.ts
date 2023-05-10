@@ -58,28 +58,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
   @Input() placeholder: string;
   @Output('clrDateChange') dateChange = new EventEmitter<Date>(false);
-  @Input('clrDate')
-  set date(date: Date | string) {
-    if (this.previousDateChange !== date) {
-      this.updateDate(this.getValidDateValueFromDate(date as Date));
-    }
-
-    if (!this.initialClrDateInputValue) {
-      this.initialClrDateInputValue = date as Date;
-    }
-  }
-
-  @Input()
-  set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-  }
-
-  @Input()
-  set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-  }
 
   protected override index = 1;
+
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
 
@@ -101,6 +82,52 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     private datepickerFocusService: DatepickerFocusService
   ) {
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
+  }
+
+  @Input('clrDate')
+  set date(date: Date | string) {
+    if (this.previousDateChange !== date) {
+      this.updateDate(this.getValidDateValueFromDate(date as Date));
+    }
+
+    if (!this.initialClrDateInputValue) {
+      this.initialClrDateInputValue = date as Date;
+    }
+  }
+
+  @Input()
+  set min(dateString: string) {
+    this.dateIOService.setMinDate(dateString);
+  }
+
+  @Input()
+  set max(dateString: string) {
+    this.dateIOService.setMaxDate(dateString);
+  }
+
+  get disabled() {
+    if (this.dateFormControlService) {
+      return this.dateFormControlService.disabled;
+    }
+    return null;
+  }
+
+  @Input('disabled')
+  @HostBinding('disabled')
+  set disabled(value: boolean | string) {
+    if (this.dateFormControlService) {
+      this.dateFormControlService.setDisabled(isBooleanAttributeSet(value));
+    }
+  }
+
+  @HostBinding('attr.placeholder')
+  get placeholderText(): string {
+    return this.placeholder ? this.placeholder : this.dateIOService.placeholderText;
+  }
+
+  @HostBinding('attr.type')
+  get inputType(): string {
+    return isPlatformBrowser(this.platformId) && this.usingNativeDatepicker() ? 'date' : 'text';
   }
 
   override ngOnInit() {
@@ -138,16 +165,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     this.setFocus(false);
   }
 
-  @HostBinding('attr.placeholder')
-  get placeholderText(): string {
-    return this.placeholder ? this.placeholder : this.dateIOService.placeholderText;
-  }
-
-  @HostBinding('attr.type')
-  get inputType(): string {
-    return isPlatformBrowser(this.platformId) && this.usingNativeDatepicker() ? 'date' : 'text';
-  }
-
   @HostListener('change', ['$event.target'])
   onValueChange(target: HTMLInputElement) {
     const validDateValue = this.dateIOService.getDateValueFromDateString(target.value);
@@ -158,20 +175,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
       this.updateDate(new Date(+year, +month - 1, +day), true);
     } else {
       this.emitDateOutput(null);
-    }
-  }
-
-  @Input('disabled')
-  @HostBinding('disabled')
-  get disabled() {
-    if (this.dateFormControlService) {
-      return this.dateFormControlService.disabled;
-    }
-    return null;
-  }
-  set disabled(value: boolean | string) {
-    if (this.dateFormControlService) {
-      this.dateFormControlService.setDisabled(isBooleanAttributeSet(value));
     }
   }
 

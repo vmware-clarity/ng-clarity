@@ -16,6 +16,9 @@ let nbRow = 0;
 export class DatagridIfExpandService extends IfExpandService {
   expandableId = '';
 
+  private _replace = new BehaviorSubject(false);
+  private _animate = new Subject<boolean>();
+
   constructor() {
     super();
     nbRow++;
@@ -34,6 +37,14 @@ export class DatagridIfExpandService extends IfExpandService {
     }
   }
 
+  get replace(): Observable<boolean> {
+    return this._replace.asObservable();
+  }
+
+  get animate(): Observable<boolean> {
+    return this._animate.asObservable();
+  }
+
   override loadingStateChange(state: ClrLoadingState) {
     super.loadingStateChange(state);
     if (state !== ClrLoadingState.LOADING) {
@@ -41,17 +52,7 @@ export class DatagridIfExpandService extends IfExpandService {
     }
   }
 
-  private _replace = new BehaviorSubject(false);
-  get replace(): Observable<boolean> {
-    return this._replace.asObservable();
-  }
-
   setReplace(replaceValue: boolean) {
     this._replace.next(replaceValue);
-  }
-
-  private _animate = new Subject<boolean>();
-  get animate(): Observable<boolean> {
-    return this._animate.asObservable();
   }
 }

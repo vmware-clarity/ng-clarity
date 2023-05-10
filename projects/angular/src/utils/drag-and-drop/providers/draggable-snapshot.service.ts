@@ -13,26 +13,30 @@ import { DragEventInterface } from '../interfaces/drag-event.interface';
 // at a certain event and passes it to clrDraggableGhost component.
 @Injectable()
 export class DraggableSnapshotService<T> {
-  constructor(private domAdapter: DomAdapter) {}
-
   private draggableElClientRect: ClientRect;
   private snapshotDragEvent: DragEventInterface<T>;
+
+  constructor(private domAdapter: DomAdapter) {}
+
+  get hasDraggableState(): boolean {
+    return !!this.snapshotDragEvent && !!this.draggableElClientRect;
+  }
+
+  get clientRect(): ClientRect {
+    return this.draggableElClientRect;
+  }
+
+  get dragEvent(): DragEventInterface<T> {
+    return this.snapshotDragEvent;
+  }
 
   capture(el: Node, event: DragEventInterface<T>): void {
     this.draggableElClientRect = this.domAdapter.clientRect(el);
     this.snapshotDragEvent = event;
   }
+
   discard(): void {
     delete this.draggableElClientRect;
     delete this.snapshotDragEvent;
-  }
-  get hasDraggableState(): boolean {
-    return !!this.snapshotDragEvent && !!this.draggableElClientRect;
-  }
-  get clientRect(): ClientRect {
-    return this.draggableElClientRect;
-  }
-  get dragEvent(): DragEventInterface<T> {
-    return this.snapshotDragEvent;
   }
 }

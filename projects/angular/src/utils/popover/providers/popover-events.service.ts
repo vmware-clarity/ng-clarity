@@ -17,9 +17,16 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
 export class ClrPopoverEventsService implements OnDestroy {
   outsideClickClose = true;
   scrollToClose = true;
-  private documentClickListener: () => void;
   ignoredEvent: any;
+  anchorButtonRef: ElementRef;
+  closeButtonRef: ElementRef;
+  contentRef: ElementRef;
+
+  private documentClickListener: () => void;
+  private escapeListener: () => void;
+  private scrollSubscription: Subscription;
   private subscriptions: Subscription[] = [];
+  private documentScroller: Observable<Event>;
 
   constructor(
     private renderer: Renderer2,
@@ -43,7 +50,11 @@ export class ClrPopoverEventsService implements OnDestroy {
     );
   }
 
-  private scrollSubscription: Subscription;
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.removeAllEventListeners();
+  }
+
   addScrollListener() {
     if (this.scrollToClose) {
       this.documentScroller = fromEvent(this.document, 'scroll', { capture: true });
@@ -67,27 +78,6 @@ export class ClrPopoverEventsService implements OnDestroy {
     if (this.documentScroller) {
       this.scrollSubscription.unsubscribe();
       delete this.documentScroller;
-    }
-  }
-
-  private testForSmartPopoverContentContainer(event: Event): boolean {
-    // Filter for the documentScroller observable event targets
-    let target = event.target as HTMLElement;
-
-    // Walk up the DOM tree until we get to the element that is a direct child of the body.
-    while (target.classList && target.parentElement.localName !== 'body') {
-      target = target.parentElement;
-    }
-
-    // Target is the child element of body where the scroll events originated.
-    // Return false and prevent the popover content container from closing for any scroll events inside a popover
-    // content container.
-    if (target.classList) {
-      // check scroll events to see if they are happening in popover content or elsewhere
-      return target.classList.contains('clr-popover-content') ? false : true;
-    } else {
-      // prevents it from closing right after first opening
-      return false;
     }
   }
 
@@ -117,7 +107,6 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  private escapeListener: () => void;
   addEscapeListener() {
     this.escapeListener = this.renderer.listen(this.document, 'keydown.escape', () => {
       this.smartOpenService.open = false;
@@ -132,10 +121,6 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  anchorButtonRef: ElementRef;
-
-  closeButtonRef: ElementRef;
-
   setCloseFocus(): void {
     this.closeButtonRef.nativeElement.focus();
   }
@@ -144,17 +129,30 @@ export class ClrPopoverEventsService implements OnDestroy {
     this.anchorButtonRef.nativeElement.focus();
   }
 
-  contentRef: ElementRef;
+  private testForSmartPopoverContentContainer(event: Event): boolean {
+    // Filter for the documentScroller observable event targets
+    let target = event.target as HTMLElement;
 
-  private documentScroller: Observable<Event>;
+    // Walk up the DOM tree until we get to the element that is a direct child of the body.
+    while (target.classList && target.parentElement.localName !== 'body') {
+      target = target.parentElement;
+    }
+
+    // Target is the child element of body where the scroll events originated.
+    // Return false and prevent the popover content container from closing for any scroll events inside a popover
+    // content container.
+    if (target.classList) {
+      // check scroll events to see if they are happening in popover content or elsewhere
+      return target.classList.contains('clr-popover-content') ? false : true;
+    } else {
+      // prevents it from closing right after first opening
+      return false;
+    }
+  }
 
   private removeAllEventListeners() {
     this.removeScrollListener();
     this.removeClickListener();
     this.removeEscapeListener();
-  }
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.removeAllEventListeners();
   }
 }

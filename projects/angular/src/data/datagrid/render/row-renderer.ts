@@ -16,6 +16,8 @@ import { DatagridCellRenderer } from './cell-renderer';
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
   @ContentChildren(DatagridCellRenderer) private cells: QueryList<DatagridCellRenderer>;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private columnsService: ColumnsService) {}
 
   ngAfterContentInit() {
@@ -32,8 +34,6 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
       })
     );
   }
-
-  private subscriptions: Subscription[] = [];
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

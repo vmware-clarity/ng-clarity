@@ -60,18 +60,30 @@ export class ClrAriaLiveService implements OnDestroy {
   private ariaLiveElement: HTMLElement;
   private document: Document;
   private previousTimeout: ReturnType<typeof setTimeout>;
+  private _id = `clr-aria-live-element-${uniqueIdFactory()}`;
 
   constructor(private ngZone: NgZone, @Inject(DOCUMENT) _document: any, @Inject(PLATFORM_ID) private platformId: any) {
     this.document = _document;
   }
 
-  private _id = `clr-aria-live-element-${uniqueIdFactory()}`;
   /**
    * get access to the internal HTML `id` that gonna be used for the AriaLive container.
    * @return ID of the DOM Element as string.
    */
   get id(): string {
     return this._id;
+  }
+
+  /**
+   * onDestroy life cycle - must stop all active setTimeouts and remove the AriaLive
+   * container from the document.
+   */
+  ngOnDestroy() {
+    clearTimeout(this.previousTimeout);
+    if (isPlatformBrowser(this.platformId) && this.ariaLiveElement) {
+      this.document.body.removeChild(this.ariaLiveElement);
+      this.ariaLiveElement = null;
+    }
   }
 
   /**
@@ -123,18 +135,6 @@ export class ClrAriaLiveService implements OnDestroy {
         this.ariaLiveElement.textContent = message as string;
       }, ARIA_LIVE_TICK);
     });
-  }
-
-  /**
-   * onDestroy life cycle - must stop all active setTimeouts and remove the AriaLive
-   * container from the document.
-   */
-  ngOnDestroy() {
-    clearTimeout(this.previousTimeout);
-    if (isPlatformBrowser(this.platformId) && this.ariaLiveElement) {
-      this.document.body.removeChild(this.ariaLiveElement);
-      this.ariaLiveElement = null;
-    }
   }
 
   /**

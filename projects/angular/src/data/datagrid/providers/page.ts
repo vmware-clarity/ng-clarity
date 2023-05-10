@@ -12,15 +12,38 @@ import { StateDebouncer } from './state-debouncer.provider';
 
 @Injectable()
 export class Page {
-  constructor(private stateDebouncer: StateDebouncer) {}
-
-  private preventEmit = false;
   activated = false;
 
   /**
    * Page size, a value of 0 means no pagination
    */
   private _size = 0;
+
+  /**
+   * Total items (needed to guess the last page)
+   */
+  private _totalItems?: number;
+
+  /**
+   * Last page
+   */
+  private _last: number;
+
+  /**
+   * Current page
+   */
+  private _current = 1;
+
+  /**
+   * The Observable that lets other classes subscribe to page changes
+   */
+  private _change = new Subject<number>();
+
+  private preventEmit = false;
+  private _sizeChange = new Subject<number>();
+
+  constructor(private stateDebouncer: StateDebouncer) {}
+
   get size(): number {
     return this._size;
   }
@@ -49,10 +72,6 @@ export class Page {
     this.preventEmit = false;
   }
 
-  /**
-   * Total items (needed to guess the last page)
-   */
-  private _totalItems?: number;
   get totalItems(): number {
     return this._totalItems || 0; // remains 0 if not set to avoid breaking change
   }
@@ -64,10 +83,6 @@ export class Page {
     }
   }
 
-  /**
-   * Last page
-   */
-  private _last: number;
   get last(): number {
     if (this._last) {
       return this._last;
@@ -82,25 +97,15 @@ export class Page {
     this._last = page;
   }
 
-  /**
-   * The Observable that lets other classes subscribe to page changes
-   */
-  private _change = new Subject<number>();
   // We do not want to expose the Subject itself, but the Observable which is read-only
   get change(): Observable<number> {
     return this._change.asObservable();
   }
 
-  private _sizeChange = new Subject<number>();
-
   get sizeChange(): Observable<number> {
     return this._sizeChange.asObservable();
   }
 
-  /**
-   * Current page
-   */
-  private _current = 1;
   get current(): number {
     return this._current;
   }
@@ -110,24 +115,6 @@ export class Page {
       this._current = page;
       this._change.next(page);
       this.stateDebouncer.changeDone();
-    }
-  }
-
-  /**
-   * Moves to the previous page if it exists
-   */
-  previous() {
-    if (this.current > 1) {
-      this.current--;
-    }
-  }
-
-  /**
-   * Moves to the next page if it exists
-   */
-  next() {
-    if (this.current < this.last) {
-      this.current++;
     }
   }
 
@@ -161,6 +148,24 @@ export class Page {
       lastInPage = Math.min(lastInPage, this.totalItems - 1);
     }
     return lastInPage;
+  }
+
+  /**
+   * Moves to the previous page if it exists
+   */
+  previous() {
+    if (this.current > 1) {
+      this.current--;
+    }
+  }
+
+  /**
+   * Moves to the next page if it exists
+   */
+  next() {
+    if (this.current < this.last) {
+      this.current++;
+    }
   }
 
   /**

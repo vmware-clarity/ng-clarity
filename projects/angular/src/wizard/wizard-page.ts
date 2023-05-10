@@ -39,89 +39,28 @@ let wizardPageIndex = 0;
 })
 export class ClrWizardPage implements OnInit {
   /**
-   * Creates an instance of ClrWizardPage.
+   * An input value that is used internally to generate the ClrWizardPage ID as
+   * well as the step nav item ID.
+   *
+   * Typed as any because it should be able to accept numbers as well as
+   * strings. Passing an index for wizard whose pages are created with an
+   * ngFor loop is a common use case.
    *
    * @memberof WizardPage
+   *
    */
-  constructor(
-    private navService: WizardNavigationService,
-    public pageCollection: PageCollectionService,
-    public buttonService: ButtonHubService
-  ) {}
+  @Input('id') _id: any = (wizardPageIndex++).toString();
 
   /**
-   * Contains a reference to the page title which is used for a number
-   * of different tasks for display in the wizard.
+   * Overrides all actions from the page level, so you can use an alternate function for
+   * validation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),
+   * ClrWizardPage.onCancel (clrWizardPageOnCancel output), or one
+   * of the granular page-level button click event emitters.
    *
    * @memberof WizardPage
    *
    */
-  @ContentChild(ClrWizardPageTitle, { static: true }) pageTitle: ClrWizardPageTitle;
-
-  /**
-   * Contains a reference to the desired title for the page's step in the
-   * navigation on the left side of the wizard. Can be projected to change the
-   * navigation link's text.
-   *
-   * If not defined, then ClrWizardPage.pageTitle will be displayed in the stepnav.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @ContentChild(ClrWizardPageNavTitle, { static: true }) pageNavTitle: ClrWizardPageNavTitle;
-
-  /**
-   * Contains a reference to the buttons defined within the page. If not defined,
-   * the wizard defaults to the set of buttons defined as a direct child of the
-   * wizard.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @ContentChild(ClrWizardPageButtons, { static: true }) _buttons: ClrWizardPageButtons;
-
-  /**
-   * Contains a reference to the header actions defined within the page. If not defined,
-   * the wizard defaults to the set of header actions defined as a direct child of the
-   * wizard.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions: ClrWizardPageHeaderActions;
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _nextStepDisabled = false;
-
-  /**
-   * A property that tells whether or not the wizard should be allowed
-   * to move to the next page.
-   *
-   * Useful for in-page validation because it prevents forward navigation
-   * and visibly disables the next button.
-   *
-   * Does not require that you re-implement navigation routines like you
-   * would if you were using ClrWizardPage.preventDefault or
-   * Wizard.preventDefault.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPageNextDisabled')
-  get nextStepDisabled(): boolean {
-    return this._nextStepDisabled;
-  }
-  set nextStepDisabled(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._nextStepDisabled) {
-      this._nextStepDisabled = valBool;
-      this.nextStepDisabledChange.emit(valBool);
-    }
-  }
+  @Input('clrWizardPagePreventDefault') preventDefault: boolean | string = false;
 
   /**
    * Emits when the value of ClrWizardPage.nextStepDisabled changes.
@@ -131,39 +70,6 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Output('clrWizardPageNextDisabledChange') nextStepDisabledChange = new EventEmitter<boolean>();
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _previousStepDisabled = false;
-
-  /**
-   * A property that tells whether or not the wizard should be allowed
-   * to move to the previous page.
-   *
-   * Useful for in-page validation because it prevents backward navigation
-   * and visibly disables the previous button.
-   *
-   * Does not require that you re-implement navigation routines like you
-   * would if you were using ClrWizardPage.preventDefault or
-   * Wizard.preventDefault.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPagePreviousDisabled')
-  get previousStepDisabled(): boolean {
-    return this._previousStepDisabled;
-  }
-  set previousStepDisabled(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._previousStepDisabled) {
-      this._previousStepDisabled = valBool;
-      this.previousStepDisabledChange.emit(valBool);
-    }
-  }
 
   /**
    * Emits when the value of ClrWizardPage.previousStepDisabled changes.
@@ -179,105 +85,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  private _hasError = false;
-
-  /**
-   * Whether the page has an error and also resolve the "falsy" value. The
-   * current logic treat a "0" or an empty string as false and likewise will treat any
-   * "truthy" value as true.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPageHasError')
-  get hasError(): boolean {
-    return this._hasError;
-  }
-  set hasError(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._hasError) {
-      this._hasError = valBool;
-    }
-  }
-
-  /**
-   * Overrides all actions from the page level, so you can use an alternate function for
-   * validation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),
-   * ClrWizardPage.onCancel (clrWizardPageOnCancel output), or one
-   * of the granular page-level button click event emitters.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPagePreventDefault') preventDefault: boolean | string = false;
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _stopCancel = false;
-
-  /**
-   * Overrides the cancel action from the page level. Allows you to use an
-   * alternate function for validation or data-munging before cancelling the
-   * wizard when combined with the ClrWizardPage.onCancel
-   * (the clrWizardPageOnCancel output).
-   *
-   * Requires that you manually close the wizard from your host component,
-   * usually with a call to Wizard.forceNext() or wizard.next();
-   *
-   * @memberof ClrWizardPage
-   */
-  @Input('clrWizardPagePreventDefaultCancel')
-  get stopCancel(): boolean {
-    return this._stopCancel;
-  }
-  set stopCancel(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._stopCancel) {
-      this._stopCancel = valBool;
-      this.stopCancelChange.emit(valBool);
-    }
-  }
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
   @Output('clrWizardPagePreventDefaultCancelChange') stopCancelChange = new EventEmitter<boolean>();
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _stopNext = false;
-
-  /**
-   * Overrides forward navigation from the page level. Allows you to use an
-   * alternate function for validation or data-munging before moving the
-   * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
-   * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
-   * (clrWizardPageNext) outputs.
-   *
-   * Requires that you manually tell the wizard to navigate forward from
-   * the hostComponent, usually with a call to Wizard.forceNext() or
-   * wizard.next();
-   *
-   * @memberof ClrWizardPage
-   */
-  @Input('clrWizardPagePreventDefaultNext')
-  get stopNext(): boolean {
-    return this._stopNext;
-  }
-  set stopNext(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._stopNext) {
-      this._stopNext = valBool;
-    }
-  }
 
   /**
    * An event emitter carried over from a legacy version of ClrWizardPage.
@@ -424,17 +232,216 @@ export class ClrWizardPage implements OnInit {
   @Output('clrWizardPageCustomButton') customButtonClicked = new EventEmitter<string>();
 
   /**
-   * An input value that is used internally to generate the ClrWizardPage ID as
-   * well as the step nav item ID.
-   *
-   * Typed as any because it should be able to accept numbers as well as
-   * strings. Passing an index for wizard whose pages are created with an
-   * ngFor loop is a common use case.
+   * Contains a reference to the page title which is used for a number
+   * of different tasks for display in the wizard.
    *
    * @memberof WizardPage
    *
    */
-  @Input('id') _id: any = (wizardPageIndex++).toString();
+  @ContentChild(ClrWizardPageTitle, { static: true }) pageTitle: ClrWizardPageTitle;
+
+  /**
+   * Contains a reference to the desired title for the page's step in the
+   * navigation on the left side of the wizard. Can be projected to change the
+   * navigation link's text.
+   *
+   * If not defined, then ClrWizardPage.pageTitle will be displayed in the stepnav.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @ContentChild(ClrWizardPageNavTitle, { static: true }) pageNavTitle: ClrWizardPageNavTitle;
+
+  /**
+   * Contains a reference to the buttons defined within the page. If not defined,
+   * the wizard defaults to the set of buttons defined as a direct child of the
+   * wizard.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @ContentChild(ClrWizardPageButtons, { static: true }) _buttons: ClrWizardPageButtons;
+
+  /**
+   * Contains a reference to the header actions defined within the page. If not defined,
+   * the wizard defaults to the set of header actions defined as a direct child of the
+   * wizard.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions: ClrWizardPageHeaderActions;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _nextStepDisabled = false;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _previousStepDisabled = false;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _hasError = false;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _stopCancel = false;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _stopNext = false;
+
+  /**
+   *
+   * @memberof WizardPage
+   *
+   */
+  private _complete = false;
+
+  /**
+   * Creates an instance of ClrWizardPage.
+   *
+   * @memberof WizardPage
+   */
+  constructor(
+    private navService: WizardNavigationService,
+    public pageCollection: PageCollectionService,
+    public buttonService: ButtonHubService
+  ) {}
+
+  /**
+   * A property that tells whether or not the wizard should be allowed
+   * to move to the next page.
+   *
+   * Useful for in-page validation because it prevents forward navigation
+   * and visibly disables the next button.
+   *
+   * Does not require that you re-implement navigation routines like you
+   * would if you were using ClrWizardPage.preventDefault or
+   * Wizard.preventDefault.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @Input('clrWizardPageNextDisabled')
+  get nextStepDisabled(): boolean {
+    return this._nextStepDisabled;
+  }
+  set nextStepDisabled(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._nextStepDisabled) {
+      this._nextStepDisabled = valBool;
+      this.nextStepDisabledChange.emit(valBool);
+    }
+  }
+
+  /**
+   * A property that tells whether or not the wizard should be allowed
+   * to move to the previous page.
+   *
+   * Useful for in-page validation because it prevents backward navigation
+   * and visibly disables the previous button.
+   *
+   * Does not require that you re-implement navigation routines like you
+   * would if you were using ClrWizardPage.preventDefault or
+   * Wizard.preventDefault.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @Input('clrWizardPagePreviousDisabled')
+  get previousStepDisabled(): boolean {
+    return this._previousStepDisabled;
+  }
+  set previousStepDisabled(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._previousStepDisabled) {
+      this._previousStepDisabled = valBool;
+      this.previousStepDisabledChange.emit(valBool);
+    }
+  }
+
+  /**
+   * Whether the page has an error and also resolve the "falsy" value. The
+   * current logic treat a "0" or an empty string as false and likewise will treat any
+   * "truthy" value as true.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @Input('clrWizardPageHasError')
+  get hasError(): boolean {
+    return this._hasError;
+  }
+  set hasError(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._hasError) {
+      this._hasError = valBool;
+    }
+  }
+
+  /**
+   * Overrides the cancel action from the page level. Allows you to use an
+   * alternate function for validation or data-munging before cancelling the
+   * wizard when combined with the ClrWizardPage.onCancel
+   * (the clrWizardPageOnCancel output).
+   *
+   * Requires that you manually close the wizard from your host component,
+   * usually with a call to Wizard.forceNext() or wizard.next();
+   *
+   * @memberof ClrWizardPage
+   */
+  @Input('clrWizardPagePreventDefaultCancel')
+  get stopCancel(): boolean {
+    return this._stopCancel;
+  }
+  set stopCancel(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._stopCancel) {
+      this._stopCancel = valBool;
+      this.stopCancelChange.emit(valBool);
+    }
+  }
+
+  /**
+   * Overrides forward navigation from the page level. Allows you to use an
+   * alternate function for validation or data-munging before moving the
+   * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
+   * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
+   * (clrWizardPageNext) outputs.
+   *
+   * Requires that you manually tell the wizard to navigate forward from
+   * the hostComponent, usually with a call to Wizard.forceNext() or
+   * wizard.next();
+   *
+   * @memberof ClrWizardPage
+   */
+  @Input('clrWizardPagePreventDefaultNext')
+  get stopNext(): boolean {
+    return this._stopNext;
+  }
+  set stopNext(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._stopNext) {
+      this._stopNext = valBool;
+    }
+  }
 
   /**
    * A read-only getter that generates an ID string for the wizard page from
@@ -473,13 +480,6 @@ export class ClrWizardPage implements OnInit {
   get readyToComplete(): boolean {
     return !this.nextStepDisabled;
   }
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _complete = false;
 
   /**
    * A page is marked as completed if it is both readyToComplete and completed,
@@ -629,18 +629,15 @@ export class ClrWizardPage implements OnInit {
   }
 
   /**
-   * Uses the nav service to make the ClrWizardPage the current page in the
-   * wizard. Bypasses all checks but still emits the ClrWizardPage.onLoad
-   * (clrWizardPageOnLoad) output.
+   * A read-only getter that returns the id used by the step nav item associated with the page.
    *
-   * In most cases, it is better to use the default navigation functions
-   * in Wizard.
+   * ClrWizardPage needs this ID string for aria information.
    *
    * @memberof WizardPage
    *
    */
-  makeCurrent(): void {
-    this.navService.currentPage = this;
+  get stepItemId(): string {
+    return this.pageCollection.getStepItemIdForPage(this);
   }
 
   /**
@@ -658,14 +655,17 @@ export class ClrWizardPage implements OnInit {
   }
 
   /**
-   * A read-only getter that returns the id used by the step nav item associated with the page.
+   * Uses the nav service to make the ClrWizardPage the current page in the
+   * wizard. Bypasses all checks but still emits the ClrWizardPage.onLoad
+   * (clrWizardPageOnLoad) output.
    *
-   * ClrWizardPage needs this ID string for aria information.
+   * In most cases, it is better to use the default navigation functions
+   * in Wizard.
    *
    * @memberof WizardPage
    *
    */
-  get stepItemId(): string {
-    return this.pageCollection.getStepItemIdForPage(this);
+  makeCurrent(): void {
+    this.navService.currentPage = this;
   }
 }

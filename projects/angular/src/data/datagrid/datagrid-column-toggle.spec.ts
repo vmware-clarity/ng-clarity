@@ -24,19 +24,19 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
   `,
 })
 class ColumnToggleTest {
-  private mockColumnsService: MockColumnsService;
+  hasCustomToggleTitle = false;
+  hasCustomToggleButton = false;
 
-  @ViewChild(TemplateRef)
-  set templateRef(value: TemplateRef<any>) {
-    this.mockColumnsService.templateRef = value;
-  }
+  private mockColumnsService: MockColumnsService;
 
   constructor(columnsService: ColumnsService) {
     this.mockColumnsService = columnsService as MockColumnsService;
   }
 
-  hasCustomToggleTitle = false;
-  hasCustomToggleButton = false;
+  @ViewChild(TemplateRef)
+  set templateRef(value: TemplateRef<any>) {
+    this.mockColumnsService.templateRef = value;
+  }
 }
 
 export default function (): void {

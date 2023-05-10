@@ -92,9 +92,7 @@ import { ColumnsService } from './providers/columns.service';
 /** @deprecated since 2.0, remove in 3.0 */
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
-
-  private _allColumnsVisible: boolean;
-  private subscription: Subscription;
+  openState: boolean;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {
@@ -103,22 +101,18 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     anchor: ClrAlignment.START,
     content: ClrAlignment.START,
   };
-  openState: boolean;
 
   @ContentChild(ClrDatagridColumnToggleTitle) customToggleTitle: ClrDatagridColumnToggleTitle;
   @ContentChild(ClrDatagridColumnToggleButton) customToggleButton: ClrDatagridColumnToggleButton;
-  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
-
-  get allColumnsVisible(): boolean {
-    return this._allColumnsVisible;
-  }
-  set allColumnsVisible(value: boolean) {
-    this._allColumnsVisible = value;
-  }
 
   // Without tracking the checkboxes get rerendered on model update, which leads
   // to loss of focus after checkbox toggle.
   readonly trackByFn = columnToggleTrackByFn;
+
+  private _allColumnsVisible: boolean;
+  private subscription: Subscription;
+
+  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
@@ -128,8 +122,11 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  get allColumnsVisible(): boolean {
+    return this._allColumnsVisible;
+  }
+  set allColumnsVisible(value: boolean) {
+    this._allColumnsVisible = value;
   }
 
   get hideableColumnStates(): ColumnState[] {
@@ -143,6 +140,10 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     return (
       nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1
     );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   toggleColumnState(columnState: ColumnState, event: boolean) {

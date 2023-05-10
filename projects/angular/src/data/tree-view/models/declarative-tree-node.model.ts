@@ -11,6 +11,10 @@ import { TreeNodeModel } from './tree-node.model';
  * Declarative = Tree node components dictate the model
  */
 export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
+  // Override for a more precise type
+  parent: DeclarativeTreeNodeModel<T> | null;
+  children: DeclarativeTreeNodeModel<T>[];
+
   constructor(parent: DeclarativeTreeNodeModel<T> | null) {
     super();
     this.parent = parent;
@@ -20,9 +24,12 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     this.children = [];
   }
 
-  // Override for a more precise type
-  parent: DeclarativeTreeNodeModel<T> | null;
-  children: DeclarativeTreeNodeModel<T>[];
+  override destroy() {
+    if (this.parent) {
+      this.parent._removeChild(this);
+    }
+    super.destroy();
+  }
 
   _addChild(child: DeclarativeTreeNodeModel<T>) {
     this.children.push(child);
@@ -33,12 +40,5 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     if (index > -1) {
       this.children.splice(index, 1);
     }
-  }
-
-  override destroy() {
-    if (this.parent) {
-      this.parent._removeChild(this);
-    }
-    super.destroy();
   }
 }

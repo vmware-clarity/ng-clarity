@@ -65,14 +65,29 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   },
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
+  // Allows the consumer to override our logic deciding if a node is expandable.
+  // Useful for recursive trees that don't want to pre-load one level ahead just to know which nodes are expandable.
+  @Input('clrExpandable') expandable: boolean | undefined;
+
+  @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
+  @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
+
   STATES = ClrSelectedState;
-  private skipEmitChange = false;
   isModelLoading = false;
   nodeId = uniqueIdFactory();
+  contentContainerTabindex = -1;
+  _model: TreeNodeModel<T>;
 
-  private typeAheadKeyEvent = new Subject<string>();
-
+  private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
+  private typeAheadKeyEvent = new Subject<string>();
+  private subscriptions: Subscription[] = [];
+
+  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef;
+
+  // @ContentChild would have been more succinct
+  // but it doesn't offer a way to query only an immediate child
+  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -104,19 +119,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this._model.nodeId = this.nodeId;
   }
 
-  _model: TreeNodeModel<T>;
-
-  isExpandable() {
-    if (typeof this.expandable !== 'undefined') {
-      return this.expandable;
-    }
-    return !!this.expandService.expandable || this.isParent;
-  }
-
-  isSelectable() {
-    return this.featuresService.selectable;
-  }
-
   @Input('clrSelected')
   get selected(): ClrSelectedState | boolean {
     return this._model.selected.value;
@@ -139,22 +141,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this.skipEmitChange = false;
   }
 
-  @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
-
-  get ariaSelected(): boolean {
-    if (this.isSelectable()) {
-      return this._model.selected.value === ClrSelectedState.SELECTED;
-    } else if (this.treeNodeLink?.active) {
-      return true;
-    } else {
-      return null;
-    }
-  }
-
-  // Allows the consumer to override our logic deciding if a node is expandable.
-  // Useful for recursive trees that don't want to pre-load one level ahead just to know which nodes are expandable.
-  @Input('clrExpandable') expandable: boolean | undefined;
-
   // I'm caving on this, for tree nodes I think we can tolerate having a two-way binding on the component
   // rather than enforce the clrIfExpanded structural directive for dynamic cases. Mostly because for the smart
   // case, you can't use a structural directive, it would need to go on an ng-container.
@@ -166,12 +152,23 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this.expandService.expanded = value;
   }
 
-  @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
+  get ariaSelected(): boolean {
+    if (this.isSelectable()) {
+      return this._model.selected.value === ClrSelectedState.SELECTED;
+    } else if (this.treeNodeLink?.active) {
+      return true;
+    } else {
+      return null;
+    }
+  }
 
-  private subscriptions: Subscription[] = [];
+  get treeNodeLink() {
+    return this.treeNodeLinkList && this.treeNodeLinkList.first;
+  }
 
-  contentContainerTabindex = -1;
-  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef;
+  private get isParent() {
+    return this._model.children && this._model.children.length > 0;
+  }
 
   ngOnInit() {
     this._model.expanded = this.expanded;
@@ -221,23 +218,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // @ContentChild would have been more succinct
-  // but it doesn't offer a way to query only an immediate child
-  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
-
-  get treeNodeLink() {
-    return this.treeNodeLinkList && this.treeNodeLinkList.first;
-  }
-
-  private setTabIndex(value: number) {
-    this.contentContainerTabindex = value;
-    this.contentContainer.nativeElement.setAttribute('tabindex', value);
-  }
-
-  private checkTabIndex(nodeId: string): void {
-    if (isPlatformBrowser(this.platformId) && this.nodeId !== nodeId && this.contentContainerTabindex !== -1) {
-      this.setTabIndex(-1);
+  isExpandable() {
+    if (typeof this.expandable !== 'undefined') {
+      return this.expandable;
     }
+    return !!this.expandService.expandable || this.isParent;
+  }
+
+  isSelectable() {
+    return this.featuresService.selectable;
   }
 
   focusTreeNode(): void {
@@ -304,8 +293,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
     this.typeAheadKeyBuffer = '';
   }
 
-  private get isParent() {
-    return this._model.children && this._model.children.length > 0;
+  private setTabIndex(value: number) {
+    this.contentContainerTabindex = value;
+    this.contentContainer.nativeElement.setAttribute('tabindex', value);
+  }
+
+  private checkTabIndex(nodeId: string): void {
+    if (isPlatformBrowser(this.platformId) && this.nodeId !== nodeId && this.contentContainerTabindex !== -1) {
+      this.setTabIndex(-1);
+    }
   }
 
   private toggleExpandOrTriggerDefault() {

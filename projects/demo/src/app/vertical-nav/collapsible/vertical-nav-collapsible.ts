@@ -15,14 +15,13 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 })
 export class VerticalNavCollapsibleDemo {
   case: any;
+  collapsible = true;
+
+  private _collapse = true;
 
   constructor(public verticalNavCases: VerticalNavCases) {
     this.case = this.verticalNavCases.basicMenu;
   }
-
-  collapsible = true;
-
-  private _collapse = true;
 
   get collapse(): boolean {
     return this._collapse;

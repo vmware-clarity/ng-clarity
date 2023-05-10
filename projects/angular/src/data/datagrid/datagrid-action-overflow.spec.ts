@@ -113,9 +113,11 @@ export default function (): void {
   `,
 })
 class SimpleTest {
-  clrDgActionOverflowOpenChangeFn = (_$event: boolean) => {
-    // Do nothing
-  };
   open: boolean;
+
   @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef;
+
+  clrDgActionOverflowOpenChangeFn(_$event: boolean) {
+    // Do nothing
+  }
 }

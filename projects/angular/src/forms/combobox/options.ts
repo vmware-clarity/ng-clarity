@@ -60,7 +60,11 @@ let nbOptionsComponents = 0;
   },
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
+  @Input('id') optionsId: string;
+
   loading = false;
+  _items: QueryList<ClrOption<T>>;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -84,20 +88,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     }
   }
 
-  searchText(input: string) {
-    return this.commonStrings.parse(this.commonStrings.keys.comboboxSearching, { INPUT: input });
-  }
-
-  /**
-   * Tests if the list of options is empty, meaning it doesn't contain any items
-   */
-  get emptyOptions() {
-    return !this.optionSelectionService.loading && this.items.length === 0;
-  }
-
-  @Input('id') optionsId: string;
-
-  _items: QueryList<ClrOption<T>>;
   @ContentChildren(ClrOption)
   get items(): QueryList<ClrOption<T>> {
     return this._items;
@@ -107,8 +97,11 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
   }
 
-  loadingStateChange(state: ClrLoadingState): void {
-    this.loading = state === ClrLoadingState.LOADING;
+  /**
+   * Tests if the list of options is empty, meaning it doesn't contain any items
+   */
+  get emptyOptions() {
+    return !this.optionSelectionService.loading && this.items.length === 0;
   }
 
   ngAfterViewInit() {
@@ -134,5 +127,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  searchText(input: string) {
+    return this.commonStrings.parse(this.commonStrings.keys.comboboxSearching, { INPUT: input });
+  }
+
+  loadingStateChange(state: ClrLoadingState): void {
+    this.loading = state === ClrLoadingState.LOADING;
   }
 }

@@ -16,11 +16,12 @@ import { ClrTabContent } from './tab-content';
   template: `<ng-container #tabContentViewContainer></ng-container>`,
 })
 class TestWrapper {
+  constructor(private tabsService: TabsService) {}
+
   @ViewChild('tabContentViewContainer', { read: ViewContainerRef, static: true })
   set tabContentViewContainer(value: ViewContainerRef) {
     this.tabsService.tabContentViewContainer = value;
   }
-  constructor(private tabsService: TabsService) {}
 }
 
 @Component({

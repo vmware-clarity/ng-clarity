@@ -22,15 +22,15 @@ import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
  */
 @Injectable()
 export class LocaleHelperService {
-  constructor(@Inject(LOCALE_ID) public locale: string) {
-    this.initializeLocaleData();
-  }
-
   private _firstDayOfWeek = 0;
   private _localeDays: ReadonlyArray<ClrDayOfWeek>;
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
   private _localeDateFormat: string;
+
+  constructor(@Inject(LOCALE_ID) public locale: string) {
+    this.initializeLocaleData();
+  }
 
   get firstDayOfWeek(): number {
     return this._firstDayOfWeek;

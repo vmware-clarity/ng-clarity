@@ -18,6 +18,16 @@ import { MultiAlertService } from './providers/multi-alert.service';
   styles: [':host { display: block; }'],
 })
 export class ClrAlert implements OnInit, OnDestroy {
+  @Input('clrAlertSizeSmall') isSmall = false;
+  @Input('clrAlertClosable') closable = true;
+  @Input('clrAlertAppLevel') isAppLevel = false;
+  @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
+
+  @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
+
+  _closed = false;
+
+  private _hidden: boolean;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -26,6 +36,42 @@ export class ClrAlert implements OnInit, OnDestroy {
     @Optional() private multiAlertService: MultiAlertService,
     private commonStrings: ClrCommonStringsService
   ) {}
+
+  @Input('clrAlertType')
+  get alertType(): string {
+    return this.iconService.alertType;
+  }
+  set alertType(val: string) {
+    this.iconService.alertType = val;
+  }
+
+  @Input('clrAlertIcon')
+  set alertIconShape(value: string) {
+    this.iconService.alertIconShape = value;
+  }
+
+  @Input('clrAlertClosed')
+  set closed(value: boolean) {
+    if (value && !this._closed) {
+      this.close();
+    } else if (!value && this._closed) {
+      this.open();
+    }
+  }
+
+  get alertClass(): string {
+    return this.iconService.iconInfoFromType(this.iconService.alertType).cssClass;
+  }
+
+  get hidden() {
+    return this._hidden;
+  }
+  set hidden(value: boolean) {
+    if (value !== this._hidden) {
+      this._hidden = value;
+      this.cdr.detectChanges();
+    }
+  }
 
   ngOnInit() {
     if (this.multiAlertService) {
@@ -41,51 +87,12 @@ export class ClrAlert implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  @Input('clrAlertSizeSmall') isSmall = false;
-  @Input('clrAlertClosable') closable = true;
-  @Input('clrAlertAppLevel') isAppLevel = false;
-
-  // Aria
-  @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
-
-  _closed = false;
-  @Input('clrAlertClosed')
-  set closed(value: boolean) {
-    if (value && !this._closed) {
-      this.close();
-    } else if (!value && this._closed) {
-      this.open();
+  open(): void {
+    this._closed = false;
+    if (this.multiAlertService) {
+      this.multiAlertService.open();
     }
-  }
-  @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
-
-  @Input('clrAlertType')
-  get alertType(): string {
-    return this.iconService.alertType;
-  }
-  set alertType(val: string) {
-    this.iconService.alertType = val;
-  }
-
-  @Input('clrAlertIcon')
-  set alertIconShape(value: string) {
-    this.iconService.alertIconShape = value;
-  }
-
-  get alertClass(): string {
-    return this.iconService.iconInfoFromType(this.iconService.alertType).cssClass;
-  }
-
-  private _hidden: boolean;
-
-  get hidden() {
-    return this._hidden;
-  }
-  set hidden(value: boolean) {
-    if (value !== this._hidden) {
-      this._hidden = value;
-      this.cdr.detectChanges();
-    }
+    this._closedChanged.emit(false);
   }
 
   close(): void {
@@ -98,13 +105,5 @@ export class ClrAlert implements OnInit, OnDestroy {
       this.multiAlertService.close(isCurrentAlert);
     }
     this._closedChanged.emit(true);
-  }
-
-  open(): void {
-    this._closed = false;
-    if (this.multiAlertService) {
-      this.multiAlertService.open();
-    }
-    this._closedChanged.emit(false);
   }
 }

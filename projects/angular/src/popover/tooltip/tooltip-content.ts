@@ -33,6 +33,10 @@ const defaultSize = 'sm';
   },
 })
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
+  private _id: string;
+  private _position: string;
+  private _size: string;
+
   constructor(
     injector: Injector,
     @Optional()
@@ -61,9 +65,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     this._id = id;
     this.tooltipIdService.updateId(id);
   }
-  private _id: string;
-
-  private _position: string;
 
   @Input('clrPosition')
   get position() {
@@ -106,8 +107,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
         assertNever(newPosition);
     }
   }
-
-  private _size: string;
 
   @Input('clrSize')
   get size() {

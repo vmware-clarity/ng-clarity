@@ -30,6 +30,8 @@ import { DatalistIdService } from './providers/datalist-id.service';
   },
 })
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
+  listValue: string;
+
   constructor(
     @Optional() private focusService: FocusService,
     vcr: ViewContainerRef,
@@ -47,8 +49,6 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
       throw new Error('clrDatalist requires being wrapped in <clr-datalist-container>');
     }
   }
-
-  listValue: string;
 
   ngAfterContentInit() {
     // Subscriptions is inherited from WrappedFormControl, unsubscribe is handled there

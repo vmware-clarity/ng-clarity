@@ -28,11 +28,11 @@ export class ClrTab {
     tabsService.register(this);
   }
 
-  ngOnDestroy() {
-    this.tabsService.unregister(this);
-  }
-
   get active() {
     return this.ifActiveService.current === this.id;
+  }
+
+  ngOnDestroy() {
+    this.tabsService.unregister(this);
   }
 }

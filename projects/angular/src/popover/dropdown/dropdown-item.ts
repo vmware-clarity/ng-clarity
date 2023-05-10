@@ -24,13 +24,13 @@ import { RootDropdownService } from './providers/dropdown.service';
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
 })
 export class ClrDropdownItem {
+  setByDeprecatedDisabled = false;
+
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
     private focusableItem: FocusableItem
   ) {}
-
-  setByDeprecatedDisabled = false;
 
   @Input('clrDisabled')
   get disabled() {

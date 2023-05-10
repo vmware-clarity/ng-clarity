@@ -51,6 +51,20 @@ export const domAdapterFactory = (platformId: any) => {
   providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }],
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+  @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
+  @ContentChildren(DatagridRowRenderer, { descendants: true }) private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
+
+  private _heightSet = false;
+  private shouldStabilizeColumns = true;
+  private subscriptions: Subscription[] = [];
+
+  /**
+   * Indicates if we want to re-compute columns width. This should only happen:
+   * 1) When headers change, with columns being added or removed
+   * 2) When rows are lazily loaded for the first time
+   */
+  private columnsSizesStable = false;
+
   constructor(
     private organizer: DatagridRenderOrganizer,
     private items: Items,
@@ -79,9 +93,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
     this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
   }
-
-  @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
-  @ContentChildren(DatagridRowRenderer, { descendants: true }) private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
 
   ngAfterContentInit() {
     this.setupColumns();
@@ -115,21 +126,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     }
   }
 
-  private setupColumns() {
-    this.headers.forEach((header, index) => header.setColumnState(index));
-    this.columnsService.columns.splice(this.headers.length); // Trim any old columns
-    this.rows.forEach(row => row.setColumnState());
-  }
-
-  private _heightSet = false;
-
-  private shouldComputeHeight(): boolean {
-    if (!this._heightSet && this.page.size > 0) {
-      if (this.items.displayed.length === this.page.size) {
-        return true;
-      }
-    }
-    return false;
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   toggleDetailPane(state: boolean) {
@@ -148,6 +146,21 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
         this.columnsService.resetToLastCache();
       }
     }
+  }
+
+  private setupColumns() {
+    this.headers.forEach((header, index) => header.setColumnState(index));
+    this.columnsService.columns.splice(this.headers.length); // Trim any old columns
+    this.rows.forEach(row => row.setColumnState());
+  }
+
+  private shouldComputeHeight(): boolean {
+    if (!this._heightSet && this.page.size > 0) {
+      if (this.items.displayed.length === this.page.size) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -170,12 +183,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private resetDatagridHeight() {
     this.renderer.setStyle(this.el.nativeElement, 'height', '');
     this._heightSet = false;
-  }
-
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   /**
@@ -205,15 +212,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       this.columnsService.emitStateChangeAt(index, state);
     });
   }
-
-  /**
-   * Indicates if we want to re-compute columns width. This should only happen:
-   * 1) When headers change, with columns being added or removed
-   * 2) When rows are lazily loaded for the first time
-   */
-  private columnsSizesStable = false;
-
-  private shouldStabilizeColumns = true;
 
   /**
    * Triggers a whole re-rendring cycle to set column sizes, if needed.

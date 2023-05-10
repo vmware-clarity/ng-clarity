@@ -50,6 +50,17 @@ export class EagerRecursiveTreeDemo {
     },
   ];
 
+  singleRootSelected: SelectedMap = this.buildDefaultSelected(this.singleRoot);
+  multiRootSelected: SelectedMap = this.buildDefaultSelected(this.multiRoot);
+
+  synchronousChildren = (node: TreeNode) => node.children;
+
+  selectedString(selectedMap: SelectedMap) {
+    return Object.keys(selectedMap)
+      .filter(key => selectedMap[key] === ClrSelectedState.SELECTED)
+      .join(', ');
+  }
+
   private buildDefaultSelected(rootMap: TreeNode | TreeNode[], selectedMap: SelectedMap = {}) {
     if (!Array.isArray(rootMap)) {
       rootMap = [rootMap];
@@ -61,16 +72,5 @@ export class EagerRecursiveTreeDemo {
       }
     });
     return selectedMap;
-  }
-
-  singleRootSelected: SelectedMap = this.buildDefaultSelected(this.singleRoot);
-  multiRootSelected: SelectedMap = this.buildDefaultSelected(this.multiRoot);
-
-  synchronousChildren = (node: TreeNode) => node.children;
-
-  selectedString(selectedMap: SelectedMap) {
-    return Object.keys(selectedMap)
-      .filter(key => selectedMap[key] === ClrSelectedState.SELECTED)
-      .join(', ');
   }
 }

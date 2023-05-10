@@ -11,11 +11,11 @@ import { Observable, Subject } from 'rxjs';
 export class TooltipIdService {
   private _id = new Subject<string>();
 
-  updateId(id: string) {
-    this._id.next(id);
-  }
-
   get id(): Observable<string> {
     return this._id.asObservable();
+  }
+
+  updateId(id: string) {
+    this._id.next(id);
   }
 }

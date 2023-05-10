@@ -19,12 +19,23 @@ import { DragAndDropEventBusService } from '../providers/drag-and-drop-event-bus
   host: { '[class.droppable]': 'true', '[class.draggable-match]': 'isDraggableMatch' },
 })
 export class ClrDroppable<T> implements OnInit, OnDestroy {
-  private dragStartSubscription: Subscription;
-  private dragMoveSubscription: Subscription;
-  private dragEndSubscription: Subscription;
+  @Output('clrDragStart') dragStartEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragMove') dragMoveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragEnd') dragEndEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragLeave') dragLeaveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDragEnter') dragEnterEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  @Output('clrDrop') dropEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+
+  isDraggableMatch = false;
 
   private droppableEl: any;
   private clientRect: ClientRect;
+  private _isDraggableOver = false;
+  private _group: string | string[];
+  private _dropTolerance: ClrDropToleranceInterface = { top: 0, right: 0, bottom: 0, left: 0 };
+  private dragStartSubscription: Subscription;
+  private dragMoveSubscription: Subscription;
+  private dragEndSubscription: Subscription;
 
   constructor(
     private el: ElementRef,
@@ -35,31 +46,9 @@ export class ClrDroppable<T> implements OnInit, OnDestroy {
     this.droppableEl = this.el.nativeElement;
   }
 
-  isDraggableMatch = false;
-  private _isDraggableOver = false;
-
-  set isDraggableOver(value: boolean) {
-    // We need to add/remove this draggable-over class via Renderer2
-    // because isDraggableOver is set outside of NgZone.
-    if (value) {
-      this.renderer.addClass(this.droppableEl, 'draggable-over');
-    } else {
-      this.renderer.removeClass(this.droppableEl, 'draggable-over');
-    }
-    this._isDraggableOver = value;
-  }
-
-  private _group: string | string[];
-
   @Input('clrGroup')
   set group(value: string | string[]) {
     this._group = value;
-  }
-
-  private _dropTolerance: ClrDropToleranceInterface = { top: 0, right: 0, bottom: 0, left: 0 };
-
-  private dropToleranceGenerator(top = 0, right = top, bottom = top, left = right): ClrDropToleranceInterface {
-    return { top, right, bottom, left };
   }
 
   @Input('clrDropTolerance')
@@ -82,12 +71,32 @@ export class ClrDroppable<T> implements OnInit, OnDestroy {
     }
   }
 
-  @Output('clrDragStart') dragStartEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragMove') dragMoveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragEnd') dragEndEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragLeave') dragLeaveEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDragEnter') dragEnterEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
-  @Output('clrDrop') dropEmitter: EventEmitter<ClrDragEvent<T>> = new EventEmitter();
+  set isDraggableOver(value: boolean) {
+    // We need to add/remove this draggable-over class via Renderer2
+    // because isDraggableOver is set outside of NgZone.
+    if (value) {
+      this.renderer.addClass(this.droppableEl, 'draggable-over');
+    } else {
+      this.renderer.removeClass(this.droppableEl, 'draggable-over');
+    }
+    this._isDraggableOver = value;
+  }
+
+  ngOnInit() {
+    this.dragStartSubscription = this.eventBus.dragStarted.subscribe((dragStartEvent: DragEventInterface<T>) => {
+      this.onDragStart(dragStartEvent);
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeFrom(this.dragStartSubscription);
+    this.unsubscribeFrom(this.dragMoveSubscription);
+    this.unsubscribeFrom(this.dragEndSubscription);
+  }
+
+  private dropToleranceGenerator(top = 0, right = top, bottom = top, left = right): ClrDropToleranceInterface {
+    return { top, right, bottom, left };
+  }
 
   private unsubscribeFrom(subscription: Subscription): void {
     if (subscription) {
@@ -209,17 +218,5 @@ export class ClrDroppable<T> implements OnInit, OnDestroy {
     this.unsubscribeFrom(this.dragEndSubscription);
     this.isDraggableMatch = false;
     delete this.clientRect;
-  }
-
-  ngOnInit() {
-    this.dragStartSubscription = this.eventBus.dragStarted.subscribe((dragStartEvent: DragEventInterface<T>) => {
-      this.onDragStart(dragStartEvent);
-    });
-  }
-
-  ngOnDestroy() {
-    this.unsubscribeFrom(this.dragStartSubscription);
-    this.unsubscribeFrom(this.dragMoveSubscription);
-    this.unsubscribeFrom(this.dragEndSubscription);
   }
 }

@@ -58,57 +58,50 @@ let nbRow = 0;
   ],
 })
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
+  @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
+  @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
+
   id: string;
   radioId: string;
   checkboxId: string;
   expandableId: string;
+  replaced: boolean;
+  displayCells = false;
+  expandAnimationTrigger = false;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
-
-  @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
-
-  private _item: T;
-  /**
-   * Model of the row, to use for selection
-   */
-  @Input('clrDgItem')
-  get item(): T {
-    return this._item;
-  }
-  set item(item: T) {
-    this._item = item;
-    this.itemChanges.next(item);
-    this.clrDgSelectable = this._selectable;
-  }
 
   /**
    * @internal
    */
   itemChanges = new ReplaySubject<T>(1);
 
-  replaced: boolean;
-
-  expandAnimationTrigger = false;
-
-  /**
-   * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
-   * This prevents our intended range-selection, because this text-selection overrides our shift-click event.
-   * We need to clear the stored selection range when shift-clicking. This will override the mostly unused shift-click
-   * selection browser functionality, which is inconsistently implemented in browsers anyway.
+  /*****
+   * property dgCells
+   *
+   * @description
+   * A Query List of the ClrDatagrid cells in this row.
+   *
    */
-  clearRanges(event: MouseEvent) {
-    if (event.shiftKey) {
-      this.document.getSelection().removeAllRanges();
-      // Firefox is too persistent about its text-selection behaviour. So we need to add a preventDefault();
-      // We should not try to enforce this on the other browsers, though, because their toggle cycle does not get canceled by
-      // the preventDefault() and they toggle the checkbox second time, effectively retrurning it to not-selected.
-      if (window.navigator.userAgent.indexOf('Firefox') !== -1) {
-        event.preventDefault();
-        this.toggle(true);
-      }
-    }
-  }
+  @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
+
+  @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
+  @ViewChild('detailButton') detailButton: ElementRef;
+  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
+  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
+  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
+
+  private _item: T;
+  private _selected = false;
+  private _detailOpenLabel = '';
+  private _detailCloseLabel = '';
+  private _rowAriaLabel = '';
+  private wrappedInjector: Injector;
+  private subscriptions: Subscription[] = [];
+
+  // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
+  private _selectable: boolean | string = true;
 
   constructor(
     public selection: Selection<T>,
@@ -148,7 +141,31 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     );
   }
 
-  private _selected = false;
+  /**
+   * Model of the row, to use for selection
+   */
+  @Input('clrDgItem')
+  get item(): T {
+    return this._item;
+  }
+  set item(item: T) {
+    this._item = item;
+    this.itemChanges.next(item);
+    this.clrDgSelectable = this._selectable;
+  }
+
+  @Input('clrDgSelectable')
+  get clrDgSelectable() {
+    return !this.selection.isLocked(this.item);
+  }
+  set clrDgSelectable(value: boolean | string) {
+    if (this.item) {
+      this.selection.lockItem(this.item, value === 'false' || value === false);
+    }
+    // Store this value locally, to be initialized when item is initialized
+    this._selectable = value;
+  }
+
   /**
    * Indicates if the row is selected
    */
@@ -173,45 +190,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
-  // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
-  private _selectable: boolean | string = true;
-  @Input('clrDgSelectable')
-  get clrDgSelectable() {
-    return !this.selection.isLocked(this.item);
-  }
-  set clrDgSelectable(value: boolean | string) {
-    if (this.item) {
-      this.selection.lockItem(this.item, value === 'false' || value === false);
-    }
-    // Store this value locally, to be initialized when item is initialized
-    this._selectable = value;
-  }
-
-  @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
-
-  toggle(selected = !this.selected) {
-    if (selected !== this.selected) {
-      this.selected = selected;
-      this.selectedChanged.emit(selected);
-    }
-  }
-
-  /**
-   * @deprecated related to clrDgRowSelection, which is deprecated
-   */
-  selectRow(selected = !this.selected, $event) {
-    // The label also captures clicks that bubble up to the row event listener, causing
-    // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-    if ($event.target.tagName === 'LABEL') {
-      return;
-    }
-    if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
-      this.selection.currentSingle = this.item;
-    } else {
-      this.toggle(selected);
-    }
-  }
-
   @Input('clrDgExpanded')
   get expanded() {
     return this.expand.expanded;
@@ -220,19 +198,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this.expand.expanded = value as boolean;
   }
 
-  @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
-
-  toggleExpand() {
-    if (this.expand.expandable) {
-      this.expandAnimation.updateStartHeight();
-      this.expanded = !this.expanded;
-      this.expandedChange.emit(this.expanded);
-    }
-  }
-
-  @ViewChild('detailButton') detailButton: ElementRef;
-
-  private _detailOpenLabel = '';
   @Input()
   get clrDgDetailOpenLabel(): string {
     return this._detailOpenLabel ? this._detailOpenLabel : this.commonStrings.keys.open;
@@ -240,7 +205,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   set clrDgDetailOpenLabel(label: string) {
     this._detailOpenLabel = label;
   }
-  private _detailCloseLabel = '';
+
   @Input()
   get clrDgDetailCloseLabel(): string {
     return this._detailCloseLabel ? this._detailCloseLabel : this.commonStrings.keys.close;
@@ -249,7 +214,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this._detailCloseLabel = label;
   }
 
-  private _rowAriaLabel = '';
   // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
   get clrDgRowAriaLabel(): string {
@@ -259,14 +223,14 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this._rowAriaLabel = label;
   }
 
-  /*****
-   * property dgCells
-   *
-   * @description
-   * A Query List of the ClrDatagrid cells in this row.
-   *
-   */
-  @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
+  get _view() {
+    return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
+  }
+
+  ngOnInit() {
+    this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
+    this.selection.lockItem(this.item, this.clrDgSelectable === false);
+  }
 
   ngAfterContentInit() {
     this.dgCells.changes.subscribe(() => {
@@ -312,6 +276,60 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     );
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  toggle(selected = !this.selected) {
+    if (selected !== this.selected) {
+      this.selected = selected;
+      this.selectedChanged.emit(selected);
+    }
+  }
+
+  toggleExpand() {
+    if (this.expand.expandable) {
+      this.expandAnimation.updateStartHeight();
+      this.expanded = !this.expanded;
+      this.expandedChange.emit(this.expanded);
+    }
+  }
+
+  /**
+   * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
+   * This prevents our intended range-selection, because this text-selection overrides our shift-click event.
+   * We need to clear the stored selection range when shift-clicking. This will override the mostly unused shift-click
+   * selection browser functionality, which is inconsistently implemented in browsers anyway.
+   */
+  clearRanges(event: MouseEvent) {
+    if (event.shiftKey) {
+      this.document.getSelection().removeAllRanges();
+      // Firefox is too persistent about its text-selection behaviour. So we need to add a preventDefault();
+      // We should not try to enforce this on the other browsers, though, because their toggle cycle does not get canceled by
+      // the preventDefault() and they toggle the checkbox second time, effectively retrurning it to not-selected.
+      if (window.navigator.userAgent.indexOf('Firefox') !== -1) {
+        event.preventDefault();
+        this.toggle(true);
+      }
+    }
+  }
+
+  /**
+   * @deprecated related to clrDgRowSelection, which is deprecated
+   */
+  selectRow(selected = !this.selected, $event) {
+    // The label also captures clicks that bubble up to the row event listener, causing
+    // this handler to run twice. This exits early to prevent toggling the checkbox twice.
+    if ($event.target.tagName === 'LABEL') {
+      return;
+    }
+    if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
+      this.selection.currentSingle = this.item;
+    } else {
+      this.toggle(selected);
+    }
+  }
+
   private rangeSelect() {
     const items = this.items.displayed;
     if (!items) {
@@ -337,28 +355,5 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       // rangeStart not yet set
       this.selection.rangeStart = this.item;
     }
-  }
-
-  private subscriptions: Subscription[] = [];
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-  }
-
-  displayCells = false;
-
-  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
-  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
-  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
-
-  private wrappedInjector: Injector;
-
-  ngOnInit() {
-    this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
-    this.selection.lockItem(this.item, this.clrDgSelectable === false);
-  }
-
-  get _view() {
-    return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
 }

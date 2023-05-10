@@ -19,13 +19,9 @@ import { ForTypeAheadProvider } from './for-type-ahead.service';
   selector: '[clrForTypeAhead]',
 })
 export class ClrForTypeAhead {
-  constructor(private el: ElementRef, private forTypeAheadProvider: ForTypeAheadProvider) {}
-
-  private trimAndLowerCase(value: string) {
-    return value.toLocaleLowerCase().trim();
-  }
-
   private _content: string;
+
+  constructor(private el: ElementRef, private forTypeAheadProvider: ForTypeAheadProvider) {}
 
   @Input('clrForTypeAhead')
   get content() {
@@ -46,5 +42,9 @@ export class ClrForTypeAhead {
       this._content = this.trimAndLowerCase(this.el.nativeElement.textContent);
       this.forTypeAheadProvider.textContent = this._content;
     }
+  }
+
+  private trimAndLowerCase(value: string) {
+    return value.toLocaleLowerCase().trim();
   }
 }

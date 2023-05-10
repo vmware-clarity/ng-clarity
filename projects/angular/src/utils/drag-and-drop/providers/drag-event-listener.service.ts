@@ -12,10 +12,26 @@ import { DragAndDropEventBusService } from './drag-and-drop-event-bus.service';
 
 @Injectable()
 export class DragEventListenerService<T> {
+  // Draggable component sets these properties:
+  dragDataTransfer?: T;
+  group?: string | string[];
+  dragStartDelay = 0;
+
+  // DraggableGhost component sets these properties:
+  ghostElement?: any;
+  dropPointPosition?: DragPointPosition;
+
   private draggableEl: any;
+  private hasDragStarted = false;
+  private initialPosition: DragPointPosition;
+  private dragStartDelayTimeout: ReturnType<typeof setTimeout>;
+  private dragStart = new Subject<DragEventInterface<T>>();
+  private dragMove = new Subject<DragEventInterface<T>>();
+  private dragEnd = new Subject<DragEventInterface<T>>();
 
   // contains listeners for the starting events such as mousedown and touchstart
   private listeners: (() => void)[] = [];
+
   // contains listeners for nested events that happens after/inside the starting events
   // such as selectstart, mousemove/touchmove, mouseup/touchend
   private nestedListeners: (() => void)[];
@@ -23,13 +39,7 @@ export class DragEventListenerService<T> {
   // contains listener for mousemove/touchmove before delay
   private checkDragStartBoundaryListener: () => void;
 
-  private dragStart = new Subject<DragEventInterface<T>>();
-  private dragMove = new Subject<DragEventInterface<T>>();
-  private dragEnd = new Subject<DragEventInterface<T>>();
-
-  private hasDragStarted = false;
-
-  private dragStartDelayTimeout: ReturnType<typeof setTimeout>;
+  constructor(private ngZone: NgZone, private renderer: Renderer2, private eventBus: DragAndDropEventBusService<T>) {}
 
   get dragStarted(): Observable<DragEventInterface<T>> {
     return this.dragStart.asObservable();
@@ -46,19 +56,6 @@ export class DragEventListenerService<T> {
   get dragStartPosition(): DragPointPosition {
     return this.initialPosition;
   }
-
-  constructor(private ngZone: NgZone, private renderer: Renderer2, private eventBus: DragAndDropEventBusService<T>) {}
-
-  private initialPosition: DragPointPosition;
-
-  // Draggable component sets these properties:
-  dragDataTransfer?: T;
-  group?: string | string[];
-  dragStartDelay = 0;
-
-  // DraggableGhost component sets these properties:
-  ghostElement?: any;
-  dropPointPosition?: DragPointPosition;
 
   attachDragListeners(draggableEl: Node) {
     this.draggableEl = draggableEl;
