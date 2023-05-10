@@ -275,6 +275,11 @@ export interface ClrCommonStrings {
   wizardStepError: string;
 
   /**
+   * Wizard: Aria-label for the stepnav section.
+   */
+  wizardStepnavAriaLabel: string;
+
+  /**
    * Password Input
    * Screen-reader text for the hide/show password field button.
    */

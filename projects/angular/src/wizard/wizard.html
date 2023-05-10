@@ -13,12 +13,12 @@
   (clrModalAlternateClose)="modalCancel()"
   [clrModalLabelledById]="wizardId"
 >
-  <nav class="modal-nav clr-wizard-stepnav-wrapper">
+  <div class="modal-nav clr-wizard-stepnav-wrapper" role="region" [attr.aria-label]="stepnavAriaLabel">
     <div class="clr-wizard-title" id="{{wizardId}}" role="heading" [attr.aria-level]="wizardTitle.headingLevel || 1">
       <ng-content select="clr-wizard-title"></ng-content>
     </div>
     <clr-wizard-stepnav></clr-wizard-stepnav>
-  </nav>
+  </div>
 
   <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage.pageTitle.headingLevel || 2">
     <span tabindex="-1" #pageTitle class="modal-title-text">

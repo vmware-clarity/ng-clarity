@@ -23,6 +23,7 @@ const defaultStory: Story = args => ({
       [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
       [clrWizardPreventModalAnimation]="clrWizardPreventModalAnimation"
       [clrWizardSize]="clrWizardSize"
+      [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
       (clrWizardOpenChange)="clrWizardOpenChange($event)"
       (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
       (clrWizardOnNext)="clrWizardOnNext($event)"
@@ -61,6 +62,7 @@ const defaultParameters: Parameters = {
     clrWizardPreventDefaultNext: { defaultValue: false },
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardPreventModalAnimation: { defaultValue: false },
+    clrWizardStepnavAriaLabel: { defaultValue: 'Step navigation', control: { type: 'text' } },
     clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },

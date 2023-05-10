@@ -25,6 +25,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { commonStringsDefault } from '../utils';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
@@ -47,6 +48,11 @@ import { ClrWizardTitle } from './wizard-title';
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
+  /**
+   * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
+   */
+  @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = commonStringsDefault.wizardStepnavAriaLabel;
+
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
