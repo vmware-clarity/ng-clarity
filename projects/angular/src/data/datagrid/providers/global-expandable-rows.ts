@@ -10,17 +10,9 @@ import { DetailService } from './detail.service';
 
 @Injectable()
 export class ExpandableRowsCount {
-  constructor(private detailService: DetailService) {}
-
   private expandableCount = 0;
 
-  register() {
-    this.expandableCount++;
-  }
-
-  unregister() {
-    this.expandableCount--;
-  }
+  constructor(private detailService: DetailService) {}
 
   /**
    * false means no rows with action
@@ -28,5 +20,13 @@ export class ExpandableRowsCount {
    */
   get hasExpandableRow(): boolean {
     return !this.detailService.enabled && this.expandableCount > 0;
+  }
+
+  register() {
+    this.expandableCount++;
+  }
+
+  unregister() {
+    this.expandableCount--;
   }
 }

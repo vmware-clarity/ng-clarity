@@ -18,6 +18,8 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   },
 })
 export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
+  @Output('clrPopoverOnCloseChange') closeChange = new EventEmitter<void>();
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -31,8 +33,6 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
       })
     );
   }
-
-  @Output('clrPopoverOnCloseChange') closeChange = new EventEmitter<void>();
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {

@@ -33,19 +33,20 @@ import { Helpers, NgControlService } from './providers/ng-control.service';
 
 @Directive()
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+  _id: string;
+
+  protected renderer: Renderer2;
+  protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
+  protected el: ElementRef<any>;
+  protected index = 0;
+  protected subscriptions: Subscription[] = [];
+
   private ifControlStateService: IfControlStateService;
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
-  protected renderer: Renderer2;
-  protected el: ElementRef<any>;
-
-  protected subscriptions: Subscription[] = [];
-  protected index = 0;
-  protected controlIdService: ControlIdService;
-
-  _id: string;
+  private _containerInjector: Injector;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -88,8 +89,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     }
   }
 
-  @HostBinding()
   @Input()
+  @HostBinding()
   get id() {
     return this._id;
   }
@@ -97,32 +98,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     this._id = value;
     if (this.controlIdService) {
       this.controlIdService.id = value;
-    }
-  }
-
-  @HostListener('blur')
-  triggerValidation() {
-    if (this.ifControlStateService) {
-      this.ifControlStateService.triggerStatusChange();
-    }
-  }
-
-  private markAsTouched(): void {
-    this.ngControl.control.markAsTouched();
-    this.ngControl.control.updateValueAndValidity();
-  }
-
-  private _containerInjector: Injector;
-
-  // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
-  // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
-  // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
-  // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
-  protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
-    try {
-      return this._containerInjector.get(token, notFoundValue);
-    } catch (e) {
-      return notFoundValue;
     }
   }
 
@@ -152,6 +127,30 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  @HostListener('blur')
+  triggerValidation() {
+    if (this.ifControlStateService) {
+      this.ifControlStateService.triggerStatusChange();
+    }
+  }
+
+  // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
+  // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
+  // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
+  // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
+  protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
+    try {
+      return this._containerInjector.get(token, notFoundValue);
+    } catch (e) {
+      return notFoundValue;
+    }
+  }
+
+  private markAsTouched(): void {
+    this.ngControl.control.markAsTouched();
+    this.ngControl.control.updateValueAndValidity();
   }
 
   private setAriaDescribedBy(helpers: Helpers) {

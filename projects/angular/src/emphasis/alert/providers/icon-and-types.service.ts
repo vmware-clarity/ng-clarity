@@ -12,11 +12,11 @@ import { ALERT_TYPES } from '../utils/alert-types';
 
 @Injectable()
 export class AlertIconAndTypesService {
-  constructor(private commonStrings: ClrCommonStringsService) {}
-
   private defaultIconShape = 'info-circle';
   private _alertIconShape = '';
   private _alertType = 'info';
+
+  constructor(private commonStrings: ClrCommonStringsService) {}
 
   get alertType(): string {
     return this._alertType;

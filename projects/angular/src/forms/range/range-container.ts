@@ -52,17 +52,6 @@ import { NgControlService } from '../common/providers/ng-control.service';
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
 
-  @Input('clrRangeHasProgress')
-  get hasProgress() {
-    return this._hasProgress;
-  }
-  set hasProgress(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._hasProgress) {
-      this._hasProgress = valBool;
-    }
-  }
-
   constructor(
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
@@ -72,6 +61,17 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
+  }
+
+  @Input('clrRangeHasProgress')
+  get hasProgress() {
+    return this._hasProgress;
+  }
+  set hasProgress(val: boolean) {
+    const valBool = !!val;
+    if (valBool !== this._hasProgress) {
+      this._hasProgress = valBool;
+    }
   }
 
   getRangeProgressFillWidth(): string {

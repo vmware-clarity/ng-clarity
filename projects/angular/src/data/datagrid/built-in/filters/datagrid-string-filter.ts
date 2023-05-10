@@ -49,7 +49,31 @@ export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>
   implements CustomFilter, AfterViewInit, OnDestroy
 {
+  /**
+   * Provide a way to pass external placeholder and aria-label to the filter input
+   */
+  @Input('clrFilterPlaceholder') placeholder: string;
+
+  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  /**
+   * Indicates if the filter dropdown is open
+   */
+  open = false;
+
+  /**
+   * We need the actual input element to automatically focus on it
+   */
+  @ViewChild('input') input: ElementRef;
+
+  /**
+   * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+   */
+  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+
+  private initFilterValue: string;
   private subs: Subscription[] = [];
+
   constructor(
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
@@ -58,15 +82,6 @@ export class DatagridStringFilter<T = any>
     private ngZone: NgZone
   ) {
     super(filters);
-  }
-
-  /**
-   * Provide a way to pass external placeholder and aria-label to the filter input
-   */
-  @Input('clrFilterPlaceholder') placeholder: string;
-
-  get placeholderValue() {
-    return this.placeholder || this.commonStrings.keys.filterItems;
   }
 
   /**
@@ -91,19 +106,29 @@ export class DatagridStringFilter<T = any>
   }
 
   /**
-   * Indicates if the filter dropdown is open
+   * Common setter for the input value
    */
-  open = false;
+  @Input('clrFilterValue')
+  get value() {
+    return this.filter.value;
+  }
+  set value(value: string) {
+    if (this.filter && typeof value === 'string') {
+      if (!value) {
+        value = '';
+      }
+      if (value !== this.filter.value) {
+        this.filter.value = value;
+        this.filterValueChange.emit(value);
+      }
+    } else {
+      this.initFilterValue = value;
+    }
+  }
 
-  /**
-   * We need the actual input element to automatically focus on it
-   */
-  @ViewChild('input') input: ElementRef;
-
-  /**
-   * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
-   */
-  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+  get placeholderValue() {
+    return this.placeholder || this.commonStrings.keys.filterItems;
+  }
 
   ngAfterViewInit() {
     this.subs.push(
@@ -128,29 +153,4 @@ export class DatagridStringFilter<T = any>
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
   }
-
-  private initFilterValue: string;
-
-  /**
-   * Common setter for the input value
-   */
-  @Input('clrFilterValue')
-  get value() {
-    return this.filter.value;
-  }
-  set value(value: string) {
-    if (this.filter && typeof value === 'string') {
-      if (!value) {
-        value = '';
-      }
-      if (value !== this.filter.value) {
-        this.filter.value = value;
-        this.filterValueChange.emit(value);
-      }
-    } else {
-      this.initFilterValue = value;
-    }
-  }
-
-  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 }

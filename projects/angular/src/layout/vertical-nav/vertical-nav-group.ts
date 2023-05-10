@@ -31,6 +31,12 @@ const COLLAPSED_STATE = 'collapsed';
   host: { class: 'nav-group' },
 })
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
+  @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
+
+  private wasExpanded = false;
+  private _subscriptions: Subscription[] = [];
+  private _expandAnimationState: string = COLLAPSED_STATE;
+
   constructor(
     private _itemExpand: IfExpandService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
@@ -83,8 +89,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     );
   }
 
-  private wasExpanded = false;
-
   @HostBinding('class.is-expanded')
   get expanded(): boolean {
     return this._itemExpand.expanded;
@@ -107,11 +111,28 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
+  get expandAnimationState(): string {
+    return this._expandAnimationState;
+  }
+  set expandAnimationState(value: string) {
+    if (value !== this._expandAnimationState) {
+      this._expandAnimationState = value;
+    }
+  }
 
-  private _subscriptions: Subscription[] = [];
+  ngAfterContentInit() {
+    // This makes sure that if someone marks a nav group expanded in a collapsed nav
+    // the expanded property is switched back to collapsed state.
+    if (this._navService.collapsed && this.expanded) {
+      this.wasExpanded = true;
+      this.expandAnimationState = COLLAPSED_STATE;
+    }
+  }
 
-  private _expandAnimationState: string = COLLAPSED_STATE;
+  ngOnDestroy() {
+    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this._navGroupRegistrationService.unregisterNavGroup();
+  }
 
   expandGroup(): void {
     this.expanded = true;
@@ -132,15 +153,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  get expandAnimationState(): string {
-    return this._expandAnimationState;
-  }
-  set expandAnimationState(value: string) {
-    if (value !== this._expandAnimationState) {
-      this._expandAnimationState = value;
-    }
-  }
-
   toggleExpand(): void {
     if (this.expanded) {
       this.collapseGroup();
@@ -152,19 +164,5 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       // then expand the nav group
       this.expandGroup();
     }
-  }
-
-  ngAfterContentInit() {
-    // This makes sure that if someone marks a nav group expanded in a collapsed nav
-    // the expanded property is switched back to collapsed state.
-    if (this._navService.collapsed && this.expanded) {
-      this.wasExpanded = true;
-      this.expandAnimationState = COLLAPSED_STATE;
-    }
-  }
-
-  ngOnDestroy() {
-    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-    this._navGroupRegistrationService.unregisterNavGroup();
   }
 }

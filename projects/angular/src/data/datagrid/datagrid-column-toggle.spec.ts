@@ -23,13 +23,13 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
 class ColumnToggleTest {
   private mockColumnsService: MockColumnsService;
 
+  constructor(columnsService: ColumnsService) {
+    this.mockColumnsService = columnsService as MockColumnsService;
+  }
+
   @ViewChild(TemplateRef)
   set templateRef(value: TemplateRef<any>) {
     this.mockColumnsService.templateRef = value;
-  }
-
-  constructor(columnsService: ColumnsService) {
-    this.mockColumnsService = columnsService as MockColumnsService;
   }
 }
 

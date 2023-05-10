@@ -97,16 +97,27 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
   hostDirectives: [ClrPopoverHostDirective],
 })
 export class ClrTabs implements AfterContentInit, OnDestroy {
+  tabLinkElements: HTMLElement[] = [];
+
+  // in order to check focus is triggered by click
+  // we are using this _mousedown flag
+  _mousedown = false;
+
+  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
+
+  @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;
+
   private subscriptions: Subscription[] = [];
+  private _tabOverflowEl: HTMLElement;
+  private _tabLinkDirectives: ClrTabLink[] = [];
 
-  private get overflowPosition() {
-    return this._tabLinkDirectives.filter(link => !link.inOverflow).length;
-  }
-
-  @ViewChild('tabContentViewContainer', { static: true, read: ViewContainerRef })
-  private set tabContentViewContainer(value: ViewContainerRef) {
-    this.tabsService.tabContentViewContainer = value;
-  }
+  constructor(
+    public ifActiveService: IfActiveService,
+    public toggleService: ClrPopoverToggleService,
+    public tabsService: TabsService,
+    @Inject(TABS_ID) public tabsId: number,
+    public commonStrings: ClrCommonStringsService
+  ) {}
 
   @Input('clrLayout')
   get layout(): TabsLayout | string {
@@ -124,24 +135,9 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     }
   }
 
-  @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;
-
-  private _tabLinkDirectives: ClrTabLink[] = [];
   get tabLinkDirectives(): ClrTabLink[] {
     return this._tabLinkDirectives;
   }
-
-  tabLinkElements: HTMLElement[] = [];
-
-  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
-
-  constructor(
-    public ifActiveService: IfActiveService,
-    public toggleService: ClrPopoverToggleService,
-    public tabsService: TabsService,
-    @Inject(TABS_ID) public tabsId: number,
-    public commonStrings: ClrCommonStringsService
-  ) {}
 
   get activeTabInOverflow() {
     return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab) > -1;
@@ -160,14 +156,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     return this.layout === TabsLayout.VERTICAL;
   }
 
-  toggleOverflowOnPosition(position: number) {
-    // we need to check current position to determine
-    // whether we need to open the tab overflow or not
-    this.toggleService.open = position >= this.overflowPosition;
-  }
-
-  private _tabOverflowEl: HTMLElement;
-
   @ViewChild(ClrTabOverflowContent, { read: ElementRef })
   set tabOverflowEl(value: ElementRef) {
     this._tabOverflowEl = value && value.nativeElement;
@@ -176,6 +164,38 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
       // we need to move the focus to the first item
       this.keyFocus.focusCurrent();
     }
+  }
+
+  private get overflowPosition() {
+    return this._tabLinkDirectives.filter(link => !link.inOverflow).length;
+  }
+
+  @ViewChild('tabContentViewContainer', { static: true, read: ViewContainerRef })
+  private set tabContentViewContainer(value: ViewContainerRef) {
+    this.tabsService.tabContentViewContainer = value;
+  }
+
+  ngAfterContentInit() {
+    this.subscriptions.push(this.listenForTabLinkChanges());
+
+    if (typeof this.ifActiveService.current === 'undefined' && this.tabLinkDirectives[0]) {
+      this.tabLinkDirectives[0].activate();
+    }
+
+    // set initial current position
+    this.keyFocus.current = this.activeTabPosition;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
+
+  toggleOverflowOnPosition(position: number) {
+    // we need to check current position to determine
+    // whether we need to open the tab overflow or not
+    this.toggleService.open = position >= this.overflowPosition;
   }
 
   resetKeyFocusCurrentToActive(event: FocusEvent) {
@@ -196,10 +216,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // reset the _mousedown flag
     this._mousedown = false;
   }
-
-  // in order to check focus is triggered by click
-  // we are using this _mousedown flag
-  _mousedown = false;
 
   openOverflowOnFocus() {
     // This method should be called only on keyboard generated focus
@@ -249,23 +265,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     return this.tabs.changes.pipe(startWith(this.tabs.map(tab => tab.tabLink))).subscribe(() => {
       this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
       this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
-    });
-  }
-
-  ngAfterContentInit() {
-    this.subscriptions.push(this.listenForTabLinkChanges());
-
-    if (typeof this.ifActiveService.current === 'undefined' && this.tabLinkDirectives[0]) {
-      this.tabLinkDirectives[0].activate();
-    }
-
-    // set initial current position
-    this.keyFocus.current = this.activeTabPosition;
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
     });
   }
 }

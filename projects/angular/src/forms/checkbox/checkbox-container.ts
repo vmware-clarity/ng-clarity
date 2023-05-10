@@ -51,10 +51,11 @@ import { ClrCheckbox } from './checkbox';
   providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-  private inline = false;
   role: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+
+  private inline = false;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,

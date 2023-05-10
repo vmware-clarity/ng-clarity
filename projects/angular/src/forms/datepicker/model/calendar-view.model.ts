@@ -12,6 +12,9 @@ import { DayViewModel } from './day-view.model';
 import { DayModel } from './day.model';
 
 export class CalendarViewModel {
+  private currMonthDayViews: DayViewModel[] = [];
+  private _calendarView: DayViewModel[][];
+
   constructor(
     public calendar: CalendarModel,
     private selectedDay: DayModel,
@@ -23,15 +26,20 @@ export class CalendarViewModel {
     this.initializeCalendarView();
   }
 
-  private currMonthDayViews: DayViewModel[] = [];
-
-  private _calendarView: DayViewModel[][];
-
   /**
    * DayViewModel matrix. Size 6x7
    */
   get calendarView(): DayViewModel[][] {
     return this._calendarView;
+  }
+
+  /**
+   * Updates the focusable day in the calendar.
+   */
+  updateFocusableDay(day: DayModel): void {
+    this.setFocusableFlag(this.focusableDay, false);
+    this.setFocusableFlag(day, true);
+    this.focusableDay = day;
   }
 
   /**
@@ -178,14 +186,5 @@ export class CalendarViewModel {
     if (day) {
       this.currMonthDayViews[day.date - 1].isFocusable = flag;
     }
-  }
-
-  /**
-   * Updates the focusable day in the calendar.
-   */
-  updateFocusableDay(day: DayModel): void {
-    this.setFocusableFlag(this.focusableDay, false);
-    this.setFocusableFlag(day, true);
-    this.focusableDay = day;
   }
 }

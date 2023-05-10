@@ -55,6 +55,7 @@ import { ClrWizard } from '../wizard';
 })
 export class TemplateApiWizardTestComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard;
+
   mySize: string;
   stepnavAriaLabel = 'Label for stepnav';
   projectedTitle = 'My Great Title';
@@ -69,6 +70,15 @@ export class TemplateApiWizardTestComponent {
   showExtraPage = false;
   stopCancel = false;
 
+  _openChange = 0;
+  _pagesLoaded = 0;
+  _firstPageLoaded = 0;
+  _currentPageChanged = 0;
+  _movedForward = 0;
+  _movedBackward = 0;
+  _cancelled = 0;
+  _finished = 0;
+
   customFinish(): void {
     this.wizard.finish(false);
   }
@@ -79,43 +89,35 @@ export class TemplateApiWizardTestComponent {
     });
   }
 
-  _openChange = 0;
   onOpenChange(): void {
     this.open = this.wizard._open;
     this._openChange++;
   }
 
-  _pagesLoaded = 0;
   handleOnLoad(): void {
     this._pagesLoaded++;
   }
 
-  _firstPageLoaded = 0;
   firstPageLoad(): void {
     this._firstPageLoaded++;
   }
 
-  _currentPageChanged = 0;
   handleCurrentChange(): void {
     this._currentPageChanged++;
   }
 
-  _movedForward = 0;
   handleOnNext(): void {
     this._movedForward++;
   }
 
-  _movedBackward = 0;
   handleOnPrevious(): void {
     this._movedBackward++;
   }
 
-  _cancelled = 0;
   handleOnCancel(): void {
     this._cancelled++;
   }
 
-  _finished = 0;
   handleOnFinish(): void {
     this._finished++;
   }

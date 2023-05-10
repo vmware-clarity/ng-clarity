@@ -81,18 +81,8 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
 export class ClrPasswordContainer extends ClrAbstractContainer {
   show = false;
   focus = false;
-  private _toggle = true;
 
-  @Input('clrToggle')
-  get clrToggle() {
-    return this._toggle;
-  }
-  set clrToggle(state: boolean) {
-    this._toggle = state;
-    if (!state) {
-      this.show = false;
-    }
-  }
+  private _toggle = true;
 
   constructor(
     ifControlStateService: IfControlStateService,
@@ -111,6 +101,17 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
         this.focus = state;
       })
     );
+  }
+
+  @Input('clrToggle')
+  get clrToggle() {
+    return this._toggle;
+  }
+  set clrToggle(state: boolean) {
+    this._toggle = state;
+    if (!state) {
+      this.show = false;
+    }
   }
 
   toggle() {

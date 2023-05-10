@@ -21,6 +21,16 @@ import { ClrPopoverToggleService } from '../../../utils/popover/providers/popove
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
+  focusBackOnTriggerWhenClosed = false;
+
+  right?: Observable<FocusableItem>;
+  down?: Observable<FocusableItem>;
+  up?: Observable<FocusableItem>;
+
+  private _trigger: HTMLElement;
+  private _container: HTMLElement;
+  private children: ReplaySubject<FocusableItem[]>;
+  private _unlistenFuncs: (() => void)[] = [];
 
   constructor(
     private renderer: Renderer2,
@@ -38,52 +48,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
-  private _unlistenFuncs: (() => void)[] = [];
-
-  /**
-   * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
-   */
-  moveToFirstItemWhenOpen() {
-    const subscription = this.toggleService.openChange.subscribe(open => {
-      if (open && this.toggleService.originalEvent) {
-        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
-        // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
-        setTimeout(() => {
-          this.focusService.moveTo(this);
-          if (this.parent) {
-            this.focusService.move(ArrowKeyDirection.RIGHT);
-          } else {
-            this.focusService.move(ArrowKeyDirection.DOWN);
-          }
-        });
-      }
-    });
-
-    this._unlistenFuncs.push(() => subscription.unsubscribe());
-  }
-
-  focusBackOnTriggerWhenClosed = false;
-
-  /**
-   * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
-   */
-  handleRootFocus() {
-    const subscription = this.toggleService.openChange.subscribe(open => {
-      if (!open) {
-        // We reset the state of the focus service both on initialization and when closing.
-        this.focusService.reset(this);
-        // But we only actively focus the trigger when closing, not on initialization.
-        if (this.focusBackOnTriggerWhenClosed) {
-          this.focus();
-        }
-      }
-      this.focusBackOnTriggerWhenClosed = open;
-    });
-
-    this._unlistenFuncs.push(() => subscription.unsubscribe());
-  }
-
-  private _trigger: HTMLElement;
   get trigger() {
     return this._trigger;
   }
@@ -105,7 +69,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
-  private _container: HTMLElement;
   get container() {
     return this._container;
   }
@@ -163,11 +126,58 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
+  ngOnDestroy() {
+    this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
+    this.focusService.detachListeners();
+  }
+
+  /**
+   * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+   */
+  moveToFirstItemWhenOpen() {
+    const subscription = this.toggleService.openChange.subscribe(open => {
+      if (open && this.toggleService.originalEvent) {
+        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
+        // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
+        setTimeout(() => {
+          this.focusService.moveTo(this);
+          if (this.parent) {
+            this.focusService.move(ArrowKeyDirection.RIGHT);
+          } else {
+            this.focusService.move(ArrowKeyDirection.DOWN);
+          }
+        });
+      }
+    });
+
+    this._unlistenFuncs.push(() => subscription.unsubscribe());
+  }
+
+  /**
+   * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
+   */
+  handleRootFocus() {
+    const subscription = this.toggleService.openChange.subscribe(open => {
+      if (!open) {
+        // We reset the state of the focus service both on initialization and when closing.
+        this.focusService.reset(this);
+        // But we only actively focus the trigger when closing, not on initialization.
+        if (this.focusBackOnTriggerWhenClosed) {
+          this.focus();
+        }
+      }
+      this.focusBackOnTriggerWhenClosed = open;
+    });
+
+    this._unlistenFuncs.push(() => subscription.unsubscribe());
+  }
+
   focus() {
     if (this.trigger && isPlatformBrowser(this.platformId)) {
       this.trigger.focus();
     }
   }
+
   blur() {
     if (this.trigger && isPlatformBrowser(this.platformId)) {
       this.trigger.blur();
@@ -178,18 +188,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     if (isPlatformBrowser(this.platformId)) {
       this.trigger.click();
     }
-  }
-
-  private children: ReplaySubject<FocusableItem[]>;
-  right?: Observable<FocusableItem>;
-  down?: Observable<FocusableItem>;
-  up?: Observable<FocusableItem>;
-
-  private openAndGetChildren() {
-    return wrapObservable(this.children, () => (this.toggleService.open = true));
-  }
-  private closeAndGetThis() {
-    return wrapObservable(of(this), () => (this.toggleService.open = false));
   }
 
   resetChildren() {
@@ -210,9 +208,12 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     this.children.next(children);
   }
 
-  ngOnDestroy() {
-    this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
-    this.focusService.detachListeners();
+  private openAndGetChildren() {
+    return wrapObservable(this.children, () => (this.toggleService.open = true));
+  }
+
+  private closeAndGetThis() {
+    return wrapObservable(of(this), () => (this.toggleService.open = false));
   }
 }
 

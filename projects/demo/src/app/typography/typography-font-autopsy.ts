@@ -32,29 +32,7 @@ export class TypographyFontAutopsyDemo {
 
   presets = fontPresets.map(presetTuple => presetTuple[0]).sort();
 
-  noop() {
-    return;
-  }
-
   fontField = 'Metropolis';
-
-  checkForPreset(event: Event) {
-    const fontName = (event.target as HTMLInputElement).value;
-    const sanitizedFontName = fontName.replace(/["']/g, '');
-    const preset = getPreset(sanitizedFontName);
-
-    if (!preset) {
-      this.fontField = '';
-      return;
-    }
-
-    this.loadPreset(preset);
-  }
-
-  loadPreset(presetToLoad: FontPreset) {
-    this.fontField = presetToLoad.font;
-    this.model.patchValue(presetToLoad);
-  }
 
   get descenderValue() {
     let myVal = 1 - this.model.value.topGap - this.model.value.ascender - this.model.value.xHeight;
@@ -76,6 +54,28 @@ export class TypographyFontAutopsyDemo {
 
   get descenderOverageHeight() {
     return pixelifyValues(millifyValues(this.model.value.descenderOverage));
+  }
+
+  noop() {
+    return;
+  }
+
+  checkForPreset(event: Event) {
+    const fontName = (event.target as HTMLInputElement).value;
+    const sanitizedFontName = fontName.replace(/["']/g, '');
+    const preset = getPreset(sanitizedFontName);
+
+    if (!preset) {
+      this.fontField = '';
+      return;
+    }
+
+    this.loadPreset(preset);
+  }
+
+  loadPreset(presetToLoad: FontPreset) {
+    this.fontField = presetToLoad.font;
+    this.model.patchValue(presetToLoad);
   }
 }
 

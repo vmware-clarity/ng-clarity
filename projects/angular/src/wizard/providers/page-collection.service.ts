@@ -44,6 +44,12 @@ export class PageCollectionService {
   pages: QueryList<ClrWizardPage>;
 
   /**
+   *
+   * @memberof PageCollectionService
+   */
+  private _pagesReset = new Subject<boolean>();
+
+  /**
    * Converts the PageCollectionService.pages QueryList to an array and returns it.
    *
    * Useful for many instances when you would prefer a QueryList to act like an array.
@@ -110,6 +116,18 @@ export class PageCollectionService {
   }
 
   /**
+   * An observable that the navigation service listens to in order to know when
+   * the page collection completed states have been reset to false so that way it
+   * can also reset the navigation to make the first page in the page collection
+   * current/active.
+   *
+   * @memberof PageCollectionService
+   */
+  get pagesReset(): Observable<boolean> {
+    return this._pagesReset.asObservable();
+  }
+
+  /**
    * Used mostly internally, but accepts a string ID and returns a ClrWizardPage
    * object that matches the ID passed. Note that IDs here should include the prefix
    * "clr-wizard-page-".
@@ -159,24 +177,6 @@ export class PageCollectionService {
     }
 
     return index;
-  }
-
-  /**
-   * Consolidates guard logic that prevents a couple of unfortunate edge cases with
-   * look ups on the collection of pages.
-   *
-   * @memberof PageCollectionService
-   */
-  private checkResults(results: ClrWizardPage[], requestedPageId: string) {
-    const foundPagesCount: number = results.length || 0;
-
-    if (foundPagesCount > 1) {
-      throw new Error('More than one page has the requested id ' + requestedPageId + '.');
-    } else if (foundPagesCount < 1) {
-      throw new Error('No page can be found with the id ' + requestedPageId + '.');
-    } else {
-      return results[0];
-    }
   }
 
   /**
@@ -331,27 +331,6 @@ export class PageCollectionService {
     }
   }
 
-  // used by the navService to navigate back to first possible step after
-  // pages are reset
-
-  /**
-   *
-   * @memberof PageCollectionService
-   */
-  private _pagesReset = new Subject<boolean>();
-
-  /**
-   * An observable that the navigation service listens to in order to know when
-   * the page collection completed states have been reset to false so that way it
-   * can also reset the navigation to make the first page in the page collection
-   * current/active.
-   *
-   * @memberof PageCollectionService
-   */
-  get pagesReset(): Observable<boolean> {
-    return this._pagesReset.asObservable();
-  }
-
   /**
    * Sets all completed states of the pages in the page collection to false and
    * notifies the navigation service to likewise reset the navigation.
@@ -412,5 +391,23 @@ export class PageCollectionService {
   findFirstIncompletePage(): ClrWizardPage {
     const myIncompleteIndex = this.findFirstIncompletePageIndex();
     return this.pagesAsArray[myIncompleteIndex];
+  }
+
+  /**
+   * Consolidates guard logic that prevents a couple of unfortunate edge cases with
+   * look ups on the collection of pages.
+   *
+   * @memberof PageCollectionService
+   */
+  private checkResults(results: ClrWizardPage[], requestedPageId: string) {
+    const foundPagesCount: number = results.length || 0;
+
+    if (foundPagesCount > 1) {
+      throw new Error('More than one page has the requested id ' + requestedPageId + '.');
+    } else if (foundPagesCount < 1) {
+      throw new Error('No page can be found with the id ' + requestedPageId + '.');
+    } else {
+      return results[0];
+    }
   }
 }

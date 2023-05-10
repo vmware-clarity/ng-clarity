@@ -16,11 +16,11 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 export class VerticalNavNestedMenusDemo {
   case: any;
 
+  private _collapse = false;
+
   constructor(public verticalNavCases: VerticalNavCases) {
     this.case = this.verticalNavCases.allNestedMenu;
   }
-
-  private _collapse = false;
 
   get collapse(): boolean {
     return this._collapse;

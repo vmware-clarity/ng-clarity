@@ -11,6 +11,9 @@ import { WillyWonka } from './willy-wonka';
 
 @Directive()
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
+  private latestFlavor: any;
+  private subscription: Subscription;
+
   // FIXME: Request Injector once we move to Angular 4.2+, it'll allow easier refactors
   constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka) {
     this.subscription = willyWonka.chocolate.subscribe(() => {
@@ -21,10 +24,6 @@ export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
       }
     });
   }
-
-  private subscription: Subscription;
-
-  private latestFlavor: any;
 
   abstract get flavor(): any;
 

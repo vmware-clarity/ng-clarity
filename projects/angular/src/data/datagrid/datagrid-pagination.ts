@@ -123,42 +123,22 @@ import { Page } from './providers/page';
   host: { '[class.pagination]': 'true' },
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
+  @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
+
+  @Output('clrDgPageChange') currentChanged = new EventEmitter<number>(false);
+
   @ContentChild(ClrDatagridPageSize) _pageSizeComponent: ClrDatagridPageSize;
+
   @ViewChild('currentPageInput') currentPageInputRef: ElementRef;
-
-  constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
-    this.page.activated = true;
-  }
-
-  /**********
-   * Subscription to the Page service for page changes.
-   * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
-   */
-  ngOnInit() {
-    /*
-     * Default page size is 10.
-     * The reason we set it here and not in the provider itself is because
-     * we don't want pagination if this component isn't present in the datagrid.
-     */
-    if (!this.page.size) {
-      this.page.size = 10;
-    }
-    this._pageSubscription = this.page.change.subscribe(current => this.currentChanged.emit(current));
-  }
 
   /**
    * Subscription to the page service changes
    */
   private _pageSubscription: Subscription;
 
-  ngOnDestroy() {
-    this.page.resetPageSize(true);
-    if (this._pageSubscription) {
-      this._pageSubscription.unsubscribe();
-    }
+  constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
+    this.page.activated = true;
   }
-
-  @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
 
   /**
    * Page size
@@ -212,22 +192,6 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     }
   }
 
-  @Output('clrDgPageChange') currentChanged = new EventEmitter<number>(false);
-
-  /**
-   * Moves to the previous page if it exists
-   */
-  previous() {
-    this.page.previous();
-  }
-
-  /**
-   * Moves to the next page if it exists
-   */
-  next() {
-    this.page.next();
-  }
-
   /**
    * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
    */
@@ -255,6 +219,43 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
       middlePages.push(this.page.current + 1);
     }
     return middlePages;
+  }
+
+  /**********
+   * Subscription to the Page service for page changes.
+   * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
+   */
+  ngOnInit() {
+    /*
+     * Default page size is 10.
+     * The reason we set it here and not in the provider itself is because
+     * we don't want pagination if this component isn't present in the datagrid.
+     */
+    if (!this.page.size) {
+      this.page.size = 10;
+    }
+    this._pageSubscription = this.page.change.subscribe(current => this.currentChanged.emit(current));
+  }
+
+  ngOnDestroy() {
+    this.page.resetPageSize(true);
+    if (this._pageSubscription) {
+      this._pageSubscription.unsubscribe();
+    }
+  }
+
+  /**
+   * Moves to the previous page if it exists
+   */
+  previous() {
+    this.page.previous();
+  }
+
+  /**
+   * Moves to the next page if it exists
+   */
+  next() {
+    this.page.next();
   }
 
   verifyCurrentPage(event: any): void {

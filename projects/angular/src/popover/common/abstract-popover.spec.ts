@@ -18,11 +18,11 @@ import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
   template: `<div class="test-popover">Popover</div>`,
 })
 class TestPopover extends AbstractPopover {
+  closeOnOutsideClick = true;
+
   constructor(injector: Injector, @Optional() parent: ElementRef) {
     super(injector, parent);
   }
-
-  closeOnOutsideClick = true;
 }
 
 @Component({

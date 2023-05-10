@@ -93,6 +93,57 @@ export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
   implements OnDestroy, OnInit, OnChanges
 {
+  @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
+  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
+  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
+
+  @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
+  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  showSeparator = true;
+
+  /**
+   * A custom filter for this column that can be provided in the projected content
+   */
+  customFilter = false;
+
+  /*
+   * What type is this column?  This defaults to STRING, but can also be
+   * set to NUMBER.  Unsupported types default to STRING. Users can set it
+   * via the [clrDgColType] input by setting it to 'string' or 'number'.
+   */
+  private _colType: 'string' | 'number' = 'string';
+
+  /*
+   * Simple object property shortcut, activates both sorting and filtering
+   * based on native comparison of the specified property on the items.
+   */
+  private _field: string;
+
+  /**
+   * ClrDatagridComparatorInterface to use when sorting the column
+   */
+  private _sortBy: ClrDatagridComparatorInterface<T>;
+
+  /**
+   * Indicates how the column is currently sorted
+   */
+  private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
+
+  private _sortDirection: 'up' | 'down' | null;
+
+  // This property holds filter value temporarily while this.filter property is not yet registered
+  // When this.filter is registered, this property value would be used update this.filter.value
+  //
+  private initFilterValue: string | [number, number];
+
+  private wrappedInjector: Injector;
+
+  /**
+   * Subscription to the sort service changes
+   */
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private _sort: Sort<T>,
     filters: FiltersProvider<T>,
@@ -105,50 +156,6 @@ export class ClrDatagridColumn<T = any>
     this.subscriptions.push(this.listenForDetailPaneChanges());
   }
 
-  showSeparator = true;
-
-  /**
-   * Subscription to the sort service changes
-   */
-  private subscriptions: Subscription[] = [];
-
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
-  private listenForDetailPaneChanges() {
-    return this.detailService.stateChange.subscribe(state => {
-      if (this.showSeparator !== !state) {
-        this.showSeparator = !state;
-        // Have to manually change because of OnPush
-        this.changeDetectorRef.markForCheck();
-      }
-    });
-  }
-
-  private listenForSortingChanges() {
-    return this._sort.change.subscribe(sort => {
-      // Need to manually mark the component to be checked
-      // for both activating and deactivating sorting
-      this.changeDetectorRef.markForCheck();
-      // We're only listening to make sure we emit an event when the column goes from sorted to unsorted
-      if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
-        this._sortOrder = ClrDatagridSortOrder.UNSORTED;
-        this.sortOrderChange.emit(this._sortOrder);
-        this._sortDirection = null;
-      }
-    });
-  }
-
-  /*
-   * What type is this column?  This defaults to STRING, but can also be
-   * set to NUMBER.  Unsupported types default to STRING. Users can set it
-   * via the [clrDgColType] input by setting it to 'string' or 'number'.
-   */
-
-  private _colType: 'string' | 'number' = 'string';
-
   // TODO: We might want to make this an enum in the future
   @Input('clrDgColType')
   get colType() {
@@ -157,12 +164,6 @@ export class ClrDatagridColumn<T = any>
   set colType(value: 'string' | 'number') {
     this._colType = value;
   }
-
-  /*
-   * Simple object property shortcut, activates both sorting and filtering
-   * based on native comparison of the specified property on the items.
-   */
-  private _field: string;
 
   @Input('clrDgField')
   get field() {
@@ -177,44 +178,6 @@ export class ClrDatagridColumn<T = any>
       }
     }
   }
-
-  private setupDefaultFilter(field: string, colType: 'string' | 'number') {
-    if (colType === 'number') {
-      this.setFilter(new DatagridNumericFilterImpl(new DatagridPropertyNumericFilter(field)));
-    } else if (colType === 'string') {
-      this.setFilter(new DatagridStringFilterImpl(new DatagridPropertyStringFilter(field)));
-    }
-    if (this.filter && this.initFilterValue) {
-      this.updateFilterValue = this.initFilterValue;
-      // This initFilterValue should be used only once after the filter registration
-      // So deleting this property value to prevent it from being used again
-      // if this field property is set again
-      delete this.initFilterValue;
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (
-      changes.colType &&
-      changes.colType.currentValue &&
-      changes.colType.currentValue !== changes.colType.previousValue
-    ) {
-      if (!this.customFilter && !this.filter && this.colType && this.field) {
-        this.setupDefaultFilter(this.field, this.colType);
-      }
-    }
-    if (changes.field && changes.field.currentValue && changes.field.currentValue !== changes.field.previousValue) {
-      if (!this.customFilter && this.colType) {
-        this.setupDefaultFilter(this.field, this.colType);
-      }
-    }
-  }
-
-  /**
-   * ClrDatagridComparatorInterface to use when sorting the column
-   */
-
-  private _sortBy: ClrDatagridComparatorInterface<T>;
 
   @Input('clrDgSortBy')
   get sortBy() {
@@ -235,18 +198,6 @@ export class ClrDatagridColumn<T = any>
       }
     }
   }
-
-  /**
-   * Indicates if the column is sortable
-   */
-  get sortable(): boolean {
-    return !!this._sortBy;
-  }
-
-  /**
-   * Indicates how the column is currently sorted
-   */
-  private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
   @Input('clrDgSortOrder')
   get sortOrder() {
@@ -277,63 +228,6 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  get ariaSort() {
-    switch (this._sortOrder) {
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        return 'none';
-      case ClrDatagridSortOrder.ASC:
-        return 'ascending';
-      case ClrDatagridSortOrder.DESC:
-        return 'descending';
-    }
-  }
-
-  @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
-
-  private _sortDirection: 'up' | 'down' | null;
-
-  get sortDirection(): 'up' | 'down' | null {
-    return this._sortDirection;
-  }
-
-  /**
-   * Sorts the datagrid based on this column
-   */
-  sort(reverse?: boolean) {
-    if (!this.sortable) {
-      return;
-    }
-
-    this._sort.toggle(this._sortBy, reverse);
-
-    // setting the private variable to not retrigger the setter logic
-    this._sortOrder = this._sort.reverse ? ClrDatagridSortOrder.DESC : ClrDatagridSortOrder.ASC;
-    // Sets the correct icon for current sort order
-    this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
-    this.sortOrderChange.emit(this._sortOrder);
-  }
-
-  /**
-   * A custom filter for this column that can be provided in the projected content
-   */
-  customFilter = false;
-
-  @ContentChild(CustomFilter)
-  set projectedFilter(custom: any) {
-    if (custom) {
-      this.deleteFilter();
-      this.customFilter = true;
-    }
-  }
-
-  /**
-   * Help with accessibility for screen readers by providing custom placeholder text inside internal filters
-   */
-  @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
-  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
-  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
-
   @Input('clrFilterValue')
   set updateFilterValue(newValue: string | [number, number]) {
     if (this.filter) {
@@ -357,10 +251,36 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  // This property holds filter value temporarily while this.filter property is not yet registered
-  // When this.filter is registered, this property value would be used update this.filter.value
-  //
-  private initFilterValue: string | [number, number];
+  @ContentChild(CustomFilter)
+  set projectedFilter(custom: any) {
+    if (custom) {
+      this.deleteFilter();
+      this.customFilter = true;
+    }
+  }
+
+  /**
+   * Indicates if the column is sortable
+   */
+  get sortable(): boolean {
+    return !!this._sortBy;
+  }
+
+  get ariaSort() {
+    switch (this._sortOrder) {
+      default:
+      case ClrDatagridSortOrder.UNSORTED:
+        return 'none';
+      case ClrDatagridSortOrder.ASC:
+        return 'ascending';
+      case ClrDatagridSortOrder.DESC:
+        return 'descending';
+    }
+  }
+
+  get sortDirection(): 'up' | 'down' | null {
+    return this._sortDirection;
+  }
 
   /**
    * @NOTE type `any` here is to let us pass templateStrictMode, because in our code we try to handle
@@ -383,15 +303,89 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
-
-  private wrappedInjector: Injector;
+  get _view() {
+    return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
+  }
 
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
 
-  get _view() {
-    return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes.colType &&
+      changes.colType.currentValue &&
+      changes.colType.currentValue !== changes.colType.previousValue
+    ) {
+      if (!this.customFilter && !this.filter && this.colType && this.field) {
+        this.setupDefaultFilter(this.field, this.colType);
+      }
+    }
+    if (changes.field && changes.field.currentValue && changes.field.currentValue !== changes.field.previousValue) {
+      if (!this.customFilter && this.colType) {
+        this.setupDefaultFilter(this.field, this.colType);
+      }
+    }
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  /**
+   * Sorts the datagrid based on this column
+   */
+  sort(reverse?: boolean) {
+    if (!this.sortable) {
+      return;
+    }
+
+    this._sort.toggle(this._sortBy, reverse);
+
+    // setting the private variable to not retrigger the setter logic
+    this._sortOrder = this._sort.reverse ? ClrDatagridSortOrder.DESC : ClrDatagridSortOrder.ASC;
+    // Sets the correct icon for current sort order
+    this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
+    this.sortOrderChange.emit(this._sortOrder);
+  }
+
+  private listenForDetailPaneChanges() {
+    return this.detailService.stateChange.subscribe(state => {
+      if (this.showSeparator !== !state) {
+        this.showSeparator = !state;
+        // Have to manually change because of OnPush
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
+
+  private listenForSortingChanges() {
+    return this._sort.change.subscribe(sort => {
+      // Need to manually mark the component to be checked
+      // for both activating and deactivating sorting
+      this.changeDetectorRef.markForCheck();
+      // We're only listening to make sure we emit an event when the column goes from sorted to unsorted
+      if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
+        this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+        this.sortOrderChange.emit(this._sortOrder);
+        this._sortDirection = null;
+      }
+    });
+  }
+
+  private setupDefaultFilter(field: string, colType: 'string' | 'number') {
+    if (colType === 'number') {
+      this.setFilter(new DatagridNumericFilterImpl(new DatagridPropertyNumericFilter(field)));
+    } else if (colType === 'string') {
+      this.setFilter(new DatagridStringFilterImpl(new DatagridPropertyStringFilter(field)));
+    }
+    if (this.filter && this.initFilterValue) {
+      this.updateFilterValue = this.initFilterValue;
+      // This initFilterValue should be used only once after the filter registration
+      // So deleting this property value to prevent it from being used again
+      // if this field property is set again
+      delete this.initFilterValue;
+    }
   }
 }

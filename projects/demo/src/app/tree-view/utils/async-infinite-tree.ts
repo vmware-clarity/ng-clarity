@@ -11,16 +11,13 @@ import { map } from 'rxjs/operators';
 import { InfiniteTree } from './infinite-tree';
 
 export class AsyncInfiniteTree {
+  private tree: InfiniteTree;
+  private delay: Observable<number>;
+
   constructor(width: number, latency = 100) {
     this.tree = new InfiniteTree(width);
     this.delay = timer(latency);
   }
-
-  /*
-   * Pure proxy for synchronous behaviors
-   */
-
-  private tree: InfiniteTree;
 
   get root() {
     return this.tree.root;
@@ -37,11 +34,6 @@ export class AsyncInfiniteTree {
   select(node: string, state: ClrSelectedState): void {
     return this.tree.select(node, state);
   }
-
-  /*
-   * Async behaviors
-   */
-  private delay: Observable<number>;
 
   fetchChildren(node: string): Observable<string[]> {
     return this.delay.pipe(map(() => this.tree.getChildren(node)));

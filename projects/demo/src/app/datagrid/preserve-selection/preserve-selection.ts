@@ -41,8 +41,7 @@ export class DatagridPreserveSelectionDemo {
   preserveFilteringTrackByIdUsers = false;
   preserveFilteringServerTrackBy = false;
 
-  trackByIndex: TrackByFunction<User> = index => index;
-  trackById: TrackByFunction<User> = (_index, item) => item.id;
+  backUpUsers: User[] = [];
 
   constructor(private inventory: Inventory) {
     this.inventory.size = this.total;
@@ -54,6 +53,9 @@ export class DatagridPreserveSelectionDemo {
       this.clientTrackByIdUsers =
         this.inventory.all;
   }
+
+  trackByIndex: TrackByFunction<User> = index => index;
+  trackById: TrackByFunction<User> = (_index, item) => item.id;
 
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
@@ -73,8 +75,6 @@ export class DatagridPreserveSelectionDemo {
         this.loading = false;
       });
   }
-
-  backUpUsers: User[] = [];
 
   updateInventorySize(): void {
     if (this.users.length === 100) {

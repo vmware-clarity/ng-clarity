@@ -7,16 +7,17 @@
 import { TemplateRef } from '@angular/core';
 
 export class MockPage {
-  constructor(pageIndex: number) {
-    this.id = 'this-is-my-page-id-' + pageIndex++;
-  }
-
   id: string;
   disabled = false;
   current = false;
   completed = false;
   readyToComplete = false;
   hasError = false;
+  navTitle: TemplateRef<any>;
+
+  constructor(pageIndex: number) {
+    this.id = 'this-is-my-page-id-' + pageIndex++;
+  }
 
   reset(): void {
     this.disabled = false;
@@ -25,6 +26,4 @@ export class MockPage {
     this.readyToComplete = false;
     this.hasError = false;
   }
-
-  navTitle: TemplateRef<any>;
 }

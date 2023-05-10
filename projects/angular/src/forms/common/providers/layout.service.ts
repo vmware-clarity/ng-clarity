@@ -16,6 +16,7 @@ export enum ClrFormLayout {
 export class LayoutService {
   readonly minLabelSize = 1;
   readonly maxLabelSize = 12;
+
   layout: ClrFormLayout | string = ClrFormLayout.HORIZONTAL;
 
   // This is basically a replacement for Object.values(), which IE11 and Node <9 don't support :(
@@ -33,6 +34,10 @@ export class LayoutService {
     }
   }
 
+  get layoutClass(): string {
+    return `clr-form-${this.layout}`;
+  }
+
   isVertical(): boolean {
     return this.layout === ClrFormLayout.VERTICAL;
   }
@@ -43,10 +48,6 @@ export class LayoutService {
 
   isCompact(): boolean {
     return this.layout === ClrFormLayout.COMPACT;
-  }
-
-  get layoutClass(): string {
-    return `clr-form-${this.layout}`;
   }
 
   isValid(layout: string): boolean {

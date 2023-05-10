@@ -15,7 +15,10 @@ import { checkForExistingPresetName, FontPreset, fontPresets, getPreset } from '
   templateUrl: './font-switcher.html',
 })
 export class FontSwitcher {
-  private _name = '';
+  @Input() layout: 'vertical' | 'horizontal' = 'vertical';
+  @Input() label = 'Presets';
+
+  @Output() switchFontPreset = new EventEmitter<FontPreset>();
 
   presetSwitcher = new FormGroup({
     preset: new FormControl('Metropolis'),
@@ -23,14 +26,7 @@ export class FontSwitcher {
 
   presets = fontPresets.map(presetTuple => presetTuple[0]).sort();
 
-  @Input() layout: 'vertical' | 'horizontal' = 'vertical';
-  @Input() label = 'Presets';
-
-  @Output() switchFontPreset = new EventEmitter<FontPreset>();
-
-  noop() {
-    return;
-  }
+  private _name = '';
 
   @Input()
   get fontName() {
@@ -40,8 +36,22 @@ export class FontSwitcher {
     this.switchFont(val);
   }
 
+  noop() {
+    return;
+  }
+
   handleSwitchFont(event: Event) {
     this.switchFont((event.target as HTMLInputElement).value);
+  }
+
+  sendFontSwitch(presetToLoad: string) {
+    const presetObj: FontPreset = getPreset(presetToLoad);
+
+    if (presetObj === null) {
+      return;
+    }
+
+    this.switchFontPreset.emit(presetObj);
   }
 
   private switchFont(presetToLoad: string) {
@@ -53,15 +63,5 @@ export class FontSwitcher {
       this.presetSwitcher.setValue({ preset: '' });
       this._name = '';
     }
-  }
-
-  sendFontSwitch(presetToLoad: string) {
-    const presetObj: FontPreset = getPreset(presetToLoad);
-
-    if (presetObj === null) {
-      return;
-    }
-
-    this.switchFontPreset.emit(presetObj);
   }
 }

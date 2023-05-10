@@ -9,16 +9,16 @@ import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
+// Popovers might need to ignore click events on an element
+// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
+
 @Injectable()
 export class ClrPopoverToggleService {
-  /**
-   *  Popovers might need to ignore click events on an element
-   *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
-   */
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
+  private _popoverAligned = new Subject<HTMLElement>();
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -30,10 +30,6 @@ export class ClrPopoverToggleService {
   set openEvent(event: Event) {
     this._openEvent = event;
     this._openEventChange.next(event);
-  }
-
-  getEventChange(): Observable<Event> {
-    return this._openEventChange.asObservable();
   }
 
   get open(): boolean {
@@ -52,6 +48,14 @@ export class ClrPopoverToggleService {
     return this._openEvent;
   }
 
+  get popoverAligned(): Observable<HTMLElement> {
+    return this._popoverAligned.asObservable();
+  }
+
+  getEventChange(): Observable<Event> {
+    return this._openEventChange.asObservable();
+  }
+
   /**
    * Sometimes, we need to remember the event that triggered the toggling to avoid loops.
    * This is for instance the case of components that open on a click, but close on a click outside.
@@ -61,12 +65,6 @@ export class ClrPopoverToggleService {
 
     this.openEvent = event;
     this.open = !this.open;
-  }
-
-  private _popoverAligned = new Subject<HTMLElement>();
-
-  get popoverAligned(): Observable<HTMLElement> {
-    return this._popoverAligned.asObservable();
   }
 
   popoverAlignedEmit(popoverNode: HTMLElement) {

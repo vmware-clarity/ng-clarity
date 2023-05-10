@@ -14,21 +14,23 @@ import { StateDebouncer } from './state-debouncer.provider';
 
 @Injectable()
 export class FiltersProvider<T = any> {
-  constructor(private _page: Page, private stateDebouncer: StateDebouncer) {}
   /**
    * This subject is the list of filters that changed last, not the whole list.
    * We emit a list rather than just one filter to allow batch changes to several at once.
    */
   private _change = new Subject<ClrDatagridFilterInterface<T>[]>();
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get change(): Observable<ClrDatagridFilterInterface<T>[]> {
-    return this._change.asObservable();
-  }
 
   /**
    * List of all filters, whether they're active or not
    */
   private _all: RegisteredFilter<T, ClrDatagridFilterInterface<T>>[] = [];
+
+  constructor(private _page: Page, private stateDebouncer: StateDebouncer) {}
+
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get change(): Observable<ClrDatagridFilterInterface<T>[]> {
+    return this._change.asObservable();
+  }
 
   /**
    * Tests if at least one filter is currently active

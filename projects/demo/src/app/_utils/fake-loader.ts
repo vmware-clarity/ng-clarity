@@ -13,9 +13,9 @@ const LATENCY = 2000;
   selector: '[clrFakeLoader]',
 })
 export class FakeLoader implements OnInit {
-  constructor(private template: TemplateRef<any>, private container: ViewContainerRef, private loading: ClrLoading) {}
-
   @Input('clrFakeLoader') fake: boolean;
+
+  constructor(private template: TemplateRef<any>, private container: ViewContainerRef, private loading: ClrLoading) {}
 
   ngOnInit() {
     if (this.fake) {

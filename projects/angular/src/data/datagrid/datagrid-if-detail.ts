@@ -23,19 +23,11 @@ import { DetailService } from './providers/detail.service';
   selector: '[clrIfDetail]',
 })
 export class ClrIfDetail implements OnInit, OnDestroy {
+  @Output('clrIfDetailChange') stateChange = new EventEmitter<any>(null);
+
   private subscriptions: Subscription[] = [];
   private skip = false; // This keeps us from resetting the input and calling the toggle twice
   private embeddedViewRef: EmbeddedViewRef<any>;
-
-  @Input('clrIfDetail')
-  set state(model: any) {
-    if (!this.skip) {
-      this.detailService.toggle(model);
-    }
-    this.skip = false;
-  }
-
-  @Output('clrIfDetailChange') stateChange = new EventEmitter<any>(null);
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -43,6 +35,14 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     private detailService: DetailService
   ) {
     this.detailService.enabled = true;
+  }
+
+  @Input('clrIfDetail')
+  set state(model: any) {
+    if (!this.skip) {
+      this.detailService.toggle(model);
+    }
+    this.skip = false;
   }
 
   ngOnInit() {
@@ -55,6 +55,10 @@ export class ClrIfDetail implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private togglePanel(showPanel: boolean) {
@@ -77,9 +81,5 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     }
 
     this.stateChange.emit(stateChangeParams);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

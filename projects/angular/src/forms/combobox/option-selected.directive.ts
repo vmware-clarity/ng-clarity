@@ -10,7 +10,7 @@ import { Directive, Input, TemplateRef } from '@angular/core';
   selector: '[clrOptionSelected]',
 })
 export class ClrOptionSelected<T> {
-  constructor(public template: TemplateRef<{ $implicit: T }>) {}
-
   @Input('clrOptionSelected') selected: T;
+
+  constructor(public template: TemplateRef<{ $implicit: T }>) {}
 }

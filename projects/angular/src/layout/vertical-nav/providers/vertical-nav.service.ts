@@ -11,18 +11,17 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class VerticalNavService {
   private _animateOnCollapsed = new Subject<boolean>();
+  private _collapsedChanged = new Subject<boolean>();
+  private _collapsed = false;
+  private _collapsible = false;
 
   get animateOnCollapsed(): Observable<boolean> {
     return this._animateOnCollapsed.asObservable();
   }
 
-  private _collapsedChanged = new Subject<boolean>();
-
   get collapsedChanged(): Observable<boolean> {
     return this._collapsedChanged.asObservable();
   }
-
-  private _collapsed = false;
 
   get collapsed(): boolean {
     return this._collapsed;
@@ -33,8 +32,6 @@ export class VerticalNavService {
       this.updateCollapseBehavior(value);
     }
   }
-
-  private _collapsible = false;
 
   get collapsible(): boolean {
     return this._collapsible;

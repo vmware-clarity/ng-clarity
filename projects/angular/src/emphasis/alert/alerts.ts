@@ -33,7 +33,12 @@ import { MultiAlertService } from './providers/multi-alert.service';
   styles: [':host { display: block }'],
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
+  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
+  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
+
   private subscriptions: Subscription[] = [];
+
+  constructor(public multiAlertService: MultiAlertService) {}
 
   @ContentChildren(ClrAlert)
   set allAlerts(value: QueryList<ClrAlert>) {
@@ -49,8 +54,6 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
       this.multiAlertService.current = index;
     }
   }
-
-  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
 
   get currentAlertIndex() {
     return this.multiAlertService.current;
@@ -71,7 +74,6 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
       this.multiAlertService.currentAlert = alert;
     }
   }
-  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
 
   /**
    * Ensure we are only dealing with alerts that have not been closed yet
@@ -88,8 +90,6 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     }
     return '';
   }
-
-  constructor(public multiAlertService: MultiAlertService) {}
 
   ngAfterContentInit() {
     this.subscriptions.push(

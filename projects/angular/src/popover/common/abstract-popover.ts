@@ -26,6 +26,28 @@ import { PopoverOptions } from './popover-options.interface';
 
 @Directive()
 export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
+  /*
+   * Until https://github.com/angular/angular/issues/8785 is supported, we don't have any way to instantiate
+   * a separate directive on the host. So let's do dirty but performant for now.
+   */
+  closeOnOutsideClick = false;
+
+  protected el: ElementRef;
+  protected toggleService: ClrPopoverToggleService;
+  protected renderer: Renderer2;
+  protected ngZone: NgZone;
+  protected ref: ChangeDetectorRef;
+  protected anchorElem: any;
+  protected anchorPoint: Point;
+  protected popoverPoint: Point;
+  protected popoverOptions: PopoverOptions = {};
+  protected ignoredElement: any;
+
+  private updateAnchor = false;
+  private popoverInstance: Popover;
+  private subscription: Subscription;
+  private documentESCListener: VoidFunction | null = null;
+
   constructor(injector: Injector, @SkipSelf() protected parentHost: ElementRef) {
     this.el = injector.get(ElementRef);
     this.toggleService = injector.get(ClrPopoverToggleService);
@@ -51,31 +73,12 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     }
   }
 
-  protected el: ElementRef;
-  protected toggleService: ClrPopoverToggleService;
-  protected renderer: Renderer2;
-  protected ngZone: NgZone;
-  protected ref: ChangeDetectorRef;
-
-  private popoverInstance: Popover;
-  private subscription: Subscription;
-
-  private updateAnchor = false;
-
-  protected anchorElem: any;
-  protected anchorPoint: Point;
-  protected popoverPoint: Point;
-  protected popoverOptions: PopoverOptions = {};
-
-  protected ignoredElement: any;
-
-  protected anchor() {
-    this.updateAnchor = true;
-  }
-
-  protected release() {
-    this.detachOutsideClickListener();
-    this.popoverInstance.release();
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  @HostBinding('class.is-off-screen')
+  get isOffScreen() {
+    return this.toggleService.open ? false : true;
   }
 
   ngAfterViewChecked() {
@@ -97,21 +100,14 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  /*
-   * Fallback to hide when *clrIfOpen is not being used
-   */
-
-  @HostBinding('class.is-off-screen')
-  get isOffScreen() {
-    return this.toggleService.open ? false : true;
+  protected anchor() {
+    this.updateAnchor = true;
   }
 
-  /*
-   * Until https://github.com/angular/angular/issues/8785 is supported, we don't have any way to instantiate
-   * a separate directive on the host. So let's do dirty but performant for now.
-   */
-  closeOnOutsideClick = false;
-  private documentESCListener: VoidFunction | null = null;
+  protected release() {
+    this.detachOutsideClickListener();
+    this.popoverInstance.release();
+  }
 
   private attachESCListener(): void {
     if (this.popoverOptions.ignoreGlobalESCListener) {

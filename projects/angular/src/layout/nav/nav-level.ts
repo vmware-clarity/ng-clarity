@@ -49,10 +49,9 @@ export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;
   @Input('closeAriaLabel') closeButtonAriaLabel: string;
 
-  private _subscription: Subscription;
-
   private _isOpen = false;
   private _document: Document;
+  private _subscription: Subscription;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,
@@ -91,6 +90,19 @@ export class ClrNavLevel implements OnInit {
     );
   }
 
+  get level(): number {
+    return this._level;
+  }
+
+  // getter to access the responsive navigation codes from the template
+  get responsiveNavCodes(): ResponsiveNavCodes {
+    return ResponsiveNavCodes;
+  }
+
+  get isOpen(): boolean {
+    return this._isOpen;
+  }
+
   ngOnInit() {
     this.cdkTrapFocus.enabled = false;
 
@@ -125,26 +137,9 @@ export class ClrNavLevel implements OnInit {
     }
   }
 
-  addNavClass(level: number) {
-    const navHostClassList = this.elementRef.nativeElement.classList;
-    if (level === ResponsiveNavCodes.NAV_LEVEL_1) {
-      navHostClassList.add(ResponsiveNavCodes.NAV_CLASS_LEVEL_1);
-    } else if (level === ResponsiveNavCodes.NAV_LEVEL_2) {
-      navHostClassList.add(ResponsiveNavCodes.NAV_CLASS_LEVEL_2);
-    }
-  }
-
-  get level(): number {
-    return this._level;
-  }
-
-  // getter to access the responsive navigation codes from the template
-  get responsiveNavCodes(): ResponsiveNavCodes {
-    return ResponsiveNavCodes;
-  }
-
-  get isOpen(): boolean {
-    return this._isOpen;
+  ngOnDestroy() {
+    this.responsiveNavService.unregisterNav(this.level);
+    this._subscription.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -157,22 +152,6 @@ export class ClrNavLevel implements OnInit {
     }
 
     this.showNavigation();
-  }
-
-  open(): void {
-    this._isOpen = true;
-    this.showNavigation();
-    this.cdkTrapFocus.enabled = true;
-    this.showCloseButton();
-    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, this.level);
-  }
-
-  close(): void {
-    this._isOpen = false;
-    this.hideNavigation();
-    this.cdkTrapFocus.enabled = false;
-    this.hideCloseButton();
-    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, this.level);
   }
 
   // TODO: Figure out whats the best way to do this. Possible methods
@@ -197,6 +176,31 @@ export class ClrNavLevel implements OnInit {
     }
   }
 
+  addNavClass(level: number) {
+    const navHostClassList = this.elementRef.nativeElement.classList;
+    if (level === ResponsiveNavCodes.NAV_LEVEL_1) {
+      navHostClassList.add(ResponsiveNavCodes.NAV_CLASS_LEVEL_1);
+    } else if (level === ResponsiveNavCodes.NAV_LEVEL_2) {
+      navHostClassList.add(ResponsiveNavCodes.NAV_CLASS_LEVEL_2);
+    }
+  }
+
+  open(): void {
+    this._isOpen = true;
+    this.showNavigation();
+    this.cdkTrapFocus.enabled = true;
+    this.showCloseButton();
+    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, this.level);
+  }
+
+  close(): void {
+    this._isOpen = false;
+    this.hideNavigation();
+    this.cdkTrapFocus.enabled = false;
+    this.hideCloseButton();
+    this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, this.level);
+  }
+
   protected hideNavigation() {
     this.renderer.setAttribute(this.elementRef.nativeElement, 'aria-hidden', 'true');
     this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', 'true');
@@ -215,10 +219,5 @@ export class ClrNavLevel implements OnInit {
   protected showCloseButton() {
     this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
-  }
-
-  ngOnDestroy() {
-    this.responsiveNavService.unregisterNav(this.level);
-    this._subscription.unsubscribe();
   }
 }

@@ -32,21 +32,25 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
   providers: [{ provide: LoadingListener, useExisting: ClrButton }],
 })
 export class ClrButton implements LoadingListener {
-  private _enableService = false;
+  @Output('click') _click = new EventEmitter<boolean>(false);
 
   @ViewChild('buttonProjectedRef', { static: true }) templateRef: TemplateRef<ClrButton>;
+
+  loading: boolean;
+
+  private _inMenu = false;
+  private _enableService = false;
+  private _classNames = 'btn';
+  private _name: string = null;
+  private _type: string = null;
+  private _disabled: any = null;
+  private _id: string = uniqueIdFactory();
 
   constructor(
     @SkipSelf()
     @Optional()
     public buttonInGroupService: ButtonInGroupService
   ) {}
-
-  get role(): string {
-    return this.inMenu ? 'menuitem' : null;
-  }
-
-  private _inMenu = false;
 
   @Input('clrInMenu')
   get inMenu(): boolean {
@@ -64,8 +68,6 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  private _classNames = 'btn';
-
   @Input('class')
   get classNames(): string {
     return this._classNames;
@@ -80,8 +82,6 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  private _name: string = null;
-
   @Input('name')
   get name(): string {
     return this._name;
@@ -91,8 +91,6 @@ export class ClrButton implements LoadingListener {
       this._name = value;
     }
   }
-
-  private _type: string = null;
 
   @Input('type')
   get type(): string {
@@ -104,8 +102,6 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  private _id: string = uniqueIdFactory();
-
   @Input('id')
   get id(): string {
     return this._id;
@@ -115,8 +111,6 @@ export class ClrButton implements LoadingListener {
       this._id = value;
     }
   }
-
-  private _disabled: any = null;
 
   @Input('disabled')
   get disabled(): any {
@@ -130,19 +124,19 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  loading: boolean;
+  get role(): string {
+    return this.inMenu ? 'menuitem' : null;
+  }
+
+  ngAfterViewInit() {
+    this._enableService = true;
+  }
 
   loadingStateChange(state: ClrLoadingState): void {
     this.loading = state === ClrLoadingState.LOADING;
   }
 
-  @Output('click') _click = new EventEmitter<boolean>(false);
-
   emitClick(): void {
     this._click.emit(true);
-  }
-
-  ngAfterViewInit() {
-    this._enableService = true;
   }
 }

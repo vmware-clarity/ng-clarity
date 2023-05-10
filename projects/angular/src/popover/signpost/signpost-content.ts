@@ -58,6 +58,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
+  private _position: string;
 
   constructor(
     injector: Injector,
@@ -81,18 +82,6 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
 
     this.document = document;
   }
-
-  /**********
-   *
-   * @description
-   * Close function that uses the signpost instance to toggle the state of the content popover.
-   *
-   */
-  close() {
-    this.toggleService.open = false;
-  }
-
-  private _position: string;
 
   /*********
    *
@@ -143,6 +132,16 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     this.popoverPoint = setPosition.popoverPoint;
     this.popoverOptions.offsetY = setPosition.offsetY;
     this.popoverOptions.offsetX = setPosition.offsetX;
+  }
+
+  /**********
+   *
+   * @description
+   * Close function that uses the signpost instance to toggle the state of the content popover.
+   *
+   */
+  close() {
+    this.toggleService.open = false;
   }
 
   override ngOnDestroy() {

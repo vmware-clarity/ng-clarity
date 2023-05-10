@@ -77,7 +77,60 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
+  @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
+  @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
+
+  // Allows disabling of the auto focus on page/state changes (excludes focus management inside of popups)
+  @Input() clrDgDisablePageFocus = false;
+
+  @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<T[]>(false);
+  @Output('clrDgSingleSelectedChange') singleSelectedChanged = new EventEmitter<T>(false);
+
+  /**
+   * Output emitted whenever the data needs to be refreshed, based on user action or external ones
+   */
+  @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
+
+  /**
+   * We grab the smart iterator from projected content
+   */
+  @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
+
+  /**
+   * Custom placeholder detection
+   */
+  @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
+
+  /**
+   * Hideable Column data source / detection.
+   */
+  @ContentChildren(ClrDatagridColumn) columns: QueryList<ClrDatagridColumn<T>>;
+
+  /**
+   * When the datagrid is user-managed without the smart iterator, we get the items displayed
+   * by querying the projected content. This is needed to keep track of the models currently
+   * displayed, typically for selection.
+   */
+  @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
+
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
+  @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
+  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
+  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
+  @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
+  @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
+
   selectAllId: string;
+
+  /* reference to the enum so that template can access */
+  SELECTION_TYPE = SelectionType;
+
+  /**
+   * Subscriptions to all the services and queries changes
+   */
+  private _subscriptions: Subscription[] = [];
+
   constructor(
     private organizer: DatagridRenderOrganizer,
     public items: Items<T>,
@@ -102,9 +155,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.detailService.id = datagridId;
   }
 
-  /* reference to the enum so that template can access */
-  SELECTION_TYPE = SelectionType;
-
   /**
    * Freezes the datagrid while data is loading
    */
@@ -115,23 +165,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   set loading(value: boolean) {
     this.items.loading = value;
   }
-
-  /**
-   * Output emitted whenever the data needs to be refreshed, based on user action or external ones
-   */
-  @Output('clrDgRefresh') refresh = new EventEmitter<ClrDatagridStateInterface<T>>(false);
-
-  /**
-   * Public method to re-trigger the computation of displayed items manually
-   */
-  dataChanged() {
-    this.items.refresh();
-  }
-
-  /**
-   * We grab the smart iterator from projected content
-   */
-  @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
 
   /**
    * Array of all selected items
@@ -145,8 +178,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
     this.selection.updateCurrent(value, false);
   }
-
-  @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<T[]>(false);
 
   /**
    * Selected item in single-select mode
@@ -164,18 +195,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
   }
 
-  @Output('clrDgSingleSelectedChange') singleSelectedChanged = new EventEmitter<T>(false);
-
-  @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
-  @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
-  @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
-  // Allows disabling of the auto focus on page/state changes (excludes focus management inside of popups)
-  @Input() clrDgDisablePageFocus = false;
-
   @Input()
   set clrDgPreserveSelection(state: boolean) {
     this.selection.preserveSelection = state;
   }
+
   /**
    * @deprecated since 2.0, remove in 3.0
    *
@@ -205,27 +229,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
      */
     this.selection.toggleAll();
   }
-
-  /**
-   * Custom placeholder detection
-   */
-  @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
-
-  /**
-   * Hideable Column data source / detection.
-   */
-  @ContentChildren(ClrDatagridColumn) columns: QueryList<ClrDatagridColumn<T>>;
-
-  /**
-   * When the datagrid is user-managed without the smart iterator, we get the items displayed
-   * by querying the projected content. This is needed to keep track of the models currently
-   * displayed, typically for selection.
-   */
-
-  @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
-  @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
-
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
 
   ngAfterContentInit() {
     if (!this.items.smart) {
@@ -360,11 +363,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     });
   }
 
-  /**
-   * Subscriptions to all the services and queries changes
-   */
-  private _subscriptions: Subscription[] = [];
-
   ngOnDestroy() {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
@@ -373,8 +371,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.organizer.resize();
   }
 
-  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
-  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
-  @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
-  @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
+  /**
+   * Public method to re-trigger the computation of displayed items manually
+   */
+  dataChanged() {
+    this.items.refresh();
+  }
 }
