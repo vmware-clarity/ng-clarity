@@ -16,21 +16,6 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
   `,
 })
 export class ClrProgressBar {
-  /**
-   * Handle component ID
-   */
-  private _ID: string;
-  @HostBinding('attr.id') externalId = '';
-  @Input()
-  get id() {
-    return this._ID;
-  }
-  set id(value: string) {
-    this._ID = value;
-    this.externalId = null;
-  }
-
-  // Progress
   @Input('clrMax') max: number | string = 100;
   @Input('clrDisplayval') displayval: string;
 
@@ -43,16 +28,29 @@ export class ClrProgressBar {
    */
   @Input('clrValue') value: number | string = 0;
 
-  // Styles
+  @HostBinding('attr.id') externalId = '';
+
+  private _ID: string;
+  private _labeled: boolean;
+  private _fade: boolean;
+  private _loop: boolean;
+  private _success: boolean;
+  private _danger: boolean;
+  private _flash: boolean;
+  private _flashDanger: boolean;
+
+  @Input()
+  get id() {
+    return this._ID;
+  }
+  set id(value: string) {
+    this._ID = value;
+    this.externalId = null;
+  }
+
   @HostBinding('class.progress')
   get progressClass() {
     return true;
-  }
-
-  private _labeled: boolean;
-  @HostBinding('class.labeled')
-  get labeledClass() {
-    return this._labeled;
   }
 
   @Input('clrLabeled')
@@ -60,10 +58,9 @@ export class ClrProgressBar {
     this._labeled = isBooleanAttributeSet(value);
   }
 
-  private _fade: boolean;
-  @HostBinding('class.progress-fade')
-  get fadeClass() {
-    return this._fade;
+  @HostBinding('class.labeled')
+  get labeledClass() {
+    return this._labeled;
   }
 
   @Input('clrFade')
@@ -71,10 +68,9 @@ export class ClrProgressBar {
     this._fade = isBooleanAttributeSet(value);
   }
 
-  private _loop: boolean;
-  @HostBinding('class.loop')
-  get loopClass() {
-    return this._loop;
+  @HostBinding('class.progress-fade')
+  get fadeClass() {
+    return this._fade;
   }
 
   @Input('clrLoop')
@@ -82,10 +78,9 @@ export class ClrProgressBar {
     this._loop = isBooleanAttributeSet(value);
   }
 
-  private _success: boolean;
-  @HostBinding('class.success')
-  get successClass() {
-    return this._success;
+  @HostBinding('class.loop')
+  get loopClass() {
+    return this._loop;
   }
 
   /** @deprecated since 2.0, remove in 4.0 */
@@ -94,10 +89,9 @@ export class ClrProgressBar {
     this._success = isBooleanAttributeSet(value);
   }
 
-  private _danger: boolean;
-  @HostBinding('class.danger')
-  get dangerClass() {
-    return this._danger;
+  @HostBinding('class.success')
+  get successClass() {
+    return this._success;
   }
 
   /** @deprecated since 2.0, remove in 4.0 */
@@ -106,10 +100,9 @@ export class ClrProgressBar {
     this._danger = isBooleanAttributeSet(value);
   }
 
-  private _flash: boolean;
-  @HostBinding('class.flash')
-  get flashClass() {
-    return this._flash;
+  @HostBinding('class.danger')
+  get dangerClass() {
+    return this._danger;
   }
 
   @Input('clrFlash')
@@ -117,10 +110,9 @@ export class ClrProgressBar {
     this._flash = isBooleanAttributeSet(value);
   }
 
-  private _flashDanger: boolean;
-  @HostBinding('class.flash-danger')
-  get flashDangerClass() {
-    return this._flashDanger;
+  @HostBinding('class.flash')
+  get flashClass() {
+    return this._flash;
   }
 
   /** @deprecated since 2.0, remove in 4.0 */
@@ -129,11 +121,9 @@ export class ClrProgressBar {
     this._flashDanger = isBooleanAttributeSet(value);
   }
 
-  /**
-   * Display optional text only when labeled is eneabled
-   */
-  displayStringValue() {
-    return this._labeled;
+  @HostBinding('class.flash-danger')
+  get flashDangerClass() {
+    return this._flashDanger;
   }
 
   /**
@@ -145,5 +135,12 @@ export class ClrProgressBar {
       return this.displayval;
     }
     return `${this.value || 0}%`;
+  }
+
+  /**
+   * Display optional text only when labeled is eneabled
+   */
+  displayStringValue() {
+    return this._labeled;
   }
 }

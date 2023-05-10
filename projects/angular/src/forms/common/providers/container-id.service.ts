@@ -19,6 +19,8 @@ let counter = 0;
 @Injectable()
 export class ContainerIdService {
   private _id = `clr-form-container-${++counter}`;
+  private _idChange = new BehaviorSubject(this._id);
+
   get id(): string {
     return this._id;
   }
@@ -27,7 +29,6 @@ export class ContainerIdService {
     this._idChange.next(value);
   }
 
-  private _idChange = new BehaviorSubject(this._id);
   get idChange(): Observable<string> {
     return this._idChange.asObservable();
   }

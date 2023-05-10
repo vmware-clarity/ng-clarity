@@ -12,18 +12,16 @@ import { ClrAlert } from '../alert';
 @Injectable()
 export class MultiAlertService {
   private subscription: Subscription;
-
   private allAlerts: QueryList<ClrAlert>;
+  private _change = new Subject<number>();
+  private _current: number;
 
   /**
    * The Observable that lets other classes subscribe to changes
    */
-  private _change = new Subject<number>();
   get changes(): Observable<number> {
     return this._change.asObservable();
   }
-
-  private _current: number;
 
   get current() {
     return this._current;

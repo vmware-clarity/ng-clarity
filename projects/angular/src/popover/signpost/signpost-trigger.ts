@@ -31,13 +31,12 @@ import { SignpostIdService } from './providers/signpost-id.service';
  *
  */
 export class ClrSignpostTrigger implements OnDestroy {
-  private subscriptions: Subscription[] = [];
-
   ariaExpanded: boolean;
   ariaControl: string;
   isOpen: boolean;
 
   private document: Document;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private toggleService: ClrPopoverToggleService,
@@ -72,6 +71,20 @@ export class ClrSignpostTrigger implements OnDestroy {
     this.addDefaultAriaLabel(this.el.nativeElement);
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  /**********
+   *
+   * @description
+   * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
+   */
+  @HostListener('click', ['$event'])
+  onSignpostTriggerClick(event: Event): void {
+    this.toggleService.toggleWithEvent(event);
+  }
+
   private addDefaultAriaLabel(el: HTMLElement) {
     if (!el.hasAttribute('aria-label')) {
       el.setAttribute('aria-label', this.commonStrings.keys.signpostToggle);
@@ -87,19 +100,5 @@ export class ClrSignpostTrigger implements OnDestroy {
     if (!this.isOpen && this.document.activeElement === this.document.body) {
       this.signpostFocusManager.focusTrigger();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-  }
-
-  /**********
-   *
-   * @description
-   * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
-   */
-  @HostListener('click', ['$event'])
-  onSignpostTriggerClick(event: Event): void {
-    this.toggleService.toggleWithEvent(event);
   }
 }

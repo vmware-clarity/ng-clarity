@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+const memberOrderingConfig = require('./.eslintrc-member-ordering');
+
 module.exports = {
   env: {
     browser: true,
@@ -36,6 +38,7 @@ module.exports = {
             accessibility: 'no-public',
           },
         ],
+        '@typescript-eslint/member-ordering': ['error', memberOrderingConfig],
         '@typescript-eslint/no-explicit-any': 'off', // Would LOVE to turn this on
         '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/no-unused-vars': [

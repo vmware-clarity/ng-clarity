@@ -11,12 +11,15 @@ import { ModalStackService } from '../../../modal/modal-stack.service';
 
 @Injectable()
 export class DetailService {
-  private toggleState = false;
-  private _state = new BehaviorSubject<boolean | null>(this.toggleState);
-  private cache: any;
-  private _enabled = false;
-  private button: HTMLButtonElement;
   id: string;
+
+  private toggleState = false;
+  private cache: any;
+  private button: HTMLButtonElement;
+  private _enabled = false;
+  private _state = new BehaviorSubject<boolean | null>(this.toggleState);
+
+  constructor(private readonly modalStackService: ModalStackService) {}
 
   get enabled(): boolean {
     return this._enabled;
@@ -25,11 +28,25 @@ export class DetailService {
     this._enabled = state;
   }
 
+  get state() {
+    return this.cache;
+  }
+
   get stateChange(): Observable<boolean | null> {
     return this._state.asObservable();
   }
 
-  constructor(private readonly modalStackService: ModalStackService) {}
+  get isOpen() {
+    return this.toggleState === true;
+  }
+
+  open(item: any, button?: HTMLButtonElement) {
+    this.cache = item;
+    this.button = button;
+    this.toggleState = true;
+    this._state.next(this.toggleState);
+    this.modalStackService.trackModalOpen(this);
+  }
 
   close() {
     this.toggleState = false;
@@ -41,14 +58,6 @@ export class DetailService {
     }
   }
 
-  open(item: any, button?: HTMLButtonElement) {
-    this.cache = item;
-    this.button = button;
-    this.toggleState = true;
-    this._state.next(this.toggleState);
-    this.modalStackService.trackModalOpen(this);
-  }
-
   toggle(item: any, button?: HTMLButtonElement) {
     if (this.isRowOpen(item) || !item) {
       this.close();
@@ -57,15 +66,7 @@ export class DetailService {
     }
   }
 
-  get state() {
-    return this.cache;
-  }
-
   isRowOpen(item: any) {
     return !!(this.toggleState && this.cache === item);
-  }
-
-  get isOpen() {
-    return this.toggleState === true;
   }
 }

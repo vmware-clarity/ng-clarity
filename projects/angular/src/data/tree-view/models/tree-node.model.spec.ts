@@ -10,14 +10,14 @@ import { ClrSelectedState } from './selected-state.enum';
 import { TreeNodeModel } from './tree-node.model';
 
 class TestModel extends TreeNodeModel<string> {
+  children: TestModel[];
+  parent: TestModel | null;
+
   constructor(name: string, parent: TestModel) {
     super();
     this.model = name;
     this.parent = parent;
   }
-
-  children: TestModel[];
-  parent: TestModel | null;
 }
 
 export default function (): void {

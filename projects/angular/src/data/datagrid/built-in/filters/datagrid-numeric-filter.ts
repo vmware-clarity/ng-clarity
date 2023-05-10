@@ -50,60 +50,10 @@ export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>
   implements CustomFilter, AfterViewInit
 {
-  constructor(
-    filters: FiltersProvider<T>,
-    private domAdapter: DomAdapter,
-    public commonStrings: ClrCommonStringsService,
-    private popoverToggleService: ClrPopoverToggleService,
-    private ngZone: NgZone
-  ) {
-    super(filters);
-  }
-
-  private subscriptions: Subscription[] = [];
-
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
-  }
-
-  /**
-   * Provide a way to pass external placeholder and aria-label to the filter input
-   */
+  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
 
-  get maxPlaceholderValue() {
-    return this.maxPlaceholder || this.commonStrings.keys.maxValue;
-  }
-
-  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
-
-  get minPlaceholderValue() {
-    return this.minPlaceholder || this.commonStrings.keys.minValue;
-  }
-
-  /**
-   * Customizable filter logic based on high and low values
-   */
-  @Input('clrDgNumericFilter')
-  set customNumericFilter(
-    value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>
-  ) {
-    if (value instanceof RegisteredFilter) {
-      this.setFilter(value);
-    } else {
-      this.setFilter(new DatagridNumericFilterImpl(value));
-    }
-    if (this.initFilterValues) {
-      this.value = this.initFilterValues;
-      // This initFilterValues should be used only once after the filter registration
-      // So deleting this property value to prevent it from being used again
-      // if this customStringFilter property is set again
-      delete this.initFilterValues;
-    }
-  }
+  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
   /**
    * Indicates if the filter dropdown is open
@@ -119,26 +69,20 @@ export class DatagridNumericFilter<T = any>
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
   @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
-  ngAfterViewInit() {
-    this.subscriptions.push(
-      this.popoverToggleService.openChange.subscribe(openChange => {
-        this.open = openChange;
-        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
-        // running change detection.
-        this.ngZone.runOutsideAngular(() => {
-          // The animation frame in used because when this executes, the input isn't displayed.
-          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
-          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
-          // Animation tasks are executed within the next rendering frame.
-          requestAnimationFrame(() => {
-            this.domAdapter.focus(this.input.nativeElement);
-          });
-        });
-      })
-    );
-  }
 
   private initFilterValues: [number, number];
+  private subscriptions: Subscription[] = [];
+
+  constructor(
+    filters: FiltersProvider<T>,
+    private domAdapter: DomAdapter,
+    public commonStrings: ClrCommonStringsService,
+    private popoverToggleService: ClrPopoverToggleService,
+    private ngZone: NgZone
+  ) {
+    super(filters);
+  }
+
   /**
    * Common setter for the input values
    */
@@ -164,6 +108,35 @@ export class DatagridNumericFilter<T = any>
     } else {
       this.initFilterValues = values;
     }
+  }
+
+  /**
+   * Customizable filter logic based on high and low values
+   */
+  @Input('clrDgNumericFilter')
+  set customNumericFilter(
+    value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>
+  ) {
+    if (value instanceof RegisteredFilter) {
+      this.setFilter(value);
+    } else {
+      this.setFilter(new DatagridNumericFilterImpl(value));
+    }
+    if (this.initFilterValues) {
+      this.value = this.initFilterValues;
+      // This initFilterValues should be used only once after the filter registration
+      // So deleting this property value to prevent it from being used again
+      // if this customStringFilter property is set again
+      delete this.initFilterValues;
+    }
+  }
+
+  get maxPlaceholderValue() {
+    return this.maxPlaceholder || this.commonStrings.keys.maxValue;
+  }
+
+  get minPlaceholderValue() {
+    return this.minPlaceholder || this.commonStrings.keys.minValue;
   }
 
   get low() {
@@ -202,5 +175,29 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+  ngAfterViewInit() {
+    this.subscriptions.push(
+      this.popoverToggleService.openChange.subscribe(openChange => {
+        this.open = openChange;
+        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
+        // running change detection.
+        this.ngZone.runOutsideAngular(() => {
+          // The animation frame in used because when this executes, the input isn't displayed.
+          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
+          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
+          // Animation tasks are executed within the next rendering frame.
+          requestAnimationFrame(() => {
+            this.domAdapter.focus(this.input.nativeElement);
+          });
+        });
+      })
+    );
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
 }

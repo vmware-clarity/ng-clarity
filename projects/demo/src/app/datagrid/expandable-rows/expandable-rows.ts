@@ -16,12 +16,6 @@ import { User } from '../inventory/user';
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridExpandableRowsDemo {
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
-
   users: User[];
   selected: User[];
   detail = 'columns';
@@ -30,6 +24,12 @@ export class DatagridExpandableRowsDemo {
   slowLoad = false;
   date = false;
   removeRowDetail = false;
+
+  constructor(inventory: Inventory) {
+    inventory.size = 10;
+    inventory.reset();
+    this.users = inventory.all;
+  }
 
   get selectable() {
     return !!this.selected;

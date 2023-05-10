@@ -18,13 +18,13 @@ import { Subject } from 'rxjs';
  */
 @Directive()
 export class WillyWonka implements AfterViewChecked {
+  disableChocolateCheck = false;
+
   private _chocolate = new Subject<string>();
 
   get chocolate(): Observable<string> {
     return this._chocolate.asObservable();
   }
-
-  disableChocolateCheck = false;
 
   ngAfterViewChecked() {
     if (!this.disableChocolateCheck) {

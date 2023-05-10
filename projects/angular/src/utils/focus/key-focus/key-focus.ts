@@ -27,13 +27,20 @@ import { normalizeKey, preventArrowKeyScroll } from './util';
   template: '<ng-content></ng-content>',
 })
 export class ClrKeyFocus {
-  constructor(private elementRef: ElementRef) {}
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;
   @Input('clrFocusOnLoad') focusOnLoad = false;
-  @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
+
   @ContentChildren(ClrKeyFocusItem, { descendants: true }) protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
 
+  protected subscriptions: Subscription[] = [];
+
+  @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
+
+  private _current = 0;
   private _focusableItems: Array<FocusableItem>;
+
+  constructor(private elementRef: ElementRef) {}
+
   /**
    * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
@@ -61,8 +68,6 @@ export class ClrKeyFocus {
     return this.elementRef.nativeElement;
   }
 
-  private _current = 0;
-
   get current() {
     return this._current;
   }
@@ -79,20 +84,6 @@ export class ClrKeyFocus {
   get currentItemElement(): HTMLElement {
     return this.currentItem.nativeElement ? this.currentItem.nativeElement : (this.currentItem as HTMLElement);
   }
-
-  focusCurrent() {
-    this.currentItem.focus();
-    this.focusChange.next(this._current);
-  }
-
-  moveTo(position: number) {
-    if (this.positionInRange(position)) {
-      this.current = position;
-      this.focusCurrent();
-    }
-  }
-
-  protected subscriptions: Subscription[] = [];
 
   ngAfterContentInit() {
     this.subscriptions.push(this.listenForItemUpdates());
@@ -135,11 +126,15 @@ export class ClrKeyFocus {
     }
   }
 
-  private getItemPosition(item: HTMLElement) {
-    if (this._focusableItems) {
-      return this.focusableItems.indexOf(item);
-    } else {
-      return this.focusableItems.map(_item => _item.nativeElement).indexOf(item);
+  focusCurrent() {
+    this.currentItem.focus();
+    this.focusChange.next(this._current);
+  }
+
+  moveTo(position: number) {
+    if (this.positionInRange(position)) {
+      this.current = position;
+      this.focusCurrent();
     }
   }
 
@@ -171,12 +166,6 @@ export class ClrKeyFocus {
     }
   }
 
-  private listenForItemUpdates() {
-    return this.clrKeyFocusItems.changes.subscribe(() => {
-      this.initializeFocus();
-    });
-  }
-
   protected nextKeyPressed(event: KeyboardEvent) {
     const key = normalizeKey(event.key);
 
@@ -205,5 +194,19 @@ export class ClrKeyFocus {
       default:
         return false;
     }
+  }
+
+  private getItemPosition(item: HTMLElement) {
+    if (this._focusableItems) {
+      return this.focusableItems.indexOf(item);
+    } else {
+      return this.focusableItems.map(_item => _item.nativeElement).indexOf(item);
+    }
+  }
+
+  private listenForItemUpdates() {
+    return this.clrKeyFocusItems.changes.subscribe(() => {
+      this.initializeFocus();
+    });
   }
 }

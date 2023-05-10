@@ -17,19 +17,10 @@ export type ClrDatagridItemsTrackByFunction<T> = (item: T) => any;
 
 @Injectable()
 export class Items<T = any> {
-  constructor(private _filters: FiltersProvider<T>, private _sort: Sort<T>, private _page: Page) {}
-
   /**
    * Indicates if the data is currently loading
    */
   loading = false;
-
-  /**
-   * Tracking function to identify objects. Default is reference equality.
-   *
-   * @deprecated in v15 and scheduled for removal in v17 (CDE-71)
-   */
-  iteratorTrackBy: TrackByFunction<T> = (_index, item) => item;
 
   /**
    * New tracking function to identify objects. If provided, this will be used instead of `iteratorTrackBy`.
@@ -42,6 +33,83 @@ export class Items<T = any> {
   private _filtersSub: Subscription;
   private _sortSub: Subscription;
   private _pageSub: Subscription;
+
+  /**
+   * Whether we should use smart items for this datagrid or let the user handle
+   * everything.
+   */
+  private _smart = false;
+
+  /**
+   * List of all items in the datagrid
+   */
+  private _all: T[];
+
+  /**
+   * Internal temporary step, which we preserve to avoid re-filtering or re-sorting if not necessary
+   */
+  private _filtered: T[];
+
+  /**
+   * List of items currently displayed
+   */
+  private _displayed: T[] = [];
+
+  /**
+   * The Observable that lets other classes subscribe to items changes
+   */
+  private _change = new Subject<T[]>();
+
+  private _allChanges = new Subject<T[]>();
+
+  constructor(private _filters: FiltersProvider<T>, private _sort: Sort<T>, private _page: Page) {}
+
+  get smart(): boolean {
+    return this._smart;
+  }
+
+  get all() {
+    return this._all;
+  }
+  set all(items: T[]) {
+    this._all = items;
+    this.emitAllChanges(items);
+    if (this.smart) {
+      this._filterItems();
+    } else {
+      this._displayed = items;
+      this.emitChange();
+    }
+  }
+
+  get displayed(): T[] {
+    // Ideally we could return an immutable array, but we don't have it in Clarity yet.
+    return this._displayed;
+  }
+
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get change(): Observable<T[]> {
+    return this._change.asObservable();
+  }
+
+  get allChanges(): Observable<T[]> {
+    return this._allChanges.asObservable();
+  }
+
+  /**
+   * Checks if we don't have data to process yet, to abort early operations
+   */
+  private get uninitialized() {
+    return !this._all;
+  }
+
+  /**
+   * Tracking function to identify objects. Default is reference equality.
+   *
+   * @deprecated in v15 and scheduled for removal in v17 (CDE-71)
+   */
+  iteratorTrackBy: TrackByFunction<T> = (_index, item) => item;
+
   /**
    * Cleans up our subscriptions to other providers
    */
@@ -57,14 +125,6 @@ export class Items<T = any> {
     }
   }
 
-  /**
-   * Whether we should use smart items for this datagrid or let the user handle
-   * everything.
-   */
-  private _smart = false;
-  get smart(): boolean {
-    return this._smart;
-  }
   smartenUp() {
     this._smart = true;
     /*
@@ -82,24 +142,6 @@ export class Items<T = any> {
       }
     });
     this._pageSub = this._page.change.subscribe(() => this._changePage());
-  }
-
-  /**
-   * List of all items in the datagrid
-   */
-  private _all: T[];
-  get all() {
-    return this._all;
-  }
-  set all(items: T[]) {
-    this._all = items;
-    this.emitAllChanges(items);
-    if (this.smart) {
-      this._filterItems();
-    } else {
-      this._displayed = items;
-      this.emitChange();
-    }
   }
 
   /**
@@ -127,46 +169,12 @@ export class Items<T = any> {
     }
   }
 
-  /**
-   * Internal temporary step, which we preserve to avoid re-filtering or re-sorting if not necessary
-   */
-  private _filtered: T[];
-
-  /**
-   * List of items currently displayed
-   */
-  private _displayed: T[] = [];
-  get displayed(): T[] {
-    // Ideally we could return an immutable array, but we don't have it in Clarity yet.
-    return this._displayed;
-  }
-
-  /**
-   * The Observable that lets other classes subscribe to items changes
-   */
-  private _change = new Subject<T[]>();
   private emitChange() {
     this._change.next(this.displayed);
   }
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get change(): Observable<T[]> {
-    return this._change.asObservable();
-  }
 
-  private _allChanges = new Subject<T[]>();
   private emitAllChanges(items: T[]): void {
     this._allChanges.next(items);
-  }
-
-  get allChanges(): Observable<T[]> {
-    return this._allChanges.asObservable();
-  }
-
-  /**
-   * Checks if we don't have data to process yet, to abort early operations
-   */
-  private get uninitialized() {
-    return !this._all;
   }
 
   /**

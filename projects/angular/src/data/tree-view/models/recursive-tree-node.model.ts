@@ -15,6 +15,12 @@ import { TreeNodeModel } from './tree-node.model';
  * Recursive = Model dictates the tree node components
  */
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+  parent: RecursiveTreeNodeModel<T> | null;
+
+  private subscription: Subscription;
+  private childrenFetched = false;
+  private _children: RecursiveTreeNodeModel<T>[] = [];
+
   constructor(
     model: T,
     parent: RecursiveTreeNodeModel<T> | null,
@@ -26,9 +32,20 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     this.parent = parent;
   }
 
-  parent: RecursiveTreeNodeModel<T> | null;
+  get children(): RecursiveTreeNodeModel<T>[] {
+    this.fetchChildren();
+    return this._children;
+  }
+  set children(value: RecursiveTreeNodeModel<T>[]) {
+    this._children = value;
+  }
 
-  private childrenFetched = false;
+  override destroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    super.destroy();
+  }
 
   clearChildren() {
     this._children.forEach(child => child.destroy());
@@ -68,23 +85,5 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
 
   private wrapChildren(rawModels: T[]) {
     return rawModels.map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
-  }
-
-  private _children: RecursiveTreeNodeModel<T>[] = [];
-  get children(): RecursiveTreeNodeModel<T>[] {
-    this.fetchChildren();
-    return this._children;
-  }
-  set children(value: RecursiveTreeNodeModel<T>[]) {
-    this._children = value;
-  }
-
-  private subscription: Subscription;
-
-  override destroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    super.destroy();
   }
 }

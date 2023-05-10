@@ -42,12 +42,10 @@ export class DatagridKitchenSinkDemo {
   showId = true;
   date = new Date();
 
-  toggleItems() {
-    if (this.variableLengthUsers.length === 5) {
-      this.variableLengthUsers = DatagridKitchenSinkData.users;
-    } else {
-      this.variableLengthUsers = DatagridKitchenSinkData.users.slice(0, 5);
-    }
+  constructor() {
+    this.nonPaginatedUsers = DatagridKitchenSinkData.users.slice(0, 5);
+    this.variableLengthUsers = DatagridKitchenSinkData.users.slice(0, 5);
+    this.users = DatagridKitchenSinkData.users;
   }
 
   get selectable() {
@@ -61,18 +59,20 @@ export class DatagridKitchenSinkDemo {
     }
   }
 
-  constructor() {
-    this.nonPaginatedUsers = DatagridKitchenSinkData.users.slice(0, 5);
-    this.variableLengthUsers = DatagridKitchenSinkData.users.slice(0, 5);
-    this.users = DatagridKitchenSinkData.users;
-  }
-
   get selected() {
     return this._selected;
   }
   set selected(selection: User[]) {
     this._selected = selection;
     this.cleanUp();
+  }
+
+  toggleItems() {
+    if (this.variableLengthUsers.length === 5) {
+      this.variableLengthUsers = DatagridKitchenSinkData.users;
+    } else {
+      this.variableLengthUsers = DatagridKitchenSinkData.users.slice(0, 5);
+    }
   }
 
   cleanUp() {

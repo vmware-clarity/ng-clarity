@@ -32,13 +32,20 @@ export class DateIOService {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
+
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
+
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
   constructor(private _localeHelperService: LocaleHelperService) {
     this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
     this.initializeLocaleDisplayFormat();
+  }
+
+  get placeholderText(): string {
+    const format: [string, string, string] = this.localeDisplayFormat.format;
+    return format[0] + this.delimiters[0] + format[1] + this.delimiters[1] + format[2];
   }
 
   setMinDate(date: string): void {
@@ -62,6 +69,47 @@ export class DateIOService {
     } else {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.maxDate = new DayModel(year, month - 1, day);
+    }
+  }
+
+  toLocaleDisplayFormatString(date: Date): string {
+    if (date) {
+      if (isNaN(date.getTime())) {
+        return '';
+      }
+      const dateNo: number = date.getDate();
+      const monthNo: number = date.getMonth() + 1;
+      const dateStr: string = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
+      const monthStr: string = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
+      if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+        return dateStr + this.delimiters[0] + monthStr + this.delimiters[1] + date.getFullYear();
+      } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+        return monthStr + this.delimiters[0] + dateStr + this.delimiters[1] + date.getFullYear();
+      } else {
+        return date.getFullYear() + this.delimiters[0] + monthStr + this.delimiters[1] + dateStr;
+      }
+    }
+    return '';
+  }
+
+  getDateValueFromDateString(date: string): Date {
+    if (!date) {
+      return null;
+    }
+    const dateParts: string[] = date.match(USER_INPUT_REGEX);
+    if (!dateParts || dateParts.length !== 3) {
+      return null;
+    }
+    const [firstPart, secondPart, thirdPart] = dateParts;
+    if (this.localeDisplayFormat === LITTLE_ENDIAN) {
+      // secondPart is month && firstPart is date
+      return this.validateAndGetDate(thirdPart, secondPart, firstPart);
+    } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
+      // firstPart is month && secondPart is date
+      return this.validateAndGetDate(thirdPart, firstPart, secondPart);
+    } else {
+      // secondPart is month && thirdPart is date
+      return this.validateAndGetDate(firstPart, secondPart, thirdPart);
     }
   }
 
@@ -95,31 +143,6 @@ export class DateIOService {
         console.error('Unexpected date format received. Delimiters extracted: ', delimiters);
       }
     }
-  }
-
-  toLocaleDisplayFormatString(date: Date): string {
-    if (date) {
-      if (isNaN(date.getTime())) {
-        return '';
-      }
-      const dateNo: number = date.getDate();
-      const monthNo: number = date.getMonth() + 1;
-      const dateStr: string = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
-      const monthStr: string = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
-      if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-        return dateStr + this.delimiters[0] + monthStr + this.delimiters[1] + date.getFullYear();
-      } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-        return monthStr + this.delimiters[0] + dateStr + this.delimiters[1] + date.getFullYear();
-      } else {
-        return date.getFullYear() + this.delimiters[0] + monthStr + this.delimiters[1] + dateStr;
-      }
-    }
-    return '';
-  }
-
-  get placeholderText(): string {
-    const format: [string, string, string] = this.localeDisplayFormat.format;
-    return format[0] + this.delimiters[0] + format[1] + this.delimiters[1] + format[2];
   }
 
   /**
@@ -163,26 +186,5 @@ export class DateIOService {
     }
     const result: number = parseToFourDigitYear(y);
     return result !== -1 ? new Date(result, m, d) : null;
-  }
-
-  getDateValueFromDateString(date: string): Date {
-    if (!date) {
-      return null;
-    }
-    const dateParts: string[] = date.match(USER_INPUT_REGEX);
-    if (!dateParts || dateParts.length !== 3) {
-      return null;
-    }
-    const [firstPart, secondPart, thirdPart] = dateParts;
-    if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-      // secondPart is month && firstPart is date
-      return this.validateAndGetDate(thirdPart, secondPart, firstPart);
-    } else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-      // firstPart is month && secondPart is date
-      return this.validateAndGetDate(thirdPart, firstPart, secondPart);
-    } else {
-      // secondPart is month && thirdPart is date
-      return this.validateAndGetDate(firstPart, secondPart, thirdPart);
-    }
   }
 }

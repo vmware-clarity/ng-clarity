@@ -29,11 +29,11 @@ import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/p
   hostDirectives: [ClrPopoverHostDirective],
 })
 export class DummyAnchor {
+  @Input() openOnFocus = false;
+
   @ViewChild('ignore') ignore: ElementRef;
 
   constructor(private toggleService: ClrPopoverToggleService) {}
-
-  @Input() openOnFocus = false;
 
   onFocus(event: FocusEvent) {
     this.toggleService.toggleWithEvent(event);

@@ -186,6 +186,7 @@ export default function (): void {
 
 class TestFilter implements ClrDatagridFilterInterface<number> {
   active = true;
+  changes = new Subject<boolean>();
 
   isActive(): boolean {
     return this.active;
@@ -194,8 +195,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
   accepts(_n: number): boolean {
     return true;
   }
-
-  changes = new Subject<boolean>();
 }
 
 @Component({

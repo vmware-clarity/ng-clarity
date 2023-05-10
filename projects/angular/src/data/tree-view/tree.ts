@@ -38,6 +38,8 @@ import { ClrTreeNode } from './tree-node';
   },
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
+  @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -72,8 +74,6 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     return this.featuresService.selectable && this.rootNodes.length > 0;
   }
 
-  @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
-
   ngAfterContentInit() {
     this.setRootNodes();
     this.subscriptions.push(
@@ -83,14 +83,14 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     );
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   private setRootNodes(): void {
     // if node has no parent, it's a root node
     // for recursive tree, this.rootNodes registers also nested children
     // so we have to use filter to extract the ones that are truly root nodes
     this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

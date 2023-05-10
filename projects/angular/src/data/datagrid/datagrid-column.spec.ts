@@ -475,6 +475,8 @@ class TestComparator implements ClrDatagridComparatorInterface<number> {
 }
 
 class TestFilter implements ClrDatagridFilterInterface<number> {
+  changes = new Subject<boolean>();
+
   isActive(): boolean {
     return true;
   }
@@ -482,8 +484,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
   accepts(_n: number): boolean {
     return true;
   }
-
-  changes = new Subject<boolean>();
 }
 
 class TestStringFilter implements ClrDatagridStringFilterInterface<number> {

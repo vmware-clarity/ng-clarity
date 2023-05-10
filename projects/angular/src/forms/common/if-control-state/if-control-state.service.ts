@@ -23,9 +23,6 @@ export class IfControlStateService implements OnDestroy {
 
   // Implement our own status changes observable, since Angular controls don't
   private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
-  get statusChanges(): Observable<CONTROL_STATE> {
-    return this._statusChanges.asObservable();
-  }
 
   constructor(private ngControlService: NgControlService) {
     // Wait for the control to be available
@@ -45,6 +42,14 @@ export class IfControlStateService implements OnDestroy {
     );
   }
 
+  get statusChanges(): Observable<CONTROL_STATE> {
+    return this._statusChanges.asObservable();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   triggerStatusChange() {
     /* Check if control is defined and run the code only then */
     if (this.control) {
@@ -53,10 +58,5 @@ export class IfControlStateService implements OnDestroy {
       const status = CONTROL_STATE[this.control.status];
       this._statusChanges.next(['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE);
     }
-  }
-
-  // Clean up subscriptions
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

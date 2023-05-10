@@ -16,16 +16,12 @@ import { DatalistIdService } from './providers/datalist-id.service';
   },
 })
 export class ClrDatalist implements AfterContentInit {
-  private subscriptions: Subscription[] = [];
-  constructor(@Optional() private datalistIdService: DatalistIdService) {}
   datalistId: string;
 
-  ngAfterContentInit() {
-    if (!this.datalistIdService) {
-      return;
-    }
-    this.subscriptions.push(this.datalistIdService.idChange.subscribe(id => (this.datalistId = id)));
-  }
+  private subscriptions: Subscription[] = [];
+
+  constructor(@Optional() private datalistIdService: DatalistIdService) {}
+
   @Input()
   set id(idValue: string) {
     if (!!idValue && this.datalistIdService) {
@@ -34,6 +30,13 @@ export class ClrDatalist implements AfterContentInit {
     } else if (idValue) {
       this.datalistId = idValue;
     }
+  }
+
+  ngAfterContentInit() {
+    if (!this.datalistIdService) {
+      return;
+    }
+    this.subscriptions.push(this.datalistIdService.idChange.subscribe(id => (this.datalistId = id)));
   }
 
   ngOnDestroy() {

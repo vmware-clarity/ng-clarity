@@ -41,18 +41,8 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
 
   @ViewChild('headerButton') headerButton: ElementRef;
+
   private subscriptions: Subscription[] = [];
-
-  get formGroup() {
-    return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
-  }
-
-  override get id(): string {
-    return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
-  }
-  override set id(_value: string) {
-    // overriding parent id required empty setter
-  }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -64,6 +54,17 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     cdr: ChangeDetectorRef
   ) {
     super(commonStrings, stepperService, ifExpandService, cdr);
+  }
+
+  override get id(): string {
+    return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
+  }
+  override set id(_value: string) {
+    // overriding parent id required empty setter
+  }
+
+  get formGroup() {
+    return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
   override ngOnInit(): void {

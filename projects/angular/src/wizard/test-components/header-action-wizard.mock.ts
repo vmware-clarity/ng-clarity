@@ -52,10 +52,12 @@ import { bellIcon, ClarityIcons, cloudIcon, warningStandardIcon } from '@cds/cor
 export class HeaderActionsTestComponent {
   open = true;
   _headerActionWasClicked = false;
-  headerActionClicked = function () {
-    this._headerActionWasClicked = true;
-  };
+
   constructor() {
     ClarityIcons.addIcons(cloudIcon, bellIcon, warningStandardIcon);
+  }
+
+  headerActionClicked() {
+    this._headerActionWasClicked = true;
   }
 }

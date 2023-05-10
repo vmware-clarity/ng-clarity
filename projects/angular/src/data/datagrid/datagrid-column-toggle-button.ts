@@ -26,17 +26,13 @@ import { ColumnsService } from './providers/columns.service';
   `,
 })
 export class ClrDatagridColumnToggleButton {
-  constructor(public commonStrings: ClrCommonStringsService, private columnsService: ColumnsService) {}
-
   private allSelected: Subject<boolean> = new EventEmitter();
+
+  constructor(public commonStrings: ClrCommonStringsService, private columnsService: ColumnsService) {}
 
   @Output('clrAllSelected')
   get clrAllSelected(): Observable<boolean> {
     return this.allSelected.asObservable();
-  }
-
-  private hideableColumns(): BehaviorSubject<ColumnState>[] {
-    return this.columnsService.columns.filter(column => column.value.hideable);
   }
 
   get allHideablesVisible() {
@@ -51,5 +47,9 @@ export class ClrDatagridColumnToggleButton {
       })
     );
     this.allSelected.next(true);
+  }
+
+  private hideableColumns(): BehaviorSubject<ColumnState>[] {
+    return this.columnsService.columns.filter(column => column.value.hideable);
   }
 }

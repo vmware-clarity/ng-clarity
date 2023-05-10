@@ -40,19 +40,15 @@ import { panelAnimation } from './utils/animation';
 export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
+
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
+
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  panel: Observable<AccordionPanelModel>;
   readonly AccordionStatus = AccordionStatus;
-  isAccordion = true;
 
-  get id(): string {
-    return this._id;
-  }
-  set id(value: string) {
-    this._id = value;
-  }
+  isAccordion = true;
+  panel: Observable<AccordionPanelModel>;
 
   private _id = uniqueIdFactory();
   private _panelIndex: number;
@@ -63,6 +59,17 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     private ifExpandService: IfExpandService,
     private cdr: ChangeDetectorRef
   ) {}
+
+  get id(): string {
+    return this._id;
+  }
+  set id(value: string) {
+    this._id = value;
+  }
+
+  get panelNumber() {
+    return this._panelIndex + 1;
+  }
 
   ngOnInit() {
     this.panel = this.accordionService.getPanelChanges(this.id).pipe(tap(panel => this.emitPanelChange(panel)));
@@ -79,10 +86,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     if (this.panel && changes.disabled && changes.disabled.currentValue !== changes.disabled.previousValue) {
       this.accordionService.disablePanel(this.id, changes.disabled.currentValue);
     }
-  }
-
-  get panelNumber() {
-    return this._panelIndex + 1;
   }
 
   togglePanel() {

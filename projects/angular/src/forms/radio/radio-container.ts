@@ -51,10 +51,11 @@ import { ClrRadio } from './radio';
   providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-  private inline = false;
   role: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+
+  private inline = false;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,

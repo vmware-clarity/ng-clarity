@@ -13,6 +13,9 @@ import { DatagridRenderStep } from '../enums/render-step.enum';
 @Injectable()
 export class DatagridRenderOrganizer {
   protected _renderStep = new Subject<DatagridRenderStep>();
+
+  private alreadySized = false;
+
   get renderStep(): Observable<DatagridRenderStep> {
     return this._renderStep.asObservable();
   }
@@ -20,8 +23,6 @@ export class DatagridRenderOrganizer {
   filterRenderSteps(step: DatagridRenderStep) {
     return this.renderStep.pipe(filter(testStep => step === testStep));
   }
-
-  private alreadySized = false;
 
   resize() {
     this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_ON);

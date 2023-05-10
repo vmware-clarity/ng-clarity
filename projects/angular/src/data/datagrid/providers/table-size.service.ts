@@ -15,6 +15,8 @@ import { ElementRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 export class TableSizeService {
   private _tableRef: HTMLElement;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+
   get tableRef(): HTMLElement {
     return this._tableRef;
   }
@@ -22,7 +24,6 @@ export class TableSizeService {
     this._tableRef = element;
   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
   set table(table: ElementRef) {
     if (isPlatformBrowser(this.platformId) && table.nativeElement) {
       this.tableRef = table.nativeElement.querySelector('.datagrid-table');

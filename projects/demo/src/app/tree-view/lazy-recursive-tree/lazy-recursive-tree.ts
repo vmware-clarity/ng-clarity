@@ -16,14 +16,10 @@ import { InfiniteTree } from '../utils/infinite-tree';
 })
 export class LazyRecursiveTreeDemo {
   tree = new InfiniteTree(3);
-
-  synchronousChildren = (node: string) => this.tree.getChildren(node);
-
   asyncTree = new AsyncInfiniteTree(3, 500);
-
-  asynchronousChildren = (node: string) => this.asyncTree.fetchChildren(node);
-
   lazierTree = new AsyncInfiniteTree(3, 500);
 
+  synchronousChildren = (node: string) => this.tree.getChildren(node);
+  asynchronousChildren = (node: string) => this.asyncTree.fetchChildren(node);
   lazierChildren = (node: string) => this.lazierTree.fetchChildren(node);
 }

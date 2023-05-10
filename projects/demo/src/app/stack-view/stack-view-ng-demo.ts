@@ -10,6 +10,11 @@ import { ClrStackBlock } from '@clr/angular';
 @Directive()
 export class StackViewNgDemo {
   /*
+   * Lazy loading demo
+   */
+  @ViewChild('lazyBlock') lazyBlock: ClrStackBlock;
+
+  /*
    * Modal edit demo
    */
   blocks: any[] = [
@@ -27,11 +32,6 @@ export class StackViewNgDemo {
   ];
 
   editModal = false;
-
-  /*
-   * Lazy loading demo
-   */
-  @ViewChild('lazyBlock') lazyBlock: ClrStackBlock;
   children: any[] = [];
 
   fetchChildren(): void {

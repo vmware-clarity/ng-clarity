@@ -16,17 +16,17 @@ export class ClrCommonStringsService {
   private _strings = commonStringsDefault;
 
   /**
-   * Allows you to pass in new overrides for localization
-   */
-  localize(overrides: Partial<ClrCommonStrings>) {
-    this._strings = { ...this._strings, ...overrides };
-  }
-
-  /**
    * Access to all of the keys as strings
    */
   get keys(): Readonly<ClrCommonStrings> {
     return this._strings;
+  }
+
+  /**
+   * Allows you to pass in new overrides for localization
+   */
+  localize(overrides: Partial<ClrCommonStrings>) {
+    this._strings = { ...this._strings, ...overrides };
   }
 
   /**

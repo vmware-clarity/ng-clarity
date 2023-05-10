@@ -13,6 +13,7 @@ import { FocusableItem } from './focusable-item';
 @Injectable()
 export class BasicFocusableItem implements FocusableItem {
   id = uniqueIdFactory();
+  disabled = false;
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -22,8 +23,6 @@ export class BasicFocusableItem implements FocusableItem {
     renderer.setAttribute(el.nativeElement, 'id', this.id);
     renderer.setAttribute(el.nativeElement, 'tabindex', '-1');
   }
-
-  disabled = false;
 
   focus() {
     if (isPlatformBrowser(this.platformId)) {

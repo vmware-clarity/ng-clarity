@@ -15,6 +15,11 @@ import { NgControlService } from './providers/ng-control.service';
   selector: 'label',
 })
 export class ClrLabel implements OnInit, OnDestroy {
+  @Input('for') @HostBinding('attr.for') forAttr: string;
+
+  private enableGrid = true;
+  private subscriptions: Subscription[] = [];
+
   constructor(
     @Optional() private controlIdService: ControlIdService,
     @Optional() private layoutService: LayoutService,
@@ -22,11 +27,6 @@ export class ClrLabel implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private el: ElementRef
   ) {}
-
-  @Input('for') @HostBinding('attr.for') forAttr: string;
-
-  private subscriptions: Subscription[] = [];
-  private enableGrid = true;
 
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
@@ -53,11 +53,11 @@ export class ClrLabel implements OnInit, OnDestroy {
     }
   }
 
-  disableGrid() {
-    this.enableGrid = false;
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  disableGrid() {
+    this.enableGrid = false;
   }
 }

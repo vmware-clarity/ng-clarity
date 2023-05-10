@@ -11,16 +11,10 @@ import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filt
 import { DatagridPropertyNumericFilter } from './datagrid-property-numeric-filter';
 
 export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
-  constructor(public filterFn: ClrDatagridNumericFilterInterface<T>) {}
-
   /**
    * The Observable required as part of the Filter interface
    */
   private _changes = new Subject<[number, number]>();
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get changes(): Observable<[number, number]> {
-    return this._changes.asObservable();
-  }
 
   /**
    * Internal values and accessor
@@ -28,11 +22,12 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   private _low: number | null = null;
   private _high: number | null = null;
 
-  /**
-   * Common setters for the input values, including individual limits and
-   * both at the same time.  Value is singular to make the interface similar
-   * to the built-in string filter.
-   */
+  constructor(public filterFn: ClrDatagridNumericFilterInterface<T>) {}
+
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get changes(): Observable<[number, number]> {
+    return this._changes.asObservable();
+  }
 
   get value(): [number, number] {
     return [this._low, this._high];
@@ -67,6 +62,17 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     }
   }
 
+  get state() {
+    if (this.filterFn instanceof DatagridPropertyNumericFilter) {
+      return {
+        property: this.filterFn.prop,
+        low: this._low,
+        high: this._high,
+      };
+    }
+    return this;
+  }
+
   /**
    * Indicates if the filter is currently active, (at least one input is set)
    */
@@ -81,17 +87,6 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     // We have a filter function in case someone wants to implement a numeric
     // filter that always passes nulls or similar
     return this.filterFn.accepts(item, this._low, this._high);
-  }
-
-  get state() {
-    if (this.filterFn instanceof DatagridPropertyNumericFilter) {
-      return {
-        property: this.filterFn.prop,
-        low: this._low,
-        high: this._high,
-      };
-    }
-    return this;
   }
 
   equals(other: ClrDatagridFilterInterface<T, any>): boolean {

@@ -15,6 +15,8 @@ import { ClrKeyFocus } from './key-focus';
   template: '<ng-content></ng-content>',
 })
 export class ClrRovingTabindex extends ClrKeyFocus {
+  private disabled = false;
+
   constructor(elementRef: ElementRef, private renderer: Renderer2) {
     super(elementRef);
   }
@@ -27,8 +29,6 @@ export class ClrRovingTabindex extends ClrKeyFocus {
   set rovingIndexItems(elements: Array<FocusableItem> | string) {
     this.focusableItems = elements as Array<FocusableItem>;
   }
-
-  private disabled = false;
 
   @Input('clrRovingTabindexDisabled')
   set rovingTabindexDisabled(disabled: boolean) {

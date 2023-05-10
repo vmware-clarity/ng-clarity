@@ -13,24 +13,21 @@ import { Component } from '@angular/core';
 })
 export class IconButtonGroupDemo {
   flip = false;
+  flip1 = false;
+  flip2 = false;
+  flip3 = false;
 
   toggleFlip() {
     this.flip = !this.flip;
   }
 
-  flip1 = false;
-
   toggleFlip1() {
     this.flip1 = !this.flip1;
   }
 
-  flip2 = false;
-
   toggleFlip2() {
     this.flip2 = !this.flip2;
   }
-
-  flip3 = false;
 
   toggleFlip3() {
     this.flip3 = !this.flip3;

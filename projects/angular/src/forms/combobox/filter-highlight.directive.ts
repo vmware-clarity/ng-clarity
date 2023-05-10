@@ -18,9 +18,12 @@ import { OptionSelectionService } from './providers/option-selection.service';
   selector: '[clrFilterHighlight]',
 })
 export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
+  @HostBinding('class') elementClass = 'clr-filter-highlight';
+
   private subscriptions: Subscription[] = [];
   private initialHtml: string;
   private filter = '';
+
   constructor(
     private element: ElementRef,
     private optionSelectionService: OptionSelectionService<T>,
@@ -39,7 +42,9 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
     }
   }
 
-  @HostBinding('class') elementClass = 'clr-filter-highlight';
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   private sanitizeForRegexp(value: string): string {
     if (!value) {
@@ -60,9 +65,5 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
     } else {
       this.element.nativeElement.innerHTML = this.initialHtml;
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

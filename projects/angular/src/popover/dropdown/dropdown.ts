@@ -24,6 +24,8 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   hostDirectives: [ClrPopoverHostDirective],
 })
 export class ClrDropdown implements OnDestroy {
+  @Input('clrCloseMenuOnItemClick') isMenuClosable = true;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -38,8 +40,6 @@ export class ClrDropdown implements OnDestroy {
     this.subscriptions.push(dropdownService.changes.subscribe(value => (this.toggleService.open = value)));
     this.subscriptions.push(toggleService.openChange.subscribe(() => this.cdr.markForCheck()));
   }
-
-  @Input('clrCloseMenuOnItemClick') isMenuClosable = true;
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

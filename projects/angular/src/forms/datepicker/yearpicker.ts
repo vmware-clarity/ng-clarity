@@ -61,6 +61,16 @@ import { ViewManagerService } from './providers/view-manager.service';
   },
 })
 export class ClrYearpicker implements AfterViewInit {
+  /**
+   * YearRangeModel which is used to build the YearPicker view.
+   */
+  yearRangeModel: YearRangeModel;
+
+  /**
+   * Keeps track of the current focused year.
+   */
+  private _focusedYear: number;
+
   constructor(
     private _dateNavigationService: DateNavigationService,
     private _viewManagerService: ViewManagerService,
@@ -73,16 +83,6 @@ export class ClrYearpicker implements AfterViewInit {
   }
 
   /**
-   * YearRangeModel which is used to build the YearPicker view.
-   */
-  yearRangeModel: YearRangeModel;
-
-  /**
-   * Keeps track of the current focused year.
-   */
-  private _focusedYear: number;
-
-  /**
    * Gets the year which the user is currently on.
    */
   get calendarYear(): number {
@@ -90,19 +90,36 @@ export class ClrYearpicker implements AfterViewInit {
   }
 
   /**
-   * Increments the focus year by the value passed. Updates the YearRangeModel if the
-   * new value is not in the current decade.
+   * Focuses on the current calendar year when the View is initialized.
    */
-  private incrementFocusYearBy(value: number): void {
-    this._focusedYear = this._focusedYear + value;
-    if (!this.yearRangeModel.inRange(this._focusedYear)) {
-      if (value > 0) {
-        this.yearRangeModel = this.yearRangeModel.nextDecade();
-      } else {
-        this.yearRangeModel = this.yearRangeModel.previousDecade();
+  ngAfterViewInit() {
+    this._datepickerFocusService.focusCell(this._elRef);
+  }
+
+  /**
+   * Handles the Keyboard arrow navigation for the yearpicker.
+   */
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    // NOTE: Didn't move this to the date navigation service because
+    // the logic is fairly simple and it didn't make sense for me
+    // to create extra observables just to move this logic to the service.
+    if (event) {
+      const key = normalizeKey(event.key);
+      if (key === Keys.ArrowUp) {
+        event.preventDefault();
+        this.incrementFocusYearBy(-1);
+      } else if (key === Keys.ArrowDown) {
+        event.preventDefault();
+        this.incrementFocusYearBy(1);
+      } else if (key === Keys.ArrowRight) {
+        event.preventDefault();
+        this.incrementFocusYearBy(5);
+      } else if (key === Keys.ArrowLeft) {
+        event.preventDefault();
+        this.incrementFocusYearBy(-5);
       }
     }
-    this._datepickerFocusService.focusCell(this._elRef);
   }
 
   /**
@@ -157,35 +174,18 @@ export class ClrYearpicker implements AfterViewInit {
   }
 
   /**
-   * Handles the Keyboard arrow navigation for the yearpicker.
+   * Increments the focus year by the value passed. Updates the YearRangeModel if the
+   * new value is not in the current decade.
    */
-  @HostListener('keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
-    // NOTE: Didn't move this to the date navigation service because
-    // the logic is fairly simple and it didn't make sense for me
-    // to create extra observables just to move this logic to the service.
-    if (event) {
-      const key = normalizeKey(event.key);
-      if (key === Keys.ArrowUp) {
-        event.preventDefault();
-        this.incrementFocusYearBy(-1);
-      } else if (key === Keys.ArrowDown) {
-        event.preventDefault();
-        this.incrementFocusYearBy(1);
-      } else if (key === Keys.ArrowRight) {
-        event.preventDefault();
-        this.incrementFocusYearBy(5);
-      } else if (key === Keys.ArrowLeft) {
-        event.preventDefault();
-        this.incrementFocusYearBy(-5);
+  private incrementFocusYearBy(value: number): void {
+    this._focusedYear = this._focusedYear + value;
+    if (!this.yearRangeModel.inRange(this._focusedYear)) {
+      if (value > 0) {
+        this.yearRangeModel = this.yearRangeModel.nextDecade();
+      } else {
+        this.yearRangeModel = this.yearRangeModel.previousDecade();
       }
     }
-  }
-
-  /**
-   * Focuses on the current calendar year when the View is initialized.
-   */
-  ngAfterViewInit() {
     this._datepickerFocusService.focusCell(this._elRef);
   }
 }
