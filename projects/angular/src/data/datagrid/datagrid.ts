@@ -23,7 +23,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, fromEvent, Subscription } from 'rxjs';
+import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
@@ -239,11 +240,24 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
 
+    const rowItemsChanges = this.rows.changes.pipe(
+      switchMap((rows: ClrDatagridRow<T>[]) =>
+        merge(
+          // immediate update
+          of(rows.map(row => row.item)),
+          // subsequent updates once per tick
+          combineLatest(rows.map(row => row.itemChanges)).pipe(debounceTime(0))
+        )
+      )
+    );
+
     this._subscriptions.push(
-      this.rows.changes.subscribe(() => {
+      rowItemsChanges.subscribe(all => {
         if (!this.items.smart) {
-          this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
+          this.items.all = all;
         }
+      }),
+      this.rows.changes.subscribe(() => {
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
         for (let i = this._displayedRows.length - 1; i >= 0; i--) {
