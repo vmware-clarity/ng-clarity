@@ -14,12 +14,12 @@
   }
 
   .clr-required-mark {
-    &::before {
+    &::after {
       content: '*';
       @include css-var(color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
       @include css-var(fill, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
       font-size: $clr-p3-font-size;
-      padding-right: $clr_baselineRem_0_25;
+      margin-left: $clr_baselineRem_0_25;
     }
   }
 }
