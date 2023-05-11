@@ -56,7 +56,7 @@ export class ClrAlert implements OnInit, OnDestroy {
       this.open();
     }
   }
-  @Output('clrAlertClosedChange') _closedChanged: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
   @Input('clrAlertType')
   set alertType(val: string) {

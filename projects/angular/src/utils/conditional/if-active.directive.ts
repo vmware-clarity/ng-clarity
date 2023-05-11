@@ -90,7 +90,7 @@ export class ClrIfActive implements OnDestroy {
    * used with de-structured / de-sugared syntax.
    *
    */
-  @Output('clrIfActiveChange') activeChange: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrIfActiveChange') activeChange = new EventEmitter<boolean>(false);
 
   /*********
    *
