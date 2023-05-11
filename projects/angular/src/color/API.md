@@ -2,8 +2,8 @@
 
 ## CSS Variables
 
-| CSS Variable Name                         | Description                                    |
-| ------------------------------------------| -----------------------------------------------|
+| CSS Variable Name     | Description                                    |
+| ----------------------| -----------------------------------------------|
 | --clr-color-neutral-0 | Changes the background color to white,and as the value increases, it changes to grey and black.
 | --clr-color-on-neutral-0   | Changes the background color to black.
 | --clr-color-on-neutral-600 | Changes the background color to white.
