@@ -113,7 +113,6 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
 }
 
 class IncompatibleFilter implements ClrDatagridFilterInterface<number> {
-  // eslint-disable-next-line
   accepts(_item: number): boolean {
     return true;
   }
