@@ -191,7 +191,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
     return this.active;
   }
 
-  // eslint-disable-next-line
   accepts(_n: number): boolean {
     return true;
   }
@@ -220,7 +219,6 @@ class FullTest {
   filter: ClrDatagridFilterInterface<number>;
   open = false;
 
-  // eslint-disable-next-line
   clrDgFilterOpenChangeFn = (_$event: boolean) => {
     // Do nothing
   };
