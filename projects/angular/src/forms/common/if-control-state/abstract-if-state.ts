@@ -42,8 +42,7 @@ export abstract class AbstractIfState {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected handleState(state: CONTROL_STATE): void {
+  protected handleState(_state: CONTROL_STATE): void {
     /* overwrite in implementation to handle status change */
   }
 }
