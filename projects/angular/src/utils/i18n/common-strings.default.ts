@@ -102,6 +102,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Wizard
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
+  wizardStepnavAriaLabel: 'Step navigation',
 
   /**
    * Password Input
