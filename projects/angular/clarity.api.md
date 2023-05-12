@@ -2987,15 +2987,12 @@ export class ClrPopoverEventsService implements OnDestroy {
     addEscapeListener(): void;
     // (undocumented)
     addScrollListener(): void;
-    set anchorButtonRef(ref: ElementRef);
     // (undocumented)
-    get anchorButtonRef(): ElementRef;
-    set closeButtonRef(ref: ElementRef);
+    anchorButtonRef: ElementRef;
     // (undocumented)
-    get closeButtonRef(): ElementRef;
-    set contentRef(host: ElementRef);
+    closeButtonRef: ElementRef;
     // (undocumented)
-    get contentRef(): ElementRef;
+    contentRef: ElementRef;
     // (undocumented)
     ignoredEvent: any;
     // (undocumented)
@@ -3062,9 +3059,8 @@ export class ClrPopoverPositionService {
     alignContent(content: HTMLElement): ClrPopoverContentOffset;
     // (undocumented)
     platformId: any;
-    set position(position: ClrPopoverPosition);
     // (undocumented)
-    get position(): ClrPopoverPosition;
+    position: ClrPopoverPosition;
     // (undocumented)
     realign(): void;
     // (undocumented)
@@ -3144,8 +3140,7 @@ export class ClrProgressBar {
     // (undocumented)
     get successClass(): boolean;
     // (undocumented)
-    get value(): number | string;
-    set value(value: number | string);
+    value: number | string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "id": "id"; "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
     // (undocumented)
