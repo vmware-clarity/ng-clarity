@@ -12,7 +12,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 @Directive({
   standalone: true,
 })
-export class StopEscapePropagationDirective implements OnInit, OnDestroy {
+export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
   private subscription: Subscription;
   private lastOpenChange: boolean | null = null;
 

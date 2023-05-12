@@ -26,6 +26,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         class="datagrid-numeric-filter-input"
         #input_low
         type="number"
+        autocomplete="off"
         name="low"
         [(ngModel)]="low"
         [placeholder]="minPlaceholderValue"
@@ -36,6 +37,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         class="datagrid-numeric-filter-input"
         #input_high
         type="number"
+        autocomplete="off"
         name="high"
         [(ngModel)]="high"
         [placeholder]="maxPlaceholderValue"

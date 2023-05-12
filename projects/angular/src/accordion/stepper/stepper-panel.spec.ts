@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
 import { StepperService } from './providers/stepper.service';
@@ -84,21 +83,18 @@ describe('ClrStep Reactive Forms', () => {
     it('should show appropriate screen reader only status in button based on form state', () => {
       const mockStep = new AccordionPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
-      const commonStringsService = fixture.debugElement
-        .query(By.directive(ClrStepper))
-        .injector.get(ClrCommonStringsService);
       mockStep.status = AccordionStatus.Error;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
       const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
-      expect(statusMessage.innerText.trim()).toBe(commonStringsService.keys.danger);
+      expect(statusMessage.innerText.trim()).toBe('Error');
 
       mockStep.status = AccordionStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      expect(statusMessage.innerText.trim()).toBe(commonStringsService.keys.success);
+      expect(statusMessage.innerText.trim()).toBe('Success');
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {

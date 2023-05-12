@@ -9,7 +9,6 @@
 @include exports('accordion.clarity') {
   .clr-accordion {
     display: block;
-    counter-reset: accordion;
     margin-bottom: $clr_baselineRem_1;
   }
 
@@ -67,11 +66,6 @@
   .clr-accordion-number {
     padding: 0 $clr-accordion-padding;
     display: none;
-
-    &::before {
-      content: counter(accordion) '.';
-      counter-increment: accordion;
-    }
   }
 
   .clr-accordion-header-button {

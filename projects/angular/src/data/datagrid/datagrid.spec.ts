@@ -9,7 +9,6 @@ import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -147,6 +146,25 @@ class MultiSelectionTest {
 class MultiSelectionSimpleTest {
   items: any[] = [1, 2, 3, 4, 5, 6, 7];
   selected: any[] = [];
+}
+
+@Component({
+  template: `
+    <clr-datagrid [clrDgItemsTrackBy]="dgTrackByFn" [(clrDgSelected)]="selected">
+      <clr-dg-column>Value</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let item of items; trackBy: ngForTrackByFn" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.value }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+})
+class MultiSelectionNgForTest {
+  items: { value: number }[] = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+  selected: { value: number }[] = [];
+
+  ngForTrackByFn: TrackByFunction<{ value: number }> = (_index, item) => item.value;
+  dgTrackByFn: ClrDatagridItemsTrackByFunction<{ value: number }> = item => item.value;
 }
 
 @Component({
@@ -315,7 +333,6 @@ class MixedExpandableRowTest {
   }
 }
 class TestComparator implements ClrDatagridComparatorInterface<number> {
-  // eslint-disable-next-line
   compare(_a: number, _b: number): number {
     return 0;
   }
@@ -326,7 +343,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
     return true;
   }
 
-  // eslint-disable-next-line
   accepts(_n: number): boolean {
     return true;
   }
@@ -347,7 +363,6 @@ class TestCustomStateFilter extends TestFilter {
 }
 
 class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
-  // eslint-disable-next-line
   accepts(_item: number, _search: string) {
     return true;
   }
@@ -530,15 +545,9 @@ export default function (): void {
       });
 
       it('should cretae default values for clrDgSingleSelectionAriaLabel, clrDgSingleActionableAriaLabel, clrDetailExpandableAriaLabel', function () {
-        expect(context.clarityDirective.clrDgSingleSelectionAriaLabel).toBe(
-          commonStringsDefault.singleSelectionAriaLabel
-        );
-        expect(context.clarityDirective.clrDgSingleActionableAriaLabel).toBe(
-          commonStringsDefault.singleActionableAriaLabel
-        );
-        expect(context.clarityDirective.clrDetailExpandableAriaLabel).toBe(
-          commonStringsDefault.detailExpandableAriaLabel
-        );
+        expect(context.clarityDirective.clrDgSingleSelectionAriaLabel).toBe('Single selection header');
+        expect(context.clarityDirective.clrDgSingleActionableAriaLabel).toBe('Single actionable header');
+        expect(context.clarityDirective.clrDetailExpandableAriaLabel).toBe('Toggle more row content');
       });
 
       it('receives an input for the loading state', function () {
@@ -1162,6 +1171,62 @@ export default function (): void {
           tick();
           expect(selection.current).toEqual([1, 3, 5, 7]);
         }));
+      });
+    });
+
+    describe('Multi selection with *ngFor', function () {
+      let context: TestContext<ClrDatagrid, MultiSelectionNgForTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, MultiSelectionNgForTest, [Selection]);
+      });
+
+      it('should preserve selection when row items change but row query list does not change', async function () {
+        context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+        context.detectChanges();
+        await context.fixture.whenStable();
+
+        const rowsChangeHandler = jasmine.createSpy('rowsChangeHandler');
+        const rowsSubscription = context.clarityDirective.rows.changes.subscribe(rowsChangeHandler);
+
+        context.testElement.querySelector('clr-dg-row input[type="checkbox"]').click();
+        context.detectChanges();
+        await context.fixture.whenStable();
+        expect(context.testComponent.selected).toEqual([{ value: 1 }]);
+
+        // Break item references and test that the selection is preserved.
+        context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+        context.detectChanges();
+        await context.fixture.whenStable();
+        expect(context.testComponent.selected).toEqual([{ value: 1 }]);
+
+        // The rows query list should not have changed.
+        expect(rowsChangeHandler).not.toHaveBeenCalled();
+        rowsSubscription.unsubscribe();
+      });
+
+      it('should preserve selection when row items and row query list both change', async function () {
+        context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+        context.detectChanges();
+        await context.fixture.whenStable();
+
+        const rowsChangeHandler = jasmine.createSpy('rowsChangeHandler');
+        const rowsSubscription = context.clarityDirective.rows.changes.subscribe(rowsChangeHandler);
+
+        context.testElement.querySelector('clr-dg-row input[type="checkbox"]').click();
+        context.detectChanges();
+        await context.fixture.whenStable();
+        expect(context.testComponent.selected).toEqual([{ value: 1 }]);
+
+        // Break item references and test that the selection is preserved. (One less item to force the rows query list to change.)
+        context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }];
+        context.detectChanges();
+        await context.fixture.whenStable();
+        expect(context.testComponent.selected).toEqual([{ value: 1 }]);
+
+        // The rows query list should have changed.
+        expect(rowsChangeHandler).toHaveBeenCalled();
+        rowsSubscription.unsubscribe();
       });
     });
 

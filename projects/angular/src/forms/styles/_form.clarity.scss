@@ -12,4 +12,14 @@
   .clr-form-group {
     padding: $clr-forms-baseline;
   }
+
+  .clr-required-mark {
+    &::after {
+      content: '*';
+      @include css-var(color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
+      @include css-var(fill, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
+      font-size: $clr-p3-font-size;
+      margin-left: $clr_baselineRem_0_25;
+    }
+  }
 }

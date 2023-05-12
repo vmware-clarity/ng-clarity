@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v4
+      - uses: actions/stale@v7
         with:
           days-before-stale: 90
           stale-pr-label: 'flag:stale'

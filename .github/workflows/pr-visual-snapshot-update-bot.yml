@@ -1,0 +1,73 @@
+name: PR Visual Snapshot Update Bot
+on:
+  workflow_run:
+    workflows: [PR Build]
+jobs:
+  pr-visual-snapshot-update-bot:
+    if: ${{github.event.workflow_run.conclusion == 'failure'}}
+    name: PR Visual Snapshot Update Bot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repo: ${{github.event.workflow_run.head_repository.full_name}}
+          ref: ${{github.event.workflow_run.head_sha}}
+      - name: Get PR Event
+        id: get-pr-event
+        uses: potiuk/get-workflow-origin@v1_5
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          sourceRunId: ${{github.event.workflow_run.id}}
+      - name: Download Changes
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: visual-snapshot-changes.diff
+          path: .
+          workflow: ${{github.event.workflow_run.workflow_id}}
+          run_id: ${{github.event.workflow_run.id}}
+          if_no_artifact_found: ignore
+      - name: Push Changes
+        id: push-changes
+        run: |
+          repositoryUrl=${{github.server_url}}/${{github.repository}}.git
+          updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
+
+          if test -f visual-snapshot-changes.diff
+          then
+            # configure git
+            git config user.name "GitHub"
+            git config user.email "noreply@github.com"
+
+            # apply changes
+            git apply visual-snapshot-changes.diff
+            rm visual-snapshot-changes.diff
+
+            # commit changes
+            git add .
+            git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+
+            # push changes
+            git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
+
+            # set commit-sha for next step
+            echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          else
+            # delete branch if it exists
+            git push $repositoryUrl -d $updateBranchName || true
+          fi
+      - name: Comment
+        if: ${{steps.push-changes.outputs.commit-sha}}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
+          body: |
+            This PR introduces visual changes: ${{steps.push-changes.outputs.commit-sha}}
+            If these changes are intended and correct, please cherry-pick the above commit to this PR.
+
+            ```
+            git checkout ${{steps.get-pr-event.outputs.sourceHeadBranch}}
+            git fetch ${{github.server_url}}/${{github.repository}}.git ${{steps.push-changes.outputs.commit-sha}}
+            git cherry-pick ${{steps.push-changes.outputs.commit-sha}}
+            git push
+            ```

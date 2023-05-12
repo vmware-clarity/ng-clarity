@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   Component,
+  ContentChild,
   ContentChildren,
   DoCheck,
   ElementRef,
@@ -24,6 +25,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrCommonStringsService } from '../utils';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
@@ -31,6 +33,7 @@ import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
+import { ClrWizardTitle } from './wizard-title';
 
 @Component({
   selector: 'clr-wizard',
@@ -45,6 +48,11 @@ import { ClrWizardPage } from './wizard-page';
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
+  /**
+   * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
+   */
+  @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = this.commonStrings.keys.wizardStepnavAriaLabel;
+
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
@@ -156,51 +164,54 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Emits when the wizard is opened or closed.
    * Listen via `(clrWizardOpenChange)` event.
    */
-  @Output('clrWizardOpenChange') _openChanged: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrWizardOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   /**
    * Emits when the wizard is canceled. Listen via `(clrWizardOnCancel)` event.
    * Can be combined with the `[clrWizardPreventDefaultCancel]` input to create
    * wizard-level custom cancel routines.
    */
-  @Output('clrWizardOnCancel') onCancel: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnCancel') onCancel = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard is completed. Listen via `(clrWizardOnFinish)` event.
    * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
    * wizard-level custom completion routines.
    */
-  @Output('clrWizardOnFinish') wizardFinished: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnFinish') wizardFinished = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard is reset. Listen via `(clrWizardOnReset)` event.
    */
-  @Output('clrWizardOnReset') onReset: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnReset') onReset = new EventEmitter<any>(false);
 
   /**
    * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
    * output. Useful for non-blocking validation.
    */
-  @Output('clrWizardCurrentPageChanged') currentPageChanged: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardCurrentPageChanged') currentPageChanged = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
    * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
    * wizard-level custom navigation routines, which are useful for validation.
    */
-  @Output('clrWizardOnNext') onMoveNext: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnNext') onMoveNext = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard moves to the previous page. Can be useful for validation.
    * Listen via `(clrWizardOnPrevious)` event.
    */
 
-  @Output('clrWizardOnPrevious') onMovePrevious: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
   @ContentChildren(ClrWizardPage, { descendants: true })
   pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
-  @ViewChild('wizardTitle') wizardTitle: ElementRef;
+
+  @ViewChild('pageTitle') pageTitle: ElementRef;
+
+  @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
 
   get currentPage(): ClrWizardPage {
     return this.navService.currentPage;
@@ -225,6 +236,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
+    private commonStrings: ClrCommonStringsService,
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
@@ -436,14 +448,14 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private listenForNextPageChanges(): Subscription {
     return this.navService.movedToNextPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
       this.onMoveNext.emit();
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
     });
   }
 
   private listenForPreviousPageChanges(): Subscription {
     return this.navService.movedToPreviousPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
       this.onMovePrevious.emit();
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
     });
   }
 
@@ -460,7 +472,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       // Added to address VPAT-749:
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.
-      this.wizardTitle?.nativeElement.focus();
+      this.pageTitle?.nativeElement.focus();
       this.currentPageChanged.emit();
     });
   }

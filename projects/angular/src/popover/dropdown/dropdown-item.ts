@@ -83,6 +83,7 @@ export class ClrDropdownItem {
 
   private stopImmediatePropagationIfDisabled($event: Event) {
     if (this.disabled) {
+      $event.preventDefault(); // prevent click event
       $event.stopImmediatePropagation();
     }
   }

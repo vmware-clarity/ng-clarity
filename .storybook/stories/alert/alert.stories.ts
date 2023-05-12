@@ -4,15 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAlert, ClrAlertModule, ClrCommonStringsService } from '@clr/angular';
+import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const commonStringsService = new ClrCommonStringsService();
 
 const defaultStory: Story = args => ({
   template: ` 
@@ -42,7 +40,7 @@ const defaultParameters: Parameters = {
     clrAlertClosed: { defaultValue: false },
     clrAlertIcon: { defaultValue: '' },
     clrAlertType: { defaultValue: 'info', control: { type: 'radio', options: ALERT_TYPES } },
-    clrCloseButtonAriaLabel: { defaultValue: commonStringsService.keys.alertCloseButtonAriaLabel },
+    clrCloseButtonAriaLabel: { defaultValue: commonStringsDefault.alertCloseButtonAriaLabel },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
     // methods

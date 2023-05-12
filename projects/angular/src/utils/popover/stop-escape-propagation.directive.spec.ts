@@ -12,10 +12,10 @@ import { ClrModal } from '../../modal/modal';
 import { ClrModalModule } from '../../modal/modal.module';
 import { Keys } from '../enums/keys.enum';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
-import { StopEscapePropagationDirective } from './stop-escape-propagation.directive';
+import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
 
 export default function (): void {
-  describe('StopEscapePropagationDirective', function () {
+  describe('ClrStopEscapePropagationDirective', function () {
     let fixture: ComponentFixture<TestComponent>;
 
     beforeEach(() => {
@@ -71,7 +71,7 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   selector: 'app-test-popover-host',
   template: '',
   providers: [ClrPopoverToggleService],
-  hostDirectives: [StopEscapePropagationDirective],
+  hostDirectives: [ClrStopEscapePropagationDirective],
 })
 class TestPopoverHostComponent {
   constructor(readonly elementRef: ElementRef<HTMLElement>, readonly toggleService: ClrPopoverToggleService) {}

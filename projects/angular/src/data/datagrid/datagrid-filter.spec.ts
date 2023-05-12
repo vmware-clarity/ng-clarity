@@ -143,14 +143,12 @@ export default function (): void {
       });
 
       it('has role and label on the filter dialog', function () {
-        const commonStrings: ClrCommonStringsService =
-          context.fixture.debugElement.injector.get(ClrCommonStringsService);
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
         openBtn.click();
         context.detectChanges();
         const popoverContent = document.querySelector('.clr-popover-content');
         expect(popoverContent.getAttribute('role')).toBe('dialog');
-        expect(popoverContent.getAttribute('aria-label')).toBe(commonStrings.keys.datagridFilterDialogAriaLabel);
+        expect(popoverContent.getAttribute('aria-label')).toBe('Filter dialog');
       });
 
       it('projects content into the dropdown', function () {
@@ -193,7 +191,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
     return this.active;
   }
 
-  // eslint-disable-next-line
   accepts(_n: number): boolean {
     return true;
   }
@@ -222,7 +219,6 @@ class FullTest {
   filter: ClrDatagridFilterInterface<number>;
   open = false;
 
-  // eslint-disable-next-line
   clrDgFilterOpenChangeFn = (_$event: boolean) => {
     // Do nothing
   };

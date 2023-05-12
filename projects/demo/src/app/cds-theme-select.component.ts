@@ -14,7 +14,7 @@ export const cdsThemeAttribute = 'cds-theme';
   template: `
     <clr-select-container>
       <label>Cds Theme</label>
-      <select clrSelect [value]="theme" (change)="applyTheme($event.target.value)">
+      <select #cdsThemeSelectElement clrSelect [value]="theme" (change)="applyTheme(cdsThemeSelectElement.value)">
         <option value="">None</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>

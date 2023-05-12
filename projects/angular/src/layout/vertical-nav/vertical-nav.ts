@@ -43,7 +43,7 @@ export class ClrVerticalNav implements OnDestroy {
   }
 
   @Output('clrVerticalNavCollapsedChange')
-  private _collapsedChanged: EventEmitter<boolean> = new EventEmitter<boolean>(true);
+  private _collapsedChanged = new EventEmitter<boolean>(true);
 
   get hasNavGroups(): boolean {
     return this._navGroupRegistrationService.navGroupCount > 0;

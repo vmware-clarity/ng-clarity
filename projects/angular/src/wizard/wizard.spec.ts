@@ -303,6 +303,36 @@ export default function (): void {
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
+        it('wizard title has default heading level', () => {
+          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          expect(wizardTitleElement.getAttribute('role')).toBe('heading');
+          expect(wizardTitleElement.getAttribute('aria-level')).toBe('1');
+        });
+
+        it('wizard title has customizable heading level', () => {
+          context.hostComponent.titleHeadingLevel = 2;
+          context.detectChanges();
+
+          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          expect(wizardTitleElement.getAttribute('role')).toBe('heading');
+          expect(wizardTitleElement.getAttribute('aria-level')).toBe('2');
+        });
+
+        it('wizard page title has default heading level', () => {
+          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          expect(pageTitleElement.getAttribute('role')).toBe('heading');
+          expect(pageTitleElement.getAttribute('aria-level')).toBe('2');
+        });
+
+        it('wizard page title has customizable heading level', () => {
+          context.hostComponent.pageTitleHeadingLevel = 3;
+          context.detectChanges();
+
+          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          expect(pageTitleElement.getAttribute('role')).toBe('heading');
+          expect(pageTitleElement.getAttribute('aria-level')).toBe('3');
+        });
+
         it('stepnav is present', () => {
           const val = context.hostElement.querySelector('.clr-wizard-stepnav');
           expect(val).toBeTruthy();
@@ -614,6 +644,16 @@ export default function (): void {
           context.hostComponent.stopCancel = true;
           context.detectChanges();
           expect(wizard.stopCancel).toBe(true);
+        });
+      });
+
+      describe('Aria-label', () => {
+        it('clrWizardStepnavAriaLabel input sets and updates aria-label for the stepnav section', () => {
+          const stepnavWrapper = context.hostElement.querySelector('.clr-wizard-stepnav-wrapper');
+          expect(stepnavWrapper.getAttribute('aria-label')).toBe('Label for stepnav');
+          context.hostComponent.stepnavAriaLabel = 'Updated step navigation label';
+          context.detectChanges();
+          expect(stepnavWrapper.getAttribute('aria-label')).toBe('Updated step navigation label');
         });
       });
     });

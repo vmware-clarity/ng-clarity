@@ -7,7 +7,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { TestContext } from './helpers.spec';
@@ -152,7 +151,7 @@ export default function (): void {
         context.detectChanges();
         tick();
         expect(document.querySelector('button.toggle-switch-close-button').attributes['aria-label'].value).toBe(
-          commonStringsDefault.close
+          'Close'
         );
       }));
 

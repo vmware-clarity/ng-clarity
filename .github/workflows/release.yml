@@ -8,11 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
@@ -38,9 +36,3 @@ jobs:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: npx netlify-cli deploy $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "--alias $GITHUB_REF_NAME")
-      - name: Deploy Chromatic
-        continue-on-error: true
-        timeout-minutes: 5
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
-        run: npx chromatic --storybook-build-dir ./dist/docs --exit-zero-on-changes

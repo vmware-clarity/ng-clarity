@@ -6,10 +6,12 @@
 
 import ButtonGroupSpecs from './button-group/button-group.spec';
 import ButtonSpecs from './button-group/button.spec';
+import ButtonGroupFocusHandlerSpecs from './providers/button-group-focus-handler.spec';
 import ButtonInGroupServiceSpecs from './providers/button-in-group.service.spec';
 
 describe('Button Group Directives', () => {
   ButtonSpecs();
   ButtonInGroupServiceSpecs();
   ButtonGroupSpecs();
+  ButtonGroupFocusHandlerSpecs();
 });

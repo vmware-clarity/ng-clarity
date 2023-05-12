@@ -6,6 +6,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
+import { commonStringsDefault } from '../../utils/i18n/common-strings.default';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { TestContext } from './helpers.spec';
@@ -25,6 +26,17 @@ export default function (): void {
       context.fixture.destroy();
       const popoverContent = document.querySelectorAll('.clr-popover-content');
       popoverContent.forEach(content => document.body.removeChild(content));
+    });
+
+    it('has a default aria-label for the button', function () {
+      expect(toggle.getAttribute('aria-label')).toBe(commonStringsDefault.rowActions);
+    });
+
+    it('allows a custom aria-label for the button', function () {
+      context.testComponent.buttonLabel = 'custom label';
+      context.detectChanges();
+
+      expect(toggle.getAttribute('aria-label')).toBe('custom label');
     });
 
     it('offers two-way binding on clrDgActionOverflowOpen', function () {
@@ -105,6 +117,7 @@ export default function (): void {
       <div class="outside-click-test">This is an area outside of the action overflow</div>
       <clr-dg-action-overflow
         [(clrDgActionOverflowOpen)]="open"
+        [(clrDgActionOverflowButtonLabel)]="buttonLabel"
         (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
       >
         <button #actionItem class="action-item" clrPopoverCloseButton>Hello world</button>
@@ -113,11 +126,12 @@ export default function (): void {
   `,
 })
 class SimpleTest {
-  // eslint-disable-next-line
   clrDgActionOverflowOpenChangeFn = (_$event: boolean) => {
     // Do nothing
   };
   open: boolean;
   @ViewChild('actionItem', { read: ElementRef, static: true })
   actionItem: ElementRef;
+
+  buttonLabel: string;
 }

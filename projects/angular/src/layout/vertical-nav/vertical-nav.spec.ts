@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrIconModule } from '../../icon/icon.module';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
@@ -535,7 +534,6 @@ export default function (): void {
 
     describe('Accessibility', () => {
       let vertNavService: VerticalNavService;
-      let commonStrings: ClrCommonStringsService;
 
       beforeEach(() => {
         fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
@@ -543,26 +541,23 @@ export default function (): void {
 
         compiled = fixture.nativeElement;
         vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-        commonStrings = new ClrCommonStringsService();
       });
 
       afterEach(() => {
         fixture.destroy();
       });
 
-      it('expect buttons to have correct aria-label from ClrCommonStringsService', () => {
+      it('expect buttons to have correct aria-label', () => {
         vertNavService.collapsible = true;
         vertNavService.collapsed = true;
 
         fixture.detectChanges();
 
-        const verticalNavToggleString = commonStrings.keys.verticalNavToggle;
-
         const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
         const navBtn: HTMLElement = compiled.querySelector('.nav-btn');
 
-        expect(toggleVertNavBtn.getAttribute('aria-label')).toBe(verticalNavToggleString);
-        expect(navBtn.getAttribute('aria-label')).toBe(verticalNavToggleString);
+        expect(toggleVertNavBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
+        expect(navBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
       });
     });
   });

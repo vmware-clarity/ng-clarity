@@ -127,7 +127,6 @@ export default function (): void {
       let context: TestContext<ClrDatagridRow, SelectableRowOrder>;
       let selectionProvider: Selection;
       let checkbox: HTMLElement;
-      let radio: HTMLInputElement;
 
       beforeEach(function () {
         context = this.create(ClrDatagridRow, SelectableRowOrder, DATAGRID_SPEC_PROVIDERS);
@@ -153,13 +152,13 @@ export default function (): void {
         // Test multi select rows
         selectionProvider.selectionType = SelectionType.Multi;
         context.detectChanges();
-        checkbox = context.clarityElement.querySelector("input[type='checkbox']");
-        expect(checkbox.getAttribute('aria-label')).toBeString('uniq aria-label');
+        const checkboxLabel = context.clarityElement.querySelector('label');
+        expect(checkboxLabel.textContent).toBeString('uniq aria-label');
         // Test single select row
         selectionProvider.selectionType = SelectionType.Single;
         context.detectChanges();
-        radio = context.clarityElement.querySelector("input[type='radio']");
-        expect(radio.getAttribute('aria-label')).toBeString('uniq aria-label');
+        const radioLabel = context.clarityElement.querySelector('label');
+        expect(radioLabel.textContent).toBeString('uniq aria-label');
       }));
 
       it('should toggle when clrDgSelectable is false for type SelectionType.Multi', () => {
@@ -359,7 +358,6 @@ export default function (): void {
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;
         context.detectChanges();
-        expect(row.children[0] instanceof HTMLLabelElement).toBeTruthy();
         row.children[0].click();
         context.detectChanges();
         expect(selectionProvider.currentSingle).toEqual(context.testComponent.item);
@@ -380,7 +378,6 @@ export default function (): void {
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;
         context.detectChanges();
-        expect(row.children[0] instanceof HTMLLabelElement).toBeTruthy();
         row.children[0].click();
         context.detectChanges();
         expect(selectionProvider.current).toEqual([context.testComponent.item]);
@@ -388,6 +385,24 @@ export default function (): void {
         row.children[0].click();
         context.detectChanges();
         expect(selectionProvider.current).toEqual([]);
+      });
+
+      it('verifies a label is not nested within a label when `rowSelectionMode` is enabled', function () {
+        selectionProvider.selectionType = SelectionType.Single;
+        context.testComponent.item = { id: 1 };
+        context.detectChanges();
+        const row = context.clarityElement;
+        selectionProvider.rowSelectionMode = true;
+        expect(row.querySelector('label label')).toBeNull();
+      });
+
+      it('verifies a label is not nested within a label when `rowSelectionMode` is enabled (multi-select)', function () {
+        selectionProvider.selectionType = SelectionType.Multi;
+        context.testComponent.item = { id: 1 };
+        context.detectChanges();
+        const row = context.clarityElement;
+        selectionProvider.rowSelectionMode = true;
+        expect(row.querySelector('label label')).toBeNull();
       });
 
       function flushAndAssertSelected(selected: boolean) {
