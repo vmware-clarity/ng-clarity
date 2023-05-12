@@ -67,8 +67,7 @@ export class ClrLoadingButton implements LoadingListener {
 
   @Input('disabled') disabled: boolean;
 
-  @Output('clrLoadingChange')
-  clrLoadingChange: EventEmitter<ClrLoadingState> = new EventEmitter<ClrLoadingState>(false);
+  @Output('clrLoadingChange') clrLoadingChange = new EventEmitter<ClrLoadingState>(false);
 
   constructor(public el: ElementRef, private renderer: Renderer2) {}
 
