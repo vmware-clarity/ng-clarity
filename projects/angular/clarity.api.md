@@ -1006,6 +1006,7 @@ export interface ClrCommonStrings {
     verticalNavToggle: string;
     warning: string;
     wizardStepError: string;
+    wizardStepnavAriaLabel: string;
     wizardStepSuccess: string;
 }
 
@@ -4287,7 +4288,7 @@ export class ClrVerticalNavModule {
 
 // @public (undocumented)
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
-    constructor(platformId: any, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, differs: IterableDiffers);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, differs: IterableDiffers);
     // Warning: (ae-forgotten-export) The symbol "ButtonHubService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -4352,6 +4353,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     previous(): void;
     reset(): void;
     size: string;
+    stepnavAriaLabel: string;
     set stopCancel(value: boolean);
     // (undocumented)
     get stopCancel(): boolean;
@@ -4368,7 +4370,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
