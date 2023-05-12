@@ -255,7 +255,7 @@ export class ClrCombobox<T>
     }
   }
 
-  @Output('clrInputChange') clrInputChange: EventEmitter<string> = new EventEmitter<string>(false);
+  @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
 
   @Output('clrOpenChange') clrOpenChange: Observable<boolean> = this.toggleService.openChange;
 
