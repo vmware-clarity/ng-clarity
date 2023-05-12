@@ -40,6 +40,7 @@ import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
@@ -1781,6 +1782,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     set item(item: T);
     // (undocumented)
     get item(): T;
+    // @internal (undocumented)
+    itemChanges: ReplaySubject<T>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
