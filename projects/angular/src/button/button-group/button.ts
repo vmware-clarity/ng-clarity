@@ -143,7 +143,7 @@ export class ClrButton implements LoadingListener {
     this.loading = state === ClrLoadingState.LOADING;
   }
 
-  @Output('click') _click: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('click') _click = new EventEmitter<boolean>(false);
 
   emitClick(): void {
     this._click.emit(true);

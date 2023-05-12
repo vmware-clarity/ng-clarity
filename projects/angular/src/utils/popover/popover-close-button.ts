@@ -32,7 +32,7 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
     );
   }
 
-  @Output('clrPopoverOnCloseChange') closeChange: EventEmitter<void> = new EventEmitter<void>();
+  @Output('clrPopoverOnCloseChange') closeChange = new EventEmitter<void>();
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {

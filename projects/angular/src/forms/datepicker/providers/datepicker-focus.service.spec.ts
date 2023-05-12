@@ -66,7 +66,7 @@ export default function () {
 }
 
 class MockNgZone extends NgZone {
-  onStable: EventEmitter<any> = new EventEmitter<any>(false);
+  onStable = new EventEmitter<any>(false);
 
   constructor() {
     super({ enableLongStackTrace: false });

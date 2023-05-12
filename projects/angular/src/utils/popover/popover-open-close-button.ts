@@ -26,7 +26,7 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
     );
   }
 
-  @Output('clrPopoverOpenCloseChange') openCloseChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output('clrPopoverOpenCloseChange') openCloseChange = new EventEmitter<boolean>();
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
