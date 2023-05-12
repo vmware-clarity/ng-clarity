@@ -47,7 +47,6 @@ export default function () {
 
     @Injectable()
     class MockNgControlService extends NgControlService {
-      // eslint-disable-next-line
       setControl = setControlSpy;
     }
 

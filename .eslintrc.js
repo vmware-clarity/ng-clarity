@@ -38,7 +38,12 @@ module.exports = {
         ],
         '@typescript-eslint/no-explicit-any': 'off', // Would LOVE to turn this on
         '@typescript-eslint/no-non-null-assertion': 'error',
-        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          {
+            argsIgnorePattern: '^_',
+          },
+        ],
         '@typescript-eslint/no-var-requires': 'error',
         curly: 'error',
         eqeqeq: 'error',
