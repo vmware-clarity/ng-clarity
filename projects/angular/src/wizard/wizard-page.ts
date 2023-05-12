@@ -141,7 +141,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageNextDisabledChange') nextStepDisabledChange: EventEmitter<boolean> = new EventEmitter();
+  @Output('clrWizardPageNextDisabledChange') nextStepDisabledChange = new EventEmitter<boolean>();
 
   /**
    *
@@ -190,8 +190,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPagePreviousDisabledChange')
-  previousStepDisabledChange: EventEmitter<boolean> = new EventEmitter();
+  @Output('clrWizardPagePreviousDisabledChange') previousStepDisabledChange = new EventEmitter<boolean>();
 
   /**
    *
@@ -279,7 +278,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPagePreventDefaultCancelChange') stopCancelChange: EventEmitter<boolean> = new EventEmitter();
+  @Output('clrWizardPagePreventDefaultCancelChange') stopCancelChange = new EventEmitter<boolean>();
 
   /**
    *
@@ -330,7 +329,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageOnCommit') onCommit: EventEmitter<string> = new EventEmitter<string>(false);
+  @Output('clrWizardPageOnCommit') onCommit = new EventEmitter<string>(false);
 
   /**
    * Emits an event when ClrWizardPage becomes the current page of the
@@ -339,7 +338,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageOnLoad') onLoad: EventEmitter<string> = new EventEmitter();
+  @Output('clrWizardPageOnLoad') onLoad = new EventEmitter<string>();
 
   /**
    * Emits an event when the ClrWizardPage invokes the cancel routine for the wizard.
@@ -356,7 +355,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageOnCancel') pageOnCancel: EventEmitter<ClrWizardPage> = new EventEmitter();
+  @Output('clrWizardPageOnCancel') pageOnCancel = new EventEmitter<ClrWizardPage>();
 
   /**
    * Emits an event when the finish button is clicked and the ClrWizardPage is
@@ -375,7 +374,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageFinish') finishButtonClicked: EventEmitter<ClrWizardPage> = new EventEmitter();
+  @Output('clrWizardPageFinish') finishButtonClicked = new EventEmitter<ClrWizardPage>();
 
   /**
    * Emits an event when the previous button is clicked and the ClrWizardPage is
@@ -394,7 +393,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPagePrevious') previousButtonClicked: EventEmitter<ClrWizardPage> = new EventEmitter();
+  @Output('clrWizardPagePrevious') previousButtonClicked = new EventEmitter<ClrWizardPage>();
 
   /**
    * Emits an event when the next button is clicked and the ClrWizardPage is
@@ -413,7 +412,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageNext') nextButtonClicked: EventEmitter<ClrWizardPage> = new EventEmitter();
+  @Output('clrWizardPageNext') nextButtonClicked = new EventEmitter<ClrWizardPage>();
 
   /**
    * Emits an event when a danger button is clicked and the ClrWizardPage is
@@ -436,7 +435,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPageDanger') dangerButtonClicked: EventEmitter<ClrWizardPage> = new EventEmitter();
+  @Output('clrWizardPageDanger') dangerButtonClicked = new EventEmitter<ClrWizardPage>();
 
   /**
    * Emits an event when a next, finish, or danger button is clicked and the
@@ -459,9 +458,9 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @Output('clrWizardPagePrimary') primaryButtonClicked: EventEmitter<string> = new EventEmitter();
+  @Output('clrWizardPagePrimary') primaryButtonClicked = new EventEmitter<string>();
 
-  @Output('clrWizardPageCustomButton') customButtonClicked: EventEmitter<string> = new EventEmitter();
+  @Output('clrWizardPageCustomButton') customButtonClicked = new EventEmitter<string>();
 
   /**
    * An input value that is used internally to generate the ClrWizardPage ID as

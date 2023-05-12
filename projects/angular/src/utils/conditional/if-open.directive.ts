@@ -57,7 +57,7 @@ export class ClrIfOpen implements OnDestroy {
    * An event emitter that emits when the open property is set to allow for 2way binding when the directive is
    * used with de-structured / de-sugared syntax.
    */
-  @Output('clrIfOpenChange') openChange: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrIfOpenChange') openChange = new EventEmitter<boolean>(false);
 
   constructor(
     private toggleService: ClrPopoverToggleService,

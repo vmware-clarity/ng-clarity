@@ -38,7 +38,7 @@ export class DatagridHeaderRenderer implements OnDestroy {
     this.subscriptions.push(columnState.subscribe(state => this.stateChanges(state)));
   }
 
-  @Output('clrDgColumnResize') resizeEmitter: EventEmitter<number> = new EventEmitter();
+  @Output('clrDgColumnResize') resizeEmitter = new EventEmitter<number>();
 
   /**
    * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
