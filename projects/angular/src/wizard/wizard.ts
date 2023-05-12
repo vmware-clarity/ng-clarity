@@ -167,46 +167,46 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Emits when the wizard is opened or closed.
    * Listen via `(clrWizardOpenChange)` event.
    */
-  @Output('clrWizardOpenChange') _openChanged: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrWizardOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   /**
    * Emits when the wizard is canceled. Listen via `(clrWizardOnCancel)` event.
    * Can be combined with the `[clrWizardPreventDefaultCancel]` input to create
    * wizard-level custom cancel routines.
    */
-  @Output('clrWizardOnCancel') onCancel: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnCancel') onCancel = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard is completed. Listen via `(clrWizardOnFinish)` event.
    * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
    * wizard-level custom completion routines.
    */
-  @Output('clrWizardOnFinish') wizardFinished: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnFinish') wizardFinished = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard is reset. Listen via `(clrWizardOnReset)` event.
    */
-  @Output('clrWizardOnReset') onReset: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnReset') onReset = new EventEmitter<any>(false);
 
   /**
    * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
    * output. Useful for non-blocking validation.
    */
-  @Output('clrWizardCurrentPageChanged') currentPageChanged: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardCurrentPageChanged') currentPageChanged = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
    * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
    * wizard-level custom navigation routines, which are useful for validation.
    */
-  @Output('clrWizardOnNext') onMoveNext: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnNext') onMoveNext = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard moves to the previous page. Can be useful for validation.
    * Listen via `(clrWizardOnPrevious)` event.
    */
 
-  @Output('clrWizardOnPrevious') onMovePrevious: EventEmitter<any> = new EventEmitter<any>(false);
+  @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
   @ContentChildren(ClrWizardPage, { descendants: true })
   pages: QueryList<ClrWizardPage>;
