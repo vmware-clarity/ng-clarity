@@ -34,22 +34,14 @@ export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;
   @Input('clrDisplayval') displayval: string;
 
-  private _value: number | string = 0;
-  @Input('clrValue')
-  get value() {
-    return this._value;
-  }
-
-  set value(value: number | string) {
-    /**
-     * No need to convert to `number` cause we could have
-     * floating point and parseInt will round the numbers
-     *
-     * working with string won't have any side-effects,
-     * we don't do any math so string will do the job.
-     */
-    this._value = value;
-  }
+  /**
+   * No need to convert to `number` cause we could have
+   * floating point and parseInt will round the numbers
+   *
+   * working with string won't have any side-effects,
+   * we don't do any math so string will do the job.
+   */
+  @Input('clrValue') value: number | string = 0;
 
   // Styles
   @HostBinding('class.progress')

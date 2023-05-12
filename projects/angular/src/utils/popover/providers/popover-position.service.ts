@@ -20,20 +20,13 @@ export class ClrPopoverPositionService {
   private currentAnchorCoords: ClientRect;
   private currentContentCoords: ClientRect;
   private contentOffsets: ClrPopoverContentOffset;
-  private _position: ClrPopoverPosition;
+  position: ClrPopoverPosition;
 
   private _shouldRealign = new Subject<void>();
   shouldRealign: Observable<void> = this._shouldRealign.asObservable();
 
   realign() {
     this._shouldRealign.next();
-  }
-
-  set position(position: ClrPopoverPosition) {
-    this._position = position;
-  }
-  get position(): ClrPopoverPosition {
-    return this._position;
   }
 
   constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {}
