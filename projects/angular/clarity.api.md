@@ -40,6 +40,7 @@ import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
@@ -1781,6 +1782,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     set item(item: T);
     // (undocumented)
     get item(): T;
+    // @internal (undocumented)
+    itemChanges: ReplaySubject<T>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -4737,6 +4740,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     pageCollection: PageCollectionService;
     // (undocumented)
     pages: QueryList<ClrWizardPage>;
+    // (undocumented)
+    pageTitle: ElementRef;
     previous(): void;
     reset(): void;
     size: string;
@@ -4757,8 +4762,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     wizardFinished: EventEmitter<any>;
     // (undocumented)
     wizardId: string;
-    // (undocumented)
-    wizardTitle: ElementRef;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"]>;
     // (undocumented)
@@ -4809,7 +4812,7 @@ export class ClrWizardButton {
 // @public (undocumented)
 export class ClrWizardCustomTags {
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title, clr-wizard-pagetitle", never, {}, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardCustomTags, "clr-wizard-title", never, {}, {}, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardCustomTags, never>;
 }
