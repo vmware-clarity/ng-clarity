@@ -487,7 +487,6 @@ export default function (): void {
 }
 
 class TestComparator implements ClrDatagridComparatorInterface<number> {
-  // eslint-disable-next-line
   compare(_a: number, _b: number): number {
     return 0;
   }
@@ -498,7 +497,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
     return true;
   }
 
-  // eslint-disable-next-line
   accepts(_n: number): boolean {
     return true;
   }
@@ -507,7 +505,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
 }
 
 class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
-  // eslint-disable-next-line
   accepts(_n: number, _search: string): boolean {
     return true;
   }

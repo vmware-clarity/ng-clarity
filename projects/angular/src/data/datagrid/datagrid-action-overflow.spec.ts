@@ -113,7 +113,6 @@ export default function (): void {
   `,
 })
 class SimpleTest {
-  // eslint-disable-next-line
   clrDgActionOverflowOpenChangeFn = (_$event: boolean) => {
     // Do nothing
   };
