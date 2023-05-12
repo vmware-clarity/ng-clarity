@@ -4,32 +4,32 @@
 
 | CSS Variable Name              | Description                                                                              |
 | ------------------------------ | ---------------------------------------------------------------------------------------- |
-| --clr-label-font-color-light             | Changes the text color light of label when apply.|
-| --clr-label-font-color-dark              | Changes the text color dark for label.           |
-| --clr-label-default-border-color         | Changes the border color of label when default.  |
-| --clr-label-font-size                    | Changes the text size of the lable.              |
-| --clr-label-font-weight                  | Changes the text thickness of label.             |
-| --clr-label-letter-spacing               | Changes the spacing between the letter of label. |
-| --clr-label-border-radius                | Changes the border radius of the label.          |
-| --clr-label-bg-hover-color               | Changes the color of label when hover on element.|
-| --clr-label-gray-bg-color                | Changes the gray color of label.                 |
-| --clr-label-purple-bg-color              | Changes the purple background color of label.    |
-| --clr-label-blue-color                   | Changes the blue color of label.                 |
-| --clr-label-orange-bg-color              | Changes the orange background color of label.    |
-| --clr-label-purple-bg-color              | Changes the purple background color of label.    |
-| --clr-label-light-blue-bg-color          | Changes the light-blue background color of label.|
-| --clr-label-info-bg-color                | Changes the info background color of label.      |
-| --clr-label-info-font-color              | Changes the font color of info label.            |
-| --clr-label-info-border-color            | Changes the border color of info label.          |
-| --clr-label-success-bg-color             | Changes the background color of success label.   |
-| --clr-label-success-font-color           | Changes the font color of success label.         |
-| --clr-label-success-border-color         | Changes the border color of success label.       |
-| --clr-label-warning-bg-color             | Changes the background color of warning label.   |
-| --clr-label-warning-font-color           | Changes the font color of warning label.         |
-| --clr-label-warning-border-color         | Changes the border color of warning label.       |
-| --clr-label-danger-bg-color              | Changes the background color of danger label.    |
-| --clr-label-danger-font-color            | Changes the font color of danger label.          |
-| --clr-label-danger-border-color          | Changes the border color of danger label.        |
+| --clr-label-font-color-light             | Changes the text color light of label when apply.       |
+| --clr-label-font-color-dark              | Changes the text color dark for label.                  |
+| --clr-label-default-border-color         | Changes the border color of label when default.         |
+| --clr-label-font-size                    | Changes the text size of the lable.                     |
+| --clr-label-font-weight                  | Changes the text font weight of label.                  |
+| --clr-label-letter-spacing               | Changes the spacing between the letter of label.        |
+| --clr-label-border-radius                | Changes the border radius of the label.                 |
+| --clr-label-bg-hover-color               | Changes the color of label when hovers over element.    |
+| --clr-label-gray-bg-color                | Changes the gray color of label.                        |
+| --clr-label-purple-bg-color              | Changes the purple background color of label.           |
+| --clr-label-blue-color                   | Changes the blue color of label.                        |
+| --clr-label-orange-bg-color              | Changes the orange background color of label.           |
+| --clr-label-purple-bg-color              | Changes the purple background color of label.           |
+| --clr-label-light-blue-bg-color          | Changes the light-blue background color of label.       |
+| --clr-label-info-bg-color                | Changes the info background color of label.             |
+| --clr-label-info-font-color              | Changes the font color of info label.                   |
+| --clr-label-info-border-color            | Changes the border color of info label.                 |
+| --clr-label-success-bg-color             | Changes the background color of success label.          |
+| --clr-label-success-font-color           | Changes the font color of success label.                |
+| --clr-label-success-border-color         | Changes the border color of success label.              |
+| --clr-label-warning-bg-color             | Changes the background color of warning label.          |
+| --clr-label-warning-font-color           | Changes the font color of warning label.                |
+| --clr-label-warning-border-color         | Changes the border color of warning label.              |
+| --clr-label-danger-bg-color              | Changes the background color of danger label.           |
+| --clr-label-danger-font-color            | Changes the font color of danger label.                 |
+| --clr-label-danger-border-color          | Changes the border color of danger label.               |
 
 ## Class names
 
