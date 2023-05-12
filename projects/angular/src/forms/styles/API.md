@@ -17,13 +17,13 @@
 | --clr-forms-subtext-disabled-color                    | Changes the helper text color when disabled.                                 |
 | --clr-forms-border-disabled-color                     | Changes the border color of element when disabled.                           |
 | --clr-forms-label-disabled-color                      | Changes the label color of element when disabled.                            |
-| --clr-forms-label-font-weight                         | Changes the thickness of form label.                                         |
-| --clr-forms-text-font-weight                          | Changes the thickness of form text.                                          |
+| --clr-forms-label-font-weight                         | Changes the font weight of form label.                                       |
+| --clr-forms-text-font-weight                          | Changes the font weight of form text.                                        |
 | --clr-forms-textarea-background-color                 | Changes the background color for text area box.                              |
 | --clr-forms-textarea-focused-outline                  | Changes the outline color of text area when focused.                         |
 | --clr-forms-textarea-invalid-focused-outline          | Changes the outline color of text area when invalid.                         |
-| --clr-forms-select-hover-background                   | Changes the background color of select box when hover.                       |
-| --clr-forms-select-caret-hover-color                  | Changes the caret icon color of select box when hover.                       |
+| --clr-forms-select-hover-background                   | Changes the background color of select box when hovers over element.         |
+| --clr-forms-select-caret-hover-color                  | Changes the caret icon color of select box when hovers over element.         |
 | --clr-forms-select-caret-color                        | Changes the caret icon color of select box.                                  |
 | --clr-forms-select-option-color                       | Changes the select options text color of select box.                         |
 | --clr-forms-select-multiple-background-color          | Changes the background color of multi select box.                            |
