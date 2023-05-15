@@ -56,7 +56,7 @@ export class ClrWizardButton {
   @Input('clrWizardButtonHidden') hidden = false;
 
   // EventEmitter which is emitted when a button is clicked.
-  @Output('clrWizardButtonClicked') wasClicked: EventEmitter<string> = new EventEmitter<string>(false);
+  @Output('clrWizardButtonClicked') wasClicked = new EventEmitter<string>(false);
 
   constructor(public navService: WizardNavigationService, public buttonService: ButtonHubService) {}
 

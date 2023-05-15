@@ -111,7 +111,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  @Output('clrVerticalNavGroupExpandedChange') expandedChange: EventEmitter<boolean> = new EventEmitter<boolean>(true);
+  @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
 
   private _subscriptions: Subscription[] = [];
 

@@ -39,7 +39,6 @@ export function setupStorybook(
       actions: { disable: true },
       controls: { disable: true },
       previewTabs: { 'storybook/docs/panel': { hidden: true } },
-      chromatic: { disableSnapshot: false },
     });
   }
 }

@@ -56,7 +56,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @HostBinding('class.open')
   @Input('clrModalOpen')
   _open = false;
-  @Output('clrModalOpenChange') _openChanged: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   @Input('clrModalClosable') closable = true;
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
@@ -67,7 +67,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   // presently this is only used by wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
   @Input('clrModalPreventClose') stopClose = false;
-  @Output('clrModalAlternateClose') altClose: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
