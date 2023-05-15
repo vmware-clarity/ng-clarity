@@ -4,12 +4,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive } from '@angular/core';
-
-@Directive({
-  selector: 'clr-wizard-title',
-})
-export class ClrWizardCustomTags {
-  // No behavior
-  // The only purpose is to "declare" the tag in Angular
-}
+export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';

@@ -297,6 +297,36 @@ export default function (): void {
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
+        it('wizard title has default heading level', () => {
+          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          expect(wizardTitleElement.getAttribute('role')).toBe('heading');
+          expect(wizardTitleElement.getAttribute('aria-level')).toBe('1');
+        });
+
+        it('wizard title has customizable heading level', () => {
+          context.hostComponent.titleHeadingLevel = 2;
+          context.detectChanges();
+
+          const wizardTitleElement = context.hostElement.querySelector('.clr-wizard-title');
+          expect(wizardTitleElement.getAttribute('role')).toBe('heading');
+          expect(wizardTitleElement.getAttribute('aria-level')).toBe('2');
+        });
+
+        it('wizard page title has default heading level', () => {
+          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          expect(pageTitleElement.getAttribute('role')).toBe('heading');
+          expect(pageTitleElement.getAttribute('aria-level')).toBe('2');
+        });
+
+        it('wizard page title has customizable heading level', () => {
+          context.hostComponent.pageTitleHeadingLevel = 3;
+          context.detectChanges();
+
+          const pageTitleElement = context.hostElement.querySelector('.modal-title');
+          expect(pageTitleElement.getAttribute('role')).toBe('heading');
+          expect(pageTitleElement.getAttribute('aria-level')).toBe('3');
+        });
+
         it('stepnav is present', () => {
           const val = context.hostElement.querySelector('.clr-wizard-stepnav');
           expect(val).toBeTruthy();
