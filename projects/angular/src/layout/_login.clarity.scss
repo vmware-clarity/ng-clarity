@@ -99,10 +99,12 @@
         flex-direction: column;
         padding: $clr_baselineRem_2 0 0 0;
 
+        // @TODO Are these used? Some are documented on the website but not actually used. Some are neither documented nor used.
         .auth-source,
         .username,
         .password,
         .checkbox,
+        // End todo.
         .clr-form-control,
         .clr-checkbox-wrapper {
           margin: $clr_baselineRem_0_25 0 $clr_baselineRem_0_75 0;
@@ -140,12 +142,12 @@
           }
         }
 
-        // @TODO Is this used?
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
         .tooltip-validation {
           margin-top: $clr_baselineRem_0_25;
         }
 
-        // @TODO Is this used?
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
         .tooltip-validation .username,
         .tooltip-validation .password {
           width: 100%;

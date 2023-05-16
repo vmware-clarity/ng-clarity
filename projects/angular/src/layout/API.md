@@ -58,11 +58,13 @@
 
 ## Class names
 
-| Class               | Description                                                                       |
-| ------------------- | --------------------------------------------------------------------------------- |
-| .login              | The login form is a predefined form for applications that require authentication. |
-| .login-wrapper      | This class marks a `div` element that contains the `form.login` element.          |
-| .login .title       | This class styles the title `section` of the login form.                          |
-| .title .welcome     | This class styles the heading of the login form.                                  |
-| .title .hint        | This class styles hint/helper text within the title of the login form.            |
-| .login .login-group | This class marks a `div` element that contains the login form controls.           |
+| Class                      | Description                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| .login                     | The login form is a predefined form for applications that require authentication. |
+| .login-wrapper             | This class marks a `div` element that contains the `form.login` element.          |
+| .login .title              | This class styles the title `section` of the login form.                          |
+| .title .welcome            | This class styles the heading of the login form.                                  |
+| .title .hint               | This class styles hint/helper text within the title of the login form.            |
+| .login .login-group        | This class marks a `div` element that contains the login form controls.           |
+| .login-group .error        | This class styles an error message. The error message is hidden by default.       |
+| .login-group .error.active | Adding the `.active` class makes the error message appear.                        |
