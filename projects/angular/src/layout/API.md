@@ -50,6 +50,7 @@
 | --clr-login-title-font-weight      | Changes the font weight of the title.       |
 | --clr-login-title-font-family      | Changes the font style of the title.        |
 | --clr-login-background-color       | Changes the background color.               |
+| --clr-login-background             | Changes the background image.               |
 | --clr-login-error-background-color | Changes the error message background color. |
 | --clr-login-error-border-radius    | Changes the error message border radius.    |
 | --clr-login-panel-line-color       | Changes the color of the divider line.      |
