@@ -12,11 +12,11 @@
 | --clr-datagrid-action-toggle-color                    | Changes the toggle action button color.                                      |
 | --clr-datagrid-pagination-btn-color                   | Changes the datagrid pagination buttons color.                               |
 | --clr-datagrid-pagination-btn-disabled-color          | Changes the datagrid pagination buttons color when disabled.                 |
-| --clr-datagrid-pagination-input-border-color          | Changes the text box border color of datagrid.                               |
-| --clr-datagrid-pagination-input-border-focus-color    | Changes the text box border color of datagrid when focus on element.         |
+| --clr-datagrid-pagination-input-border-color          | Changes the datagrid pagination input border color.                          |
+| --clr-datagrid-pagination-input-border-focus-color    | Changes the datagrid pagination input border color when focused.             |
 | --clr-datagrid-popover-bg-color                       | Changes the background color of popup box.                                   |
 | --clr-datagrid-popover-border-color                   | Changes the border color of popup box.                                       |
-| --clr-datagrid-row-selected                           | Changes the text color of datagrid row when user selected.                   |
+| --clr-datagrid-row-selected                           | Changes the datagrid selected row text color.                                |
 | --clr-datagrid-loading-background                     | Changes the datagrid loading spinner background.                             |
 | --clr-datagrid-popovers-box-shadow-color              | Changes the datagrid popovers shadow color.                                  |
 | --clr-datagrid-column-switch-header-font-color        | Changes the datagrid manage columns dialog header font color.                |
