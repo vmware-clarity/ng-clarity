@@ -57,7 +57,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   static ngAcceptInputType_date: Date | null | string;
 
   @Input() placeholder: string;
-  @Output('clrDateChange') dateChange: EventEmitter<Date> = new EventEmitter<Date>(false);
+  @Output('clrDateChange') dateChange = new EventEmitter<Date>(false);
   @Input('clrDate')
   set date(date: Date | string) {
     if (this.previousDateChange !== date) {

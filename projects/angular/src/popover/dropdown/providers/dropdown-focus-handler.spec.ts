@@ -17,9 +17,6 @@ import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 
-// eslint-disable-next-line id-blacklist
-import any = jasmine.any;
-
 @Component({
   selector: 'simple-host',
   template: '',
@@ -301,7 +298,7 @@ export default function (): void {
       it('links received children back to the trigger', function (this: TestContext) {
         const spy = spyOn(Linkers, 'linkParent');
         this.focusHandler.addChildren(this.children);
-        expect(spy).toHaveBeenCalledWith(this.children, any(Observable), ArrowKeyDirection.LEFT);
+        expect(spy).toHaveBeenCalledWith(this.children, jasmine.any(Observable), ArrowKeyDirection.LEFT);
       });
 
       it('closes the dropdown when trying to go back to the trigger', function (this: TestContext) {

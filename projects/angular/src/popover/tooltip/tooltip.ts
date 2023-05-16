@@ -6,7 +6,7 @@
 
 import { Component } from '@angular/core';
 
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
@@ -17,6 +17,6 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
     '[class.tooltip]': 'true',
   },
   providers: [TooltipIdService, TooltipMouseService],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
 })
 export class ClrTooltip {}

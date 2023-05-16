@@ -37,7 +37,7 @@ import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { PopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -62,7 +62,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     FOCUS_SERVICE_PROVIDER,
     COMBOBOX_FOCUS_HANDLER_PROVIDER,
   ],
-  hostDirectives: [PopoverHostDirective],
+  hostDirectives: [ClrPopoverHostDirective],
   host: {
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
@@ -229,6 +229,10 @@ export class ClrCombobox<T>
 
   onFocus() {
     this.focused = true;
+
+    // fix for "expression changed" error when focus is returned to a combobox after a modal is closed
+    // https://github.com/vmware-clarity/ng-clarity/issues/663
+    this.cdr.detectChanges();
   }
 
   getSelectionAriaLabel() {
@@ -251,7 +255,7 @@ export class ClrCombobox<T>
     }
   }
 
-  @Output('clrInputChange') clrInputChange: EventEmitter<string> = new EventEmitter<string>(false);
+  @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
 
   @Output('clrOpenChange') clrOpenChange: Observable<boolean> = this.toggleService.openChange;
 

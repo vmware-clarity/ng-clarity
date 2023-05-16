@@ -100,7 +100,6 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
 }
 
 class IncompatibleFilter implements ClrDatagridFilterInterface<string> {
-  // eslint-disable-next-line
   accepts(_item: string): boolean {
     return true;
   }

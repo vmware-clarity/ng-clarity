@@ -21,7 +21,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrExpandableAnimation } from '../../utils/animations/expandable-animation/expandable-animation';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -75,12 +75,18 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @Input('clrDgItem')
   set item(item: T) {
     this._item = item;
+    this.itemChanges.next(item);
     this.clrDgSelectable = this._selectable;
   }
 
   get item(): T {
     return this._item;
   }
+
+  /**
+   * @internal
+   */
+  itemChanges = new ReplaySubject<T>(1);
 
   replaced: boolean;
 
@@ -196,7 +202,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  protected selectRow(selected = !this.selected) {
+  protected selectRow(selected = !this.selected, $event) {
+    // The label also captures clicks that bubble up to the row event listener, causing
+    // this handler to run twice. This exits early to prevent toggling the checkbox twice.
+    if ($event.target.tagName === 'LABEL') {
+      return;
+    }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
       this.selection.currentSingle = this.item;
     } else {
@@ -243,6 +254,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   private _rowAriaLabel = '';
+  // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
   set clrDgRowAriaLabel(label: string) {
     this._rowAriaLabel = label;

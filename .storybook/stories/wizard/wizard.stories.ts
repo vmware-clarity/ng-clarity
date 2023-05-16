@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrWizard, ClrWizardModule } from '@clr/angular';
+import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
@@ -23,6 +23,7 @@ const defaultStory: Story = args => ({
       [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
       [clrWizardPreventModalAnimation]="clrWizardPreventModalAnimation"
       [clrWizardSize]="clrWizardSize"
+      [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
       (clrWizardOpenChange)="clrWizardOpenChange($event)"
       (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
       (clrWizardOnNext)="clrWizardOnNext($event)"
@@ -31,7 +32,7 @@ const defaultStory: Story = args => ({
       (clrWizardOnFinish)="clrWizardOnFinish($event)"
       (clrWizardOnReset)="clrWizardOnReset($event)"
     >
-      <clr-wizard-title>Wizard</clr-wizard-title>
+      <clr-wizard-title [clrHeadingLevel]="clrHeadingLevel">Wizard</clr-wizard-title>
 
       <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
       <clr-wizard-button type="previous">Previous</clr-wizard-button>
@@ -52,6 +53,7 @@ const defaultParameters: Parameters = {
   component: ClrWizard,
   argTypes: {
     // inputs
+    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
     clrWizardOpen: { defaultValue: true }, // the default value is really false, but that doesn't really work for the story
     clrWizardClosable: { defaultValue: true },
     clrWizardDisableStepnav: { defaultValue: false },
@@ -60,6 +62,7 @@ const defaultParameters: Parameters = {
     clrWizardPreventDefaultNext: { defaultValue: false },
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardPreventModalAnimation: { defaultValue: false },
+    clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
     clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },

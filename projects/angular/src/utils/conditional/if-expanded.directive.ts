@@ -39,7 +39,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     }
   }
 
-  @Output('clrIfExpandedChange') expandedChange: EventEmitter<boolean> = new EventEmitter<boolean>(true);
+  @Output('clrIfExpandedChange') expandedChange = new EventEmitter<boolean>(true);
 
   constructor(
     @Optional() private template: TemplateRef<any>,

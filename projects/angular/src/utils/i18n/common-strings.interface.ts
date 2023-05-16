@@ -204,6 +204,16 @@ export interface ClrCommonStrings {
   alertCloseButtonAriaLabel: string;
 
   /**
+   * Alert: Next Alert button
+   */
+  alertNextAlertAriaLabel: string;
+
+  /**
+   * Alert: Previous Alert button
+   */
+  alertPreviousAlertAriaLabel: string;
+
+  /**
    * Datepicker UI labels
    */
   datepickerDialogLabel: string;
@@ -263,6 +273,11 @@ export interface ClrCommonStrings {
    * Wizard: Screen-reader text for step with error.
    */
   wizardStepError: string;
+
+  /**
+   * Wizard: Aria-label for the stepnav section.
+   */
+  wizardStepnavAriaLabel: string;
 
   /**
    * Password Input
