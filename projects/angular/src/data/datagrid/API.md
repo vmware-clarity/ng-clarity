@@ -10,19 +10,19 @@
 | --clr-datagrid-row-hover-color                        | Changes the datagrid row color when hovered over.                            |
 | --clr-datagrid-row-hover-font-color                   | Changes the datagrid row text color when hovered over.                       |
 | --clr-datagrid-action-toggle-color                    | Changes the toggle action button color.                                      |
-| --clr-datagrid-pagination-btn-color                   | Changes the table bottom pagination buttons color.                           |
-| --clr-datagrid-pagination-btn-disabled-color          | Changes the table bottom pagination buttons color when disabled.             |
-| --clr-datagrid-pagination-input-border-color          | Changes the text box border color of table datagrid.                         |
-| --clr-datagrid-pagination-input-border-focus-color    | Changes the text box border color of table datagrid when focus on element.   |
+| --clr-datagrid-pagination-btn-color                   | Changes the datagrid pagination buttons color.                               |
+| --clr-datagrid-pagination-btn-disabled-color          | Changes the datagrid pagination buttons color when disabled.                 |
+| --clr-datagrid-pagination-input-border-color          | Changes the text box border color of datagrid.                               |
+| --clr-datagrid-pagination-input-border-focus-color    | Changes the text box border color of datagrid when focus on element.         |
 | --clr-datagrid-popover-bg-color                       | Changes the background color of popup box.                                   |
 | --clr-datagrid-popover-border-color                   | Changes the border color of popup box.                                       |
-| --clr-datagrid-row-selected                           | Changes the text color of table row when user selected.                      |
-| --clr-datagrid-loading-background                     | Changes the background color of datagrid when click on toggle spinner.       |
-| --clr-datagrid-popovers-box-shadow-color              | Changes the popup box shadow color of datagrid.                              |
-| --clr-datagrid-column-switch-header-font-color        | Changes the column header text color of datagrid.                            |
+| --clr-datagrid-row-selected                           | Changes the text color of datagrid row when user selected.                   |
+| --clr-datagrid-loading-background                     | Changes the datagrid loading spinner background.                             |
+| --clr-datagrid-popovers-box-shadow-color              | Changes the datagrid popovers shadow color.                                  |
+| --clr-datagrid-column-switch-header-font-color        | Changes the datagrid manage columns dialog header font color.                |
 | --clr-datagrid-column-switch-header-font-hover-color  | Changes the column header text color of datagrid when hovered over.          |
-| --clr-datagrid-detail-caret-icon-open-bg-color        | Changes the caret icon background color of datagrid.                         |
-| --clr-datagrid-detail-caret-icon-open-icon-color      | Changes the caret icon color of datagrid.                                    |
+| --clr-datagrid-detail-caret-icon-open-bg-color        | Changes the datagrid open detail caret icon background color.                |
+| --clr-datagrid-detail-caret-icon-open-icon-color      | Changes the datagrid open detail caret icon color.                           |
 | --clr-datagrid-placeholder-color                      | Changes the text color of datagrid placeholder.                              |
 | --clr-datagrid-placeholder-font-size                  | Changes the placeholder text size of datagrid.                               |
 | --clr-datagrid-pagination-btn-disabled-opacity        | Changes the opacity of pagination button when disabled.                      |
@@ -45,7 +45,7 @@
 | .datagrid-nav                         | To filter and navigate through data displayed in datagrid.                      |
 | .datagrid-outer-wrapper               | It's container element that holds and positions data grid component.            |
 | .datagrid-calculation-table           | Allows for the display and manipulation of calculated data.                     |
-| .datagrid-host                        | To manage and optimize the performance of data tables.                          |
+| .datagrid-host                        | To manage and optimize the performance of datagrid.                             |
 | .datagrid-header                      | To displays the column labels or headers.                                       |
 | .datagrid-row                         | To display single record or item of data in a horizontal format.                |
 | .datagrid-row-master                  | Primary row that used to group or summarize related data in hierarchical format.|
