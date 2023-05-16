@@ -20,7 +20,7 @@
 | --clr-datagrid-loading-background                     | Changes the datagrid loading spinner background.                             |
 | --clr-datagrid-popovers-box-shadow-color              | Changes the datagrid popovers shadow color.                                  |
 | --clr-datagrid-column-switch-header-font-color        | Changes the datagrid manage columns dialog header font color.                |
-| --clr-datagrid-column-switch-header-font-hover-color  | Changes the column header text color of datagrid when hovered over.          |
+| --clr-datagrid-column-switch-header-font-hover-color  | Changes the datagrid manage columns dialog header font color when hovered.   |
 | --clr-datagrid-detail-caret-icon-open-bg-color        | Changes the datagrid open detail caret icon background color.                |
 | --clr-datagrid-detail-caret-icon-open-icon-color      | Changes the datagrid open detail caret icon color.                           |
 | --clr-datagrid-placeholder-color                      | Changes the text color of datagrid placeholder.                              |
