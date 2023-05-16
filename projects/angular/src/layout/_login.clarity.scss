@@ -55,7 +55,7 @@
         }
       }
 
-      // @TODO Is this used?
+      // @TODO Is this used? It's not documented on the website or used in the demo app.
       .trademark {
         @include css-var(color, clr-login-trademark-color, $clr-login-trademark-color, $clr-use-custom-properties);
         @include css-var(
@@ -74,7 +74,7 @@
         letter-spacing: $clr-login-trademark-letter-spacing;
       }
 
-      // @TODO Is this used?
+      // @TODO Is this used? It's not documented on the website or used in the demo app.
       .subtitle {
         @include css-var(
           font-weight,
