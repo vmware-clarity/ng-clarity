@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrWizard, ClrWizardModule } from '@clr/angular';
+import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
@@ -23,6 +23,7 @@ const defaultStory: Story = args => ({
       [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
       [clrWizardPreventModalAnimation]="clrWizardPreventModalAnimation"
       [clrWizardSize]="clrWizardSize"
+      [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
       (clrWizardOpenChange)="clrWizardOpenChange($event)"
       (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
       (clrWizardOnNext)="clrWizardOnNext($event)"
@@ -61,6 +62,7 @@ const defaultParameters: Parameters = {
     clrWizardPreventDefaultNext: { defaultValue: false },
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardPreventModalAnimation: { defaultValue: false },
+    clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
     clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
