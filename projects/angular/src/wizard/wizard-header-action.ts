@@ -37,7 +37,7 @@ export class ClrWizardHeaderAction {
 
   @Input('clrWizardHeaderActionDisabled') disabled = false;
 
-  @Output('actionClicked') headerActionClicked: EventEmitter<string> = new EventEmitter(false);
+  @Output('actionClicked') headerActionClicked = new EventEmitter<string>(false);
 
   click(): void {
     if (this.disabled) {

@@ -146,7 +146,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   // As multiple check events may happen in the same rendering cycle, we need to collect all events
   // and only act after the content is really stable. Or we may get wrong intermediate positioning values.
   // We will channel subsequent content check events through this observable.
-  private checkCollector: EventEmitter<void> = new EventEmitter();
+  private checkCollector = new EventEmitter<void>();
 
   ngAfterContentChecked(): void {
     if (this.smartOpenService.open && this.view && this.shouldRealign) {
