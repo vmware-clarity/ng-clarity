@@ -3,7 +3,7 @@
 ## CSS Variables
 
 | CSS Variable Name                              | Description                                                                    |
-|------------------------------------------------|--------------------------------------------------------------------------------|
+| ---------------------------------------------- | ------------------------------------------------------------------------------ |
 | --clr-accordion-text-color                     | Changes the text color used by the title and icon of the component.            |
 | --clr-accordion-active-background-color        | Changes the background color of the header element when open.                  |
 | --clr-accordion-content-background-color       | Changes the background color of the accordion content when open.               |
@@ -25,11 +25,10 @@
 | --clr-accordion-border-left-color-complete     | Changes the color of the left indicator when a step is complete.               |
 | --clr-accordion-border-left-color-error        | Changes the color of the left indicator when a step is in an error state.      |
 
-
 ## Class names
 
 | Class name                           | Description                                                                      |
-|--------------------------------------|----------------------------------------------------------------------------------|
+| ------------------------------------ | -------------------------------------------------------------------------------- |
 | clr-accordion                        | Top level class that wraps the component.                                        |
 | clr-accordion-panel                  | Provides an expandable details-summary view.                                     |
 | clr-accordion-panel-open             | State modifier and associated styles for the accordion with the panel open.      |
@@ -42,10 +41,9 @@
 | clr-accordion-angle                  | Styles the status icon used in the header button.                                |
 | clr-accordion-panel-inactive         | Used to disable the header button click when using the accordion as a stepper.   |
 | clr-accordion-panel-complete         | State modifier and associated styles for the accordion step in a complete state. |
-| clr-accordion-panel-error            | State modifier and associated styles for the accordion step in an error state.   |     
+| clr-accordion-panel-error            | State modifier and associated styles for the accordion step in an error state.   |
 | clr-accordion-number                 | Used to style the numbered steps when using the accordion as a stepper           |
 | clr-accordion-error-icon             | Used to style the error icon when using the accordion as a stepper               |
 | clr-accordion-complete-icon          | Used to style the complete icon when using the accordion as a stepper            |
 | clr-accordion-header-has-description | Class to indicate the header contains a clr-accordion-description element.       |
 | clr-accordion-description            | Wrapper class for a header description, when the accordion is used as a stepper. |
-
