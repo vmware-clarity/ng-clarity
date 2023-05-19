@@ -19,8 +19,7 @@
 
 ## Class names
 
-| Class name          | Description                              |
-| --------------------| ---------------------------------------- |
-| clr-datepicker-demo | This is a container class.The purpose of container class is to contain, pad, and (occasionally) centre their contents. |
+| Class name          | Description                                |
+| --------------------| ------------------------------------------ |
 | clr-date-container  | COntainer class which contains datepicker. |
 | clr-input-group     | class is an input utility that provides users with a calendar view to select a date. |

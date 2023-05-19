@@ -16,8 +16,6 @@
 
 | Class name         | Description                              |
 | -------------------| ---------------------------------------- |
-| clr-signpost-demo  | Container class for signpost element |
-| signpost-demo      | Class that wraps all signpost elements |
 | signpost-item      | Class contains the signpost element |
 | signpost-positions | The signpost position is specified by Clsss |
 | clr-signpost       | Class is a directional marker that indicates where you are in your path |

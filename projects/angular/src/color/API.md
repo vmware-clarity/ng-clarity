@@ -30,5 +30,4 @@ NOTE: For all --clr-color-on (0 to 500) color will be black and 600-1000  color 
 
 | Class name        | Description                                                            |
 | ----------------- | ---------------------------------------------------------------------- |
-| clr-color-demo    | Container class for color palate |
 | clr-color-palette | Set of colors in a group meant to be used for a certain kind of output.|

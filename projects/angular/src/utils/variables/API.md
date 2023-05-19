@@ -75,5 +75,4 @@
 
 | Class name                   | Description                              |
 | ---------------------------- | ---------------------------------------- |
-| clr-typography-demo          | This is a container class| 
 | clr-typography-font-weight   | Used to set how thick or thin characters in text should be displayed |
