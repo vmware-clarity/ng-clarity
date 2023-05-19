@@ -142,11 +142,10 @@ export class DatagridNumericFilter<T = any>
   /**
    * Common setter for the input values
    */
+  @Input('clrFilterValue')
   get value() {
     return [this.filter.low, this.filter.high];
   }
-
-  @Input('clrFilterValue')
   set value(values: [number, number]) {
     if (this.filter && Array.isArray(values)) {
       if (values && (values[0] !== this.filter.low || values[1] !== this.filter.high)) {
@@ -175,7 +174,6 @@ export class DatagridNumericFilter<T = any>
       return null;
     }
   }
-
   set low(low: number | string) {
     if (typeof low === 'number' && low !== this.filter.low) {
       this.filter.low = low;
@@ -194,7 +192,6 @@ export class DatagridNumericFilter<T = any>
       return null;
     }
   }
-
   set high(high: number | string) {
     if (typeof high === 'number' && high !== this.filter.high) {
       this.filter.high = high;

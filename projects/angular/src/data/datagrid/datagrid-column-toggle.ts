@@ -101,7 +101,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   get allColumnsVisible(): boolean {
     return this._allColumnsVisible;
   }
-
   set allColumnsVisible(value: boolean) {
     this._allColumnsVisible = value;
   }

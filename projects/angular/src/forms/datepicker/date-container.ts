@@ -101,6 +101,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
       this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
     }
   }
+
   get popoverPosition(): ClrPopoverPosition {
     return this.viewManagerService.position;
   }

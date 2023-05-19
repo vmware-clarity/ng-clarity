@@ -24,20 +24,18 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   },
 })
 export class ClrVerticalNav implements OnDestroy {
+  @Input('clrVerticalNavCollapsible')
   get collapsible(): boolean | string {
     return this._navService.collapsible;
   }
-
-  @Input('clrVerticalNavCollapsible')
   set collapsible(value: boolean | string) {
     this._navService.collapsible = value as boolean;
   }
 
+  @Input('clrVerticalNavCollapsed')
   get collapsed(): boolean | string {
     return this._navService.collapsed;
   }
-
-  @Input('clrVerticalNavCollapsed')
   set collapsed(value: boolean | string) {
     this._navService.collapsed = value as boolean;
   }

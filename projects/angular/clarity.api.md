@@ -333,9 +333,9 @@ export class ClrAlert implements OnInit, OnDestroy {
     get alertClass(): string;
     // (undocumented)
     set alertIconShape(value: string);
-    set alertType(val: string);
     // (undocumented)
     get alertType(): string;
+    set alertType(val: string);
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -348,9 +348,9 @@ export class ClrAlert implements OnInit, OnDestroy {
     _closedChanged: EventEmitter<boolean>;
     // (undocumented)
     clrCloseButtonAriaLabel: string;
-    set hidden(value: boolean);
     // (undocumented)
     get hidden(): boolean;
+    set hidden(value: boolean);
     // (undocumented)
     isAppLevel: boolean;
     // (undocumented)
@@ -402,14 +402,13 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     get alerts(): ClrAlert[];
     // (undocumented)
     set allAlerts(value: QueryList<ClrAlert>);
+    get currentAlert(): ClrAlert;
     set currentAlert(alert: ClrAlert);
     // (undocumented)
-    get currentAlert(): ClrAlert;
-    // (undocumented)
     currentAlertChange: EventEmitter<ClrAlert>;
-    set currentAlertIndex(index: number);
     // (undocumented)
     get currentAlertIndex(): number;
+    set currentAlertIndex(index: number);
     // (undocumented)
     currentAlertIndexChange: EventEmitter<number>;
     // (undocumented)
@@ -432,14 +431,12 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     constructor(multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    get currentAlert(): ClrAlert;
     set currentAlert(alert: ClrAlert);
     // (undocumented)
-    get currentAlert(): ClrAlert;
-    // (undocumented)
     currentAlertChange: EventEmitter<ClrAlert>;
-    set currentAlertIndex(index: number);
-    // (undocumented)
     get currentAlertIndex(): number;
+    set currentAlertIndex(index: number);
     // (undocumented)
     currentAlertIndexChange: EventEmitter<number>;
     // (undocumented)
@@ -671,9 +668,9 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
-    set clrInline(value: boolean | string);
     // (undocumented)
     get clrInline(): boolean | string;
+    set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
@@ -778,9 +775,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     invalid: boolean;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
-    set multiSelect(value: boolean | string);
     // (undocumented)
     get multiSelect(): boolean | string;
+    set multiSelect(value: boolean | string);
     // (undocumented)
     get multiSelectModel(): T[];
     // (undocumented)
@@ -809,9 +806,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     registerOnTouched(onTouched: any): void;
     // (undocumented)
     protected renderer: Renderer2;
-    set searchText(text: string);
     // (undocumented)
     get searchText(): string;
+    set searchText(text: string);
     // (undocumented)
     setDisabledState(): void;
     // (undocumented)
@@ -1268,7 +1265,6 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     filterNumberMinPlaceholder: string;
     filterStringPlaceholder: string;
-    // (undocumented)
     get filterValue(): any;
     set filterValue(newValue: any);
     // (undocumented)
@@ -1690,18 +1686,18 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     checkboxId: string;
     clearRanges(event: MouseEvent): void;
-    set clrDgDetailCloseLabel(label: string);
     // (undocumented)
     get clrDgDetailCloseLabel(): string;
-    set clrDgDetailOpenLabel(label: string);
+    set clrDgDetailCloseLabel(label: string);
     // (undocumented)
     get clrDgDetailOpenLabel(): string;
-    set clrDgRowAriaLabel(label: string);
+    set clrDgDetailOpenLabel(label: string);
     // (undocumented)
     get clrDgRowAriaLabel(): string;
-    set clrDgSelectable(value: boolean | string);
+    set clrDgRowAriaLabel(label: string);
     // (undocumented)
     get clrDgSelectable(): boolean | string;
+    set clrDgSelectable(value: boolean | string);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -1730,9 +1726,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    set item(item: T);
-    // (undocumented)
     get item(): T;
+    set item(item: T);
     // @internal (undocumented)
     itemChanges: ReplaySubject<T>;
     // (undocumented)
@@ -1974,9 +1969,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     set date(date: Date | string);
     // (undocumented)
     dateChange: EventEmitter<Date>;
-    set disabled(value: boolean | string);
     // (undocumented)
     get disabled(): boolean | string;
+    set disabled(value: boolean | string);
     // (undocumented)
     protected el: ElementRef;
     // (undocumented)
@@ -2063,9 +2058,8 @@ export class ClrDay {
     // (undocumented)
     get dayString(): string;
     // Warning: (ae-forgotten-export) The symbol "DayViewModel" needs to be exported by the entry point index.d.ts
-    set dayView(day: DayViewModel);
-    // (undocumented)
     get dayView(): DayViewModel;
+    set dayView(day: DayViewModel);
     onDayViewFocus(): void;
     selectDay(): void;
     // (undocumented)
@@ -2132,12 +2126,11 @@ export class ClrDropdown implements OnDestroy {
 export class ClrDropdownItem {
     // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point index.d.ts
     constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem);
-    set disabled(value: boolean | string);
     // (undocumented)
     get disabled(): boolean | string;
-    set dropdownItemId(value: string);
-    // (undocumented)
+    set disabled(value: boolean | string);
     get dropdownItemId(): string;
+    set dropdownItemId(value: string);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": "clrDisabled"; "dropdownItemId": "id"; }, {}, never, never, false, never>;
     // (undocumented)
@@ -2369,8 +2362,8 @@ export class ClrIconModule {
 export class ClrIfActive implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "IfActiveService" needs to be exported by the entry point index.d.ts
     constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
-    set active(value: boolean | string);
     get active(): boolean | string;
+    set active(value: boolean | string);
     activeChange: EventEmitter<boolean>;
     // (undocumented)
     ngOnDestroy(): void;
@@ -2440,8 +2433,8 @@ export class ClrIfOpen implements OnDestroy {
     static ngAcceptInputType_open: boolean | '';
     // (undocumented)
     ngOnDestroy(): void;
-    set open(value: boolean | string);
     get open(): boolean | string;
+    set open(value: boolean | string);
     openChange: EventEmitter<boolean>;
     updateView(value: boolean): void;
     // (undocumented)
@@ -2806,18 +2799,18 @@ export class ClrOption<T> implements OnInit {
     ngOnInit(): void;
     // (undocumented)
     onClick(): void;
-    set optionId(id: string);
     // (undocumented)
     get optionId(): string;
+    set optionId(id: string);
     // Warning: (ae-forgotten-export) The symbol "OptionData" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     optionProxy: OptionData<T>;
     // (undocumented)
     get selected(): boolean;
-    set value(value: T);
     // (undocumented)
     get value(): T;
+    set value(value: T);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": "id"; "value": "clrValue"; }, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -2853,9 +2846,9 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     get emptyOptions(): boolean;
     // (undocumented)
     id: number;
-    set items(items: QueryList<ClrOption<T>>);
     // (undocumented)
     get items(): QueryList<ClrOption<T>>;
+    set items(items: QueryList<ClrOption<T>>);
     // (undocumented)
     _items: QueryList<ClrOption<T>>;
     // (undocumented)
@@ -2913,9 +2906,9 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
 // @public (undocumented)
 export class ClrPasswordContainer extends ClrAbstractContainer {
     constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FocusService_2, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
-    set clrToggle(state: boolean);
     // (undocumented)
     get clrToggle(): boolean;
+    set clrToggle(state: boolean);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -3075,14 +3068,14 @@ export class ClrPopoverPositionService {
 export class ClrPopoverToggleService {
     // (undocumented)
     getEventChange(): Observable<Event>;
-    set open(value: boolean);
     // (undocumented)
     get open(): boolean;
+    set open(value: boolean);
     // (undocumented)
     get openChange(): Observable<boolean>;
-    set openEvent(event: Event);
     // (undocumented)
     get openEvent(): Event;
+    set openEvent(event: Event);
     // (undocumented)
     get originalEvent(): Event;
     // (undocumented)
@@ -3126,9 +3119,9 @@ export class ClrProgressBar {
     get flashClass(): boolean;
     // (undocumented)
     get flashDangerClass(): boolean;
-    set id(value: string);
     // (undocumented)
     get id(): string;
+    set id(value: string);
     // (undocumented)
     get labeledClass(): boolean;
     // (undocumented)
@@ -3171,9 +3164,9 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
-    set clrInline(value: boolean | string);
     // (undocumented)
     get clrInline(): boolean | string;
+    set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
@@ -3237,9 +3230,9 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService, ifControlStateService: IfControlStateService);
     // (undocumented)
     getRangeProgressFillWidth(): string;
-    set hasProgress(val: boolean);
     // (undocumented)
     get hasProgress(): boolean;
+    set hasProgress(val: boolean);
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
@@ -3381,7 +3374,6 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
     get position(): string;
     set position(position: string);
     // (undocumented)
@@ -3555,9 +3547,9 @@ export class ClrStackViewCustomTags {
 
 // @public (undocumented)
 export class ClrStackViewLabel implements OnInit {
-    set id(val: string);
     // (undocumented)
     get id(): string;
+    set id(val: string);
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -3756,9 +3748,9 @@ export class ClrTabLink {
     el: ElementRef;
     // (undocumented)
     ifActiveService: IfActiveService;
-    set inOverflow(inOverflow: boolean);
     // (undocumented)
     get inOverflow(): boolean;
+    set inOverflow(inOverflow: boolean);
     // (undocumented)
     get tabindex(): 0 | -1;
     // (undocumented)
@@ -3809,9 +3801,10 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     keyFocus: ClrKeyFocus;
     // Warning: (ae-forgotten-export) The symbol "TabsLayout" needs to be exported by the entry point index.d.ts
-    set layout(layout: TabsLayout | string);
+    //
     // (undocumented)
     get layout(): TabsLayout | string;
+    set layout(layout: TabsLayout | string);
     // (undocumented)
     _mousedown: boolean;
     // (undocumented)
@@ -4297,14 +4290,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get currentPage(): ClrWizardPage;
     set currentPage(page: ClrWizardPage);
     currentPageChanged: EventEmitter<any>;
-    set disableStepnav(value: boolean);
-    // (undocumented)
     get disableStepnav(): boolean;
+    set disableStepnav(value: boolean);
     finish(skipChecksAndEmits?: boolean): void;
     forceFinish(): void;
-    set forceForward(value: boolean);
-    // (undocumented)
     get forceForward(): boolean;
+    set forceForward(value: boolean);
     forceNext(): void;
     goTo(pageId: string): void;
     // (undocumented)
@@ -4349,15 +4340,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     reset(): void;
     size: string;
     stepnavAriaLabel: string;
-    set stopCancel(value: boolean);
-    // (undocumented)
     get stopCancel(): boolean;
-    set stopNavigation(value: boolean);
-    // (undocumented)
+    set stopCancel(value: boolean);
     get stopNavigation(): boolean;
-    set stopNext(value: boolean);
-    // (undocumented)
+    set stopNavigation(value: boolean);
     get stopNext(): boolean;
+    set stopNext(value: boolean);
     toggle(open: boolean): void;
     wizardFinished: EventEmitter<any>;
     // (undocumented)

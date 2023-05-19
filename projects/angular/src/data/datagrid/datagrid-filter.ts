@@ -115,11 +115,11 @@ export class ClrDatagridFilter<T = any>
   };
 
   private _open = false;
+
+  @Input('clrDgFilterOpen')
   get open() {
     return this._open;
   }
-
-  @Input('clrDgFilterOpen')
   set open(open: boolean) {
     open = !!open;
     if (this.open !== open) {

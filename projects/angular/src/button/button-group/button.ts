@@ -49,11 +49,10 @@ export class ClrButton implements LoadingListener {
 
   private _inMenu = false;
 
+  @Input('clrInMenu')
   get inMenu(): boolean {
     return this._inMenu;
   }
-
-  @Input('clrInMenu')
   set inMenu(value: boolean) {
     value = !!value;
     if (this._inMenu !== value) {
@@ -68,11 +67,10 @@ export class ClrButton implements LoadingListener {
 
   private _classNames = 'btn';
 
+  @Input('class')
   get classNames(): string {
     return this._classNames;
   }
-
-  @Input('class')
   set classNames(value: string) {
     if (typeof value === 'string') {
       const classNames: string[] = value.split(' ');
@@ -85,11 +83,10 @@ export class ClrButton implements LoadingListener {
 
   private _name: string = null;
 
+  @Input('name')
   get name(): string {
     return this._name;
   }
-
-  @Input('name')
   set name(value: string) {
     if (typeof value === 'string') {
       this._name = value;
@@ -98,11 +95,10 @@ export class ClrButton implements LoadingListener {
 
   private _type: string = null;
 
+  @Input('type')
   get type(): string {
     return this._type;
   }
-
-  @Input('type')
   set type(value: string) {
     if (typeof value === 'string') {
       this._type = value;
@@ -111,11 +107,10 @@ export class ClrButton implements LoadingListener {
 
   private _id: string = uniqueIdFactory();
 
+  @Input('id')
   get id(): string {
     return this._id;
   }
-
-  @Input('id')
   set id(value: string) {
     if (typeof value === 'string') {
       this._id = value;
@@ -124,11 +119,10 @@ export class ClrButton implements LoadingListener {
 
   private _disabled: any = null;
 
+  @Input('disabled')
   get disabled(): any {
     return this._disabled;
   }
-
-  @Input('disabled')
   set disabled(value: any) {
     if (value !== null && value !== false) {
       this._disabled = '';

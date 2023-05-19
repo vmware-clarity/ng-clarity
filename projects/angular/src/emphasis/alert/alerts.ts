@@ -52,24 +52,24 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
 
   @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
 
-  set currentAlertIndex(index: number) {
-    this.multiAlertService.current = index;
-  }
   get currentAlertIndex() {
     return this.multiAlertService.current;
+  }
+  set currentAlertIndex(index: number) {
+    this.multiAlertService.current = index;
   }
 
   /**
    * Input/Output to support two way binding on current alert instance
    */
   @Input('clrCurrentAlert')
+  get currentAlert() {
+    return this.multiAlertService.currentAlert;
+  }
   set currentAlert(alert: ClrAlert) {
     if (alert) {
       this.multiAlertService.currentAlert = alert;
     }
-  }
-  get currentAlert() {
-    return this.multiAlertService.currentAlert;
   }
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
 

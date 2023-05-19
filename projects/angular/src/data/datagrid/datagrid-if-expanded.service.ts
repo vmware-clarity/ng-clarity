@@ -25,7 +25,6 @@ export class DatagridIfExpandService extends IfExpandService {
   override get expanded(): boolean {
     return this._expanded;
   }
-
   override set expanded(value: boolean) {
     value = !!value;
     if (value !== this._expanded) {

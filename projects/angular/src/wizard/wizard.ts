@@ -69,12 +69,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Set using `[clrWizardForceForwardNavigation]` input.
    */
   @Input('clrWizardForceForwardNavigation')
+  get forceForward(): boolean {
+    return this._forceForward;
+  }
   set forceForward(value: boolean) {
     this._forceForward = !!value;
     this.navService.forceForwardNavigation = value;
-  }
-  get forceForward(): boolean {
-    return this._forceForward;
   }
   private _forceForward = false;
 
@@ -98,12 +98,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * host component to make the ClrWizard work as expected.
    */
   @Input('clrWizardPreventDefaultNext')
+  get stopNext(): boolean {
+    return this._stopNext;
+  }
   set stopNext(value: boolean) {
     this._stopNext = !!value;
     this.navService.wizardHasAltNext = value;
-  }
-  get stopNext(): boolean {
-    return this._stopNext;
   }
   private _stopNext = false;
 
@@ -116,12 +116,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * before closing a ClrWizard.
    */
   @Input('clrWizardPreventDefaultCancel')
+  get stopCancel(): boolean {
+    return this._stopCancel;
+  }
   set stopCancel(value: boolean) {
     this._stopCancel = !!value;
     this.navService.wizardHasAltCancel = value;
-  }
-  get stopCancel(): boolean {
-    return this._stopCancel;
   }
   private _stopCancel = false;
 
@@ -134,12 +134,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * the stepnav, close X, or the  back, finish, or next buttons.
    */
   @Input('clrWizardPreventNavigation')
+  get stopNavigation(): boolean {
+    return this._stopNavigation;
+  }
   set stopNavigation(value: boolean) {
     this._stopNavigation = !!value;
     this.navService.wizardStopNavigation = value;
-  }
-  get stopNavigation(): boolean {
-    return this._stopNavigation;
   }
   private _stopNavigation = false;
 
@@ -151,12 +151,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * able to jump backwards and change things.
    */
   @Input('clrWizardDisableStepnav')
+  get disableStepnav(): boolean {
+    return this._disableStepnav;
+  }
   set disableStepnav(value: boolean) {
     this._disableStepnav = !!value;
     this.navService.wizardDisableStepnav = value;
-  }
-  get disableStepnav(): boolean {
-    return this._disableStepnav;
   }
   private _disableStepnav = false;
 
@@ -216,7 +216,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   get currentPage(): ClrWizardPage {
     return this.navService.currentPage;
   }
-
   set currentPage(page: ClrWizardPage) {
     this.navService.goTo(page, true);
   }

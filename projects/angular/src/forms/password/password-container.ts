@@ -84,14 +84,14 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
   private _toggle = true;
 
   @Input('clrToggle')
+  get clrToggle() {
+    return this._toggle;
+  }
   set clrToggle(state: boolean) {
     this._toggle = state;
     if (!state) {
       this.show = false;
     }
-  }
-  get clrToggle() {
-    return this._toggle;
   }
 
   constructor(

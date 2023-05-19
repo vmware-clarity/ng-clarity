@@ -18,7 +18,6 @@ export class TableSizeService {
   get tableRef(): HTMLElement {
     return this._tableRef;
   }
-
   set tableRef(element: HTMLElement) {
     this._tableRef = element;
   }

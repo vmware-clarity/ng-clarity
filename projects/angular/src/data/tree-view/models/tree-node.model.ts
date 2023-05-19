@@ -35,7 +35,6 @@ export abstract class TreeNodeModel<T> {
   get loading() {
     return this._loading;
   }
-
   set loading(isLoading: boolean) {
     this._loading = isLoading;
     this.loading$.next(isLoading);

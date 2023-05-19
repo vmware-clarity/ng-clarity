@@ -24,29 +24,27 @@ export class ClrPopoverToggleService {
     return this._openChange.asObservable();
   }
 
+  get openEvent(): Event {
+    return this._openEvent;
+  }
   set openEvent(event: Event) {
     this._openEvent = event;
     this._openEventChange.next(event);
-  }
-
-  get openEvent(): Event {
-    return this._openEvent;
   }
 
   getEventChange(): Observable<Event> {
     return this._openEventChange.asObservable();
   }
 
+  get open(): boolean {
+    return this._open;
+  }
   set open(value: boolean) {
     value = !!value;
     if (this._open !== value) {
       this._open = value;
       this._openChange.next(value);
     }
-  }
-
-  get open(): boolean {
-    return this._open;
   }
 
   // For compatibility with legacy IfOpenService based implementations

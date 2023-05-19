@@ -109,6 +109,9 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   @Input('clrLayout')
+  get layout(): TabsLayout | string {
+    return this.tabsService.layout;
+  }
   set layout(layout: TabsLayout | string) {
     if (
       Object.keys(TabsLayout)
@@ -119,9 +122,6 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     ) {
       this.tabsService.layout = layout;
     }
-  }
-  get layout(): TabsLayout | string {
-    return this.tabsService.layout;
   }
 
   @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;

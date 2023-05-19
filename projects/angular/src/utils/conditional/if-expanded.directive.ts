@@ -27,11 +27,10 @@ import { IfExpandService } from './if-expanded.service';
 export class ClrIfExpanded implements OnInit, OnDestroy {
   private _expanded = false;
 
+  @Input('clrIfExpanded')
   get expanded(): boolean | string {
     return this._expanded;
   }
-
-  @Input('clrIfExpanded')
   set expanded(value: boolean | string) {
     if (typeof value === 'boolean') {
       this.expand.expanded = value;

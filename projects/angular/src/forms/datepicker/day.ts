@@ -50,12 +50,11 @@ export class ClrDay {
    */
 
   @Input('clrDayView')
-  set dayView(day: DayViewModel) {
-    this._dayView = day;
-  }
-
   get dayView(): DayViewModel {
     return this._dayView;
+  }
+  set dayView(day: DayViewModel) {
+    this._dayView = day;
   }
 
   get dayString(): string {
