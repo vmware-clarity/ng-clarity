@@ -1,11 +1,13 @@
 # Timeline-clarity - Style API
 
+## CSS variables
+
 | CSS Variable Name                | Description                                                  |
-| -------------------------------- | -------------------------------------------------------|
+| -------------------------------- | -------------------------------------------------------------|
 | --clr-timeline-line-color        | Changes the color of the line in a timeline element.
 | --clr-timeline-step-header-color | Changes the text color in the header of each timeline element.
-| --clr-timeline-step-title-color  | Changes the text color of title for all static style and angular components of the timeline.
-| --clr-timeline-step-description-color | Changes the text color of discription for all static style and angular components of the timeline.
+| --clr-timeline-step-title-color  | Changes the text color of title.
+| --clr-timeline-step-description-color | Changes the timeline step description text color.
 | --clr-timeline-incomplete-step-color  | Changes the color of incomplete step circle in the timeline.
 | --clr-timeline-current-step-color     | Changes the color of the current step circle in the timeline.
 | --clr-timeline-success-step-color     | Changes the color of the completed step circle in the timeline.
@@ -14,12 +16,10 @@
 
 ## Class names
 
-| Class name               | Description                              |
-| ------------------------ | ---------------------------------------- |
-| clr-timeline-demo        | This is a container class |
-| clr-timeline-demo-static | Class that includes each timeline component |
-| clr-timeline             | An unordered list class |
-| clr-timeline-step        | Class that shows a series of content for timeline |
-| clr-timeline-step-header | Class that displays content above the timeline in horizontal mode and to the left of the timeline in vertical mode |
-| clr-timeline-step-body   | Class that displays content below the timeline in horizontal mode and to the right of the timeline in vertical mode |
-| clr-timeline clr-timeline-vertical | The class containing the vertical timeline |
+| Class name                         | Description                                           |
+| ---------------------------------- | ----------------------------------------------------- |
+| clr-timeline                       | Main Timeline class.                                  |
+| clr-timeline-step                  | Class that shows a series of content for timeline.    |
+| clr-timeline-step-header           | Class that displays step header.                      |
+| clr-timeline-step-body             | Class that displays step body.                        |
+| clr-timeline clr-timeline-vertical | The class containing the vertical timeline.           |
