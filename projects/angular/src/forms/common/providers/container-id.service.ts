@@ -22,7 +22,6 @@ export class ContainerIdService {
   get id(): string {
     return this._id;
   }
-
   set id(value: string) {
     this._id = value;
     this._idChange.next(value);

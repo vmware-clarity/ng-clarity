@@ -22,12 +22,12 @@ export class ClrProgressBar {
   private _ID: string;
   @HostBinding('attr.id') externalId = '';
   @Input()
+  get id() {
+    return this._ID;
+  }
   set id(value: string) {
     this._ID = value;
     this.externalId = null;
-  }
-  get id() {
-    return this._ID;
   }
 
   // Progress

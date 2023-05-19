@@ -73,14 +73,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    * Model of the row, to use for selection
    */
   @Input('clrDgItem')
+  get item(): T {
+    return this._item;
+  }
   set item(item: T) {
     this._item = item;
     this.itemChanges.next(item);
     this.clrDgSelectable = this._selectable;
-  }
-
-  get item(): T {
-    return this._item;
   }
 
   /**
@@ -153,6 +152,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   /**
    * Indicates if the row is selected
    */
+  @Input('clrDgSelected')
   get selected() {
     if (this.selection.selectionType === SelectionType.None) {
       return this._selected;
@@ -160,8 +160,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       return this.selection.isSelected(this.item);
     }
   }
-
-  @Input('clrDgSelected')
   set selected(value: boolean | string) {
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
@@ -178,16 +176,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
   @Input('clrDgSelectable')
+  get clrDgSelectable() {
+    return !this.selection.isLocked(this.item);
+  }
   set clrDgSelectable(value: boolean | string) {
     if (this.item) {
       this.selection.lockItem(this.item, value === 'false' || value === false);
     }
     // Store this value locally, to be initialized when item is initialized
     this._selectable = value;
-  }
-
-  get clrDgSelectable() {
-    return !this.selection.isLocked(this.item);
   }
 
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
@@ -215,11 +212,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
+  @Input('clrDgExpanded')
   get expanded() {
     return this.expand.expanded;
   }
-
-  @Input('clrDgExpanded')
   set expanded(value: boolean | string) {
     this.expand.expanded = value as boolean;
   }
@@ -238,29 +234,29 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   private _detailOpenLabel = '';
   @Input()
-  set clrDgDetailOpenLabel(label: string) {
-    this._detailOpenLabel = label;
-  }
   get clrDgDetailOpenLabel(): string {
     return this._detailOpenLabel ? this._detailOpenLabel : this.commonStrings.keys.open;
   }
+  set clrDgDetailOpenLabel(label: string) {
+    this._detailOpenLabel = label;
+  }
   private _detailCloseLabel = '';
   @Input()
-  set clrDgDetailCloseLabel(label: string) {
-    this._detailCloseLabel = label;
-  }
   get clrDgDetailCloseLabel(): string {
     return this._detailCloseLabel ? this._detailCloseLabel : this.commonStrings.keys.close;
+  }
+  set clrDgDetailCloseLabel(label: string) {
+    this._detailCloseLabel = label;
   }
 
   private _rowAriaLabel = '';
   // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
-  set clrDgRowAriaLabel(label: string) {
-    this._rowAriaLabel = label;
-  }
   get clrDgRowAriaLabel(): string {
     return this._rowAriaLabel ? this._rowAriaLabel : this.commonStrings.keys.select;
+  }
+  set clrDgRowAriaLabel(label: string) {
+    this._rowAriaLabel = label;
   }
 
   /*****

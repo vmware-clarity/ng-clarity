@@ -35,12 +35,11 @@ export class ClrTabLink {
   private _inOverflow: boolean;
 
   @Input('clrTabLinkInOverflow')
-  set inOverflow(inOverflow) {
-    this._inOverflow = inOverflow;
-  }
-
   get inOverflow(): boolean {
     return this._inOverflow && this.tabsService.layout !== TabsLayout.VERTICAL;
+  }
+  set inOverflow(inOverflow) {
+    this._inOverflow = inOverflow;
   }
 
   @HostBinding('class.btn-link')

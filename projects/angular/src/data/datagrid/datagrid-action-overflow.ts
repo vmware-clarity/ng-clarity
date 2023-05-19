@@ -123,11 +123,11 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   private _open = false;
+
+  @Input('clrDgActionOverflowOpen')
   get open() {
     return this._open;
   }
-
-  @Input('clrDgActionOverflowOpen')
   set open(open: boolean) {
     const openState = !!open;
     if (!!openState !== this.open) {

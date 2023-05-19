@@ -108,11 +108,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Freezes the datagrid while data is loading
    */
+  @Input('clrDgLoading')
   get loading(): boolean {
     return this.items.loading;
   }
-
-  @Input('clrDgLoading')
   set loading(value: boolean) {
     this.items.loading = value;
   }
@@ -198,11 +197,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   get allSelected() {
     return this.selection.isAllSelected();
   }
-
-  /**
-   * Selects/deselects all currently displayed items
-   * @param value
-   */
   set allSelected(_value: boolean) {
     /**
      * This is a setter but we ignore the value.

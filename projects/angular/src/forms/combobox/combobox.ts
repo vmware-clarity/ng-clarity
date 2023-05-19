@@ -119,7 +119,6 @@ export class ClrCombobox<T>
   override get id() {
     return this.controlIdService.id + '-combobox';
   }
-
   override set id(id: string) {
     super.id = id;
   }
@@ -134,6 +133,9 @@ export class ClrCombobox<T>
 
   private _searchText = '';
 
+  get searchText(): string {
+    return this._searchText;
+  }
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
@@ -147,10 +149,6 @@ export class ClrCombobox<T>
     // based on the "showAllOptions" variable which may have changed in the openChange subscription below.
     // The option-items directive does not listen to openChange, but it listens to currentInput changes.
     this.optionSelectionService.currentInput = this.searchText;
-  }
-
-  get searchText(): string {
-    return this._searchText;
   }
 
   get multiSelectModel(): T[] {
@@ -188,6 +186,9 @@ export class ClrCombobox<T>
   @Input('placeholder') placeholder = '';
 
   @Input('clrMulti')
+  get multiSelect() {
+    return this.optionSelectionService.multiselectable;
+  }
   set multiSelect(value: boolean | string) {
     if (value) {
       this.optionSelectionService.selectionModel = new MultiSelectComboboxModel<T>();
@@ -197,10 +198,6 @@ export class ClrCombobox<T>
       this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     }
     this.updateControlValue();
-  }
-
-  get multiSelect() {
-    return this.optionSelectionService.multiselectable;
   }
 
   get ariaControls(): string {

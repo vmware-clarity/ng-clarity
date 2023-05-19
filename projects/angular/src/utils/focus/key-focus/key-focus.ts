@@ -35,11 +35,19 @@ export class ClrKeyFocus {
   protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
 
   private _focusableItems: Array<FocusableItem>;
-  @Input('clrKeyFocus')
   /**
    * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
    */
+  @Input('clrKeyFocus')
+  get focusableItems() {
+    if (this._focusableItems) {
+      return this._focusableItems;
+    } else if (this.clrKeyFocusItems) {
+      return this.clrKeyFocusItems.toArray();
+    }
+    return [];
+  }
   set focusableItems(elements: Array<FocusableItem> | any) {
     // We accept a list of focusable elements (HTMLElements or existing Directives) or auto query for clrKeyFocusItem
     // We accept a list reference in the cases where we cannot use ContentChildren to query
@@ -48,14 +56,6 @@ export class ClrKeyFocus {
       this._focusableItems = elements as Array<FocusableItem>;
       this.initializeFocus();
     }
-  }
-  get focusableItems() {
-    if (this._focusableItems) {
-      return this._focusableItems;
-    } else if (this.clrKeyFocusItems) {
-      return this.clrKeyFocusItems.toArray();
-    }
-    return [];
   }
 
   get nativeElement(): HTMLElement {
@@ -67,7 +67,6 @@ export class ClrKeyFocus {
   get current() {
     return this._current;
   }
-
   set current(value: number) {
     if (this._current !== value) {
       this._current = value;

@@ -18,7 +18,6 @@ export class IfExpandService implements LoadingListener {
   get loading(): boolean {
     return this._loading;
   }
-
   set loading(value: boolean) {
     value = !!value;
     if (value !== this._loading) {
@@ -30,7 +29,6 @@ export class IfExpandService implements LoadingListener {
   get expanded(): boolean {
     return this._expanded;
   }
-
   set expanded(value: boolean) {
     value = !!value;
     if (value !== this._expanded) {

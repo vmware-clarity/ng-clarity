@@ -163,11 +163,10 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Page size
    */
+  @Input('clrDgPageSize')
   get pageSize(): number | string {
     return this.page.size;
   }
-
-  @Input('clrDgPageSize')
   set pageSize(size: number | string) {
     if (typeof size === 'number') {
       this.page.size = size as number;
@@ -177,11 +176,10 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Total items (needed to guess the last page)
    */
+  @Input('clrDgTotalItems')
   get totalItems(): number | string {
     return this.page.totalItems;
   }
-
-  @Input('clrDgTotalItems')
   set totalItems(total: number | string) {
     if (typeof total === 'number') {
       this.page.totalItems = total as number;
@@ -191,11 +189,10 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Last page
    */
+  @Input('clrDgLastPage')
   get lastPage(): number | string {
     return this.page.last;
   }
-
-  @Input('clrDgLastPage')
   set lastPage(last: number | string) {
     if (typeof last === 'number') {
       this.page.last = last as number;
@@ -205,11 +202,10 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Current page
    */
+  @Input('clrDgPage')
   get currentPage(): number | string {
     return this.page.current;
   }
-
-  @Input('clrDgPage')
   set currentPage(page: number | string) {
     if (typeof page === 'number') {
       this.page.current = page as number;

@@ -53,7 +53,6 @@ export class DatagridKitchenSinkDemo {
   get selectable() {
     return !!this.selected2;
   }
-
   set selectable(value: boolean) {
     if (value) {
       this.selected2 = [];
@@ -71,7 +70,6 @@ export class DatagridKitchenSinkDemo {
   get selected() {
     return this._selected;
   }
-
   set selected(selection: User[]) {
     this._selected = selection;
     this.cleanUp();

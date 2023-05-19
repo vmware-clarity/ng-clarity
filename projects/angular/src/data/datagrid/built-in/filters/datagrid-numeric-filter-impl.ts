@@ -37,7 +37,6 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   get value(): [number, number] {
     return [this._low, this._high];
   }
-
   set value(vals: [number, number]) {
     const low = vals[0];
     const high = vals[1];

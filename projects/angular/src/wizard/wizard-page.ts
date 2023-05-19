@@ -102,7 +102,7 @@ export class ClrWizardPage implements OnInit {
   private _nextStepDisabled = false;
 
   /**
-   * A getter that tells whether or not the wizard should be allowed
+   * A property that tells whether or not the wizard should be allowed
    * to move to the next page.
    *
    * Useful for in-page validation because it prevents forward navigation
@@ -115,17 +115,10 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
+  @Input('clrWizardPageNextDisabled')
   get nextStepDisabled(): boolean {
     return this._nextStepDisabled;
   }
-
-  /**
-   * Sets whether the page should allow forward navigation.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPageNextDisabled')
   set nextStepDisabled(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._nextStepDisabled) {
@@ -151,7 +144,7 @@ export class ClrWizardPage implements OnInit {
   private _previousStepDisabled = false;
 
   /**
-   * A getter that tells whether or not the wizard should be allowed
+   * A property that tells whether or not the wizard should be allowed
    * to move to the previous page.
    *
    * Useful for in-page validation because it prevents backward navigation
@@ -164,17 +157,10 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
+  @Input('clrWizardPagePreviousDisabled')
   get previousStepDisabled(): boolean {
     return this._previousStepDisabled;
   }
-
-  /**
-   * Sets whether the page should allow backward navigation.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('clrWizardPagePreviousDisabled')
   set previousStepDisabled(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._previousStepDisabled) {
@@ -200,17 +186,7 @@ export class ClrWizardPage implements OnInit {
   private _hasError = false;
 
   /**
-   * A getter that tells whether or not the page has an error.
-   *
-   * @memberof WizardPage
-   *
-   */
-  get hasError(): boolean {
-    return this._hasError;
-  }
-
-  /**
-   * Sets whether the page has an error and also resolve the "falsy" value. The
+   * Whether the page has an error and also resolve the "falsy" value. The
    * current logic treat a "0" or an empty string as false and likewise will treat any
    * "truthy" value as true.
    *
@@ -218,6 +194,9 @@ export class ClrWizardPage implements OnInit {
    *
    */
   @Input('clrWizardPageHasError')
+  get hasError(): boolean {
+    return this._hasError;
+  }
   set hasError(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._hasError) {
@@ -244,16 +223,6 @@ export class ClrWizardPage implements OnInit {
   private _stopCancel = false;
 
   /**
-   * A getter that retrieves whether the page is preventing the cancel action.
-   *
-   * @memberof WizardPage
-   *
-   */
-  get stopCancel(): boolean {
-    return this._stopCancel;
-  }
-
-  /**
    * Overrides the cancel action from the page level. Allows you to use an
    * alternate function for validation or data-munging before cancelling the
    * wizard when combined with the ClrWizardPage.onCancel
@@ -265,6 +234,9 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   @Input('clrWizardPagePreventDefaultCancel')
+  get stopCancel(): boolean {
+    return this._stopCancel;
+  }
   set stopCancel(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._stopCancel) {
@@ -288,16 +260,6 @@ export class ClrWizardPage implements OnInit {
   private _stopNext = false;
 
   /**
-   * A getter that tells you whether the page is preventing the next action.
-   *
-   * @memberof WizardPage
-   *
-   */
-  get stopNext(): boolean {
-    return this._stopNext;
-  }
-
-  /**
    * Overrides forward navigation from the page level. Allows you to use an
    * alternate function for validation or data-munging before moving the
    * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
@@ -311,6 +273,9 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   @Input('clrWizardPagePreventDefaultNext')
+  get stopNext(): boolean {
+    return this._stopNext;
+  }
   set stopNext(val: boolean) {
     const valBool = !!val;
     if (valBool !== this._stopNext) {

@@ -149,12 +149,11 @@ export class ClrDatagridColumn<T = any>
 
   private _colType: 'string' | 'number' = 'string';
 
+  // TODO: We might want to make this an enum in the future
+  @Input('clrDgColType')
   get colType() {
     return this._colType;
   }
-
-  // TODO: We might want to make this an enum in the future
-  @Input('clrDgColType')
   set colType(value: 'string' | 'number') {
     this._colType = value;
   }
@@ -164,11 +163,11 @@ export class ClrDatagridColumn<T = any>
    * based on native comparison of the specified property on the items.
    */
   private _field: string;
+
+  @Input('clrDgField')
   get field() {
     return this._field;
   }
-
-  @Input('clrDgField')
   set field(field: string) {
     if (typeof field === 'string') {
       this._field = field;
@@ -217,11 +216,10 @@ export class ClrDatagridColumn<T = any>
 
   private _sortBy: ClrDatagridComparatorInterface<T>;
 
+  @Input('clrDgSortBy')
   get sortBy() {
     return this._sortBy;
   }
-
-  @Input('clrDgSortBy')
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
@@ -249,11 +247,11 @@ export class ClrDatagridColumn<T = any>
    * Indicates how the column is currently sorted
    */
   private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
+
+  @Input('clrDgSortOrder')
   get sortOrder() {
     return this._sortOrder;
   }
-
-  @Input('clrDgSortOrder')
   set sortOrder(value: ClrDatagridSortOrder) {
     if (typeof value === 'undefined') {
       return;
@@ -364,13 +362,6 @@ export class ClrDatagridColumn<T = any>
   //
   private initFilterValue: string | [number, number];
 
-  get filterValue() {
-    if (this.filter instanceof DatagridStringFilterImpl || this.filter instanceof DatagridNumericFilterImpl) {
-      return this.filter.value;
-    }
-    return null;
-  }
-
   /**
    * @NOTE type `any` here is to let us pass templateStrictMode, because in our code we try to handle
    * two types of filters String and Number with the same variable but both of them work with different
@@ -379,6 +370,12 @@ export class ClrDatagridColumn<T = any>
    *
    * Orignial types: string | [number, number]
    */
+  get filterValue() {
+    if (this.filter instanceof DatagridStringFilterImpl || this.filter instanceof DatagridNumericFilterImpl) {
+      return this.filter.value;
+    }
+    return null;
+  }
   set filterValue(newValue: any) {
     if (this.filter instanceof DatagridStringFilterImpl || this.filter instanceof DatagridNumericFilterImpl) {
       this.updateFilterValue = newValue;

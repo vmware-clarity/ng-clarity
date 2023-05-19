@@ -41,7 +41,6 @@ export class DatagridCompactDemo {
   get selectable() {
     return !!this.selected2;
   }
-
   set selectable(value: boolean) {
     if (value) {
       this.selected2 = [];
@@ -58,7 +57,6 @@ export class DatagridCompactDemo {
   get selected() {
     return this._selected;
   }
-
   set selected(selection: User[]) {
     this._selected = selection;
     this.cleanUp();
