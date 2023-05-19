@@ -25,7 +25,6 @@ export class VerticalNavNestedMenusDemo {
   get collapse(): boolean {
     return this._collapse;
   }
-
   set collapse(value: boolean) {
     this._collapse = value;
   }

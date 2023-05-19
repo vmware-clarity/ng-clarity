@@ -31,23 +31,15 @@ export class ClrIfOpen implements OnDestroy {
   /*********
    *
    * @description
-   * A setter that updates ClrPopoverToggleService.open with value.
+   * A property that gets/sets ClrPopoverToggleService.open with value.
    *
-   * @param value
    */
   @Input('clrIfOpen')
-  set open(value: boolean | string) {
-    this.toggleService.open = value as boolean;
-  }
-
-  /********
-   *
-   * @description
-   * A getter that returns the current ClrPopoverToggleService.open value.
-   *
-   */
   get open() {
     return this.toggleService.open;
+  }
+  set open(value: boolean | string) {
+    this.toggleService.open = value as boolean;
   }
 
   /**********

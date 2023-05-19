@@ -49,7 +49,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override get id(): string {
     return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
   }
-
   override set id(_value: string) {
     // overriding parent id required empty setter
   }

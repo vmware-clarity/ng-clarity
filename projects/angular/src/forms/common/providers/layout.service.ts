@@ -24,14 +24,13 @@ export class LayoutService {
   private layoutValues: string[] = Object.keys(ClrFormLayout).map(key => (ClrFormLayout as Record<string, any>)[key]);
   private _labelSize = 2;
 
+  get labelSize(): number {
+    return this._labelSize;
+  }
   set labelSize(size: number) {
     if (this.labelSizeIsValid(size)) {
       this._labelSize = size;
     }
-  }
-
-  get labelSize(): number {
-    return this._labelSize;
   }
 
   isVertical(): boolean {

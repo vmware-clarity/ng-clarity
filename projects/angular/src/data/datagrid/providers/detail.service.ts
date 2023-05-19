@@ -19,7 +19,6 @@ export class DetailService {
   get enabled(): boolean {
     return this._enabled;
   }
-
   set enabled(state: boolean) {
     this._enabled = state;
   }

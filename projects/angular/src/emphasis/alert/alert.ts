@@ -49,7 +49,8 @@ export class ClrAlert implements OnInit, OnDestroy {
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
 
   _closed = false;
-  @Input('clrAlertClosed') set closed(value: boolean) {
+  @Input('clrAlertClosed')
+  set closed(value: boolean) {
     if (value && !this._closed) {
       this.close();
     } else if (!value && this._closed) {
@@ -59,12 +60,11 @@ export class ClrAlert implements OnInit, OnDestroy {
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
   @Input('clrAlertType')
-  set alertType(val: string) {
-    this.iconService.alertType = val;
-  }
-
   get alertType(): string {
     return this.iconService.alertType;
+  }
+  set alertType(val: string) {
+    this.iconService.alertType = val;
   }
 
   @Input('clrAlertIcon')
@@ -78,15 +78,14 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   private _hidden: boolean;
 
+  get hidden() {
+    return this._hidden;
+  }
   set hidden(value: boolean) {
     if (value !== this._hidden) {
       this._hidden = value;
       this.cdr.detectChanges();
     }
-  }
-
-  get hidden() {
-    return this._hidden;
   }
 
   close(): void {

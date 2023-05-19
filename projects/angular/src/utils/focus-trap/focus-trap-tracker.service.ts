@@ -16,7 +16,6 @@ export class FocusTrapTracker {
   get current(): FocusTrapDirective {
     return this._current;
   }
-
   set current(value: FocusTrapDirective) {
     this._previousFocusTraps.push(this._current);
     this._current = value;

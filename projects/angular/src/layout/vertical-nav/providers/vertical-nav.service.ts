@@ -27,7 +27,6 @@ export class VerticalNavService {
   get collapsed(): boolean {
     return this._collapsed;
   }
-
   set collapsed(value: boolean) {
     value = !!value;
     if (this.collapsible && this._collapsed !== value) {
@@ -40,7 +39,6 @@ export class VerticalNavService {
   get collapsible(): boolean {
     return this._collapsible;
   }
-
   set collapsible(value: boolean) {
     value = !!value;
     if (this._collapsible !== value) {

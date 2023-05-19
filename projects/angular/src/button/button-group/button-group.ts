@@ -160,11 +160,10 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   // Indicates the position of the overflow menu
   private _menuPosition: string;
 
+  @Input('clrMenuPosition')
   get menuPosition(): string {
     return this._menuPosition;
   }
-
-  @Input('clrMenuPosition')
   set menuPosition(pos: string) {
     if (pos && (ClrPopoverPositions as Record<string, any>)[pos]) {
       this._menuPosition = pos;

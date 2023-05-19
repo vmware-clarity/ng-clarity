@@ -94,10 +94,6 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
 
   private _position: string;
 
-  get position() {
-    return this._position;
-  }
-
   /*********
    *
    * @description
@@ -128,6 +124,9 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    * @param newPosition
    */
   @Input('clrPosition')
+  get position() {
+    return this._position;
+  }
   set position(position: string) {
     // Ugh
     this.renderer.removeClass(this.el.nativeElement, this.position);

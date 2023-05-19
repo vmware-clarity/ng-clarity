@@ -62,24 +62,18 @@ export class ClrIfActive implements OnDestroy {
   /*********
    *
    * @description
-   * A setter that updates IfActiveService.active with value.
+   * A property that gets/sets the IfActiveService.active value.
    *
    * @param value
    */
   @Input('clrIfActive')
+  get active() {
+    return this.ifActiveService.current === this.id;
+  }
   set active(value: boolean | string) {
     if (value) {
       this.ifActiveService.current = this.id;
     }
-  }
-
-  /********
-   *
-   * @description
-   * A getter that returns the current IfActiveService.active value.
-   */
-  get active() {
-    return this.ifActiveService.current === this.id;
   }
 
   /**********

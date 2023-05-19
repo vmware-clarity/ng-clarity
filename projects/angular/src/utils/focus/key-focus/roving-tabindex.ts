@@ -21,12 +21,11 @@ export class ClrRovingTabindex extends ClrKeyFocus {
 
   // Proxy the input, as the selector name from parent class will still be "clrKeyFocus".
   @Input('clrRovingTabindex')
-  set rovingIndexItems(elements: Array<FocusableItem> | string) {
-    this.focusableItems = elements as Array<FocusableItem>;
-  }
-
   get rovingIndexItems(): Array<FocusableItem> | string {
     return this.focusableItems;
+  }
+  set rovingIndexItems(elements: Array<FocusableItem> | string) {
+    this.focusableItems = elements as Array<FocusableItem>;
   }
 
   private disabled = false;

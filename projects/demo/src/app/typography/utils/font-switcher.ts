@@ -36,7 +36,6 @@ export class FontSwitcher {
   get fontName() {
     return this._name;
   }
-
   set fontName(val: string) {
     this.switchFont(val);
   }

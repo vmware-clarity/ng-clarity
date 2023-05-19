@@ -27,11 +27,11 @@ export class ClrForTypeAhead {
 
   private _content: string;
 
+  @Input('clrForTypeAhead')
   get content() {
     return this._content;
   }
-
-  @Input('clrForTypeAhead') set content(value: string) {
+  set content(value: string) {
     if (value) {
       this._content = this.trimAndLowerCase(value);
       this.forTypeAheadProvider.textContent = this._content;

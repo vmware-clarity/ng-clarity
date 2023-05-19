@@ -89,7 +89,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   get expanded(): boolean {
     return this._itemExpand.expanded;
   }
-
   set expanded(value: boolean) {
     if (this._itemExpand.expanded !== value) {
       this._itemExpand.expanded = value;
@@ -139,7 +138,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   get expandAnimationState(): string {
     return this._expandAnimationState;
   }
-
   set expandAnimationState(value: string) {
     if (value !== this._expandAnimationState) {
       this._expandAnimationState = value;

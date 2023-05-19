@@ -36,7 +36,6 @@ export class ClrStackView {
   get editing(): boolean {
     return this.editable && this._editMode;
   }
-
   set editing(value: boolean) {
     if (this.editable) {
       this._editMode = value;

@@ -20,7 +20,6 @@ export class ForTypeAheadProvider {
   get textContent() {
     return this._textContent;
   }
-
   set textContent(value: string) {
     this._textContent = value;
     this._textContentChange.next(value);

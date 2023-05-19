@@ -30,22 +30,22 @@ export class ClrOption<T> implements OnInit {
 
   private _id: string;
   @Input('id')
+  get optionId() {
+    return this._id;
+  }
   set optionId(id: string) {
     this._id = id;
     this.optionProxy.id = this._id;
   }
-  get optionId() {
-    return this._id;
-  }
 
   private _value: T;
   @Input('clrValue')
+  get value(): T {
+    return this._value;
+  }
   set value(value: T) {
     this._value = value;
     this.optionProxy.value = value;
-  }
-  get value(): T {
-    return this._value;
   }
 
   @HostBinding('class.active')

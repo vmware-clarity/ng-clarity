@@ -23,13 +23,13 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
    * Input/Output to support two way binding on current alert instance
    */
   @Input('clrCurrentAlert')
+  get currentAlert() {
+    return this.multiAlertService.currentAlert;
+  }
   set currentAlert(alert: ClrAlert) {
     if (alert) {
       this.multiAlertService.currentAlert = alert;
     }
-  }
-  get currentAlert() {
-    return this.multiAlertService.currentAlert;
   }
 
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
@@ -38,11 +38,11 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
    * Input/Output to support two way binding on current alert index
    */
   @Input('clrCurrentAlertIndex')
-  set currentAlertIndex(index: number) {
-    this.multiAlertService.current = index;
-  }
   get currentAlertIndex() {
     return this.multiAlertService.current;
+  }
+  set currentAlertIndex(index: number) {
+    this.multiAlertService.current = index;
   }
 
   get previousAlertAriaLabel() {

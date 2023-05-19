@@ -47,6 +47,7 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'error',
         curly: 'error',
         eqeqeq: 'error',
+        'grouped-accessor-pairs': ['error', 'getBeforeSet'],
         'import/no-absolute-path': ['error'],
         'import/no-useless-path-segments': ['error'],
         'import/order': [

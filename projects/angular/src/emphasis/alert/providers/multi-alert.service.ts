@@ -42,7 +42,6 @@ export class MultiAlertService {
   get currentAlert() {
     return this.activeAlerts && this.activeAlerts[this.current];
   }
-
   set currentAlert(alert: ClrAlert) {
     this.current = this.activeAlerts.indexOf(alert);
   }

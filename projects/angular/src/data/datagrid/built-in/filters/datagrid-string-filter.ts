@@ -134,10 +134,10 @@ export class DatagridStringFilter<T = any>
   /**
    * Common setter for the input value
    */
+  @Input('clrFilterValue')
   get value() {
     return this.filter.value;
   }
-  @Input('clrFilterValue')
   set value(value: string) {
     if (this.filter && typeof value === 'string') {
       if (!value) {

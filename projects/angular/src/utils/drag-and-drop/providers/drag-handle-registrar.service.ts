@@ -19,7 +19,6 @@ export class DragHandleRegistrarService<T> {
   get defaultHandleEl() {
     return this._defaultHandleEl;
   }
-
   set defaultHandleEl(el: Node) {
     this._defaultHandleEl = el; // defaultHandleEl will be usually the clrDraggable element.
 
