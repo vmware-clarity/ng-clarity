@@ -20,9 +20,9 @@ import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { filter, pairwise, tap } from 'rxjs/operators';
 
+import { ClrCommonStringsService } from '../../utils';
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAccordionPanel } from '../accordion-panel';
 import { AccordionStatus } from '../enums/accordion-status.enum';
 import { AccordionPanelModel } from '../models/accordion.model';
@@ -85,6 +85,11 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     }
   }
 
+  ngAfterContentInit() {
+    this.listenToInitialStepperPanelChanges();
+    this.cdr.detectChanges();
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
@@ -95,6 +100,14 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
         .subscribe(() => this.headerButton.nativeElement.focus())
     );
+  }
+
+  private listenToInitialStepperPanelChanges() {
+    this.subscriptions.push(
+      this.accordionService.getPanelChanges(this.id).subscribe(() => {
+          this.cdr.detectChanges();
+      })
+    )
   }
 
   private triggerAllFormControlValidationIfError(panel: AccordionPanelModel) {

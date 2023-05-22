@@ -10,7 +10,7 @@
         [attr.aria-disabled]="!isAccordion && panel.disabled"
         [attr.aria-controls]="getAccordionContentId(panel.templateId)"
         [attr.aria-expanded]="panel.open"
-        [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
+        [class.clr-accordion-header-has-description]="(accordionDescription?.changes | async)?.length || accordionDescription?.length"
         #headerButton
       >
         <span class="clr-sr-only">

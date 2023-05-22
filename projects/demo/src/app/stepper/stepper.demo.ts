@@ -4,68 +4,71 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClrIfExpanded} from "@clr/angular";
+import {expand} from "rxjs/operators";
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
+  providers: [ClrIfExpanded]
 })
 export class StepperDemo {
-  stepOpen = true;
-  showSecondStep = true;
-  initialStep = 'contact';
-  form: FormGroup = this.getReactiveForm();
-  templateForm: any = this.getTemplateForm();
-  partiallyCompletedForm: FormGroup = this.getReactiveForm();
+  form: FormGroup;
+  expanded = {
+    name: false,
+    contact: false,
+    address: false,
+    phone: false,
+  };
+
+  expName = false;
+  expContact = false;
+  expAddress = false;
+  expPhone = false;
+
+  initialStep: string;
+  loading = false;
+
+  constructor(private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      name: this.formBuilder.group({
+        first: ['Luke', Validators.required],
+        last: ['Skywalker', Validators.required],
+      }),
+      contact: this.formBuilder.group({
+        email: [],
+        phone: [],
+      }),
+      address: this.formBuilder.group({
+        city: [],
+        line: [],
+      }),
+      phone: this.formBuilder.group({
+        mobile: [],
+      }),
+      password: this.formBuilder.group({
+        password: [],
+        confirm: [],
+      }),
+    });
+  }
+
+  handleClick() {
+    this.loading = true;
+    // this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initialStep = 'address';
+        this.loading = false;
+
+      }, 200);
+    // });
+  }
 
   submit() {
     console.log('reactive form submit', this.form.value);
   }
 
-  templateFormSubmit(templateFormValues: unknown) {
-    console.log('template form submit', templateFormValues);
-  }
-
-  toggleInitialStep() {
-    this.initialStep = this.initialStep === 'contact' ? 'password' : 'contact';
-  }
-
-  log(value: any) {
-    console.log('value', value);
-  }
-
-  private getReactiveForm() {
-    return new FormGroup({
-      name: new FormGroup({
-        first: new FormControl('Luke', Validators.required),
-        last: new FormControl('Skywalker', Validators.required),
-      }),
-      contact: new FormGroup({
-        email: new FormControl(),
-        phone: new FormControl(),
-      }),
-      password: new FormGroup({
-        password: new FormControl(),
-        confirm: new FormControl(),
-      }),
-    });
-  }
-
-  private getTemplateForm() {
-    return {
-      name: {
-        firstName: '',
-        lastName: '',
-      },
-      contact: {
-        email: '',
-        phone: '',
-      },
-      password: {
-        password: '',
-        confirm: '',
-      },
-    };
-  }
+  protected readonly expand = expand;
 }
