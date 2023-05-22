@@ -37,8 +37,7 @@ import { ClrStepperPanel } from './stepper-panel';
 })
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrInitialStep') initialPanel: string;
-  @ContentChildren(ClrStepperPanel, { descendants: true })
-  panels: QueryList<ClrStepperPanel>;
+  @ContentChildren(ClrStepperPanel, { descendants: true }) panels: QueryList<ClrStepperPanel>;
   subscriptions: Subscription[] = [];
   form: FormGroupDirective | NgForm;
 

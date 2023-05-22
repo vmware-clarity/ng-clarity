@@ -27,14 +27,11 @@ import { MarkControlService } from './providers/mark-control.service';
   `,
 })
 class SimpleTest {
-  @ViewChild(ClrForm, { static: true })
-  form: ClrForm;
+  @ViewChild(ClrForm, { static: true }) form: ClrForm;
 
-  @ViewChild('submitBtn', { static: true })
-  submitBtn;
+  @ViewChild('submitBtn', { static: true }) submitBtn;
 
-  @ViewChild('testLabel', { static: true })
-  testLabel;
+  @ViewChild('testLabel', { static: true }) testLabel;
 
   model = new FormGroup({
     testControl: new FormControl('', [Validators.required]),

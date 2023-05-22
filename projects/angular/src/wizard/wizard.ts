@@ -216,8 +216,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
-  @ContentChildren(ClrWizardPage, { descendants: true })
-  pages: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardPage, { descendants: true }) pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
   @ViewChild('pageTitle') pageTitle: ElementRef;

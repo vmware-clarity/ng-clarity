@@ -29,8 +29,7 @@ import { ClrKeyFocusModule } from './key-focus.module';
   `,
 })
 class TestComponent {
-  @ViewChild(ClrKeyFocus, { static: true })
-  keyFocus: ClrKeyFocus;
+  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
   @ViewChildren(ClrKeyFocusItem) keyFocusItems: QueryList<ClrKeyFocusItem>;
   open = false;
   changed = false;

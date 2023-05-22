@@ -117,6 +117,5 @@ class SimpleTest {
     // Do nothing
   };
   open: boolean;
-  @ViewChild('actionItem', { read: ElementRef, static: true })
-  actionItem: ElementRef;
+  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef;
 }

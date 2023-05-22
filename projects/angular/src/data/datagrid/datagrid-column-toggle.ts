@@ -107,8 +107,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
   @ContentChild(ClrDatagridColumnToggleTitle) customToggleTitle: ClrDatagridColumnToggleTitle;
   @ContentChild(ClrDatagridColumnToggleButton) customToggleButton: ClrDatagridColumnToggleButton;
-  @ViewChild('allSelected', { read: ElementRef })
-  private allSelectedElement: ElementRef<HTMLElement>;
+  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
 
   get allColumnsVisible(): boolean {
     return this._allColumnsVisible;

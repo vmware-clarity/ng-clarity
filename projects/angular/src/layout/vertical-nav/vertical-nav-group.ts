@@ -96,8 +96,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  @Input('clrVerticalNavGroupLabel')
-  groupLabel = this.commonStrings.keys.verticalNavGroupToggle;
+  @Input('clrVerticalNavGroupLabel') groupLabel = this.commonStrings.keys.verticalNavGroupToggle;
 
   @Input('clrVerticalNavGroupExpanded')
   set userExpandedInput(value: boolean | string) {

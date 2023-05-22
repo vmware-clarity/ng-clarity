@@ -103,8 +103,7 @@ export class ClrDatagridFilter<T = any>
     );
   }
 
-  @ViewChild('anchor', { read: ElementRef })
-  anchor: ElementRef;
+  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef;
 
   // Smart Popover
   smartPosition: ClrPopoverPosition = {

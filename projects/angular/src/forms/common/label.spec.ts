@@ -32,8 +32,7 @@ class ExplicitForTest {
   providers: [ControlIdService],
 })
 class ContainerizedTest {
-  @ViewChild(ClrLabel, { static: true })
-  label;
+  @ViewChild(ClrLabel, { static: true }) label;
 }
 
 @Component({

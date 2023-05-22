@@ -45,8 +45,7 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
 })
 export class ClrNavLevel extends FocusTrap implements OnInit {
   @Input('clr-nav-level') _level: number;
-  @Input('closeAriaLabel')
-  closeButtonAriaLabel: string;
+  @Input('closeAriaLabel') closeButtonAriaLabel: string;
 
   private _subscription: Subscription;
 

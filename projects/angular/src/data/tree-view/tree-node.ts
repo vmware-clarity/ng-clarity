@@ -171,8 +171,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   contentContainerTabindex = -1;
-  @ViewChild('contentContainer', { read: ElementRef, static: true })
-  private contentContainer: ElementRef;
+  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef;
 
   ngOnInit() {
     this._model.expanded = this.expanded;
@@ -224,8 +223,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
 
   // @ContentChild would have been more succinct
   // but it doesn't offer a way to query only an immediate child
-  @ContentChildren(ClrTreeNodeLink, { descendants: false })
-  private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
+  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
 
   get treeNodeLink() {
     return this.treeNodeLinkList && this.treeNodeLinkList.first;

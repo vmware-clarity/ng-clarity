@@ -31,16 +31,11 @@ class TestComponent {
   myId = 'ohai';
   disableMe = false;
 
-  @ViewChild('unset', { static: true })
-  plainDefaultHA: ClrWizardHeaderAction;
-  @ViewChild('disabled', { static: true })
-  disabledHA: ClrWizardHeaderAction;
-  @ViewChild('identified', { static: true })
-  idHA: ClrWizardHeaderAction;
-  @ViewChild('projected', { static: true })
-  projectedHA: ClrWizardHeaderAction;
-  @ViewChild('clicker', { static: true })
-  clickedHA: ClrWizardHeaderAction;
+  @ViewChild('unset', { static: true }) plainDefaultHA: ClrWizardHeaderAction;
+  @ViewChild('disabled', { static: true }) disabledHA: ClrWizardHeaderAction;
+  @ViewChild('identified', { static: true }) idHA: ClrWizardHeaderAction;
+  @ViewChild('projected', { static: true }) projectedHA: ClrWizardHeaderAction;
+  @ViewChild('clicker', { static: true }) clickedHA: ClrWizardHeaderAction;
 
   private _lastClickedHeaderAction = '';
   get lastClickedHeaderAction(): string {

@@ -223,11 +223,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
 
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
-  @ViewChild('scrollableColumns', { read: ViewContainerRef })
-  scrollableColumns: ViewContainerRef;
+  @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
 
-  @ViewChild('datagridTable', { read: ElementRef })
-  datagridTable: ElementRef;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
 
   ngAfterContentInit() {
     if (!this.items.smart) {
@@ -375,12 +373,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.organizer.resize();
   }
 
-  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef })
-  _projectedDisplayColumns: ViewContainerRef;
-  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef })
-  _projectedCalculationColumns: ViewContainerRef;
-  @ViewChild('displayedRows', { read: ViewContainerRef })
-  _displayedRows: ViewContainerRef;
-  @ViewChild('calculationRows', { read: ViewContainerRef })
-  _calculationRows: ViewContainerRef;
+  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
+  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
+  @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
+  @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 }

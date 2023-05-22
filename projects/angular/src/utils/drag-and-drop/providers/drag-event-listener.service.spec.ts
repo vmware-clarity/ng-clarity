@@ -309,8 +309,7 @@ class TestComponent implements OnInit, OnDestroy {
     private eventBus: DragAndDropEventBusService<DragTransfer>
   ) {}
 
-  @ViewChild('draggableButton', { static: true })
-  draggableButtonRef: ElementRef;
+  @ViewChild('draggableButton', { static: true }) draggableButtonRef: ElementRef;
 
   private subscriptions: Subscription[] = [];
 

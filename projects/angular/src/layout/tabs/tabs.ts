@@ -131,8 +131,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   tabLinkElements: HTMLElement[] = [];
 
-  @ViewChild(ClrKeyFocus, { static: true })
-  keyFocus: ClrKeyFocus;
+  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
 
   constructor(
     public ifActiveService: IfActiveService,

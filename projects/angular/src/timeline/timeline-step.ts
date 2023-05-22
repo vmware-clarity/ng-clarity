@@ -39,8 +39,7 @@ export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
   stepTitleText: string;
-  @ContentChild(ClrTimelineStepTitle, { read: ElementRef })
-  stepTitle: ElementRef;
+  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef;
 
   constructor(
     private iconAttributeService: TimelineIconAttributeService,

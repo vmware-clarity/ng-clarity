@@ -77,9 +77,7 @@ export class ClrTabLink {
     return this.tabsService.children.find(tab => tab.tabLink === this)?.tabContent?.tabContentId;
   }
 
-  @HostBinding('id')
-  @Input('id')
-  tabLinkId: string;
+  @Input('id') @HostBinding('id') tabLinkId: string;
 
   @HostListener('click')
   activate() {
