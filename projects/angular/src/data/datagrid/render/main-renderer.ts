@@ -81,8 +81,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   }
 
   @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
-  @ContentChildren(DatagridRowRenderer, { descendants: true })
-  private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
+  @ContentChildren(DatagridRowRenderer, { descendants: true }) private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
 
   ngAfterContentInit() {
     this.setupColumns();

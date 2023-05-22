@@ -23,9 +23,7 @@ export class ClrLabel implements OnInit, OnDestroy {
     private el: ElementRef
   ) {}
 
-  @HostBinding('attr.for')
-  @Input('for')
-  forAttr: string;
+  @Input('for') @HostBinding('attr.for') forAttr: string;
 
   private subscriptions: Subscription[] = [];
   private enableGrid = true;

@@ -28,7 +28,7 @@ module.exports = {
     {
       files: ['**/*.ts'],
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-      plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports'],
+      plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports', 'decorator-position'],
       rules: {
         '@typescript-eslint/explicit-member-accessibility': [
           'error',
@@ -46,6 +46,7 @@ module.exports = {
         ],
         '@typescript-eslint/no-var-requires': 'error',
         curly: 'error',
+        'decorator-position/decorator-position': 'error',
         eqeqeq: 'error',
         'grouped-accessor-pairs': ['error', 'getBeforeSet'],
         'import/no-absolute-path': ['error'],

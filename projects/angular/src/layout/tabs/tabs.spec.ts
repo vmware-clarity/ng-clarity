@@ -90,8 +90,7 @@ class NgIfFirstTest {
   `,
 })
 class NgIfSecondTest {
-  @ViewChild('first', { static: true })
-  firstTab: ClrTab;
+  @ViewChild('first', { static: true }) firstTab: ClrTab;
 }
 
 @Component({
@@ -120,8 +119,7 @@ class NgIfSecondTest {
   `,
 })
 class NestedTabsTest {
-  @ViewChild(ClrTabs, { static: true })
-  tabsInstance: ClrTabs;
+  @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
 }
 
 @Component({
@@ -139,8 +137,7 @@ class NestedTabsTest {
   `,
 })
 class NoClrIfActiveTest {
-  @ViewChild(ClrTabs, { static: true })
-  tabsInstance: ClrTabs;
+  @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
 }
 
 @Component({

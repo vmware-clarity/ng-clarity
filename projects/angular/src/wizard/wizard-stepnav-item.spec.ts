@@ -33,10 +33,8 @@ class TestComponent implements AfterContentInit {
   page: MockPage;
   projector = 'foo';
 
-  @ViewChild(ClrWizardStepnavItem, { static: true })
-  stepNavItem: ClrWizardStepnavItem;
-  @ViewChild(ClrWizardPageNavTitle, { static: true })
-  navTitleRef: ClrWizardPageNavTitle;
+  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem: ClrWizardStepnavItem;
+  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef: ClrWizardPageNavTitle;
 
   ngAfterContentInit(): void {
     this.page.navTitle = this.navTitleRef.pageNavTitleTemplateRef;

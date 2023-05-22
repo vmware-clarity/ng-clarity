@@ -79,17 +79,12 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   },
 })
 export class ClrStackBlock implements OnInit {
-  @HostBinding('class.stack-block-expanded')
-  @Input('clrSbExpanded')
-  expanded = false;
+  @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
-  @HostBinding('class.stack-block-expandable')
-  @Input('clrSbExpandable')
-  expandable = false;
+  @Input('clrSbExpandable') @HostBinding('class.stack-block-expandable') expandable = false;
 
-  @ContentChild(ClrStackViewLabel)
-  stackBlockTitle: any;
+  @ContentChild(ClrStackViewLabel) stackBlockTitle: any;
 
   focused = false;
   private _changedChildren = 0;

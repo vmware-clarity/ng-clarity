@@ -31,8 +31,7 @@ export class ClrKeyFocus {
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;
   @Input('clrFocusOnLoad') focusOnLoad = false;
   @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
-  @ContentChildren(ClrKeyFocusItem, { descendants: true })
-  protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
+  @ContentChildren(ClrKeyFocusItem, { descendants: true }) protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
 
   private _focusableItems: Array<FocusableItem>;
   /**

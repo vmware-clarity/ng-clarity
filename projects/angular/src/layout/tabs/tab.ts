@@ -17,10 +17,8 @@ import { ClrTabLink } from './tab-link.directive';
   providers: [IF_ACTIVE_ID_PROVIDER],
 })
 export class ClrTab {
-  @ContentChild(ClrTabLink, { static: true })
-  tabLink: ClrTabLink;
-  @ContentChild(ClrTabContent, { static: true })
-  tabContent: ClrTabContent;
+  @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;
+  @ContentChild(ClrTabContent, { static: true }) tabContent: ClrTabContent;
 
   constructor(
     public ifActiveService: IfActiveService,
