@@ -17,7 +17,7 @@
 | --clr-wizard-border-radius | Changes the wizard element's corner radius.
 | --clr-wizard-stepnav-active-border-radius | Changes the side navigation corner radius .
 | --clr-wizard-stepnav-border-color | Changes the color of the side navigation bar's border in the wizard element.
-| --clr-wizard-box-shadow-color | Changes the highlight color.
+| --clr-wizard-box-shadow-color | Changes the combobox highlight color.
 
 
 ## Class names

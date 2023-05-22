@@ -22,7 +22,7 @@
 | ----------------------------------- | -------------------------------------------- |
 | clr-combobox-container              | This is a container class.                   |
 | clr-combobox-form-control           | This is a form control class.                |
-| clr-combobox                        | Main combobox elements.                      |
+| clr-combobox                        | Main combobox element class.                 |
 | clr-combobox-wrapper                | This is a wrapper class.                     |
 | clr-combobox-input-wrapper          | This is a input wrapper class.               |
 | clr-combobox-input                  | Class includes the input element.            |
