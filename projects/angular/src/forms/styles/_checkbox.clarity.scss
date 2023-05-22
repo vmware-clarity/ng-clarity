@@ -11,6 +11,7 @@
   .clr-checkbox-wrapper {
     @include form-flatten-validate-text();
     position: relative;
+    display: flex;
 
     .clr-control-label {
       @include checkbox-radio-label-styles(
