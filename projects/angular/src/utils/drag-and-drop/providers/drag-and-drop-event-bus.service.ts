@@ -11,10 +11,10 @@ import { DragEventInterface, DragEventType } from '../interfaces/drag-event.inte
 
 @Injectable({ providedIn: 'root' })
 export class DragAndDropEventBusService<T> {
-  private dragStart: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
-  private dragMove: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
-  private dragEnd: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
-  private drop: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
+  private dragStart = new Subject<DragEventInterface<T>>();
+  private dragMove = new Subject<DragEventInterface<T>>();
+  private dragEnd = new Subject<DragEventInterface<T>>();
+  private drop = new Subject<DragEventInterface<T>>();
 
   get dragStarted(): Observable<DragEventInterface<T>> {
     return this.dragStart.asObservable();

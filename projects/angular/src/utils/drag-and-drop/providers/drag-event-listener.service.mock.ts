@@ -17,9 +17,9 @@ import { DragEventListenerService } from './drag-event-listener.service';
 export class MockDragEventListener {
   private listeners: (() => void)[];
   draggableEl: any;
-  dragStarted: Subject<any> = new Subject<any>();
-  dragMoved: Subject<any> = new Subject<any>();
-  dragEnded: Subject<any> = new Subject<any>();
+  dragStarted = new Subject<any>();
+  dragMoved = new Subject<any>();
+  dragEnded = new Subject<any>();
   dragStartPosition: DragPointPosition;
 
   attachDragListeners(draggableEl: any) {

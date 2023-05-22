@@ -27,10 +27,10 @@ export class OptionSelectionService<T> {
     this._currentInput = input;
     this._inputChanged.next(input);
   }
-  private _inputChanged: BehaviorSubject<string> = new BehaviorSubject('');
+  private _inputChanged = new BehaviorSubject('');
   inputChanged = this._inputChanged.asObservable();
 
-  private _selectionChanged: ReplaySubject<ComboboxModel<T>> = new ReplaySubject(1);
+  private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
 
   // This observable is for notifying the ClrOption to update its
   // selection by comparing the value

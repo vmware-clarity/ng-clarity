@@ -22,7 +22,7 @@ export class IfControlStateService implements OnDestroy {
   private control: NgControl;
 
   // Implement our own status changes observable, since Angular controls don't
-  private _statusChanges: BehaviorSubject<CONTROL_STATE> = new BehaviorSubject(CONTROL_STATE.NONE);
+  private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
   get statusChanges(): Observable<CONTROL_STATE> {
     return this._statusChanges.asObservable();
   }

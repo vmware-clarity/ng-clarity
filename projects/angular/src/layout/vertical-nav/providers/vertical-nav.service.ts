@@ -10,13 +10,13 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class VerticalNavService {
-  private _animateOnCollapsed: Subject<boolean> = new Subject<boolean>();
+  private _animateOnCollapsed = new Subject<boolean>();
 
   get animateOnCollapsed(): Observable<boolean> {
     return this._animateOnCollapsed.asObservable();
   }
 
-  private _collapsedChanged: Subject<boolean> = new Subject<boolean>();
+  private _collapsedChanged = new Subject<boolean>();
 
   get collapsedChanged(): Observable<boolean> {
     return this._collapsedChanged.asObservable();

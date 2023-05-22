@@ -12,7 +12,7 @@ import { DatagridRenderStep } from '../enums/render-step.enum';
 
 @Injectable()
 export class DatagridRenderOrganizer {
-  protected _renderStep: Subject<DatagridRenderStep> = new Subject<DatagridRenderStep>();
+  protected _renderStep = new Subject<DatagridRenderStep>();
   get renderStep(): Observable<DatagridRenderStep> {
     return this._renderStep.asObservable();
   }

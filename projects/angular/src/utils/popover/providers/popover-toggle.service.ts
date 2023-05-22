@@ -16,9 +16,9 @@ export class ClrPopoverToggleService {
    *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
    */
   private _open = false;
-  private _openChange: Subject<boolean> = new Subject<boolean>();
+  private _openChange = new Subject<boolean>();
   private _openEvent: Event;
-  private _openEventChange: Subject<Event> = new Subject<Event>();
+  private _openEventChange = new Subject<Event>();
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -65,7 +65,7 @@ export class ClrPopoverToggleService {
     this.open = !this.open;
   }
 
-  private _popoverAligned: Subject<HTMLElement> = new Subject();
+  private _popoverAligned = new Subject<HTMLElement>();
 
   get popoverAligned(): Observable<HTMLElement> {
     return this._popoverAligned.asObservable();

@@ -42,7 +42,7 @@ export class DatagridIfExpandService extends IfExpandService {
     }
   }
 
-  private _replace: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean);
+  private _replace = new BehaviorSubject(false);
   get replace(): Observable<boolean> {
     return this._replace.asObservable();
   }
@@ -51,7 +51,7 @@ export class DatagridIfExpandService extends IfExpandService {
     this._replace.next(replaceValue);
   }
 
-  private _animate: Subject<boolean> = new Subject<boolean>();
+  private _animate = new Subject<boolean>();
   get animate(): Observable<boolean> {
     return this._animate.asObservable();
   }

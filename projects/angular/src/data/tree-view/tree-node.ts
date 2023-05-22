@@ -70,7 +70,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, OnDestroy {
   isModelLoading = false;
   nodeId = uniqueIdFactory();
 
-  private typeAheadKeyEvent: Subject<string> = new Subject<string>();
+  private typeAheadKeyEvent = new Subject<string>();
 
   private typeAheadKeyBuffer = '';
 

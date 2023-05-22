@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class RootDropdownService {
-  private _changes: Subject<boolean> = new Subject<boolean>();
+  private _changes = new Subject<boolean>();
 
   get changes(): Observable<boolean> {
     return this._changes.asObservable();

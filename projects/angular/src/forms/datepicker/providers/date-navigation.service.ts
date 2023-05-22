@@ -54,7 +54,7 @@ export class DateNavigationService {
 
   selectedDay: DayModel;
 
-  private _selectedDayChange: Subject<DayModel> = new Subject<DayModel>();
+  private _selectedDayChange = new Subject<DayModel>();
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
@@ -126,7 +126,7 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
-  private _displayedCalendarChange: Subject<void> = new Subject<void>();
+  private _displayedCalendarChange = new Subject<void>();
 
   /**
    * This observable lets the subscriber know that the displayed calendar has changed.
@@ -135,7 +135,7 @@ export class DateNavigationService {
     return this._displayedCalendarChange.asObservable();
   }
 
-  private _focusOnCalendarChange: Subject<void> = new Subject<void>();
+  private _focusOnCalendarChange = new Subject<void>();
 
   /**
    * This observable lets the subscriber know that the focus should be applied on the calendar.
@@ -144,7 +144,7 @@ export class DateNavigationService {
     return this._focusOnCalendarChange.asObservable();
   }
 
-  private _focusedDayChange: Subject<DayModel> = new Subject<DayModel>();
+  private _focusedDayChange = new Subject<DayModel>();
 
   /**
    * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
