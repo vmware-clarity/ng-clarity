@@ -25,6 +25,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrCommonStringsService } from '../utils';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
@@ -47,6 +48,11 @@ import { ClrWizardTitle } from './wizard-title';
   },
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
+  /**
+   * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
+   */
+  @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = this.commonStrings.keys.wizardStepnavAriaLabel;
+
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
@@ -245,6 +251,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
+    private commonStrings: ClrCommonStringsService,
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
