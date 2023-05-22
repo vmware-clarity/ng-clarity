@@ -14,9 +14,7 @@ import { DatagridRenderOrganizer } from '../render/render-organizer';
 @Injectable()
 export class DisplayModeService implements OnDestroy {
   private subscriptions: Subscription[] = [];
-  protected _view: BehaviorSubject<DatagridDisplayMode> = new BehaviorSubject<DatagridDisplayMode>(
-    DatagridDisplayMode.DISPLAY
-  );
+  protected _view = new BehaviorSubject(DatagridDisplayMode.DISPLAY);
 
   constructor(renderOrganizer: DatagridRenderOrganizer) {
     this.subscriptions.push(

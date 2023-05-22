@@ -23,9 +23,9 @@ export class DragEventListenerService<T> {
   // contains listener for mousemove/touchmove before delay
   private checkDragStartBoundaryListener: () => void;
 
-  private dragStart: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
-  private dragMove: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
-  private dragEnd: Subject<DragEventInterface<T>> = new Subject<DragEventInterface<T>>();
+  private dragStart = new Subject<DragEventInterface<T>>();
+  private dragMove = new Subject<DragEventInterface<T>>();
+  private dragEnd = new Subject<DragEventInterface<T>>();
 
   private hasDragStarted = false;
 

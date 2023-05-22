@@ -28,7 +28,7 @@ export class ContainerIdService {
     this._idChange.next(value);
   }
 
-  private _idChange: BehaviorSubject<string> = new BehaviorSubject(this._id);
+  private _idChange = new BehaviorSubject(this._id);
   get idChange(): Observable<string> {
     return this._idChange.asObservable();
   }

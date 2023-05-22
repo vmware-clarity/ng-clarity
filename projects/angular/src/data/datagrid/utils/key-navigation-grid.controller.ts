@@ -52,7 +52,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private host: HTMLElement;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   ngOnDestroy(): void {
     this.destroy$.next();

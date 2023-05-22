@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class DetailService {
   private toggleState = false;
-  private _state: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean>(this.toggleState);
+  private _state = new BehaviorSubject<boolean | null>(this.toggleState);
   private cache: any;
   private _enabled = false;
   private button: HTMLButtonElement;

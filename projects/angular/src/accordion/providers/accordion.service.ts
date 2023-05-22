@@ -14,7 +14,7 @@ import { AccordionModel, AccordionPanelModel } from '../models/accordion.model';
 @Injectable()
 export class AccordionService {
   protected accordion = new AccordionModel();
-  protected readonly _panelsChanges = new BehaviorSubject<AccordionPanelModel[]>(this.accordion.panels);
+  protected readonly _panelsChanges = new BehaviorSubject(this.accordion.panels);
 
   getPanelChanges(panelId: string): Observable<AccordionPanelModel> {
     return this._panelsChanges.pipe(map(panels => panels.find(s => s.id === panelId)));

@@ -243,7 +243,7 @@ export class Selection<T = any> {
    */
   shiftPressed = false;
 
-  private valueCollector: Subject<T[]> = new Subject<T[]>();
+  private valueCollector = new Subject<T[]>();
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
 

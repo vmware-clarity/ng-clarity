@@ -18,7 +18,7 @@ export interface Helpers {
 @Injectable()
 export class NgControlService {
   // Observable to subscribe to the control, since its not available immediately for projected content
-  private _controlChanges: Subject<NgControl> = new Subject<NgControl>();
+  private _controlChanges = new Subject<NgControl>();
   get controlChanges(): Observable<NgControl> {
     return this._controlChanges.asObservable();
   }
@@ -27,7 +27,7 @@ export class NgControlService {
     this._controlChanges.next(control);
   }
 
-  private _helpers: Subject<Helpers> = new Subject();
+  private _helpers = new Subject<Helpers>();
 
   get helpersChange(): Observable<Helpers> {
     return this._helpers.asObservable();
