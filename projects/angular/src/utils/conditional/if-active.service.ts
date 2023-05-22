@@ -41,7 +41,7 @@ export class IfActiveService {
    * implemting the IfActive structural directive.
    *
    */
-  private _currentChange: Subject<number> = new Subject<number>();
+  private _currentChange = new Subject<number>();
 
   /*********
    * @property _current

@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class FocusService {
-  private _focused: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean);
+  private _focused = new BehaviorSubject(false);
   get focusChange(): Observable<boolean> {
     return this._focused.asObservable();
   }

@@ -12,7 +12,7 @@ import { ClrButton } from '../button-group/button';
 
 @Injectable()
 export class ButtonInGroupService {
-  private _changes: Subject<ClrButton> = new Subject<ClrButton>();
+  private _changes = new Subject<ClrButton>();
 
   get changes(): Observable<ClrButton> {
     return this._changes.asObservable();

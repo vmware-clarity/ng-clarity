@@ -43,7 +43,7 @@ export class IfExpandService implements LoadingListener {
     this.expanded = !this._expanded;
   }
 
-  protected _expandChange: Subject<boolean> = new Subject<boolean>();
+  protected _expandChange = new Subject<boolean>();
   get expandChange(): Observable<boolean> {
     return this._expandChange.asObservable();
   }

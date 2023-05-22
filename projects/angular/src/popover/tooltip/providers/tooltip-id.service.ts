@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class TooltipIdService {
-  private _id: Subject<string> = new Subject<string>();
+  private _id = new Subject<string>();
 
   updateId(id: string) {
     this._id.next(id);

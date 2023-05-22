@@ -15,9 +15,9 @@ export class TreeFocusManagerService<T> {
 
   private focusedNodeId: string;
 
-  private _focusRequest: Subject<string> = new Subject();
+  private _focusRequest = new Subject<string>();
 
-  private _focusChange: Subject<string> = new Subject();
+  private _focusChange = new Subject<string>();
 
   get focusRequest(): Observable<string> {
     return this._focusRequest.asObservable();

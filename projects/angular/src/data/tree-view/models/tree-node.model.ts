@@ -11,7 +11,7 @@ import { ClrSelectedState } from './selected-state.enum';
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
-  selected = new BehaviorSubject<ClrSelectedState>(ClrSelectedState.UNSELECTED);
+  selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
   model: T | null;
   textContent: string;
   /*
@@ -30,7 +30,7 @@ export abstract class TreeNodeModel<T> {
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
    */
   private _loading = false;
-  loading$ = new BehaviorSubject<boolean>(false);
+  loading$ = new BehaviorSubject(false);
 
   get loading() {
     return this._loading;

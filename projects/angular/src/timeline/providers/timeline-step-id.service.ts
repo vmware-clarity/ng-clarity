@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class TimelineStepIdService {
-  private _id: Subject<string> = new Subject<string>();
+  private _id = new Subject<string>();
 
   get id(): Observable<string> {
     return this._id.asObservable();

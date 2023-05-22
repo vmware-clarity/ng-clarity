@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class SignpostIdService {
-  private _id: Subject<string> = new Subject<string>();
+  private _id = new Subject<string>();
 
   setId(id: string) {
     this._id.next(id);
