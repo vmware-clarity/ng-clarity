@@ -43,7 +43,7 @@ class TemplateFormsTestComponent {
 
 @Injectable()
 class MockStepperService extends StepperService {
-  step = new BehaviorSubject<AccordionPanelModel>(new AccordionPanelModel('groupName', 0));
+  step = new BehaviorSubject(new AccordionPanelModel('groupName', 0));
   activeStep = new Subject<string>();
 
   getPanelChanges() {

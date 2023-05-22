@@ -20,7 +20,7 @@ export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {
   /**
    * The Observable required as part of the Filter interface
    */
-  private changesSubject: Subject<T> = new Subject<T>();
+  private changesSubject = new Subject<T>();
   get changes(): Observable<T> {
     return this.changesSubject.asObservable();
   }

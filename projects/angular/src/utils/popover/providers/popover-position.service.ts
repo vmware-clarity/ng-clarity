@@ -22,7 +22,7 @@ export class ClrPopoverPositionService {
   private contentOffsets: ClrPopoverContentOffset;
   private _position: ClrPopoverPosition;
 
-  private _shouldRealign: Subject<void> = new Subject();
+  private _shouldRealign = new Subject<void>();
   shouldRealign: Observable<void> = this._shouldRealign.asObservable();
 
   realign() {

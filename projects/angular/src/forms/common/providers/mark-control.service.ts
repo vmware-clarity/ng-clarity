@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class MarkControlService {
-  private _touched: Subject<void> = new Subject();
+  private _touched = new Subject<void>();
 
   get touchedChange(): Observable<void> {
     return this._touched.asObservable();
