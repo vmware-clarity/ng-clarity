@@ -50,8 +50,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
-  @ContentChild(SelectMultipleControlValueAccessor, { static: false })
-  multiple: SelectMultipleControlValueAccessor;
+  @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple: SelectMultipleControlValueAccessor;
   private multi = false;
 
   constructor(

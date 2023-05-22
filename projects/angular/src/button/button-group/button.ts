@@ -34,8 +34,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
 export class ClrButton implements LoadingListener {
   private _enableService = false;
 
-  @ViewChild('buttonProjectedRef', { static: true })
-  templateRef: TemplateRef<ClrButton>;
+  @ViewChild('buttonProjectedRef', { static: true }) templateRef: TemplateRef<ClrButton>;
 
   constructor(
     @SkipSelf()

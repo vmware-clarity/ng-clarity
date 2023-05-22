@@ -33,8 +33,7 @@ export class ClrForm {
     this.markControlService.markAsTouched();
   }
 
-  @ContentChildren(ClrLabel, { descendants: true })
-  labels: QueryList<ClrLabel>;
+  @ContentChildren(ClrLabel, { descendants: true }) labels: QueryList<ClrLabel>;
 
   @HostListener('submit')
   onFormSubmit() {

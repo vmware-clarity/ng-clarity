@@ -21,10 +21,8 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   providers: [ClrPopoverToggleService, ClrPopoverEventsService],
 })
 class TestHost {
-  @ViewChild('closeButton', { read: ElementRef, static: true })
-  closeButton: ElementRef;
-  @ViewChild('toggleButton', { read: ElementRef, static: true })
-  toggleButton: ElementRef;
+  @ViewChild('closeButton', { read: ElementRef, static: true }) closeButton: ElementRef;
+  @ViewChild('toggleButton', { read: ElementRef, static: true }) toggleButton: ElementRef;
   openState;
 
   handleClose() {

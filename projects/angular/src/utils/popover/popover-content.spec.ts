@@ -36,8 +36,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
 })
 class SimpleContent {
-  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true })
-  content: ClrPopoverContent;
+  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
   smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.VERTICAL,
     side: ClrSide.BEFORE,

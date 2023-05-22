@@ -22,8 +22,7 @@ import { ClrControlSuccess } from './success';
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
   protected subscriptions: Subscription[] = [];
   _dynamic = false;
-  @ContentChild(ClrLabel, { static: false })
-  label: ClrLabel;
+  @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
   control: NgControl;
   private state: CONTROL_STATE;
 

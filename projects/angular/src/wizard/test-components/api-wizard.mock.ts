@@ -54,8 +54,7 @@ import { ClrWizard } from '../wizard';
   `,
 })
 export class TemplateApiWizardTestComponent {
-  @ViewChild('wizard', { static: true })
-  wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) wizard: ClrWizard;
   mySize: string;
   stepnavAriaLabel = 'Label for stepnav';
   projectedTitle = 'My Great Title';

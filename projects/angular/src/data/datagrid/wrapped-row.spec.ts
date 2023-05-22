@@ -13,8 +13,7 @@ import { WrappedRow } from './wrapped-row';
   template: `<dg-wrapped-row>Hello World!</dg-wrapped-row>`,
 })
 class WrappedRowTest {
-  @ViewChild(WrappedRow, { static: true })
-  wrapper: WrappedRow;
+  @ViewChild(WrappedRow, { static: true }) wrapper: WrappedRow;
 }
 
 interface TestContext {
