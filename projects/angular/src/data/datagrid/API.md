@@ -42,12 +42,11 @@
 | Class name                            | Description                                                                     |
 | ------------------------------------- | -----------------------------------------------------------------------------   |
 | .clr-datagrid                         | Identify the main datagrid element.                                             |
-| .datagrid-nav                         | To filter and navigate through data displayed in datagrid.                      |
-| .datagrid-outer-wrapper               | It's container element that holds and positions data grid component.            |
-| .datagrid-calculation-table           | Allows for the display and manipulation of calculated data.                     |
-| .datagrid-host                        | To manage and optimize the performance of datagrid.                             |
-| .datagrid-header                      | To displays the column labels or headers.                                       |
-| .datagrid-row                         | To display single record or item of data in a horizontal format.                |
-| .datagrid-row-master                  | Primary row that used to group or summarize related data in hierarchical format.|
-| .datagrid-row-flex                    | Allows for flexible sizing and positioning of cells within data grid.           |
-| .datagrid-footer                      | The bottom row that typically displays summary.                                 |
+| .datagrid-outer-wrapper               | Datagrid internal layout containe.                                              |
+| .datagrid-calculation-table           | Datagrid internal element involved in automatic column size calculation.        |
+| .datagrid-host                        | Basic datagrid layout container.                                                |
+| .datagrid-header                      | Datagrid header container.                                                      |
+| .datagrid-row                         | Datagrid row container.                                                         |
+| .datagrid-row-master                  | Internal datagrid row element.                                                  |
+| .datagrid-row-flex                    | Internal datagrid row container, managing "flex" positioning.                   |
+| .datagrid-footer                      | Datagrid footer.                                                                |

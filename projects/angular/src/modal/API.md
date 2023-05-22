@@ -5,7 +5,7 @@
 | CSS Variable Name                                     | Description                                                                  |
 | ----------------------------------------------------- | -----------------------------------------------------------------------------|
 | --clr-modal-close-color                               | Changes the close icon color.                                                |
-| --clr-modal-bg-color                                  | Changes the background color of popup modal.                                 |
+| --clr-modal-bg-color                                  | Changes the background color of modal popup.                                 |
 | --clr-modal-content-box-shadow-color                  | Changes the border shadow color of popup box.                                |
 | --clr-modal-backdrop-color                            | Changes the backdrop background color of popup.                              |
 | --clr-modal-backdrop-opacity                          | Changes the opacity for backdrop background color.                           |
