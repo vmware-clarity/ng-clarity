@@ -4,7 +4,7 @@
 
 | CSS Variable Name                       | Description                                                |
 | --------------------------------------- | ---------------------------------------------------------- |
-| --clr-signpost-content-bg-color         | Changes the background color of the description for all signpost elements.
+| --clr-signpost-content-bg-color         | Changes the background color of the content.
 | --clr-signpost-content-border-color     | Changes the border color of the description for all signpost elements. 
 | --clr-signpost-action-color             | Changes the color of close icon.
 | --clr-signpost-action-hover-color       | Changes the color of close icon on hover.
@@ -16,7 +16,9 @@
 
 | Class name         | Description                              |
 | -------------------| ---------------------------------------- |
-| signpost-item      | Class contains the signpost element |
-| signpost-positions | The signpost position is specified by Clsss |
-| clr-signpost       | Class is a directional marker that indicates where you are in your path |
-| signpost           | Class is a directional marker |
+| signpost-item      | Main signpost element.                   |
+| signpost-action    | This is signpost action button class.    |
+| signpost-trigger   | Signpost trigger button.                 |
+| signpost-content   | This is for displaying content.          |
+| signpost-wrap      | This is wrapper class.                   |
+| signpost-positions | This is signpost position class.         |
