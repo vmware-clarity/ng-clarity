@@ -21,4 +21,3 @@
 | signpost-trigger   | Signpost trigger button.                 |
 | signpost-content   | This is for displaying content.          |
 | signpost-wrap      | This is wrapper class.                   |
-| signpost-positions | This is signpost position class.         |
