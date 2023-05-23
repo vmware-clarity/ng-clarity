@@ -132,37 +132,19 @@ export class ClrPopoverEventsService implements OnDestroy {
     }
   }
 
-  private _anchorButtonRef: ElementRef;
-  set anchorButtonRef(ref: ElementRef) {
-    this._anchorButtonRef = ref;
-  }
-  get anchorButtonRef(): ElementRef {
-    return this._anchorButtonRef;
-  }
+  anchorButtonRef: ElementRef;
 
-  private _closeButtonRef: ElementRef;
-  set closeButtonRef(ref: ElementRef) {
-    this._closeButtonRef = ref;
-  }
-  get closeButtonRef(): ElementRef {
-    return this._closeButtonRef;
-  }
+  closeButtonRef: ElementRef;
 
   setCloseFocus(): void {
-    this._closeButtonRef.nativeElement.focus();
+    this.closeButtonRef.nativeElement.focus();
   }
 
   setAnchorFocus(): void {
     this.anchorButtonRef.nativeElement.focus();
   }
 
-  private _contentRef: ElementRef;
-  set contentRef(host: ElementRef) {
-    this._contentRef = host;
-  }
-  get contentRef(): ElementRef {
-    return this._contentRef;
-  }
+  contentRef: ElementRef;
 
   private documentScroller: Observable<Event>;
 
