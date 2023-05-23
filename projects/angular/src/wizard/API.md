@@ -1,5 +1,7 @@
 # Wizard-clarity - Style API
 
+## CSS Variables
+
 | CSS Variable Name          | Description                                                        |
 | -------------------------- | ------------------------------------------------------------------ |
 | --clr-wizard-main-bgcolor    | Changes the background color in wizard element.
