@@ -37,15 +37,15 @@ import { Selection } from './providers/selection';
   },
 })
 export class ClrDatagridFooter<T = any> {
+  /* reference to the enum so that template can access */
+  SELECTION_TYPE = SelectionType;
+
   constructor(
     public selection: Selection<T>,
     public detailService: DetailService,
     private columnsService: ColumnsService,
     public commonStrings: ClrCommonStringsService
   ) {}
-
-  /* reference to the enum so that template can access */
-  SELECTION_TYPE = SelectionType;
 
   get hasHideableColumns(): boolean {
     return this.columnsService.hasHideableColumns;

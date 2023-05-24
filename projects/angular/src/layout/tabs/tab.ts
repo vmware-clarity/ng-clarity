@@ -17,10 +17,8 @@ import { ClrTabLink } from './tab-link.directive';
   providers: [IF_ACTIVE_ID_PROVIDER],
 })
 export class ClrTab {
-  @ContentChild(ClrTabLink, { static: true })
-  tabLink: ClrTabLink;
-  @ContentChild(ClrTabContent, { static: true })
-  tabContent: ClrTabContent;
+  @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;
+  @ContentChild(ClrTabContent, { static: true }) tabContent: ClrTabContent;
 
   constructor(
     public ifActiveService: IfActiveService,
@@ -30,11 +28,11 @@ export class ClrTab {
     tabsService.register(this);
   }
 
-  ngOnDestroy() {
-    this.tabsService.unregister(this);
-  }
-
   get active() {
     return this.ifActiveService.current === this.id;
+  }
+
+  ngOnDestroy() {
+    this.tabsService.unregister(this);
   }
 }

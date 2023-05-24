@@ -60,7 +60,11 @@ let nbOptionsComponents = 0;
   },
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
+  @Input('id') optionsId: string;
+
   loading = false;
+  _items: QueryList<ClrOption<T>>;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -84,8 +88,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     }
   }
 
-  searchText(input: string) {
-    return this.commonStrings.parse(this.commonStrings.keys.comboboxSearching, { INPUT: input });
+  @ContentChildren(ClrOption)
+  get items(): QueryList<ClrOption<T>> {
+    return this._items;
+  }
+  set items(items: QueryList<ClrOption<T>>) {
+    this._items = items;
+    this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
   }
 
   /**
@@ -93,23 +102,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
    */
   get emptyOptions() {
     return !this.optionSelectionService.loading && this.items.length === 0;
-  }
-
-  @Input('id') optionsId: string;
-
-  _items: QueryList<ClrOption<T>>;
-  @ContentChildren(ClrOption)
-  set items(items: QueryList<ClrOption<T>>) {
-    this._items = items;
-    this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
-  }
-
-  get items(): QueryList<ClrOption<T>> {
-    return this._items;
-  }
-
-  loadingStateChange(state: ClrLoadingState): void {
-    this.loading = state === ClrLoadingState.LOADING;
   }
 
   ngAfterViewInit() {
@@ -135,5 +127,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  searchText(input: string) {
+    return this.commonStrings.parse(this.commonStrings.keys.comboboxSearching, { INPUT: input });
+  }
+
+  loadingStateChange(state: ClrLoadingState): void {
+    this.loading = state === ClrLoadingState.LOADING;
   }
 }

@@ -60,16 +60,6 @@ export class ClrWizardButton {
 
   constructor(public navService: WizardNavigationService, public buttonService: ButtonHubService) {}
 
-  private checkDefaultAndCustomType(valueToCheck = '', typeToLookUp: string) {
-    if (DEFAULT_BUTTON_TYPES[typeToLookUp] === valueToCheck) {
-      return true;
-    }
-    if (CUSTOM_BUTTON_TYPES[typeToLookUp] === valueToCheck) {
-      return true;
-    }
-    return false;
-  }
-
   get isCancel(): boolean {
     return this.checkDefaultAndCustomType(this.type, 'cancel');
   }
@@ -179,5 +169,15 @@ export class ClrWizardButton {
 
     this.wasClicked.emit(this.type);
     this.buttonService.buttonClicked(this.type);
+  }
+
+  private checkDefaultAndCustomType(valueToCheck = '', typeToLookUp: string) {
+    if (DEFAULT_BUTTON_TYPES[typeToLookUp] === valueToCheck) {
+      return true;
+    }
+    if (CUSTOM_BUTTON_TYPES[typeToLookUp] === valueToCheck) {
+      return true;
+    }
+    return false;
   }
 }

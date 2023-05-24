@@ -17,19 +17,21 @@ import { ClrPopoverEventsService } from './popover-events.service';
 
 @Injectable()
 export class ClrPopoverPositionService {
+  position: ClrPopoverPosition;
+  shouldRealign: Observable<void>;
+
   private currentAnchorCoords: ClientRect;
   private currentContentCoords: ClientRect;
   private contentOffsets: ClrPopoverContentOffset;
-  position: ClrPopoverPosition;
-
   private _shouldRealign = new Subject<void>();
-  shouldRealign: Observable<void> = this._shouldRealign.asObservable();
+
+  constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {
+    this.shouldRealign = this._shouldRealign.asObservable();
+  }
 
   realign() {
     this._shouldRealign.next();
   }
-
-  constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {}
 
   alignContent(content: HTMLElement): ClrPopoverContentOffset {
     if (!isPlatformBrowser(this.platformId)) {

@@ -22,12 +22,6 @@ export interface ClrRecursiveForOfContext<T> {
   selector: '[clrRecursiveFor][clrRecursiveForOf]',
 })
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-  constructor(
-    private template: TemplateRef<ClrRecursiveForOfContext<T>>,
-    private featuresService: TreeFeaturesService<T>,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   // TODO: accept NgIterable<T>
   @Input('clrRecursiveForOf') nodes: T | T[];
 
@@ -35,6 +29,12 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   @Input('clrRecursiveForGetChildren') getChildren: (node: T) => AsyncArray<T>;
 
   private childrenFetchSubscription: Subscription;
+
+  constructor(
+    private template: TemplateRef<ClrRecursiveForOfContext<T>>,
+    private featuresService: TreeFeaturesService<T>,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
   ngOnChanges() {

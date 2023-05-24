@@ -13,6 +13,8 @@ import { Observable, Subject } from 'rxjs';
   template: `<z-index-various-content></z-index-various-content>`,
 })
 export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {
+  private changesSubject = new Subject<T>();
+
   constructor(protected filterContainer: ClrDatagridFilter) {
     filterContainer.setFilter(this);
   }
@@ -20,7 +22,6 @@ export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {
   /**
    * The Observable required as part of the Filter interface
    */
-  private changesSubject = new Subject<T>();
   get changes(): Observable<T> {
     return this.changesSubject.asObservable();
   }

@@ -33,6 +33,10 @@ const defaultSize = 'sm';
   },
 })
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
+  private _id: string;
+  private _position: string;
+  private _size: string;
+
   constructor(
     injector: Injector,
     @Optional()
@@ -51,26 +55,21 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     this.id = uniqueIdFactory();
   }
 
+  @Input()
   get id(): string {
     return this._id;
   }
-
-  @Input()
   set id(value: string) {
     const id = value || '';
 
     this._id = id;
     this.tooltipIdService.updateId(id);
   }
-  private _id: string;
 
-  private _position: string;
-
+  @Input('clrPosition')
   get position() {
     return this._position;
   }
-
-  @Input('clrPosition')
   set position(value: string) {
     const oldPosition = this._position;
     const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
@@ -109,13 +108,10 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     }
   }
 
-  private _size: string;
-
+  @Input('clrSize')
   get size() {
     return this._size;
   }
-
-  @Input('clrSize')
   set size(value: string) {
     const oldSize = this._size;
     const newSize = SIZES.includes(value) ? value : defaultSize;

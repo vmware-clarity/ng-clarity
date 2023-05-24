@@ -65,102 +65,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Input('clrWizardClosable') closable = true;
 
   /**
-   * Resets page completed states when navigating backwards.
-   * Set using `[clrWizardForceForwardNavigation]` input.
-   */
-  @Input('clrWizardForceForwardNavigation')
-  set forceForward(value: boolean) {
-    this._forceForward = !!value;
-    this.navService.forceForwardNavigation = value;
-  }
-  get forceForward(): boolean {
-    return this._forceForward;
-  }
-  private _forceForward = false;
-
-  _open = false;
-  /**
-   * Toggles open/close of the wizard component.
-   * Set using the `[clrWizardOpen]` input.
-   */
-  @Input('clrWizardOpen')
-  set clrWizardOpen(open: boolean) {
-    if (open) {
-      this.buttonService.buttonsReady = true;
-    }
-    this._open = open;
-  }
-
-  /**
-   * Prevents ClrWizard from moving to the next page or closing itself on finishing.
-   * Set using the `[clrWizardPreventDefaultNext]` input. Note that using stopNext
-   * will require you to create your own calls to .next() and .finish() in your
-   * host component to make the ClrWizard work as expected.
-   */
-  @Input('clrWizardPreventDefaultNext')
-  set stopNext(value: boolean) {
-    this._stopNext = !!value;
-    this.navService.wizardHasAltNext = value;
-  }
-  get stopNext(): boolean {
-    return this._stopNext;
-  }
-  private _stopNext = false;
-
-  /**
-   * Prevents ClrWizard from closing when the cancel button or close "X" is clicked.
-   * Set using the `[clrWizardPreventDefaultCancel]` input.
-   *
-   * Note that using stopCancel will require you to create your own calls to `close()` in your host compone`nt
-   * to make the ClrWizard work as expected. Useful for doing checks or prompts
-   * before closing a ClrWizard.
-   */
-  @Input('clrWizardPreventDefaultCancel')
-  set stopCancel(value: boolean) {
-    this._stopCancel = !!value;
-    this.navService.wizardHasAltCancel = value;
-  }
-  get stopCancel(): boolean {
-    return this._stopCancel;
-  }
-  private _stopCancel = false;
-
-  /**
-   * Prevents ClrWizard from performing any form of navigation away from the current
-   * page. Set using the `[clrWizardPreventNavigation]` input.
-   * Note that stopNavigation is meant to freeze the wizard in place, typically
-   * during a long validation or background action where you want the wizard to
-   * display loading content but not allow the user to execute navigation in
-   * the stepnav, close X, or the  back, finish, or next buttons.
-   */
-  @Input('clrWizardPreventNavigation')
-  set stopNavigation(value: boolean) {
-    this._stopNavigation = !!value;
-    this.navService.wizardStopNavigation = value;
-  }
-  get stopNavigation(): boolean {
-    return this._stopNavigation;
-  }
-  private _stopNavigation = false;
-
-  /**
-   * Prevents clicks on the links in the stepnav from working.
-   * Set using `[clrWizardDisableStepnav]` input.
-   * A more granular bypassing of navigation which can be useful when your
-   * ClrWizard is in a state of completion and you don't want users to be
-   * able to jump backwards and change things.
-   */
-  @Input('clrWizardDisableStepnav')
-  set disableStepnav(value: boolean) {
-    this._disableStepnav = !!value;
-    this.navService.wizardDisableStepnav = value;
-  }
-  get disableStepnav(): boolean {
-    return this._disableStepnav;
-  }
-  private _disableStepnav = false;
-
-  /**
    * Emits when the wizard is opened or closed.
    * Listen via `(clrWizardOpenChange)` event.
    */
@@ -202,35 +106,22 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Emits when the wizard moves to the previous page. Can be useful for validation.
    * Listen via `(clrWizardOnPrevious)` event.
    */
-
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
-  @ContentChildren(ClrWizardPage, { descendants: true })
-  pages: QueryList<ClrWizardPage>;
+  @ViewChild('pageTitle') pageTitle: ElementRef;
+  @ContentChildren(ClrWizardPage, { descendants: true }) pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
-  @ViewChild('pageTitle') pageTitle: ElementRef;
+  _open = false;
+  wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
 
-  get currentPage(): ClrWizardPage {
-    return this.navService.currentPage;
-  }
-
-  set currentPage(page: ClrWizardPage) {
-    this.navService.goTo(page, true);
-  }
-
-  get isLast(): boolean {
-    return this.navService.currentPageIsLast;
-  }
-
-  get isFirst(): boolean {
-    return this.navService.currentPageIsFirst;
-  }
-
-  wizardId = uniqueIdFactory();
-
+  private _forceForward = false;
+  private _stopNext = false;
+  private _stopCancel = false;
+  private _stopNavigation = false;
+  private _disableStepnav = false;
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
 
@@ -252,6 +143,111 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     );
 
     this.differ = differs.find([]).create(null);
+  }
+
+  /**
+   * Resets page completed states when navigating backwards.
+   * Set using `[clrWizardForceForwardNavigation]` input.
+   */
+  @Input('clrWizardForceForwardNavigation')
+  get forceForward(): boolean {
+    return this._forceForward;
+  }
+  set forceForward(value: boolean) {
+    this._forceForward = !!value;
+    this.navService.forceForwardNavigation = value;
+  }
+
+  /**
+   * Toggles open/close of the wizard component.
+   * Set using the `[clrWizardOpen]` input.
+   */
+  @Input('clrWizardOpen')
+  set clrWizardOpen(open: boolean) {
+    if (open) {
+      this.buttonService.buttonsReady = true;
+    }
+    this._open = open;
+  }
+
+  /**
+   * Prevents ClrWizard from moving to the next page or closing itself on finishing.
+   * Set using the `[clrWizardPreventDefaultNext]` input. Note that using stopNext
+   * will require you to create your own calls to .next() and .finish() in your
+   * host component to make the ClrWizard work as expected.
+   */
+  @Input('clrWizardPreventDefaultNext')
+  get stopNext(): boolean {
+    return this._stopNext;
+  }
+  set stopNext(value: boolean) {
+    this._stopNext = !!value;
+    this.navService.wizardHasAltNext = value;
+  }
+
+  /**
+   * Prevents ClrWizard from closing when the cancel button or close "X" is clicked.
+   * Set using the `[clrWizardPreventDefaultCancel]` input.
+   *
+   * Note that using stopCancel will require you to create your own calls to `close()` in your host compone`nt
+   * to make the ClrWizard work as expected. Useful for doing checks or prompts
+   * before closing a ClrWizard.
+   */
+  @Input('clrWizardPreventDefaultCancel')
+  get stopCancel(): boolean {
+    return this._stopCancel;
+  }
+  set stopCancel(value: boolean) {
+    this._stopCancel = !!value;
+    this.navService.wizardHasAltCancel = value;
+  }
+
+  /**
+   * Prevents ClrWizard from performing any form of navigation away from the current
+   * page. Set using the `[clrWizardPreventNavigation]` input.
+   * Note that stopNavigation is meant to freeze the wizard in place, typically
+   * during a long validation or background action where you want the wizard to
+   * display loading content but not allow the user to execute navigation in
+   * the stepnav, close X, or the  back, finish, or next buttons.
+   */
+  @Input('clrWizardPreventNavigation')
+  get stopNavigation(): boolean {
+    return this._stopNavigation;
+  }
+  set stopNavigation(value: boolean) {
+    this._stopNavigation = !!value;
+    this.navService.wizardStopNavigation = value;
+  }
+
+  /**
+   * Prevents clicks on the links in the stepnav from working.
+   * Set using `[clrWizardDisableStepnav]` input.
+   * A more granular bypassing of navigation which can be useful when your
+   * ClrWizard is in a state of completion and you don't want users to be
+   * able to jump backwards and change things.
+   */
+  @Input('clrWizardDisableStepnav')
+  get disableStepnav(): boolean {
+    return this._disableStepnav;
+  }
+  set disableStepnav(value: boolean) {
+    this._disableStepnav = !!value;
+    this.navService.wizardDisableStepnav = value;
+  }
+
+  get currentPage(): ClrWizardPage {
+    return this.navService.currentPage;
+  }
+  set currentPage(page: ClrWizardPage) {
+    this.navService.goTo(page, true);
+  }
+
+  get isLast(): boolean {
+    return this.navService.currentPageIsLast;
+  }
+
+  get isFirst(): boolean {
+    return this.navService.currentPageIsFirst;
   }
 
   ngAfterContentInit(): void {

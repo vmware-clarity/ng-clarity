@@ -79,10 +79,14 @@ class TemplateTestComponent {
   @ViewChild('lifecycle') lifecycleTemplateTester: ClrWizardPage;
   @ViewChild('other') otherTemplateTester: ClrWizardPage;
 
-  navTwoWayBindingPassed = false;
   testId = 'ohai';
+  loadedPageId = '';
+  navTwoWayBindingPassed = false;
 
   private _navTestNextDisabled = false;
+  private _navTestPreviousDisabled = true;
+  private _navStopCancel = false;
+
   get navTestNextDisabled(): boolean {
     return this._navTestNextDisabled;
   }
@@ -93,7 +97,6 @@ class TemplateTestComponent {
     }
   }
 
-  private _navTestPreviousDisabled = true;
   get navTestPreviousDisabled(): boolean {
     return this._navTestPreviousDisabled;
   }
@@ -104,7 +107,6 @@ class TemplateTestComponent {
     }
   }
 
-  private _navStopCancel = false;
   get navStopCancel(): boolean {
     return this._navStopCancel;
   }
@@ -113,7 +115,6 @@ class TemplateTestComponent {
     this._navStopCancel = val;
   }
 
-  loadedPageId = '';
   onLoadCheck(pageId: string): void {
     this.loadedPageId = pageId;
   }
@@ -204,18 +205,21 @@ class ViewTestComponent {
   innerProjector = 12;
   asyncLoaded = false;
   asyncContent = '';
+  testId = 'ohai';
+  disablePrevious = false;
+  preventCancel = false;
+  altCancelRan = false;
+
   // wizard has to init to open or all the pages are hidden inside modal
   open = true;
+
   loadAsync(): void {
     setTimeout(() => {
       this.asyncLoaded = true;
       this.asyncContent = 'better late than never';
     }, 100);
   }
-  testId = 'ohai';
-  disablePrevious = false;
-  preventCancel = false;
-  altCancelRan = false;
+
   altCancel() {
     this.altCancelRan = true;
   }

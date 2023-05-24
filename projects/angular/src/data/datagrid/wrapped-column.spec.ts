@@ -13,8 +13,7 @@ import { WrappedColumn } from './wrapped-column';
   template: `<dg-wrapped-column>Hello World!</dg-wrapped-column>`,
 })
 class WrappedColumnTest {
-  @ViewChild(WrappedColumn, { static: true })
-  wrapper: WrappedColumn;
+  @ViewChild(WrappedColumn, { static: true }) wrapper: WrappedColumn;
 }
 
 interface TestContext {

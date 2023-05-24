@@ -64,25 +64,17 @@ export class IfActiveService {
   /*********
    *
    * @description
-   * A setter function that updates the current state of _current for this instance of IfActive structural directive.
+   * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
    * And, broadcasts the new value to all subscribers.
    *
-   * @param value
    */
+  get current(): number {
+    return this._current;
+  }
   set current(value: number) {
     if (this._current !== value) {
       this._current = value;
       this._currentChange.next(value);
     }
-  }
-
-  /*********
-   *
-   * @description
-   * A getter that returns the current value of this IfActive instance.
-   * @returns
-   */
-  get current(): number {
-    return this._current;
   }
 }

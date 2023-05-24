@@ -29,17 +29,6 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
   private differ: IterableDiffer<T> | null = null;
   private subscriptions: Subscription[] = [];
 
-  @Input('clrDgItemsOf')
-  set rawItems(items: T[]) {
-    this._rawItems = items ? items : []; // local copy for ngOnChange diffing
-  }
-
-  @Input('clrDgItemsTrackBy')
-  set trackBy(value: TrackByFunction<T>) {
-    this.items.iteratorTrackBy = value;
-    this.iterableProxy.ngForTrackBy = value;
-  }
-
   constructor(
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,
@@ -54,6 +43,17 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
         this.iterableProxy.ngDoCheck();
       })
     );
+  }
+
+  @Input('clrDgItemsOf')
+  set rawItems(items: T[]) {
+    this._rawItems = items ? items : []; // local copy for ngOnChange diffing
+  }
+
+  @Input('clrDgItemsTrackBy')
+  set trackBy(value: TrackByFunction<T>) {
+    this.items.iteratorTrackBy = value;
+    this.iterableProxy.ngForTrackBy = value;
   }
 
   /**

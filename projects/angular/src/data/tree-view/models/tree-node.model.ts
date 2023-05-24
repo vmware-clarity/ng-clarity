@@ -11,9 +11,18 @@ import { ClrSelectedState } from './selected-state.enum';
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
-  selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
   model: T | null;
   textContent: string;
+  loading$ = new BehaviorSubject(false);
+  selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
+
+  /*
+   * Being able to push this down to the RecursiveTreeNodeModel would require too much work on the angular components
+   * right now for them to know which kind of model they are using. So I'm lifting the public properties to this
+   * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
+   */
+  private _loading = false;
+
   /*
    * Ideally, I would like to use a polymorphic this type here to ensure homogeneity of the tree, something like:
    * abstract parent: this<T> | null;
@@ -24,18 +33,9 @@ export abstract class TreeNodeModel<T> {
   abstract parent: TreeNodeModel<T> | null;
   abstract children: TreeNodeModel<T>[];
 
-  /*
-   * Being able to push this down to the RecursiveTreeNodeModel would require too much work on the angular components
-   * right now for them to know which kind of model they are using. So I'm lifting the public properties to this
-   * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
-   */
-  private _loading = false;
-  loading$ = new BehaviorSubject(false);
-
   get loading() {
     return this._loading;
   }
-
   set loading(isLoading: boolean) {
     this._loading = isLoading;
     this.loading$.next(isLoading);
@@ -69,6 +69,20 @@ export abstract class TreeNodeModel<T> {
     this.setSelected(newState, true, propagate);
   }
 
+  /*
+   * Internal, but needs to be called by other nodes
+   */
+  _updateSelectionFromChildren() {
+    const newState = this.computeSelectionStateFromChildren();
+    if (newState === this.selected.value) {
+      return;
+    }
+    this.selected.next(newState);
+    if (this.parent) {
+      this.parent._updateSelectionFromChildren();
+    }
+  }
+
   private computeSelectionStateFromChildren() {
     let oneSelected = false;
     let oneUnselected = false;
@@ -99,20 +113,6 @@ export abstract class TreeNodeModel<T> {
       return ClrSelectedState.SELECTED;
     } else {
       return ClrSelectedState.UNSELECTED;
-    }
-  }
-
-  /*
-   * Internal, but needs to be called by other nodes
-   */
-  _updateSelectionFromChildren() {
-    const newState = this.computeSelectionStateFromChildren();
-    if (newState === this.selected.value) {
-      return;
-    }
-    this.selected.next(newState);
-    if (this.parent) {
-      this.parent._updateSelectionFromChildren();
     }
   }
 }

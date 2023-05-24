@@ -9,34 +9,32 @@ import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
+// Popovers might need to ignore click events on an element
+// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
+
 @Injectable()
 export class ClrPopoverToggleService {
-  /**
-   *  Popovers might need to ignore click events on an element
-   *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
-   */
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
+  private _popoverAligned = new Subject<HTMLElement>();
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
   }
 
+  get openEvent(): Event {
+    return this._openEvent;
+  }
   set openEvent(event: Event) {
     this._openEvent = event;
     this._openEventChange.next(event);
   }
 
-  get openEvent(): Event {
-    return this._openEvent;
+  get open(): boolean {
+    return this._open;
   }
-
-  getEventChange(): Observable<Event> {
-    return this._openEventChange.asObservable();
-  }
-
   set open(value: boolean) {
     value = !!value;
     if (this._open !== value) {
@@ -45,13 +43,17 @@ export class ClrPopoverToggleService {
     }
   }
 
-  get open(): boolean {
-    return this._open;
-  }
-
   // For compatibility with legacy IfOpenService based implementations
   get originalEvent(): Event {
     return this._openEvent;
+  }
+
+  get popoverAligned(): Observable<HTMLElement> {
+    return this._popoverAligned.asObservable();
+  }
+
+  getEventChange(): Observable<Event> {
+    return this._openEventChange.asObservable();
   }
 
   /**
@@ -63,12 +65,6 @@ export class ClrPopoverToggleService {
 
     this.openEvent = event;
     this.open = !this.open;
-  }
-
-  private _popoverAligned = new Subject<HTMLElement>();
-
-  get popoverAligned(): Observable<HTMLElement> {
-    return this._popoverAligned.asObservable();
   }
 
   popoverAlignedEmit(popoverNode: HTMLElement) {

@@ -12,11 +12,11 @@ import { Subject } from 'rxjs';
 export class SignpostIdService {
   private _id = new Subject<string>();
 
-  setId(id: string) {
-    this._id.next(id);
-  }
-
   get id(): Observable<string> {
     return this._id.asObservable();
+  }
+
+  setId(id: string) {
+    this._id.next(id);
   }
 }

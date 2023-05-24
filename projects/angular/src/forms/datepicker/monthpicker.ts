@@ -32,6 +32,11 @@ import { ViewManagerService } from './providers/view-manager.service';
   },
 })
 export class ClrMonthpicker implements AfterViewInit {
+  /**
+   * Keeps track of the current focused month.
+   */
+  private _focusedMonthIndex: number;
+
   constructor(
     private _viewManagerService: ViewManagerService,
     private _localeHelperService: LocaleHelperService,
@@ -41,11 +46,6 @@ export class ClrMonthpicker implements AfterViewInit {
   ) {
     this._focusedMonthIndex = this.calendarMonthIndex;
   }
-
-  /**
-   * Keeps track of the current focused month.
-   */
-  private _focusedMonthIndex: number;
 
   /**
    * Gets the months array which is used to rendered the monthpicker view.
@@ -63,19 +63,10 @@ export class ClrMonthpicker implements AfterViewInit {
   }
 
   /**
-   * Calls the DateNavigationService to update the month value of the calendar.
-   * Also changes the view to the daypicker.
+   * Focuses on the current calendar month when the View is initialized.
    */
-  changeMonth(monthIndex: number) {
-    this._dateNavigationService.changeMonth(monthIndex);
-    this._viewManagerService.changeToDayView();
-  }
-
-  /**
-   * Compares the month passed to the focused month and returns the tab index.
-   */
-  getTabIndex(monthIndex: number): number {
-    return monthIndex === this._focusedMonthIndex ? 0 : -1;
+  ngAfterViewInit() {
+    this._datepickerFocusService.focusCell(this._elRef);
   }
 
   /**
@@ -109,9 +100,18 @@ export class ClrMonthpicker implements AfterViewInit {
   }
 
   /**
-   * Focuses on the current calendar month when the View is initialized.
+   * Calls the DateNavigationService to update the month value of the calendar.
+   * Also changes the view to the daypicker.
    */
-  ngAfterViewInit() {
-    this._datepickerFocusService.focusCell(this._elRef);
+  changeMonth(monthIndex: number) {
+    this._dateNavigationService.changeMonth(monthIndex);
+    this._viewManagerService.changeToDayView();
+  }
+
+  /**
+   * Compares the month passed to the focused month and returns the tab index.
+   */
+  getTabIndex(monthIndex: number): number {
+    return monthIndex === this._focusedMonthIndex ? 0 : -1;
   }
 }

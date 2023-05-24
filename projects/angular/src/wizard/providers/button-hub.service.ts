@@ -13,31 +13,32 @@ export class ButtonHubService {
   buttonsReady = false;
 
   private _previousBtnClicked = new Subject<any>();
+  private _nextBtnClicked = new Subject<any>();
+  private _dangerBtnClicked = new Subject<any>();
+  private _cancelBtnClicked = new Subject<any>();
+  private _finishBtnClicked = new Subject<any>();
+  private _customBtnClicked = new Subject<any>();
+
   get previousBtnClicked(): Observable<any> {
     return this._previousBtnClicked.asObservable();
   }
 
-  private _nextBtnClicked = new Subject<any>();
   get nextBtnClicked(): Observable<any> {
     return this._nextBtnClicked.asObservable();
   }
 
-  private _dangerBtnClicked = new Subject<any>();
   get dangerBtnClicked(): Observable<any> {
     return this._dangerBtnClicked.asObservable();
   }
 
-  private _cancelBtnClicked = new Subject<any>();
   get cancelBtnClicked(): Observable<any> {
     return this._cancelBtnClicked.asObservable();
   }
 
-  private _finishBtnClicked = new Subject<any>();
   get finishBtnClicked(): Observable<any> {
     return this._finishBtnClicked.asObservable();
   }
 
-  private _customBtnClicked = new Subject<any>();
   get customBtnClicked(): Observable<any> {
     return this._customBtnClicked.asObservable();
   }

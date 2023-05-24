@@ -18,9 +18,45 @@ let nbSelection = 0;
 export class Selection<T = any> {
   id: string;
   preserveSelection = false;
+
+  /**
+   * Last selection, for use in range selection.
+   */
+  rangeStart: T;
+
+  /**
+   * Shift key state, for use in range selection.
+   */
+  shiftPressed = false;
+
+  /** @deprecated since 2.0, remove in 3.0 */
+  rowSelectionMode = false;
+
   private prevSelectionRefs: T[] = []; // Refs of selected items
   private prevSingleSelectionRef: T; // Ref of single selected item
   private lockedRefs: T[] = []; // Ref of locked items
+  private valueCollector = new Subject<T[]>();
+  private _selectionType: SelectionType = SelectionType.None;
+
+  /**
+   * The current selection
+   */
+  private _current: T[];
+
+  /**
+   * The current selection in single selection type
+   */
+  private _currentSingle: T;
+
+  /**
+   * The Observable that lets other classes subscribe to selection changes
+   */
+  private _change = new Subject<T[] | T>();
+
+  /**
+   * Subscriptions to the other providers changes.
+   */
+  private subscriptions: Subscription[] = [];
 
   constructor(private _items: Items<T>, private _filters: FiltersProvider<T>) {
     this.id = 'clr-dg-selection' + nbSelection++;
@@ -161,15 +197,6 @@ export class Selection<T = any> {
     this.subscriptions.push(this.valueCollector.pipe(debounceTime(0)).subscribe(() => this.emitChange()));
   }
 
-  clearSelection(): void {
-    this._current = [];
-    this.prevSelectionRefs = [];
-    this.prevSingleSelectionRef = null;
-    this._currentSingle = null;
-    this.emitChange();
-  }
-
-  private _selectionType: SelectionType = SelectionType.None;
   get selectionType(): SelectionType {
     return this._selectionType;
   }
@@ -185,29 +212,13 @@ export class Selection<T = any> {
     }
   }
 
-  /** @deprecated since 2.0, remove in 3.0 */
-  rowSelectionMode = false;
-
-  private get _selectable(): boolean {
-    return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
+  get current(): T[] {
+    return this._current;
+  }
+  set current(value: T[]) {
+    this.updateCurrent(value, true);
   }
 
-  /**
-   * Subscriptions to the other providers changes.
-   */
-  private subscriptions: Subscription[] = [];
-
-  /**
-   * Cleans up our subscriptions to other providers
-   */
-  destroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  /**
-   * The current selection in single selection type
-   */
-  private _currentSingle: T;
   get currentSingle(): T {
     return this._currentSingle;
   }
@@ -223,49 +234,36 @@ export class Selection<T = any> {
     this.emitChange();
   }
 
-  /**
-   * The current selection
-   */
-  private _current: T[];
-  get current(): T[] {
-    return this._current;
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get change(): Observable<T[] | T> {
+    return this._change.asObservable();
   }
-  set current(value: T[]) {
-    this.updateCurrent(value, true);
+
+  private get _selectable(): boolean {
+    return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
+  }
+
+  clearSelection(): void {
+    this._current = [];
+    this.prevSelectionRefs = [];
+    this.prevSingleSelectionRef = null;
+    this._currentSingle = null;
+    this.emitChange();
   }
 
   /**
-   * Last selection, for use in range selection.
+   * Cleans up our subscriptions to other providers
    */
-  rangeStart: T;
-  /**
-   * Shift key state, for use in range selection.
-   */
-  shiftPressed = false;
+  destroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
-  private valueCollector = new Subject<T[]>();
   updateCurrent(value: T[], emit: boolean) {
     this._current = value;
 
     if (emit) {
       this.valueCollector.next(value);
     }
-  }
-
-  /**
-   * The Observable that lets other classes subscribe to selection changes
-   */
-  private _change = new Subject<T[] | T>();
-  private emitChange() {
-    if (this._selectionType === SelectionType.Single) {
-      this._change.next(this.currentSingle);
-    } else if (this._selectionType === SelectionType.Multi) {
-      this._change.next(this.current);
-    }
-  }
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get change(): Observable<T[] | T> {
-    return this._change.asObservable();
   }
 
   /**
@@ -278,30 +276,6 @@ export class Selection<T = any> {
       return this.current.indexOf(item) >= 0;
     }
     return false;
-  }
-
-  /**
-   * Selects an item
-   */
-  private selectItem(item: T): void {
-    this.current = this.current.concat(item);
-    if (this._items.canTrackBy()) {
-      // Push selected ref onto array
-      this.prevSelectionRefs.push(this._items.trackBy(item));
-    }
-  }
-
-  /**
-   * Deselects an item
-   */
-  private deselectItem(indexOfItem: number): void {
-    this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
-    if (indexOfItem < this.prevSelectionRefs.length) {
-      // Keep selected refs array in sync
-      const removedItems = this.prevSelectionRefs.splice(indexOfItem, 1);
-      // locked reference is no longer needed (if any)
-      this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
-    }
   }
 
   /**
@@ -346,13 +320,6 @@ export class Selection<T = any> {
     }
     const temp: T[] = displayedItems.filter(item => this.current.indexOf(item) > -1);
     return temp.length === displayedItems.length;
-  }
-
-  /**
-   * Make sure that it could be locked
-   */
-  private canItBeLocked(): boolean {
-    return this._selectionType !== SelectionType.None && this._items.canTrackBy();
   }
 
   /**
@@ -411,6 +378,45 @@ export class Selection<T = any> {
           this.selectItem(item);
         }
       });
+    }
+  }
+
+  /**
+   * Selects an item
+   */
+  private selectItem(item: T): void {
+    this.current = this.current.concat(item);
+    if (this._items.canTrackBy()) {
+      // Push selected ref onto array
+      this.prevSelectionRefs.push(this._items.trackBy(item));
+    }
+  }
+
+  /**
+   * Deselects an item
+   */
+  private deselectItem(indexOfItem: number): void {
+    this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
+    if (indexOfItem < this.prevSelectionRefs.length) {
+      // Keep selected refs array in sync
+      const removedItems = this.prevSelectionRefs.splice(indexOfItem, 1);
+      // locked reference is no longer needed (if any)
+      this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
+    }
+  }
+
+  /**
+   * Make sure that it could be locked
+   */
+  private canItBeLocked(): boolean {
+    return this._selectionType !== SelectionType.None && this._items.canTrackBy();
+  }
+
+  private emitChange() {
+    if (this._selectionType === SelectionType.Single) {
+      this._change.next(this.currentSingle);
+    } else if (this._selectionType === SelectionType.Multi) {
+      this._change.next(this.current);
     }
   }
 }

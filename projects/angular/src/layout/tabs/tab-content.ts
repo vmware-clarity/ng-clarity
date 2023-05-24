@@ -30,6 +30,10 @@ let nbTabContentComponents = 0;
   `,
 })
 export class ClrTabContent implements OnDestroy {
+  @Input('id') tabContentId: string;
+
+  private viewRef: EmbeddedViewRef<ClrTabContent>;
+
   constructor(
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) public id: number,
@@ -40,7 +44,13 @@ export class ClrTabContent implements OnDestroy {
     }
   }
 
-  private viewRef: EmbeddedViewRef<ClrTabContent>;
+  get active() {
+    return this.ifActiveService.current === this.id;
+  }
+
+  get ariaLabelledBy(): string {
+    return this.tabsService.children.find(tab => tab.tabContent === this)?.tabLink?.tabLinkId;
+  }
 
   // The template must be applied on the top-down phase of view-child initialization to prevent
   // components in the content from initializing before a content container exists.
@@ -48,16 +58,6 @@ export class ClrTabContent implements OnDestroy {
   @ViewChild('tabContentProjectedRef', { static: true })
   private set templateRef(value: TemplateRef<ClrTabContent>) {
     this.viewRef = this.tabsService.tabContentViewContainer.createEmbeddedView(value);
-  }
-
-  get ariaLabelledBy(): string {
-    return this.tabsService.children.find(tab => tab.tabContent === this)?.tabLink?.tabLinkId;
-  }
-
-  @Input('id') tabContentId: string;
-
-  get active() {
-    return this.ifActiveService.current === this.id;
   }
 
   ngOnDestroy(): void {

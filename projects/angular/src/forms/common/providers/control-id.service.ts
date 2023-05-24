@@ -13,6 +13,8 @@ let counter = 0;
 @Injectable()
 export class ControlIdService {
   private _id = 'clr-form-control-' + ++counter;
+  private _idChange = new BehaviorSubject(this._id);
+
   get id(): string {
     return this._id;
   }
@@ -21,7 +23,6 @@ export class ControlIdService {
     this._idChange.next(value);
   }
 
-  private _idChange = new BehaviorSubject(this._id);
   get idChange(): Observable<string> {
     return this._idChange.asObservable();
   }

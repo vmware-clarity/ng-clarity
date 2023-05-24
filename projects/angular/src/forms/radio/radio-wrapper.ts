@@ -27,8 +27,7 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
   // the user puts a radio inside a wrapper without a label, host wrapping doesn't apply
   // but we'd still need to insert a label
   _dynamic = false;
-  @ContentChild(ClrLabel, { static: true })
-  label: ClrLabel;
+  @ContentChild(ClrLabel, { static: true }) label: ClrLabel;
 
   ngOnInit() {
     if (this.label) {

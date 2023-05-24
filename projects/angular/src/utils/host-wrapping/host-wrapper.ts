@@ -23,6 +23,8 @@ import { EmptyAnchor } from './empty-anchor';
  * TODO - make sure these comment annotations do not break ng-packgr.
  */
 export class HostWrapper<W extends DynamicWrapper> implements Injector {
+  private injector: Injector;
+
   constructor(containerType: Type<W>, vcr: ViewContainerRef, index = 0) {
     this.injector = vcr.injector;
     // If the host is already wrapped, we don't do anything
@@ -51,8 +53,6 @@ export class HostWrapper<W extends DynamicWrapper> implements Injector {
       this.injector = containerRef.injector;
     }
   }
-
-  private injector: Injector;
 
   get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
     return this.injector.get(token, notFoundValue);

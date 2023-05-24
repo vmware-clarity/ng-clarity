@@ -33,6 +33,16 @@ import { IF_ACTIVE_ID, IfActiveService } from './if-active.service';
  *
  */
 export class ClrIfActive implements OnDestroy {
+  /**********
+   * @property activeChange
+   *
+   * @description
+   * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
+   * used with de-structured / de-sugared syntax.
+   *
+   */
+  @Output('clrIfActiveChange') activeChange = new EventEmitter<boolean>(false);
+
   private subscription: Subscription;
   private wasActive = false;
 
@@ -49,55 +59,29 @@ export class ClrIfActive implements OnDestroy {
     });
   }
 
-  private checkAndUpdateView(currentId: number) {
-    const isNowActive = currentId === this.id;
-    // only emit if the new active state is changed since last time.
-    if (isNowActive !== this.wasActive) {
-      this.updateView(isNowActive);
-      this.activeChange.emit(isNowActive);
-      this.wasActive = isNowActive;
-    }
-  }
-
-  /*********
-   *
+  /**
    * @description
-   * A setter that updates IfActiveService.active with value.
+   * A property that gets/sets IfActiveService.active with value.
    *
-   * @param value
    */
   @Input('clrIfActive')
+  get active() {
+    return this.ifActiveService.current === this.id;
+  }
   set active(value: boolean | string) {
     if (value) {
       this.ifActiveService.current = this.id;
     }
   }
 
-  /********
-   *
-   * @description
-   * A getter that returns the current IfActiveService.active value.
-   */
-  get active() {
-    return this.ifActiveService.current === this.id;
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
-  /**********
-   * @property activeChange
-   *
-   * @description
-   * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
-   * used with de-structured / de-sugared syntax.
-   *
-   */
-  @Output('clrIfActiveChange') activeChange = new EventEmitter<boolean>(false);
-
-  /*********
-   *
+  /**
    * @description
    * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
    * Clears all views from the ViewContainerRef
-   * @param value
    */
   updateView(value: boolean) {
     if (value) {
@@ -107,7 +91,13 @@ export class ClrIfActive implements OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  private checkAndUpdateView(currentId: number) {
+    const isNowActive = currentId === this.id;
+    // only emit if the new active state is changed since last time.
+    if (isNowActive !== this.wasActive) {
+      this.updateView(isNowActive);
+      this.activeChange.emit(isNowActive);
+      this.wasActive = isNowActive;
+    }
   }
 }

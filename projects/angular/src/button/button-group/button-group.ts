@@ -40,15 +40,22 @@ import { ClrButton } from './button';
   host: { '[class.btn-group]': 'true' },
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+  @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
+
   @ViewChild('menuToggle') menuToggle: ElementRef<HTMLElement>;
   @ViewChild('menu') menu: ElementRef<HTMLElement>;
-  @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
-  // Aria
-  @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
+  @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
 
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;
+
+  popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
+  inlineButtons: ClrButton[] = [];
+  menuButtons: ClrButton[] = [];
+
+  // Indicates the position of the overflow menu
+  private _menuPosition: string;
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
@@ -58,14 +65,23 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     private focusHandler: ButtonGroupFocusHandler
   ) {}
 
-  popoverPosition: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
+  @Input('clrMenuPosition')
+  get menuPosition(): string {
+    return this._menuPosition;
+  }
+  set menuPosition(pos: string) {
+    if (pos && (ClrPopoverPositions as Record<string, any>)[pos]) {
+      this._menuPosition = pos;
+    } else {
+      this._menuPosition = 'bottom-left';
+    }
+
+    this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
+  }
 
   get open() {
     return this.toggleService.open;
   }
-
-  inlineButtons: ClrButton[] = [];
-  menuButtons: ClrButton[] = [];
 
   /**
    * 1. Initializes the initial Button Group View
@@ -142,29 +158,6 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     });
     this.inlineButtons = tempInlineButtons;
     this.menuButtons = tempInMenuButtons;
-  }
-
-  /**
-   * Overflow Menu
-   *
-   */
-
-  // Indicates the position of the overflow menu
-  private _menuPosition: string;
-
-  get menuPosition(): string {
-    return this._menuPosition;
-  }
-
-  @Input('clrMenuPosition')
-  set menuPosition(pos: string) {
-    if (pos && (ClrPopoverPositions as Record<string, any>)[pos]) {
-      this._menuPosition = pos;
-    } else {
-      this._menuPosition = 'bottom-left';
-    }
-
-    this.popoverPosition = (ClrPopoverPositions as Record<string, any>)[this._menuPosition];
   }
 
   private handleFocusOnMenuOpen() {

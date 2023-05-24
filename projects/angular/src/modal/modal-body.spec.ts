@@ -21,11 +21,12 @@ describe('ClrModalBody Directive', () => {
     // patching ResizeObserver appears to be the workaround now https://github.com/angular/angular/issues/31695
     // eslint-disable-next-line no-global-assign
     (ResizeObserver as unknown) = class {
+      observe = jasmine.createSpy('observe');
+      disconnect = jasmine.createSpy('disconnect');
+
       constructor(c: () => void) {
         resizeObserverCallback = c;
       }
-      observe = jasmine.createSpy('observe');
-      disconnect = jasmine.createSpy('disconnect');
     };
   });
 

@@ -18,6 +18,17 @@ import { OptionSelectionService } from './option-selection.service';
 
 @Injectable()
 export class ComboboxFocusHandler<T> {
+  // We need a Change Detector from the related component, so we can update it on Blur
+  // (which is needed because of Edge specific lifecycle mis-behavior)
+  componentCdRef: ChangeDetectorRef;
+  pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
+
+  private renderer: Renderer2;
+  private _trigger: HTMLElement;
+  private _listbox: HTMLElement;
+  private _textInput: HTMLElement;
+  private optionData: OptionData<T>[] = [];
+
   constructor(
     rendererFactory: RendererFactory2,
     private toggleService: ClrPopoverToggleService,
@@ -29,21 +40,6 @@ export class ComboboxFocusHandler<T> {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  // We need a Change Detector from the related component, so we can update it on Blur
-  // (which is needed because of Edge specific lifecycle mis-behavior)
-  componentCdRef: ChangeDetectorRef;
-
-  private renderer: Renderer2;
-
-  private handleFocusSubscription() {
-    this.toggleService.openChange.subscribe(open => {
-      if (!open) {
-        this.pseudoFocus.model = null;
-      }
-    });
-  }
-
-  private _trigger: HTMLElement;
   get trigger() {
     return this._trigger;
   }
@@ -52,7 +48,6 @@ export class ComboboxFocusHandler<T> {
     this.addFocusOnBlurListener(el);
   }
 
-  private _listbox: HTMLElement;
   get listbox() {
     return this._listbox;
   }
@@ -61,9 +56,6 @@ export class ComboboxFocusHandler<T> {
     this.addFocusOnBlurListener(el);
   }
 
-  pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
-
-  private _textInput: HTMLElement;
   get textInput() {
     return this._textInput;
   }
@@ -71,6 +63,48 @@ export class ComboboxFocusHandler<T> {
     this._textInput = el;
     this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event));
     this.addFocusOnBlurListener(el);
+  }
+
+  focusInput() {
+    if (this.textInput && isPlatformBrowser(this.platformId)) {
+      this.textInput.focus();
+    }
+  }
+
+  focusFirstActive() {
+    if (this.optionData.length > 0) {
+      if (this.selectionService.selectionModel.isEmpty()) {
+        this.pseudoFocus.select(this.optionData[0]);
+      } else {
+        let firstActive: T;
+        if (this.selectionService.multiselectable) {
+          firstActive = (this.selectionService.selectionModel.model as T[])[0];
+        } else {
+          firstActive = this.selectionService.selectionModel.model as T;
+        }
+        const activeProxy = this.optionData.find(option => option.value === firstActive);
+        if (activeProxy) {
+          // active element is visible
+          this.pseudoFocus.select(activeProxy);
+        } else {
+          // we have active element, but it's filtered out
+          this.pseudoFocus.select(this.optionData[0]);
+        }
+        this.scrollIntoSelectedModel('auto');
+      }
+    }
+  }
+
+  addOptionValues(options: OptionData<T>[]) {
+    this.optionData = options;
+  }
+
+  private handleFocusSubscription() {
+    this.toggleService.openChange.subscribe(open => {
+      if (!open) {
+        this.pseudoFocus.model = null;
+      }
+    });
   }
 
   private moveFocusTo(direction: ArrowKeyDirection) {
@@ -164,12 +198,6 @@ export class ComboboxFocusHandler<T> {
     event.stopImmediatePropagation();
   }
 
-  focusInput() {
-    if (this.textInput && isPlatformBrowser(this.platformId)) {
-      this.textInput.focus();
-    }
-  }
-
   private addFocusOnBlurListener(el: HTMLElement) {
     if (isPlatformBrowser(this.platformId)) {
       this.renderer.listen(el, 'blur', event => {
@@ -189,36 +217,6 @@ export class ComboboxFocusHandler<T> {
     // which points to the element that becomes active as the blur event occurs on the input.
     const target = (event.relatedTarget || document.activeElement) as Node;
     return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
-  }
-
-  focusFirstActive() {
-    if (this.optionData.length > 0) {
-      if (this.selectionService.selectionModel.isEmpty()) {
-        this.pseudoFocus.select(this.optionData[0]);
-      } else {
-        let firstActive: T;
-        if (this.selectionService.multiselectable) {
-          firstActive = (this.selectionService.selectionModel.model as T[])[0];
-        } else {
-          firstActive = this.selectionService.selectionModel.model as T;
-        }
-        const activeProxy = this.optionData.find(option => option.value === firstActive);
-        if (activeProxy) {
-          // active element is visible
-          this.pseudoFocus.select(activeProxy);
-        } else {
-          // we have active element, but it's filtered out
-          this.pseudoFocus.select(this.optionData[0]);
-        }
-        this.scrollIntoSelectedModel('auto');
-      }
-    }
-  }
-
-  private optionData: OptionData<T>[] = [];
-
-  addOptionValues(options: OptionData<T>[]) {
-    this.optionData = options;
   }
 }
 

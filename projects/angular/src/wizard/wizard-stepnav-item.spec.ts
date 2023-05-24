@@ -27,16 +27,15 @@ const fakeOutPage = new MockPage(pageIndex);
   `,
 })
 class TestComponent implements AfterContentInit {
-  constructor() {
-    this.page = fakeOutPage;
-  }
+  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem: ClrWizardStepnavItem;
+  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef: ClrWizardPageNavTitle;
+
   page: MockPage;
   projector = 'foo';
 
-  @ViewChild(ClrWizardStepnavItem, { static: true })
-  stepNavItem: ClrWizardStepnavItem;
-  @ViewChild(ClrWizardPageNavTitle, { static: true })
-  navTitleRef: ClrWizardPageNavTitle;
+  constructor() {
+    this.page = fakeOutPage;
+  }
 
   ngAfterContentInit(): void {
     this.page.navTitle = this.navTitleRef.pageNavTitleTemplateRef;

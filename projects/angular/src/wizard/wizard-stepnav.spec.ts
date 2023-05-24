@@ -34,8 +34,7 @@ mockPages = resetMockPages();
   template: `<clr-wizard-stepnav></clr-wizard-stepnav>`,
 })
 class TestComponent {
-  @ViewChild(ClrWizardStepnav, { static: true })
-  stepNav: ClrWizardStepnav;
+  @ViewChild(ClrWizardStepnav, { static: true }) stepNav: ClrWizardStepnav;
 }
 
 export default function (): void {

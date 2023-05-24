@@ -95,25 +95,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  @Input('clrPosition')
-  set clrPosition(position: string) {
-    if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
-      this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
-    }
-  }
-  get popoverPosition(): ClrPopoverPosition {
-    return this.viewManagerService.position;
-  }
-
-  get open() {
-    return this.toggleService.open;
-  }
-
   private toggleButton: ElementRef;
-  @ViewChild('actionButton')
-  set actionButton(button: ElementRef) {
-    this.toggleButton = button;
-  }
 
   constructor(
     protected renderer: Renderer2,
@@ -145,18 +127,24 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
   }
 
-  ngAfterViewInit(): void {
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
-        if (open) {
-          this.initializeCalendar();
-        } else {
-          this.toggleButton.nativeElement.focus();
-        }
-      })
-    );
+  @Input('clrPosition')
+  set clrPosition(position: string) {
+    if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
+      this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
+    }
+  }
 
-    this.subscriptions.push(this.listenForDateChanges());
+  @ViewChild('actionButton')
+  set actionButton(button: ElementRef) {
+    this.toggleButton = button;
+  }
+
+  get popoverPosition(): ClrPopoverPosition {
+    return this.viewManagerService.position;
+  }
+
+  get open() {
+    return this.toggleService.open;
   }
 
   /**
@@ -174,6 +162,20 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     return (
       (this.control && this.control.disabled) || (this.dateFormControlService && this.dateFormControlService.disabled)
     );
+  }
+
+  ngAfterViewInit(): void {
+    this.subscriptions.push(
+      this.toggleService.openChange.subscribe(open => {
+        if (open) {
+          this.initializeCalendar();
+        } else {
+          this.toggleButton.nativeElement.focus();
+        }
+      })
+    );
+
+    this.subscriptions.push(this.listenForDateChanges());
   }
 
   /**

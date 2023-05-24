@@ -25,21 +25,14 @@ import { IfExpandService } from './if-expanded.service';
   selector: '[clrIfExpanded]',
 })
 export class ClrIfExpanded implements OnInit, OnDestroy {
+  @Output('clrIfExpandedChange') expandedChange = new EventEmitter<boolean>(true);
+
   private _expanded = false;
 
-  get expanded(): boolean | string {
-    return this._expanded;
-  }
-
-  @Input('clrIfExpanded')
-  set expanded(value: boolean | string) {
-    if (typeof value === 'boolean') {
-      this.expand.expanded = value;
-      this._expanded = value;
-    }
-  }
-
-  @Output('clrIfExpandedChange') expandedChange = new EventEmitter<boolean>(true);
+  /**
+   * Subscriptions to all the services and queries changes
+   */
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     @Optional() private template: TemplateRef<any>,
@@ -56,10 +49,26 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Subscriptions to all the services and queries changes
-   */
-  private _subscriptions: Subscription[] = [];
+  @Input('clrIfExpanded')
+  get expanded(): boolean | string {
+    return this._expanded;
+  }
+  set expanded(value: boolean | string) {
+    if (typeof value === 'boolean') {
+      this.expand.expanded = value;
+      this._expanded = value;
+    }
+  }
+
+  ngOnInit() {
+    this.expand.expandable++;
+    this.updateView();
+  }
+
+  ngOnDestroy() {
+    this.expand.expandable--;
+    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
 
   private updateView() {
     if (this.expand.expanded && this.container.length !== 0) {
@@ -89,15 +98,5 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
         // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
       }
     }
-  }
-
-  ngOnInit() {
-    this.expand.expandable++;
-    this.updateView();
-  }
-
-  ngOnDestroy() {
-    this.expand.expandable--;
-    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }
