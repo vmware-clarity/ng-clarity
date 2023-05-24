@@ -7,20 +7,21 @@
 import { ClrSelectedState } from '@clr/angular';
 
 export class InfiniteTree {
+  root: string[];
+
+  // For the purpose of this demo, we just store the shortest prefix of each selected subtree.
+  selected: string[] = [];
+
+  private readonly possibleValues: string[];
+
   constructor(width: number) {
     this.possibleValues = new Array(width).fill(0).map((_, i) => '' + (i + 1));
     this.root = this.possibleValues;
   }
 
-  private readonly possibleValues: string[];
-  root: string[];
-
   getChildren(node: string) {
     return this.possibleValues.map(i => node + '.' + i);
   }
-
-  // For the purpose of this demo, we just store the shortest prefix of each selected subtree.
-  selected: string[] = [];
 
   isSelected(node: string) {
     if (this.selected.some(s => node.startsWith(s))) {

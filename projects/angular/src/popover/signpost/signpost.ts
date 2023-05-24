@@ -43,8 +43,6 @@ import { ClrSignpostTrigger } from './signpost-trigger';
  *
  */
 export class ClrSignpost {
-  constructor(public commonStrings: ClrCommonStringsService) {}
-
   /**********
    * @property useCustomTrigger
    *
@@ -53,6 +51,8 @@ export class ClrSignpost {
    *
    */
   useCustomTrigger = false;
+
+  constructor(public commonStrings: ClrCommonStringsService) {}
 
   /**********
    * @property signPostTrigger

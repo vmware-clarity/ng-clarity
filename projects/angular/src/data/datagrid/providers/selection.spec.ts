@@ -1101,6 +1101,8 @@ export default function (): void {
 }
 
 abstract class TestFilter implements ClrDatagridFilterInterface<number> {
+  changes = new Subject<boolean>();
+
   private active = false;
 
   toggle() {
@@ -1111,8 +1113,6 @@ abstract class TestFilter implements ClrDatagridFilterInterface<number> {
   isActive(): boolean {
     return this.active;
   }
-
-  changes = new Subject<boolean>();
 
   abstract accepts(n: number): boolean;
 }
@@ -1124,6 +1124,8 @@ class EvenFilter extends TestFilter {
 }
 
 class ItemEvenFilter implements ClrDatagridFilterInterface<Item> {
+  changes = new Subject<boolean>();
+
   private active = false;
 
   toggle() {
@@ -1134,8 +1136,6 @@ class ItemEvenFilter implements ClrDatagridFilterInterface<Item> {
   isActive(): boolean {
     return this.active;
   }
-
-  changes = new Subject<boolean>();
 
   accepts(i: Item): boolean {
     return i.id % 2 === 0;

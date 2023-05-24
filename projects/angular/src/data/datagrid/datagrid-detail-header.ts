@@ -31,9 +31,9 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetailHeader {
+  constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+
   get titleId() {
     return `${this.detailService.id}-title`;
   }
-
-  constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 }

@@ -33,6 +33,22 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private _filterField: string;
   private differ: IterableDiffer<T> | null = null;
 
+  constructor(
+    public template: TemplateRef<NgForOfContext<T>>,
+    private differs: IterableDiffers,
+    private optionService: OptionSelectionService<T>,
+    private positionService: ClrPopoverPositionService,
+    private vcr: ViewContainerRef
+  ) {
+    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
+    this.subscriptions.push(
+      optionService.inputChanged.subscribe(filter => {
+        this.filter = filter;
+        this.updateItems();
+      })
+    );
+  }
+
   @Input('clrOptionItemsOf')
   set rawItems(items: T[]) {
     this._rawItems = items ? items : [];
@@ -50,20 +66,21 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     this.optionService.displayField = field;
   }
 
-  constructor(
-    public template: TemplateRef<NgForOfContext<T>>,
-    private differs: IterableDiffers,
-    private optionService: OptionSelectionService<T>,
-    private positionService: ClrPopoverPositionService,
-    private vcr: ViewContainerRef
-  ) {
-    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
-    this.subscriptions.push(
-      optionService.inputChanged.subscribe(filter => {
-        this.filter = filter;
-        this.updateItems();
-      })
-    );
+  ngDoCheck() {
+    if (!this.differ) {
+      this.differ = this.differs.find(this.filteredItems).create(this.iterableProxy.ngForTrackBy);
+    }
+    if (this.differ) {
+      const changes = this.differ.diff(this.filteredItems);
+      if (changes) {
+        this.iterableProxy.ngDoCheck();
+        this.positionService.realign();
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   private updateItems() {
@@ -90,22 +107,5 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
       });
     }
     this.iterableProxy.ngForOf = this.filteredItems;
-  }
-
-  ngDoCheck() {
-    if (!this.differ) {
-      this.differ = this.differs.find(this.filteredItems).create(this.iterableProxy.ngForTrackBy);
-    }
-    if (this.differ) {
-      const changes = this.differ.diff(this.filteredItems);
-      if (changes) {
-        this.iterableProxy.ngDoCheck();
-        this.positionService.realign();
-      }
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

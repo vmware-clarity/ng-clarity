@@ -258,12 +258,12 @@ class TestComponent {
 
   menuClosable = true;
   testCnt = 0;
+  customClickHandlerDone = false;
 
   outsideButtonClickHandler(): void {
     this.testCnt++;
   }
 
-  customClickHandlerDone = false;
   customClickHandler() {
     this.customClickHandlerDone = true;
   }

@@ -16,16 +16,15 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 export class VerticalNavAllCases {
   cases: any[];
 
+  private _collapse = false;
+
   constructor(public verticalNavCases: VerticalNavCases) {
     this.cases = this.verticalNavCases.nonCollapsedMenus;
   }
 
-  private _collapse = false;
-
   get collapse(): boolean {
     return this._collapse;
   }
-
   set collapse(value: boolean) {
     this._collapse = value;
   }

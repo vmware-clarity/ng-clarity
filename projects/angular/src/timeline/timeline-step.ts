@@ -38,20 +38,14 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
+  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef;
+
   stepTitleText: string;
-  @ContentChild(ClrTimelineStepTitle, { read: ElementRef })
-  stepTitle: ElementRef;
 
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
-
-  ngAfterContentInit() {
-    if (this.stepTitle && isPlatformBrowser(this.platformId)) {
-      this.stepTitleText = this.stepTitle.nativeElement.innerText;
-    }
-  }
 
   get iconAriaLabel(): string {
     return this.iconAttributeService.getAriaLabel(this.state);
@@ -67,5 +61,11 @@ export class ClrTimelineStep {
 
   get isProcessing(): boolean {
     return this.state === ClrTimelineStepState.PROCESSING;
+  }
+
+  ngAfterContentInit() {
+    if (this.stepTitle && isPlatformBrowser(this.platformId)) {
+      this.stepTitleText = this.stepTitle.nativeElement.innerText;
+    }
   }
 }

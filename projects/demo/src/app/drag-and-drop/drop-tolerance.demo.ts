@@ -16,16 +16,8 @@ export class DropToleranceDemo {
   files: any[] = [{ name: 'img_001.jpg' }, { name: 'img_002.jpg' }, { name: 'img_003.jpg' }];
 
   droppedFiles: any[] = [];
-
-  private moveItem(item: any, from: any[], to: any[]) {
-    const indexInFiles = from.indexOf(item);
-    if (indexInFiles > -1) {
-      from.splice(indexInFiles, 1);
-    }
-    if (to.indexOf(item) === -1) {
-      to.push(item);
-    }
-  }
+  tableADropTolerance: any = {};
+  tableBDropTolerance: any = {};
 
   onDropToUpload(dragEvent: ClrDragEvent<any>) {
     this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedFiles);
@@ -35,14 +27,21 @@ export class DropToleranceDemo {
     this.moveItem(dragEvent.dragDataTransfer, this.droppedFiles, this.files);
   }
 
-  tableADropTolerance: any = {};
-  tableBDropTolerance: any = {};
-
   updateTableAField(updatedField: any): void {
     this.tableADropTolerance = { ...this.tableADropTolerance, ...updatedField };
   }
 
   updateTableBField(updatedField: any): void {
     this.tableBDropTolerance = { ...this.tableBDropTolerance, ...updatedField };
+  }
+
+  private moveItem(item: any, from: any[], to: any[]) {
+    const indexInFiles = from.indexOf(item);
+    if (indexInFiles > -1) {
+      from.splice(indexInFiles, 1);
+    }
+    if (to.indexOf(item) === -1) {
+      to.push(item);
+    }
   }
 }

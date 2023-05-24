@@ -31,6 +31,13 @@ import { TreeFeaturesService } from './tree-features.service';
  * This is part of the hack to get around https://github.com/angular/angular/issues/15998
  */
 export class RecursiveChildren<T> {
+  // Offering the option to either give the parent node to recurse potentially lazily,
+  // or directly the list of children to display.
+  @Input('parent') parent: TreeNodeModel<T>;
+  @Input('children') children: TreeNodeModel<T>[];
+
+  subscription: Subscription;
+
   constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
     if (expandService) {
       this.subscription = this.expandService.expandChange.subscribe(value => {
@@ -54,19 +61,12 @@ export class RecursiveChildren<T> {
     );
   }
 
-  // Offering the option to either give the parent node to recurse potentially lazily,
-  // or directly the list of children to display.
-  @Input('parent') parent: TreeNodeModel<T>;
-  @Input('children') children: TreeNodeModel<T>[];
-
   getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T> {
     return {
       $implicit: node.model,
       clrModel: node,
     };
   }
-
-  subscription: Subscription;
 
   ngOnDestroy() {
     if (this.subscription) {

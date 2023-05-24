@@ -17,32 +17,35 @@ import { MultiAlertService } from './providers/multi-alert.service';
   host: { '[class.alerts-pager]': 'true' },
 })
 export class ClrAlertsPager implements OnInit, OnDestroy {
+  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
+  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>();
+
   private multiAlertServiceChanges: Subscription;
+
+  constructor(public multiAlertService: MultiAlertService, public commonStrings: ClrCommonStringsService) {}
 
   /**
    * Input/Output to support two way binding on current alert instance
    */
   @Input('clrCurrentAlert')
+  get currentAlert() {
+    return this.multiAlertService.currentAlert;
+  }
   set currentAlert(alert: ClrAlert) {
     if (alert) {
       this.multiAlertService.currentAlert = alert;
     }
   }
-  get currentAlert() {
-    return this.multiAlertService.currentAlert;
-  }
-
-  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
 
   /**
    * Input/Output to support two way binding on current alert index
    */
   @Input('clrCurrentAlertIndex')
-  set currentAlertIndex(index: number) {
-    this.multiAlertService.current = index;
-  }
   get currentAlertIndex() {
     return this.multiAlertService.current;
+  }
+  set currentAlertIndex(index: number) {
+    this.multiAlertService.current = index;
   }
 
   get previousAlertAriaLabel() {
@@ -61,15 +64,15 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     });
   }
 
-  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>();
-
-  constructor(public multiAlertService: MultiAlertService, public commonStrings: ClrCommonStringsService) {}
-
   ngOnInit() {
     this.multiAlertServiceChanges = this.multiAlertService.changes.subscribe(index => {
       this.currentAlertIndexChange.emit(index);
       this.currentAlertChange.emit(this.multiAlertService.activeAlerts[index]);
     });
+  }
+
+  ngOnDestroy() {
+    this.multiAlertServiceChanges.unsubscribe();
   }
 
   pageUp() {
@@ -78,9 +81,5 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
 
   pageDown() {
     this.multiAlertService.previous();
-  }
-
-  ngOnDestroy() {
-    this.multiAlertServiceChanges.unsubscribe();
   }
 }

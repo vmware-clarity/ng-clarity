@@ -15,12 +15,13 @@ import { DragEventListenerService } from './drag-event-listener.service';
 // when attachDragListener() is called and removes it when detachDragListener() is called.
 @Injectable()
 export class MockDragEventListener {
-  private listeners: (() => void)[];
   draggableEl: any;
   dragStarted = new Subject<any>();
   dragMoved = new Subject<any>();
   dragEnded = new Subject<any>();
   dragStartPosition: DragPointPosition;
+
+  private listeners: (() => void)[];
 
   attachDragListeners(draggableEl: any) {
     this.draggableEl = draggableEl;

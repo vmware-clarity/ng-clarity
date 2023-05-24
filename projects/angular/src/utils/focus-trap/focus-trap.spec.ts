@@ -48,8 +48,7 @@ class FocusTrapComponent extends FocusTrap {
   `,
 })
 class TestFocusTrapComponent {
-  @ViewChild(FocusTrapComponent)
-  focusTrapComponent: FocusTrapComponent;
+  @ViewChild(FocusTrapComponent) focusTrapComponent: FocusTrapComponent;
 }
 
 describe('Focus Trap Utilities: ', () => {

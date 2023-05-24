@@ -9,20 +9,18 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class ForTypeAheadProvider {
-  private _textContentChange = new Subject<string>();
-
-  get textContentChange(): Observable<string> {
-    return this._textContentChange.asObservable();
-  }
-
   private _textContent: string;
+  private _textContentChange = new Subject<string>();
 
   get textContent() {
     return this._textContent;
   }
-
   set textContent(value: string) {
     this._textContent = value;
     this._textContentChange.next(value);
+  }
+
+  get textContentChange(): Observable<string> {
+    return this._textContentChange.asObservable();
   }
 }

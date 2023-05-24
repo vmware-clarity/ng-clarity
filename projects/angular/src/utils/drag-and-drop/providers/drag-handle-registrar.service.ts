@@ -16,10 +16,11 @@ export class DragHandleRegistrarService<T> {
   private _customHandleEl: any;
   private _defaultHandleEl: any;
 
+  constructor(private dragEventListener: DragEventListenerService<T>, private renderer: Renderer2) {}
+
   get defaultHandleEl() {
     return this._defaultHandleEl;
   }
-
   set defaultHandleEl(el: Node) {
     this._defaultHandleEl = el; // defaultHandleEl will be usually the clrDraggable element.
 
@@ -28,18 +29,6 @@ export class DragHandleRegistrarService<T> {
     if (!this._customHandleEl) {
       this.makeElementHandle(this._defaultHandleEl);
     }
-  }
-
-  constructor(private dragEventListener: DragEventListenerService<T>, private renderer: Renderer2) {}
-
-  private makeElementHandle(el: Node) {
-    if (this._defaultHandleEl && this._defaultHandleEl !== el) {
-      // Before making an element the custom handle element,
-      // we should remove the existing drag-handle class from the draggable element.
-      this.renderer.removeClass(this._defaultHandleEl, 'drag-handle');
-    }
-    this.dragEventListener.attachDragListeners(el);
-    this.renderer.addClass(el, 'drag-handle');
   }
 
   get customHandleEl() {
@@ -60,5 +49,15 @@ export class DragHandleRegistrarService<T> {
     if (this._defaultHandleEl) {
       this.makeElementHandle(this._defaultHandleEl);
     }
+  }
+
+  private makeElementHandle(el: Node) {
+    if (this._defaultHandleEl && this._defaultHandleEl !== el) {
+      // Before making an element the custom handle element,
+      // we should remove the existing drag-handle class from the draggable element.
+      this.renderer.removeClass(this._defaultHandleEl, 'drag-handle');
+    }
+    this.dragEventListener.attachDragListeners(el);
+    this.renderer.addClass(el, 'drag-handle');
   }
 }

@@ -82,10 +82,24 @@ export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
   implements CustomFilter, OnChanges, OnDestroy
 {
-  private subs: Subscription[] = [];
-  ariaExpanded = false;
+  @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
+  ariaExpanded = false;
   popoverId = uniqueIdFactory();
+  toggleButtonAriaLabel: string;
+
+  // Smart Popover
+  smartPosition: ClrPopoverPosition = {
+    axis: ClrAxis.VERTICAL,
+    side: ClrSide.AFTER,
+    anchor: ClrAlignment.END,
+    content: ClrAlignment.END,
+  };
+
+  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef;
+
+  private _open = false;
+  private subs: Subscription[] = [];
 
   constructor(
     _filters: FiltersProvider<T>,
@@ -103,23 +117,10 @@ export class ClrDatagridFilter<T = any>
     );
   }
 
-  @ViewChild('anchor', { read: ElementRef })
-  anchor: ElementRef;
-
-  // Smart Popover
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.END,
-    content: ClrAlignment.END,
-  };
-
-  private _open = false;
+  @Input('clrDgFilterOpen')
   get open() {
     return this._open;
   }
-
-  @Input('clrDgFilterOpen')
   set open(open: boolean) {
     open = !!open;
     if (this.open !== open) {
@@ -133,8 +134,6 @@ export class ClrDatagridFilter<T = any>
     }
   }
 
-  @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
-
   @Input('clrDgFilter')
   set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>) {
     this.setFilter(filter);
@@ -146,8 +145,6 @@ export class ClrDatagridFilter<T = any>
   get active() {
     return !!this.filter && this.filter.isActive();
   }
-
-  toggleButtonAriaLabel: string;
 
   ngOnChanges() {
     this.setToggleButtonAriaLabel();

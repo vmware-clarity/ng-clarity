@@ -22,6 +22,15 @@ import { DatagridRenderOrganizer } from './render-organizer';
   providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
 })
 export class DatagridHeaderRenderer implements OnDestroy {
+  @Output('clrDgColumnResize') resizeEmitter = new EventEmitter<number>();
+
+  /**
+   * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
+   */
+  private widthSet = false;
+  private autoSet = false;
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
@@ -38,18 +47,20 @@ export class DatagridHeaderRenderer implements OnDestroy {
     this.subscriptions.push(columnState.subscribe(state => this.stateChanges(state)));
   }
 
-  @Output('clrDgColumnResize') resizeEmitter = new EventEmitter<number>();
-
-  /**
-   * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
-   */
-  private widthSet = false;
-  private autoSet = false;
-
-  private subscriptions: Subscription[] = [];
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  getColumnWidthState(): Partial<ColumnState> {
+    const strictWidth = this.detectStrictWidth();
+    return {
+      width: this.computeWidth(strictWidth),
+      strictWidth: strictWidth,
+    };
+  }
+
+  setColumnState(index: number) {
+    this.columnsService.columns[index] = this.columnState;
   }
 
   private stateChanges(state: ColumnState) {
@@ -95,18 +106,6 @@ export class DatagridHeaderRenderer implements OnDestroy {
       width = this.domAdapter.scrollWidth(this.el.nativeElement);
     }
     return width;
-  }
-
-  getColumnWidthState(): Partial<ColumnState> {
-    const strictWidth = this.detectStrictWidth();
-    return {
-      width: this.computeWidth(strictWidth),
-      strictWidth: strictWidth,
-    };
-  }
-
-  setColumnState(index: number) {
-    this.columnsService.columns[index] = this.columnState;
   }
 
   private setWidth(state: ColumnState) {

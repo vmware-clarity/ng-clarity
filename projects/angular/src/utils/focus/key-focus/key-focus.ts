@@ -27,19 +27,33 @@ import { normalizeKey, preventArrowKeyScroll } from './util';
   template: '<ng-content></ng-content>',
 })
 export class ClrKeyFocus {
-  constructor(private elementRef: ElementRef) {}
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;
   @Input('clrFocusOnLoad') focusOnLoad = false;
-  @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
-  @ContentChildren(ClrKeyFocusItem, { descendants: true })
-  protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
 
+  @ContentChildren(ClrKeyFocusItem, { descendants: true }) protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
+
+  protected subscriptions: Subscription[] = [];
+
+  @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
+
+  private _current = 0;
   private _focusableItems: Array<FocusableItem>;
-  @Input('clrKeyFocus')
+
+  constructor(private elementRef: ElementRef) {}
+
   /**
    * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
    */
+  @Input('clrKeyFocus')
+  get focusableItems() {
+    if (this._focusableItems) {
+      return this._focusableItems;
+    } else if (this.clrKeyFocusItems) {
+      return this.clrKeyFocusItems.toArray();
+    }
+    return [];
+  }
   set focusableItems(elements: Array<FocusableItem> | any) {
     // We accept a list of focusable elements (HTMLElements or existing Directives) or auto query for clrKeyFocusItem
     // We accept a list reference in the cases where we cannot use ContentChildren to query
@@ -49,25 +63,14 @@ export class ClrKeyFocus {
       this.initializeFocus();
     }
   }
-  get focusableItems() {
-    if (this._focusableItems) {
-      return this._focusableItems;
-    } else if (this.clrKeyFocusItems) {
-      return this.clrKeyFocusItems.toArray();
-    }
-    return [];
-  }
 
   get nativeElement(): HTMLElement {
     return this.elementRef.nativeElement;
   }
 
-  private _current = 0;
-
   get current() {
     return this._current;
   }
-
   set current(value: number) {
     if (this._current !== value) {
       this._current = value;
@@ -81,20 +84,6 @@ export class ClrKeyFocus {
   get currentItemElement(): HTMLElement {
     return this.currentItem.nativeElement ? this.currentItem.nativeElement : (this.currentItem as HTMLElement);
   }
-
-  focusCurrent() {
-    this.currentItem.focus();
-    this.focusChange.next(this._current);
-  }
-
-  moveTo(position: number) {
-    if (this.positionInRange(position)) {
-      this.current = position;
-      this.focusCurrent();
-    }
-  }
-
-  protected subscriptions: Subscription[] = [];
 
   ngAfterContentInit() {
     this.subscriptions.push(this.listenForItemUpdates());
@@ -137,11 +126,15 @@ export class ClrKeyFocus {
     }
   }
 
-  private getItemPosition(item: HTMLElement) {
-    if (this._focusableItems) {
-      return this.focusableItems.indexOf(item);
-    } else {
-      return this.focusableItems.map(_item => _item.nativeElement).indexOf(item);
+  focusCurrent() {
+    this.currentItem.focus();
+    this.focusChange.next(this._current);
+  }
+
+  moveTo(position: number) {
+    if (this.positionInRange(position)) {
+      this.current = position;
+      this.focusCurrent();
     }
   }
 
@@ -173,12 +166,6 @@ export class ClrKeyFocus {
     }
   }
 
-  private listenForItemUpdates() {
-    return this.clrKeyFocusItems.changes.subscribe(() => {
-      this.initializeFocus();
-    });
-  }
-
   protected nextKeyPressed(event: KeyboardEvent) {
     const key = normalizeKey(event.key);
 
@@ -207,5 +194,19 @@ export class ClrKeyFocus {
       default:
         return false;
     }
+  }
+
+  private getItemPosition(item: HTMLElement) {
+    if (this._focusableItems) {
+      return this.focusableItems.indexOf(item);
+    } else {
+      return this.focusableItems.map(_item => _item.nativeElement).indexOf(item);
+    }
+  }
+
+  private listenForItemUpdates() {
+    return this.clrKeyFocusItems.changes.subscribe(() => {
+      this.initializeFocus();
+    });
   }
 }

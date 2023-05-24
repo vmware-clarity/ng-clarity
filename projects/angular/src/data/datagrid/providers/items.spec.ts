@@ -206,6 +206,8 @@ export default function (): void {
 }
 
 class EvenFilter implements ClrDatagridFilterInterface<number> {
+  changes = new Subject<boolean>();
+
   private active = false;
 
   toggle() {
@@ -216,8 +218,6 @@ class EvenFilter implements ClrDatagridFilterInterface<number> {
   isActive(): boolean {
     return this.active;
   }
-
-  changes = new Subject<boolean>();
 
   accepts(n: number): boolean {
     return n % 2 === 0;
@@ -225,6 +225,8 @@ class EvenFilter implements ClrDatagridFilterInterface<number> {
 }
 
 class NegativeFilter implements ClrDatagridFilterInterface<number> {
+  changes = new Subject<boolean>();
+
   private active = false;
 
   toggle() {
@@ -235,8 +237,6 @@ class NegativeFilter implements ClrDatagridFilterInterface<number> {
   isActive(): boolean {
     return this.active;
   }
-
-  changes = new Subject<boolean>();
 
   accepts(n: number): boolean {
     return n < 0;
@@ -250,7 +250,10 @@ class TestComparator implements ClrDatagridComparatorInterface<number> {
 }
 
 class NameFilter implements ClrDatagridFilterInterface<User> {
+  changes = new Subject<string>();
+
   private _search = '';
+
   search(value: string) {
     this._search = value;
     this.changes.next(value);
@@ -259,8 +262,6 @@ class NameFilter implements ClrDatagridFilterInterface<User> {
   isActive(): boolean {
     return this._search.length > 0;
   }
-
-  changes = new Subject<string>();
 
   accepts(user: User): boolean {
     return user.name.includes(this._search);

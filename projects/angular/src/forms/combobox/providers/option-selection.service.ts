@@ -12,10 +12,19 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
 export class OptionSelectionService<T> {
-  selectionModel: ComboboxModel<T>;
   loading = false;
   displayField: string;
+  selectionModel: ComboboxModel<T>;
+  inputChanged: Observable<string>;
+
   private _currentInput = '';
+  private _inputChanged = new BehaviorSubject('');
+  private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
+
+  constructor() {
+    this.inputChanged = this._inputChanged.asObservable();
+  }
+
   get currentInput(): string {
     return this._currentInput;
   }
@@ -27,15 +36,15 @@ export class OptionSelectionService<T> {
     this._currentInput = input;
     this._inputChanged.next(input);
   }
-  private _inputChanged = new BehaviorSubject('');
-  inputChanged = this._inputChanged.asObservable();
-
-  private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
 
   // This observable is for notifying the ClrOption to update its
   // selection by comparing the value
   get selectionChanged(): Observable<ComboboxModel<T>> {
     return this._selectionChanged.asObservable();
+  }
+
+  get multiselectable(): boolean {
+    return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
   select(item: T) {
@@ -64,10 +73,6 @@ export class OptionSelectionService<T> {
     }
     this.selectionModel.unselect(item);
     this._selectionChanged.next(this.selectionModel);
-  }
-
-  get multiselectable(): boolean {
-    return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
   // TODO: Add support for trackBy and compareFn

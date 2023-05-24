@@ -39,8 +39,17 @@ import { Selection } from './providers/selection';
   },
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
+  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
+  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
+
+  replacedRow = false;
+
   /* reference to the enum so that template can access it */
   SELECTION_TYPE = SelectionType;
+
+  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     public selection: Selection,
@@ -50,29 +59,12 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     public commonStrings: ClrCommonStringsService
   ) {}
 
-  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
-
   @Input('clrDgReplace')
   set replace(value: boolean) {
     this.expand.setReplace(!!value);
   }
-  private subscriptions: Subscription[] = [];
-  replacedRow = false;
-
-  ngAfterContentInit() {
-    this.subscriptions.push(
-      this.expand.replace.subscribe(replaceChange => {
-        this.replacedRow = replaceChange;
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
 
   // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
-  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
@@ -84,12 +76,23 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   }
 
   // TODO: @deprecated - dategrid* keys are deprecated. Remove in v14.
-  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
   get endOfExpandableContentAriaText() {
     return (
       this._endOfExpandableContentAriaText ||
       `${this.commonStrings.keys.dategridExpandableEndOf || this.commonStrings.keys.datagridExpandableEndOf} 
       ${this.commonStrings.keys.dategridExpandableRowContent || this.commonStrings.keys.datagridExpandableRowContent}`
     );
+  }
+
+  ngAfterContentInit() {
+    this.subscriptions.push(
+      this.expand.replace.subscribe(replaceChange => {
+        this.replacedRow = replaceChange;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

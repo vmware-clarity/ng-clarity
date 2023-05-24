@@ -44,23 +44,12 @@ const KEYBOARD_RESIZE_LENGTH = 12;
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   columnSeparatorId = uniqueIdFactory();
 
-  @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef;
-
-  private get resizeTrackerEl() {
-    return this.resizeTrackerRef.nativeElement;
-  }
-
-  @ViewChild('columnHandle') private columnHandleRef: ElementRef;
-
-  private get columnHandleEl() {
-    return this.columnHandleRef.nativeElement;
-  }
-
   private resizeStartedOnKeyDown = false;
-
   private isWithinMaxResizeRange: boolean;
-
   private unlisteners: (() => void)[] = [];
+
+  @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef;
+  @ViewChild('columnHandle') private columnHandleRef: ElementRef;
 
   // Every column draggable separator should have its own unique ID
   // in order to not conflict with other draggables/droppables.
@@ -72,6 +61,18 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     public commonString: ClrCommonStringsService,
     @Inject(DOCUMENT) private document: any
   ) {}
+
+  get descriptionId(): string {
+    return `${this.columnSeparatorId}-aria-describedby`;
+  }
+
+  private get resizeTrackerEl() {
+    return this.resizeTrackerRef.nativeElement;
+  }
+
+  private get columnHandleEl() {
+    return this.columnHandleRef.nativeElement;
+  }
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
@@ -89,8 +90,8 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
     });
   }
 
-  get descriptionId(): string {
-    return `${this.columnSeparatorId}-aria-describedby`;
+  ngOnDestroy() {
+    this.unlisteners.forEach(unlistener => unlistener());
   }
 
   showTracker(): void {
@@ -156,9 +157,5 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
   private isArrowRightKeyEvent(event: KeyboardEvent) {
     return normalizeKey(event.key) === Keys.ArrowRight;
-  }
-
-  ngOnDestroy() {
-    this.unlisteners.forEach(unlistener => unlistener());
   }
 }

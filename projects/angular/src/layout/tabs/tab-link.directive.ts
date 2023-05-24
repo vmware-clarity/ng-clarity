@@ -32,24 +32,11 @@ let nbTabLinkComponents = 0;
   },
 })
 export class ClrTabLink {
-  private _inOverflow: boolean;
-
-  @Input('clrTabLinkInOverflow')
-  set inOverflow(inOverflow) {
-    this._inOverflow = inOverflow;
-  }
-
-  get inOverflow(): boolean {
-    return this._inOverflow && this.tabsService.layout !== TabsLayout.VERTICAL;
-  }
-
-  @HostBinding('class.btn-link')
-  @HostBinding('class.nav-link')
-  get addLinkClasses() {
-    return !this.inOverflow;
-  }
+  @Input('id') @HostBinding('id') tabLinkId: string;
 
   templateRefContainer: TemplateRefContainer;
+
+  private _inOverflow: boolean;
 
   constructor(
     public ifActiveService: IfActiveService,
@@ -73,18 +60,23 @@ export class ClrTabLink {
     ]).instance;
   }
 
+  @Input('clrTabLinkInOverflow')
+  get inOverflow(): boolean {
+    return this._inOverflow && this.tabsService.layout !== TabsLayout.VERTICAL;
+  }
+  set inOverflow(inOverflow) {
+    this._inOverflow = inOverflow;
+  }
+
+  @HostBinding('class.btn-link')
+  @HostBinding('class.nav-link')
+  get addLinkClasses() {
+    return !this.inOverflow;
+  }
+
   @HostBinding('attr.aria-controls')
   get ariaControls(): string {
     return this.tabsService.children.find(tab => tab.tabLink === this)?.tabContent?.tabContentId;
-  }
-
-  @HostBinding('id')
-  @Input('id')
-  tabLinkId: string;
-
-  @HostListener('click')
-  activate() {
-    this.ifActiveService.current = this.id;
   }
 
   @HostBinding('class.active')
@@ -96,5 +88,10 @@ export class ClrTabLink {
   @HostBinding('attr.tabindex')
   get tabindex() {
     return this.active ? 0 : -1;
+  }
+
+  @HostListener('click')
+  activate() {
+    this.ifActiveService.current = this.id;
   }
 }

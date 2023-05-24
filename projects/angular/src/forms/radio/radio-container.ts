@@ -51,10 +51,11 @@ import { ClrRadio } from './radio';
   providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-  private inline = false;
   role: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+
+  private inline = false;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -72,15 +73,15 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
    * [clrInline]="true|false" - expect a boolean
    */
   @Input()
+  get clrInline() {
+    return this.inline;
+  }
   set clrInline(value: boolean | string) {
     if (typeof value === 'string') {
       this.inline = value === 'false' ? false : true;
     } else {
       this.inline = !!value;
     }
-  }
-  get clrInline() {
-    return this.inline;
   }
 
   override ngAfterContentInit() {

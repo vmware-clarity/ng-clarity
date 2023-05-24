@@ -24,7 +24,13 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
   templateUrl: './calendar.html',
 })
 export class ClrCalendar implements OnDestroy {
+  /**
+   * Calendar View Model to generate the Calendar.
+   */
+  calendarViewModel: CalendarViewModel;
+
   private _subs: Subscription[] = [];
+
   constructor(
     private _localeHelperService: LocaleHelperService,
     private _dateNavigationService: DateNavigationService,
@@ -35,11 +41,6 @@ export class ClrCalendar implements OnDestroy {
     this.generateCalendarView();
     this.initializeSubscriptions();
   }
-
-  /**
-   * Calendar View Model to generate the Calendar.
-   */
-  calendarViewModel: CalendarViewModel;
 
   /**
    * Gets the locale days according to the TranslationWidth.Narrow format.
@@ -62,6 +63,49 @@ export class ClrCalendar implements OnDestroy {
 
   get today(): DayModel {
     return this._dateNavigationService.today;
+  }
+
+  /**
+   * Focuses on the focusable day when the Calendar View is initialized.
+   */
+  ngAfterViewInit() {
+    this._datepickerFocusService.focusCell(this._elRef);
+  }
+
+  /**
+   * Unsubscribe from subscriptions.
+   */
+  ngOnDestroy(): void {
+    this._subs.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  /**
+   * Delegates Keyboard arrow navigation to the DateNavigationService.
+   */
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (event && this.focusedDay) {
+      switch (normalizeKey(event.key)) {
+        case Keys.ArrowUp:
+          event.preventDefault();
+          this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
+          break;
+        case Keys.ArrowDown:
+          event.preventDefault();
+          this._dateNavigationService.incrementFocusDay(NO_OF_DAYS_IN_A_WEEK);
+          break;
+        case Keys.ArrowLeft:
+          event.preventDefault();
+          this._dateNavigationService.incrementFocusDay(-1);
+          break;
+        case Keys.ArrowRight:
+          event.preventDefault();
+          this._dateNavigationService.incrementFocusDay(1);
+          break;
+        default:
+          break; // No default case. ESLint x-(
+      }
+    }
   }
 
   /**
@@ -102,48 +146,5 @@ export class ClrCalendar implements OnDestroy {
       this._localeHelperService.firstDayOfWeek,
       this._dateIOService.disabledDates
     );
-  }
-
-  /**
-   * Delegates Keyboard arrow navigation to the DateNavigationService.
-   */
-  @HostListener('keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
-    if (event && this.focusedDay) {
-      switch (normalizeKey(event.key)) {
-        case Keys.ArrowUp:
-          event.preventDefault();
-          this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
-          break;
-        case Keys.ArrowDown:
-          event.preventDefault();
-          this._dateNavigationService.incrementFocusDay(NO_OF_DAYS_IN_A_WEEK);
-          break;
-        case Keys.ArrowLeft:
-          event.preventDefault();
-          this._dateNavigationService.incrementFocusDay(-1);
-          break;
-        case Keys.ArrowRight:
-          event.preventDefault();
-          this._dateNavigationService.incrementFocusDay(1);
-          break;
-        default:
-          break; // No default case. ESLint x-(
-      }
-    }
-  }
-
-  /**
-   * Focuses on the focusable day when the Calendar View is initialized.
-   */
-  ngAfterViewInit() {
-    this._datepickerFocusService.focusCell(this._elRef);
-  }
-
-  /**
-   * Unsubscribe from subscriptions.
-   */
-  ngOnDestroy(): void {
-    this._subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

@@ -27,6 +27,11 @@ export class ButtonGroupFocusHandler {
     private renderer: Renderer2
   ) {}
 
+  ngOnDestroy() {
+    this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
+    this.focusService.detachListeners();
+  }
+
   initialize({ menu, menuToggle }: { menu: HTMLElement; menuToggle: HTMLElement }) {
     this.menu = menu;
     this.menuToggle = menuToggle;
@@ -99,11 +104,6 @@ export class ButtonGroupFocusHandler {
       this.focusService.moveTo(this.buttons[this.buttons.length - 1]);
     }
     this.initialFocus = InitialFocus.FIRST_ITEM;
-  }
-
-  ngOnDestroy() {
-    this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
-    this.focusService.detachListeners();
   }
 }
 

@@ -45,11 +45,11 @@ export class DatagridFullDemo {
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
 
-  trackById: TrackByFunction<User> = (_index, item) => item.id;
-
   constructor(private inventory: Inventory) {
     this.reset();
   }
+
+  trackById: TrackByFunction<User> = (_index, item) => item.id;
 
   reset() {
     this.resetting = true;

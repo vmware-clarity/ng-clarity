@@ -27,7 +27,10 @@ import { FOCUS_ON_VIEW_INIT } from './focus-on-view-init.provider';
   selector: '[clrFocusOnViewInit]',
 })
 export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
+  private document: Document;
+  private directFocus = true; // true if the element gets focused without need to set tabindex;
   private destroy$ = new Subject<void>();
+  private _isEnabled: boolean;
 
   constructor(
     private el: ElementRef,
@@ -58,10 +61,6 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     );
   }
 
-  private document: Document;
-  private directFocus = true; // true if the element gets focused without need to set tabindex;
-
-  private _isEnabled: boolean;
   @Input('clrFocusOnViewInit')
   set isEnabled(value: boolean | string) {
     if (this.focusOnViewInit && typeof value === 'boolean') {

@@ -95,10 +95,8 @@ export default function (): void {
   `,
 })
 class TestTimeline {
-  @ViewChild('noLayout', { static: false })
-  noLayout: ClrTimeline;
-  @ViewChild('timeline', { static: false })
-  timeline: ClrTimeline;
+  @ViewChild('noLayout', { static: false }) noLayout: ClrTimeline;
+  @ViewChild('timeline', { static: false }) timeline: ClrTimeline;
 
   layout: ClrTimelineLayout = ClrTimelineLayout.HORIZONTAL;
 }

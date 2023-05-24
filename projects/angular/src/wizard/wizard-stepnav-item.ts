@@ -58,12 +58,6 @@ export class ClrWizardStepnavItem {
     public commonStrings: ClrCommonStringsService
   ) {}
 
-  private pageGuard(): void {
-    if (!this.page) {
-      throw new Error('Wizard stepnav item is not associated with a wizard page.');
-    }
-  }
-
   get id(): string {
     this.pageGuard();
     return this.pageCollection.getStepItemIdForPage(this.page);
@@ -107,5 +101,11 @@ export class ClrWizardStepnavItem {
     }
 
     this.navService.goTo(this.page);
+  }
+
+  private pageGuard(): void {
+    if (!this.page) {
+      throw new Error('Wizard stepnav item is not associated with a wizard page.');
+    }
   }
 }

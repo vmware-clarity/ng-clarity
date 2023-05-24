@@ -34,11 +34,10 @@ type OffsetPosition = {
   ],
 })
 export class ClrDraggableGhost<T> implements OnDestroy {
-  private draggableGhostEl: any;
-
-  private subscriptions: Subscription[] = [];
-
   @HostBinding('@leaveAnimation') leaveAnimConfig = { value: 0, params: { top: '0px', left: '0px' } };
+
+  private draggableGhostEl: any;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private el: ElementRef,
@@ -99,6 +98,10 @@ export class ClrDraggableGhost<T> implements OnDestroy {
     );
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
   private setDefaultGhostSize(el: Node): void {
     if (this.draggableSnapshot.hasDraggableState) {
       this.setSizeStyle(el, this.draggableSnapshot.clientRect.width, this.draggableSnapshot.clientRect.height);
@@ -135,9 +138,5 @@ export class ClrDraggableGhost<T> implements OnDestroy {
     this.renderer.setStyle(el, 'left', `${left}px`);
     this.renderer.setStyle(el, 'top', `${top}px`);
     this.renderer.setStyle(el, 'visibility', 'visible');
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }

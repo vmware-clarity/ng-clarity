@@ -17,16 +17,6 @@ export class BasicDroppableDemo {
   activeDemoVariant = 'basic-draggable';
   droppedFiles: any[] = [];
 
-  private moveItem(item: any, from: any[], to: any[]) {
-    const indexInFiles = from.indexOf(item);
-    if (indexInFiles > -1) {
-      from.splice(indexInFiles, 1);
-    }
-    if (to.indexOf(item) === -1) {
-      to.push(item);
-    }
-  }
-
   onDropToUpload(dragEvent: ClrDragEvent<any>) {
     console.log('dropped to upload');
     this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedFiles);
@@ -35,5 +25,15 @@ export class BasicDroppableDemo {
   onDropBack(dragEvent: ClrDragEvent<any>) {
     console.log('dropped back');
     this.moveItem(dragEvent.dragDataTransfer, this.droppedFiles, this.files);
+  }
+
+  private moveItem(item: any, from: any[], to: any[]) {
+    const indexInFiles = from.indexOf(item);
+    if (indexInFiles > -1) {
+      from.splice(indexInFiles, 1);
+    }
+    if (to.indexOf(item) === -1) {
+      to.push(item);
+    }
   }
 }

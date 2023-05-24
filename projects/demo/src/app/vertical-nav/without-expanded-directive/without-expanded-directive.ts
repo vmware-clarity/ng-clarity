@@ -15,16 +15,17 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 })
 export class WithoutExpandedDirectiveDemo {
   case: any;
-
   option = 'text';
-
   groupExpand = true;
+  navCollapsed = false;
+
+  constructor(public verticalNavCases: VerticalNavCases) {
+    this.case = this.verticalNavCases.allNestedIconMenu;
+  }
 
   updateGroupExpand(event: any) {
     this.groupExpand = event;
   }
-
-  navCollapsed = false;
 
   updateNavCollapsed(val: boolean): void {
     this.navCollapsed = val;
@@ -36,9 +37,5 @@ export class WithoutExpandedDirectiveDemo {
 
   toggleGroup(): void {
     this.groupExpand = !this.groupExpand;
-  }
-
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.allNestedIconMenu;
   }
 }

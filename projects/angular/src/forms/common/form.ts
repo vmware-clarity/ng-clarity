@@ -20,24 +20,23 @@ import { MarkControlService } from './providers/mark-control.service';
   },
 })
 export class ClrForm {
+  @ContentChildren(ClrLabel, { descendants: true }) labels: QueryList<ClrLabel>;
+
+  constructor(public layoutService: LayoutService, private markControlService: MarkControlService) {}
+
   @Input('clrLabelSize')
   set labelSize(size: number | string) {
     const sizeNumber = parseInt(size as string, 10) || 2;
     this.layoutService.labelSize = sizeNumber;
   }
 
-  constructor(public layoutService: LayoutService, private markControlService: MarkControlService) {}
+  @HostListener('submit')
+  onFormSubmit() {
+    this.markAsTouched();
+  }
 
   // Trying to avoid adding an input and keep this backwards compatible at the same time
   markAsTouched() {
     this.markControlService.markAsTouched();
-  }
-
-  @ContentChildren(ClrLabel, { descendants: true })
-  labels: QueryList<ClrLabel>;
-
-  @HostListener('submit')
-  onFormSubmit() {
-    this.markAsTouched();
   }
 }

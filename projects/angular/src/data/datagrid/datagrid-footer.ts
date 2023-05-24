@@ -39,17 +39,17 @@ import { Selection } from './providers/selection';
   },
 })
 export class ClrDatagridFooter<T = any> {
+  /* reference to the enum so that template can access */
+  SELECTION_TYPE = SelectionType;
+
+  @ContentChild(ClrDatagridColumnToggle) toggle: ClrDatagridColumnToggle;
+
   constructor(
     public selection: Selection<T>,
     public detailService: DetailService,
     private columnsService: ColumnsService,
     public commonStrings: ClrCommonStringsService
   ) {}
-
-  /* reference to the enum so that template can access */
-  SELECTION_TYPE = SelectionType;
-
-  @ContentChild(ClrDatagridColumnToggle) toggle: ClrDatagridColumnToggle;
 
   get hasHideableColumns(): boolean {
     return this.columnsService.hasHideableColumns;

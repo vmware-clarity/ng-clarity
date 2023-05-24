@@ -107,16 +107,15 @@ export function castHtmlElementToFocusTrapElement(el: HTMLElement): FocusTrapEle
 }
 
 export class FocusTrap {
+  active = false;
+  firstFocusElement: HTMLElement | FocusTrapElement;
   focusTrapElement: FocusTrapElement;
-  private previousFocus: HTMLElement;
-  private onFocusInEvent: () => void;
-  private unlisten: () => void;
 
   protected _document: Document;
 
-  firstFocusElement: HTMLElement | FocusTrapElement;
-
-  active = false;
+  private previousFocus: HTMLElement;
+  private onFocusInEvent: () => void;
+  private unlisten: () => void;
 
   constructor(protected renderer: Renderer2, injector: Injector, platformId: any, hostElement: FocusTrapElement) {
     if (isPlatformBrowser(platformId)) {

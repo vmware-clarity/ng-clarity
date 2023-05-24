@@ -39,20 +39,15 @@ import { panelAnimation } from './utils/animation';
 export class ClrAccordionPanel implements OnInit, OnChanges {
   @Input('clrAccordionPanelDisabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
+
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
+
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  panel: Observable<AccordionPanelModel>;
   readonly AccordionStatus = AccordionStatus;
+
   isAccordion = true;
-
-  get id(): string {
-    return this._id;
-  }
-
-  set id(value: string) {
-    this._id = value;
-  }
+  panel: Observable<AccordionPanelModel>;
 
   private _id = uniqueIdFactory();
 
@@ -61,6 +56,13 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     private accordionService: AccordionService,
     private ifExpandService: IfExpandService
   ) {}
+
+  get id(): string {
+    return this._id;
+  }
+  set id(value: string) {
+    this._id = value;
+  }
 
   ngOnInit() {
     this.panel = this.accordionService.getPanelChanges(this.id).pipe(tap(panel => this.emitPanelChange(panel)));

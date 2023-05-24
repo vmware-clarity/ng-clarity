@@ -156,6 +156,8 @@ export default function (): void {
 }
 
 abstract class TestFilter implements ClrDatagridFilterInterface<number> {
+  changes = new Subject<boolean>();
+
   private active = false;
 
   toggle() {
@@ -166,8 +168,6 @@ abstract class TestFilter implements ClrDatagridFilterInterface<number> {
   isActive(): boolean {
     return this.active;
   }
-
-  changes = new Subject<boolean>();
 
   abstract accepts(n: number): boolean;
 }

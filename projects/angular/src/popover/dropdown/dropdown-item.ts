@@ -24,47 +24,45 @@ import { RootDropdownService } from './providers/dropdown.service';
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
 })
 export class ClrDropdownItem {
+  setByDeprecatedDisabled = false;
+
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
     private focusableItem: FocusableItem
   ) {}
 
-  setByDeprecatedDisabled = false;
-
   @Input('clrDisabled')
+  get disabled() {
+    return this.focusableItem.disabled;
+  }
   set disabled(value: boolean | string) {
     // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
     this.focusableItem.disabled = !!value || value === '';
-  }
-
-  get disabled() {
-    return this.focusableItem.disabled;
   }
 
   /*
    * @deprecated since 3.0, remove in 4.0. the presence of this attribute makes it not-focusable in IE11. Use [clrDisabled] input instead.
    */
   @Input('disabled')
+  get disabledDeprecated() {
+    return this.focusableItem.disabled;
+  }
   set disabledDeprecated(value: boolean | string) {
     // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
     this.focusableItem.disabled = !!value || value === '';
     this.setByDeprecatedDisabled = true;
   }
 
-  get disabledDeprecated() {
-    return this.focusableItem.disabled;
-  }
-
   /**
    * Let you overwrite the focusable auto increment id.
    */
   @Input('id')
-  set dropdownItemId(value: string) {
-    this.focusableItem.id = value;
-  }
   get dropdownItemId() {
     return this.focusableItem.id;
+  }
+  set dropdownItemId(value: string) {
+    this.focusableItem.id = value;
   }
 
   @HostListener('click')

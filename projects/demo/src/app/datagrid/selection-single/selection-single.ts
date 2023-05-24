@@ -32,15 +32,15 @@ export class DatagridSelectionSingleDemo {
   loading = true;
   total: number;
 
-  trackByIndex: TrackByFunction<User> = index => index;
-  trackById: TrackByFunction<User> = (_index, item) => item.id;
-
   constructor(private inventory: Inventory) {
     this.inventory.size = 100;
     this.inventory.latency = 500;
     this.inventory.reset();
     this.users = this.trackByIndexUsers = this.trackByIdUsers = this.inventory.all;
   }
+
+  trackByIndex: TrackByFunction<User> = index => index;
+  trackById: TrackByFunction<User> = (_index, item) => item.id;
 
   refresh(state: ClrDatagridStateInterface) {
     // this.loading = true;

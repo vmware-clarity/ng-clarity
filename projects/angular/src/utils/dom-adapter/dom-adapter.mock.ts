@@ -11,21 +11,22 @@ import { DomAdapter } from './dom-adapter';
 @Injectable()
 export class MockDomAdapter extends DomAdapter {
   _userDefinedWidth = 0;
+  _scrollBarWidth = 0;
+  _scrollWidth = 0;
+  _computedHeight = 0;
+
   userDefinedWidth(_element: any): number {
     return this._userDefinedWidth;
   }
 
-  _scrollBarWidth = 0;
   scrollBarWidth(_element: any) {
     return this._scrollBarWidth;
   }
 
-  _scrollWidth = 0;
   scrollWidth(_element: any) {
     return this._scrollWidth;
   }
 
-  _computedHeight = 0;
   computedHeight(_element: any) {
     return this._computedHeight;
   }

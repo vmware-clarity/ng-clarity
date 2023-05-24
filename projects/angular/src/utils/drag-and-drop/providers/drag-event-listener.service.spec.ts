@@ -304,15 +304,14 @@ class TestComponent implements OnInit, OnDestroy {
 
   nbDragMoveFired = 0;
 
+  @ViewChild('draggableButton', { static: true }) draggableButtonRef: ElementRef;
+
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private dragEventListener: DragEventListenerService<DragTransfer>,
     private eventBus: DragAndDropEventBusService<DragTransfer>
   ) {}
-
-  @ViewChild('draggableButton', { static: true })
-  draggableButtonRef: ElementRef;
-
-  private subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.dragEventListener.attachDragListeners(this.draggableButtonRef.nativeElement);

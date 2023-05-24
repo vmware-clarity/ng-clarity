@@ -9,9 +9,14 @@ import { Observable } from 'rxjs';
 import { FocusableItem } from './focusable-item';
 
 export class MockFocusableItem implements FocusableItem {
-  constructor(public id: string) {}
-
   disabled = false;
+
+  up?: FocusableItem | Observable<FocusableItem>;
+  down?: FocusableItem | Observable<FocusableItem>;
+  left?: FocusableItem | Observable<FocusableItem>;
+  right?: FocusableItem | Observable<FocusableItem>;
+
+  constructor(public id: string) {}
 
   focus() {
     // Do nothing
@@ -22,9 +27,4 @@ export class MockFocusableItem implements FocusableItem {
   activate() {
     // Do nothing
   }
-
-  up?: FocusableItem | Observable<FocusableItem>;
-  down?: FocusableItem | Observable<FocusableItem>;
-  left?: FocusableItem | Observable<FocusableItem>;
-  right?: FocusableItem | Observable<FocusableItem>;
 }

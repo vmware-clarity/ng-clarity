@@ -42,6 +42,8 @@ import { ColumnsService } from './providers/columns.service';
  *
  */
 export class ClrDatagridHideableColumn implements OnDestroy {
+  @Output('clrDgHiddenChange') hiddenChange = new EventEmitter<boolean>();
+
   /**
    *
    * @description
@@ -49,6 +51,23 @@ export class ClrDatagridHideableColumn implements OnDestroy {
    *
    */
   private _hidden: boolean;
+
+  private subscriptions: Subscription[] = [];
+
+  constructor(
+    private titleTemplateRef: TemplateRef<any>,
+    private viewContainerRef: ViewContainerRef,
+    private columnsService: ColumnsService,
+    @Optional()
+    @Inject(COLUMN_STATE)
+    private columnState: BehaviorSubject<ColumnState>
+  ) {
+    this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
+
+    if (!this.columnState) {
+      throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
+    }
+  }
 
   /**
    *
@@ -80,25 +99,6 @@ export class ClrDatagridHideableColumn implements OnDestroy {
       changes: [DatagridColumnChanges.HIDDEN],
     });
   }
-
-  @Output('clrDgHiddenChange') hiddenChange = new EventEmitter<boolean>();
-
-  constructor(
-    private titleTemplateRef: TemplateRef<any>,
-    private viewContainerRef: ViewContainerRef,
-    private columnsService: ColumnsService,
-    @Optional()
-    @Inject(COLUMN_STATE)
-    private columnState: BehaviorSubject<ColumnState>
-  ) {
-    this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
-
-    if (!this.columnState) {
-      throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
-    }
-  }
-
-  private subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.columnsService.emitStateChange(this.columnState, {

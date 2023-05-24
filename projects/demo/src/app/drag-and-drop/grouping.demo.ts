@@ -29,22 +29,14 @@ export class GroupingDemo {
     this.files = FILES;
   }
 
-  private moveItem(item: any, to: any[], from: any[]) {
-    const indexInFiles = from.indexOf(item);
-    if (indexInFiles > -1) {
-      from.splice(indexInFiles, 1);
-    }
-    if (to.indexOf(item) === -1) {
-      to.push(item);
-    }
-  }
-
   onDropImage(dragEvent: ClrDragEvent<any>) {
     this.moveItem(dragEvent.dragDataTransfer, this.droppedImages, this.files);
   }
+
   onDropMovie(dragEvent: ClrDragEvent<any>) {
     this.moveItem(dragEvent.dragDataTransfer, this.droppedMovies, this.files);
   }
+
   onDropAudio(dragEvent: ClrDragEvent<any>) {
     this.moveItem(dragEvent.dragDataTransfer, this.droppedAudios, this.files);
   }
@@ -56,6 +48,16 @@ export class GroupingDemo {
       this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedMovies);
     } else if (this.droppedImages.indexOf(dragEvent.dragDataTransfer) > -1) {
       this.moveItem(dragEvent.dragDataTransfer, this.files, this.droppedImages);
+    }
+  }
+
+  private moveItem(item: any, to: any[], from: any[]) {
+    const indexInFiles = from.indexOf(item);
+    if (indexInFiles > -1) {
+      from.splice(indexInFiles, 1);
+    }
+    if (to.indexOf(item) === -1) {
+      to.push(item);
     }
   }
 }

@@ -20,8 +20,9 @@ const enum DatepickerViewEnum {
  */
 @Injectable()
 export class ViewManagerService {
-  private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;
   position: ClrPopoverPosition = ClrPopoverPositions['bottom-left'];
+
+  private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;
 
   get isDayView(): boolean {
     return this._currentView === DatepickerViewEnum.DAYVIEW;

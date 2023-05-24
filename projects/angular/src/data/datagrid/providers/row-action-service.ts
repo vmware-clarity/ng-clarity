@@ -10,18 +10,18 @@ import { Injectable } from '@angular/core';
 export class RowActionService {
   private actionableCount = 0;
 
+  /**
+   * false means no rows with action
+   */
+  get hasActionableRow(): boolean {
+    return this.actionableCount > 0;
+  }
+
   register() {
     this.actionableCount++;
   }
 
   unregister() {
     this.actionableCount--;
-  }
-
-  /**
-   * false means no rows with action
-   */
-  get hasActionableRow(): boolean {
-    return this.actionableCount > 0;
   }
 }

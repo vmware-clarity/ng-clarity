@@ -13,7 +13,16 @@ import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interfa
 @Injectable()
 export class ColumnsService {
   columns: BehaviorSubject<ColumnState>[] = [];
+
   private _cache: ColumnState[] = [];
+
+  get columnStates(): ColumnState[] {
+    return this.columns.map(column => column.value);
+  }
+
+  get hasHideableColumns(): boolean {
+    return this.columnStates.filter(state => state.hideable).length > 0;
+  }
 
   cache() {
     this._cache = this.columns.map(subject => {
@@ -33,14 +42,6 @@ export class ColumnsService {
       this.columns[index].next({ ...state, changes: ALL_COLUMN_CHANGES });
     });
     this._cache = [];
-  }
-
-  get columnStates(): ColumnState[] {
-    return this.columns.map(column => column.value);
-  }
-
-  get hasHideableColumns(): boolean {
-    return this.columnStates.filter(state => state.hideable).length > 0;
   }
 
   // Helper method to emit a change to a column only when there is an actual diff to process for that column

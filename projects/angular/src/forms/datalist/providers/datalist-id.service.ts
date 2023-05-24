@@ -12,17 +12,16 @@ let counter = 0;
 @Injectable()
 export class DatalistIdService {
   private _id = 'clr-datalist-' + ++counter;
+  private _idChange = new BehaviorSubject(this._id);
 
   get id(): string {
     return this._id;
   }
-
   set id(value: string) {
     this._id = value;
     this._idChange.next(value);
   }
 
-  private _idChange = new BehaviorSubject(this._id);
   get idChange(): Observable<string> {
     return this._idChange.asObservable();
   }

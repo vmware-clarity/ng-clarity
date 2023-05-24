@@ -19,11 +19,12 @@ import { ClrTabsModule } from './tabs.module';
   template: `<ng-container #tabContentViewContainer></ng-container>`,
 })
 class TestWrapper {
+  constructor(private tabsService: TabsService) {}
+
   @ViewChild('tabContentViewContainer', { static: true, read: ViewContainerRef })
   set tabContentViewContainer(value: ViewContainerRef) {
     this.tabsService.tabContentViewContainer = value;
   }
-  constructor(private tabsService: TabsService) {}
 }
 
 @Component({

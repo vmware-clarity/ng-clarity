@@ -38,10 +38,14 @@ export class DatagridCompactDemo {
   nameFilter = '';
   currentPageSize = 1;
 
+  constructor() {
+    this.nonPaginatedUsers = DatagridKitchenSinkData.users.slice(0, 5);
+    this.users = DatagridKitchenSinkData.users;
+  }
+
   get selectable() {
     return !!this.selected2;
   }
-
   set selectable(value: boolean) {
     if (value) {
       this.selected2 = [];
@@ -50,15 +54,9 @@ export class DatagridCompactDemo {
     }
   }
 
-  constructor() {
-    this.nonPaginatedUsers = DatagridKitchenSinkData.users.slice(0, 5);
-    this.users = DatagridKitchenSinkData.users;
-  }
-
   get selected() {
     return this._selected;
   }
-
   set selected(selection: User[]) {
     this._selected = selection;
     this.cleanUp();

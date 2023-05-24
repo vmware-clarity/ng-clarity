@@ -30,8 +30,7 @@ import { ClrRovingTabindex } from './roving-tabindex';
   `,
 })
 class TestComponent {
-  @ViewChild(ClrRovingTabindex, { static: true })
-  keyFocus: ClrRovingTabindex;
+  @ViewChild(ClrRovingTabindex, { static: true }) keyFocus: ClrRovingTabindex;
   @ViewChildren(ClrKeyFocusItem) keyFocusItems: QueryList<ClrKeyFocusItem>;
   open = false;
   changed = false;

@@ -12,10 +12,11 @@ import { FocusableItem } from './focusable-item/focusable-item';
 
 @Injectable()
 export class FocusService {
+  private _current: FocusableItem;
+  private _unlistenFuncs: (() => void)[] = [];
+
   constructor(private renderer: Renderer2) {}
 
-  private _unlistenFuncs: (() => void)[] = [];
-  private _current: FocusableItem;
   get current() {
     return this._current;
   }

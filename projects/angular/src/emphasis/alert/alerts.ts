@@ -33,7 +33,12 @@ import { MultiAlertService } from './providers/multi-alert.service';
   styles: [':host { display: block }'],
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
+  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
+  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
+
   private subscriptions: Subscription[] = [];
+
+  constructor(public multiAlertService: MultiAlertService) {}
 
   @ContentChildren(ClrAlert)
   set allAlerts(value: QueryList<ClrAlert>) {
@@ -50,28 +55,25 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     }
   }
 
-  @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>(false);
-
-  set currentAlertIndex(index: number) {
-    this.multiAlertService.current = index;
-  }
   get currentAlertIndex() {
     return this.multiAlertService.current;
+  }
+  set currentAlertIndex(index: number) {
+    this.multiAlertService.current = index;
   }
 
   /**
    * Input/Output to support two way binding on current alert instance
    */
   @Input('clrCurrentAlert')
+  get currentAlert() {
+    return this.multiAlertService.currentAlert;
+  }
   set currentAlert(alert: ClrAlert) {
     if (alert) {
       this.multiAlertService.currentAlert = alert;
     }
   }
-  get currentAlert() {
-    return this.multiAlertService.currentAlert;
-  }
-  @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
 
   /**
    * Ensure we are only dealing with alerts that have not been closed yet
@@ -88,8 +90,6 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     }
     return '';
   }
-
-  constructor(public multiAlertService: MultiAlertService) {}
 
   ngAfterContentInit() {
     this.subscriptions.push(

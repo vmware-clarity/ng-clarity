@@ -89,6 +89,98 @@ export class WizardNavigationService implements OnDestroy {
   pagesResetSubscription: Subscription;
 
   /**
+   * A Boolean flag used by the ClrWizardPage to avoid a race condition when pages are
+   * loading and there is no current page defined.
+   *
+   * @memberof WizardNavigationService
+   */
+  navServiceLoaded = false;
+
+  /**
+   * A boolean flag shared across the Wizard subcomponents that follows the value
+   * of the Wizard.forceForward (clrWizardForceForwardNavigation) input. When true,
+   * navigating backwards in the stepnav menu will reset any skipped pages' completed
+   * state to false.
+   *
+   * This is useful when a wizard executes validation on a page-by-page basis when
+   * the next button is clicked.
+   *
+   * @memberof WizardNavigationService
+   */
+  forceForwardNavigation = false;
+
+  /**
+   * A boolean flag shared across the Wizard subcomponents that follows the value
+   * of the Wizard.stopCancel (clrWizardPreventDefaultCancel) input. When true, the cancel
+   * routine is subverted and must be reinstated in the host component calling Wizard.close()
+   * at some point.
+   *
+   * @memberof WizardNavigationService
+   */
+  wizardHasAltCancel = false;
+
+  /**
+   * A boolean flag shared across the Wizard subcomponents that follows the value
+   * of the Wizard.stopNext (clrWizardPreventDefaultNext) input. When true, the next and finish
+   * routines are subverted and must be reinstated in the host component calling Wizard.next(),
+   * Wizard.forceNext(), Wizard.finish(), or Wizard.forceFinish().
+   *
+   * @memberof WizardNavigationService
+   */
+  wizardHasAltNext = false;
+
+  /**
+   * A boolean flag shared across the Wizard subcomponents that follows the value
+   * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
+   * navigational elements in the wizard are disabled.
+   *
+   * This is intended to freeze the wizard in place. Events are not fired so this is
+   * not a way to implement alternate functionality for navigation.
+   *
+   * @memberof WizardNavigationService
+   */
+  wizardStopNavigation = false;
+
+  /**
+   * A boolean flag shared with the stepnav items that prevents user clicks on
+   * stepnav items from navigating the wizard.
+   *
+   * @memberof WizardNavigationService
+   */
+  wizardDisableStepnav = false;
+
+  /**
+   * @memberof WizardNavigationService
+   */
+  private _currentPage: ClrWizardPage;
+
+  /**
+   *
+   * @memberof WizardNavigationService
+   */
+  private _currentChanged = new Subject<ClrWizardPage>();
+
+  /**
+   * @memberof WizardNavigationService
+   */
+  private _movedToNextPage = new Subject<boolean>();
+
+  /**
+   * @memberof WizardNavigationService
+   */
+  private _wizardFinished = new Subject<boolean>();
+
+  /**
+   * @memberof WizardNavigationService
+   */
+  private _movedToPreviousPage = new Subject<boolean>();
+
+  /**
+   * @memberof WizardNavigationService
+   */
+  private _cancelWizard = new Subject<any>();
+
+  /**
    * Creates an instance of WizardNavigationService. Also sets up subscriptions
    * that listen to the button service to determine when a button has been clicked
    * in the wizard. Is also responsible for taking action when the page collection
@@ -144,26 +236,6 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
-   *
-   * @memberof WizardNavigationService
-   */
-  ngOnDestroy(): void {
-    this.previousButtonSubscription.unsubscribe();
-    this.nextButtonSubscription.unsubscribe();
-    this.dangerButtonSubscription.unsubscribe();
-    this.finishButtonSubscription.unsubscribe();
-    this.customButtonSubscription.unsubscribe();
-    this.cancelButtonSubscription.unsubscribe();
-    this.pagesResetSubscription.unsubscribe();
-  }
-
-  /**
-   *
-   * @memberof WizardNavigationService
-   */
-  private _currentChanged = new Subject<ClrWizardPage>();
-
-  /**
    * An Observable that is predominantly used amongst the subcomponents and services
    * of the wizard. It is recommended that users listen to the ClrWizardPage.onLoad
    * (clrWizardPageOnLoad) output instead of this Observable.
@@ -175,27 +247,6 @@ export class WizardNavigationService implements OnDestroy {
     // A BREAKING CHANGE SO AWAITING MINOR RELEASE
     return this._currentChanged.asObservable();
   }
-
-  /**
-   * A Boolean flag used by the ClrWizardPage to avoid a race condition when pages are
-   * loading and there is no current page defined.
-   *
-   * @memberof WizardNavigationService
-   */
-  navServiceLoaded = false;
-
-  /**
-   * A boolean flag shared across the Wizard subcomponents that follows the value
-   * of the Wizard.forceForward (clrWizardForceForwardNavigation) input. When true,
-   * navigating backwards in the stepnav menu will reset any skipped pages' completed
-   * state to false.
-   *
-   * This is useful when a wizard executes validation on a page-by-page basis when
-   * the next button is clicked.
-   *
-   * @memberof WizardNavigationService
-   */
-  forceForwardNavigation = false;
 
   /**
    * @memberof WizardNavigationService
@@ -233,11 +284,6 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
-   * @memberof WizardNavigationService
-   */
-  private _currentPage: ClrWizardPage;
-
-  /**
    * Returns the ClrWizardPage object of the current page or null.
    *
    * @memberof WizardNavigationService
@@ -268,11 +314,6 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
-   * @memberof WizardNavigationService
-   */
-  private _movedToNextPage = new Subject<boolean>();
-
-  /**
    * An observable used internally to alert the wizard that forward navigation
    * has occurred. It is recommended that you use the Wizard.onMoveNext
    * (clrWizardOnNext) output instead of this one.
@@ -282,11 +323,6 @@ export class WizardNavigationService implements OnDestroy {
   get movedToNextPage(): Observable<boolean> {
     return this._movedToNextPage.asObservable();
   }
-
-  /**
-   * @memberof WizardNavigationService
-   */
-  private _wizardFinished = new Subject<boolean>();
 
   /**
    * An observable used internally to alert the wizard that the nav service
@@ -299,6 +335,39 @@ export class WizardNavigationService implements OnDestroy {
    */
   get wizardFinished(): Observable<boolean> {
     return this._wizardFinished.asObservable();
+  }
+
+  /**
+   * Notifies the wizard when backwards navigation has occurred via the
+   * previous button.
+   *
+   * @memberof WizardNavigationService
+   */
+  get movedToPreviousPage(): Observable<boolean> {
+    return this._movedToPreviousPage.asObservable();
+  }
+
+  /**
+   * Notifies the wizard that a user is trying to cancel it.
+   *
+   * @memberof WizardNavigationService
+   */
+  get notifyWizardCancel(): Observable<any> {
+    return this._cancelWizard.asObservable();
+  }
+
+  /**
+   *
+   * @memberof WizardNavigationService
+   */
+  ngOnDestroy(): void {
+    this.previousButtonSubscription.unsubscribe();
+    this.nextButtonSubscription.unsubscribe();
+    this.dangerButtonSubscription.unsubscribe();
+    this.finishButtonSubscription.unsubscribe();
+    this.customButtonSubscription.unsubscribe();
+    this.cancelButtonSubscription.unsubscribe();
+    this.pagesResetSubscription.unsubscribe();
   }
 
   /**
@@ -435,21 +504,6 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
-   * @memberof WizardNavigationService
-   */
-  private _movedToPreviousPage = new Subject<boolean>();
-
-  /**
-   * Notifies the wizard when backwards navigation has occurred via the
-   * previous button.
-   *
-   * @memberof WizardNavigationService
-   */
-  get movedToPreviousPage(): Observable<boolean> {
-    return this._movedToPreviousPage.asObservable();
-  }
-
-  /**
    * Programmatically moves the wizard to the page before the current page.
    *
    * In most instances, it makes more sense to call Wizard.previous()
@@ -478,20 +532,6 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
-   * @memberof WizardNavigationService
-   */
-  private _cancelWizard = new Subject<any>();
-
-  /**
-   * Notifies the wizard that a user is trying to cancel it.
-   *
-   * @memberof WizardNavigationService
-   */
-  get notifyWizardCancel(): Observable<any> {
-    return this._cancelWizard.asObservable();
-  }
-
-  /**
    * Allows a hook into the cancel workflow of the wizard from the nav service. Note that
    * this route goes through all checks and event emissions as if a cancel button had
    * been clicked.
@@ -509,46 +549,6 @@ export class WizardNavigationService implements OnDestroy {
   cancel(): void {
     this._cancelWizard.next();
   }
-
-  /**
-   * A boolean flag shared across the Wizard subcomponents that follows the value
-   * of the Wizard.stopCancel (clrWizardPreventDefaultCancel) input. When true, the cancel
-   * routine is subverted and must be reinstated in the host component calling Wizard.close()
-   * at some point.
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardHasAltCancel = false;
-
-  /**
-   * A boolean flag shared across the Wizard subcomponents that follows the value
-   * of the Wizard.stopNext (clrWizardPreventDefaultNext) input. When true, the next and finish
-   * routines are subverted and must be reinstated in the host component calling Wizard.next(),
-   * Wizard.forceNext(), Wizard.finish(), or Wizard.forceFinish().
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardHasAltNext = false;
-
-  /**
-   * A boolean flag shared across the Wizard subcomponents that follows the value
-   * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
-   * navigational elements in the wizard are disabled.
-   *
-   * This is intended to freeze the wizard in place. Events are not fired so this is
-   * not a way to implement alternate functionality for navigation.
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardStopNavigation = false;
-
-  /**
-   * A boolean flag shared with the stepnav items that prevents user clicks on
-   * stepnav items from navigating the wizard.
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardDisableStepnav = false;
 
   /**
    * Performs all required checks to determine if a user can navigate to a page. Checking at each
