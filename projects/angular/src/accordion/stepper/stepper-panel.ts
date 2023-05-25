@@ -72,6 +72,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
+    this.listenToInitialStepperPanelChanges();
 
     if (this.formGroup) {
       // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
@@ -83,14 +84,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
         })
       );
     }
-  }
-
-  ngAfterContentInit() {
-    this.listenToInitialStepperPanelChanges();
-
-
-
-    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
