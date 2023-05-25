@@ -7,7 +7,6 @@
 import { Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ClrIfExpanded} from "@clr/angular";
-import {expand} from "rxjs/operators";
 
 @Component({
   templateUrl: 'stepper.demo.html',
@@ -30,6 +29,8 @@ export class StepperDemo {
 
   initialStep: string;
   loading = false;
+
+  protected readonly expand;
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -69,6 +70,4 @@ export class StepperDemo {
   submit() {
     console.log('reactive form submit', this.form.value);
   }
-
-  protected readonly expand = expand;
 }
