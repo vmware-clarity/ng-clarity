@@ -137,28 +137,28 @@
 
       // Warning button colors
       --clr-btn-warning-color: var(--clr-color-neutral-0);
-      --clr-btn-warning-bg-color: var(--clr-color-danger-700);
-      --clr-btn-warning-border-color: var(--clr-btn-danger-bg-color);
-      --clr-btn-warning-hover-bg-color: var(--clr-color-danger-800);
-      --clr-btn-warning-hover-color: var(--clr-btn-danger-color);
-      --clr-btn-warning-box-shadow-color: var(--clr-color-danger-900);
+      --clr-btn-warning-bg-color: var(--clr-color-warning-700);
+      --clr-btn-warning-border-color: var(--clr-btn-warning-bg-color);
+      --clr-btn-warning-hover-bg-color: var(--clr-color-warning-800);
+      --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
+      --clr-btn-warning-box-shadow-color: var(--clr-color-warning-900);
       --clr-btn-warning-disabled-color: var(--clr-color-neutral-700);
       --clr-btn-warning-disabled-bg-color: var(--clr-color-neutral-400);
       --clr-btn-warning-disabled-border-color: var(--clr-color-neutral-400);
-      --clr-btn-warning-checked-bg-color: var(--clr-color-danger-800);
-      --clr-btn-warning-checked-color: var(--clr-btn-danger-color);
+      --clr-btn-warning-checked-bg-color: var(--clr-color-warning-800);
+      --clr-btn-warning-checked-color: var(--clr-btn-warning-color);
 
       // Warning outline button colors
-      --clr-btn-warning-outline-color: var(--clr-color-danger-700);
+      --clr-btn-warning-outline-color: var(--clr-color-warning-700);
       --clr-btn-warning-outline-bg-color: var(--clr-btn-outline-bg-color);
-      --clr-btn-warning-outline-border-color: var(--clr-color-danger-800);
-      --clr-btn-warning-outline-hover-bg-color: var(--clr-color-danger-100);
-      --clr-btn-warning-outline-hover-color: var(--clr-color-danger-900);
-      --clr-btn-warning-outline-box-shadow-color: var(--clr-color-danger-200);
+      --clr-btn-warning-outline-border-color: var(--clr-color-warning-800);
+      --clr-btn-warning-outline-hover-bg-color: var(--clr-color-warning-100);
+      --clr-btn-warning-outline-hover-color: var(--clr-color-warning-900);
+      --clr-btn-warning-outline-box-shadow-color: var(--clr-color-warning-200);
       --clr-btn-warning-outline-disabled-color: var(--clr-color-neutral-700);
-      --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-danger-outline-bg-color);
-      --clr-btn-warning-outline-disabled-border-color: var(--clr-btn-danger-outline-disabled-color);
-      --clr-btn-warning-outline-checked-bg-color: var(--clr-color-danger-800);
+      --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-warning-outline-bg-color);
+      --clr-btn-warning-outline-disabled-border-color: var(--clr-btn-warning-outline-disabled-color);
+      --clr-btn-warning-outline-checked-bg-color: var(--clr-color-warning-800);
       --clr-btn-warning-outline-checked-color: var(--clr-color-neutral-0);
 
       // Link button colors

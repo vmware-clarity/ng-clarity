@@ -477,16 +477,16 @@ $clr-btn-danger-outline-checked-color: $clr-color-neutral-0 !default;
 
 // Warning button colors
 $clr-btn-warning-color: $clr-color-neutral-0 !default;
-$clr-btn-warning-bg-color: $clr-color-danger-700 !default;
-$clr-btn-warning-border-color: $clr-btn-danger-bg-color !default;
-$clr-btn-warning-hover-bg-color: $clr-color-danger-800 !default;
-$clr-btn-warning-hover-color: $clr-btn-danger-color !default;
-$clr-btn-warning-box-shadow-color: $clr-color-danger-900 !default;
+$clr-btn-warning-bg-color: $clr-color-warning-700 !default;
+$clr-btn-warning-border-color: $clr-btn-warning-bg-color !default;
+$clr-btn-warning-hover-bg-color: $clr-color-warning-800 !default;
+$clr-btn-warning-hover-color: $clr-btn-warning-color !default;
+$clr-btn-warning-box-shadow-color: $clr-color-warning-900 !default;
 $clr-btn-warning-disabled-color: $clr-color-neutral-700 !default;
 $clr-btn-warning-disabled-bg-color: $clr-color-neutral-400 !default;
-$clr-btn-warning-disabled-border-color: $clr-btn-danger-disabled-color !default;
-$clr-btn-warning-checked-bg-color: $clr-color-danger-800 !default;
-$clr-btn-warning-checked-color: $clr-btn-danger-color !default;
+$clr-btn-warning-disabled-border-color: $clr-btn-warning-disabled-color !default;
+$clr-btn-warning-checked-bg-color: $clr-color-warning-800 !default;
+$clr-btn-warning-checked-color: $clr-btn-warning-color !default;
 
 @function lookupFromWarningButtonColors($property: null) {
   @if $property == color {
@@ -537,16 +537,16 @@ $clr-btn-warning-checked-color: $clr-btn-danger-color !default;
 }
 
 // Warning outline button colors
-$clr-btn-warning-outline-color: $clr-color-danger-700 !default;
+$clr-btn-warning-outline-color: $clr-color-warning-700 !default;
 $clr-btn-warning-outline-bg-color: transparent !default;
-$clr-btn-warning-outline-border-color: $clr-color-danger-800 !default;
-$clr-btn-warning-outline-hover-bg-color: $clr-color-danger-100 !default;
-$clr-btn-warning-outline-hover-color: $clr-color-danger-900 !default;
-$clr-btn-warning-outline-box-shadow-color: $clr-color-danger-200 !default;
+$clr-btn-warning-outline-border-color: $clr-color-warning-800 !default;
+$clr-btn-warning-outline-hover-bg-color: $clr-color-warning-100 !default;
+$clr-btn-warning-outline-hover-color: $clr-color-warning-900 !default;
+$clr-btn-warning-outline-box-shadow-color: $clr-color-warning-200 !default;
 $clr-btn-warning-outline-disabled-color: $clr-color-neutral-700 !default;
-$clr-btn-warning-outline-disabled-bg-color: $clr-btn-danger-outline-bg-color !default;
-$clr-btn-warning-outline-disabled-border-color: $clr-btn-danger-outline-disabled-color !default;
-$clr-btn-warning-outline-checked-bg-color: $clr-color-danger-800 !default;
+$clr-btn-warning-outline-disabled-bg-color: $clr-btn-warning-outline-bg-color !default;
+$clr-btn-warning-outline-disabled-border-color: $clr-btn-warning-outline-disabled-color !default;
+$clr-btn-warning-outline-checked-bg-color: $clr-color-warning-800 !default;
 $clr-btn-warning-outline-checked-color: $clr-color-neutral-0 !default;
 
 @function lookupFromWarningOutlineButtonColors($property: null) {
