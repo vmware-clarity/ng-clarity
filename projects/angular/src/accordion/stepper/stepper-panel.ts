@@ -87,6 +87,9 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
   ngAfterContentInit() {
     this.listenToInitialStepperPanelChanges();
+
+
+
     this.cdr.detectChanges();
   }
 
