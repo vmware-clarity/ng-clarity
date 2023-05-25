@@ -14,8 +14,8 @@
 | --clr-datagrid-pagination-btn-disabled-color          | Changes the datagrid pagination buttons color when disabled.                 |
 | --clr-datagrid-pagination-input-border-color          | Changes the datagrid pagination input border color.                          |
 | --clr-datagrid-pagination-input-border-focus-color    | Changes the datagrid pagination input border color when focused.             |
-| --clr-datagrid-popover-bg-color                       | Changes the background color of popup box.                                   |
-| --clr-datagrid-popover-border-color                   | Changes the border color of popup box.                                       |
+| --clr-datagrid-popover-bg-color                       | Changes the datagrid popovers background color.                              |
+| --clr-datagrid-popover-border-color                   | Changes the datagrid popovers border color..                                 |
 | --clr-datagrid-row-selected                           | Changes the datagrid selected row text color.                                |
 | --clr-datagrid-loading-background                     | Changes the datagrid loading spinner background.                             |
 | --clr-datagrid-popovers-box-shadow-color              | Changes the datagrid popovers shadow color.                                  |
