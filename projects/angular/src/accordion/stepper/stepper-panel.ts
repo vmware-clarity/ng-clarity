@@ -44,7 +44,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   private subscriptions: Subscription[] = [];
 
   get formGroup() {
-    return this.ngModelGroup.control;
+    return this.ngModelGroup.control || null;
   }
 
   override get id(): string {
