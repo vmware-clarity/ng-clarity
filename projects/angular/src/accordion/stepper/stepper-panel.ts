@@ -44,11 +44,11 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   private subscriptions: Subscription[] = [];
 
   get formGroup() {
-    return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
+    return this.ngModelGroup.control;
   }
 
   override get id(): string {
-    return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
+    return this.ngModelGroup.name;
   }
 
   override set id(_value: string) {
@@ -101,9 +101,9 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   private listenToInitialStepperPanelChanges() {
     this.subscriptions.push(
       this.accordionService.getPanelChanges(this.id).subscribe(() => {
-          this.cdr.detectChanges();
+        this.cdr.detectChanges();
       })
-    )
+    );
   }
 
   private triggerAllFormControlValidationIfError(panel: AccordionPanelModel) {
