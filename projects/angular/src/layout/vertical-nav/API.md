@@ -2,10 +2,10 @@
 
 ## CSS Variables
 
-| CSS Variable Name          | Description                                                        |
-| -------------------------- | ------------------------------------------------------------------ |
+| CSS Variable Name                    | Description                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
 | --clr-vertical-nav-divider-color     | Changes the border colorn in a nav bar.
-| --clr-vertical-nav-icon-active-color |  Changes the border color in a nav bar on hover.
+| --clr-vertical-nav-icon-active-color | Changes the border color in a nav bar on hover.
 | --clr-vertical-nav-item-color        | Changes the color of the text in the side nav bar menu items.
 | --clr-vertical-nav-item-active-color | Changes the color of the text in the side nav bar menu items on over .
 | --clr-vertical-nav-bg-color          | Changes the side bav bar's background color .
@@ -19,8 +19,8 @@
 ## Class names
 | Class name                  | Description                              |
 | -------------               | ---------------------------------------- |
-| clr-vertical-nav            | Allow you to list all of your website's pages |
-| nav-content                 |  Defines a set of navigation links |
-| nav-link                    | Allows navigation to another webpage |
-| nav-text                    | Contains the nav bar menu items |
-| clr-vertical-nav-basic-demo | This is a container class |
+| clr-vertical-nav            | Vertical navigation main element         |
+| nav-content                 | Defines a set of navigation links        |
+| nav-link                    | Navigation link class                    |
+| nav-text                    | Contains the nav bar menu items          |
+| clr-vertical-nav-basic-demo | This is a container class                |
