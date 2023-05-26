@@ -330,22 +330,22 @@ $clr-btn-danger-outline-disabled-border-color: $clr-btn-disabled-border-color; /
 
 // Warning button
 $clr-btn-warning-color: hsl(0, 0%, 0%); // color, checked-color,
-$clr-btn-warning-bg-color: hsl(3, 90%, 62%); // background-color, border-color
-$clr-btn-warning-hover-bg-color: hsl(3, 100%, 69%); // hover-background-color
-$clr-btn-warning-hover-color: $clr-btn-danger-color; // hover-color
-$clr-btn-warning-box-shadow-color: hsl(10, 100%, 39%); // active-box-shadow-color
-$clr-btn-warning-checked-bg-color: hsl(10, 100%, 39%); // checked-background-color
+$clr-btn-warning-bg-color: hsl(48, 90%, 62%); // background-color, border-color
+$clr-btn-warning-hover-bg-color: hsl(48, 100%, 69%); // hover-background-color
+$clr-btn-warning-hover-color: $clr-btn-warning-color; // hover-color
+$clr-btn-warning-box-shadow-color: hsl(50, 100%, 62%); // active-box-shadow-color
+$clr-btn-warning-checked-bg-color: hsl(50, 100%, 69%); // checked-background-color
 $clr-btn-warning-disabled-color: $clr-btn-disabled-font-color; // disabled-color,
 $clr-btn-warning-disabled-bg-color: $clr-btn-disabled-bg-color; // disabled-background-color
 $clr-btn-warning-disabled-border-color: $clr-btn-disabled-border-color; // disabled-border-color
 
 // Warning outline button
-$clr-btn-warning-outline-border-color: hsl(3, 90%, 62%); // border-color
-$clr-btn-warning-outline-color: hsl(3, 90%, 62%); // color
+$clr-btn-warning-outline-border-color: hsl(48, 90%, 62%); // border-color
+$clr-btn-warning-outline-color: hsl(48, 90%, 62%); // color
 $clr-btn-warning-outline-hover-bg-color: hsla(0, 0%, 100%, 0.1); // hover-background-color
-$clr-btn-warning-outline-hover-color: hsl(3, 100%, 69%); // hover-color
+$clr-btn-warning-outline-hover-color: hsl(48, 100%, 69%); // hover-color
 $clr-btn-warning-outline-box-shadow-color: hsl(0, 0%, 0%); // active-box-shadow-color
-$clr-btn-warning-outline-checked-bg-color: hsl(3, 90%, 62%); // checked-background-color
+$clr-btn-warning-outline-checked-bg-color: hsl(48, 90%, 62%); // checked-background-color
 $clr-btn-warning-outline-checked-color: hsl(0, 0%, 100%); // checked-color
 $clr-btn-warning-outline-disabled-color: $clr-btn-outline-disabled-font-color; // disabled-color
 $clr-btn-warning-outline-disabled-bg-color: transparent; // disabled-background-color
