@@ -1,3 +1,13 @@
+# Spinner Component API
+
+The Spinner component provides a loading spinner that can be customized with different sizes and styles.
+
+## Usage
+
+```html
+<clr-spinner></clr-spinner>
+```
+
 ## CSS Variables
 
 | CSS Variable Name              | Description                                                  |
