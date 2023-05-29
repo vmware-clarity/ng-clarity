@@ -329,6 +329,7 @@
   --clr-app-alert-info-pager-bg-color: var(--cds-alias-status-info-shade); // var(--clr-color-action-800, #{$clr-color-action-800});
   --clr-app-alert-warning-pager-bg-color: var(--cds-alias-status-warning-shade); // var(--clr-color-warning-900, #{$clr-color-warning-900});
   --clr-app-alert-danger-pager-bg-color: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-900, #{$clr-color-danger-900});
+  --clr-app-alert-success-pager-bg-color: var(--cds-global-color-green-900); // var(--clr-color-success-900, #{$clr-color-success-900});
 
   --clr-app-alert-info-pager-font-color: var(--cds-global-color-white); // New custom property
   --clr-app-alert-warning-pager-font-color: var(--cds-global-color-black); // New custom property
