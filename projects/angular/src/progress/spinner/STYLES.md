@@ -78,7 +78,7 @@ The Spinner component can be styled using CSS classes.
 #### Customizing Spinner Color
 
 ```scss
-$clr-spinner-color: #ff0000;
+$clr-spinner-color: #00ff00;
 ```
 
 #### Customizing Spinner Background Color
