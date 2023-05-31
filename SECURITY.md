@@ -1,11 +1,10 @@
 # Security Policy
 
-## Security Release Process
-
 Clarity is an open source design system that brings together UX guidelines, design resources, and coding implementations with Web Components. This repository includes everything you need to build, customize, test, and deploy Clarity. For complete documentation, visit the Clarity website.
 
 The community has adopted this security disclosure and response policy to ensure we responsibly handle critical issues.
 
+# Security Release Process
 
 ## Reporting Vulnerabilities
 Security issues can be reported by emailing [Clarity Security](mailto:clarity-security@vmware.com).
@@ -23,6 +22,7 @@ Provide a descriptive subject line and in the body of the email include the foll
 
 *   Basic identity information, such as your name and your affiliation or company.
 *   Detailed steps to reproduce the vulnerability (POC scripts, screenshots, and logs are all helpful to us).
+*   Link to [Clarity Stackbliz](https://stackblitz.com/@clr-team) where the vulnerability is reproduceable will be much appreciated.
 *   Description of the effects of the vulnerability on Clarity Angular and the related hardware and software configurations.
 *   How the vulnerability affects Clarity Angular usage and an estimation of the attack surface, if there is one.
 *   List other projects or dependencies that were used in conjunction with Clarity Angular to produce the vulnerability.
