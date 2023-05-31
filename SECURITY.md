@@ -6,7 +6,12 @@ The community has adopted this security disclosure and response policy to ensure
 
 # Security Release Process
 
+## Supported Versions
+
+Supported versions can be found at [Clarity Support Policies](https://clarity.design/documentation/support).
+
 ## Reporting Vulnerabilities
+
 Security issues can be reported by emailing [Clarity Security](mailto:clarity-security@vmware.com).
 
 Security is of the highest importance and all security vulnerabilities or suspected security vulnerabilities should be reported to Clarity Angular privately, to minimize attacks against current users of Clarity Angular before they are fixed. Vulnerabilities will be investigated and patched on the next patch (or minor) release as soon as possible. This information could be kept entirely internal to the project.
@@ -15,25 +20,21 @@ Security is of the highest importance and all security vulnerabilities or suspec
 
 To report a vulnerability or a security-related issue, please contact the before mentioned email address with the details of the vulnerability. The email will be fielded by the Clarity Security Team. Emails will be addressed within 5 business days, including a detailed plan to investigate the issue and any potential workarounds to perform in the meantime. Do not report non-security-impacting bugs through this channel. Use [GitHub issues](https://github.com/vmware-clarity/ng-clarity/issues) instead.
 
-
 ## Proposed Email Content
 
 Provide a descriptive subject line and in the body of the email include the following information:
 
-*   Basic identity information, such as your name and your affiliation or company.
-*   Detailed steps to reproduce the vulnerability (POC scripts, screenshots, and logs are all helpful to us).
-*   Link to [Clarity Stackbliz](https://stackblitz.com/@clr-team) where the vulnerability is reproduceable will be much appreciated.
-*   Description of the effects of the vulnerability on Clarity Angular and the related hardware and software configurations.
-*   How the vulnerability affects Clarity Angular usage and an estimation of the attack surface, if there is one.
-*   List other projects or dependencies that were used in conjunction with Clarity Angular to produce the vulnerability.
-
+- Basic identity information, such as your name and your affiliation or company.
+- Detailed steps to reproduce the vulnerability (POC scripts, screenshots, and logs are all helpful to us).
+- Description of the effects of the vulnerability on Clarity Angular and the related hardware and software configurations.
+- How the vulnerability affects Clarity Angular usage and an estimation of the attack surface, if there is one.
+- List other projects or dependencies that were used in conjunction with Clarity Angular to produce the vulnerability.
 
 ## When to Report Vulnerability
 
-*   When you think Clarity Angular has a potential security vulnerability.
-*   When you suspect a security vulnerability, but you are unsure it impacts Clarity Angular.
-*   When you know or suspect of a potential vulnerability on another project that is used by Clarity Angular.
-
+- When you think Clarity Angular has a potential security vulnerability.
+- When you suspect a security vulnerability, but you are unsure it impacts Clarity Angular.
+- When you know or suspect of a potential vulnerability on another project that is used by Clarity Angular.
 
 ## Security Vulnerability Response
 
