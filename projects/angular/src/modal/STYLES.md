@@ -2,7 +2,7 @@
 
 ## CSS Custom Properties
 
-| CSS Variable Name                    | Description                    |
+| CSS Custom Property                  | Description                    |
 | ------------------------------------ | ------------------------------ |
 | --clr-modal-close-color              | Fill color of modal close icon |
 | --clr-modal-bg-color                 | Background color of modal      |
