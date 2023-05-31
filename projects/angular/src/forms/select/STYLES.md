@@ -14,10 +14,10 @@
 | Class name              | Description                                                               |
 | ----------------------- | ------------------------------------------------------------------------- |
 | clr-select              | Select element class                                                      |
-| clr-control-container   | Class that styles the select HTML element                                 |
 | clr-control-helper      | Helper element class when clr-select-container component is used          |
 | clr-control-error       | Error element class when clr-select-container component is used           |
 | clr-control-success     | Success element class when used with clr-select-container component       |
 | clr-validate-icon       | Error or success icon class when used with clr-select-container component |
+| clr-control-container   | Internal class that styles the clr-select-container component             |
 | clr-multiselect-wrapper | Internal class that wraps the single selects                              |
 | clr-select-wrapper      | Internal class that wraps the multiple selects                            |
