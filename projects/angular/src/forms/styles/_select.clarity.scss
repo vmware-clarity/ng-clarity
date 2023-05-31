@@ -73,12 +73,7 @@
     }
 
     &:hover::after {
-      @include css-var(
-        color,
-        clr-forms-select-caret-hover-color,
-        $clr-forms-select-caret-hover-color,
-        $clr-use-custom-properties
-      );
+      background-image: generateCaretIcon($clr-forms-select-caret-hover-color);
     }
   }
 
