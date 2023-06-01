@@ -112,6 +112,7 @@ const defaultParameters: Parameters = {
 };
 
 const variants: Parameters[] = [
+  {},
   {
     singleSelectable: true,
   },
