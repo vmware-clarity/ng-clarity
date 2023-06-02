@@ -1,4 +1,4 @@
-# MODAL - Style API
+# Modal
 
 ## CSS Custom Properties
 
