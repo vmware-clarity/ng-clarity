@@ -536,6 +536,7 @@
       align-items: center;
 
       .clr-checkbox-wrapper {
+        display: block;
         // compensate for the default checkbox margin, defined in its ::before section
         margin-top: -1 * $clr_baselineRem_0_25;
       }
