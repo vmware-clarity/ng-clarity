@@ -1,4 +1,4 @@
-# TABLES - Style API
+# Table
 
 ## CSS Custom Properties
 
