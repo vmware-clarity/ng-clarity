@@ -1,4 +1,4 @@
-# FORMS - Style API
+# Forms
 
 ## CSS Custom Properties
 
