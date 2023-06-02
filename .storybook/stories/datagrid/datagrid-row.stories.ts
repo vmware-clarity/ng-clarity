@@ -111,6 +111,14 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const variants: Parameters[] = [
+  {},
+  {
+    singleSelectable: true,
+  },
+  {
+    multiSelectable: true,
+  },
+];
 
 setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
