@@ -17,8 +17,9 @@ Toggle Switch - Style API
 
 ## Class names
 
-| Class name            | Description                                                    |
-| --------------------- | -------------------------------------------------------------- |
-| clr-toggle-wrapper    | Wrapper class for the toggle switch component                  |
-| clr-control-container | Internal container class for the toggle switch component       |
-| clr-subtext-wrapper   | Internal wrapper class for the toggle switch component content |
+| Class name            | Description                                                       |
+| --------------------- | ----------------------------------------------------------------- |
+| clr-toggle-wrapper    | Wrapper class for the toggle switch component                     |
+| clr-control-container | Internal container class for the toggle switch component          |
+| clr-subtext-wrapper   | Internal wrapper class for the toggle switch component content    |
+| clr-toggle-right      | Class that aligns the toggle switch to the right in the container |
