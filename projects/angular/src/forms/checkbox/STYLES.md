@@ -1,4 +1,4 @@
-Toggle Switch - Style API
+# Toggle Switch
 
 ## CSS Custom Properties
 
