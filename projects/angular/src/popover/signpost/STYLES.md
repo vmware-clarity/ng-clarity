@@ -1,4 +1,4 @@
-# Signpost - Style API
+# Signpost
 
 ## CSS Custom Properties
 
