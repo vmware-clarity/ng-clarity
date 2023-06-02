@@ -1,8 +1,8 @@
-# Combobox
+# Signpost - Style API
 
 ## CSS Custom Properties
 
-| CSS Variable Name                       | Description                        |
+| CSS Custom Property                     | Description                        |
 | --------------------------------------- | ---------------------------------- |
 | --clr-signpost-content-bg-color         | Signpost content background color. |
 | --clr-signpost-content-border-color     | Signpost content border color.     |
