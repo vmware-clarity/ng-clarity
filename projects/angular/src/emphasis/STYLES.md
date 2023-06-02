@@ -1,4 +1,4 @@
-# Badge - Style API
+# Badge
 
 ## CSS Custom Properties
 
