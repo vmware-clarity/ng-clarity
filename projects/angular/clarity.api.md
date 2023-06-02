@@ -2564,10 +2564,12 @@ export class ClrHeader implements OnDestroy {
     get responsiveNavCommonString(): string;
     // (undocumented)
     get responsiveOverflowCommonString(): string;
+    // (undocumented)
+    role: string;
     // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, {}, {}, never, ["*"]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": "role"; }, {}, never, ["*"]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
 }
