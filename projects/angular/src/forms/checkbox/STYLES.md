@@ -4,8 +4,8 @@
 
 | CSS Custom Property                           | Description                                           |
 | --------------------------------------------- | ----------------------------------------------------- |
-| --clr-toggle-bg-color-off                     | Background color for enabled toggle that is off       |
-| --clr-toggle-bg-color-on                      | Background color for enabled toggle that is on        |
+| --clr-toggle-bg-color-off                     | Background color for toggle that is off               |
+| --clr-toggle-bg-color-on                      | Background color for toggle that is on                |
 | --clr-toggle-handle-bg-color                  | Background color of the handle of the toggle          |
 | --clr-toggle-disabled-default-border-color    | Border color for a disabled toggle                    |
 | --clr-toggle-disabled-off-border-color        | Border color for disabled toggle that is off          |
