@@ -1,4 +1,4 @@
-# Alert - Style API
+# Alert
 
 ## CSS Custom Properties
 
