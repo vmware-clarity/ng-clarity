@@ -6,6 +6,7 @@
 | --------------------------------- | --------------------------------- |
 | --clr-nav-link-active-font-weight | Tabs nav link active font weight. |
 | --clr-nav-link-font-weight        | Tabs nav link font weight.        |
+| --clr-nav-link-color              | Tabs nav link color.              |
 | --clr-nav-link-active-color       | Tabs nav link active color.       |
 | --clr-nav-hover-bg-color          | Tabs nav hover background color.  |
 | --clr-nav-active-bg-color         | Tabs nav active background color. |
