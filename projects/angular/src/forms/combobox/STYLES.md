@@ -2,7 +2,7 @@
 
 ## CSS Custom Properties
 
-| CSS Variable Name                     | Description                                                            |
+| CSS Custom Property                   | Description                                                            |
 | ------------------------------------- | ---------------------------------------------------------------------- |
 | --clr-combobox-trigger-color          | Combobox trigger color                                                 |
 | --clr-combobox-font-size              | Combobox font size                                                     |
