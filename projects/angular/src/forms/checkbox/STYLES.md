@@ -1,4 +1,24 @@
-# Toggle Switch
+# Checkbox
+
+## CSS Custom Properties
+
+| CSS Custom Property                             | Description                            |
+| ----------------------------------------------- | -------------------------------------- |
+| --clr-forms-checkbox-label-color                | Font color of checkbox label           |
+| --clr-forms-checkbox-background-color           | Background color of checkbox           |
+| --clr-forms-checkbox-indeterminate-border-color | Border color of indeterminate checkbox |
+| --clr-forms-checkbox-mark-color                 | Color of checkbox mark                 |
+| --clr-forms-checkbox-disabled-background-color  | Background color of disabled checkbox  |
+| --clr-forms-checkbox-disabled-mark-color        | Color of disabled checkbox mark        |
+| --clr-forms-checkbox-border-radius              | Border radius of checkbox              |
+
+## Class names
+
+| Class name           | Description                              |
+| -------------------- | ---------------------------------------- |
+| clr-checkbox-wrapper | Wrapper class for the checkbox component |
+
+# Toggle
 
 ## CSS Custom Properties
 
@@ -17,9 +37,7 @@
 
 ## Class names
 
-| Class name            | Description                                                       |
-| --------------------- | ----------------------------------------------------------------- |
-| clr-toggle-wrapper    | Wrapper class for the toggle switch component                     |
-| clr-control-container | Internal container class for the toggle switch component          |
-| clr-subtext-wrapper   | Internal wrapper class for the toggle switch component content    |
-| clr-toggle-right      | Class that aligns the toggle switch to the right in the container |
+| Class name         | Description                                                       |
+| ------------------ | ----------------------------------------------------------------- |
+| clr-toggle-wrapper | Wrapper class for the toggle switch component                     |
+| clr-toggle-right   | Class that aligns the toggle switch to the right in the container |
