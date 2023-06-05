@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { Component, HostBinding, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -41,6 +41,8 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   host: { '[class.header]': 'true' },
 })
 export class ClrHeader implements OnDestroy {
+  @Input() @HostBinding('attr.role') role = 'banner';
+
   isNavLevel1OnPage = false;
   isNavLevel2OnPage = false;
   openNavLevel: number = null;
