@@ -24,7 +24,7 @@
 | nav-content            | Used for placing nav content.                                     |
 | nav-trigger            | Navigation trigger button for collapse/expand state.              |
 | nav-trigger-icon       | Navigation trigger icon.                                          |
-| nav-trigger--bottom    | Class used for placing nav trigger at the bottom.                 |
+| nav-trigger--bottom    | Move navigation trigger at the bottom.                            |
 | nav-group              | Internal class used to assign element as group.                   |
 | nav-group-content      | Internal class used placing group content.                        |
 | nav-group-text         | Internal class used group's text.                                 |
