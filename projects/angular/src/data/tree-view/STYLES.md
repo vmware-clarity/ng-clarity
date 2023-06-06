@@ -2,14 +2,14 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                    | Description                    |
-| -------------------------------------- | ------------------------------ |
-| --clr-tree-border-radius               | Border radius                  |
-| --clr-tree-node-caret-link-hover-color | Caret hover color              |
-| --clr-tree-link-hover-color            | Tree link hover color          |
-| --clr-tree-link-selection-color        | Selected link background color |
-| --clr-tree-link-text-color             | Tree link default font color   |
-| --clr-tree-node-caret-color            | Tree link caret color          |
+| CSS Custom Property                    | Description                      |
+| -------------------------------------- | -------------------------------- |
+| --clr-tree-border-radius               | Tree node content border radius  |
+| --clr-tree-node-caret-link-hover-color | Caret hover color                |
+| --clr-tree-link-hover-color            | Tree link hover color            |
+| --clr-tree-link-selection-color        | Selected link background color   |
+| --clr-tree-link-text-color             | Tree link default font color     |
+| --clr-tree-node-caret-color            | Tree link caret color            |
 
 ## Class names
 
