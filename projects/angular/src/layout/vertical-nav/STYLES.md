@@ -18,6 +18,20 @@
 
 ## Class names
 
-| Class name       | Description                            |
-| ---------------- | -------------------------------------- |
-| clr-vertical-nav | Used to vertically display navigation. |
+| Class name             | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| clr-vertical-nav       | Used to vertically display navigation.                            |
+| nav-divider            | Used for separating nav content.                                  |
+| nav-content            | Used for placing nav content.                                     |
+| nav-trigger            | Used for to toggle between collapse/expand state.                 |
+| nav-trigger-icon       | Used to represent nav trigger's icon.                             |
+| nav-trigger--bottom    | Class used for placing nav trigger at the bottom.                 |
+| nav-group              | Internal class used to assign element as group.                   |
+| nav-group-content      | Internal class used placing group content.                        |
+| nav-group-text         | Internal class used group's text.                                 |
+| nav-group-children     | Internal class used to assign group's children.                   |
+| nav-group-trigger      | Internal class used to open/close group.                          |
+| nav-group-trigger-icon | Internal class used for trigger icon.                             |
+| nav-btn                | Internal class used to expand nav when collapsed.                 |
+| has-icons              | Internal class pointing is vertical nav has icons.                |
+| has-nav-groups         | Internal class pointing is vertical nav has at least 1 nav group. |
