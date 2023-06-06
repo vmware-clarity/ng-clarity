@@ -4,11 +4,10 @@
 
 | CSS Custom Property                             | Description                                |
 | ----------------------------------------------- | ------------------------------------------ |
-| --clr-vertical-nav-divider-color                | Vertical nav divider color.                |
 | --clr-vertical-nav-icon-active-color            | Vertical nav active icon color.            |
 | --clr-vertical-nav-toggle-icon-color            | Vertical nav toggle icon color.            |
-| --clr-vertical-nav-item-color                   | Vertical nav item color.                   |
-| --clr-vertical-nav-item-active-color            | Vertical nav item active color.            |
+| --clr-vertical-nav-item-color                   | Vertical nav item font color.              |
+| --clr-vertical-nav-item-active-color            | Vertical nav item active font color.       |
 | --clr-vertical-nav-bg-color                     | Vertical nav background color.             |
 | --clr-vertical-nav-active-bg-color              | Vertical nav active background color.      |
 | --clr-vertical-nav-hover-bg-color               | Vertical nav hover background color.       |
@@ -23,8 +22,8 @@
 | clr-vertical-nav       | Used to vertically display navigation.                            |
 | nav-divider            | Used for separating nav content.                                  |
 | nav-content            | Used for placing nav content.                                     |
-| nav-trigger            | Used for to toggle between collapse/expand state.                 |
-| nav-trigger-icon       | Used to represent nav trigger's icon.                             |
+| nav-trigger            | Navigation trigger button for collapse/expand state.              |
+| nav-trigger-icon       | Navigation trigger icon.                                          |
 | nav-trigger--bottom    | Class used for placing nav trigger at the bottom.                 |
 | nav-group              | Internal class used to assign element as group.                   |
 | nav-group-content      | Internal class used placing group content.                        |
