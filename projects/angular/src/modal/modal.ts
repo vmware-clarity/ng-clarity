@@ -53,9 +53,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @ViewChild(FocusTrapDirective) focusTrap: FocusTrapDirective;
 
-  @HostBinding('class.open')
-  @Input('clrModalOpen')
-  _open = false;
+  @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   @Input('clrModalClosable') closable = true;
