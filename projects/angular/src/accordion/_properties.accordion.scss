@@ -8,6 +8,7 @@
   @if $clr-use-custom-properties == true {
     :root {
       --clr-accordion-text-color: var(--clr-global-font-color);
+      --clr-accordion-panel-disabled-color: var(--clr-color-neutral-500);
 
       --clr-accordion-active-background-color: var(--clr-global-selection-color);
       --clr-accordion-content-background-color: var(--clr-color-neutral-0);
