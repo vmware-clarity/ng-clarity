@@ -5,8 +5,7 @@
  */
 
 @use 'sass:list';
-@use 'variables/variables' as variables2;
-@use 'variables/variables.global';
+@use 'variables/variables';
 
 // NOTE: file added to prettierignore because it was added unwanted spaces in the css-var() mixin
 
