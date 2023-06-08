@@ -1,11 +1,16 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.color' as variables2;
+@use '../../utils/variables/variables.global';
+@use 'variables.alert' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('alert.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('alert.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ./_alert.clarity.scss
       // Used for 'toggle' button for dropdowns on the right side of an alert
@@ -15,14 +20,14 @@
       // standard alert close
       --clr-alert-close-icon-color: var(--clr-alert-action-color);
       --clr-alert-close-icon-hover-color: var(--clr-alert-action-active-color);
-      --clr-alert-close-icon-opacity: #{$clr-alert-close-icon-opacity};
-      --clr-alert-close-icon-hover-opacity: #{$clr-alert-close-icon-hover-opacity};
+      --clr-alert-close-icon-opacity: #{variables3.$clr-alert-close-icon-opacity};
+      --clr-alert-close-icon-hover-opacity: #{variables3.$clr-alert-close-icon-hover-opacity};
 
       // Close icon colors for APP-LEVEL ALERTS
       --clr-app-level-alert-color: var(--clr-color-neutral-0);
       --clr-app-alert-close-icon-color: var(--clr-app-level-alert-color);
-      --clr-app-alert-close-icon-opacity: #{$clr-app-alert-close-icon-opacity};
-      --clr-app-alert-close-icon-hover-opacity: #{$clr-app-alert-close-icon-hover-opacity};
+      --clr-app-alert-close-icon-opacity: #{variables3.$clr-app-alert-close-icon-opacity};
+      --clr-app-alert-close-icon-hover-opacity: #{variables3.$clr-app-alert-close-icon-hover-opacity};
 
       // Dimensions & Layout
       // Usage: ./_alert.clarity.scss
@@ -134,10 +139,10 @@
       --clr-app-alert-success-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
 
       // App Alerts Pager
-      --clr-app-alert-pager-text-color: var(--clr-color-neutral-0, #{$clr-color-neutral-0});
-      --clr-app-alert-info-pager-bg-color: var(--clr-color-action-800, #{$clr-color-action-800});
-      --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900, #{$clr-color-warning-900});
-      --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900, #{$clr-color-danger-900});
+      --clr-app-alert-pager-text-color: var(--clr-color-neutral-0, #{variables2.$clr-color-neutral-0});
+      --clr-app-alert-info-pager-bg-color: var(--clr-color-action-800, #{variables2.$clr-color-action-800});
+      --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900, #{variables2.$clr-color-warning-900});
+      --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900, #{variables2.$clr-color-danger-900});
     }
   }
 }

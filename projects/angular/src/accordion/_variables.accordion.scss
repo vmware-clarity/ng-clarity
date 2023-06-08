@@ -1,21 +1,26 @@
+@use 'sass:map';
+@use '../utils/variables/variables.color' as variables2;
+@use '../utils/variables/variables.global';
+@use '../utils/variables/variables.layout' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-$clr-accordion-text-color: $clr-global-font-color !default;
-$clr-accordion-active-background-color: $clr-global-selection-color !default;
-$clr-accordion-content-background-color: $clr-color-neutral-0 !default;
-$clr-accordion-header-background-color: $clr-color-neutral-50 !default;
-$clr-accordion-header-hover-background-color: $clr-color-neutral-200 !default;
-$clr-accordion-border-left-color: $clr-color-neutral-200 !default;
-$clr-accordion-responsive-breakpoint: map-get($clr-grid-breakpoints, sm) !default;
-$clr-accordion-error-color: $clr-global-error-color !default;
-$clr-accordion-complete-color: $clr-global-success-color !default;
-$clr-accordion-border-color: $clr-color-neutral-400 !default;
-$clr-accordion-padding: $clr_baselineRem_18px !default;
-$clr-accordion-border-radius: $clr-global-borderradius !default;
-$clr-accordion-border-left-width: $clr_baselineRem_0_25 !default;
+$clr-accordion-text-color: variables.$clr-global-font-color !default;
+$clr-accordion-active-background-color: variables.$clr-global-selection-color !default;
+$clr-accordion-content-background-color: variables2.$clr-color-neutral-0 !default;
+$clr-accordion-header-background-color: variables2.$clr-color-neutral-50 !default;
+$clr-accordion-header-hover-background-color: variables2.$clr-color-neutral-200 !default;
+$clr-accordion-border-left-color: variables2.$clr-color-neutral-200 !default;
+$clr-accordion-responsive-breakpoint: map.get(variables3.$clr-grid-breakpoints, sm) !default;
+$clr-accordion-error-color: variables.$clr-global-error-color !default;
+$clr-accordion-complete-color: variables.$clr-global-success-color !default;
+$clr-accordion-border-color: variables2.$clr-color-neutral-400 !default;
+$clr-accordion-padding: variables.$clr_baselineRem_18px !default;
+$clr-accordion-border-radius: variables.$clr-global-borderradius !default;
+$clr-accordion-border-left-width: variables.$clr_baselineRem_0_25 !default;
 $clr-accordion-border-left-color-complete: $clr-accordion-complete-color !default;
 $clr-accordion-border-left-color-error: $clr-accordion-error-color !default;

@@ -1,22 +1,27 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.typography' as variables2;
+@use 'variables.combobox' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('combobox.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('combobox.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-combobox-trigger-color: var(--clr-color-neutral-500);
-      --clr-combobox-font-size: #{$clr-p2-font-size};
-      --clr-combobox-border-color: #{$clr-combobox-border-color};
-      --clr-combobox-border-radius: #{$clr-combobox-border-radius};
-      --clr-combobox-input-background-color: #{$clr-combobox-input-background-color};
-      --clr-combobox-pill-background-color: #{$clr-combobox-pill-background-color};
-      --clr-combobox-pill-border-color: #{$clr-combobox-pill-border-color};
-      --clr-combobox-pill-border-radius: #{$clr-combobox-pill-border-radius};
-      --clr-combobox-pill-font-color: #{$clr-combobox-pill-font-color};
-      --clr-combobox-filter-highlight: #{$clr-combobox-filter-highlight};
+      --clr-combobox-font-size: #{variables2.$clr-p2-font-size};
+      --clr-combobox-border-color: #{variables3.$clr-combobox-border-color};
+      --clr-combobox-border-radius: #{variables3.$clr-combobox-border-radius};
+      --clr-combobox-input-background-color: #{variables3.$clr-combobox-input-background-color};
+      --clr-combobox-pill-background-color: #{variables3.$clr-combobox-pill-background-color};
+      --clr-combobox-pill-border-color: #{variables3.$clr-combobox-pill-border-color};
+      --clr-combobox-pill-border-radius: #{variables3.$clr-combobox-pill-border-radius};
+      --clr-combobox-pill-font-color: #{variables3.$clr-combobox-pill-font-color};
+      --clr-combobox-filter-highlight: #{variables3.$clr-combobox-filter-highlight};
     }
   }
 }

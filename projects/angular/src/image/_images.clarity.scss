@@ -1,3 +1,8 @@
+@use '../emphasis/alert/variables.alert' as alert-variables;
+@use '../utils/mixins';
+@use '../utils/variables/variables.color';
+@use 'icons.clarity';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -10,10 +15,10 @@
   vertical-align: middle;
 }
 
-@include exports('images.clarity') {
+@include mixins.exports('images.clarity') {
   %icon-styles {
     display: inline-block;
-    @include equilateral($clr-icon-dimension-sm);
+    @include mixins.equilateral(alert-variables.$clr-icon-dimension-sm);
     padding: 0;
     @include icon-background-styles();
   }
@@ -24,15 +29,15 @@
 
     &.clr-icon-warning,
     &.icon-warning {
-      background-image: generateWarningIcon();
+      background-image: icons.generateWarningIcon();
     }
 
     &.clr-icon-warning-white {
-      background-image: generateWarningIcon($clr-color-neutral-0);
+      background-image: icons.generateWarningIcon(variables.$clr-color-neutral-0);
     }
 
     &.clr-vmw-logo {
-      background-image: generateVMWLogo();
+      background-image: icons.generateVMWLogo();
     }
   }
 }

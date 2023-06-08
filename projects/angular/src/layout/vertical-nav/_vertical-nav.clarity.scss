@@ -1,3 +1,9 @@
+@use 'sass:meta';
+@use '../../utils/a11y';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.vertical-nav' as vertical-nav-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,20 +11,25 @@
  */
 
 @mixin vertical-nav-link-colors() {
-  @include css-var(color, clr-vertical-nav-item-color, $clr-vertical-nav-item-color, $clr-use-custom-properties);
+  @include mixins.css-var(
+    color,
+    clr-vertical-nav-item-color,
+    vertical-nav-variables.$clr-vertical-nav-item-color,
+    variables.$clr-use-custom-properties
+  );
 
   &.active {
-    @include css-var(
+    @include mixins.css-var(
       color,
       clr-vertical-nav-item-active-color,
-      $clr-vertical-nav-item-active-color,
-      $clr-use-custom-properties
+      vertical-nav-variables.$clr-vertical-nav-item-active-color,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       background-color,
       clr-vertical-nav-active-bg-color,
-      $clr-vertical-nav-active-bg-color,
-      $clr-use-custom-properties
+      vertical-nav-variables.$clr-vertical-nav-active-bg-color,
+      variables.$clr-use-custom-properties
     );
 
     position: relative;
@@ -29,76 +40,76 @@
       top: 0;
       bottom: 0;
       left: 0;
-      width: $clr_baselineRem_3px;
+      width: variables.$clr_baselineRem_3px;
       background: var(--clr-nav-active-box-shadow-color);
     }
 
     .nav-icon {
-      @include css-var(
+      @include mixins.css-var(
         fill,
         clr-vertical-nav-icon-active-color,
-        $clr-vertical-nav-icon-active-color,
-        $clr-use-custom-properties
+        vertical-nav-variables.$clr-vertical-nav-icon-active-color,
+        variables.$clr-use-custom-properties
       );
     }
   }
 
   &:hover {
-    @include css-var(
+    @include mixins.css-var(
       color,
       clr-vertical-nav-item-active-color,
-      $clr-vertical-nav-item-active-color,
-      $clr-use-custom-properties
+      vertical-nav-variables.$clr-vertical-nav-item-active-color,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       background-color,
       clr-vertical-nav-hover-bg-color,
-      $clr-vertical-nav-hover-bg-color,
-      $clr-use-custom-properties
+      vertical-nav-variables.$clr-vertical-nav-hover-bg-color,
+      variables.$clr-use-custom-properties
     );
     text-decoration: none;
   }
 }
 
-@import './properties.vertical-nav';
+@include meta.load-css('properties.vertical-nav');
 
-@include exports('vertical-nav.clarity') {
+@include mixins.exports('vertical-nav.clarity') {
   .clr-vertical-nav {
     //Display
     display: flex;
     flex-direction: column;
 
     //Dims
-    padding-top: $clr-vertical-nav-top-padding;
-    width: $clr-vertical-nav-width;
-    min-width: $clr-vertical-nav-min-width;
+    padding-top: vertical-nav-variables.$clr-vertical-nav-top-padding;
+    width: vertical-nav-variables.$clr-vertical-nav-width;
+    min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
 
     //Others
-    @include css-var(
+    @include mixins.css-var(
       background-color,
       clr-vertical-nav-bg-color,
-      $clr-vertical-nav-bg-color,
-      $clr-use-custom-properties
+      vertical-nav-variables.$clr-vertical-nav-bg-color,
+      variables.$clr-use-custom-properties
     );
     will-change: width;
     transition: width 0.2s ease-in-out;
 
     .nav-divider {
       //Dims
-      @include css-var(
+      @include mixins.css-var(
         border-color,
         clr-vertical-nav-trigger-divider-border-color,
-        $clr-vertical-nav-trigger-divider-border-color,
-        $clr-use-custom-properties
+        vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color,
+        variables.$clr-use-custom-properties
       );
       border-style: solid;
-      @include css-var(
+      @include mixins.css-var(
         border-width,
         clr-vertical-nav-trigger-divider-border-width,
-        $clr-global-borderwidth,
-        $clr-use-custom-properties
+        variables.$clr-global-borderwidth,
+        variables.$clr-use-custom-properties
       );
-      margin: $clr-vertical-nav-divider-margin 0;
+      margin: vertical-nav-variables.$clr-vertical-nav-divider-margin 0;
     }
 
     .nav-content {
@@ -119,7 +130,7 @@
 
       //Dims
       height: auto;
-      min-height: $clr-vertical-nav-item-height;
+      min-height: vertical-nav-variables.$clr-vertical-nav-item-height;
     }
 
     .nav-group-content {
@@ -140,12 +151,12 @@
 
       .nav-icon {
         //Dims
-        margin-left: $clr-vertical-nav-link-padding-left;
+        margin-left: vertical-nav-variables.$clr-vertical-nav-link-padding-left;
       }
 
       .nav-text {
         //Dims
-        padding-left: $clr-vertical-nav-link-padding-left;
+        padding-left: vertical-nav-variables.$clr-vertical-nav-link-padding-left;
       }
 
       .nav-icon + .nav-text {
@@ -166,27 +177,27 @@
     .nav-trigger,
     .nav-group-trigger {
       //Display
-      flex: 0 0 $clr-vertical-nav-item-height;
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
 
       //Dims
       border: none;
-      height: $clr-vertical-nav-item-height;
+      height: vertical-nav-variables.$clr-vertical-nav-item-height;
 
       padding: 0;
 
       //Others
       cds-icon[shape='angle-double'],
       clr-icon[shape='angle-double'] {
-        @include css-var(
+        @include mixins.css-var(
           color,
           clr-vertical-nav-toggle-icon-color,
-          $clr-vertical-nav-toggle-icon-color,
-          $clr-use-custom-properties
+          vertical-nav-variables.$clr-vertical-nav-toggle-icon-color,
+          variables.$clr-use-custom-properties
         );
       }
       background-color: transparent;
       cursor: pointer;
-      outline-offset: $clr-outline-offset;
+      outline-offset: variables.$clr-outline-offset;
     }
 
     .nav-trigger {
@@ -197,8 +208,8 @@
       justify-content: flex-start;
 
       //Dims
-      height: $clr-vertical-nav-item-height;
-      margin-top: -1 * $clr-vertical-nav-top-padding;
+      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      margin-top: -1 * vertical-nav-variables.$clr-vertical-nav-top-padding;
     }
 
     //Parent .nav-group-content
@@ -218,9 +229,9 @@
         flex-shrink: 0;
 
         //Dims
-        width: $clr-vertical-nav-icon-size;
+        width: vertical-nav-variables.$clr-vertical-nav-icon-size;
         align-self: center;
-        margin-right: $clr-vertical-nav-trigger-icon-align-margin;
+        margin-right: vertical-nav-variables.$clr-vertical-nav-trigger-icon-align-margin;
 
         //Others
         transition: all 0.2s ease-in-out;
@@ -231,7 +242,9 @@
     .nav-trigger-icon {
       //Dims
       margin-left: auto;
-      margin-right: ($clr-vertical-nav-item-height - $clr-vertical-nav-icon-size) * 0.5;
+      margin-right: (
+          vertical-nav-variables.$clr-vertical-nav-item-height - vertical-nav-variables.$clr-vertical-nav-icon-size
+        ) * 0.5;
 
       //Others
       transition: all 0.2s ease-in-out;
@@ -239,31 +252,32 @@
 
     .nav-trigger + .nav-content {
       //Dims
-      @include css-var(
+      @include mixins.css-var(
         border-top-color,
         clr-vertical-nav-trigger-divider-border-color,
-        $clr-vertical-nav-trigger-divider-border-color,
-        $clr-use-custom-properties
+        vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color,
+        variables.$clr-use-custom-properties
       );
       border-top-style: solid;
-      @include css-var(
+      @include mixins.css-var(
         border-top-width,
         clr-vertical-nav-trigger-divider-border-width,
-        $clr-global-borderwidth,
-        $clr-use-custom-properties
+        variables.$clr-global-borderwidth,
+        variables.$clr-use-custom-properties
       );
-      padding-top: $clr_baselineRem_0_5;
+      padding-top: variables.$clr_baselineRem_0_5;
     }
 
     .nav-group-text,
     .nav-link {
       //Dims
-      height: $clr-vertical-nav-item-height;
-      padding: 0 $clr-vertical-nav-link-padding-right 0 $clr-vertical-nav-link-padding-left;
+      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      padding: 0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+        vertical-nav-variables.$clr-vertical-nav-link-padding-left;
 
       //Others
-      line-height: $clr-vertical-nav-item-height;
-      outline-offset: $clr-outline-offset;
+      line-height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      outline-offset: variables.$clr-outline-offset;
     }
 
     .nav-group-text,
@@ -272,7 +286,7 @@
       //Display
       flex: 1 1 auto;
       //Mixins
-      @include overflow-ellipsis();
+      @include mixins.overflow-ellipsis();
     }
 
     .nav-link {
@@ -286,30 +300,31 @@
 
     .nav-header {
       //Dims
-      padding: 0 $clr-vertical-nav-link-padding-right 0 $clr-vertical-nav-link-padding-left;
+      padding: 0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+        vertical-nav-variables.$clr-vertical-nav-link-padding-left;
 
       //Others
-      font-size: $clr-vertical-nav-header-font-size;
-      @include css-var(
+      font-size: vertical-nav-variables.$clr-vertical-nav-header-font-size;
+      @include mixins.css-var(
         font-weight,
         clr-vertical-nav-header-font-weight,
-        $clr-vertical-nav-header-font-weight,
-        $clr-use-custom-properties
+        vertical-nav-variables.$clr-vertical-nav-header-font-weight,
+        variables.$clr-use-custom-properties
       );
-      letter-spacing: $clr-vertical-nav-header-letter-spacing;
-      line-height: $clr-vertical-nav-item-height;
+      letter-spacing: vertical-nav-variables.$clr-vertical-nav-header-letter-spacing;
+      line-height: vertical-nav-variables.$clr-vertical-nav-item-height;
     }
 
     //Parent .nav-text
     .nav-icon {
       //Display
-      flex: 0 0 $clr-vertical-nav-icon-size;
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-icon-size;
       align-self: center;
 
       //Dims
-      @include equilateral($clr-vertical-nav-icon-size);
-      @include min-equilateral($clr-vertical-nav-icon-size);
-      margin-right: $clr-vertical-nav-icon-right-margin;
+      @include mixins.equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
+      @include mixins.min-equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
+      margin-right: vertical-nav-variables.$clr-vertical-nav-icon-right-margin;
 
       //Others
       vertical-align: middle;
@@ -331,18 +346,18 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      outline-offset: $clr-outline-offset;
+      outline-offset: variables.$clr-outline-offset;
     }
 
     & > .nav-link,
     .nav-content > .nav-link {
       //Display
-      flex: 0 0 $clr-vertical-nav-item-height;
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
     }
 
     .nav-link + .nav-group-trigger {
       //Display
-      flex: 0 0 $clr-vertical-nav-item-height;
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
 
       .nav-group-text {
         display: none;
@@ -374,29 +389,30 @@
 
     &.has-icons {
       .nav-group-children .nav-link {
-        padding-left: $clr-vertical-nav-icon-size + $clr-vertical-nav-icon-right-margin +
-          $clr-vertical-nav-link-padding-left;
+        padding-left: vertical-nav-variables.$clr-vertical-nav-icon-size +
+          vertical-nav-variables.$clr-vertical-nav-icon-right-margin +
+          vertical-nav-variables.$clr-vertical-nav-link-padding-left;
       }
     }
 
     .nav-group.active:not(.is-expanded) {
       .nav-group-content {
-        @include css-var(
+        @include mixins.css-var(
           background-color,
           clr-vertical-nav-active-bg-color,
-          $clr-vertical-nav-active-bg-color,
-          $clr-use-custom-properties
+          vertical-nav-variables.$clr-vertical-nav-active-bg-color,
+          variables.$clr-use-custom-properties
         );
 
-        border-left: $clr_baselineRem_3px solid var(--clr-nav-active-box-shadow-color);
+        border-left: variables.$clr_baselineRem_3px solid var(--clr-nav-active-box-shadow-color);
 
         //Horrible Nesting but nothing I can do.
         .nav-icon {
-          @include css-var(
+          @include mixins.css-var(
             fill,
             clr-vertical-nav-icon-active-color,
-            $clr-vertical-nav-icon-active-color,
-            $clr-use-custom-properties
+            vertical-nav-variables.$clr-vertical-nav-icon-active-color,
+            variables.$clr-use-custom-properties
           );
         }
       }
@@ -404,19 +420,19 @@
 
     .nav-group-content {
       .nav-link.active ~ .nav-group-trigger {
-        @include css-var(
+        @include mixins.css-var(
           background-color,
           clr-vertical-nav-active-bg-color,
-          $clr-vertical-nav-active-bg-color,
-          $clr-use-custom-properties
+          vertical-nav-variables.$clr-vertical-nav-active-bg-color,
+          variables.$clr-use-custom-properties
         );
       }
       .nav-link:hover ~ .nav-group-trigger {
-        @include css-var(
+        @include mixins.css-var(
           background-color,
           clr-vertical-nav-hover-bg-color,
-          $clr-vertical-nav-hover-bg-color,
-          $clr-use-custom-properties
+          vertical-nav-variables.$clr-vertical-nav-hover-bg-color,
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -428,35 +444,36 @@
 
     .main-container:not([class*='open-overflow-menu']):not([class*='open-hamburger-menu']) &.is-collapsed {
       //Dims
-      width: $clr-vertical-nav-min-width;
-      min-width: $clr-vertical-nav-min-width;
+      width: vertical-nav-variables.$clr-vertical-nav-min-width;
+      min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
 
       //Others
       cursor: pointer;
 
       .nav-trigger {
         //Dims
-        margin-right: $clr-vertical-nav-trigger-collapsed-margin;
+        margin-right: vertical-nav-variables.$clr-vertical-nav-trigger-collapsed-margin;
       }
 
       .nav-icon {
         //Dims
         margin: 0;
-        margin-left: $clr_baselineRem_0_667;
+        margin-left: variables.$clr_baselineRem_0_667;
       }
 
       .nav-group-content {
         .nav-link {
           //Display
-          flex: 0 0 $clr-vertical-nav-min-width;
+          flex: 0 0 vertical-nav-variables.$clr-vertical-nav-min-width;
         }
 
         .nav-link ~ .nav-group-trigger {
           //Display
-          flex: 0 0 $clr-vertical-nav-collapsed-caret-size + $clr-vertical-nav-icon-right-margin;
+          flex: 0 0 vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size +
+            vertical-nav-variables.$clr-vertical-nav-icon-right-margin;
 
           //Others
-          transform: translateX(-1 * $clr-vertical-nav-icon-size);
+          transform: translateX(-1 * vertical-nav-variables.$clr-vertical-nav-icon-size);
           pointer-events: none;
         }
       }
@@ -476,14 +493,14 @@
 
         clr-icon.nav-group-trigger-icon {
           //Dims
-          height: $clr-vertical-nav-item-height;
-          width: $clr-vertical-nav-collapsed-caret-size;
-          margin-left: $clr_baselineRem_0_125;
+          height: vertical-nav-variables.$clr-vertical-nav-item-height;
+          width: vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size;
+          margin-left: variables.$clr_baselineRem_0_125;
           margin-right: 0;
         }
 
         cds-icon.nav-group-trigger-icon {
-          width: $clr-vertical-nav-collapsed-caret-size;
+          width: vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size;
         }
       }
 
@@ -505,7 +522,7 @@
 
         .nav-group-text,
         .nav-text {
-          @include screen-reader-only();
+          @include a11y.screen-reader-only();
         }
       }
     }
@@ -518,18 +535,18 @@
 
       .nav-trigger + .nav-content {
         //Dims
-        @include css-var(
+        @include mixins.css-var(
           border-bottom-color,
           clr-vertical-nav-trigger-divider-border-color,
-          $clr-vertical-nav-trigger-divider-border-color,
-          $clr-use-custom-properties
+          vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color,
+          variables.$clr-use-custom-properties
         );
         border-bottom-style: solid;
-        @include css-var(
+        @include mixins.css-var(
           border-bottom-width,
           clr-vertical-nav-trigger-divider-border-width,
-          $clr-global-borderwidth,
-          $clr-use-custom-properties
+          variables.$clr-global-borderwidth,
+          variables.$clr-use-custom-properties
         );
         border-top: none;
         padding-top: 0;

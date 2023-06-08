@@ -1,11 +1,14 @@
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('badge.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('badge.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-badge-background-color: var(--clr-color-neutral-600);
       --clr-badge-color: var(--clr-color-on-neutral-600);

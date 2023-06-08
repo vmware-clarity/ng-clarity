@@ -1,12 +1,16 @@
+@use '../../../utils/mixins';
+@use '../mixins/grid';
+@use '../mixins/grid-framework';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('grid.clarity') {
+@include mixins.exports('grid.clarity') {
   .clr-row {
-    @include clr-make-row();
+    @include grid.clr-make-row();
   }
 
   // Remove the negative margin from default .row, then the horizontal padding
@@ -22,7 +26,7 @@
     }
   }
 
-  @include clr-make-grid-columns();
+  @include grid-framework.clr-make-grid-columns();
 
   .clr-break-row {
     width: 100%;

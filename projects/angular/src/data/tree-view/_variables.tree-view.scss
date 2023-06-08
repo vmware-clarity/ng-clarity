@@ -1,3 +1,9 @@
+@use '../../emphasis/alert/variables.alert' as variables4;
+@use '../../layout/nav/variables.nav' as variables5;
+@use '../../utils/variables/variables.color' as variables2;
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.typography' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,20 +11,21 @@
  */
 
 // Usage: ../data/tree-view/_tree-vioew.clarity.scss
-$clr-tree-border-radius: $clr-global-borderradius !default;
-$clr-tree-caret-size: $clr-icon-dimension-sm !default;
-$clr-tree-spinner-size: $clr-icon-dimension-sm !default;
-$clr-tree-node-touch-target: $clr_baselineRem_1_35 !default;
-$clr-tree-node-children-margin: $clr-tree-node-touch-target - $clr-tree-caret-size * 0.5 - $clr_baselineRem_1px !default;
-$clr-tree-node-touch-target-big: $clr_baselineRem_1_5 !default;
-$clr-tree-node-touch-target-small: $clr_baselineRem_1 !default;
-$clr-tree-node-content-icon-margin-right: $clr_baselineRem_0_25 !default;
-$clr-tree-node-link-padding-left: $clr_baselineRem_0_25 !default;
-$clr-tree-node-caret-link-hover-color: $clr-color-neutral-1000 !default;
-$clr-tree-link-hover-color: $clr-custom-links-hover-color !default;
-$clr-tree-link-selection-color: $clr-global-selection-color !default;
-$clr-tree-link-text-color: $clr-color-neutral-700 !default;
-$clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - $clr_baselineRem_1) * 0.5 !default;
-$clr-tree-checkbox-padding-left: ($clr-tree-node-touch-target - $clr-icon-dimension-sm) * 0.5 !default;
-$clr-tree-node-caret-color: $clr-color-neutral-500 !default;
-$clr-tree-node-checkbox-label-font-size: $clr-p1-font-size !default;
+$clr-tree-border-radius: variables.$clr-global-borderradius !default;
+$clr-tree-caret-size: variables4.$clr-icon-dimension-sm !default;
+$clr-tree-spinner-size: variables4.$clr-icon-dimension-sm !default;
+$clr-tree-node-touch-target: variables.$clr_baselineRem_1_35 !default;
+$clr-tree-node-children-margin: $clr-tree-node-touch-target - $clr-tree-caret-size * 0.5 -
+  variables.$clr_baselineRem_1px !default;
+$clr-tree-node-touch-target-big: variables.$clr_baselineRem_1_5 !default;
+$clr-tree-node-touch-target-small: variables.$clr_baselineRem_1 !default;
+$clr-tree-node-content-icon-margin-right: variables.$clr_baselineRem_0_25 !default;
+$clr-tree-node-link-padding-left: variables.$clr_baselineRem_0_25 !default;
+$clr-tree-node-caret-link-hover-color: variables2.$clr-color-neutral-1000 !default;
+$clr-tree-link-hover-color: variables5.$clr-custom-links-hover-color !default;
+$clr-tree-link-selection-color: variables.$clr-global-selection-color !default;
+$clr-tree-link-text-color: variables2.$clr-color-neutral-700 !default;
+$clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - variables.$clr_baselineRem_1) * 0.5 !default;
+$clr-tree-checkbox-padding-left: ($clr-tree-node-touch-target - variables4.$clr-icon-dimension-sm) * 0.5 !default;
+$clr-tree-node-caret-color: variables2.$clr-color-neutral-500 !default;
+$clr-tree-node-checkbox-label-font-size: variables3.$clr-p1-font-size !default;

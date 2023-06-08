@@ -3,6 +3,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import './properties.color';
-@import './properties.global';
-@import './properties.typography';
+@use 'properties.color';
+@use 'properties.global' as properties2;
+@use 'properties.typography' as properties3;

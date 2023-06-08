@@ -1,3 +1,9 @@
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.layout' as variables2;
+@use 'variables.dropdown' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -12,39 +18,64 @@
   left: 0;
 
   //Dimensions
-  min-width: $clr_baselineRem_5;
-  max-width: $clr_baselineRem_15;
+  min-width: variables.$clr_baselineRem_5;
+  max-width: variables.$clr_baselineRem_15;
 
   //Other
-  @include css-var(background, clr-dropdown-bg-color, $clr-dropdown-bg-color, $clr-use-custom-properties);
-  @include css-var(border-width, clr-global-borderwidth, $clr-global-borderwidth, $clr-use-custom-properties);
+  @include mixins.css-var(
+    background,
+    clr-dropdown-bg-color,
+    variables3.$clr-dropdown-bg-color,
+    variables.$clr-use-custom-properties
+  );
+  @include mixins.css-var(
+    border-width,
+    clr-global-borderwidth,
+    variables.$clr-global-borderwidth,
+    variables.$clr-use-custom-properties
+  );
   border-style: solid;
-  @include css-var(border-color, clr-dropdown-border-color, $clr-dropdown-border-color, $clr-use-custom-properties);
-  @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
+  @include mixins.css-var(
+    border-color,
+    clr-dropdown-border-color,
+    variables3.$clr-dropdown-border-color,
+    variables.$clr-use-custom-properties
+  );
+  @include mixins.css-var(
+    border-radius,
+    clr-global-borderradius,
+    variables.$clr-global-borderradius,
+    variables.$clr-use-custom-properties
+  );
   // OldIE/Edge
-  box-shadow: 0 $clr-global-borderwidth $clr_baselineRem_0_125 $clr-dropdown-box-shadow;
-  @if $clr-use-custom-properties == true {
+  box-shadow: 0 variables.$clr-global-borderwidth variables.$clr_baselineRem_0_125 variables3.$clr-dropdown-box-shadow;
+  @if variables.$clr-use-custom-properties == true {
     box-shadow: 0
-      $clr-global-borderwidth
-      $clr_baselineRem_0_125
-      var(--clr-dropdown-box-shadow, $clr-dropdown-box-shadow);
+      variables.$clr-global-borderwidth
+      variables.$clr_baselineRem_0_125
+      var(--clr-dropdown-box-shadow, variables3.$clr-dropdown-box-shadow);
   }
-  margin-top: $clr_baselineRem_2px;
-  padding: $clr_baselineRem_0_5 0;
+  margin-top: variables.$clr_baselineRem_2px;
+  padding: variables.$clr_baselineRem_0_5 0;
   visibility: hidden;
-  z-index: map-get($clr-layers, dropdown-menu);
+  z-index: map.get(variables.$clr-layers, dropdown-menu);
 }
 
 @mixin generate-dropdown-item() {
-  @include css-var(color, clr-dropdown-item-color, $clr-dropdown-item-color, $clr-use-custom-properties);
-  font-size: $clr-dropdown-item-font-size;
-  @include css-var(
+  @include mixins.css-var(
+    color,
+    clr-dropdown-item-color,
+    variables3.$clr-dropdown-item-color,
+    variables.$clr-use-custom-properties
+  );
+  font-size: variables3.$clr-dropdown-item-font-size;
+  @include mixins.css-var(
     font-weight,
     clr-dropdown-item-font-weight,
-    $clr-dropdown-item-font-weight,
-    $clr-use-custom-properties
+    variables3.$clr-dropdown-item-font-weight,
+    variables.$clr-use-custom-properties
   );
-  letter-spacing: $clr-dropdown-item-letter-spacing;
+  letter-spacing: variables3.$clr-dropdown-item-letter-spacing;
 
   background: transparent;
   border: 0;
@@ -57,28 +88,33 @@
   text-transform: none;
 
   &:hover {
-    @include css-var(
+    @include mixins.css-var(
       background-color,
       clr-dropdown-bg-hover-color,
-      $clr-dropdown-bg-hover-color,
-      $clr-use-custom-properties
+      variables3.$clr-dropdown-bg-hover-color,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(color, clr-dropdown-item-color, $clr-dropdown-item-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-dropdown-item-color,
+      variables3.$clr-dropdown-item-color,
+      variables.$clr-use-custom-properties
+    );
     text-decoration: none;
   }
 
   &.active {
-    @include css-var(
+    @include mixins.css-var(
       background,
       clr-dropdown-selection-color,
-      $clr-dropdown-selection-color,
-      $clr-use-custom-properties
+      variables3.$clr-dropdown-selection-color,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       color,
       clr-dropdown-active-text-color,
-      $clr-dropdown-active-text-color,
-      $clr-use-custom-properties
+      variables3.$clr-dropdown-active-text-color,
+      variables.$clr-use-custom-properties
     );
   }
 
@@ -108,9 +144,9 @@
 }
 
 @mixin generate-dropdown-item-height() {
-  padding: $clr_baselineRem_0_125 $clr_baselineRem_1;
+  padding: variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1;
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
-    padding: $clr_baselineRem_0_25 $clr_baselineRem_1;
+  @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, sm)) {
+    padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
   }
 }

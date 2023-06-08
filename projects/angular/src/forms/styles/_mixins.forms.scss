@@ -1,3 +1,7 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.forms' as styles-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -26,7 +30,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: $clr-forms-baseline * 2;
+    margin-right: styles-variables.$clr-forms-baseline * 2;
     width: auto;
   }
 }
@@ -36,15 +40,15 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: $clr-forms-baseline;
+    margin-left: styles-variables.$clr-forms-baseline;
   }
 }
 
 // Standard Clarity Input Bottom Border Animation
 @mixin input-border-bottom-animation(
-  $border-color-sass: $clr-forms-focused-color,
+  $border-color-sass: styles-variables.$clr-forms-focused-color,
   $border-color-prop: clr-forms-focused-color,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   // Border-bottom animation on focus
   @if $use-custom-props != true {
@@ -53,7 +57,7 @@
     background: linear-gradient(
         to bottom,
         transparent 95%,
-        var(css-variablize-string($border-color-prop), $border-color-sass) 95%
+        var(mixins.css-variablize-string($border-color-prop), $border-color-sass) 95%
       )
       no-repeat;
   }
@@ -65,7 +69,7 @@
     @if not $border-color-prop or $use-custom-props != true {
       border-bottom-color: $border-color-sass;
     } @else {
-      @include css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
+      @include mixins.css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
     }
     background-size: 100% 100%;
   }
@@ -73,7 +77,7 @@
 
 // Style default input
 @mixin custom-inputs-reset($height) {
-  @include clr-appearance-normal();
+  @include mixins.clr-appearance-normal();
   margin: 0;
   padding: 0;
   border: none;
@@ -88,25 +92,30 @@
 }
 
 @mixin form-fields-appearance(
-  $border-color-sass: $clr-forms-border-color,
-  $text-color-sass: $clr-forms-text-color,
+  $border-color-sass: styles-variables.$clr-forms-border-color,
+  $text-color-sass: styles-variables.$clr-forms-text-color,
   $border-color-prop: clr-forms-border-color,
   $text-color-prop: clr-forms-text-color,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   @if $use-custom-props != true {
     color: $text-color-sass;
-    border-bottom: $clr-global-borderwidth solid $border-color-sass;
+    border-bottom: variables.$clr-global-borderwidth solid $border-color-sass;
   } @else {
-    @include css-var(color, $text-color-prop, $text-color-sass, $use-custom-props);
-    border-bottom: $clr-global-borderwidth solid;
-    @include css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
+    @include mixins.css-var(color, $text-color-prop, $text-color-sass, $use-custom-props);
+    border-bottom: variables.$clr-global-borderwidth solid;
+    @include mixins.css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
   }
   display: inline-block;
 }
 
 @mixin disabled-form-fields() {
-  @include css-var(color, clr-forms-text-disabled-color, $clr-forms-text-disabled-color, $clr-use-custom-properties);
+  @include mixins.css-var(
+    color,
+    clr-forms-text-disabled-color,
+    styles-variables.$clr-forms-text-disabled-color,
+    variables.$clr-use-custom-properties
+  );
   cursor: not-allowed;
 }
 
@@ -114,22 +123,22 @@
   //Positioning
   position: absolute;
   opacity: 0;
-  top: $clr_baselineRem_5px;
+  top: variables.$clr_baselineRem_5px;
   left: 0;
 
   //Display
   //NOTE: Even though the input is invisible, we assign it a height
   //and width so that it aligns right behind the fake checkbox
   //and so that the user's default input size doesn't affect it
-  @include equilateral($size);
+  @include mixins.equilateral($size);
 }
 
 @mixin checkbox-radio-label-styles(
   $min-height,
   $padding-left,
-  $color: $clr-forms-checkbox-label-color,
+  $color: styles-variables.$clr-forms-checkbox-label-color,
   $color-prop: clr-forms-checkbox-label-color,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   //Positioning
   position: relative;
@@ -140,12 +149,12 @@
   padding-left: $padding-left;
   margin-top: 0;
   cursor: pointer;
-  line-height: $clr-forms-baseline * 4;
+  line-height: styles-variables.$clr-forms-baseline * 4;
 
   @if $use-custom-props != true {
     color: $color;
   } @else {
-    @include css-var(color, $color-prop, $color, $use-custom-props);
+    @include mixins.css-var(color, $color-prop, $color, $use-custom-props);
   }
 }
 
@@ -155,7 +164,7 @@
   $left,
   $border-color,
   $border-color-prop: null,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   //Positioning
   position: absolute;
@@ -165,18 +174,18 @@
   //Display
   content: '';
   display: inline-block;
-  @include equilateral($size);
-  border: $clr-global-borderwidth solid;
+  @include mixins.equilateral($size);
+  border: variables.$clr-global-borderwidth solid;
 
   @if $use-custom-props != true or not $border-color-prop {
     border-color: $border-color;
   } @else {
-    @include css-var(border-color, $border-color-prop, $border-color, $use-custom-props);
+    @include mixins.css-var(border-color, $border-color-prop, $border-color, $use-custom-props);
   }
 }
 
 @mixin custom-inputs($height) {
-  @include clr-appearance-normal();
+  @include mixins.clr-appearance-normal();
   margin: 0;
   padding: 0;
   border: none;
@@ -194,25 +203,25 @@
   $height,
   $background-color,
   $background-color-prop: null,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   -webkit-appearance: none;
   left: 0;
   height: $height;
 
-  @include css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
 }
 
 @mixin range-track-style(
   $height,
   $background-color,
   $background-color-prop: null,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   height: $height;
   cursor: pointer;
 
-  @include css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
 }
 
 @mixin range-thumb-style(
@@ -220,12 +229,12 @@
   $size,
   $background-color,
   $background-color-prop: null,
-  $use-custom-props: $clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   margin-top: $margin;
   border-radius: 50%;
   height: $size;
   width: $size;
 
-  @include css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
 }

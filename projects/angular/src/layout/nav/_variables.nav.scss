@@ -1,3 +1,5 @@
+@use '../../utils/variables/variables.color';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -6,8 +8,8 @@
 
 // Usage: ../utils/_reboot.scss
 // Link colors
-$clr-link-active-color: $clr-color-secondary-action-500 !default;
-$clr-link-color: $clr-color-action-600 !default;
-$clr-link-hover-color: $clr-color-action-600 !default;
+$clr-link-active-color: variables.$clr-color-secondary-action-500 !default;
+$clr-link-color: variables.$clr-color-action-600 !default;
+$clr-link-hover-color: variables.$clr-color-action-600 !default;
 $clr-link-visited-color: hsl(238, 41%, 53%) !default;
-$clr-custom-links-hover-color: $clr-color-neutral-200 !default;
+$clr-custom-links-hover-color: variables.$clr-color-neutral-200 !default;

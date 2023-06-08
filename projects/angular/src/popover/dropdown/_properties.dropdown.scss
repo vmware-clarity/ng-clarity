@@ -1,11 +1,15 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.dropdown' as dropdown-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('dropdown.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('dropdown.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       --clr-dropdown-active-text-color: var(--clr-color-neutral-1000);
@@ -25,7 +29,7 @@
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       // Dropdown Header
       --clr-dropdown-header-color: var(--clr-color-neutral-900);
-      --clr-dropdown-header-font-weight: #{$clr-dropdown-header-font-weight};
+      --clr-dropdown-header-font-weight: #{dropdown-variables.$clr-dropdown-header-font-weight};
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item

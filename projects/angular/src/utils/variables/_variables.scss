@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import './variables.color';
-@import './variables.global';
-@import './variables.layout';
-@import './variables.typography';
+@use 'variables.color';
+@use 'variables.global' as variables2;
+@use 'variables.layout' as variables3;
+@use 'variables.typography' as variables4;

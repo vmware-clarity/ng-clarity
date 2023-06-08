@@ -5,141 +5,141 @@
  */
 
 // Clarity Internal Dependencies
-@import '../utils/normalize'; // TODO: upgrade to latest normalize, once updated clr-ui can import core as is.
+@use '../utils/normalize'; // TODO: upgrade to latest normalize, once updated clr-ui can import core as is.
 
-@import '../utils/mixins';
-@import '../utils/variables/variables';
-@import '../utils/variables/properties';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use '../utils/variables/properties';
 
 // Layout/Grid
-@import '../layout/grid/grid';
+@use '../layout/grid/grid';
 
-@import '../typography/typography';
+@use '../typography/typography';
 
 // Component variables
-@import '../utils/variables.clarity';
+@use '../utils/variables.clarity' as variables2;
 
 //Reboot
-@import '../utils/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
-@import '../utils/a11y';
+@use '../utils/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@use '../utils/a11y';
 
 //Icons & Images
-@import '../image/icons.clarity'; // depends on variables.clarity
-@import '../image/images.clarity'; // depends on variables.clarity, mixins.clarity, icons.clarity
+@use '../image/icons.clarity'; // depends on variables.clarity
+@use '../image/images.clarity'; // depends on variables.clarity, mixins.clarity, icons.clarity
 
 //Popover
-@import '../popover/common/popover.clarity';
+@use '../popover/common/popover.clarity';
 
 // Smart Popover
-@import './popover/popover-popover.clarity';
+@use 'popover/popover-popover.clarity';
 
 //Buttons
-@import '../button/buttons.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity
-@import '../button/button-group/button-group.clarity'; // depends on variables.clarity, mixins.clarity
-@import '../utils/close.clarity'; //depends on variables.clarity, mixins.clarity
+@use '../button/buttons.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity
+@use '../button/button-group/button-group.clarity'; // depends on variables.clarity, mixins.clarity
+@use '../utils/close.clarity'; //depends on variables.clarity, mixins.clarity
 
 //Alerts
 //depends on variables.clarity, mixins.clarity, color.clarity, icons.clarity, buttons.clarity
-@import '../emphasis/alert/alert.clarity';
+@use '../emphasis/alert/alert.clarity';
 
 //Cards
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, list-group.clarity, buttons.clarity
-@import '../layout/card.clarity';
+@use '../layout/card.clarity';
 
 //Dropdowns
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity
-@import '../popover/dropdown/dropdown.clarity';
+@use '../popover/dropdown/dropdown.clarity';
 
 //Badges
 // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity
-@import '../emphasis/badges.clarity';
+@use '../emphasis/badges.clarity';
 
 //Labels
 // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity, badges.clarity
-@import '../emphasis/labels.clarity';
+@use '../emphasis/labels.clarity';
 
 //Login
 //depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, icons.clarity
-@import '../layout/login.clarity';
+@use '../layout/login.clarity';
 
 //Layout
 //depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../layout/main-container/layout.clarity';
+@use '../layout/main-container/layout.clarity';
 
 //Modal
 //depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../modal/modal.clarity';
+@use '../modal/modal.clarity';
 
 //Nav
-@import '../layout/nav/header.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../layout/nav/links.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
-@import '../layout/nav/nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../layout/nav/subnav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../layout/vertical-nav/vertical-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
-@import '../layout/nav/responsive-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@use '../layout/nav/header.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@use '../layout/nav/links.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
+@use '../layout/nav/nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@use '../layout/nav/subnav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@use '../layout/vertical-nav/vertical-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
+@use '../layout/nav/responsive-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
 
 //Progress Bars
 //depends on variables.clarity, helpers.clarity, color.clarity, cards.clarity
-@import '../progress/progress-bars/progress-bars.clarity';
+@use '../progress/progress-bars/progress-bars.clarity';
 
 //Spinners
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, icons.clarity
-@import '../progress/spinner/spinner.clarity';
+@use '../progress/spinner/spinner.clarity';
 
 //Tables
 //depends on variables.clarity, mixins.clarity, helpers.clarity, typography.clarity
-@import '../data/tables.clarity';
+@use '../data/tables.clarity';
 
 //Tooltips
 // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity
-@import '../popover/tooltip/tooltips.clarity';
+@use '../popover/tooltip/tooltips.clarity';
 
 //Forms
-@import '../forms/styles/mixins.forms';
-@import '../forms/styles/properties.forms';
-@import '../forms/styles/containers.clarity';
-@import '../forms/styles/form.clarity';
-@import '../forms/styles/checkbox.clarity';
-@import '../forms/styles/file.clarity';
-@import '../forms/styles/input.clarity';
-@import '../forms/styles/input-group.clarity';
-@import '../forms/styles/radio.clarity';
-@import '../forms/styles/select.clarity';
-@import '../forms/styles/textarea.clarity';
-@import '../forms/styles/toggles.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
-@import '../forms/styles/range.clarity';
-@import '../forms/styles/datalist.clarity';
-@import '../forms/datepicker/datepicker.clarity';
-@import '../forms/combobox/combobox.clarity';
+@use '../forms/styles/mixins.forms' as mixins2;
+@use '../forms/styles/properties.forms' as properties2;
+@use '../forms/styles/containers.clarity';
+@use '../forms/styles/form.clarity';
+@use '../forms/styles/checkbox.clarity';
+@use '../forms/styles/file.clarity';
+@use '../forms/styles/input.clarity';
+@use '../forms/styles/input-group.clarity';
+@use '../forms/styles/radio.clarity';
+@use '../forms/styles/select.clarity';
+@use '../forms/styles/textarea.clarity';
+@use '../forms/styles/toggles.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
+@use '../forms/styles/range.clarity';
+@use '../forms/styles/datalist.clarity';
+@use '../forms/datepicker/datepicker.clarity';
+@use '../forms/combobox/combobox.clarity';
 
 //Stack View
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, forms.clarity
-@import '../data/stack-view/stack-view.clarity';
+@use '../data/stack-view/stack-view.clarity';
 
 //Tree View
 //depends on variables.clarity, mixins.clarity, helpers.clarity, forms.clarity
-@import '../data/tree-view/tree-view.clarity';
+@use '../data/tree-view/tree-view.clarity';
 
 //Datagrid
 //depends on variables.clarity, mixins.clarity, helpers.clarity, layers, icons.clarity, tables.clarity, forms.clarity
-@import '../data/datagrid/datagrid.clarity';
+@use '../data/datagrid/datagrid.clarity';
 
 //Animations
 // no dependencies on other clarity scss
-@import '../utils/animations/animations.clarity';
+@use '../utils/animations/animations.clarity';
 
 //Tabs
-@import '../layout/tabs/tabs.clarity'; // no dependencies on other clarity scss
+@use '../layout/tabs/tabs.clarity'; // no dependencies on other clarity scss
 
 //Wizards
 // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
-@import '../wizard/wizard.clarity';
+@use '../wizard/wizard.clarity';
 
 // Signposts
-@import '../popover/signpost/signposts.clarity';
+@use '../popover/signpost/signposts.clarity';
 
 // Stepper
-@import '../accordion/accordion.clarity';
+@use '../accordion/accordion.clarity';
 
 // Timeline
-@import '../timeline/timeline.clarity';
+@use '../timeline/timeline.clarity';

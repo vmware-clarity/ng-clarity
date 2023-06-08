@@ -1,3 +1,6 @@
+@use 'sass:string';
+@use '../layout/variables.login';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -10,10 +13,10 @@
 $svg_data: 'data:image/svg+xml;charset=utf8';
 
 @function encodeColorString($colorStr) {
-  @if not str-index($colorStr, '#') {
+  @if not string.index($colorStr, '#') {
     @return $colorStr;
   }
-  @return '%23#{str-slice($colorStr, 2)}';
+  @return '%23#{string.slice($colorStr, 2)}';
 }
 
 @function generateErrorIcon($fillColor: #a32100) {
@@ -49,7 +52,7 @@ $svg_data: 'data:image/svg+xml;charset=utf8';
 }
 
 @function generateLoginBackground() {
-  @return url('#{$svg_data},#{$clr-login-background}');
+  @return url('#{$svg_data},#{variables.$clr-login-background}');
 }
 
 @function generateVMWLogo() {

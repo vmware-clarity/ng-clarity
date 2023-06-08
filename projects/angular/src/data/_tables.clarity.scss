@@ -1,3 +1,8 @@
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.tables' as data-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -9,29 +14,60 @@
   #{$table} {
     border-collapse: separate;
     border-style: solid;
-    @include css-var(border-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-    @include css-var(border-color, clr-table-border-color, $clr-table-border-color, $clr-use-custom-properties);
-    @include css-var(border-radius, clr-table-border-radius, $clr-table-border-radius, $clr-use-custom-properties);
-    @include css-var(background-color, clr-table-bgcolor, $clr-table-bgcolor, $clr-use-custom-properties);
-    @include css-var(color, clr-table-font-color, $clr-table-font-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-width,
+      clr-table-borderwidth,
+      data-variables.$clr-table-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-color,
+      clr-table-border-color,
+      data-variables.$clr-table-border-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-radius,
+      clr-table-border-radius,
+      data-variables.$clr-table-border-radius,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      background-color,
+      clr-table-bgcolor,
+      data-variables.$clr-table-bgcolor,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      clr-table-font-color,
+      data-variables.$clr-table-font-color,
+      variables.$clr-use-custom-properties
+    );
     margin: 0;
-    margin-top: $clr_baselineRem_1;
+    margin-top: variables.$clr_baselineRem_1;
     max-width: 100%;
     width: 100%;
 
     #{$th},
     #{$td} {
-      font-size: $clr-table-fontsize;
-      line-height: $clr-table-lineheight;
+      font-size: data-variables.$clr-table-fontsize;
+      line-height: data-variables.$clr-table-lineheight;
       border-top-style: solid;
-      @include css-var(border-top-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-      @include css-var(
+      @include mixins.css-var(
+        border-top-width,
+        clr-table-borderwidth,
+        data-variables.$clr-table-borderwidth,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
         border-top-color,
         clr-tablerow-bordercolor,
-        $clr-tablerow-bordercolor,
-        $clr-use-custom-properties
+        data-variables.$clr-tablerow-bordercolor,
+        variables.$clr-use-custom-properties
       );
-      padding: $clr-table-topcellpadding $clr-table-cellpadding $clr-table-bottomcellpadding;
+      padding: data-variables.$clr-table-topcellpadding data-variables.$clr-table-cellpadding
+        data-variables.$clr-table-bottomcellpadding;
       text-align: center;
       vertical-align: top;
 
@@ -39,25 +75,40 @@
         text-align: left;
 
         &:first-child {
-          padding-left: $clr-table-smallpadding;
+          padding-left: data-variables.$clr-table-smallpadding;
         }
       }
     }
 
     #{$th} {
-      @include css-var(color, clr-thead-color, $clr-thead-color, $clr-use-custom-properties);
-      font-size: $clr-thead-font-size;
-      font-weight: $clr-thead-font-weight;
-      letter-spacing: $clr-thead-letter-spacing;
-      @include css-var(background-color, clr-thead-bgcolor, $clr-thead-bgcolor, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-thead-color,
+        data-variables.$clr-thead-color,
+        variables.$clr-use-custom-properties
+      );
+      font-size: data-variables.$clr-thead-font-size;
+      font-weight: data-variables.$clr-thead-font-weight;
+      letter-spacing: data-variables.$clr-thead-letter-spacing;
+      @include mixins.css-var(
+        background-color,
+        clr-thead-bgcolor,
+        data-variables.$clr-thead-bgcolor,
+        variables.$clr-use-custom-properties
+      );
       vertical-align: bottom;
       border-bottom-style: solid;
-      @include css-var(border-bottom-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-      @include css-var(
+      @include mixins.css-var(
+        border-bottom-width,
+        clr-table-borderwidth,
+        data-variables.$clr-table-borderwidth,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
         border-bottom-color,
         clr-table-border-color,
-        $clr-table-border-color,
-        $clr-use-custom-properties
+        data-variables.$clr-table-border-color,
+        variables.$clr-use-custom-properties
       );
       border-top: 0 none;
     }
@@ -69,29 +120,39 @@
     // in the rare event we have more than one tbody element.
     #{$tbody} + #{$tbody} {
       border-top-style: solid;
-      @include css-var(border-top-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-      @include css-var(border-top-color, clr-table-border-color, $clr-table-border-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-top-width,
+        clr-table-borderwidth,
+        data-variables.$clr-table-borderwidth,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-top-color,
+        clr-table-border-color,
+        data-variables.$clr-table-border-color,
+        variables.$clr-use-custom-properties
+      );
     }
 
     // Rounded corners on tables are a pain...
     #{$thead} #{$th} {
       &:first-child {
         border-radius: 0;
-        @include css-var(
+        @include mixins.css-var(
           border-top-left-radius,
           clr-table-cornercellradius,
-          $clr-table-cornercellradius,
-          $clr-use-custom-properties
+          data-variables.$clr-table-cornercellradius,
+          variables.$clr-use-custom-properties
         );
       }
 
       &:last-child {
         border-radius: 0;
-        @include css-var(
+        @include mixins.css-var(
           border-top-right-radius,
           clr-table-cornercellradius,
-          $clr-table-cornercellradius,
-          $clr-use-custom-properties
+          data-variables.$clr-table-cornercellradius,
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -101,21 +162,21 @@
         #{$td} {
           &:first-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-bottom-left-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
 
           &:last-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-bottom-right-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
         }
@@ -126,15 +187,15 @@
   #{$table}-compact {
     #{$th},
     #{$td} {
-      padding-top: $clr-table--compact-verticalPadding + $clr_baselineRem_1px;
-      padding-bottom: $clr-table--compact-verticalPadding;
+      padding-top: data-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
+      padding-bottom: data-variables.$clr-table--compact-verticalPadding;
     }
   }
 }
 
-@import './properties.tables';
+@include meta.load-css('properties.tables');
 
-@include exports('tables.clarity') {
+@include mixins.exports('tables.clarity') {
   @include basic-table('.table', 'thead', 'tbody', 'tr', 'th', 'td');
 
   .table.table-vertical {
@@ -147,27 +208,52 @@
     th {
       border-bottom: 0;
       border-top-style: solid;
-      @include css-var(border-top-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-      @include css-var(border-top-color, clr-table-border-color, $clr-table-border-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-top-width,
+        clr-table-borderwidth,
+        data-variables.$clr-table-borderwidth,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-top-color,
+        clr-table-border-color,
+        data-variables.$clr-table-border-color,
+        variables.$clr-use-custom-properties
+      );
       vertical-align: top;
     }
 
     td,
     th {
       text-align: left;
-      @include css-var(border-color, clr-table-border-color, $clr-table-border-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-color,
+        clr-table-border-color,
+        data-variables.$clr-table-border-color,
+        variables.$clr-use-custom-properties
+      );
 
       &:first-child {
         border-right-style: solid;
-        @include css-var(border-right-width, clr-table-borderwidth, $clr-table-borderwidth, $clr-use-custom-properties);
-        @include css-var(
+        @include mixins.css-var(
+          border-right-width,
+          clr-table-borderwidth,
+          data-variables.$clr-table-borderwidth,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
           border-right-color,
           clr-table-border-color,
-          $clr-table-border-color,
-          $clr-use-custom-properties
+          data-variables.$clr-table-border-color,
+          variables.$clr-use-custom-properties
         );
-        @include css-var(background-color, clr-thead-bgcolor, $clr-thead-bgcolor, $clr-use-custom-properties);
-        font-weight: $clr-thead-font-weight;
+        @include mixins.css-var(
+          background-color,
+          clr-thead-bgcolor,
+          data-variables.$clr-thead-bgcolor,
+          variables.$clr-use-custom-properties
+        );
+        font-weight: data-variables.$clr-thead-font-weight;
       }
     }
 
@@ -179,21 +265,21 @@
 
           &:first-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-top-left-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
 
           &:last-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-top-right-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
         }
@@ -206,21 +292,21 @@
         td {
           &:first-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-bottom-left-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
 
           &:last-child {
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-bottom-right-radius,
               clr-table-cornercellradius,
-              $clr-table-cornercellradius,
-              $clr-use-custom-properties
+              data-variables.$clr-table-cornercellradius,
+              variables.$clr-use-custom-properties
             );
           }
         }
@@ -236,11 +322,11 @@
 
     th {
       background-color: transparent;
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-color,
         clr-table-border-color,
-        $clr-table-border-color,
-        $clr-use-custom-properties
+        data-variables.$clr-table-border-color,
+        variables.$clr-use-custom-properties
       );
 
       border-top: 0 none;
@@ -255,7 +341,7 @@
       border-top: 0 none;
 
       // there's no border so we have to adjust padding to preserve baseline.
-      padding-top: $clr-table-topcellpadding + $clr-table-borderwidth;
+      padding-top: data-variables.$clr-table-topcellpadding + data-variables.$clr-table-borderwidth;
 
       &:first-child {
         border-right: 0 none;
@@ -284,17 +370,17 @@
     th,
     td {
       // nudge down to force row to 24px height with border
-      padding-top: $clr-table--compact-verticalPadding + $clr_baselineRem_1px;
-      padding-bottom: $clr-table--compact-verticalPadding;
+      padding-top: data-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
+      padding-bottom: data-variables.$clr-table--compact-verticalPadding;
     }
 
     &.table-noborder {
       th,
       td {
         // nudge down to force row to 24px height with border
-        padding-top: $clr-table--compact-verticalPadding + $clr_baselineRem_2px;
+        padding-top: data-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_2px;
         // account for now missing bottom border
-        padding-bottom: $clr-table--compact-verticalPadding + $clr_baselineRem_1px;
+        padding-bottom: data-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
       }
     }
   }

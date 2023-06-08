@@ -1,10 +1,14 @@
+@use 'sass:string';
+@use 'mixins';
+@use 'variables/variables.global';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('close.clarity') {
+@include mixins.exports('close.clarity') {
   // scss-lint:disable QualifyingElement
   button.close {
     padding: 0;
@@ -17,32 +21,52 @@
 
   .close {
     float: right;
-    font-size: $clr_baselineRem_1_5;
+    font-size: variables.$clr_baselineRem_1_5;
     transition: color linear 0.2s;
     font-weight: 200;
     text-shadow: none;
     line-height: inherit;
-    @include css-var(color, unquote('clr-close-color--normal'), $clr-close-color--normal, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      string.unquote('clr-close-color--normal'),
+      variables.$clr-close-color--normal,
+      variables.$clr-use-custom-properties
+    );
 
     cds-icon,
     clr-icon {
-      @include css-var(fill, unquote('clr-close-color--normal'), $clr-close-color--normal, $clr-use-custom-properties);
+      @include mixins.css-var(
+        fill,
+        string.unquote('clr-close-color--normal'),
+        variables.$clr-close-color--normal,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &:focus,
     &:hover,
     &:active {
       opacity: 1;
-      @include css-var(color, unquote('clr-close-color--hover'), $clr-close-color--hover, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        string.unquote('clr-close-color--hover'),
+        variables.$clr-close-color--hover,
+        variables.$clr-use-custom-properties
+      );
 
       cds-icon,
       clr-icon {
-        @include css-var(fill, unquote('clr-close-color--hover'), $clr-close-color--hover, $clr-use-custom-properties);
+        @include mixins.css-var(
+          fill,
+          string.unquote('clr-close-color--hover'),
+          variables.$clr-close-color--hover,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
     &:focus {
-      @include include-outline-style-form-fields();
+      @include mixins.include-outline-style-form-fields();
     }
   }
 }

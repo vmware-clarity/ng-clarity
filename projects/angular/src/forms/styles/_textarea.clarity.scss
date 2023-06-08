@@ -1,15 +1,20 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('forms.textarea') {
+@include mixins.exports('forms.textarea') {
   // @TODO Fix selectors when old forms are removed to allow better defaults
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    margin-top: $clr-forms-baseline;
+    margin-top: styles-variables.$clr-forms-baseline;
 
     .clr-validate-icon {
       margin-left: 0;
@@ -17,37 +22,52 @@
   }
 
   .clr-textarea {
-    $textarea-vertical-padding: $clr-forms-baseline + $clr_baselineRem_2px;
-    $textarea-horizontal-padding: $clr-forms-baseline * 2;
+    $textarea-vertical-padding: styles-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px;
+    $textarea-horizontal-padding: styles-variables.$clr-forms-baseline * 2;
 
-    max-width: calc(100% - #{$clr-forms-baseline});
+    max-width: calc(100% - #{styles-variables.$clr-forms-baseline});
     height: auto;
 
     resize: vertical;
-    @include css-var(
+    @include mixins.css-var(
       background,
       clr-forms-textarea-background-color,
-      $clr-forms-textarea-background-color,
-      $clr-use-custom-properties
+      styles-variables.$clr-forms-textarea-background-color,
+      variables.$clr-use-custom-properties
     );
-    border: $clr-global-borderwidth solid;
-    @include css-var(border-color, clr-forms-border-color, $clr-forms-border-color, $clr-use-custom-properties);
-    @include css-var(color, clr-forms-text-color, $clr-forms-text-color, $clr-use-custom-properties);
-    border-radius: $clr-forms-baseline * 0.5;
+    border: variables.$clr-global-borderwidth solid;
+    @include mixins.css-var(
+      border-color,
+      clr-forms-border-color,
+      styles-variables.$clr-forms-border-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      clr-forms-text-color,
+      styles-variables.$clr-forms-text-color,
+      variables.$clr-use-custom-properties
+    );
+    border-radius: styles-variables.$clr-forms-baseline * 0.5;
     padding: $textarea-vertical-padding $textarea-horizontal-padding;
-    font-size: $clr-forms-field-font-size;
+    font-size: styles-variables.$clr-forms-field-font-size;
 
     &:focus {
-      @include include-slim-outline-style-form-fields();
+      @include mixins.include-slim-outline-style-form-fields();
     }
 
     &:disabled {
-      @include disabled-form-fields();
+      @include styles-mixins.disabled-form-fields();
     }
   }
 
   .clr-error .clr-textarea {
-    @include css-var(border-color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-forms-invalid-color,
+      styles-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-control-container textarea {
@@ -55,14 +75,14 @@
   }
 
   .clr-form-control.row .clr-textarea-wrapper {
-    max-width: calc(100% - #{$clr-forms-baseline});
+    max-width: calc(100% - #{styles-variables.$clr-forms-baseline});
   }
 
   .clr-form-compact .clr-textarea-wrapper {
     margin-top: 0;
 
     .clr-textarea {
-      @include form-flatten-compact-adjustments();
+      @include styles-mixins.form-flatten-compact-adjustments();
     }
   }
 }

@@ -1,32 +1,37 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('forms.range') {
+@include mixins.exports('forms.range') {
   .clr-range-wrapper {
     position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    height: $clr-forms-range-thumb-height;
+    height: styles-variables.$clr-forms-range-thumb-height;
     white-space: nowrap;
 
     .fill-input {
       position: absolute;
       left: 0;
       display: inline-block;
-      height: $clr-forms-range-track-height;
+      height: styles-variables.$clr-forms-range-track-height;
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
 
-      @include css-var(
+      @include mixins.css-var(
         background-color,
         clr-forms-range-progress-fill-color,
-        $clr-forms-range-progress-fill-color,
-        $clr-use-custom-properties
+        styles-variables.$clr-forms-range-progress-fill-color,
+        variables.$clr-use-custom-properties
       );
     }
   }
@@ -35,7 +40,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: $clr-forms-range-thumb-height;
+    height: styles-variables.$clr-forms-range-thumb-height;
 
     &:disabled,
     &:disabled + .fill-input {
@@ -46,46 +51,50 @@
 
   input[type='range'] {
     padding: 0;
-    @include range-style($clr-forms-range-track-height, $clr-forms-range-track-color, clr-forms-range-track-color);
+    @include styles-mixins.range-style(
+      styles-variables.$clr-forms-range-track-height,
+      styles-variables.$clr-forms-range-track-color,
+      clr-forms-range-track-color
+    );
 
     &::-webkit-slider-runnable-track {
-      @include range-track-style(
-        $clr-forms-range-track-height,
-        $clr-forms-range-track-color,
+      @include styles-mixins.range-track-style(
+        styles-variables.$clr-forms-range-track-height,
+        styles-variables.$clr-forms-range-track-color,
         clr-forms-range-track-color
       );
     }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      @include range-thumb-style(
-        $clr-forms-range-thumb-margin,
-        $clr-forms-range-thumb-height,
-        $clr-forms-range-progress-fill-color,
+      @include styles-mixins.range-thumb-style(
+        styles-variables.$clr-forms-range-thumb-margin,
+        styles-variables.$clr-forms-range-thumb-height,
+        styles-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color
       );
     }
 
     &::-moz-range-track {
-      @include range-track-style(
-        $clr-forms-range-track-height,
-        $clr-forms-range-track-color,
+      @include styles-mixins.range-track-style(
+        styles-variables.$clr-forms-range-track-height,
+        styles-variables.$clr-forms-range-track-color,
         clr-forms-range-track-color
       );
     }
 
     &::-moz-range-thumb {
       border: 0;
-      @include range-thumb-style(
-        $clr-forms-range-thumb-margin,
-        $clr-forms-range-thumb-height,
-        $clr-forms-range-progress-fill-color,
+      @include styles-mixins.range-thumb-style(
+        styles-variables.$clr-forms-range-thumb-margin,
+        styles-variables.$clr-forms-range-thumb-height,
+        styles-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color
       );
     }
   }
 
-  @include fixForMsEdge() {
+  @include mixins.fixForMsEdge() {
     .clr-range-wrapper {
       .fill-input {
         display: none;
@@ -93,12 +102,12 @@
 
       &.progress-fill {
         input[type='range']::-ms-fill-lower {
-          height: $clr-forms-range-track-height;
-          @include css-var(
+          height: styles-variables.$clr-forms-range-track-height;
+          @include mixins.css-var(
             background-color,
             clr-forms-range-progress-fill-color,
-            $clr-forms-range-progress-fill-color,
-            $clr-use-custom-properties
+            styles-variables.$clr-forms-range-progress-fill-color,
+            variables.$clr-use-custom-properties
           );
         }
       }
@@ -107,31 +116,31 @@
     input[type='range'] {
       border: 0;
       margin: 0;
-      @include range-style($clr-forms-range-thumb-height, transparent);
+      @include styles-mixins.range-style(styles-variables.$clr-forms-range-thumb-height, transparent);
 
       &::-ms-track {
         margin: 0;
         border: 0;
-        @include range-track-style(
-          $clr-forms-range-track-height,
-          $clr-forms-range-track-color,
+        @include styles-mixins.range-track-style(
+          styles-variables.$clr-forms-range-track-height,
+          styles-variables.$clr-forms-range-track-color,
           clr-forms-range-track-color
         );
       }
 
       &::-ms-thumb {
         border: 0;
-        @include range-thumb-style(
+        @include styles-mixins.range-thumb-style(
           0,
-          $clr-forms-range-thumb-height,
-          $clr-forms-range-progress-fill-color,
+          styles-variables.$clr-forms-range-thumb-height,
+          styles-variables.$clr-forms-range-progress-fill-color,
           clr-forms-range-progress-fill-color
         );
       }
     }
   }
 
-  @include fixForIE11AndUp() {
+  @include mixins.fixForIE11AndUp() {
     .clr-range-wrapper {
       .fill-input {
         display: none;
@@ -139,12 +148,12 @@
 
       &.progress-fill {
         input[type='range']::-ms-fill-lower {
-          height: $clr-forms-range-track-height;
-          @include css-var(
+          height: styles-variables.$clr-forms-range-track-height;
+          @include mixins.css-var(
             background-color,
             clr-forms-range-progress-fill-color,
-            $clr-forms-range-progress-fill-color,
-            $clr-use-custom-properties
+            styles-variables.$clr-forms-range-progress-fill-color,
+            variables.$clr-use-custom-properties
           );
         }
       }
@@ -157,24 +166,24 @@
     input[type='range'] {
       border: 0;
       margin: 0;
-      @include range-style($clr-forms-range-thumb-height, transparent);
+      @include styles-mixins.range-style(styles-variables.$clr-forms-range-thumb-height, transparent);
 
       &::-ms-track {
         border: 0;
         margin: 0;
-        @include range-track-style(
-          $clr-forms-range-track-height,
-          $clr-forms-range-track-color,
+        @include styles-mixins.range-track-style(
+          styles-variables.$clr-forms-range-track-height,
+          styles-variables.$clr-forms-range-track-color,
           clr-forms-range-track-color
         );
       }
 
       &::-ms-thumb {
         border: 0;
-        @include range-thumb-style(
+        @include styles-mixins.range-thumb-style(
           0,
-          $clr-forms-range-thumb-height,
-          $clr-forms-range-progress-fill-color,
+          styles-variables.$clr-forms-range-thumb-height,
+          styles-variables.$clr-forms-range-progress-fill-color,
           clr-forms-range-progress-fill-color
         );
       }

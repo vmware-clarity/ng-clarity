@@ -4,9 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.tabs';
+@use 'properties.tabs';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.tabs' as tabs-variables;
 
-@include exports('tabs.clarity') {
+@include mixins.exports('tabs.clarity') {
   @media screen {
     section[aria-hidden='true'] {
       display: none;
@@ -36,7 +39,7 @@ button.nav-link {
   display: inline;
 }
 
-@include fixForIE11AndUp {
+@include mixins.fixForIE11AndUp {
   .tab-content {
     display: inline-block;
     width: 100%;
@@ -52,18 +55,18 @@ button.nav-link {
     box-shadow: none;
     flex-direction: column;
     align-items: stretch;
-    margin-right: $clr_baselineRem_1;
+    margin-right: variables.$clr_baselineRem_1;
     overflow: auto;
     flex-shrink: 0;
-    padding: $clr_baselineRem_4px;
-    width: $clr_baselineRem_10;
-    min-width: $clr_baselineRem_2;
+    padding: variables.$clr_baselineRem_4px;
+    width: variables.$clr_baselineRem_10;
+    min-width: variables.$clr_baselineRem_2;
 
     .nav-link {
       text-align: left;
-      padding: 0 $clr_baselineRem_0_5;
+      padding: 0 variables.$clr_baselineRem_0_5;
       border: none;
-      margin-bottom: $clr_baselineRem_1px;
+      margin-bottom: variables.$clr_baselineRem_1px;
       flex-shrink: 0;
       margin-top: 0;
       margin-left: 0;
@@ -76,22 +79,27 @@ button.nav-link {
       &.active,
       &:hover {
         // IE/OldEdge
-        box-shadow: inset $clr_baselineRem_3px 0 0 $clr-nav-active-box-shadow-color;
-        @if $clr-use-custom-properties == true {
-          box-shadow: inset $clr_baselineRem_3px 0 0 var(--clr-nav-active-box-shadow-color);
+        box-shadow: inset variables.$clr_baselineRem_3px 0 0 tabs-variables.$clr-nav-active-box-shadow-color;
+        @if variables.$clr-use-custom-properties == true {
+          box-shadow: inset variables.$clr_baselineRem_3px 0 0 var(--clr-nav-active-box-shadow-color);
         }
       }
       &.active {
-        @include css-var(
+        @include mixins.css-var(
           background-color,
           clr-nav-active-bg-color,
-          $clr-global-selection-color,
-          $clr-use-custom-properties
+          variables.$clr-global-selection-color,
+          variables.$clr-use-custom-properties
         );
       }
 
       &:not(.active):hover {
-        @include css-var(background-color, clr-nav-hover-bg-color, $clr-nav-hover-bg-color, $clr-use-custom-properties);
+        @include mixins.css-var(
+          background-color,
+          clr-nav-hover-bg-color,
+          tabs-variables.$clr-nav-hover-bg-color,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }

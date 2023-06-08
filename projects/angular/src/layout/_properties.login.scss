@@ -1,11 +1,15 @@
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.login' as layout-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('login.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('login.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../layout/_login.clarity.scss
       --clr-login-title-color: var(--clr-h1-color);
@@ -23,7 +27,7 @@
       --clr-login-subtitle-font-family: var(--clr-h3-font-family);
 
       --clr-login-background-color: var(--clr-global-app-background);
-      --clr-login-background: url('data:image/svg+xml;charset=utf8,#{$clr-login-background}');
+      --clr-login-background: url('data:image/svg+xml;charset=utf8,#{layout-variables.$clr-login-background}');
 
       --clr-login-error-background-color: var(--clr-color-danger-800);
       --clr-login-error-border-radius: var(--clr-global-borderradius);

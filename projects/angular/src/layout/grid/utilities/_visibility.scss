@@ -1,3 +1,7 @@
+@use 'sass:map';
+@use '../../../utils/variables/variables.layout';
+@use '../mixins/breakpoint';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -9,15 +13,15 @@
   visibility: hidden !important;
 }
 
-@each $bp in map-keys($clr-grid-breakpoints) {
+@each $bp in map.keys(variables.$clr-grid-breakpoints) {
   .clr-hidden-#{$bp}-up {
-    @include clr-media-breakpoint-up($bp) {
+    @include breakpoint.clr-media-breakpoint-up($bp) {
       display: none !important;
     }
   }
 
   .clr-hidden-#{$bp}-down {
-    @include clr-media-breakpoint-down($bp) {
+    @include breakpoint.clr-media-breakpoint-down($bp) {
       display: none !important;
     }
   }

@@ -1,3 +1,7 @@
+@use 'sass:map';
+@use '../../../utils/variables/variables.layout';
+@use '../mixins/breakpoint';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,9 +9,9 @@
  */
 
 // Custom styles for additional flex alignment options.
-@each $breakpoint in map-keys($clr-grid-breakpoints) {
-  @include clr-media-breakpoint-up($breakpoint) {
-    $infix: clr-breakpoint-infix($breakpoint, $clr-grid-breakpoints);
+@each $breakpoint in map.keys(variables.$clr-grid-breakpoints) {
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
+    $infix: breakpoint.clr-breakpoint-infix($breakpoint, variables.$clr-grid-breakpoints);
 
     .clr-flex#{$infix}-row {
       flex-direction: row !important;
@@ -147,9 +151,9 @@
   }
 }
 
-@each $breakpoint in map-keys($clr-grid-breakpoints) {
+@each $breakpoint in map.keys(variables.$clr-grid-breakpoints) {
   // Flex column reordering
-  @include clr-media-breakpoint-up($breakpoint) {
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
     .clr-flex-#{$breakpoint}-first {
       order: -1;
     }
@@ -164,7 +168,7 @@
   }
 
   // Alignment for every item
-  @include clr-media-breakpoint-up($breakpoint) {
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
     .clr-flex-items-#{$breakpoint}-top {
       align-items: flex-start;
     }
@@ -179,7 +183,7 @@
   }
 
   // Alignment per item
-  @include clr-media-breakpoint-up($breakpoint) {
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
     .clr-flex-#{$breakpoint}-top {
       align-self: flex-start;
     }
@@ -194,7 +198,7 @@
   }
 
   // Horizontal alignment of item
-  @include clr-media-breakpoint-up($breakpoint) {
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
     .clr-flex-items-#{$breakpoint}-left {
       justify-content: flex-start;
     }

@@ -1,3 +1,6 @@
+@use '../../utils/variables/variables.color';
+@use '../../utils/variables/variables.typography' as variables2;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,15 +8,15 @@
  */
 
 // Usage: ../layout/nav/_nav.clarity.scss
-$clr-nav-box-shadow-color: $clr-color-neutral-400 !default;
-$clr-nav-active-box-shadow-color: $clr-color-action-600 !default;
+$clr-nav-box-shadow-color: variables.$clr-color-neutral-400 !default;
+$clr-nav-active-box-shadow-color: variables.$clr-color-action-600 !default;
 
-$clr-nav-link-color: $clr-color-neutral-700 !default;
-$clr-nav-link-active-color: $clr-color-neutral-1000 !default;
-$clr-nav-hover-bg-color: $clr-color-neutral-200 !default;
+$clr-nav-link-color: variables.$clr-color-neutral-700 !default;
+$clr-nav-link-active-color: variables.$clr-color-neutral-1000 !default;
+$clr-nav-hover-bg-color: variables.$clr-color-neutral-200 !default;
 
-$clr-nav-link-font-size: $clr-p1-font-size !default;
-$clr-nav-link-font-weight: $clr-p1-font-weight !default;
-$clr-nav-link-letter-spacing: $clr-p1-letter-spacing !default;
+$clr-nav-link-font-size: variables2.$clr-p1-font-size !default;
+$clr-nav-link-font-weight: variables2.$clr-p1-font-weight !default;
+$clr-nav-link-letter-spacing: variables2.$clr-p1-letter-spacing !default;
 
 $clr-nav-link-active-font-weight: $clr-nav-link-font-weight !default;

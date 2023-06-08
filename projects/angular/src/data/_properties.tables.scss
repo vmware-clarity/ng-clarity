@@ -1,11 +1,15 @@
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.tables' as data-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('table.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('table.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Theme variables
       // Usage: ./data/_tables.clarity.scss
@@ -25,14 +29,14 @@
 
       // Border radius of corner cells needs to be slightly less than the table's,
       // To make sure they correctly cover the whole area up to the border.
-      --clr-table-cornercellradius: #{$clr-table-border-radius - $clr_baselineRem_1px};
+      --clr-table-cornercellradius: #{data-variables.$clr-table-border-radius - variables.$clr_baselineRem_1px};
 
       // Usage: ./data/_tables.clarity.scss
       // Usage: ./data/datagrid/_datagrid.clarity.scss
       --clr-table-font-color: var(--clr-color-neutral-700);
 
       // Table header styles
-      --clr-thead-color: #{$clr-thead-color};
+      --clr-thead-color: #{data-variables.$clr-thead-color};
     }
   }
 }

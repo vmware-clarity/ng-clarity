@@ -1,30 +1,39 @@
+@use '../../image/icons.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.spinner' as spinner-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('spinner.clarity') {
+@include mixins.exports('spinner.clarity') {
   .spinner {
     // spinner-lg is the default
     position: relative;
     display: inline-block;
-    @include min-equilateral($clr_baselineRem_3);
+    @include mixins.min-equilateral(variables.$clr_baselineRem_3);
     animation: spin 1s linear infinite;
     margin: 0;
     padding: 0;
-    background: generateSpinnerIcon($clr-spinner-bg-color, $clr-spinner-color, $clr-spinner-opacity);
+    background: icons.generateSpinnerIcon(
+      spinner-variables.$clr-spinner-bg-color,
+      spinner-variables.$clr-spinner-color,
+      spinner-variables.$clr-spinner-opacity
+    );
     text-indent: 100%;
     overflow: hidden;
     white-space: nowrap;
 
     &.spinner-md {
-      @include min-equilateral($clr_baselineRem_1_5);
+      @include mixins.min-equilateral(variables.$clr_baselineRem_1_5);
     }
 
     &.spinner-inline,
     &.spinner-sm {
-      @include min-equilateral($clr_baselineRem_0_75);
+      @include mixins.min-equilateral(variables.$clr_baselineRem_0_75);
     }
 
     &.spinner-inline {
@@ -33,30 +42,30 @@
 
     &.spinner-inverse {
       // TODO: get ux input on direction here
-      background: generateSpinnerIcon($clr-spinner-inverse-bg-color, #74c1e2);
+      background: icons.generateSpinnerIcon(spinner-variables.$clr-spinner-inverse-bg-color, #74c1e2);
     }
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
-      background: generateSpinnerIcon(transparent, #ffffff, 1);
+      background: icons.generateSpinnerIcon(transparent, #ffffff, 1);
     }
 
     &.spinner-check {
       animation: none;
-      background: generateCheckIcon($clr-spinner-color);
+      background: icons.generateCheckIcon(spinner-variables.$clr-spinner-color);
     }
   }
 
   //Spinners inside of small buttons
   .btn-sm {
     .spinner {
-      @include min-equilateral($clr_baselineRem_0_5416);
+      @include mixins.min-equilateral(variables.$clr_baselineRem_0_5416);
     }
   }
 
   .btn-icon:not(.btn-sm) {
     .spinner {
-      @include min-equilateral($clr_baselineRem_0_65);
+      @include mixins.min-equilateral(variables.$clr_baselineRem_0_65);
     }
   }
 

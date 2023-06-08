@@ -1,15 +1,20 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('forms.input-group') {
+@include mixins.exports('forms.input-group') {
   .clr-input-group {
-    @include form-fields-appearance();
-    @include input-border-bottom-animation();
+    @include styles-mixins.form-fields-appearance();
+    @include styles-mixins.input-border-bottom-animation();
     max-width: 100%;
-    height: $clr_baselineRem_1;
+    height: variables.$clr_baselineRem_1;
 
     &.clr-focus {
       width: auto;
@@ -38,46 +43,61 @@
     }
 
     .clr-input-group-addon {
-      @include css-var(color, clr-forms-subtext-color, $clr-forms-subtext-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-forms-subtext-color,
+        styles-variables.$clr-forms-subtext-color,
+        variables.$clr-use-custom-properties
+      );
 
       &:first-child {
-        padding: 0 0 0 ($clr-forms-baseline * 1.5);
+        padding: 0 0 0 (styles-variables.$clr-forms-baseline * 1.5);
       }
 
       &:last-child {
-        padding: 0 ($clr-forms-baseline * 1.5) 0 0;
+        padding: 0 (styles-variables.$clr-forms-baseline * 1.5) 0 0;
       }
     }
 
     .clr-input-group-icon-action {
-      @include clr-no-styles-button();
-      @include css-var(color, clr-forms-focused-color, $clr-forms-focused-color, $clr-use-custom-properties);
-      padding: 0 $clr-forms-baseline * 1.5;
+      @include mixins.clr-no-styles-button();
+      @include mixins.css-var(
+        color,
+        clr-forms-focused-color,
+        styles-variables.$clr-forms-focused-color,
+        variables.$clr-use-custom-properties
+      );
+      padding: 0 styles-variables.$clr-forms-baseline * 1.5;
 
       cds-icon,
       clr-icon {
-        @include equilateral($clr_baselineRem_0_75);
-        transform: translate(-1 * $clr_baselineRem_1px, -1 * $clr_baselineRem_1px);
+        @include mixins.equilateral(variables.$clr_baselineRem_0_75);
+        transform: translate(-1 * variables.$clr_baselineRem_1px, -1 * variables.$clr_baselineRem_1px);
       }
     }
   }
 
   .clr-form-control-disabled .clr-input-group-icon-action {
-    @include css-var(color, clr-forms-text-disabled-color, $clr-forms-text-disabled-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-forms-text-disabled-color,
+      styles-variables.$clr-forms-text-disabled-color,
+      variables.$clr-use-custom-properties
+    );
     cursor: not-allowed;
   }
 
   .clr-error .clr-input-group {
-    @include css-var(
+    @include mixins.css-var(
       border-bottom-color,
       clr-forms-invalid-color,
-      $clr-forms-invalid-color,
-      $clr-use-custom-properties
+      styles-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
     );
-    @include input-border-bottom-animation(
-      $clr-forms-invalid-color,
+    @include styles-mixins.input-border-bottom-animation(
+      styles-variables.$clr-forms-invalid-color,
       clr-forms-invalid-color,
-      $clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
   }
 

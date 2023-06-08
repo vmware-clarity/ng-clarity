@@ -1,3 +1,5 @@
+@use '../../utils/variables/variables.color';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,13 +7,13 @@
  */
 
 // Usage: ../progress/progress-bars/_progress-bars.clarity.scss
-$clr-progress-defaultBarColor: $clr-color-action-600 !default;
+$clr-progress-defaultBarColor: variables.$clr-color-action-600 !default;
 // @deprecated in 3.0
 //  warning, success, and danger distinctions for progress bars are deprecated in 3.0
-$clr-progress-success-color: $clr-color-success-400 !default;
+$clr-progress-success-color: variables.$clr-color-success-400 !default;
 // @deprecated in 3.0
-$clr-progress-danger-color: $clr-color-danger-800 !default;
+$clr-progress-danger-color: variables.$clr-color-danger-800 !default;
 // @deprecated in 3.0
 $clr-progress-warning-color: $clr-progress-danger-color !default;
-$clr-progress-bgColor: $clr-color-neutral-200 !default;
-$clr-progress-user-color: $clr-color-secondary-action-800 !default;
+$clr-progress-bgColor: variables.$clr-color-neutral-200 !default;
+$clr-progress-user-color: variables.$clr-color-secondary-action-800 !default;

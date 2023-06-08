@@ -1,25 +1,40 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.typography' as variables2;
+@use 'variables.forms' as variables3;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('forms.wrappers') {
+@include mixins.exports('forms.wrappers') {
   .clr-form {
-    padding: $clr-forms-baseline;
+    padding: variables3.$clr-forms-baseline;
   }
 
   .clr-form-group {
-    padding: $clr-forms-baseline;
+    padding: variables3.$clr-forms-baseline;
   }
 
   .clr-required-mark {
     &::after {
       content: '*';
-      @include css-var(color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
-      @include css-var(fill, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
-      font-size: $clr-p3-font-size;
-      margin-left: $clr_baselineRem_0_25;
+      @include mixins.css-var(
+        color,
+        clr-forms-invalid-color,
+        variables3.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        fill,
+        clr-forms-invalid-color,
+        variables3.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+      font-size: variables2.$clr-p3-font-size;
+      margin-left: variables.$clr_baselineRem_0_25;
     }
   }
 }

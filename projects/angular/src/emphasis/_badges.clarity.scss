@@ -4,44 +4,48 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.badges';
+@use 'properties.badges';
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.badges' as variables2;
+@use 'variables.label' as variables3;
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},
   &.badge-#{$alias} {
-    @include css-var(
+    @include mixins.css-var(
       background,
-      getBadgeColor($color, bg-color, 'css-var'),
-      getBadgeColor($color, bg-color),
-      $clr-use-custom-properties
+      variables2.getBadgeColor($color, bg-color, 'css-var'),
+      variables2.getBadgeColor($color, bg-color),
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       color,
-      getBadgeColor($color, color, 'css-var'),
-      getBadgeColor($color, color),
-      $clr-use-custom-properties
+      variables2.getBadgeColor($color, color, 'css-var'),
+      variables2.getBadgeColor($color, color),
+      variables.$clr-use-custom-properties
     );
   }
 }
 
 @mixin generateStatusBadgeStyles($status: info) {
   &.badge-#{$status} {
-    @include css-var(
+    @include mixins.css-var(
       background,
-      getBadgeColor($status, bg-color, 'css-var'),
-      getBadgeColor($status, bg-color),
-      $clr-use-custom-properties
+      variables2.getBadgeColor($status, bg-color, 'css-var'),
+      variables2.getBadgeColor($status, bg-color),
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       color,
-      getBadgeColor($status, color, 'css-var'),
-      getBadgeColor($status, color),
-      $clr-use-custom-properties
+      variables2.getBadgeColor($status, color, 'css-var'),
+      variables2.getBadgeColor($status, color),
+      variables.$clr-use-custom-properties
     );
   }
 }
 
-@include exports('badges.clarity') {
+@include mixins.exports('badges.clarity') {
   //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
   //instead of using our baselineRem function. This was done to achieve the desired look
   //and to align this with our vertical baseline. Not sure why but aligning inline-blocks within inline-blocks
@@ -53,20 +57,30 @@
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    min-width: $clr_baselineRem_0_625;
-    background: getLabelColor(gray, bg-color);
-    height: $clr_baselineRem_0_625;
+    min-width: variables.$clr_baselineRem_0_625;
+    background: variables3.getLabelColor(gray, bg-color);
+    height: variables.$clr_baselineRem_0_625;
     line-height: normal;
-    border-radius: $clr_baselineRem_0_416;
-    font-size: $clr_baselineRem_0_416;
-    padding: 0 $clr_baselineRem_4px;
-    margin-right: $clr_baselineRem_0_25;
+    border-radius: variables.$clr_baselineRem_0_416;
+    font-size: variables.$clr_baselineRem_0_416;
+    padding: 0 variables.$clr_baselineRem_4px;
+    margin-right: variables.$clr_baselineRem_0_25;
     white-space: nowrap;
     text-align: center;
-    @include css-var(color, clr-badge-font-color-light, $clr-badge-font-color-light, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-badge-font-color-light,
+      variables2.$clr-badge-font-color-light,
+      variables.$clr-use-custom-properties
+    );
 
     &:visited {
-      @include css-var(color, clr-badge-font-color-light, $clr-badge-font-color-light, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-badge-font-color-light,
+        variables2.$clr-badge-font-color-light,
+        variables.$clr-use-custom-properties
+      );
     }
 
     @include generateBadgeStyles(gray, 1);
@@ -81,15 +95,15 @@
     @include generateStatusBadgeStyles(warning);
   }
 
-  @include fixForIE10AndUp {
+  @include mixins.fixForIE10AndUp {
     .badge {
-      padding: $clr_baselineRem_2px $clr_baselineRem_0_125 0;
+      padding: variables.$clr_baselineRem_2px variables.$clr_baselineRem_0_125 0;
     }
   }
 
-  @include fixForMsEdge {
+  @include mixins.fixForMsEdge {
     .badge {
-      padding: $clr_baselineRem_2px $clr_baselineRem_0_125 0;
+      padding: variables.$clr_baselineRem_2px variables.$clr_baselineRem_0_125 0;
     }
   }
 }

@@ -1,3 +1,10 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../button/variables.buttons' as button-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.tooltip' as tooltip-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,27 +12,42 @@
  */
 
 @mixin common-tooltip-styles {
-  @include css-var(color, clr-tooltip-color, $clr-tooltip-color, $clr-use-custom-properties);
-  font-size: $clr-tooltip-font-size;
-  @include css-var(font-weight, clr-tooltip-font-weight, $clr-tooltip-font-weight, $clr-use-custom-properties);
-  letter-spacing: $clr-tooltip-letter-spacing;
+  @include mixins.css-var(
+    color,
+    clr-tooltip-color,
+    tooltip-variables.$clr-tooltip-color,
+    variables.$clr-use-custom-properties
+  );
+  font-size: tooltip-variables.$clr-tooltip-font-size;
+  @include mixins.css-var(
+    font-weight,
+    clr-tooltip-font-weight,
+    tooltip-variables.$clr-tooltip-font-weight,
+    variables.$clr-use-custom-properties
+  );
+  letter-spacing: tooltip-variables.$clr-tooltip-letter-spacing;
 
-  @include css-var(
+  @include mixins.css-var(
     background-color,
     clr-tooltip-background-color,
-    $clr-tooltip-background-color,
-    $clr-use-custom-properties
+    tooltip-variables.$clr-tooltip-background-color,
+    variables.$clr-use-custom-properties
   );
-  @include css-var(border-radius, clr-tooltip-border-radius, $clr-tooltip-border-radius, $clr-use-custom-properties);
-  line-height: $clr_baselineRem_0_75;
+  @include mixins.css-var(
+    border-radius,
+    clr-tooltip-border-radius,
+    tooltip-variables.$clr-tooltip-border-radius,
+    variables.$clr-use-custom-properties
+  );
+  line-height: variables.$clr_baselineRem_0_75;
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
-  padding: $clr_baselineRem_0_375 $clr_baselineRem_0_5;
-  width: $clr-tooltip-default-width;
+  padding: variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5;
+  width: tooltip-variables.$clr-tooltip-default-width;
 }
 
 @mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
-  $oppA: map-get($opp-directions, $dirA);
-  $oppB: map-get($opp-directions, $dirB);
+  $oppA: map.get(mixins.$opp-directions, $dirA);
+  $oppB: map.get(mixins.$opp-directions, $dirB);
 
   @include common-tooltip-styles;
 
@@ -36,32 +58,32 @@
   #{$dirB}: auto;
 
   border-#{$oppA}-#{$oppB}-radius: 0;
-  margin-#{$oppA}: $clr-tooltip-adjusted-margin;
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     position: absolute;
-    #{$oppA}: -1 * $clr_baselineRem_0_35;
+    #{$oppA}: -1 * variables.$clr_baselineRem_0_35;
     #{$oppB}: 0;
     #{$dirA}: auto;
     #{$dirB}: auto;
     content: '';
-    border-#{$oppB}: $arrow-height solid $clr-tooltip-background-color;
-    @if $clr-use-custom-properties == true {
+    border-#{$oppB}: tooltip-variables.$arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    @if variables.$clr-use-custom-properties == true {
       border-#{$oppB}-color: var(--clr-tooltip-background-color);
     }
-    border-#{$dirA}: $arrow-width solid $clr-tooltip-background-color;
-    @if $clr-use-custom-properties == true {
+    border-#{$dirA}: tooltip-variables.$arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    @if variables.$clr-use-custom-properties == true {
       border-#{$dirA}-color: var(--clr-tooltip-background-color);
     }
-    border-#{$dirB}: $arrow-height solid transparent;
-    border-#{$oppA}: $arrow-width solid transparent;
+    border-#{$dirB}: tooltip-variables.$arrow-height solid transparent;
+    border-#{$oppA}: tooltip-variables.$arrow-width solid transparent;
 
     pointer-events: none;
   }
 }
 
 @mixin horizontal-tooltip-generator($dirA: right) {
-  $oppA: map-get($opp-directions, $dirA);
+  $oppA: map.get(mixins.$opp-directions, $dirA);
 
   position: absolute;
   #{$dirA}: auto;
@@ -72,33 +94,33 @@
   @include common-tooltip-styles;
 
   border-top-#{$oppA}-radius: 0;
-  margin-#{$oppA}: $clr-tooltip-adjusted-margin;
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     position: absolute;
     top: 0;
-    #{$oppA}: -1 * $clr_baselineRem_0_375;
+    #{$oppA}: -1 * variables.$clr_baselineRem_0_375;
     bottom: auto;
     #{$dirA}: auto;
     content: '';
-    border-top: $arrow-height solid $clr-tooltip-background-color;
-    @if $clr-use-custom-properties == true {
+    border-top: tooltip-variables.$arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    @if variables.$clr-use-custom-properties == true {
       border-top-color: var(--clr-tooltip-background-color);
     }
-    border-#{$dirA}: $arrow-width solid $clr-tooltip-background-color;
-    @if $clr-use-custom-properties == true {
+    border-#{$dirA}: tooltip-variables.$arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    @if variables.$clr-use-custom-properties == true {
       border-#{$dirA}-color: var(--clr-tooltip-background-color);
     }
-    border-bottom: $arrow-height solid transparent;
-    border-#{$oppA}: $arrow-width solid transparent;
+    border-bottom: tooltip-variables.$arrow-height solid transparent;
+    border-#{$oppA}: tooltip-variables.$arrow-width solid transparent;
 
     pointer-events: none;
   }
 }
 
-@import './properties.tooltip';
+@include meta.load-css('properties.tooltip');
 
-@include exports('tooltips.clarity') {
+@include mixins.exports('tooltips.clarity') {
   .tooltip {
     display: inline-block;
     position: relative;
@@ -113,7 +135,7 @@
       opacity: 0;
       transition: opacity 0.3s linear;
       white-space: normal;
-      z-index: map-get($clr-layers, tooltips);
+      z-index: map.get(variables.$clr-layers, tooltips);
 
       &::after {
         position: absolute;
@@ -142,8 +164,8 @@
     }
 
     &:focus > :first-child {
-      outline-offset: $clr_baselineRem_1px;
-      outline-width: $clr_baselineRem_1px;
+      outline-offset: variables.$clr_baselineRem_1px;
+      outline-width: variables.$clr_baselineRem_1px;
       outline-color: rgb(59, 153, 252); //Color that Chrome uses
       outline-style: solid;
     }
@@ -184,22 +206,22 @@
     //Tooltips Size
     &.tooltip-xs > .tooltip-content,
     .tooltip-content.tooltip-xs {
-      width: $clr_baselineRem_3;
+      width: variables.$clr_baselineRem_3;
     }
 
     &.tooltip-sm > .tooltip-content,
     .tooltip-content.tooltip-sm {
-      width: $clr_baselineRem_5;
+      width: variables.$clr_baselineRem_5;
     }
 
     &.tooltip-md > .tooltip-content,
     .tooltip-content.tooltip-md {
-      width: $clr-tooltip-default-width;
+      width: tooltip-variables.$clr-tooltip-default-width;
     }
 
     &.tooltip-lg > .tooltip-content,
     .tooltip-content.tooltip-lg {
-      width: $clr_baselineRem_15;
+      width: variables.$clr_baselineRem_15;
     }
   }
 
@@ -211,16 +233,16 @@
     & > .btn + .tooltip-content,
     &.tooltip-top-right > .btn + .tooltip-content,
     &.tooltip-top-left > .btn + .tooltip-content {
-      margin-bottom: $clr-tooltip-adjusted-margin - $clr-btn-vertical-margin;
+      margin-bottom: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin;
     }
 
     &.tooltip-bottom-right > .btn + .tooltip-content,
     &.tooltip-bottom-left > .btn + .tooltip-content {
-      margin-top: $clr-tooltip-adjusted-margin - $clr-btn-vertical-margin;
+      margin-top: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin;
     }
 
     &.tooltip-right > .btn + .tooltip-content {
-      margin-left: $clr-tooltip-adjusted-margin - $clr-btn-horizontal-margin;
+      margin-left: tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-horizontal-margin;
     }
   }
 

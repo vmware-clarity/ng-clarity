@@ -30,61 +30,61 @@
 // Typography
 // Vertical Nav
 
-@import '../utils/variables/variables';
+@use '../utils/variables/variables';
 
 // Alert
-@import '../emphasis/alert/variables.alert';
+@use '../emphasis/alert/variables.alert' as variables2;
 // End Alert
 
 // Label
 // Has code sharing with badges
-@import '../emphasis/variables.label';
+@use '../emphasis/variables.label' as variables3;
 // END: Label
 
 // Badge
 //Has code sharing with labels
-@import '../emphasis/variables.badges';
+@use '../emphasis/variables.badges' as variables4;
 // END: Badge
 
 // Button
 // Disabled states are global for all buttons, independent of status or type
-@import '../button/variables.buttons';
+@use '../button/variables.buttons' as variables5;
 // BUTTON END
 
 // Card
-@import '../layout/variables.card';
+@use '../layout/variables.card' as variables6;
 // END CARD
 
 // Dropdown
-@import '../popover/dropdown/variables.dropdown';
+@use '../popover/dropdown/variables.dropdown' as variables7;
 // END: Dropdown
 
 // Table
 // NOTE: Datagrid depends on these
-@import '../data/variables.tables';
+@use '../data/variables.tables' as variables8;
 // END Table
 
 // Datagrid
-@import '../data/datagrid/variables.datagrid';
+@use '../data/datagrid/variables.datagrid' as variables9;
 // End Datagrid
 
 // Forms
-@import '../forms/styles/variables.forms';
-@import '../button/variables.toggles';
-@import '../forms/datepicker/variables.datepicker';
-@import '../forms/combobox/variables.combobox';
+@use '../forms/styles/variables.forms' as variables10;
+@use '../button/variables.toggles' as variables11;
+@use '../forms/datepicker/variables.datepicker' as variables12;
+@use '../forms/combobox/variables.combobox' as variables13;
 
 // Header
-@import '../layout/main-container/variables.header';
+@use '../layout/main-container/variables.header' as variables14;
 // END Header
 
 // Login
-@import '../layout/variables.login';
+@use '../layout/variables.login' as variables15;
 // END: Login
 
 // Modal and Wizard (They are genetically related)
-@import '../modal/variables.modal';
-@import '../wizard/variables.wizard';
+@use '../modal/variables.modal' as variables16;
+@use '../wizard/variables.wizard' as variables17;
 // END: Modal and Wizard
 
 // Nav
@@ -94,40 +94,40 @@
 // Vertical Nav
 // Responsive Nav
 // Global nav variables
-@import '../layout/nav/variables.nav';
-@import '../layout/nav/variables.responsive-nav';
+@use '../layout/nav/variables.nav' as variables18;
+@use '../layout/nav/variables.responsive-nav' as variables19;
 // Subnav - NOTE: Depricated
-@import '../layout/nav/variables.subnav';
+@use '../layout/nav/variables.subnav' as variables20;
 // Vertical Nav
-@import '../layout/vertical-nav/variables.vertical-nav';
+@use '../layout/vertical-nav/variables.vertical-nav' as variables21;
 // END: Nav variables
 
 // Progress Bars
-@import '../progress/progress-bars/variables.progress-bars';
+@use '../progress/progress-bars/variables.progress-bars' as variables22;
 // END Progress bars
 
 // Signpost
-@import '../popover/signpost/variables.signpost';
+@use '../popover/signpost/variables.signpost' as variables23;
 // END Signpost variables
 
 // Spinners
-@import '../progress/spinner/variables.spinner';
+@use '../progress/spinner/variables.spinner' as variables24;
 // END Spinners
 
 // Stack View
-@import '../data/stack-view/variables.stack-view';
+@use '../data/stack-view/variables.stack-view' as variables25;
 
 // Tabs
-@import '../layout/tabs/variables.tabs';
+@use '../layout/tabs/variables.tabs' as variables26;
 
 // Tree View
-@import '../data/tree-view/variables.tree-view';
+@use '../data/tree-view/variables.tree-view' as variables27;
 
 // Tooltip
-@import '../popover/tooltip/variables.tooltip';
+@use '../popover/tooltip/variables.tooltip' as variables28;
 
 // Accordion
-@import '../accordion/variables.accordion';
+@use '../accordion/variables.accordion' as variables29;
 
 // Timeline
-@import '../timeline/variables.timeline';
+@use '../timeline/variables.timeline' as variables30;

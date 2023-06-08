@@ -1,3 +1,9 @@
+@use 'sass:map';
+@use '../../../utils/variables/variables.global' as variables2;
+@use '../../../utils/variables/variables.layout';
+@use 'breakpoint';
+@use 'grid';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -5,20 +11,20 @@
  */
 
 @mixin clr-make-grid-columns(
-  $columns: $clr-grid-columns,
-  $gutter: $clr-grid-gutter-width,
-  $breakpoints: $clr-grid-breakpoints
+  $columns: variables.$clr-grid-columns,
+  $gutter: variables.$clr-grid-gutter-width,
+  $breakpoints: variables.$clr-grid-breakpoints
 ) {
   // Common properties for all breakpoints
   %clr-grid-column {
     width: 100%;
-    min-height: $clr_baselineRem_1px; // Prevent columns from collapsing when empty
+    min-height: variables2.$clr_baselineRem_1px; // Prevent columns from collapsing when empty
     padding-right: ($gutter * 0.5);
     padding-left: ($gutter * 0.5);
   }
 
-  @each $breakpoint in map-keys($breakpoints) {
-    $infix: clr-breakpoint-infix($breakpoint, $breakpoints);
+  @each $breakpoint in map.keys($breakpoints) {
+    $infix: breakpoint.clr-breakpoint-infix($breakpoint, $breakpoints);
 
     // Allow columns to stretch full width below their breakpoints
     @for $i from 1 through $columns {
@@ -32,7 +38,7 @@
       @extend %clr-grid-column;
     }
 
-    @include clr-media-breakpoint-up($breakpoint, $breakpoints) {
+    @include breakpoint.clr-media-breakpoint-up($breakpoint, $breakpoints) {
       // Provide basic `.clr-col-{bp}` classes for equal-width flexbox columns
       .clr-col#{$infix} {
         flex-basis: 0;
@@ -48,7 +54,7 @@
 
       @for $i from 1 through $columns {
         .clr-col#{$infix}-#{$i} {
-          @include clr-make-col($i, $columns);
+          @include grid.clr-make-col($i, $columns);
         }
       }
 
@@ -72,7 +78,7 @@
           /* stylelint-disable */
           // Avoid emitting useless .offset-0
           .clr-offset#{$infix}-#{$i} {
-            @include clr-make-col-offset($i, $columns);
+            @include grid.clr-make-col-offset($i, $columns);
           }
           /* stylelint-enable */
         }

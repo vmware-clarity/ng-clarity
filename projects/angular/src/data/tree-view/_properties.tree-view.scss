@@ -1,11 +1,14 @@
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('tree.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('tree.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../data/tree-view/_tree-view.clarity.scss
       --clr-tree-border-radius: var(--clr-global-borderradius);

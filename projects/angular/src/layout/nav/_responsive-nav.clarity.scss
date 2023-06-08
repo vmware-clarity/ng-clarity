@@ -1,3 +1,14 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.color' as variables2;
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.layout' as variables3;
+@use '../main-container/variables.header' as variables5;
+@use '../vertical-nav/vertical-nav.clarity';
+@use 'header.clarity';
+@use 'variables.responsive-nav' as variables4;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -12,19 +23,24 @@
   right: $right;
   bottom: $bottom;
   left: $left;
-  @include css-var(background, clr-nav-background-color, $clr-nav-background-color, $clr-use-custom-properties);
-  z-index: $clr-sliding-panel-z-index;
+  @include mixins.css-var(
+    background,
+    clr-nav-background-color,
+    variables4.$clr-nav-background-color,
+    variables.$clr-use-custom-properties
+  );
+  z-index: variables4.$clr-sliding-panel-z-index;
   height: 100vh;
 }
 
-@mixin menu-trigger($right: auto, $left: 0, $transformX: $clr-trigger-position) {
+@mixin menu-trigger($right: auto, $left: 0, $transformX: variables4.$clr-trigger-position) {
   position: fixed;
   top: 0;
   right: $right;
   left: $left;
-  z-index: $clr-sliding-panel-z-index;
+  z-index: variables4.$clr-sliding-panel-z-index;
   transform: translateX($transformX);
-  transition: $clr-trigger-animation;
+  transition: variables4.$clr-trigger-animation;
 
   &::after {
     content: none;
@@ -37,9 +53,9 @@
 
     &::before,
     &::after {
-      left: $clr_baselineRem_0_125;
+      left: variables.$clr_baselineRem_0_125;
       transform-origin: 9%;
-      transition: $clr-trigger-animation;
+      transition: variables4.$clr-trigger-animation;
     }
 
     &::before {
@@ -53,9 +69,9 @@
 }
 
 @mixin clr-nav-close-trigger-animation() {
-  left: $clr_baselineRem_0_125;
+  left: variables.$clr_baselineRem_0_125;
   transform-origin: 9%;
-  transition: $clr-trigger-animation;
+  transition: variables4.$clr-trigger-animation;
 }
 
 @mixin overflow-menu-trigger-animation() {
@@ -64,11 +80,11 @@
 
     &::before,
     &::after {
-      height: $clr_baselineRem_2px;
-      width: $clr_baselineRem_1;
-      left: -1 * $clr_baselineRem_0_25;
+      height: variables.$clr_baselineRem_2px;
+      width: variables.$clr_baselineRem_1;
+      left: -1 * variables.$clr_baselineRem_0_25;
       transform-origin: -3%;
-      transition: $clr-trigger-animation;
+      transition: variables4.$clr-trigger-animation;
     }
 
     &::before {
@@ -81,9 +97,9 @@
   }
 }
 
-@import './properties.responsive-nav';
+@include meta.load-css('properties.responsive-nav');
 
-@include exports('responsive-nav.clarity') {
+@include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
     margin: 0.75rem;
 
@@ -102,25 +118,25 @@
 
   .header-hamburger-trigger,
   .clr-nav-close {
-    $trigger-span-psuedo-positioning: -1 * $clr_baselineRem_7px;
+    $trigger-span-psuedo-positioning: -1 * variables.$clr_baselineRem_7px;
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      height: $clr_baselineRem_2px;
-      width: $clr_baselineRem_1;
-      @include css-var(
+      height: variables.$clr_baselineRem_2px;
+      width: variables.$clr_baselineRem_1;
+      @include mixins.css-var(
         background,
         clr-responsive-nav-trigger-bg-color,
-        $clr-color-neutral-0,
-        $clr-use-custom-properties
+        variables2.$clr-color-neutral-0,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-radius,
         clr-responsive-nav-hamburger-border-radius,
-        $clr-global-borderradius,
-        $clr-use-custom-properties
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
       );
     }
 
@@ -151,24 +167,24 @@
 
   .header-overflow-trigger,
   .clr-nav-close {
-    $overflow-trigger-psuedo-positioning: -1 * $clr_baselineRem_8px;
+    $overflow-trigger-psuedo-positioning: -1 * variables.$clr_baselineRem_8px;
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      @include equilateral($clr_baselineRem_4px);
-      @include css-var(
+      @include mixins.equilateral(variables.$clr_baselineRem_4px);
+      @include mixins.css-var(
         background,
         clr-responsive-nav-trigger-bg-color,
-        $clr-color-neutral-0,
-        $clr-use-custom-properties
+        variables2.$clr-color-neutral-0,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-radius,
         clr-responsive-nav-overflow-border-radius,
-        $clr_baselineRem_4px,
-        $clr-use-custom-properties
+        variables.$clr_baselineRem_4px,
+        variables.$clr-use-custom-properties
       );
     }
 
@@ -197,7 +213,7 @@
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, lg)) {
+  @media screen and (max-width: map.get(variables3.$clr-grid-breakpoints, lg)) {
     .main-container {
       .header-hamburger-trigger,
       .header-overflow-trigger {
@@ -206,18 +222,18 @@
         border: none;
         background: none;
         cursor: pointer;
-        font-size: $clr_baselineRem_1;
-        @include equilateral($clr-header-height);
-        padding: 0 0 $clr_baselineRem_4px 0;
+        font-size: variables.$clr_baselineRem_1;
+        @include mixins.equilateral(variables5.$clr-header-height);
+        padding: 0 0 variables.$clr_baselineRem_4px 0;
         //4px to vertically align the trigger lines. display flex was not working on all browsers.
         text-align: center;
         white-space: nowrap;
 
         &:focus {
-          outline-offset: -1 * $clr_baselineRem_5px; //So that the outline styles aren't hidden because of the browser
+          outline-offset: -1 * variables.$clr_baselineRem_5px; //So that the outline styles aren't hidden because of the browser
         }
 
-        @include header-nav-appearance();
+        @include header.header-nav-appearance();
       }
 
       .header-nav.clr-nav-level-1,
@@ -225,8 +241,8 @@
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include sliding-nav-positioning();
-        transform: translateX(-1 * $clr-sliding-panel-width);
-        transition: $clr-sliding-panel-animation;
+        transform: translateX(-1 * variables4.$clr-sliding-panel-width);
+        transition: variables4.$clr-sliding-panel-animation;
       }
 
       .header-nav.clr-nav-level-2,
@@ -234,8 +250,8 @@
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         @include sliding-nav-positioning(0, 0, 0, auto);
-        transform: translateX($clr-sliding-panel-width);
-        transition: $clr-sliding-panel-animation;
+        transform: translateX(variables4.$clr-sliding-panel-width);
+        transition: variables4.$clr-sliding-panel-animation;
       }
 
       .subnav.clr-nav-level-1,
@@ -260,31 +276,31 @@
           padding-left: 0;
 
           .nav-item {
-            height: $clr_baselineRem_1_5;
+            height: variables.$clr_baselineRem_1_5;
             margin-right: 0;
           }
 
           .nav-link {
-            padding: 0 $clr_baselineRem_0_5 0 $clr_baselineRem_1;
+            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
             border-radius: 0;
-            @include css-var(
+            @include mixins.css-var(
               border-top-left-radius,
               clr-global-borderradius,
-              $clr-global-borderradius,
-              $clr-use-custom-properties
+              variables.$clr-global-borderradius,
+              variables.$clr-use-custom-properties
             );
-            @include css-var(
+            @include mixins.css-var(
               border-bottom-left-radius,
               clr-global-borderradius,
-              $clr-global-borderradius,
-              $clr-use-custom-properties
+              variables.$clr-global-borderradius,
+              variables.$clr-use-custom-properties
             );
 
-            @include vertical-nav-link-colors();
+            @include vertical-nav.vertical-nav-link-colors();
 
             &:hover,
             &.active {
@@ -307,14 +323,14 @@
         &::after {
           position: absolute;
           content: '';
-          @include header-section-divider();
+          @include header.header-section-divider();
           left: 0;
         }
       }
 
       .header {
         .branding {
-          max-width: $clr_baselineRem_10;
+          max-width: variables.$clr_baselineRem_10;
           min-width: 0;
           overflow: hidden;
         }
@@ -348,15 +364,20 @@
             bottom: 0;
             left: 0;
             right: 0;
-            @include css-var(
+            @include mixins.css-var(
               background,
               clr-responsive-nav-header-backdrop-bg-color,
-              $clr-color-neutral-1000,
-              $clr-use-custom-properties
+              variables2.$clr-color-neutral-1000,
+              variables.$clr-use-custom-properties
             );
-            @include css-var(opacity, clr-responsive-nav-header-backdrop-opacity, 0.85, $clr-use-custom-properties);
+            @include mixins.css-var(
+              opacity,
+              clr-responsive-nav-header-backdrop-opacity,
+              0.85,
+              variables.$clr-use-custom-properties
+            );
             cursor: pointer;
-            z-index: $clr-sliding-panel-backdrop-z-index;
+            z-index: variables4.$clr-sliding-panel-backdrop-z-index;
           }
 
           .header-nav.clr-nav-level-1,
@@ -370,17 +391,17 @@
               }
 
               .nav-text {
-                $nav-text-height: $clr_baselineRem_1;
+                $nav-text-height: variables.$clr_baselineRem_1;
 
                 display: inline-block;
-                @include css-var(
+                @include mixins.css-var(
                   color,
                   clr-sliding-panel-text-color,
-                  $clr-sliding-panel-text-color,
-                  $clr-use-custom-properties
+                  variables4.$clr-sliding-panel-text-color,
+                  variables.$clr-use-custom-properties
                 );
                 line-height: $nav-text-height;
-                padding: $clr_baselineRem_0_25 0 $clr_baselineRem_0_25 $clr_baselineRem_1;
+                padding: variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
                 white-space: normal;
                 font-weight: normal;
               }
@@ -391,7 +412,7 @@
                 display: inline-block;
               }
 
-              @include vertical-nav-link-colors();
+              @include vertical-nav.vertical-nav-link-colors();
 
               &.active > .nav-text {
                 color: inherit;
@@ -412,10 +433,10 @@
             top: 0;
             left: 0;
             overflow: hidden;
-            width: $clr-sliding-panel-width;
-            max-width: $clr-sliding-panel-width;
-            z-index: $clr-sliding-panel-z-index + 1;
-            padding-left: $clr_baselineRem_1;
+            width: variables4.$clr-sliding-panel-width;
+            max-width: variables4.$clr-sliding-panel-width;
+            z-index: variables4.$clr-sliding-panel-z-index + 1;
+            padding-left: variables.$clr_baselineRem_1;
 
             & > .nav-link {
               overflow: hidden;
@@ -432,16 +453,16 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              background-color: $clr-color-neutral-600;
-              border-radius: $clr-global-borderradius;
+              background-color: variables2.$clr-color-neutral-600;
+              border-radius: variables.$clr-global-borderradius;
             }
 
             .title {
-              @include css-var(
+              @include mixins.css-var(
                 color,
                 clr-sliding-panel-text-color,
-                $clr-sliding-panel-text-color,
-                $clr-use-custom-properties
+                variables4.$clr-sliding-panel-text-color,
+                variables.$clr-use-custom-properties
               );
               text-overflow: ellipsis;
               overflow: hidden;
@@ -458,9 +479,9 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: $clr-header-height + $clr_baselineRem_1;
+          padding-top: variables5.$clr-header-height + variables.$clr_baselineRem_1;
           transform: translateX(0);
-          transition: $clr-sliding-panel-animation;
+          transition: variables4.$clr-sliding-panel-animation;
         }
       }
 
@@ -470,17 +491,17 @@
         .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           transform: translateX(0);
-          transition: $clr-sliding-panel-animation;
+          transition: variables4.$clr-sliding-panel-animation;
         }
 
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2 {
-          padding-top: $clr_baselineRem_1;
+          padding-top: variables.$clr_baselineRem_1;
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * $clr-trigger-position));
+          @include menu-trigger(0, auto, (-1 * variables4.$clr-trigger-position));
           @include overflow-menu-trigger-animation();
         }
       }
@@ -491,8 +512,8 @@
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
-          width: $clr-sliding-panel-width;
-          max-width: $clr-sliding-panel-width;
+          width: variables4.$clr-sliding-panel-width;
+          max-width: variables4.$clr-sliding-panel-width;
         }
       }
 
@@ -501,18 +522,18 @@
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
-          width: $clr-sliding-panel-width;
-          max-width: $clr-sliding-panel-width;
+          width: variables4.$clr-sliding-panel-width;
+          max-width: variables4.$clr-sliding-panel-width;
         }
       }
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables3.$clr-grid-breakpoints, sm)) {
     .main-container {
       .header {
         .branding {
-          max-width: $clr_baselineRem_6;
+          max-width: variables.$clr_baselineRem_6;
           min-width: 0;
           overflow: hidden;
         }
@@ -522,14 +543,14 @@
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
-        transform: translateX(-1 * $clr-sliding-panel-width-sm);
+        transform: translateX(-1 * variables4.$clr-sliding-panel-width-sm);
       }
 
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
-        transform: translateX($clr-sliding-panel-width-sm);
+        transform: translateX(variables4.$clr-sliding-panel-width-sm);
       }
     }
 
@@ -537,8 +558,8 @@
       &.open-hamburger-menu {
         .header {
           .branding {
-            width: $clr-sliding-panel-width-sm;
-            max-width: $clr-sliding-panel-width-sm;
+            width: variables4.$clr-sliding-panel-width-sm;
+            max-width: variables4.$clr-sliding-panel-width-sm;
           }
         }
 
@@ -547,12 +568,12 @@
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
-          width: $clr-sliding-panel-width-sm;
-          max-width: $clr-sliding-panel-width-sm;
+          width: variables4.$clr-sliding-panel-width-sm;
+          max-width: variables4.$clr-sliding-panel-width-sm;
         }
 
         .clr-nav-close {
-          @include menu-trigger(auto, 0, $clr-trigger-position-sm);
+          @include menu-trigger(auto, 0, variables4.$clr-trigger-position-sm);
         }
       }
 
@@ -561,12 +582,12 @@
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
-          width: $clr-sliding-panel-width-sm;
-          max-width: $clr-sliding-panel-width-sm;
+          width: variables4.$clr-sliding-panel-width-sm;
+          max-width: variables4.$clr-sliding-panel-width-sm;
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * $clr-trigger-position-sm));
+          @include menu-trigger(0, auto, (-1 * variables4.$clr-trigger-position-sm));
         }
       }
     }

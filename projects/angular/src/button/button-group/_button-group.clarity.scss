@@ -4,17 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../../popover/dropdown/menu-mixins.clarity';
+@use '../../popover/dropdown/menu-mixins.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../variables.buttons' as button-variables;
 
 @mixin square-off-btngroup-btns($dir: left) {
   border-top-#{$dir}-radius: 0;
   border-bottom-#{$dir}-radius: 0;
 }
 
-@include exports('button-group.clarity') {
+@include mixins.exports('button-group.clarity') {
   .btn-group {
     display: inline-flex;
-    margin-right: $clr_baselineRem_0_5;
+    margin-right: variables.$clr_baselineRem_0_5;
 
     clr-dropdown {
       .dropdown-toggle {
@@ -24,8 +27,8 @@
 
       &:last-child {
         .dropdown-toggle {
-          border-top-right-radius: $clr-btn-border-radius;
-          border-bottom-right-radius: $clr-btn-border-radius;
+          border-top-right-radius: button-variables.$clr-btn-border-radius;
+          border-bottom-right-radius: button-variables.$clr-btn-border-radius;
         }
       }
     }
@@ -41,22 +44,23 @@
 
       input[type='radio']:focus,
       input[type='checkbox']:focus {
-        $outline-shadow: 0 0 $clr_baselineRem_5px var(--clr-btn-group-focus-outline, $clr-btn-group-focus-outline);
-        $ie-outline-shadow: 0 0 $clr_baselineRem_5px $clr-btn-group-focus-outline;
+        $outline-shadow: 0 0 variables.$clr_baselineRem_5px
+          var(--clr-btn-group-focus-outline, button-variables.$clr-btn-group-focus-outline);
+        $ie-outline-shadow: 0 0 variables.$clr_baselineRem_5px button-variables.$clr-btn-group-focus-outline;
         appearance: none;
         opacity: 1;
         top: 0;
-        @include equilateral(100%);
+        @include mixins.equilateral(100%);
         box-shadow: $ie-outline-shadow;
         box-shadow: $outline-shadow;
-        padding: $clr_baselineRem_3px 0 $clr_baselineRem_3px $clr_baselineRem_3px;
-        border-width: $clr_baselineRem_1px;
+        padding: variables.$clr_baselineRem_3px 0 variables.$clr_baselineRem_3px variables.$clr_baselineRem_3px;
+        border-width: variables.$clr_baselineRem_1px;
         border-style: solid;
-        @include css-var(
+        @include mixins.css-var(
           border-color,
           clr-btn-group-focus-outline,
-          $clr-btn-group-focus-outline,
-          $clr-use-custom-properties
+          button-variables.$clr-btn-group-focus-outline,
+          variables.$clr-use-custom-properties
         );
 
         &::-ms-check {
@@ -92,7 +96,12 @@
       .tooltip:not(:last-child) .btn,
       .btn:not(:last-child) {
         margin: 0;
-        @include css-var(margin-right, clr-btn-border-width, $clr-btn-border-width, $clr-use-custom-properties);
+        @include mixins.css-var(
+          margin-right,
+          clr-btn-border-width,
+          button-variables.$clr-btn-border-width,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -110,13 +119,23 @@
     }
 
     > .btn-group-overflow:last-child:not(:first-child) > .btn:first-child {
-      @include css-var(border-radius, clr-btn-border-radius, $clr-btn-border-radius, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-radius,
+        clr-btn-border-radius,
+        button-variables.$clr-btn-border-radius,
+        variables.$clr-use-custom-properties
+      );
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     > .btn-group-overflow:last-child:first-child > .btn:first-child {
-      @include css-var(border-radius, clr-btn-border-radius, $clr-btn-border-radius, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-radius,
+        clr-btn-border-radius,
+        button-variables.$clr-btn-border-radius,
+        variables.$clr-use-custom-properties
+      );
     }
 
     //To avoid double borders
@@ -186,7 +205,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      @include equilateral(0);
+      @include mixins.equilateral(0);
       opacity: 0;
     }
   }
@@ -195,7 +214,7 @@
     .checkbox,
     .radio {
       &.btn label {
-        line-height: $clr_baselineRem_1 - $clr_baselineRem_1px;
+        line-height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_1px;
       }
     }
   }

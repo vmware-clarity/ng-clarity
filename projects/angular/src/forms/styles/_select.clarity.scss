@@ -1,51 +1,60 @@
+@use 'sass:map';
+@use '../../image/icons.clarity';
+@use '../../image/images.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('forms.select') {
+@include mixins.exports('forms.select') {
   .clr-select-wrapper,
   .clr-multiselect-wrapper {
     position: relative;
     white-space: nowrap;
 
     select {
-      @include custom-inputs($clr_baselineRem_1);
-      @include form-fields-appearance();
+      @include styles-mixins.custom-inputs(variables.$clr_baselineRem_1);
+      @include styles-mixins.form-fields-appearance();
       &:not([multiple]) {
-        @include input-border-bottom-animation();
+        @include styles-mixins.input-border-bottom-animation();
       }
       &[multiple]:focus {
-        @include include-slim-outline-style-form-fields();
+        @include mixins.include-slim-outline-style-form-fields();
       }
       position: relative;
-      padding: 0 ($clr-forms-select-caret-size + $clr-forms-baseline * 2) 0 $clr-forms-baseline;
+      padding: 0 (styles-variables.$clr-forms-select-caret-size + styles-variables.$clr-forms-baseline * 2) 0
+        styles-variables.$clr-forms-baseline;
       cursor: pointer;
-      font-size: $clr-forms-field-font-size;
+      font-size: styles-variables.$clr-forms-field-font-size;
 
       //Moves the :after pseudo element (arrow) to the back so that clicking over it activates
       //the dropdown.
-      z-index: map-get($clr-layers, select-box);
+      z-index: map.get(variables.$clr-layers, select-box);
 
       &:hover,
       &:active {
-        $hoverSassVar: $clr-forms-select-hover-background;
+        $hoverSassVar: styles-variables.$clr-forms-select-hover-background;
         $hoverCssVar: clr-forms-select-hover-background;
-        @include css-var(border-color, $hoverCssVar, $hoverSassVar, $clr-use-custom-properties);
-        @include css-var(background, $hoverCssVar, $hoverSassVar, $clr-use-custom-properties);
+        @include mixins.css-var(border-color, $hoverCssVar, $hoverSassVar, variables.$clr-use-custom-properties);
+        @include mixins.css-var(background, $hoverCssVar, $hoverSassVar, variables.$clr-use-custom-properties);
       }
 
       &:disabled option {
-        @include disabled-form-fields();
+        @include styles-mixins.disabled-form-fields();
       }
 
       option {
-        @include css-var(
+        @include mixins.css-var(
           color,
           clr-forms-select-option-color,
-          $clr-forms-select-option-color,
-          $clr-use-custom-properties
+          styles-variables.$clr-forms-select-option-color,
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -57,29 +66,29 @@
   }
 
   .clr-select-wrapper {
-    max-height: $clr-forms-baseline * 4;
+    max-height: styles-variables.$clr-forms-baseline * 4;
     display: inline-block;
 
     &::after {
       position: absolute;
       content: '';
-      @include equilateral($clr-forms-select-caret-size);
-      top: ($clr-forms-baseline * 4 - $clr-forms-select-caret-size) * 0.5;
-      right: $clr-forms-baseline;
+      @include mixins.equilateral(styles-variables.$clr-forms-select-caret-size);
+      top: (styles-variables.$clr-forms-baseline * 4 - styles-variables.$clr-forms-select-caret-size) * 0.5;
+      right: styles-variables.$clr-forms-baseline;
       // TODO: get rid of generated icons?
-      background-image: generateCaretIcon($clr-forms-select-caret-color);
-      @include icon-background-styles();
+      background-image: icons.generateCaretIcon(styles-variables.$clr-forms-select-caret-color);
+      @include images.icon-background-styles();
       margin: 0;
     }
 
     &:hover::after {
-      background-image: generateCaretIcon($clr-forms-select-caret-hover-color);
+      background-image: icons.generateCaretIcon(styles-variables.$clr-forms-select-caret-hover-color);
     }
   }
 
   .clr-error .clr-select-wrapper::after,
   .clr-success .clr-select-wrapper::after {
-    right: $clr-forms-icon-size + $clr-forms-baseline;
+    right: styles-variables.$clr-forms-icon-size + styles-variables.$clr-forms-baseline;
   }
 
   .clr-multiselect-wrapper {
@@ -93,66 +102,91 @@
   //Multiple Select
   select[multiple],
   select[size] {
-    $multiSassBgVar: $clr-forms-select-multiple-background-color;
+    $multiSassBgVar: styles-variables.$clr-forms-select-multiple-background-color;
     $multiCssBgVar: clr-forms-select-multiple-background-color;
-    $multiSassBorderVar: $clr-forms-select-multiple-border-color;
+    $multiSassBorderVar: styles-variables.$clr-forms-select-multiple-border-color;
     $multiCssBorderVar: clr-forms-select-multiple-border-color;
     padding: 0;
-    @include css-var(background, $multiCssBgVar, $multiSassBgVar, $clr-use-custom-properties);
-    border: $clr-global-borderwidth solid;
-    @include css-var(border-color, $multiCssBorderVar, $multiSassBorderVar, $clr-use-custom-properties);
-    @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
+    @include mixins.css-var(background, $multiCssBgVar, $multiSassBgVar, variables.$clr-use-custom-properties);
+    border: variables.$clr-global-borderwidth solid;
+    @include mixins.css-var(
+      border-color,
+      $multiCssBorderVar,
+      $multiSassBorderVar,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-radius,
+      clr-global-borderradius,
+      variables.$clr-global-borderradius,
+      variables.$clr-use-custom-properties
+    );
     height: auto;
-    min-width: $clr_baselineRem_5;
+    min-width: variables.$clr_baselineRem_5;
 
     &:hover,
     &:active {
-      @include css-var(background, $multiCssBgVar, $multiSassBgVar, $clr-use-custom-properties);
-      @include css-var(border-color, $multiCssBorderVar, $multiSassBorderVar, $clr-use-custom-properties);
+      @include mixins.css-var(background, $multiCssBgVar, $multiSassBgVar, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        border-color,
+        $multiCssBorderVar,
+        $multiSassBorderVar,
+        variables.$clr-use-custom-properties
+      );
     }
     option {
-      padding: ($clr-forms-baseline * 0.5) $clr-forms-baseline;
-      @include css-var(
+      padding: (styles-variables.$clr-forms-baseline * 0.5) styles-variables.$clr-forms-baseline;
+      @include mixins.css-var(
         color,
         clr-forms-select-multiple-option-color,
-        $clr-forms-select-multiple-option-color,
-        $clr-use-custom-properties
+        styles-variables.$clr-forms-select-multiple-option-color,
+        variables.$clr-use-custom-properties
       );
     }
   }
 
   .clr-error select:not([multiple]) {
-    @include css-var(
+    @include mixins.css-var(
       border-bottom-color,
       clr-forms-invalid-color,
-      $clr-forms-invalid-color,
-      $clr-use-custom-properties
+      styles-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
     );
   }
 
   .clr-error select[multiple] {
-    @include css-var(border-color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-forms-invalid-color,
+      styles-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
   }
   .clr-form-control-disabled .clr-select {
     &.disabled {
-      @include disabled-form-fields();
+      @include styles-mixins.disabled-form-fields();
 
       &:hover::after {
-        @include css-var(
+        @include mixins.css-var(
           color,
           clr-forms-select-caret-color,
-          $clr-forms-select-caret-color,
-          $clr-use-custom-properties
+          styles-variables.$clr-forms-select-caret-color,
+          variables.$clr-use-custom-properties
         );
       }
     }
 
     &.disabled > select,
     select:disabled {
-      @include disabled-form-fields();
+      @include styles-mixins.disabled-form-fields();
       &:hover {
         background: none;
-        @include css-var(border-color, clr-forms-border-color, $clr-forms-border-color, $clr-use-custom-properties);
+        @include mixins.css-var(
+          border-color,
+          clr-forms-border-color,
+          styles-variables.$clr-forms-border-color,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
