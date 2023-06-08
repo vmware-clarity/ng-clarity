@@ -1,24 +1,22 @@
-@use '../mixins';
-@use 'variables.global';
-@use 'variables.typography' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../mixins';
+@use 'variables';
 
 @include mixins.exports('typography.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
-      --clr-font: #{variables2.$clr-font};
+      --clr-font: #{variables.$clr-font};
       --clr-display-font: var(--clr-font);
 
-      --clr-font-weight-light: #{variables2.$clr-font-weight-light};
-      --clr-font-weight-regular: #{variables2.$clr-font-weight-regular};
-      --clr-font-weight-semibold: #{variables2.$clr-font-weight-semibold};
-      --clr-font-weight-bold: #{variables2.$clr-font-weight-bold};
-      --clr-font-weight-extrabold: #{variables2.$clr-font-weight-extrabold};
+      --clr-font-weight-light: #{variables.$clr-font-weight-light};
+      --clr-font-weight-regular: #{variables.$clr-font-weight-regular};
+      --clr-font-weight-semibold: #{variables.$clr-font-weight-semibold};
+      --clr-font-weight-bold: #{variables.$clr-font-weight-bold};
+      --clr-font-weight-extrabold: #{variables.$clr-font-weight-extrabold};
 
       // Header styles
       //H1 - login_productName
