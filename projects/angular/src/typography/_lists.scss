@@ -1,12 +1,10 @@
-@use '../utils/mixins';
-@use '../utils/variables/variables.global' as variables2;
-@use '../utils/variables/variables.typography';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
 @include mixins.exports('lists.clarity') {
   %kill-list-styles {
@@ -34,10 +32,10 @@
     margin-left: variables.$clr-list-style-padding;
 
     &.compact {
-      line-height: variables2.$clr_baselineRem_0_75;
+      line-height: variables.$clr_baselineRem_0_75;
 
       & > li {
-        margin-bottom: variables2.$clr_baselineRem_0_25;
+        margin-bottom: variables.$clr_baselineRem_0_25;
 
         &:last-child {
           margin-bottom: 0;
@@ -72,7 +70,7 @@
   ul:not([cds-list]),
   ol:not([cds-list]) {
     &.list-spacer {
-      margin-top: variables2.$clr_baselineRem_1;
+      margin-top: variables.$clr_baselineRem_1;
     }
   }
 }

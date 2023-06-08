@@ -7,24 +7,23 @@
 @use 'code';
 @use 'lists';
 @use '../utils/mixins';
-@use '../utils/variables/variables.global' as variables2;
-@use '../utils/variables/variables.typography';
+@use '../utils/variables/variables';
 
 @include mixins.exports('typography.clarity') {
   //Headings
   h1:not([cds-text]) {
-    @include mixins.css-var(color, clr-h1-color, variables.$clr-h1-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h1-color, variables.$clr-h1-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h1-font-weight,
       variables.$clr-h1-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h1-font-family,
       variables.$clr-h1-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h1-font-size;
     letter-spacing: variables.$clr-h1-letter-spacing;
@@ -34,18 +33,18 @@
   }
 
   h2:not([cds-text]) {
-    @include mixins.css-var(color, clr-h2-color, variables.$clr-h2-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h2-color, variables.$clr-h2-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h2-font-weight,
       variables.$clr-h2-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h2-font-family,
       variables.$clr-h2-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h2-font-size;
     letter-spacing: variables.$clr-h2-letter-spacing;
@@ -55,18 +54,18 @@
   }
 
   h3:not([cds-text]) {
-    @include mixins.css-var(color, clr-h3-color, variables.$clr-h3-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h3-color, variables.$clr-h3-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h3-font-weight,
       variables.$clr-h3-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h3-font-family,
       variables.$clr-h3-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h3-font-size;
     letter-spacing: variables.$clr-h3-letter-spacing;
@@ -76,18 +75,18 @@
   }
 
   h4:not([cds-text]) {
-    @include mixins.css-var(color, clr-h4-color, variables.$clr-h4-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h4-color, variables.$clr-h4-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h4-font-weight,
       variables.$clr-h4-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h4-font-family,
       variables.$clr-h4-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h4-font-size;
     letter-spacing: variables.$clr-h4-letter-spacing;
@@ -97,18 +96,18 @@
   }
 
   h5:not([cds-text]) {
-    @include mixins.css-var(color, clr-h5-color, variables.$clr-h5-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h5-color, variables.$clr-h5-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h5-font-weight,
       variables.$clr-h5-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h5-font-family,
       variables.$clr-h5-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h5-font-size;
     letter-spacing: variables.$clr-h5-letter-spacing;
@@ -118,18 +117,18 @@
   }
 
   h6:not([cds-text]) {
-    @include mixins.css-var(color, clr-h6-color, variables.$clr-h6-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-h6-color, variables.$clr-h6-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-h6-font-weight,
       variables.$clr-h6-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-family,
       clr-h6-font-family,
       variables.$clr-h6-font-family,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-h6-font-size;
     letter-spacing: variables.$clr-h6-letter-spacing;
@@ -140,19 +139,19 @@
 
   //Body.
   body:not([cds-text]) {
-    @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       font-weight,
       clr-p1-font-weight,
       variables.$clr-p1-font-weight,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
     font-size: variables.$clr-p1-font-size;
     letter-spacing: variables.$clr-p1-letter-spacing;
     line-height: variables.$clr-p1-line-height;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
 
-    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables2.$clr-use-custom-properties);
+    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
     margin-top: 0 !important;
   }
 
@@ -163,12 +162,12 @@
 
   body {
     p:not([cds-text]) {
-      @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p1-font-weight,
         variables.$clr-p1-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p1-font-size;
       letter-spacing: variables.$clr-p1-letter-spacing;
@@ -179,12 +178,12 @@
 
     .p0:not([cds-text]),
     p.p0:not([cds-text]) {
-      @include mixins.css-var(color, clr-p0-color, variables.$clr-p0-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p0-color, variables.$clr-p0-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p0-font-weight,
         variables.$clr-p0-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p0-font-size;
       letter-spacing: variables.$clr-p0-letter-spacing;
@@ -195,12 +194,12 @@
 
     .p2:not([cds-text]),
     p.p2:not([cds-text]) {
-      @include mixins.css-var(color, clr-p2-color, variables.$clr-p2-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p2-color, variables.$clr-p2-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p2-font-weight,
         variables.$clr-p2-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p2-font-size;
       letter-spacing: variables.$clr-p2-letter-spacing;
@@ -211,12 +210,12 @@
 
     .p3:not([cds-text]),
     p.p3:not([cds-text]) {
-      @include mixins.css-var(color, clr-p3-color, variables.$clr-p3-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p3-color, variables.$clr-p3-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p3-font-weight,
         variables.$clr-p3-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p3-font-size;
       letter-spacing: variables.$clr-p3-letter-spacing;
@@ -227,12 +226,12 @@
 
     .p4:not([cds-text]),
     p.p4:not([cds-text]) {
-      @include mixins.css-var(color, clr-p4-color, variables.$clr-p4-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p4-color, variables.$clr-p4-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p4-font-weight,
         variables.$clr-p4-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p4-font-size;
       letter-spacing: variables.$clr-p4-letter-spacing;
@@ -243,12 +242,12 @@
 
     .p5:not([cds-text]),
     p.p5:not([cds-text]) {
-      @include mixins.css-var(color, clr-p5-color, variables.$clr-p5-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p5-color, variables.$clr-p5-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p5-font-weight,
         variables.$clr-p5-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p5-font-size;
       letter-spacing: variables.$clr-p5-letter-spacing;
@@ -259,12 +258,12 @@
 
     .p6:not([cds-text]),
     p.p6:not([cds-text]) {
-      @include mixins.css-var(color, clr-p6-color, variables.$clr-p6-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p6-color, variables.$clr-p6-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p6-font-weight,
         variables.$clr-p6-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p6-font-size;
       letter-spacing: variables.$clr-p6-letter-spacing;
@@ -275,12 +274,12 @@
 
     .p7:not([cds-text]),
     p.p7:not([cds-text]) {
-      @include mixins.css-var(color, clr-p7-color, variables.$clr-p7-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p7-color, variables.$clr-p7-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p7-font-weight,
         variables.$clr-p7-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p7-font-size;
       letter-spacing: variables.$clr-p7-letter-spacing;
@@ -291,12 +290,12 @@
 
     .p8:not([cds-text]),
     p.p8:not([cds-text]) {
-      @include mixins.css-var(color, clr-p8-color, variables.$clr-p8-color, variables2.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-p8-color, variables.$clr-p8-color, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         font-weight,
         clr-p8-font-weight,
         variables.$clr-p8-font-weight,
-        variables2.$clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       font-size: variables.$clr-p8-font-size;
       letter-spacing: variables.$clr-p8-letter-spacing;
@@ -311,7 +310,7 @@
       font-weight,
       clr-font-weight-light,
       variables.$clr-font-weight-light,
-      variables2.$clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
   }
 
@@ -336,10 +335,10 @@
     @include mixins.css-var(
       color,
       clr-global-font-color,
-      variables2.$clr-global-font-color,
-      variables2.$clr-use-custom-properties
+      variables.$clr-global-font-color,
+      variables.$clr-use-custom-properties
     );
-    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables2.$clr-use-custom-properties);
-    font-size: variables2.$clr-basefont-size;
+    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
+    font-size: variables.$clr-basefont-size;
   }
 }

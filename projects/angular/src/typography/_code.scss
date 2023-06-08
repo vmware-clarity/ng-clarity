@@ -1,12 +1,10 @@
-@use '../utils/mixins';
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
 @include mixins.exports('code.clarity') {
   //Styles for Clarity Code Snippets
@@ -18,7 +16,7 @@
     @include mixins.css-var(
       border-color,
       clr-color-neutral-400,
-      variables2.$clr-color-neutral-400,
+      variables.$clr-color-neutral-400,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -47,7 +45,7 @@
       @include mixins.css-var(
         color,
         clr-color-danger-800,
-        variables2.$clr-color-danger-800,
+        variables.$clr-color-danger-800,
         variables.$clr-use-custom-properties
       );
       padding: 0;
