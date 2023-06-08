@@ -12,11 +12,10 @@
 
 @use 'sass:string';
 @use 'properties.wizard';
-@use '../modal/variables.modal' as variables4;
+@use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.typography' as variables2;
-@use 'variables.wizard' as variables3;
+@use '../utils/variables/variables';
+@use 'variables.wizard' as wizard-variables;
 
 @include mixins.exports('wizard.clarity') {
   .clr-wizard {
@@ -25,7 +24,7 @@
       flex-direction: column;
       align-items: center;
       // IE/OldEdge
-      box-shadow: variables3.$clr-wizard-box-shadow;
+      box-shadow: wizard-variables.$clr-wizard-box-shadow;
       @if variables.$clr-use-custom-properties == true {
         box-shadow: 0
           variables.$clr_baselineRem_1px
@@ -42,13 +41,13 @@
       @include mixins.css-var(
         border-top-right-radius,
         clr-wizard-border-radius,
-        variables3.$clr-wizard-border-radius,
+        wizard-variables.$clr-wizard-border-radius,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-bottom-right-radius,
         clr-wizard-border-radius,
-        variables3.$clr-wizard-border-radius,
+        wizard-variables.$clr-wizard-border-radius,
         variables.$clr-use-custom-properties
       );
       box-shadow: none;
@@ -66,16 +65,16 @@
       flex: 0 0 auto;
       width: 100%;
       // right padding nudged a bit to better align icons
-      padding: variables3.$clr-wizard-default-space
-        (variables3.$clr-wizard-default-space - variables.$clr_baselineRem_5px) variables.$clr_baselineRem_0_25
-        variables3.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-default-space
+        (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px) variables.$clr_baselineRem_0_25
+        wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-title {
       @include mixins.css-var(
         color,
         clr-wizard-title-text,
-        variables3.$clr-wizard-title-text,
+        wizard-variables.$clr-wizard-title-text,
         variables.$clr-use-custom-properties
       );
       display: flex;
@@ -91,7 +90,7 @@
       @include mixins.css-var(
         color,
         clr-wizard-main-text-color,
-        variables3.$clr-wizard-main-text-color,
+        wizard-variables.$clr-wizard-main-text-color,
         variables.$clr-use-custom-properties
       );
       width: 100%;
@@ -100,12 +99,12 @@
     .modal-footer {
       padding: 0;
       display: block;
-      padding-top: variables3.$clr-wizard-default-space;
-      height: variables3.$clr-wizard-footer-height;
-      min-height: variables3.$clr-wizard-footer-height;
-      max-height: variables3.$clr-wizard-footer-height;
+      padding-top: wizard-variables.$clr-wizard-default-space;
+      height: wizard-variables.$clr-wizard-footer-height;
+      min-height: wizard-variables.$clr-wizard-footer-height;
+      max-height: wizard-variables.$clr-wizard-footer-height;
       width: 100%;
-      flex: 0 0 variables3.$clr-wizard-footer-height;
+      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
     }
 
     .clr-wizard-btn {
@@ -132,16 +131,16 @@
     }
 
     .clr-wizard-header-action {
-      @include mixins.equilateral(variables3.$clr-wizard-default-space);
+      @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
       padding: 0;
       margin: 0;
-      min-width: variables3.$clr-wizard-default-space;
-      line-height: variables3.$clr-wizard-default-space;
-      font-size: variables3.$clr-wizard-default-space + variables.$clr_baselineRem_2px;
+      min-width: wizard-variables.$clr-wizard-default-space;
+      line-height: wizard-variables.$clr-wizard-default-space;
+      font-size: wizard-variables.$clr-wizard-default-space + variables.$clr_baselineRem_2px;
       @include mixins.css-var(
         color,
         clr-wizard-header-action-color,
-        variables3.$clr-wizard-header-action-color,
+        wizard-variables.$clr-wizard-header-action-color,
         variables.$clr-use-custom-properties
       );
       transition: color linear 0.2s;
@@ -150,7 +149,7 @@
         @include mixins.css-var(
           color,
           clr-wizard-header-action-color,
-          variables3.$clr-wizard-header-action-color,
+          wizard-variables.$clr-wizard-header-action-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -161,14 +160,14 @@
         @include mixins.css-var(
           color,
           string.unquote('clr-wizard-header-action-color--hovered'),
-          variables3.$clr-wizard-header-action-color--hovered,
+          wizard-variables.$clr-wizard-header-action-color--hovered,
           variables.$clr-use-custom-properties
         );
       }
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables3.$clr-wizard-default-space - variables.$clr_baselineRem_2px);
+        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_2px);
       }
     }
 
@@ -181,8 +180,8 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      padding-bottom: variables3.$clr-wizard-default-space;
-      line-height: variables3.$clr-wizard-default-space;
+      padding-bottom: wizard-variables.$clr-wizard-default-space;
+      line-height: wizard-variables.$clr-wizard-default-space;
       @include mixins.css-var(
         border-right-width,
         clr-global-borderwidth,
@@ -193,39 +192,39 @@
       @include mixins.css-var(
         border-right-color,
         clr-wizard-stepnav-border-color,
-        variables3.$clr-wizard-stepnav-border-color,
+        wizard-variables.$clr-wizard-stepnav-border-color,
         variables.$clr-use-custom-properties
       );
       height: 100%;
       @include mixins.css-var(
         background-color,
         clr-wizard-stepnav-bgcolor,
-        variables3.$clr-wizard-stepnav-bgcolor,
+        wizard-variables.$clr-wizard-stepnav-bgcolor,
         variables.$clr-use-custom-properties
       );
       border-radius: 0;
       @include mixins.css-var(
         border-top-left-radius,
         clr-wizard-border-radius,
-        variables3.$clr-wizard-border-radius,
+        wizard-variables.$clr-wizard-border-radius,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-bottom-left-radius,
         clr-wizard-border-radius,
-        variables3.$clr-wizard-border-radius,
+        wizard-variables.$clr-wizard-border-radius,
         variables.$clr-use-custom-properties
       );
     }
 
     .clr-wizard-stepnav {
-      padding-left: variables3.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-default-space;
       display: block;
       font-size: variables.$clr_baselineRem_0_583;
       @include mixins.css-var(
         color,
         clr-wizard-stepnav-text,
-        variables3.$clr-wizard-stepnav-text,
+        wizard-variables.$clr-wizard-stepnav-text,
         variables.$clr-use-custom-properties
       );
       width: 100%;
@@ -246,7 +245,8 @@
     .clr-wizard-stepnav-item {
       display: block;
       // IE/OldEdge
-      box-shadow: variables3.$clr-wizard-stepnav-border-size 0 0 variables3.$clr-wizard-stepnav-item-border-color inset;
+      box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+        wizard-variables.$clr-wizard-stepnav-item-border-color inset;
       @if variables.$clr-use-custom-properties == true {
         box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-item-border-color) inset;
       }
@@ -256,13 +256,13 @@
       @include mixins.css-var(
         color,
         clr-wizard-stepnav-text,
-        variables3.$clr-wizard-stepnav-text,
+        wizard-variables.$clr-wizard-stepnav-text,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         font-weight,
         clr-font-weight-regular,
-        variables2.$clr-font-weight-regular,
+        variables.$clr-font-weight-regular,
         variables.$clr-use-custom-properties
       );
 
@@ -270,13 +270,13 @@
         @include mixins.css-var(
           color,
           string.unquote('clr-wizard-stepnav-text--active'),
-          variables3.$clr-wizard-stepnav-text--active,
+          wizard-variables.$clr-wizard-stepnav-text--active,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-weight,
           clr-font-weight-semibold,
-          variables2.$clr-font-weight-semibold,
+          variables.$clr-font-weight-semibold,
           variables.$clr-use-custom-properties
         );
 
@@ -284,20 +284,20 @@
           @include mixins.css-var(
             background-color,
             clr-wizard-stepnav-active-bgcolor,
-            variables3.$clr-wizard-stepnav-active-bgcolor,
+            wizard-variables.$clr-wizard-stepnav-active-bgcolor,
             variables.$clr-use-custom-properties
           );
           border-radius: 0;
           @include mixins.css-var(
             border-top-left-radius,
             clr-wizard-border-radius,
-            variables3.$clr-wizard-border-radius,
+            wizard-variables.$clr-wizard-border-radius,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             border-bottom-left-radius,
             clr-wizard-border-radius,
-            variables3.$clr-wizard-border-radius,
+            wizard-variables.$clr-wizard-border-radius,
             variables.$clr-use-custom-properties
           );
         }
@@ -305,8 +305,8 @@
 
       &.complete {
         // IE/OldEdge
-        box-shadow: variables3.$clr-wizard-stepnav-border-size 0 0
-          variables3.$clr-wizard-stepnav-item-border-color--active inset;
+        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+          wizard-variables.$clr-wizard-stepnav-item-border-color--active inset;
         @if variables.$clr-use-custom-properties == true {
           box-shadow: var(--clr-wizard-stepnav-border-size)
             0
@@ -318,7 +318,8 @@
       }
 
       &.error {
-        box-shadow: variables3.$clr-wizard-stepnav-border-size 0 0 variables3.$clr-wizard-stepnav-error-color inset;
+        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+          wizard-variables.$clr-wizard-stepnav-error-color inset;
         transition: box-shadow 0.2s ease-in;
       }
 
@@ -348,7 +349,7 @@
 
         .clr-wizard-stepnav-item-error-icon {
           transform: none;
-          fill: variables3.$clr-wizard-stepnav-error-color;
+          fill: wizard-variables.$clr-wizard-stepnav-error-color;
         }
       }
     }
@@ -357,23 +358,23 @@
       @include mixins.css-var(
         color,
         clr-wizard-title-text,
-        variables3.$clr-wizard-title-text,
+        wizard-variables.$clr-wizard-title-text,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         font-weight,
         clr-h1-font-weight,
-        variables2.$clr-h1-font-weight,
+        variables.$clr-h1-font-weight,
         variables.$clr-use-custom-properties
       );
       margin-top: 0;
-      padding-top: variables3.$clr-wizard-default-space;
-      padding-left: variables3.$clr-wizard-default-space;
-      padding-right: variables3.$clr-wizard-default-space * 0.5;
-      padding-bottom: variables3.$clr-wizard-default-space;
+      padding-top: wizard-variables.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-default-space;
+      padding-right: wizard-variables.$clr-wizard-default-space * 0.5;
+      padding-bottom: wizard-variables.$clr-wizard-default-space;
       flex: 0 0 auto;
-      font-size: variables4.$clr-modal-title-font-size;
-      line-height: variables4.$clr-modal-title-line-height;
+      font-size: modal-variables.$clr-modal-title-font-size;
+      line-height: modal-variables.$clr-modal-title-line-height;
     }
 
     // normal modal ignores this. wizard needs it so the nav and content
@@ -394,7 +395,7 @@
 
     .clr-wizard-footer-buttons {
       text-align: right;
-      padding-right: variables3.$clr-wizard-default-space;
+      padding-right: wizard-variables.$clr-wizard-default-space;
       margin: 0;
     }
 
@@ -425,7 +426,7 @@
     }
 
     .clr-wizard-page:not([aria-hidden='true']) {
-      padding: variables3.$clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-default-space;
       padding-top: variables.$clr_baselineRem_0_75;
       display: block;
     }
@@ -447,49 +448,49 @@
 
     &.wizard-md {
       .modal-dialog {
-        min-height: variables3.$clr-wizard-all-dialog-min-height;
-        max-height: variables3.$clr-wizard-md-dialog-max-height;
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
       }
 
       .modal-content,
       .clr-wizard-stepnav-wrapper {
-        max-height: variables3.$clr-wizard-md-dialog-max-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
       }
 
       .clr-wizard-stepnav-wrapper {
-        min-width: variables3.$clr-wizard-md-nav-min-width;
-        max-width: variables3.$clr-wizard-md-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-md-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-md-nav-max-width;
       }
     }
 
     &.wizard-lg {
       .modal-dialog {
-        min-height: variables3.$clr-wizard-all-dialog-min-height;
-        max-height: variables3.$clr-wizard-lg-dialog-max-height;
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
       }
 
       .modal-content,
       .clr-wizard-stepnav-wrapper {
-        max-height: variables3.$clr-wizard-lg-dialog-max-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
       }
 
       .nav-panel,
       .clr-wizard-stepnav-wrapper {
-        min-width: variables3.$clr-wizard-lg-nav-min-width;
-        max-width: variables3.$clr-wizard-lg-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-lg-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-lg-nav-max-width;
       }
     }
 
     &.wizard-xl {
       .modal-dialog {
-        height: variables3.$clr-wizard-xl-dialog-max-height;
+        height: wizard-variables.$clr-wizard-xl-dialog-max-height;
         max-height: none;
       }
 
       .nav-panel,
       .clr-wizard-stepnav-wrapper {
-        min-width: variables3.$clr-wizard-xl-nav-min-width;
-        max-width: variables3.$clr-wizard-xl-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-xl-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-xl-nav-max-width;
       }
     }
 
