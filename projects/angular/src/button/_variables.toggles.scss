@@ -1,11 +1,9 @@
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/variables/variables';
 
 // Usage: ../button/_toggles.clarity.scss
 // Toggle
@@ -21,8 +19,8 @@ $clr-toggle-transition-animation: ease-in !default;
 
 // Usage: ../button/_toggles.clarity.scss
 // Colors (disabled)
-$clr-toggle-disabled-default-border-color: variables2.$clr-color-neutral-400 !default;
-$clr-toggle-disabled-default-handle-color: variables2.$clr-color-neutral-0 !default;
+$clr-toggle-disabled-default-border-color: variables.$clr-color-neutral-400 !default;
+$clr-toggle-disabled-default-handle-color: variables.$clr-color-neutral-0 !default;
 
 $clr-toggle-disabled-off-border-color: $clr-toggle-disabled-default-border-color !default;
 $clr-toggle-disabled-off-bg-color: $clr-toggle-disabled-default-handle-color !default; // Also sets disabled/on inner part of handle circle.
@@ -33,6 +31,6 @@ $clr-toggle-disabled-on-handle-border-color: $clr-toggle-disabled-default-handle
 
 // Usage: ../button/_toggles.clarity.scss
 // Colors (enabled)
-$clr-toggle-bg-color-off: variables2.$clr-color-neutral-600 !default;
-$clr-toggle-bg-color-on: variables2.$clr-color-success-500 !default;
-$clr-toggle-handle-bg-color: variables2.$clr-color-neutral-50 !default;
+$clr-toggle-bg-color-off: variables.$clr-color-neutral-600 !default;
+$clr-toggle-bg-color-on: variables.$clr-color-success-500 !default;
+$clr-toggle-handle-bg-color: variables.$clr-color-neutral-50 !default;

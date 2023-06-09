@@ -1,12 +1,10 @@
-@use '../utils/variables/variables.color' as variables3;
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.typography' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+@use '../utils/variables/variables';
 
 // General
 // Usage: ./_buttons.clarity.scss
@@ -24,7 +22,7 @@ $clr-btn-horizontal-padding: variables.$clr_baselineRem_0_5 !default;
 
 $clr-btn-height: variables.$clr_baselineRem_1_5 !default;
 $clr-btn-height-sm: variables.$clr_baselineRem_1 !default;
-$clr-btn-font-weight: variables2.$clr-font-weight-semibold !default;
+$clr-btn-font-weight: variables.$clr-font-weight-semibold !default;
 $clr-btn-padding: 0 $clr-btn-horizontal-padding !default;
 
 $clr-btn-border-radius: variables.$clr-global-borderradius !default;
@@ -53,17 +51,17 @@ $clr-btn-appearance-form-height: $clr-btn-height !default;
 $clr-btn-appearance-form-padding: $clr-btn-padding !default;
 
 // Default button colors
-$clr-btn-default-color: variables3.$clr-color-action-600 !default;
+$clr-btn-default-color: variables.$clr-color-action-600 !default;
 $clr-btn-default-border-color: $clr-btn-default-color !default;
 $clr-btn-default-bg-color: transparent !default;
-$clr-btn-default-hover-bg-color: variables3.$clr-color-action-50 !default;
-$clr-btn-default-hover-color: variables3.$clr-color-action-800 !default;
-$clr-btn-default-box-shadow-color: variables3.$clr-color-action-500 !default;
-$clr-btn-default-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-default-hover-bg-color: variables.$clr-color-action-50 !default;
+$clr-btn-default-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-default-box-shadow-color: variables.$clr-color-action-500 !default;
+$clr-btn-default-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-default-disabled-bg-color: $clr-btn-default-bg-color !default;
-$clr-btn-default-disabled-border-color: variables3.$clr-color-neutral-600 !default;
-$clr-btn-default-checked-bg-color: variables3.$clr-color-action-600 !default;
-$clr-btn-default-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-default-disabled-border-color: variables.$clr-color-neutral-600 !default;
+$clr-btn-default-checked-bg-color: variables.$clr-color-action-600 !default;
+$clr-btn-default-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromDefaultButtonColors($property: null) {
   @if $property == color {
@@ -114,16 +112,16 @@ $clr-btn-default-checked-color: variables3.$clr-color-neutral-0 !default;
 }
 
 // Default outline button
-$clr-btn-default-outline-color: variables3.$clr-color-action-600 !default;
+$clr-btn-default-outline-color: variables.$clr-color-action-600 !default;
 $clr-btn-default-outline-border-color: $clr-btn-default-outline-color !default;
 $clr-btn-default-outline-bg-color: transparent !default;
-$clr-btn-default-outline-hover-bg-color: variables3.$clr-color-action-50 !default;
-$clr-btn-default-outline-hover-color: variables3.$clr-color-action-800 !default;
-$clr-btn-default-outline-box-shadow-color: variables3.$clr-color-action-500 !default;
-$clr-btn-default-outline-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-default-outline-hover-bg-color: variables.$clr-color-action-50 !default;
+$clr-btn-default-outline-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-default-outline-box-shadow-color: variables.$clr-color-action-500 !default;
+$clr-btn-default-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-default-outline-disabled-bg-color: $clr-btn-default-outline-bg-color !default;
-$clr-btn-default-outline-disabled-border-color: variables3.$clr-color-neutral-600 !default;
-$clr-btn-default-outline-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-default-outline-disabled-border-color: variables.$clr-color-neutral-600 !default;
+$clr-btn-default-outline-checked-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-default-outline-checked-bg-color: $clr-btn-default-outline-color !default;
 
 @function lookupFromDefaultOutlineButtonColors($property: null) {
@@ -175,17 +173,17 @@ $clr-btn-default-outline-checked-bg-color: $clr-btn-default-outline-color !defau
 }
 
 // Primary button colors
-$clr-btn-primary-color: variables3.$clr-color-neutral-0 !default;
-$clr-btn-primary-bg-color: variables3.$clr-color-action-600 !default;
-$clr-btn-primary-border-color: variables3.$clr-color-action-600 !default;
-$clr-btn-primary-hover-bg-color: variables3.$clr-color-action-800 !default;
-$clr-btn-primary-hover-color: variables3.$clr-color-action-50 !default;
-$clr-btn-primary-box-shadow-color: variables3.$clr-color-action-500 !default;
-$clr-btn-primary-disabled-color: variables3.$clr-color-neutral-700 !default;
-$clr-btn-primary-disabled-bg-color: variables3.$clr-color-neutral-400 !default;
-$clr-btn-primary-disabled-border-color: variables3.$clr-color-neutral-400 !default;
-$clr-btn-primary-checked-bg-color: variables3.$clr-color-action-600 !default;
-$clr-btn-primary-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-primary-color: variables.$clr-color-neutral-0 !default;
+$clr-btn-primary-bg-color: variables.$clr-color-action-600 !default;
+$clr-btn-primary-border-color: variables.$clr-color-action-600 !default;
+$clr-btn-primary-hover-bg-color: variables.$clr-color-action-800 !default;
+$clr-btn-primary-hover-color: variables.$clr-color-action-50 !default;
+$clr-btn-primary-box-shadow-color: variables.$clr-color-action-500 !default;
+$clr-btn-primary-disabled-color: variables.$clr-color-neutral-700 !default;
+$clr-btn-primary-disabled-bg-color: variables.$clr-color-neutral-400 !default;
+$clr-btn-primary-disabled-border-color: variables.$clr-color-neutral-400 !default;
+$clr-btn-primary-checked-bg-color: variables.$clr-color-action-600 !default;
+$clr-btn-primary-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromPrimaryButtonColors($property: null) {
   @if $property == color {
@@ -236,15 +234,15 @@ $clr-btn-primary-checked-color: variables3.$clr-color-neutral-0 !default;
 }
 
 // Success button colors
-$clr-btn-success-color: variables3.$clr-color-neutral-0 !default;
-$clr-btn-success-bg-color: variables3.$clr-color-success-700 !default;
+$clr-btn-success-color: variables.$clr-color-neutral-0 !default;
+$clr-btn-success-bg-color: variables.$clr-color-success-700 !default;
 $clr-btn-success-border-color: $clr-btn-success-bg-color !default;
-$clr-btn-success-hover-bg-color: variables3.$clr-color-success-800 !default;
+$clr-btn-success-hover-bg-color: variables.$clr-color-success-800 !default;
 $clr-btn-success-hover-color: $clr-btn-success-color !default;
-$clr-btn-success-box-shadow-color: variables3.$clr-color-success-900 !default;
-$clr-btn-success-disabled-color: variables3.$clr-color-neutral-700 !default;
-$clr-btn-success-disabled-bg-color: variables3.$clr-color-neutral-400 !default;
-$clr-btn-success-disabled-border-color: variables3.$clr-color-neutral-400 !default;
+$clr-btn-success-box-shadow-color: variables.$clr-color-success-900 !default;
+$clr-btn-success-disabled-color: variables.$clr-color-neutral-700 !default;
+$clr-btn-success-disabled-bg-color: variables.$clr-color-neutral-400 !default;
+$clr-btn-success-disabled-border-color: variables.$clr-color-neutral-400 !default;
 $clr-btn-success-checked-bg-color: $clr-btn-success-hover-bg-color !default;
 $clr-btn-success-checked-color: $clr-btn-success-color !default;
 
@@ -297,17 +295,17 @@ $clr-btn-success-checked-color: $clr-btn-success-color !default;
 }
 
 // Success outline button colors
-$clr-btn-success-outline-color: variables3.$clr-color-success-700 !default;
+$clr-btn-success-outline-color: variables.$clr-color-success-700 !default;
 $clr-btn-success-outline-bg-color: transparent !default;
-$clr-btn-success-outline-border-color: variables3.$clr-color-success-700 !default;
-$clr-btn-success-outline-hover-bg-color: variables3.$clr-color-success-50 !default;
-$clr-btn-success-outline-hover-color: variables3.$clr-color-success-900 !default;
-$clr-btn-success-outline-box-shadow-color: variables3.$clr-color-success-400 !default;
-$clr-btn-success-outline-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-success-outline-border-color: variables.$clr-color-success-700 !default;
+$clr-btn-success-outline-hover-bg-color: variables.$clr-color-success-50 !default;
+$clr-btn-success-outline-hover-color: variables.$clr-color-success-900 !default;
+$clr-btn-success-outline-box-shadow-color: variables.$clr-color-success-400 !default;
+$clr-btn-success-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-success-outline-disabled-bg-color: $clr-btn-success-outline-bg-color !default;
-$clr-btn-success-outline-disabled-border-color: variables3.$clr-color-neutral-600 !default;
+$clr-btn-success-outline-disabled-border-color: variables.$clr-color-neutral-600 !default;
 $clr-btn-success-outline-checked-bg-color: $clr-btn-success-outline-border-color !default;
-$clr-btn-success-outline-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-success-outline-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromSuccessOutlineButtonColors($property: null) {
   @if $property == color {
@@ -358,16 +356,16 @@ $clr-btn-success-outline-checked-color: variables3.$clr-color-neutral-0 !default
 }
 
 // Danger button colors
-$clr-btn-danger-color: variables3.$clr-color-neutral-0 !default;
-$clr-btn-danger-bg-color: variables3.$clr-color-danger-700 !default;
+$clr-btn-danger-color: variables.$clr-color-neutral-0 !default;
+$clr-btn-danger-bg-color: variables.$clr-color-danger-700 !default;
 $clr-btn-danger-border-color: $clr-btn-danger-bg-color !default;
-$clr-btn-danger-hover-bg-color: variables3.$clr-color-danger-800 !default;
+$clr-btn-danger-hover-bg-color: variables.$clr-color-danger-800 !default;
 $clr-btn-danger-hover-color: $clr-btn-danger-color !default;
-$clr-btn-danger-box-shadow-color: variables3.$clr-color-danger-900 !default;
-$clr-btn-danger-disabled-color: variables3.$clr-color-neutral-700 !default;
-$clr-btn-danger-disabled-bg-color: variables3.$clr-color-neutral-400 !default;
+$clr-btn-danger-box-shadow-color: variables.$clr-color-danger-900 !default;
+$clr-btn-danger-disabled-color: variables.$clr-color-neutral-700 !default;
+$clr-btn-danger-disabled-bg-color: variables.$clr-color-neutral-400 !default;
 $clr-btn-danger-disabled-border-color: $clr-btn-danger-disabled-color !default;
-$clr-btn-danger-checked-bg-color: variables3.$clr-color-danger-800 !default;
+$clr-btn-danger-checked-bg-color: variables.$clr-color-danger-800 !default;
 $clr-btn-danger-checked-color: $clr-btn-danger-color !default;
 
 @function lookupFromDangerButtonColors($property: null) {
@@ -419,17 +417,17 @@ $clr-btn-danger-checked-color: $clr-btn-danger-color !default;
 }
 
 // Danger outline button colors
-$clr-btn-danger-outline-color: variables3.$clr-color-danger-700 !default;
+$clr-btn-danger-outline-color: variables.$clr-color-danger-700 !default;
 $clr-btn-danger-outline-bg-color: transparent !default;
-$clr-btn-danger-outline-border-color: variables3.$clr-color-danger-800 !default;
-$clr-btn-danger-outline-hover-bg-color: variables3.$clr-color-danger-100 !default;
-$clr-btn-danger-outline-hover-color: variables3.$clr-color-danger-900 !default;
-$clr-btn-danger-outline-box-shadow-color: variables3.$clr-color-danger-200 !default;
-$clr-btn-danger-outline-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-danger-outline-border-color: variables.$clr-color-danger-800 !default;
+$clr-btn-danger-outline-hover-bg-color: variables.$clr-color-danger-100 !default;
+$clr-btn-danger-outline-hover-color: variables.$clr-color-danger-900 !default;
+$clr-btn-danger-outline-box-shadow-color: variables.$clr-color-danger-200 !default;
+$clr-btn-danger-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-danger-outline-disabled-bg-color: $clr-btn-danger-outline-bg-color !default;
 $clr-btn-danger-outline-disabled-border-color: $clr-btn-danger-outline-disabled-color !default;
-$clr-btn-danger-outline-checked-bg-color: variables3.$clr-color-danger-800 !default;
-$clr-btn-danger-outline-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-danger-outline-checked-bg-color: variables.$clr-color-danger-800 !default;
+$clr-btn-danger-outline-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromDangerOutlineButtonColors($property: null) {
   @if $property == color {
@@ -480,16 +478,16 @@ $clr-btn-danger-outline-checked-color: variables3.$clr-color-neutral-0 !default;
 }
 
 // Warning button colors
-$clr-btn-warning-color: variables3.$clr-color-neutral-0 !default;
-$clr-btn-warning-bg-color: variables3.$clr-color-danger-700 !default;
+$clr-btn-warning-color: variables.$clr-color-neutral-0 !default;
+$clr-btn-warning-bg-color: variables.$clr-color-danger-700 !default;
 $clr-btn-warning-border-color: $clr-btn-danger-bg-color !default;
-$clr-btn-warning-hover-bg-color: variables3.$clr-color-danger-800 !default;
+$clr-btn-warning-hover-bg-color: variables.$clr-color-danger-800 !default;
 $clr-btn-warning-hover-color: $clr-btn-danger-color !default;
-$clr-btn-warning-box-shadow-color: variables3.$clr-color-danger-900 !default;
-$clr-btn-warning-disabled-color: variables3.$clr-color-neutral-700 !default;
-$clr-btn-warning-disabled-bg-color: variables3.$clr-color-neutral-400 !default;
+$clr-btn-warning-box-shadow-color: variables.$clr-color-danger-900 !default;
+$clr-btn-warning-disabled-color: variables.$clr-color-neutral-700 !default;
+$clr-btn-warning-disabled-bg-color: variables.$clr-color-neutral-400 !default;
 $clr-btn-warning-disabled-border-color: $clr-btn-danger-disabled-color !default;
-$clr-btn-warning-checked-bg-color: variables3.$clr-color-danger-800 !default;
+$clr-btn-warning-checked-bg-color: variables.$clr-color-danger-800 !default;
 $clr-btn-warning-checked-color: $clr-btn-danger-color !default;
 
 @function lookupFromWarningButtonColors($property: null) {
@@ -541,17 +539,17 @@ $clr-btn-warning-checked-color: $clr-btn-danger-color !default;
 }
 
 // Warning outline button colors
-$clr-btn-warning-outline-color: variables3.$clr-color-danger-700 !default;
+$clr-btn-warning-outline-color: variables.$clr-color-danger-700 !default;
 $clr-btn-warning-outline-bg-color: transparent !default;
-$clr-btn-warning-outline-border-color: variables3.$clr-color-danger-800 !default;
-$clr-btn-warning-outline-hover-bg-color: variables3.$clr-color-danger-100 !default;
-$clr-btn-warning-outline-hover-color: variables3.$clr-color-danger-900 !default;
-$clr-btn-warning-outline-box-shadow-color: variables3.$clr-color-danger-200 !default;
-$clr-btn-warning-outline-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-warning-outline-border-color: variables.$clr-color-danger-800 !default;
+$clr-btn-warning-outline-hover-bg-color: variables.$clr-color-danger-100 !default;
+$clr-btn-warning-outline-hover-color: variables.$clr-color-danger-900 !default;
+$clr-btn-warning-outline-box-shadow-color: variables.$clr-color-danger-200 !default;
+$clr-btn-warning-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-warning-outline-disabled-bg-color: $clr-btn-danger-outline-bg-color !default;
 $clr-btn-warning-outline-disabled-border-color: $clr-btn-danger-outline-disabled-color !default;
-$clr-btn-warning-outline-checked-bg-color: variables3.$clr-color-danger-800 !default;
-$clr-btn-warning-outline-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-warning-outline-checked-bg-color: variables.$clr-color-danger-800 !default;
+$clr-btn-warning-outline-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromWarningOutlineButtonColors($property: null) {
   @if $property == color {
@@ -602,16 +600,16 @@ $clr-btn-warning-outline-checked-color: variables3.$clr-color-neutral-0 !default
 }
 
 // Link button colors
-$clr-btn-link-color: variables3.$clr-color-action-600 !default;
+$clr-btn-link-color: variables.$clr-color-action-600 !default;
 $clr-btn-link-bg-color: transparent !default;
 $clr-btn-link-border-color: transparent !default;
 $clr-btn-link-hover-bg-color: transparent !default;
-$clr-btn-link-hover-color: variables3.$clr-color-action-800 !default;
-$clr-btn-link-disabled-color: variables3.$clr-color-neutral-700 !default;
+$clr-btn-link-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-link-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-link-disabled-bg-color: transparent !default;
 $clr-btn-link-disabled-border-color: transparent !default;
 $clr-btn-link-checked-bg-color: transparent !default;
-$clr-btn-link-checked-color: variables3.$clr-color-action-800 !default;
+$clr-btn-link-checked-color: variables.$clr-color-action-800 !default;
 
 @function lookupFromLinkButtonColors($property: null) {
   @if $property == color {
@@ -658,17 +656,17 @@ $clr-btn-link-checked-color: variables3.$clr-color-action-800 !default;
 }
 
 // Inverse button colors
-$clr-btn-inverse-color: variables3.$clr-color-neutral-0 !default;
-$clr-btn-inverse-border-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-inverse-color: variables.$clr-color-neutral-0 !default;
+$clr-btn-inverse-border-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-bg-color: transparent !default;
 $clr-btn-inverse-hover-bg-color: rgba(255, 255, 255, 0.15) !default;
-$clr-btn-inverse-hover-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-inverse-hover-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-box-shadow-color: rgba(0, 0, 0, 0.25) !default;
-$clr-btn-inverse-disabled-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-inverse-disabled-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-disabled-bg-color: $clr-btn-inverse-bg-color !default;
-$clr-btn-inverse-disabled-border-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-inverse-disabled-border-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-checked-bg-color: rgba(255, 255, 255, 0.15) !default;
-$clr-btn-inverse-checked-color: variables3.$clr-color-neutral-0 !default;
+$clr-btn-inverse-checked-color: variables.$clr-color-neutral-0 !default;
 
 @function lookupFromInverseButtonColors($property: null) {
   @if $property == color {

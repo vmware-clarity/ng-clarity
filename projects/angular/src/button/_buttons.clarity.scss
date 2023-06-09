@@ -1,14 +1,12 @@
-@use 'sass:meta';
-@use '../utils/mixins';
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-@use 'variables.buttons' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.buttons' as buttons-variables;
 
 @function getActiveWidthBoxShadowTop($type: default) {
   @if type == primary {
@@ -40,51 +38,51 @@
   }
 
   @if $type == default {
-    @return variables3.lookupFromDefaultButtonColors($property);
+    @return buttons-variables.lookupFromDefaultButtonColors($property);
   }
 
   @if $type == default-outline {
-    @return variables3.lookupFromDefaultOutlineButtonColors($property);
+    @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
   }
 
   @if $type == primary {
-    @return variables3.lookupFromPrimaryButtonColors($property);
+    @return buttons-variables.lookupFromPrimaryButtonColors($property);
   }
 
   @if $type == success {
-    @return variables3.lookupFromSuccessButtonColors($property);
+    @return buttons-variables.lookupFromSuccessButtonColors($property);
   }
 
   @if $type == success-outline {
-    @return variables3.lookupFromSuccessOutlineButtonColors($property);
+    @return buttons-variables.lookupFromSuccessOutlineButtonColors($property);
   }
 
   @if $type == danger {
-    @return variables3.lookupFromDangerButtonColors($property);
+    @return buttons-variables.lookupFromDangerButtonColors($property);
   }
 
   @if $type == danger-outline {
-    @return variables3.lookupFromDangerOutlineButtonColors($property);
+    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
   }
 
   @if $type == warning {
-    @return variables3.lookupFromWarningButtonColors($property);
+    @return buttons-variables.lookupFromWarningButtonColors($property);
   }
 
   @if $type == warning-outline {
-    @return variables3.lookupFromWarningOutlineButtonColors($property);
+    @return buttons-variables.lookupFromWarningOutlineButtonColors($property);
   }
 
   @if $type == link {
-    @return variables3.lookupFromLinkButtonColors($property);
+    @return buttons-variables.lookupFromLinkButtonColors($property);
   }
 
   @if $type == inverse {
-    @return variables3.lookupFromInverseButtonColors($property);
+    @return buttons-variables.lookupFromInverseButtonColors($property);
   }
 
   @if $type == icon {
-    @return variables3.lookupFromIconButtonColors($property);
+    @return buttons-variables.lookupFromIconButtonColors($property);
   }
 
   @return null;
@@ -184,13 +182,13 @@
   @include mixins.css-var(
     border-radius,
     clr-btn-border-radius,
-    variables3.$clr-btn-border-radius,
+    buttons-variables.$clr-btn-border-radius,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
     border-width,
     clr-btn-border-width,
-    variables3.$clr-btn-border-width,
+    buttons-variables.$clr-btn-border-width,
     variables.$clr-use-custom-properties
   );
   border-style: solid;
@@ -210,32 +208,32 @@
   @include mixins.css-var(
     line-height,
     clr-btn-appearance-standard-line-height,
-    variables3.$clr-btn-appearance-standard-line-height,
+    buttons-variables.$clr-btn-appearance-standard-line-height,
     variables.$clr-use-custom-properties
   );
-  letter-spacing: variables3.$clr-btn-appearance-standard-letter-spacing;
+  letter-spacing: buttons-variables.$clr-btn-appearance-standard-letter-spacing;
   @include mixins.css-var(
     font-size,
     clr-btn-appearance-standard-font-size,
-    variables3.$clr-btn-appearance-standard-font-size,
+    buttons-variables.$clr-btn-appearance-standard-font-size,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
     font-weight,
     clr-btn-appearance-standard-font-weight,
-    variables3.$clr-btn-appearance-standard-font-weight,
+    buttons-variables.$clr-btn-appearance-standard-font-weight,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
     height,
     clr-btn-appearance-standard-height,
-    variables3.$clr-btn-appearance-standard-height,
+    buttons-variables.$clr-btn-appearance-standard-height,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
     padding,
     clr-btn-appearance-standard-padding,
-    variables3.$clr-btn-appearance-standard-padding,
+    buttons-variables.$clr-btn-appearance-standard-padding,
     variables.$clr-use-custom-properties
   );
 }
@@ -258,32 +256,32 @@
     @include mixins.css-var(
       line-height,
       clr-btn-appearance-form-line-height,
-      variables3.$clr-btn-appearance-form-line-height,
+      buttons-variables.$clr-btn-appearance-form-line-height,
       variables.$clr-use-custom-properties
     );
-    letter-spacing: variables3.$clr-btn-appearance-form-letter-spacing;
+    letter-spacing: buttons-variables.$clr-btn-appearance-form-letter-spacing;
     @include mixins.css-var(
       font-size,
       clr-btn-appearance-form-font-size,
-      variables3.$clr-btn-appearance-form-font-size,
+      buttons-variables.$clr-btn-appearance-form-font-size,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-weight,
       clr-btn-appearance-form-font-weight,
-      variables3.$clr-btn-appearance-form-font-weight,
+      buttons-variables.$clr-btn-appearance-form-font-weight,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       height,
       clr-btn-appearance-form-height,
-      variables3.$clr-btn-appearance-form-height,
+      buttons-variables.$clr-btn-appearance-form-height,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       padding,
       clr-btn-appearance-form-padding,
-      variables3.$clr-btn-appearance-form-padding,
+      buttons-variables.$clr-btn-appearance-form-padding,
       variables.$clr-use-custom-properties
     );
   }
@@ -396,19 +394,19 @@
     @include mixins.css-var(
       margin-top,
       clr-btn-vertical-margin,
-      variables3.$clr-btn-vertical-margin,
+      buttons-variables.$clr-btn-vertical-margin,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       margin-bottom,
       clr-btn-vertical-margin,
-      variables3.$clr-btn-vertical-margin,
+      buttons-variables.$clr-btn-vertical-margin,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       margin-right,
       clr-btn-horizontal-margin,
-      variables3.$clr-btn-horizontal-margin,
+      buttons-variables.$clr-btn-horizontal-margin,
       variables.$clr-use-custom-properties
     );
     margin-left: 0;
@@ -467,7 +465,7 @@
       @include mixins.css-var(
         color,
         clr-btn-icon-disabled-color,
-        variables2.$clr-color-neutral-400,
+        variables.$clr-color-neutral-400,
         variables.$clr-use-custom-properties
       );
     }
@@ -485,7 +483,7 @@
       @include mixins.css-var(
         border-color,
         --clr-color-neutral-400,
-        variables2.$clr-color-neutral-400,
+        variables.$clr-color-neutral-400,
         variables.$clr-use-custom-properties
       );
     }
