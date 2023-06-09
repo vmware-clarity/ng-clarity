@@ -21,14 +21,13 @@
 
 ## Classes
 
-| Class                | Description                                       |
-| -------------------- | ------------------------------------------------- |
-| dropdown             | The overall dropdown component.                   |
-| dropdown-toggle      | The toggle element inside the dropdown component. |
-| dropdown-menu        | The dropdown menu container.                      |
-| dropdown-header      | The header element inside the dropdown menu.      |
-| dropdown-item        | The individual items in the dropdown menu.        |
-| dropdown-item-active | The active item in the dropdown menu.             |
-| expandable           | The expandable dropdown item.                     |
-| dropdown-divider     | The divider element in the dropdown menu.         |
-| disabled             | Applies the disabled state to the dropdown item.  |
+| Class            | Description                                       |
+| ---------------- | ------------------------------------------------- |
+| dropdown         | The overall dropdown component.                   |
+| dropdown-toggle  | The toggle element inside the dropdown component. |
+| dropdown-menu    | The dropdown menu container.                      |
+| dropdown-header  | The header element inside the dropdown menu.      |
+| dropdown-item    | The individual items in the dropdown menu.        |
+| expandable       | The expandable dropdown item.                     |
+| dropdown-divider | The divider element in the dropdown menu.         |
+| disabled         | Applies the disabled state to the dropdown item.  |
