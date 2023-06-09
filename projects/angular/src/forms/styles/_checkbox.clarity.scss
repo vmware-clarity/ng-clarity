@@ -1,14 +1,13 @@
-@use '../../emphasis/alert/variables.alert' as alert-variables;
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../emphasis/alert/variables.alert' as alert-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
 
 @include mixins.exports('forms.checkbox') {
   $mark-half-size: styles-variables.$clr-forms-checkbox-mark-size * 0.5;

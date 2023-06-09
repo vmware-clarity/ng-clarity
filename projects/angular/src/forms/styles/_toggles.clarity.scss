@@ -1,15 +1,14 @@
-@use 'sass:meta';
-@use '../../button/variables.toggles' as button-variables;
-@use '../../emphasis/alert/variables.alert' as alert-variables;
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'variables.forms' as styles-variables;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
+@use '../../button/variables.toggles' as button-variables;
+@use '../../emphasis/alert/variables.alert' as alert-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.forms' as forms-variables;
 
 @mixin clr-toggle-transition-styles() {
   transition-duration: button-variables.$clr-toggle-transition-time;
@@ -71,7 +70,7 @@
         button-variables.$clr-toggle-bg-color-off,
         variables.$clr-use-custom-properties
       );
-      top: (styles-variables.$clr-forms-baseline * 0.5);
+      top: (forms-variables.$clr-forms-baseline * 0.5);
       right: 0;
       left: -1 *
         (button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing);
@@ -121,7 +120,7 @@
         button-variables.$clr-toggle-handle-bg-color,
         variables.$clr-use-custom-properties
       );
-      top: (variables.$clr_baselineRem_2px + styles-variables.$clr-forms-baseline * 0.5);
+      top: (variables.$clr_baselineRem_2px + forms-variables.$clr-forms-baseline * 0.5);
       right: 0;
       left: -1 *
         (
@@ -276,14 +275,14 @@
     .clr-control-label {
       display: block;
       font-weight: 400;
-      line-height: (4 * styles-variables.$clr-forms-baseline);
+      line-height: (4 * forms-variables.$clr-forms-baseline);
     }
   }
 
   // These are the inline styles overrides
   .clr-control-inline .clr-toggle-wrapper .clr-control-label {
     display: inline-block;
-    margin-right: (2 * styles-variables.$clr-forms-baseline);
+    margin-right: (2 * forms-variables.$clr-forms-baseline);
   }
   // This sets the option to move the toggles to the right of the label
   .clr-toggle-right {
@@ -325,7 +324,7 @@
         );
     }
     .clr-control-inline .clr-toggle-wrapper .clr-control-label {
-      margin-right: (9 * styles-variables.$clr-forms-baseline);
+      margin-right: (9 * forms-variables.$clr-forms-baseline);
     }
   }
 }

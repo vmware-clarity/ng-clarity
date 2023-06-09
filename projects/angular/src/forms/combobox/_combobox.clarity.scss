@@ -6,13 +6,12 @@
 
 @use 'properties.combobox';
 @use '../../popover/dropdown/menu-mixins.clarity';
-@use '../../popover/dropdown/variables.dropdown' as variables5;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.typography' as variables2;
+@use '../../utils/variables/variables';
 @use '../styles/mixins.forms' as styles-mixins;
-@use '../styles/variables.forms' as variables3;
-@use 'variables.combobox' as variables4;
+@use '../styles/variables.forms' as forms-variables;
+@use 'variables.combobox' as combobox-variables;
 
 @include mixins.exports('combobox.clarity') {
   // needed for the proper calculation of popover offset that we do to keep label always visible
@@ -29,7 +28,7 @@
     @include mixins.css-var(
       background-color,
       clr-forms-focused-color,
-      variables3.$clr-forms-focused-color,
+      forms-variables.$clr-forms-focused-color,
       variables.$clr-use-custom-properties
     );
     height: variables.$clr_baselineRem_2px;
@@ -41,13 +40,13 @@
     @include mixins.css-var(
       border-bottom-left-radius,
       clr-combobox-border-radius,
-      variables4.$clr-combobox-border-radius,
+      combobox-variables.$clr-combobox-border-radius,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       border-bottom-right-radius,
       clr-combobox-border-radius,
-      variables4.$clr-combobox-border-radius,
+      combobox-variables.$clr-combobox-border-radius,
       variables.$clr-use-custom-properties
     );
   }
@@ -58,7 +57,7 @@
     @include mixins.css-var(
       background-color,
       clr-forms-invalid-color,
-      variables3.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
   }
@@ -67,29 +66,30 @@
     position: relative;
 
     //Dimensions
-    padding: 0 variables4.$clr-combobox-trigger-right-padding 0 variables4.$clr-combobox-trigger-left-padding;
-    min-height: variables4.$clr-combobox-min-height;
-    min-width: variables4.$clr-combobox-min-width;
+    padding: 0 combobox-variables.$clr-combobox-trigger-right-padding 0
+      combobox-variables.$clr-combobox-trigger-left-padding;
+    min-height: combobox-variables.$clr-combobox-min-height;
+    min-width: combobox-variables.$clr-combobox-min-width;
     @include mixins.css-var(
       font-size,
       clr-combobox-font-size,
-      variables4.$clr-combobox-font-size,
+      combobox-variables.$clr-combobox-font-size,
       variables.$clr-use-custom-properties
     );
 
     &.multi {
-      min-width: calc(min(variables4.$clr-ng-multiselect-min-width, 100%));
+      min-width: min(var(combobox-variables.$clr-ng-multiselect-min-width), 100%);
       padding-bottom: variables.$clr_baselineRem_0_125;
     }
 
     //Mixins
-    @include styles-mixins.form-fields-appearance(variables3.$clr-forms-border-color);
+    @include styles-mixins.form-fields-appearance(forms-variables.$clr-forms-border-color);
 
     // override the above mixin for combobox-specific styles
     @include mixins.css-var(
       background-color,
       clr-combobox-input-background-color,
-      variables4.$clr-combobox-input-background-color,
+      combobox-variables.$clr-combobox-input-background-color,
       variables.$clr-use-custom-properties
     );
 
@@ -98,23 +98,21 @@
     @include mixins.css-var(
       border-color,
       clr-combobox-border-color,
-      variables4.$clr-combobox-border-color,
+      combobox-variables.$clr-combobox-border-color,
       variables.$clr-use-custom-properties
     );
 
-    border-bottom-width: variables.$clr-global-borderwidth;
-    border-bottom-style: solid;
     @include mixins.css-var(
       border-bottom-color,
       clr-forms-border-color,
-      variables3.$clr-forms-border-color,
+      forms-variables.$clr-forms-border-color,
       variables.$clr-use-custom-properties
     );
 
     @include mixins.css-var(
       border-radius,
       clr-combobox-border-radius,
-      variables4.$clr-combobox-border-radius,
+      combobox-variables.$clr-combobox-border-radius,
       variables.$clr-use-custom-properties
     );
 
@@ -124,7 +122,7 @@
     }
 
     &.invalid {
-      border-bottom-color: variables3.$clr-forms-invalid-color;
+      border-bottom-color: forms-variables.$clr-forms-invalid-color;
     }
 
     //Others
@@ -138,7 +136,7 @@
       border: none;
       cursor: pointer;
       padding: variables.$clr_baselineRem_3px variables.$clr_baselineRem_3px;
-      color: variables4.$clr-combobox-pill-font-color;
+      color: combobox-variables.$clr-combobox-pill-font-color;
     }
 
     .label-combobox-pill {
@@ -146,7 +144,7 @@
       @include mixins.css-var(
         background-color,
         clr-combobox-pill-background-color,
-        variables4.$clr-combobox-pill-background-color,
+        combobox-variables.$clr-combobox-pill-background-color,
         variables.$clr-use-custom-properties
       );
       border-width: variables.$clr_baselineRem_1px;
@@ -155,13 +153,13 @@
       @include mixins.css-var(
         border-radius,
         clr-combobox-pill-border-radius,
-        variables4.$clr-combobox-pill-border-radius,
+        combobox-variables.$clr-combobox-pill-border-radius,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-color,
         clr-combobox-pill-border-color,
-        variables4.$clr-combobox-pill-border-color,
+        combobox-variables.$clr-combobox-pill-border-color,
         variables.$clr-use-custom-properties
       );
 
@@ -171,11 +169,11 @@
         @include mixins.css-var(
           color,
           clr-combobox-pill-font-color,
-          variables4.$clr-combobox-pill-font-color,
+          combobox-variables.$clr-combobox-pill-font-color,
           variables.$clr-use-custom-properties
         );
-        font-size: variables2.$clr-typography-xxsmalltext;
-        font-weight: variables2.$clr-font-weight-regular;
+        font-size: variables.$clr-typography-xxsmalltext;
+        font-weight: variables.$clr-font-weight-regular;
         padding: 0 variables.$clr_baselineRem_8px 0 variables.$clr_baselineRem_4px;
       }
 
@@ -184,7 +182,7 @@
         @include mixins.css-var(
           color,
           clr-combobox-pill-font-color,
-          variables4.$clr-combobox-pill-font-color,
+          combobox-variables.$clr-combobox-pill-font-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -203,7 +201,7 @@
     }
 
     //Dimensions
-    width: variables4.$clr-combobox-trigger-dimensions;
+    width: combobox-variables.$clr-combobox-trigger-dimensions;
     margin: auto;
     position: absolute;
     top: 0;
@@ -222,7 +220,7 @@
       @include mixins.css-var(
         color,
         clr-combobox-pill-font-color,
-        variables4.$clr-combobox-pill-font-color,
+        combobox-variables.$clr-combobox-pill-font-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -257,7 +255,7 @@
       @include mixins.css-var(
         background-color,
         clr-dropdown-bg-hover-color,
-        variables5.$clr-dropdown-bg-hover-color,
+        dropdown-variables.$clr-dropdown-bg-hover-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -274,7 +272,7 @@
       @include mixins.css-var(
         color,
         clr-dropdown-item-color,
-        variables5.$clr-dropdown-item-color,
+        dropdown-variables.$clr-dropdown-item-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -291,11 +289,11 @@
   }
 
   .clr-filter-highlight b {
-    font-weight: variables2.$clr-font-weight-semibold;
+    font-weight: variables.$clr-font-weight-semibold;
     @include mixins.css-var(
       color,
       clr-combobox-filter-highlight,
-      variables4.$clr-combobox-filter-highlight,
+      combobox-variables.$clr-combobox-filter-highlight,
       variables.$clr-use-custom-properties
     );
   }

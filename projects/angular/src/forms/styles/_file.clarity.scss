@@ -1,13 +1,12 @@
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as styles-mixins;
+@use 'variables.forms' as styles-variables;
 
 @include mixins.exports('forms.file') {
   .clr-file-wrapper {
