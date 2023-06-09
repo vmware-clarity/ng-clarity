@@ -10,6 +10,7 @@
 @use '../../utils/variables/variables';
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
+@use '../../button/buttons.clarity';
 
 @mixin generateAlertType($alertType: 'info') {
   @include mixins.css-var(
