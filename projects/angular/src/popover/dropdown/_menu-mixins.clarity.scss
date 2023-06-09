@@ -1,14 +1,12 @@
-@use 'sass:map';
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.layout' as variables2;
-@use 'variables.dropdown' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.dropdown' as dropdown-variables;
 
 @mixin generate-dropdown-menu() {
   display: flex;
@@ -25,7 +23,7 @@
   @include mixins.css-var(
     background,
     clr-dropdown-bg-color,
-    variables3.$clr-dropdown-bg-color,
+    dropdown-variables.$clr-dropdown-bg-color,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
@@ -38,7 +36,7 @@
   @include mixins.css-var(
     border-color,
     clr-dropdown-border-color,
-    variables3.$clr-dropdown-border-color,
+    dropdown-variables.$clr-dropdown-border-color,
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
@@ -48,12 +46,13 @@
     variables.$clr-use-custom-properties
   );
   // OldIE/Edge
-  box-shadow: 0 variables.$clr-global-borderwidth variables.$clr_baselineRem_0_125 variables3.$clr-dropdown-box-shadow;
+  box-shadow: 0 variables.$clr-global-borderwidth variables.$clr_baselineRem_0_125
+    dropdown-variables.$clr-dropdown-box-shadow;
   @if variables.$clr-use-custom-properties == true {
     box-shadow: 0
       variables.$clr-global-borderwidth
       variables.$clr_baselineRem_0_125
-      var(--clr-dropdown-box-shadow, variables3.$clr-dropdown-box-shadow);
+      var(--clr-dropdown-box-shadow, dropdown-variables.$clr-dropdown-box-shadow);
   }
   margin-top: variables.$clr_baselineRem_2px;
   padding: variables.$clr_baselineRem_0_5 0;
@@ -65,17 +64,17 @@
   @include mixins.css-var(
     color,
     clr-dropdown-item-color,
-    variables3.$clr-dropdown-item-color,
+    dropdown-variables.$clr-dropdown-item-color,
     variables.$clr-use-custom-properties
   );
-  font-size: variables3.$clr-dropdown-item-font-size;
+  font-size: dropdown-variables.$clr-dropdown-item-font-size;
   @include mixins.css-var(
     font-weight,
     clr-dropdown-item-font-weight,
-    variables3.$clr-dropdown-item-font-weight,
+    dropdown-variables.$clr-dropdown-item-font-weight,
     variables.$clr-use-custom-properties
   );
-  letter-spacing: variables3.$clr-dropdown-item-letter-spacing;
+  letter-spacing: dropdown-variables.$clr-dropdown-item-letter-spacing;
 
   background: transparent;
   border: 0;
@@ -91,13 +90,13 @@
     @include mixins.css-var(
       background-color,
       clr-dropdown-bg-hover-color,
-      variables3.$clr-dropdown-bg-hover-color,
+      dropdown-variables.$clr-dropdown-bg-hover-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
       clr-dropdown-item-color,
-      variables3.$clr-dropdown-item-color,
+      dropdown-variables.$clr-dropdown-item-color,
       variables.$clr-use-custom-properties
     );
     text-decoration: none;
@@ -107,13 +106,13 @@
     @include mixins.css-var(
       background,
       clr-dropdown-selection-color,
-      variables3.$clr-dropdown-selection-color,
+      dropdown-variables.$clr-dropdown-selection-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
       clr-dropdown-active-text-color,
-      variables3.$clr-dropdown-active-text-color,
+      dropdown-variables.$clr-dropdown-active-text-color,
       variables.$clr-use-custom-properties
     );
   }
@@ -146,7 +145,7 @@
 @mixin generate-dropdown-item-height() {
   padding: variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1;
 
-  @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
   }
 }

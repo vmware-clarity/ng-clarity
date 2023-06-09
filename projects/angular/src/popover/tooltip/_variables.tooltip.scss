@@ -1,6 +1,4 @@
-@use '../../utils/variables/variables.color';
-@use '../../utils/variables/variables.global' as variables2;
-@use '../../utils/variables/variables.typography' as variables3;
+@use '../../utils/variables/variables';
 
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
@@ -10,13 +8,13 @@
 
 // Usage: ../popover/tooltip/_tooltips.clarity.scss
 $clr-tooltip-background-color: variables.$clr-color-neutral-1000 !default;
-$clr-tooltip-border-radius: variables2.$clr_baselineRem_0_125 !default;
-$clr-tooltip-default-width: variables2.$clr_baselineRem_10 !default;
-$arrow-height: variables2.$clr_baselineRem_0_25 !default;
-$arrow-width: variables2.$clr_baselineRem_5px !default;
-$clr-tooltip-adjusted-margin: variables2.$clr_baselineRem_0_667 !default;
+$clr-tooltip-border-radius: variables.$clr_baselineRem_0_125 !default;
+$clr-tooltip-default-width: variables.$clr_baselineRem_10 !default;
+$arrow-height: variables.$clr_baselineRem_0_25 !default;
+$arrow-width: variables.$clr_baselineRem_5px !default;
+$clr-tooltip-adjusted-margin: variables.$clr_baselineRem_0_667 !default;
 
 $clr-tooltip-color: variables.$clr-color-neutral-0 !default;
-$clr-tooltip-font-size: variables3.$clr-p3-font-size !default;
-$clr-tooltip-font-weight: variables3.$clr-p3-font-weight !default;
-$clr-tooltip-letter-spacing: variables3.$clr-p3-letter-spacing !default;
+$clr-tooltip-font-size: variables.$clr-p3-font-size !default;
+$clr-tooltip-font-weight: variables.$clr-p3-font-weight !default;
+$clr-tooltip-letter-spacing: variables.$clr-p3-letter-spacing !default;
