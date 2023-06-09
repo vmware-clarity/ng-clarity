@@ -96,7 +96,7 @@
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
-    flex: 1 1 0%;
+    flex: 1 1 0;
     width: 100%;
     border: 0;
     padding: accordion-variables.$clr-accordion-padding;
@@ -194,7 +194,7 @@
 
   .clr-accordion-angle {
     transition: all 200ms ease-in-out;
-    transform: rotate(90);
+    transform: rotate(90deg);
   }
 
   .clr-accordion-error-icon,
