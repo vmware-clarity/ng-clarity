@@ -167,22 +167,22 @@
 
   // panel states
   .clr-accordion-panel-open {
-    .clr-accordion-content {
+    & > .clr-accordion-content-region .clr-accordion-content {
       display: block;
     }
 
-    .clr-accordion-angle {
-      visibility: visible;
-      transform: rotate(180deg);
-    }
-
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       @include css-var(
         background,
         clr-accordion-active-background-color,
         $clr-accordion-active-background-color,
         $clr-use-custom-properties
       );
+
+      .clr-accordion-angle {
+        visibility: visible;
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -315,7 +315,7 @@
   }
 
   // override the border bottom style when last panel is open
-  .clr-accordion-panel-open .clr-accordion-header {
+  .clr-accordion-panel-open > .clr-accordion-header {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border-bottom: 0 !important;
@@ -327,7 +327,7 @@
       visibility: hidden;
     }
 
-    .clr-accordion-panel-open .clr-accordion-angle {
+    .clr-accordion-panel-open > .clr-accordion-header .clr-accordion-angle {
       visibility: visible;
     }
 
