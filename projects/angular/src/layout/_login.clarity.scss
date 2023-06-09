@@ -8,10 +8,8 @@
 @use 'properties.login';
 @use '../image/icons.clarity';
 @use '../utils/mixins';
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.layout' as variables3;
-@use 'variables.login' as variables4;
+@use '../utils/variables/variables';
+@use 'variables.login' as login-variables;
 
 @include mixins.exports('login.clarity') {
   .login-wrapper {
@@ -19,14 +17,14 @@
     height: 100%;
     background: icons.generateLoginBackground();
     background-size: 100%;
-    background-position: variables4.$clr-login-width 0;
+    background-position: login-variables.$clr-login-width 0;
     background-repeat: no-repeat;
 
     .login {
       @include mixins.css-var(
         background,
         clr-login-background-color,
-        variables4.$clr-login-background-color,
+        login-variables.$clr-login-background-color,
         variables.$clr-use-custom-properties
       );
       position: relative;
@@ -36,40 +34,40 @@
       padding: variables.$clr_baselineRem_1 variables.$clr_baselineRem_2_5;
       height: auto;
       min-height: 100vh;
-      width: variables4.$clr-login-width;
+      width: login-variables.$clr-login-width;
 
       .title {
         @include mixins.css-var(
           color,
           clr-login-title-color,
-          variables4.$clr-login-title-color,
+          login-variables.$clr-login-title-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-weight,
           clr-login-title-font-weight,
-          variables4.$clr-login-title-font-weight,
+          login-variables.$clr-login-title-font-weight,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-family,
           clr-login-title-font-family,
-          variables4.$clr-login-title-font-family,
+          login-variables.$clr-login-title-font-family,
           variables.$clr-use-custom-properties
         );
-        font-size: variables4.$clr-login-title-font-size;
-        letter-spacing: variables4.$clr-login-title-letter-spacing;
-        line-height: variables4.$clr-login-title-line-height;
+        font-size: login-variables.$clr-login-title-font-size;
+        letter-spacing: login-variables.$clr-login-title-letter-spacing;
+        line-height: login-variables.$clr-login-title-line-height;
 
         .welcome {
-          line-height: variables4.$clr-login-title-line-height;
+          line-height: login-variables.$clr-login-title-line-height;
         }
 
         .hint {
           @include mixins.css-var(
             color,
             clr-login-title-color,
-            variables4.$clr-login-title-color,
+            login-variables.$clr-login-title-color,
             variables.$clr-use-custom-properties
           );
           margin-top: variables.$clr_baselineRem_1_25;
@@ -82,23 +80,23 @@
         @include mixins.css-var(
           color,
           clr-login-trademark-color,
-          variables4.$clr-login-trademark-color,
+          login-variables.$clr-login-trademark-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-weight,
           clr-login-trademark-font-weight,
-          variables4.$clr-login-trademark-font-weight,
+          login-variables.$clr-login-trademark-font-weight,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-family,
           clr-login-trademark-font-family,
-          variables4.$clr-login-trademark-font-family,
+          login-variables.$clr-login-trademark-font-family,
           variables.$clr-use-custom-properties
         );
-        font-size: variables4.$clr-login-trademark-font-size;
-        letter-spacing: variables4.$clr-login-trademark-letter-spacing;
+        font-size: login-variables.$clr-login-trademark-font-size;
+        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
       }
 
       // @TODO Is this used? It's not documented on the website or used in the demo app.
@@ -106,24 +104,24 @@
         @include mixins.css-var(
           font-weight,
           clr-login-subtitle-font-weight,
-          variables4.$clr-login-subtitle-font-weight,
+          login-variables.$clr-login-subtitle-font-weight,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           color,
           clr-login-subtitle-color,
-          variables4.$clr-login-subtitle-color,
+          login-variables.$clr-login-subtitle-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           font-family,
           clr-login-subtitle-font-family,
-          variables4.$clr-login-subtitle-font-family,
+          login-variables.$clr-login-subtitle-font-family,
           variables.$clr-use-custom-properties
         );
-        font-size: variables4.$clr-login-subtitle-font-size;
-        letter-spacing: variables4.$clr-login-subtitle-letter-spacing;
-        line-height: variables4.$clr-login-subtitle-line-height;
+        font-size: login-variables.$clr-login-subtitle-font-size;
+        letter-spacing: login-variables.$clr-login-subtitle-letter-spacing;
+        line-height: login-variables.$clr-login-subtitle-line-height;
       }
 
       .login-group {
@@ -192,13 +190,13 @@
           @include mixins.css-var(
             background,
             clr-login-error-background-color,
-            variables2.$clr-color-danger-800,
+            variables.$clr-color-danger-800,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-login-background-color,
-            variables4.$clr-login-background-color,
+            login-variables.$clr-login-background-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
@@ -212,16 +210,16 @@
           &:before {
             display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
             content: '';
-            background: icons.generateErrorIcon(variables4.$clr-login-background-color);
+            background: icons.generateErrorIcon(login-variables.$clr-login-background-color);
             margin: variables.$clr_baselineRem_1px variables.$clr_baselineRem_0_25 0 0;
-            @include mixins.equilateral(variables4.$clr-login-icon-size);
+            @include mixins.equilateral(login-variables.$clr-login-icon-size);
           }
 
           &.active {
             display: flex;
 
             &:before {
-              flex: 0 0 variables4.$clr-login-icon-size;
+              flex: 0 0 login-variables.$clr-login-icon-size;
             }
           }
         }
@@ -251,7 +249,7 @@
         @include mixins.css-var(
           background,
           clr-login-panel-line-color,
-          variables2.$clr-color-neutral-1000,
+          variables.$clr-color-neutral-1000,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(opacity, clr-login-panel-line-opacity, 0.1, variables.$clr-use-custom-properties);
@@ -261,13 +259,13 @@
     }
   }
 
-  @media screen and (max-width: map.get(variables3.$clr-grid-breakpoints, md)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
     .login-wrapper {
       justify-content: center;
       @include mixins.css-var(
         background,
         clr-login-background-color,
-        variables4.$clr-login-background-color,
+        login-variables.$clr-login-background-color,
         variables.$clr-use-custom-properties
       );
 
@@ -283,7 +281,7 @@
     }
   }
 
-  @media screen and (max-width: map.get(variables3.$clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .login-wrapper {
       .login {
         padding: variables.$clr_baselineRem_1 15%;

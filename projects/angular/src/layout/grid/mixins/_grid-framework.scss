@@ -1,14 +1,12 @@
-@use 'sass:map';
-@use '../../../utils/variables/variables.global' as variables2;
-@use '../../../utils/variables/variables.layout';
-@use 'breakpoint';
-@use 'grid';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use '../../../utils/variables/variables';
+@use 'breakpoint';
+@use 'grid';
 
 @mixin clr-make-grid-columns(
   $columns: variables.$clr-grid-columns,
@@ -18,7 +16,7 @@
   // Common properties for all breakpoints
   %clr-grid-column {
     width: 100%;
-    min-height: variables2.$clr_baselineRem_1px; // Prevent columns from collapsing when empty
+    min-height: variables.$clr_baselineRem_1px; // Prevent columns from collapsing when empty
     padding-right: ($gutter * 0.5);
     padding-left: ($gutter * 0.5);
   }

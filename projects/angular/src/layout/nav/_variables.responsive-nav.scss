@@ -1,22 +1,20 @@
-@use 'sass:map';
-@use '../../utils/variables/variables.color';
-@use '../../utils/variables/variables.global' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use '../../utils/variables/variables';
 
 // Usage: ../layout/nav/_responsive-nav.clarity.scss
 // Responsive Nav
 $clr-sliding-panel-text-color: variables.$clr-color-neutral-700 !default;
-$clr-sliding-panel-width: variables2.$clr_baselineRem_15 !default;
-$clr-sliding-panel-width-sm: variables2.$clr_baselineRem_12 !default;
-$clr-trigger-position: $clr-sliding-panel-width + variables2.$clr_baselineRem_0_5 !default;
-$clr-trigger-position-sm: $clr-sliding-panel-width-sm + variables2.$clr_baselineRem_0_5 !default;
-$clr-sliding-panel-z-index: map.get(variables2.$clr-layers, sidepanel);
-$clr-sliding-panel-backdrop-z-index: map.get(variables2.$clr-layers, sidepanel-bg) !default;
+$clr-sliding-panel-width: variables.$clr_baselineRem_15 !default;
+$clr-sliding-panel-width-sm: variables.$clr_baselineRem_12 !default;
+$clr-trigger-position: $clr-sliding-panel-width + variables.$clr_baselineRem_0_5 !default;
+$clr-trigger-position-sm: $clr-sliding-panel-width-sm + variables.$clr_baselineRem_0_5 !default;
+$clr-sliding-panel-z-index: map.get(variables.$clr-layers, sidepanel);
+$clr-sliding-panel-backdrop-z-index: map.get(variables.$clr-layers, sidepanel-bg) !default;
 $clr-sliding-transition-time: 0.3s !default;
 $clr-transition-style: ease !default;
 $clr-nav-background-color: variables.$clr-color-neutral-200 !default;

@@ -1,12 +1,9 @@
-@use '../../utils/variables/variables.color' as variables2;
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.typography' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/variables/variables';
 
 // Usage: ../layout/main-containter/_layout.clarity.scss
 // Usage: ../layout/nav/_header.clarity.scss
@@ -14,7 +11,7 @@
 $clr-header-height: variables.$clr_baselineRem_2_5 !default;
 
 // Usage: ../layout/nav/_header.clarity.scss
-$clr-header-bgColor: variables2.$clr-color-neutral-900 !default;
+$clr-header-bgColor: variables.$clr-color-neutral-900 !default;
 $clr-logo-width: variables.$clr_baselineRem_1_5 !default;
 $clr-nav-icon-size: variables.$clr_baselineRem_0_916 !default;
 $clr-header-section-divider-height: variables.$clr_baselineRem_1_66 !default;
@@ -31,11 +28,11 @@ $clr-header-2-bg-color: hsl(
   19%,
   35%
 ) !default; // Hard coded because this color is not in the color palette. Its reserved for headers only
-$clr-header-3-bg-color: variables2.$clr-color-secondary-action-1000 !default;
+$clr-header-3-bg-color: variables.$clr-color-secondary-action-1000 !default;
 // Hard coded because this color is not in the color palette. Its reserved for headers only
 $clr-header-4-bg-color: hsl(202, 66%, 41%) !default;
-$clr-header-5-bg-color: variables2.$clr-color-action-800 !default;
-$clr-header-6-bg-color: variables2.$clr-color-action-1000 !default;
+$clr-header-5-bg-color: variables.$clr-color-action-800 !default;
+$clr-header-6-bg-color: variables.$clr-color-action-1000 !default;
 $clr-header-7-bg-color: hsl(
   206,
   25%,
@@ -43,10 +40,10 @@ $clr-header-7-bg-color: hsl(
 ) !default; // Hard coded because this color is not in the color palette. Its reserved for headers only
 $clr-header-8-bg-color: #0f171c !default; // dark theme only header added by external team to workaround lack of header-7 in dark theme
 
-$clr-header-font-color: variables2.$clr-color-neutral-50 !default;
+$clr-header-font-color: variables.$clr-color-neutral-50 !default;
 
 $clr-header-title-color: $clr-header-font-color !default;
-$clr-header-title-font-size: variables3.$clr-h5-font-size !default;
-$clr-header-title-font-weight: variables3.$clr-h5-font-weight !default;
-$clr-header-title-font-family: variables3.$clr-h5-font-family !default;
-$clr-header-title-letter-spacing: variables3.$clr-h5-letter-spacing !default;
+$clr-header-title-font-size: variables.$clr-h5-font-size !default;
+$clr-header-title-font-weight: variables.$clr-h5-font-weight !default;
+$clr-header-title-font-family: variables.$clr-h5-font-family !default;
+$clr-header-title-letter-spacing: variables.$clr-h5-letter-spacing !default;

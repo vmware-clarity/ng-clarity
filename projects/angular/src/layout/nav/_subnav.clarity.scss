@@ -4,11 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.subnav';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.color' as variables2;
-@use '../../utils/variables/variables.global';
-@use 'variables.subnav' as variables3;
+@use '../../utils/variables/variables';
+@use 'variables.subnav' as subnav-variables;
 
 @include mixins.exports('subnav.clarity') {
   /*TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
@@ -16,12 +14,12 @@
   .subnav {
     display: flex;
     // IE/OldEdge
-    box-shadow: variables3.$clr-nav-shadow;
+    box-shadow: subnav-variables.$clr-nav-shadow;
     @if variables.$clr-use-custom-properties == true {
       box-shadow: 0
         (-1 * variables.$clr_baselineRem_1px)
         0
-        var(--clr-nav-box-shadow-color, variables2.$clr-color-neutral-400)
+        var(--clr-nav-box-shadow-color, variables.$clr-color-neutral-400)
         inset;
     }
     justify-content: space-between; //nav to the first and aside to the very right
@@ -29,10 +27,10 @@
     @include mixins.css-var(
       background-color,
       clr-subnav-bg-color,
-      variables3.$clr-subnav-bgColor,
+      subnav-variables.$clr-subnav-bgColor,
       variables.$clr-use-custom-properties
     );
-    height: variables3.$clr-subnav-height;
+    height: subnav-variables.$clr-subnav-height;
 
     .nav {
       flex: 1 1 auto;
@@ -48,7 +46,7 @@
       flex: 0 0 auto;
       display: flex;
       align-items: center;
-      height: variables3.$clr-subnav-height;
+      height: subnav-variables.$clr-subnav-height;
       padding: 0 variables.$clr_baselineRem_1;
 
       & > :last-child {

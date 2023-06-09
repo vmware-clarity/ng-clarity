@@ -1,14 +1,13 @@
-@use 'sass:meta';
-@use '../../utils/a11y';
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'variables.vertical-nav' as vertical-nav-variables;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
+@use '../../utils/a11y';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.vertical-nav' as vertical-nav-variables;
 
 @mixin vertical-nav-link-colors() {
   @include mixins.css-var(

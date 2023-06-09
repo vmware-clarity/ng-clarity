@@ -1,12 +1,9 @@
-@use '../../utils/variables/variables.color' as variables2;
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.typography' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/variables/variables';
 
 // Usage: ./_vertical-nav.clarity.scss
 //Vertical Nav: Links
@@ -14,37 +11,37 @@ $clr-vertical-nav-link-padding-right: variables.$clr_baselineRem_0_5 !default;
 $clr-vertical-nav-link-padding-left: variables.$clr_baselineRem_1 !default;
 
 //Vertical Nav: Divider
-$clr-vertical-nav-divider-color: variables2.$clr-color-neutral-700 !default;
+$clr-vertical-nav-divider-color: variables.$clr-color-neutral-700 !default;
 $clr-vertical-nav-divider-margin: variables.$clr_baselineRem_0_5 !default;
 
 //Vertical Nav: Icons
 $clr-vertical-nav-icon-size: variables.$clr_baselineRem_0_667 !default;
 $clr-vertical-nav-icon-right-margin: variables.$clr_baselineRem_0_25 !default;
 $clr-vertical-nav-collapsed-caret-size: variables.$clr_baselineRem_0_416 !default;
-$clr-vertical-nav-icon-active-color: variables2.$clr-color-action-600 !default;
+$clr-vertical-nav-icon-active-color: variables.$clr-color-action-600 !default;
 
 //Vertical Nav: Align
 $clr-vertical-nav-width: variables.$clr_baselineRem_10 !default;
 $clr-vertical-nav-min-width: variables.$clr_baselineRem_2 !default;
 $clr-vertical-nav-item-height: variables.$clr_baselineRem_1_5 !default;
-$clr-vertical-nav-item-color: variables2.$clr-color-neutral-700 !default;
-$clr-vertical-nav-item-active-color: variables2.$clr-color-neutral-700 !default;
-$clr-vertical-nav-bg-color: variables2.$clr-color-neutral-200 !default;
-$clr-vertical-nav-active-bg-color: variables2.$clr-color-neutral-0 !default;
-$clr-vertical-nav-hover-bg-color: variables2.$clr-color-neutral-400 !default;
+$clr-vertical-nav-item-color: variables.$clr-color-neutral-700 !default;
+$clr-vertical-nav-item-active-color: variables.$clr-color-neutral-700 !default;
+$clr-vertical-nav-bg-color: variables.$clr-color-neutral-200 !default;
+$clr-vertical-nav-active-bg-color: variables.$clr-color-neutral-0 !default;
+$clr-vertical-nav-hover-bg-color: variables.$clr-color-neutral-400 !default;
 $clr-vertical-nav-top-padding: variables.$clr_baselineRem_0_75 !default;
 $clr-vertical-nav-trigger-icon-align-margin: ($clr-vertical-nav-item-height - $clr-vertical-nav-icon-size) * 0.5 !default;
 
 //Vertical Nav: Trigger
-$clr-vertical-nav-toggle-icon-color: variables2.$clr-color-neutral-1000 !default;
+$clr-vertical-nav-toggle-icon-color: variables.$clr-color-neutral-1000 !default;
 $clr-vertical-nav-trigger-collapsed-margin: variables.$clr_baselineRem_0_125 !default;
-$clr-vertical-nav-trigger-divider-border-color: variables2.$clr-color-neutral-400 !default;
+$clr-vertical-nav-trigger-divider-border-color: variables.$clr-color-neutral-400 !default;
 
 //Vertical Nav: Links
 $clr-vertical-nav-link-padding-right: variables.$clr_baselineRem_0_5 !default;
 $clr-vertical-nav-link-padding-left: variables.$clr_baselineRem_1 !default;
 
 // Vertical Nav: Header
-$clr-vertical-nav-header-font-size: variables3.$clr-p4-font-size !default;
-$clr-vertical-nav-header-font-weight: variables3.$clr-p4-font-weight !default;
-$clr-vertical-nav-header-letter-spacing: variables3.$clr-p4-letter-spacing !default;
+$clr-vertical-nav-header-font-size: variables.$clr-p4-font-size !default;
+$clr-vertical-nav-header-font-weight: variables.$clr-p4-font-weight !default;
+$clr-vertical-nav-header-letter-spacing: variables.$clr-p4-letter-spacing !default;

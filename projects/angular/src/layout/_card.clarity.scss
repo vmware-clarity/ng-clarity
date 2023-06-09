@@ -6,17 +6,15 @@
 
 @use 'sass:map';
 @use 'properties.card';
-@use '../button/variables.buttons' as variables5;
 @use '../utils/mixins';
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.layout' as variables3;
-@use 'variables.card' as variables4;
+@use '../utils/variables/variables';
+@use '../button/variables.buttons' as button-variables;
+@use 'variables.card' as card-variables;
 
 @include mixins.exports('card.clarity') {
   %card-border-appearance {
     // IE/OldEdge
-    box-shadow: variables4.$clr-card-box-shadow;
+    box-shadow: card-variables.$clr-card-box-shadow;
     @if variables.$clr-use-custom-properties == true {
       box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-box-shadow-color);
     }
@@ -36,14 +34,14 @@
     @include mixins.css-var(
       border-color,
       clr-card-border-color,
-      variables4.$clr-card-border-color,
+      card-variables.$clr-card-border-color,
       variables.$clr-use-custom-properties
     );
   }
 
   %clickable-card-transition {
     // IE/OldEdge
-    box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 variables2.$clr-color-action-500;
+    box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 variables.$clr-color-action-500;
     @if variables.$clr-use-custom-properties == true {
       box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-clickable-box-shadow-color);
     }
@@ -57,7 +55,7 @@
     @include mixins.css-var(
       border-color,
       clr-card-clickable-border-color,
-      variables2.$clr-color-action-500,
+      variables.$clr-color-action-500,
       variables.$clr-use-custom-properties
     );
     cursor: pointer;
@@ -68,7 +66,7 @@
 
   %card-space-between {
     margin-top: 0;
-    margin-bottom: variables4.$card-children-space-between;
+    margin-bottom: card-variables.$card-children-space-between;
 
     &:last-child {
       margin-bottom: 0;
@@ -90,7 +88,7 @@
     @include mixins.css-var(
       background-color,
       clr-card-bg-color,
-      variables4.$clr-card-bg-color,
+      card-variables.$clr-card-bg-color,
       variables.$clr-use-custom-properties
     );
     width: 100%;
@@ -126,7 +124,7 @@
     //Clarity Lists
     & > .list,
     & > .list-unstyled {
-      padding: variables4.$card-children-padding-vertical variables4.$card-children-padding-horizontal;
+      padding: card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal;
     }
 
     .list-group {
@@ -137,11 +135,11 @@
 
     .list-group-item {
       padding: variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_0_75;
-      font-size: variables4.$clr-card-text-font-size;
+      font-size: card-variables.$clr-card-text-font-size;
       @include mixins.css-var(
         background-color,
         clr-card-bg-color,
-        variables4.$clr-card-bg-color,
+        card-variables.$clr-card-bg-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -154,7 +152,7 @@
       @include mixins.css-var(
         border-bottom-color,
         clr-card-border-color,
-        variables4.$clr-card-border-color,
+        card-variables.$clr-card-border-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -174,7 +172,7 @@
   .card-header,
   .card-block,
   .card-footer {
-    padding: variables4.$card-children-padding-vertical variables4.$card-children-padding-horizontal;
+    padding: card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal;
   }
 
   .card-header,
@@ -182,17 +180,17 @@
     @include mixins.css-var(
       color,
       clr-card-title-color,
-      variables4.$clr-card-title-color,
+      card-variables.$clr-card-title-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-weight,
       clr-card-title-font-weight,
-      variables4.$clr-card-title-font-weight,
+      card-variables.$clr-card-title-font-weight,
       variables.$clr-use-custom-properties
     );
-    font-size: variables4.$clr-card-title-font-size;
-    letter-spacing: variables4.$clr-card-title-letter-spacing;
+    font-size: card-variables.$clr-card-title-font-size;
+    letter-spacing: card-variables.$clr-card-title-letter-spacing;
   }
 
   h1,
@@ -208,7 +206,7 @@
   }
 
   .card-text {
-    font-size: variables4.$clr-card-text-font-size;
+    font-size: card-variables.$clr-card-text-font-size;
   }
 
   //Images
@@ -269,7 +267,7 @@
     .btn,
     .btn.btn-link,
     .card-link {
-      margin: 0 variables5.$clr-btn-horizontal-margin 0 0;
+      margin: 0 button-variables.$clr-btn-horizontal-margin 0 0;
     }
 
     //Need this level of nesting for now.
@@ -292,7 +290,7 @@
     @include mixins.css-var(
       border-bottom-color,
       clr-card-border-color,
-      variables4.$clr-card-border-color,
+      card-variables.$clr-card-border-color,
       variables.$clr-use-custom-properties
     );
 
@@ -315,7 +313,7 @@
     @include mixins.css-var(
       border-bottom-color,
       clr-card-divider-color,
-      variables4.$clr-card-divider-color,
+      card-variables.$clr-card-divider-color,
       variables.$clr-use-custom-properties
     );
   }
@@ -323,8 +321,8 @@
   .card-block {
     .card-divider {
       @extend %card-space-between;
-      margin-left: -1 * (variables4.$card-children-padding-horizontal);
-      margin-right: -1 * (variables4.$card-children-padding-horizontal);
+      margin-left: -1 * (card-variables.$card-children-padding-horizontal);
+      margin-right: -1 * (card-variables.$card-children-padding-horizontal);
       width: auto;
     }
   }
@@ -382,7 +380,7 @@
   //Credit: Bootstrap 4 Card Masonry
   //Added some fixes to avoid flickering in Clickable cards
   //Added extra column classes to control the number of CSS columns
-  @media screen and (min-width: map.get(variables3.$clr-grid-breakpoints, sm)) {
+  @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .card-columns {
       column-count: 3;
       column-gap: variables.$clr_baselineRem_0_5;
