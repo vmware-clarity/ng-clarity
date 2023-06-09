@@ -1414,20 +1414,22 @@
             min-width: $clr_baselineRem_0_75;
             margin: 0;
             padding: 0;
-            @include css-var(
-              color,
-              clr-datagrid-column-switch-header-font-color,
-              $clr-datagrid-column-switch-header-font-color,
-              $clr-use-custom-properties
-            );
 
-            &:hover {
+            cds-icon {
               @include css-var(
                 color,
-                clr-datagrid-column-switch-header-font-hover-color,
-                $clr-datagrid-column-switch-header-font-hover-color,
+                clr-datagrid-column-switch-header-font-color,
+                $clr-datagrid-column-switch-header-font-color,
                 $clr-use-custom-properties
               );
+              &:hover {
+                @include css-var(
+                  color,
+                  clr-datagrid-column-switch-header-font-hover-color,
+                  $clr-datagrid-column-switch-header-font-hover-color,
+                  $clr-use-custom-properties
+                );
+              }
             }
           }
         }
@@ -2035,20 +2037,22 @@
         min-width: $clr_baselineRem_0_75;
         margin: 0;
         padding: 0;
-        @include css-var(
-          color,
-          clr-datagrid-column-switch-header-font-color,
-          $clr-datagrid-column-switch-header-font-color,
-          $clr-use-custom-properties
-        );
 
-        &:hover {
+        cds-icon {
           @include css-var(
             color,
-            clr-datagrid-column-switch-header-font-hover-color,
-            $clr-datagrid-column-switch-header-font-hover-color,
+            clr-datagrid-column-switch-header-font-color,
+            $clr-datagrid-column-switch-header-font-color,
             $clr-use-custom-properties
           );
+          &:hover {
+            @include css-var(
+              color,
+              clr-datagrid-column-switch-header-font-hover-color,
+              $clr-datagrid-column-switch-header-font-hover-color,
+              $clr-use-custom-properties
+            );
+          }
         }
       }
     }
