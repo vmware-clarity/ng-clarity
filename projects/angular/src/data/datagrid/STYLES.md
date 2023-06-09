@@ -12,6 +12,7 @@
 | --clr-datagrid-action-toggle-color                   | Datagrid action toggle icon color when active.                           |
 | --clr-datagrid-pagination-btn-color                  | Color for pagination buttons.                                            |
 | --clr-datagrid-pagination-btn-disabled-color         | Color for disabled pagination buttons.                                   |
+| --clr-datagrid-pagination-btn-disabled-opacity       | Opacity for disabled pagination buttons.                                 |
 | --clr-datagrid-pagination-input-border-color         | Border color for the pagination input field.                             |
 | --clr-datagrid-pagination-input-border-focus-color   | Border color for the pagination input field when focused.                |
 | --clr-datagrid-popover-bg-color                      | Background color for popovers within the datagrid.                       |
@@ -23,6 +24,7 @@
 | --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                         |
 | --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                       |
 | --clr-datagrid-placeholder-color                     | Font color for empty datagrid placeholder.                               |
+| --clr-datagrid-placeholder-font-size                 | Font size for empty datagrid placeholder.                                |
 | --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                  |
 | --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                  |
 | --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                              |
