@@ -4,11 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import '../utils/variables/variables.color';
+@use '../utils/variables/variables';
 
-$clr-accordion-text-color: $clr-color-neutral-0;
-$clr-accordion-active-background-color: $clr-global-selection-color;
-$clr-accordion-header-hover-background-color: $clr-global-selection-color;
+$clr-accordion-text-color: variables.$clr-color-neutral-0;
+$clr-accordion-active-background-color: variables.$clr-global-selection-color;
+$clr-accordion-header-hover-background-color: variables.$clr-global-selection-color;
 $clr-accordion-content-background-color: hsl(198, 28%, 18%);
 $clr-accordion-header-background-color: hsl(201, 30%, 15%);
 $clr-accordion-border-left-color: hsl(202, 30%, 24%);
