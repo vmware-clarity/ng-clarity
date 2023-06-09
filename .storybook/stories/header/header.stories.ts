@@ -13,7 +13,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <clr-main-container>
-      <clr-header>
+      <clr-header [role]="role">
         <div class="branding">
           <a href="javascript://" class="nav-link">
             <cds-icon shape="vm-bug"></cds-icon>
