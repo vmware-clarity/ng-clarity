@@ -1,17 +1,15 @@
-@use '../../../utils/mixins';
-@use '../../../utils/variables/variables.color';
-@use '../../../utils/variables/variables.global' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../../utils/mixins';
+@use '../../../utils/variables/variables';
 
 @mixin clr-progress-color(
   $color: variables.$clr-color-action-600,
   $color-prop: clr-color-action-600,
-  $use-custom-props: variables2.$clr-use-custom-properties
+  $use-custom-props: variables.$clr-use-custom-properties
 ) {
   // for IE...
   @include mixins.css-var(color, $color-prop, $color, $use-custom-props);

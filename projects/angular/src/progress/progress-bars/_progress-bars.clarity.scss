@@ -4,10 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'utils/mixins.clarity';
 @use 'properties.progress-bars';
-@use '../../layout/variables.card' as layout-variables;
+@use 'utils/mixins.clarity';
 @use '../../utils/mixins' as utils-mixins;
+@use '../../layout/variables.card' as layout-variables;
 @use '../../utils/variables/variables.global';
 @use 'variables.progress-bars' as progress-bars-variables;
 
