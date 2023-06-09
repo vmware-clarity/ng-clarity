@@ -1,13 +1,11 @@
-@use 'sass:color';
-@use '../utils/mixins';
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:color';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
 @include mixins.exports('modal.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -16,9 +14,9 @@
       --clr-modal-close-color: var(--clr-color-neutral-600);
       --clr-modal-bg-color: var(--clr-color-neutral-0);
       --clr-modal-content-box-shadow-color: rgba(
-        #{color.red(variables2.$clr-color-neutral-1000)},
-        #{color.green(variables2.$clr-color-neutral-1000)},
-        #{color.blue(variables2.$clr-color-neutral-1000)},
+        #{color.red(variables.$clr-color-neutral-1000)},
+        #{color.green(variables.$clr-color-neutral-1000)},
+        #{color.blue(variables.$clr-color-neutral-1000)},
         0.2
       );
       --clr-modal-backdrop-color: var(--clr-color-neutral-900);

@@ -5,11 +5,9 @@
  */
 
 @use 'sass:map';
-@use 'properties.modal';
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.layout' as variables2;
-@use 'variables.modal' as variables3;
+@use '../utils/variables/variables';
+@use 'variables.modal' as modal-variables;
 
 @include mixins.exports('modal.clarity') {
   .modal {
@@ -25,7 +23,7 @@
     align-items: center;
     padding: variables.$clr_baselineRem_2;
 
-    @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, sm)) {
+    @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
       padding: variables.$clr_baselineRem_0_5;
     }
   }
@@ -33,42 +31,42 @@
   .modal-dialog {
     position: relative;
     z-index: map.get(variables.$clr-layers, modal);
-    width: variables3.$clr-modal-md-width;
+    width: modal-variables.$clr-modal-md-width;
     max-width: 100%;
 
     &.modal-sm {
-      width: variables3.$clr-modal-sm-width;
+      width: modal-variables.$clr-modal-sm-width;
     }
 
     &.modal-lg {
-      width: variables3.$clr-modal-lg-width;
+      width: modal-variables.$clr-modal-lg-width;
     }
 
     &.modal-xl {
-      width: variables3.$clr-modal-xl-width;
+      width: modal-variables.$clr-modal-xl-width;
     }
 
     $modal-boxshadow-y: variables.$clr_baselineRem_1px;
     $modal-boxshadow-spread: variables.$clr_baselineRem_2px;
 
     .modal-content {
-      padding: variables3.$clr-modal-content-padding-top variables3.$clr-modal-content-padding-right
-        variables3.$clr-modal-content-padding-bottom variables3.$clr-modal-content-padding-left;
+      padding: modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
+        modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left;
       @include mixins.css-var(
         background-color,
         clr-modal-bg-color,
-        variables3.$clr-modal-bg-color,
+        modal-variables.$clr-modal-bg-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-radius,
         clr-modal-border-radius,
-        variables3.$clr-modal-border-radius,
+        modal-variables.$clr-modal-border-radius,
         variables.$clr-use-custom-properties
       );
       // IE/OldEdge
       box-shadow: 0 $modal-boxshadow-y $modal-boxshadow-spread $modal-boxshadow-spread
-        variables3.$clr-modal-content-box-shadow-color;
+        modal-variables.$clr-modal-content-box-shadow-color;
       @if variables.$clr-use-custom-properties == true {
         box-shadow: 0
           $modal-boxshadow-y
@@ -97,7 +95,7 @@
       @include mixins.css-var(
         color,
         clr-modal-title-color,
-        variables3.$clr-modal-title-color,
+        modal-variables.$clr-modal-title-color,
         variables.$clr-use-custom-properties
       );
       margin: 0;
@@ -105,21 +103,21 @@
     }
 
     .modal-title:not([cds-text]) {
-      font-size: variables3.$clr-modal-title-font-size;
+      font-size: modal-variables.$clr-modal-title-font-size;
       @include mixins.css-var(
         font-family,
         clr-modal-title-font-family,
-        variables3.$clr-modal-title-font-family,
+        modal-variables.$clr-modal-title-font-family,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         font-weight,
         clr-modal-title-font-weight,
-        variables3.$clr-modal-title-font-weight,
+        modal-variables.$clr-modal-title-font-weight,
         variables.$clr-use-custom-properties
       );
-      line-height: variables3.$clr-modal-title-line-height;
-      letter-spacing: variables3.$clr-modal-title-letter-spacing;
+      line-height: modal-variables.$clr-modal-title-line-height;
+      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
     .close {
@@ -133,7 +131,7 @@
         @include mixins.css-var(
           fill,
           clr-modal-close-color,
-          variables3.$clr-modal-close-color,
+          modal-variables.$clr-modal-close-color,
           variables.$clr-use-custom-properties
         );
 
@@ -178,13 +176,13 @@
     }
   }
 
-  @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, md)) and (orientation: landscape) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {
     .modal-body-wrapper {
       max-height: 55vh;
     }
   }
 
-  @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .modal-content {
       padding: variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1;
     }
@@ -212,7 +210,7 @@
     @include mixins.css-var(
       background-color,
       clr-modal-backdrop-color,
-      variables3.$clr-modal-backdrop-color,
+      modal-variables.$clr-modal-backdrop-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
