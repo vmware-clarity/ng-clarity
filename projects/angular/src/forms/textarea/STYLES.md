@@ -1,16 +1,12 @@
 # Textarea
 
-## CSS Properties
+## CSS Custom Properties
 
-| CSS Property Name                            | Description                                        |
-| -------------------------------------------- | -------------------------------------------------- |
-| --clr-forms-textarea-background-color        | Background color for textarea elements.            |
-| --clr-forms-select-caret-hover-color         | Hover color for the caret icon in select elements. |
-| --clr-forms-select-caret-color               | Color for the caret icon in select elements.       |
-| --clr-forms-select-option-color              | Color for the options in select elements.          |
-| --clr-forms-select-multiple-background-color | Background color for multiple select elements.     |
-| --clr-forms-select-multiple-border-color     | Border color for multiple select elements.         |
-| --clr-forms-select-multiple-option-color     | Color for the options in multiple select elements. |
+| CSS Custom Property                          | Description                                                |
+| -------------------------------------------- | ---------------------------------------------------------- |
+| --clr-forms-textarea-background-color        | Background color for textarea elements.                    |
+| --clr-forms-textarea-focused-outline         | Outline for focused textarea elements.                     |
+| --clr-forms-textarea-invalid-focused-outline | Outline for focused textarea elements in an invalid state. |
 
 ## Classes
 
