@@ -1,29 +1,26 @@
-@use 'sass:map';
-@use 'sass:meta';
-@use '../../forms/styles/variables.forms' as variables8;
-@use '../../image/icons.clarity';
-@use '../../modal/variables.modal' as variables9;
-@use '../../popover/dropdown/variables.dropdown' as variables7;
-@use '../../utils/mixins';
-@use '../../utils/variables/variables.color' as variables2;
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.layout' as variables3;
-@use '../../utils/variables/variables.typography' as variables4;
-@use '../tables.clarity';
-@use '../variables.tables' as variables5;
-@use 'variables.datagrid' as variables6;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'sass:map';
+@use 'sass:meta';
+@use '../tables.clarity';
+@use '../../image/icons.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../forms/styles/variables.forms' as forms-variables;
+@use '../../modal/variables.modal' as modal-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../variables.tables' as tables-variables;
+@use 'variables.datagrid' as datagrid-variables;
+
 @mixin clr-datagrid-header-bg {
   @include mixins.css-var(
     background-color,
     clr-thead-bgcolor,
-    variables5.$clr-thead-bgcolor,
+    tables-variables.$clr-thead-bgcolor,
     variables.$clr-use-custom-properties
   );
 }
@@ -66,13 +63,13 @@
 
   .datagrid-container {
     width: auto;
-    font-size: variables5.$clr-table-fontsize;
-    padding: variables5.$clr-table-topcellpadding variables5.$clr-table-cellpadding
-      variables5.$clr-table-bottomcellpadding;
+    font-size: tables-variables.$clr-table-fontsize;
+    padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+      tables-variables.$clr-table-bottomcellpadding;
   }
 
   .datagrid-expandable-caret {
-    padding: variables.$clr_baselineRem_2px variables6.$horizontalPadding variables.$clr_baselineRem_0_125;
+    padding: variables.$clr_baselineRem_2px datagrid-variables.$horizontalPadding variables.$clr_baselineRem_0_125;
     text-align: center;
 
     .datagrid-expandable-caret-button {
@@ -85,7 +82,7 @@
       @include mixins.css-var(
         color,
         clr-datagrid-icon-color,
-        variables6.$clr-datagrid-icon-color,
+        datagrid-variables.$clr-datagrid-icon-color,
         variables.$clr-use-custom-properties
       );
       // nudge down for vertical alignment...
@@ -101,8 +98,8 @@
     }
 
     &.datagrid-column {
-      padding: variables5.$clr-table-topcellpadding variables5.$clr-table-cellpadding
-        variables5.$clr-table-bottomcellpadding;
+      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+        tables-variables.$clr-table-bottomcellpadding;
     }
   }
 
@@ -120,13 +117,13 @@
     @include mixins.css-var(
       border-top-width,
       clr-table-borderwidth,
-      variables5.$clr-table-borderwidth,
+      tables-variables.$clr-table-borderwidth,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       border-top-color,
       clr-table-border-color,
-      variables5.$clr-table-border-color,
+      tables-variables.$clr-table-border-color,
       variables.$clr-use-custom-properties
     );
 
@@ -138,7 +135,7 @@
       @include mixins.css-var(
         background-color,
         clr-datagrid-row-hover-color,
-        variables6.$clr-datagrid-row-hover-color,
+        datagrid-variables.$clr-datagrid-row-hover-color,
         variables.$clr-use-custom-properties
       );
 
@@ -146,7 +143,7 @@
         @include mixins.css-var(
           background-color,
           clr-datagrid-row-hover-color,
-          variables6.$clr-datagrid-row-hover-color,
+          datagrid-variables.$clr-datagrid-row-hover-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -156,7 +153,7 @@
       @include mixins.css-var(
         color,
         clr-datagrid-row-selected,
-        variables6.$clr-datagrid-row-selected,
+        datagrid-variables.$clr-datagrid-row-selected,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -170,7 +167,7 @@
         @include mixins.css-var(
           color,
           clr-datagrid-row-selected,
-          variables6.$clr-datagrid-row-selected,
+          datagrid-variables.$clr-datagrid-row-selected,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
@@ -187,7 +184,7 @@
       @include mixins.css-var(
         background,
         clr-datagrid-popover-bg-color,
-        variables6.$clr-datagrid-popover-bg-color,
+        datagrid-variables.$clr-datagrid-popover-bg-color,
         variables.$clr-use-custom-properties
       );
       padding: variables.$clr_baselineRem_0_25;
@@ -202,7 +199,7 @@
       @include mixins.css-var(
         border-color,
         clr-datagrid-popover-border-color,
-        variables6.$clr-datagrid-popover-border-color,
+        datagrid-variables.$clr-datagrid-popover-border-color,
         variables.$clr-use-custom-properties
       );
       @include clr-datagrid-popover-shadows;
@@ -221,15 +218,15 @@
         top: 50%;
         right: 100%;
         @include mixins.equilateral(0);
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size;
-        border-top: variables6.$clr-datagrid-action-arrow-size solid transparent;
-        border-bottom: variables6.$clr-datagrid-action-arrow-size solid transparent;
-        border-right-width: variables6.$clr-datagrid-action-arrow-size;
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size;
+        border-top: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
+        border-bottom: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
+        border-right-width: datagrid-variables.$clr-datagrid-action-arrow-size;
         border-right-style: solid;
         @include mixins.css-var(
           border-right-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -240,15 +237,17 @@
         top: 50%;
         right: 100%;
         @include mixins.equilateral(0);
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
-        border-top: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-        border-bottom: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-        border-right-width: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px);
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
+        border-top: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
+        border-bottom: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
+        border-right-width: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px);
         border-right-style: solid;
         @include mixins.css-var(
           border-right-color,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -257,18 +256,18 @@
         @include mixins.css-var(
           color,
           clr-dropdown-text-color,
-          variables7.$clr-dropdown-text-color,
+          dropdown-variables.$clr-dropdown-text-color,
           variables.$clr-use-custom-properties
         );
 
-        font-size: variables7.$clr-dropdown-font-size;
-        letter-spacing: variables7.$clr-dropdown-letter-spacing;
+        font-size: dropdown-variables.$clr-dropdown-font-size;
+        letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
 
         background: transparent;
         border: 0;
         cursor: pointer;
         display: block;
-        line-height: variables7.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
+        line-height: dropdown-variables.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
         margin: 0;
         padding: variables.$clr_baselineRem_1px variables.$clr_baselineRem_1 0;
         text-align: left;
@@ -279,7 +278,7 @@
           @include mixins.css-var(
             background-color,
             clr-datagrid-action-popover-hover-color,
-            variables6.$clr-datagrid-action-popover-hover-color,
+            datagrid-variables.$clr-datagrid-action-popover-hover-color,
             variables.$clr-use-custom-properties
           );
           text-decoration: none;
@@ -289,13 +288,13 @@
           @include mixins.css-var(
             background,
             clr-datagrid-row-hover-color,
-            variables6.$clr-datagrid-row-hover-color,
+            datagrid-variables.$clr-datagrid-row-hover-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-color-neutral-1000,
-            variables2.$clr-color-neutral-1000,
+            variables.$clr-color-neutral-1000,
             variables.$clr-use-custom-properties
           );
         }
@@ -334,7 +333,7 @@
       @include mixins.css-var(
         background,
         clr-datagrid-popover-bg-color,
-        variables6.$clr-datagrid-popover-bg-color,
+        datagrid-variables.$clr-datagrid-popover-bg-color,
         variables.$clr-use-custom-properties
       );
       padding: variables.$clr_baselineRem_0_25;
@@ -349,7 +348,7 @@
       @include mixins.css-var(
         border-color,
         clr-datagrid-popover-border-color,
-        variables6.$clr-datagrid-popover-border-color,
+        datagrid-variables.$clr-datagrid-popover-border-color,
         variables.$clr-use-custom-properties
       );
       @include clr-datagrid-popover-shadows;
@@ -369,15 +368,15 @@
         right: 100%;
         width: 0;
         height: 0;
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size;
-        border-top: variables6.$clr-datagrid-action-arrow-size solid transparent;
-        border-bottom: variables6.$clr-datagrid-action-arrow-size solid transparent;
-        border-right-width: variables6.$clr-datagrid-action-arrow-size;
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size;
+        border-top: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
+        border-bottom: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
+        border-right-width: datagrid-variables.$clr-datagrid-action-arrow-size;
         border-right-style: solid;
         @include mixins.css-var(
           border-right-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -389,15 +388,17 @@
         right: 100%;
         width: 0;
         height: 0;
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
-        border-top: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-        border-bottom: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-        border-right-width: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px);
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
+        border-top: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
+        border-bottom: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
+        border-right-width: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px);
         border-right-style: solid;
         @include mixins.css-var(
           border-right-color,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -406,18 +407,18 @@
         @include mixins.css-var(
           color,
           clr-dropdown-text-color,
-          variables7.$clr-dropdown-text-color,
+          dropdown-variables.$clr-dropdown-text-color,
           variables.$clr-use-custom-properties
         );
 
-        font-size: variables7.$clr-dropdown-font-size;
-        letter-spacing: variables7.$clr-dropdown-letter-spacing;
+        font-size: dropdown-variables.$clr-dropdown-font-size;
+        letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
 
         background: transparent;
         border: 0;
         cursor: pointer;
         display: block;
-        line-height: variables7.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
+        line-height: dropdown-variables.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
         margin: 0;
         padding: variables.$clr_baselineRem_1px variables.$clr_baselineRem_1 0;
         text-align: left;
@@ -428,7 +429,7 @@
           @include mixins.css-var(
             background-color,
             clr-datagrid-action-popover-hover-color,
-            variables6.$clr-datagrid-action-popover-hover-color,
+            datagrid-variables.$clr-datagrid-action-popover-hover-color,
             variables.$clr-use-custom-properties
           );
           text-decoration: none;
@@ -438,13 +439,13 @@
           @include mixins.css-var(
             background,
             clr-datagrid-row-hover-color,
-            variables6.$clr-datagrid-row-hover-color,
+            datagrid-variables.$clr-datagrid-row-hover-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-color-neutral-1000,
-            variables2.$clr-color-neutral-1000,
+            variables.$clr-color-neutral-1000,
             variables.$clr-use-custom-properties
           );
         }
@@ -483,7 +484,7 @@
       @include mixins.css-var(
         background,
         clr-datagrid-popover-bg-color,
-        variables6.$clr-datagrid-popover-bg-color,
+        datagrid-variables.$clr-datagrid-popover-bg-color,
         variables.$clr-use-custom-properties
       );
       padding: variables.$clr_baselineRem_0_25;
@@ -498,7 +499,7 @@
       @include mixins.css-var(
         border-color,
         clr-datagrid-popover-border-color,
-        variables6.$clr-datagrid-popover-border-color,
+        datagrid-variables.$clr-datagrid-popover-border-color,
         variables.$clr-use-custom-properties
       );
       @include clr-datagrid-popover-shadows;
@@ -518,16 +519,16 @@
         right: 100%;
         width: 0;
         height: 0;
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size;
-        border-right: variables6.$clr-datagrid-action-arrow-size solid;
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size;
+        border-right: datagrid-variables.$clr-datagrid-action-arrow-size solid;
         @include mixins.css-var(
           border-right-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
-        border-top: variables6.$clr-datagrid-action-arrow-size solid transparent;
-        border-bottom: variables6.$clr-datagrid-action-arrow-size solid transparent;
+        border-top: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
+        border-bottom: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
       }
 
       &::after {
@@ -538,28 +539,30 @@
         width: 0;
         height: 0;
         // not all browsers support calc() in psuedoelements
-        margin-top: -1 * variables6.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
-        border-right: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
-          variables6.$clr-datagrid-popover-bg-color;
-        border-top: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-        border-bottom: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
+        margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
+        border-right: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          datagrid-variables.$clr-datagrid-popover-bg-color;
+        border-top: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
+        border-bottom: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+          transparent;
       }
 
       .action-item {
         @include mixins.css-var(
           color,
           clr-dropdown-text-color,
-          variables7.$clr-dropdown-text-color,
+          dropdown-variables.$clr-dropdown-text-color,
           variables.$clr-use-custom-properties
         );
-        font-size: variables7.$clr-dropdown-font-size;
-        letter-spacing: variables7.$clr-dropdown-letter-spacing;
+        font-size: dropdown-variables.$clr-dropdown-font-size;
+        letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
 
         background: transparent;
         border: 0;
         cursor: pointer;
         display: block;
-        line-height: variables7.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
+        line-height: dropdown-variables.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
         margin: 0;
         padding: variables.$clr_baselineRem_1px variables.$clr_baselineRem_1 0;
         text-align: left;
@@ -571,7 +574,7 @@
           @include mixins.css-var(
             background-color,
             clr-datagrid-action-popover-hover-color,
-            variables6.$clr-datagrid-action-popover-hover-color,
+            datagrid-variables.$clr-datagrid-action-popover-hover-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -580,13 +583,13 @@
           @include mixins.css-var(
             background,
             clr-datagrid-row-hover-color,
-            variables6.$clr-datagrid-row-hover-color,
+            datagrid-variables.$clr-datagrid-row-hover-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-datagrid-row-hover-font-color,
-            variables6.$clr-datagrid-row-hover-font-color,
+            datagrid-variables.$clr-datagrid-row-hover-font-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -635,7 +638,7 @@
     }
 
     .datagrid-select {
-      min-width: variables.$clr_baselineRem_0_375 - variables5.$clr-table-borderwidth; // This fixed an issue that made the cell too wide.
+      min-width: variables.$clr_baselineRem_0_375 - tables-variables.$clr-table-borderwidth; // This fixed an issue that made the cell too wide.
       align-items: center;
 
       .clr-checkbox-wrapper {
@@ -680,7 +683,7 @@
     @include mixins.css-var(
       background-color,
       clr-table-bgcolor,
-      variables5.$clr-table-bgcolor,
+      tables-variables.$clr-table-bgcolor,
       variables.$clr-use-custom-properties
     );
     display: flex;
@@ -700,7 +703,7 @@
         @include mixins.css-var(
           background-color,
           clr-table-border-color,
-          variables5.$clr-table-border-color,
+          tables-variables.$clr-table-border-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -786,7 +789,7 @@
       @include mixins.css-var(
         border-bottom-color,
         clr-table-border-color,
-        variables5.$clr-table-border-color,
+        tables-variables.$clr-table-border-color,
         variables.$clr-use-custom-properties
       );
 
@@ -861,7 +864,7 @@
         cursor: pointer;
         float: right;
         vertical-align: middle;
-        @include mixins.equilateral(variables6.$clr-datagrid-icon-size);
+        @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
         margin-left: variables.$clr_baselineRem_0_25;
         background-repeat: no-repeat;
         background-size: contain;
@@ -871,7 +874,7 @@
           @include mixins.css-var(
             color,
             clr-color-neutral-600,
-            variables2.$clr-color-neutral-600,
+            variables.$clr-color-neutral-600,
             variables.$clr-use-custom-properties
           );
         }
@@ -882,7 +885,7 @@
             @include mixins.css-var(
               color,
               clr-color-action-600,
-              variables2.$clr-color-action-600,
+              variables.$clr-color-action-600,
               variables.$clr-use-custom-properties
             );
           }
@@ -894,7 +897,7 @@
             @include mixins.css-var(
               color,
               clr-color-action-600,
-              variables2.$clr-color-action-600,
+              variables.$clr-color-action-600,
               variables.$clr-use-custom-properties
             );
           }
@@ -906,7 +909,7 @@
             @include mixins.css-var(
               color,
               clr-color-action-600,
-              variables2.$clr-color-action-600,
+              variables.$clr-color-action-600,
               variables.$clr-use-custom-properties
             );
           }
@@ -920,7 +923,7 @@
         @include mixins.css-var(
           background,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
         padding: variables.$clr_baselineRem_0_75;
@@ -934,7 +937,7 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
         @include clr-datagrid-popover-shadows;
@@ -967,7 +970,7 @@
         @include mixins.css-var(
           background,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
         padding: variables.$clr_baselineRem_0_75;
@@ -981,7 +984,7 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
         @include clr-datagrid-popover-shadows;
@@ -1014,7 +1017,7 @@
         @include mixins.css-var(
           background,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
         padding: variables.$clr_baselineRem_0_75;
@@ -1027,7 +1030,7 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
         border-style: solid;
@@ -1068,7 +1071,7 @@
         @include mixins.css-var(
           color,
           clr-table-font-color,
-          variables5.$clr-table-font-color,
+          tables-variables.$clr-table-font-color,
           variables.$clr-use-custom-properties
         );
         text-align: left;
@@ -1098,11 +1101,11 @@
           @include mixins.css-var(
             color,
             clr-color-action-600,
-            variables2.$clr-color-action-600,
+            variables.$clr-color-action-600,
             variables.$clr-use-custom-properties
           );
           margin-left: auto; // pushes icon to rhs b/c of parents display: flex
-          @include mixins.equilateral(variables6.$clr-datagrid-icon-size);
+          @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
           vertical-align: middle;
         }
       }
@@ -1126,15 +1129,17 @@
           content: '';
           position: absolute;
           height: calc(
-            100% + #{variables6.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
+            100% + #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
           );
           width: variables.$clr_baselineRem_1px;
-          top: calc(-0.5 * #{variables6.$clr-datagrid-column-separator-expandby} + #{variables.$clr_baselineRem_1px});
+          top: calc(
+            -0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby} + #{variables.$clr_baselineRem_1px}
+          );
           left: 0;
           @include mixins.css-var(
             background-color,
             clr-table-border-color,
-            variables5.$clr-table-border-color,
+            tables-variables.$clr-table-border-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -1160,7 +1165,7 @@
           @include mixins.css-var(
             border-right-color,
             clr-color-action-300,
-            variables2.$clr-color-action-300,
+            variables.$clr-color-action-300,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
@@ -1196,8 +1201,8 @@
       &.datagrid-select,
       &.datagrid-expandable-caret,
       &.datagrid-row-actions {
-        max-width: variables6.$clr-datagrid-fixed-column-size;
-        min-width: variables6.$clr-datagrid-fixed-column-size;
+        max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
+        min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
       }
     }
 
@@ -1214,9 +1219,9 @@
       }
 
       &.datagrid-fixed-column {
-        flex: 0 0 variables6.$clr-datagrid-fixed-column-size;
-        max-width: variables6.$clr-datagrid-fixed-column-size;
-        min-width: variables6.$clr-datagrid-fixed-column-size;
+        flex: 0 0 datagrid-variables.$clr-datagrid-fixed-column-size;
+        max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
+        min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
       }
 
       &.datagrid-row-actions {
@@ -1224,7 +1229,7 @@
       }
 
       &.datagrid-expandable-caret {
-        padding: variables.$clr_baselineRem_2px variables6.$horizontalPadding variables.$clr_baselineRem_0_125;
+        padding: variables.$clr_baselineRem_2px datagrid-variables.$horizontalPadding variables.$clr_baselineRem_0_125;
         text-align: center;
       }
 
@@ -1241,7 +1246,7 @@
           @include mixins.css-var(
             color,
             clr-datagrid-icon-color,
-            variables6.$clr-datagrid-icon-color,
+            datagrid-variables.$clr-datagrid-icon-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -1253,7 +1258,7 @@
             @include mixins.css-var(
               color,
               clr-datagrid-action-toggle-color,
-              variables6.$clr-datagrid-action-toggle-color,
+              datagrid-variables.$clr-datagrid-action-toggle-color,
               variables.$clr-use-custom-properties
             );
           }
@@ -1275,7 +1280,7 @@
       @include mixins.css-var(
         border-top-color,
         clr-table-border-color,
-        variables5.$clr-table-border-color,
+        tables-variables.$clr-table-border-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -1290,7 +1295,7 @@
       @include mixins.css-var(
         background,
         clr-table-bgcolor,
-        variables5.$clr-table-bgcolor,
+        tables-variables.$clr-table-bgcolor,
         variables.$clr-use-custom-properties
       );
       display: none;
@@ -1306,13 +1311,13 @@
         @include mixins.css-var(
           font-size,
           clr-datagrid-placeholder-font-size,
-          variables6.$clr-datagrid-placeholder-font-size,
+          datagrid-variables.$clr-datagrid-placeholder-font-size,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           color,
           clr-datagrid-placeholder-color,
-          variables6.$clr-datagrid-placeholder-color,
+          datagrid-variables.$clr-datagrid-placeholder-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -1360,7 +1365,7 @@
       }
 
       &.datagrid-container {
-        border-top: variables.$clr-global-borderwidth solid variables5.$clr-table-border-color;
+        border-top: variables.$clr-global-borderwidth solid tables-variables.$clr-table-border-color;
 
         .datagrid-cell {
           border-top: none;
@@ -1375,21 +1380,21 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: 0 variables5.$clr-table-cellpadding;
+    padding: 0 tables-variables.$clr-table-cellpadding;
     // Account for borders
     line-height: variables.$clr_baselineRem_1_5 - (3 * variables.$clr-global-borderwidth);
-    font-size: variables5.$clr-thead-font-size;
+    font-size: tables-variables.$clr-thead-font-size;
     @include mixins.css-var(
       background-color,
       clr-thead-bgcolor,
-      variables5.$clr-thead-bgcolor,
+      tables-variables.$clr-thead-bgcolor,
       variables.$clr-use-custom-properties
     );
     border-style: solid;
     @include mixins.css-var(
       border-color,
       clr-table-footer-border-top-color,
-      variables5.$clr-table-footer-border-top-color,
+      tables-variables.$clr-table-footer-border-top-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -1471,19 +1476,19 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-column-toggle-border-color,
-          variables6.$clr-datagrid-column-toggle-border-color,
+          datagrid-variables.$clr-datagrid-column-toggle-border-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           background-color,
           clr-datagrid-column-toggle-fill-color,
-          variables6.$clr-datagrid-column-toggle-fill-color,
+          datagrid-variables.$clr-datagrid-column-toggle-fill-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           color,
           clr-datagrid-column-toggle-text-color,
-          variables6.$clr-datagrid-column-toggle-text-color,
+          datagrid-variables.$clr-datagrid-column-toggle-text-color,
           variables.$clr-use-custom-properties
         );
 
@@ -1491,19 +1496,19 @@
           @include mixins.css-var(
             border-color,
             clr-datagrid-column-toggle-border-hover-color,
-            variables6.$clr-datagrid-column-toggle-border-hover-color,
+            datagrid-variables.$clr-datagrid-column-toggle-border-hover-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             background-color,
             clr-datagrid-column-toggle-fill-hover-color,
-            variables6.$clr-datagrid-column-toggle-fill-hover-color,
+            datagrid-variables.$clr-datagrid-column-toggle-fill-hover-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-datagrid-column-toggle-text-hover-color,
-            variables6.$clr-datagrid-column-toggle-text-hover-color,
+            datagrid-variables.$clr-datagrid-column-toggle-text-hover-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -1513,19 +1518,19 @@
           @include mixins.css-var(
             border-color,
             clr-datagrid-column-toggle-border-active-color,
-            variables6.$clr-datagrid-column-toggle-border-active-color,
+            datagrid-variables.$clr-datagrid-column-toggle-border-active-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             background-color,
             clr-datagrid-column-toggle-fill-active-color,
-            variables6.$clr-datagrid-column-toggle-fill-active-color,
+            datagrid-variables.$clr-datagrid-column-toggle-fill-active-color,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
             clr-datagrid-column-toggle-text-active-color,
-            variables6.$clr-datagrid-column-toggle-text-active-color,
+            datagrid-variables.$clr-datagrid-column-toggle-text-active-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -1541,13 +1546,13 @@
         @include mixins.css-var(
           background-color,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           border-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
@@ -1614,7 +1619,7 @@
         @include mixins.css-var(
           background-color,
           clr-datagrid-popover-bg-color,
-          variables6.$clr-datagrid-popover-bg-color,
+          datagrid-variables.$clr-datagrid-popover-bg-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
@@ -1626,7 +1631,7 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-popover-border-color,
-          variables6.$clr-datagrid-popover-border-color,
+          datagrid-variables.$clr-datagrid-popover-border-color,
           variables.$clr-use-custom-properties
         );
         border-style: solid;
@@ -1652,7 +1657,7 @@
             @include mixins.css-var(
               color,
               clr-datagrid-column-switch-header-font-color,
-              variables6.$clr-datagrid-column-switch-header-font-color,
+              datagrid-variables.$clr-datagrid-column-switch-header-font-color,
               variables.$clr-use-custom-properties
             );
 
@@ -1660,7 +1665,7 @@
               @include mixins.css-var(
                 color,
                 clr-datagrid-column-switch-header-font-hover-color,
-                variables6.$clr-datagrid-column-switch-header-font-hover-color,
+                datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
                 variables.$clr-use-custom-properties
               );
             }
@@ -1708,7 +1713,7 @@
       @include mixins.css-var(
         background-color,
         clr-color-neutral-600,
-        variables2.$clr-color-neutral-600,
+        variables.$clr-color-neutral-600,
         variables.$clr-use-custom-properties
       );
     }
@@ -1717,13 +1722,13 @@
       @include mixins.css-var(
         border-left-color,
         clr-color-neutral-0,
-        variables2.$clr-color-neutral-0,
+        variables.$clr-color-neutral-0,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-bottom-color,
         clr-color-neutral-0,
-        variables2.$clr-color-neutral-0,
+        variables.$clr-color-neutral-0,
         variables.$clr-use-custom-properties
       );
     }
@@ -1740,7 +1745,7 @@
     @include mixins.css-var(
       background-color,
       clr-datagrid-loading-background,
-      variables6.$clr-datagrid-loading-background,
+      datagrid-variables.$clr-datagrid-loading-background,
       variables.$clr-use-custom-properties
     );
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
@@ -1762,9 +1767,11 @@
     .datagrid-column .datagrid-column-separator {
       &::after {
         height: calc(
-          100% + 0.5 * #{variables6.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
+          100% + 0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
         );
-        top: calc(-0.25 * #{variables6.$clr-datagrid-column-separator-expandby} + #{variables.$clr_baselineRem_1px});
+        top: calc(
+          -0.25 * #{datagrid-variables.$clr-datagrid-column-separator-expandby} + #{variables.$clr_baselineRem_1px}
+        );
       }
     }
 
@@ -1796,7 +1803,7 @@
       .datagrid-expandable-caret-button {
         @include mixins.clr-no-styles-button();
         @include mixins.equilateral(variables.$clr_baselineRem_1);
-        outline-offset: variables6.$clr-datagrid-compact-outline-offset;
+        outline-offset: datagrid-variables.$clr-datagrid-compact-outline-offset;
       }
 
       .datagrid-expandable-caret-icon {
@@ -1808,8 +1815,8 @@
       }
 
       &.datagrid-column {
-        padding-top: variables5.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
-        padding-bottom: variables5.$clr-table--compact-verticalPadding;
+        padding-top: tables-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
+        padding-bottom: tables-variables.$clr-table--compact-verticalPadding;
       }
     }
 
@@ -1821,7 +1828,7 @@
     }
 
     .datagrid-footer {
-      padding: 0 variables5.$clr-table-cellpadding;
+      padding: 0 tables-variables.$clr-table-cellpadding;
       line-height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_1px;
 
       .pagination {
@@ -1830,7 +1837,7 @@
 
       .column-switch-wrapper .column-toggle--action {
         margin: 0;
-        outline-offset: variables6.$clr-datagrid-compact-outline-offset;
+        outline-offset: datagrid-variables.$clr-datagrid-compact-outline-offset;
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
@@ -1862,13 +1869,13 @@
       @include mixins.css-var(
         background-color,
         clr-forms-textarea-background-color,
-        variables8.$clr-forms-textarea-background-color,
+        forms-variables.$clr-forms-textarea-background-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-color,
         clr-datagrid-pagination-input-border-color,
-        variables6.$clr-datagrid-pagination-input-border-color,
+        datagrid-variables.$clr-datagrid-pagination-input-border-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -1897,14 +1904,15 @@
         @include mixins.css-var(
           border-color,
           clr-datagrid-pagination-input-border-focus-color,
-          variables6.$clr-datagrid-pagination-input-border-focus-color,
+          datagrid-variables.$clr-datagrid-pagination-input-border-focus-color,
           variables.$clr-use-custom-properties
         );
-        box-shadow: 0 0 variables.$clr-global-borderwidth variables6.$clr-datagrid-pagination-input-border-focus-color;
+        box-shadow: 0 0 variables.$clr-global-borderwidth
+          datagrid-variables.$clr-datagrid-pagination-input-border-focus-color;
         box-shadow: 0 0 var(--clr-global-borderwidth, variables.$clr-global-borderwidth)
           var(
             --clr-datagrid-pagination-input-border-focus-color,
-            variables6.$clr-datagrid-pagination-input-border-focus-color
+            datagrid-variables.$clr-datagrid-pagination-input-border-focus-color
           );
       }
     }
@@ -1932,13 +1940,13 @@
       @include mixins.css-var(
         color,
         clr-datagrid-pagination-btn-disabled-color,
-        variables6.$clr-datagrid-pagination-btn-disabled-color,
+        datagrid-variables.$clr-datagrid-pagination-btn-disabled-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         opacity,
         clr-datagrid-pagination-btn-disabled-opacity,
-        variables6.$clr-datagrid-pagination-btn-disabled-opacity,
+        datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity,
         variables.$clr-use-custom-properties
       );
     }
@@ -1958,7 +1966,7 @@
       @include mixins.css-var(
         color,
         clr-datagrid-pagination-btn-color,
-        variables6.$clr-datagrid-pagination-btn-color,
+        datagrid-variables.$clr-datagrid-pagination-btn-color,
         variables.$clr-use-custom-properties
       );
       // FIXME: this should be in the general reboot
@@ -2044,7 +2052,7 @@
 
     .datagrid-placeholder-container,
     .datagrid-row {
-      border-right: variables.$clr_baselineRem_1px solid variables5.$clr-table-border-color;
+      border-right: variables.$clr_baselineRem_1px solid tables-variables.$clr-table-border-color;
     }
 
     .datagrid-footer {
@@ -2073,11 +2081,10 @@
       display: inline-block;
       position: absolute;
       border: variables.$clr_baselineRem_10px solid transparent;
-      border-color: transparent;
       @include mixins.css-var(
         border-right-color,
         clr-table-border-color,
-        variables5.$clr-table-border-color,
+        tables-variables.$clr-table-border-color,
         variables.$clr-use-custom-properties
       );
       top: variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_2px;
@@ -2092,7 +2099,7 @@
       @include mixins.css-var(
         border-right-color,
         clr-datagrid-popover-bg-color,
-        variables6.$clr-datagrid-popover-bg-color,
+        datagrid-variables.$clr-datagrid-popover-bg-color,
         variables.$clr-use-custom-properties
       );
       top: variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px;
@@ -2112,7 +2119,7 @@
     @include mixins.css-var(
       border-color,
       clr-datagrid-default-border-color,
-      variables6.$clr-datagrid-default-border-color,
+      datagrid-variables.$clr-datagrid-default-border-color,
       variables.$clr-use-custom-properties
     );
     border-left: none;
@@ -2131,7 +2138,7 @@
     @include mixins.css-var(
       background,
       clr-datagrid-popover-bg-color,
-      variables6.$clr-datagrid-popover-bg-color,
+      datagrid-variables.$clr-datagrid-popover-bg-color,
       variables.$clr-use-custom-properties
     );
     overflow: hidden;
@@ -2181,7 +2188,7 @@
           @include mixins.css-var(
             color,
             clr-modal-close-color,
-            variables9.$clr-modal-close-color,
+            modal-variables.$clr-modal-close-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -2200,14 +2207,14 @@
     .datagrid-detail-caret-button {
       @include mixins.clr-no-styles-button();
       cursor: pointer;
-      padding: (variables.$clr_baselineRem_0_125 - variables.$clr-global-borderwidth) variables6.$horizontalPadding
-        variables.$clr_baselineRem_0_125;
+      padding: (variables.$clr_baselineRem_0_125 - variables.$clr-global-borderwidth)
+        datagrid-variables.$horizontalPadding variables.$clr_baselineRem_0_125;
 
       &.is-open {
         @include mixins.css-var(
           background-color,
           clr-datagrid-detail-caret-icon-open-bg-color,
-          variables6.$clr-datagrid-detail-caret-icon-open-bg-color,
+          datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
@@ -2221,7 +2228,7 @@
           @include mixins.css-var(
             color,
             clr-datagrid-detail-caret-icon-open-icon-color,
-            variables6.$clr-datagrid-detail-caret-icon-open-icon-color,
+            datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -2232,7 +2239,7 @@
       @include mixins.css-var(
         color,
         clr-datagrid-icon-color,
-        variables6.$clr-datagrid-icon-color,
+        datagrid-variables.$clr-datagrid-icon-color,
         variables.$clr-use-custom-properties
       );
       // nudge down for vertical alignment...
@@ -2244,8 +2251,8 @@
     }
 
     &.datagrid-column {
-      padding: variables5.$clr-table-topcellpadding variables5.$clr-table-cellpadding
-        variables5.$clr-table-bottomcellpadding;
+      padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+        tables-variables.$clr-table-bottomcellpadding;
     }
   }
 
@@ -2257,19 +2264,19 @@
     }
 
     .datagrid-detail-pane {
-      border-left: variables.$clr_baselineRem_1px solid variables5.$clr-table-border-color;
+      border-left: variables.$clr_baselineRem_1px solid tables-variables.$clr-table-border-color;
       border-radius: variables.$clr_baselineRem_0_125;
     }
   }
 
-  @media screen and (max-width: map.get(variables3.$clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     // too specific query needed to avoid issues with nested datagrids
     .datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
       display: none;
     }
 
     .datagrid-detail-pane {
-      border-left: variables.$clr_baselineRem_1px solid variables5.$clr-table-border-color;
+      border-left: variables.$clr_baselineRem_1px solid tables-variables.$clr-table-border-color;
       border-radius: variables.$clr_baselineRem_0_125;
     }
   }
@@ -2288,7 +2295,7 @@
     @include mixins.css-var(
       background-color,
       clr-datagrid-popover-bg-color,
-      variables6.$clr-datagrid-popover-bg-color,
+      datagrid-variables.$clr-datagrid-popover-bg-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -2301,7 +2308,7 @@
     @include mixins.css-var(
       border-color,
       clr-datagrid-popover-border-color,
-      variables6.$clr-datagrid-popover-border-color,
+      datagrid-variables.$clr-datagrid-popover-border-color,
       variables.$clr-use-custom-properties
     );
     @include clr-datagrid-popover-shadows();
@@ -2326,7 +2333,7 @@
       h4,
       h5,
       h6 {
-        @include mixins.css-var(color, clr-p1-color, variables4.$clr-p1-color, variables.$clr-use-custom-properties);
+        @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
         font-weight: 400;
         font-size: 0.8rem;
         line-height: 1.2rem;
@@ -2340,7 +2347,7 @@
         @include mixins.css-var(
           color,
           clr-datagrid-column-switch-header-font-color,
-          variables6.$clr-datagrid-column-switch-header-font-color,
+          datagrid-variables.$clr-datagrid-column-switch-header-font-color,
           variables.$clr-use-custom-properties
         );
 
@@ -2348,7 +2355,7 @@
           @include mixins.css-var(
             color,
             clr-datagrid-column-switch-header-font-hover-color,
-            variables6.$clr-datagrid-column-switch-header-font-hover-color,
+            datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
             variables.$clr-use-custom-properties
           );
         }
@@ -2384,7 +2391,7 @@
     @include mixins.css-var(
       background,
       clr-datagrid-popover-bg-color,
-      variables6.$clr-datagrid-popover-bg-color,
+      datagrid-variables.$clr-datagrid-popover-bg-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -2397,7 +2404,7 @@
     @include mixins.css-var(
       border-color,
       clr-datagrid-popover-border-color,
-      variables6.$clr-datagrid-popover-border-color,
+      datagrid-variables.$clr-datagrid-popover-border-color,
       variables.$clr-use-custom-properties
     );
     padding: variables.$clr_baselineRem_0_75;
@@ -2429,7 +2436,7 @@
     @include mixins.css-var(
       background,
       clr-datagrid-popover-bg-color,
-      variables6.$clr-datagrid-popover-bg-color,
+      datagrid-variables.$clr-datagrid-popover-bg-color,
       variables.$clr-use-custom-properties
     );
     padding: variables.$clr_baselineRem_0_25;
@@ -2444,7 +2451,7 @@
     @include mixins.css-var(
       border-color,
       clr-datagrid-popover-border-color,
-      variables6.$clr-datagrid-popover-border-color,
+      datagrid-variables.$clr-datagrid-popover-border-color,
       variables.$clr-use-custom-properties
     );
     @include clr-datagrid-popover-shadows;
@@ -2464,13 +2471,13 @@
       right: 100%;
       width: 0;
       height: 0;
-      margin-top: -1 * variables6.$clr-datagrid-action-arrow-size;
-      border: variables6.$clr-datagrid-action-arrow-size solid transparent;
+      margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size;
+      border: datagrid-variables.$clr-datagrid-action-arrow-size solid transparent;
       border-left: 0 none;
       @include mixins.css-var(
         border-right-color,
         clr-datagrid-popover-border-color,
-        variables6.$clr-datagrid-popover-border-color,
+        datagrid-variables.$clr-datagrid-popover-border-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -2483,28 +2490,30 @@
       width: 0;
       height: 0;
       // not all browsers support calc() in psuedoelements
-      margin-top: -1 * variables6.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
-      border-right: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
-        variables6.$clr-datagrid-popover-bg-color;
-      border-top: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
-      border-bottom: (variables6.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid transparent;
+      margin-top: -1 * datagrid-variables.$clr-datagrid-action-arrow-size + variables.$clr_baselineRem_1px;
+      border-right: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+        datagrid-variables.$clr-datagrid-popover-bg-color;
+      border-top: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+        transparent;
+      border-bottom: (datagrid-variables.$clr-datagrid-action-arrow-size - variables.$clr_baselineRem_1px) solid
+        transparent;
     }
 
     .action-item {
       @include mixins.css-var(
         color,
         clr-dropdown-text-color,
-        variables7.$clr-dropdown-text-color,
+        dropdown-variables.$clr-dropdown-text-color,
         variables.$clr-use-custom-properties
       );
-      font-size: variables7.$clr-dropdown-font-size;
-      letter-spacing: variables7.$clr-dropdown-letter-spacing;
+      font-size: dropdown-variables.$clr-dropdown-font-size;
+      letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
 
       background: transparent;
       border: 0;
       cursor: pointer;
       display: block;
-      line-height: variables7.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
+      line-height: dropdown-variables.$clr-dropdown-line-height - variables.$clr_baselineRem_1px;
       margin: 0;
       padding: variables.$clr_baselineRem_1px variables.$clr_baselineRem_1 0;
       text-align: left;
@@ -2516,7 +2525,7 @@
         @include mixins.css-var(
           background-color,
           clr-datagrid-action-popover-hover-color,
-          variables6.$clr-datagrid-action-popover-hover-color,
+          datagrid-variables.$clr-datagrid-action-popover-hover-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -2525,13 +2534,13 @@
         @include mixins.css-var(
           background-color,
           clr-datagrid-row-hover-color,
-          variables6.$clr-datagrid-row-hover-color,
+          datagrid-variables.$clr-datagrid-row-hover-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           color,
           clr-datagrid-row-hover-font-color,
-          variables6.$clr-datagrid-row-hover-font-color,
+          datagrid-variables.$clr-datagrid-row-hover-font-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -2606,28 +2615,28 @@
           @include mixins.css-var(
             border-color,
             clr-tablerow-bordercolor,
-            variables5.$clr-tablerow-bordercolor,
+            tables-variables.$clr-tablerow-bordercolor,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             border-width,
             clr-table-borderwidth,
-            variables5.$clr-table-borderwidth,
+            tables-variables.$clr-table-borderwidth,
             variables.$clr-use-custom-properties
           );
           border-style: solid;
-          padding: variables5.$clr-table-topcellpadding variables5.$clr-table-cellpadding
-            variables5.$clr-table-bottomcellpadding;
+          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+            tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
-          @include mixins.css-var(color, clr-p6-color, variables4.$clr-p6-color, variables.$clr-use-custom-properties);
+          @include mixins.css-var(color, clr-p6-color, variables.$clr-p6-color, variables.$clr-use-custom-properties);
           @include mixins.css-var(
             font-weight,
             clr-font-weight-bold,
-            variables4.$clr-font-weight-bold,
+            variables.$clr-font-weight-bold,
             variables.$clr-use-custom-properties
           );
-          font-size: variables4.$clr-typography-xxsmalltext;
-          letter-spacing: variables4.$clr-kerning-tinytext;
+          font-size: variables.$clr-typography-xxsmalltext;
+          letter-spacing: variables.$clr-kerning-tinytext;
           line-height: variables.$clr_baselineRem_0_5;
           margin-top: variables.$clr_baselineRem_1;
           margin-bottom: 0;
@@ -2642,10 +2651,10 @@
           // calculation container element
           display: table-cell;
           min-width: variables.$clr_baselineRem_4;
-          font-size: variables5.$clr-table-fontsize;
-          line-height: variables5.$clr-table-lineheight;
-          padding: variables5.$clr-table-topcellpadding variables5.$clr-table-cellpadding
-            variables5.$clr-table-bottomcellpadding;
+          font-size: tables-variables.$clr-table-fontsize;
+          line-height: tables-variables.$clr-table-lineheight;
+          padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
+            tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
         }
       }

@@ -1,59 +1,57 @@
-@use '../../utils/variables/variables.color' as variables2;
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.typography' as variables3;
-@use '../variables.tables' as variables4;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../../utils/variables/variables';
+@use '../variables.tables' as tables-variables;
+
 // Usage: ../data/datagrid/_datagrid.clarity.scss
 $clr-datagrid-icon-size: variables.$clr_baselineRem_0_583;
 $clr-datagrid-action-arrow-size: variables.$clr_baselineRem_0_25;
-$clr-datagrid-fixed-column-size: (2 * variables4.$clr-table-cellpadding) + variables4.$clr-table-lineheight;
+$clr-datagrid-fixed-column-size: (2 * tables-variables.$clr-table-cellpadding) + tables-variables.$clr-table-lineheight;
 $clr-datagrid-font-color: hsl(203, 16%, 72%) !default;
-$clr-datagrid-default-border-color: variables2.$clr-color-neutral-400 !default;
+$clr-datagrid-default-border-color: variables.$clr-color-neutral-400 !default;
 
-$clr-datagrid-row-hover-color: variables2.$clr-color-neutral-200 !default;
-$clr-datagrid-row-hover-font-color: variables2.$clr-color-neutral-1000 !default;
-$clr-datagrid-action-toggle-color: variables2.$clr-color-neutral-700 !default;
-$clr-datagrid-pagination-btn-color: variables2.$clr-color-neutral-700 !default;
-$clr-datagrid-pagination-btn-disabled-color: variables2.$clr-color-neutral-600 !default;
+$clr-datagrid-row-hover-color: variables.$clr-color-neutral-200 !default;
+$clr-datagrid-row-hover-font-color: variables.$clr-color-neutral-1000 !default;
+$clr-datagrid-action-toggle-color: variables.$clr-color-neutral-700 !default;
+$clr-datagrid-pagination-btn-color: variables.$clr-color-neutral-700 !default;
+$clr-datagrid-pagination-btn-disabled-color: variables.$clr-color-neutral-600 !default;
 $clr-datagrid-pagination-btn-disabled-opacity: 0.56;
 $clr-datagrid-pagination-input-border-color: $clr-datagrid-default-border-color !default;
-$clr-datagrid-pagination-input-border-focus-color: variables2.$clr-color-action-400 !default;
-$clr-datagrid-popover-bg-color: variables2.$clr-color-neutral-0 !default;
+$clr-datagrid-pagination-input-border-focus-color: variables.$clr-color-action-400 !default;
+$clr-datagrid-popover-bg-color: variables.$clr-color-neutral-0 !default;
 $clr-datagrid-popover-border-color: $clr-datagrid-default-border-color !default;
-$clr-datagrid-action-popover-hover-color: variables2.$clr-color-neutral-200 !default;
+$clr-datagrid-action-popover-hover-color: variables.$clr-color-neutral-200 !default;
 $clr-datagrid-loading-background: hsla(0, 0%, 100%, 0.6) !default;
-$clr-datagrid-row-selected: variables2.$clr-color-neutral-1000 !default;
+$clr-datagrid-row-selected: variables.$clr-color-neutral-1000 !default;
 
 $clr-datagrid-icon-size: variables.$clr_baselineRem_0_583;
-$clr-datagrid-icon-color: variables2.$clr-color-neutral-600 !default;
+$clr-datagrid-icon-color: variables.$clr-color-neutral-600 !default;
 $clr-datagrid-action-arrow-size: variables.$clr_baselineRem_0_25;
-$clr-datagrid-fixed-column-size: (2 * variables4.$clr-table-cellpadding) + variables4.$clr-table-lineheight;
+$clr-datagrid-fixed-column-size: (2 * tables-variables.$clr-table-cellpadding) + tables-variables.$clr-table-lineheight;
 $horizontalPadding: ($clr-datagrid-fixed-column-size - variables.$clr_baselineRem_1_25) * 0.5;
 $clr-datagrid-column-separator-expandby: variables.$clr_baselineRem_0_5;
-$clr-datagrid-column-switch-header-font-color: variables2.$clr-color-neutral-500;
-$clr-datagrid-column-switch-header-font-hover-color: variables2.$clr-color-action-600;
+$clr-datagrid-column-switch-header-font-color: variables.$clr-color-neutral-500;
+$clr-datagrid-column-switch-header-font-hover-color: variables.$clr-color-action-600;
 $clr-datagrid-compact-outline-offset: -1 * variables.$clr_baselineRem_4px;
 
-$clr-datagrid-detail-caret-icon-open-bg-color: variables2.$clr-color-action-600;
-$clr-datagrid-detail-caret-icon-open-icon-color: variables2.$clr-color-neutral-0;
+$clr-datagrid-detail-caret-icon-open-bg-color: variables.$clr-color-action-600;
+$clr-datagrid-detail-caret-icon-open-icon-color: variables.$clr-color-neutral-0;
 
 // Placeholder
-$clr-datagrid-placeholder-color: variables2.$clr-color-neutral-500 !default;
-$clr-datagrid-placeholder-font-size: variables3.$clr-h5-font-size !default;
+$clr-datagrid-placeholder-color: variables.$clr-color-neutral-500 !default;
+$clr-datagrid-placeholder-font-size: variables.$clr-h5-font-size !default;
 
 // Column Toggle
-$clr-datagrid-column-toggle-border-color: variables2.$clr-color-neutral-600 !default;
-$clr-datagrid-column-toggle-fill-color: variables2.$clr-color-neutral-50 !default;
-$clr-datagrid-column-toggle-text-color: variables2.$clr-color-neutral-700 !default;
-$clr-datagrid-column-toggle-border-hover-color: variables2.$clr-color-neutral-700 !default;
-$clr-datagrid-column-toggle-fill-hover-color: variables2.$clr-color-neutral-0 !default;
-$clr-datagrid-column-toggle-text-hover-color: variables2.$clr-color-neutral-1000 !default;
-$clr-datagrid-column-toggle-border-active-color: variables2.$clr-color-neutral-700 !default;
-$clr-datagrid-column-toggle-fill-active-color: variables2.$clr-color-neutral-100 !default;
-$clr-datagrid-column-toggle-text-active-color: variables2.$clr-color-neutral-700 !default;
+$clr-datagrid-column-toggle-border-color: variables.$clr-color-neutral-600 !default;
+$clr-datagrid-column-toggle-fill-color: variables.$clr-color-neutral-50 !default;
+$clr-datagrid-column-toggle-text-color: variables.$clr-color-neutral-700 !default;
+$clr-datagrid-column-toggle-border-hover-color: variables.$clr-color-neutral-700 !default;
+$clr-datagrid-column-toggle-fill-hover-color: variables.$clr-color-neutral-0 !default;
+$clr-datagrid-column-toggle-text-hover-color: variables.$clr-color-neutral-1000 !default;
+$clr-datagrid-column-toggle-border-active-color: variables.$clr-color-neutral-700 !default;
+$clr-datagrid-column-toggle-fill-active-color: variables.$clr-color-neutral-100 !default;
+$clr-datagrid-column-toggle-text-active-color: variables.$clr-color-neutral-700 !default;

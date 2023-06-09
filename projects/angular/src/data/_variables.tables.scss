@@ -1,12 +1,9 @@
-@use '../utils/variables/variables.color';
-@use '../utils/variables/variables.global' as variables2;
-@use '../utils/variables/variables.typography' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/variables/variables';
 
 // Theme variables
 // Usage: ./data/_tables.clarity.scss
@@ -21,33 +18,33 @@ $clr-table-border-color: variables.$clr-color-neutral-400 !default;
 
 // Usage: ./data/_tables.clarity.scss
 $clr-tablerow-bordercolor: variables.$clr-color-neutral-200 !default;
-$clr-table-border-radius: variables2.$clr-global-borderradius !default;
-$clr-table-borderwidth: variables2.$clr-global-borderwidth !default;
-$clr-table-smallpadding: variables2.$clr_baselineRem_0_25 !default;
+$clr-table-border-radius: variables.$clr-global-borderradius !default;
+$clr-table-borderwidth: variables.$clr-global-borderwidth !default;
+$clr-table-smallpadding: variables.$clr_baselineRem_0_25 !default;
 
 // Border radius of corner cells needs to be slightly less than the table's,
 // To make sure they correctly cover the whole area up to the border.
-$clr-table-cornercellradius: $clr-table-border-radius - variables2.$clr_baselineRem_1px !default;
+$clr-table-cornercellradius: $clr-table-border-radius - variables.$clr_baselineRem_1px !default;
 
 // Usage: ./data/_tables.clarity.scss
 // Usage: ./data/datagrid/_datagrid.clarity.scss
 $clr-table-font-color: variables.$clr-color-neutral-700 !default;
 
 // Table dims and sizing
-$clr-table-fontsize: variables2.$clr_baselineRem_0_5416 !default;
-$clr-table-lineheight: variables2.$clr_baselineRem_0_583 !default;
-$clr-table-lineheightPaddingShim: (variables2.$clr_baselineRem_1 - $clr-table-lineheight) * 0.5 !default;
-$clr-table-cellpadding: variables2.$clr_baselineRem_0_5 !default;
-$clr-table-topcellpadding: $clr-table-cellpadding - variables2.$clr_baselineRem_1px !default;
-$clr-table-bottomcellpadding: $clr-table-cellpadding - variables2.$clr_baselineRem_1px !default;
-$clr-table-topcellpadding-cmp: $clr-table-cellpadding * 0.5 - variables2.$clr_baselineRem_1px !default;
-$clr-table-bottomcellpadding-cmp: $clr-table-cellpadding * 0.5 - variables2.$clr_baselineRem_1px !default;
+$clr-table-fontsize: variables.$clr_baselineRem_0_5416 !default;
+$clr-table-lineheight: variables.$clr_baselineRem_0_583 !default;
+$clr-table-lineheightPaddingShim: (variables.$clr_baselineRem_1 - $clr-table-lineheight) * 0.5 !default;
+$clr-table-cellpadding: variables.$clr_baselineRem_0_5 !default;
+$clr-table-topcellpadding: $clr-table-cellpadding - variables.$clr_baselineRem_1px !default;
+$clr-table-bottomcellpadding: $clr-table-cellpadding - variables.$clr_baselineRem_1px !default;
+$clr-table-topcellpadding-cmp: $clr-table-cellpadding * 0.5 - variables.$clr_baselineRem_1px !default;
+$clr-table-bottomcellpadding-cmp: $clr-table-cellpadding * 0.5 - variables.$clr_baselineRem_1px !default;
 
-$clr-table--compact-rowHeight: variables2.$clr_baselineRem_1 !default;
+$clr-table--compact-rowHeight: variables.$clr_baselineRem_1 !default;
 $clr-table--compact-verticalPadding: ($clr-table--compact-rowHeight - $clr-table-lineheight) * 0.5 !default;
 
 // Table header styles
-$clr-thead-color: variables3.$clr-p6-color !default;
-$clr-thead-font-size: variables3.$clr-p6-font-size !default;
-$clr-thead-font-weight: variables3.$clr-p6-font-weight !default;
-$clr-thead-letter-spacing: variables3.$clr-p6-letter-spacing !default;
+$clr-thead-color: variables.$clr-p6-color !default;
+$clr-thead-font-size: variables.$clr-p6-font-size !default;
+$clr-thead-font-weight: variables.$clr-p6-font-weight !default;
+$clr-thead-letter-spacing: variables.$clr-p6-letter-spacing !default;
