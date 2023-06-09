@@ -1,24 +1,23 @@
-@use 'sass:meta';
-@use '../utils/mixins';
-@use '../utils/variables/variables.global';
-@use 'variables.badges' as variables3;
-@use 'variables.label' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
-  $sassVarBgColor: variables2.getLabelColor($color, bg-color);
-  $cssVarBgColor: variables2.getLabelColor($color, bg-color, 'css-var');
-  $sassVarTextColor: variables2.getLabelColor($color, color);
-  $cssVarTextColor: variables2.getLabelColor($color, color, 'css-var');
+  $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
+  $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
+  $sassVarTextColor: label-variables.getLabelColor($color, color);
+  $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border: variables2.$clr-label-borderwidth solid;
+    border: label-variables.$clr-label-borderwidth solid;
     @include mixins.css-var(border-color, $cssVarBgColor, $sassVarBgColor, variables.$clr-use-custom-properties);
   }
 
@@ -29,15 +28,15 @@
       @include mixins.css-var(
         background,
         clr-label-bg-hover-color,
-        variables2.$clr-label-bg-hover-color,
+        label-variables.$clr-label-bg-hover-color,
         variables.$clr-use-custom-properties
       );
     }
 
     &:active {
       // OldEdge/IE
-      box-shadow: 0 variables2.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
-      box-shadow: 0 variables2.$clr-label-borderwidth 0 0
+      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
+      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0
         var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor) inset;
       transform: translateY(0.5px);
     }
@@ -46,14 +45,14 @@
   &.label-#{'' + $color} > .badge {
     @include mixins.css-var(
       background,
-      variables3.getBadgeColor($color, bg-color, 'css-var'),
-      variables3.getBadgeColor($color, bg-color),
+      badges-variables.getBadgeColor($color, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($color, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      variables3.getBadgeColor($color, color, 'css-var'),
-      variables3.getBadgeColor($color, color),
+      badges-variables.getBadgeColor($color, color, 'css-var'),
+      badges-variables.getBadgeColor($color, color),
       variables.$clr-use-custom-properties
     );
   }
@@ -63,21 +62,21 @@
   &.label-#{$status} {
     @include mixins.css-var(
       background,
-      variables2.getLabelColor($status, bg-color, 'css-var'),
-      variables2.getLabelColor($status, bg-color),
+      label-variables.getLabelColor($status, bg-color, 'css-var'),
+      label-variables.getLabelColor($status, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      variables2.getLabelColor($status, color, 'css-var'),
-      variables2.getLabelColor($status, color),
+      label-variables.getLabelColor($status, color, 'css-var'),
+      label-variables.getLabelColor($status, color),
       variables.$clr-use-custom-properties
     );
-    border: variables2.$clr-label-borderwidth solid;
+    border: label-variables.$clr-label-borderwidth solid;
     @include mixins.css-var(
       border-color,
-      variables2.getLabelColor($status, border-color, 'css-var'),
-      variables2.getLabelColor($status, border-color),
+      label-variables.getLabelColor($status, border-color, 'css-var'),
+      label-variables.getLabelColor($status, border-color),
       variables.$clr-use-custom-properties
     );
   }
@@ -97,39 +96,39 @@
     @include mixins.css-var(
       font-size,
       clr-label-font-size,
-      variables2.$clr-label-font-size,
+      label-variables.$clr-label-font-size,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-weight,
       clr-label-font-weight,
-      variables2.$clr-label-font-weight,
+      label-variables.$clr-label-font-weight,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       letter-spacing,
       clr-label-letter-spacing,
-      variables2.$clr-label-letter-spacing,
+      label-variables.$clr-label-letter-spacing,
       variables.$clr-use-custom-properties
     );
 
     // line-height needed to be adjusted to force center alignment
-    line-height: variables2.$clr-label-font-size + variables.$clr_baselineRem_1px;
+    line-height: label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0 variables2.$clr-label-padding-left-right 0;
+    padding: 0 label-variables.$clr-label-padding-left-right 0;
     @include mixins.css-var(
       border-radius,
       clr-label-border-radius,
       variables.$clr_baselineRem_0_5,
       variables.$clr-use-custom-properties
     );
-    border: variables2.$clr-label-borderwidth solid;
+    border: label-variables.$clr-label-borderwidth solid;
     @include mixins.css-var(
       border-color,
       clr-label-default-border-color,
-      variables2.$clr-label-default-border-color,
+      label-variables.$clr-label-default-border-color,
       variables.$clr-use-custom-properties
     );
     height: variables.$clr_baselineRem_0_875;
@@ -138,7 +137,7 @@
     @include mixins.css-var(
       color,
       clr-label-font-color-light,
-      variables2.$clr-label-font-color-light,
+      label-variables.$clr-label-font-color-light,
       variables.$clr-use-custom-properties
     );
 
@@ -146,7 +145,7 @@
       @include mixins.css-var(
         color,
         clr-label-font-color-light,
-        variables2.$clr-label-font-color-light,
+        label-variables.$clr-label-font-color-light,
         variables.$clr-use-custom-properties
       );
     }
@@ -163,17 +162,18 @@
         @include mixins.css-var(
           background,
           clr-label-bg-hover-color,
-          variables2.$clr-label-bg-hover-color,
+          label-variables.$clr-label-bg-hover-color,
           variables.$clr-use-custom-properties
         );
       }
 
       &:active {
-        $mySassShadow: variables2.getLabelColor(gray, bg-color);
+        $mySassShadow: label-variables.getLabelColor(gray, bg-color);
         // OldEdge/IE
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0 variables2.getLabelColor(gray, bg-color) inset;
+        box-shadow: 0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset;
         box-shadow: 0 variables.$clr_baselineRem_1px 0 0
-          var(mixins.css-variablize-string(variables2.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow) inset;
+          var(mixins.css-variablize-string(label-variables.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow)
+          inset;
         transform: translateY(0.5px);
       }
     }

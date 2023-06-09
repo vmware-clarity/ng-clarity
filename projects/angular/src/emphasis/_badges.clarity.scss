@@ -7,22 +7,22 @@
 @use 'properties.badges';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
-@use 'variables.badges' as variables2;
-@use 'variables.label' as variables3;
+@use 'variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},
   &.badge-#{$alias} {
     @include mixins.css-var(
       background,
-      variables2.getBadgeColor($color, bg-color, 'css-var'),
-      variables2.getBadgeColor($color, bg-color),
+      badges-variables.getBadgeColor($color, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($color, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      variables2.getBadgeColor($color, color, 'css-var'),
-      variables2.getBadgeColor($color, color),
+      badges-variables.getBadgeColor($color, color, 'css-var'),
+      badges-variables.getBadgeColor($color, color),
       variables.$clr-use-custom-properties
     );
   }
@@ -32,14 +32,14 @@
   &.badge-#{$status} {
     @include mixins.css-var(
       background,
-      variables2.getBadgeColor($status, bg-color, 'css-var'),
-      variables2.getBadgeColor($status, bg-color),
+      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($status, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      variables2.getBadgeColor($status, color, 'css-var'),
-      variables2.getBadgeColor($status, color),
+      badges-variables.getBadgeColor($status, color, 'css-var'),
+      badges-variables.getBadgeColor($status, color),
       variables.$clr-use-custom-properties
     );
   }
@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: center;
     min-width: variables.$clr_baselineRem_0_625;
-    background: variables3.getLabelColor(gray, bg-color);
+    background: label-variables.getLabelColor(gray, bg-color);
     height: variables.$clr_baselineRem_0_625;
     line-height: normal;
     border-radius: variables.$clr_baselineRem_0_416;
@@ -70,7 +70,7 @@
     @include mixins.css-var(
       color,
       clr-badge-font-color-light,
-      variables2.$clr-badge-font-color-light,
+      badges-variables.$clr-badge-font-color-light,
       variables.$clr-use-custom-properties
     );
 
@@ -78,7 +78,7 @@
       @include mixins.css-var(
         color,
         clr-badge-font-color-light,
-        variables2.$clr-badge-font-color-light,
+        badges-variables.$clr-badge-font-color-light,
         variables.$clr-use-custom-properties
       );
     }

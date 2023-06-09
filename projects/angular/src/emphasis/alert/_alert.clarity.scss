@@ -6,34 +6,32 @@
 
 @use 'sass:map';
 @use 'properties.alert';
-@use '../../popover/dropdown/variables.dropdown' as variables5;
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.color' as variables3;
-@use '../../utils/variables/variables.global';
-@use '../../utils/variables/variables.layout' as variables2;
-@use 'variables.alert' as variables4;
+@use '../../utils/variables/variables';
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use 'variables.alert' as alert-variables;
 
 @mixin generateAlertType($alertType: 'info') {
   @include mixins.css-var(
     background,
-    variables4.getAlertColor($alertType, bg-color, 'css-var'),
-    variables4.getAlertColor($alertType, bg-color),
+    alert-variables.getAlertColor($alertType, bg-color, 'css-var'),
+    alert-variables.getAlertColor($alertType, bg-color),
     variables.$clr-use-custom-properties
   );
   @include mixins.css-var(
     color,
-    variables4.getAlertColor($alertType, color, 'css-var'),
-    variables4.getAlertColor($alertType, color),
+    alert-variables.getAlertColor($alertType, color, 'css-var'),
+    alert-variables.getAlertColor($alertType, color),
     variables.$clr-use-custom-properties
   );
 
-  $border-prop: variables4.getAlertColor($alertType, border-color);
+  $border-prop: alert-variables.getAlertColor($alertType, border-color);
 
   @if $border-prop != 'none' {
-    border: variables4.$clr-alert-borderwidth solid;
+    border: alert-variables.$clr-alert-borderwidth solid;
     @include mixins.css-var(
       border-color,
-      variables4.getAlertColor($alertType, border-color, 'css-var'),
+      alert-variables.getAlertColor($alertType, border-color, 'css-var'),
       $border-prop,
       variables.$clr-use-custom-properties
     );
@@ -44,16 +42,16 @@
   .alert-icon {
     @include mixins.css-var(
       color,
-      variables4.getAlertColor($alertType, icon, 'css-var'),
-      variables4.getAlertColor($alertType, icon),
+      alert-variables.getAlertColor($alertType, icon, 'css-var'),
+      alert-variables.getAlertColor($alertType, icon),
       variables.$clr-use-custom-properties
     );
   }
 
-  $myActionCssVar: variables4.getAlertColor($alertType, action, 'css-var');
-  $myActionSassVar: variables4.getAlertColor($alertType, action);
-  $myActionActiveCssVar: variables4.getAlertColor($alertType, action-active, 'css-var');
-  $myActionActiveSassVar: variables4.getAlertColor($alertType, action-active);
+  $myActionCssVar: alert-variables.getAlertColor($alertType, action, 'css-var');
+  $myActionSassVar: alert-variables.getAlertColor($alertType, action);
+  $myActionActiveCssVar: alert-variables.getAlertColor($alertType, action-active, 'css-var');
+  $myActionActiveSassVar: alert-variables.getAlertColor($alertType, action-active);
 
   .alert-actions .dropdown .dropdown-toggle {
     @include mixins.css-var(color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
@@ -101,19 +99,19 @@
         $myActionActiveSassVar,
         variables.$clr-use-custom-properties
       );
-      color: variables4.getAlertColor($alertType, action-active);
+      color: alert-variables.getAlertColor($alertType, action-active);
     }
   }
 
   .close {
-    $myCloseIconSassVar: variables4.getAlertColor($alertType, close-icon);
-    $myCloseIconCssVar: variables4.getAlertColor($alertType, close-icon, 'css-var');
+    $myCloseIconSassVar: alert-variables.getAlertColor($alertType, close-icon);
+    $myCloseIconCssVar: alert-variables.getAlertColor($alertType, close-icon, 'css-var');
 
     @include mixins.css-var(color, $myCloseIconCssVar, $myCloseIconSassVar, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       opacity,
-      variables4.getAlertColor($alertType, close-icon-opacity, 'css-var'),
-      variables4.getAlertColor($alertType, close-icon-opacity),
+      alert-variables.getAlertColor($alertType, close-icon-opacity, 'css-var'),
+      alert-variables.getAlertColor($alertType, close-icon-opacity),
       variables.$clr-use-custom-properties
     );
 
@@ -127,14 +125,14 @@
     &:active {
       @include mixins.css-var(
         color,
-        variables4.getAlertColor($alertType, close-icon-hover, 'css-var'),
-        variables4.getAlertColor($alertType, close-icon-hover),
+        alert-variables.getAlertColor($alertType, close-icon-hover, 'css-var'),
+        alert-variables.getAlertColor($alertType, close-icon-hover),
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         opacity,
-        variables4.getAlertColor($alertType, close-icon-hover-opacity, 'css-var'),
-        variables4.getAlertColor($alertType, close-icon-hover-opacity),
+        alert-variables.getAlertColor($alertType, close-icon-hover-opacity, 'css-var'),
+        alert-variables.getAlertColor($alertType, close-icon-hover-opacity),
         variables.$clr-use-custom-properties
       );
     }
@@ -164,7 +162,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    min-height: variables4.$clr-alert-item-min-height;
+    min-height: alert-variables.$clr-alert-item-min-height;
     margin-bottom: variables.$clr_baselineRem_0_25;
 
     &:last-child {
@@ -174,7 +172,7 @@
 
   .alert-items {
     $vertPadding: variables.$clr_baselineRem_10px;
-    $horizPadding: variables.$clr_baselineRem_0_5 - variables4.$clr-alert-borderwidth;
+    $horizPadding: variables.$clr_baselineRem_0_5 - alert-variables.$clr-alert-borderwidth;
     flex: 1 1 auto;
     flex-flow: column nowrap;
     padding: $vertPadding $horizPadding;
@@ -196,8 +194,8 @@
   }
 
   .alert {
-    font-size: variables4.$clr-alert-font-size;
-    letter-spacing: variables4.$clr-alert-letter-spacing;
+    font-size: alert-variables.$clr-alert-font-size;
+    letter-spacing: alert-variables.$clr-alert-letter-spacing;
 
     line-height: variables.$clr_baselineRem_0_75;
     position: relative;
@@ -208,10 +206,10 @@
     @include mixins.css-var(
       border-radius,
       clr-alert-borderradius,
-      variables4.$clr-alert-borderradius,
+      alert-variables.$clr-alert-borderradius,
       variables.$clr-use-custom-properties
     );
-    margin-top: variables4.$clr-alert-top-margin;
+    margin-top: alert-variables.$clr-alert-top-margin;
 
     @include generateAlertType(info);
 
@@ -233,8 +231,8 @@
 
     .alert-item {
       .clr-icon {
-        @include mixins.equilateral(variables4.$clr-alert-icon-dimension-sm);
-        margin-right: variables4.$clr-icon-margin-right;
+        @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
+        margin-right: alert-variables.$clr-icon-margin-right;
       }
 
       .clr-icon + .alert-text {
@@ -259,12 +257,12 @@
         @include mixins.css-var(
           color,
           clr-dropdown-text-color,
-          variables5.$clr-dropdown-text-color,
+          dropdown-variables.$clr-dropdown-text-color,
           variables.$clr-use-custom-properties
         );
-        font-size: variables5.$clr-dropdown-font-size;
-        line-height: variables5.$clr-dropdown-line-height;
-        letter-spacing: variables5.$clr-dropdown-letter-spacing;
+        font-size: dropdown-variables.$clr-dropdown-font-size;
+        line-height: dropdown-variables.$clr-dropdown-line-height;
+        letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
       }
     }
 
@@ -284,7 +282,7 @@
         @include mixins.css-var(
           color,
           clr-dropdown-text-color,
-          variables5.$clr-dropdown-text-color,
+          dropdown-variables.$clr-dropdown-text-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -306,7 +304,7 @@
 
       cds-icon,
       clr-icon {
-        $alert-close-icon-dims: variables.$clr_baselineRem_1 - variables4.$clr-alert-borderwidth;
+        $alert-close-icon-dims: variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth;
         margin-top: -1 * variables.$clr_baselineRem_0_125;
         @include mixins.equilateral($alert-close-icon-dims);
       }
@@ -402,8 +400,8 @@
     line-height: $alertSmallLineHeight;
 
     .alert-items {
-      padding: ($alertSmallNudge - variables4.$clr-alert-borderwidth)
-        (variables.$clr_baselineRem_0_25 - variables4.$clr-alert-borderwidth);
+      padding: ($alertSmallNudge - alert-variables.$clr-alert-borderwidth)
+        (variables.$clr_baselineRem_0_25 - alert-variables.$clr-alert-borderwidth);
     }
 
     .alert-item {
@@ -447,7 +445,7 @@
     }
   }
 
-  @media screen and (max-width: map.get(variables2.$clr-grid-breakpoints, md)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
     .alert {
       .alert-item {
         flex-wrap: wrap;
@@ -467,7 +465,7 @@
         flex: 1 0 100%;
         padding-top: variables.$clr_baselineRem_0_125;
         // TOCHECK: CALCULATIONS
-        padding-left: variables4.$clr-alert-icon-dimension-sm + variables4.$clr-icon-margin-right;
+        padding-left: alert-variables.$clr-alert-icon-dimension-sm + alert-variables.$clr-icon-margin-right;
       }
     }
 
@@ -509,7 +507,7 @@
       @include mixins.css-var(
         background,
         clr-app-alert-info-pager-bg-color,
-        variables3.$clr-color-action-800,
+        variables.$clr-color-action-800,
         variables.$clr-use-custom-properties
       );
     }
@@ -518,7 +516,7 @@
       @include mixins.css-var(
         background,
         clr-app-alert-danger-pager-bg-color,
-        variables3.$clr-color-danger-900,
+        variables.$clr-color-danger-900,
         variables.$clr-use-custom-properties
       );
     }
@@ -527,7 +525,7 @@
       @include mixins.css-var(
         background,
         clr-app-alert-warning-pager-bg-color,
-        variables3.$clr-color-warning-900,
+        variables.$clr-color-warning-900,
         variables.$clr-use-custom-properties
       );
     }
@@ -537,7 +535,7 @@
       @include mixins.css-var(
         background,
         clr-color-success-900,
-        variables3.$clr-color-success-900,
+        variables.$clr-color-success-900,
         variables.$clr-use-custom-properties
       );
     }
@@ -547,7 +545,7 @@
     @include mixins.css-var(
       color,
       clr-app-alert-pager-text-color,
-      variables3.$clr-color-neutral-0,
+      variables.$clr-color-neutral-0,
       variables.$clr-use-custom-properties
     );
 
@@ -556,16 +554,16 @@
         @include mixins.css-var(
           color,
           clr-app-alert-#{$alertType}-pager-font-color,
-          variables3.$clr-color-neutral-0,
+          variables.$clr-color-neutral-0,
           variables.$clr-use-custom-properties
         );
       }
     }
 
-    font-size: variables4.$clr-alert-font-size;
-    letter-spacing: variables4.$clr-alert-letter-spacing;
+    font-size: alert-variables.$clr-alert-font-size;
+    letter-spacing: alert-variables.$clr-alert-letter-spacing;
     float: left;
-    min-height: variables4.$clr-alert-min-height;
+    min-height: alert-variables.$clr-alert-min-height;
     text-align: center;
     width: variables.$clr_baselineRem_6;
   }
@@ -575,7 +573,7 @@
     @include mixins.css-var(
       color,
       clr-app-alert-pager-text-color,
-      variables3.$clr-color-neutral-0,
+      variables.$clr-color-neutral-0,
       variables.$clr-use-custom-properties
     );
     cursor: pointer;
@@ -585,7 +583,7 @@
       @include mixins.css-var(
         color,
         clr-app-alert-pager-text-color,
-        variables3.$clr-color-neutral-0,
+        variables.$clr-color-neutral-0,
         variables.$clr-use-custom-properties
       );
 
@@ -594,7 +592,7 @@
           @include mixins.css-var(
             color,
             clr-app-alert-#{$alertType}-pager-font-color,
-            variables3.$clr-color-neutral-0,
+            variables.$clr-color-neutral-0,
             variables.$clr-use-custom-properties
           );
         }
@@ -604,7 +602,7 @@
 
   .alerts-pager-control {
     display: flex;
-    margin-top: variables4.$clr-alert-top-margin;
+    margin-top: alert-variables.$clr-alert-top-margin;
     white-space: nowrap;
   }
 

@@ -1,12 +1,9 @@
-@use '../../utils/variables/variables.color';
-@use '../../utils/variables/variables.global' as variables3;
-@use '../../utils/variables/variables.typography' as variables2;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/variables/variables';
 
 // App Level font colors
 // Usage: ./_alert.clarity.scss
@@ -27,22 +24,22 @@ $clr-app-alert-close-icon-hover-opacity: 1 !default;
 
 // TYPOGRAPHIC STYLES
 // Usage: ./_alert.clarity.scss
-$clr-alert-font-size: variables2.$clr-p3-font-size !default;
-$clr-alert-letter-spacing: variables2.$clr-p3-letter-spacing !default;
+$clr-alert-font-size: variables.$clr-p3-font-size !default;
+$clr-alert-letter-spacing: variables.$clr-p3-letter-spacing !default;
 
 // Dimensions & Layout
 // Usage: ./_alert.clarity.scss
-$clr-icon-margin-right: variables3.$clr_baselineRem_0_25 !default;
-$clr-icon-dimension-sm: variables3.$clr_baselineRem_0_667 !default;
-$clr-alert-icon-dimension-sm: variables3.$clr_baselineRem_0_75 !default;
-$clr-alert-top-margin: variables3.$clr_baselineRem_0_25 !default;
-$clr-alert-min-height: variables3.$clr_baselineRem_1_5 !default;
-$clr-alert-horizontal-padding: variables3.$clr_baselineRem_0_5 !default;
-$clr-alert-top-padding: variables3.$clr_baselineRem_0_125 !default;
-$clr-alert-bottom-padding: variables3.$clr_baselineRem_0_375 !default;
+$clr-icon-margin-right: variables.$clr_baselineRem_0_25 !default;
+$clr-icon-dimension-sm: variables.$clr_baselineRem_0_667 !default;
+$clr-alert-icon-dimension-sm: variables.$clr_baselineRem_0_75 !default;
+$clr-alert-top-margin: variables.$clr_baselineRem_0_25 !default;
+$clr-alert-min-height: variables.$clr_baselineRem_1_5 !default;
+$clr-alert-horizontal-padding: variables.$clr_baselineRem_0_5 !default;
+$clr-alert-top-padding: variables.$clr_baselineRem_0_125 !default;
+$clr-alert-bottom-padding: variables.$clr_baselineRem_0_375 !default;
 $clr-alert-item-min-height: $clr-alert-icon-dimension-sm !default;
-$clr-alert-borderwidth: variables3.$clr-global-borderwidth !default;
-$clr-alert-borderradius: variables3.$clr-global-borderradius !default;
+$clr-alert-borderwidth: variables.$clr-global-borderwidth !default;
+$clr-alert-borderradius: variables.$clr-global-borderradius !default;
 
 // Info type
 // Usage: ./_alert.clarity.scss

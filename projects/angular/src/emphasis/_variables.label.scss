@@ -1,12 +1,9 @@
-@use '../utils/variables/variables.color' as variables2;
-@use '../utils/variables/variables.global';
-@use '../utils/variables/variables.typography' as variables3;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/variables/variables';
 
 // Usage: ./_labels.clarity.scss
 $clr-label-padding-top-bottom: variables.$clr_baselineRem_0_125 !default;
@@ -16,50 +13,50 @@ $clr-label-borderwidth: variables.$clr-global-borderwidth !default;
 // COLOR
 // Usage:
 // - ./_labels.clarity.scss
-$clr-label-font-color-light: variables2.$clr-color-neutral-1000 !default;
-$clr-label-font-color-dark: variables2.$clr-color-neutral-1000 !default;
-$clr-label-default-border-color: variables2.$clr-color-neutral-600 !default;
+$clr-label-font-color-light: variables.$clr-color-neutral-1000 !default;
+$clr-label-font-color-dark: variables.$clr-color-neutral-1000 !default;
+$clr-label-default-border-color: variables.$clr-color-neutral-600 !default;
 
 // TYPOGRAPHIC STYLES
 // Usage:
 // - ./_labels.clarity.scss
-$clr-label-font-size: variables3.$clr-p7-font-size !default;
-$clr-label-font-weight: variables3.$clr-p7-font-weight !default;
-$clr-label-letter-spacing: variables3.$clr-p7-letter-spacing !default;
+$clr-label-font-size: variables.$clr-p7-font-size !default;
+$clr-label-font-weight: variables.$clr-p7-font-weight !default;
+$clr-label-letter-spacing: variables.$clr-p7-letter-spacing !default;
 
 // Usage: ./_labels.clarity.scss
-$clr-label-bg-hover-color: variables2.$clr-color-neutral-200 !default;
+$clr-label-bg-hover-color: variables.$clr-color-neutral-200 !default;
 
-$clr-label-gray-bg-color: variables2.$clr-color-neutral-600 !default;
+$clr-label-gray-bg-color: variables.$clr-color-neutral-600 !default;
 $clr-label-gray-color: $clr-label-font-color-light !default;
 
-$clr-label-purple-bg-color: variables2.$clr-color-secondary-action-500 !default;
+$clr-label-purple-bg-color: variables.$clr-color-secondary-action-500 !default;
 $clr-label-purple-color: $clr-label-font-color-light !default;
 
-$clr-label-blue-bg-color: variables2.$clr-color-action-800 !default;
+$clr-label-blue-bg-color: variables.$clr-color-action-800 !default;
 $clr-label-blue-color: $clr-label-font-color-light !default;
 
-$clr-label-orange-bg-color: variables2.$clr-color-warning-1000 !default;
+$clr-label-orange-bg-color: variables.$clr-color-warning-1000 !default;
 $clr-label-orange-color: $clr-label-font-color-dark !default;
 
-$clr-label-light-blue-bg-color: variables2.$clr-color-action-500 !default;
+$clr-label-light-blue-bg-color: variables.$clr-color-action-500 !default;
 $clr-label-light-blue-color: $clr-label-font-color-dark !default;
 
-$clr-label-info-bg-color: variables2.$clr-color-action-50 !default;
-$clr-label-info-font-color: variables2.$clr-color-action-800 !default;
-$clr-label-info-border-color: variables2.$clr-color-action-800 !default;
+$clr-label-info-bg-color: variables.$clr-color-action-50 !default;
+$clr-label-info-font-color: variables.$clr-color-action-800 !default;
+$clr-label-info-border-color: variables.$clr-color-action-800 !default;
 
-$clr-label-success-bg-color: variables2.$clr-color-success-50 !default;
-$clr-label-success-font-color: variables2.$clr-color-success-800 !default;
-$clr-label-success-border-color: variables2.$clr-color-success-800 !default;
+$clr-label-success-bg-color: variables.$clr-color-success-50 !default;
+$clr-label-success-font-color: variables.$clr-color-success-800 !default;
+$clr-label-success-border-color: variables.$clr-color-success-800 !default;
 
-$clr-label-warning-bg-color: variables2.$clr-color-warning-100 !default;
-$clr-label-warning-font-color: variables2.$clr-color-neutral-900 !default;
-$clr-label-warning-border-color: variables2.$clr-color-warning-800 !default;
+$clr-label-warning-bg-color: variables.$clr-color-warning-100 !default;
+$clr-label-warning-font-color: variables.$clr-color-neutral-900 !default;
+$clr-label-warning-border-color: variables.$clr-color-warning-800 !default;
 
-$clr-label-danger-bg-color: variables2.$clr-color-danger-100 !default;
-$clr-label-danger-font-color: variables2.$clr-color-danger-900 !default;
-$clr-label-danger-border-color: variables2.$clr-color-danger-900 !default;
+$clr-label-danger-bg-color: variables.$clr-color-danger-100 !default;
+$clr-label-danger-font-color: variables.$clr-color-danger-900 !default;
+$clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
 
 @function getLabelCssVarName($type: gray, $prop: color) {
   @if $prop == color {
