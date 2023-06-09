@@ -39,6 +39,7 @@
 | clr-accordion-header-has-description | Accordion header with a description.                  |
 | clr-accordion-description            | Description text within the accordion header.         |
 | clr-accordion-content                | Content section of an accordion panel.                |
+| clr-accordion-content-region         | Content region section of an accordion panel.         |
 | clr-accordion-inner-content          | Inner content section within the accordion content.   |
 | clr-accordion-angle                  | Angle or arrow indicator within the accordion header. |
 | clr-accordion-error-icon             | Error icon within the accordion header.               |
