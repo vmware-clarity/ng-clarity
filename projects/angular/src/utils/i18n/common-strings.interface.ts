@@ -22,10 +22,6 @@ export interface ClrCommonStrings {
    */
   hide: string;
   /**
-   * Delete button
-   */
-  delete?: string;
-  /**
    * Expandable components: expand caret
    */
   expand: string;
@@ -45,10 +41,6 @@ export interface ClrCommonStrings {
    * Selectable components: checkbox to select all
    */
   selectAll: string;
-  /**
-   * Selected item(s): combobox
-   */
-  selection?: string;
   /**
    * Pagination: previous button
    */
@@ -132,19 +124,19 @@ export interface ClrCommonStrings {
   /**
    * Datagrid filter toggle button
    */
-  datagridFilterAriaLabel?: string;
+  datagridFilterAriaLabel: string;
   /**
    * Datagrid filter dialog
    */
-  datagridFilterDialogAriaLabel?: string;
+  datagridFilterDialogAriaLabel: string;
   /**
    * Datagrid column handler string
    */
-  columnSeparatorAriaLabel?: string;
+  columnSeparatorAriaLabel: string;
   /**
    * Datagrid column resize handler string
    */
-  columnSeparatorDescription?: string;
+  columnSeparatorDescription: string;
   /**
    * Modal start of content
    */
@@ -249,10 +241,10 @@ export interface ClrCommonStrings {
   timelineStepProcessing: string;
 
   // Datagrid Helper text for expandable rows
-  datagridExpandableBeginningOf?: string;
-  datagridExpandableEndOf?: string;
-  datagridExpandableRowContent?: string;
-  datagridExpandableRowsHelperText?: string;
+  datagridExpandableBeginningOf: string;
+  datagridExpandableEndOf: string;
+  datagridExpandableRowContent: string;
+  datagridExpandableRowsHelperText: string;
 
   /**
    * Combobox Searching Text
