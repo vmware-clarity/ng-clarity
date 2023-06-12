@@ -890,8 +890,8 @@ export interface ClrCommonStrings {
     allColumnsSelected: string;
     close: string;
     collapse: string;
-    columnSeparatorAriaLabel?: string;
-    columnSeparatorDescription?: string;
+    columnSeparatorAriaLabel: string;
+    columnSeparatorDescription: string;
     // (undocumented)
     comboboxDelete: string;
     // (undocumented)
@@ -907,15 +907,15 @@ export interface ClrCommonStrings {
     currentPage: string;
     danger: string;
     // (undocumented)
-    datagridExpandableBeginningOf?: string;
+    datagridExpandableBeginningOf: string;
     // (undocumented)
-    datagridExpandableEndOf?: string;
+    datagridExpandableEndOf: string;
     // (undocumented)
-    datagridExpandableRowContent?: string;
+    datagridExpandableRowContent: string;
     // (undocumented)
-    datagridExpandableRowsHelperText?: string;
-    datagridFilterAriaLabel?: string;
-    datagridFilterDialogAriaLabel?: string;
+    datagridExpandableRowsHelperText: string;
+    datagridFilterAriaLabel: string;
+    datagridFilterDialogAriaLabel: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -939,7 +939,6 @@ export interface ClrCommonStrings {
     datepickerToggleChangeDateLabel: string;
     // (undocumented)
     datepickerToggleChooseDateLabel: string;
-    delete?: string;
     detailExpandableAriaLabel: string;
     detailPaneEnd: string;
     detailPaneStart: string;
@@ -977,7 +976,6 @@ export interface ClrCommonStrings {
     select: string;
     selectAll: string;
     selectedRows: string;
-    selection?: string;
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
