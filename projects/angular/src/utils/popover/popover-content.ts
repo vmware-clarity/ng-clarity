@@ -100,7 +100,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
         this.alignContent();
         this.shouldRealign = false;
         if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
+          this.renderer.setStyle(this.view.rootNodes[0], 'visibility', 'visible');
         }
       })
     );
@@ -129,8 +129,8 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     // coordinates values.
     this.renderer.setStyle(rootNode, 'top', '0px');
     this.renderer.setStyle(rootNode, 'left', '0px');
-    // We need to hide it during the calculation phase, while it's not yet finally positioned.
-    this.renderer.setStyle(rootNode, 'opacity', '0');
+    // // We need to hide it during the calculation phase, while it's not yet finally positioned.
+    this.renderer.setStyle(rootNode, 'visibility', 'hidden');
     this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
       this.smartOpenService.openEvent = event;
     });
@@ -158,7 +158,13 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     if (!this.view) {
       return;
     }
-    const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
+
+    const { yOffset, xOffset } = this.smartPositionService.alignContent(this.view.rootNodes[0]);
+    const positionCoords = {
+      yOffset: yOffset + this.document.documentElement.scrollTop,
+      xOffset: xOffset + this.document.documentElement.scrollLeft,
+    };
+
     this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
     this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);
     this.smartOpenService.popoverAlignedEmit(this.view.rootNodes[0]);
