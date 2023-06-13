@@ -14,7 +14,7 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from '../../utils/destroy/destroy.service';
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
@@ -162,8 +162,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   private handleFocusOnMenuOpen() {
     if (this.menuButtons.length) {
-      this.toggleService.openChange.pipe(delay(0), takeUntil(this.destroy$)).subscribe(isOpened => {
-        if (isOpened) {
+      this.toggleService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
+        if (visible) {
           this.focusHandler.initialize({
             menu: this.menu.nativeElement,
             menuToggle: this.menuToggle.nativeElement,

@@ -101,6 +101,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
         this.shouldRealign = false;
         if (this.view) {
           this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
+          this.smartOpenService.popoverVisibleEmit(true);
         }
       })
     );
@@ -129,7 +130,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     // coordinates values.
     this.renderer.setStyle(rootNode, 'top', '0px');
     this.renderer.setStyle(rootNode, 'left', '0px');
-    // We need to hide it during the calculation phase, while it's not yet finally positioned.
+    // // We need to hide it during the calculation phase, while it's not yet finally positioned.
     this.renderer.setStyle(rootNode, 'opacity', '0');
     this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
       this.smartOpenService.openEvent = event;
@@ -152,12 +153,14 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
     this.container.clear();
     delete this.view;
+    this.smartOpenService.popoverVisibleEmit(false);
   }
 
   private alignContent() {
     if (!this.view) {
       return;
     }
+
     const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
     this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
     this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);
