@@ -14,4 +14,4 @@ $clr-subnav-bgColor: variables.$clr-color-neutral-0 !default;
 $clr-subnav-height: variables.$clr_baselineRem_1_5 !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
-$clr-nav-shadow: 0 (-1 * variables.$clr_baselineRem_1px) 0 variables.$clr-color-neutral-400 inset;
+$clr-nav-shadow: 0 (-1 * variables.$clr_baselineRem_1px) 0 variables.$clr-color-neutral-400 inset !default;

@@ -19,7 +19,7 @@ $clr-datagrid-row-hover-font-color: variables.$clr-color-neutral-1000 !default;
 $clr-datagrid-action-toggle-color: variables.$clr-color-neutral-700 !default;
 $clr-datagrid-pagination-btn-color: variables.$clr-color-neutral-700 !default;
 $clr-datagrid-pagination-btn-disabled-color: variables.$clr-color-neutral-600 !default;
-$clr-datagrid-pagination-btn-disabled-opacity: 0.56;
+$clr-datagrid-pagination-btn-disabled-opacity: 0.56 !default;
 $clr-datagrid-pagination-input-border-color: $clr-datagrid-default-border-color !default;
 $clr-datagrid-pagination-input-border-focus-color: variables.$clr-color-action-400 !default;
 $clr-datagrid-popover-bg-color: variables.$clr-color-neutral-0 !default;

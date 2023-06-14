@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../mixins';
-@use 'variables';
+@use 'variables.global' as global-variables;
+@use 'variables.color';
 
 @include mixins.exports('color.properties') {
-  @if variables.$clr-use-custom-properties == true {
+  @if global-variables.$clr-use-custom-properties == true {
     :root {
       // global color variables
 
