@@ -1654,20 +1654,23 @@
             min-width: variables.$clr_baselineRem_0_75;
             margin: 0;
             padding: 0;
-            @include mixins.css-var(
-              color,
-              clr-datagrid-column-switch-header-font-color,
-              datagrid-variables.$clr-datagrid-column-switch-header-font-color,
-              variables.$clr-use-custom-properties
-            );
 
-            &:hover {
+            cds-icon {
               @include mixins.css-var(
                 color,
-                clr-datagrid-column-switch-header-font-hover-color,
-                datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
+                clr-datagrid-column-switch-header-font-color,
+                datagrid-variables.$clr-datagrid-column-switch-header-font-color,
                 variables.$clr-use-custom-properties
               );
+
+              &:hover {
+                @include mixins.css-var(
+                  color,
+                  clr-datagrid-column-switch-header-font-hover-color,
+                  datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
+                  variables.$clr-use-custom-properties
+                );
+              }
             }
           }
         }
@@ -2344,20 +2347,23 @@
         min-width: variables.$clr_baselineRem_0_75;
         margin: 0;
         padding: 0;
-        @include mixins.css-var(
-          color,
-          clr-datagrid-column-switch-header-font-color,
-          datagrid-variables.$clr-datagrid-column-switch-header-font-color,
-          variables.$clr-use-custom-properties
-        );
 
-        &:hover {
+        cds-icon {
           @include mixins.css-var(
             color,
-            clr-datagrid-column-switch-header-font-hover-color,
-            datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
+            clr-datagrid-column-switch-header-font-color,
+            datagrid-variables.$clr-datagrid-column-switch-header-font-color,
             variables.$clr-use-custom-properties
           );
+
+          &:hover {
+            @include mixins.css-var(
+              color,
+              clr-datagrid-column-switch-header-font-hover-color,
+              datagrid-variables.$clr-datagrid-column-switch-header-font-hover-color,
+              variables.$clr-use-custom-properties
+            );
+          }
         }
       }
     }
