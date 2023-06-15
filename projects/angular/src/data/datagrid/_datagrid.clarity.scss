@@ -372,10 +372,6 @@
         line-height: variables.$clr_baselineRem_1;
       }
     }
-
-    .datagrid-row-sticky {
-      z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
-    }
   }
 
   .datagrid-row-sticky {
