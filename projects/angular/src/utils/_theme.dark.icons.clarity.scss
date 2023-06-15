@@ -1,5 +1,3 @@
-@use 'theme.dark.clarity' as theme;
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -11,6 +9,8 @@
  *
  * This one is left for backwards compatibility
  */
+@use 'theme.dark.clarity' as theme;
+
 clr-icon {
   &.is-green,
   &.is-success {
