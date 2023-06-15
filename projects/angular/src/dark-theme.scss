@@ -10,7 +10,7 @@
 @use 'utils/components.clarity';
 
 // Clarity icons code (overrides icons style)
-//@use 'utils/theme.dark.icons.clarity' as dark-icons-theme;
+@use 'utils/theme.dark.icons.clarity' as dark-icons-theme;
 
 // Metropolis font
 @use 'typography/font-metropolis';

@@ -956,3 +956,42 @@
   $clr-accordion-border-color: hsl(208, 16%, 34%)
 );
 // END: Accordion
+
+/*********
+  * $clr-global-hover-bg-color
+  * Components or elements that can be hovered will have this color applied to their background-color.
+  * Component's with variables affected in the dark theme (this file)
+  * - Dropdown
+  * - Tree View
+  */
+$clr-global-hover-bg-color: hsl(201, 31%, 23%) !default;
+
+/**********
+  * Alerts
+  * Alerts are banners that communicate a message with a severity attached to it. They grab the user’s attention to
+  * provide critical information needed in context. These variables control the background-color and font color for each
+  * of the alert types.
+  *
+  * There are seven types of alert and we set the background-color and font color for each here.
+  */
+
+$clr-theme-alert-font-color: hsl(210, 16%, 93%) !default;
+$clr-theme-app-alert-font-color: hsl(0, 0%, 0%) !default;
+$clr-global-font-color-secondary: hsl(203, 16%, 72%) !default;
+
+$clr-table-borderstyle: variables.$clr_baselineRem_1px solid hsl(208, 16%, 34%);
+$clr-table-bordercolor: hsl(208, 16%, 34%);
+
+/**********
+ * Icons
+ * Icons by default are presentational only meaning they do not provide any context to screen readers
+ *
+ * Usage: ./_icons.clarity.scss
+ */
+$clr-icon-color-success: hsl(92, 79%, 40%);
+$clr-icon-color-error: hsl(3, 90%, 62%);
+$clr-icon-color-warning: hsl(49, 98%, 51%);
+$clr-icon-color-info: hsl(198, 65%, 57%);
+$clr-icon-color-inverse: hsl(0, 0%, 100%);
+$clr-icon-color-highlight: hsl(198, 65%, 57%);
+// END: Icons
