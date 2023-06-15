@@ -78,7 +78,7 @@
     );
 
     &.multi {
-      min-width: min(var(combobox-variables.$clr-ng-multiselect-min-width), 100%);
+      min-width: calc(min(combobox-variables.$clr-ng-multiselect-min-width, 100%));
       padding-bottom: variables.$clr_baselineRem_0_125;
     }
 
