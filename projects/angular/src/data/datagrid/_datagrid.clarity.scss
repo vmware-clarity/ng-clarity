@@ -373,10 +373,6 @@
       }
     }
 
-    .datagrid-action-overflow {
-      z-index: map.get(variables.$clr-layers, datagrid-popover);
-    }
-
     .datagrid-row-sticky {
       z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
     }
