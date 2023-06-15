@@ -385,7 +385,7 @@
     flex-wrap: nowrap;
     position: sticky;
     left: 0;
-    z-index: map.get(variables.$clr-layers, datagrid-header-sticky);
+    z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
     .datagrid-cell:last-child {
       &:after {
