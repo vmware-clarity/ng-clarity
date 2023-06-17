@@ -130,7 +130,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     // coordinates values.
     this.renderer.setStyle(rootNode, 'top', '0px');
     this.renderer.setStyle(rootNode, 'left', '0px');
-    // // We need to hide it during the calculation phase, while it's not yet finally positioned.
+    // We need to hide it during the calculation phase, while it's not yet finally positioned.
     this.renderer.setStyle(rootNode, 'opacity', '0');
     this.removeClickListenerFn = this.renderer.listen(rootNode, 'click', event => {
       this.smartOpenService.openEvent = event;
