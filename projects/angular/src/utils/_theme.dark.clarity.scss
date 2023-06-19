@@ -884,9 +884,11 @@
   // colors
   $clr-timeline-line-color: hsl(203, 16%, 72%),
   $clr-timeline-step-header-color: hsl(210, 17%, 93%),
-  $clr-timeline-step-title-color: hsl(0, 0%, 34%),
+  $clr-timeline-step-title-color: hsl(203, 16%, 72%),
+  // #565656
   $clr-timeline-step-description-color: hsl(203, 16%, 72%),
-  $clr-timeline-incomplete-step-color: hsl(0, 0%, 34%),
+  // #565656
+  $clr-timeline-incomplete-step-color: hsl(210, 17%, 93%),
   $clr-timeline-current-step-color: hsl(198, 65%, 57%),
   $clr-timeline-success-step-color: hsl(92, 79%, 40%),
   $clr-timeline-error-step-color: hsl(3, 90%, 62%)
