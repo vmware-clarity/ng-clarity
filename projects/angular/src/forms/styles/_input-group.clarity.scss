@@ -5,13 +5,13 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.input-group') {
   .clr-input-group {
-    @include styles-mixins.form-fields-appearance();
-    @include styles-mixins.input-border-bottom-animation();
+    @include forms-mixins.form-fields-appearance();
+    @include forms-mixins.input-border-bottom-animation();
     max-width: 100%;
     height: variables.$clr_baselineRem_1;
 
@@ -45,16 +45,16 @@
       @include mixins.css-var(
         color,
         clr-forms-subtext-color,
-        styles-variables.$clr-forms-subtext-color,
+        forms-variables.$clr-forms-subtext-color,
         variables.$clr-use-custom-properties
       );
 
       &:first-child {
-        padding: 0 0 0 (styles-variables.$clr-forms-baseline * 1.5);
+        padding: 0 0 0 (forms-variables.$clr-forms-baseline * 1.5);
       }
 
       &:last-child {
-        padding: 0 (styles-variables.$clr-forms-baseline * 1.5) 0 0;
+        padding: 0 (forms-variables.$clr-forms-baseline * 1.5) 0 0;
       }
     }
 
@@ -63,10 +63,10 @@
       @include mixins.css-var(
         color,
         clr-forms-focused-color,
-        styles-variables.$clr-forms-focused-color,
+        forms-variables.$clr-forms-focused-color,
         variables.$clr-use-custom-properties
       );
-      padding: 0 styles-variables.$clr-forms-baseline * 1.5;
+      padding: 0 forms-variables.$clr-forms-baseline * 1.5;
 
       cds-icon,
       clr-icon {
@@ -80,7 +80,7 @@
     @include mixins.css-var(
       color,
       clr-forms-text-disabled-color,
-      styles-variables.$clr-forms-text-disabled-color,
+      forms-variables.$clr-forms-text-disabled-color,
       variables.$clr-use-custom-properties
     );
     cursor: not-allowed;
@@ -90,11 +90,11 @@
     @include mixins.css-var(
       border-bottom-color,
       clr-forms-invalid-color,
-      styles-variables.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
-    @include styles-mixins.input-border-bottom-animation(
-      styles-variables.$clr-forms-invalid-color,
+    @include forms-mixins.input-border-bottom-animation(
+      forms-variables.$clr-forms-invalid-color,
       clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );

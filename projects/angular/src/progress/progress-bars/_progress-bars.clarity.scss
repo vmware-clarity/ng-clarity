@@ -7,7 +7,7 @@
 @use 'properties.progress-bars';
 @use 'utils/mixins.clarity';
 @use '../../utils/mixins' as utils-mixins;
-@use '../../layout/variables.card' as layout-variables;
+@use '../../layout/variables.card' as card-variables;
 @use '../../utils/variables/variables.global';
 @use 'variables.progress-bars' as progress-bars-variables;
 
@@ -560,7 +560,7 @@
     .progress-static {
       // by default, positioned at the topmost of its card-block container
       margin: 0;
-      margin-top: -1 * layout-variables.$card-children-padding-vertical;
+      margin-top: -1 * card-variables.$card-children-padding-vertical;
       height: $clr-progressInCard-height;
       position: absolute;
       left: 0;

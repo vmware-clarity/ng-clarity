@@ -5,27 +5,27 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.radio') {
   // @TODO un-nest the radio inputs when old forms are removed
   .clr-radio-wrapper {
-    @include styles-mixins.form-flatten-validate-text();
+    @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
     line-height: variables.$clr_baselineRem_1;
 
     //Hide the default radio
     input[type='radio'] {
-      @include styles-mixins.checkbox-radio-input-styles(styles-variables.$clr-forms-radio-size);
+      @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);
     }
 
     .clr-control-label {
-      @include styles-mixins.checkbox-radio-label-styles(
-        styles-variables.$clr-forms-radio-label-height,
-        styles-variables.$clr-forms-radio-padding-left,
-        styles-variables.$clr-forms-radio-label-color,
+      @include forms-mixins.checkbox-radio-label-styles(
+        forms-variables.$clr-forms-radio-label-height,
+        forms-variables.$clr-forms-radio-padding-left,
+        forms-variables.$clr-forms-radio-label-color,
         clr-forms-radio-label-color
       );
     }
@@ -36,11 +36,11 @@
 
     //Radio button base
     input[type='radio'] + .clr-control-label::before {
-      @include styles-mixins.checkbox-radio-shared-inactive(
-        styles-variables.$clr-forms-radio-height,
-        styles-variables.$clr-forms-radio-top,
+      @include forms-mixins.checkbox-radio-shared-inactive(
+        forms-variables.$clr-forms-radio-height,
+        forms-variables.$clr-forms-radio-top,
         0,
-        styles-variables.$clr-forms-border-color,
+        forms-variables.$clr-forms-border-color,
         clr-forms-border-color
       );
       border-radius: 50%;
@@ -51,7 +51,7 @@
       @include mixins.css-var(
         box-shadow,
         clr-forms-radio-selected-shadow,
-        styles-variables.$clr-forms-radio-selected-shadow,
+        forms-variables.$clr-forms-radio-selected-shadow,
         variables.$clr-use-custom-properties
       );
       border: none;
@@ -73,7 +73,7 @@
       @include mixins.css-var(
         box-shadow,
         clr-forms-radio-disabled-shadow,
-        styles-variables.$clr-forms-radio-disabled-shadow,
+        forms-variables.$clr-forms-radio-disabled-shadow,
         variables.$clr-use-custom-properties
       );
     }
@@ -82,14 +82,14 @@
       @include mixins.css-var(
         background-color,
         clr-forms-radio-disabled-background-color,
-        styles-variables.$clr-forms-radio-disabled-background-color,
+        forms-variables.$clr-forms-radio-disabled-background-color,
         variables.$clr-use-custom-properties
       );
       //background-color around the dot
       @include mixins.css-var(
         box-shadow,
         clr-forms-radio-checked-disabled-shadow,
-        styles-variables.$clr-forms-radio-checked-disabled-shadow,
+        forms-variables.$clr-forms-radio-checked-disabled-shadow,
         variables.$clr-use-custom-properties
       );
     }
@@ -105,7 +105,7 @@
     @include mixins.css-var(
       border-color,
       clr-forms-invalid-color,
-      styles-variables.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
   }
@@ -115,9 +115,9 @@
   }
 
   .clr-form-compact .clr-radio-wrapper {
-    @include styles-mixins.form-flatten-compact-adjustments();
-    @include styles-mixins.form-inline-input();
-    height: styles-variables.$clr-forms-baseline * 4;
+    @include forms-mixins.form-flatten-compact-adjustments();
+    @include forms-mixins.form-inline-input();
+    height: forms-variables.$clr-forms-baseline * 4;
 
     .clr-control-label {
       margin-top: 0;

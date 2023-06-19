@@ -5,7 +5,7 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'variables.forms' as styles-variables;
+@use 'variables.forms' as forms-variables;
 
 // Flatten the error icon and message to be inline for certain input types
 @mixin form-flatten-validate-text() {
@@ -29,7 +29,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: styles-variables.$clr-forms-baseline * 2;
+    margin-right: forms-variables.$clr-forms-baseline * 2;
     width: auto;
   }
 }
@@ -39,13 +39,13 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: styles-variables.$clr-forms-baseline;
+    margin-left: forms-variables.$clr-forms-baseline;
   }
 }
 
 // Standard Clarity Input Bottom Border Animation
 @mixin input-border-bottom-animation(
-  $border-color-sass: styles-variables.$clr-forms-focused-color,
+  $border-color-sass: forms-variables.$clr-forms-focused-color,
   $border-color-prop: clr-forms-focused-color,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
@@ -91,8 +91,8 @@
 }
 
 @mixin form-fields-appearance(
-  $border-color-sass: styles-variables.$clr-forms-border-color,
-  $text-color-sass: styles-variables.$clr-forms-text-color,
+  $border-color-sass: forms-variables.$clr-forms-border-color,
+  $text-color-sass: forms-variables.$clr-forms-text-color,
   $border-color-prop: clr-forms-border-color,
   $text-color-prop: clr-forms-text-color,
   $use-custom-props: variables.$clr-use-custom-properties
@@ -112,7 +112,7 @@
   @include mixins.css-var(
     color,
     clr-forms-text-disabled-color,
-    styles-variables.$clr-forms-text-disabled-color,
+    forms-variables.$clr-forms-text-disabled-color,
     variables.$clr-use-custom-properties
   );
   cursor: not-allowed;
@@ -135,7 +135,7 @@
 @mixin checkbox-radio-label-styles(
   $min-height,
   $padding-left,
-  $color: styles-variables.$clr-forms-checkbox-label-color,
+  $color: forms-variables.$clr-forms-checkbox-label-color,
   $color-prop: clr-forms-checkbox-label-color,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
@@ -148,7 +148,7 @@
   padding-left: $padding-left;
   margin-top: 0;
   cursor: pointer;
-  line-height: styles-variables.$clr-forms-baseline * 4;
+  line-height: forms-variables.$clr-forms-baseline * 4;
 
   @if $use-custom-props != true {
     color: $color;

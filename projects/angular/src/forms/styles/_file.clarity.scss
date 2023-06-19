@@ -5,14 +5,14 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.file') {
   .clr-file-wrapper {
-    @include styles-mixins.form-flatten-validate-text();
+    @include forms-mixins.form-flatten-validate-text();
     position: relative;
-    margin-top: styles-variables.$clr-forms-baseline;
+    margin-top: forms-variables.$clr-forms-baseline;
 
     .btn {
       margin: 0;
@@ -28,14 +28,14 @@
   }
 
   .clr-form-compact .clr-file-wrapper {
-    @include styles-mixins.form-flatten-compact-adjustments();
+    @include forms-mixins.form-flatten-compact-adjustments();
     margin-top: 0;
 
     & ~ .clr-validate-icon {
-      line-height: styles-variables.$clr-forms-baseline * 4;
+      line-height: forms-variables.$clr-forms-baseline * 4;
     }
     & ~ .clr-subtext {
-      line-height: styles-variables.$clr-forms-baseline * 4;
+      line-height: forms-variables.$clr-forms-baseline * 4;
       margin-top: 0;
     }
     .clr-control-label {

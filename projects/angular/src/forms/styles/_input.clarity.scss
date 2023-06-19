@@ -5,32 +5,32 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.input') {
   .clr-input-wrapper {
     white-space: nowrap;
-    max-height: styles-variables.$clr-forms-baseline * 4;
+    max-height: forms-variables.$clr-forms-baseline * 4;
   }
 
   .clr-input {
-    @include styles-mixins.custom-inputs-reset(styles-variables.$clr-forms-baseline * 4);
-    @include styles-mixins.form-fields-appearance();
-    padding: 0 styles-variables.$clr-forms-baseline;
-    max-height: styles-variables.$clr-forms-baseline * 4;
-    font-size: styles-variables.$clr-forms-field-font-size;
+    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-baseline * 4);
+    @include forms-mixins.form-fields-appearance();
+    padding: 0 forms-variables.$clr-forms-baseline;
+    max-height: forms-variables.$clr-forms-baseline * 4;
+    font-size: forms-variables.$clr-forms-field-font-size;
 
     &[readonly] {
       border: none;
     }
 
     &:not([readonly]) {
-      @include styles-mixins.input-border-bottom-animation();
+      @include forms-mixins.input-border-bottom-animation();
     }
 
     &:disabled {
-      @include styles-mixins.disabled-form-fields();
+      @include forms-mixins.disabled-form-fields();
     }
   }
 
@@ -38,22 +38,22 @@
     @include mixins.css-var(
       border-bottom-color,
       clr-forms-invalid-color,
-      styles-variables.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
-    @include styles-mixins.input-border-bottom-animation(
-      styles-variables.$clr-forms-invalid-color,
+    @include forms-mixins.input-border-bottom-animation(
+      forms-variables.$clr-forms-invalid-color,
       clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
   }
 
   .clr-form-control.row .clr-input-wrapper {
-    max-width: calc(100% - #{styles-variables.$clr-forms-icon-size});
+    max-width: calc(100% - #{forms-variables.$clr-forms-icon-size});
   }
 
   .clr-form-compact .clr-input {
-    @include styles-mixins.form-flatten-compact-adjustments();
+    @include forms-mixins.form-flatten-compact-adjustments();
   }
 
   .clr-form-control-readonly .clr-input {
@@ -61,7 +61,7 @@
   }
 
   .clr-form-control-multi .clr-input {
-    max-width: calc(100% + #{styles-variables.$clr-forms-icon-size});
+    max-width: calc(100% + #{forms-variables.$clr-forms-icon-size});
   }
 
   /**
@@ -71,7 +71,7 @@
     @include mixins.css-var(
       color,
       clr-forms-placeholder-color,
-      styles-variables.$clr-forms-placeholder-color,
+      forms-variables.$clr-forms-placeholder-color,
       variables.$clr-use-custom-properties
     );
   }

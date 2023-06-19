@@ -5,8 +5,8 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'mixins.forms' as styles-mixins;
-@use 'variables.forms' as styles-variables;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.containers') {
   // Fix of #5009 and #5146
@@ -17,7 +17,7 @@
   }
 
   .clr-form-control {
-    margin-top: styles-variables.$clr-forms-baseline * 4;
+    margin-top: forms-variables.$clr-forms-baseline * 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -32,7 +32,7 @@
     @include mixins.css-var(
       color,
       clr-forms-text-disabled-color,
-      styles-variables.$clr-forms-text-disabled-color,
+      forms-variables.$clr-forms-text-disabled-color,
       variables.$clr-use-custom-properties
     );
 
@@ -41,7 +41,7 @@
       @include mixins.css-var(
         color,
         clr-forms-label-disabled-color,
-        styles-variables.$clr-forms-label-disabled-color,
+        forms-variables.$clr-forms-label-disabled-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -52,13 +52,13 @@
       @include mixins.css-var(
         color,
         clr-forms-text-disabled-color,
-        styles-variables.$clr-forms-text-disabled-color,
+        forms-variables.$clr-forms-text-disabled-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         border-bottom-color,
         clr-forms-border-disabled-color,
-        styles-variables.$clr-forms-border-disabled-color,
+        forms-variables.$clr-forms-border-disabled-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -67,7 +67,7 @@
       @include mixins.css-var(
         background-color,
         clr-forms-border-disabled-color,
-        styles-variables.$clr-forms-border-disabled-color,
+        forms-variables.$clr-forms-border-disabled-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -76,7 +76,7 @@
       @include mixins.css-var(
         color,
         clr-forms-subtext-disabled-color,
-        styles-variables.$clr-forms-subtext-disabled-color,
+        forms-variables.$clr-forms-subtext-disabled-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -96,17 +96,17 @@
     @include mixins.css-var(
       color,
       clr-forms-label-color,
-      styles-variables.$clr-forms-label-color,
+      forms-variables.$clr-forms-label-color,
       variables.$clr-use-custom-properties
     );
-    font-size: styles-variables.$clr-forms-label-font-size;
+    font-size: forms-variables.$clr-forms-label-font-size;
     @include mixins.css-var(
       font-weight,
       clr-forms-label-font-weight,
-      styles-variables.$clr-forms-label-font-weight,
+      forms-variables.$clr-forms-label-font-weight,
       variables.$clr-use-custom-properties
     );
-    line-height: styles-variables.$clr-forms-baseline * 3;
+    line-height: forms-variables.$clr-forms-baseline * 3;
   }
 
   .clr-control-container {
@@ -114,20 +114,20 @@
   }
 
   .clr-control-inline {
-    @include styles-mixins.form-inline-input();
+    @include forms-mixins.form-inline-input();
   }
 
   .clr-subtext {
     display: block;
-    font-size: styles-variables.$clr-forms-subtext-font-size;
-    line-height: styles-variables.$clr-forms-subtext-line-height;
+    font-size: forms-variables.$clr-forms-subtext-font-size;
+    line-height: forms-variables.$clr-forms-subtext-line-height;
     @include mixins.css-var(
       color,
       clr-forms-subtext-color,
-      styles-variables.$clr-forms-subtext-color,
+      forms-variables.$clr-forms-subtext-color,
       variables.$clr-use-custom-properties
     );
-    margin-top: styles-variables.$clr-forms-baseline;
+    margin-top: forms-variables.$clr-forms-baseline;
   }
 
   .clr-subtext-wrapper {
@@ -136,17 +136,17 @@
   }
 
   .clr-validate-icon {
-    @include mixins.min-equilateral(styles-variables.$clr-forms-icon-size);
+    @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
     @include mixins.css-var(
       color,
       clr-forms-invalid-color,
-      styles-variables.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       fill,
       clr-forms-invalid-color,
-      styles-variables.$clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
     );
     display: none;
@@ -158,7 +158,7 @@
       @include mixins.css-var(
         border-bottom-color,
         clr-forms-valid-color,
-        styles-variables.$clr-forms-valid-color,
+        forms-variables.$clr-forms-valid-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -167,13 +167,13 @@
       @include mixins.css-var(
         color,
         clr-forms-valid-color,
-        styles-variables.$clr-forms-valid-color,
+        forms-variables.$clr-forms-valid-color,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         fill,
         clr-forms-valid-color,
-        styles-variables.$clr-forms-valid-color,
+        forms-variables.$clr-forms-valid-color,
         variables.$clr-use-custom-properties
       );
       margin-left: -0.2rem;
@@ -182,7 +182,7 @@
       @include mixins.css-var(
         color,
         clr-forms-valid-text-color,
-        styles-variables.$clr-forms-valid-text-color,
+        forms-variables.$clr-forms-valid-text-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -198,7 +198,7 @@
       @include mixins.css-var(
         color,
         clr-forms-invalid-color,
-        styles-variables.$clr-forms-invalid-color,
+        forms-variables.$clr-forms-invalid-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -207,7 +207,7 @@
   .clr-form-horizontal {
     .clr-form-control > .clr-control-label,
     .clr-form-control > .clr-form-control.clr-form-control-multi .clr-control-label {
-      width: styles-variables.$clr-forms-baseline * 32;
+      width: forms-variables.$clr-forms-baseline * 32;
       flex-shrink: 0;
       margin-top: variables.$clr_baselineRem_0_125;
     }
@@ -223,8 +223,8 @@
 
   .clr-form-compact {
     .clr-form-control > .clr-control-label {
-      width: styles-variables.$clr-forms-baseline * 32;
-      min-width: styles-variables.$clr-forms-baseline * 32;
+      width: forms-variables.$clr-forms-baseline * 32;
+      min-width: forms-variables.$clr-forms-baseline * 32;
     }
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
@@ -232,13 +232,13 @@
     }
 
     .clr-control-label {
-      margin-top: styles-variables.$clr-forms-baseline * 0.5;
+      margin-top: forms-variables.$clr-forms-baseline * 0.5;
     }
 
     .clr-form-control {
       display: flex;
       flex-direction: row;
-      margin-top: styles-variables.$clr-forms-baseline * 2;
+      margin-top: forms-variables.$clr-forms-baseline * 2;
     }
 
     .clr-control-container {
@@ -247,8 +247,8 @@
 
     .clr-subtext {
       display: inline-block;
-      margin-top: styles-variables.$clr-forms-baseline;
-      margin-left: styles-variables.$clr-forms-icon-size;
+      margin-top: forms-variables.$clr-forms-baseline;
+      margin-left: forms-variables.$clr-forms-icon-size;
     }
 
     .clr-error,
