@@ -7,7 +7,6 @@
 @use 'variables.global';
 
 @include mixins.exports('global.properties') {
-  @debug 'divider dasd: #{variables.$clr-use-custom-properties}';
   @if variables.$clr-use-custom-properties == true {
     :root {
       // app borders
