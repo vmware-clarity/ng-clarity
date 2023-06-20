@@ -101,6 +101,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
         this.shouldRealign = false;
         if (this.view) {
           this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
+          this.smartOpenService.popoverVisibleEmit(true);
         }
       })
     );
@@ -152,12 +153,14 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
     this.container.clear();
     delete this.view;
+    this.smartOpenService.popoverVisibleEmit(false);
   }
 
   private alignContent() {
     if (!this.view) {
       return;
     }
+
     const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
     this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
     this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);

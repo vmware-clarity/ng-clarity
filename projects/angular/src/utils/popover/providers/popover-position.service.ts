@@ -95,6 +95,14 @@ export class ClrPopoverPositionService {
       this.handleHorizontalAxisTwoViolations(errorSum);
     }
 
+    /**
+     * Adjusts popover position based on scroll value by adding the negative 'top' value of currentContentCoords to yOffset for proper alignment.
+     * - The negative value means that the 'top' of the content is scrolled out of view at the top of the viewport.
+     */
+    if (this.currentContentCoords.top < 0) {
+      this.contentOffsets.yOffset += Math.abs(this.currentContentCoords.top);
+    }
+
     return this.contentOffsets;
   }
 
