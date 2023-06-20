@@ -62,6 +62,19 @@ export default function (): void {
         subscription.unsubscribe();
       });
 
+      it('exposes an observable for the popover visible change events', function (this: TestContext) {
+        const visibleObservable: Observable<boolean> = this.toggleService.popoverVisible;
+        expect(visibleObservable).toBeDefined();
+        expect(visibleObservable instanceof Observable).toBe(true);
+        let visible = false;
+        const subscription = visibleObservable.subscribe(() => {
+          visible = true;
+        });
+        this.toggleService.popoverVisibleEmit(null);
+        expect(visible).toBeTrue();
+        subscription.unsubscribe();
+      });
+
       it('updates and notifies when the openEvent changes', function (this: TestContext) {
         const clickEvent: Event = new MouseEvent('click');
         let testEvent: Event;

@@ -94,7 +94,9 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     this.subscriptions.push(
       this.smartToggleService.openChange.subscribe(openState => {
         this.open = openState;
-        if (openState) {
+      }),
+      this.smartToggleService.popoverVisible.subscribe(visible => {
+        if (visible) {
           this.initializeFocus();
         }
       })
@@ -127,18 +129,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   private initializeFocus(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
 
-          if (buttons.length) {
-            this.keyFocus.current = 0;
-            this.keyFocus.focusableItems = buttons;
+      if (buttons.length) {
+        this.keyFocus.current = 0;
+        this.keyFocus.focusableItems = buttons;
 
-            this.keyFocus.focusCurrent();
-          }
-        });
-      });
+        this.keyFocus.focusCurrent();
+      }
     }
   }
 }
