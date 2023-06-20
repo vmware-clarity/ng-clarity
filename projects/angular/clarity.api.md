@@ -3433,6 +3433,10 @@ export class ClrPopoverToggleService {
     get popoverAligned(): Observable<HTMLElement>;
     // (undocumented)
     popoverAlignedEmit(popoverNode: HTMLElement): void;
+    // (undocumented)
+    get popoverVisible(): Observable<boolean>;
+    // (undocumented)
+    popoverVisibleEmit(visible: boolean): void;
     toggleWithEvent(event: any): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverToggleService, never>;
