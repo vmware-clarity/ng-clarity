@@ -133,8 +133,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
       this.panelOpen = panel.open;
     }
 
-    if (panel.open) {
-      this.ifExpandService.expanded = true;
-    }
+    this.ifExpandService.expanded = panel.open;
   }
 }

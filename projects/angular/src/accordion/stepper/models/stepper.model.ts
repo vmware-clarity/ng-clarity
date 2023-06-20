@@ -9,6 +9,7 @@ import { AccordionModel } from '../../models/accordion.model';
 
 export class StepperModel extends AccordionModel {
   private stepperModelInitialize = false;
+  private _initialPanelId = '';
 
   get allPanelsCompleted(): boolean {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
@@ -42,6 +43,7 @@ export class StepperModel extends AccordionModel {
   }
 
   overrideInitialPanel(panelId: string) {
+    this._initialPanelId = panelId;
     this.panels
       .filter(() => this._panels[panelId] !== undefined)
       .forEach(panel => {
@@ -91,8 +93,10 @@ export class StepperModel extends AccordionModel {
       return;
     }
 
-    this._panels[firstPanel.id].open = true;
-    this._panels[firstPanel.id].disabled = true;
+    const startPanel = this._initialPanelId ? this._initialPanelId : firstPanel.id;
+
+    this._panels[startPanel].open = true;
+    this._panels[startPanel].disabled = true;
     this.stepperModelInitialize = true;
   }
 

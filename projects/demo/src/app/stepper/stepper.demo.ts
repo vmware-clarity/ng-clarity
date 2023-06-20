@@ -27,7 +27,7 @@ export class StepperDemo {
   expAddress = false;
   expPhone = false;
 
-  initialStep: string;
+  initialStep = 'phone';
   loading = false;
 
   protected readonly expand;

@@ -43,8 +43,9 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
   ) {
     this._subscriptions.push(
       expand.expandChange.subscribe(() => {
+        this.expanded = this.expand.expanded;
+        this.expandedChange.emit(this.expand.expanded);
         this.updateView();
-        this.expandedChange.emit(this._expanded);
       })
     );
   }
