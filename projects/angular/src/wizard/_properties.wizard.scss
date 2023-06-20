@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
 
-@include exports('wizard.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('wizard.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-wizard-main-bgcolor: var(--clr-color-neutral-0);
       --clr-wizard-stepnav-bgcolor: var(--clr-color-neutral-50);
@@ -13,7 +15,7 @@
       --clr-wizard-stepnav-text: var(--clr-color-neutral-900);
       --clr-wizard-stepnav-text--active: var(--clr-global-on-selection-color);
       --clr-wizard-title-text: var(--clr-color-neutral-1000);
-      --clr-wizard-stepnav-border-size: #{$clr_baselineRem_4px};
+      --clr-wizard-stepnav-border-size: #{variables.$clr_baselineRem_4px};
       --clr-wizard-stepnav-item-border-color: var(--clr-color-neutral-200);
       --clr-wizard-stepnav-item-border-color--active: var(--clr-color-success-400);
       --clr-wizard-stepnav-active-bgcolor: var(--clr-global-selection-color);

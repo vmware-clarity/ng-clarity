@@ -3,6 +3,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:string';
+@use '../layout/variables.login';
 
 //Background SVG Images work only when the svg is url encoded.
 //Use this encoder http://meyerweb.com/eric/tools/dencoder/ to encode the SVG.
@@ -10,10 +12,10 @@
 $svg_data: 'data:image/svg+xml;charset=utf8';
 
 @function encodeColorString($colorStr) {
-  @if not str-index($colorStr, '#') {
+  @if not string.index($colorStr, '#') {
     @return $colorStr;
   }
-  @return '%23#{str-slice($colorStr, 2)}';
+  @return '%23#{string.slice($colorStr, 2)}';
 }
 
 @function generateErrorIcon($fillColor: #a32100) {
@@ -49,7 +51,7 @@ $svg_data: 'data:image/svg+xml;charset=utf8';
 }
 
 @function generateLoginBackground() {
-  @return url('#{$svg_data},#{$clr-login-background}');
+  @return url('#{$svg_data},#{variables.$clr-login-background}');
 }
 
 @function generateVMWLogo() {

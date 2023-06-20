@@ -3,17 +3,20 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:color';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
-@include exports('modal.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('modal.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../modal/_modal.clarity.scss
       --clr-modal-close-color: var(--clr-color-neutral-600);
       --clr-modal-bg-color: var(--clr-color-neutral-0);
       --clr-modal-content-box-shadow-color: rgba(
-        #{red($clr-color-neutral-1000)},
-        #{green($clr-color-neutral-1000)},
-        #{blue($clr-color-neutral-1000)},
+        #{color.red(variables.$clr-color-neutral-1000)},
+        #{color.green(variables.$clr-color-neutral-1000)},
+        #{color.blue(variables.$clr-color-neutral-1000)},
         0.2
       );
       --clr-modal-backdrop-color: var(--clr-color-neutral-900);

@@ -4,39 +4,69 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.card';
+@use 'sass:map';
+@use 'properties.card';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use '../button/variables.buttons' as button-variables;
+@use 'variables.card' as card-variables;
 
-@include exports('card.clarity') {
+@include mixins.exports('card.clarity') {
   %card-border-appearance {
     // IE/OldEdge
-    box-shadow: $clr-card-box-shadow;
-    @if $clr-use-custom-properties == true {
-      box-shadow: 0 $clr_baselineRem_0_125 0 0 var(--clr-card-box-shadow-color);
+    box-shadow: card-variables.$clr-card-box-shadow;
+    @if variables.$clr-use-custom-properties == true {
+      box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-box-shadow-color);
     }
-    @include css-var(border-radius, clr-card-border-radius, $clr-global-borderradius, $clr-use-custom-properties);
-    @include css-var(border-width, clr-card-border-width, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-radius,
+      clr-card-border-radius,
+      variables.$clr-global-borderradius,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-width,
+      clr-card-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-style: solid;
-    @include css-var(border-color, clr-card-border-color, $clr-card-border-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-card-border-color,
+      card-variables.$clr-card-border-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   %clickable-card-transition {
     // IE/OldEdge
-    box-shadow: 0 $clr_baselineRem_0_125 0 0 $clr-color-action-500;
-    @if $clr-use-custom-properties == true {
-      box-shadow: 0 $clr_baselineRem_0_125 0 0 var(--clr-card-clickable-box-shadow-color);
+    box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 variables.$clr-color-action-500;
+    @if variables.$clr-use-custom-properties == true {
+      box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-clickable-box-shadow-color);
     }
-    @include css-var(border-width, clr-card-border-width, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-width,
+      clr-card-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-style: solid;
-    @include css-var(border-color, clr-card-clickable-border-color, $clr-color-action-500, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-card-clickable-border-color,
+      variables.$clr-color-action-500,
+      variables.$clr-use-custom-properties
+    );
     cursor: pointer;
     text-decoration: none;
-    transform: translateY(-1 * $clr_baselineRem_2px);
+    transform: translateY(-1 * variables.$clr_baselineRem_2px);
     transition: border 0.2s ease, transform 0.2s ease;
   }
 
   %card-space-between {
     margin-top: 0;
-    margin-bottom: $card-children-space-between;
+    margin-bottom: card-variables.$card-children-space-between;
 
     &:last-child {
       margin-bottom: 0;
@@ -55,9 +85,14 @@
   .card {
     position: relative;
     display: block;
-    @include css-var(background-color, clr-card-bg-color, $clr-card-bg-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      background-color,
+      clr-card-bg-color,
+      card-variables.$clr-card-bg-color,
+      variables.$clr-use-custom-properties
+    );
     width: 100%;
-    margin-top: $clr_baselineRem_1;
+    margin-top: variables.$clr_baselineRem_1;
     @extend %card-border-appearance;
 
     .btn-link {
@@ -89,7 +124,7 @@
     //Clarity Lists
     & > .list,
     & > .list-unstyled {
-      padding: $card-children-padding-vertical $card-children-padding-horizontal;
+      padding: card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal;
     }
 
     .list-group {
@@ -99,22 +134,37 @@
     }
 
     .list-group-item {
-      padding: $clr_baselineRem_0_5 $clr_baselineRem_0_75;
-      font-size: $clr-card-text-font-size;
-      @include css-var(background-color, clr-card-bg-color, $clr-card-bg-color, $clr-use-custom-properties);
-      @include css-var(border-bottom-width, clr-card-border-width, $clr-global-borderwidth, $clr-use-custom-properties);
+      padding: variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_0_75;
+      font-size: card-variables.$clr-card-text-font-size;
+      @include mixins.css-var(
+        background-color,
+        clr-card-bg-color,
+        card-variables.$clr-card-bg-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-bottom-width,
+        clr-card-border-width,
+        variables.$clr-global-borderwidth,
+        variables.$clr-use-custom-properties
+      );
       border-bottom-style: solid;
-      @include css-var(border-bottom-color, clr-card-border-color, $clr-card-border-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-bottom-color,
+        clr-card-border-color,
+        card-variables.$clr-card-border-color,
+        variables.$clr-use-custom-properties
+      );
     }
 
     //Dropdowns
 
     //NOTE: This is a fix just for dropdowns in Cards in Edge.
     //TODO: Figure out why the caret sign is not aligned next to the dropdown toggle only in cards
-    @include fixForMsEdge() {
+    @include mixins.fixForMsEdge() {
       .dropdown > .dropdown-toggle::after {
         display: inline-block;
-        margin-top: -1 * $clr_baselineRem_0_5;
+        margin-top: -1 * variables.$clr_baselineRem_0_5;
       }
     }
   }
@@ -122,15 +172,25 @@
   .card-header,
   .card-block,
   .card-footer {
-    padding: $card-children-padding-vertical $card-children-padding-horizontal;
+    padding: card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal;
   }
 
   .card-header,
   .card-title {
-    @include css-var(color, clr-card-title-color, $clr-card-title-color, $clr-use-custom-properties);
-    @include css-var(font-weight, clr-card-title-font-weight, $clr-card-title-font-weight, $clr-use-custom-properties);
-    font-size: $clr-card-title-font-size;
-    letter-spacing: $clr-card-title-letter-spacing;
+    @include mixins.css-var(
+      color,
+      clr-card-title-color,
+      card-variables.$clr-card-title-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-card-title-font-weight,
+      card-variables.$clr-card-title-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    font-size: card-variables.$clr-card-title-font-size;
+    letter-spacing: card-variables.$clr-card-title-letter-spacing;
   }
 
   h1,
@@ -146,40 +206,40 @@
   }
 
   .card-text {
-    font-size: $clr-card-text-font-size;
+    font-size: card-variables.$clr-card-text-font-size;
   }
 
   //Images
   .card-img {
     &:first-child > img {
       border-radius: 0;
-      @include css-var(
+      @include mixins.css-var(
         border-top-left-radius,
         clr-card-border-radius,
-        $clr-global-borderradius,
-        $clr-use-custom-properties
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-top-right-radius,
         clr-card-border-radius,
-        $clr-global-borderradius,
-        $clr-use-custom-properties
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
       );
     }
 
     &:last-child > img {
       border-radius: 0;
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-left-radius,
         clr-card-border-radius,
-        $clr-global-borderradius,
-        $clr-use-custom-properties
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-right-radius,
         clr-card-border-radius,
-        $clr-global-borderradius,
-        $clr-use-custom-properties
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
       );
     }
 
@@ -192,7 +252,12 @@
   .card.card-img,
   .card > .card-img:first-child:last-child {
     & > img {
-      @include css-var(border-radius, clr-card-border-radius, $clr-global-borderradius, $clr-use-custom-properties);
+      @include mixins.css-var(
+        border-radius,
+        clr-card-border-radius,
+        variables.$clr-global-borderradius,
+        variables.$clr-use-custom-properties
+      );
       @extend %card-image-appearance;
     }
   }
@@ -202,7 +267,7 @@
     .btn,
     .btn.btn-link,
     .card-link {
-      margin: 0 $clr-btn-horizontal-margin 0 0;
+      margin: 0 button-variables.$clr-btn-horizontal-margin 0 0;
     }
 
     //Need this level of nesting for now.
@@ -215,9 +280,19 @@
 
   .card-header,
   .card-block {
-    @include css-var(border-bottom-width, clr-card-border-width, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-bottom-width,
+      clr-card-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-bottom-style: solid;
-    @include css-var(border-bottom-color, clr-card-border-color, $clr-card-border-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-bottom-color,
+      clr-card-border-color,
+      card-variables.$clr-card-border-color,
+      variables.$clr-use-custom-properties
+    );
 
     &:last-child {
       border-bottom: none;
@@ -228,16 +303,26 @@
   //Card dividers should only be used inside of a .card-block
   .card-divider {
     display: block;
-    @include css-var(border-bottom-width, clr-card-border-width, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-bottom-width,
+      clr-card-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-bottom-style: solid;
-    @include css-var(border-bottom-color, clr-card-divider-color, $clr-card-divider-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-bottom-color,
+      clr-card-divider-color,
+      card-variables.$clr-card-divider-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .card-block {
     .card-divider {
       @extend %card-space-between;
-      margin-left: -1 * ($card-children-padding-horizontal);
-      margin-right: -1 * ($card-children-padding-horizontal);
+      margin-left: -1 * (card-variables.$card-children-padding-horizontal);
+      margin-right: -1 * (card-variables.$card-children-padding-horizontal);
       width: auto;
     }
   }
@@ -255,16 +340,16 @@
     display: flex;
 
     .card-media-image {
-      $clr-card-media-image-size: $clr_baselineRem_2_5;
+      $clr-card-media-image-size: variables.$clr_baselineRem_2_5;
       display: inline-block; //to make sure IE11 respects the max-height and max-width
       flex: 0 0 auto;
-      @include max-equilateral($clr-card-media-image-size);
+      @include mixins.max-equilateral($clr-card-media-image-size);
     }
 
     .card-media-description {
       display: flex;
       flex-direction: column;
-      margin: 0 0 0 $clr_baselineRem_0_5;
+      margin: 0 0 0 variables.$clr_baselineRem_0_5;
     }
 
     .card-media-title {
@@ -280,7 +365,7 @@
       flex-direction: column;
 
       .card-media-description {
-        margin: $clr_baselineRem_0_25 0 0 0;
+        margin: variables.$clr_baselineRem_0_25 0 0 0;
       }
     }
   }
@@ -295,10 +380,10 @@
   //Credit: Bootstrap 4 Card Masonry
   //Added some fixes to avoid flickering in Clickable cards
   //Added extra column classes to control the number of CSS columns
-  @media screen and (min-width: map-get($clr-grid-breakpoints, sm)) {
+  @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .card-columns {
       column-count: 3;
-      column-gap: $clr_baselineRem_0_5;
+      column-gap: variables.$clr_baselineRem_0_5;
       break-inside: avoid;
       column-fill: balance;
 
@@ -316,7 +401,7 @@
 
       .card {
         display: inline-block; //For some weird reason stops the cards from getting cut off between 2 columns
-        margin: $clr_baselineRem_0_25;
+        margin: variables.$clr_baselineRem_0_25;
       }
 
       .clickable {
@@ -327,7 +412,7 @@
     }
   }
 
-  @include fixForMsEdge {
+  @include mixins.fixForMsEdge {
     // Edge did NOT like using display inline-table for button-groups inside of cards...
     .card {
       .checkbox,

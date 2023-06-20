@@ -4,9 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.signpost';
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.signpost' as signpost-variables;
 
-@include exports('signpost.clarity') {
+@include mixins.exports('signpost.clarity') {
   .signpost {
     display: inline-block;
 
@@ -15,23 +18,28 @@
     }
 
     .signpost-action {
-      min-width: $clr_baselineRem_1;
+      min-width: variables.$clr_baselineRem_1;
       margin: 0;
       padding: 0;
-      @include css-var(color, clr-signpost-action-color, $clr-signpost-action-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-signpost-action-color,
+        signpost-variables.$clr-signpost-action-color,
+        variables.$clr-use-custom-properties
+      );
 
       cds-icon,
       clr-icon {
-        @include equilateral($clr_baselineRem_1);
+        @include mixins.equilateral(variables.$clr_baselineRem_1);
       }
 
       &:hover,
       &.active {
-        @include css-var(
+        @include mixins.css-var(
           color,
           clr-signpost-action-hover-color,
-          $clr-signpost-action-hover-color,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-action-hover-color,
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -39,7 +47,7 @@
     .signpost-content-header button {
       cds-icon,
       clr-icon {
-        @include equilateral($clr_baselineRem_0_667);
+        @include mixins.equilateral(variables.$clr_baselineRem_0_667);
       }
     }
   }
@@ -52,25 +60,25 @@
 
   .signpost-content {
     background-color: transparent;
-    min-width: $clr_baselineRem_9;
-    max-width: $clr_baselineRem_15;
-    min-height: $clr_baselineRem_2;
-    max-height: $clr_baselineRem_21;
+    min-width: variables.$clr_baselineRem_9;
+    max-width: variables.$clr_baselineRem_15;
+    min-height: variables.$clr_baselineRem_2;
+    max-height: variables.$clr_baselineRem_21;
     display: inline-block;
     position: relative;
-    z-index: map-get($clr-layers, tooltips);
+    z-index: map.get(variables.$clr-layers, tooltips);
 
     &:hover {
       cursor: default;
     }
 
     .popover-pointer {
-      @include equilateral(0);
+      @include mixins.equilateral(0);
       position: absolute;
 
       &:before {
         content: '';
-        @include equilateral(0);
+        @include mixins.equilateral(0);
         position: absolute;
       }
     }
@@ -100,24 +108,24 @@
     &.top-middle,
     &.top-right {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-top,
           clr-signpost-pointer-border,
-          $clr-signpost-pointer-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-border,
+          variables.$clr-use-custom-properties
         );
 
-        bottom: -1 * $clr-signpost-border-size;
+        bottom: -1 * signpost-variables.$clr-signpost-border-size;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-top,
             clr-signpost-pointer-psuedo-border,
-            $clr-signpost-pointer-psuedo-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
+            variables.$clr-use-custom-properties
           );
 
-          bottom: $clr_baselineRem_2px;
+          bottom: variables.$clr_baselineRem_2px;
         }
       }
     }
@@ -128,47 +136,47 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-left,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        right: (-1 * $clr_baselineRem_1px);
+        right: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-left,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          right: $clr_baselineRem_1px;
+          right: variables.$clr_baselineRem_1px;
         }
       }
     }
 
     &.top-middle {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-right,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
         left: 50%;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-right,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
-          left: $clr_baselineRem_1px;
+          left: variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -179,22 +187,22 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-right,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
-        left: (-1 * $clr_baselineRem_1px);
+        left: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-right,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
-          left: $clr_baselineRem_1px;
+          left: variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -208,24 +216,24 @@
     &.bottom-middle,
     &.bottom-right {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-bottom,
           clr-signpost-pointer-border,
-          $clr-signpost-pointer-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-border,
+          variables.$clr-use-custom-properties
         );
 
-        top: -1 * $clr-signpost-border-size + $clr_baselineRem_1px;
+        top: -1 * signpost-variables.$clr-signpost-border-size + variables.$clr_baselineRem_1px;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-bottom,
             clr-signpost-pointer-psuedo-border,
-            $clr-signpost-pointer-psuedo-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: $clr_baselineRem_2px;
+          top: variables.$clr_baselineRem_2px;
         }
       }
     }
@@ -236,48 +244,48 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-left,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        right: (-1 * $clr_baselineRem_1px);
+        right: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-left,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          right: $clr_baselineRem_1px;
+          right: variables.$clr_baselineRem_1px;
         }
       }
     }
 
     &.bottom-middle {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-right,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
         right: 50%;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-right,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          right: -1 * $clr-signpost-border-size - $clr_baselineRem_1px;
+          right: -1 * signpost-variables.$clr-signpost-border-size - variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -288,24 +296,24 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-right,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        left: (-1 * $clr_baselineRem_1px);
+        left: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-right,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          left: $clr_baselineRem_1px;
+          left: variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -319,21 +327,21 @@
     &.left-middle,
     &.left-bottom {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-left,
           clr-signpost-pointer-border,
-          $clr-signpost-pointer-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-border,
+          variables.$clr-use-custom-properties
         );
 
-        right: -1 * $clr-signpost-border-size;
+        right: -1 * signpost-variables.$clr-signpost-border-size;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-left,
             clr-signpost-pointer-psuedo-border,
-            $clr-signpost-pointer-psuedo-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
+            variables.$clr-use-custom-properties
           );
         }
       }
@@ -345,51 +353,51 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-top,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        bottom: (-1 * $clr_baselineRem_1px);
+        bottom: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-top,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: -1 * $clr-signpost-border-size - $clr_baselineRem_1px;
-          right: $clr_baselineRem_2px;
+          top: -1 * signpost-variables.$clr-signpost-border-size - variables.$clr_baselineRem_1px;
+          right: variables.$clr_baselineRem_2px;
         }
       }
     }
 
     &.left-middle {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-bottom,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
         top: 50%;
         transform: translateY(-50%);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-bottom,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: $clr_baselineRem_1px;
-          left: -1 * $clr-signpost-border-size - $clr_baselineRem_2px;
+          top: variables.$clr_baselineRem_1px;
+          left: -1 * signpost-variables.$clr-signpost-border-size - variables.$clr_baselineRem_2px;
         }
       }
     }
@@ -400,25 +408,25 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-bottom,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        top: (-1 * $clr_baselineRem_1px);
+        top: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-bottom,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: $clr_baselineRem_1px;
-          left: -1 * $clr-signpost-border-size - $clr_baselineRem_2px;
+          top: variables.$clr_baselineRem_1px;
+          left: -1 * signpost-variables.$clr-signpost-border-size - variables.$clr_baselineRem_2px;
         }
       }
     }
@@ -432,24 +440,24 @@
     &.right-middle,
     &.right-bottom {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-right,
           clr-signpost-pointer-border,
-          $clr-signpost-pointer-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-border,
+          variables.$clr-use-custom-properties
         );
 
-        left: -1 * $clr-signpost-border-size;
+        left: -1 * signpost-variables.$clr-signpost-border-size;
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-right,
             clr-signpost-pointer-psuedo-border,
-            $clr-signpost-pointer-psuedo-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
+            variables.$clr-use-custom-properties
           );
 
-          left: $clr_baselineRem_2px;
+          left: variables.$clr_baselineRem_2px;
         }
       }
     }
@@ -460,49 +468,49 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-top,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        bottom: (-1 * $clr_baselineRem_1px);
+        bottom: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-top,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: -1 * $clr-signpost-border-size - $clr_baselineRem_1px;
+          top: -1 * signpost-variables.$clr-signpost-border-size - variables.$clr_baselineRem_1px;
         }
       }
     }
 
     &.right-middle {
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-bottom,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
         top: 50%;
         transform: translateY(-50%);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-bottom,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: $clr_baselineRem_1px;
+          top: variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -513,24 +521,24 @@
       }
 
       .popover-pointer {
-        @include css-var(
+        @include mixins.css-var(
           border-bottom,
           clr-signpost-pointer-invisible-border,
-          $clr-signpost-pointer-invisible-border,
-          $clr-use-custom-properties
+          signpost-variables.$clr-signpost-pointer-invisible-border,
+          variables.$clr-use-custom-properties
         );
 
-        top: (-1 * $clr_baselineRem_1px);
+        top: (-1 * variables.$clr_baselineRem_1px);
 
         &:before {
-          @include css-var(
+          @include mixins.css-var(
             border-bottom,
             clr-signpost-pointer-invisible-border,
-            $clr-signpost-pointer-invisible-border,
-            $clr-use-custom-properties
+            signpost-variables.$clr-signpost-pointer-invisible-border,
+            variables.$clr-use-custom-properties
           );
 
-          top: $clr_baselineRem_1px;
+          top: variables.$clr_baselineRem_1px;
         }
       }
     }
@@ -547,33 +555,38 @@
   }
 
   .signpost-wrap {
-    @include css-var(
+    @include mixins.css-var(
       border-radius,
       clr-signpost-border-radius,
-      $clr-signpost-border-radius,
-      $clr-use-custom-properties
+      signpost-variables.$clr-signpost-border-radius,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(border-width, clr-global-borderwidth, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-width,
+      clr-global-borderwidth,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-style: solid;
-    @include css-var(
+    @include mixins.css-var(
       border-color,
       clr-signpost-content-border-color,
-      $clr-signpost-content-border-color,
-      $clr-use-custom-properties
+      signpost-variables.$clr-signpost-content-border-color,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       background-color,
       clr-signpost-content-bg-color,
-      $clr-signpost-content-bg-color,
-      $clr-use-custom-properties
+      signpost-variables.$clr-signpost-content-bg-color,
+      variables.$clr-use-custom-properties
     );
-    z-index: map-get($clr-layers, tooltips);
+    z-index: map.get(variables.$clr-layers, tooltips);
     position: relative;
   }
 
   .signpost-content-body {
-    padding: $clr_baselineRem_1;
-    max-height: $clr_baselineRem_20;
+    padding: variables.$clr_baselineRem_1;
+    max-height: variables.$clr_baselineRem_20;
     overflow-y: auto;
   }
 }

@@ -3,10 +3,16 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use 'properties.datepicker';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.datepicker' as datepicker-variables;
 
-@import './properties.datepicker';
-
-@mixin generate-calendar-button($height: $clr-calendar-click-target, $padding: $clr-calendar-btn-padding) {
+@mixin generate-calendar-button(
+  $height: datepicker-variables.$clr-calendar-click-target,
+  $padding: datepicker-variables.$clr-calendar-btn-padding
+) {
   //Dimensions
   height: $height;
   min-width: $height;
@@ -16,20 +22,25 @@
   //Other Props
   color: inherit;
   border: none;
-  @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
+  @include mixins.css-var(
+    border-radius,
+    clr-global-borderradius,
+    variables.$clr-global-borderradius,
+    variables.$clr-use-custom-properties
+  );
   background: none;
   cursor: pointer;
-  line-height: $clr-calendar-click-target;
+  line-height: datepicker-variables.$clr-calendar-click-target;
 }
 
 @mixin generate-calendar-focus-style() {
   &:hover,
   &:focus {
-    @include css-var(
+    @include mixins.css-var(
       background,
       clr-calendar-btn-hover-focus-color,
-      $clr-calendar-btn-hover-focus-color,
-      $clr-use-custom-properties
+      datepicker-variables.$clr-calendar-btn-hover-focus-color,
+      variables.$clr-use-custom-properties
     );
   }
 
@@ -39,7 +50,7 @@
   }
 }
 
-@include exports('datepicker.clarity') {
+@include mixins.exports('datepicker.clarity') {
   .date-container {
     display: inline-flex;
     align-items: center;
@@ -53,14 +64,19 @@
     @include generate-calendar-button();
 
     .datepicker-trigger-icon {
-      @include css-var(fill, clr-datepicker-trigger-color, $clr-datepicker-trigger-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        fill,
+        clr-datepicker-trigger-color,
+        datepicker-variables.$clr-datepicker-trigger-color,
+        variables.$clr-use-custom-properties
+      );
 
       &:hover {
-        @include css-var(
+        @include mixins.css-var(
           fill,
           clr-datepicker-trigger-hover-color,
-          $clr-datepicker-trigger-hover-color,
-          $clr-use-custom-properties
+          datepicker-variables.$clr-datepicker-trigger-hover-color,
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -70,8 +86,8 @@
   }
   .clr-form-control {
     .datepicker-trigger {
-      line-height: $clr_baselineRem_1 - $clr_baselineRem_2px;
-      height: $clr_baselineRem_1 - $clr_baselineRem_2px;
+      line-height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_2px;
+      height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_2px;
     }
   }
 
@@ -84,31 +100,42 @@
     flex-direction: column;
 
     //Dimensions
-    padding: $clr-calendar-padding;
-    margin-top: $clr-calendar-margin-top;
-    width: $clr-calendar-width;
-    height: $clr-calendar-height;
+    padding: datepicker-variables.$clr-calendar-padding;
+    margin-top: datepicker-variables.$clr-calendar-margin-top;
+    width: datepicker-variables.$clr-calendar-width;
+    height: datepicker-variables.$clr-calendar-height;
 
     //Other Props
-    @include css-var(
+    @include mixins.css-var(
       background,
       clr-calendar-background-color,
-      $clr-calendar-background-color,
-      $clr-use-custom-properties
+      datepicker-variables.$clr-calendar-background-color,
+      variables.$clr-use-custom-properties
     );
-    border: $clr-global-borderwidth solid;
-    @include css-var(border-color, clr-calendar-border-color, $clr-calendar-border-color, $clr-use-custom-properties);
-    @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
+    border: variables.$clr-global-borderwidth solid;
+    @include mixins.css-var(
+      border-color,
+      clr-calendar-border-color,
+      datepicker-variables.$clr-calendar-border-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-radius,
+      clr-global-borderradius,
+      variables.$clr-global-borderradius,
+      variables.$clr-use-custom-properties
+    );
     // OldIE/Edge
-    box-shadow: 0 $clr-global-borderwidth $clr_baselineRem_0_125 $clr-popover-box-shadow-color;
-    @if $clr-use-custom-properties == true {
+    box-shadow: 0 variables.$clr-global-borderwidth variables.$clr_baselineRem_0_125
+      variables.$clr-popover-box-shadow-color;
+    @if variables.$clr-use-custom-properties == true {
       box-shadow: 0
-        $clr-global-borderwidth
-        $clr_baselineRem_0_125
-        var(--clr-popover-box-shadow-color, $clr-popover-box-shadow-color);
+        variables.$clr-global-borderwidth
+        variables.$clr_baselineRem_0_125
+        var(--clr-popover-box-shadow-color, variables.$clr-popover-box-shadow-color);
     }
     overflow: hidden;
-    z-index: map-get($clr-layers, dropdown-menu);
+    z-index: map.get(variables.$clr-layers, dropdown-menu);
   }
 
   .calendar-header {
@@ -119,13 +146,13 @@
 
   .calendar-switchers,
   .year-switchers {
-    transform: translateY(-1 * $clr_baselineRem_2px);
+    transform: translateY(-1 * variables.$clr_baselineRem_2px);
     display: flex;
   }
 
   .year-switchers {
     flex: 0 0 auto;
-    width: $clr-switcher-width;
+    width: datepicker-variables.$clr-switcher-width;
     align-self: center;
   }
 
@@ -139,7 +166,7 @@
   .calendar-cell,
   .calendar-table .calendar-cell {
     //Dimensions
-    @include min-equilateral($clr-calendar-click-target);
+    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
     padding: 0;
 
     //Other Props
@@ -151,11 +178,16 @@
   }
 
   .weekdays {
-    flex: 0 0 $clr-calendar-click-target;
+    flex: 0 0 datepicker-variables.$clr-calendar-click-target;
   }
 
   .weekday {
-    @include css-var(font-size, clr-day-font-size, $clr-day-font-size, $clr-use-custom-properties);
+    @include mixins.css-var(
+      font-size,
+      clr-day-font-size,
+      datepicker-variables.$clr-day-font-size,
+      variables.$clr-use-custom-properties
+    );
     font-weight: 600;
   }
 
@@ -164,17 +196,17 @@
     @include generate-calendar-focus-style();
 
     //Other Props
-    @include css-var(
+    @include mixins.css-var(
       font-size,
       clr-calendar-picker-btn-font-size,
-      $clr-calendar-picker-btn-font-size,
-      $clr-use-custom-properties
+      datepicker-variables.$clr-calendar-picker-btn-font-size,
+      variables.$clr-use-custom-properties
     );
-    @include css-var(
+    @include mixins.css-var(
       font-weight,
       clr-calendar-picker-btn-font-weight,
-      $clr-calendar-picker-btn-font-weight,
-      $clr-use-custom-properties
+      datepicker-variables.$clr-calendar-picker-btn-font-weight,
+      variables.$clr-use-custom-properties
     );
   }
 
@@ -189,17 +221,17 @@
     color: inherit;
 
     &.is-today {
-      @include css-var(
+      @include mixins.css-var(
         color,
         clr-calendar-today-date-cell-color,
-        $clr-calendar-today-date-cell-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-today-date-cell-color,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         font-weight,
         clr-calendar-today-date-cell-font-weight,
-        $clr-calendar-today-date-cell-font-weight,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-today-date-cell-font-weight,
+        variables.$clr-use-custom-properties
       );
     }
 
@@ -212,26 +244,26 @@
     }
 
     &.is-selected {
-      @include css-var(
+      @include mixins.css-var(
         background,
         clr-calendar-active-cell-background-color,
-        $clr-calendar-active-cell-background-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-cell-background-color,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         color,
         clr-calendar-active-cell-color,
-        $clr-calendar-active-cell-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-cell-color,
+        variables.$clr-use-custom-properties
       );
     }
 
     &.is-selected:focus {
-      @include css-var(
+      @include mixins.css-var(
         background,
         clr-calendar-active-focus-cell-background-color,
-        $clr-calendar-active-focus-cell-background-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-focus-cell-background-color,
+        variables.$clr-use-custom-properties
       );
     }
 
@@ -249,29 +281,39 @@
   }
 
   .switcher {
-    @include css-var(color, clr-calendar-btn-color, $clr-calendar-btn-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-calendar-btn-color,
+      datepicker-variables.$clr-calendar-btn-color,
+      variables.$clr-use-custom-properties
+    );
 
     cds-icon,
     clr-icon {
-      @include equilateral($clr_baselineRem_0_75);
+      @include mixins.equilateral(variables.$clr_baselineRem_0_75);
     }
   }
 
   .monthpicker-trigger,
   .yearpicker-trigger {
     //Dimensions
-    min-width: $clr_baselineRem_2;
-    max-width: $clr_baselineRem_2_5;
+    min-width: variables.$clr_baselineRem_2;
+    max-width: variables.$clr_baselineRem_2_5;
 
     //Other Props
-    @include css-var(color, clr-calendar-btn-color, $clr-calendar-btn-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-calendar-btn-color,
+      datepicker-variables.$clr-calendar-btn-color,
+      variables.$clr-use-custom-properties
+    );
     text-align: center;
-    @include overflow-ellipsis();
+    @include mixins.overflow-ellipsis();
   }
 
   .monthpicker,
   .yearpicker {
-    min-height: $clr-monthpicker-min-height;
+    min-height: datepicker-variables.$clr-monthpicker-min-height;
   }
 
   .monthpicker,
@@ -291,16 +333,19 @@
 
   .month,
   .year {
-    @include generate-calendar-button($clr-calendar-month-cell-height, $clr-calendar-month-cell-padding);
+    @include generate-calendar-button(
+      datepicker-variables.$clr-calendar-month-cell-height,
+      datepicker-variables.$clr-calendar-month-cell-padding
+    );
     @include generate-calendar-focus-style();
 
     //Dimensions
-    width: $clr-month-year-btn-width;
+    width: datepicker-variables.$clr-month-year-btn-width;
 
     //Other Props
-    font-size: $clr-calendar-picker-btn-font-size;
-    font-weight: $clr-calendar-picker-btn-font-weight;
-    outline-offset: -1 * $clr_baselineRem_5px; //needed for chrome
+    font-size: datepicker-variables.$clr-calendar-picker-btn-font-size;
+    font-weight: datepicker-variables.$clr-calendar-picker-btn-font-weight;
+    outline-offset: -1 * variables.$clr_baselineRem_5px; //needed for chrome
 
     &.is-disabled {
       opacity: 0.4;
@@ -311,33 +356,33 @@
     }
 
     &.is-selected {
-      @include css-var(
+      @include mixins.css-var(
         background,
         clr-calendar-active-cell-background-color,
-        $clr-calendar-active-cell-background-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-cell-background-color,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         color,
         clr-calendar-active-cell-color,
-        $clr-calendar-active-cell-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-cell-color,
+        variables.$clr-use-custom-properties
       );
     }
 
     &.is-selected:focus {
-      @include css-var(
+      @include mixins.css-var(
         background,
         clr-calendar-active-focus-cell-background-color,
-        $clr-calendar-active-focus-cell-background-color,
-        $clr-use-custom-properties
+        datepicker-variables.$clr-calendar-active-focus-cell-background-color,
+        variables.$clr-use-custom-properties
       );
     }
   }
 
   .month {
     text-align: center;
-    @include overflow-ellipsis();
+    @include mixins.overflow-ellipsis();
   }
 
   .year {

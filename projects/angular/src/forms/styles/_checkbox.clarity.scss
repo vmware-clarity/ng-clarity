@@ -3,21 +3,26 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../emphasis/alert/variables.alert' as alert-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
-@include exports('forms.checkbox') {
-  $mark-half-size: $clr-forms-checkbox-mark-size * 0.5;
+@include mixins.exports('forms.checkbox') {
+  $mark-half-size: forms-variables.$clr-forms-checkbox-mark-size * 0.5;
 
   // @TODO un-nest the checkbox from the wrapper, after old forms are removed
   .clr-checkbox-wrapper {
-    @include form-flatten-validate-text();
+    @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
 
     .clr-control-label {
-      @include checkbox-radio-label-styles(
-        $clr-forms-checkbox-label-height,
-        $clr-forms-checkbox-padding-left,
-        $clr-forms-checkbox-label-color,
+      @include forms-mixins.checkbox-radio-label-styles(
+        forms-variables.$clr-forms-checkbox-label-height,
+        forms-variables.$clr-forms-checkbox-padding-left,
+        forms-variables.$clr-forms-checkbox-label-color,
         clr-forms-checkbox-label-color
       );
     }
@@ -25,28 +30,28 @@
     //Hide the default checkbox behind the pseudo elements
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
-      @include checkbox-radio-input-styles($clr-forms-checkbox-size);
+      @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
     }
 
     //Checkbox base
     input[type='checkbox'] + .clr-control-label::before {
-      @include checkbox-radio-shared-inactive(
-        $clr-forms-checkbox-height,
-        $clr-forms-checkbox-top,
+      @include forms-mixins.checkbox-radio-shared-inactive(
+        forms-variables.$clr-forms-checkbox-height,
+        forms-variables.$clr-forms-checkbox-top,
         0,
-        $clr-forms-border-color,
+        forms-variables.$clr-forms-border-color,
         clr-forms-border-color
       );
-      @include css-var(
+      @include mixins.css-var(
         border-radius,
         clr-forms-checkbox-border-radius,
-        $clr-forms-checkbox-border-radius,
-        $clr-use-custom-properties
+        forms-variables.$clr-forms-checkbox-border-radius,
+        variables.$clr-use-custom-properties
       );
     }
 
     input[type='checkbox']:focus + .clr-control-label::before {
-      @include include-outline-style-form-fields();
+      @include mixins.include-outline-style-form-fields();
     }
 
     //Checkmark
@@ -54,27 +59,27 @@
       position: absolute;
       content: '';
       display: none;
-      height: $mark-half-size + $clr_baselineRem_1px;
-      width: $clr-forms-checkbox-mark-size;
-      border-left: $clr-forms-checkbox-mark-border-size solid;
-      border-bottom: $clr-forms-checkbox-mark-border-size solid;
-      @include css-var(
+      height: $mark-half-size + variables.$clr_baselineRem_1px;
+      width: forms-variables.$clr-forms-checkbox-mark-size;
+      border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid;
+      border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid;
+      @include mixins.css-var(
         border-color,
         clr-forms-checkbox-mark-color,
-        $clr-forms-checkbox-mark-color,
-        $clr-use-custom-properties
+        forms-variables.$clr-forms-checkbox-mark-color,
+        variables.$clr-use-custom-properties
       );
-      top: ($clr-forms-baseline * 4 - $clr-icon-dimension-sm) * 0.5;
+      top: (forms-variables.$clr-forms-baseline * 4 - alert-variables.$clr-icon-dimension-sm) * 0.5;
       left: $mark-half-size;
       transform: translate(0, $mark-half-size) rotate(-45deg);
     }
 
     input[type='checkbox']:checked + .clr-control-label::before {
-      @include css-var(
+      @include mixins.css-var(
         background,
         clr-forms-checkbox-background-color,
-        $clr-forms-checkbox-background-color,
-        $clr-use-custom-properties
+        forms-variables.$clr-forms-checkbox-background-color,
+        variables.$clr-use-custom-properties
       );
       border: none;
     }
@@ -83,67 +88,77 @@
       display: inline-block;
     }
 
-    $indetermSassBrdrColorVar: $clr-forms-checkbox-indeterminate-border-color;
+    $indetermSassBrdrColorVar: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
     $indetermCssBrdrColorVar: clr-forms-checkbox-indeterminate-border-color;
     input[type='checkbox'].clr-indeterminate + .clr-control-label::before,
     input[type='checkbox']:indeterminate + .clr-control-label::before {
-      border: $clr-global-borderwidth solid;
-      @include css-var(border-color, $indetermCssBrdrColorVar, $indetermSassBrdrColorVar, $clr-use-custom-properties);
+      border: variables.$clr-global-borderwidth solid;
+      @include mixins.css-var(
+        border-color,
+        $indetermCssBrdrColorVar,
+        $indetermSassBrdrColorVar,
+        variables.$clr-use-custom-properties
+      );
     }
 
     input[type='checkbox'].clr-indeterminate + .clr-control-label::after,
     input[type='checkbox']:indeterminate + .clr-control-label::after {
       border-left: none;
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-color,
         $indetermCssBrdrColorVar,
         $indetermSassBrdrColorVar,
-        $clr-use-custom-properties
+        variables.$clr-use-custom-properties
       );
       display: inline-block;
       transform: translate(0, $mark-half-size);
     }
 
     &.clr-checkbox-inline {
-      @include form-inline-input();
+      @include forms-mixins.form-inline-input();
     }
   }
 
   .clr-error .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before {
-    @include css-var(border-color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
     .clr-control-label {
       cursor: not-allowed;
 
-      @include css-var(
+      @include mixins.css-var(
         color,
         clr-forms-label-disabled-color,
-        $clr-forms-label-disabled-color,
-        $clr-use-custom-properties
+        forms-variables.$clr-forms-label-disabled-color,
+        variables.$clr-use-custom-properties
       );
     }
 
     input[type='checkbox'] + .clr-control-label::before,
     input[type='checkbox']:checked + .clr-control-label::before {
-      @include css-var(
+      @include mixins.css-var(
         background-color,
         clr-forms-checkbox-disabled-background-color,
-        $clr-forms-checkbox-disabled-background-color,
-        $clr-use-custom-properties
+        forms-variables.$clr-forms-checkbox-disabled-background-color,
+        variables.$clr-use-custom-properties
       );
       border: none;
     }
 
     input[type='checkbox']:checked + .clr-control-label::after {
-      $sassVar: $clr-forms-checkbox-disabled-mark-color;
+      $sassVar: forms-variables.$clr-forms-checkbox-disabled-mark-color;
       $cssVar: clr-forms-checkbox-disabled-mark-color;
-      $disabled-border-style: ($clr-forms-checkbox-height * 0.125) solid;
+      $disabled-border-style: (forms-variables.$clr-forms-checkbox-height * 0.125) solid;
       border-left: $disabled-border-style;
       border-bottom: $disabled-border-style;
-      @include css-var(border-left-color, $cssVar, $sassVar, $clr-use-custom-properties);
-      @include css-var(border-bottom-color, $cssVar, $sassVar, $clr-use-custom-properties);
+      @include mixins.css-var(border-left-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
+      @include mixins.css-var(border-bottom-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
     }
 
     input[type='checkbox']:checked.clr-indeterminate + .clr-control-label::after,
@@ -153,9 +168,9 @@
   }
 
   .clr-form-compact .clr-checkbox-wrapper {
-    @include form-flatten-compact-adjustments();
-    @include form-inline-input();
-    height: $clr-forms-baseline * 4;
+    @include forms-mixins.form-flatten-compact-adjustments();
+    @include forms-mixins.form-inline-input();
+    height: forms-variables.$clr-forms-baseline * 4;
 
     .clr-control-label {
       margin-top: 0;

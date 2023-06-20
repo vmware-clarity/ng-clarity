@@ -3,53 +3,57 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
 
-@include exports('forms.input') {
+@include mixins.exports('forms.input') {
   .clr-input-wrapper {
     white-space: nowrap;
-    max-height: $clr-forms-baseline * 4;
+    max-height: forms-variables.$clr-forms-baseline * 4;
   }
 
   .clr-input {
-    @include custom-inputs-reset($clr-forms-baseline * 4);
-    @include form-fields-appearance();
-    padding: 0 $clr-forms-baseline;
-    max-height: $clr-forms-baseline * 4;
-    font-size: $clr-forms-field-font-size;
+    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-baseline * 4);
+    @include forms-mixins.form-fields-appearance();
+    padding: 0 forms-variables.$clr-forms-baseline;
+    max-height: forms-variables.$clr-forms-baseline * 4;
+    font-size: forms-variables.$clr-forms-field-font-size;
 
     &[readonly] {
       border: none;
     }
 
     &:not([readonly]) {
-      @include input-border-bottom-animation();
+      @include forms-mixins.input-border-bottom-animation();
     }
 
     &:disabled {
-      @include disabled-form-fields();
+      @include forms-mixins.disabled-form-fields();
     }
   }
 
   .clr-error .clr-input:not([readonly]) {
-    @include css-var(
+    @include mixins.css-var(
       border-bottom-color,
       clr-forms-invalid-color,
-      $clr-forms-invalid-color,
-      $clr-use-custom-properties
+      forms-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
     );
-    @include input-border-bottom-animation(
-      $clr-forms-invalid-color,
+    @include forms-mixins.input-border-bottom-animation(
+      forms-variables.$clr-forms-invalid-color,
       clr-forms-invalid-color,
-      $clr-use-custom-properties
+      variables.$clr-use-custom-properties
     );
   }
 
   .clr-form-control.row .clr-input-wrapper {
-    max-width: calc(100% - #{$clr-forms-icon-size});
+    max-width: calc(100% - #{forms-variables.$clr-forms-icon-size});
   }
 
   .clr-form-compact .clr-input {
-    @include form-flatten-compact-adjustments();
+    @include forms-mixins.form-flatten-compact-adjustments();
   }
 
   .clr-form-control-readonly .clr-input {
@@ -57,13 +61,18 @@
   }
 
   .clr-form-control-multi .clr-input {
-    max-width: calc(100% + #{$clr-forms-icon-size});
+    max-width: calc(100% + #{forms-variables.$clr-forms-icon-size});
   }
 
   /**
    Placeholder
    **/
-  @include input-placeholder-wrapper() {
-    @include css-var(color, clr-forms-placeholder-color, $clr-forms-placeholder-color, $clr-use-custom-properties);
+  @include mixins.input-placeholder-wrapper() {
+    @include mixins.css-var(
+      color,
+      clr-forms-placeholder-color,
+      forms-variables.$clr-forms-placeholder-color,
+      variables.$clr-use-custom-properties
+    );
   }
 }

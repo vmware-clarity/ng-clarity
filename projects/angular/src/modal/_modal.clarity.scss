@@ -4,57 +4,70 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.modal';
+@use 'sass:map';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.modal' as modal-variables;
 
-@include exports('modal.clarity') {
+@include mixins.exports('modal.clarity') {
   .modal {
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: map-get($clr-layers, modal);
+    z-index: map.get(variables.$clr-layers, modal);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: $clr_baselineRem_2;
+    padding: variables.$clr_baselineRem_2;
 
-    @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
-      padding: $clr_baselineRem_0_5;
+    @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+      padding: variables.$clr_baselineRem_0_5;
     }
   }
 
   .modal-dialog {
     position: relative;
-    z-index: map-get($clr-layers, modal);
-    width: $clr-modal-md-width;
+    z-index: map.get(variables.$clr-layers, modal);
+    width: modal-variables.$clr-modal-md-width;
     max-width: 100%;
 
     &.modal-sm {
-      width: $clr-modal-sm-width;
+      width: modal-variables.$clr-modal-sm-width;
     }
 
     &.modal-lg {
-      width: $clr-modal-lg-width;
+      width: modal-variables.$clr-modal-lg-width;
     }
 
     &.modal-xl {
-      width: $clr-modal-xl-width;
+      width: modal-variables.$clr-modal-xl-width;
     }
 
-    $modal-boxshadow-y: $clr_baselineRem_1px;
-    $modal-boxshadow-spread: $clr_baselineRem_2px;
+    $modal-boxshadow-y: variables.$clr_baselineRem_1px;
+    $modal-boxshadow-spread: variables.$clr_baselineRem_2px;
 
     .modal-content {
-      padding: $clr-modal-content-padding-top $clr-modal-content-padding-right $clr-modal-content-padding-bottom
-        $clr-modal-content-padding-left;
-      @include css-var(background-color, clr-modal-bg-color, $clr-modal-bg-color, $clr-use-custom-properties);
-      @include css-var(border-radius, clr-modal-border-radius, $clr-modal-border-radius, $clr-use-custom-properties);
+      padding: modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
+        modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left;
+      @include mixins.css-var(
+        background-color,
+        clr-modal-bg-color,
+        modal-variables.$clr-modal-bg-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-radius,
+        clr-modal-border-radius,
+        modal-variables.$clr-modal-border-radius,
+        variables.$clr-use-custom-properties
+      );
       // IE/OldEdge
       box-shadow: 0 $modal-boxshadow-y $modal-boxshadow-spread $modal-boxshadow-spread
-        $clr-modal-content-box-shadow-color;
-      @if $clr-use-custom-properties == true {
+        modal-variables.$clr-modal-content-box-shadow-color;
+      @if variables.$clr-use-custom-properties == true {
         box-shadow: 0
           $modal-boxshadow-y
           $modal-boxshadow-spread
@@ -66,7 +79,7 @@
 
   .modal-header {
     border-bottom: none;
-    padding: 0 0 $clr_baselineRem_1 0;
+    padding: 0 0 variables.$clr_baselineRem_1 0;
 
     // TODO: This class is used only in the clr-modal template.
     // It should be merged this with `.modal-header` in a major version
@@ -79,41 +92,51 @@
     }
 
     .modal-title {
-      @include css-var(color, clr-modal-title-color, $clr-modal-title-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-modal-title-color,
+        modal-variables.$clr-modal-title-color,
+        variables.$clr-use-custom-properties
+      );
       margin: 0;
-      padding: 0 $clr_baselineRem_0_125;
+      padding: 0 variables.$clr_baselineRem_0_125;
     }
 
     .modal-title:not([cds-text]) {
-      font-size: $clr-modal-title-font-size;
-      @include css-var(
+      font-size: modal-variables.$clr-modal-title-font-size;
+      @include mixins.css-var(
         font-family,
         clr-modal-title-font-family,
-        $clr-modal-title-font-family,
-        $clr-use-custom-properties
+        modal-variables.$clr-modal-title-font-family,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         font-weight,
         clr-modal-title-font-weight,
-        $clr-modal-title-font-weight,
-        $clr-use-custom-properties
+        modal-variables.$clr-modal-title-font-weight,
+        variables.$clr-use-custom-properties
       );
-      line-height: $clr-modal-title-line-height;
-      letter-spacing: $clr-modal-title-letter-spacing;
+      line-height: modal-variables.$clr-modal-title-line-height;
+      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
     .close {
-      margin-top: -1 * $clr_baselineRem_1px;
-      margin-right: -1 * $clr_baselineRem_5px;
-      font-size: $clr_baselineRem_1_0833;
-      line-height: $clr_baselineRem_1;
+      margin-top: -1 * variables.$clr_baselineRem_1px;
+      margin-right: -1 * variables.$clr_baselineRem_5px;
+      font-size: variables.$clr_baselineRem_1_0833;
+      line-height: variables.$clr_baselineRem_1;
 
       cds-icon,
       clr-icon {
-        @include css-var(fill, clr-modal-close-color, $clr-modal-close-color, $clr-use-custom-properties);
+        @include mixins.css-var(
+          fill,
+          clr-modal-close-color,
+          modal-variables.$clr-modal-close-color,
+          variables.$clr-use-custom-properties
+        );
 
         // per measurement, this results in an icon that is 16x16...
-        @include equilateral($clr_baselineRem_1);
+        @include mixins.equilateral(variables.$clr_baselineRem_1);
       }
     }
   }
@@ -132,7 +155,7 @@
     max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 $clr_baselineRem_0_125;
+    padding: 0 variables.$clr_baselineRem_0_125;
 
     & > :first-child {
       margin-top: 0;
@@ -145,27 +168,27 @@
   .modal-footer {
     display: flex;
     justify-content: flex-end;
-    padding: $clr_baselineRem_1 0 0 0;
+    padding: variables.$clr_baselineRem_1 0 0 0;
 
     .btn {
       //switched right margin to left because footer is right aligned
-      margin: 0 0 0 $clr_baselineRem_0_5;
+      margin: 0 0 0 variables.$clr_baselineRem_0_5;
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, md)) and (orientation: landscape) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {
     .modal-body-wrapper {
       max-height: 55vh;
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .modal-content {
-      padding: $clr_baselineRem_0_5 0 $clr_baselineRem_0_5 $clr_baselineRem_1;
+      padding: variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1;
     }
 
     .modal-header {
-      padding: 0 $clr_baselineRem_1 $clr_baselineRem_0_5 0;
+      padding: 0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_0_5 0;
     }
 
     .modal-body-wrapper {
@@ -173,7 +196,7 @@
     }
 
     .modal-footer {
-      padding: $clr_baselineRem_0_5 $clr_baselineRem_1 0 0;
+      padding: variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1 0 0;
     }
   }
 
@@ -184,9 +207,19 @@
     bottom: 0;
     right: 0;
     left: 0;
-    @include css-var(background-color, clr-modal-backdrop-color, $clr-modal-backdrop-color, $clr-use-custom-properties);
-    @include css-var(opacity, clr-modal-backdrop-opacity, $clr-backdrop-opacity, $clr-use-custom-properties);
-    z-index: map-get($clr-layers, modal-bg);
+    @include mixins.css-var(
+      background-color,
+      clr-modal-backdrop-color,
+      modal-variables.$clr-modal-backdrop-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      opacity,
+      clr-modal-backdrop-opacity,
+      $clr-backdrop-opacity,
+      variables.$clr-use-custom-properties
+    );
+    z-index: map.get(variables.$clr-layers, modal-bg);
   }
 
   // modal-nav is only used in wizards

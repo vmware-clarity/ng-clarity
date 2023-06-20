@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
 
-@include exports('tab.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('tab.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../layout/nav/_nav.clarity.scss
       --clr-nav-box-shadow-color: var(--clr-color-neutral-400);

@@ -5,6 +5,7 @@
  */
 
 @use 'sass:math';
+@use 'variables.color';
 
 /* stylelint-disable-next-line meowtec/no-px */
 $clr-baseline-px: 24px; // DEPRECATED in 3.0: no longer used in Clarity SASS
@@ -48,7 +49,7 @@ $clr_baselineRem_10: convertBaselineToBase20(240); // 240px
 $clr_baselineRem_15: convertBaselineToBase20(360); // 360px
 
 // Pixel-based utilities
-$clr_baselineRem_-1px: -convertBaselineToBase20(1);
+$clr_baselineRem_-1px: convertBaselineToBase20(1);
 $clr_baselineRem_0_5px: convertBaselineToBase20(0.5); // used by cds-tag to depress the tag .5px when user clicks
 $clr_baselineRem_1px: convertBaselineToBase20(1);
 $clr_baselineRem_2px: convertBaselineToBase20(2);
@@ -212,19 +213,19 @@ $clr-global-borderwidth: $clr_baselineRem_1px !default;
 $clr-outline-offset: -1 * $clr_baselineRem_5px;
 
 // App bg color
-$clr-global-app-background: $clr-color-neutral-50 !default;
+$clr-global-app-background: variables.$clr-color-neutral-50 !default;
 
 // App selection color
 $clr-global-selection-color: hsl(201, 29%, 88%) !default;
 $clr-selection-color: $clr-global-selection-color !default; // $clr-selection-color is deprecated and will be removed.
-$clr-global-on-selection-color: $clr-color-neutral-1000 !default;
+$clr-global-on-selection-color: variables.$clr-color-neutral-1000 !default;
 
 // App hover color
-$clr-global-hover-color: $clr-color-neutral-200 !default;
-$clr-global-content-header-font-color: $clr-color-neutral-1000 !default;
-$clr-global-font-color: $clr-color-neutral-700 !default;
-$clr-global-success-color: $clr-color-success-500 !default;
-$clr-global-error-color: $clr-color-danger-800 !default;
+$clr-global-hover-color: variables.$clr-color-neutral-200 !default;
+$clr-global-content-header-font-color: variables.$clr-color-neutral-1000 !default;
+$clr-global-font-color: variables.$clr-color-neutral-700 !default;
+$clr-global-success-color: variables.$clr-color-success-500 !default;
+$clr-global-error-color: variables.$clr-color-danger-800 !default;
 
 // TODO: Can any of this be grouped in a 'Layout' section?
 //5.Content Area Paddings
@@ -251,9 +252,9 @@ $grid-gutter-widths: (
 
 // Close button colors
 // Usage: ../emphasis/alert/_alert.clarity.scss
-$clr-close-color--normal: $clr-color-neutral-600 !default;
+$clr-close-color--normal: variables.$clr-color-neutral-600 !default;
 $clr-close-color--normal-opacity: 0.2 !default;
-$clr-close-color--hover: $clr-color-neutral-1000 !default;
+$clr-close-color--hover: variables.$clr-color-neutral-1000 !default;
 $clr-close-color--hover-opacity: 0.5 !default;
 
 // Box Shadow

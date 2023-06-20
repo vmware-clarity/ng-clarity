@@ -3,30 +3,31 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/variables/variables.color';
 
 // Usage:
 // - ./_labels.clarity.scss
-$clr-badge-font-color-light: $clr-color-neutral-0 !default;
-$clr-badge-font-color-dark: $clr-color-neutral-0 !default;
+$clr-badge-font-color-light: variables.$clr-color-neutral-0 !default;
+$clr-badge-font-color-dark: variables.$clr-color-neutral-0 !default;
 
-$clr-badge-info-bg-color: $clr-color-action-800 !default;
-$clr-badge-info-color: $clr-color-neutral-0 !default;
-$clr-badge-success-bg-color: $clr-color-success-800 !default;
-$clr-badge-success-color: $clr-color-neutral-0 !default;
-$clr-badge-warning-bg-color: $clr-color-warning-1000 !default;
-$clr-badge-warning-color: $clr-color-neutral-0 !default;
-$clr-badge-danger-bg-color: $clr-color-danger-900 !default;
-$clr-badge-danger-color: $clr-color-neutral-0 !default;
+$clr-badge-info-bg-color: variables.$clr-color-action-800 !default;
+$clr-badge-info-color: variables.$clr-color-neutral-0 !default;
+$clr-badge-success-bg-color: variables.$clr-color-success-800 !default;
+$clr-badge-success-color: variables.$clr-color-neutral-0 !default;
+$clr-badge-warning-bg-color: variables.$clr-color-warning-1000 !default;
+$clr-badge-warning-color: variables.$clr-color-neutral-0 !default;
+$clr-badge-danger-bg-color: variables.$clr-color-danger-900 !default;
+$clr-badge-danger-color: variables.$clr-color-neutral-0 !default;
 
-$clr-badge-gray-bg-color: $clr-color-neutral-600 !default;
+$clr-badge-gray-bg-color: variables.$clr-color-neutral-600 !default;
 $clr-badge-gray-color: $clr-badge-font-color-light !default;
-$clr-badge-purple-bg-color: $clr-color-secondary-action-500 !default;
+$clr-badge-purple-bg-color: variables.$clr-color-secondary-action-500 !default;
 $clr-badge-purple-color: $clr-badge-font-color-light !default;
-$clr-badge-blue-bg-color: $clr-color-action-800 !default;
+$clr-badge-blue-bg-color: variables.$clr-color-action-800 !default;
 $clr-badge-blue-color: $clr-badge-font-color-light !default;
-$clr-badge-orange-bg-color: $clr-color-warning-1000 !default;
+$clr-badge-orange-bg-color: variables.$clr-color-warning-1000 !default;
 $clr-badge-orange-color: $clr-badge-font-color-dark !default;
-$clr-badge-light-blue-bg-color: $clr-color-action-500 !default;
+$clr-badge-light-blue-bg-color: variables.$clr-color-action-500 !default;
 $clr-badge-light-blue-color: $clr-badge-font-color-dark !default;
 
 @function getBadgeCssVarName($type: gray, $prop: color) {

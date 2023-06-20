@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
-@include exports('label.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('label.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // COLOR
       // Usage:
@@ -17,11 +19,11 @@
       // TYPOGRAPHIC STYLES
       // Usage:
       // - ./_labels.clarity.scss
-      --clr-label-font-size: #{$clr-p7-font-size};
-      --clr-label-font-weight: #{$clr-p7-font-weight};
-      --clr-label-letter-spacing: #{$clr-p7-letter-spacing};
+      --clr-label-font-size: #{variables.$clr-p7-font-size};
+      --clr-label-font-weight: #{variables.$clr-p7-font-weight};
+      --clr-label-letter-spacing: #{variables.$clr-p7-letter-spacing};
 
-      --clr-label-border-radius: #{$clr_baselineRem_0_5};
+      --clr-label-border-radius: #{variables.$clr_baselineRem_0_5};
 
       // Usage: ./_labels.clarity.scss
       --clr-label-bg-hover-color: var(--clr-color-neutral-200);
