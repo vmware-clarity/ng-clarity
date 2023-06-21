@@ -5,68 +5,67 @@
  */
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClrIfExpanded } from '@clr/angular';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
-  providers: [ClrIfExpanded],
 })
 export class StepperDemo {
-  form: FormGroup;
-  expanded = {
-    name: false,
-    contact: false,
-    address: false,
-    phone: false,
-  };
+  stepOpen = true;
+  showSecondStep = true;
+  initialStep = 'contact';
+  form: FormGroup = this.getReactiveForm();
+  templateForm: any = this.getTemplateForm();
+  partiallyCompletedForm: FormGroup = this.getReactiveForm();
 
-  expName = false;
-  expContact = false;
-  expAddress = false;
-  expPhone = false;
+  submit() {
+    console.log('reactive form submit', this.form.value);
+  }
 
-  initialStep = 'phone';
-  loading = false;
+  templateFormSubmit(templateFormValues: unknown) {
+    console.log('template form submit', templateFormValues);
+  }
 
-  protected readonly expand;
+  toggleInitialStep() {
+    this.initialStep = this.initialStep === 'contact' ? 'password' : 'contact';
+  }
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      name: this.formBuilder.group({
-        first: ['Luke', Validators.required],
-        last: ['Skywalker', Validators.required],
+  log(value: any) {
+    console.log('value', value);
+  }
+
+  private getReactiveForm() {
+    return new FormGroup({
+      name: new FormGroup({
+        first: new FormControl('Luke', Validators.required),
+        last: new FormControl('Skywalker', Validators.required),
       }),
-      contact: this.formBuilder.group({
-        email: [],
-        phone: [],
+      contact: new FormGroup({
+        email: new FormControl(),
+        phone: new FormControl(),
       }),
-      address: this.formBuilder.group({
-        city: [],
-        line: [],
-      }),
-      phone: this.formBuilder.group({
-        mobile: [],
-      }),
-      password: this.formBuilder.group({
-        password: [],
-        confirm: [],
+      password: new FormGroup({
+        password: new FormControl(),
+        confirm: new FormControl(),
       }),
     });
   }
 
-  handleClick() {
-    this.loading = true;
-    // this.zone.runOutsideAngular(() => {
-    setTimeout(() => {
-      this.initialStep = this.initialStep === 'address' ? 'contact' : 'address';
-      this.loading = false;
-    }, 200);
-    // });
-  }
-
-  submit() {
-    console.log('reactive form submit', this.form.value);
+  private getTemplateForm() {
+    return {
+      name: {
+        firstName: '',
+        lastName: '',
+      },
+      contact: {
+        email: '',
+        phone: '',
+      },
+      password: {
+        password: '',
+        confirm: '',
+      },
+    };
   }
 }
