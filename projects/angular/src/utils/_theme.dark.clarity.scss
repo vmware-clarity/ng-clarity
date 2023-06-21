@@ -141,6 +141,7 @@
 */
 @forward '../accordion/variables.accordion' with (
   $clr-accordion-text-color: color-variables.$clr-color-neutral-0,
+  $clr-accordion-panel-disabled-color: color-variables.$clr-color-neutral-600,
   $clr-accordion-active-background-color: variables.$clr-global-selection-color,
   $clr-accordion-header-hover-background-color: variables.$clr-global-selection-color,
   $clr-accordion-content-background-color: hsl(198, 28%, 18%),

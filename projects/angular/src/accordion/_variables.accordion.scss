@@ -7,6 +7,7 @@
 @use '../utils/variables/variables';
 
 $clr-accordion-text-color: variables.$clr-global-font-color !default;
+$clr-accordion-panel-disabled-color: variables.$clr-color-neutral-500 !default;
 $clr-accordion-active-background-color: variables.$clr-global-selection-color !default;
 $clr-accordion-content-background-color: variables.$clr-color-neutral-0 !default;
 $clr-accordion-header-background-color: variables.$clr-color-neutral-50 !default;
