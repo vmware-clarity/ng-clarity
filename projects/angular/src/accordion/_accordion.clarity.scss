@@ -89,6 +89,19 @@
     @media (min-width: $clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .clr-accordion-title {
+        @include css-var(
+          color,
+          clr-accordion-panel-disabled-color,
+          $clr-accordion-panel-disabled-color,
+          $clr-use-custom-properties
+        );
+      }
+    }
   }
 
   .clr-accordion-status {

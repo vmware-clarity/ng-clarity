@@ -410,6 +410,7 @@
   /* Accordion */
 
   --clr-accordion-text-color: var(--cds-alias-object-interaction-color); // var(--cds-global-typography-color-500);
+  --clr-accordion-panel-disabled-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-500);
 
   --clr-accordion-active-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
   --clr-accordion-content-background-color: var(--cds-alias-object-app-background); // var(--clr-color-neutral-0);
