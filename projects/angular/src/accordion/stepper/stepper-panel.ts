@@ -85,11 +85,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     }
   }
 
-  ngAfterContentInit() {
-    this.listenToInitialStepperPanelChanges();
-    this.cdr.detectChanges();
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
@@ -99,14 +94,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
         .subscribe(() => this.headerButton.nativeElement.focus())
-    );
-  }
-
-  private listenToInitialStepperPanelChanges() {
-    this.subscriptions.push(
-      this.accordionService.getPanelChanges(this.id).subscribe(() => {
-        this.cdr.detectChanges();
-      })
     );
   }
 
