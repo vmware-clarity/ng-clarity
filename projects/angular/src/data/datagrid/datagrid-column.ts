@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Injector,
   Input,
@@ -20,11 +21,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, skipWhile, tap } from 'rxjs/operators';
 
-import { ClrPopoverEventsService, ClrPopoverPositionService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -153,7 +155,8 @@ export class ClrDatagridColumn<T = any>
     private detailService: DetailService,
     private changeDetectorRef: ChangeDetectorRef,
     private smartPositionService: ClrPopoverPositionService,
-    private smartEventsService: ClrPopoverEventsService
+    private smartEventsService: ClrPopoverEventsService,
+    private elementRef: ElementRef
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -311,6 +314,10 @@ export class ClrDatagridColumn<T = any>
     return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
   }
 
+  get datagridElementRef() {
+    return this.elementRef?.nativeElement?.closest('clr-datagrid');
+  }
+
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
@@ -381,6 +388,7 @@ export class ClrDatagridColumn<T = any>
   private listenForFilterChanges() {
     return this.filter.changes
       .pipe(
+        skipWhile(() => !!this.datagridElementRef?.style.height === true),
         tap(() => {
           this.smartEventsService.removeScrollListener();
           this.smartPositionService.realign();
