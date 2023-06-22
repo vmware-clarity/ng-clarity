@@ -405,6 +405,6 @@ export class ClrDatagridColumn<T = any>
       // if this field property is set again
       delete this.initFilterValue;
     }
-    this.listenForFilterChanges();
+    this.subscriptions.push(this.listenForFilterChanges());
   }
 }
