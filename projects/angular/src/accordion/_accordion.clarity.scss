@@ -113,6 +113,19 @@
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .clr-accordion-title {
+        @include mixins.css-var(
+          color,
+          clr-accordion-panel-disabled-color,
+          accordion-variables.$clr-accordion-panel-disabled-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
   }
 
   .clr-accordion-status {
