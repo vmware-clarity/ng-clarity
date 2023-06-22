@@ -20,7 +20,9 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 
+import { ClrPopoverEventsService, ClrPopoverPositionService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -149,7 +151,9 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private smartPositionService: ClrPopoverPositionService,
+    private smartEventsService: ClrPopoverEventsService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -374,6 +378,20 @@ export class ClrDatagridColumn<T = any>
     });
   }
 
+  private listenForFilterChanges() {
+    return this.filter.changes
+      .pipe(
+        tap(() => {
+          this.smartEventsService.removeScrollListener();
+          this.smartPositionService.realign();
+        }),
+        debounceTime(500)
+      )
+      .subscribe(() => {
+        this.smartEventsService.addScrollListener();
+      });
+  }
+
   private setupDefaultFilter(field: string, colType: 'string' | 'number') {
     if (colType === 'number') {
       this.setFilter(new DatagridNumericFilterImpl(new DatagridPropertyNumericFilter(field)));
@@ -387,5 +405,6 @@ export class ClrDatagridColumn<T = any>
       // if this field property is set again
       delete this.initFilterValue;
     }
+    this.listenForFilterChanges();
   }
 }
