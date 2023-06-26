@@ -7,12 +7,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { ClrDatagrid } from '../datagrid';
 import { ALL_COLUMN_CHANGES } from '../enums/column-changes.enum';
 import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';
 
 @Injectable()
 export class ColumnsService {
   columns: BehaviorSubject<ColumnState>[] = [];
+  host: ClrDatagrid;
 
   private _cache: ColumnState[] = [];
 

@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   EventEmitter,
   Injector,
   Input,
@@ -35,6 +34,7 @@ import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-fil
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import { ColumnsService } from './providers/columns.service';
 import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
@@ -156,7 +156,7 @@ export class ClrDatagridColumn<T = any>
     private changeDetectorRef: ChangeDetectorRef,
     private smartPositionService: ClrPopoverPositionService,
     private smartEventsService: ClrPopoverEventsService,
-    private elementRef: ElementRef
+    private columnsService: ColumnsService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -314,10 +314,6 @@ export class ClrDatagridColumn<T = any>
     return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
   }
 
-  get datagridElementRef() {
-    return this.elementRef?.nativeElement?.closest('clr-datagrid');
-  }
-
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
   }
@@ -388,7 +384,7 @@ export class ClrDatagridColumn<T = any>
   private listenForFilterChanges() {
     return this.filter.changes
       .pipe(
-        skipWhile(() => !!this.datagridElementRef?.style.height === true),
+        skipWhile(() => !!this.columnsService.host?.el?.nativeElement?.style.height),
         tap(() => {
           this.smartEventsService.removeScrollListener();
           this.smartPositionService.realign();

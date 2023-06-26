@@ -142,7 +142,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    private el: ElementRef,
+    public el: ElementRef,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
@@ -150,7 +150,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
-
+    this.columnsService.host = this;
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     this.detailService.id = datagridId;
   }
