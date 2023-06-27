@@ -1,4 +1,4 @@
-# Card - Style API
+# Card
 
 ## CSS Custom Properties
 
@@ -40,7 +40,7 @@
 | card-footer            | The footer can contain two actions in form of a button or link. For more actions, use a dropdown.                              |
 | card-link              | A link within a card footer.                                                                                                   |
 
-# Login - Style API
+# Login
 
 ## CSS Custom Properties
 
