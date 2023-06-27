@@ -21,7 +21,7 @@
 | --clr-wizard-stepnav-border-color              | Wizard navigation border color                                      |
 | --clr-wizard-box-shadow-color                  | Wizard highlight indication color                                   |
 
-## Class names
+## CSS Classes
 
 | Class name                         | Description                                    |
 | ---------------------------------- | ---------------------------------------------- |

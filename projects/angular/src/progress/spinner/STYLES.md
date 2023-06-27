@@ -1,6 +1,6 @@
 # Spinner
 
-## Classes
+## CSS Classes
 
 | Class Name      | Description                           |
 | --------------- | ------------------------------------- |

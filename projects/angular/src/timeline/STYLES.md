@@ -14,7 +14,7 @@
 | --clr-timeline-error-step-color       | Failed timeline step circle color     |
 | --clr-timeline-step-title-font-weight | Timeline step title font weight       |
 
-## Class names
+## CSS Classes
 
 | Class name                    | Description                     |
 | ----------------------------- | ------------------------------- |
