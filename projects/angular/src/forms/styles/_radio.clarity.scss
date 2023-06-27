@@ -14,7 +14,12 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    line-height: variables.$clr_baselineRem_1;
+    @include mixins.css-var(
+      line-height,
+      clr-forms-radio-line-height,
+      forms-variables.$clr-forms-radio-line-height,
+      variables.$clr-use-custom-properties
+    );
 
     //Hide the default radio
     input[type='radio'] {

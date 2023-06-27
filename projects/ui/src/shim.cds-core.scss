@@ -470,17 +470,20 @@
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
 
   // Checkbox
-  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token
+  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
   --clr-forms-checkbox-background-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-forms-checkbox-indeterminate-border-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-forms-checkbox-mark-color: var(--cds-global-typography-color-100); // var(--clr-color-neutral-0);
-  --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
+  --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token --cds-alias-status-disabled-tint
   --clr-forms-checkbox-disabled-mark-color: var(--cds-global-typography-color-100); // var(--clr-color-neutral-1000);
 
   // Radio
-  --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color); // indirectly mapped to CDS token
+  --clr-forms-radio-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token --cds-alias-status-disabled-tint
+  --clr-forms-radio-disabled-mark-color: var(--cds-global-typography-color-100); // var(--clr-color-neutral-1000);
+  --clr-forms-radio-line-height: var(--cds-global-space-7);
+
+  /// add more radio stuff
 
   // Range
   --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
