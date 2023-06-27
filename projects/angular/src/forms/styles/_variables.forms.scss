@@ -91,6 +91,7 @@ $clr-forms-radio-height: $clr-forms-checkbox-height;
 $clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
 $clr-forms-radio-top: $clr-forms-checkbox-top;
 $clr-forms-radio-line-height: variables.$clr_baselineRem_1;
+$clr-forms-radio-input-top: variables.$clr_baselineRem_5px;
 $clr-forms-radio-selected-shadow: $clr-forms-checkbox-checked-shadow !default;
 $clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;
 $clr-forms-radio-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_5 variables.$clr-color-neutral-200 !default;

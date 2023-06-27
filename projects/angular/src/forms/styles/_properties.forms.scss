@@ -88,6 +88,7 @@
       --clr-forms-radio-selected-shadow: var(--clr-forms-checkbox-checked-shadow);
       --clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
       --clr-forms-radio-line-height: #{forms-variables.$clr-forms-radio-line-height};
+      --clr-forms-radio-input-top: #{variables.$clr_baselineRem_5px};
       --clr-forms-radio-focused-shadow: 0
         0
         #{mixins.$clr-outline-blur}
