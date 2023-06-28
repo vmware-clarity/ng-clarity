@@ -481,8 +481,10 @@
   --clr-forms-radio-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
   --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token --cds-alias-status-disabled-tint
   --clr-forms-radio-disabled-mark-color: var(--cds-global-typography-color-100); // var(--clr-color-neutral-1000);
-  --clr-forms-radio-line-height: var(--cds-global-space-7);
+  --clr-forms-radio-line-height: var(--cds-global-space-9);
   --clr-forms-radio-input-top: var(--cds-global-space-3);
+  --clr-forms-radio-padding-left: var(--cds-global-space-9);
+  --clr-forms-radio-label-height: var(--cds-global-space-9);
 
   /// add more radio stuff
 

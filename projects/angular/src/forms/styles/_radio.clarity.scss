@@ -28,7 +28,9 @@
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
+        clr-forms-radio-label-height,
         forms-variables.$clr-forms-radio-label-height,
+        clr-forms-radio-padding-left,
         forms-variables.$clr-forms-radio-padding-left,
         forms-variables.$clr-forms-radio-label-color,
         clr-forms-radio-label-color

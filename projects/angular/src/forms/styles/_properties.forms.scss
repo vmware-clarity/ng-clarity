@@ -89,6 +89,8 @@
       --clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
       --clr-forms-radio-line-height: #{forms-variables.$clr-forms-radio-line-height};
       --clr-forms-radio-input-top: #{variables.$clr_baselineRem_5px};
+      --clr-forms-radio-padding-left: var(forms-variables.$clr-forms-radio-padding-left);
+      --clr-forms-radio-label-height: var(forms-variables.$clr-forms-radio-label-height);
       --clr-forms-radio-focused-shadow: 0
         0
         #{mixins.$clr-outline-blur}
