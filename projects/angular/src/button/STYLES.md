@@ -1,4 +1,4 @@
-# Button - Style API
+# Button
 
 ## CSS Custom Properties
 
