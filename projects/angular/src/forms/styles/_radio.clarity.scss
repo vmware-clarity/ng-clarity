@@ -105,6 +105,12 @@
   .clr-form-control-disabled .clr-radio-wrapper {
     .clr-control-label {
       cursor: not-allowed;
+      @include mixins.css-var(
+        color,
+        clr-forms-radio-label-disabled-color,
+        forms-variables.$clr-forms-radio-label-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 

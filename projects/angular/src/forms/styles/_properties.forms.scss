@@ -83,6 +83,7 @@
 
       // Radio
       --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color);
+      --clr-forms-radio-label-disabled-color: #{forms-variables.$clr-forms-radio-label-color};
       --clr-forms-radio-disabled-background-color: var(--clr-color-neutral-700);
       --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color);
       --clr-forms-radio-selected-shadow: var(--clr-forms-checkbox-checked-shadow);
