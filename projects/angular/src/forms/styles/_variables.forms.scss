@@ -73,6 +73,8 @@ $clr-forms-checkbox-border-radius: variables.$clr-global-borderradius !default;
 
 $clr-forms-checkbox-label-height: $clr-forms-baseline * 4;
 $clr-forms-checkbox-top: ($clr-forms-checkbox-label-height - $clr-forms-checkbox-height) * 0.5 !default;
+$clr-forms-checkbox-line-height: $clr-forms-icon-size;
+$clr-forms-checkbox-input-top: variables.$clr_baselineRem_5px;
 
 $clr-forms-checkbox-size: variables.$clr_baselineRem_0_667;
 $clr-forms-checkbox-padding-left: $clr-forms-checkbox-height + variables.$clr_baselineRem_0_25;
@@ -90,7 +92,7 @@ $clr-forms-radio-label-height: $clr-forms-checkbox-label-height;
 $clr-forms-radio-height: $clr-forms-checkbox-height;
 $clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
 $clr-forms-radio-top: $clr-forms-checkbox-top;
-$clr-forms-radio-line-height: variables.$clr_baselineRem_1;
+$clr-forms-radio-line-height: $clr-forms-icon-size;
 $clr-forms-radio-input-top: variables.$clr_baselineRem_5px;
 $clr-forms-radio-selected-shadow: $clr-forms-checkbox-checked-shadow !default;
 $clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;

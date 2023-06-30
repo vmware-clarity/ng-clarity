@@ -118,17 +118,16 @@
   cursor: not-allowed;
 }
 
-@mixin checkbox-radio-input-styles($size) {
+@mixin checkbox-radio-input-styles(
+  $size,
+  $input-top: clr-forms-radio-input-top,
+  $input-top-fallback: forms-variables.$clr-forms-radio-input-top
+) {
   //Positioning
   position: absolute;
   opacity: 0;
   left: 0;
-  @include mixins.css-var(
-    top,
-    clr-forms-radio-input-top,
-    forms-variables.$clr-forms-radio-input-top,
-    variables.$clr-use-custom-properties
-  );
+  @include mixins.css-var(top, $input-top, $input-top-fallback, variables.$clr-use-custom-properties);
 
   //Display
   //NOTE: Even though the input is invisible, we assign it a height
@@ -142,6 +141,8 @@
   $min-height-fallback,
   $padding-left,
   $padding-left-fallback,
+  $line-height,
+  $line-height-fallback,
   $color: forms-variables.$clr-forms-checkbox-label-color,
   $color-prop: clr-forms-checkbox-label-color,
   $use-custom-props: variables.$clr-use-custom-properties
@@ -156,12 +157,7 @@
 
   @include mixins.css-var(min-height, $min-height, $min-height-fallback, variables.$clr-use-custom-properties);
   @include mixins.css-var(padding-left, $padding-left, $padding-left-fallback, variables.$clr-use-custom-properties);
-  @include mixins.css-var(
-    line-height,
-    clr-forms-radio-line-height,
-    forms-variables.$clr-forms-radio-line-height,
-    variables.$clr-use-custom-properties
-  );
+  @include mixins.css-var(line-height, $line-height, $line-height-fallback, variables.$clr-use-custom-properties);
 
   @if $use-custom-props != true {
     color: $color;

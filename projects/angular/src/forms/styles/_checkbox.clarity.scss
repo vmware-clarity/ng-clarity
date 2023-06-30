@@ -20,10 +20,12 @@
 
     .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
-        clr-forms-radio-label-height,
+        clr-forms-checkbox-label-height,
         forms-variables.$clr-forms-checkbox-label-height,
-        clr-forms-radio-padding-left,
+        clr-forms-checkbox-padding-left,
         forms-variables.$clr-forms-checkbox-padding-left,
+        clr-forms-checkbox-line-height,
+        forms-variables.$clr-forms-checkbox-line-height,
         forms-variables.$clr-forms-checkbox-label-color,
         clr-forms-checkbox-label-color
       );
@@ -32,7 +34,11 @@
     //Hide the default checkbox behind the pseudo elements
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
-      @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
+      @include forms-mixins.checkbox-radio-input-styles(
+        forms-variables.$clr-forms-checkbox-size,
+        clr-forms-checkbox-input-top,
+        forms-variables.$clr-forms-checkbox-input-top
+      );
     }
 
     //Checkbox base

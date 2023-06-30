@@ -14,16 +14,14 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    @include mixins.css-var(
-      line-height,
-      clr-forms-radio-line-height,
-      forms-variables.$clr-forms-radio-line-height,
-      variables.$clr-use-custom-properties
-    );
 
     //Hide the default radio
     input[type='radio'] {
-      @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-radio-size);
+      @include forms-mixins.checkbox-radio-input-styles(
+        forms-variables.$clr-forms-radio-size,
+        clr-forms-radio-input-top,
+        forms-variables.$clr-forms-radio-input-top
+      );
     }
 
     .clr-control-label {
@@ -32,6 +30,8 @@
         forms-variables.$clr-forms-radio-label-height,
         clr-forms-radio-padding-left,
         forms-variables.$clr-forms-radio-padding-left,
+        clr-forms-radio-line-height,
+        forms-variables.$clr-forms-radio-line-height,
         forms-variables.$clr-forms-radio-label-color,
         clr-forms-radio-label-color
       );
