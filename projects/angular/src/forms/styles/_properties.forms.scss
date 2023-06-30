@@ -127,6 +127,12 @@
       --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
+
+      // Password
+      --clr-forms-password-input-height: #{forms-variables.$clr-forms-password-input-height};
+      --clr-forms-password-padding: #{forms-variables.$clr-forms-password-padding};
+      --clr-forms-password-layout-space: #{forms-variables.$clr-forms-password-layout-space};
+      --clr-forms-password-eye-icon-size: #{forms-variables.$clr-forms-password-eye-icon-size};
     }
   }
 }
