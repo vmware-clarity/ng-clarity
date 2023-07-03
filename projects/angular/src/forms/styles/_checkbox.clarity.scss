@@ -172,13 +172,6 @@
     }
 
     input[type='checkbox']:checked + .clr-control-label::after {
-      //$sassVar: forms-variables.$clr-forms-checkbox-disabled-mark-color;
-      //$cssVar: clr-forms-checkbox-disabled-mark-color;
-      //$disabled-border-style: (forms-variables.$clr-forms-checkbox-height * 0.125) solid;
-      //border-left: $disabled-border-style;
-      //border-bottom: $disabled-border-style;
-      //@include mixins.css-var(border-left-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
-      //@include mixins.css-var(border-bottom-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         border-color,
         clr-forms-checkbox-disabled-mark-color,
