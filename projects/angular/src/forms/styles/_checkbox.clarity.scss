@@ -96,15 +96,13 @@
       display: inline-block;
     }
 
-    $indetermSassBrdrColorVar: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
-    $indetermCssBrdrColorVar: clr-forms-checkbox-indeterminate-border-color;
     input[type='checkbox'].clr-indeterminate + .clr-control-label::before,
     input[type='checkbox']:indeterminate + .clr-control-label::before {
       border: variables.$clr-global-borderwidth solid;
       @include mixins.css-var(
         border-color,
-        $indetermCssBrdrColorVar,
-        $indetermSassBrdrColorVar,
+        clr-forms-checkbox-border-color,
+        forms-variables.$clr-forms-checkbox-indeterminate-border-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -114,8 +112,8 @@
       border-left: none;
       @include mixins.css-var(
         border-bottom-color,
-        $indetermCssBrdrColorVar,
-        $indetermSassBrdrColorVar,
+        clr-forms-checkbox-indeterminate-border-color,
+        forms-variables.$clr-forms-checkbox-indeterminate-border-color,
         variables.$clr-use-custom-properties
       );
       display: inline-block;
@@ -148,11 +146,25 @@
       );
     }
 
-    input[type='checkbox'] + .clr-control-label::before,
-    input[type='checkbox']:checked + .clr-control-label::before {
+    input[type='checkbox'] + .clr-control-label::before {
       @include mixins.css-var(
         background-color,
         clr-forms-checkbox-disabled-background-color,
+        forms-variables.$clr-forms-checkbox-disabled-background-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-forms-checkbox-disabled-border-color,
+        forms-variables.$clr-forms-checkbox-disabled-background-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    input[type='checkbox']:checked + .clr-control-label::before {
+      @include mixins.css-var(
+        background-color,
+        clr-forms-checkbox-disabled-checked-background-color,
         forms-variables.$clr-forms-checkbox-disabled-background-color,
         variables.$clr-use-custom-properties
       );
@@ -160,13 +172,30 @@
     }
 
     input[type='checkbox']:checked + .clr-control-label::after {
-      $sassVar: forms-variables.$clr-forms-checkbox-disabled-mark-color;
-      $cssVar: clr-forms-checkbox-disabled-mark-color;
-      $disabled-border-style: (forms-variables.$clr-forms-checkbox-height * 0.125) solid;
-      border-left: $disabled-border-style;
-      border-bottom: $disabled-border-style;
-      @include mixins.css-var(border-left-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
-      @include mixins.css-var(border-bottom-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
+      //$sassVar: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+      //$cssVar: clr-forms-checkbox-disabled-mark-color;
+      //$disabled-border-style: (forms-variables.$clr-forms-checkbox-height * 0.125) solid;
+      //border-left: $disabled-border-style;
+      //border-bottom: $disabled-border-style;
+      //@include mixins.css-var(border-left-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
+      //@include mixins.css-var(border-bottom-color, $cssVar, $sassVar, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        border-color,
+        clr-forms-checkbox-disabled-mark-color,
+        forms-variables.$clr-forms-checkbox-disabled-mark-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    input[type='checkbox'].clr-indeterminate + .clr-control-label::after,
+    input[type='checkbox']:indeterminate + .clr-control-label::after {
+      @include mixins.css-var(
+        border-color,
+        clr-forms-checkbox-disabled-indeterminate-color,
+        forms-variables.$clr-forms-checkbox-disabled-mark-color,
+        variables.$clr-use-custom-properties
+      );
+      border-left: none;
     }
 
     input[type='checkbox']:checked.clr-indeterminate + .clr-control-label::after,
