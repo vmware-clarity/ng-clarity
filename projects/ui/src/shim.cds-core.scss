@@ -632,11 +632,23 @@
   --clr-toggle-disabled-default-handle-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
   --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+
   // Also sets disabled/on inner part of handle circle.
   --clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+
+  --clr-toggle-height: var(--cds-global-space-7);
+  --clr-toggle-switch-base-height: var(--cds-global-space-8);
+  --clr-toggle-switch-base-width: calc(var(--cds-global-space-10) + var(--cds-global-space-1));
+  --clr-toggle-base-line: var(--cds-global-space-4);
+  --clr-toggle-icon-margin: calc(var(--cds-global-space-11) + var(--cds-global-space-5));
+  --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));
+  --clr-toggle-switch-left-spacing: calc(var(--clr-toggle-switch-base-width) - var(--cds-global-space-5) + var(--cds-global-space-2));
+  --clr-toggle-switch-left-spacing-negative: calc(-1 * (var(--clr-toggle-switch-left-spacing)));
+  --clr-toggle-icon-dot-place: calc(-1 * (var(--clr-toggle-icon-margin) - var(--cds-global-space-2)));
+  --clr-toggle-icon-top: calc(var(--cds-global-space-2) + 0.5 * var(--clr-toggle-base-line));
 
   /* Tooltips */
 

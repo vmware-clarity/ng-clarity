@@ -4,15 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:meta';
-@use '../../button/variables.toggles' as button-variables;
+@use '../../button/variables.toggles' as toggle-variables;
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'variables.forms' as forms-variables;
 
 @mixin clr-toggle-transition-styles() {
-  transition-duration: button-variables.$clr-toggle-transition-time;
-  transition-timing-function: button-variables.$clr-toggle-transition-animation;
+  transition-duration: toggle-variables.$clr-toggle-transition-time;
+  transition-timing-function: toggle-variables.$clr-toggle-transition-animation;
 }
 
 @include meta.load-css('../../button/properties.toggles');
@@ -24,7 +23,7 @@
   }
 
   .clr-toggle-wrapper {
-    height: button-variables.$clr-toggle-height;
+    height: toggle-variables.$clr-toggle-height;
     vertical-align: middle;
     position: relative;
     display: block;
@@ -34,10 +33,14 @@
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: button-variables.$clr-toggle-height;
-      margin-left: button-variables.$clr-toggle-switch-base-width +
-        button-variables.$clr-toggle-switch-base-left-spacing;
+      height: toggle-variables.$clr-toggle-height;
       margin-right: 0;
+      @include mixins.css-var(
+        margin-left,
+        clr-toggle-icon-margin,
+        toggle-variables.$clr-toggle-icon-margin,
+        variables.$clr-use-custom-properties
+      );
     }
 
     input[type='checkbox'] {
@@ -54,26 +57,30 @@
       position: absolute;
       display: inline-block;
       content: '';
-      height: button-variables.$clr-toggle-switch-base-height;
-      width: button-variables.$clr-toggle-switch-base-width;
+      height: toggle-variables.$clr-toggle-switch-base-height;
+      width: toggle-variables.$clr-toggle-switch-base-width;
       border: variables.$clr_baselineRem_2px solid;
       border-radius: variables.$clr_baselineRem_0_375;
       @include mixins.css-var(
         border-color,
         clr-toggle-bg-color-off,
-        button-variables.$clr-toggle-bg-color-off,
+        toggle-variables.$clr-toggle-bg-color-off,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         background-color,
         clr-toggle-bg-color-off,
-        button-variables.$clr-toggle-bg-color-off,
+        toggle-variables.$clr-toggle-bg-color-off,
         variables.$clr-use-custom-properties
       );
-      top: (forms-variables.$clr-forms-baseline * 0.5);
+      top: (toggle-variables.$clr-toggle-base-line * 0.5);
       right: 0;
-      left: -1 *
-        (button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing);
+      @include mixins.css-var(
+        left,
+        clr-toggle-icon-margin-negative,
+        toggle-variables.$clr-toggle-icon-margin-negative,
+        variables.$clr-use-custom-properties
+      );
       @include clr-toggle-transition-styles;
       transition-property: border-color, background-color;
     }
@@ -86,13 +93,13 @@
       @include mixins.css-var(
         border-color,
         clr-toggle-bg-color-on,
-        button-variables.$clr-toggle-bg-color-on,
+        toggle-variables.$clr-toggle-bg-color-on,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         background-color,
         clr-toggle-bg-color-on,
-        button-variables.$clr-toggle-bg-color-on,
+        toggle-variables.$clr-toggle-bg-color-on,
         variables.$clr-use-custom-properties
       );
       @include clr-toggle-transition-styles;
@@ -104,40 +111,52 @@
       position: absolute;
       display: inline-block;
       content: '';
-      @include mixins.equilateral(button-variables.$clr-toggle-switch-height);
       border-width: variables.$clr-global-borderwidth;
+      border-style: solid;
+      border-radius: 50%;
+      right: 0;
+      @include mixins.css-var(
+        top,
+        clr-toggle-icon-top,
+        toggle-variables.$clr-toggle-icon-top,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.equilateral(toggle-variables.$clr-toggle-switch-height);
       @include mixins.css-var(
         border-color,
         clr-toggle-handle-bg-color,
-        button-variables.$clr-toggle-handle-bg-color,
+        toggle-variables.$clr-toggle-handle-bg-color,
         variables.$clr-use-custom-properties
       );
-      border-style: solid;
-      border-radius: 50%;
       @include mixins.css-var(
         background-color,
         clr-toggle-handle-bg-color,
-        button-variables.$clr-toggle-handle-bg-color,
+        toggle-variables.$clr-toggle-handle-bg-color,
         variables.$clr-use-custom-properties
       );
-      top: (variables.$clr_baselineRem_2px + forms-variables.$clr-forms-baseline * 0.5);
-      right: 0;
-      left: -1 *
-        (
-          button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing -
-            variables.$clr_baselineRem_2px
-        );
+      @include mixins.css-var(
+        left,
+        clr-toggle-icon-dot-place,
+        toggle-variables.$clr-toggle-icon-dot-place,
+        variables.$clr-use-custom-properties
+      );
       @include clr-toggle-transition-styles;
       transition-property: right, left;
     }
 
     input[type='checkbox']:checked + label::after {
-      right: -1 *
-        (
-          button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing -
-            variables.$clr_baselineRem_2px
-        );
-      left: -1 * button-variables.$clr-toggle-switch-left-spacing;
+      @include mixins.css-var(
+        right,
+        clr-toggle-icon-dot-place,
+        toggle-variables.$clr-toggle-icon-dot-place,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        left,
+        clr-toggle-switch-left-spacing-negative,
+        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        variables.$clr-use-custom-properties
+      );
       @include clr-toggle-transition-styles;
       transition-property: right, left;
     }
@@ -152,13 +171,13 @@
         @include mixins.css-var(
           border-color,
           clr-toggle-disabled-on-border-color,
-          button-variables.$clr-toggle-disabled-on-border-color,
+          toggle-variables.$clr-toggle-disabled-on-border-color,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           background-color,
           clr-toggle-disabled-on-border-color,
-          button-variables.$clr-toggle-disabled-on-border-color,
+          toggle-variables.$clr-toggle-disabled-on-border-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -173,14 +192,14 @@
         @include mixins.css-var(
           background-color,
           clr-toggle-disabled-off-bg-color,
-          button-variables.$clr-toggle-disabled-off-bg-color,
+          toggle-variables.$clr-toggle-disabled-off-bg-color,
           variables.$clr-use-custom-properties
         );
         // toggle disabled/off border color (excluding the handle circle)
         @include mixins.css-var(
           border-color,
           clr-toggle-disabled-off-border-color,
-          button-variables.$clr-toggle-disabled-off-border-color,
+          toggle-variables.$clr-toggle-disabled-off-border-color,
           variables.$clr-use-custom-properties
         );
       }
@@ -190,7 +209,7 @@
         @include mixins.css-var(
           background-color,
           clr-toggle-disabled-off-bg-color,
-          button-variables.$clr-toggle-disabled-off-bg-color,
+          toggle-variables.$clr-toggle-disabled-off-bg-color,
           variables.$clr-use-custom-properties
         );
         // toggle handle color for disabled/off handle outer border circle
@@ -199,10 +218,10 @@
         @include mixins.css-var(
           border-color,
           clr-toggle-disabled-off-handle-border-color,
-          button-variables.$clr-toggle-disabled-off-handle-border-color,
+          toggle-variables.$clr-toggle-disabled-off-handle-border-color,
           variables.$clr-use-custom-properties
         );
-        @include mixins.equilateral(button-variables.$clr-toggle-switch-base-height);
+        @include mixins.equilateral(toggle-variables.$clr-toggle-switch-base-height);
         top: variables.$clr_baselineRem_3px;
       }
     }
@@ -212,14 +231,14 @@
       @include mixins.css-var(
         border-color,
         clr-toggle-disabled-on-border-color,
-        button-variables.$clr-toggle-disabled-on-border-color,
+        toggle-variables.$clr-toggle-disabled-on-border-color,
         variables.$clr-use-custom-properties
       );
       // toggle disabled/on bg color
       @include mixins.css-var(
         background-color,
         clr-toggle-disabled-on-bg-color,
-        button-variables.$clr-toggle-disabled-on-bg-color,
+        toggle-variables.$clr-toggle-disabled-on-bg-color,
         variables.$clr-use-custom-properties
       );
     }
@@ -229,45 +248,68 @@
       @include mixins.css-var(
         border-color,
         clr-toggle-disabled-on-handle-border-color,
-        button-variables.$clr-toggle-disabled-on-handle-border-color,
+        toggle-variables.$clr-toggle-disabled-on-handle-border-color,
         variables.$clr-use-custom-properties
       );
-      @include mixins.equilateral(button-variables.$clr-toggle-switch-height);
+      @include mixins.equilateral(toggle-variables.$clr-toggle-switch-height);
       top: variables.$clr_baselineRem_5px;
-      left: -1 * button-variables.$clr-toggle-switch-left-spacing;
+      @include mixins.css-var(
+        left,
+        --clr-toggle-switch-left-spacing-negative,
+        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        variables.$clr-use-custom-properties
+      );
     }
 
     input[type='checkbox']:disabled + label::after {
-      left: -1 *
-        (button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing);
+      @include mixins.css-var(
+        left,
+        --clr-toggle-icon-margin-negative,
+        toggle-variables.$clr-toggle-icon-margin-negative,
+        variables.$clr-use-custom-properties
+      );
     }
 
     // Allow for label to be on the right of the toggle switch.
     &.right-label {
       label {
-        margin-left: button-variables.$clr-toggle-switch-base-width +
-          button-variables.$clr-toggle-switch-base-left-spacing;
+        @include mixins.css-var(
+          margin-left,
+          clr-toggle-icon-margin,
+          toggle-variables.$clr-toggle-icon-margin,
+          variables.$clr-use-custom-properties
+        );
         margin-right: 0;
       }
 
       input[type='checkbox'] + label::before {
         right: 0;
-        left: -1 *
-          (button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing);
+        @include mixins.css-var(
+          left,
+          --clr-toggle-icon-margin-negative,
+          toggle-variables.$clr-toggle-icon-margin-negative,
+          variables.$clr-use-custom-properties
+        );
       }
 
       input[type='checkbox'] + label::after {
         right: 0;
-        left: -1 *
-          (
-            button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing -
-              variables.$clr_baselineRem_2px
-          );
+        @include mixins.css-var(
+          left,
+          clr-toggle-icon-dot-place,
+          toggle-variables.$clr-toggle-icon-dot-place,
+          variables.$clr-use-custom-properties
+        );
         transition-property: left;
       }
 
       input[type='checkbox']:checked + label::after {
-        left: -1 * button-variables.$clr-toggle-switch-left-spacing;
+        @include mixins.css-var(
+          left,
+          --clr-toggle-switch-left-spacing-negative,
+          toggle-variables.$clr-toggle-switch-left-spacing-negative,
+          variables.$clr-use-custom-properties
+        );
         transition-property: left;
       }
     }
@@ -275,56 +317,77 @@
     .clr-control-label {
       display: block;
       font-weight: 400;
-      line-height: (4 * forms-variables.$clr-forms-baseline);
+      line-height: (4 * toggle-variables.$clr-toggle-base-line);
     }
   }
 
   // These are the inline styles overrides
   .clr-control-inline .clr-toggle-wrapper .clr-control-label {
     display: inline-block;
-    margin-right: (2 * forms-variables.$clr-forms-baseline);
+    margin-right: (2 * toggle-variables.$clr-toggle-base-line);
   }
   // This sets the option to move the toggles to the right of the label
   .clr-toggle-right {
     label {
       display: inline-block;
-      margin-right: button-variables.$clr-toggle-switch-base-width +
-        button-variables.$clr-toggle-switch-base-left-spacing;
       margin-left: 0;
+      @include mixins.css-var(
+        margin-right,
+        clr-toggle-icon-margin,
+        toggle-variables.$clr-toggle-icon-margin,
+        variables.$clr-use-custom-properties
+      );
     }
     input[type='checkbox'] + label::before {
       left: unset;
-      right: -1 *
-        (button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing);
+      @include mixins.css-var(
+        right,
+        --clr-toggle-icon-margin-negative,
+        toggle-variables.$clr-toggle-icon-margin-negative,
+        variables.$clr-use-custom-properties
+      );
     }
     input[type='checkbox'] + label::after {
       left: unset;
-      right: -1 * button-variables.$clr-toggle-switch-left-spacing;
+      @include mixins.css-var(
+        right,
+        --clr-toggle-switch-left-spacing-negative,
+        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        variables.$clr-use-custom-properties
+      );
       transition-property: right;
     }
     input[type='checkbox']:checked + label::after {
       left: unset;
-      right: -1 *
-        (
-          button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing -
-            variables.$clr_baselineRem_2px
-        );
+      @include mixins.css-var(
+        right,
+        clr-toggle-icon-dot-place,
+        toggle-variables.$clr-toggle-icon-dot-place,
+        variables.$clr-use-custom-properties
+      );
       transition-property: right;
     }
     input[type='checkbox']:disabled + label::after {
       left: unset;
-      right: -1 * (button-variables.$clr-toggle-switch-left-spacing + variables.$clr_baselineRem_1px);
+      @include mixins.css-var(
+        right,
+        --clr-toggle-switch-left-spacing-negative,
+        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        variables.$clr-use-custom-properties
+      );
+      //right: -(toggle-variables.$clr-toggle-switch-left-spacing + variables.$clr_baselineRem_1px);
     }
     input[type='checkbox']:checked:disabled + label::after {
       left: unset;
-      right: -1 *
-        (
-          button-variables.$clr-toggle-switch-base-width + button-variables.$clr-toggle-switch-base-left-spacing -
-            variables.$clr_baselineRem_2px
-        );
+      @include mixins.css-var(
+        right,
+        clr-toggle-icon-dot-place,
+        toggle-variables.$clr-toggle-icon-dot-place,
+        variables.$clr-use-custom-properties
+      );
     }
     .clr-control-inline .clr-toggle-wrapper .clr-control-label {
-      margin-right: (9 * forms-variables.$clr-forms-baseline);
+      margin-right: (9 * toggle-variables.$clr-toggle-base-line);
     }
   }
 }
