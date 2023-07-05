@@ -13,11 +13,21 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    margin-top: forms-variables.$clr-forms-baseline;
-
+    @include mixins.css-var(
+      margin-top,
+      clr-forms-textarea-label-space,
+      forms-variables.$clr-forms-baseline,
+      variables.$clr-use-custom-properties
+    );
     .clr-validate-icon {
       margin-left: 0;
     }
+    @include mixins.css-var(
+      margin-bottom,
+      clr-forms-textarea-helper-message-space,
+      0,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-textarea {
@@ -47,8 +57,19 @@
       forms-variables.$clr-forms-text-color,
       variables.$clr-use-custom-properties
     );
-    border-radius: forms-variables.$clr-forms-baseline * 0.5;
-    padding: $textarea-vertical-padding $textarea-horizontal-padding;
+    @include mixins.css-var(
+      border-radius,
+      clr-forms-textarea-border-radius,
+      forms-variables.$clr-forms-baseline * 0.5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-forms-textarea-padding,
+      $textarea-vertical-padding $textarea-horizontal-padding,
+      variables.$clr-use-custom-properties
+    );
+
     font-size: forms-variables.$clr-forms-field-font-size;
 
     &:focus {

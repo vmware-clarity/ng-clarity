@@ -37,6 +37,8 @@
 
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
+      --clr-forms-textarea-label-space: #{forms-variables.$clr-forms-baseline};
+      --clr-forms-textarea-helper-message-space: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-focused-outline: 0
         0
         #{variables.$clr_baselineRem_2px}
@@ -65,6 +67,10 @@
           forms-variables.$clr-forms-invalid-color,
           $lightness: 30%
         )};
+      --clr-forms-textarea-padding: forms-variables.$clr-forms-baseline +
+        variables.$clr_baselineRem_2px
+        forms-variables.$clr-forms-baseline *
+        2;
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);

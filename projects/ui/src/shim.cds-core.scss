@@ -468,6 +468,10 @@
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
   --clr-forms-select-multiple-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
+  --clr-forms-textarea-padding: var(--cds-global-space-7);
+  --clr-forms-textarea-label-space: var(--cds-global-space-5);
+  --clr-forms-textarea-helper-message-space: var(--cds-global-space-5);
+  --clr-forms-textarea-border-radius: var(--cds-alias-object-border-radius-100);
 
   // Checkbox
   --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token
