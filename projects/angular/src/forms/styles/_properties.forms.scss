@@ -134,6 +134,11 @@
       --clr-forms-password-layout-space: #{forms-variables.$clr-forms-password-layout-space};
       --clr-forms-password-eye-icon-min-height: #{forms-variables.$clr-forms-password-eye-icon-min-height};
       --clr-forms-password-eye-icon-width: #{forms-variables.$clr-forms-password-eye-icon-width};
+
+      --clr-forms-password-default-typography-color: #{forms-variables.$clr-forms-password-default-typography-color};
+      --clr-forms-password-default-underline-color: #{forms-variables.$clr-forms-password-default-underline-color};
+
+      //--clr-forms-password-default-eye-icon-color: #{forms-variables.$clr-forms-password-default-eye-icon-color};
     }
   }
 }

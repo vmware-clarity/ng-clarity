@@ -728,6 +728,12 @@
   --clr-forms-password-eye-icon-min-height: var(--cds-global-space-9); // show/hide icon min-height
   --clr-forms-password-eye-icon-width: var(--cds-global-space-9); // show/hide icon width
 
+  --clr-forms-password-default-typography-color: var(--cds-alias-typography-color-400); // not present for the moment
+  --clr-forms-password-default-underline-color: var(--cds-alias-typography-color-300); // not present for the moment
+
+  // TODO: Check whether we really want to style icon color (rather than setting status - danger, highlight, info etc)
+  //--clr-forms-password-default-eye-icon-color: var(--cds-alias-interaction-color); // not present for the moment
+
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
