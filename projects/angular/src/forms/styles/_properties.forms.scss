@@ -130,9 +130,10 @@
 
       // Password
       --clr-forms-password-input-height: #{forms-variables.$clr-forms-password-input-height};
-      --clr-forms-password-padding: #{forms-variables.$clr-forms-password-padding};
+      --clr-forms-password-padding-bottom: #{forms-variables.$clr-forms-password-padding-bottom};
       --clr-forms-password-layout-space: #{forms-variables.$clr-forms-password-layout-space};
-      --clr-forms-password-eye-icon-size: #{forms-variables.$clr-forms-password-eye-icon-size};
+      --clr-forms-password-eye-icon-min-height: #{forms-variables.$clr-forms-password-eye-icon-min-height};
+      --clr-forms-password-eye-icon-width: #{forms-variables.$clr-forms-password-eye-icon-width};
     }
   }
 }
