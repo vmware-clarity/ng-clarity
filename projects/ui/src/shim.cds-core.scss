@@ -729,10 +729,12 @@
   --clr-forms-password-eye-icon-width: var(--cds-global-space-9); // show/hide icon width
 
   --clr-forms-password-default-typography-color: var(--cds-alias-typography-color-400); // not present for the moment
-  --clr-forms-password-default-underline-color: var(--cds-alias-typography-color-300); // not present for the moment
+  //--clr-forms-password-default-underline-color: var(--cds-alias-typography-color-300); // not present for the moment
 
-  // TODO: Check whether we really want to style icon color (rather than setting status - danger, highlight, info etc)
-  //--clr-forms-password-default-eye-icon-color: var(--cds-alias-interaction-color); // not present for the moment
+  // TODO: Make sure this is what we need,
+  //  in spec it is --cds-alias-interaction-color, which is gray, hence it's put as fallback here
+  --clr-forms-password-default-eye-icon-color: var(--cds-global-color-blue-700, --cds-alias-object-interaction-color);
+  --clr-forms-password-disabled-eye-icon-color: var(--cds-alias-status-disabled);
 
   /* Combobox */
 
