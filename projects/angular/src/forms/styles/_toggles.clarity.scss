@@ -255,7 +255,7 @@
       top: variables.$clr_baselineRem_5px;
       @include mixins.css-var(
         left,
-        --clr-toggle-switch-left-spacing-negative,
+        clr-toggle-switch-left-spacing-negative,
         toggle-variables.$clr-toggle-switch-left-spacing-negative,
         variables.$clr-use-custom-properties
       );
@@ -264,7 +264,7 @@
     input[type='checkbox']:disabled + label::after {
       @include mixins.css-var(
         left,
-        --clr-toggle-icon-margin-negative,
+        clr-toggle-icon-margin-negative,
         toggle-variables.$clr-toggle-icon-margin-negative,
         variables.$clr-use-custom-properties
       );
@@ -286,7 +286,7 @@
         right: 0;
         @include mixins.css-var(
           left,
-          --clr-toggle-icon-margin-negative,
+          clr-toggle-icon-margin-negative,
           toggle-variables.$clr-toggle-icon-margin-negative,
           variables.$clr-use-custom-properties
         );
@@ -306,7 +306,7 @@
       input[type='checkbox']:checked + label::after {
         @include mixins.css-var(
           left,
-          --clr-toggle-switch-left-spacing-negative,
+          clr-toggle-switch-left-spacing-negative,
           toggle-variables.$clr-toggle-switch-left-spacing-negative,
           variables.$clr-use-custom-properties
         );
@@ -342,7 +342,7 @@
       left: unset;
       @include mixins.css-var(
         right,
-        --clr-toggle-icon-margin-negative,
+        clr-toggle-icon-margin-negative,
         toggle-variables.$clr-toggle-icon-margin-negative,
         variables.$clr-use-custom-properties
       );
@@ -351,7 +351,7 @@
       left: unset;
       @include mixins.css-var(
         right,
-        --clr-toggle-switch-left-spacing-negative,
+        clr-toggle-switch-left-spacing-negative,
         toggle-variables.$clr-toggle-switch-left-spacing-negative,
         variables.$clr-use-custom-properties
       );
@@ -371,7 +371,7 @@
       left: unset;
       @include mixins.css-var(
         right,
-        --clr-toggle-switch-left-spacing-negative,
+        clr-toggle-switch-left-spacing-negative,
         toggle-variables.$clr-toggle-switch-left-spacing-negative,
         variables.$clr-use-custom-properties
       );
