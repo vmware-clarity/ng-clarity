@@ -625,11 +625,11 @@
   // colors
   --clr-toggle-bg-color-off: var(--cds-alias-status-neutral); // var(--clr-color-neutral-600);
   --clr-toggle-bg-color-on: var(--cds-alias-status-success); // var(--clr-color-success-500);
-  --clr-toggle-handle-bg-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-50);
 
   // disabled colors
-  --clr-toggle-disabled-default-border-color: var(--cds-global-color-gray-400); // var(--clr-color-neutral-400);
-  --clr-toggle-disabled-default-handle-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
+  --clr-toggle-disabled-default-border-color: var(--cds-alias-object-interaction-status-disabled, var(--cds-global-color-gray-400)); // var(--clr-color-neutral-400);
+  --clr-toggle-disabled-default-handle-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
   --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
 
@@ -639,9 +639,9 @@
   --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
 
-  --clr-toggle-height: var(--cds-global-space-7);
-  --clr-toggle-switch-base-height: var(--cds-global-space-8);
-  --clr-toggle-switch-base-width: calc(var(--cds-global-space-10) + var(--cds-global-space-1));
+  --clr-toggle-height: var(--cds-global-space-9);
+  --clr-toggle-switch-base-height: var(--cds-global-space-7);
+  --clr-toggle-switch-base-width: var(--cds-global-space-10);
   --clr-toggle-base-line: var(--cds-global-space-4);
   --clr-toggle-icon-margin: calc(var(--cds-global-space-11) + var(--cds-global-space-5));
   --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));

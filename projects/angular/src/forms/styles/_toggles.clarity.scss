@@ -23,22 +23,32 @@
   }
 
   .clr-toggle-wrapper {
-    height: toggle-variables.$clr-toggle-height;
     vertical-align: middle;
     position: relative;
     display: block;
     margin-right: variables.$clr_baselineRem_0_5;
+    @include mixins.css-var(
+      height,
+      clr-toggle-height,
+      toggle-variables.$clr-toggle-height,
+      variables.$clr-use-custom-properties
+    );
 
     label {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: toggle-variables.$clr-toggle-height;
       margin-right: 0;
       @include mixins.css-var(
         margin-left,
         clr-toggle-icon-margin,
         toggle-variables.$clr-toggle-icon-margin,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        height,
+        clr-toggle-height,
+        toggle-variables.$clr-toggle-height,
         variables.$clr-use-custom-properties
       );
     }
@@ -57,10 +67,20 @@
       position: absolute;
       display: inline-block;
       content: '';
-      height: toggle-variables.$clr-toggle-switch-base-height;
-      width: toggle-variables.$clr-toggle-switch-base-width;
       border: variables.$clr_baselineRem_2px solid;
       border-radius: variables.$clr_baselineRem_0_375;
+      @include mixins.css-var(
+        height,
+        clr-toggle-switch-base-height,
+        toggle-variables.$clr-toggle-switch-base-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        width,
+        clr-toggle-switch-base-width,
+        toggle-variables.$clr-toggle-switch-base-width,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         border-color,
         clr-toggle-bg-color-off,
