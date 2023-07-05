@@ -2,15 +2,15 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Properties                       | Description                                                   |
-| ------------------------------------------- | ------------------------------------------------------------- |
-| --clr-forms-radio-label-color               | The color of the label for radio buttons.                     |
-| --clr-forms-radio-disabled-background-color | The background color of disabled radio buttons.               |
-| --clr-forms-radio-disabled-mark-color       | The color of the mark (indicator) for disabled radio buttons. |
-| --clr-forms-radio-line-height               | The line height of the radio button wrapper.                  |
-| --clr-forms-radio-input-top                 | The top space for the radio input element.                    |
-| --clr-forms-radio-padding-left              | The left padding for radio label element.                     |
-| --clr-forms-radio-label-height              | The height of the radio label element.                        |
+| CSS Custom Properties                       | Description                                              |
+| ------------------------------------------- | -------------------------------------------------------- |
+| --clr-forms-radio-label-color               | Color of the label for radio buttons                     |
+| --clr-forms-radio-disabled-background-color | Background color of disabled radio buttons               |
+| --clr-forms-radio-disabled-mark-color       | Color of the mark (indicator) for disabled radio buttons |
+| --clr-forms-radio-line-height               | Line height of the radio button wrapper                  |
+| --clr-forms-radio-input-top                 | Top space for the radio input element                    |
+| --clr-forms-radio-padding-left              | Left padding for radio label element                     |
+| --clr-forms-radio-label-height              | Height of the radio label element                        |
 
 ## Classes
 
