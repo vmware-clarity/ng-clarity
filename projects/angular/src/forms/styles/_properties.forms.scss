@@ -145,6 +145,8 @@
 
       --clr-forms-password-disabled-typography-color: var(--clr-forms-text-disabled-color);
       --clr-forms-password-disabled-underline-color: var(--clr-forms-text-disabled-color);
+
+      --clr-forms-password-error-underline-color: var(--clr-forms-invalid-color);
     }
   }
 }

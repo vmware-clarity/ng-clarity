@@ -741,6 +741,8 @@
   --clr-forms-password-disabled-underline-color: var(--cds-alias-status-disabled, var(--clr-color-neutral-500));
 
   --clr-forms-password-disabled-typography-color: var(--cds-alias-typography-disabled, var(--cds-alias-typography-color-400)); // not present for the moment
+
+  --clr-forms-password-error-underline-color: var(--cds-alias-status-danger);
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
