@@ -117,7 +117,3 @@ $clr-forms-password-default-underline-color: $clr-forms-border-color !default;
 
 $clr-forms-password-default-eye-icon-color: $clr-forms-focused-color;
 $clr-forms-password-disabled-eye-icon-color: $clr-forms-text-disabled-color;
-
-// TODO: Double check whether we want flexibility for icons colors as iconography colors docs say that we set color
-// by providing status - danger, highlight, success etc
-//$clr-forms-password-default-eye-icon-color:purple;
