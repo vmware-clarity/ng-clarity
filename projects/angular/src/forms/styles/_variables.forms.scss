@@ -109,11 +109,4 @@ $clr-forms-range-margin: variables.$clr_baselineRem_5px;
 $clr-forms-password-input-height: variables.$clr_baselineRem_2_66 !default;
 $clr-forms-password-padding-bottom: variables.$clr_baselineRem_0_1 !default;
 $clr-forms-password-layout-space: variables.$clr_baselineRem_0_1 !default;
-$clr-forms-password-eye-icon-width: $clr-forms-icon-size; // 24px
 $clr-forms-password-eye-icon-min-height: $clr-forms-baseline * 4;
-
-$clr-forms-password-default-typography-color: $clr-forms-text-color !default;
-$clr-forms-password-default-underline-color: $clr-forms-border-color !default;
-
-$clr-forms-password-default-eye-icon-color: $clr-forms-focused-color;
-$clr-forms-password-disabled-eye-icon-color: $clr-forms-text-disabled-color;
