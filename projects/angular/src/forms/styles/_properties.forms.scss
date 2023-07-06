@@ -142,6 +142,8 @@
       --clr-forms-password-disabled-eye-icon-color: #{forms-variables.$clr-forms-password-disabled-eye-icon-color};
 
       //--clr-forms-password-default-eye-icon-color: #{forms-variables.$clr-forms-password-default-eye-icon-color};
+
+      --clr-forms-password-disabled-underline-color: var(--clr-forms-text-disabled-color);
     }
   }
 }
