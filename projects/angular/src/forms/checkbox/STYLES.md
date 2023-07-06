@@ -12,7 +12,6 @@
 | --clr-forms-checkbox-disabled-mark-color        | Color of disabled checkbox mark            |
 | --clr-forms-checkbox-border-radius              | Border radius of checkbox                  |
 | --clr-forms-checkbox-line-height                | Line height of the checkbox button wrapper |
-| --clr-forms-checkbox-input-top                  | Top space for the checkbox input element   |
 | --clr-forms-checkbox-padding-left               | Left padding for checkbox label element    |
 | --clr-forms-checkbox-label-height               | Height of the checkbox label element       |
 

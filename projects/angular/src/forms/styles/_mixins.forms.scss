@@ -118,16 +118,12 @@
   cursor: not-allowed;
 }
 
-@mixin checkbox-radio-input-styles(
-  $size,
-  $input-top: clr-forms-radio-input-top,
-  $input-top-fallback: forms-variables.$clr-forms-radio-input-top
-) {
+@mixin checkbox-radio-input-styles($size) {
   //Positioning
   position: absolute;
   opacity: 0;
+  top: variables.$clr_baselineRem_5px;
   left: 0;
-  @include mixins.css-var(top, $input-top, $input-top-fallback, variables.$clr-use-custom-properties);
 
   //Display
   //NOTE: Even though the input is invisible, we assign it a height

@@ -8,7 +8,6 @@
 | --clr-forms-radio-disabled-background-color | Background color of disabled radio buttons               |
 | --clr-forms-radio-disabled-mark-color       | Color of the mark (indicator) for disabled radio buttons |
 | --clr-forms-radio-line-height               | Line height of the radio button wrapper                  |
-| --clr-forms-radio-input-top                 | Top space for the radio input element                    |
 | --clr-forms-radio-padding-left              | Left padding for radio label element                     |
 | --clr-forms-radio-label-height              | Height of the radio label element                        |
 

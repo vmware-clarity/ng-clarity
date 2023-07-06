@@ -75,7 +75,6 @@
       --clr-forms-checkbox-disabled-mark-color: var(--clr-color-neutral-1000);
       --clr-forms-checkbox-border-radius: var(--clr-global-borderradius);
       --clr-forms-checkbox-line-height: #{forms-variables.$clr-forms-checkbox-line-height};
-      --clr-forms-checkbox-input-top: #{forms-variables.$clr-forms-checkbox-input-top};
       --clr-forms-checkbox-padding-left: #{forms-variables.$clr-forms-checkbox-padding-left};
       --clr-forms-checkbox-label-height: #{forms-variables.$clr-forms-checkbox-label-height};
       --clr-forms-checkbox-checked-shadow: inset
@@ -93,7 +92,6 @@
       --clr-forms-radio-selected-shadow: var(--clr-forms-checkbox-checked-shadow);
       --clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
       --clr-forms-radio-line-height: #{forms-variables.$clr-forms-radio-line-height};
-      --clr-forms-radio-input-top: #{forms-variables.$clr-forms-radio-input-top};
       --clr-forms-radio-padding-left: #{forms-variables.$clr-forms-radio-padding-left};
       --clr-forms-radio-label-height: #{forms-variables.$clr-forms-radio-label-height};
       --clr-forms-radio-focused-shadow: 0
