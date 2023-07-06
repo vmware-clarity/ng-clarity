@@ -740,6 +740,7 @@
   //--clr-forms-password-disabled-underline-color: var(--cds-alias-object-interaction-background-disabled, var(--clr-color-neutral-500));
   --clr-forms-password-disabled-underline-color: var(--cds-alias-status-disabled, var(--clr-color-neutral-500));
 
+  --clr-forms-password-disabled-typography-color: var(--cds-alias-typography-disabled, var(--cds-alias-typography-color-400)); // not present for the moment
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
