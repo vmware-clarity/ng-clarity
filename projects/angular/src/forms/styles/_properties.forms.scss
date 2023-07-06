@@ -37,8 +37,6 @@
 
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
-      --clr-forms-textarea-label-space: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-helper-message-space: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-focused-outline: 0
         0
         #{variables.$clr_baselineRem_2px}

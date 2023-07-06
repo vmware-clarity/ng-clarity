@@ -13,21 +13,9 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    @include mixins.css-var(
-      margin-top,
-      clr-forms-textarea-label-space,
-      forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
     .clr-validate-icon {
       margin-left: 0;
     }
-    @include mixins.css-var(
-      margin-bottom,
-      clr-forms-textarea-helper-message-space,
-      0,
-      variables.$clr-use-custom-properties
-    );
   }
 
   .clr-textarea {
