@@ -728,24 +728,20 @@
   --clr-forms-password-eye-icon-min-height: var(--cds-global-space-9); // show/hide icon min-height
   --clr-forms-password-eye-icon-width: var(--cds-global-space-9); // show/hide icon width
 
-  --clr-forms-password-default-typography-color: var(--cds-alias-typography-color-400); // not present for the moment
-  --clr-forms-password-default-underline-color: var(--cds-alias-typography-color-300); // not present for the moment
+  --clr-forms-password-typography-color: var(--cds-alias-typography-color-400); // not present for the moment
+  --clr-forms-password-underline-color: var(--cds-alias-typography-color-300); // not present for the moment
 
   // TODO: Make sure this is what we need,
   //  in spec it is --cds-alias-interaction-color, which is gray, hence it's put as fallback here
-  --clr-forms-password-default-eye-icon-color: var(--cds-global-color-blue-700, --cds-alias-object-interaction-color);
+  --clr-forms-password-eye-icon-color: var(--cds-global-color-blue-700, --cds-alias-object-interaction-color);
   --clr-forms-password-disabled-eye-icon-color: var(--cds-alias-status-disabled);
 
   // TODO: This is in spec, but it seems to be white, we need the second color
   //--clr-forms-password-disabled-underline-color: var(--cds-alias-object-interaction-background-disabled, var(--clr-color-neutral-500));
   --clr-forms-password-disabled-underline-color: var(--cds-alias-status-disabled, var(--clr-color-neutral-500));
-
   --clr-forms-password-disabled-typography-color: var(--cds-alias-typography-disabled, var(--cds-alias-typography-color-400));
-
   --clr-forms-password-active-underline-color: var(--cds-alias-object-interaction-background-highlight);
-
   --clr-forms-password-error-underline-color: var(--cds-alias-status-danger);
-
   --clr-forms-password-success-underline-color: var(--cds-alias-status-success);
   /* Combobox */
 
