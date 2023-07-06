@@ -742,6 +742,8 @@
 
   --clr-forms-password-disabled-typography-color: var(--cds-alias-typography-disabled, var(--cds-alias-typography-color-400)); // not present for the moment
 
+  --clr-forms-password-active-underline-color: var(--cds-alias-object-interaction-background-highlight);
+
   --clr-forms-password-error-underline-color: var(--cds-alias-status-danger);
 
   --clr-forms-password-success-underline-color: var(--cds-alias-status-success);
