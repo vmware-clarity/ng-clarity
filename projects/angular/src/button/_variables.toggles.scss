@@ -13,16 +13,10 @@ $clr-toggle-switch-base-height: variables.$clr_baselineRem_0_75 !default;
 $clr-toggle-switch-base-width: variables.$clr_baselineRem_1_375 !default;
 $clr-toggle-switch-height: variables.$clr_baselineRem_0_583 !default;
 $clr-toggle-switch-base-left-spacing: variables.$clr_baselineRem_0_375 !default;
-$clr-toggle-base-line: form-variables.$clr-forms-baseline !default;
-$clr-toggle-icon-margin: $clr-toggle-switch-base-width + $clr-toggle-switch-base-left-spacing !default;
-$clr-toggle-icon-margin-negative: -1 * ($clr-toggle-icon-margin) !default;
-$clr-toggle-icon-dot-place: -1 * ($clr-toggle-icon-margin - variables.$clr_baselineRem_2px) !default;
 $clr-toggle-switch-left-spacing: $clr-toggle-switch-base-width - $clr-toggle-switch-base-left-spacing +
   variables.$clr_baselineRem_1px !default;
-$clr-toggle-switch-left-spacing-negative: -1 * ($clr-toggle-switch-left-spacing) !default;
 $clr-toggle-transition-time: 0.15s !default;
 $clr-toggle-transition-animation: ease-in !default;
-$clr-toggle-icon-top: (variables.$clr_baselineRem_2px + 0.5 * $clr-toggle-base-line);
 
 // Usage: ../button/_toggles.clarity.scss
 // Colors (disabled)

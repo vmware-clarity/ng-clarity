@@ -5,6 +5,7 @@
  */
 @use 'sass:meta';
 @use '../../button/variables.toggles' as toggle-variables;
+@use '../styles/variables.forms' as form-variables;
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
@@ -42,7 +43,7 @@
       @include mixins.css-var(
         margin-left,
         clr-toggle-icon-margin,
-        toggle-variables.$clr-toggle-icon-margin,
+        toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -93,12 +94,17 @@
         toggle-variables.$clr-toggle-bg-color-off,
         variables.$clr-use-custom-properties
       );
-      top: (toggle-variables.$clr-toggle-base-line * 0.5);
+      @include mixins.css-var(
+        top,
+        clr-toggle-icon-top,
+        form-variables.$clr-forms-baseline * 0.5,
+        variables.$clr-use-custom-properties
+      );
       right: 0;
       @include mixins.css-var(
         left,
         clr-toggle-icon-margin-negative,
-        toggle-variables.$clr-toggle-icon-margin-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing),
         variables.$clr-use-custom-properties
       );
       @include clr-toggle-transition-styles;
@@ -137,11 +143,11 @@
       right: 0;
       @include mixins.css-var(
         top,
-        clr-toggle-icon-top,
-        toggle-variables.$clr-toggle-icon-top,
+        clr-toggle-icon-dot-top,
+        variables.$clr_baselineRem_2px + 0.5 * form-variables.$clr-forms-baseline,
         variables.$clr-use-custom-properties
       );
-      @include mixins.equilateral(toggle-variables.$clr-toggle-switch-height);
+      @include mixins.equilateral(var(--clr-toggle-dot-diameter));
       @include mixins.css-var(
         border-color,
         clr-toggle-handle-bg-color,
@@ -157,7 +163,8 @@
       @include mixins.css-var(
         left,
         clr-toggle-icon-dot-place,
-        toggle-variables.$clr-toggle-icon-dot-place,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing -
+              variables.$clr_baselineRem_2px),
         variables.$clr-use-custom-properties
       );
       @include clr-toggle-transition-styles;
@@ -168,13 +175,14 @@
       @include mixins.css-var(
         right,
         clr-toggle-icon-dot-place,
-        toggle-variables.$clr-toggle-icon-dot-place,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing -
+              variables.$clr_baselineRem_2px),
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
         left,
         clr-toggle-switch-left-spacing-negative,
-        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
         variables.$clr-use-custom-properties
       );
       @include clr-toggle-transition-styles;
@@ -241,8 +249,13 @@
           toggle-variables.$clr-toggle-disabled-off-handle-border-color,
           variables.$clr-use-custom-properties
         );
-        @include mixins.equilateral(toggle-variables.$clr-toggle-switch-base-height);
-        top: variables.$clr_baselineRem_3px;
+        @include mixins.equilateral(var(--clr-toggle-switch-base-height));
+        @include mixins.css-var(
+          top,
+          clr-toggle-icon-dot-top-disabled,
+          variables.$clr_baselineRem_3px,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -271,12 +284,17 @@
         toggle-variables.$clr-toggle-disabled-on-handle-border-color,
         variables.$clr-use-custom-properties
       );
-      @include mixins.equilateral(toggle-variables.$clr-toggle-switch-height);
-      top: variables.$clr_baselineRem_5px;
+      @include mixins.equilateral(var(--clr-toggle-dot-diameter));
+      @include mixins.css-var(
+        top,
+        clr-toggle-icon-dot-top,
+        variables.$clr_baselineRem_5px,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         left,
         clr-toggle-switch-left-spacing-negative,
-        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
         variables.$clr-use-custom-properties
       );
     }
@@ -285,7 +303,7 @@
       @include mixins.css-var(
         left,
         clr-toggle-icon-margin-negative,
-        toggle-variables.$clr-toggle-icon-margin-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing),
         variables.$clr-use-custom-properties
       );
     }
@@ -296,7 +314,7 @@
         @include mixins.css-var(
           margin-left,
           clr-toggle-icon-margin,
-          toggle-variables.$clr-toggle-icon-margin,
+          toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing,
           variables.$clr-use-custom-properties
         );
         margin-right: 0;
@@ -307,7 +325,7 @@
         @include mixins.css-var(
           left,
           clr-toggle-icon-margin-negative,
-          toggle-variables.$clr-toggle-icon-margin-negative,
+          -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing),
           variables.$clr-use-custom-properties
         );
       }
@@ -317,7 +335,8 @@
         @include mixins.css-var(
           left,
           clr-toggle-icon-dot-place,
-          toggle-variables.$clr-toggle-icon-dot-place,
+          -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing -
+                variables.$clr_baselineRem_2px),
           variables.$clr-use-custom-properties
         );
         transition-property: left;
@@ -327,7 +346,7 @@
         @include mixins.css-var(
           left,
           clr-toggle-switch-left-spacing-negative,
-          toggle-variables.$clr-toggle-switch-left-spacing-negative,
+          -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
           variables.$clr-use-custom-properties
         );
         transition-property: left;
@@ -337,14 +356,14 @@
     .clr-control-label {
       display: block;
       font-weight: 400;
-      line-height: (4 * toggle-variables.$clr-toggle-base-line);
+      line-height: (4 * form-variables.$clr-forms-baseline);
     }
   }
 
   // These are the inline styles overrides
   .clr-control-inline .clr-toggle-wrapper .clr-control-label {
     display: inline-block;
-    margin-right: (2 * toggle-variables.$clr-toggle-base-line);
+    margin-right: (2 * form-variables.$clr-forms-baseline);
   }
   // This sets the option to move the toggles to the right of the label
   .clr-toggle-right {
@@ -354,7 +373,7 @@
       @include mixins.css-var(
         margin-right,
         clr-toggle-icon-margin,
-        toggle-variables.$clr-toggle-icon-margin,
+        toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing,
         variables.$clr-use-custom-properties
       );
     }
@@ -363,7 +382,7 @@
       @include mixins.css-var(
         right,
         clr-toggle-icon-margin-negative,
-        toggle-variables.$clr-toggle-icon-margin-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing),
         variables.$clr-use-custom-properties
       );
     }
@@ -372,7 +391,7 @@
       @include mixins.css-var(
         right,
         clr-toggle-switch-left-spacing-negative,
-        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
         variables.$clr-use-custom-properties
       );
       transition-property: right;
@@ -382,7 +401,8 @@
       @include mixins.css-var(
         right,
         clr-toggle-icon-dot-place,
-        toggle-variables.$clr-toggle-icon-dot-place,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing -
+              variables.$clr_baselineRem_2px),
         variables.$clr-use-custom-properties
       );
       transition-property: right;
@@ -392,7 +412,7 @@
       @include mixins.css-var(
         right,
         clr-toggle-switch-left-spacing-negative,
-        toggle-variables.$clr-toggle-switch-left-spacing-negative,
+        -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
         variables.$clr-use-custom-properties
       );
       //right: -(toggle-variables.$clr-toggle-switch-left-spacing + variables.$clr_baselineRem_1px);
@@ -402,12 +422,13 @@
       @include mixins.css-var(
         right,
         clr-toggle-icon-dot-place,
-        toggle-variables.$clr-toggle-icon-dot-place,
+        -1 * (toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing -
+              variables.$clr_baselineRem_2px),
         variables.$clr-use-custom-properties
       );
     }
     .clr-control-inline .clr-toggle-wrapper .clr-control-label {
-      margin-right: (9 * toggle-variables.$clr-toggle-base-line);
+      margin-right: (9 * form-variables.$clr-forms-baseline);
     }
   }
 }
