@@ -48,7 +48,7 @@
         )
     );
     --clr-toggle-icon-top: calc(0.5 * #{form-variables.$clr-forms-baseline});
-    --clr-toggle-icon-dot-top-disabled: variables.$clr_baselineRem_3px;
+    --clr-toggle-icon-dot-top-disabled: #{variables.$clr_baselineRem_3px};
     --clr-toggle-icon-dot-top: calc(#{variables.$clr_baselineRem_2px} + (0.5 * #{form-variables.$clr-forms-baseline}));
   }
 }

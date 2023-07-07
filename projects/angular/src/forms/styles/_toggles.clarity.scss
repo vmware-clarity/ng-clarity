@@ -412,10 +412,9 @@
       @include mixins.css-var(
         right,
         clr-toggle-switch-left-spacing-negative,
-        -1 * (toggle-variables.$clr-toggle-switch-left-spacing),
+        -1 * (toggle-variables.$clr-toggle-switch-left-spacing + variables.$clr_baselineRem_1px),
         variables.$clr-use-custom-properties
       );
-      //right: -(toggle-variables.$clr-toggle-switch-left-spacing + variables.$clr_baselineRem_1px);
     }
     input[type='checkbox']:checked:disabled + label::after {
       left: unset;
