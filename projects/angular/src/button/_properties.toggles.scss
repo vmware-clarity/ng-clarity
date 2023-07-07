@@ -13,6 +13,8 @@
     --clr-toggle-bg-color-off: var(--clr-color-neutral-600);
     --clr-toggle-bg-color-on: var(--clr-color-success-500);
     --clr-toggle-handle-bg-color: var(--clr-color-neutral-50);
+    --clr-toggle-handle-border-color: var(--clr-toggle-handle-bg-color);
+    --clr-toggle-handle-border-color-on: var(--clr-toggle-handle-bg-color); // var(--clr-color-neutral-50);
 
     // disabled colors
     --clr-toggle-disabled-default-border-color: var(--clr-color-neutral-400);

@@ -137,7 +137,7 @@
       position: absolute;
       display: inline-block;
       content: '';
-      border-width: variables.$clr-global-borderwidth;
+      border-width: variables.$clr_baselineRem_2px;
       border-style: solid;
       border-radius: 50%;
       right: 0;
@@ -147,10 +147,21 @@
         variables.$clr_baselineRem_2px + 0.5 * form-variables.$clr-forms-baseline,
         variables.$clr-use-custom-properties
       );
-      @include mixins.equilateral(var(--clr-toggle-dot-diameter));
+      @include mixins.css-var(
+        height,
+        clr-toggle-dot-diameter,
+        toggle-variables.$clr-toggle-switch-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        width,
+        clr-toggle-dot-diameter,
+        toggle-variables.$clr-toggle-switch-height,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         border-color,
-        clr-toggle-handle-bg-color,
+        clr-toggle-handle-border-color,
         toggle-variables.$clr-toggle-handle-bg-color,
         variables.$clr-use-custom-properties
       );
@@ -172,6 +183,12 @@
     }
 
     input[type='checkbox']:checked + label::after {
+      @include mixins.css-var(
+        border-color,
+        clr-toggle-handle-border-color-on,
+        toggle-variables.$clr-toggle-handle-bg-color,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         right,
         clr-toggle-icon-dot-place,
@@ -240,8 +257,6 @@
           toggle-variables.$clr-toggle-disabled-off-bg-color,
           variables.$clr-use-custom-properties
         );
-        // toggle handle color for disabled/off handle outer border circle
-        border-width: variables.$clr_baselineRem_2px;
         border-style: solid;
         @include mixins.css-var(
           border-color,
@@ -249,7 +264,18 @@
           toggle-variables.$clr-toggle-disabled-off-handle-border-color,
           variables.$clr-use-custom-properties
         );
-        @include mixins.equilateral(var(--clr-toggle-switch-base-height));
+        @include mixins.css-var(
+          height,
+          clr-toggle-switch-base-height,
+          toggle-variables.$clr-toggle-switch-base-height,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          width,
+          clr-toggle-switch-base-height,
+          toggle-variables.$clr-toggle-switch-base-height,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.css-var(
           top,
           clr-toggle-icon-dot-top-disabled,
@@ -284,7 +310,18 @@
         toggle-variables.$clr-toggle-disabled-on-handle-border-color,
         variables.$clr-use-custom-properties
       );
-      @include mixins.equilateral(var(--clr-toggle-dot-diameter));
+      @include mixins.css-var(
+        height,
+        clr-toggle-dot-diameter,
+        toggle-variables.$clr-toggle-switch-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        width,
+        clr-toggle-dot-diameter,
+        toggle-variables.$clr-toggle-switch-height,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         top,
         clr-toggle-icon-dot-top,
