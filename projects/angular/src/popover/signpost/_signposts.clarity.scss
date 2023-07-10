@@ -6,7 +6,9 @@
 
 @use 'sass:map';
 @use '../../utils/mixins';
+@use 'properties.signpost';
 @use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.color' as color-variables;
 @use 'variables.signpost' as signpost-variables;
 
 @include mixins.exports('signpost.clarity') {
@@ -552,6 +554,12 @@
     width: 100%;
     background-color: inherit;
     top: 0;
+    @include mixins.css-var(
+      border-radius,
+      clr-signpost-border-radius,
+      signpost-variables.$clr-signpost-border-radius,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .signpost-wrap {
@@ -585,7 +593,19 @@
   }
 
   .signpost-content-body {
-    padding: variables.$clr_baselineRem_1;
+    @include mixins.css-var(
+      padding,
+      clr-signpost-content-padding,
+      variables.$clr_baselineRem_1,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      clr-signpost-content-color,
+      color-variables.$clr-color-neutral-700,
+      variables.$clr-use-custom-properties
+    );
+
     max-height: variables.$clr_baselineRem_20;
     overflow-y: auto;
   }
