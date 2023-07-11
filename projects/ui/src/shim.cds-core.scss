@@ -570,7 +570,7 @@
   --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
   --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
   --clr-signpost-border-radius: var(--cds-alias-object-border-radius-100);
-  --clr-signpost-content-padding: var(--cds-global-space-7);
+  --clr-signpost-content-padding: var(--cds-global-space-0) var(--cds-global-space-7) var(--cds-global-space-7);
 
   /* StackView */
 
