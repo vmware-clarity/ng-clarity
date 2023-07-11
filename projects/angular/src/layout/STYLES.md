@@ -15,7 +15,7 @@
 | --clr-card-clickable-border-color     | Clickable cards background color. |
 | --clr-card-clickable-box-shadow-color | Clickable cards shadow color.     |
 
-## Class names
+## CSS Classes
 
 | Class                  | Description                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -56,7 +56,7 @@
 | --clr-login-panel-line-color       | Color of the divider line.      |
 | --clr-login-panel-line-opacity     | Opacity to the divider line.    |
 
-## Class names
+## CSS Classes
 
 | Class         | Description                                                                       |
 | ------------- | --------------------------------------------------------------------------------- |

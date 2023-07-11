@@ -14,7 +14,7 @@
 | --clr-modal-title-font-family        | Font family of modal title     |
 | --clr-modal-title-font-weight        | Font weight of modal title     |
 
-## Class names
+## CSS Classes
 
 | Class name          | Description                                        |
 | ------------------- | -------------------------------------------------- |

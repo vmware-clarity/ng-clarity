@@ -12,7 +12,7 @@
 | --clr-forms-checkbox-disabled-mark-color        | Color of disabled checkbox mark        |
 | --clr-forms-checkbox-border-radius              | Border radius of checkbox              |
 
-## Class names
+## CSS Classes
 
 | Class name           | Description                              |
 | -------------------- | ---------------------------------------- |
@@ -35,7 +35,7 @@
 | --clr-toggle-disabled-on-bg-color             | Background color for disabled toggle that is on       |
 | --clr-toggle-disabled-on-handle-border-color  | Handle border color for disabled toggle that is on    |
 
-## Class names
+## CSS Classes
 
 | Class name         | Description                                                       |
 | ------------------ | ----------------------------------------------------------------- |

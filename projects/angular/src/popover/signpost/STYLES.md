@@ -13,7 +13,7 @@
 | --clr-signpost-pointer-invisible-border | Signpost pointer invisible border. |
 | --clr-signpost-pointer-psuedo-border    | Signpost pointer psuedo border.    |
 
-## Class names
+## CSS Classes
 
 | Class name              | Description                                                   |
 | ----------------------- | ------------------------------------------------------------- |

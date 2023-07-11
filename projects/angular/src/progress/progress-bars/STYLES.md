@@ -10,7 +10,7 @@
 | --clr-progress-alt-color-3   | Warning color    |
 | --clr-progress-bg-color      | Background color |
 
-## Class names
+## CSS Classes
 
 | Class name      | Description                                                              |
 | --------------- | ------------------------------------------------------------------------ |

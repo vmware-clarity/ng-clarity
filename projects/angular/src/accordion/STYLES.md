@@ -25,7 +25,7 @@
 | --clr-accordion-header-left-complete-indicator | Left indicator style for the accordion header in the complete state. |
 | --clr-accordion-header-left-error-indicator    | Left indicator style for the accordion header in the error state.    |
 
-##CSS Classes
+## CSS Classes
 
 | Class Name                           | Description                                           |
 | ------------------------------------ | ----------------------------------------------------- |
