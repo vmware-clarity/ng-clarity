@@ -5,10 +5,10 @@
  */
 @use 'sass:meta';
 @use '../../button/variables.toggles' as toggle-variables;
-@use '../styles/variables.forms' as form-variables;
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use 'variables.forms' as forms-variables;
 
 @mixin clr-toggle-transition-styles() {
   transition-duration: toggle-variables.$clr-toggle-transition-time;
@@ -97,7 +97,7 @@
       @include mixins.css-var(
         top,
         clr-toggle-icon-top,
-        form-variables.$clr-forms-baseline * 0.5,
+        forms-variables.$clr-forms-baseline * 0.5,
         variables.$clr-use-custom-properties
       );
       right: 0;
@@ -144,7 +144,7 @@
       @include mixins.css-var(
         top,
         clr-toggle-icon-dot-top,
-        variables.$clr_baselineRem_2px + 0.5 * form-variables.$clr-forms-baseline,
+        variables.$clr_baselineRem_2px + 0.5 * forms-variables.$clr-forms-baseline,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -393,14 +393,14 @@
     .clr-control-label {
       display: block;
       font-weight: 400;
-      line-height: (4 * form-variables.$clr-forms-baseline);
+      line-height: (4 * forms-variables.$clr-forms-baseline);
     }
   }
 
   // These are the inline styles overrides
   .clr-control-inline .clr-toggle-wrapper .clr-control-label {
     display: inline-block;
-    margin-right: (2 * form-variables.$clr-forms-baseline);
+    margin-right: (2 * forms-variables.$clr-forms-baseline);
   }
   // This sets the option to move the toggles to the right of the label
   .clr-toggle-right {
@@ -464,7 +464,7 @@
       );
     }
     .clr-control-inline .clr-toggle-wrapper .clr-control-label {
-      margin-right: (9 * form-variables.$clr-forms-baseline);
+      margin-right: (9 * forms-variables.$clr-forms-baseline);
     }
   }
 }
