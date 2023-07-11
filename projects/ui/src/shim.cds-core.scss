@@ -630,7 +630,7 @@
   --clr-toggle-handle-border-color-on: var(--clr-toggle-bg-color-on); // var(--clr-color-neutral-50);
 
   // disabled colors
-  --clr-toggle-disabled-default-border-color: var(--cds-alias-object-interaction-status-disabled, var(--cds-global-color-gray-400)); // var(--clr-color-neutral-400);
+  --clr-toggle-disabled-default-border-color: var(--cds-alias-object-interaction-color-disabled, var(--cds-global-color-gray-400)); // var(--clr-color-neutral-400);
   --clr-toggle-disabled-default-handle-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
   --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
