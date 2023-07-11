@@ -11,7 +11,7 @@
 | --clr-tree-link-text-color             | Tree link default font color    |
 | --clr-tree-node-caret-color            | Tree link caret color           |
 
-## Class names
+## CSS Classes
 
 | Class name                      | Description                                 |
 | ------------------------------- | ------------------------------------------- |

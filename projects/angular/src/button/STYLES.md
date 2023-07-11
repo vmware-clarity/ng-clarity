@@ -138,7 +138,7 @@
 | --clr-btn-inverse-checked-color                 | Checked checkbox inverse button text color.                                 |
 | --clr-btn-inverse-checked-bg-color              | Checked checkbox inverse button background color.                           |
 
-## Class names
+## CSS Classes
 
 | Class name          | Description                                              |
 | ------------------- | -------------------------------------------------------- |

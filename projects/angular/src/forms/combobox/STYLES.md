@@ -15,7 +15,7 @@
 | --clr-combobox-pill-font-color        | Text color of the selected items pills in a multiselect combobox       |
 | --clr-combobox-filter-highlight       | Combobox filter highlight color                                        |
 
-## Class names
+## CSS Classes
 
 | Class name                 | Description                                           |
 | -------------------------- | ----------------------------------------------------- |

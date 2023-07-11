@@ -15,7 +15,7 @@
 | --clr-vertical-nav-trigger-divider-border-color | Vertical nav trigger divider border color. |
 | --clr-vertical-nav-header-font-weight           | Vertical nav header font weight.           |
 
-## Class names
+## CSS Classes
 
 | Class name             | Description                                                      |
 | ---------------------- | ---------------------------------------------------------------- |

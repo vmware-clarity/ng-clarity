@@ -7,7 +7,7 @@
 | --clr-forms-range-progress-fill-color | The color of the range fill progress. |
 | --clr-forms-range-track-color         | The color of the range track.         |
 
-## Classes
+## CSS Classes
 
 | Class Name        | Description                                                 |
 | ----------------- | ----------------------------------------------------------- |

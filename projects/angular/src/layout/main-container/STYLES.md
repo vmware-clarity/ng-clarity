@@ -6,7 +6,7 @@
 | --------------------------- | ----------------------------------- |
 | --clr-global-app-background | Global application background color |
 
-## Class names
+## CSS Classes
 
 | Class name        | Description                        |
 | ----------------- | ---------------------------------- |
@@ -40,7 +40,7 @@
 | --clr-header-title-font-weight | Header branding title text fort weight     |
 | --clr-header-title-font-family | Header branding title font family          |
 
-## Class names
+## CSS Classes
 
 | Class name               | Description                          |
 | ------------------------ | ------------------------------------ |
