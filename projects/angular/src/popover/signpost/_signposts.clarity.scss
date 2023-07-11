@@ -550,10 +550,16 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
-    position: absolute;
     width: 100%;
     background-color: inherit;
     top: 0;
+    @include mixins.css-var(
+      position,
+      clr-signpost-content-header-position,
+      absolute,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(padding, clr-signpost-content-header-padding, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-radius,
       clr-signpost-border-radius,

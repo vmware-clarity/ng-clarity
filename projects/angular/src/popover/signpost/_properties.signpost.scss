@@ -24,6 +24,9 @@
       --clr-signpost-pointer-psuedo-border: #{signpost-variables.$clr-signpost-pointer-psuedo-border};
       --clr-signpost-content-padding: #{variables.$clr_baselineRem_1};
       --clr-signpost-content-color: var(--clr-color-neutral-700);
+
+      --clr-signpost-content-header-position: absolute;
+      --clr-signpost-content-header-padding: 0;
     }
   }
 }
