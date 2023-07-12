@@ -9,7 +9,7 @@
 | --clr-tooltip-color            | Color of the tooltip text       |
 | --clr-tooltip-font-weight      | Font weight of the tooltip text |
 
-## Class names
+## CSS Classes
 
 | Class name          | Description                                                            |
 | ------------------- | ---------------------------------------------------------------------- |

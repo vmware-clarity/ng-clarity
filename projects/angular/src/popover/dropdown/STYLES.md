@@ -19,7 +19,7 @@
 | --clr-dropdown-item-color           | The color of the dropdown item.                                  |
 | --clr-dropdown-item-font-weight     | Not used.                                                        |
 
-## Classes
+## CSS Classes
 
 | Class            | Description                                       |
 | ---------------- | ------------------------------------------------- |

@@ -8,7 +8,7 @@
 | --clr-forms-textarea-focused-outline         | Outline for focused textarea.                     |
 | --clr-forms-textarea-invalid-focused-outline | Outline for focused textarea in an invalid state. |
 
-## Classes
+## CSS Classes
 
 | Class Name           | Description                    |
 | -------------------- | ------------------------------ |

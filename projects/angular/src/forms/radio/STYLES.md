@@ -8,7 +8,7 @@
 | --clr-forms-radio-disabled-background-color | The background color of disabled radio buttons.               |
 | --clr-forms-radio-disabled-mark-color       | The color of the mark (indicator) for disabled radio buttons. |
 
-## Classes
+## CSS Classes
 
 | Class             | Description                                              |
 | ----------------- | -------------------------------------------------------- |

@@ -17,7 +17,7 @@
 | --clr-signpost-content-header-position  | Signpost content header position.  |
 | --clr-signpost-content-header-padding   | Signpost content header padding.   |
 
-## Class names
+## CSS Classes
 
 | Class name              | Description                                                   |
 | ----------------------- | ------------------------------------------------------------- |
