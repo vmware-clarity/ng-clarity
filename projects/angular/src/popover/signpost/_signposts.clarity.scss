@@ -35,11 +35,19 @@
         @include mixins.equilateral(variables.$clr_baselineRem_1);
       }
 
-      &:hover,
-      &.active {
+      &:hover {
         @include mixins.css-var(
           color,
           clr-signpost-action-hover-color,
+          signpost-variables.$clr-signpost-action-hover-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+
+      &.active {
+        @include mixins.css-var(
+          color,
+          clr-signpost-action-active-color,
           signpost-variables.$clr-signpost-action-hover-color,
           variables.$clr-use-custom-properties
         );
