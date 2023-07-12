@@ -22,7 +22,8 @@
                 class="signpost-action btn btn-small btn-link"
                 clrSignpostTrigger
               >
-                <cds-icon shape="help-info"></cds-icon>
+                {{ position.text }}
+                <cds-icon shape="{{ position.icon }}"></cds-icon>
               </button>
               <clr-signpost-content *clrIfOpen [clrPosition]="position.position">
                 <p>{{ position.position }}</p>
