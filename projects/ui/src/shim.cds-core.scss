@@ -566,7 +566,7 @@
   --clr-signpost-content-header-padding: var(--cds-global-space-7) var(--cds-global-space-7) var(--cds-global-space-5);
 
   // NOTE: I had to use hardcoded border size value in order to avoid sass variables
-  --clr-signpost-border-size: 0.6rem;
+  --clr-signpost-border-size: var(--cds-global-space-6);
   --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
   --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
   --clr-signpost-border-radius: var(--cds-alias-object-border-radius-100);

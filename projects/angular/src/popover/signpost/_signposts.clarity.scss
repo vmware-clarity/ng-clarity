@@ -276,7 +276,7 @@
           variables.$clr-use-custom-properties
         );
 
-        right: 50%;
+        left: 50%;
 
         &:before {
           @include mixins.css-var(
@@ -387,7 +387,6 @@
         );
 
         top: 50%;
-        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
@@ -501,7 +500,6 @@
         );
 
         top: 50%;
-        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
