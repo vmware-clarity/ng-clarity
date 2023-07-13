@@ -20,7 +20,14 @@
     }
 
     .signpost-action {
-      min-width: variables.$clr_baselineRem_1;
+      // to be removed once shim is fully integrated.
+      @include mixins.css-var(
+        min-width,
+        clr-signpost-action-icon-dimension,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+
       margin: 0;
       padding: 0;
       @include mixins.css-var(
@@ -32,7 +39,27 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_1);
+        // to be removed once shim is fully integrated.
+        @include mixins.css-var(
+          width,
+          clr-signpost-action-icon-dimension,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+        // to be removed once shim is fully integrated.
+        @include mixins.css-var(
+          height,
+          clr-signpost-action-icon-dimension,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+
+        @include mixins.css-var(
+          color,
+          clr-signpost-action-icon-color,
+          signpost-variables.$clr-signpost-action-color,
+          variables.$clr-use-custom-properties
+        );
       }
 
       cds-icon:hover,

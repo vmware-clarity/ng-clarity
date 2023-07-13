@@ -14,7 +14,9 @@
       --clr-signpost-content-bg-color: var(--clr-color-neutral-0);
       --clr-signpost-content-border-color: var(--clr-color-neutral-500);
 
+      --clr-signpost-action-icon-dimension: #{variables.$clr_baselineRem_1}; // to be removed when shim is fully integrated
       --clr-signpost-action-color: var(--clr-color-neutral-600);
+      --clr-signpost-action-icon-color: var(--clr-btn-link-color);
       --clr-signpost-action-hover-color: var(--clr-color-action-700);
       --clr-signpost-action-active-color: var(--clr-color-action-700);
 

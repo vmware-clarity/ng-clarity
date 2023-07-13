@@ -560,7 +560,9 @@
   --clr-signpost-content-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-signpost-content-border-color: var(--cds-alias-object-interaction-border-color); // var(--clr-color-neutral-500);
 
+  --clr-signpost-action-icon-dimension: var(--cds-global-space-0); // to be removed when shim is fully integrated
   --clr-signpost-action-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
+  --clr-signpost-action-icon-color: var(--clr-signpost-action-color);
   --clr-signpost-action-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-action-700);
   --clr-signpost-action-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-action-700);
   --clr-signpost-content-header-position: static;

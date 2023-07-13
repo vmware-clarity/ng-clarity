@@ -17,9 +17,10 @@
           <div class="position">
             <clr-signpost>
               <button
+                *ngIf="position.useCustomTrigger"
                 id="{{ position.id }}"
                 type="button"
-                class="signpost-action btn btn-small btn-link"
+                class="btn btn-small btn-link"
                 clrSignpostTrigger
               >
                 {{ position.text }}
