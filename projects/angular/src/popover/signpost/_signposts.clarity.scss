@@ -35,6 +35,8 @@
         @include mixins.equilateral(variables.$clr_baselineRem_1);
       }
 
+      cds-icon:hover,
+      clr-icon:hover,
       &:hover {
         @include mixins.css-var(
           color,
@@ -44,6 +46,8 @@
         );
       }
 
+      &.active cds-icon,
+      &.active clr-icon,
       &.active {
         @include mixins.css-var(
           color,
@@ -55,6 +59,9 @@
     }
 
     .signpost-content-header button {
+      line-height: 0;
+      @include mixins.min-equilateral(variables.$clr_baselineRem_0_667);
+
       cds-icon,
       clr-icon {
         @include mixins.equilateral(variables.$clr_baselineRem_0_667);
@@ -617,6 +624,7 @@
       variables.$clr-use-custom-properties
     );
 
+    text-align: left;
     max-height: variables.$clr_baselineRem_20;
     overflow-y: auto;
   }
