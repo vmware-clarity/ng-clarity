@@ -816,7 +816,7 @@
   $clr-signpost-border-size: variables.$clr_baselineRem_0_5,
   $clr-signpost-pointer-border: variables.$clr_baselineRem_0_5 solid hsl(0, 0%, 0%)-border-color,
   $clr-signpost-pointer-invisible-border: variables.$clr_baselineRem_0_5 solid transparent,
-  $clr-signpost-pointer-pseudo-border: variables.$clr_baselineRem_0_5 solid hsl(198, 28%, 18%)
+  $clr-signpost-pointer-psuedo-border: variables.$clr_baselineRem_0_5 solid hsl(198, 28%, 18%)
 );
 
 // END Signpost overrides

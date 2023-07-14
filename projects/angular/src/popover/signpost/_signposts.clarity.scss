@@ -164,8 +164,8 @@
         &:before {
           @include mixins.css-var(
             border-top,
-            clr-signpost-pointer-pseudo-border,
-            signpost-variables.$clr-signpost-pointer-pseudo-border,
+            clr-signpost-pointer-psuedo-border,
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
             variables.$clr-use-custom-properties
           );
 
@@ -271,8 +271,8 @@
         &:before {
           @include mixins.css-var(
             border-bottom,
-            clr-signpost-pointer-pseudo-border,
-            signpost-variables.$clr-signpost-pointer-pseudo-border,
+            clr-signpost-pointer-psuedo-border,
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
             variables.$clr-use-custom-properties
           );
 
@@ -382,8 +382,8 @@
         &:before {
           @include mixins.css-var(
             border-left,
-            clr-signpost-pointer-pseudo-border,
-            signpost-variables.$clr-signpost-pointer-pseudo-border,
+            clr-signpost-pointer-psuedo-border,
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
             variables.$clr-use-custom-properties
           );
         }
@@ -494,8 +494,8 @@
         &:before {
           @include mixins.css-var(
             border-right,
-            clr-signpost-pointer-pseudo-border,
-            signpost-variables.$clr-signpost-pointer-pseudo-border,
+            clr-signpost-pointer-psuedo-border,
+            signpost-variables.$clr-signpost-pointer-psuedo-border,
             variables.$clr-use-custom-properties
           );
 
