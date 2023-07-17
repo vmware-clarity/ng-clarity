@@ -82,7 +82,7 @@
     #{$dirB}: auto;
     @include mixins.css-var(
       #{$oppA},
-      clr-tooltip-tip-vertical-size,
+      clr-tooltip-arrow-vertical-size,
       -1 * variables.$clr_baselineRem_0_35,
       variables.$clr-use-custom-properties
     );
@@ -90,7 +90,7 @@
     border-style: solid;
     @include mixins.css-var(
       border-#{$oppB}-width,
-      clr-tooltip-tip-height,
+      clr-tooltip-arrow-height,
       tooltip-variables.$arrow-height,
       variables.$clr-use-custom-properties
     );
@@ -103,7 +103,7 @@
 
     @include mixins.css-var(
       border-#{$dirA}-width,
-      clr-tooltip-tip-width,
+      clr-tooltip-arrow-width,
       tooltip-variables.$arrow-width,
       variables.$clr-use-custom-properties
     );
@@ -117,7 +117,7 @@
     border-#{$oppA}-color: transparent;
     @include mixins.css-var(
       border-#{$oppA}-width,
-      clr-tooltip-tip-width,
+      clr-tooltip-arrow-width,
       tooltip-variables.$arrow-width,
       variables.$clr-use-custom-properties
     );
@@ -125,7 +125,7 @@
     border-#{$dirB}-color: transparent;
     @include mixins.css-var(
       border-#{$dirB}-width,
-      clr-tooltip-tip-width,
+      clr-tooltip-arrow-width,
       tooltip-variables.$arrow-width,
       variables.$clr-use-custom-properties
     );
@@ -161,7 +161,7 @@
     #{$dirA}: auto;
     @include mixins.css-var(
       #{$oppA},
-      clr-tooltip-tip-horizontal-size,
+      clr-tooltip-arrow-horizontal-size,
       -1 * variables.$clr_baselineRem_0_375,
       variables.$clr-use-custom-properties
     );
@@ -170,7 +170,7 @@
 
     @include mixins.css-var(
       border-top-width,
-      clr-tooltip-tip-height,
+      clr-tooltip-arrow-height,
       tooltip-variables.$arrow-height,
       variables.$clr-use-custom-properties
     );
@@ -183,7 +183,7 @@
 
     @include mixins.css-var(
       border-#{$dirA}-width,
-      clr-tooltip-tip-width,
+      clr-tooltip-arrow-width,
       tooltip-variables.$arrow-width,
       variables.$clr-use-custom-properties
     );
@@ -197,7 +197,7 @@
     border-bottom-color: transparent;
     @include mixins.css-var(
       border-top-width,
-      clr-tooltip-tip-height,
+      clr-tooltip-arrow-height,
       tooltip-variables.$arrow-height,
       variables.$clr-use-custom-properties
     );
@@ -205,7 +205,7 @@
     border-#{$oppA}-color: transparent;
     @include mixins.css-var(
       border-#{$oppA}-width,
-      clr-tooltip-tip-width,
+      clr-tooltip-arrow-width,
       tooltip-variables.$arrow-width,
       variables.$clr-use-custom-properties
     );
