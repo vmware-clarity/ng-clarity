@@ -38,9 +38,19 @@
     tooltip-variables.$clr-tooltip-border-radius,
     variables.$clr-use-custom-properties
   );
-  line-height: variables.$clr_baselineRem_0_75;
+  @include mixins.css-var(
+    padding,
+    clr-tooltip-content-padding,
+    variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5,
+    variables.$clr-use-custom-properties
+  );
+  @include mixins.css-var(
+    line-height,
+    clr-tooltip-content-line-height,
+    variables.$clr_baselineRem_0_75,
+    variables.$clr-use-custom-properties
+  );
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
-  padding: variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5;
   width: tooltip-variables.$clr-tooltip-default-width;
 }
 

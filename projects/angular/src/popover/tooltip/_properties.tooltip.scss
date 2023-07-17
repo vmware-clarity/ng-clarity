@@ -14,6 +14,8 @@
       --clr-tooltip-border-radius: var(--clr-global-borderradius);
       --clr-tooltip-color: var(--clr-color-neutral-0);
       --clr-tooltip-font-weight: var(--clr-p3-font-weight);
+      --clr-tooltip-content-padding: #{variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5};
+      --clr-tooltip-content-line-height: #{variables.$clr_baselineRem_0_75};
     }
   }
 }
