@@ -67,25 +67,68 @@
   #{$dirB}: auto;
 
   border-#{$oppA}-#{$oppB}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  @include mixins.css-var(
+    margin-#{$oppA},
+    clr-tooltip-content-margin,
+    tooltip-variables.$clr-tooltip-adjusted-margin,
+    variables.$clr-use-custom-properties
+  );
 
   &::before {
+    content: '';
     position: absolute;
-    #{$oppA}: -1 * variables.$clr_baselineRem_0_35;
     #{$oppB}: 0;
     #{$dirA}: auto;
     #{$dirB}: auto;
-    content: '';
-    border-#{$oppB}: tooltip-variables.$arrow-height solid tooltip-variables.$clr-tooltip-background-color;
-    @if variables.$clr-use-custom-properties == true {
-      border-#{$oppB}-color: var(--clr-tooltip-background-color);
-    }
-    border-#{$dirA}: tooltip-variables.$arrow-width solid tooltip-variables.$clr-tooltip-background-color;
-    @if variables.$clr-use-custom-properties == true {
-      border-#{$dirA}-color: var(--clr-tooltip-background-color);
-    }
-    border-#{$dirB}: tooltip-variables.$arrow-height solid transparent;
-    border-#{$oppA}: tooltip-variables.$arrow-width solid transparent;
+    @include mixins.css-var(
+      #{$oppA},
+      clr-tooltip-tip-vertical-size,
+      -1 * variables.$clr_baselineRem_0_35,
+      variables.$clr-use-custom-properties
+    );
+
+    border-style: solid;
+    @include mixins.css-var(
+      border-#{$oppB}-width,
+      clr-tooltip-tip-height,
+      tooltip-variables.$arrow-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-#{$oppB}-color,
+      clr-tooltip-background-color,
+      tooltip-variables.$clr-tooltip-background-color,
+      variables.$clr-use-custom-properties
+    );
+
+    @include mixins.css-var(
+      border-#{$dirA}-width,
+      clr-tooltip-tip-width,
+      tooltip-variables.$arrow-width,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-#{$dirA}-color,
+      clr-tooltip-background-color,
+      tooltip-variables.$clr-tooltip-background-color,
+      variables.$clr-use-custom-properties
+    );
+
+    border-#{$oppA}-color: transparent;
+    @include mixins.css-var(
+      border-#{$oppA}-width,
+      clr-tooltip-tip-width,
+      tooltip-variables.$arrow-width,
+      variables.$clr-use-custom-properties
+    );
+
+    border-#{$dirB}-color: transparent;
+    @include mixins.css-var(
+      border-#{$dirB}-width,
+      clr-tooltip-tip-width,
+      tooltip-variables.$arrow-width,
+      variables.$clr-use-custom-properties
+    );
 
     pointer-events: none;
   }
@@ -103,25 +146,69 @@
   @include common-tooltip-styles;
 
   border-top-#{$oppA}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  @include mixins.css-var(
+    margin-#{$oppA},
+    clr-tooltip-content-margin,
+    tooltip-variables.$clr-tooltip-adjusted-margin,
+    variables.$clr-use-custom-properties
+  );
 
   &::before {
+    content: '';
     position: absolute;
     top: 0;
-    #{$oppA}: -1 * variables.$clr_baselineRem_0_375;
     bottom: auto;
     #{$dirA}: auto;
-    content: '';
-    border-top: tooltip-variables.$arrow-height solid tooltip-variables.$clr-tooltip-background-color;
-    @if variables.$clr-use-custom-properties == true {
-      border-top-color: var(--clr-tooltip-background-color);
-    }
-    border-#{$dirA}: tooltip-variables.$arrow-width solid tooltip-variables.$clr-tooltip-background-color;
-    @if variables.$clr-use-custom-properties == true {
-      border-#{$dirA}-color: var(--clr-tooltip-background-color);
-    }
-    border-bottom: tooltip-variables.$arrow-height solid transparent;
-    border-#{$oppA}: tooltip-variables.$arrow-width solid transparent;
+    @include mixins.css-var(
+      #{$oppA},
+      clr-tooltip-tip-horizontal-size,
+      -1 * variables.$clr_baselineRem_0_375,
+      variables.$clr-use-custom-properties
+    );
+
+    border-style: solid;
+
+    @include mixins.css-var(
+      border-top-width,
+      clr-tooltip-tip-height,
+      tooltip-variables.$arrow-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-top-color,
+      clr-tooltip-background-color,
+      tooltip-variables.$clr-tooltip-background-color,
+      variables.$clr-use-custom-properties
+    );
+
+    @include mixins.css-var(
+      border-#{$dirA}-width,
+      clr-tooltip-tip-width,
+      tooltip-variables.$arrow-width,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-#{$dirA}-color,
+      clr-tooltip-background-color,
+      tooltip-variables.$clr-tooltip-background-color,
+      variables.$clr-use-custom-properties
+    );
+
+    border-bottom-color: transparent;
+    @include mixins.css-var(
+      border-top-width,
+      clr-tooltip-tip-height,
+      tooltip-variables.$arrow-height,
+      variables.$clr-use-custom-properties
+    );
+
+    border-#{$oppA}-color: transparent;
+    @include mixins.css-var(
+      border-#{$oppA}-width,
+      clr-tooltip-tip-width,
+      tooltip-variables.$arrow-width,
+      variables.$clr-use-custom-properties
+    );
 
     pointer-events: none;
   }
