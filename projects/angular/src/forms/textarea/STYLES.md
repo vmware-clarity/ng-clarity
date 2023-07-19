@@ -10,7 +10,7 @@
 | --clr-forms-textarea-border-radius           | Border radius for textarea.                       |
 | --clr-forms-textarea-padding                 | Textbox padding all sides.                        |
 
-## Classes
+## CSS Classes
 
 | Class Name           | Description                    |
 | -------------------- | ------------------------------ |

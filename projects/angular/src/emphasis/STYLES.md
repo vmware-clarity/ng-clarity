@@ -27,7 +27,7 @@
 | --clr-badge-font-color-light    | Default, gray, purple, blue and `:visited` badges text color |
 | --clr-badge-font-color-dark     | Orange, light-blue badges text color                         |
 
-## Class names
+## CSS Classes
 
 | Class name       | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |
