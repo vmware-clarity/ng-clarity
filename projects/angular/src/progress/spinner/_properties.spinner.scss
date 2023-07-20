@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+
+@include mixins.exports('spinner.properties') {
+  @if variables.$clr-use-custom-properties == true {
+    :root {
+      --clr-spinner-color: #{variables.$clr-color-action-600};
+      --clr-spinner-track-color: red;
+      --clr-spinner-bg-color: #{variables.$clr-color-neutral-1000};
+      --clr-spinner-inverse-bg-color: #{variables.$clr-color-neutral-0};
+    }
+  }
+}
