@@ -7,6 +7,19 @@ jobs:
     name: PR Comment Bot
     runs-on: ubuntu-latest
     steps:
+      - name: Check For Docs
+        id: check-for-docs
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const actifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: '${{github.repository_owner}}'',
+              repo: '${{ github.event.repository.name }}',
+              run_id: '${{github.event.workflow_run.id}}',
+            });
+
+            return actifacts.find(actifact => artifact.name === 'docs')
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
@@ -56,8 +69,26 @@ jobs:
 
             🤖 Clarity Release Bot
           edit-mode: replace
-      - name: Build Failed PR Comment
-        if: ${{github.event.workflow_run.conclusion == 'failure'}}
+      - name: Build Failed with Docs Artifact PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'failure' && steps.check-for-docs.outputs.result == 'true'}}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
+          body: |
+            👋 @${{github.event.sender.login}},
+
+            * 😭 The build for this PR has failed
+            * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
+            * 🍿 Although the build failed, you can still view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app)
+            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal #clarity-support Slack channel](https://vmware-clarity.slack.com/archives/C0JF8D2LB)
+
+            Thank you,
+
+            🤖 Clarity Release Bot
+          edit-mode: replace
+      - name: Build Failed without Docs Artifact PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'failure' && steps.check-for-docs.outputs.result == 'false'}}
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}

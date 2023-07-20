@@ -12,6 +12,8 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
+    I need the visual regression test to fail.
+
     <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
       <clr-accordion-panel
         *ngFor="let _ of createArray(panelCount); let i = index"

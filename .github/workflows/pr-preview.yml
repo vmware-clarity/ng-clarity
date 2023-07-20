@@ -6,7 +6,6 @@ on:
       - completed
 jobs:
   pr-preview:
-    if: ${{github.event.workflow_run.conclusion == 'success'}}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -24,13 +23,19 @@ jobs:
           path: dist/docs
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
+          if_no_artifact_found: ignore
+      - name: Check For Docs
+        id: check-for-docs
+        run: echo "docs-exist=$([[ -d dist/docs ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
       - name: Get PR Event
         id: get-pr-event
+        if: ${{steps.check-for-docs.outputs.docs-exist == 'true'}}
         uses: potiuk/get-workflow-origin@v1_5
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Deploy Docs Preview
+        if: ${{steps.check-for-docs.outputs.docs-exist == 'true'}}
         timeout-minutes: 5
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
