@@ -49,7 +49,7 @@ jobs:
             * 🙏 The Clarity team thanks you for opening a pull request
             * 🎉 The build for this PR has succeeded
             * 🔍 The PR is now ready for review
-            * 🍿 In the meantime, checkout out a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app)
+            * 🍿 In the meantime, view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app)
             * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal #clarity-support Slack channel](https://vmware-clarity.slack.com/archives/C0JF8D2LB)
 
             Thank you,
@@ -66,7 +66,7 @@ jobs:
             👋 @${{github.event.sender.login}},
 
             * 😭 The build for this PR has failed
-            * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
+            * 🗒 Please check the [build log](${{github.event.workflow_run.html_url}})
             * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal #clarity-support Slack channel](https://vmware-clarity.slack.com/archives/C0JF8D2LB)
 
             Thank you,
