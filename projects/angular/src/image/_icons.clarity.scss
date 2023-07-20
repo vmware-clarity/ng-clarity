@@ -40,13 +40,40 @@ $svg_data: 'data:image/svg+xml;charset=utf8';
   @return url('#{$svg_data},#{$check-icon}');
 }
 
-@function generateSpinnerIcon($fillBgColor: #000000, $fillSnakeColor: #0077b8, $opacityBg: 0.15) {
-  $spinner-icon: '%3Csvg%20id%3D%22Layer_2%22%20data-name%3D%22Layer%202%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20.cls-1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20.cls-2%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fill%3A%20none%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20stroke-miterlimit%3A%2010%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20stroke-width%3A%205px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20.cls-1%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20stroke%3A%20' +
-    encodeColorString($fillBgColor + '') + '%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20stroke-opacity%3A%20' +
-    $opacityBg +
-    '%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20.cls-2%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20stroke%3A%20' +
-    encodeColorString($fillSnakeColor + '') /* the blue, smaller part of the ring*/ +
-    '%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%3C%2Fstyle%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Ctitle%3EPreloader_72x2%3C%2Ftitle%3E%0A%20%20%20%20%3Ccircle%20class%3D%22cls-1%22%20cx%3D%2236%22%20cy%3D%2236%22%20r%3D%2233%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22cls-2%22%20d%3D%22M14.3%2C60.9A33%2C33%2C0%2C0%2C1%2C36%2C3%22%3E%0A%20%20%20%20%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A';
+//<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+//<defs>
+//<style>
+//.cls-1,
+//.cls-2 {
+//fill: none;
+//stroke-miterlimit: 10;
+//stroke-width: 5px;
+//}
+//.cls-1 {
+//stroke: hsl(198,0%,0%);
+//stroke-opacity: 0.15;
+//}
+//.cls-2 {
+//  stroke: hsl(198,100%,32%);
+//</style>
+//</defs>
+//<circle class="cls-1" cx="36" cy="36" r="33"/>
+//<path class="cls-2" d="M14.3,60.9A33,33,0,0,1,36,3">
+//</path>
+//</svg>
+@function generateSpinnerIcon($fillBgColor: #000000, $fillSnakeColor: #000, $opacityBg: 0.29, $strokeWidthInPx: 5) {
+  $spinner-icon: '%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000' +
+    '%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3C' + 'defs%3E%3Cstyle%3E' + '.cls-1%2C.cls-2%7B' + 'fill%3Anone%3B' +
+    'stroke-miterlimit%3A10%3B' + 'stroke-width%3A' + $strokeWidthInPx + 'px%3B%7D.cls-1%7B' + 'stroke%3A' +
+    //'var%28--clr-spinner-bg-color%2C' +
+    encodeColorString($fillBgColor + '') + //encodeColorString($fillBgColor + ')') +
+    //'%29' +
+    //'green%29' +
+    //'%3Bstroke-opacity%3A' + $opacityBg +
+    //'%3B'+
+    '%7D'+ '.cls-2%7B' + 'stroke%3A' + encodeColorString($fillSnakeColor + '') /* the blue, smaller part of the ring*/ +
+    '%3B%3C%2Fstyle%3E%3C%2Fdefs%3E' + '%3Ccircle%20' + 'class%3D%22cls-1%22%20cx%3D%2236%22%20cy%3D%2236%22%20r%3D%2233%22%2F%3E' +
+    '%3Cpath%20class%3D%22cls-2' + '%22%20d%3D%22M14.3%2C60.9A33%2C33%2C0%2C0%2C1%2C36%2C3%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E';
   @return url('#{$svg_data},#{$spinner-icon}');
 }
 

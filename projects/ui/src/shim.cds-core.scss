@@ -568,6 +568,15 @@
   --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--cds-alias-object-border-color);
   --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
 
+  /* Spinner */
+  --clr-spinner-track-stroke-width: var(--cds-global-space-2);
+  --clr-spinner-circle-label-spacing: var(--cds-global-space-6);
+  --clr-spinner-size: var(--cds-global-space-7);
+
+  --clr-spinner-text-color: var(--cds-alias-typography-color-400);
+  --clr-spinner-indicator-color: var(--cds-alias-status-info);
+  --clr-spinner-bg-color: var(--cds-alias-object-container-background-shade);
+
   /* StackView */
 
   --clr-stack-view-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);

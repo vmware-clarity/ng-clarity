@@ -9,22 +9,46 @@
 @use 'variables.spinner' as spinner-variables;
 
 @include mixins.exports('spinner.clarity') {
+  .spinner::before {
+    content: '';
+    position: absolute;
+    transform: rotate(270deg);
+    border-radius: 50%;
+    clip: rect(0, 5em, 2.5em, 2.5em);
+    width: 5em;
+    height: 5em;
+    border: 0.45em solid green;
+    box-sizing: border-box;
+  }
+  .spinner::after {
+    content: '';
+    position: absolute;
+    transform: rotate(220deg);
+    border-radius: 50%;
+    clip: rect(0, 5em, 2.5em, 2.5em);
+    width: 5em;
+    height: 5em;
+    border: 0.45em solid blue;
+    box-sizing: border-box;
+  }
   .spinner {
     // spinner-lg is the default
     position: relative;
     display: inline-block;
     @include mixins.min-equilateral(variables.$clr_baselineRem_3);
     animation: spin 1s linear infinite;
-    margin: 0;
+    margin: 0 var(--clr-spinner-circle-label-spacingm spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
     padding: 0;
-    background: icons.generateSpinnerIcon(
-      spinner-variables.$clr-spinner-bg-color,
-      spinner-variables.$clr-spinner-color,
-      spinner-variables.$clr-spinner-opacity
-    );
+
     text-indent: 100%;
     overflow: hidden;
     white-space: nowrap;
+
+    font-size: 20px;
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    background-color: gray;
 
     &.spinner-md {
       @include mixins.min-equilateral(variables.$clr_baselineRem_1_5);
@@ -37,6 +61,7 @@
 
     &.spinner-inline {
       vertical-align: text-bottom; //To align with text properly
+      padding-left: 100px !important;
     }
 
     &.spinner-inverse {
