@@ -9,28 +9,6 @@
 @use 'variables.spinner' as spinner-variables;
 
 @include mixins.exports('spinner.clarity') {
-  .spinner::before {
-    content: '';
-    position: absolute;
-    transform: rotate(270deg);
-    border-radius: 50%;
-    clip: rect(0, 5em, 2.5em, 2.5em);
-    width: 5em;
-    height: 5em;
-    border: 0.45em solid green;
-    box-sizing: border-box;
-  }
-  .spinner::after {
-    content: '';
-    position: absolute;
-    transform: rotate(220deg);
-    border-radius: 50%;
-    clip: rect(0, 5em, 2.5em, 2.5em);
-    width: 5em;
-    height: 5em;
-    border: 0.45em solid blue;
-    box-sizing: border-box;
-  }
   .spinner {
     // spinner-lg is the default
     position: relative;
@@ -43,6 +21,10 @@
     text-indent: 100%;
     overflow: hidden;
     white-space: nowrap;
+    border-radius: 50%;
+    border: 5px solid;
+    border-color: rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity);
+    box-sizing: border-box;
 
     font-size: 20px;
     @include mixins.min-equilateral(3em);
