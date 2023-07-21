@@ -37,7 +37,7 @@
     display: inline-block;
     @include mixins.min-equilateral(variables.$clr_baselineRem_3);
     animation: spin 1s linear infinite;
-    margin: 0 var(--clr-spinner-circle-label-spacingm spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
+    margin: 0 var(--clr-spinner-circle-label-spacing, spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
     padding: 0;
 
     text-indent: 100%;
@@ -45,37 +45,89 @@
     white-space: nowrap;
 
     font-size: 20px;
-    width: 5em;
-    height: 5em;
-    border-radius: 50%;
-    background-color: gray;
+    @include mixins.min-equilateral(3em);
+
+    background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(white, white),
+      linear-gradient(
+        10deg,
+        spinner-variables.$clr-spinner-color 100%,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 0%
+      ),
+      linear-gradient(
+        110deg,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 100%,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 30%
+      ),
+      linear-gradient(
+        311deg,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 44%,
+        spinner-variables.$clr-spinner-color 0%
+      ),
+      linear-gradient(
+        120deg,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 100%,
+        spinner-variables.$clr-spinner-bg-color 100%
+      );
+    background-position: center center, left top, right top, left bottom, right bottom;
+    background-origin: content-box, border-box, border-box, border-box, border-box;
+    background-clip: content-box, border-box, border-box, border-box, border-box;
 
     &.spinner-md {
+      border-width: 3px;
+      text-indent: variables.$clr_baselineRem_1_5;
       @include mixins.min-equilateral(variables.$clr_baselineRem_1_5);
     }
 
     &.spinner-inline,
     &.spinner-sm {
+      border-width: 2.5px;
+      //text-indent: variables.$clr_baselineRem_0_75;
       @include mixins.min-equilateral(variables.$clr_baselineRem_0_75);
     }
 
     &.spinner-inline {
-      vertical-align: text-bottom; //To align with text properly
-      padding-left: 100px !important;
+      //vertical-align: text-bottom; //To align with text properly
+      //padding-left: 50px !important;
     }
 
     &.spinner-inverse {
       // TODO: get ux input on direction here
-      background: icons.generateSpinnerIcon(spinner-variables.$clr-spinner-inverse-bg-color, #74c1e2);
+      border-color: rgba(spinner-variables.$clr-spinner-inverse-bg-color, spinner-variables.$clr-spinner-opacity);
+
+      background-image: linear-gradient(hsl(0, 0%, 19%), hsl(0, 0%, 19%)),
+        linear-gradient(
+          10deg,
+          spinner-variables.$clr-spinner-color 100%,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 0%
+        ),
+        linear-gradient(
+          110deg,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 100%,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 30%
+        ),
+        linear-gradient(
+          311deg,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 44%,
+          spinner-variables.$clr-spinner-color 0%
+        ),
+        linear-gradient(
+          120deg,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity) 100%,
+          spinner-variables.$clr-spinner-bg-color 100%
+        );
     }
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
+      // TODO: Remove this
       background: icons.generateSpinnerIcon(transparent, #ffffff, 1);
     }
 
     &.spinner-check {
       animation: none;
+      // TODO: Remove this
       background: icons.generateCheckIcon(spinner-variables.$clr-spinner-color);
     }
   }
