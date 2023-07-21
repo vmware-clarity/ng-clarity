@@ -116,10 +116,10 @@
   // Primary button colors
   --clr-btn-primary-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-primary-bg-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-btn-primary-border-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-300)); // var(--clr-color-action-600);
-  --clr-btn-primary-hover-bg-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-300)); // var(--clr-color-action-800);
+  --clr-btn-primary-border-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
+  --clr-btn-primary-hover-bg-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-800)); // var(--clr-color-action-800);
   --clr-btn-primary-hover-color: var(--clr-btn-primary-color); // var(--clr-color-action-50);
-  --clr-btn-primary-box-shadow-color: var(--cds-alias-object-interaction-info-click, var(--cds-global-color-blue-500)); // var(--clr-color-action-500);
+  --clr-btn-primary-box-shadow-color: var(--cds-alias-object-interaction-info-click, var(--cds-global-color-blue-900)); // var(--clr-color-action-500);
 
   --clr-btn-primary-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
   --clr-btn-primary-disabled-bg-color: var(--cds-alias-status-disabled);
@@ -145,9 +145,9 @@
   --clr-btn-success-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-success-bg-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
   --clr-btn-success-border-color: var(--clr-btn-success-bg-color);
-  --clr-btn-success-hover-bg-color: var(--cds-alias-status-success); // var(--clr-color-success-800);
+  --clr-btn-success-hover-bg-color: var(--cds-alias-object-interaction-success-hover, var(--cds-global-color-green-800)); // var(--clr-color-success-800);
   --clr-btn-success-hover-color: var(--clr-btn-success-color);
-  --clr-btn-success-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-success-900);
+  --clr-btn-success-box-shadow-color: var(--cds-alias-object-interaction-success-click, var(--cds-global-color-green-900)); // var(--clr-color-success-900);
 
   --clr-btn-success-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
   --clr-btn-success-disabled-bg-color: var(--cds-alias-status-disabled);
@@ -159,8 +159,8 @@
   --clr-btn-success-outline-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
   --clr-btn-success-outline-bg-color: var(--clr-btn-outline-bg-color);
   --clr-btn-success-outline-border-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
-  --clr-btn-success-outline-hover-bg-color: hsla(93, 80%, 28%, 0.1); // var(--clr-color-success-50);
-  --clr-btn-success-outline-hover-color: var(--cds-alias-status-success); // var(--clr-color-success-900);
+  --clr-btn-success-outline-hover-bg-color: var(--cds-alias-object-interaction-success-secondary-hover, var(--cds-global-color-green-50));
+  --clr-btn-success-outline-hover-color: var(--cds-alias-typography-success-hover, var(--cds-global-color-green-800));
   --clr-btn-success-outline-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-success-400);
 
   --clr-btn-success-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
@@ -173,9 +173,9 @@
   --clr-btn-danger-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-danger-bg-color: var(--cds-alias-status-danger); // var(--clr-color-danger-700);
   --clr-btn-danger-border-color: var(--clr-btn-danger-bg-color);
-  --clr-btn-danger-hover-bg-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
+  --clr-btn-danger-hover-bg-color: var(--cds-alias-object-interaction-danger-hover, var(--cds-global-color-red-800)); // var(--clr-color-danger-800);
   --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
-  --clr-btn-danger-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-danger-900);
+  --clr-btn-danger-box-shadow-color: var(--cds-alias-object-interaction-danger-click, var(--cds-global-color-red-900)); // var(--clr-color-danger-900);
 
   --clr-btn-danger-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
   --clr-btn-danger-disabled-bg-color: var(--cds-alias-status-disabled);
@@ -187,8 +187,8 @@
   --clr-btn-danger-outline-color: var(--cds-alias-status-danger); // var(--clr-color-danger-700);
   --clr-btn-danger-outline-bg-color: var(--clr-btn-outline-bg-color);
   --clr-btn-danger-outline-border-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
-  --clr-btn-danger-outline-hover-bg-color: hsla(9, 100%, 44%, 0.1); // var(--clr-color-danger-100);
-  --clr-btn-danger-outline-hover-color: var(--cds-alias-status-danger); // var(--clr-color-danger-900);
+  --clr-btn-danger-outline-hover-bg-color: var(--cds-alias-object-interaction-danger-secondary-hover, var(--cds-global-color-red-50));
+  --clr-btn-danger-outline-hover-color: var(--cds-alias-typography-danger-hover, var(--cds-global-color-red-800));
   --clr-btn-danger-outline-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-danger-200);
 
   --clr-btn-danger-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
@@ -201,9 +201,9 @@
   --clr-btn-warning-color: var(--cds-global-color-black);
   --clr-btn-warning-bg-color: var(--cds-alias-status-warning);
   --clr-btn-warning-border-color: var(--clr-btn-warning-bg-color);
-  --clr-btn-warning-hover-bg-color: var(--cds-alias-status-warning);
+  --clr-btn-warning-hover-bg-color: var(--cds-alias-object-interaction-warning-hover, var(--cds-global-color-ochre-600));
   --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
-  --clr-btn-warning-box-shadow-color: var(--cds-alias-object-opacity-100);
+  --clr-btn-warning-box-shadow-color: var(--cds-alias-object-interaction-warning-click, var(--cds-global-color-ochre-700));
 
   --clr-btn-warning-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
   --clr-btn-warning-disabled-bg-color: var(--cds-alias-status-disabled);
@@ -215,8 +215,8 @@
   --clr-btn-warning-outline-color: var(--cds-alias-status-warning-dark);
   --clr-btn-warning-outline-bg-color: var(--clr-btn-outline-bg-color);
   --clr-btn-warning-outline-border-color: var(--cds-alias-status-warning-dark);
-  --clr-btn-warning-outline-hover-bg-color: hsla(40, 100%, 59%, 0.1);
-  --clr-btn-warning-outline-hover-color: var(--cds-alias-status-warning-dark);
+  --clr-btn-warning-outline-hover-bg-color: var(--cds-alias-object-interaction-warning-secondary-hover, var(--cds-global-color-ochre-50));
+  --clr-btn-warning-outline-hover-color: var(--cds-alias-typography-warning-hover, var(--cds-global-color-ochre-900));
   --clr-btn-warning-outline-box-shadow-color: var(--cds-alias-object-opacity-100);
 
   --clr-btn-warning-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
@@ -239,12 +239,12 @@
   --clr-btn-link-checked-color: var(--cds-global-color-blue-800); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
 
   // Inverse button colors
-  --clr-btn-inverse-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
-  --clr-btn-inverse-border-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
+  --clr-btn-inverse-color: var(--cds-global-color-white); // var(--clr-color-neutral-0);
+  --clr-btn-inverse-border-color: var(--cds-global-color-white); // var(--clr-color-neutral-0);
   --clr-btn-inverse-bg-color: var(--clr-btn-transparent-bg-color);
-  --clr-btn-inverse-hover-bg-color: rgba(255, 255, 255, 0.15);
-  --clr-btn-inverse-hover-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
-  --clr-btn-inverse-box-shadow-color: rgba(0, 0, 0, 0.25);
+  --clr-btn-inverse-hover-bg-color: var(--cds-alias-object-interaction-inverse-hover, var(--cds-global-color-construction-600));
+  --clr-btn-inverse-hover-color: var(--clr-btn-inverse-color); // var(--clr-color-neutral-0);
+  --clr-btn-inverse-box-shadow-color: var(--cds-alias-object-interaction-inverse-click, var(--cds-global-color-construction-800));
 
   --clr-btn-inverse-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-0);
   --clr-btn-inverse-disabled-bg-color: var(--clr-btn-inverse-bg-color);
