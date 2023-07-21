@@ -1055,11 +1055,11 @@
 
   // Spinner
   --clr-spinner-default-size: var(--cds-global-space-14);
-  --clr-spinner-small-size: var(--cds-global-space-7);
   --clr-spinner-medium-size: var(--cds-global-space-11);
+  --clr-spinner-small-size: var(--cds-global-space-7);
   --clr-spinner-default-stroke-width: var(--cds-global-space-4);
-  --clr-spinner-small-stroke-width: var(--cds-global-space-2);
   --clr-spinner-medium-stroke-width: var(--cds-global-space-3);
+  --clr-spinner-small-stroke-width: var(--cds-global-space-2);
 
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
