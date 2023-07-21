@@ -82,49 +82,64 @@
   /* Buttons */
 
   // Shared colors
-  --clr-btn-outline-bg-color: transparent;
+  --clr-btn-transparent-bg-color: var(--cds-alias-object-opacity-0);
+  --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
 
   // Default button colors
-  --clr-btn-default-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-btn-default-border-color: var(--clr-btn-default-color);
-  --clr-btn-default-bg-color: var(--clr-btn-outline-bg-color); // #{$clr-btn-default-bg-color};
-  --clr-btn-default-hover-bg-color: hsla(198, 100%, 34%, 0.1); // var(--clr-color-action-50);
-  --clr-btn-default-hover-color: var(--cds-alias-status-info); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
-  --clr-btn-default-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-action-500);
+  --clr-btn-default-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
+  --clr-btn-default-border-color: var(--cds-alias-status-neutral); // var(--clr-color-action-600);
+  --clr-btn-default-bg-color: var(--cds-alias-status-neutral); // var(--clr-color-action-600);
+  --clr-btn-default-hover-bg-color: var(--cds-alias-object-interaction-nutral-hover, var(--cds-global-color-construction-200)); // var(--clr-color-action-50);
+  --clr-btn-default-hover-color: var(--clr-btn-default-color); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
+  --clr-btn-default-box-shadow-color: var(--cds-alias-object-interaction-neutral-click, var(--cds-global-color-construction-400)); // var(--clr-color-action-500);
 
-  --clr-btn-default-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-700);
-  --clr-btn-default-disabled-bg-color: var(--clr-btn-default-bg-color);
-  --clr-btn-default-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-600);
+  --clr-btn-default-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
+  --clr-btn-default-disabled-bg-color: var(--cds-alias-status-disabled);
+  --clr-btn-default-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-btn-default-checked-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-default-checked-bg-color: var(--clr-btn-default-color); // var(--clr-color-action-600);
 
   // Default outline button
-  --clr-btn-default-outline-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
+  --clr-btn-default-outline-color: var(--cds-alias-status-neutral); // var(--clr-color-action-600);
   --clr-btn-default-outline-border-color: var(--clr-btn-default-outline-color);
   --clr-btn-default-outline-bg-color: var(--clr-btn-outline-bg-color);
-  --clr-btn-default-outline-hover-bg-color: hsla(198, 100%, 34%, 0.1); // var(--clr-color-action-50);
-  --clr-btn-default-outline-hover-color: var(--cds-alias-status-info); // var(--clr-color-action-800);
-  --clr-btn-default-outline-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-action-500);
+  --clr-btn-default-outline-hover-bg-color: var(--cds-alias-object-interaction-neutral-secondary-hover, var(--cds-global-color-construction-800)); // var(--clr-color-action-50);
+  --clr-btn-default-outline-hover-color: var(--clr-btn-default-outline-color); // var(--clr-color-action-800);
+  --clr-btn-default-outline-box-shadow-color: var(--clr-btn-outline-bg-color); // var(--clr-color-action-500);
 
-  --clr-btn-default-outline-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-700);
+  --clr-btn-default-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
   --clr-btn-default-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
-  --clr-btn-default-outline-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
+  --clr-btn-default-outline-disabled-border-color: var(--cds-alias-status-disabled);
   --clr-btn-default-outline-checked-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-default-outline-checked-bg-color: var(--clr-btn-default-outline-bg-color);
 
   // Primary button colors
   --clr-btn-primary-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-primary-bg-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-btn-primary-border-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-btn-primary-hover-bg-color: var(--cds-alias-status-info); // var(--clr-color-action-800);
-  --clr-btn-primary-hover-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-action-50);
-  --clr-btn-primary-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-action-500);
+  --clr-btn-primary-border-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-300)); // var(--clr-color-action-600);
+  --clr-btn-primary-hover-bg-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-300)); // var(--clr-color-action-800);
+  --clr-btn-primary-hover-color: var(--clr-btn-primary-color); // var(--clr-color-action-50);
+  --clr-btn-primary-box-shadow-color: var(--cds-alias-object-interaction-info-click, var(--cds-global-color-blue-500)); // var(--clr-color-action-500);
 
-  --clr-btn-primary-disabled-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-700);
-  --clr-btn-primary-disabled-bg-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
-  --clr-btn-primary-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
+  --clr-btn-primary-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
+  --clr-btn-primary-disabled-bg-color: var(--cds-alias-status-disabled);
+  --clr-btn-primary-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-btn-primary-checked-bg-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-btn-primary-checked-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
+
+  // Primary outline button
+  --clr-btn-primary-outline-color: var(--cds-alias-status-info); // var(--clr-color-neutral-0);
+  --clr-btn-primary-outline-border-color: var(--clr-btn-primary-outline-color);
+  --clr-btn-primary-outline-bg-color: var(--clr-btn-outline-bg-color);
+  --clr-btn-primary-outline-hover-bg-color: var(--cds-alias-object-interaction-info-hover, var(--cds-global-color-blue-300)); // var(--clr-color-action-50);
+  --clr-btn-primary-outline-hover-color: var(--cds-alias-typography-info-hover, var(--cds-global-color-blue-200)); // var(--clr-color-action-800);
+  --clr-btn-primary-outline-box-shadow-color: var(--clr-btn-outline-bg-color); // var(--clr-color-action-500);
+
+  --clr-btn-primary-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
+  --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-primary-outline-disabled-border-color: var(--cds-alias-status-disabled);
+  --clr-btn-primary-outline-checked-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
+  --clr-btn-primary-outline-checked-bg-color: var(--clr-btn-default-outline-bg-color);
 
   // Success button colors
   --clr-btn-success-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
@@ -133,9 +148,10 @@
   --clr-btn-success-hover-bg-color: var(--cds-alias-status-success); // var(--clr-color-success-800);
   --clr-btn-success-hover-color: var(--clr-btn-success-color);
   --clr-btn-success-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-success-900);
-  --clr-btn-success-disabled-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-700);
-  --clr-btn-success-disabled-bg-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
-  --clr-btn-success-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
+
+  --clr-btn-success-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
+  --clr-btn-success-disabled-bg-color: var(--cds-alias-status-disabled);
+  --clr-btn-success-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-btn-success-checked-bg-color: var(--clr-btn-success-bg-color);
   --clr-btn-success-checked-color: var(--clr-btn-success-color);
 
@@ -146,9 +162,10 @@
   --clr-btn-success-outline-hover-bg-color: hsla(93, 80%, 28%, 0.1); // var(--clr-color-success-50);
   --clr-btn-success-outline-hover-color: var(--cds-alias-status-success); // var(--clr-color-success-900);
   --clr-btn-success-outline-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-success-400);
-  --clr-btn-success-outline-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-700);
-  --clr-btn-success-outline-disabled-bg-color: var(--clr-btn-success-outline-bg-color);
-  --clr-btn-success-outline-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-600);
+
+  --clr-btn-success-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
+  --clr-btn-success-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-success-outline-disabled-border-color: var(--cds-alias-status-disabled);
   --clr-btn-success-outline-checked-bg-color: var(--clr-btn-success-outline-bg-color);
   --clr-btn-success-outline-checked-color: var(--clr-btn-success-outline-color); // var(--clr-color-neutral-0);
 
@@ -159,9 +176,10 @@
   --clr-btn-danger-hover-bg-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
   --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
   --clr-btn-danger-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-danger-900);
-  --clr-btn-danger-disabled-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-700);
-  --clr-btn-danger-disabled-bg-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
-  --clr-btn-danger-disabled-border-color: var(--clr-btn-danger-disabled-color);
+
+  --clr-btn-danger-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
+  --clr-btn-danger-disabled-bg-color: var(--cds-alias-status-disabled);
+  --clr-btn-danger-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-btn-danger-checked-bg-color: var(--clr-btn-danger-bg-color); // var(--clr-color-danger-800);
   --clr-btn-danger-checked-color: var(--clr-btn-danger-color);
 
@@ -172,22 +190,24 @@
   --clr-btn-danger-outline-hover-bg-color: hsla(9, 100%, 44%, 0.1); // var(--clr-color-danger-100);
   --clr-btn-danger-outline-hover-color: var(--cds-alias-status-danger); // var(--clr-color-danger-900);
   --clr-btn-danger-outline-box-shadow-color: var(--cds-alias-object-opacity-100); // var(--clr-color-danger-200);
-  --clr-btn-danger-outline-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-700);
-  --clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-danger-outline-bg-color);
-  --clr-btn-danger-outline-disabled-border-color: var(--cds-alias-status-disabled-tint);
+
+  --clr-btn-danger-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
+  --clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-danger-outline-disabled-border-color: var(--cds-alias-status-disabled);
   --clr-btn-danger-outline-checked-bg-color: var(--clr-btn-danger-outline-bg-color); // var(--clr-color-danger-800);
   --clr-btn-danger-outline-checked-color: var(--clr-btn-danger-outline-color); // var(--clr-color-neutral-0);
 
   // Warning button colors
-  --clr-btn-warning-color: var(--cds-global-color-construction-900);
+  --clr-btn-warning-color: var(--cds-global-color-black);
   --clr-btn-warning-bg-color: var(--cds-alias-status-warning);
   --clr-btn-warning-border-color: var(--clr-btn-warning-bg-color);
   --clr-btn-warning-hover-bg-color: var(--cds-alias-status-warning);
   --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
   --clr-btn-warning-box-shadow-color: var(--cds-alias-object-opacity-100);
-  --clr-btn-warning-disabled-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
-  --clr-btn-warning-disabled-bg-color: var(--cds-alias-status-disabled-tint);
-  --clr-btn-warning-disabled-border-color: var(--clr-btn-warning-disabled-color);
+
+  --clr-btn-warning-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-900)); // var(--clr-color-neutral-700);
+  --clr-btn-warning-disabled-bg-color: var(--cds-alias-status-disabled);
+  --clr-btn-warning-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-btn-warning-checked-bg-color: var(--clr-btn-warning-bg-color);
   --clr-btn-warning-checked-color: var(--clr-btn-warning-color);
 
@@ -198,31 +218,34 @@
   --clr-btn-warning-outline-hover-bg-color: hsla(40, 100%, 59%, 0.1);
   --clr-btn-warning-outline-hover-color: var(--cds-alias-status-warning-dark);
   --clr-btn-warning-outline-box-shadow-color: var(--cds-alias-object-opacity-100);
-  --clr-btn-warning-outline-disabled-color: var(--cds-alias-status-disabled-tint);
-  --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-warning-outline-bg-color);
-  --clr-btn-warning-outline-disabled-border-color: var(--cds-alias-status-disabled-tint);
+
+  --clr-btn-warning-outline-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-500));
+  --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-warning-outline-disabled-border-color: var(--cds-alias-status-disabled);
   --clr-btn-warning-outline-checked-bg-color: var(--clr-btn-warning-outline-bg-color);
   --clr-btn-warning-outline-checked-color: var(--clr-btn-warning-outline-color);
 
   // Link button colors
   --clr-btn-link-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-btn-link-bg-color: transparent;
-  --clr-btn-link-border-color: transparent;
-  --clr-btn-link-hover-bg-color: transparent;
-  --clr-btn-link-hover-color: var(--cds-alias-status-info); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
-  --clr-btn-link-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-700);
-  --clr-btn-link-disabled-bg-color: transparent;
-  --clr-btn-link-disabled-border-color: transparent;
-  --clr-btn-link-checked-bg-color: transparent;
+  --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-hover-color: var(--cds-alias-typography-link-color-hover, var(--cds-global-color-blue-800)); // var(--clr-color-action-800);
+
+  --clr-btn-link-disabled-color: var(--cds-alias-topography-disabled, var(--cds-global-color-construction-500));
+  --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-disabled-border-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-checked-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-checked-color: var(--cds-global-color-blue-800); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
 
   // Inverse button colors
   --clr-btn-inverse-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-inverse-border-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
-  --clr-btn-inverse-bg-color: transparent;
+  --clr-btn-inverse-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-inverse-hover-bg-color: rgba(255, 255, 255, 0.15);
   --clr-btn-inverse-hover-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-btn-inverse-box-shadow-color: rgba(0, 0, 0, 0.25);
+
   --clr-btn-inverse-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-0);
   --clr-btn-inverse-disabled-bg-color: var(--clr-btn-inverse-bg-color);
   --clr-btn-inverse-disabled-border-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-0);

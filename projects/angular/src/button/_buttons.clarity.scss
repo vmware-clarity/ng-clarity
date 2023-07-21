@@ -304,20 +304,13 @@
   .btn.btn-secondary,
   .btn.btn-info,
   .btn.btn-outline,
-  .btn.btn-primary-outline,
   .btn.btn-secondary-outline,
-  .btn.btn-outline-primary,
   .btn.btn-outline-secondary,
-  .btn.btn-info-outline,
   .btn-secondary .btn,
   .btn-info .btn,
   .btn-outline .btn,
-  .btn-primary-outline .btn,
   .btn-secondary-outline .btn,
-  .btn-outline-primary .btn,
-  .btn-outline-secondary .btn,
-  .btn-info-outline .btn,
-  .btn-outline-info .btn {
+  .btn-outline-secondary .btn {
     @include populateButtonProperties(default);
   }
 
@@ -347,6 +340,16 @@
   .btn.btn-outline-info,
   .btn-outline .btn {
     @include populateButtonProperties(default-outline);
+  }
+
+  .btn.btn-primary-outline,
+  .btn-outline-info .btn,
+  .btn-primary-outline .btn,
+  .btn-outline-primary .btn,
+  .btn.btn-outline-primary,
+  .btn-info-outline .btn,
+  .btn.btn-info-outline {
+    @include populateButtonProperties(primary-outline);
   }
 
   .btn.btn-success-outline,
