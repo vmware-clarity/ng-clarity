@@ -15,7 +15,8 @@
     display: inline-block;
     //@include mixins.min-equilateral(variables.$clr_baselineRem_4);
     animation: spin 1s linear infinite;
-    margin: 0 var(--clr-spinner-circle-label-spacing, spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
+    //margin: 0 var(--clr-spinner-circle-label-spacing, spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
+    margin: 0 0 0 0;
     padding: 0;
 
     text-indent: 100%;
