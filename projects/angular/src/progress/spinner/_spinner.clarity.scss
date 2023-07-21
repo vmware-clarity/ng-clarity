@@ -13,7 +13,7 @@
     // spinner-lg is the default
     position: relative;
     display: inline-block;
-    @include mixins.min-equilateral(variables.$clr_baselineRem_3);
+    //@include mixins.min-equilateral(variables.$clr_baselineRem_4);
     animation: spin 1s linear infinite;
     margin: 0 var(--clr-spinner-circle-label-spacing, spinner-variables.$clr-spinner-spinner-label-distance) 0 0;
     padding: 0;
@@ -27,7 +27,7 @@
     box-sizing: border-box;
 
     font-size: 20px;
-    @include mixins.min-equilateral(3em);
+    @include mixins.min-equilateral(3.6em);
 
     background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
     background-repeat: no-repeat;
@@ -103,13 +103,12 @@
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
-      // TODO: Remove this
+      // TODO: Remove this if possible
       background: icons.generateSpinnerIcon(transparent, #ffffff, 1);
     }
 
     &.spinner-check {
       animation: none;
-      // TODO: Remove this
       background: icons.generateCheckIcon(spinner-variables.$clr-spinner-color);
     }
   }
