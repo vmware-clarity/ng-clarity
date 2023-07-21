@@ -32,7 +32,7 @@
 
     background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
     background-repeat: no-repeat;
-    background-image: linear-gradient(white, white),
+    background-image: linear-gradient(var(--clr-global-app-background), var(--clr-global-app-background)),
       linear-gradient(
         10deg,
         spinner-variables.$clr-spinner-color 100%,
