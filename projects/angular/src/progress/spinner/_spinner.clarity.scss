@@ -79,7 +79,7 @@
       // TODO: get ux input on direction here
       border-color: rgba(spinner-variables.$clr-spinner-inverse-bg-color, spinner-variables.$clr-spinner-opacity);
 
-      background-image: linear-gradient(hsl(0, 0%, 19%), hsl(0, 0%, 19%)),
+      background-image: linear-gradient(var(--clr-global-app-background), var(--clr-global-app-background)),
         linear-gradient(
           10deg,
           spinner-variables.$clr-spinner-color 100%,
