@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+
+@if variables.$clr-use-custom-properties == true {
+  :root {
+    --clr-spinner-default-size: #{variables.$clr_baselineRem_3};
+    --clr-spinner-small-size: #{variables.$clr_baselineRem_0_75};
+    --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_5};
+    --clr-spinner-inside-button-size: #{variables.$clr_baselineRem_0_65};
+    --clr-spinner-inside-small-button-size: #{variables.$clr_baselineRem_0_5416};
+    --clr-spinner-default-stroke-width: #{variables.$clr_baselineRem_0_25};
+    --clr-spinner-small-stroke-width: #{variables.$clr_baselineRem_0_1};
+    --clr-spinner-medium-stroke-width: #{variables.$clr_baselineRem_0_125};
+  }
+}
