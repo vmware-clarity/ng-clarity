@@ -21,7 +21,6 @@
     animation: spin 1s linear infinite;
     margin: 0;
     padding: 0;
-    border-radius: 50%;
     text-indent: 100%;
     overflow: hidden;
     white-space: nowrap;
@@ -36,7 +35,6 @@
       position: absolute;
       top: 0;
       left: 0;
-      transform: rotate(315deg);
       clip-path: ellipse(100% 53.5% at 0 0);
       @include mixins.css-var(
         border-width,
