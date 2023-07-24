@@ -107,8 +107,11 @@
   }
 
   //To override the visited state of anchor links styled as buttons
-  &:visited {
-    @include button-css-var($button-type, color, color, variables.$clr-use-custom-properties);
+  &.btn-link:visited {
+    @include button-css-var($button-type, color, visited-color, variables.$clr-use-custom-properties);
+    &:hover {
+      @include button-css-var($button-type, color, visited-hover-color, variables.$clr-use-custom-properties);
+    }
   }
 
   &:hover {
@@ -301,19 +304,14 @@
   // TODO: Refactor these classnames when the standard clarity naming convention is set.
   // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
   // version.
+  .btn,
   .btn.btn-secondary,
-  .btn.btn-info,
-  .btn.btn-outline,
-  .btn.btn-secondary-outline,
-  .btn.btn-outline-secondary,
-  .btn-secondary .btn,
-  .btn-info .btn,
-  .btn-outline .btn,
-  .btn-secondary-outline .btn,
-  .btn-outline-secondary .btn {
+  .btn-secondary .btn {
     @include populateButtonProperties(default);
   }
 
+  .btn.btn-info,
+  .btn-info .btn,
   .btn.btn-primary,
   .btn-primary .btn {
     @include populateButtonProperties(primary);
@@ -335,19 +333,22 @@
 
   .btn.btn-outline,
   .btn.btn-outline .btn,
-  .btn.btn-info-outline,
-  .btn-info-outline .btn,
-  .btn.btn-outline-info,
+  .btn.btn-secondary-outline,
+  .btn.btn-outline-secondary,
+  .btn-secondary-outline .btn,
+  .btn-outline-secondary .btn,
   .btn-outline .btn {
     @include populateButtonProperties(default-outline);
   }
 
   .btn.btn-primary-outline,
   .btn-outline-info .btn,
+  .btn-info-outline .btn,
   .btn-primary-outline .btn,
   .btn-outline-primary .btn,
   .btn.btn-outline-primary,
-  .btn-info-outline .btn,
+  .btn.btn-outline-info,
+  .btn.btn-info-outline,
   .btn.btn-info-outline {
     @include populateButtonProperties(primary-outline);
   }

@@ -87,6 +87,19 @@
       --clr-btn-primary-checked-bg-color: var(--clr-color-action-600);
       --clr-btn-primary-checked-color: var(--clr-color-neutral-0);
 
+      // Primary outline button
+      --clr-btn-primary-outline-color: var(--clr-color-action-600);
+      --clr-btn-primary-outline-border-color: var(--clr-btn-default-outline-color);
+      --clr-btn-primary-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-primary-outline-hover-bg-color: var(--clr-color-action-50);
+      --clr-btn-primary-outline-hover-color: var(--clr-color-action-800);
+      --clr-btn-primary-outline-box-shadow-color: var(--clr-color-action-500);
+      --clr-btn-primary-outline-disabled-color: var(--clr-color-neutral-700);
+      --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-primary-outline-disabled-border-color: var(--clr-color-neutral-600);
+      --clr-btn-primary-outline-checked-color: var(--clr-color-neutral-0);
+      --clr-btn-primary-outline-checked-bg-color: var(--clr-btn-default-outline-color);
+
       // Success button colors
       --clr-btn-success-color: var(--clr-color-neutral-0);
       --clr-btn-success-bg-color: var(--clr-color-success-700);
@@ -167,10 +180,12 @@
 
       // Link button colors
       --clr-btn-link-color: var(--clr-color-action-600);
+      --clr-btn-link-visited-color: var(--clr-btn-link-color);
       --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-color: var(--clr-color-action-800);
+      --clr-btn-link-visited-hover-color: var(--clr-btn-link-hover-color);
       --clr-btn-link-disabled-color: var(--clr-color-neutral-700);
       --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-disabled-border-color: var(--clr-btn-transparent-bg-color);
