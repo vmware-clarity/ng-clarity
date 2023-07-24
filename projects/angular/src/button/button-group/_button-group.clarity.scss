@@ -88,6 +88,8 @@
       }
     }
 
+    // once shim is fully integrated to be replaced with
+    // &:not([class*='-outline'])
     &.btn-primary,
     &.btn-success,
     &.btn-danger,
