@@ -304,7 +304,7 @@
   // TODO: Refactor these classnames when the standard clarity naming convention is set.
   // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
   // version.
-  .btn,
+  a.btn,
   .btn.btn-secondary,
   .btn-secondary .btn {
     @include populateButtonProperties(default);

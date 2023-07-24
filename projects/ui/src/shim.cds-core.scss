@@ -256,7 +256,7 @@
   --clr-btn-inverse-checked-color: var(--clr-btn-inverse-color);
 
   // For theme-able icon button color
-  --clr-btn-icon-disabled-color: var(--cds-alias-status-disabled-tint); // var(--clr-btn-default-disabled-color, #{$clr-btn-default-disabled-color});
+  --clr-btn-icon-disabled-color: var(--cds-alias-typography-disabled-button, var(--cds-global-color-construction-500)); // var(--clr-btn-default-disabled-color, #{$clr-btn-default-disabled-color});
 
   // Button groups
 
@@ -789,24 +789,6 @@
       color: var(--clr-alert-danger-font-color);
       border: 1px solid var(--clr-alert-danger-border-color);
     }
-  }
-
-  .btn:not([disabled]):hover,
-  .btn:not([disabled]):focus,
-  .btn:not([disabled]):active {
-    filter: brightness(90%);
-  }
-
-  .btn.disabled,
-  .btn:disabled {
-    opacity: 1;
-  }
-
-  .btn-primary,
-  .btn-success,
-  .btn-warning,
-  .btn-danger {
-    --clr-btn-icon-disabled-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
   }
 }
 
