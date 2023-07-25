@@ -12,6 +12,7 @@ $clr-accordion-active-background-color: variables.$clr-global-selection-color !d
 $clr-accordion-content-background-color: variables.$clr-color-neutral-0 !default;
 $clr-accordion-header-background-color: variables.$clr-color-neutral-50 !default;
 $clr-accordion-header-hover-background-color: variables.$clr-color-neutral-200 !default;
+$clr-accordion-header-active-background-color: variables.$clr-color-neutral-200 !default;
 $clr-accordion-border-left-color: variables.$clr-color-neutral-200 !default;
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 $clr-accordion-error-color: variables.$clr-global-error-color !default;

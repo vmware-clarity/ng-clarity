@@ -67,6 +67,27 @@
         variables.$clr-use-custom-properties
       );
     }
+
+    &:active {
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-active-background-color,
+        accordion-variables.$clr-accordion-header-active-background-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    .clr-accordion-panel--disabled :not(.clr-accordion-panel-open) & {
+      &:hover,
+      &:active {
+        @include mixins.css-var(
+          background-color,
+          clr-accordion-header-background-color,
+          accordion-variables.$clr-accordion-header-background-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
   }
 
   .clr-accordion-panel:last-child {
@@ -120,6 +141,15 @@
 
     &:disabled {
       cursor: not-allowed;
+
+      .clr-accordion-status {
+        @include mixins.css-var(
+          color,
+          clr-accordion-panel-disabled-color,
+          accordion-variables.$clr-accordion-panel-disabled-color,
+          variables.$clr-use-custom-properties
+        );
+      }
 
       .clr-accordion-title {
         @include mixins.css-var(
@@ -380,7 +410,7 @@
       );
       @include mixins.css-var(
         line-height,
-        clr-accordion-button-line-height,
+        clr-accordion-header-button-line-height,
         variables.$clr_baselineRem_1,
         variables.$clr-use-custom-properties
       );

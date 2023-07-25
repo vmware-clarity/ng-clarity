@@ -6,6 +6,8 @@
 
 /* This shim file maps the custom properties of @clr/ui to Core tokens. Thus, it is only needed for apps currently dependent on @clr/ui and wanting to apply Core look and feel. */
 
+@use './token_shim.cds-core';
+
 [cds-theme] {
   /* Global */
 
@@ -409,7 +411,7 @@
 
   /* Accordion */
 
-  --clr-accordion-text-color: var(--cds-alias-object-interaction-color); // var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-accordion-text-color: var(--cds-alias-typography-color-700, --cds-global-typography-color-700); // var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
   --clr-accordion-panel-disabled-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-500);
 
   --clr-accordion-active-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
@@ -417,6 +419,7 @@
 
   --clr-accordion-header-background-color: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
   --clr-accordion-header-hover-background-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
+  --clr-accordion-header-active-background-color: var(--cds-alias-object-interaction-background-active); // var(--clr-color-neutral-200);
 
   --clr-accordion-error-color: var(--cds-alias-status-danger); // var(--clr-global-error-color);
   --clr-accordion-complete-color: var(--cds-alias-status-success); // var(--clr-global-success-color);
@@ -428,7 +431,7 @@
 
   --clr-accordion-title-font-size: var(--cds-global-typography-secondary-font-size);
   --clr-accordion-title-font-weight: var(--cds-global-typography-secondary-font-weight);
-  --clr-accordion-button-line-height: var(--cds-global-typography-secondary-line-height);
+  --clr-accordion-header-button-line-height: var(--cds-global-typography-secondary-line-height);
   --clr-accordion-header-button-padding: calc(var(--cds-global-space-5) + var(--cds-global-space-2));
 
   // v17 remove var in favor of gap:sm class
