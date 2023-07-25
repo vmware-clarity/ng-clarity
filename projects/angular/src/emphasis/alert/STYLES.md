@@ -101,7 +101,7 @@
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
 
-## Class names
+## CSS Classes
 
 | Class name           | Description                                                                |
 | -------------------- | -------------------------------------------------------------------------- |

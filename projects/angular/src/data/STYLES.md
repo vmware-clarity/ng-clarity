@@ -16,7 +16,7 @@
 | --clr-table-font-color                 | Font color for table rows                                 |
 | --clr-thead-color                      | Font color for table header                               |
 
-## Class names
+## CSS Classes
 
 #### All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
 

@@ -1,0 +1,107 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// This file introduces new global/alias variables in the design system that will be published in
+// @cds/core when finalized (prior to v16). It also remaps existing variables to their new design
+// system values as certain values have required adjustments to account for accessibility concerns
+// while finalizing the system
+
+:root {
+  // New global
+  --cds-global-color-construction-25: hsl(198, 33%, 99%);
+
+  // New vars
+  --cds-alias-utility-blue-tint: var(--cds-global-color-blue-50);
+  --cds-alias-utility-blue-shade: var(--cds-global-color-blue-800);
+  --cds-alias-utility-light-blue: var(--cds-global-color-blue-300);
+  --cds-alias-utility-light-blue-tint: var(--cds-global-color-blue-50);
+  --cds-alias-utility-light-blue-shade: var(--cds-global-color-blue-600);
+  --cds-alias-utility-dark-blue: var(--cds-global-color-azure-800);
+  --cds-alias-utility-dark-blue-tint: var(--cds-global-color-azure-50);
+  --cds-alias-utility-dark-blue-shade: var(--cds-global-color-azure-1000);
+  --cds-alias-utility-green: var(--cds-global-color-green-700);
+  --cds-alias-utility-green-tint: var(--cds-global-color-green-50);
+  --cds-alias-utility-green-shade: var(--cds-global-color-green-800);
+  --cds-alias-utility-yellow: var(--cds-global-color-ochre-500);
+  --cds-alias-utility-yellow-tint: var(--cds-global-color-ochre-100);
+  --cds-alias-utility-yellow-shade: var(--cds-global-color-ochre-700);
+  --cds-alias-utility-red: var(--cds-global-color-red-700);
+  --cds-alias-utility-red-tint: var(--cds-global-color-red-50);
+  --cds-alias-utility-red-shade: var(--cds-global-color-red-800);
+  --cds-alias-utility-tangerine: var(--cds-global-color-tangerine-400);
+  --cds-alias-utility-tangerine-tint: var(--cds-global-color-tangerine-50);
+  --cds-alias-utility-tangerine-shade: var(--cds-global-color-tangerine-600);
+  --cds-alias-utility-violet: var(--cds-global-color-violet-600);
+  --cds-alias-utility-violet-tint: var(--cds-global-color-violet-50);
+  --cds-alias-utility-violet-shade: var(--cds-global-color-violet-800);
+
+  --cds-alias-typography-color-450: var(--cds-global-color-construction-1000);
+  --cds-alias-typography-disabled-button: var(--cds-global-color-construction-500);
+  --cds-alias-typography-disabled: var(--cds-global-color-construction-400);
+  --cds-alias-typography-info-hover: var(--cds-global-color-blue-800);
+  --cds-alias-typography-success-hover: var(--cds-global-color-green-800);
+  --cds-alias-typography-warning-hover: var(--cds-global-color-ochre-900);
+  --cds-alias-typography-danger-hover: var(--cds-global-color-red-800);
+  --cds-alias-typography-neutral-hover: var(--cds-global-color-construction-700);
+  --cds-alias-typography-link-on-colorbg: var(--cds-global-color-black);
+
+  --cds-alias-object-interaction-info-hover: var(--cds-global-color-blue-800);
+  --cds-alias-object-interaction-info-click: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-info-secondary-hover: var(--cds-global-color-blue-50);
+  --cds-alias-object-interaction-success-hover: var(--cds-global-color-green800);
+  --cds-alias-object-interaction-success-click: var(--cds-global-color-green-900);
+  --cds-alias-object-interaction-success-secondary-hover: var(--cds-global-color-green-50);
+  --cds-alias-object-interaction-warning-hover: var(--cds-global-color-ochre-600);
+  --cds-alias-object-interaction-warning-click: var(--cds-global-color-ochre-700);
+  --cds-alias-object-interaction-warning-secondary-hover: var(--cds-global-color-ochre-50);
+  --cds-alias-object-interaction-danger-hover: var(--cds-global-color-red-800);
+  --cds-alias-object-interaction-danger-click: var(--cds-global-color-red-900);
+  --cds-alias-object-interaction-danger-secondary-hover: var(--cds-global-color-red-50);
+  --cds-alias-object-interaction-neutral-hover: var(--cds-global-color-construction-700);
+  --cds-alias-object-interaction-neutral-click: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-neutral-secondary-hover: var(--cds-global-color-construction-50);
+  --cds-alias-object-interaction-inverse-hover: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-inverse-click: var(--cds-global-color-construction-800);
+  --cds-alias-object-container-background-dark: var(--cds-global-color-construction-200);
+
+  // Changed in system
+  // Remove when added/deployed in next @cds/core version (missed in last update)
+  --cds-alias-object-interaction-color-disabled: var(--cds-global-color-construction-700);
+  // Maps to new global, remove when global is added to @cds/core for v16 release
+  --cds-alias-object-app-background: var(--cds-global-color-construction-25);
+}
+
+[cds-theme~='dark'] {
+  // New vars
+  --cds-alias-typography-color-450: var(--cds-global-color-construction-50);
+  --cds-alias-typography-disabled-button: var(--cds-global-color-construction-900);
+  --cds-alias-typography-disabled: var(--cds-global-color-construction-500);
+  --cds-alias-typography-info-hover: var(--cds-global-color-blue-200);
+  --cds-alias-typography-success-hover: var(--cds-global-color-green-400);
+  --cds-alias-typography-warning-hover: var(--cds-global-color-yellow-600);
+  --cds-alias-typography-danger-hover: var(--cds-global-color-red-400);
+  --cds-alias-typography-neutral-hover: var(--cds-global-color-construction-200);
+  --cds-alias-typography-link-on-colorbg: var(--cds-global-color-construction-1000);
+
+  --cds-alias-object-interaction-info-hover: var(--cds-global-color-blue-300);
+  --cds-alias-object-interaction-info-click: var(--cds-global-color-blue-500);
+  --cds-alias-object-interaction-info-secondary-hover: var(--cds-global-color-blue-1000);
+  --cds-alias-object-interaction-success-hover: var(--cds-global-color-green-400);
+  --cds-alias-object-interaction-success-click: var(--cds-global-color-green-600);
+  --cds-alias-object-interaction-success-secondary-hover: var(--cds-global-color-green-1000);
+  --cds-alias-object-interaction-warning-hover: var(--cds-global-color-yellow-300);
+  --cds-alias-object-interaction-warning-click: var(--cds-global-color-yellow-500);
+  --cds-alias-object-interaction-warning-secondary-hover: var(--cds-global-color-yellow-1000);
+  --cds-alias-object-interaction-danger-hover: var(--cds-global-color-red-400);
+  --cds-alias-object-interaction-danger-click: var(--cds-global-color-red-600);
+  --cds-alias-object-interaction-danger-secondary-hover: var(--cds-global-color-red-1000);
+  --cds-alias-object-interaction-neutral-hover: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-neutral-click: var(--cds-global-color-construction-400);
+  --cds-alias-object-interaction-neutral-secondary-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-inverse-hover: var(--cds-global-color-construction-700);
+  --cds-alias-object-interaction-inverse-click: var(--cds-global-color-construction-800);
+  --cds-alias-object-container-background-dark: var(--cds-global-color-construction-800);
+}

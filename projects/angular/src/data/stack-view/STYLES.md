@@ -21,7 +21,7 @@
 | --clr-stack-view-stack-block-expanded-text-color                       | Font color of expanded stack block label and content                  |
 | --clr-stack-view-stack-block-caret-color                               | Color of stack block caret                                            |
 
-## Class names
+## CSS Classes
 
 | Class name             | Description                                          |
 | ---------------------- | ---------------------------------------------------- |

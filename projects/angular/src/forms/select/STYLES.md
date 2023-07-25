@@ -9,7 +9,7 @@
 | --clr-forms-select-multiple-border-color     | Border color used by multiple select options      |
 | --clr-forms-select-multiple-option-color     | Text color used by the multiple select options    |
 
-## Class names
+## CSS Classes
 
 | Class name              | Description                                    |
 | ----------------------- | ---------------------------------------------- |

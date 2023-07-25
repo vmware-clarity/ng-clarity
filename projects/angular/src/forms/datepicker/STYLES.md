@@ -19,7 +19,7 @@
 | --clr-calendar-active-focus-cell-background-color | Focused cell background color                   |
 | --clr-day-font-size                               | Week day font color                             |
 
-## Class names
+## CSS Classes
 
 | Class name              | Description                                      |
 | ----------------------- | ------------------------------------------------ |

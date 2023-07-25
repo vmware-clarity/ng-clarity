@@ -11,7 +11,7 @@
 | --clr-forms-radio-padding-left              | Left padding for radio label element                     |
 | --clr-forms-radio-label-height              | Height of the radio label element                        |
 
-## Classes
+## CSS Classes
 
 | Class             | Description                                              |
 | ----------------- | -------------------------------------------------------- |

@@ -15,7 +15,7 @@
 | --clr-forms-checkbox-padding-left               | Left padding for checkbox label element    |
 | --clr-forms-checkbox-label-height               | Height of the checkbox label element       |
 
-## Class names
+## CSS Classes
 
 | Class name           | Description                              |
 | -------------------- | ---------------------------------------- |
@@ -38,7 +38,7 @@
 | --clr-toggle-disabled-on-bg-color             | Background color for disabled toggle that is on       |
 | --clr-toggle-disabled-on-handle-border-color  | Handle border color for disabled toggle that is on    |
 
-## Class names
+## CSS Classes
 
 | Class name         | Description                                                       |
 | ------------------ | ----------------------------------------------------------------- |
