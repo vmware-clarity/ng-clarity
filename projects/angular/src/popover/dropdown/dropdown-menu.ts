@@ -33,6 +33,10 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
   },
 })
 export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit, OnDestroy {
+  @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
+
+  private focusHandler: DropdownFocusHandler;
+
   constructor(
     injector: Injector,
     @Optional()
@@ -104,9 +108,6 @@ export class ClrDropdownMenu extends AbstractPopover implements AfterContentInit
         break;
     }
   }
-
-  private focusHandler: DropdownFocusHandler;
-  @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
 
   ngAfterContentInit() {
     this.focusHandler.container = this.el.nativeElement;

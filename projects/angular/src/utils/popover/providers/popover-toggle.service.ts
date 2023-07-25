@@ -9,34 +9,37 @@ import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
+// Popovers might need to ignore click events on an element
+// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
+
 @Injectable()
 export class ClrPopoverToggleService {
-  /**
-   *  Popovers might need to ignore click events on an element
-   *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
-   */
   private _open = false;
-  private _openChange: Subject<boolean> = new Subject<boolean>();
+  private _openChange = new Subject<boolean>();
   private _openEvent: Event;
-  private _openEventChange: Subject<Event> = new Subject<Event>();
+  private _openEventChange = new Subject<Event>();
+  private _popoverAligned = new Subject<HTMLElement>();
+  private _popoverVisible = new Subject<boolean>();
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
   }
 
-  set openEvent(event: Event) {
-    this._openEvent = event;
-    this._openEventChange.next(event);
+  get popoverVisible(): Observable<boolean> {
+    return this._popoverVisible.asObservable();
   }
 
   get openEvent(): Event {
     return this._openEvent;
   }
-
-  getEventChange(): Observable<Event> {
-    return this._openEventChange.asObservable();
+  set openEvent(event: Event) {
+    this._openEvent = event;
+    this._openEventChange.next(event);
   }
 
+  get open(): boolean {
+    return this._open;
+  }
   set open(value: boolean) {
     value = !!value;
     if (this._open !== value) {
@@ -45,13 +48,17 @@ export class ClrPopoverToggleService {
     }
   }
 
-  get open(): boolean {
-    return this._open;
-  }
-
   // For compatibility with legacy IfOpenService based implementations
   get originalEvent(): Event {
     return this._openEvent;
+  }
+
+  get popoverAligned(): Observable<HTMLElement> {
+    return this._popoverAligned.asObservable();
+  }
+
+  getEventChange(): Observable<Event> {
+    return this._openEventChange.asObservable();
   }
 
   /**
@@ -65,10 +72,8 @@ export class ClrPopoverToggleService {
     this.open = !this.open;
   }
 
-  private _popoverAligned: Subject<HTMLElement> = new Subject();
-
-  get popoverAligned(): Observable<HTMLElement> {
-    return this._popoverAligned.asObservable();
+  popoverVisibleEmit(visible: boolean) {
+    this._popoverVisible.next(visible);
   }
 
   popoverAlignedEmit(popoverNode: HTMLElement) {

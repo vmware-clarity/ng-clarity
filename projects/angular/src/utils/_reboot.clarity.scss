@@ -6,9 +6,12 @@
 
 // @deprecated Bootstrap dependencies are deprecated since 1.0. Review for removal of this file before 2.0
 // (note that there is a section at the bottom that's not related to bootstap but may also be candidate for removal by 2.0)
-@import '../layout/nav/properties.nav';
+@use '../layout/nav/properties.nav';
+@use '../layout/nav/variables.nav' as nav-variables;
+@use 'mixins';
+@use 'variables/variables.global';
 
-@include exports('reboot.clarity') {
+@include mixins.exports('reboot.clarity') {
   // Customizing BS4 reboot file below from Bootstrap 4.0.0-alpha.3
   // Styles taken directly from BS4 reboot file.
   // Un-needed styles commented out below...
@@ -422,21 +425,41 @@
   }
 
   a:link {
-    @include css-var(color, clr-link-color, $clr-link-color, $clr-use-custom-properties);
+    @include mixins.css-var(color, clr-link-color, nav-variables.$clr-link-color, variables.$clr-use-custom-properties);
   }
 
   a:visited {
-    @include css-var(color, clr-link-visited-color, $clr-link-visited-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-visited-color,
+      nav-variables.$clr-link-visited-color,
+      variables.$clr-use-custom-properties
+    );
     &:hover {
-      @include css-var(color, clr-link-visited-color-hover, $clr-link-visited-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-link-visited-color-hover,
+        nav-variables.$clr-link-visited-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
   a:hover {
-    @include css-var(color, clr-link-hover-color, $clr-link-hover-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-hover-color,
+      nav-variables.$clr-link-hover-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   a:active {
-    @include css-var(color, clr-link-active-color, $clr-link-active-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-active-color,
+      nav-variables.$clr-link-active-color,
+      variables.$clr-use-custom-properties
+    );
   }
 }

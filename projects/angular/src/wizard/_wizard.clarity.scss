@@ -10,18 +10,27 @@
 // IT'S AN ISSUE WITH THE NUMBER OF BUTTONS, NOT THE LENGTH OF THE TEXT
 // INSIDE THE BUTTONS
 
-@import './properties.wizard';
+@use 'sass:string';
+@use 'properties.wizard';
+@use '../modal/variables.modal' as modal-variables;
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.wizard' as wizard-variables;
 
-@include exports('wizard.clarity') {
+@include mixins.exports('wizard.clarity') {
   .clr-wizard {
     .modal-dialog {
       display: flex;
       flex-direction: column;
       align-items: center;
       // IE/OldEdge
-      box-shadow: $clr-wizard-box-shadow;
-      @if $clr-use-custom-properties == true {
-        box-shadow: 0 $clr_baselineRem_1px $clr_baselineRem_2px $clr_baselineRem_2px var(--clr-wizard-box-shadow-color);
+      box-shadow: wizard-variables.$clr-wizard-box-shadow;
+      @if variables.$clr-use-custom-properties == true {
+        box-shadow: 0
+          variables.$clr_baselineRem_1px
+          variables.$clr_baselineRem_2px
+          variables.$clr_baselineRem_2px
+          var(--clr-wizard-box-shadow-color);
       }
       height: 50%;
       max-height: 100%;
@@ -29,17 +38,17 @@
 
     .modal-content {
       border-radius: 0;
-      @include css-var(
+      @include mixins.css-var(
         border-top-right-radius,
         clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-border-radius,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-right-radius,
         clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-border-radius,
+        variables.$clr-use-custom-properties
       );
       box-shadow: none;
       padding: 0;
@@ -52,39 +61,50 @@
       flex-direction: column;
     }
 
-    .modal-header {
+    .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
       // right padding nudged a bit to better align icons
-      padding: $clr-wizard-default-space ($clr-wizard-default-space - $clr_baselineRem_5px) $clr_baselineRem_0_25
-        $clr-wizard-default-space;
+      padding: wizard-variables.$clr-wizard-default-space
+        (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px) variables.$clr_baselineRem_0_25
+        wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-title {
-      @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-wizard-title-text,
+        wizard-variables.$clr-wizard-title-text,
+        variables.$clr-use-custom-properties
+      );
       display: flex;
       flex-direction: row;
       width: 100%;
       // align focus style across modal title
-      line-height: $clr_baselineRem_1_13;
-      margin-top: -1 * $clr_baselineRem_0_13;
+      line-height: variables.$clr_baselineRem_1_13;
+      margin-top: -1 * variables.$clr_baselineRem_0_13;
     }
 
     .modal-body {
       flex: 1 1 auto;
-      @include css-var(color, clr-wizard-main-text-color, $clr-wizard-main-text-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-wizard-main-text-color,
+        wizard-variables.$clr-wizard-main-text-color,
+        variables.$clr-use-custom-properties
+      );
       width: 100%;
     }
 
     .modal-footer {
       padding: 0;
       display: block;
-      padding-top: $clr-wizard-default-space;
-      height: $clr-wizard-footer-height;
-      min-height: $clr-wizard-footer-height;
-      max-height: $clr-wizard-footer-height;
+      padding-top: wizard-variables.$clr-wizard-default-space;
+      height: wizard-variables.$clr-wizard-footer-height;
+      min-height: wizard-variables.$clr-wizard-footer-height;
+      max-height: wizard-variables.$clr-wizard-footer-height;
       width: 100%;
-      flex: 0 0 $clr-wizard-footer-height;
+      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
     }
 
     .clr-wizard-btn {
@@ -106,48 +126,48 @@
 
     .modal-header-actions-wrapper {
       flex: 1 0 auto;
-      padding-left: $clr_baselineRem_0_5;
-      padding-right: $clr_baselineRem_4px;
+      padding-left: variables.$clr_baselineRem_0_5;
+      padding-right: variables.$clr_baselineRem_4px;
     }
 
     .clr-wizard-header-action {
-      @include equilateral($clr-wizard-default-space);
+      @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
       padding: 0;
       margin: 0;
-      min-width: $clr-wizard-default-space;
-      line-height: $clr-wizard-default-space;
-      font-size: $clr-wizard-default-space + $clr_baselineRem_2px;
-      @include css-var(
+      min-width: wizard-variables.$clr-wizard-default-space;
+      line-height: wizard-variables.$clr-wizard-default-space;
+      font-size: wizard-variables.$clr-wizard-default-space + variables.$clr_baselineRem_2px;
+      @include mixins.css-var(
         color,
         clr-wizard-header-action-color,
-        $clr-wizard-header-action-color,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-header-action-color,
+        variables.$clr-use-custom-properties
       );
       transition: color linear 0.2s;
 
       & a {
-        @include css-var(
+        @include mixins.css-var(
           color,
           clr-wizard-header-action-color,
-          $clr-wizard-header-action-color,
-          $clr-use-custom-properties
+          wizard-variables.$clr-wizard-header-action-color,
+          variables.$clr-use-custom-properties
         );
       }
 
       &:hover,
       &:active,
       &:focus {
-        @include css-var(
+        @include mixins.css-var(
           color,
-          unquote('clr-wizard-header-action-color--hovered'),
-          $clr-wizard-header-action-color--hovered,
-          $clr-use-custom-properties
+          string.unquote('clr-wizard-header-action-color--hovered'),
+          wizard-variables.$clr-wizard-header-action-color--hovered,
+          variables.$clr-use-custom-properties
         );
       }
 
       cds-icon,
       clr-icon {
-        @include equilateral($clr-wizard-default-space - $clr_baselineRem_2px);
+        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_2px);
       }
     }
 
@@ -160,43 +180,53 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      padding-bottom: $clr-wizard-default-space;
-      line-height: $clr-wizard-default-space;
-      @include css-var(border-right-width, clr-global-borderwidth, $clr-global-borderwidth, $clr-use-custom-properties);
+      padding-bottom: wizard-variables.$clr-wizard-default-space;
+      line-height: wizard-variables.$clr-wizard-default-space;
+      @include mixins.css-var(
+        border-right-width,
+        clr-global-borderwidth,
+        variables.$clr-global-borderwidth,
+        variables.$clr-use-custom-properties
+      );
       border-right-style: solid;
-      @include css-var(
+      @include mixins.css-var(
         border-right-color,
         clr-wizard-stepnav-border-color,
-        $clr-wizard-stepnav-border-color,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-stepnav-border-color,
+        variables.$clr-use-custom-properties
       );
       height: 100%;
-      @include css-var(
+      @include mixins.css-var(
         background-color,
         clr-wizard-stepnav-bgcolor,
-        $clr-wizard-stepnav-bgcolor,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-stepnav-bgcolor,
+        variables.$clr-use-custom-properties
       );
       border-radius: 0;
-      @include css-var(
+      @include mixins.css-var(
         border-top-left-radius,
         clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-border-radius,
+        variables.$clr-use-custom-properties
       );
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-left-radius,
         clr-wizard-border-radius,
-        $clr-wizard-border-radius,
-        $clr-use-custom-properties
+        wizard-variables.$clr-wizard-border-radius,
+        variables.$clr-use-custom-properties
       );
     }
 
     .clr-wizard-stepnav {
-      padding-left: $clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-default-space;
       display: block;
-      font-size: $clr_baselineRem_0_583;
-      @include css-var(color, clr-wizard-stepnav-text, $clr-wizard-stepnav-text, $clr-use-custom-properties);
+      font-size: variables.$clr_baselineRem_0_583;
+      @include mixins.css-var(
+        color,
+        clr-wizard-stepnav-text,
+        wizard-variables.$clr-wizard-stepnav-text,
+        variables.$clr-use-custom-properties
+      );
       width: 100%;
       flex: 1 1 auto;
     }
@@ -215,52 +245,69 @@
     .clr-wizard-stepnav-item {
       display: block;
       // IE/OldEdge
-      box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-item-border-color inset;
-      @if $clr-use-custom-properties == true {
+      box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+        wizard-variables.$clr-wizard-stepnav-item-border-color inset;
+      @if variables.$clr-use-custom-properties == true {
         box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-item-border-color) inset;
       }
-      margin: 0 0 (-1 * $clr-global-borderwidth) 0;
-      padding: $clr_baselineRem_0_25 0;
-      padding-left: $clr_baselineRem_8px;
-      @include css-var(color, clr-wizard-stepnav-text, $clr-wizard-stepnav-text, $clr-use-custom-properties);
-      @include css-var(font-weight, clr-font-weight-regular, $clr-font-weight-regular, $clr-use-custom-properties);
+      margin: 0 0 (-1 * variables.$clr-global-borderwidth) 0;
+      padding: variables.$clr_baselineRem_0_25 0;
+      padding-left: variables.$clr_baselineRem_8px;
+      @include mixins.css-var(
+        color,
+        clr-wizard-stepnav-text,
+        wizard-variables.$clr-wizard-stepnav-text,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-font-weight-regular,
+        variables.$clr-font-weight-regular,
+        variables.$clr-use-custom-properties
+      );
 
       &.active {
-        @include css-var(
+        @include mixins.css-var(
           color,
-          unquote('clr-wizard-stepnav-text--active'),
-          $clr-wizard-stepnav-text--active,
-          $clr-use-custom-properties
+          string.unquote('clr-wizard-stepnav-text--active'),
+          wizard-variables.$clr-wizard-stepnav-text--active,
+          variables.$clr-use-custom-properties
         );
-        @include css-var(font-weight, clr-font-weight-semibold, $clr-font-weight-semibold, $clr-use-custom-properties);
+        @include mixins.css-var(
+          font-weight,
+          clr-font-weight-semibold,
+          variables.$clr-font-weight-semibold,
+          variables.$clr-use-custom-properties
+        );
 
         .clr-wizard-stepnav-link {
-          @include css-var(
+          @include mixins.css-var(
             background-color,
             clr-wizard-stepnav-active-bgcolor,
-            $clr-wizard-stepnav-active-bgcolor,
-            $clr-use-custom-properties
+            wizard-variables.$clr-wizard-stepnav-active-bgcolor,
+            variables.$clr-use-custom-properties
           );
           border-radius: 0;
-          @include css-var(
+          @include mixins.css-var(
             border-top-left-radius,
             clr-wizard-border-radius,
-            $clr-wizard-border-radius,
-            $clr-use-custom-properties
+            wizard-variables.$clr-wizard-border-radius,
+            variables.$clr-use-custom-properties
           );
-          @include css-var(
+          @include mixins.css-var(
             border-bottom-left-radius,
             clr-wizard-border-radius,
-            $clr-wizard-border-radius,
-            $clr-use-custom-properties
+            wizard-variables.$clr-wizard-border-radius,
+            variables.$clr-use-custom-properties
           );
         }
       }
 
       &.complete {
         // IE/OldEdge
-        box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-item-border-color--active inset;
-        @if $clr-use-custom-properties == true {
+        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+          wizard-variables.$clr-wizard-stepnav-item-border-color--active inset;
+        @if variables.$clr-use-custom-properties == true {
           box-shadow: var(--clr-wizard-stepnav-border-size)
             0
             0
@@ -271,7 +318,8 @@
       }
 
       &.error {
-        box-shadow: $clr-wizard-stepnav-border-size 0 0 $clr-wizard-stepnav-error-color inset;
+        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
+          wizard-variables.$clr-wizard-stepnav-error-color inset;
         transition: box-shadow 0.2s ease-in;
       }
 
@@ -285,8 +333,8 @@
       display: flex;
       color: inherit;
       align-items: center;
-      padding: 0 $clr_baselineRem_0_125 0 $clr_baselineRem_0_416;
-      font-size: $clr_baselineRem_0_583;
+      padding: 0 variables.$clr_baselineRem_0_125 0 variables.$clr_baselineRem_0_416;
+      font-size: variables.$clr_baselineRem_0_583;
       font-weight: inherit;
       letter-spacing: normal;
       text-align: left;
@@ -296,27 +344,37 @@
       .clr-wizard-stepnav-link-suffix {
         display: flex;
         justify-content: center;
-        min-width: $clr_baselineRem_1;
-        padding-right: $clr_baselineRem_0_25 + $clr_baselineRem_1px;
+        min-width: variables.$clr_baselineRem_1;
+        padding-right: variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px;
 
         .clr-wizard-stepnav-item-error-icon {
           transform: none;
-          fill: $clr-wizard-stepnav-error-color;
+          fill: wizard-variables.$clr-wizard-stepnav-error-color;
         }
       }
     }
 
     .clr-wizard-title {
-      @include css-var(color, clr-wizard-title-text, $clr-wizard-title-text, $clr-use-custom-properties);
-      @include css-var(font-weight, clr-h1-font-weight, $clr-h1-font-weight, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-wizard-title-text,
+        wizard-variables.$clr-wizard-title-text,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-h1-font-weight,
+        variables.$clr-h1-font-weight,
+        variables.$clr-use-custom-properties
+      );
       margin-top: 0;
-      padding-top: $clr-wizard-default-space;
-      padding-left: $clr-wizard-default-space;
-      padding-right: $clr-wizard-default-space * 0.5;
-      padding-bottom: $clr-wizard-default-space;
+      padding-top: wizard-variables.$clr-wizard-default-space;
+      padding-left: wizard-variables.$clr-wizard-default-space;
+      padding-right: wizard-variables.$clr-wizard-default-space * 0.5;
+      padding-bottom: wizard-variables.$clr-wizard-default-space;
       flex: 0 0 auto;
-      font-size: $clr-modal-title-font-size;
-      line-height: $clr-modal-title-line-height;
+      font-size: modal-variables.$clr-modal-title-font-size;
+      line-height: modal-variables.$clr-modal-title-line-height;
     }
 
     // normal modal ignores this. wizard needs it so the nav and content
@@ -325,7 +383,7 @@
       display: flex;
       flex-direction: row;
       flex: 1 1 100%;
-      @include equilateral(100%);
+      @include mixins.equilateral(100%);
       // firefox fix
       max-height: 100%;
 
@@ -337,7 +395,7 @@
 
     .clr-wizard-footer-buttons {
       text-align: right;
-      padding-right: $clr-wizard-default-space;
+      padding-right: wizard-variables.$clr-wizard-default-space;
       margin: 0;
     }
 
@@ -350,8 +408,8 @@
 
     .clr-wizard-btn-wrapper {
       flex: 0 1 auto;
-      min-width: $clr_baselineRem_3_5;
-      padding-left: $clr_baselineRem_0_5;
+      min-width: variables.$clr_baselineRem_3_5;
+      padding-left: variables.$clr_baselineRem_0_5;
     }
 
     .clr-wizard-btn-wrapper[aria-hidden='true'] {
@@ -368,8 +426,8 @@
     }
 
     .clr-wizard-page:not([aria-hidden='true']) {
-      padding: $clr-wizard-default-space;
-      padding-top: $clr_baselineRem_0_75;
+      padding: wizard-variables.$clr-wizard-default-space;
+      padding-top: variables.$clr_baselineRem_0_75;
       display: block;
     }
   }
@@ -390,54 +448,54 @@
 
     &.wizard-md {
       .modal-dialog {
-        min-height: $clr-wizard-all-dialog-min-height;
-        max-height: $clr-wizard-md-dialog-max-height;
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
       }
 
       .modal-content,
       .clr-wizard-stepnav-wrapper {
-        max-height: $clr-wizard-md-dialog-max-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
       }
 
       .clr-wizard-stepnav-wrapper {
-        min-width: $clr-wizard-md-nav-min-width;
-        max-width: $clr-wizard-md-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-md-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-md-nav-max-width;
       }
     }
 
     &.wizard-lg {
       .modal-dialog {
-        min-height: $clr-wizard-all-dialog-min-height;
-        max-height: $clr-wizard-lg-dialog-max-height;
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
       }
 
       .modal-content,
       .clr-wizard-stepnav-wrapper {
-        max-height: $clr-wizard-lg-dialog-max-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
       }
 
       .nav-panel,
       .clr-wizard-stepnav-wrapper {
-        min-width: $clr-wizard-lg-nav-min-width;
-        max-width: $clr-wizard-lg-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-lg-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-lg-nav-max-width;
       }
     }
 
     &.wizard-xl {
       .modal-dialog {
-        height: $clr-wizard-xl-dialog-max-height;
+        height: wizard-variables.$clr-wizard-xl-dialog-max-height;
         max-height: none;
       }
 
       .nav-panel,
       .clr-wizard-stepnav-wrapper {
-        min-width: $clr-wizard-xl-nav-min-width;
-        max-width: $clr-wizard-xl-nav-max-width;
+        min-width: wizard-variables.$clr-wizard-xl-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-xl-nav-max-width;
       }
     }
 
     .spinner:not(.spinner-inline):not(.clr-treenode-spinner) {
-      left: calc(50% + #{$clr_baselineRem_4_791667});
+      left: calc(50% + #{variables.$clr_baselineRem_4_791667});
       position: absolute;
       top: 40%;
     }
@@ -474,7 +532,7 @@
     }
 
     .clr-wizard-stepnav {
-      padding-top: $clr_baselineRem_1;
+      padding-top: variables.$clr_baselineRem_1;
     }
   }
 
@@ -485,9 +543,9 @@
   }
 }
 
-@include fixForMsEdge {
+@include mixins.fixForMsEdge {
   // Edge is pushing header actions down. This aligns them with the close btn.
   .clr-wizard .clr-wizard-header-action {
-    margin-top: -1 * $clr_baselineRem_0_125;
+    margin-top: -1 * variables.$clr_baselineRem_0_125;
   }
 }

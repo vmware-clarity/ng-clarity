@@ -346,12 +346,12 @@ class TestComponent {
 
   menuClosable = true;
   testCnt = 0;
+  customClickHandlerDone = false;
 
   outsideButtonClickHandler(): void {
     this.testCnt++;
   }
 
-  customClickHandlerDone = false;
   customClickHandler() {
     this.customClickHandlerDone = true;
   }
@@ -381,10 +381,15 @@ class TestComponent {
 class DropdownItemThatOpensModalTestComponent {
   modalOpen = false;
 
+  // eslint-disable-next-line decorator-position/decorator-position
   @ViewChild(ClrDropdownTrigger, { read: ElementRef })
   readonly dropdownTriggerButtonElementRef: ElementRef<HTMLButtonElement>;
+
+  // eslint-disable-next-line decorator-position/decorator-position
   @ViewChild(ClrDropdownItem, { read: ElementRef })
   readonly dropdownItemButtonElementRef: ElementRef<HTMLButtonElement>;
+
+  // eslint-disable-next-line decorator-position/decorator-position
   @ViewChild('modalCloseButton', { read: ElementRef })
   readonly modalCloseButtonElementRef: ElementRef<HTMLButtonElement>;
 

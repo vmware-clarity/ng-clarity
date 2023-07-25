@@ -34,17 +34,6 @@ export class Inventory {
     }
   }
 
-  // Used by an iterator to pull an item out of an array in a repeatable way.
-  private getItem<T>(num: number, array: T[]): T {
-    return array[num % array.length];
-  }
-
-  private _checkCurrentQuery() {
-    if (!this._currentQuery) {
-      this._currentQuery = this._all.slice();
-    }
-  }
-
   filter(filters: { [key: string]: string[] }): Inventory {
     this._checkCurrentQuery();
     if (filters) {
@@ -104,6 +93,17 @@ export class Inventory {
     const result: FetchResult = { users: JSON.parse(items), length: this._currentQuery.length };
     this._currentQuery = null;
     return this._fakeHttp(result);
+  }
+
+  // Used by an iterator to pull an item out of an array in a repeatable way.
+  private getItem<T>(num: number, array: T[]): T {
+    return array[num % array.length];
+  }
+
+  private _checkCurrentQuery() {
+    if (!this._currentQuery) {
+      this._currentQuery = this._all.slice();
+    }
   }
 
   private _fakeHttp<T>(result: T): Promise<T> {

@@ -13,36 +13,31 @@ import { Component } from '@angular/core';
 })
 export class ProjectionUpdateTest1Demo {
   show = true;
+  show1 = true;
+  show2 = true;
+  show3 = true;
+  show4 = true;
+  show5 = true;
 
   toggleShow(): void {
     this.show = !this.show;
   }
 
-  show1 = true;
-
   toggleShow1(): void {
     this.show1 = !this.show1;
   }
-
-  show2 = true;
 
   toggleShow2(): void {
     this.show2 = !this.show2;
   }
 
-  show3 = true;
-
   toggleShow3(): void {
     this.show3 = !this.show3;
   }
 
-  show4 = true;
-
   toggleShow4(): void {
     this.show4 = !this.show4;
   }
-
-  show5 = true;
 
   toggleShow5(): void {
     this.show5 = !this.show5;

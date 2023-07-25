@@ -10,13 +10,13 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class SignpostIdService {
-  private _id: Subject<string> = new Subject<string>();
-
-  setId(id: string) {
-    this._id.next(id);
-  }
+  private _id = new Subject<string>();
 
   get id(): Observable<string> {
     return this._id.asObservable();
+  }
+
+  setId(id: string) {
+    this._id.next(id);
   }
 }

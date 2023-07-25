@@ -4,10 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@include exports('datagrid.properties') {
-  @if $clr-use-custom-properties == true {
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.datagrid' as datagrid-variables;
+
+@include mixins.exports('datagrid.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
-      --clr-datagrid-font-color: #{$clr-datagrid-font-color};
+      --clr-datagrid-font-color: #{datagrid-variables.$clr-datagrid-font-color};
       --clr-datagrid-default-border-color: var(--clr-color-neutral-400);
       --clr-datagrid-icon-color: var(--clr-color-neutral-600);
 
@@ -22,7 +26,7 @@
       --clr-datagrid-popover-border-color: var(--clr-datagrid-default-border-color);
       --clr-datagrid-action-popover-hover-color: var(--clr-color-neutral-200);
       --clr-datagrid-row-selected: var(--clr-color-neutral-1000);
-      --clr-datagrid-loading-background: #{$clr-datagrid-loading-background};
+      --clr-datagrid-loading-background: #{datagrid-variables.$clr-datagrid-loading-background};
       --clr-datagrid-popovers-box-shadow-color: rgba(140, 140, 140, 0.25);
 
       --clr-datagrid-column-switch-header-font-color: var(--clr-color-neutral-500);
@@ -32,9 +36,9 @@
       --clr-datagrid-detail-caret-icon-open-icon-color: var(--clr-color-neutral-0);
 
       --clr-datagrid-placeholder-color: var(--clr-color-neutral-700);
-      --clr-datagrid-placeholder-font-size: #{$clr-h5-font-size};
+      --clr-datagrid-placeholder-font-size: #{variables.$clr-h5-font-size};
 
-      --clr-datagrid-pagination-btn-disabled-opacity: #{$clr-datagrid-pagination-btn-disabled-opacity};
+      --clr-datagrid-pagination-btn-disabled-opacity: #{datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity};
 
       --clr-datagrid-column-toggle-border-color: var(--clr-color-neutral-600);
       --clr-datagrid-column-toggle-fill-color: var(--clr-color-neutral-50);

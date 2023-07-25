@@ -83,8 +83,8 @@ class ChocolateTest extends WillyWonka {
 })
 class ChocolateParent extends WillyWonka {
   nbChildren = 0;
-
   changes = 0;
+
   incrementChange() {
     this.changes++;
   }
@@ -95,19 +95,12 @@ class ChocolateParent extends WillyWonka {
   template: '{{last}} {{incrementChange()}}',
 })
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
-  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
-    super(cdr, parent);
-  }
+  changes = 0;
 
   private index: number;
 
-  ngOnInit() {
-    this.index = this.parent.nbChildren++;
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.parent.nbChildren--;
+  constructor(cdr: ChangeDetectorRef, public parent: ChocolateParent) {
+    super(cdr, parent);
   }
 
   get flavor() {
@@ -118,7 +111,15 @@ class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {
     return this.index === this.parent.nbChildren - 1;
   }
 
-  changes = 0;
+  ngOnInit() {
+    this.index = this.parent.nbChildren++;
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.parent.nbChildren--;
+  }
+
   incrementChange() {
     this.changes++;
   }

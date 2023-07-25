@@ -9,49 +9,51 @@
  *
  * This one is left for backwards compatibility
  */
+@use 'theme.dark.clarity' as theme;
+
 clr-icon {
   &.is-green,
   &.is-success {
-    fill: $clr-icon-color-success;
+    fill: theme.$clr-icon-color-success;
   }
   &.is-red,
   &.is-danger,
   &.is-error {
-    fill: $clr-icon-color-error;
+    fill: theme.$clr-icon-color-error;
   }
   &.is-warning {
-    fill: $clr-icon-color-warning;
+    fill: theme.$clr-icon-color-warning;
   }
   &.is-blue,
   &.is-info {
-    fill: $clr-icon-color-info;
+    fill: theme.$clr-icon-color-info;
   }
   &.is-white,
   &.is-inverse {
-    fill: $clr-icon-color-inverse;
+    fill: theme.$clr-icon-color-inverse;
   }
   &.is-highlight {
-    fill: $clr-icon-color-highlight;
+    fill: theme.$clr-icon-color-highlight;
   }
 }
 
 cds-icon {
   &[status='success'] {
-    fill: $clr-icon-color-success;
+    fill: theme.$clr-icon-color-success;
   }
   &[status='danger'] {
-    fill: $clr-icon-color-error;
+    fill: theme.$clr-icon-color-error;
   }
   &[status='warning'] {
-    fill: $clr-icon-color-warning;
+    fill: theme.$clr-icon-color-warning;
   }
   &[status='info'] {
-    fill: $clr-icon-color-info;
+    fill: theme.$clr-icon-color-info;
   }
   &[inverse] {
-    fill: $clr-icon-color-inverse;
+    fill: theme.$clr-icon-color-inverse;
   }
   &[status='highlight'] {
-    fill: $clr-icon-color-highlight;
+    fill: theme.$clr-icon-color-highlight;
   }
 }

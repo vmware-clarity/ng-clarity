@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
 
-@include exports('progress.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('progress.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../progress/progress-bars/_progress-bars.clarity.scss
       --clr-progress-default-color: var(--clr-color-action-600);

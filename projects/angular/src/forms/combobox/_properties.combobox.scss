@@ -3,20 +3,23 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.combobox' as combobox-variables;
 
-@include exports('combobox.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('combobox.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-combobox-trigger-color: var(--clr-color-neutral-500);
-      --clr-combobox-font-size: #{$clr-p2-font-size};
-      --clr-combobox-border-color: #{$clr-combobox-border-color};
-      --clr-combobox-border-radius: #{$clr-combobox-border-radius};
-      --clr-combobox-input-background-color: #{$clr-combobox-input-background-color};
-      --clr-combobox-pill-background-color: #{$clr-combobox-pill-background-color};
-      --clr-combobox-pill-border-color: #{$clr-combobox-pill-border-color};
-      --clr-combobox-pill-border-radius: #{$clr-combobox-pill-border-radius};
-      --clr-combobox-pill-font-color: #{$clr-combobox-pill-font-color};
-      --clr-combobox-filter-highlight: #{$clr-combobox-filter-highlight};
+      --clr-combobox-font-size: #{variables.$clr-p2-font-size};
+      --clr-combobox-border-color: #{combobox-variables.$clr-combobox-border-color};
+      --clr-combobox-border-radius: #{combobox-variables.$clr-combobox-border-radius};
+      --clr-combobox-input-background-color: #{combobox-variables.$clr-combobox-input-background-color};
+      --clr-combobox-pill-background-color: #{combobox-variables.$clr-combobox-pill-background-color};
+      --clr-combobox-pill-border-color: #{combobox-variables.$clr-combobox-pill-border-color};
+      --clr-combobox-pill-border-radius: #{combobox-variables.$clr-combobox-pill-border-radius};
+      --clr-combobox-pill-font-color: #{combobox-variables.$clr-combobox-pill-font-color};
+      --clr-combobox-filter-highlight: #{combobox-variables.$clr-combobox-filter-highlight};
     }
   }
 }

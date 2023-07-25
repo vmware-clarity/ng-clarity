@@ -1,5 +1,7 @@
 ![Clarity Angular](logo.png)
 
+# Clarity Angular
+
 ## Getting Started
 
 Clarity Angular is published as two npm packages:

@@ -11,29 +11,42 @@ import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter
 import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
 
 export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
-  constructor(public filterFn: ClrDatagridStringFilterInterface<T>) {}
-
   /**
    * The Observable required as part of the Filter interface
    */
   private _changes = new Subject<string>();
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get changes(): Observable<string> {
-    return this._changes.asObservable();
-  }
 
   /**
    * Input value converted to lowercase
    */
   private _lowerCaseValue = '';
-  get lowerCaseValue() {
-    return this._lowerCaseValue;
-  }
 
   /**
    * Raw input value
    */
   private _rawValue = '';
+
+  constructor(public filterFn: ClrDatagridStringFilterInterface<T>) {}
+
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get changes(): Observable<string> {
+    return this._changes.asObservable();
+  }
+
+  get lowerCaseValue() {
+    return this._lowerCaseValue;
+  }
+
+  get state() {
+    if (this.filterFn instanceof DatagridPropertyStringFilter) {
+      return {
+        property: this.filterFn.prop,
+        value: this.value,
+      };
+    }
+    return this;
+  }
+
   get value(): string {
     return this._rawValue;
   }
@@ -64,16 +77,6 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
   accepts(item: T): boolean {
     // We always test with the lowercase value of the input, to stay case insensitive
     return this.filterFn.accepts(item, this.lowerCaseValue);
-  }
-
-  get state() {
-    if (this.filterFn instanceof DatagridPropertyStringFilter) {
-      return {
-        property: this.filterFn.prop,
-        value: this.value,
-      };
-    }
-    return this;
   }
 
   equals(other: ClrDatagridFilterInterface<T, any>): boolean {

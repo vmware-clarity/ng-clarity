@@ -18,7 +18,7 @@ export class TreeFeaturesService<T> {
     template: TemplateRef<ClrRecursiveForOfContext<T>>;
     root: RecursiveTreeNodeModel<T>[];
   };
-  childrenFetched: Subject<void> = new Subject();
+  childrenFetched = new Subject<void>();
 }
 
 export function treeFeaturesFactory<T>(existing: TreeFeaturesService<T>) {

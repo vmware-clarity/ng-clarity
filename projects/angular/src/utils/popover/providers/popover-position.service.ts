@@ -17,26 +17,21 @@ import { ClrPopoverEventsService } from './popover-events.service';
 
 @Injectable()
 export class ClrPopoverPositionService {
+  position: ClrPopoverPosition;
+  shouldRealign: Observable<void>;
+
   private currentAnchorCoords: ClientRect;
   private currentContentCoords: ClientRect;
   private contentOffsets: ClrPopoverContentOffset;
-  private _position: ClrPopoverPosition;
+  private _shouldRealign = new Subject<void>();
 
-  private _shouldRealign: Subject<void> = new Subject();
-  shouldRealign: Observable<void> = this._shouldRealign.asObservable();
+  constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {
+    this.shouldRealign = this._shouldRealign.asObservable();
+  }
 
   realign() {
     this._shouldRealign.next();
   }
-
-  set position(position: ClrPopoverPosition) {
-    this._position = position;
-  }
-  get position(): ClrPopoverPosition {
-    return this._position;
-  }
-
-  constructor(private eventService: ClrPopoverEventsService, @Inject(PLATFORM_ID) public platformId: any) {}
 
   alignContent(content: HTMLElement): ClrPopoverContentOffset {
     if (!isPlatformBrowser(this.platformId)) {
@@ -98,6 +93,14 @@ export class ClrPopoverPositionService {
     } else if (visibilityViolations.length === 2 && this.position.axis === ClrAxis.HORIZONTAL) {
       // When primary axis is HORIZONTAL and there are two viewport violations
       this.handleHorizontalAxisTwoViolations(errorSum);
+    }
+
+    /**
+     * Adjusts popover position based on scroll value by adding the negative 'top' value of currentContentCoords to yOffset for proper alignment.
+     * - The negative value means that the 'top' of the content is scrolled out of view at the top of the viewport.
+     */
+    if (this.currentContentCoords.top < 0) {
+      this.contentOffsets.yOffset += Math.abs(this.currentContentCoords.top);
     }
 
     return this.contentOffsets;

@@ -12,15 +12,15 @@ import { MOBILE_USERAGENT_REGEX } from '../utils/constants';
 
 @Injectable()
 export class DatepickerEnabledService {
+  private _isUserAgentMobile = false;
+  private _innerWidth: number;
+
   constructor(@Inject(DOCUMENT) private _document: any) {
     if (this._document) {
       this._isUserAgentMobile = MOBILE_USERAGENT_REGEX.test(_document.defaultView.navigator.userAgent);
       this._innerWidth = _document.defaultView.innerWidth;
     }
   }
-
-  private _isUserAgentMobile = false;
-  private _innerWidth: number;
 
   /**
    * Returns if the calendar should be active or not.

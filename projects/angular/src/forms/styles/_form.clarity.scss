@@ -3,23 +3,36 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.forms' as forms-variables;
 
-@include exports('forms.wrappers') {
+@include mixins.exports('forms.wrappers') {
   .clr-form {
-    padding: $clr-forms-baseline;
+    padding: forms-variables.$clr-forms-baseline;
   }
 
   .clr-form-group {
-    padding: $clr-forms-baseline;
+    padding: forms-variables.$clr-forms-baseline;
   }
 
   .clr-required-mark {
     &::after {
       content: '*';
-      @include css-var(color, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
-      @include css-var(fill, clr-forms-invalid-color, $clr-forms-invalid-color, $clr-use-custom-properties);
-      font-size: $clr-p3-font-size;
-      margin-left: $clr_baselineRem_0_25;
+      @include mixins.css-var(
+        color,
+        clr-forms-invalid-color,
+        forms-variables.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        fill,
+        clr-forms-invalid-color,
+        forms-variables.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+      font-size: variables.$clr-p3-font-size;
+      margin-left: variables.$clr_baselineRem_0_25;
     }
   }
 }

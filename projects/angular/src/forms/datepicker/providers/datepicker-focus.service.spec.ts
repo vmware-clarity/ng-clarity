@@ -88,7 +88,7 @@ class MockNgZone extends NgZone {
   `,
 })
 class TestComponent {
-  constructor(public elementRef: ElementRef) {}
-
   tabIndex = '0';
+
+  constructor(public elementRef: ElementRef) {}
 }

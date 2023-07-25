@@ -16,6 +16,11 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
   },
 })
 export class ClrSpinner {
+  private _inline: boolean;
+  private _inverse: boolean;
+  private _small: boolean;
+  private _medium: boolean;
+
   /**
    * Default class for all spinners. This class is always true
    */
@@ -24,8 +29,6 @@ export class ClrSpinner {
     return true;
   }
 
-  // Style
-  private _inline: boolean;
   @HostBinding('class.spinner-inline')
   get inlineClass() {
     return this._inline;
@@ -36,7 +39,6 @@ export class ClrSpinner {
     this._inline = isBooleanAttributeSet(value);
   }
 
-  private _inverse: boolean;
   @HostBinding('class.spinner-inverse')
   get inverseClass() {
     return this._inverse;
@@ -47,16 +49,6 @@ export class ClrSpinner {
     this._inverse = isBooleanAttributeSet(value);
   }
 
-  // Size
-  /**
-   * By default all spinners are Large. (spinner-lg)
-   * To change the size you need to use set clrSmall or clrMedium to TRUE/
-   */
-
-  /**
-   * Small
-   */
-  private _small: boolean;
   @HostBinding('class.spinner-sm')
   get smallClass() {
     return this._small;
@@ -78,7 +70,6 @@ export class ClrSpinner {
    *
    * Also there is no logical need to have both of them set to TRUE or FALSE.
    */
-  private _medium: boolean;
   @HostBinding('class.spinner-md')
   get mediumClass() {
     if (this._small) {

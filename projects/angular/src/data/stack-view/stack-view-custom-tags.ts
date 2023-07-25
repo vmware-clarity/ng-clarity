@@ -29,15 +29,15 @@ export class ClrStackViewLabel implements OnInit {
   private _id: string = null;
 
   @Input()
+  get id() {
+    return this._id;
+  }
   set id(val: string) {
     if (typeof val === 'string' && val !== '') {
       this._id = val;
     } else {
       this._id = this._generatedId + '';
     }
-  }
-  get id() {
-    return this._id;
   }
 
   ngOnInit() {

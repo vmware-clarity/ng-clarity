@@ -22,8 +22,7 @@ import { ClrExpandableAnimation } from './index';
   `,
 })
 class TestComponent {
-  @ViewChild(ClrExpandableAnimation, { static: true })
-  expandable: ClrExpandableAnimation;
+  @ViewChild(ClrExpandableAnimation, { static: true }) expandable: ClrExpandableAnimation;
   expanded = false;
   data = ['one'];
 }

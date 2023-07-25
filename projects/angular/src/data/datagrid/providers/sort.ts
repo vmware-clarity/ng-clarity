@@ -13,12 +13,23 @@ import { StateDebouncer } from './state-debouncer.provider';
 
 @Injectable()
 export class Sort<T = any> {
-  constructor(private stateDebouncer: StateDebouncer) {}
-
   /**
    * Currently active comparator
    */
   private _comparator: ClrDatagridComparatorInterface<T>;
+
+  /**
+   * Ascending order if false, descending if true
+   */
+  private _reverse = false;
+
+  /**
+   * The Observable that lets other classes subscribe to sort changes
+   */
+  private _change = new Subject<Sort<T>>();
+
+  constructor(private stateDebouncer: StateDebouncer) {}
+
   get comparator(): ClrDatagridComparatorInterface<T> {
     return this._comparator;
   }
@@ -29,10 +40,6 @@ export class Sort<T = any> {
     this.stateDebouncer.changeDone();
   }
 
-  /**
-   * Ascending order if false, descending if true
-   */
-  private _reverse = false;
   get reverse(): boolean {
     return this._reverse;
   }
@@ -43,13 +50,6 @@ export class Sort<T = any> {
     this.stateDebouncer.changeDone();
   }
 
-  /**
-   * The Observable that lets other classes subscribe to sort changes
-   */
-  private _change = new Subject<Sort<T>>();
-  private emitChange() {
-    this._change.next(this);
-  }
   // We do not want to expose the Subject itself, but the Observable which is read-only
   get change(): Observable<Sort<T>> {
     return this._change.asObservable();
@@ -87,5 +87,9 @@ export class Sort<T = any> {
    */
   compare(a: T, b: T): number {
     return (this.reverse ? -1 : 1) * this.comparator.compare(a, b);
+  }
+
+  private emitChange() {
+    this._change.next(this);
   }
 }

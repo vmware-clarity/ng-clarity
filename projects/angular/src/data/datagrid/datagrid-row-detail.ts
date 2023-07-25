@@ -38,8 +38,17 @@ import { Selection } from './providers/selection';
   },
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
+  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
+  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
+
+  replacedRow = false;
+
   /* reference to the enum so that template can access it */
   SELECTION_TYPE = SelectionType;
+
+  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     public selection: Selection,
@@ -49,14 +58,26 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     public commonStrings: ClrCommonStringsService
   ) {}
 
-  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
-
   @Input('clrDgReplace')
   set replace(value: boolean) {
     this.expand.setReplace(!!value);
   }
-  private subscriptions: Subscription[] = [];
-  replacedRow = false;
+
+  get beginningOfExpandableContentAriaText() {
+    return (
+      this._beginningOfExpandableContentAriaText ||
+      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
+      ${this.commonStrings.keys.datagridExpandableRowContent}`
+    );
+  }
+
+  get endOfExpandableContentAriaText() {
+    return (
+      this._endOfExpandableContentAriaText ||
+      `${this.commonStrings.keys.datagridExpandableEndOf} 
+      ${this.commonStrings.keys.datagridExpandableRowContent}`
+    );
+  }
 
   ngAfterContentInit() {
     this.subscriptions.push(
@@ -68,23 +89,5 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
-  get beginningOfExpandableContentAriaText() {
-    return (
-      this._beginningOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableBeginningOf} 
-      ${this.commonStrings.keys.datagridExpandableRowContent}`
-    );
-  }
-
-  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
-  get endOfExpandableContentAriaText() {
-    return (
-      this._endOfExpandableContentAriaText ||
-      `${this.commonStrings.keys.datagridExpandableEndOf} 
-      ${this.commonStrings.keys.datagridExpandableRowContent}`
-    );
   }
 }

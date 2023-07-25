@@ -37,6 +37,12 @@ const OVERFLOW_AUTO = 'auto';
 
 export class Popover {
   private _scroll: Subject<void>;
+  private boundOnScrollListener: any = this.emitScrollEvent.bind(this);
+
+  /*
+   * Containers up to the first positioned one will have an event on scroll
+   */
+  private scrollableElements: HTMLElement[] = [];
 
   constructor(private element: any) {
     // Browsers don't agree with what to do if some of these are not specified, so we set them all to be safe.
@@ -252,17 +258,9 @@ export class Popover {
     return position === POSITION_RELATIVE || position === POSITION_ABSOLUTE || position === POSITION_FIXED;
   }
 
-  /*
-   * Containers up to the first positioned one will have an event on scroll
-   */
-
-  private scrollableElements: HTMLElement[] = [];
-
   private emitScrollEvent() {
     this._scroll.next();
   }
-
-  private boundOnScrollListener: any = this.emitScrollEvent.bind(this);
 
   private addScrollEventListeners(e: any) {
     this._scroll = new Subject<void>();

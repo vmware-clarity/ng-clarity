@@ -15,10 +15,12 @@ export class IfExpandService implements LoadingListener {
   expandable = 0;
 
   protected _loading = false;
+  protected _expanded = false;
+  protected _expandChange = new Subject<boolean>();
+
   get loading(): boolean {
     return this._loading;
   }
-
   set loading(value: boolean) {
     value = !!value;
     if (value !== this._loading) {
@@ -26,11 +28,9 @@ export class IfExpandService implements LoadingListener {
     }
   }
 
-  protected _expanded = false;
   get expanded(): boolean {
     return this._expanded;
   }
-
   set expanded(value: boolean) {
     value = !!value;
     if (value !== this._expanded) {
@@ -39,13 +39,12 @@ export class IfExpandService implements LoadingListener {
     }
   }
 
-  toggle() {
-    this.expanded = !this._expanded;
-  }
-
-  protected _expandChange: Subject<boolean> = new Subject<boolean>();
   get expandChange(): Observable<boolean> {
     return this._expandChange.asObservable();
+  }
+
+  toggle() {
+    this.expanded = !this._expanded;
   }
 
   loadingStateChange(state: ClrLoadingState): void {

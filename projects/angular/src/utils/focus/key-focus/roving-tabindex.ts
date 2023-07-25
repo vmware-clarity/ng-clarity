@@ -15,21 +15,20 @@ import { ClrKeyFocus } from './key-focus';
   template: '<ng-content></ng-content>',
 })
 export class ClrRovingTabindex extends ClrKeyFocus {
+  private disabled = false;
+
   constructor(elementRef: ElementRef, private renderer: Renderer2) {
     super(elementRef);
   }
 
   // Proxy the input, as the selector name from parent class will still be "clrKeyFocus".
   @Input('clrRovingTabindex')
-  set rovingIndexItems(elements: Array<FocusableItem> | string) {
-    this.focusableItems = elements as Array<FocusableItem>;
-  }
-
   get rovingIndexItems(): Array<FocusableItem> | string {
     return this.focusableItems;
   }
-
-  private disabled = false;
+  set rovingIndexItems(elements: Array<FocusableItem> | string) {
+    this.focusableItems = elements as Array<FocusableItem>;
+  }
 
   @Input('clrRovingTabindexDisabled')
   set rovingTabindexDisabled(disabled: boolean) {

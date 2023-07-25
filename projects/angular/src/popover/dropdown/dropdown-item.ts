@@ -30,24 +30,23 @@ export class ClrDropdownItem {
   ) {}
 
   @Input('clrDisabled')
+  get disabled() {
+    return this.focusableItem.disabled;
+  }
   set disabled(value: boolean | string) {
     // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
     this.focusableItem.disabled = !!value || value === '';
-  }
-
-  get disabled() {
-    return this.focusableItem.disabled;
   }
 
   /**
    * Let you overwrite the focusable auto increment id.
    */
   @Input('id')
-  set dropdownItemId(value: string) {
-    this.focusableItem.id = value;
-  }
   get dropdownItemId() {
     return this.focusableItem.id;
+  }
+  set dropdownItemId(value: string) {
+    this.focusableItem.id = value;
   }
 
   @HostListener('click')

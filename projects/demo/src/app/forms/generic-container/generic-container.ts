@@ -11,8 +11,6 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
   templateUrl: './generic-container.html',
 })
 export class FormsGenericContainerDemo {
-  constructor(private fb: FormBuilder) {}
-
   model = {
     basic: '',
     container: '',
@@ -33,6 +31,8 @@ export class FormsGenericContainerDemo {
     required: new FormControl('', [Validators.required, Validators.minLength(5), Validators.pattern(/asdfasdf/)]),
     cars: new FormControl([3], [Validators.required]),
   });
+
+  constructor(private fb: FormBuilder) {}
 
   submit() {
     console.log(this);

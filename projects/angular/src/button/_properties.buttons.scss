@@ -3,51 +3,54 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.buttons' as button-variables;
 
-@include exports('button.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('button.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Spacing
-      --clr-btn-vertical-margin: #{$clr-btn-vertical-margin};
-      --clr-btn-horizontal-margin: #{$clr-btn-horizontal-margin};
-      --clr-btn-horizontal-padding: #{$clr-btn-horizontal-padding};
+      --clr-btn-vertical-margin: #{button-variables.$clr-btn-vertical-margin};
+      --clr-btn-horizontal-margin: #{button-variables.$clr-btn-horizontal-margin};
+      --clr-btn-horizontal-padding: #{button-variables.$clr-btn-horizontal-padding};
       --clr-btn-vertical-padding: 0;
       --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
 
       // Sizing
-      --clr-btn-height: #{$clr-btn-height};
-      --clr-btn-height-sm: #{$clr-btn-height-sm};
+      --clr-btn-height: #{button-variables.$clr-btn-height};
+      --clr-btn-height-sm: #{button-variables.$clr-btn-height-sm};
 
       // Fonts
-      --clr-btn-font-weight: #{$clr-btn-font-weight};
+      --clr-btn-font-weight: #{button-variables.$clr-btn-font-weight};
 
       // Borders
-      --clr-btn-border-radius: #{$clr-btn-border-radius};
-      --clr-btn-border-width: #{$clr-btn-border-width};
+      --clr-btn-border-radius: #{button-variables.$clr-btn-border-radius};
+      --clr-btn-border-width: #{button-variables.$clr-btn-border-width};
 
       // Shared colors
       --clr-btn-outline-bg-color: transparent;
 
       // Standard button appearance - overrideable but not advertised!
-      --clr-btn-appearance-standard-line-height: #{$clr-btn-appearance-standard-line-height};
-      --clr-btn-appearance-standard-font-size: #{$clr-btn-appearance-standard-font-size};
-      --clr-btn-appearance-standard-font-weight: #{$clr-btn-appearance-standard-font-weight};
-      --clr-btn-appearance-standard-height: #{$clr-btn-appearance-standard-height};
-      --clr-btn-appearance-standard-padding: #{$clr-btn-appearance-standard-padding};
-      --clr-btn-appearance-standard-icon-size: #{$clr_baselineRem_0_5};
+      --clr-btn-appearance-standard-line-height: #{button-variables.$clr-btn-appearance-standard-line-height};
+      --clr-btn-appearance-standard-font-size: #{button-variables.$clr-btn-appearance-standard-font-size};
+      --clr-btn-appearance-standard-font-weight: #{button-variables.$clr-btn-appearance-standard-font-weight};
+      --clr-btn-appearance-standard-height: #{button-variables.$clr-btn-appearance-standard-height};
+      --clr-btn-appearance-standard-padding: #{button-variables.$clr-btn-appearance-standard-padding};
+      --clr-btn-appearance-standard-icon-size: #{variables.$clr_baselineRem_0_5};
 
       // form-style button appearance styles - overrideable but not advertised!
-      --clr-btn-appearance-form-line-height: #{$clr-btn-appearance-form-line-height};
-      --clr-btn-appearance-form-letter-spacing: #{$clr-btn-appearance-form-letter-spacing};
-      --clr-btn-appearance-form-font-size: #{$clr-btn-appearance-form-font-size};
-      --clr-btn-appearance-form-font-weight: #{$clr-btn-appearance-form-font-weight};
-      --clr-btn-appearance-form-height: #{$clr-btn-appearance-form-height};
-      --clr-btn-appearance-form-padding: #{$clr-btn-appearance-form-padding};
+      --clr-btn-appearance-form-line-height: #{button-variables.$clr-btn-appearance-form-line-height};
+      --clr-btn-appearance-form-letter-spacing: #{button-variables.$clr-btn-appearance-form-letter-spacing};
+      --clr-btn-appearance-form-font-size: #{button-variables.$clr-btn-appearance-form-font-size};
+      --clr-btn-appearance-form-font-weight: #{button-variables.$clr-btn-appearance-form-font-weight};
+      --clr-btn-appearance-form-height: #{button-variables.$clr-btn-appearance-form-height};
+      --clr-btn-appearance-form-padding: #{button-variables.$clr-btn-appearance-form-padding};
 
       // Default button colors
       --clr-btn-default-color: var(--clr-color-action-600);
       --clr-btn-default-border-color: var(--clr-btn-default-color);
-      --clr-btn-default-bg-color: #{$clr-btn-default-bg-color};
+      --clr-btn-default-bg-color: #{button-variables.$clr-btn-default-bg-color};
       --clr-btn-default-hover-bg-color: var(--clr-color-action-50);
       --clr-btn-default-hover-color: var(--clr-color-action-800);
       --clr-btn-default-box-shadow-color: var(--clr-color-action-500);
@@ -187,10 +190,13 @@
       --clr-btn-inverse-checked-color: var(--clr-color-neutral-0);
 
       // For theme-able icon button color
-      --clr-btn-icon-disabled-color: var(--clr-btn-default-disabled-color, #{$clr-btn-default-disabled-color});
+      --clr-btn-icon-disabled-color: var(
+        --clr-btn-default-disabled-color,
+        #{button-variables.$clr-btn-default-disabled-color}
+      );
 
       // Button groups
-      --clr-btn-group-focus-outline: #{$clr-btn-group-focus-outline};
+      --clr-btn-group-focus-outline: #{button-variables.$clr-btn-group-focus-outline};
     }
   }
 }

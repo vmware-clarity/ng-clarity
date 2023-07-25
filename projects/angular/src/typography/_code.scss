@@ -3,18 +3,35 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
 
-@include exports('code.clarity') {
+@include mixins.exports('code.clarity') {
   //Styles for Clarity Code Snippets
   pre {
-    margin: $clr_baselineRem_0_5 0;
+    margin: variables.$clr_baselineRem_0_5 0;
   }
 
   pre {
-    @include css-var(border-color, clr-color-neutral-400, $clr-color-neutral-400, $clr-use-custom-properties);
-    @include css-var(border-width, clr-global-borderwidth, $clr-global-borderwidth, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-color-neutral-400,
+      variables.$clr-color-neutral-400,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-width,
+      clr-global-borderwidth,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     border-style: solid;
-    @include css-var(border-radius, clr-global-borderradius, $clr-global-borderradius, $clr-use-custom-properties);
+    @include mixins.css-var(
+      border-radius,
+      clr-global-borderradius,
+      variables.$clr-global-borderradius,
+      variables.$clr-use-custom-properties
+    );
   }
 
   pre code {
@@ -25,7 +42,12 @@
   // @deprecated Bootstrap dependencies are deprecated since 1.0. Review and edit before 2.0 if needed.
   code {
     &.clr-code {
-      @include css-var(color, clr-color-danger-800, $clr-color-danger-800, $clr-use-custom-properties);
+      @include mixins.css-var(
+        color,
+        clr-color-danger-800,
+        variables.$clr-color-danger-800,
+        variables.$clr-use-custom-properties
+      );
       padding: 0;
       background: transparent;
     }

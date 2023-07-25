@@ -20,19 +20,37 @@ import { ClrControlSuccess } from './success';
 
 @Directive()
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy, AfterContentInit {
-  protected subscriptions: Subscription[] = [];
-  _dynamic = false;
-  @ContentChild(ClrLabel, { static: false })
-  label: ClrLabel;
-  control: NgControl;
-  private state: CONTROL_STATE;
-
-  /**
-   * Find Success, Error and Helper control components.
-   */
+  @ContentChild(ClrLabel, { static: false }) label: ClrLabel;
   @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
   @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
+
+  control: NgControl;
+  _dynamic = false;
+
+  protected subscriptions: Subscription[] = [];
+
+  private state: CONTROL_STATE;
+
+  constructor(
+    protected ifControlStateService: IfControlStateService,
+    @Optional() protected layoutService: LayoutService,
+    protected controlClassService: ControlClassService,
+    protected ngControlService: NgControlService
+  ) {
+    this.subscriptions.push(
+      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+        this.state = state;
+        this.updateHelpers();
+      })
+    );
+
+    this.subscriptions.push(
+      this.ngControlService.controlChanges.subscribe(control => {
+        this.control = control;
+      })
+    );
+  }
 
   /**
    * @NOTE
@@ -67,24 +85,8 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
   }
 
-  constructor(
-    protected ifControlStateService: IfControlStateService,
-    @Optional() protected layoutService: LayoutService,
-    protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService
-  ) {
-    this.subscriptions.push(
-      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
-        this.state = state;
-        this.updateHelpers();
-      })
-    );
-
-    this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      })
-    );
+  private get touched() {
+    return this.control?.touched;
   }
 
   ngAfterContentInit() {
@@ -128,9 +130,5 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
         showValid: this.showValid,
       });
     }
-  }
-
-  private get touched() {
-    return this.control?.touched;
   }
 }

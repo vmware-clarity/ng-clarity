@@ -56,6 +56,10 @@ describe('Header', () => {
     expect(compiled.textContent).toMatch(/Components/);
   });
 
+  it('has role="banner" by default', () => {
+    expect(compiled.querySelector('clr-header').getAttribute('role')).toBe('banner');
+  });
+
   it('shows the hamburger trigger when the level1 directive is registered', () => {
     expect(compiled.querySelector('.header-hamburger-trigger')).not.toBeNull();
   });
@@ -69,5 +73,53 @@ describe('Header', () => {
     expect(compiled.querySelector('.header-overflow-trigger').getAttribute('aria-label')).toBe(
       'Navigation overflow menu'
     );
+  });
+});
+
+describe('Header with custom role', () => {
+  let fixture: ComponentFixture<any>;
+  let nativeElement: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: '<clr-header role="generic"></clr-header>',
+      },
+    });
+
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+    });
+
+    fixture = TestBed.createComponent(TestComponent);
+    nativeElement = fixture.nativeElement;
+  });
+
+  it('uses provided custom role', () => {
+    expect(nativeElement.querySelector('clr-header').getAttribute('role')).toBe('generic');
+  });
+});
+
+describe('Header without role', () => {
+  let fixture: ComponentFixture<any>;
+  let nativeElement: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: '<clr-header [role]="undefined"></clr-header>',
+      },
+    });
+
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+    });
+
+    fixture = TestBed.createComponent(TestComponent);
+    nativeElement = fixture.nativeElement;
+  });
+
+  it('does not have a role attribute', () => {
+    expect(nativeElement.querySelector('clr-header').hasAttribute('role')).toBe(false);
   });
 });

@@ -37,20 +37,6 @@ export class ClrDaypicker {
   }
 
   /**
-   * Calls the ViewManagerService to change to the monthpicker view.
-   */
-  changeToMonthView(): void {
-    this._viewManagerService.changeToMonthView();
-  }
-
-  /**
-   * Calls the ViewManagerService to change to the yearpicker view.
-   */
-  changeToYearView(): void {
-    this._viewManagerService.changeToYearView();
-  }
-
-  /**
    * Returns the month value of the calendar in the TranslationWidth.Abbreviated format.
    */
   get calendarMonth(): string {
@@ -62,6 +48,20 @@ export class ClrDaypicker {
    */
   get calendarYear(): number {
     return this._dateNavigationService.displayedCalendar.year;
+  }
+
+  /**
+   * Calls the ViewManagerService to change to the monthpicker view.
+   */
+  changeToMonthView(): void {
+    this._viewManagerService.changeToMonthView();
+  }
+
+  /**
+   * Calls the ViewManagerService to change to the yearpicker view.
+   */
+  changeToYearView(): void {
+    this._viewManagerService.changeToYearView();
   }
 
   /**

@@ -3,16 +3,19 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use 'variables.stack-view' as stack-view-variables;
 
-@include exports('stack-view.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('stack-view.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../stack-view/_stack-view.clarity.scss
-      --clr-stack-view-border-radius: #{$clr-stack-view-border-radius};
+      --clr-stack-view-border-radius: #{stack-view-variables.$clr-stack-view-border-radius};
       --clr-stack-view-border-color: var(--clr-color-neutral-400);
       --clr-stack-view-bg-color: var(--clr-color-neutral-50);
       --clr-stack-view-stack-block-border-bottom: var(--clr-color-neutral-300);
-      --clr-stack-view-color: #{$clr-p3-color};
+      --clr-stack-view-color: #{variables.$clr-p3-color};
       --clr-stack-view-stack-block-label-text-color: var(--clr-global-font-color);
 
       //border-bottom for stack-view rows (not last)

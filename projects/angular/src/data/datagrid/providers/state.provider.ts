@@ -20,17 +20,17 @@ import { StateDebouncer } from './state-debouncer.provider';
  */
 @Injectable()
 export class StateProvider<T> {
+  /**
+   * The Observable that lets other classes subscribe to global state changes
+   */
+  change: Observable<ClrDatagridStateInterface<T>> = this.debouncer.change.pipe(map(() => this.state));
+
   constructor(
     private filters: FiltersProvider<T>,
     private sort: Sort<T>,
     private page: Page,
     private debouncer: StateDebouncer
   ) {}
-
-  /**
-   * The Observable that lets other classes subscribe to global state changes
-   */
-  change: Observable<ClrDatagridStateInterface<T>> = this.debouncer.change.pipe(map(() => this.state));
 
   /*
    * By making this a getter, we open the possibility for a setter in the future.

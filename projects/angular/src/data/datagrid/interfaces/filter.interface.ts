@@ -7,13 +7,13 @@
 import { Observable } from 'rxjs';
 
 export interface ClrDatagridFilterInterface<T, S = any> {
-  isActive(): boolean;
-
-  accepts(item: T): boolean;
+  readonly state?: S;
 
   changes: Observable<any>;
 
-  readonly state?: S;
+  isActive(): boolean;
+
+  accepts(item: T): boolean;
 
   equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
 }

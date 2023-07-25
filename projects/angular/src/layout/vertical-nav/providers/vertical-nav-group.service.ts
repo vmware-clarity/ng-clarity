@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class VerticalNavGroupService {
-  private _expandChange: Subject<boolean> = new Subject<boolean>();
+  private _expandChange = new Subject<boolean>();
 
   get expandChange(): Observable<boolean> {
     return this._expandChange.asObservable();

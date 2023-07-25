@@ -16,18 +16,17 @@ const MIN_COLUMN_WIDTH = 96;
 
 @Injectable()
 export class ColumnResizerService {
-  constructor(private el: ElementRef, private domAdapter: DomAdapter, private organizer: DatagridRenderOrganizer) {}
+  // is it within the maximum resize range to the left
+  isWithinMaxResizeRange: boolean;
 
   private widthBeforeResize: number;
-
   private _resizedBy = 0;
+
+  constructor(private el: ElementRef, private domAdapter: DomAdapter, private organizer: DatagridRenderOrganizer) {}
 
   get resizedBy() {
     return this._resizedBy;
   }
-
-  // is it within the maximum resize range to the left
-  isWithinMaxResizeRange: boolean;
 
   get minColumnWidth() {
     return this.domAdapter.minWidth(this.el.nativeElement) || MIN_COLUMN_WIDTH;
@@ -35,6 +34,10 @@ export class ColumnResizerService {
 
   get maxResizeRange() {
     return this.widthBeforeResize - this.minColumnWidth;
+  }
+
+  get widthAfterResize(): number {
+    return this.widthBeforeResize + this._resizedBy;
   }
 
   startResize(): void {
@@ -45,10 +48,6 @@ export class ColumnResizerService {
 
   endResize(): void {
     this.organizer.resize();
-  }
-
-  get widthAfterResize(): number {
-    return this.widthBeforeResize + this._resizedBy;
   }
 
   calculateResize(resizedBy: number): void {

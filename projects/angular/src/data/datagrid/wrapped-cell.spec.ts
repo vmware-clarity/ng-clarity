@@ -13,8 +13,7 @@ import { WrappedCell } from './wrapped-cell';
   template: `<dg-wrapped-cell>Hello World!</dg-wrapped-cell>`,
 })
 class WrappedCellTest {
-  @ViewChild(WrappedCell, { static: true })
-  wrapper: WrappedCell;
+  @ViewChild(WrappedCell, { static: true }) wrapper: WrappedCell;
 }
 
 interface TestContext {

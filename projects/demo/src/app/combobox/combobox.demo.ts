@@ -11,31 +11,12 @@ import { map, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './combobox.demo.html',
-  styles: [
-    `
-      cds-icon {
-        --color: var(--clr-label-gray-color);
-      }
-    `,
-  ],
+  styles: [],
 })
 export class ComboboxDemo {
-  private _disabled = false;
-  get disabled(): boolean {
-    return this._disabled;
-  }
-  set disabled(disabled: boolean) {
-    this._disabled = disabled;
-    if (disabled) {
-      this.form.disable();
-      this.formOnBlur.disable();
-    } else {
-      this.form.enable();
-      this.formOnBlur.enable();
-    }
-  }
   loading = false;
   open = false;
+
   states0 = [
     {
       name: 'Alabama',
@@ -58,6 +39,7 @@ export class ComboboxDemo {
       abbreviation: 'AR',
     },
   ];
+
   states = [
     {
       name: 'Alabama',
@@ -332,11 +314,6 @@ export class ComboboxDemo {
       ),
   };
 
-  fetchStates(filter = '') {
-    this.loading = true;
-    this.asyncStates$ = this.STATES_SERVICE.getStates(filter).pipe(tap(() => (this.loading = false)));
-  }
-
   form = new FormGroup({
     model: new FormControl(this.states[15], Validators.required),
   });
@@ -344,4 +321,25 @@ export class ComboboxDemo {
   formOnBlur = new FormGroup({
     model: new FormControl(null, { validators: [Validators.required], updateOn: 'blur' }),
   });
+
+  private _disabled = false;
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(disabled: boolean) {
+    this._disabled = disabled;
+    if (disabled) {
+      this.form.disable();
+      this.formOnBlur.disable();
+    } else {
+      this.form.enable();
+      this.formOnBlur.enable();
+    }
+  }
+
+  fetchStates(filter = '') {
+    this.loading = true;
+    this.asyncStates$ = this.STATES_SERVICE.getStates(filter).pipe(tap(() => (this.loading = false)));
+  }
 }

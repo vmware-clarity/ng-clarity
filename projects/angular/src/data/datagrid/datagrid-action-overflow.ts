@@ -65,7 +65,12 @@ let clrDgActionId = 0;
   `,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
+
+  @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
+
+  popoverId = uniqueIdFactory();
+
   smartPosition: ClrPopoverPosition = {
     axis: ClrAxis.HORIZONTAL,
     side: ClrSide.AFTER,
@@ -73,9 +78,10 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     content: ClrAlignment.CENTER,
   };
 
-  popoverId = uniqueIdFactory();
-
   @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
+
+  private _open = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private rowActionService: RowActionService,
@@ -88,12 +94,28 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     this.subscriptions.push(
       this.smartToggleService.openChange.subscribe(openState => {
         this.open = openState;
-        if (openState) {
+      }),
+      this.smartToggleService.popoverVisible.subscribe(visible => {
+        if (visible) {
           this.initializeFocus();
         }
       })
     );
     this.popoverId = 'clr-action-menu' + clrDgActionId++;
+  }
+
+  @Input('clrDgActionOverflowOpen')
+  get open() {
+    return this._open;
+  }
+  set open(open: boolean) {
+    const openState = !!open;
+    if (!!openState !== this.open) {
+      // prevents chocolate mess
+      this.smartToggleService.open = openState;
+      this.openChange.emit(openState);
+      this._open = openState;
+    }
   }
 
   ngOnDestroy() {
@@ -107,38 +129,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   private initializeFocus(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
 
-          if (buttons.length) {
-            this.keyFocus.current = 0;
-            this.keyFocus.focusableItems = buttons;
+      if (buttons.length) {
+        this.keyFocus.current = 0;
+        this.keyFocus.focusableItems = buttons;
 
-            this.keyFocus.focusCurrent();
-          }
-        });
-      });
+        this.keyFocus.focusCurrent();
+      }
     }
   }
-
-  private _open = false;
-  get open() {
-    return this._open;
-  }
-
-  @Input('clrDgActionOverflowOpen')
-  set open(open: boolean) {
-    const openState = !!open;
-    if (!!openState !== this.open) {
-      // prevents chocolate mess
-      this.smartToggleService.open = openState;
-      this.openChange.emit(openState);
-      this._open = openState;
-    }
-  }
-
-  @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
-
-  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
 }

@@ -3,13 +3,22 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../nav/variables.subnav' as subnav-variables;
+@use 'variables.header' as header-variables;
 
-@include exports('layout.clarity') {
+@include mixins.exports('layout.clarity') {
   .main-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    @include css-var(background, clr-global-app-background, $clr-global-app-background, $clr-use-custom-properties);
+    @include mixins.css-var(
+      background,
+      clr-global-app-background,
+      variables.$clr-global-app-background,
+      variables.$clr-use-custom-properties
+    );
 
     .alert.alert-app-level {
       flex: 0 0 auto;
@@ -18,12 +27,12 @@
 
     header,
     .header {
-      flex: 0 0 $clr-header-height;
+      flex: 0 0 header-variables.$clr-header-height;
     }
 
     .sub-nav,
     .subnav {
-      flex: 0 0 $clr-subnav-height;
+      flex: 0 0 subnav-variables.$clr-subnav-height;
     }
 
     //This is a utility class which mimics the main-container class
@@ -48,14 +57,14 @@
       //min-height: 0px works in Firefox but not in IE. IE wants a positive value
       //IE:
       //http://stackoverflow.com/a/14964944/3538394
-      min-height: $clr_baselineRem_1px;
+      min-height: variables.$clr_baselineRem_1px;
 
       .content-area {
         flex: 1 1 auto;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        padding: $clr-content-area-padding-top $clr-content-area-padding-right $clr-content-area-padding-bottom
-          $clr-content-area-padding-left;
+        padding: variables.$clr-content-area-padding-top variables.$clr-content-area-padding-right
+          variables.$clr-content-area-padding-bottom variables.$clr-content-area-padding-left;
 
         & > :first-child {
           margin-top: 0;

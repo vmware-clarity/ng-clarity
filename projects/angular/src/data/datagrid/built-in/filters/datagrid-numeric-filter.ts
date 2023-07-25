@@ -50,6 +50,29 @@ export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>
   implements CustomFilter, AfterViewInit
 {
+  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
+  @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
+
+  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
+
+  /**
+   * Indicates if the filter dropdown is open
+   */
+  open = false;
+
+  /**
+   * We need the actual input element to automatically focus on it
+   */
+  @ViewChild('input_low') input: ElementRef;
+
+  /**
+   * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+   */
+  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+
+  private initFilterValues: [number, number];
+  private subscriptions: Subscription[] = [];
+
   constructor(
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
@@ -60,28 +83,31 @@ export class DatagridNumericFilter<T = any>
     super(filters);
   }
 
-  private subscriptions: Subscription[] = [];
-
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
-  }
-
   /**
-   * Provide a way to pass external placeholder and aria-label to the filter input
+   * Common setter for the input values
    */
-  @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
-
-  get maxPlaceholderValue() {
-    return this.maxPlaceholder || this.commonStrings.keys.maxValue;
+  @Input('clrFilterValue')
+  get value() {
+    return [this.filter.low, this.filter.high];
   }
-
-  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
-
-  get minPlaceholderValue() {
-    return this.minPlaceholder || this.commonStrings.keys.minValue;
+  set value(values: [number, number]) {
+    if (this.filter && Array.isArray(values)) {
+      if (values && (values[0] !== this.filter.low || values[1] !== this.filter.high)) {
+        if (typeof values[0] === 'number') {
+          this.filter.low = values[0];
+        } else {
+          this.filter.low = null;
+        }
+        if (typeof values[1] === 'number') {
+          this.filter.high = values[1];
+        } else {
+          this.filter.high = null;
+        }
+        this.filterValueChange.emit(values);
+      }
+    } else {
+      this.initFilterValues = values;
+    }
   }
 
   /**
@@ -105,20 +131,50 @@ export class DatagridNumericFilter<T = any>
     }
   }
 
-  /**
-   * Indicates if the filter dropdown is open
-   */
-  open = false;
+  get maxPlaceholderValue() {
+    return this.maxPlaceholder || this.commonStrings.keys.maxValue;
+  }
 
-  /**
-   * We need the actual input element to automatically focus on it
-   */
-  @ViewChild('input_low') input: ElementRef;
+  get minPlaceholderValue() {
+    return this.minPlaceholder || this.commonStrings.keys.minValue;
+  }
 
-  /**
-   * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
-   */
-  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+  get low() {
+    if (typeof this.filter.low === 'number' && isFinite(this.filter.low)) {
+      return this.filter.low;
+    } else {
+      // There's not a low limit
+      return null;
+    }
+  }
+  set low(low: number | string) {
+    if (typeof low === 'number' && low !== this.filter.low) {
+      this.filter.low = low;
+      this.filterValueChange.emit([this.filter.low, this.filter.high]);
+    } else if (typeof low !== 'number') {
+      this.filter.low = null;
+      this.filterValueChange.emit([this.filter.low, this.filter.high]);
+    }
+  }
+
+  get high() {
+    if (typeof this.filter.high === 'number' && isFinite(this.filter.high)) {
+      return this.filter.high;
+    } else {
+      // There's not a high limit
+      return null;
+    }
+  }
+  set high(high: number | string) {
+    if (typeof high === 'number' && high !== this.filter.high) {
+      this.filter.high = high;
+      this.filterValueChange.emit([this.filter.low, this.filter.high]);
+    } else if (typeof high !== 'number') {
+      this.filter.high = null;
+      this.filterValueChange.emit([this.filter.low, this.filter.high]);
+    }
+  }
+
   ngAfterViewInit() {
     this.subscriptions.push(
       this.popoverToggleService.openChange.subscribe(openChange => {
@@ -138,72 +194,10 @@ export class DatagridNumericFilter<T = any>
     );
   }
 
-  private initFilterValues: [number, number];
-  /**
-   * Common setter for the input values
-   */
-  get value() {
-    return [this.filter.low, this.filter.high];
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
-
-  @Input('clrFilterValue')
-  set value(values: [number, number]) {
-    if (this.filter && Array.isArray(values)) {
-      if (values && (values[0] !== this.filter.low || values[1] !== this.filter.high)) {
-        if (typeof values[0] === 'number') {
-          this.filter.low = values[0];
-        } else {
-          this.filter.low = null;
-        }
-        if (typeof values[1] === 'number') {
-          this.filter.high = values[1];
-        } else {
-          this.filter.high = null;
-        }
-        this.filterValueChange.emit(values);
-      }
-    } else {
-      this.initFilterValues = values;
-    }
-  }
-
-  get low() {
-    if (typeof this.filter.low === 'number' && isFinite(this.filter.low)) {
-      return this.filter.low;
-    } else {
-      // There's not a low limit
-      return null;
-    }
-  }
-
-  set low(low: number | string) {
-    if (typeof low === 'number' && low !== this.filter.low) {
-      this.filter.low = low;
-      this.filterValueChange.emit([this.filter.low, this.filter.high]);
-    } else if (typeof low !== 'number') {
-      this.filter.low = null;
-      this.filterValueChange.emit([this.filter.low, this.filter.high]);
-    }
-  }
-
-  get high() {
-    if (typeof this.filter.high === 'number' && isFinite(this.filter.high)) {
-      return this.filter.high;
-    } else {
-      // There's not a high limit
-      return null;
-    }
-  }
-
-  set high(high: number | string) {
-    if (typeof high === 'number' && high !== this.filter.high) {
-      this.filter.high = high;
-      this.filterValueChange.emit([this.filter.low, this.filter.high]);
-    } else if (typeof high !== 'number') {
-      this.filter.high = null;
-      this.filterValueChange.emit([this.filter.low, this.filter.high]);
-    }
-  }
-
-  @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 }

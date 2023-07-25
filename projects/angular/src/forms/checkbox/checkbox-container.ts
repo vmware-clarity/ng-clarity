@@ -51,10 +51,11 @@ import { ClrCheckbox } from './checkbox';
   providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService],
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-  private inline = false;
   role: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+
+  private inline = false;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -72,15 +73,15 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
    * [clrInline]="true|false" - expect a boolean
    */
   @Input()
+  get clrInline() {
+    return this.inline;
+  }
   set clrInline(value: boolean | string) {
     if (typeof value === 'string') {
       this.inline = value === 'false' ? false : true;
     } else {
       this.inline = !!value;
     }
-  }
-  get clrInline() {
-    return this.inline;
   }
 
   override ngAfterContentInit() {

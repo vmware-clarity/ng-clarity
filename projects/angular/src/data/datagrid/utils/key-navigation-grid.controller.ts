@@ -34,6 +34,20 @@ export interface KeyNavigationGridConfig {
 
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
+  private host: HTMLElement;
+  private config: KeyNavigationGridConfig;
+  private listenersAdded = false;
+  private destroy$ = new Subject<void>();
+
+  constructor(private zone: NgZone) {
+    this.config = {
+      keyGridRows: '[role=row]:not(.datagrid-placeholder)',
+      keyGridCells:
+        '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
+      keyGrid: '[role=grid]',
+    };
+  }
+
   private get grid() {
     return this.host?.querySelector(this.config.keyGrid);
   }
@@ -46,26 +60,9 @@ export class KeyNavigationGridController implements OnDestroy {
     return this.host?.querySelectorAll(this.config.keyGridCells) as NodeListOf<HTMLElement>;
   }
 
-  private config: KeyNavigationGridConfig;
-
-  private listenersAdded = false;
-
-  private host: HTMLElement;
-
-  private destroy$ = new Subject();
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  constructor(private zone: NgZone) {
-    this.config = {
-      keyGridRows: '[role=row]:not(.datagrid-placeholder)',
-      keyGridCells:
-        '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
-      keyGrid: '[role=grid]',
-    };
   }
 
   addListeners() {

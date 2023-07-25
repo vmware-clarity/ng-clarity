@@ -4,108 +4,139 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './properties.login';
+@use 'sass:map';
+@use 'properties.login';
+@use '../image/icons.clarity';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.login' as login-variables;
 
-@include exports('login.clarity') {
+@include mixins.exports('login.clarity') {
   .login-wrapper {
     display: flex;
     height: 100%;
-    background: generateLoginBackground();
+    background: icons.generateLoginBackground();
     background-size: 100%;
-    background-position: $clr-login-width 0;
+    background-position: login-variables.$clr-login-width 0;
     background-repeat: no-repeat;
 
     .login {
-      @include css-var(background, clr-login-background-color, $clr-login-background-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        background,
+        clr-login-background-color,
+        login-variables.$clr-login-background-color,
+        variables.$clr-use-custom-properties
+      );
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: $clr_baselineRem_1 $clr_baselineRem_2_5;
+      padding: variables.$clr_baselineRem_1 variables.$clr_baselineRem_2_5;
       height: auto;
       min-height: 100vh;
-      width: $clr-login-width;
+      width: login-variables.$clr-login-width;
 
       .title {
-        @include css-var(color, clr-login-title-color, $clr-login-title-color, $clr-use-custom-properties);
-        @include css-var(
+        @include mixins.css-var(
+          color,
+          clr-login-title-color,
+          login-variables.$clr-login-title-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
           font-weight,
           clr-login-title-font-weight,
-          $clr-login-title-font-weight,
-          $clr-use-custom-properties
+          login-variables.$clr-login-title-font-weight,
+          variables.$clr-use-custom-properties
         );
-        @include css-var(
+        @include mixins.css-var(
           font-family,
           clr-login-title-font-family,
-          $clr-login-title-font-family,
-          $clr-use-custom-properties
+          login-variables.$clr-login-title-font-family,
+          variables.$clr-use-custom-properties
         );
-        font-size: $clr-login-title-font-size;
-        letter-spacing: $clr-login-title-letter-spacing;
-        line-height: $clr-login-title-line-height;
+        font-size: login-variables.$clr-login-title-font-size;
+        letter-spacing: login-variables.$clr-login-title-letter-spacing;
+        line-height: login-variables.$clr-login-title-line-height;
 
         .welcome {
-          line-height: $clr-login-title-line-height;
+          line-height: login-variables.$clr-login-title-line-height;
         }
 
         .hint {
-          @include css-var(color, clr-login-title-color, $clr-login-title-color, $clr-use-custom-properties);
-          margin-top: $clr_baselineRem_1_25;
-          font-size: $clr_baselineRem_0_583;
+          @include mixins.css-var(
+            color,
+            clr-login-title-color,
+            login-variables.$clr-login-title-color,
+            variables.$clr-use-custom-properties
+          );
+          margin-top: variables.$clr_baselineRem_1_25;
+          font-size: variables.$clr_baselineRem_0_583;
         }
       }
 
-      // @TODO Is this used?
+      // @TODO Is this used? It's not documented on the website or used in the demo app.
       .trademark {
-        @include css-var(color, clr-login-trademark-color, $clr-login-trademark-color, $clr-use-custom-properties);
-        @include css-var(
+        @include mixins.css-var(
+          color,
+          clr-login-trademark-color,
+          login-variables.$clr-login-trademark-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
           font-weight,
           clr-login-trademark-font-weight,
-          $clr-login-trademark-font-weight,
-          $clr-use-custom-properties
+          login-variables.$clr-login-trademark-font-weight,
+          variables.$clr-use-custom-properties
         );
-        @include css-var(
+        @include mixins.css-var(
           font-family,
           clr-login-trademark-font-family,
-          $clr-login-trademark-font-family,
-          $clr-use-custom-properties
+          login-variables.$clr-login-trademark-font-family,
+          variables.$clr-use-custom-properties
         );
-        font-size: $clr-login-trademark-font-size;
-        letter-spacing: $clr-login-trademark-letter-spacing;
+        font-size: login-variables.$clr-login-trademark-font-size;
+        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
       }
 
-      // @TODO Is this used?
+      // @TODO Is this used? It's not documented on the website or used in the demo app.
       .subtitle {
-        @include css-var(
+        @include mixins.css-var(
           font-weight,
           clr-login-subtitle-font-weight,
-          $clr-login-subtitle-font-weight,
-          $clr-use-custom-properties
+          login-variables.$clr-login-subtitle-font-weight,
+          variables.$clr-use-custom-properties
         );
-        @include css-var(color, clr-login-subtitle-color, $clr-login-subtitle-color, $clr-use-custom-properties);
-        @include css-var(
+        @include mixins.css-var(
+          color,
+          clr-login-subtitle-color,
+          login-variables.$clr-login-subtitle-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
           font-family,
           clr-login-subtitle-font-family,
-          $clr-login-subtitle-font-family,
-          $clr-use-custom-properties
+          login-variables.$clr-login-subtitle-font-family,
+          variables.$clr-use-custom-properties
         );
-        font-size: $clr-login-subtitle-font-size;
-        letter-spacing: $clr-login-subtitle-letter-spacing;
-        line-height: $clr-login-subtitle-line-height;
+        font-size: login-variables.$clr-login-subtitle-font-size;
+        letter-spacing: login-variables.$clr-login-subtitle-letter-spacing;
+        line-height: login-variables.$clr-login-subtitle-line-height;
       }
 
       .login-group {
         display: flex;
         flex-direction: column;
-        padding: $clr_baselineRem_2 0 0 0;
+        padding: variables.$clr_baselineRem_2 0 0 0;
 
+        // @TODO Are these used? Some are documented on the website but not actually used. Some are neither documented nor used.
         .auth-source,
         .username,
         .password,
         .checkbox,
         .clr-form-control,
         .clr-checkbox-wrapper {
-          margin: $clr_baselineRem_0_25 0 $clr_baselineRem_0_75 0;
+          margin: variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0;
         }
 
         // Overrides for new forms layouts to match original login layout
@@ -131,21 +162,21 @@
             & > .clr-input-group {
               max-width: 100%;
               width: 100%;
-              padding-right: $clr_baselineRem_0_4;
+              padding-right: variables.$clr_baselineRem_0_4;
 
               & > .clr-input {
-                width: calc(100% - #{$clr_baselineRem_1});
+                width: calc(100% - #{variables.$clr_baselineRem_1});
               }
             }
           }
         }
 
-        // @TODO Is this used?
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
         .tooltip-validation {
-          margin-top: $clr_baselineRem_0_25;
+          margin-top: variables.$clr_baselineRem_0_25;
         }
 
-        // @TODO Is this used?
+        // @TODO Is this used? It's not documented on the website or used in the demo app.
         .tooltip-validation .username,
         .tooltip-validation .password {
           width: 100%;
@@ -154,52 +185,57 @@
 
         .error {
           display: none;
-          margin: $clr_baselineRem_0_25 0 0 0;
-          padding: $clr_baselineRem_0_375 $clr_baselineRem_0_5;
-          @include css-var(
+          margin: variables.$clr_baselineRem_0_25 0 0 0;
+          padding: variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5;
+          @include mixins.css-var(
             background,
             clr-login-error-background-color,
-            $clr-color-danger-800,
-            $clr-use-custom-properties
+            variables.$clr-color-danger-800,
+            variables.$clr-use-custom-properties
           );
-          @include css-var(color, clr-login-background-color, $clr-login-background-color, $clr-use-custom-properties);
-          @include css-var(
+          @include mixins.css-var(
+            color,
+            clr-login-background-color,
+            login-variables.$clr-login-background-color,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
             border-radius,
             clr-login-error-border-radius,
-            $clr-global-borderradius,
-            $clr-use-custom-properties
+            variables.$clr-global-borderradius,
+            variables.$clr-use-custom-properties
           );
-          line-height: $clr_baselineRem_0_75;
+          line-height: variables.$clr_baselineRem_0_75;
 
           &:before {
             display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
             content: '';
-            background: generateErrorIcon($clr-login-background-color);
-            margin: $clr_baselineRem_1px $clr_baselineRem_0_25 0 0;
-            @include equilateral($clr-login-icon-size);
+            background: icons.generateErrorIcon(login-variables.$clr-login-background-color);
+            margin: variables.$clr_baselineRem_1px variables.$clr_baselineRem_0_25 0 0;
+            @include mixins.equilateral(login-variables.$clr-login-icon-size);
           }
 
           &.active {
             display: flex;
 
             &:before {
-              flex: 0 0 $clr-login-icon-size;
+              flex: 0 0 login-variables.$clr-login-icon-size;
             }
           }
         }
 
         .btn {
-          margin: $clr_baselineRem_3 0 0 0;
+          margin: variables.$clr_baselineRem_3 0 0 0;
           max-width: none;
         }
 
         .error + .btn {
-          margin: $clr_baselineRem_1 0 0 0;
+          margin: variables.$clr_baselineRem_1 0 0 0;
         }
 
         .signup {
-          margin-top: $clr_baselineRem_0_5;
-          font-size: $clr_baselineRem_0_583;
+          margin-top: variables.$clr_baselineRem_0_5;
+          font-size: variables.$clr_baselineRem_0_583;
           text-align: center;
         }
       }
@@ -208,25 +244,35 @@
         position: absolute;
         content: '';
         display: block;
-        width: $clr_baselineRem_1px;
+        width: variables.$clr_baselineRem_1px;
         height: 100%;
-        @include css-var(background, clr-login-panel-line-color, $clr-color-neutral-1000, $clr-use-custom-properties);
-        @include css-var(opacity, clr-login-panel-line-opacity, 0.1, $clr-use-custom-properties);
+        @include mixins.css-var(
+          background,
+          clr-login-panel-line-color,
+          variables.$clr-color-neutral-1000,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(opacity, clr-login-panel-line-opacity, 0.1, variables.$clr-use-custom-properties);
         top: 0;
-        right: -1 * $clr_baselineRem_2px;
+        right: -1 * variables.$clr_baselineRem_2px;
       }
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, md)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
     .login-wrapper {
       justify-content: center;
-      @include css-var(background, clr-login-background-color, $clr-login-background-color, $clr-use-custom-properties);
+      @include mixins.css-var(
+        background,
+        clr-login-background-color,
+        login-variables.$clr-login-background-color,
+        variables.$clr-use-custom-properties
+      );
 
       .login {
         width: 100%;
         margin-left: 0;
-        padding: $clr_baselineRem_1 20%;
+        padding: variables.$clr_baselineRem_1 20%;
 
         &:after {
           content: none;
@@ -235,10 +281,10 @@
     }
   }
 
-  @media screen and (max-width: map-get($clr-grid-breakpoints, sm)) {
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .login-wrapper {
       .login {
-        padding: $clr_baselineRem_1 15%;
+        padding: variables.$clr_baselineRem_1 15%;
       }
     }
   }

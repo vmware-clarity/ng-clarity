@@ -21,16 +21,15 @@ export enum ClrLoadingState {
 export class ClrLoading implements OnDestroy {
   static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
 
+  private _loadingState: ClrLoadingState | string = ClrLoadingState.DEFAULT;
+
   // We find the first parent that handles something loading
   constructor(@Optional() private listener: LoadingListener) {}
 
-  private _loadingState: ClrLoadingState | string = ClrLoadingState.DEFAULT;
-
+  @Input('clrLoading')
   get loadingState() {
     return this._loadingState;
   }
-
-  @Input('clrLoading')
   set loadingState(value: boolean | string | ClrLoadingState) {
     if (value === true) {
       value = ClrLoadingState.LOADING;

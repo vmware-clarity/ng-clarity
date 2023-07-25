@@ -3,22 +3,40 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.nav' as nav-variables;
 
-@include exports('links.clarity') {
+@include mixins.exports('links.clarity') {
   // only imported for demos. gives a static view of links in various states.
   a.link-normal:link {
-    @include css-var(color, clr-link-color, $clr-link-color, $clr-use-custom-properties);
+    @include mixins.css-var(color, clr-link-color, nav-variables.$clr-link-color, variables.$clr-use-custom-properties);
   }
 
   a.link-hovered:link {
-    @include css-var(color, clr-link-hover-color, $clr-link-hover-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-hover-color,
+      nav-variables.$clr-link-hover-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   a.link-clicked:link {
-    @include css-var(color, clr-link-active-color, $clr-link-active-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-active-color,
+      nav-variables.$clr-link-active-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   a.link-visited:link {
-    @include css-var(color, clr-link-visited-color, $clr-link-visited-color, $clr-use-custom-properties);
+    @include mixins.css-var(
+      color,
+      clr-link-visited-color,
+      nav-variables.$clr-link-visited-color,
+      variables.$clr-use-custom-properties
+    );
   }
 }

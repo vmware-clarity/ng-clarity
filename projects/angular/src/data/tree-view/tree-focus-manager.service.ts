@@ -14,10 +14,8 @@ export class TreeFocusManagerService<T> {
   rootNodeModels: TreeNodeModel<T>[];
 
   private focusedNodeId: string;
-
-  private _focusRequest: Subject<string> = new Subject();
-
-  private _focusChange: Subject<string> = new Subject();
+  private _focusRequest = new Subject<string>();
+  private _focusChange = new Subject<string>();
 
   get focusRequest(): Observable<string> {
     return this._focusRequest.asObservable();
@@ -25,6 +23,46 @@ export class TreeFocusManagerService<T> {
 
   get focusChange(): Observable<string> {
     return this._focusChange.asObservable();
+  }
+
+  focusNode(model: TreeNodeModel<T>): void {
+    if (model) {
+      this._focusRequest.next(model.nodeId);
+    }
+  }
+
+  broadcastFocusedNode(nodeId: string): void {
+    if (this.focusedNodeId !== nodeId) {
+      this.focusedNodeId = nodeId;
+      this._focusChange.next(nodeId);
+    }
+  }
+
+  focusParent(model: TreeNodeModel<T>): void {
+    if (model) {
+      this.focusNode(model.parent);
+    }
+  }
+
+  focusFirstVisibleNode(): void {
+    const focusModel = this.rootNodeModels && this.rootNodeModels[0];
+    this.focusNode(focusModel);
+  }
+
+  focusLastVisibleNode(): void {
+    this.focusNode(this.findLastVisibleInTree());
+  }
+
+  focusNodeAbove(model: TreeNodeModel<T>): void {
+    this.focusNode(this.findNodeAbove(model));
+  }
+
+  focusNodeBelow(model: TreeNodeModel<T>): void {
+    this.focusNode(this.findNodeBelow(model));
+  }
+
+  focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void {
+    this.focusNode(this.findClosestNodeStartsWith(searchString, model));
   }
 
   private findSiblings(model: TreeNodeModel<T>): TreeNodeModel<T>[] {
@@ -178,45 +216,5 @@ export class TreeFocusManagerService<T> {
     }
     // Now look from its own direct parent
     return this.findNodeStartsWith(searchString, model.parent);
-  }
-
-  focusNode(model: TreeNodeModel<T>): void {
-    if (model) {
-      this._focusRequest.next(model.nodeId);
-    }
-  }
-
-  broadcastFocusedNode(nodeId: string): void {
-    if (this.focusedNodeId !== nodeId) {
-      this.focusedNodeId = nodeId;
-      this._focusChange.next(nodeId);
-    }
-  }
-
-  focusParent(model: TreeNodeModel<T>): void {
-    if (model) {
-      this.focusNode(model.parent);
-    }
-  }
-
-  focusFirstVisibleNode(): void {
-    const focusModel = this.rootNodeModels && this.rootNodeModels[0];
-    this.focusNode(focusModel);
-  }
-
-  focusLastVisibleNode(): void {
-    this.focusNode(this.findLastVisibleInTree());
-  }
-
-  focusNodeAbove(model: TreeNodeModel<T>): void {
-    this.focusNode(this.findNodeAbove(model));
-  }
-
-  focusNodeBelow(model: TreeNodeModel<T>): void {
-    this.focusNode(this.findNodeBelow(model));
-  }
-
-  focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void {
-    this.focusNode(this.findClosestNodeStartsWith(searchString, model));
   }
 }

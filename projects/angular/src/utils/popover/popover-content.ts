@@ -33,6 +33,27 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   private view: EmbeddedViewRef<void>;
   private subscriptions: Subscription[] = [];
+  private removeClickListenerFn: VoidFunction | null = null;
+
+  private shouldRealign = false;
+
+  // Check-collector pattern:
+  // In order to get accurate content height/width values, we cannot calculate alignment offsets until
+  // after the projected content has stabilized.
+  // As multiple check events may happen in the same rendering cycle, we need to collect all events
+  // and only act after the content is really stable. Or we may get wrong intermediate positioning values.
+  // We will channel subsequent content check events through this observable.
+  private checkCollector = new EventEmitter<void>();
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private container: ViewContainerRef,
+    private template: TemplateRef<any>,
+    private renderer: Renderer2,
+    private smartPositionService: ClrPopoverPositionService,
+    private smartEventsService: ClrPopoverEventsService,
+    private smartOpenService: ClrPopoverToggleService
+  ) {}
 
   @Input('clrPopoverContent')
   set open(value: boolean) {
@@ -54,17 +75,12 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.smartEventsService.scrollToClose = !!scrollToClose;
   }
 
-  private removeClickListenerFn: VoidFunction | null = null;
-
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private container: ViewContainerRef,
-    private template: TemplateRef<any>,
-    private renderer: Renderer2,
-    private smartPositionService: ClrPopoverPositionService,
-    private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
-  ) {}
+  ngAfterContentChecked(): void {
+    if (this.smartOpenService.open && this.view && this.shouldRealign) {
+      // Channel content-check event through the check-collector
+      this.checkCollector.emit();
+    }
+  }
 
   ngAfterViewInit() {
     this.subscriptions.push(
@@ -77,11 +93,6 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
       }),
       this.smartPositionService.shouldRealign.subscribe(() => {
         this.shouldRealign = true;
-        // Avoid flickering on initialization, caused by the asynchronous nature of the
-        // check-collector pattern.
-        if (this.view) {
-          this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '0');
-        }
       }),
       // Here we collect subsequent synchronously received content-check events and only take action
       // at the end of the cycle. See below for details on the check-collector pattern.
@@ -90,6 +101,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
         this.shouldRealign = false;
         if (this.view) {
           this.renderer.setStyle(this.view.rootNodes[0], 'opacity', '1');
+          this.smartOpenService.popoverVisibleEmit(true);
         }
       })
     );
@@ -98,19 +110,6 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
   ngOnDestroy() {
     this.removeContent();
     this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  private removeContent(): void {
-    if (!this.view) {
-      return;
-    }
-    if (this.removeClickListenerFn) {
-      this.removeClickListenerFn();
-      this.removeClickListenerFn = null;
-    }
-    this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
-    this.container.clear();
-    delete this.view;
   }
 
   /**
@@ -143,27 +142,25 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.shouldRealign = true;
   }
 
-  private shouldRealign = false;
-
-  // Check-collector pattern:
-  // In order to get accurate content height/width values, we cannot calculate alignment offsets until
-  // after the projected content has stabilized.
-  // As multiple check events may happen in the same rendering cycle, we need to collect all events
-  // and only act after the content is really stable. Or we may get wrong intermediate positioning values.
-  // We will channel subsequent content check events through this observable.
-  private checkCollector = new EventEmitter<void>();
-
-  ngAfterContentChecked(): void {
-    if (this.smartOpenService.open && this.view && this.shouldRealign) {
-      // Channel content-check event through the check-collector
-      this.checkCollector.emit();
+  private removeContent(): void {
+    if (!this.view) {
+      return;
     }
+    if (this.removeClickListenerFn) {
+      this.removeClickListenerFn();
+      this.removeClickListenerFn = null;
+    }
+    this.view.rootNodes.forEach(node => this.renderer.removeChild(this.document.body, node));
+    this.container.clear();
+    delete this.view;
+    this.smartOpenService.popoverVisibleEmit(false);
   }
 
   private alignContent() {
     if (!this.view) {
       return;
     }
+
     const positionCoords = this.smartPositionService.alignContent(this.view.rootNodes[0]);
     this.renderer.setStyle(this.view.rootNodes[0], 'top', `${positionCoords.yOffset}px`);
     this.renderer.setStyle(this.view.rootNodes[0], 'left', `${positionCoords.xOffset}px`);

@@ -11,15 +11,19 @@ import { FiltersProvider, RegisteredFilter } from '../providers/filters';
 
 @Directive()
 export abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInterface<T>> implements OnDestroy {
-  constructor(private filters: FiltersProvider<T>) {}
-
   /**
    * @NOTEe Type `any` is set here to be able to pass templateStrictMode
    */
   registered: any;
 
+  constructor(private filters: FiltersProvider<T>) {}
+
   get filter(): F {
     return this.registered && this.registered.filter;
+  }
+
+  ngOnDestroy(): void {
+    this.deleteFilter();
   }
 
   setFilter(filter: F | RegisteredFilter<T, F>) {
@@ -37,9 +41,5 @@ export abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInte
       this.registered.unregister();
       delete this.registered;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.deleteFilter();
   }
 }

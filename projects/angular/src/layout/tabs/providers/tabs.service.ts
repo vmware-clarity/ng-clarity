@@ -11,13 +11,10 @@ import { ClrTab } from '../tab';
 
 @Injectable()
 export class TabsService {
-  private _children: ClrTab[] = [];
-
   layout: TabsLayout | string = TabsLayout.HORIZONTAL;
+  tabContentViewContainer: ViewContainerRef;
 
-  register(tab: ClrTab) {
-    this._children.push(tab);
-  }
+  private _children: ClrTab[] = [];
 
   get children() {
     return this._children;
@@ -37,12 +34,14 @@ export class TabsService {
     }
   }
 
+  register(tab: ClrTab) {
+    this._children.push(tab);
+  }
+
   unregister(tab: ClrTab) {
     const index = this.children.indexOf(tab);
     if (index > -1) {
       this.children.splice(index, 1);
     }
   }
-
-  tabContentViewContainer: ViewContainerRef;
 }

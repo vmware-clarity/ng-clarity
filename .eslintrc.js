@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+const memberOrderingConfig = require('./.eslintrc-member-ordering');
+
 module.exports = {
   env: {
     browser: true,
@@ -28,7 +30,7 @@ module.exports = {
     {
       files: ['**/*.ts'],
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-      plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports'],
+      plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports', 'decorator-position'],
       rules: {
         '@typescript-eslint/explicit-member-accessibility': [
           'error',
@@ -36,6 +38,7 @@ module.exports = {
             accessibility: 'no-public',
           },
         ],
+        '@typescript-eslint/member-ordering': ['error', memberOrderingConfig],
         '@typescript-eslint/no-explicit-any': 'off', // Would LOVE to turn this on
         '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/no-unused-vars': [
@@ -46,7 +49,9 @@ module.exports = {
         ],
         '@typescript-eslint/no-var-requires': 'error',
         curly: 'error',
+        'decorator-position/decorator-position': 'error',
         eqeqeq: 'error',
+        'grouped-accessor-pairs': ['error', 'getBeforeSet'],
         'import/no-absolute-path': ['error'],
         'import/no-useless-path-segments': ['error'],
         'import/order': [

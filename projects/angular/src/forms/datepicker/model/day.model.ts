@@ -43,11 +43,11 @@ export class DayModel {
     return `${this.year}${this.pad(this.month)}${this.pad(this.date)}`;
   }
 
-  private pad(num: number): string {
-    return num < 10 ? `0${num}` : `${num}`;
-  }
-
   toDateString(): string {
     return this.toDate().toLocaleDateString();
+  }
+
+  private pad(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
   }
 }

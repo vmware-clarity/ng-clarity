@@ -8,22 +8,23 @@ import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
 export class PageCollectionMock {
+  _previousPageIsCompleted = true;
+
   private _pagesReset = new Subject<boolean>();
+  private _stepItemIdWasCalled = false;
+
   get pagesReset(): Observable<boolean> {
     return this._pagesReset.asObservable();
-  }
-
-  private _stepItemIdWasCalled = false;
-  getStepItemIdForPage(): string {
-    this._stepItemIdWasCalled = true;
-    return 'mock-id';
   }
 
   get stepItemIdWasCalled(): boolean {
     return this._stepItemIdWasCalled;
   }
 
-  _previousPageIsCompleted = true;
+  getStepItemIdForPage(): string {
+    this._stepItemIdWasCalled = true;
+    return 'mock-id';
+  }
 
   previousPageIsCompleted(_page: any = null): boolean {
     return this._previousPageIsCompleted;

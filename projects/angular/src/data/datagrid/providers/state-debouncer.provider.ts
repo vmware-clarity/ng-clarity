@@ -14,19 +14,20 @@ import { Subject } from 'rxjs';
  */
 @Injectable()
 export class StateDebouncer {
-  /**
-   * The Observable that lets other classes subscribe to global state changes
-   */
-  private _change = new Subject<void>();
-  // We do not want to expose the Subject itself, but the Observable which is read-only
-  get change(): Observable<void> {
-    return this._change.asObservable();
-  }
-
   /*
    * This is the lock, to only emit once all the changes have finished processing
    */
   private nbChanges = 0;
+
+  /**
+   * The Observable that lets other classes subscribe to global state changes
+   */
+  private _change = new Subject<void>();
+
+  // We do not want to expose the Subject itself, but the Observable which is read-only
+  get change(): Observable<void> {
+    return this._change.asObservable();
+  }
 
   changeStart() {
     this.nbChanges++;

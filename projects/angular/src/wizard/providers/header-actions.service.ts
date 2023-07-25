@@ -14,9 +14,9 @@ export class HeaderActionService {
   // this service communicates information about the presence/display of header actions
   // across the wizard
 
-  constructor(public navService: WizardNavigationService) {}
-
   wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+
+  constructor(public navService: WizardNavigationService) {}
 
   get wizardHasHeaderActions(): boolean {
     const wizardHdrActions = this.wizardHeaderActions;

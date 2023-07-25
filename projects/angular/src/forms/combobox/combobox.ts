@@ -25,7 +25,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 import { IF_ACTIVE_ID_PROVIDER } from '../../utils/conditional/if-active.service';
 import { Keys } from '../../utils/enums/keys.enum';
@@ -73,17 +72,38 @@ export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>
   implements ControlValueAccessor, LoadingListener, AfterContentInit
 {
+  @Input('placeholder') placeholder = '';
+
+  @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
+  @Output('clrOpenChange') clrOpenChange = this.toggleService.openChange;
+
+  /**
+   * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
+   */
+  @Output('clrSelectionChange') clrSelectionChange = this.optionSelectionService.selectionChanged;
+
   @ViewChild('textboxInput') textbox: ElementRef;
   @ViewChild('trigger') trigger: ElementRef;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
-  @ContentChild(ClrOptions) private options: ClrOptions<T>;
-
-  private onChangeCallback: (model: T | T[]) => any;
-
-  protected override index = 1;
 
   invalid = false;
   focused = false;
+  focusedPill: any;
+
+  smartPosition: ClrPopoverPosition = {
+    axis: ClrAxis.VERTICAL,
+    side: ClrSide.AFTER,
+    anchor: ClrAlignment.START,
+    content: ClrAlignment.START,
+  };
+
+  protected override index = 1;
+
+  @ContentChild(ClrOptions) private options: ClrOptions<T>;
+
+  private _searchText = '';
+  private onTouchedCallback: () => any;
+  private onChangeCallback: (model: T | T[]) => any;
 
   constructor(
     vcr: ViewContainerRef,
@@ -112,28 +132,33 @@ export class ClrCombobox<T>
     this.updateControlValue();
   }
 
-  focusedPill: any;
+  @Input('clrMulti')
+  get multiSelect() {
+    return this.optionSelectionService.multiselectable;
+  }
+  set multiSelect(value: boolean | string) {
+    if (value) {
+      this.optionSelectionService.selectionModel = new MultiSelectComboboxModel<T>();
+    } else {
+      // in theory, setting this again should not cause errors even though we already set it in constructor,
+      // since the initial call to writeValue (caused by [ngModel] input) should happen after this
+      this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
+    }
+    this.updateControlValue();
+  }
 
   // Override the id of WrappedFormControl, as we want to move it to the embedded input.
   // Otherwise the label/component connection does not work and screen readers do not read the label.
   override get id() {
     return this.controlIdService.id + '-combobox';
   }
-
   override set id(id: string) {
     super.id = id;
   }
 
-  inputId(): string {
-    return this.controlIdService.id;
+  get searchText(): string {
+    return this._searchText;
   }
-
-  get openState(): boolean {
-    return this.toggleService.open;
-  }
-
-  private _searchText = '';
-
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
@@ -149,8 +174,8 @@ export class ClrCombobox<T>
     this.optionSelectionService.currentInput = this.searchText;
   }
 
-  get searchText(): string {
-    return this._searchText;
+  get openState(): boolean {
+    return this.toggleService.open;
   }
 
   get multiSelectModel(): T[] {
@@ -158,49 +183,6 @@ export class ClrCombobox<T>
       throw Error('multiSelectModel is not available in single selection context');
     }
     return (this.optionSelectionService.selectionModel as MultiSelectComboboxModel<T>).model;
-  }
-
-  smartPosition: ClrPopoverPosition = {
-    axis: ClrAxis.VERTICAL,
-    side: ClrSide.AFTER,
-    anchor: ClrAlignment.START,
-    content: ClrAlignment.START,
-  };
-
-  loadingStateChange(state: ClrLoadingState): void {
-    this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
-    this.positionService.realign();
-    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-      this.focusFirstActive();
-    }
-  }
-
-  private get disabled() {
-    return this.control && this.control.disabled;
-  }
-
-  unselect(item: T) {
-    if (!this.disabled) {
-      this.optionSelectionService.unselect(item);
-    }
-  }
-
-  @Input('placeholder') placeholder = '';
-
-  @Input('clrMulti')
-  set multiSelect(value: boolean | string) {
-    if (value) {
-      this.optionSelectionService.selectionModel = new MultiSelectComboboxModel<T>();
-    } else {
-      // in theory, setting this again should not cause errors even though we already set it in constructor,
-      // since the initial call to writeValue (caused by [ngModel] input) should happen after this
-      this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
-    }
-    this.updateControlValue();
-  }
-
-  get multiSelect() {
-    return this.optionSelectionService.multiselectable;
   }
 
   get ariaControls(): string {
@@ -217,6 +199,60 @@ export class ClrCombobox<T>
 
   get displayField(): string {
     return this.optionSelectionService.displayField;
+  }
+
+  private get disabled() {
+    return this.control && this.control.disabled;
+  }
+
+  ngAfterContentInit() {
+    this.initializeSubscriptions();
+
+    // Initialize with preselected value
+    if (!this.optionSelectionService.selectionModel.isEmpty()) {
+      this.updateInputValue(this.optionSelectionService.selectionModel);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.focusHandler.componentCdRef = this.cdr;
+    this.focusHandler.textInput = this.textbox.nativeElement;
+    this.focusHandler.trigger = this.trigger.nativeElement;
+    // The text input is the actual element we are wrapping
+    // This assignment is needed by the wrapper, so it can set
+    // the aria properties on the input element, not on the component.
+    this.el = this.textbox;
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeyUp(event: KeyboardEvent) {
+    // if BACKSPACE in multiselect mode, delete the last pill if text is empty
+    if (event.key === Keys.Backspace && this.multiSelect && this._searchText.length === 0) {
+      const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
+      if (multiModel && multiModel.length > 0) {
+        const lastItem: T = multiModel[multiModel.length - 1];
+        this.control.control.markAsTouched();
+        this.optionSelectionService.unselect(lastItem);
+      }
+    }
+  }
+
+  inputId(): string {
+    return this.controlIdService.id;
+  }
+
+  loadingStateChange(state: ClrLoadingState): void {
+    this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
+    this.positionService.realign();
+    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+      this.focusFirstActive();
+    }
+  }
+
+  unselect(item: T) {
+    if (!this.disabled) {
+      this.optionSelectionService.unselect(item);
+    }
   }
 
   onBlur() {
@@ -242,26 +278,37 @@ export class ClrCombobox<T>
     return this.commonStrings.keys.comboboxSelection;
   }
 
-  @HostListener('keydown', ['$event'])
-  onKeyUp(event: KeyboardEvent) {
-    // if BACKSPACE in multiselect mode, delete the last pill if text is empty
-    if (event.key === Keys.Backspace && this.multiSelect && this._searchText.length === 0) {
-      const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
-      if (multiModel && multiModel.length > 0) {
-        const lastItem: T = multiModel[multiModel.length - 1];
-        this.control.control.markAsTouched();
-        this.optionSelectionService.unselect(lastItem);
-      }
-    }
+  focusFirstActive() {
+    setTimeout(() => {
+      this.focusHandler.focusFirstActive();
+    });
   }
 
-  @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
+  writeValue(value: T | T[]): void {
+    this.optionSelectionService.selectionModel.model = value;
+    this.updateInputValue(this.optionSelectionService.selectionModel);
+  }
 
-  @Output('clrOpenChange') clrOpenChange: Observable<boolean> = this.toggleService.openChange;
+  registerOnTouched(onTouched: any): void {
+    this.onTouchedCallback = onTouched;
+  }
 
-  // This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change
-  @Output('clrSelectionChange') clrSelectionChange: Observable<ComboboxModel<T>> =
-    this.optionSelectionService.selectionChanged;
+  registerOnChange(onChange: any): void {
+    this.onChangeCallback = onChange;
+  }
+
+  getActiveDescendant() {
+    const model = this.focusHandler.pseudoFocus.model;
+    return model ? model.id : null;
+  }
+
+  setDisabledState(): void {
+    // do nothing
+  }
+
+  focusInput() {
+    this.focusHandler.focusInput();
+  }
 
   private initializeSubscriptions(): void {
     this.subscriptions.push(
@@ -315,12 +362,6 @@ export class ClrCombobox<T>
     }
   }
 
-  focusFirstActive() {
-    setTimeout(() => {
-      this.focusHandler.focusFirstActive();
-    });
-  }
-
   private updateInputValue(model: ComboboxModel<T>) {
     if (!this.multiSelect) {
       this.searchText = model.model ? this.getDisplayNames(model.model)[0] : '';
@@ -336,35 +377,6 @@ export class ClrCombobox<T>
     }
   }
 
-  // ControlValueAccessor implementation methods
-  writeValue(value: T | T[]): void {
-    this.optionSelectionService.selectionModel.model = value;
-    this.updateInputValue(this.optionSelectionService.selectionModel);
-  }
-
-  registerOnChange(onChange: any): void {
-    this.onChangeCallback = onChange;
-  }
-
-  getActiveDescendant() {
-    const model = this.focusHandler.pseudoFocus.model;
-    return model ? model.id : null;
-  }
-
-  private onTouchedCallback: () => any;
-
-  registerOnTouched(onTouched: any): void {
-    this.onTouchedCallback = onTouched;
-  }
-
-  setDisabledState(): void {
-    // do nothing
-  }
-
-  focusInput() {
-    this.focusHandler.focusInput();
-  }
-
   private getDisplayNames(model: T | T[]) {
     if (this.displayField) {
       if (!Array.isArray(model)) {
@@ -373,25 +385,5 @@ export class ClrCombobox<T>
       return model.map(item => (item ? (item as any)[this.displayField] : null));
     }
     return [this.optionSelectionService.selectionModel.model];
-  }
-
-  // Lifecycle methods
-  ngAfterContentInit() {
-    this.initializeSubscriptions();
-
-    // Initialize with preselected value
-    if (!this.optionSelectionService.selectionModel.isEmpty()) {
-      this.updateInputValue(this.optionSelectionService.selectionModel);
-    }
-  }
-
-  ngAfterViewInit() {
-    this.focusHandler.componentCdRef = this.cdr;
-    this.focusHandler.textInput = this.textbox.nativeElement;
-    this.focusHandler.trigger = this.trigger.nativeElement;
-    // The text input is the actual element we are wrapping
-    // This assignment is needed by the wrapper, so it can set
-    // the aria properties on the input element, not on the component.
-    this.el = this.textbox;
   }
 }

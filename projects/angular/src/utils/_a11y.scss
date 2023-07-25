@@ -3,6 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'mixins';
 
 @mixin screen-reader-only() {
   position: absolute;
@@ -18,7 +19,7 @@
   left: 0;
 }
 
-@include exports('a11y.clarity') {
+@include mixins.exports('a11y.clarity') {
   .clr-sr-only {
     @include screen-reader-only();
   }
