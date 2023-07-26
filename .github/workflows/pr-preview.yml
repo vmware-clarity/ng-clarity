@@ -6,7 +6,6 @@ on:
       - completed
 jobs:
   pr-preview:
-    if: ${{github.event.workflow_run.conclusion == 'success'}}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -18,19 +17,23 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
+        id: download-docs
         uses: dawidd6/action-download-artifact@v2
         with:
           name: docs
           path: dist/docs
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
+          if_no_artifact_found: ignore
       - name: Get PR Event
         id: get-pr-event
+        if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
         uses: potiuk/get-workflow-origin@v1_5
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Deploy Docs Preview
+        if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
         timeout-minutes: 5
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
