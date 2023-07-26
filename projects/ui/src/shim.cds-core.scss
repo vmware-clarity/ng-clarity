@@ -260,11 +260,20 @@
   // For theme-able icon button color
   --clr-btn-icon-disabled-color: var(--cds-alias-typography-disabled-button);
 
-  // Button groups
+  // Button spacings
   --clr-btn-border-width: var(--cds-global-space-1);
   --clr-btn-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-btn-appearance-form-height: var(--cds-global-space-11); // this is standard height
+  --clr-btn-appearance-standard-height: var(--cds-global-space-9); // this is btn-sm (small) height
   --clr-btn-appearance-standard-line-height: var(--cds-global-space-7);
   --clr-btn-appearance-standard-padding: 0 var(--cds-global-space-6);
+  --clr-btn-display: inline-flex;
+  --clr-btn-appearance-gap: var(--cds-global-space-5);
+  --clr-btn-appearance-link-gap: var(--cds-global-space-3);
+  --clr-btn-appearance-icon-margin: var(--cds-global-space-0);
+  --clr-btn-appearance-sm-icon-margin: var(--cds-global-space-0);
+  --clr-btn-appearance-form-font-size: var(--cds-global-typography-font-size-2);
+  --clr-btn-appearance-standard-font-size: var(--cds-global-typography-font-size-1);
 
   /* Alert Color Properties */
 

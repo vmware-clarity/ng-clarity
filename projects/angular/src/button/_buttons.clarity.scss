@@ -109,14 +109,26 @@
   //To override the visited state of anchor links styled as buttons
   &.btn-link:visited {
     @include button-css-var($button-type, color, visited-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, visited-color, variables.$clr-use-custom-properties);
+    }
     &:hover {
       @include button-css-var($button-type, color, visited-hover-color, variables.$clr-use-custom-properties);
+      cds-icon,
+      clr-icon {
+        @include button-css-var($button-type, color, visited-hover-color, variables.$clr-use-custom-properties);
+      }
     }
   }
 
   &:hover {
     @include button-css-var($button-type, background-color, hover-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+    }
   }
 
   &:active {
@@ -199,7 +211,13 @@
 
 @mixin btn-appearance() {
   cursor: pointer;
-  display: inline-block;
+
+  // clr-btn-display and clr-btn-appearance-gap variables will be removed after token migration
+  // display: inline-flex and gap: var(--cds-global-space-5); will become standard
+  align-items: center;
+  place-content: center;
+  @include mixins.css-var(display, clr-btn-display, inline-block, variables.$clr-use-custom-properties);
+  @include mixins.css-var(gap, clr-btn-appearance-gap, 8px, variables.$clr-use-custom-properties);
 
   // Overrides a Fix for IOS in BS4 _normalize.scss (~ln 330)
   // `!important` is to override specificity in this instance
@@ -296,7 +314,14 @@
       transform: translate3d(0, -1 * variables.$clr_baselineRem_2px, 0);
     }
     cds-icon {
-      margin-top: -1.4 * variables.$clr_baselineRem_2px;
+      // clr-btn-appearance-icon-margin variable will be removed after token migration
+      // margin-top: var(--cds-global-space-0); will become standard or simply removed
+      @include mixins.css-var(
+        margin-top,
+        clr-btn-appearance-icon-margin,
+        -1.4 * variables.$clr_baselineRem_2px,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -454,7 +479,14 @@
         variables.$clr_baselineRem_0_5,
         variables.$clr-use-custom-properties
       );
-      margin-top: -0.1rem;
+      // clr-btn-appearance-sm-icon-margin variable will be removed after token migration
+      // margin-top: var(--cds-global-space-0); will become standard or simply removed
+      @include mixins.css-var(
+        margin-top,
+        clr-btn-appearance-sm-icon-margin,
+        -0.1rem,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
