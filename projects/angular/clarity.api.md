@@ -1633,8 +1633,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     currentChanged: EventEmitter<number>;
-    get currentPage(): number | string;
-    set currentPage(page: number | string);
+    get currentPage(): number;
+    set currentPage(page: number);
     // (undocumented)
     currentPageInputRef: ElementRef;
     // (undocumented)
@@ -1643,8 +1643,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     disableCurrentPageInput: boolean;
     get firstItem(): number;
     get lastItem(): number;
-    get lastPage(): number | string;
-    set lastPage(last: number | string);
+    get lastPage(): number;
+    set lastPage(last: number);
     get middlePages(): number[];
     next(): void;
     // (undocumented)
@@ -1652,13 +1652,13 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnInit(): void;
     // (undocumented)
     page: Page;
-    get pageSize(): number | string;
-    set pageSize(size: number | string);
+    get pageSize(): number;
+    set pageSize(size: number);
     // (undocumented)
     _pageSizeComponent: ClrDatagridPageSize;
     previous(): void;
-    get totalItems(): number | string;
-    set totalItems(total: number | string);
+    get totalItems(): number;
+    set totalItems(total: number);
     updateCurrentPage(event: any): void;
     // (undocumented)
     verifyCurrentPage(event: any): void;
