@@ -19,9 +19,6 @@
   }
 
   .clr-textarea {
-    $textarea-vertical-padding: forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px;
-    $textarea-horizontal-padding: forms-variables.$clr-forms-baseline * 2;
-
     max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
     height: auto;
 
@@ -54,7 +51,7 @@
     @include mixins.css-var(
       padding,
       clr-forms-textarea-padding,
-      $textarea-vertical-padding $textarea-horizontal-padding,
+      forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
       variables.$clr-use-custom-properties
     );
 
@@ -62,10 +59,18 @@
 
     &:focus {
       @include mixins.include-slim-outline-style-form-fields();
+      @if variables.$clr-use-custom-properties == true {
+        background-color: var(--clr-forms-textarea-focus-background);
+        outline-color: var(--clr-forms-textarea-focus-outline);
+      }
     }
 
     &:disabled {
       @include forms-mixins.disabled-form-fields();
+      @if variables.$clr-use-custom-properties == true {
+        background-color: var(--clr-forms-textarea-disabled-background);
+        border-color: var(--clr-forms-textarea-disabled-border-color);
+      }
     }
   }
 
