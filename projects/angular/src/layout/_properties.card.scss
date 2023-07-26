@@ -4,7 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
+@use '../utils/variables/variables';
+@use './variables.card' as card-variables;
 
 @include mixins.exports('card.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -14,13 +15,31 @@
       --clr-card-divider-color: var(--clr-color-neutral-300);
       --clr-card-title-color: var(--clr-h4-color);
       --clr-card-title-font-weight: var(--clr-h4-font-weight);
+      --clr-card-header-title-color: var(--clr-card-title-color);
+      --clr-card-content-title-color: var(--clr-card-title-color);
 
       --clr-card-border-width: var(--clr-global-borderwidth);
+      --clr-card-clickable-border-width: var(--clr-global-borderwidth);
       --clr-card-border-radius: var(--clr-global-borderradius);
       --clr-card-border-color: var(--clr-color-neutral-300);
-      --clr-card-box-shadow-color: var(--clr-card-border-color);
+      --clr-card-box-shadow: 0 #{variables.$clr_baselineRem_0_125} 0 0 #{variables.$clr-color-neutral-300};
       --clr-card-clickable-border-color: var(--clr-color-action-500);
-      --clr-card-clickable-box-shadow-color: var(--clr-card-clickable-border-color);
+      --clr-card-clickable-box-shadow: 0 #{variables.$clr_baselineRem_0_125} 0 0 #{variables.$clr-color-action-500};
+      --clr-card-text-color: #{variables.$clr-p1-color};
+      --clr-card-text-font-size: #{variables.$clr-p1-font-size};
+      --clr-card-children-space-between: #{variables.$clr_baselineRem_0_5};
+      --clr-card-media-description-margin-left: #{variables.$clr_baselineRem_0_5};
+      --clr-card-media-description-margin-top: #{variables.$clr_baselineRem_0_25};
+      --clr-card-list-group-item-padding: #{variables.$clr_baselineRem_0_5} #{variables.$clr_baselineRem_0_75};
+      --clr-card-header-title-font-size: #{variables.$clr-h3-font-size};
+      --clr-card-content-title-font-size: #{variables.$clr-h4-font-size};
+      --clr-card-header-padding: #{card-variables.$card-children-padding-vertical}
+        #{card-variables.$card-children-padding-horizontal};
+      --clr-card-footer-padding: #{card-variables.$card-children-padding-vertical}
+        #{card-variables.$card-children-padding-horizontal};
+      --clr-card-block-padding: #{card-variables.$card-children-padding-vertical}
+        #{card-variables.$card-children-padding-horizontal};
+      --clr-card-alert-margin: #{variables.$clr_baselineRem_0_25} 0;
     }
   }
 }

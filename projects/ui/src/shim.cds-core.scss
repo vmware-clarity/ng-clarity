@@ -549,13 +549,28 @@
 
   --clr-card-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-card-divider-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-300);
-  --clr-card-title-color: var(--clr-h4-color);
-
+  --clr-card-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-card-header-title-color: var(--clr-card-title-color);
+  --clr-card-content-title-color: var(--clr-card-title-color);
+  --clr-card-header-title-font-size: var(--cds-global-typography-section-font-size);
+  --clr-card-content-title-font-size: var(--cds-global-typography-subsection-font-size);
+  --clr-card-text-font-size: var(--cds-global-typography-body-font-size);
   --clr-card-border-color: var(--cds-alias-object-container-border-color); // var(--clr-color-neutral-300);
-  --clr-card-box-shadow-color: var(--clr-card-border-color); // indirectly mapped to CDS token
+  --clr-card-box-shadow: var(--cds-alias-object-shadow-300); // indirectly mapped to CDS token
   --clr-card-clickable-border-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-500);
-  --clr-card-clickable-box-shadow-color: var(--clr-card-clickable-border-color); // indirectly mapped to CDS token
+  --clr-card-clickable-box-shadow: var(--cds-alias-object-shadow-300); // indirectly mapped to CDS token
   --clr-card-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-card-border-width: var(--cds-alias-object-border-width-100);
+  --clr-card-clickable-border-width: var(--cds-alias-object-border-width-200);
+  --clr-card-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-card-header-padding: var(--cds-global-space-7);
+  --clr-card-footer-padding: var(--cds-global-space-7);
+  --clr-card-block-padding: var(--cds-global-space-7);
+  --clr-card-list-group-item-padding: var(--cds-global-space-7);
+  --clr-card-children-space-between: var(--cds-global-space-7);
+  --clr-card-media-description-margin-left: var(--cds-global-space-7);
+  --clr-card-media-description-margin-top: var(--cds-global-space-7);
+  --clr-card-alert-margin: 0 0 var(--cds-global-space-5) 0;
 
   /* Forms */
 
