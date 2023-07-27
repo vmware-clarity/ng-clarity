@@ -8,6 +8,12 @@
 
 @use './token_shim.cds-core';
 
+// Line height tokens are implemented as the smallest version in the figma specs but some
+// styles have a standard and/or expanded styles with larger line heights.
+@function convertCompactToStandardLineHeight($variable) {
+  @return calc(var(#{$variable}) + (calc(4 / 20 * 1rem)));
+}
+
 [cds-theme] {
   /* Global */
 
@@ -431,7 +437,8 @@
 
   --clr-accordion-title-font-size: var(--cds-global-typography-secondary-font-size);
   --clr-accordion-title-font-weight: var(--cds-global-typography-secondary-font-weight);
-  --clr-accordion-header-button-line-height: calc(var(--cds-global-typography-secondary-line-height) * 1.25); // secondary line-height is 16px in tokens, but specified as 20px in figma.
+
+  --clr-accordion-header-button-line-height: #{convertCompactToStandardLineHeight(--cds-global-typography-secondary-line-height)}; // secondary line-height is 16px in tokens, but specified as 20px in figma.
   --clr-accordion-header-button-padding: var(--cds-global-space-5) var(--cds-global-space-6);
   --clr-accordion-header-button-font-size: var(--cds-global-typography-secondary-font-size);
 
