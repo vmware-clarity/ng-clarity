@@ -424,8 +424,19 @@
     border-spacing: 0;
   }
 
-  a:link {
-    @include mixins.css-var(color, clr-link-color, nav-variables.$clr-link-color, variables.$clr-use-custom-properties);
+  a {
+    @include mixins.css-var(display, clr-link-display, inline, variables.$clr-use-custom-properties);
+    @include mixins.css-var(align-items, clr-link-align-items, center, variables.$clr-use-custom-properties);
+    @include mixins.css-var(gap, clr-link-gap, 4px, variables.$clr-use-custom-properties);
+
+    &:link {
+      @include mixins.css-var(
+        color,
+        clr-link-color,
+        nav-variables.$clr-link-color,
+        variables.$clr-use-custom-properties
+      );
+    }
   }
 
   a:visited {

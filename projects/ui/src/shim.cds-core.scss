@@ -232,7 +232,7 @@
   --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
-  --clr-btn-link-hover-color: var(--cds-alias-typography-link-color-hover); // var(--clr-color-action-800);
+  --clr-btn-link-hover-color: var(--cds-alias-typography-info-hover); // var(--clr-color-action-800);
 
   --clr-btn-link-visited-color: var(--cds-alias-typography-link-color-visited, var(--cds-global-typography-link-color-visited)); // var(--clr-color-action-800);
   --clr-btn-link-visited-hover-color: var(--cds-alias-typography-link-color-visited-hover, var(--cds-global-typography-link-color-visited-hover));
@@ -269,20 +269,13 @@
   --clr-btn-appearance-standard-padding: 0 var(--cds-global-space-6);
   --clr-btn-display: inline-flex;
   --clr-btn-appearance-gap: var(--cds-global-space-5);
-  --clr-btn-appearance-link-gap: var(--cds-global-space-3);
-  --clr-btn-appearance-link-text-decoration: underline;
   --clr-btn-appearance-icon-margin: var(--cds-global-space-0);
   --clr-btn-appearance-sm-icon-margin: var(--cds-global-space-0);
   --clr-btn-appearance-form-font-size: var(--cds-global-typography-font-size-2);
   --clr-btn-appearance-standard-font-size: var(--cds-global-typography-font-size-1);
   --clr-btn-appearance-link-font-size: var(--cds-global-typography-font-size-4);
-  --clr-btn-appearance-link-font-size-sm: var(--cds-global-typography-font-size-4);
-  --clr-btn-appearance-link-height: var(--cds-global-space-9);
   --clr-btn-appearance-form-letter-spacing: var(--cds-global-typography-smallcaption-letter-spacing);
   --clr-btn-appearance-standard-letter-spacing: var(--cds-global-typography-smallcaption-letter-spacing);
-  --clr-btn-appearance-link-letter-spacing: normal;
-  --clr-btn-appearance-link-letter-spacing-sm: normal;
-  --clr-btn-appearance-link-text-transform: capitalize;
 
   /* Alert Color Properties */
 
@@ -590,11 +583,14 @@
 
   /* Navigation */
 
-  --clr-link-active-color: var(--cds-global-typography-link-color);
-  --clr-link-color: var(--cds-global-typography-link-color); // var(--clr-color-action-600);
-  --clr-link-hover-color: var(--cds-global-typography-link-color-hover); // var(--clr-color-action-600);
-  --clr-link-visited-color: var(--cds-global-typography-link-color-visited);
-  --clr-link-visited-color-hover: var(--cds-global-typography-link-color-visited-hover);
+  --clr-link-gap: var(--cds-global-space-3);
+  --clr-link-display: inline-flex;
+  --clr-link-align-items: center;
+  --clr-link-active-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color));
+  --clr-link-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color)); // var(--clr-color-action-600);
+  --clr-link-hover-color: var(--cds-alias-typography-link-color-hover, var(--cds-global-typography-link-color-hover)); // var(--clr-color-action-600);
+  --clr-link-visited-color: var(--cds-alias-typography-link-color-visited, var(--cds-global-typography-link-color-visited));
+  --clr-link-visited-color-hover: var(--cds-alias-typography-link-color-visited-hover, var(--cds-global-typography-link-color-visited-hover));
   --clr-custom-links-hover-color: var(--cds-global-color-gray-200); // var(--clr-color-neutral-200);
 
   /* Responsive Navigation */

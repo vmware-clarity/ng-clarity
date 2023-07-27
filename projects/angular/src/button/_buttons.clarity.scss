@@ -395,62 +395,9 @@
   .btn.btn-link,
   .btn-link .btn {
     @include populateButtonProperties(link);
-    @include mixins.css-var(gap, clr-btn-appearance-link-gap, 8px, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      text-decoration,
-      clr-btn-appearance-link-text-decoration,
-      none,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      text-transform,
-      clr-btn-appearance-link-text-transform,
-      uppercase,
-      variables.$clr-use-custom-properties
-    );
-
-    @include mixins.css-var(
-      letter-spacing,
-      clr-btn-appearance-link-letter-spacing,
-      buttons-variables.$clr-btn-appearance-form-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-btn-appearance-link-font-size,
-      buttons-variables.$clr-btn-appearance-form-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      height,
-      clr-btn-appearance-link-height,
-      buttons-variables.$clr-btn-appearance-form-height,
-      variables.$clr-use-custom-properties
-    );
-
-    &.btn-sm {
-      @include mixins.css-var(
-        letter-spacing,
-        clr-btn-appearance-link-letter-spacing-sm,
-        buttons-variables.$clr-btn-appearance-standard-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-btn-appearance-link-font-size-sm,
-        buttons-variables.$clr-btn-appearance-standard-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        height,
-        clr-btn-appearance-link-height-sm,
-        buttons-variables.$clr-btn-appearance-standard-height,
-        variables.$clr-use-custom-properties
-      );
-    }
 
     //To override the visited state of anchor links styled as buttons
-    &.btn-link:visited {
+    &:visited {
       @include button-css-var(link, color, visited-color, variables.$clr-use-custom-properties);
       cds-icon,
       clr-icon {
