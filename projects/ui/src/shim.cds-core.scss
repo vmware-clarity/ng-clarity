@@ -709,9 +709,23 @@
   /* Modal */
 
   --clr-modal-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
-  --clr-modal-close-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
-  --clr-modal-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
+  --clr-modal-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-modal-close-color: var(--cds-alias-typography-color-450); // var(--clr-color-neutral-600);
+  --clr-modal-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-modal-backdrop-color: var(--cds-alias-object-overlay-backdrop-background); // var(--clr-color-neutral-900);
+  --clr-modal-content-box-shadow: var(--cds-alias-object-shadow-300);
+  --clr-modal-content-border-style: solid;
+  --clr-modal-content-border-color: var(--cds-alias-object-container-border-color);
+  --clr-modal-content-border-width: var(--cds-alias-object-border-width-100);
+  --clr-modal-content-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-modal-content-padding: var(--cds-global-space-9);
+  --clr-modal-header-padding: 0 0 var(--cds-global-space-9) 0;
+  --clr-modal-footer-padding: var(--cds-global-space-9) 0 0 0;
+  --clr-modal-footer-gap: var(--cds-global-space-5);
+  --clr-modal-sm-width: calc(288 * (1rem / var(--clr-global-font-size)));
+  --clr-modal-md-width: calc(576 * (1rem / var(--clr-global-font-size)));
+  --clr-modal-lg-width: calc(864 * (1rem / var(--clr-global-font-size)));
+  --clr-modal-xl-width: calc(1152 * (1rem / var(--clr-global-font-size)));
 
   /* Navigation */
 
