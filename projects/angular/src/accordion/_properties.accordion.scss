@@ -56,7 +56,7 @@
       --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
       --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
       --clr-accordion-header-gap: 0;
-      --clr-accordion-status-icon-width: variables.$clr_baselineRem_0_8;
+      --clr-accordion-status-icon-width: #{variables.$clr_baselineRem_0_8};
     }
   }
 }

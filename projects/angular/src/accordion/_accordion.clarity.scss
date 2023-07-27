@@ -117,8 +117,8 @@
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
-    align-content: center;
     align-items: center;
+    align-content: center;
     flex: 1 1 0;
     width: 100%;
     border: 0;
@@ -126,7 +126,6 @@
     background: transparent;
     text-align: left;
     cursor: pointer;
-    gap: var(--clr-accordion-header-gap, 0);
     @include mixins.css-var(gap, clr-accordion-header-gap, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       color,
