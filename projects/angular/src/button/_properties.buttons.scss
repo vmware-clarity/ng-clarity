@@ -211,6 +211,7 @@
       --clr-btn-inverse-checked-color: var(--clr-color-neutral-0);
 
       // For theme-able icon button color
+      --clr-btn-disabled-opacity: 0.4;
       --clr-btn-icon-disabled-color: var(
         --clr-btn-default-disabled-color,
         #{button-variables.$clr-btn-default-disabled-color}

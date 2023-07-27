@@ -142,7 +142,7 @@
   &:disabled {
     @include button-css-var($button-type, color, disabled-color, variables.$clr-use-custom-properties);
     cursor: not-allowed;
-    opacity: 0.4;
+    @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
     box-shadow: none;
@@ -536,7 +536,7 @@
     &.btn-danger :disabled {
       @include mixins.css-var(
         border-color,
-        --clr-color-neutral-400,
+        clr-color-neutral-400,
         variables.$clr-color-neutral-400,
         variables.$clr-use-custom-properties
       );
