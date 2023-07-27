@@ -65,10 +65,10 @@
           forms-variables.$clr-forms-invalid-color,
           $lightness: 30%
         )};
-      --clr-forms-textarea-padding: forms-variables.$clr-forms-baseline +
+      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
         variables.$clr_baselineRem_2px
         forms-variables.$clr-forms-baseline *
-        2;
+        2};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);

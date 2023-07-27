@@ -25,8 +25,6 @@
   }
 
   .clr-textarea {
-    $textarea-vertical-padding: forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px;
-    $textarea-horizontal-padding: forms-variables.$clr-forms-baseline * 2;
     max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
     height: auto;
 
@@ -56,13 +54,12 @@
       forms-variables.$clr-forms-baseline * 0.5,
       variables.$clr-use-custom-properties
     );
-    padding: $textarea-vertical-padding $textarea-horizontal-padding;
-    // @include mixins.css-var(
-    //   padding,
-    //   clr-forms-textarea-padding,
-    //   forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
-    //   variables.$clr-use-custom-properties
-    // );
+    @include mixins.css-var(
+      padding,
+      clr-forms-textarea-padding,
+      forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
+      variables.$clr-use-custom-properties
+    );
 
     font-size: forms-variables.$clr-forms-field-font-size;
 
