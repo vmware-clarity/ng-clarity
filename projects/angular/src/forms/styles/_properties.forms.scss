@@ -69,6 +69,7 @@
         variables.$clr_baselineRem_2px
         forms-variables.$clr-forms-baseline *
         2};
+      --clr-forms-textarea-label-spacing: #{forms-variables.$clr-forms-baseline};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);

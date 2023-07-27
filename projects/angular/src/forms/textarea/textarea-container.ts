@@ -18,7 +18,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-textarea-wrapper">
+      <div class="clr-textarea-wrapper" [ngClass]="layoutClass()">
         <ng-content select="[clrTextarea]"></ng-content>
         <cds-icon
           *ngIf="showInvalid"
@@ -47,4 +47,8 @@ import { NgControlService } from '../common/providers/ng-control.service';
   },
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
 })
-export class ClrTextareaContainer extends ClrAbstractContainer {}
+export class ClrTextareaContainer extends ClrAbstractContainer {
+  layoutClass() {
+    return this.addGrid() ? 'horizontal-layout' : 'vertical-layout';
+  }
+}

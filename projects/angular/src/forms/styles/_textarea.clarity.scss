@@ -13,12 +13,30 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    @include mixins.css-var(
-      margin-top,
-      clr-forms-textarea-label-spacing,
-      forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
+    &.vertical-layout {
+      @include mixins.css-var(
+        margin-top,
+        clr-forms-textarea-label-spacing,
+        forms-variables.$clr-forms-baseline,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &.horizontal-layout {
+      @include mixins.css-var(
+        margin-left,
+        clr-forms-textarea-label-spacing,
+        forms-variables.$clr-forms-baseline,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &:not(.vertical-layout, .horizontal-layout) {
+      @include mixins.css-var(
+        margin-top,
+        clr-forms-textarea-label-spacing,
+        forms-variables.$clr-forms-baseline,
+        variables.$clr-use-custom-properties
+      );
+    }
     .clr-validate-icon {
       margin-left: 0;
     }
