@@ -121,6 +121,11 @@
     } @else {
       $fallbackColor: getSassButtonColor($button-type, box-shadow-color);
 
+      // ATM (after token migration)
+      // Replace box-shadow section with commented section. Renaming all of clr-btn 'box-shadow' to 'click' color properties is needed.
+      // $buttonColor: 'clr-btn-' + $button-type + '-click-color';
+      // @include mixins.css-var(background-color, $buttonColor, $fallbackColor, variables.$clr-use-custom-properties);
+
       // IE/OldEdge
       box-shadow: 0 getActiveWidthBoxShadowTop($button-type) 0 0 $fallbackColor inset;
 
@@ -196,7 +201,8 @@
 @mixin btn-appearance() {
   cursor: pointer;
 
-  // clr-btn-display and clr-btn-appearance-gap variables will be removed after token migration
+  // ATM (after token migration)
+  // clr-btn-display and clr-btn-appearance-gap variables will be removed
   // display: inline-flex and gap: var(--cds-global-space-5); will become standard
   align-items: center;
   place-content: center;
@@ -308,7 +314,8 @@
       transform: translate3d(0, -1 * variables.$clr_baselineRem_2px, 0);
     }
     cds-icon {
-      // clr-btn-appearance-icon-margin variable will be removed after token migration
+      // ATM (after token migration)
+      // clr-btn-appearance-icon-margin variable will be removed
       // margin-top: var(--cds-global-space-0); will become standard or simply removed
       @include mixins.css-var(
         margin-top,
@@ -489,7 +496,8 @@
         variables.$clr_baselineRem_0_5,
         variables.$clr-use-custom-properties
       );
-      // clr-btn-appearance-sm-icon-margin variable will be removed after token migration
+      // ATM (after token migration)
+      // clr-btn-appearance-sm-icon-margin variable will be removed
       // margin-top: var(--cds-global-space-0); will become standard or simply removed
       @include mixins.css-var(
         margin-top,
