@@ -19,7 +19,22 @@
 | --clr-wizard-border-radius                     | Wizard border radius                                                |
 | --clr-wizard-stepnav-active-border-radius      | Wizard active navigation element border radius                      |
 | --clr-wizard-stepnav-border-color              | Wizard navigation border color                                      |
-| --clr-wizard-box-shadow-color                  | Wizard highlight indication color                                   |
+| --clr-wizard-box-shadow                        | Wizard highlight indication                                         |
+| --clr-wizard-stepnav-link-line-height          | Wizard avigation item line height                                   |
+| --clr-wizard-stepnav-item-padding              | Wizard navigation item padding                                      |
+| --clr-wizard-stepnav-padding                   | Wizard navigation padding                                           |
+| --clr-wizard-stepnav-link-padding              | Wizard navigation item button padding                               |
+| --clr-wizard-stepnav-link-suffix-padding       | Wizard navigation item button suffix padding                        |
+| --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                      |
+| --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                           |
+| --clr-wizard-page-padding                      | Wizard page content padding                                         |
+| --clr-wizard-footer-padding                    | Wizard page footer padding                                          |
+| --clr-wizard-footer-height                     | Wizard page footer height                                           |
+| --clr-wizard-stepnav-link-hover-bg-color       | Wizard navigation item button background color on hover             |
+| --clr-wizard-title-padding                     | Wizard title padding                                                |
+| --clr-wizard-content-background-color          | Wizard content background color                                     |
+| --clr-wizard-header-padding                    | Wizard page header padding                                          |
+| --clr-wizard-footer-buttons-wrapper-gap        | Wizard page footer gap size between buttons                         |
 
 ## CSS Classes
 

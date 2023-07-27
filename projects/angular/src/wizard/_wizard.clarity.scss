@@ -25,14 +25,12 @@
       flex-direction: column;
       align-items: center;
       // IE/OldEdge
-      box-shadow: wizard-variables.$clr-wizard-box-shadow;
-      @if variables.$clr-use-custom-properties == true {
-        box-shadow: 0
-          variables.$clr_baselineRem_1px
-          variables.$clr_baselineRem_2px
-          variables.$clr_baselineRem_2px
-          var(--clr-wizard-box-shadow-color);
-      }
+      @include mixins.css-var(
+        box-shadow,
+        clr-wizard-box-shadow,
+        wizard-variables.$clr-wizard-box-shadow,
+        variables.$clr-use-custom-properties
+      );
       height: 50%;
       max-height: 100%;
     }
@@ -51,6 +49,12 @@
         wizard-variables.$clr-wizard-border-radius,
         variables.$clr-use-custom-properties
       );
+      @include mixins.css-var(
+        background-color,
+        clr-wizard-content-background-color,
+        modal-variables.$clr-modal-bg-color,
+        variables.$clr-use-custom-properties
+      );
       box-shadow: none;
       padding: 0;
       flex: 2 2 auto;
@@ -66,9 +70,14 @@
       flex: 0 0 auto;
       width: 100%;
       // right padding nudged a bit to better align icons
-      padding: wizard-variables.$clr-wizard-default-space
-        (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px) variables.$clr_baselineRem_0_25
-        wizard-variables.$clr-wizard-default-space;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-header-padding,
+        wizard-variables.$clr-wizard-default-space
+          (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px) variables.$clr_baselineRem_0_25
+          wizard-variables.$clr-wizard-default-space,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .modal-title {
@@ -98,14 +107,36 @@
     }
 
     .modal-footer {
-      padding: 0;
       display: block;
-      padding-top: wizard-variables.$clr-wizard-default-space;
-      height: wizard-variables.$clr-wizard-footer-height;
-      min-height: wizard-variables.$clr-wizard-footer-height;
-      max-height: wizard-variables.$clr-wizard-footer-height;
       width: 100%;
       flex: 0 0 wizard-variables.$clr-wizard-footer-height;
+      @if variables.$clr-use-custom-properties == true {
+        flex: 0 0 var(--clr-wizard-footer-height);
+      }
+      @include mixins.css-var(
+        height,
+        clr-wizard-footer-height,
+        wizard-variables.$clr-wizard-footer-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        min-height,
+        clr-wizard-footer-height,
+        wizard-variables.$clr-wizard-footer-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        max-height,
+        clr-wizard-footer-height,
+        wizard-variables.$clr-wizard-footer-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        padding,
+        clr-wizard-footer-padding,
+        wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0 0,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-wizard-btn {
@@ -181,7 +212,6 @@
       order: -1;
       overflow: hidden;
       overflow-y: auto;
-      padding-bottom: wizard-variables.$clr-wizard-default-space;
       line-height: wizard-variables.$clr-wizard-default-space;
       @include mixins.css-var(
         border-right-width,
@@ -219,7 +249,12 @@
     }
 
     .clr-wizard-stepnav {
-      padding-left: wizard-variables.$clr-wizard-default-space;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-stepnav-padding,
+        0 0 wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space,
+        variables.$clr-use-custom-properties
+      );
       display: block;
       font-size: variables.$clr_baselineRem_0_583;
       @include mixins.css-var(
@@ -246,14 +281,27 @@
     .clr-wizard-stepnav-item {
       display: block;
       // IE/OldEdge
-      box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
-        wizard-variables.$clr-wizard-stepnav-item-border-color inset;
-      @if variables.$clr-use-custom-properties == true {
-        box-shadow: var(--clr-wizard-stepnav-border-size) 0 0 var(--clr-wizard-stepnav-item-border-color) inset;
-      }
+      border-left-style: solid;
+      @include mixins.css-var(
+        border-left-width,
+        clr-wizard-stepnav-border-size,
+        wizard-variables.$clr-wizard-stepnav-border-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-wizard-stepnav-item-border-color,
+        wizard-variables.$clr-wizard-stepnav-item-border-color,
+        variables.$clr-use-custom-properties
+      );
+
       margin: 0 0 (-1 * variables.$clr-global-borderwidth) 0;
-      padding: variables.$clr_baselineRem_0_25 0;
-      padding-left: variables.$clr_baselineRem_8px;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-stepnav-item-padding,
+        variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_4px,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         color,
         clr-wizard-stepnav-text,
@@ -266,6 +314,21 @@
         variables.$clr-font-weight-regular,
         variables.$clr-use-custom-properties
       );
+
+      &:not(.disabled):hover .clr-wizard-stepnav-link {
+        @include mixins.css-var(
+          color,
+          string.unquote('clr-wizard-stepnav-text--active'),
+          wizard-variables.$clr-wizard-stepnav-text--active,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background-color,
+          clr-wizard-stepnav-link-hover-bg-color,
+          transparent,
+          variables.$clr-use-custom-properties
+        );
+      }
 
       &.active {
         @include mixins.css-var(
@@ -282,6 +345,12 @@
         );
 
         .clr-wizard-stepnav-link {
+          @include mixins.css-var(
+            color,
+            string.unquote('clr-wizard-stepnav-text--active'),
+            wizard-variables.$clr-wizard-stepnav-text--active,
+            variables.$clr-use-custom-properties
+          );
           @include mixins.css-var(
             background-color,
             clr-wizard-stepnav-active-bgcolor,
@@ -305,23 +374,23 @@
       }
 
       &.complete {
-        // IE/OldEdge
-        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
-          wizard-variables.$clr-wizard-stepnav-item-border-color--active inset;
-        @if variables.$clr-use-custom-properties == true {
-          box-shadow: var(--clr-wizard-stepnav-border-size)
-            0
-            0
-            var(--clr-wizard-stepnav-item-border-color--active)
-            inset;
-        }
-        transition: box-shadow 0.2s ease-in;
+        @include mixins.css-var(
+          border-color,
+          string.unquote('clr-wizard-stepnav-item-border-color--active'),
+          wizard-variables.$clr-wizard-stepnav-item-border-color--active,
+          variables.$clr-use-custom-properties
+        );
+        transition: border-color 0.2s ease-in;
       }
 
       &.error {
-        box-shadow: wizard-variables.$clr-wizard-stepnav-border-size 0 0
-          wizard-variables.$clr-wizard-stepnav-error-color inset;
-        transition: box-shadow 0.2s ease-in;
+        @include mixins.css-var(
+          border-color,
+          clr-wizard-stepnav-item-error-border-color,
+          wizard-variables.$clr-wizard-stepnav-error-color,
+          variables.$clr-use-custom-properties
+        );
+        transition: border-color 0.2s ease-in;
       }
 
       &.no-click button {
@@ -336,9 +405,20 @@
       gap: 0;
       color: inherit;
       align-items: center;
-      padding: 0 variables.$clr_baselineRem_0_125 0 variables.$clr_baselineRem_0_416;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-stepnav-link-padding,
+        0 variables.$clr_baselineRem_0_125 0 variables.$clr_baselineRem_0_416,
+        variables.$clr-use-custom-properties
+      );
       font-size: variables.$clr_baselineRem_0_583;
       font-weight: inherit;
+      @include mixins.css-var(
+        line-height,
+        clr-wizard-stepnav-link-line-height,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
       letter-spacing: normal;
       text-align: left;
       text-transform: none;
@@ -348,11 +428,21 @@
         display: flex;
         justify-content: center;
         min-width: variables.$clr_baselineRem_1;
-        padding-right: variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px;
+        @include mixins.css-var(
+          padding,
+          clr-wizard-stepnav-link-suffix-padding,
+          0 variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px 0 0,
+          variables.$clr-use-custom-properties
+        );
 
         .clr-wizard-stepnav-item-error-icon {
           transform: none;
-          fill: wizard-variables.$clr-wizard-stepnav-error-color;
+          @include mixins.css-var(
+            fill,
+            clr-wizard-stepnav-link-error-icon-color,
+            wizard-variables.$clr-wizard-stepnav-error-color,
+            variables.$clr-use-custom-properties
+          );
         }
       }
     }
@@ -371,10 +461,13 @@
         variables.$clr-use-custom-properties
       );
       margin-top: 0;
-      padding-top: wizard-variables.$clr-wizard-default-space;
-      padding-left: wizard-variables.$clr-wizard-default-space;
-      padding-right: wizard-variables.$clr-wizard-default-space * 0.5;
-      padding-bottom: wizard-variables.$clr-wizard-default-space;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-title-padding,
+        wizard-variables.$clr-wizard-default-space (wizard-variables.$clr-wizard-default-space * 0.5)
+          wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space,
+        variables.$clr-use-custom-properties
+      );
       flex: 0 0 auto;
       font-size: modal-variables.$clr-modal-title-font-size;
       line-height: modal-variables.$clr-modal-title-line-height;
@@ -398,7 +491,6 @@
 
     .clr-wizard-footer-buttons {
       text-align: right;
-      padding-right: wizard-variables.$clr-wizard-default-space;
       margin: 0;
     }
 
@@ -407,12 +499,22 @@
       flex-direction: row;
       flex-wrap: nowrap;
       justify-content: flex-end;
+      @include mixins.css-var(
+        gap,
+        clr-wizard-footer-buttons-wrapper-gap,
+        variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-wizard-btn-wrapper {
       flex: 0 1 auto;
-      min-width: variables.$clr_baselineRem_3_5;
-      padding-left: variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        gap,
+        clr-wizard-footer-btn-wrapper-min-width,
+        variables.$clr_baselineRem_3_5,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-wizard-btn-wrapper[aria-hidden='true'] {
@@ -429,9 +531,14 @@
     }
 
     .clr-wizard-page:not([aria-hidden='true']) {
-      padding: wizard-variables.$clr-wizard-default-space;
-      padding-top: variables.$clr_baselineRem_0_75;
       display: block;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-page-padding,
+        variables.$clr_baselineRem_0_75 wizard-variables.$clr-wizard-default-space
+          wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -447,6 +554,12 @@
       display: flex;
       flex-grow: 1;
       width: 100%;
+      @include mixins.css-var(
+        padding,
+        clr-wizard-main-padding,
+        0 variables.$clr_baselineRem_0_125,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &.wizard-md {

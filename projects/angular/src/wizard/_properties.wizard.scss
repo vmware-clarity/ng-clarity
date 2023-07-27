@@ -5,6 +5,8 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use './variables.wizard' as wizard-variables;
+@use '../modal/variables.modal' as modal-variables;
 
 @include mixins.exports('wizard.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -25,7 +27,47 @@
       --clr-wizard-stepnav-active-border-radius: var(--clr-wizard-border-radius);
 
       --clr-wizard-stepnav-border-color: hsl(0, 0%, 89%);
-      --clr-wizard-box-shadow-color: rgba(0, 0, 0, 0.2);
+      --clr-wizard-box-shadow: 0
+        #{variables.$clr_baselineRem_1px}
+        #{variables.$clr_baselineRem_2px}
+        #{variables.$clr_baselineRem_2px}
+        rgba(0, 0, 0, 0.2);
+
+      --clr-wizard-stepnav-link-line-height: #{variables.$clr_baselineRem_1};
+      --clr-wizard-stepnav-item-padding: #{variables.$clr_baselineRem_0_25}
+        0
+        #{variables.$clr_baselineRem_0_25}
+        #{variables.$clr_baselineRem_4px};
+      --clr-wizard-stepnav-padding: 0 0 0 #{variables.$clr_baselineRem_1};
+      --clr-wizard-stepnav-link-padding: 0 #{variables.$clr_baselineRem_0_125} 0 #{variables.$clr_baselineRem_0_416};
+      --clr-wizard-stepnav-link-suffix-padding: 0
+        #{variables.$clr_baselineRem_0_25 +
+        variables.$clr_baselineRem_1px}
+        0
+        0;
+      --clr-wizard-stepnav-link-error-icon-color: var(--clr-color-danger-800);
+      --clr-wizard-stepnav-item-error-border-color: var(--clr-color-danger-800);
+      --clr-wizard-page-padding: #{variables.$clr_baselineRem_0_75
+        wizard-variables.$clr-wizard-default-space
+        wizard-variables.$clr-wizard-default-space
+        wizard-variables.$clr-wizard-default-space};
+      --clr-wizard-footer-padding: #{wizard-variables.$clr-wizard-default-space
+        wizard-variables.$clr-wizard-default-space
+        0
+        0};
+      --clr-wizard-footer-height: #{wizard-variables.$clr-wizard-footer-height};
+      --clr-wizard-footer-btn-wrapper-min-width: #{variables.$clr_baselineRem_3_5}; // ATM - remove
+      --clr-wizard-stepnav-link-hover-bg-color: transparent;
+      --clr-wizard-title-padding: #{wizard-variables.$clr-wizard-default-space
+        (wizard-variables.$clr-wizard-default-space * 0.5)
+        wizard-variables.$clr-wizard-default-space
+        wizard-variables.$clr-wizard-default-space};
+      --clr-wizard-content-background-color: #{modal-variables.$clr-modal-bg-color};
+      --clr-wizard-header-padding: #{wizard-variables.$clr-wizard-default-space
+        (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px)
+        variables.$clr_baselineRem_0_25
+        wizard-variables.$clr-wizard-default-space};
+      --clr-wizard-footer-buttons-wrapper-gap: #{variables.$clr_baselineRem_0_5};
     }
   }
 }
