@@ -65,6 +65,11 @@ const defaultParameters: Parameters = {
 
 const variants: Parameters[] = [
   {
+    title: 'Small Modal',
+    body: 'This is a small modal.',
+    size: 'sm',
+  },
+  {
     title: 'Medium Modal',
     body: 'This is a medium modal.',
     size: 'md',
