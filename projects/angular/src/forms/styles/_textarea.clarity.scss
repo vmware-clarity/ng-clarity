@@ -13,12 +13,7 @@
   .clr-form-horizontal {
     .clr-textarea-wrapper {
       // margin-top: 0;
-      @include mixins.css-var(
-        margin-left,
-        clr-forms-textarea-label-spacing,
-        forms-variables.$clr-forms-baseline,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.css-var(margin-left, clr-forms-textarea-label-spacing, 0, variables.$clr-use-custom-properties);
     }
   }
 
