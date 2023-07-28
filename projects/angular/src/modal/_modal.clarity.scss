@@ -106,12 +106,6 @@
         transparent,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        border-radius,
-        clr-modal-content-border-radius,
-        unset,
-        variables.$clr-use-custom-properties
-      );
     }
   }
 
@@ -249,7 +243,7 @@
     .modal-content {
       @include mixins.css-var(
         padding,
-        clr-modal-content-padding,
+        clr-modal-sm-content-padding,
         variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1,
         variables.$clr-use-custom-properties
       );
@@ -258,7 +252,7 @@
     .modal-header {
       @include mixins.css-var(
         padding,
-        clr-modal-header-padding,
+        clr-modal-sm-header-padding,
         0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_0_5 0,
         variables.$clr-use-custom-properties
       );
@@ -271,7 +265,7 @@
     .modal-footer {
       @include mixins.css-var(
         padding,
-        clr-modal-footer-padding,
+        clr-modal-sm-footer-padding,
         variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1 0 0,
         variables.$clr-use-custom-properties
       );

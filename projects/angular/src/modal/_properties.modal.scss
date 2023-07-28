@@ -37,13 +37,19 @@
       --clr-modal-content-border-width: 0;
       --clr-modal-content-border-radius: unset;
       --clr-modal-content-padding: #{variables.$clr_baselineRem_1};
+      --clr-modal-sm-content-padding: #{variables.$clr_baselineRem_0_5}
+        0
+        #{variables.$clr_baselineRem_0_5}
+        #{variables.$clr_baselineRem_1};
 
       // Usage: ../modal/_modal.clarity.scss
       --clr-modal-title-color: var(--clr-h3-color);
       --clr-modal-title-font-family: var(--clr-h3-font-family);
       --clr-modal-title-font-weight: var(--clr-h3-font-weight);
       --clr-modal-header-padding: 0 0 #{variables.$clr_baselineRem_1} 0;
+      --clr-modal-sm-header-padding: 0 #{variables.$clr_baselineRem_1} #{variables.$clr_baselineRem_0_5} 0;
       --clr-modal-footer-padding: #{variables.$clr_baselineRem_1} 0 0 0;
+      --clr-modal-sm-footer-padding: #{variables.$clr_baselineRem_0_5} #{variables.$clr_baselineRem_1} 0 0;
       --clr-modal-footer-gap: #{variables.$clr_baselineRem_0_5};
     }
   }
