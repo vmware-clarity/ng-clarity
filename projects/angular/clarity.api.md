@@ -3865,6 +3865,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get onStackLabelFocus(): boolean;
     // (undocumented)
+    preventDefaultIfNotInputEvent(event: Event): void;
+    // (undocumented)
     get role(): string;
     // (undocumented)
     set setChangedValue(value: boolean);
@@ -3873,7 +3875,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get tabIndex(): string;
     // (undocumented)
-    toggleExpand(): void;
+    toggleExpand(event?: Event): void;
     // (undocumented)
     uniqueId: string;
     // (undocumented)
