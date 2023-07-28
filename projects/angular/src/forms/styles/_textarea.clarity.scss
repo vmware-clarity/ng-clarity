@@ -10,18 +10,9 @@
 
 @include mixins.exports('forms.textarea') {
   // @TODO Fix selectors when old forms are removed to allow better defaults
-  .clr-textarea-wrapper {
-    white-space: nowrap;
-    display: flex;
-    &.vertical-layout {
-      @include mixins.css-var(
-        margin-top,
-        clr-forms-textarea-label-spacing,
-        forms-variables.$clr-forms-baseline,
-        variables.$clr-use-custom-properties
-      );
-    }
-    &.horizontal-layout {
+  .clr-form-horizontal {
+    .clr-textarea-wrapper {
+      margin-top: 0;
       @include mixins.css-var(
         margin-left,
         clr-forms-textarea-label-spacing,
@@ -29,14 +20,17 @@
         variables.$clr-use-custom-properties
       );
     }
-    &:not(.vertical-layout, .horizontal-layout) {
-      @include mixins.css-var(
-        margin-top,
-        clr-forms-textarea-label-spacing,
-        forms-variables.$clr-forms-baseline,
-        variables.$clr-use-custom-properties
-      );
-    }
+  }
+
+  .clr-textarea-wrapper {
+    white-space: nowrap;
+    display: flex;
+    @include mixins.css-var(
+      margin-top,
+      clr-forms-textarea-label-spacing,
+      forms-variables.$clr-forms-baseline,
+      variables.$clr-use-custom-properties
+    );
     .clr-validate-icon {
       margin-left: 0;
     }
@@ -91,10 +85,18 @@
 
     &:disabled {
       @include forms-mixins.disabled-form-fields();
-      @if variables.$clr-use-custom-properties == true {
-        background-color: var(--clr-forms-textarea-disabled-background);
-        border-color: var(--clr-forms-textarea-disabled-border-color);
-      }
+      @include mixins.css-var(
+        background-color,
+        clr-forms-textarea-disabled-background,
+        forms-variables.$clr-forms-textarea-background-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-forms-textarea-disabled-border-color,
+        forms-variables.$clr-forms-border-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 

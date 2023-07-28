@@ -467,7 +467,7 @@
   --clr-forms-textarea-focus-background: var(--cds-alias-object-interaction-background-selected);
   --clr-forms-textarea-focus-outline: var(--cds-alias-object-interaction-background-highlight);
   --clr-forms-textarea-disabled-background: var(--cds-alias-object-container-background);
-  --clr-forms-textarea-disabled-border-color: var(--cds-alias-object-interaction-background-disabled);
+  --clr-forms-textarea-disabled-border-color: var(--cds-alias-object-interaction-color-disabled);
   --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
