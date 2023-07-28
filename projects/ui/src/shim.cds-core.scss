@@ -475,7 +475,8 @@
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-textarea-padding: var(--cds-global-space-7);
   --clr-forms-textarea-border-radius: var(--cds-alias-object-border-radius-100);
-  --clr-forms-textarea-label-spacing: var(--cds-global-space-5);
+  --clr-forms-textarea-wrapper-margin-left: var(--cds-global-space-5);
+  --clr-forms-textarea-wrapper-margin-top: var(--cds-global-space-5);
 
   // Checkbox
   --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token
