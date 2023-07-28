@@ -155,6 +155,7 @@
       align-items: center;
       height: header-variables.$clr-header-height;
       text-decoration: none;
+      gap: 0;
 
       &:focus {
         outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
