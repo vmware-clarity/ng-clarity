@@ -60,14 +60,11 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   ) {
     this.renderer = renderer;
     this.el = el;
-    try {
-      this.ngControlService = injector.get(NgControlService);
-      this.ifControlStateService = injector.get(IfControlStateService);
-      this.controlClassService = injector.get(ControlClassService);
-      this.markControlService = injector.get(MarkControlService);
-    } catch (e) {
-      // Swallow errors
-    }
+
+    this.ngControlService = injector.get(NgControlService, null);
+    this.ifControlStateService = injector.get(IfControlStateService, null);
+    this.controlClassService = injector.get(ControlClassService, null);
+    this.markControlService = injector.get(MarkControlService, null);
 
     if (this.controlClassService) {
       this.controlClassService.initControlClass(renderer, el.nativeElement);
@@ -105,14 +102,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
 
-    try {
-      this.containerIdService = this._containerInjector.get(ContainerIdService);
-    } catch (_injectorError) {
-      /**
-       * We suppress error, not all containers will provide `ContainerIdService` so
-       * there could be exception that is not provided.
-       */
-    }
+    /**
+     * not all containers will provide `ContainerIdService`
+     */
+    this.containerIdService = this._containerInjector.get(ContainerIdService, null);
 
     if (this._id) {
       this.controlIdService.id = this._id;
