@@ -61,10 +61,12 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     this.renderer = renderer;
     this.el = el;
 
-    this.ngControlService = injector.get(NgControlService, null);
-    this.ifControlStateService = injector.get(IfControlStateService, null);
-    this.controlClassService = injector.get(ControlClassService, null);
-    this.markControlService = injector.get(MarkControlService, null);
+    if (injector) {
+      this.ngControlService = injector.get(NgControlService, null);
+      this.ifControlStateService = injector.get(IfControlStateService, null);
+      this.controlClassService = injector.get(ControlClassService, null);
+      this.markControlService = injector.get(MarkControlService, null);
+    }
 
     if (this.controlClassService) {
       this.controlClassService.initControlClass(renderer, el.nativeElement);
