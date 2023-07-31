@@ -22,6 +22,9 @@
       --clr-accordion-header-font-size: #{variables.$clr_baselineRem_0_65};
 
       --clr-accordion-header-button-font-size: #{variables.$clr_baselineRem_0_5};
+      --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
+      --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
+
       --clr-accordion-title-font-weight: 500;
       --clr-accordion-title-font-size: #{variables.$clr_baselineRem_0_5416};
 
@@ -53,8 +56,6 @@
         0
         var(--clr-accordion-border-left-color-error);
 
-      --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
-      --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
       --clr-accordion-header-gap: 0;
       --clr-accordion-status-icon-width: #{variables.$clr_baselineRem_0_8};
     }
