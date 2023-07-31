@@ -5,11 +5,13 @@
  */
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '../../utils/mixins';
 @use 'properties.signpost';
 @use '../../utils/variables/variables.global';
 @use '../../utils/variables/variables.color' as color-variables;
 @use 'variables.signpost' as signpost-variables;
+@include meta.load-css('properties.signpost');
 
 @include mixins.exports('signpost.clarity') {
   .signpost {
