@@ -12,12 +12,14 @@
   @if variables.$clr-use-custom-properties == true {
     :root {
       // Structure
+      --clr-forms-baseline: #{variables.$clr_baselineRem_0_25};
       --clr-form-disabled-background-color: var(--clr-color-neutral-400);
 
       // Generic
       --clr-forms-label-color: var(--clr-color-neutral-800);
       --clr-forms-text-color: var(--clr-color-neutral-1000);
       --clr-forms-invalid-color: var(--clr-color-danger-800);
+      --clr-forms-invalid-text-color: var(--clr-color-danger-800);
       --clr-forms-valid-color: var(--clr-color-success-700);
       --clr-forms-valid-text-color: var(--clr-color-success-900);
       --clr-forms-subtext-color: var(--clr-color-neutral-600);
@@ -26,14 +28,21 @@
       --clr-forms-focused-color: var(--clr-color-action-600);
 
       --clr-forms-subtext-disabled-color: #{forms-variables.$clr-forms-subtext-disabled-color};
-      --clr-forms-border-disabled-color: #{forms-variables.$clr-forms-border-disabled-color};
+      --clr-forms-border-disabled-color: #{forms-variables.$clr-forms-border-color};
       --clr-forms-text-disabled-color: #{forms-variables.$clr-forms-text-disabled-color};
       --clr-forms-label-disabled-color: #{forms-variables.$clr-forms-label-disabled-color};
+      --clr-forms-icon-size: #{variables.$clr_baselineRem_1};
+      --clr-forms-placeholder-disabled-color: #{forms-variables.$clr-forms-placeholder-color};
+      --clr-forms-subtext-margin-top: #{forms-variables.$clr-forms-baseline};
 
       // Typographic
       --clr-forms-label-font-weight: var(--clr-font-weight-bold);
       --clr-forms-block-label-font-weight: #{variables.$clr-h5-font-weight};
       --clr-forms-text-font-weight: #{variables.$clr-p3-font-weight};
+
+      // Input
+      --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
+      --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
 
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
@@ -96,6 +105,12 @@
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
       --clr-forms-range-track-color: var(--clr-color-neutral-200);
+
+      // Datalist
+
+      --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
     }
   }
 }

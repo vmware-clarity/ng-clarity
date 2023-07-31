@@ -5,9 +5,11 @@
  */
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.modal' as modal-variables;
+@include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
   .modal {
