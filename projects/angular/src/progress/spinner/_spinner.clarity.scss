@@ -19,7 +19,8 @@
       variables.$clr-use-custom-properties
     );
     animation: spin 1s linear infinite;
-    margin: 0;
+    // TODO: Add variable
+    margin-right: var(--clr-spinner-spacing-to-text, 12px);
     padding: 0;
     text-indent: 100%;
     overflow: hidden;
