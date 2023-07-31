@@ -17,6 +17,8 @@
 [cds-theme] {
   /* Global */
   --clr-global-font-size: var(--cds-global-base);
+  --clr-global-borderradius: var(--cds-alias-object-border-radius-100);
+  --clr-global-borderwidth: var(--cds-alias-object-border-width-100);
 
   // app background
   --clr-global-app-background: var(--cds-alias-object-app-background); // #{$clr-global-app-background}; // $clr-color-neutral-50
@@ -1049,14 +1051,18 @@
   --clr-datagrid-default-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-datagrid-icon-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
   --clr-datagrid-row-hover-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
+  --clr-datagrid-row-active-color: var(--cds-alias-object-interaction-background-active);
   --clr-datagrid-row-hover-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
   --clr-datagrid-action-toggle-color: var(--cds-alias-object-interaction-background-active); // var(--cds-global-color-gray-700); // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-disabled-color: var(--cds-alias-status-disabled); // var(--clr-color-neutral-600);
   --clr-datagrid-pagination-input-border-color: var(--cds-alias-object-border-color); // indirectly mapped;
   --clr-datagrid-pagination-input-border-focus-color: var(--clr-color-action-400);
-  --clr-datagrid-popover-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
+  --clr-datagrid-pagination-input-size: var(--cds-global-space-9);
+  --clr-datagrid-popover-padding: var(--cds-global-space-5);
+  --clr-datagrid-popover-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-datagrid-popover-border-color: var(--cds-alias-object-border-color); // indirectly mapped;
+  --clr-datagrid-popover-font-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-datagrid-action-popover-hover-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
   --clr-datagrid-row-selected: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
 
@@ -1066,7 +1072,7 @@
   --clr-datagrid-detail-caret-icon-open-bg-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
   --clr-datagrid-detail-caret-icon-open-icon-color: var(--cds-global-color-gray-0); // var(--clr-color-neutral-0);
 
-  --clr-datagrid-placeholder-color: var(--cds-global-color-gray-700); // var(--clr-color-neutral-700);
+  --clr-datagrid-placeholder-color: var(--cds-alias-typography-color-200, var(--cds-global-typography-color-200)); // var(--clr-color-neutral-700);
 
   --clr-datagrid-loading-background: var(--cds-alias-object-opacity-100); // #{$clr-datagrid-loading-background}; // hsla(0, 0%, 100%, 0.6);
 
@@ -1086,8 +1092,39 @@
   --clr-datagrid-column-toggle-fill-active-color: var(--cds-alias-object-opacity-0);
   --clr-datagrid-column-toggle-text-active-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
 
-  // Login
+  --clr-datagrid-detail-header-padding: 0;
+  --clr-datagrid-detail-header-title-padding: 0;
+  --clr-datagrid-detail-pane-close-btn-margin: 0;
+  --clr-datagrid-detail-pane-close-padding: 0;
+  --clr-datagrid-detail-body-padding: var(--cds-global-space-7) 0;
+  --clr-datagrid-detail-pane-close-btn-min-width: auto;
+  --clr-datagrid-detail-pane-content-padding: var(--cds-global-space-7);
+  --clr-datagrid-detail-pane-close-icon-size: var(--cds-global-space-9);
+  --clr-datagrid-detail-body-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-datagrid-detail-header-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-datagrid-detail-pane-bg-color: var(--cds-alias-object-container-background);
+  --clr-datagrid-detail-pane-border-color: var(--cds-alias-object-border-color);
 
+  --clr-datagrid-placeholder-padding: var(--cds-global-space-9);
+  --clr-datagrid-placeholder-gap: var(--cds-global-space-9);
+  --clr-datagrid-placeholder-font-size: var(--clr-h4-font-size);
+  --clr-datagrid-placeholder-font-weight: var(--clr-h4-font-weight);
+  --clr-datagrid-placeholder-line-height: var(--clr-h4-line-height);
+  --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
+  --clr-datagrid-placeholder-background-color: var(--cds-alias-object-container-background);
+  --clr-datagrid-popovers-box-shadow: var(--cds-alias-object-shadow-100);
+  --clr-datagrid-column-seperator-height: var(--cds-global-space-7);
+  --clr-datagrid-filter-toggle-size: var(--cds-global-space-7);
+
+  --clr-datagrid-footer-padding: var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-datagrid-footer-line-height: auto; // ATM - remove
+  --clr-datagrid-footer-pagination-line-height: auto; // ATM - remove
+  --clr-datagrid-footer-column-switch-margin: 0; // ATM - remove
+  --clr-datagrid-footer-select-wrapper-caret-top-position: 30%; // ATM - remove
+  --clr-datagrid-footer-pagination-gap: var(--cds-global-space-6);
+  --clr-datagrid-footer-pagination-list-margin: var(--cds-global-space-6); // ATM - remove
+
+  // Login
   --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
   --clr-login-padding: var(--cds-global-space-7);
   --clr-login-group-padding: var(--cds-global-space-13) 0 0 0;

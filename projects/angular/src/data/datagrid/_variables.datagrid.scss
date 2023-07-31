@@ -31,7 +31,6 @@ $clr-datagrid-row-selected: variables.$clr-color-neutral-1000 !default;
 $clr-datagrid-icon-size: variables.$clr_baselineRem_0_583;
 $clr-datagrid-icon-color: variables.$clr-color-neutral-600 !default;
 $clr-datagrid-action-arrow-size: variables.$clr_baselineRem_0_25;
-$clr-datagrid-fixed-column-size: (2 * tables-variables.$clr-table-cellpadding) + tables-variables.$clr-table-lineheight;
 $horizontalPadding: ($clr-datagrid-fixed-column-size - variables.$clr_baselineRem_1_25) * 0.5;
 $clr-datagrid-column-separator-expandby: variables.$clr_baselineRem_0_5;
 $clr-datagrid-column-switch-header-font-color: variables.$clr-color-neutral-500;
