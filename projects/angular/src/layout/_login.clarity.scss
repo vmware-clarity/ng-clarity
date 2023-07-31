@@ -5,11 +5,12 @@
  */
 
 @use 'sass:map';
-@use 'properties.login';
+@use 'sass:meta';
 @use '../image/icons.clarity';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.login' as login-variables;
+@include meta.load-css('properties.login');
 
 @include mixins.exports('login.clarity') {
   .login-wrapper {

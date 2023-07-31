@@ -5,11 +5,12 @@
  */
 
 @use 'sass:map';
-@use 'properties.card';
+@use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use '../button/variables.buttons' as button-variables;
 @use 'variables.card' as card-variables;
+@include meta.load-css('properties.card');
 
 @include mixins.exports('card.clarity') {
   %card-border-appearance {
