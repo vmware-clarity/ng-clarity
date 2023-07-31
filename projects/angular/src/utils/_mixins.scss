@@ -96,11 +96,6 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   }
 }
 
-@mixin equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
-  @include css-var(height, $var, $fallback, $do-custom-prop);
-  @include css-var(width, $var, $fallback, $do-custom-prop);
-}
-
 @mixin equilateral($size: 1.2rem) {
   height: $size;
   width: $size;
