@@ -49,6 +49,4 @@ for (const { storyId, component } of stories) {
   }
 }
 
-test.afterAll(() => {
-  handleUnusedScreenshots(usedScreenshotPaths);
-});
+handleUnusedScreenshots(usedScreenshotPaths);
