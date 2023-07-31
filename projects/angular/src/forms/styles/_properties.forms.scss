@@ -104,6 +104,12 @@
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
       --clr-forms-range-track-color: var(--clr-color-neutral-200);
+
+      // Datalist
+
+      --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
     }
   }
 }
