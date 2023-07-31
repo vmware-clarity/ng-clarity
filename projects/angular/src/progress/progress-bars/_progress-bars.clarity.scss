@@ -4,12 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.progress-bars';
+@use 'sass:meta';
 @use 'utils/mixins.clarity';
 @use '../../utils/mixins' as utils-mixins;
 @use '../../layout/variables.card' as card-variables;
 @use '../../utils/variables/variables.global';
 @use 'variables.progress-bars' as progress-bars-variables;
+@include meta.load-css('properties.progress-bars');
 
 @include utils-mixins.exports('progress-bars.clarity') {
   // KEY POINTS TO NOTE:
