@@ -149,6 +149,10 @@
   --clr-p8-line-height: calc(12 * (1rem / var(--clr-global-font-size)));
   --clr-p8-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
+  // List item li
+  --clr-list-item-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-list-item-margin-left: var(--cds-global-space-6);
+
   /* Buttons */
 
   // Shared colors

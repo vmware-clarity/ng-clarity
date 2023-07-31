@@ -130,6 +130,10 @@
       --clr-p8-font-size: #{variables.$clr-p8-font-size};
       --clr-p8-line-height: #{variables.$clr-p8-line-height};
       --clr-p8-letter-spacing: #{variables.$clr-p8-letter-spacing};
+
+      // List item li
+      --clr-list-item-color: inherit;
+      --clr-list-item-margin-left: #{variables.$clr-list-style-padding};
     }
   }
 }
