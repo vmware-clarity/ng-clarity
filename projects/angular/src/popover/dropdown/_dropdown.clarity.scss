@@ -3,14 +3,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
 @use 'menu-mixins.clarity.scss' as menu-mixins;
-@use 'properties.dropdown';
 @use '../../button/variables.buttons' as button-variables;
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.dropdown' as dropdown-variables;
+@include meta.load-css('properties.dropdown');
 
 %dropdown-content {
   overflow: hidden;
