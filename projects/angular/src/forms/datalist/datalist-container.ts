@@ -25,6 +25,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
+          <cds-icon shape="angle" class="clr-datalist-caret" direction="down"></cds-icon>
         </div>
         <cds-icon
           *ngIf="showInvalid"
