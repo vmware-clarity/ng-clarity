@@ -11,11 +11,12 @@
 // INSIDE THE BUTTONS
 
 @use 'sass:string';
-@use 'properties.wizard';
+@use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.wizard' as wizard-variables;
+@include meta.load-css('properties.wizard');
 
 @include mixins.exports('wizard.clarity') {
   .clr-wizard {

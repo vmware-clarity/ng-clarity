@@ -503,6 +503,12 @@
   --clr-forms-text-disabled-color: var(--cds-alias-status-disabled); // #{$clr-forms-text-disabled-color};
   --clr-forms-label-disabled-color: var(--cds-alias-status-disabled); // #{$clr-forms-label-disabled-color};
 
+  // Datalist
+
+  --clr-forms-datalist-caret-color: var(--cds-alias-status-neutral);
+  --clr-forms-datalist-caret-disabled-color: var(--cds-alias-status-disabled);
+  --clr-forms-datalist-caret-icon-size: var(--cds-global-space-7);
+
   // Textarea
   --clr-forms-textarea-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
 

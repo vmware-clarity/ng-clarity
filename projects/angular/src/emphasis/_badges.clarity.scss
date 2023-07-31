@@ -4,11 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.badges';
+@use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
+@include meta.load-css('properties.badges');
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},

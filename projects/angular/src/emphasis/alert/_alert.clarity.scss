@@ -5,12 +5,13 @@
  */
 
 @use 'sass:map';
-@use 'properties.alert';
+@use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
+@include meta.load-css('properties.alert');
 
 @mixin generateAlertType($alertType: 'info') {
   @include mixins.css-var(
