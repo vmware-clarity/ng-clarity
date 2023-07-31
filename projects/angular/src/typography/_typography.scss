@@ -25,9 +25,24 @@
       variables.$clr-h1-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h1-font-size;
-    letter-spacing: variables.$clr-h1-letter-spacing;
-    line-height: variables.$clr-h1-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h1-font-size,
+      variables.$clr-h1-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h1-line-height,
+      variables.$clr-h1-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h1-letter-spacing,
+      variables.$clr-h1-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -46,9 +61,24 @@
       variables.$clr-h2-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h2-font-size;
-    letter-spacing: variables.$clr-h2-letter-spacing;
-    line-height: variables.$clr-h2-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h2-font-size,
+      variables.$clr-h2-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h2-line-height,
+      variables.$clr-h2-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h2-letter-spacing,
+      variables.$clr-h2-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -67,9 +97,24 @@
       variables.$clr-h3-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h3-font-size;
-    letter-spacing: variables.$clr-h3-letter-spacing;
-    line-height: variables.$clr-h3-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h3-font-size,
+      variables.$clr-h3-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h3-line-height,
+      variables.$clr-h3-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h3-letter-spacing,
+      variables.$clr-h3-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -88,9 +133,24 @@
       variables.$clr-h4-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h4-font-size;
-    letter-spacing: variables.$clr-h4-letter-spacing;
-    line-height: variables.$clr-h4-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h4-font-size,
+      variables.$clr-h4-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h4-line-height,
+      variables.$clr-h4-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h4-letter-spacing,
+      variables.$clr-h4-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -109,9 +169,24 @@
       variables.$clr-h5-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h5-font-size;
-    letter-spacing: variables.$clr-h5-letter-spacing;
-    line-height: variables.$clr-h5-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h5-font-size,
+      variables.$clr-h5-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h5-line-height,
+      variables.$clr-h5-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h5-letter-spacing,
+      variables.$clr-h5-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -130,9 +205,24 @@
       variables.$clr-h6-font-family,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-h6-font-size;
-    letter-spacing: variables.$clr-h6-letter-spacing;
-    line-height: variables.$clr-h6-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-h6-font-size,
+      variables.$clr-h6-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-h6-line-height,
+      variables.$clr-h6-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-h6-letter-spacing,
+      variables.$clr-h6-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
   }
@@ -146,11 +236,25 @@
       variables.$clr-p1-font-weight,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr-p1-font-size;
-    letter-spacing: variables.$clr-p1-letter-spacing;
-    line-height: variables.$clr-p1-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-p1-font-size,
+      variables.$clr-p1-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-p1-letter-spacing,
+      variables.$clr-p1-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-p1-line-height,
+      variables.$clr-p1-line-height,
+      variables.$clr-use-custom-properties
+    );
     margin-bottom: variables.$clr-global-typography-margin-bottom;
-
     @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
     margin-top: 0 !important;
   }
@@ -169,9 +273,24 @@
         variables.$clr-p1-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p1-font-size;
-      letter-spacing: variables.$clr-p1-letter-spacing;
-      line-height: variables.$clr-p1-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p1-font-size,
+        variables.$clr-p1-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p1-letter-spacing,
+        variables.$clr-p1-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p1-line-height,
+        variables.$clr-p1-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -185,9 +304,24 @@
         variables.$clr-p0-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p0-font-size;
-      letter-spacing: variables.$clr-p0-letter-spacing;
-      line-height: variables.$clr-p0-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p0-font-size,
+        variables.$clr-p0-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p0-letter-spacing,
+        variables.$clr-p0-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p0-line-height,
+        variables.$clr-p0-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -201,9 +335,24 @@
         variables.$clr-p2-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p2-font-size;
-      letter-spacing: variables.$clr-p2-letter-spacing;
-      line-height: variables.$clr-p2-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p2-font-size,
+        variables.$clr-p2-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p2-letter-spacing,
+        variables.$clr-p2-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p2-line-height,
+        variables.$clr-p2-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -217,9 +366,24 @@
         variables.$clr-p3-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p3-font-size;
-      letter-spacing: variables.$clr-p3-letter-spacing;
-      line-height: variables.$clr-p3-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p3-font-size,
+        variables.$clr-p3-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p3-letter-spacing,
+        variables.$clr-p3-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p3-line-height,
+        variables.$clr-p3-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -233,9 +397,24 @@
         variables.$clr-p4-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p4-font-size;
-      letter-spacing: variables.$clr-p4-letter-spacing;
-      line-height: variables.$clr-p4-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p4-font-size,
+        variables.$clr-p4-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p4-letter-spacing,
+        variables.$clr-p4-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p4-line-height,
+        variables.$clr-p4-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -249,9 +428,24 @@
         variables.$clr-p5-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p5-font-size;
-      letter-spacing: variables.$clr-p5-letter-spacing;
-      line-height: variables.$clr-p5-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p5-font-size,
+        variables.$clr-p5-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p5-letter-spacing,
+        variables.$clr-p5-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p5-line-height,
+        variables.$clr-p5-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -265,9 +459,24 @@
         variables.$clr-p6-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p6-font-size;
-      letter-spacing: variables.$clr-p6-letter-spacing;
-      line-height: variables.$clr-p6-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p6-font-size,
+        variables.$clr-p6-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p6-letter-spacing,
+        variables.$clr-p6-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p6-line-height,
+        variables.$clr-p6-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -281,9 +490,24 @@
         variables.$clr-p7-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p7-font-size;
-      letter-spacing: variables.$clr-p7-letter-spacing;
-      line-height: variables.$clr-p7-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p7-font-size,
+        variables.$clr-p7-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p7-letter-spacing,
+        variables.$clr-p7-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p7-line-height,
+        variables.$clr-p7-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -297,9 +521,24 @@
         variables.$clr-p8-font-weight,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr-p8-font-size;
-      letter-spacing: variables.$clr-p8-letter-spacing;
-      line-height: variables.$clr-p8-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-p8-font-size,
+        variables.$clr-p8-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-p8-letter-spacing,
+        variables.$clr-p8-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-p8-line-height,
+        variables.$clr-p8-line-height,
+        variables.$clr-use-custom-properties
+      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
     }
@@ -338,7 +577,12 @@
       variables.$clr-global-font-color,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      font-size,
+      clr-basefont-size,
+      variables.$clr-basefont-size,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
-    font-size: variables.$clr-basefont-size;
   }
 }

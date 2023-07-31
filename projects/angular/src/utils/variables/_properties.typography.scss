@@ -21,70 +21,115 @@
       // Header styles
       //H1 - login_productName
       --clr-h1-color: var(--clr-global-content-header-font-color);
+      --clr-h1-font-size: #{variables.$clr-h1-font-size};
       --clr-h1-font-weight: var(--clr-font-weight-light);
       --clr-h1-font-family: var(--clr-display-font);
+      --clr-h1-line-height: #{variables.$clr-h1-line-height};
+      --clr-h1-letter-spacing: #{variables.$clr-h1-letter-spacing};
 
       //H2 - login_trademark, page_mainHeading
       --clr-h2-color: var(--clr-global-content-header-font-color);
+      --clr-h2-font-size: #{variables.$clr-h2-font-size};
       --clr-h2-font-weight: var(--clr-font-weight-light);
       --clr-h2-font-family: var(--clr-display-font);
+      --clr-h2-line-height: #{variables.$clr-h2-line-height};
+      --clr-h2-letter-spacing: #{variables.$clr-h2-letter-spacing};
 
       //H3 - login_subtitle, modal_header, page_secondaryHeading
       --clr-h3-color: var(--clr-global-content-header-font-color);
+      --clr-h3-font-size: #{variables.$clr-h3-font-size};
       --clr-h3-font-weight: var(--clr-font-weight-light);
       --clr-h3-font-family: var(--clr-display-font);
+      --clr-h3-line-height: #{variables.$clr-h3-line-height};
+      --clr-h3-letter-spacing: #{variables.$clr-h3-letter-spacing};
 
       //H4 - card titles, page_tertiaryHeading
       --clr-h4-color: var(--clr-global-content-header-font-color);
+      --clr-h4-font-size: #{variables.$clr-h4-font-size};
       --clr-h4-font-weight: var(--clr-font-weight-light);
       --clr-h4-font-family: var(--clr-display-font);
+      --clr-h4-line-height: #{variables.$clr-h4-line-height};
+      --clr-h4-letter-spacing: #{variables.$clr-h4-letter-spacing};
 
       //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
       --clr-h5-color: var(--clr-global-font-color);
+      --clr-h5-font-size: #{variables.$clr-h5-font-size};
       --clr-h5-font-weight: var(--clr-font-weight-regular);
       --clr-h5-font-family: var(--clr-display-font);
+      --clr-h5-line-height: #{variables.$clr-h5-line-height};
+      --clr-h5-letter-spacing: #{variables.$clr-h5-letter-spacing};
 
       //H6 - toc_header
       --clr-h6-color: var(--clr-color-neutral-900);
+      --clr-h6-font-size: #{variables.$clr-h6-font-size};
       --clr-h6-font-weight: var(--clr-font-weight-semibold);
       --clr-h6-font-family: var(--clr-display-font);
+      --clr-h6-line-height: #{variables.$clr-h6-line-height};
+      --clr-h6-letter-spacing: #{variables.$clr-h6-letter-spacing};
 
       // Non-header text styles
       //P0 - Intro text
       --clr-p0-color: var(--clr-global-font-color);
       --clr-p0-font-weight: var(--clr-font-weight-light);
+      --clr-p0-font-size: #{variables.$clr-p0-font-size};
+      --clr-p0-line-height: #{variables.$clr-p0-line-height};
+      --clr-p0-letter-spacing: #{variables.$clr-p0-letter-spacing};
 
       //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
       --clr-p1-color: var(--clr-global-font-color);
       --clr-p1-font-weight: var(--clr-font-weight-regular);
+      --clr-p1-font-size: #{variables.$clr-p1-font-size};
+      --clr-p1-line-height: #{variables.$clr-p1-line-height};
+      --clr-p1-letter-spacing: #{variables.$clr-p1-letter-spacing};
 
       //P2 - form_label, stackview_header
       --clr-p2-color: var(--clr-global-font-color);
       --clr-p2-font-weight: var(--clr-font-weight-semibold);
+      --clr-p2-font-size: #{variables.$clr-p2-font-size};
+      --clr-p2-line-height: #{variables.$clr-p2-line-height};
+      --clr-p2-letter-spacing: #{variables.$clr-p2-letter-spacing};
 
       //P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
       --clr-p3-color: var(--clr-global-font-color);
       --clr-p3-font-weight: var(--clr-font-weight-regular);
+      --clr-p3-font-size: #{variables.$clr-p3-font-size};
+      --clr-p3-line-height: #{variables.$clr-p3-line-height};
+      --clr-p3-letter-spacing: #{variables.$clr-p3-letter-spacing};
 
       //P4 - small alerts, dropdown_header, vertical_nav_header
       --clr-p4-color: var(--clr-global-font-color);
       --clr-p4-font-weight: var(--clr-font-weight-bold);
+      --clr-p4-font-size: #{variables.$clr-p4-font-size};
+      --clr-p4-line-height: #{variables.$clr-p4-line-height};
+      --clr-p4-letter-spacing: #{variables.$clr-p4-letter-spacing};
 
       //P5
       --clr-p5-color: var(--clr-global-font-color);
       --clr-p5-font-weight: var(--clr-font-weight-regular);
+      --clr-p5-font-size: #{variables.$clr-p5-font-size};
+      --clr-p5-line-height: #{variables.$clr-p5-line-height};
+      --clr-p5-letter-spacing: #{variables.$clr-p5-letter-spacing};
 
       //P6 - card link btns, form_subtext, table_header
       --clr-p6-color: var(--clr-global-font-color);
       --clr-p6-font-weight: var(--clr-font-weight-bold);
+      --clr-p6-font-size: #{variables.$clr-p6-font-size};
+      --clr-p6-line-height: #{variables.$clr-p6-line-height};
+      --clr-p6-letter-spacing: #{variables.$clr-p6-letter-spacing};
 
       //P7 - label_text
       --clr-p7-color: var(--clr-global-font-color);
       --clr-p7-font-weight: var(--clr-font-weight-regular);
+      --clr-p7-font-size: #{variables.$clr-p7-font-size};
+      --clr-p7-line-height: #{variables.$clr-p7-line-height};
+      --clr-p7-letter-spacing: #{variables.$clr-p7-letter-spacing};
 
       //P8
       --clr-p8-color: var(--clr-global-font-color);
       --clr-p8-font-weight: var(--clr-font-weight-regular);
+      --clr-p8-font-size: #{variables.$clr-p8-font-size};
+      --clr-p8-line-height: #{variables.$clr-p8-line-height};
+      --clr-p8-letter-spacing: #{variables.$clr-p8-letter-spacing};
     }
   }
 }
