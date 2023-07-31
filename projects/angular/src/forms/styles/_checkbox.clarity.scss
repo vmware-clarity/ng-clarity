@@ -116,19 +116,6 @@
       transform: translate(0, $mark-half-size);
     }
 
-    input[type='checkbox'].clr-indeterminate:checked + .clr-control-label::after,
-    input[type='checkbox']:indeterminate:checked + .clr-control-label::after {
-      border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid;
-      border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid;
-      @include mixins.css-var(
-        border-color,
-        clr-forms-checkbox-mark-color,
-        forms-variables.$clr-forms-checkbox-mark-color,
-        variables.$clr-use-custom-properties
-      );
-      transform: translate(0, $mark-half-size) rotate(-45deg);
-    }
-
     &.clr-checkbox-inline {
       @include forms-mixins.form-inline-input();
     }
@@ -198,24 +185,6 @@
         variables.$clr-use-custom-properties
       );
       border-left: none;
-    }
-
-    input[type='checkbox']:checked.clr-indeterminate + .clr-control-label::after,
-    input[type='checkbox']:checked:indeterminate + .clr-control-label::after {
-      border-left: none;
-    }
-
-    input[type='checkbox'].clr-indeterminate:checked + .clr-control-label::after,
-    input[type='checkbox']:indeterminate:checked + .clr-control-label::after {
-      border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid;
-      border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid;
-      @include mixins.css-var(
-        border-color,
-        clr-forms-checkbox-disabled-mark-color,
-        forms-variables.$clr-forms-checkbox-disabled-mark-color,
-        variables.$clr-use-custom-properties
-      );
-      transform: translate(0, $mark-half-size) rotate(-45deg);
     }
   }
 
