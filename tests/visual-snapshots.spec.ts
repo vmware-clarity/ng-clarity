@@ -39,6 +39,10 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
+      console.log(
+        `Executing ${screenshotPath}:${storyId}:${theme} story. Worker index: ${process.env.TEST_WORKER_INDEX}. Parallel Index: ${process.env.TEST_PARALLEL_INDEX}`
+      );
+
       await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
         caret: 'hide',
