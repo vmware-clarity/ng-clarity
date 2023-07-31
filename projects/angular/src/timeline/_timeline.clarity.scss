@@ -3,10 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use 'properties.timeline';
+@use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.timeline' as timeline-variables;
+@include meta.load-css('properties.timeline');
 
 @include mixins.exports('timeline.clarity') {
   .clr-timeline {

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.combobox';
+@use 'sass:meta';
 @use '../../popover/dropdown/menu-mixins.clarity';
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../../utils/mixins';
@@ -12,6 +12,7 @@
 @use '../styles/mixins.forms' as styles-mixins;
 @use '../styles/variables.forms' as forms-variables;
 @use 'variables.combobox' as combobox-variables;
+@include meta.load-css('properties.combobox');
 
 @include mixins.exports('combobox.clarity') {
   // needed for the proper calculation of popover offset that we do to keep label always visible
