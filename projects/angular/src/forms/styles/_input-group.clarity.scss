@@ -76,14 +76,24 @@
     }
   }
 
-  .clr-form-control-disabled .clr-input-group-icon-action {
-    @include mixins.css-var(
-      color,
-      clr-forms-text-disabled-color,
-      forms-variables.$clr-forms-text-disabled-color,
-      variables.$clr-use-custom-properties
-    );
-    cursor: not-allowed;
+  .clr-form-control-disabled {
+    .clr-input-group {
+      @include mixins.css-var(
+        border-bottom-color,
+        clr-forms-border-disabled-color,
+        forms-variables.$clr-forms-border-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+    .clr-input-group-icon-action {
+      @include mixins.css-var(
+        color,
+        clr-forms-text-disabled-color,
+        forms-variables.$clr-forms-text-disabled-color,
+        variables.$clr-use-custom-properties
+      );
+      cursor: not-allowed;
+    }
   }
 
   .clr-error .clr-input-group {
@@ -96,6 +106,20 @@
     @include forms-mixins.input-border-bottom-animation(
       forms-variables.$clr-forms-invalid-color,
       clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
+  }
+
+  .clr-success .clr-input-group {
+    @include mixins.css-var(
+      border-bottom-color,
+      clr-forms-valid-color,
+      forms-variables.$clr-forms-valid-color,
+      variables.$clr-use-custom-properties
+    );
+    @include forms-mixins.input-border-bottom-animation(
+      forms-variables.$clr-forms-valid-color,
+      clr-forms-valid-color,
       variables.$clr-use-custom-properties
     );
   }

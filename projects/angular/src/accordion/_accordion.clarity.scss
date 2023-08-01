@@ -4,11 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.accordion';
+@use 'sass:meta';
 @use '../utils/a11y';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.accordion' as accordion-variables;
+@include meta.load-css('properties.accordion');
 
 @include mixins.exports('accordion.clarity') {
   .clr-accordion {

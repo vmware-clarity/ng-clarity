@@ -16,6 +16,7 @@
 
 [cds-theme] {
   /* Global */
+  --clr-global-font-size: var(--cds-global-base);
 
   // app background
   --clr-global-app-background: var(--cds-alias-object-app-background); // #{$clr-global-app-background}; // $clr-color-neutral-50
@@ -42,50 +43,123 @@
 
   /* Typography */
 
-  --clr-h1-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  //H1
+  --clr-h1-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h1-font-size: var(--cds-global-typography-font-size-9);
+  --clr-h1-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-h1-font-family: var(--cds-global-typography-font-family);
+  --clr-h1-line-height: calc(44 * (1rem / var(--clr-global-font-size)));
+  --clr-h1-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
   //H2 - login_trademark, page_mainHeading
-  --clr-h2-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-h2-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h2-font-size: var(--cds-global-typography-font-size-8);
+  --clr-h2-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-h2-font-family: var(--cds-global-typography-font-family);
+  --clr-h2-line-height: calc(36 * (1rem / var(--clr-global-font-size)));
+  --clr-h2-letter-spacing: calc(-0.4 * (1rem / var(--clr-global-font-size)));
 
   //H3 - login_subtitle, modal_header, page_secondaryHeading
-  --clr-h3-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-h3-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h3-font-size: var(--cds-global-typography-font-size-7);
+  --clr-h3-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-h3-font-family: var(--cds-global-typography-font-family);
+  --clr-h3-line-height: calc(32 * (1rem / var(--clr-global-font-size)));
+  --clr-h3-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H4 - card titles, page_tertiaryHeading
-  --clr-h4-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-h4-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h4-font-size: var(--cds-global-typography-font-size-6);
+  --clr-h4-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-h4-font-family: var(--cds-global-typography-font-family);
+  --clr-h4-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h4-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
-  --clr-h5-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-h5-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h5-font-size: var(--cds-global-typography-font-size-5);
+  --clr-h5-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-h5-font-family: var(--cds-global-typography-font-family);
+  --clr-h5-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h5-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H6 - toc_header
-  --clr-h6-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-h6-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300));
+  --clr-h6-font-size: var(--cds-global-typography-font-size-5);
+  --clr-h6-font-weight: var(--cds-global-typography-font-weight-light);
+  --clr-h6-font-family: var(--cds-global-typography-font-family);
+  --clr-h6-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h6-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   // Non-header text styles
   //P0 - Intro text
-  --clr-p0-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p0-color: var(--cds-alias-typography-color-450);
+  --clr-p0-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-p0-font-size: var(--cds-global-typography-font-size-4);
+  --clr-p0-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p0-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
-  --clr-p1-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p1-color: var(--cds-alias-typography-color-450);
+  --clr-p1-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-p1-font-size: var(--cds-global-typography-font-size-4);
+  --clr-p1-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p1-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P2 - form_label, stackview_header
-  --clr-p2-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p2-color: var(--cds-alias-typography-color-450);
+  --clr-p2-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-p2-font-size: var(--cds-global-typography-font-size-3);
+  --clr-p2-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p2-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
-  --clr-p3-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p3-color: var(--cds-alias-typography-color-450);
+  --clr-p3-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-p3-font-size: var(--cds-global-typography-font-size-3);
+  --clr-p3-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p3-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P4 - small alerts, dropdown_header, vertical_nav_header
-  --clr-p4-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p4-color: var(--cds-alias-typography-color-450);
+  --clr-p4-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-p4-font-size: var(--cds-global-typography-font-size-3);
+  --clr-p4-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p4-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P5
-  --clr-p5-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p5-color: var(--cds-alias-typography-color-450);
+  --clr-p5-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-p5-font-size: var(--cds-global-typography-font-size-3);
+  --clr-p5-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p5-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P6 - card link btns, form_subtext, table_header
-  --clr-p6-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p6-color: var(--cds-alias-typography-color-450);
+  --clr-p6-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-p6-font-size: var(--cds-global-typography-font-size-1);
+  --clr-p6-line-height: calc(16 * (1rem / var(--clr-global-font-size)));
+  --clr-p6-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //P7 - label_text
-  --clr-p7-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p7-color: var(--cds-alias-typography-color-450);
+  --clr-p7-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-p7-font-size: var(--cds-global-typography-font-size-0);
+  --clr-p7-line-height: calc(12 * (1rem / var(--clr-global-font-size)));
+  --clr-p7-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
   //P8
-  --clr-p8-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-p8-color: var(--cds-alias-typography-color-450);
+  --clr-p8-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-p8-font-size: var(--cds-global-typography-font-size-0);
+  --clr-p8-line-height: calc(12 * (1rem / var(--clr-global-font-size)));
+  --clr-p8-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
+
+  // List item li
+  --clr-list-item-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-list-item-margin-left: var(--cds-global-space-6);
+  --clr-list-item-line-height: var(--clr-p1-line-height);
+  --clr-list-item-compact-margin-bottom: var(--cds-global-space-0);
 
   /* Buttons */
 
@@ -463,46 +537,86 @@
   /* Forms */
 
   // Structure
-  --clr-form-disabled-background-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
+  --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
   --clr-forms-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
+  --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-forms-invalid-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
+  --clr-forms-invalid-text-color: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-800);
   --clr-forms-valid-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
-  --clr-forms-valid-text-color: var(--cds-alias-status-success); // var(--clr-color-success-900);
+  --clr-forms-valid-text-color: var(--cds-alias-status-success-shade); // var(--clr-color-success-900);
   --clr-forms-subtext-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300)); // var(--clr-color-neutral-600);
   --clr-forms-placeholder-color: var(--cds-alias-typography-color-200, var(--cds-global-typography-color-200)); // var(--clr-color-neutral-600);
-  --clr-forms-border-color: var(--cds-alias-object-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
-  --clr-forms-focused-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
+  --clr-forms-border-color: var(--cds-alias-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
+  --clr-forms-focused-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-500);
+  --clr-forms-icon-size: var(--cds-global-space-9);
+  --clr-forms-subtext-margin-top: var(--cds-global-space-3);
 
-  --clr-forms-subtext-disabled-color: var(--cds-alias-status-disabled); // #{$clr-forms-subtext-disabled-color};
-  --clr-forms-border-disabled-color: var(--cds-alias-object-border-color-tint); // #{$clr-forms-border-disabled-color};
-  --clr-forms-text-disabled-color: var(--cds-alias-status-disabled); // #{$clr-forms-text-disabled-color};
-  --clr-forms-label-disabled-color: var(--cds-alias-status-disabled); // #{$clr-forms-label-disabled-color};
+  --clr-forms-subtext-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-subtext-disabled-color};
+  --clr-forms-border-disabled-color: var(--cds-alias-object-interaction-color-disabled); // #{$clr-forms-border-disabled-color};
+  --clr-forms-text-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-text-disabled-color};
+  --clr-forms-label-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-label-disabled-color};
+  --clr-forms-icon-disabled-color: var(--cds-alias-status-disabled);
+  --clr-forms-placeholder-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400));
+
+  // Input
+  --clr-forms-input-padding: 0 var(--cds-global-space-5);
+  --clr-forms-input-wrapper-height: var(--cds-global-space-9);
+
+  // Datalist
+
+  --clr-forms-datalist-caret-color: var(--cds-alias-status-neutral);
+  --clr-forms-datalist-caret-disabled-color: var(--cds-alias-status-disabled);
+  --clr-forms-datalist-caret-icon-size: var(--cds-global-space-7);
 
   // Textarea
   --clr-forms-textarea-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
-
   --clr-forms-select-caret-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
+  --clr-forms-textarea-focus-background: var(--cds-alias-object-interaction-background-selected);
+  --clr-forms-textarea-focus-outline: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-textarea-disabled-background: var(--cds-alias-object-container-background);
+  --clr-forms-textarea-disabled-border-color: var(--cds-alias-object-interaction-color-disabled);
   --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
   --clr-forms-select-multiple-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
+  --clr-forms-textarea-padding: var(--cds-global-space-7);
+  --clr-forms-textarea-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-forms-textarea-wrapper-margin-left: var(--cds-global-space-5);
+  --clr-forms-textarea-wrapper-margin-top: var(--cds-global-space-5);
 
   // Checkbox
-  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token
-  --clr-forms-checkbox-background-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-checkbox-indeterminate-border-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-checkbox-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
-  --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
-  --clr-forms-checkbox-disabled-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-checkbox-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
+  --clr-forms-checkbox-indeterminate-border-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
+  --clr-forms-checkbox-mark-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
+
+  --clr-forms-checkbox-disabled-label-color: var(--clr-forms-label-disabled-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-checkbox-disabled-background-color: var(--clr-btn-default-bg-color); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-checkbox-disabled-checked-background-color: var(--cds-alias-status-disabled); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-checkbox-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-action-600);
+  --clr-forms-checkbox-disabled-indeterminate-color: var(--cds-alias-status-disabled); // var(--clr-color-action-600);
+  --clr-forms-checkbox-disabled-mark-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-1000);
+
+  --clr-forms-checkbox-line-height: var(--cds-global-space-9);
+  --clr-forms-checkbox-padding-left: var(--cds-global-space-9);
+  --clr-forms-checkbox-label-height: var(--cds-global-space-9);
 
   // Radio
-  --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color); // indirectly mapped to CDS token
+  --clr-forms-radio-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-radio-label-disabled-color: var(--cds-alias-typography-disabled);
+  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-radio-disabled-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-forms-radio-line-height: var(--cds-global-space-9);
+  --clr-forms-radio-padding-left: var(--cds-global-space-9);
+  --clr-forms-radio-label-height: var(--cds-global-space-9);
+  --clr-forms-radio-selected-shadow: inset 0 0 0 var(--cds-global-space-4) var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-radio-checked-disabled-shadow: inset 0 0 0 var(--cds-global-space-4) var(--cds-alias-object-interaction-color-disabled);
+
+  /// add more radio stuff
 
   // Range
   --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
@@ -567,6 +681,10 @@
   --clr-link-hover-color: var(--cds-global-typography-link-color-hover); // var(--clr-color-action-600);
   --clr-link-visited-color: var(--cds-global-typography-link-color-visited);
   --clr-link-visited-color-hover: var(--cds-global-typography-link-color-visited-hover);
+  --clr-link-font-weight: inherit;
+  --clr-link-font-size: inherit;
+  --clr-link-line-height: inherit;
+  --clr-link-letter-spacing: inherit;
   --clr-custom-links-hover-color: var(--cds-global-color-gray-200); // var(--clr-color-neutral-200);
 
   /* Responsive Navigation */
@@ -578,17 +696,27 @@
   --clr-responsive-nav-header-backdrop-bg-color: var(--cds-global-color-gray-1000); // var(--clr-color-neutral-1000);
 
   /* Signpost */
+  --clr-signpost-content-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-signpost-content-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
+  --clr-signpost-content-border-color: var(--cds-alias-object-interaction-border-color); // var(--clr-color-neutral-500);
 
-  --clr-signpost-content-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
-  --clr-signpost-content-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-500);
-
+  --clr-signpost-action-icon-dimension: var(--cds-global-space-0); // to be removed when shim is fully integrated
   --clr-signpost-action-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
+  --clr-signpost-action-icon-color: var(--clr-signpost-action-color);
   --clr-signpost-action-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-action-700);
+  --clr-signpost-action-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-action-700);
+  --clr-signpost-content-header-position: static;
+  --clr-signpost-content-header-padding: var(--cds-global-space-7) var(--cds-global-space-7) var(--cds-global-space-5);
 
   // NOTE: I had to use hardcoded border size value in order to avoid sass variables
-  --clr-signpost-border-size: 0.6rem;
-  --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--cds-alias-object-border-color);
+  --clr-signpost-border-size: var(--cds-global-space-6);
+  --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
   --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
+  --clr-signpost-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-signpost-content-padding: var(--cds-global-space-0) var(--cds-global-space-7) var(--cds-global-space-7);
+  --clr-signpost-content-close-button-line-height: 0;
+  --clr-signpost-content-close-button-dimensions: var(--cds-global-space-7);
+  --clr-signpost-content-close-icon-dimensions: var(--cds-global-space-7);
 
   /* StackView */
 
@@ -647,23 +775,50 @@
   // colors
   --clr-toggle-bg-color-off: var(--cds-alias-status-neutral); // var(--clr-color-neutral-600);
   --clr-toggle-bg-color-on: var(--cds-alias-status-success); // var(--clr-color-success-500);
-  --clr-toggle-handle-bg-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-border-color: var(--clr-toggle-bg-color-off); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-border-color-on: var(--clr-toggle-bg-color-on); // var(--clr-color-neutral-50);
 
   // disabled colors
-  --clr-toggle-disabled-default-border-color: var(--cds-global-color-gray-400); // var(--clr-color-neutral-400);
-  --clr-toggle-disabled-default-handle-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
+  --clr-toggle-disabled-default-border-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-400);
+  --clr-toggle-disabled-default-handle-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
   --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+
   // Also sets disabled/on inner part of handle circle.
   --clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
-  --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+  --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
+
+  --clr-toggle-height: var(--cds-global-space-9);
+  --clr-toggle-switch-base-height: var(--cds-global-space-7);
+  --clr-toggle-switch-base-width: var(--cds-global-space-10);
+  --clr-toggle-base-line: var(--cds-global-space-4);
+  --clr-toggle-icon-margin: calc(var(--cds-global-space-11) + var(--cds-global-space-5));
+  --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));
+  --clr-toggle-switch-left-spacing: calc(var(--clr-toggle-switch-base-width) - var(--cds-global-space-3));
+  --clr-toggle-switch-left-spacing-negative: calc(-1 * (var(--clr-toggle-switch-left-spacing)));
+  --clr-toggle-dot-diameter: var(--cds-global-space-7);
+  --clr-toggle-icon-dot-place: calc(-1 * var(--clr-toggle-icon-margin));
+  --clr-toggle-icon-top: var(--cds-global-space-3);
+  --clr-toggle-icon-dot-top: var(--clr-toggle-icon-top);
+  --clr-toggle-icon-dot-top-disabled: var(--clr-toggle-icon-top);
 
   /* Tooltips */
 
-  --clr-tooltip-background-color: var(--cds-global-color-gray-1000); // var(--clr-color-neutral-1000);
-  --clr-tooltip-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
+  --clr-tooltip-background-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tooltip-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
+  --clr-tooltip-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-tooltip-font-weight: var(--cds-global-typography-body-font-weight);
+  --clr-tooltip-content-margin: var(--cds-global-space-9);
+  --clr-tooltip-content-padding: var(--cds-global-space-6);
+  --clr-tooltip-content-line-height: var(--cds-global-space-7);
+
+  --clr-tooltip-arrow-width: var(--cds-global-space-5);
+  --clr-tooltip-arrow-height: var(--cds-global-space-5);
+  --clr-tooltip-arrow-horizontal-size: calc(-1 * var(--cds-global-space-6));
+  --clr-tooltip-arrow-vertical-size: calc(-1 * var(--cds-global-space-6));
 
   /* Wizard */
 
