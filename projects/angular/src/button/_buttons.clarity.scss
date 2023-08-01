@@ -431,7 +431,7 @@
   }
 
   .btn-block {
-    display: block;
+    @include mixins.css-var(display, clr-btn-block-display, block, variables.$clr-use-custom-properties);
     width: 100%;
     max-width: 100%;
   }
