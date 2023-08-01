@@ -134,7 +134,11 @@
 
 @mixin checkbox-radio-label-styles(
   $min-height,
+  $min-height-fallback,
   $padding-left,
+  $padding-left-fallback,
+  $line-height,
+  $line-height-fallback,
   $color: forms-variables.$clr-forms-checkbox-label-color,
   $color-prop: clr-forms-checkbox-label-color,
   $use-custom-props: variables.$clr-use-custom-properties
@@ -144,11 +148,12 @@
 
   //Display
   display: block;
-  min-height: $min-height;
-  padding-left: $padding-left;
   margin-top: 0;
   cursor: pointer;
-  line-height: forms-variables.$clr-forms-baseline * 4;
+
+  @include mixins.css-var(min-height, $min-height, $min-height-fallback, variables.$clr-use-custom-properties);
+  @include mixins.css-var(padding-left, $padding-left, $padding-left-fallback, variables.$clr-use-custom-properties);
+  @include mixins.css-var(line-height, $line-height, $line-height-fallback, variables.$clr-use-custom-properties);
 
   @if $use-custom-props != true {
     color: $color;
