@@ -67,10 +67,7 @@
         variables.$clr-use-custom-properties
       );
       border-style: solid;
-      border-color: rgba(
-        var(--clr-spinner-fill-bg-color-rgb, spinner-variables.$clr-spinner-bg-color-rgb),
-        spinner-variables.$clr-spinner-opacity
-      );
+      border-color: rgba(var(--clr-spinner-fill-bg-color-rgb), spinner-variables.$clr-spinner-opacity-inverse);
       border-radius: 50%;
     }
 
