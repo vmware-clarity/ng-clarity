@@ -39,7 +39,7 @@ import { panelAnimation } from './utils/animation';
   providers: [IfExpandService],
 })
 export class ClrAccordionPanel implements OnInit, OnChanges {
-  @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel--disabled') disabled = false;
+  @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') panelOpen = false;
 
   @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
