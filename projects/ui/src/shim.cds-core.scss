@@ -917,10 +917,12 @@
   --clr-spinner-default-stroke-width: var(--cds-global-space-4);
   --clr-spinner-medium-stroke-width: var(--cds-global-space-3);
   --clr-spinner-small-stroke-width: var(--cds-global-space-2);
-  --clr-spinner-fill-bg-color-rgb: var(--cds-alias-object-container-background-shade, rgba(55, 55, 55, 0.3));
+  //--clr-spinner-fill-bg-color-rgb: var(--cds-alias-object-container-background-shade, rgba(55, 55, 55, 0.3));
+  --clr-spinner-fill-bg-color: var(--cds-alias-object-container-background-shade);
   // TODO: Fix alias
-  --clr-spinner-fill-inverse-bg-color-rgb: var(--cds-alias-object-interaction-background-active2, rgba(55, 55, 55, 0.85));
-  --clr-spinner-fill-snake-color: var(--cds-alias-status-info);
+  --clr-spinner-fill-inverse-bg-color: var(--cds-alias-status-neutral-tint); //, rgba(55, 55, 55, 0.85));
+  //--clr-spinner-fill-snake-color: var(--cds-alias-status-info);
+  --clr-spinner-fill-snake-color: hsl(198, 100%, 32%);
   --clr-spinner-fill-inverse-snake-color: var(--cds-global-color-blue-300, var(--cds-alias-status-info));
 
   .login-wrapper {
