@@ -30,6 +30,9 @@
 
       --clr-signpost-content-header-position: absolute;
       --clr-signpost-content-header-padding: 0;
+      --clr-signpost-content-close-button-line-height: inherit;
+      --clr-signpost-content-close-button-dimensions: #{variables.$clr_baselineRem_1};
+      --clr-signpost-content-close-icon-dimensions: #{variables.$clr_baselineRem_0_667};
     }
   }
 }

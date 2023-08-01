@@ -82,12 +82,21 @@
     }
 
     .signpost-content-header button {
-      line-height: 0;
-      @include mixins.min-equilateral(variables.$clr_baselineRem_0_667);
+      @include mixins.css-var(
+        line-height,
+        clr-signpost-content-close-button-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+
+      @include mixins.min-equilateral-var(clr-signpost-content-close-button-dimensions, variables.$clr_baselineRem_1);
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_0_667);
+        @include mixins.min-equilateral-var(
+          clr-signpost-content-close-icon-dimensions,
+          variables.$clr_baselineRem_0_667
+        );
       }
     }
   }
@@ -262,7 +271,7 @@
           signpost-variables.$clr-signpost-pointer-border,
           variables.$clr-use-custom-properties
         );
-        top: -1 * signpost-variables.$clr-signpost-border-size;
+        top: -1 * signpost-variables.$clr-signpost-border-size + variables.$clr_baselineRem_1px;
 
         &:before {
           @include mixins.css-var(
@@ -314,7 +323,7 @@
           variables.$clr-use-custom-properties
         );
 
-        left: 50%;
+        right: 50%;
 
         &:before {
           @include mixins.css-var(
@@ -425,6 +434,7 @@
         );
 
         top: 50%;
+        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
@@ -538,6 +548,7 @@
         );
 
         top: 50%;
+        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
