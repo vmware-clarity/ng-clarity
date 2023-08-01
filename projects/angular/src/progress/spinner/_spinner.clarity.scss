@@ -126,7 +126,7 @@
     &.spinner-inverse {
       // TODO: get ux input on direction here
       &::after {
-        border-color: var(--clr-spinner-fill-snake-color, spinner-variables.$clr-spinner-color);
+        border-color: var(--clr-spinner-fill-inverse-snake-color, spinner-variables.$clr-spinner-inverse-color);
       }
       &::before {
         border-color: rgba(
