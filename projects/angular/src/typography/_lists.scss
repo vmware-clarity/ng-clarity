@@ -42,10 +42,20 @@
     );
 
     &.compact {
-      line-height: variables.$clr_baselineRem_0_75;
+      @include mixins.css-var(
+        line-height,
+        clr-list-item-line-height,
+        variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
 
       & > li {
-        margin-bottom: variables.$clr_baselineRem_0_25;
+        @include mixins.css-var(
+          margin-bottom,
+          clr-list-item-compact-margin-bottom,
+          variables.$clr_baselineRem_0_25,
+          variables.$clr-use-custom-properties
+        );
 
         &:last-child {
           margin-bottom: 0;

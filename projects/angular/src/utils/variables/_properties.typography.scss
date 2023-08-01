@@ -135,6 +135,7 @@
       --clr-list-item-color: inherit;
       --clr-list-item-margin-left: #{variables.$clr-list-style-padding};
       --clr-list-item-line-height: inherit;
+      --clr-list-item-compact-margin-bottom: #{variables.$clr_baselineRem_0_25};
     }
   }
 }
