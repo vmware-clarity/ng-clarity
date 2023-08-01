@@ -7,7 +7,9 @@
 @use 'sass:map';
 @use 'sass:meta';
 @use '../../utils/mixins';
+@use 'properties.signpost';
 @use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.color' as color-variables;
 @use 'variables.signpost' as signpost-variables;
 @include meta.load-css('properties.signpost');
 
@@ -20,7 +22,15 @@
     }
 
     .signpost-action {
-      min-width: variables.$clr_baselineRem_1;
+      // ATM (after token migration)
+      // to be removed once shim is fully integrated.
+      @include mixins.css-var(
+        min-width,
+        clr-signpost-action-icon-dimension,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+
       margin: 0;
       padding: 0;
       @include mixins.css-var(
@@ -32,11 +42,25 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_1);
+        // ATM (after token migration)
+        // to be removed once shim is fully integrated.
+        @include mixins.equilateral-var(
+          clr-signpost-action-icon-dimension,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+
+        @include mixins.css-var(
+          color,
+          clr-signpost-action-icon-color,
+          signpost-variables.$clr-signpost-action-color,
+          variables.$clr-use-custom-properties
+        );
       }
 
-      &:hover,
-      &.active {
+      cds-icon:hover,
+      clr-icon:hover,
+      &:hover {
         @include mixins.css-var(
           color,
           clr-signpost-action-hover-color,
@@ -44,12 +68,35 @@
           variables.$clr-use-custom-properties
         );
       }
+
+      &.active cds-icon,
+      &.active clr-icon,
+      &.active {
+        @include mixins.css-var(
+          color,
+          clr-signpost-action-active-color,
+          signpost-variables.$clr-signpost-action-hover-color,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
 
     .signpost-content-header button {
+      @include mixins.css-var(
+        line-height,
+        clr-signpost-content-close-button-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+
+      @include mixins.min-equilateral-var(clr-signpost-content-close-button-dimensions, variables.$clr_baselineRem_1);
+
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_0_667);
+        @include mixins.min-equilateral-var(
+          clr-signpost-content-close-icon-dimensions,
+          variables.$clr_baselineRem_0_667
+        );
       }
     }
   }
@@ -224,7 +271,6 @@
           signpost-variables.$clr-signpost-pointer-border,
           variables.$clr-use-custom-properties
         );
-
         top: -1 * signpost-variables.$clr-signpost-border-size + variables.$clr_baselineRem_1px;
 
         &:before {
@@ -550,10 +596,22 @@
   .signpost-content-header {
     display: flex;
     justify-content: flex-end;
-    position: absolute;
     width: 100%;
     background-color: inherit;
     top: 0;
+    @include mixins.css-var(
+      position,
+      clr-signpost-content-header-position,
+      absolute,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(padding, clr-signpost-content-header-padding, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      border-radius,
+      clr-signpost-border-radius,
+      signpost-variables.$clr-signpost-border-radius,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .signpost-wrap {
@@ -587,7 +645,20 @@
   }
 
   .signpost-content-body {
-    padding: variables.$clr_baselineRem_1;
+    @include mixins.css-var(
+      padding,
+      clr-signpost-content-padding,
+      variables.$clr_baselineRem_1,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      clr-signpost-content-color,
+      color-variables.$clr-color-neutral-700,
+      variables.$clr-use-custom-properties
+    );
+
+    text-align: left;
     max-height: variables.$clr_baselineRem_20;
     overflow-y: auto;
   }

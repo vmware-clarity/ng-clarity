@@ -4,7 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables';
+@use 'variables.signpost' as signpost-variables;
 
 @include mixins.exports('signpost.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -13,14 +14,25 @@
       --clr-signpost-content-bg-color: var(--clr-color-neutral-0);
       --clr-signpost-content-border-color: var(--clr-color-neutral-500);
 
+      --clr-signpost-action-icon-dimension: #{variables.$clr_baselineRem_1}; // to be removed when shim is fully integrated
       --clr-signpost-action-color: var(--clr-color-neutral-600);
+      --clr-signpost-action-icon-color: var(--clr-btn-link-color);
       --clr-signpost-action-hover-color: var(--clr-color-action-700);
+      --clr-signpost-action-active-color: var(--clr-color-action-700);
 
       --clr-signpost-border-radius: var(--clr-global-borderradius);
 
-      --clr-signpost-pointer-border: var(--clr-signpost-pointer-border);
-      --clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-invisible-border);
-      --clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-psuedo-border);
+      --clr-signpost-pointer-border: #{signpost-variables.$clr-signpost-pointer-border};
+      --clr-signpost-pointer-invisible-border: #{signpost-variables.$clr-signpost-pointer-invisible-border};
+      --clr-signpost-pointer-psuedo-border: #{signpost-variables.$clr-signpost-pointer-psuedo-border};
+      --clr-signpost-content-padding: #{variables.$clr_baselineRem_1};
+      --clr-signpost-content-color: var(--clr-color-neutral-700);
+
+      --clr-signpost-content-header-position: absolute;
+      --clr-signpost-content-header-padding: 0;
+      --clr-signpost-content-close-button-line-height: inherit;
+      --clr-signpost-content-close-button-dimensions: #{variables.$clr_baselineRem_1};
+      --clr-signpost-content-close-icon-dimensions: #{variables.$clr_baselineRem_0_667};
     }
   }
 }
