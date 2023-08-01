@@ -41,6 +41,7 @@
 | --clr-forms-checkbox-border-radius              | Border radius of checkbox                                        |
 | --clr-forms-checkbox-checked-shadow             | Not used in checkbox. Used for --clr-forms-radio-selected-shadow |
 | --clr-forms-radio-label-color                   | Font color of radio label                                        |
+| --clr-forms-radio-label-disabled-color          | Font color of disabled radio label                               |
 | --clr-forms-radio-disabled-background-color     | Background color of disabled radio                               |
 | --clr-forms-radio-disabled-mark-color           | Color of disabled radio mark                                     |
 | --clr-forms-radio-selected-shadow               | Shadow of selected radio                                         |
