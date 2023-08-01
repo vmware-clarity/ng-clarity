@@ -19,6 +19,7 @@
 
   li {
     @include mixins.css-var(color, clr-list-item-color, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(line-height, clr-list-item-line-height, inherit, variables.$clr-use-custom-properties);
   }
 
   ul:not([cds-list]),
