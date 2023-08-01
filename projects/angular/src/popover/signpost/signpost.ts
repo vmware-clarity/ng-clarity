@@ -50,7 +50,7 @@ export class ClrSignpost {
   constructor(public commonStrings: ClrCommonStringsService) {}
 
   /**********
-   * @property ClrSignpostTrigger
+   * @property signPostTrigger
    *
    * @description
    * Uses ContentChild to check for a user supplied element with the ClrSignpostTrigger on it.
