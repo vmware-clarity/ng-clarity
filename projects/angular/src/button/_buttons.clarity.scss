@@ -380,7 +380,9 @@
   }
 
   .btn.btn-sm,
-  .btn-sm .btn {
+  .btn-sm .btn,
+  .btn.btn-small,
+  .btn-small .btn {
     @include btn-sm-appearance();
   }
 
@@ -421,7 +423,8 @@
   }
 
   //Small Icon Button
-  .btn-sm:not(.btn-link) {
+  .btn-sm:not(.btn-link),
+  .btn-small:not(.btn-link) {
     clr-icon {
       @include mixins.css-var(
         width,
@@ -492,7 +495,8 @@
       @include populateButtonProperties(link);
     }
 
-    &.btn-sm .btn-group-overflow > .dropdown-toggle {
+    &.btn-sm .btn-group-overflow > .dropdown-toggle,
+    &.btn-small .btn-group-overflow > .dropdown-toggle {
       @include btn-sm-appearance();
     }
   }

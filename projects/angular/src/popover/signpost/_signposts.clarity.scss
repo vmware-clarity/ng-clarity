@@ -225,7 +225,7 @@
           variables.$clr-use-custom-properties
         );
 
-        top: -1 * signpost-variables.$clr-signpost-border-size + variables.$clr_baselineRem_1px;
+        top: -1 * signpost-variables.$clr-signpost-border-size;
 
         &:before {
           @include mixins.css-var(
@@ -277,7 +277,7 @@
           variables.$clr-use-custom-properties
         );
 
-        right: 50%;
+        left: 50%;
 
         &:before {
           @include mixins.css-var(
@@ -388,7 +388,6 @@
         );
 
         top: 50%;
-        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
@@ -502,7 +501,6 @@
         );
 
         top: 50%;
-        transform: translateY(-50%);
 
         &:before {
           @include mixins.css-var(
