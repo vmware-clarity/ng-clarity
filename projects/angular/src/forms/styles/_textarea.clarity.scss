@@ -12,13 +12,7 @@
   // @TODO Fix selectors when old forms are removed to allow better defaults
   .clr-form-horizontal {
     .clr-textarea-wrapper {
-      // margin-top: 0;
-      @include mixins.css-var(
-        margin-left,
-        clr-forms-textarea-wrapper-margin-left,
-        0,
-        variables.$clr-use-custom-properties
-      );
+      margin-top: 0;
     }
   }
 
