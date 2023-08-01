@@ -670,17 +670,27 @@
   --clr-responsive-nav-header-backdrop-bg-color: var(--cds-global-color-gray-1000); // var(--clr-color-neutral-1000);
 
   /* Signpost */
+  --clr-signpost-content-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-signpost-content-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
+  --clr-signpost-content-border-color: var(--cds-alias-object-interaction-border-color); // var(--clr-color-neutral-500);
 
-  --clr-signpost-content-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
-  --clr-signpost-content-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-500);
-
+  --clr-signpost-action-icon-dimension: var(--cds-global-space-0); // to be removed when shim is fully integrated
   --clr-signpost-action-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
+  --clr-signpost-action-icon-color: var(--clr-signpost-action-color);
   --clr-signpost-action-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-action-700);
+  --clr-signpost-action-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-action-700);
+  --clr-signpost-content-header-position: static;
+  --clr-signpost-content-header-padding: var(--cds-global-space-7) var(--cds-global-space-7) var(--cds-global-space-5);
 
   // NOTE: I had to use hardcoded border size value in order to avoid sass variables
-  --clr-signpost-border-size: 0.6rem;
-  --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--cds-alias-object-border-color);
+  --clr-signpost-border-size: var(--cds-global-space-6);
+  --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
   --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
+  --clr-signpost-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-signpost-content-padding: var(--cds-global-space-0) var(--cds-global-space-7) var(--cds-global-space-7);
+  --clr-signpost-content-close-button-line-height: 0;
+  --clr-signpost-content-close-button-dimensions: var(--cds-global-space-7);
+  --clr-signpost-content-close-icon-dimensions: var(--cds-global-space-7);
 
   /* StackView */
 
