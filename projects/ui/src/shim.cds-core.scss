@@ -511,7 +511,7 @@
   /* Forms */
 
   // Structure
-  --clr-form-disabled-background-color: var(--cds-alias-status-disabled-tint); // var(--clr-color-neutral-400);
+  --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
@@ -556,17 +556,34 @@
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
 
   // Checkbox
-  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token
-  --clr-forms-checkbox-background-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-checkbox-indeterminate-border-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-checkbox-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
-  --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
-  --clr-forms-checkbox-disabled-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-checkbox-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
+  --clr-forms-checkbox-indeterminate-border-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
+  --clr-forms-checkbox-mark-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
+
+  --clr-forms-checkbox-disabled-label-color: var(--clr-forms-label-disabled-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-checkbox-disabled-background-color: var(--clr-btn-default-bg-color); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-checkbox-disabled-checked-background-color: var(--cds-alias-status-disabled); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-checkbox-disabled-border-color: var(--cds-alias-status-disabled); // var(--clr-color-action-600);
+  --clr-forms-checkbox-disabled-indeterminate-color: var(--cds-alias-status-disabled); // var(--clr-color-action-600);
+  --clr-forms-checkbox-disabled-mark-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-1000);
+
+  --clr-forms-checkbox-line-height: var(--cds-global-space-9);
+  --clr-forms-checkbox-padding-left: var(--cds-global-space-9);
+  --clr-forms-checkbox-label-height: var(--cds-global-space-9);
 
   // Radio
-  --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token
-  --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color); // indirectly mapped to CDS token
+  --clr-forms-radio-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400
+  --clr-forms-radio-label-disabled-color: var(--cds-alias-typography-disabled);
+  --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color); // indirectly mapped to CDS token --cds-alias-object-interaction-background
+  --clr-forms-radio-disabled-mark-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-forms-radio-line-height: var(--cds-global-space-9);
+  --clr-forms-radio-padding-left: var(--cds-global-space-9);
+  --clr-forms-radio-label-height: var(--cds-global-space-9);
+  --clr-forms-radio-selected-shadow: inset 0 0 0 var(--cds-global-space-4) var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-radio-checked-disabled-shadow: inset 0 0 0 var(--cds-global-space-4) var(--cds-alias-object-interaction-color-disabled);
+
+  /// add more radio stuff
 
   // Range
   --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
@@ -715,18 +732,35 @@
   // colors
   --clr-toggle-bg-color-off: var(--cds-alias-status-neutral); // var(--clr-color-neutral-600);
   --clr-toggle-bg-color-on: var(--cds-alias-status-success); // var(--clr-color-success-500);
-  --clr-toggle-handle-bg-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-border-color: var(--clr-toggle-bg-color-off); // var(--clr-color-neutral-50);
+  --clr-toggle-handle-border-color-on: var(--clr-toggle-bg-color-on); // var(--clr-color-neutral-50);
 
   // disabled colors
-  --clr-toggle-disabled-default-border-color: var(--cds-global-color-gray-400); // var(--clr-color-neutral-400);
-  --clr-toggle-disabled-default-handle-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
+  --clr-toggle-disabled-default-border-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-400);
+  --clr-toggle-disabled-default-handle-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
   --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+
   // Also sets disabled/on inner part of handle circle.
   --clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
   --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
-  --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-handle-color); // indirectly mapped
+  --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-border-color); // indirectly mapped
+
+  --clr-toggle-height: var(--cds-global-space-9);
+  --clr-toggle-switch-base-height: var(--cds-global-space-7);
+  --clr-toggle-switch-base-width: var(--cds-global-space-10);
+  --clr-toggle-base-line: var(--cds-global-space-4);
+  --clr-toggle-icon-margin: calc(var(--cds-global-space-11) + var(--cds-global-space-5));
+  --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));
+  --clr-toggle-switch-left-spacing: calc(var(--clr-toggle-switch-base-width) - var(--cds-global-space-3));
+  --clr-toggle-switch-left-spacing-negative: calc(-1 * (var(--clr-toggle-switch-left-spacing)));
+  --clr-toggle-dot-diameter: var(--cds-global-space-7);
+  --clr-toggle-icon-dot-place: calc(-1 * var(--clr-toggle-icon-margin));
+  --clr-toggle-icon-top: var(--cds-global-space-3);
+  --clr-toggle-icon-dot-top: var(--clr-toggle-icon-top);
+  --clr-toggle-icon-dot-top-disabled: var(--clr-toggle-icon-top);
 
   /* Tooltips */
 
