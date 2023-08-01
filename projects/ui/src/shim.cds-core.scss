@@ -771,8 +771,18 @@
 
   /* Tooltips */
 
-  --clr-tooltip-background-color: var(--cds-global-color-gray-1000); // var(--clr-color-neutral-1000);
-  --clr-tooltip-color: var(--cds-global-color-construction-50); // var(--clr-color-neutral-0);
+  --clr-tooltip-background-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tooltip-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
+  --clr-tooltip-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-tooltip-font-weight: var(--cds-global-typography-body-font-weight);
+  --clr-tooltip-content-margin: var(--cds-global-space-9);
+  --clr-tooltip-content-padding: var(--cds-global-space-6);
+  --clr-tooltip-content-line-height: var(--cds-global-space-7);
+
+  --clr-tooltip-arrow-width: var(--cds-global-space-5);
+  --clr-tooltip-arrow-height: var(--cds-global-space-5);
+  --clr-tooltip-arrow-horizontal-size: calc(-1 * var(--cds-global-space-6));
+  --clr-tooltip-arrow-vertical-size: calc(-1 * var(--cds-global-space-6));
 
   /* Wizard */
 

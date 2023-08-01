@@ -5,6 +5,7 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use 'variables.tooltip' as tooltip-variables;
 
 @include mixins.exports('tooltip.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -14,6 +15,14 @@
       --clr-tooltip-border-radius: var(--clr-global-borderradius);
       --clr-tooltip-color: var(--clr-color-neutral-0);
       --clr-tooltip-font-weight: var(--clr-p3-font-weight);
+      --clr-tooltip-content-padding: #{variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5};
+      --clr-tooltip-content-line-height: #{variables.$clr_baselineRem_0_75};
+      --clr-tooltip-content-margin: #{tooltip-variables.$clr-tooltip-adjusted-margin};
+
+      --clr-tooltip-arrow-width: #{tooltip-variables.$arrow-width};
+      --clr-tooltip-arrow-height: #{tooltip-variables.$arrow-height};
+      --clr-tooltip-arrow-horizontal-size: #{-1 * variables.$clr_baselineRem_0_375};
+      --clr-tooltip-arrow-vertical-size: #{-1 * variables.$clr_baselineRem_0_35};
     }
   }
 }
