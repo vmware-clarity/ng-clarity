@@ -78,8 +78,7 @@
       );
     }
 
-    .clr-accordion-panel-disabled & {
-      &.clr-accordion-header, // Increases specificity
+    .clr-accordion-panel-disabled :not(.clr-accordion-panel-open) & {
       &:hover,
       &:active {
         @include mixins.css-var(
