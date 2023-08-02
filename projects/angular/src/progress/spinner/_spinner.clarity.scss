@@ -20,7 +20,7 @@
     );
     animation: spin 1s linear infinite;
     // TODO: Add variable
-    margin-right: var(--clr-spinner-spacing-to-text);
+    margin-right: 0;
     padding: 0;
     text-indent: 100%;
     overflow: hidden;
@@ -118,6 +118,7 @@
 
     &.spinner-inline {
       vertical-align: text-bottom; //To align with text properly
+      margin-right: var(--clr-spinner-spacing-to-text);
     }
 
     &.spinner-inverse {
