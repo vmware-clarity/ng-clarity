@@ -20,7 +20,7 @@
     );
     animation: spin 1s linear infinite;
     // TODO: Add variable
-    margin-right: var(--clr-spinner-spacing-to-text, 12px);
+    margin-right: var(--clr-spinner-spacing-to-text);
     padding: 0;
     text-indent: 100%;
     overflow: hidden;
