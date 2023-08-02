@@ -1472,12 +1472,6 @@
         min-width: variables.$clr_baselineRem_0_75;
         text-transform: capitalize;
         @include mixins.css-var(
-          gap,
-          clr-datagrid-column-toggle-gap,
-          variables.$clr_baselineRem_4px,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
           padding,
           clr-datagrid-column-toggle-padding,
           0 variables.$clr_baselineRem_6px,
@@ -1501,15 +1495,6 @@
           datagrid-variables.$clr-datagrid-column-toggle-text-color,
           variables.$clr-use-custom-properties
         );
-        cds-icon,
-        clr-icon {
-          @include mixins.css-var(
-            color,
-            clr-datagrid-column-toggle-text-color,
-            datagrid-variables.$clr-datagrid-column-toggle-text-color,
-            variables.$clr-use-custom-properties
-          );
-        }
 
         &.disabled,
         &:disabled,
@@ -1518,16 +1503,21 @@
         &.disabled:active,
         &:disabled:active {
           cursor: not-allowed;
-          @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
+          @include mixins.css-var(
+            opacity,
+            clr-datagrid-column-toggle-disabled-opacity,
+            0.4,
+            variables.$clr-use-custom-properties
+          );
           @include mixins.css-var(
             border-color,
-            clr-btn-default-disabled-color,
+            clr-datagrid-column-toggle-disabled-color,
             variables.$clr-color-neutral-700,
             variables.$clr-use-custom-properties
           );
           @include mixins.css-var(
             color,
-            clr-btn-default-disabled-color,
+            clr-datagrid-column-toggle-disabled-color,
             variables.$clr-color-neutral-700,
             variables.$clr-use-custom-properties
           );
@@ -1537,16 +1527,6 @@
             datagrid-variables.$clr-datagrid-column-toggle-fill-color,
             variables.$clr-use-custom-properties
           );
-
-          cds-icon,
-          clr-icon {
-            @include mixins.css-var(
-              color,
-              clr-btn-default-disabled-color,
-              variables.$clr-color-neutral-700,
-              variables.$clr-use-custom-properties
-            );
-          }
         }
 
         &:hover {
@@ -1568,15 +1548,6 @@
             datagrid-variables.$clr-datagrid-column-toggle-text-hover-color,
             variables.$clr-use-custom-properties
           );
-          cds-icon,
-          clr-icon {
-            @include mixins.css-var(
-              color,
-              clr-datagrid-column-toggle-text-hover-color,
-              datagrid-variables.$clr-datagrid-column-toggle-text-hover-color,
-              variables.$clr-use-custom-properties
-            );
-          }
         }
         &:active,
         &:focus {
@@ -1599,15 +1570,6 @@
             datagrid-variables.$clr-datagrid-column-toggle-text-active-color,
             variables.$clr-use-custom-properties
           );
-          cds-icon,
-          clr-icon {
-            @include mixins.css-var(
-              color,
-              clr-datagrid-column-toggle-text-active-color,
-              datagrid-variables.$clr-datagrid-column-toggle-text-active-color,
-              variables.$clr-use-custom-properties
-            );
-          }
         }
       }
 

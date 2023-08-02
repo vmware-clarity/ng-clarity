@@ -949,6 +949,8 @@
   --clr-datagrid-column-toggle-border-color: var(--cds-alias-object-interaction-border-color);
   --clr-datagrid-column-toggle-fill-color: var(--cds-alias-object-opacity-0);
   --clr-datagrid-column-toggle-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-datagrid-column-toggle-disabled-color: var(--clr-btn-default-disabled-color);
+  --clr-datagrid-column-toggle-disabled-opacity: var(--clr-btn-disabled-opacity);
 
   --clr-datagrid-column-toggle-border-hover-color: var(--cds-alias-object-interaction-color-active);
   --clr-datagrid-column-toggle-fill-hover-color: var(--cds-alias-object-interaction-background);

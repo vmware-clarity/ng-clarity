@@ -77,7 +77,6 @@
     //Display
     display: flex;
     flex-direction: column;
-    gap: 0;
 
     //Dims
     padding-top: vertical-nav-variables.$clr-vertical-nav-top-padding;
@@ -117,7 +116,6 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-      gap: 0;
 
       //Others
       overflow-y: auto;
@@ -137,7 +135,6 @@
     .nav-group-content {
       //Display
       display: flex;
-      gap: 0;
 
       //Others
       @include vertical-nav-link-colors();
@@ -205,7 +202,6 @@
     .nav-trigger {
       //Display
       display: flex;
-      gap: 0;
       align-items: center;
       //Flex-start because of IE11 + margin-left: auto
       justify-content: flex-start;
@@ -221,7 +217,6 @@
       //flex: 0 0 $clr-vertical-nav-item-height;
       display: flex;
       flex: 1 1 auto;
-      gap: 0;
 
       //Others
       color: inherit;
@@ -297,7 +292,6 @@
       //Display
       display: flex;
       text-decoration: none;
-      gap: 0;
 
       //Others
       @include vertical-nav-link-colors();
@@ -523,7 +517,6 @@
 
         .nav-link {
           display: flex;
-          gap: 0;
         }
 
         .nav-group-text,
