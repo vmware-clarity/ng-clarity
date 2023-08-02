@@ -9,15 +9,21 @@
     <clr-alerts>
       <clr-alert clrAlertType="info" [clrAlertAppLevel]="true">
         <clr-alert-item>
-          <span class="alert-text">View additional alerts using the pager</span>
+          <span class="alert-text">
+            View additional alerts using the pager
+            <a href="javascript://"><cds-icon shape="user"></cds-icon>Reset to green</a>
+          </span>
           <div class="alert-actions">
-            <button class="btn alert-action">Fix</button>
+            <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Fix</button>
           </div>
         </clr-alert-item>
       </clr-alert>
       <clr-alert clrAlertType="warning" [clrAlertAppLevel]="true">
         <clr-alert-item>
-          <span class="alert-text">Application level alerts should only be used for important messages.</span>
+          <span class="alert-text"
+            >Application level alerts should only be used for important messages.
+            <a href="javascript://"><cds-icon shape="user"></cds-icon>Reset to green</a></span
+          >
           <div class="alert-actions">
             <button class="btn alert-action">Fix</button>
           </div>
