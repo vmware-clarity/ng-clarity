@@ -918,9 +918,9 @@
   --clr-spinner-medium-stroke-width: var(--cds-global-space-3);
   --clr-spinner-small-stroke-width: var(--cds-global-space-2);
   --clr-spinner-fill-bg-color: var(--cds-alias-object-container-background-shade);
-  --clr-spinner-fill-inverse-bg-color: var(--cds-alias-status-neutral-tint);
+  --clr-spinner-fill-inverse-bg-color: var(--cds-alias-object-container-background-inverse);
   --clr-spinner-fill-snake-color: var(--cds-alias-status-info);
-  --clr-spinner-fill-inverse-snake-color: var(--cds-global-color-blue-300, var(--cds-alias-status-info));
+  --clr-spinner-fill-inverse-snake-color: var(--cds-alias-status-info-tint, var(--cds-global-color-blue-300));
 
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
