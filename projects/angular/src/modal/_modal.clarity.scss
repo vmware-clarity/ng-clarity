@@ -39,6 +39,28 @@
       modal-variables.$clr-modal-md-width,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      border-radius,
+      clr-modal-border-radius,
+      modal-variables.$clr-modal-border-radius,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      box-shadow,
+      clr-modal-content-box-shadow,
+      0 variables.$clr_baselineRem_1px variables.$clr_baselineRem_2px variables.$clr_baselineRem_2px
+        modal-variables.$clr-modal-content-box-shadow-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(border-style, clr-modal-content-border-style, none, variables.$clr-use-custom-properties);
+    @include mixins.css-var(border-width, clr-modal-content-border-width, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-modal-content-border-color,
+      transparent,
+      variables.$clr-use-custom-properties
+    );
+    overflow: hidden;
     max-width: 100%;
 
     &.modal-sm {
@@ -68,9 +90,6 @@
       );
     }
 
-    $modal-boxshadow-y: variables.$clr_baselineRem_1px;
-    $modal-boxshadow-spread: variables.$clr_baselineRem_2px;
-
     .modal-content {
       @include mixins.css-var(
         padding,
@@ -83,27 +102,6 @@
         background-color,
         clr-modal-bg-color,
         modal-variables.$clr-modal-bg-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-radius,
-        clr-modal-border-radius,
-        modal-variables.$clr-modal-border-radius,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        box-shadow,
-        clr-modal-content-box-shadow,
-        0 $modal-boxshadow-y $modal-boxshadow-spread $modal-boxshadow-spread
-          modal-variables.$clr-modal-content-box-shadow-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(border-style, clr-modal-content-border-style, none, variables.$clr-use-custom-properties);
-      @include mixins.css-var(border-width, clr-modal-content-border-width, 0, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        border-color,
-        clr-modal-content-border-color,
-        transparent,
         variables.$clr-use-custom-properties
       );
     }
