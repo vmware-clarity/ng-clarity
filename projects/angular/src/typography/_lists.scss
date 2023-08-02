@@ -17,6 +17,11 @@
     }
   }
 
+  li {
+    @include mixins.css-var(color, clr-list-item-color, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(line-height, clr-list-item-line-height, inherit, variables.$clr-use-custom-properties);
+  }
+
   ul:not([cds-list]),
   ol:not([cds-list]) {
     list-style-position: inside;
@@ -29,13 +34,28 @@
   ul.list:not([cds-list]),
   ol.list:not([cds-list]) {
     list-style-position: outside;
-    margin-left: variables.$clr-list-style-padding;
+    @include mixins.css-var(
+      margin-left,
+      clr-list-item-margin-left,
+      variables.$clr-list-style-padding,
+      variables.$clr-use-custom-properties
+    );
 
     &.compact {
-      line-height: variables.$clr_baselineRem_0_75;
+      @include mixins.css-var(
+        line-height,
+        clr-list-item-line-height,
+        variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
 
       & > li {
-        margin-bottom: variables.$clr_baselineRem_0_25;
+        @include mixins.css-var(
+          margin-bottom,
+          clr-list-item-compact-margin-bottom,
+          variables.$clr_baselineRem_0_25,
+          variables.$clr-use-custom-properties
+        );
 
         &:last-child {
           margin-bottom: 0;
@@ -50,7 +70,12 @@
   ul:not(.list-unstyled):not([cds-list]),
   ol:not([cds-list]) {
     & > li > ul.list-unstyled {
-      margin-left: variables.$clr-list-style-padding;
+      @include mixins.css-var(
+        margin-left,
+        clr-list-item-margin-left,
+        variables.$clr-list-style-padding,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -60,7 +85,12 @@
 
   li > ul:not([cds-list]) {
     margin-top: 0;
-    margin-left: variables.$clr-list-style-padding;
+    @include mixins.css-var(
+      margin-left,
+      clr-list-item-margin-left,
+      variables.$clr-list-style-padding,
+      variables.$clr-use-custom-properties
+    );
   }
 
   ul.list-group:not([cds-list]) {

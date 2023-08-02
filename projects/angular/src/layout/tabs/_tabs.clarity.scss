@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.tabs';
+@use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tabs' as tabs-variables;
+@include meta.load-css('properties.tabs');
 
 @include mixins.exports('tabs.clarity') {
   @media screen {

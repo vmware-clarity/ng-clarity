@@ -5,6 +5,7 @@
  */
 
 @use 'sass:list';
+@use 'sass:selector';
 @use 'variables/variables';
 
 // NOTE: file added to prettierignore because it was added unwanted spaces in the css-var() mixin
@@ -100,6 +101,17 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   width: $size;
 }
 
+@mixin equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
+  @include css-var(height, $var, $fallback, $do-custom-prop);
+  @include css-var(width, $var, $fallback, $do-custom-prop);
+}
+
+@mixin min-equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
+  @include equilateral-var($var, $fallback, $do-custom-prop);
+  @include css-var(min-height, $var, $fallback, $do-custom-prop);
+  @include css-var(min-width, $var, $fallback, $do-custom-prop);
+}
+
 @mixin min-equilateral($size: 1.2rem) {
   @include equilateral($size);
   min-height: $size;
@@ -183,21 +195,38 @@ $opp-directions: (
   }
 }
 
+// Moves styles outside of any parent selector conditionally,
+// while allowing an additional selector to be appended.
+@mixin optional-at-root($selector) {
+  // Check if parent selector exists
+  @if & {
+    // Append the additional selector to the parent selector
+    @at-root #{selector.append(&, $selector)} {
+      @content;
+    }
+  } @else {
+    // Use the parent selector with the additional selector
+    @at-root #{$selector} {
+      @content;
+    }
+  }
+}
+
 @mixin input-placeholder-wrapper() {
   /* _normalize overwrite */
-  ::-webkit-input-placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
     @content;
   }
   /* Internet Explorer 10-11 */
-  :-ms-input-placeholder {
+  @include optional-at-root(':-ms-input-placeholder') {
     @content;
   }
   /* Microsoft Edge */
-  ::-ms-input-placeholder {
+  @include optional-at-root('::-ms-input-placeholder') {
     @content;
   }
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  ::placeholder {
+  @include optional-at-root('::placeholder') {
     @content;
   }
 }
