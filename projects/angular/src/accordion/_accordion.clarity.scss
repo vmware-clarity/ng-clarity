@@ -62,6 +62,12 @@
 
     &:hover {
       @include mixins.css-var(
+        color,
+        clr-accordion-text-color-hover,
+        accordion-variables.$clr-accordion-text-color-hover,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
         background-color,
         clr-accordion-header-hover-background-color,
         accordion-variables.$clr-accordion-header-hover-background-color,
@@ -70,6 +76,12 @@
     }
 
     &:active {
+      @include mixins.css-var(
+        color,
+        clr-accordion-text-color-active,
+        accordion-variables.$clr-accordion-text-color-active,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-accordion-header-active-background-color,
@@ -132,14 +144,8 @@
     background: transparent;
     text-align: left;
     cursor: pointer;
+    color: inherit;
     @include mixins.css-var(gap, clr-accordion-header-gap, 0, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      color,
-      clr-accordion-text-color,
-      accordion-variables.$clr-accordion-text-color,
-      variables.$clr-use-custom-properties
-    );
-
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }

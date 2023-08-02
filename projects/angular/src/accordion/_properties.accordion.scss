@@ -12,6 +12,9 @@
   @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-accordion-text-color: var(--clr-global-font-color);
+      --clr-accordion-text-color-hover: var(--clr-global-font-color);
+      --clr-accordion-text-color-active: var(--clr-global-font-color);
+      --clr-accordion-text-color-selected: var(--clr-global-font-color);
       --clr-accordion-panel-disabled-color: var(--clr-color-neutral-500);
 
       --clr-accordion-active-background-color: var(--clr-global-selection-color);

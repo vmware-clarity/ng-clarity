@@ -534,7 +534,11 @@
 
   /* Accordion */
 
-  --clr-accordion-text-color: var(--cds-alias-typography-color-700, var(--cds-global-typography-color-700)); // var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-accordion-text-color: var(--cds-alias-object-interaction-color);
+  --clr-accordion-text-color-hover: var(--cds-alias-object-interaction-color-hover);
+  --clr-accordion-text-color-active: var(--cds-alias-object-interaction-color-active);
+  --clr-accordion-text-color-selected: var(--cds-alias-object-interaction-color-selected);
+
   --clr-accordion-panel-disabled-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-500);
 
   --clr-accordion-active-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
