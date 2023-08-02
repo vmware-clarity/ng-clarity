@@ -68,8 +68,6 @@
   --cds-alias-object-container-background-dark: var(--cds-global-color-construction-200);
 
   // Changed in system
-  // Remove when added/deployed in next @cds/core version (missed in last update)
-  --cds-alias-object-interaction-color-disabled: var(--cds-global-color-construction-700);
   // Maps to new global, remove when global is added to @cds/core for v16 release
   --cds-alias-object-app-background: var(--cds-global-color-construction-25);
 }
