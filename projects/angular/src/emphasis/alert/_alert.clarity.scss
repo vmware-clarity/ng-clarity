@@ -197,14 +197,7 @@
   //close alert button.
   .alert-item > span,
   .alert-text {
-    @include mixins.css-var(
-      display,
-      clr-link-display,
-      inline-block,
-      //needed for IE11
-      variables.$clr-use-custom-properties
-    );
-
+    display: inline-block; //needed for IE11
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 98%; //needed for IE11
@@ -265,13 +258,6 @@
     }
 
     .alert-actions {
-      @include mixins.css-var(
-        display,
-        clr-link-display,
-        inline-block,
-        //needed for IE11
-        variables.$clr-use-custom-properties
-      );
       flex: 0 0 auto;
       white-space: nowrap;
 
