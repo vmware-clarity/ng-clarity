@@ -67,7 +67,7 @@
         variables.$clr-use-custom-properties
       );
       border-style: solid;
-      border-color: var(--clr-spinner-fill-bg-color, spinner-variables.$clr-spinner-bg-color);
+      border-color: var(--clr-spinner-fill-bg-color);
       border-radius: 50%;
     }
 
@@ -126,7 +126,7 @@
         border-color: var(--clr-spinner-fill-inverse-snake-color, spinner-variables.$clr-spinner-inverse-color);
       }
       &::before {
-        border-color: var(--clr-spinner-fill-inverse-bg-color, spinner-variables.$clr-spinner-inverse-bg-color);
+        border-color: var(--clr-spinner-fill-inverse-bg-color);
       }
     }
 
