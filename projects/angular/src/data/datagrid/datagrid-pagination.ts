@@ -150,7 +150,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   set pageSize(size: number) {
     // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof size === 'number') {
-      this.page.size = size as number;
+      this.page.size = size;
     }
   }
 
@@ -164,7 +164,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   set totalItems(total: number) {
     // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof total === 'number') {
-      this.page.totalItems = total as number;
+      this.page.totalItems = total;
     }
   }
 
@@ -178,7 +178,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   set lastPage(last: number) {
     // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof last === 'number') {
-      this.page.last = last as number;
+      this.page.last = last;
     }
   }
 
@@ -192,7 +192,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   set currentPage(page: number) {
     // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof page === 'number') {
-      this.page.current = page as number;
+      this.page.current = page;
     }
   }
 
