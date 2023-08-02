@@ -438,29 +438,10 @@
         accordion-variables.$clr-accordion-content-color,
         variables.$clr-use-custom-properties
       );
-
-      @include mixins.css-var(
-        font-weight,
-        clr-accordion-content-font-weight,
-        accordion-variables.$clr-accordion-content-font-weight,
-        variables.$clr-use-custom-properties
-      );
       @include mixins.css-var(
         font-size,
         clr-accordion-content-font-size,
         accordion-variables.$clr-accordion-content-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-accordion-content-letter-spacing,
-        accordion-variables.$clr-accordion-content-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-accordion-content-line-height,
-        accordion-variables.$clr-accordion-content-line-height,
         variables.$clr-use-custom-properties
       );
     }

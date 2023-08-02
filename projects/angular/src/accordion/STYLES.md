@@ -9,9 +9,6 @@
 | --clr-accordion-content-background-color       | Background color of the accordion content area.                      |
 | --clr-accordion-content-color                  | Color of the text in the accordion content area.                     |
 | --clr-accordion-content-font-size              | Font size of the text in the accordion content area.                 |
-| --clr-accordion-content-font-weight            | Font weight of the text in the accordion content area.               |
-| --clr-accordion-content-line-height            | Line height of the text in the accordion content area.               |
-| --clr-accordion-content-letter-spacing         | Letter spacing of the text in the accordion content area.            |
 | --clr-accordion-header-background-color        | Background color of the accordion header.                            |
 | --clr-accordion-header-hover-background-color  | Background color of the accordion header on hover.                   |
 | --clr-accordion-header-active-background-color | Background color of the accordion header when active.                |
