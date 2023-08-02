@@ -502,7 +502,7 @@
   .card {
     .alert {
       @include mixins.css-var(
-        margin-top,
+        margin,
         clr-card-alert-margin,
         variables.$clr_baselineRem_0_25 0,
         variables.$clr-use-custom-properties

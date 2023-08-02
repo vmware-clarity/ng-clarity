@@ -555,7 +555,7 @@
   --clr-card-header-title-font-size: var(--cds-global-typography-section-font-size);
   --clr-card-content-title-font-size: var(--cds-global-typography-subsection-font-size);
   --clr-card-text-font-size: var(--cds-global-typography-body-font-size);
-  --clr-card-border-color: var(--cds-alias-object-container-border-color); // var(--clr-color-neutral-300);
+  --clr-card-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-300);
   --clr-card-box-shadow: var(--cds-alias-object-shadow-300); // indirectly mapped to CDS token
   --clr-card-clickable-border-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-500);
   --clr-card-clickable-box-shadow: var(--cds-alias-object-shadow-300); // indirectly mapped to CDS token
