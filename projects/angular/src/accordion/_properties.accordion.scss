@@ -21,6 +21,7 @@
       --clr-accordion-content-background-color: var(--clr-color-neutral-0);
 
       --clr-accordion-header-background-color: var(--clr-color-neutral-50);
+      --clr-accordion-header-disabled-background-color: var(--clr-global-selection-color);
       --clr-accordion-header-hover-background-color: var(--clr-color-neutral-200);
       --clr-accordion-header-active-background-color: var(--clr-color-neutral-200);
       --clr-accordion-header-font-size: #{variables.$clr_baselineRem_0_65};

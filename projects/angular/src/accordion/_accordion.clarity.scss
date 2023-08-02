@@ -108,6 +108,25 @@
         );
       }
     }
+
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-disabled-background-color,
+        accordion-variables.$clr-accordion-header-disabled-background-color,
+        variables.$clr-use-custom-properties
+      );
+
+      &:hover,
+      &:active {
+        @include mixins.css-var(
+          background-color,
+          clr-accordion-header-disabled-background-color,
+          accordion-variables.$clr-accordion-header-disabled-background-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
   }
 
   .clr-accordion-panel:last-child {
