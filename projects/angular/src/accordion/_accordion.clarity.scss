@@ -118,6 +118,15 @@
     &:disabled {
       cursor: not-allowed;
 
+      .clr-accordion-status {
+        @include mixins.css-var(
+          color,
+          clr-accordion-panel-disabled-color,
+          accordion-variables.$clr-accordion-panel-disabled-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+
       .clr-accordion-title {
         @include mixins.css-var(
           color,
