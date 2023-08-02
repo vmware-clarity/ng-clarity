@@ -27,6 +27,15 @@
     variables.$clr-use-custom-properties
   );
 
+  & a {
+    @include mixins.css-var(
+      color,
+      alert-variables.getAlertColor($alertType, color, 'css-var'),
+      alert-variables.getAlertColor($alertType, color),
+      variables.$clr-use-custom-properties
+    );
+  }
+
   $border-prop: alert-variables.getAlertColor($alertType, border-color);
 
   @if $border-prop != 'none' {
@@ -66,6 +75,7 @@
 
     &.btn {
       @include mixins.css-var(border-color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
+      @include mixins.css-var(background-color, clr-btn-transparent-bg-color, 0, variables.$clr-use-custom-properties);
 
       &:focus,
       &:hover,
@@ -78,6 +88,8 @@
         );
       }
 
+      // ATM (after token migration)
+      // &:active section to be removed alert buttons should act as outline buttons
       &:active {
         // OldEdge + IE
         box-shadow: 0 variables.$clr_baselineRem_1px 0 0 $myActionActiveSassVar inset;
@@ -101,7 +113,6 @@
         $myActionActiveSassVar,
         variables.$clr-use-custom-properties
       );
-      color: alert-variables.getAlertColor($alertType, action-active);
     }
   }
 
