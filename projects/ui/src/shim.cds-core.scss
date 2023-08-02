@@ -479,9 +479,9 @@
 
   --clr-progress-default-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-progress-alt-color-1: var(--cds-alias-status-success); // var(--clr-color-success-400);
-  --clr-progress-alt-color-2: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
-  --clr-progress-alt-color-3: var(--clr-progress-alt-color-2); // indirectly mapped to CDS token
-  --clr-progress-bg-color: var(--cds-alias-object-border-color-tint); // var(--clr-color-neutral-200);
+  --clr-progress-alt-color-2: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-800);
+  --clr-progress-alt-color-3: var(--cds-alias-status-warning);
+  --clr-progress-bg-color: var(--cds-alias-object-container-background-shade); // var(--clr-color-neutral-200);
 
   /* Accordion */
 
