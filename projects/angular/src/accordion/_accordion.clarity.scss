@@ -78,7 +78,14 @@
       );
     }
 
-    .clr-accordion-panel-disabled :not(.clr-accordion-panel-open) & {
+    .clr-accordion-panel-disabled > div > & {
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-background-color,
+        accordion-variables.$clr-accordion-header-background-color,
+        variables.$clr-use-custom-properties
+      );
+
       &:hover,
       &:active {
         @include mixins.css-var(
