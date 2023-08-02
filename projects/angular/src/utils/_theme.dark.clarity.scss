@@ -829,13 +829,10 @@
 */
 
 @forward '../progress/spinner/variables.spinner' with (
-    $clr-spinner-color: color-variables.$clr-color-action-400,
-    // TODO: Return these in the main theme
-    //$clr-spinner-bg-color: hsl(200, 23%, 25%),
-    $clr-spinner-opacity: 1,
-    $clr-spinner-inverse-color: color-variables.$clr-color-action-300,
-    //$clr-spinner-inverse-bg-color: hsl(200, 20%, 30%)
-  );
+  $clr-spinner-color: color-variables.$clr-color-action-400,
+  $clr-spinner-opacity: 1,
+  $clr-spinner-inverse-color: color-variables.$clr-color-action-300
+);
 // END Spinners
 
 /*********
