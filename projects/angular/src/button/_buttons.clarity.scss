@@ -106,14 +106,13 @@
     @include button-css-var($button-type, color, color, variables.$clr-use-custom-properties);
   }
 
-  //To override the visited state of anchor links styled as buttons
-  &:visited {
-    @include button-css-var($button-type, color, color, variables.$clr-use-custom-properties);
-  }
-
   &:hover {
     @include button-css-var($button-type, background-color, hover-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+    }
   }
 
   &:active {
@@ -121,6 +120,11 @@
       box-shadow: none;
     } @else {
       $fallbackColor: getSassButtonColor($button-type, box-shadow-color);
+
+      // ATM (after token migration)
+      // Replace box-shadow section with commented section. Renaming all of clr-btn 'box-shadow' to 'click' color properties is needed.
+      // $buttonColor: 'clr-btn-' + $button-type + '-click-color';
+      // @include mixins.css-var(background-color, $buttonColor, $fallbackColor, variables.$clr-use-custom-properties);
 
       // IE/OldEdge
       box-shadow: 0 getActiveWidthBoxShadowTop($button-type) 0 0 $fallbackColor inset;
@@ -138,7 +142,7 @@
   &:disabled {
     @include button-css-var($button-type, color, disabled-color, variables.$clr-use-custom-properties);
     cursor: not-allowed;
-    opacity: 0.4;
+    @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
     box-shadow: none;
@@ -196,7 +200,14 @@
 
 @mixin btn-appearance() {
   cursor: pointer;
-  display: inline-block;
+
+  // ATM (after token migration)
+  // clr-btn-display and clr-btn-appearance-gap variables will be removed
+  // display: inline-flex and gap: var(--cds-global-space-5); will become standard
+  align-items: center;
+  place-content: center;
+  @include mixins.css-var(display, clr-btn-display, inline-block, variables.$clr-use-custom-properties);
+  @include mixins.css-var(gap, clr-btn-appearance-gap, 8px, variables.$clr-use-custom-properties);
 
   // Overrides a Fix for IOS in BS4 _normalize.scss (~ln 330)
   // `!important` is to override specificity in this instance
@@ -211,7 +222,12 @@
     buttons-variables.$clr-btn-appearance-standard-line-height,
     variables.$clr-use-custom-properties
   );
-  letter-spacing: buttons-variables.$clr-btn-appearance-standard-letter-spacing;
+  @include mixins.css-var(
+    letter-spacing,
+    clr-btn-appearance-standard-letter-spacing,
+    buttons-variables.$clr-btn-appearance-standard-letter-spacing,
+    variables.$clr-use-custom-properties
+  );
   @include mixins.css-var(
     font-size,
     clr-btn-appearance-standard-font-size,
@@ -259,7 +275,12 @@
       buttons-variables.$clr-btn-appearance-form-line-height,
       variables.$clr-use-custom-properties
     );
-    letter-spacing: buttons-variables.$clr-btn-appearance-form-letter-spacing;
+    @include mixins.css-var(
+      letter-spacing,
+      clr-btn-appearance-form-letter-spacing,
+      buttons-variables.$clr-btn-appearance-form-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       font-size,
       clr-btn-appearance-form-font-size,
@@ -293,7 +314,15 @@
       transform: translate3d(0, -1 * variables.$clr_baselineRem_2px, 0);
     }
     cds-icon {
-      margin-top: -1.4 * variables.$clr_baselineRem_2px;
+      // ATM (after token migration)
+      // clr-btn-appearance-icon-margin variable will be removed
+      // margin-top: var(--cds-global-space-0); will become standard or simply removed
+      @include mixins.css-var(
+        margin-top,
+        clr-btn-appearance-icon-margin,
+        -1.4 * variables.$clr_baselineRem_2px,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -301,26 +330,14 @@
   // TODO: Refactor these classnames when the standard clarity naming convention is set.
   // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
   // version.
+  a.btn,
   .btn.btn-secondary,
-  .btn.btn-info,
-  .btn.btn-outline,
-  .btn.btn-primary-outline,
-  .btn.btn-secondary-outline,
-  .btn.btn-outline-primary,
-  .btn.btn-outline-secondary,
-  .btn.btn-info-outline,
-  .btn-secondary .btn,
-  .btn-info .btn,
-  .btn-outline .btn,
-  .btn-primary-outline .btn,
-  .btn-secondary-outline .btn,
-  .btn-outline-primary .btn,
-  .btn-outline-secondary .btn,
-  .btn-info-outline .btn,
-  .btn-outline-info .btn {
+  .btn-secondary .btn {
     @include populateButtonProperties(default);
   }
 
+  .btn.btn-info,
+  .btn-info .btn,
   .btn.btn-primary,
   .btn-primary .btn {
     @include populateButtonProperties(primary);
@@ -342,11 +359,24 @@
 
   .btn.btn-outline,
   .btn.btn-outline .btn,
-  .btn.btn-info-outline,
-  .btn-info-outline .btn,
-  .btn.btn-outline-info,
+  .btn.btn-secondary-outline,
+  .btn.btn-outline-secondary,
+  .btn-secondary-outline .btn,
+  .btn-outline-secondary .btn,
   .btn-outline .btn {
     @include populateButtonProperties(default-outline);
+  }
+
+  .btn.btn-primary-outline,
+  .btn-outline-info .btn,
+  .btn-info-outline .btn,
+  .btn-primary-outline .btn,
+  .btn-outline-primary .btn,
+  .btn.btn-outline-primary,
+  .btn.btn-outline-info,
+  .btn.btn-info-outline,
+  .btn.btn-info-outline {
+    @include populateButtonProperties(primary-outline);
   }
 
   .btn.btn-success-outline,
@@ -372,6 +402,22 @@
   .btn.btn-link,
   .btn-link .btn {
     @include populateButtonProperties(link);
+
+    //To override the visited state of anchor links styled as buttons
+    &:visited {
+      @include button-css-var(link, color, visited-color, variables.$clr-use-custom-properties);
+      cds-icon,
+      clr-icon {
+        @include button-css-var(link, color, visited-color, variables.$clr-use-custom-properties);
+      }
+      &:hover {
+        @include button-css-var(link, color, visited-hover-color, variables.$clr-use-custom-properties);
+        cds-icon,
+        clr-icon {
+          @include button-css-var(link, color, visited-hover-color, variables.$clr-use-custom-properties);
+        }
+      }
+    }
   }
 
   .btn.btn-inverse,
@@ -387,7 +433,7 @@
   }
 
   .btn-block {
-    display: block;
+    @include mixins.css-var(display, clr-btn-block-display, block, variables.$clr-use-custom-properties);
     width: 100%;
     max-width: 100%;
   }
@@ -453,7 +499,15 @@
         variables.$clr_baselineRem_0_5,
         variables.$clr-use-custom-properties
       );
-      margin-top: -0.1rem;
+      // ATM (after token migration)
+      // clr-btn-appearance-sm-icon-margin variable will be removed
+      // margin-top: var(--cds-global-space-0); will become standard or simply removed
+      @include mixins.css-var(
+        margin-top,
+        clr-btn-appearance-sm-icon-margin,
+        -0.1rem,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -485,7 +539,7 @@
     &.btn-danger :disabled {
       @include mixins.css-var(
         border-color,
-        --clr-color-neutral-400,
+        clr-color-neutral-400,
         variables.$clr-color-neutral-400,
         variables.$clr-use-custom-properties
       );
