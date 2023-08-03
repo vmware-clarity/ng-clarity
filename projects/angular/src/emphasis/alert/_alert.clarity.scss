@@ -501,9 +501,12 @@
   //1.cards
   .card {
     .alert {
-      $clr-alert-card-horizontal-margin: 0;
-      $clr-alert-card-vertical-margin: variables.$clr_baselineRem_0_25;
-      margin: $clr-alert-card-vertical-margin $clr-alert-card-horizontal-margin;
+      @include mixins.css-var(
+        margin,
+        clr-card-alert-margin,
+        variables.$clr_baselineRem_0_25 0,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
