@@ -7,7 +7,9 @@
 
 // Usage: ../progress/spinner/_spinner.clarity.scss
 $clr-spinner-color: variables.$clr-color-action-600 !default;
-$clr-spinner-inverse-color: variables.$clr-color-action-300 !default;
+$clr-spinner-bg-color: variables.$clr-color-neutral-1000 !default;
+
+$clr-spinner-inverse-color: #74c1e2 !default;
+$clr-spinner-inverse-bg-color: variables.$clr-color-neutral-0 !default;
 
 $clr-spinner-opacity: 0.15 !default;
-$clr-spinner-opacity-inverse: 0.3 !default;

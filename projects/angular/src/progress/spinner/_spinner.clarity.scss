@@ -43,7 +43,12 @@
         variables.$clr-use-custom-properties
       );
       border-style: solid;
-      border-color: var(--clr-spinner-fill-snake-color, spinner-variables.$clr-spinner-color);
+      @include mixins.css-var(
+        border-color,
+        clr-spinner-fill-snake-color,
+        spinner-variables.$clr-spinner-color,
+        variables.$clr-use-custom-properties
+      );
       border-right-color: transparent !important;
       border-bottom-color: transparent !important;
       border-radius: 50%;
@@ -66,7 +71,12 @@
         variables.$clr-use-custom-properties
       );
       border-style: solid;
-      border-color: var(--clr-spinner-fill-bg-color);
+      @include mixins.css-var(
+        border-color,
+        clr-spinner-fill-bg-color,
+        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
+        variables.$clr-use-custom-properties
+      );
       border-radius: 50%;
     }
 
@@ -123,17 +133,32 @@
     &.spinner-inverse {
       // TODO: get ux input on direction here
       &::after {
-        border-color: var(--clr-spinner-fill-inverse-snake-color, spinner-variables.$clr-spinner-inverse-color);
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-inverse-snake-color,
+          spinner-variables.$clr-spinner-inverse-color,
+          variables.$clr-use-custom-properties
+        );
       }
       &::before {
-        border-color: var(--clr-spinner-fill-inverse-bg-color);
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-inverse-bg-color,
+          rgba(spinner-variables.$clr-spinner-inverse-bg-color, spinner-variables.$clr-spinner-opacity),
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
       &::after {
-        border-color: var(--clr-spinner-fill-snake-color, spinner-variables.$clr-spinner-color);
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-snake-color,
+          spinner-variables.$clr-spinner-color,
+          variables.$clr-use-custom-properties
+        );
       }
       &::before {
         border-color: rgba(transparent, 1);
