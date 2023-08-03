@@ -197,6 +197,14 @@
   }
 
   .card-footer {
+    display: flex;
+    flex-direction: row;
+    @include mixins.css-var(
+      gap,
+      clr-card-footer-gap,
+      variables.$clr_baselineRem_0_5,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       padding,
       clr-card-footer-padding,
@@ -331,12 +339,6 @@
 
   .card-block,
   .card-footer {
-    .btn,
-    .btn.btn-link,
-    .card-link {
-      margin: 0 button-variables.$clr-btn-horizontal-margin 0 0;
-    }
-
     //Need this level of nesting for now.
     //Adding a TODO to remove the nesting in a separate PR
     //Don't want to create a PR which solves multiple different issues.

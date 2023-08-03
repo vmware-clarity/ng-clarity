@@ -40,6 +40,7 @@
       --clr-card-block-padding: #{card-variables.$card-children-padding-vertical}
         #{card-variables.$card-children-padding-horizontal};
       --clr-card-alert-margin: #{variables.$clr_baselineRem_0_25} 0;
+      --clr-card-footer-gap: #{variables.$clr_baselineRem_0_5};
     }
   }
 }
