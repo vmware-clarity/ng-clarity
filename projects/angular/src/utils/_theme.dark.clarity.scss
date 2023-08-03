@@ -835,7 +835,7 @@
   $clr-spinner-color: hsl(198, 65%, 57%),
   $clr-spinner-inverse-color: #74c1e2,
   $clr-spinner-bg-color: hsl(200, 23%, 25%),
-  $clr-spinner-inverse-bg-color: color-variables.$clr-color-neutral-0,
+  $clr-spinner-inverse-bg-color: hsl(200, 23%, 25%),
   $clr-spinner-opacity: 1
 );
 // END Spinners
