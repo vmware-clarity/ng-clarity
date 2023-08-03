@@ -8,7 +8,6 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
-@use '../button/variables.buttons' as button-variables;
 @use 'variables.card' as card-variables;
 @include meta.load-css('properties.card');
 
@@ -145,7 +144,7 @@
       @include mixins.css-var(
         font-size,
         clr-card-text-font-size,
-        variables.$clr-p1-font-size,
+        card-variables.$clr-card-text-font-size,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -278,7 +277,7 @@
     @include mixins.css-var(
       font-size,
       clr-card-text-font-size,
-      variables.$clr-p1-font-size,
+      card-variables.$clr-card-text-font-size,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(color, clr-card-text-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
@@ -339,6 +338,12 @@
 
   .card-block,
   .card-footer {
+    .btn,
+    .btn.btn-link,
+    .card-link {
+      margin: 0;
+    }
+
     //Need this level of nesting for now.
     //Adding a TODO to remove the nesting in a separate PR
     //Don't want to create a PR which solves multiple different issues.

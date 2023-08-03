@@ -22,11 +22,21 @@
       --clr-card-clickable-border-width: var(--clr-global-borderwidth);
       --clr-card-border-radius: var(--clr-global-borderradius);
       --clr-card-border-color: var(--clr-color-neutral-300);
-      --clr-card-box-shadow: 0 #{variables.$clr_baselineRem_0_125} 0 0 #{variables.$clr-color-neutral-300};
+      // АТМ
+      // Leave only `clr-card-box-shadow` and remove `clr-card-box-shadow-color`
+      --clr-card-box-shadow-color: var(--clr-card-border-color);
+      --clr-card-box-shadow: 0 #{variables.$clr_baselineRem_0_125} 0 0 var(--clr-card-box-shadow-color);
       --clr-card-clickable-border-color: var(--clr-color-action-500);
-      --clr-card-clickable-box-shadow: 0 #{variables.$clr_baselineRem_0_125} 0 0 #{variables.$clr-color-action-500};
+      // АТМ
+      // Leave only `clr-card-clickable-box-shadow` and remove `clr-card-clickable-box-shadow-color`
+      --clr-card-clickable-box-shadow-color: var(--clr-card-clickable-border-color);
+      --clr-card-clickable-box-shadow: 0
+        #{variables.$clr_baselineRem_0_125}
+        0
+        0
+        var(--clr-card-clickable-box-shadow-color);
       --clr-card-text-color: #{variables.$clr-p1-color};
-      --clr-card-text-font-size: #{variables.$clr-p1-font-size};
+      --clr-card-text-font-size: #{card-variables.$clr-card-text-font-size};
       --clr-card-children-space-between: #{variables.$clr_baselineRem_0_5};
       --clr-card-media-description-margin-left: #{variables.$clr_baselineRem_0_5};
       --clr-card-media-description-margin-top: #{variables.$clr_baselineRem_0_25};
