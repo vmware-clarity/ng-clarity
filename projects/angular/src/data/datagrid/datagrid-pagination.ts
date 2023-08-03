@@ -144,10 +144,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * Page size
    */
   @Input('clrDgPageSize')
-  get pageSize(): number | string {
+  get pageSize(): number {
     return this.page.size;
   }
-  set pageSize(size: number | string) {
+  set pageSize(size: number) {
+    // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof size === 'number') {
       this.page.size = size;
     }
@@ -157,10 +158,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * Total items (needed to guess the last page)
    */
   @Input('clrDgTotalItems')
-  get totalItems(): number | string {
+  get totalItems(): number {
     return this.page.totalItems;
   }
-  set totalItems(total: number | string) {
+  set totalItems(total: number) {
+    // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof total === 'number') {
       this.page.totalItems = total;
     }
@@ -170,10 +172,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * Last page
    */
   @Input('clrDgLastPage')
-  get lastPage(): number | string {
+  get lastPage(): number {
     return this.page.last;
   }
-  set lastPage(last: number | string) {
+  set lastPage(last: number) {
+    // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof last === 'number') {
       this.page.last = last;
     }
@@ -183,10 +186,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * Current page
    */
   @Input('clrDgPage')
-  get currentPage(): number | string {
+  get currentPage(): number {
     return this.page.current;
   }
-  set currentPage(page: number | string) {
+  set currentPage(page: number) {
+    // todo(v16): Remove this check. The property type used to be `string | number`. I kept this check to maintain the no-op if you pass a string.
     if (typeof page === 'number') {
       this.page.current = page;
     }
