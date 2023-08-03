@@ -588,7 +588,7 @@
   --clr-forms-valid-text-color: var(--cds-alias-status-success-shade); // var(--clr-color-success-900);
   --clr-forms-subtext-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300)); // var(--clr-color-neutral-600);
   --clr-forms-placeholder-color: var(--cds-alias-typography-color-200, var(--cds-global-typography-color-200)); // var(--clr-color-neutral-600);
-  --clr-forms-border-color: var(--cds-alias-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
+  --clr-forms-border-color: var(--cds-alias-object-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
   --clr-forms-focused-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-500);
   --clr-forms-icon-size: var(--cds-global-space-9);
   --clr-forms-subtext-margin-top: var(--cds-global-space-3);
