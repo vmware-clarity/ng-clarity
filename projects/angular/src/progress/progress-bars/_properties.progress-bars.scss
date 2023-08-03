@@ -15,6 +15,10 @@
       --clr-progress-alt-color-2: var(--clr-color-danger-800); // red
       --clr-progress-alt-color-3: var(--clr-progress-alt-color-2); // red
       --clr-progress-bg-color: var(--clr-color-neutral-200);
+
+      --clr-progress-max-height: #{variables.$clr_baselineRem_0_583};
+      --clr-progress-min-height: #{variables.$clr_baselineRem_4px};
+      --clr-progress-loop-width: 75%;
     }
   }
 }

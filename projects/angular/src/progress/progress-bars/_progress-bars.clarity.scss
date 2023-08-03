@@ -41,12 +41,24 @@
     // We want this to be em so that it will follow the font-size of its container.
     // If we used rem, we would be sizing the bar outside of the context of its
     // placement in the layout.
+    // ATM (after token migration)
+    // this will be breaking change must rethink how compact progress bars are created
     height: 2em;
     margin: 0;
-    // NOTE: previous measurements based on base font size of 14px; remove this comment once nobody cares...
-    max-height: variables.$clr_baselineRem_0_583;
-    min-height: variables.$clr_baselineRem_4px;
     overflow: hidden;
+
+    @include utils-mixins.css-var(
+      max-height,
+      clr-progress-max-height,
+      variables.$clr_baselineRem_0_583,
+      variables.$clr-use-custom-properties
+    );
+    @include utils-mixins.css-var(
+      min-height,
+      clr-progress-min-height,
+      variables.$clr_baselineRem_4px,
+      variables.$clr-use-custom-properties
+    );
 
     display: block;
     width: 100%;
@@ -264,15 +276,24 @@
         progress-bars-variables.$clr-progress-defaultBarColor,
         variables.$clr-use-custom-properties
       );
-      width: 75%;
+
+      @include utils-mixins.css-var(width, clr-progress-loop-width, 75%, variables.$clr-use-custom-properties);
     }
 
-    &.danger::after,
-    &.warning::after {
+    &.danger::after {
       @include utils-mixins.css-var(
         background-color,
         clr-progress-alt-color-2,
         progress-bars-variables.$clr-progress-danger-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    &.warning::after {
+      @include utils-mixins.css-var(
+        background-color,
+        clr-progress-alt-color-3,
+        progress-bars-variables.$clr-progress-warning-color,
         variables.$clr-use-custom-properties
       );
     }
