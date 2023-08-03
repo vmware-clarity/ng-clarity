@@ -144,7 +144,7 @@
         @include mixins.css-var(
           border-color,
           clr-spinner-fill-inverse-bg-color,
-          rgba(spinner-variables.$clr-spinner-inverse-bg-color, spinner-variables.$clr-spinner-opacity),
+          rgba(spinner-variables.$clr-spinner-inverse-bg-color, 0.15),
           variables.$clr-use-custom-properties
         );
       }
