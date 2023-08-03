@@ -31,11 +31,56 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: variables.$clr_baselineRem_1 variables.$clr_baselineRem_2_5;
+      @include mixins.css-var(
+        padding,
+        clr-login-padding,
+        variables.$clr_baselineRem_1 variables.$clr_baselineRem_2_5,
+        variables.$clr-use-custom-properties
+      );
       height: auto;
       min-height: 100vh;
-      width: login-variables.$clr-login-width;
+      @include mixins.css-var(
+        width,
+        clr-login-width,
+        variables.$clr_baselineRem_21,
+        variables.$clr-use-custom-properties
+      );
+
+      .login-footer,
+      .login-header {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+
+        .actions {
+          margin-left: auto;
+        }
+      }
+
+      .login-footer {
+        @include mixins.css-var(
+          gap,
+          clr-login-footer-margin,
+          variables.$clr_baselineRem_0_75,
+          variables.$clr-use-custom-properties
+        );
+        .copyright {
+          @include mixins.css-var(
+            color,
+            clr-login-copyright-color,
+            variables.$clr-p1-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
+
+      .login-body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
 
       .title {
         @include mixins.css-var(
@@ -56,22 +101,35 @@
           login-variables.$clr-login-title-font-family,
           variables.$clr-use-custom-properties
         );
+        @include mixins.css-var(width, clr-login-title-width, 100%, variables.$clr-use-custom-properties);
         font-size: login-variables.$clr-login-title-font-size;
         letter-spacing: login-variables.$clr-login-title-letter-spacing;
         line-height: login-variables.$clr-login-title-line-height;
 
         .welcome {
           line-height: login-variables.$clr-login-title-line-height;
+          @include mixins.css-var(
+            color,
+            clr-login-welcome-color,
+            variables.$clr-h3-color,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(margin, clr-login-welcome-margin, 0, variables.$clr-use-custom-properties);
         }
 
         .hint {
           @include mixins.css-var(
             color,
-            clr-login-title-color,
+            clr-login-hint-color,
             login-variables.$clr-login-title-color,
             variables.$clr-use-custom-properties
           );
-          margin-top: variables.$clr_baselineRem_1_25;
+          @include mixins.css-var(
+            margin,
+            clr-login-hint-margin,
+            variables.$clr_baselineRem_1_25 0 0,
+            variables.$clr-use-custom-properties
+          );
           font-size: variables.$clr_baselineRem_0_583;
         }
       }
@@ -128,16 +186,35 @@
       .login-group {
         display: flex;
         flex-direction: column;
-        padding: variables.$clr_baselineRem_2 0 0 0;
+        @include mixins.css-var(
+          padding,
+          clr-login-group-padding,
+          variables.$clr_baselineRem_2 0 0 0,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(width, clr-login-group-width, 100%, variables.$clr-use-custom-properties);
 
         // @TODO Are these used? Some are documented on the website but not actually used. Some are neither documented nor used.
         .auth-source,
         .username,
         .password,
         .checkbox,
-        .clr-form-control,
+        .clr-form-control {
+          @include mixins.css-var(
+            margin,
+            clr-login-group-control-margin,
+            variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0,
+            variables.$clr-use-custom-properties
+          );
+        }
+
         .clr-checkbox-wrapper {
-          margin: variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0;
+          @include mixins.css-var(
+            margin,
+            clr-login-group-remember-margin,
+            variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0,
+            variables.$clr-use-custom-properties
+          );
         }
 
         // Overrides for new forms layouts to match original login layout
@@ -186,7 +263,12 @@
 
         .error {
           display: none;
-          margin: variables.$clr_baselineRem_0_25 0 0 0;
+          @include mixins.css-var(
+            margin,
+            clr-login-group-error-margin,
+            variables.$clr_baselineRem_0_25 0 0 0,
+            variables.$clr-use-custom-properties
+          );
           padding: variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5;
           @include mixins.css-var(
             background,
@@ -226,16 +308,22 @@
         }
 
         .btn {
-          margin: variables.$clr_baselineRem_3 0 0 0;
+          @include mixins.css-var(
+            margin,
+            clr-login-group-btn-margin,
+            variables.$clr_baselineRem_1 0 0 0,
+            variables.$clr-use-custom-properties
+          );
           max-width: none;
         }
 
-        .error + .btn {
-          margin: variables.$clr_baselineRem_1 0 0 0;
-        }
-
         .signup {
-          margin-top: variables.$clr_baselineRem_0_5;
+          @include mixins.css-var(
+            margin,
+            clr-login-group-signup-margin,
+            variables.$clr_baselineRem_0_5 0 0 0,
+            variables.$clr-use-custom-properties
+          );
           font-size: variables.$clr_baselineRem_0_583;
           text-align: center;
         }

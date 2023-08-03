@@ -990,10 +990,30 @@
   --clr-datagrid-column-toggle-fill-active-color: var(--cds-alias-object-opacity-0);
   --clr-datagrid-column-toggle-text-active-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
 
+  // Login
+
+  --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
+  --clr-login-padding: var(--cds-global-space-7);
+  --clr-login-group-padding: var(--cds-global-space-13) 0 0 0;
+  --clr-login-group-control-margin: 0 0 var(--cds-global-space-9) 0;
+  --clr-login-group-remember-margin: 0 0 var(--cds-global-space-13) 0;
+  --clr-login-group-error-margin: 0;
+  --clr-login-group-btn-margin: var(--cds-global-space-5) 0 var(--cds-global-space-5) 0;
+  --clr-login-group-width: calc(320 * (1rem / var(--clr-global-font-size)));
+  --clr-login-title-width: calc(320 * (1rem / var(--clr-global-font-size)));
+  --clr-login-title-margin: 0 0 var(--cds-global-space-13);
+  --clr-login-welcome-margin: 0 0 var(--cds-global-space-5) 0;
+  --clr-login-hint-margin: var(--cds-global-space-5) 0 0 0;
+  --clr-login-group-signup-margin: 0;
+  --clr-login-footer-gap: var(--cds-global-space-7);
+
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
-    --clr-login-background-color: var(--clr-global-app-background);
-    --clr-login-title-color: var(--clr-h1-color);
+    --clr-login-background-color: var(--cds-alias-object-container-background);
+    --clr-login-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+    --clr-login-copyright-color: var(--cds-alias-typography-link-color);
+    --clr-login-welcome-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+    --clr-login-hint-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
 
     --clr-login-error-background-color: var(--clr-alert-danger-bg-color);
 
