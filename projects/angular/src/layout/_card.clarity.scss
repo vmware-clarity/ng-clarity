@@ -8,17 +8,17 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
-@use '../button/variables.buttons' as button-variables;
 @use 'variables.card' as card-variables;
 @include meta.load-css('properties.card');
 
 @include mixins.exports('card.clarity') {
   %card-border-appearance {
-    // IE/OldEdge
-    box-shadow: card-variables.$clr-card-box-shadow;
-    @if variables.$clr-use-custom-properties == true {
-      box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-box-shadow-color);
-    }
+    @include mixins.css-var(
+      box-shadow,
+      clr-card-box-shadow,
+      card-variables.$clr-card-box-shadow,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       border-radius,
       clr-card-border-radius,
@@ -41,14 +41,15 @@
   }
 
   %clickable-card-transition {
-    // IE/OldEdge
-    box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 variables.$clr-color-action-500;
-    @if variables.$clr-use-custom-properties == true {
-      box-shadow: 0 variables.$clr_baselineRem_0_125 0 0 var(--clr-card-clickable-box-shadow-color);
-    }
+    @include mixins.css-var(
+      box-shadow,
+      clr-card-clickable-box-shadow,
+      0 variables.$clr_baselineRem_0_125 0 0 variables.$clr-color-action-500,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       border-width,
-      clr-card-border-width,
+      clr-card-clickable-border-width,
       variables.$clr-global-borderwidth,
       variables.$clr-use-custom-properties
     );
@@ -67,7 +68,12 @@
 
   %card-space-between {
     margin-top: 0;
-    margin-bottom: card-variables.$card-children-space-between;
+    @include mixins.css-var(
+      margin-bottom,
+      clr-card-children-space-between,
+      card-variables.$card-children-space-between,
+      variables.$clr-use-custom-properties
+    );
 
     &:last-child {
       margin-bottom: 0;
@@ -135,8 +141,18 @@
     }
 
     .list-group-item {
-      padding: variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_0_75;
-      font-size: card-variables.$clr-card-text-font-size;
+      @include mixins.css-var(
+        font-size,
+        clr-card-text-font-size,
+        card-variables.$clr-card-text-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        padding,
+        clr-card-list-group-item-padding,
+        variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-card-bg-color,
@@ -170,27 +186,78 @@
     }
   }
 
-  .card-header,
-  .card-block,
+  .card-block {
+    @include mixins.css-var(
+      padding,
+      clr-card-block-padding,
+      card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal,
+      variables.$clr-use-custom-properties
+    );
+  }
+
   .card-footer {
-    padding: card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal;
+    display: flex;
+    flex-direction: row;
+    @include mixins.css-var(
+      gap,
+      clr-card-footer-gap,
+      variables.$clr_baselineRem_0_5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-card-footer-padding,
+      card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal,
+      variables.$clr-use-custom-properties
+    );
+  }
+
+  h3.card-header,
+  .card-header {
+    @include mixins.css-var(
+      font-size,
+      clr-card-header-title-font-size,
+      variables.$clr-h3-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-card-header-padding,
+      card-variables.$card-children-padding-vertical card-variables.$card-children-padding-horizontal,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      clr-card-header-title-color,
+      card-variables.$clr-card-title-color,
+      variables.$clr-use-custom-properties
+    );
+  }
+
+  h4.card-title,
+  .card-title {
+    @include mixins.css-var(
+      color,
+      clr-card-content-title-color,
+      card-variables.$clr-card-title-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-size,
+      clr-card-content-title-font-size,
+      variables.$clr-h4-font-size,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .card-header,
   .card-title {
-    @include mixins.css-var(
-      color,
-      clr-card-title-color,
-      card-variables.$clr-card-title-color,
-      variables.$clr-use-custom-properties
-    );
     @include mixins.css-var(
       font-weight,
       clr-card-title-font-weight,
       card-variables.$clr-card-title-font-weight,
       variables.$clr-use-custom-properties
     );
-    font-size: card-variables.$clr-card-title-font-size;
     letter-spacing: card-variables.$clr-card-title-letter-spacing;
   }
 
@@ -207,7 +274,13 @@
   }
 
   .card-text {
-    font-size: card-variables.$clr-card-text-font-size;
+    @include mixins.css-var(
+      font-size,
+      clr-card-text-font-size,
+      card-variables.$clr-card-text-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(color, clr-card-text-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
   }
 
   //Images
@@ -268,7 +341,7 @@
     .btn,
     .btn.btn-link,
     .card-link {
-      margin: 0 button-variables.$clr-btn-horizontal-margin 0 0;
+      margin: 0;
     }
 
     //Need this level of nesting for now.
@@ -350,7 +423,24 @@
     .card-media-description {
       display: flex;
       flex-direction: column;
-      margin: 0 0 0 variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        color,
+        clr-card-text-color,
+        variables.$clr-p1-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-size,
+        clr-card-text-font-size,
+        variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-left,
+        clr-card-media-description-margin-left,
+        variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .card-media-title {
@@ -366,7 +456,13 @@
       flex-direction: column;
 
       .card-media-description {
-        margin: variables.$clr_baselineRem_0_25 0 0 0;
+        margin-left: 0;
+        @include mixins.css-var(
+          margin-top,
+          clr-card-media-description-margin-top,
+          variables.$clr_baselineRem_0_25,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
