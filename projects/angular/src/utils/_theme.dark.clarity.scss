@@ -829,9 +829,6 @@
 */
 
 @forward '../progress/spinner/variables.spinner' with (
-  //$clr-spinner-color: color-variables.$clr-color-action-400,
-  //$clr-spinner-opacity: 1,
-  //$clr-spinner-inverse-color: color-variables.$clr-color-action-300
   $clr-spinner-color: hsl(198, 65%, 57%),
   $clr-spinner-inverse-color: #74c1e2,
   $clr-spinner-bg-color: hsl(200, 23%, 25%),
