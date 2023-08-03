@@ -40,6 +40,8 @@
 
       --clr-datagrid-pagination-btn-disabled-opacity: #{datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity};
 
+      --clr-datagrid-column-toggle-gap: #{variables.$clr_baselineRem_4px};
+      --clr-datagrid-column-toggle-padding: #{0 variables.$clr_baselineRem_6px};
       --clr-datagrid-column-toggle-border-color: var(--clr-color-neutral-600);
       --clr-datagrid-column-toggle-fill-color: var(--clr-color-neutral-50);
       --clr-datagrid-column-toggle-text-color: var(--clr-color-neutral-700);
@@ -49,6 +51,8 @@
       --clr-datagrid-column-toggle-border-active-color: var(--clr-color-neutral-700);
       --clr-datagrid-column-toggle-fill-active-color: var(--clr-color-neutral-100);
       --clr-datagrid-column-toggle-text-active-color: var(--clr-color-neutral-700);
+      --clr-datagrid-column-toggle-disabled-color: #{variables.$clr-color-neutral-700};
+      --clr-datagrid-column-toggle-disabled-opacity: 0.4;
     }
   }
 }
