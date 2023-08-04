@@ -27,6 +27,8 @@
 | --clr-forms-select-hover-background             | Background and border color of select on hover                   |
 | --clr-forms-select-caret-hover-color            | Color of select caret on hover                                   |
 | --clr-forms-select-caret-color                  | Color of select caret                                            |
+| --clr-forms-select-caret-disabled-color         | Color of disabled select caret                                   |
+| --clr-forms-select-caret-icon-size              | Size of select caret                                             |
 | --clr-forms-select-option-color                 | Font color of select options                                     |
 | --clr-forms-select-multiple-background-color    | Background color of multiple select                              |
 | --clr-forms-select-multiple-border-color        | Border color of multiple select                                  |

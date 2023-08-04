@@ -64,25 +64,64 @@
     }
   }
 
+  .clr-multiselect-wrapper {
+    .clr-select-caret {
+      visibility: hidden;
+    }
+  }
+
+  .clr-select-inner-wrapper {
+    display: inline-flex;
+    position: relative;
+  }
+
   .clr-select-wrapper {
     max-height: forms-variables.$clr-forms-baseline * 4;
     display: inline-block;
 
-    &::after {
+    .clr-select-caret {
       position: absolute;
-      content: '';
-      @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
+      display: inline;
+      @include mixins.equilateral-var(
+        clr-forms-select-caret-icon-size,
+        variables.$clr_baselineRem_0_667,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-forms-select-caret-color,
+        forms-variables.$clr-forms-select-caret-color,
+        variables.$clr-use-custom-properties
+      );
       top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
       right: forms-variables.$clr-forms-baseline;
-      // TODO: get rid of generated icons?
-      background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);
-      @include images.icon-background-styles();
-      margin: 0;
+    }
+    &:hover {
+      .clr-datalist-caret {
+        @include mixins.css-var(
+          color,
+          clr-forms-select-caret-hover-color,
+          forms-variables.$clr-forms-select-caret-hover-color,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
 
-    &:hover::after {
-      background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-hover-color);
-    }
+    // &::after {
+    //   position: absolute;
+    //   content: '';
+    //   @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
+    //   top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
+    //   right: forms-variables.$clr-forms-baseline;
+    //   // TODO: get rid of generated icons?
+    //   background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);
+    //   @include images.icon-background-styles();
+    //   margin: 0;
+    // }
+
+    // &:hover::after {
+    //   background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-hover-color);
+    // }
   }
 
   .clr-error .clr-select-wrapper::after,

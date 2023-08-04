@@ -612,20 +612,24 @@
 
   // Textarea
   --clr-forms-textarea-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
-  --clr-forms-select-caret-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
   --clr-forms-textarea-focus-background: var(--cds-alias-object-interaction-background-selected);
   --clr-forms-textarea-focus-outline: var(--cds-alias-object-interaction-background-highlight);
   --clr-forms-textarea-disabled-background: var(--cds-alias-object-container-background);
   --clr-forms-textarea-disabled-border-color: var(--cds-alias-object-interaction-color-disabled);
-  --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
-  --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
-  --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
-  --clr-forms-select-multiple-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
-  --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-textarea-padding: var(--cds-global-space-7);
   --clr-forms-textarea-border-radius: var(--cds-alias-object-border-radius-100);
   --clr-forms-textarea-wrapper-margin-left: var(--cds-global-space-5);
   --clr-forms-textarea-wrapper-margin-top: var(--cds-global-space-5);
+
+  // Select
+  --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
+  --clr-forms-select-caret-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
+  --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
+  --clr-forms-select-caret-disabled-color: var(--cds-alias-status-disabled);
+  --clr-forms-select-caret-icon-size: var(--cds-global-space-7);
+  --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
+  --clr-forms-select-multiple-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
+  --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
 
   // Checkbox
   --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token --cds-global-typography-color-400

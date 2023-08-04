@@ -64,8 +64,11 @@
         #{color.blue(variables.$clr-color-neutral-300)},
         0.5
       );
-      --clr-forms-select-caret-hover-color: var(--clr-color-neutral-600);
-      --clr-forms-select-caret-color: var(--clr-color-neutral-500);
+      --clr-forms-select-caret-hover-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-select-caret-color: #{variables.$clr-color-neutral-500};
+      --clr-forms-select-caret-disabled-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-select-caret-icon-size: #{variables.$clr_baselineRem_0_667};
+
       --clr-forms-select-option-color: var(--clr-forms-text-color);
       --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
       --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);

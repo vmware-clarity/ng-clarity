@@ -21,7 +21,10 @@ import { NgControlService } from '../common/providers/ng-control.service';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
-        <ng-content select="[clrSelect]"></ng-content>
+        <div class="clr-select-inner-wrapper">
+          <ng-content select="[clrSelect]"></ng-content>
+          <cds-icon shape="angle" class="clr-select-caret" direction="down"></cds-icon>
+        </div>
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
