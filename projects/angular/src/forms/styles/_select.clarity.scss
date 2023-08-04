@@ -100,26 +100,10 @@
         );
       }
     }
-
-    // &::after {
-    //   position: absolute;
-    //   content: '';
-    //   @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
-    //   top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
-    //   right: forms-variables.$clr-forms-baseline;
-    //   // TODO: get rid of generated icons?
-    //   background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);
-    //   @include images.icon-background-styles();
-    //   margin: 0;
-    // }
-
-    // &:hover::after {
-    //   background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-hover-color);
-    // }
   }
 
-  .clr-error .clr-select-wrapper::after,
-  .clr-success .clr-select-wrapper::after {
+  .clr-error .clr-select-wrapper .clr-select-caret,
+  .clr-success .clr-select-wrapper .clr-select-caret {
     right: forms-variables.$clr-forms-icon-size + forms-variables.$clr-forms-baseline;
   }
 
