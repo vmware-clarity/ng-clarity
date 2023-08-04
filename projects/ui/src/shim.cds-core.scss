@@ -998,7 +998,7 @@
   --clr-login-group-control-margin: 0 0 var(--cds-global-space-9) 0;
   --clr-login-group-remember-margin: 0 0 var(--cds-global-space-13) 0;
   --clr-login-group-error-margin: 0;
-  --clr-login-group-btn-margin: var(--cds-global-space-5) 0 var(--cds-global-space-5) 0;
+  --clr-login-group-btn-margin: var(--cds-global-space-5) 0;
   --clr-login-group-width: calc(320 * (1rem / var(--clr-global-font-size)));
   --clr-login-title-width: calc(320 * (1rem / var(--clr-global-font-size)));
   --clr-login-title-margin: 0 0 var(--cds-global-space-13);
@@ -1006,6 +1006,8 @@
   --clr-login-hint-margin: var(--cds-global-space-5) 0 0 0;
   --clr-login-group-signup-margin: 0;
   --clr-login-footer-gap: var(--cds-global-space-7);
+  --clr-login-footer-font-size: var(--clr-p6-font-size);
+  --clr-login-footer-line-height: var(--clr-p6-line-height);
 
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere

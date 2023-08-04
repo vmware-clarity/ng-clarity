@@ -39,6 +39,8 @@
       --clr-login-panel-line-color: var(--clr-color-neutral-1000);
       --clr-login-panel-line-opacity: 0.1;
 
+      --clr-login-footer-font-size: inherit;
+      --clr-login-footer-line-height: inherit;
       --clr-login-footer-gap: #{variables.$clr_baselineRem_0_75};
       --clr-login-welcome-margin: 0;
       --clr-login-group-btn-margin: #{variables.$clr_baselineRem_1} 0 0 0;

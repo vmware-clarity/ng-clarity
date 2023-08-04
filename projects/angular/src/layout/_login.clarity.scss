@@ -42,7 +42,7 @@
       @include mixins.css-var(
         width,
         clr-login-width,
-        variables.$clr_baselineRem_21,
+        login-variables.$clr-login-width,
         variables.$clr-use-custom-properties
       );
 
@@ -59,8 +59,15 @@
 
       .login-footer {
         @include mixins.css-var(
+          line-height,
+          clr-login-footer-line-height,
+          inherit,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(font-size, clr-login-footer-font-size, inherit, variables.$clr-use-custom-properties);
+        @include mixins.css-var(
           gap,
-          clr-login-footer-margin,
+          clr-login-footer-gap,
           variables.$clr_baselineRem_0_75,
           variables.$clr-use-custom-properties
         );
