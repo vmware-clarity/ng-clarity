@@ -88,9 +88,30 @@
     }
   }
 
+  .clr-success .clr-textarea {
+    @include mixins.css-var(
+      border-color,
+      clr-forms-valid-color,
+      forms-variables.$clr-forms-valid-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      outline-color,
+      forms-variables.$clr-forms-valid-color,
+      forms-variables.$clr-forms-valid-color,
+      variables.$clr-use-custom-properties
+    );
+  }
+
   .clr-error .clr-textarea {
     @include mixins.css-var(
       border-color,
+      clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      outline-color,
       clr-forms-invalid-color,
       forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties
