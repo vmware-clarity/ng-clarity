@@ -33,55 +33,88 @@
   .modal-dialog {
     position: relative;
     z-index: map.get(variables.$clr-layers, modal);
-    width: modal-variables.$clr-modal-md-width;
+    @include mixins.css-var(
+      width,
+      clr-modal-md-width,
+      modal-variables.$clr-modal-md-width,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-radius,
+      clr-modal-border-radius,
+      modal-variables.$clr-modal-border-radius,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      box-shadow,
+      clr-modal-content-box-shadow,
+      0 variables.$clr_baselineRem_1px variables.$clr_baselineRem_2px variables.$clr_baselineRem_2px
+        modal-variables.$clr-modal-content-box-shadow-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(border-style, clr-modal-content-border-style, none, variables.$clr-use-custom-properties);
+    @include mixins.css-var(border-width, clr-modal-content-border-width, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      border-color,
+      clr-modal-content-border-color,
+      transparent,
+      variables.$clr-use-custom-properties
+    );
+    overflow: hidden;
     max-width: 100%;
 
     &.modal-sm {
-      width: modal-variables.$clr-modal-sm-width;
+      @include mixins.css-var(
+        width,
+        clr-modal-sm-width,
+        modal-variables.$clr-modal-sm-width,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &.modal-lg {
-      width: modal-variables.$clr-modal-lg-width;
+      @include mixins.css-var(
+        width,
+        clr-modal-lg-width,
+        modal-variables.$clr-modal-lg-width,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &.modal-xl {
-      width: modal-variables.$clr-modal-xl-width;
+      @include mixins.css-var(
+        width,
+        clr-modal-xl-width,
+        modal-variables.$clr-modal-xl-width,
+        variables.$clr-use-custom-properties
+      );
     }
 
-    $modal-boxshadow-y: variables.$clr_baselineRem_1px;
-    $modal-boxshadow-spread: variables.$clr_baselineRem_2px;
-
     .modal-content {
-      padding: modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
-        modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left;
+      @include mixins.css-var(
+        padding,
+        clr-modal-content-padding,
+        modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
+          modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-modal-bg-color,
         modal-variables.$clr-modal-bg-color,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        border-radius,
-        clr-modal-border-radius,
-        modal-variables.$clr-modal-border-radius,
-        variables.$clr-use-custom-properties
-      );
-      // IE/OldEdge
-      box-shadow: 0 $modal-boxshadow-y $modal-boxshadow-spread $modal-boxshadow-spread
-        modal-variables.$clr-modal-content-box-shadow-color;
-      @if variables.$clr-use-custom-properties == true {
-        box-shadow: 0
-          $modal-boxshadow-y
-          $modal-boxshadow-spread
-          $modal-boxshadow-spread
-          var(--clr-modal-content-box-shadow-color);
-      }
     }
   }
 
   .modal-header {
     border-bottom: none;
-    padding: 0 0 variables.$clr_baselineRem_1 0;
+    @include mixins.css-var(
+      padding,
+      clr-modal-header-padding,
+      0 0 variables.$clr_baselineRem_1 0,
+      variables.$clr-use-custom-properties
+    );
 
     // TODO: This class is used only in the clr-modal template.
     // It should be merged this with `.modal-header` in a major version
@@ -159,6 +192,15 @@
     overflow-x: hidden;
     padding: 0 variables.$clr_baselineRem_0_125;
 
+    .modal-body {
+      @include mixins.css-var(
+        color,
+        clr-modal-text-color,
+        variables.$clr-p1-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
     & > :first-child {
       margin-top: 0;
     }
@@ -170,11 +212,22 @@
   .modal-footer {
     display: flex;
     justify-content: flex-end;
-    padding: variables.$clr_baselineRem_1 0 0 0;
+    @include mixins.css-var(
+      padding,
+      clr-modal-footer-padding,
+      variables.$clr_baselineRem_1 0 0 0,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      gap,
+      clr-modal-footer-gap,
+      variables.$clr_baselineRem_0_5,
+      variables.$clr-use-custom-properties
+    );
 
     .btn {
       //switched right margin to left because footer is right aligned
-      margin: 0 0 0 variables.$clr_baselineRem_0_5;
+      margin: 0;
     }
   }
 
@@ -186,11 +239,21 @@
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .modal-content {
-      padding: variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1;
+      @include mixins.css-var(
+        padding,
+        clr-modal-sm-content-padding,
+        variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .modal-header {
-      padding: 0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_0_5 0;
+      @include mixins.css-var(
+        padding,
+        clr-modal-sm-header-padding,
+        0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_0_5 0,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .modal-body-wrapper {
@@ -198,7 +261,12 @@
     }
 
     .modal-footer {
-      padding: variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1 0 0;
+      @include mixins.css-var(
+        padding,
+        clr-modal-sm-footer-padding,
+        variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1 0 0,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 

@@ -13,17 +13,18 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    margin-top: forms-variables.$clr-forms-baseline;
-
+    @include mixins.css-var(
+      margin-top,
+      clr-forms-textarea-wrapper-margin-top,
+      forms-variables.$clr-forms-baseline,
+      variables.$clr-use-custom-properties
+    );
     .clr-validate-icon {
       margin-left: 0;
     }
   }
 
   .clr-textarea {
-    $textarea-vertical-padding: forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px;
-    $textarea-horizontal-padding: forms-variables.$clr-forms-baseline * 2;
-
     max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
     height: auto;
 
@@ -47,16 +48,43 @@
       forms-variables.$clr-forms-text-color,
       variables.$clr-use-custom-properties
     );
-    border-radius: forms-variables.$clr-forms-baseline * 0.5;
-    padding: $textarea-vertical-padding $textarea-horizontal-padding;
+    @include mixins.css-var(
+      border-radius,
+      clr-forms-textarea-border-radius,
+      forms-variables.$clr-forms-baseline * 0.5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-forms-textarea-padding,
+      forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
+      variables.$clr-use-custom-properties
+    );
+
     font-size: forms-variables.$clr-forms-field-font-size;
 
     &:focus {
       @include mixins.include-slim-outline-style-form-fields();
+      @if variables.$clr-use-custom-properties == true {
+        background-color: var(--clr-forms-textarea-focus-background);
+        outline-color: var(--clr-forms-textarea-focus-outline);
+      }
     }
 
     &:disabled {
       @include forms-mixins.disabled-form-fields();
+      @include mixins.css-var(
+        background-color,
+        clr-forms-textarea-disabled-background,
+        forms-variables.$clr-forms-textarea-background-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-forms-textarea-disabled-border-color,
+        forms-variables.$clr-forms-border-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 

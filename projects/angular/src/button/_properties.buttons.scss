@@ -16,6 +16,11 @@
       --clr-btn-horizontal-padding: #{button-variables.$clr-btn-horizontal-padding};
       --clr-btn-vertical-padding: 0;
       --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
+      --clr-btn-appearance-gap: #{variables.$clr_baselineRem_8px};
+      --clr-btn-display: inline-block;
+      --clr-btn-block-display: block;
+      --clr-btn-appearance-icon-margin: #{-1.4 * variables.$clr_baselineRem_2px};
+      --clr-btn-appearance-sm-icon-margin: -0.1rem;
 
       // Sizing
       --clr-btn-height: #{button-variables.$clr-btn-height};
@@ -29,10 +34,12 @@
       --clr-btn-border-width: #{button-variables.$clr-btn-border-width};
 
       // Shared colors
-      --clr-btn-outline-bg-color: transparent;
+      --clr-btn-transparent-bg-color: transparent;
+      --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
 
       // Standard button appearance - overrideable but not advertised!
       --clr-btn-appearance-standard-line-height: #{button-variables.$clr-btn-appearance-standard-line-height};
+      --clr-btn-appearance-standard-letter-spacing: #{button-variables.$clr-btn-appearance-standard-letter-spacing};
       --clr-btn-appearance-standard-font-size: #{button-variables.$clr-btn-appearance-standard-font-size};
       --clr-btn-appearance-standard-font-weight: #{button-variables.$clr-btn-appearance-standard-font-weight};
       --clr-btn-appearance-standard-height: #{button-variables.$clr-btn-appearance-standard-height};
@@ -85,6 +92,19 @@
       --clr-btn-primary-disabled-border-color: var(--clr-color-neutral-400);
       --clr-btn-primary-checked-bg-color: var(--clr-color-action-600);
       --clr-btn-primary-checked-color: var(--clr-color-neutral-0);
+
+      // Primary outline button
+      --clr-btn-primary-outline-color: var(--clr-color-action-600);
+      --clr-btn-primary-outline-border-color: var(--clr-btn-default-outline-color);
+      --clr-btn-primary-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-primary-outline-hover-bg-color: var(--clr-color-action-50);
+      --clr-btn-primary-outline-hover-color: var(--clr-color-action-800);
+      --clr-btn-primary-outline-box-shadow-color: var(--clr-color-action-500);
+      --clr-btn-primary-outline-disabled-color: var(--clr-color-neutral-700);
+      --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-primary-outline-disabled-border-color: var(--clr-color-neutral-600);
+      --clr-btn-primary-outline-checked-color: var(--clr-color-neutral-0);
+      --clr-btn-primary-outline-checked-bg-color: var(--clr-btn-default-outline-color);
 
       // Success button colors
       --clr-btn-success-color: var(--clr-color-neutral-0);
@@ -166,20 +186,22 @@
 
       // Link button colors
       --clr-btn-link-color: var(--clr-color-action-600);
-      --clr-btn-link-bg-color: transparent;
-      --clr-btn-link-border-color: transparent;
-      --clr-btn-link-hover-bg-color: transparent;
+      --clr-btn-link-visited-color: var(--clr-btn-link-color);
+      --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-color: var(--clr-color-action-800);
+      --clr-btn-link-visited-hover-color: var(--clr-btn-link-hover-color);
       --clr-btn-link-disabled-color: var(--clr-color-neutral-700);
-      --clr-btn-link-disabled-bg-color: transparent;
-      --clr-btn-link-disabled-border-color: transparent;
-      --clr-btn-link-checked-bg-color: transparent;
+      --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-checked-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-checked-color: var(--clr-color-action-800);
 
       // Inverse button colors
       --clr-btn-inverse-color: var(--clr-color-neutral-0);
       --clr-btn-inverse-border-color: var(--clr-color-neutral-0);
-      --clr-btn-inverse-bg-color: transparent;
+      --clr-btn-inverse-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-inverse-hover-bg-color: rgba(255, 255, 255, 0.15);
       --clr-btn-inverse-hover-color: var(--clr-color-neutral-0);
       --clr-btn-inverse-box-shadow-color: rgba(0, 0, 0, 0.25);
@@ -190,6 +212,7 @@
       --clr-btn-inverse-checked-color: var(--clr-color-neutral-0);
 
       // For theme-able icon button color
+      --clr-btn-disabled-opacity: 0.4;
       --clr-btn-icon-disabled-color: var(
         --clr-btn-default-disabled-color,
         #{button-variables.$clr-btn-default-disabled-color}

@@ -118,6 +118,7 @@
     &:disabled {
       cursor: not-allowed;
 
+      .clr-accordion-status,
       .clr-accordion-title {
         @include mixins.css-var(
           color,
