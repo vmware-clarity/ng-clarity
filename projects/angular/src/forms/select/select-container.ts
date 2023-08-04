@@ -21,10 +21,8 @@ import { NgControlService } from '../common/providers/ng-control.service';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
-        <div class="clr-select-inner-wrapper">
-          <ng-content select="[clrSelect]"></ng-content>
-          <cds-icon shape="angle" class="clr-select-caret" direction="down"></cds-icon>
-        </div>
+        <ng-content select="[clrSelect]"></ng-content>
+        <cds-icon *ngIf="!isMulti()" shape="angle" class="clr-select-caret" direction="down"></cds-icon>
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
@@ -79,5 +77,9 @@ export class ClrSelectContainer extends ClrAbstractContainer {
 
   wrapperClass() {
     return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
+  }
+
+  isMulti() {
+    return this.multi;
   }
 }

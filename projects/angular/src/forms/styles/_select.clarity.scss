@@ -70,18 +70,14 @@
     }
   }
 
-  .clr-select-inner-wrapper {
-    display: inline-flex;
-    position: relative;
-  }
-
   .clr-select-wrapper {
     max-height: forms-variables.$clr-forms-baseline * 4;
     display: inline-block;
 
     .clr-select-caret {
+      top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
+      right: forms-variables.$clr-forms-baseline;
       position: absolute;
-      display: inline;
       @include mixins.equilateral-var(
         clr-forms-select-caret-icon-size,
         variables.$clr_baselineRem_0_667,
@@ -93,8 +89,6 @@
         forms-variables.$clr-forms-select-caret-color,
         variables.$clr-use-custom-properties
       );
-      top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
-      right: forms-variables.$clr-forms-baseline;
     }
     &:hover {
       .clr-datalist-caret {
