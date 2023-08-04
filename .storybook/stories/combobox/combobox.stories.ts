@@ -24,7 +24,7 @@ const defaultStory: Story = args => ({
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
-        [disabled]="disabled"
+        [disabled]="isDisabled"
         name="combo"
       >
         <ng-container *clrOptionSelected="let selected">
@@ -35,8 +35,6 @@ const defaultStory: Story = args => ({
         </clr-options>
       </clr-combobox>
     </clr-combobox-container>
-
-    <img style="display: none;" [src]="'https://raw.githubusercontent.com/vmware-clarity/ng-clarity/main/logo.png?' + controlDisabled" (load)="controlDisabled ? formControl.disable() : formControl.enable()">
   `,
   props: { ...args },
 });
@@ -86,7 +84,7 @@ const defaultParameters: Parameters = {
     elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
-    disabled: null,
+    isDisabled: null,
     label: 'Combobox',
   },
 };
@@ -105,7 +103,7 @@ const variants: Parameters[] = [
   {
     clrMulti: false,
     singleModel: 'Ba',
-    disabled: true,
+    isDisabled: true,
     label: 'Single/Disabled',
   },
   {
@@ -114,7 +112,7 @@ const variants: Parameters[] = [
   },
   {
     clrMulti: true,
-    disabled: true,
+    isDisabled: true,
     label: 'Multi/Disabled',
   },
 ];
