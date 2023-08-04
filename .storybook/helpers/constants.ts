@@ -9,5 +9,4 @@ export const THEMES = {
   NG_DARK: 'clr-ui-dark',
   CORE_LIGHT: 'light',
   CORE_DARK: 'dark',
-  HIGH_CONTRAST: 'high-contrast',
 };
