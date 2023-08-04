@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { FormControl } from '@angular/forms';
 import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
@@ -16,15 +15,17 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <clr-combobox-container>
-      <label>Options:</label>
+      <label>{{label}}</label>
       <clr-combobox
         [id]="id"
         [clrMulti]="clrMulti"
-        [formControl]="formControl"
+        [ngModel]="clrMulti?multiModel:singleModel"
         [placeholder]="placeholder"
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
+        [disabled]="disabled"
+        name="combo"
       >
         <ng-container *clrOptionSelected="let selected">
           {{selected}}
@@ -46,6 +47,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrMulti: { defaultValue: false, control: { type: 'boolean' } },
+    placeholder: { defaultValue: 'Placeholder text' },
     id: { defaultValue: '' },
     // outputs
     clrInputChange: { control: { disable: true } },
@@ -71,7 +73,6 @@ const defaultParameters: Parameters = {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
-    formControl: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // outputs
@@ -79,20 +80,42 @@ const defaultParameters: Parameters = {
     clrOpenChange: action('clrOpenChange'),
     clrSelectionChange: action('clrSelectionChange'),
     // story helpers
-    formControl: new FormControl(),
     optionCount: elements.length,
     content: 'Option',
     controlDisabled: false,
     elements,
+    singleModel: 'Am',
+    multiModel: ['Am', 'As', 'Ba'],
+    disabled: null,
+    label: 'Combobox',
   },
 };
 
 const variants: Parameters[] = [
   {
     clrMulti: false,
+    singleModel: '',
+    label: 'Single/Placeholder',
+  },
+  {
+    clrMulti: false,
+    singleModel: 'Ba',
+    label: 'Single/Preselected',
+  },
+  {
+    clrMulti: false,
+    singleModel: 'Ba',
+    disabled: true,
+    label: 'Single/Disabled',
   },
   {
     clrMulti: true,
+    label: 'Multi/Placeholder/Preselected',
+  },
+  {
+    clrMulti: true,
+    disabled: true,
+    label: 'Multi/Disabled',
   },
 ];
 
