@@ -36,6 +36,20 @@
 
       // Table header styles
       --clr-thead-color: #{table-variables.$clr-thead-color};
+
+      --clr-table-cell-padding: #{table-variables.$clr-table-topcellpadding
+        table-variables.$clr-table-cellpadding
+        table-variables.$clr-table-bottomcellpadding};
+      --clr-table-cell-padding-left: #{table-variables.$clr-table-smallpadding}; // ATM delete this property
+      --clr-table-cell-compact-padding: #{table-variables.$clr-table--compact-verticalPadding +
+        variables.$clr_baselineRem_1px
+        table-variables.$clr-table-cellpadding
+        table-variables.$clr-table--compact-verticalPadding};
+      --clr-table-noborder-cell-padding-left: 0; // ATM delete this property
+      --clr-table-noborder-borderwidth: 0;
+      --clr-table-noborder-bg-color: transparent;
+      --clr-table-noborder-th-border-color: #{table-variables.$clr-table-border-color};
+      --clr-table-vertical-align: bottom;
     }
   }
 }

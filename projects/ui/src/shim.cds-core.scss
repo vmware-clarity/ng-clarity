@@ -909,11 +909,28 @@
 
   /* Tables */
 
+  // General
+  --clr-table-borderwidth: var(--cds-global-space-1);
+  --clr-table-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-table-cornercellradius: var(--cds-alias-object-border-radius-100);
+  --clr-table-cell-padding-horizontal: var(--cds-global-space-7);
+  --clr-table-cell-padding-vertical: var(--cds-global-space-5);
+  --clr-table-cell-padding: var(--clr-table-cell-padding-vertical) var(--clr-table-cell-padding-horizontal);
+  --clr-table-cell-compact-padding-vertical: var(--cds-global-space-3);
+  --clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding-vertical) var(--clr-table-cell-padding-horizontal);
+  --clr-table-noborder-borderwidth: var(--cds-global-space-0);
+  --clr-table-cell-padding-left: var(--cds-global-space-7); // ATM delete this property
+  --clr-table-noborder-cell-padding-left: var(--cds-global-space-7); // ATM delete this property
+  --clr-table-zero-padding: var(--cds-global-space-0); // ATM delete this property
+  --clr-table-vertical-align: middle;
+
   // Theme variables
   // Usage: ./data/_tables.clarity.scss
   // Usage: ./data/datagrid/_datagrid.clarity.scss
   --clr-table-bgcolor: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-thead-bgcolor: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
+  --clr-table-noborder-bg-color: var(--clr-thead-bgcolor);
+  --clr-table-noborder-th-border-color: var(--cds-alias-object-opacity-0);
 
   // Usage: ./data/datagrid/_datagrid.clarity.scss
   --clr-table-header-border-bottom-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
@@ -925,10 +942,10 @@
 
   // Usage: ./data/_tables.clarity.scss
   // Usage: ./data/datagrid/_datagrid.clarity.scss
-  --clr-table-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
+  --clr-table-font-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
 
   // Table header styles
-  --clr-thead-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // #{$clr-thead-color};
+  --clr-thead-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // #{$clr-thead-color};
 
   /* Datagrid */
 
