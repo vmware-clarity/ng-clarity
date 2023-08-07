@@ -19,12 +19,12 @@ const defaultStory: Story = args => ({
       <clr-combobox
         [id]="id"
         [clrMulti]="clrMulti"
-        [ngModel]="clrMulti?multiModel:singleModel"
+        [ngModel]="clrMulti ? multiModel : singleModel"
         [placeholder]="placeholder"
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
-        [disabled]="isDisabled"
+        [disabled]="controlDisabled"
         name="combo"
       >
         <ng-container *clrOptionSelected="let selected">
@@ -84,7 +84,6 @@ const defaultParameters: Parameters = {
     elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
-    isDisabled: null,
     label: 'Combobox',
   },
 };
@@ -103,7 +102,7 @@ const variants: Parameters[] = [
   {
     clrMulti: false,
     singleModel: 'Ba',
-    isDisabled: true,
+    controlDisabled: true,
     label: 'Single/Disabled',
   },
   {
@@ -112,7 +111,7 @@ const variants: Parameters[] = [
   },
   {
     clrMulti: true,
-    isDisabled: true,
+    controlDisabled: true,
     label: 'Multi/Disabled',
   },
 ];
