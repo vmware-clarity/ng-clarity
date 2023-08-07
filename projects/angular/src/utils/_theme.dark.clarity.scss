@@ -827,7 +827,6 @@
 *
 * Usage: ../progress/spinner/_spinner.clarity.scss
 */
-
 @forward '../progress/spinner/variables.spinner' with (
   $clr-spinner-color: hsl(198, 65%, 57%),
   $clr-spinner-bg-color: hsl(200, 23%, 25%),

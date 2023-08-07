@@ -45,13 +45,13 @@
       border-style: solid;
       @include mixins.css-var(
         border-color,
-        clr-spinner-fill-snake-color,
+        clr-spinner-fill-color,
         spinner-variables.$clr-spinner-color,
         variables.$clr-use-custom-properties
       );
       border-right-color: transparent !important;
       border-bottom-color: transparent !important;
-      border-radius: 50%;
+      @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
     }
 
     &::before {
@@ -77,7 +77,7 @@
         rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
         variables.$clr-use-custom-properties
       );
-      border-radius: 50%;
+      @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
     }
 
     &.spinner-md {
@@ -127,7 +127,7 @@
 
     &.spinner-inline {
       vertical-align: text-bottom; //To align with text properly
-      margin-right: var(--clr-spinner-spacing-to-text);
+      @include mixins.css-var(margin-right, clr-spinner-margin-right, 0, variables.$clr-use-custom-properties);
     }
 
     &.spinner-inverse {
@@ -135,7 +135,7 @@
       &::after {
         @include mixins.css-var(
           border-color,
-          clr-spinner-fill-inverse-snake-color,
+          clr-spinner-fill-inverse-color,
           spinner-variables.$clr-spinner-inverse-color,
           variables.$clr-use-custom-properties
         );
@@ -155,7 +155,7 @@
       &::after {
         @include mixins.css-var(
           border-color,
-          clr-spinner-fill-snake-color,
+          clr-spinner-fill-color,
           spinner-variables.$clr-spinner-color,
           variables.$clr-use-custom-properties
         );

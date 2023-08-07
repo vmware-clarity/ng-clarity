@@ -5,16 +5,26 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use './variables.spinner' as spinner-variables;
 
 @if variables.$clr-use-custom-properties == true {
   :root {
     --clr-spinner-default-size: #{variables.$clr_baselineRem_3};
-    --clr-spinner-small-size: #{variables.$clr_baselineRem_0_75};
     --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_5};
+    --clr-spinner-small-size: #{variables.$clr_baselineRem_0_75};
+    --clr-spinner-margin-right: #{variables.$clr_baselineRem_0_5};
     --clr-spinner-inside-button-size: #{variables.$clr_baselineRem_0_65};
     --clr-spinner-inside-small-button-size: #{variables.$clr_baselineRem_0_5416};
     --clr-spinner-default-stroke-width: #{variables.$clr_baselineRem_0_25};
-    --clr-spinner-small-stroke-width: #{variables.$clr_baselineRem_0_1};
     --clr-spinner-medium-stroke-width: #{variables.$clr_baselineRem_0_125};
+    --clr-spinner-small-stroke-width: #{variables.$clr_baselineRem_0_1};
+    --clr-spinner-fill-bg-color: rgba(
+      #{spinner-variables.$clr-spinner-bg-color},
+      #{spinner-variables.$clr-spinner-opacity}
+    );
+    --clr-spinner-fill-inverse-bg-color: rgba(#{spinner-variables.$clr-spinner-inverse-bg-color}, 0.15);
+    --clr-spinner-fill-color: #{spinner-variables.$clr-spinner-color};
+    --clr-spinner-fill-inverse-color: #{spinner-variables.$clr-spinner-inverse-color};
+    --clr-spinner-border-radius: 50%;
   }
 }
