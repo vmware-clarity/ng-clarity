@@ -62,11 +62,70 @@
 
     &:hover {
       @include mixins.css-var(
+        color,
+        clr-accordion-text-color-hover,
+        accordion-variables.$clr-accordion-text-color-hover,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
         background-color,
         clr-accordion-header-hover-background-color,
         accordion-variables.$clr-accordion-header-hover-background-color,
         variables.$clr-use-custom-properties
       );
+    }
+
+    &:active {
+      @include mixins.css-var(
+        color,
+        clr-accordion-text-color-active,
+        accordion-variables.$clr-accordion-text-color-active,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-active-background-color,
+        accordion-variables.$clr-accordion-header-active-background-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    .clr-accordion-panel-disabled > div > & {
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-background-color,
+        accordion-variables.$clr-accordion-header-background-color,
+        variables.$clr-use-custom-properties
+      );
+
+      &:hover,
+      &:active {
+        @include mixins.css-var(
+          background-color,
+          clr-accordion-header-background-color,
+          accordion-variables.$clr-accordion-header-background-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
+
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
+      @include mixins.css-var(
+        background-color,
+        clr-accordion-header-disabled-background-color,
+        accordion-variables.$clr-accordion-header-disabled-background-color,
+        variables.$clr-use-custom-properties
+      );
+
+      &:hover,
+      &:active {
+        @include mixins.css-var(
+          background-color,
+          clr-accordion-header-disabled-background-color,
+          accordion-variables.$clr-accordion-header-disabled-background-color,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
   }
 
@@ -104,13 +163,8 @@
     background: transparent;
     text-align: left;
     cursor: pointer;
-    @include mixins.css-var(
-      color,
-      clr-accordion-text-color,
-      accordion-variables.$clr-accordion-text-color,
-      variables.$clr-use-custom-properties
-    );
-
+    color: inherit;
+    @include mixins.css-var(gap, clr-accordion-header-gap, 0, variables.$clr-use-custom-properties);
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
@@ -370,7 +424,18 @@
         variables.$clr_baselineRem_0_5,
         variables.$clr-use-custom-properties
       );
-      padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding,
+        clr-accordion-header-button-padding,
+        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-accordion-header-button-line-height,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-accordion-content {
@@ -378,11 +443,33 @@
     }
 
     .clr-accordion-inner-content {
-      padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1_4583;
+      @include mixins.css-var(
+        padding,
+        clr-accordion-content-padding,
+        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1_4583,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-accordion-content-color,
+        accordion-variables.$clr-accordion-content-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-size,
+        clr-accordion-content-font-size,
+        accordion-variables.$clr-accordion-content-font-size,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-accordion-status {
-      width: variables.$clr_baselineRem_0_8;
+      @include mixins.css-var(
+        width,
+        clr-accordion-status-icon-width,
+        variables.$clr_baselineRem_0_8,
+        variables.$clr-use-custom-properties
+      );
 
       cds-icon,
       clr-icon {

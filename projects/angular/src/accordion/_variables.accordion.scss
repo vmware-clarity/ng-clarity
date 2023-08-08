@@ -7,11 +7,16 @@
 @use '../utils/variables/variables';
 
 $clr-accordion-text-color: variables.$clr-global-font-color !default;
+$clr-accordion-text-color-hover: variables.$clr-global-font-color !default;
+$clr-accordion-text-color-active: variables.$clr-global-font-color !default;
+$clr-accordion-text-color-selected: variables.$clr-global-font-color !default;
 $clr-accordion-panel-disabled-color: variables.$clr-color-neutral-500 !default;
 $clr-accordion-active-background-color: variables.$clr-global-selection-color !default;
 $clr-accordion-content-background-color: variables.$clr-color-neutral-0 !default;
 $clr-accordion-header-background-color: variables.$clr-color-neutral-50 !default;
+$clr-accordion-header-disabled-background-color: variables.$clr-color-neutral-200 !default;
 $clr-accordion-header-hover-background-color: variables.$clr-color-neutral-200 !default;
+$clr-accordion-header-active-background-color: variables.$clr-color-neutral-200 !default;
 $clr-accordion-border-left-color: variables.$clr-color-neutral-200 !default;
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 $clr-accordion-error-color: variables.$clr-global-error-color !default;
@@ -22,3 +27,5 @@ $clr-accordion-border-radius: variables.$clr-global-borderradius !default;
 $clr-accordion-border-left-width: variables.$clr_baselineRem_0_25 !default;
 $clr-accordion-border-left-color-complete: $clr-accordion-complete-color !default;
 $clr-accordion-border-left-color-error: $clr-accordion-error-color !default;
+$clr-accordion-content-color: variables.$clr-p1-color !default;
+$clr-accordion-content-font-size: variables.$clr-p1-font-size !default;
