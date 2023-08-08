@@ -118,10 +118,24 @@
       timeline-variables.$clr-timeline-step-header-color,
       variables.$clr-use-custom-properties
     );
-
-    font-weight: var(--clr-timeline-step-header-font-weight, inherit);
-    font-size: var(--clr-timeline-step-header-font-size, timeline-variables.$clr-timeline-step-header-font-size);
-    line-height: var(--clr-timeline-step-header-line-height, timeline-variables.$clr-timeline-step-header-line-height);
+    @include mixins.css-var(
+      font-weight,
+      clr-timeline-step-header-font-weight,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-header-font-size,
+      timeline-variables.$clr-timeline-step-header-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-header-line-height,
+      timeline-variables.$clr-timeline-step-header-line-height,
+      variables.$clr-use-custom-properties
+    );
 
     @include mixins.css-var(
       margin-bottom,
@@ -155,14 +169,24 @@
       timeline-variables.$clr-timeline-step-title-color,
       variables.$clr-use-custom-properties
     );
-    font-size: var(--clr-timeline-step-title-font-size, timeline-variables.$clr-timeline-step-title-font-size);
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-title-font-size,
+      timeline-variables.$clr-timeline-step-title-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-title-line-height,
+      timeline-variables.$clr-timeline-step-title-line-height,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       font-weight,
       clr-timeline-step-title-font-weight,
       timeline-variables.$clr-timeline-step-title-font-weight,
       variables.$clr-use-custom-properties
     );
-    line-height: var(--clr-timeline-step-title-line-height, timeline-variables.$clr-timeline-step-title-line-height);
     @include mixins.css-var(
       margin-top,
       clr-timeline-step-internal-margin,
@@ -184,13 +208,17 @@
       timeline-variables.$clr-timeline-step-description-color,
       variables.$clr-use-custom-properties
     );
-    font-size: var(
-      --clr-timeline-step-description-font-size,
-      timeline-variables.$clr-timeline-step-description-font-size
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-description-font-size,
+      timeline-variables.$clr-timeline-step-description-font-size,
+      variables.$clr-use-custom-properties
     );
-    line-height: var(
-      --clr-timeline-step-description-line-height,
-      timeline-variables.$clr-timeline-step-description-line-height
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-description-line-height,
+      timeline-variables.$clr-timeline-step-description-line-height,
+      variables.$clr-use-custom-properties
     );
     button {
       display: block;
@@ -290,6 +318,8 @@
         timeline-variables.$clr-timeline-vertical-step-body-left-padding,
         variables.$clr-use-custom-properties
       );
+      // ATM (after token migration)
+      // remove margin-top or set it to 0
       @include mixins.css-var(
         margin-top,
         clr-timeline-internal-margin-0,
