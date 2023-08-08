@@ -850,7 +850,17 @@
   --clr-timeline-error-step-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
 
   --clr-timeline-icon-size: var(--cds-global-space-11);
+  --clr-timeline-step-margin: var(--cds-global-space-5);
+  --clr-timeline-step-internal-margin: var(--cds-global-space-6);
+  --clr-timeline-line-width: var(--cds-global-space-2);
+  --clr-timeline-horizontal-line-length: calc(100% - calc(var(--clr-timeline-icon-size) - var(--clr-timeline-step-internal-margin)));
+  --clr-timeline-vertical-line-position: translate(
+    calc(-0.5 * calc(var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)) - var(--clr-timeline-step-internal-margin)),
+    calc(var(--clr-timeline-icon-size) - var(--clr-timeline-line-width))
+  );
 
+  --clr-timeline-vertical-line-lenght: calc(100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)));
+  --clr-timeline-internal-margin-0: var(--cds-global-space-0);
   /* Toggles */
 
   // colors

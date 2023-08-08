@@ -5,6 +5,7 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use 'variables.timeline' as timeline-variables;
 
 @include mixins.exports('timeline.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -22,6 +23,9 @@
 
       // body (title)
       --clr-timeline-step-title-font-weight: var(--clr-p2-font-weight);
+
+      --clr-timeline-icon-size: #{timeline-variables.$clr-timeline-icon-size};
+      --clr-timeline-line-width: #{timeline-variables.$clr-timeline-line-thickness};
     }
   }
 }
