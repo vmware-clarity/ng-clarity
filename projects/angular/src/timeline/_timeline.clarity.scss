@@ -24,7 +24,10 @@
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
+      @include mixins.min-equilateral-var(
+        clr-timeline-icon-size timeline-variables.$clr-timeline-icon-size,
+        variables.$clr-use-custom-properties
+      );
     }
 
     cds-icon[shape='circle'],
