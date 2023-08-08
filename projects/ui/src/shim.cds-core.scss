@@ -8,6 +8,12 @@
 
 @use './token_shim.cds-core';
 
+// Line height tokens are implemented as the smallest version in the figma specs but some
+// styles have a standard and/or expanded styles with larger line heights.
+@function convertCompactToStandardLineHeight($variable, $fallback_variable) {
+  @return calc(var(#{$variable}, var(#{$fallback_variable})) + (calc(4 / 20 * 1rem)));
+}
+
 [cds-theme] {
   /* Global */
   --clr-global-font-size: var(--cds-global-base);
@@ -550,14 +556,20 @@
 
   /* Accordion */
 
-  --clr-accordion-text-color: var(--cds-alias-object-interaction-color); // var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-accordion-text-color: var(--cds-alias-object-interaction-color);
+  --clr-accordion-text-color-hover: var(--cds-alias-object-interaction-color-hover);
+  --clr-accordion-text-color-active: var(--cds-alias-object-interaction-color-active);
+  --clr-accordion-text-color-selected: var(--cds-alias-object-interaction-color-selected);
+
   --clr-accordion-panel-disabled-color: var(--cds-alias-object-interaction-color-disabled); // var(--clr-color-neutral-500);
 
   --clr-accordion-active-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
   --clr-accordion-content-background-color: var(--cds-alias-object-app-background); // var(--clr-color-neutral-0);
 
-  --clr-accordion-header-background-color: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
+  --clr-accordion-header-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-50);
+  --clr-accordion-header-disabled-background-color: var(--cds-alias-object-container-background);
   --clr-accordion-header-hover-background-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
+  --clr-accordion-header-active-background-color: var(--cds-alias-object-interaction-background-active); // var(--clr-color-neutral-200);
 
   --clr-accordion-error-color: var(--cds-alias-status-danger); // var(--clr-global-error-color);
   --clr-accordion-complete-color: var(--cds-alias-status-success); // var(--clr-global-success-color);
@@ -566,6 +578,25 @@
   --clr-accordion-border-left-color: var(--cds-alias-object-border-color-tint); // #{$clr-accordion-border-left-color};
   --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color); // indirectly mapped to CDS token
   --clr-accordion-border-left-color-error: var(--clr-accordion-error-color); // indirectly mapped to CDS token
+
+  --clr-accordion-title-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-global-typography-secondary-font-size));
+  --clr-accordion-title-font-weight: var(--cds-alias-typography-secondary-font-weight, var(--cds-global-typography-secondary-font-weight));
+
+  --clr-accordion-header-button-line-height: var(
+    --clr-p1-line-height,
+    #{convertCompactToStandardLineHeight(--cds-alias-typography-secondary-line-height, --cds-global-typography-secondary-line-height)}
+  ); // secondary line-height is 16px in tokens, but specified as 20px in figma.
+  --clr-accordion-header-button-padding: var(--cds-global-space-5) var(--cds-global-space-6);
+  --clr-accordion-header-button-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-alias-typography-secondary-font-size));
+
+  --clr-accordion-content-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-accordion-content-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-global-typography-secondary-font-size));
+
+  // v17 remove var in favor of gap:sm class
+  --clr-accordion-header-gap: var(--cds-global-space-5);
+  // v17: remove
+  --clr-accordion-status-icon-width: auto;
+  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
 
   /* Cards */
 
@@ -1077,6 +1108,20 @@
   --clr-login-footer-gap: var(--cds-global-space-7);
   --clr-login-footer-font-size: var(--clr-p6-font-size);
   --clr-login-footer-line-height: var(--clr-p6-line-height);
+
+  // Spinner
+  --clr-spinner-default-size: var(--cds-global-space-14);
+  --clr-spinner-medium-size: var(--cds-global-space-11);
+  --clr-spinner-small-size: var(--cds-global-space-7);
+  --clr-spinner-margin-right: var(--cds-global-space-6);
+  --clr-spinner-default-stroke-width: var(--cds-global-space-4);
+  --clr-spinner-medium-stroke-width: var(--cds-global-space-3);
+  --clr-spinner-small-stroke-width: var(--cds-global-space-2);
+  --clr-spinner-fill-bg-color: var(--cds-alias-object-container-background-shade);
+  --clr-spinner-fill-inverse-bg-color: var(--cds-alias-object-container-background-inverse);
+  --clr-spinner-fill-color: var(--cds-alias-status-info);
+  --clr-spinner-fill-inverse-color: var(--cds-alias-status-info-tint);
+  --clr-spinner-border-radius: var(--cds-alias-object-border-radius-300);
 
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
