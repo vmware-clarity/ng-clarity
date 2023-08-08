@@ -76,7 +76,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   responsiveNavToggleOpen: 'Open navigation menu',
   responsiveNavToggleClose: 'Close navigation menu',
   responsiveNavOverflowOpen: 'Open navigation overflow menu',
-  responsiveNavOverflowClose: 'Open navigation overflow menu',
+  responsiveNavOverflowClose: 'Close navigation overflow menu',
   //Vertical Nav
   verticalNavToggle: 'Toggle vertical navigation',
   // Timeline steps
