@@ -38,10 +38,28 @@
 
       &:hover,
       &:active {
-        $hoverSassVar: forms-variables.$clr-forms-select-hover-background;
-        $hoverCssVar: clr-forms-select-hover-background;
-        @include mixins.css-var(border-color, $hoverCssVar, $hoverSassVar, variables.$clr-use-custom-properties);
-        @include mixins.css-var(background, $hoverCssVar, $hoverSassVar, variables.$clr-use-custom-properties);
+        @include mixins.css-var(
+          border-color,
+          clr-forms-select-hover-border-color,
+          forms-variables.$clr-forms-select-hover-border-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background,
+          clr-forms-select-hover-background,
+          forms-variables.$clr-forms-select-hover-background,
+          variables.$clr-use-custom-properties
+        );
+
+        &:disabled {
+          cursor: not-allowed;
+          @include mixins.css-var(
+            border-color,
+            clr-forms-select-disabled-border-color,
+            forms-variables.$clr-forms-select-disabled-border-color,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
 
       &:disabled option {

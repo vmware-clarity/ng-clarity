@@ -53,6 +53,8 @@ $clr-forms-select-hover-background: rgba(
   color.blue(variables.$clr-color-neutral-300),
   0.5
 ) !default;
+$clr-forms-select-hover-border-color: $clr-forms-select-hover-background !default;
+$clr-forms-select-disabled-border-color: $clr-forms-border-disabled-color !default;
 $clr-forms-select-caret-hover-color: variables.$clr-color-neutral-600 !default;
 $clr-forms-select-caret-color: variables.$clr-color-neutral-500 !default;
 $clr-forms-select-caret-size: dropdown-variables.$clr-dropdown-caret-icon-dimension;

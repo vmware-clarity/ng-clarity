@@ -64,6 +64,8 @@
         #{color.blue(variables.$clr-color-neutral-300)},
         0.5
       );
+      --clr-forms-select-hover-border-color: var(--clr-forms-select-hover-background);
+      --clr-forms-select-disabled-border-color: #{forms-variables.$clr-forms-border-color};
       --clr-forms-select-caret-hover-color: var(--clr-color-neutral-600);
       --clr-forms-select-caret-color: var(--clr-color-neutral-500);
       --clr-forms-select-option-color: var(--clr-forms-text-color);
