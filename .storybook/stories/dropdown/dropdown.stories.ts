@@ -17,7 +17,7 @@ const defaultStory: Story = args => ({
         Dropdown
         <cds-icon shape="angle" direction="down"></cds-icon>
       </button>
-      <clr-dropdown-menu>
+      <clr-dropdown-menu *clrIfOpen="open">
         <div aria-label="Action 1" clrDropdownItem>Action 1</div>
         <div aria-label="Action 2" clrDropdownItem>Action 2</div>
         <div aria-label="Action 3" clrDropdownItem>Action 3</div>
@@ -30,8 +30,15 @@ const defaultStory: Story = args => ({
 const defaultParameters: Parameters = {
   title: 'Dropdown/Dropdown',
   component: ClrDropdown,
+  args: {
+    open: null,
+  },
 };
 
-const variants: Parameters[] = [];
+const variants: Parameters[] = [
+  {
+    open: true,
+  },
+];
 
 setupStorybook(ClrDropdownModule, defaultStory, defaultParameters, variants);
