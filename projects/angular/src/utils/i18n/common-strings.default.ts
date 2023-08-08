@@ -74,7 +74,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   stackViewChanged: 'Value changed.',
   // Responsive Nav
   responsiveNavToggleOpen: 'Open navigation menu',
-  responsiveNavToggleClose: 'Open navigation menu',
+  responsiveNavToggleClose: 'Close navigation menu',
   responsiveNavOverflowOpen: 'Open navigation overflow menu',
   responsiveNavOverflowClose: 'Open navigation overflow menu',
   //Vertical Nav
