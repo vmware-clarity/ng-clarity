@@ -65,10 +65,8 @@
 
     &:focus {
       @include mixins.include-slim-outline-style-form-fields();
-      @if variables.$clr-use-custom-properties == true {
-        background-color: var(--clr-forms-textarea-focus-background);
-        outline-color: var(--clr-forms-textarea-focus-outline);
-      }
+      //background-color: var(--clr-forms-textarea-focus-background);
+      outline-color: var(--clr-forms-textarea-focus-outline);
     }
 
     &:disabled {
