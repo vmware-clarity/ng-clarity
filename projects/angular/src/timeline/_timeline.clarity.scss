@@ -111,15 +111,18 @@
   // Note: headers (timestamps) are unable to auto-adjust height based on their siblings' using pure CSS.
   // Hence forcing them in one-line by using "nowrap".
   .clr-timeline-step-header {
+    white-space: nowrap;
     @include mixins.css-var(
       color,
       clr-timeline-step-header-color,
       timeline-variables.$clr-timeline-step-header-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-header-font-size;
-    line-height: timeline-variables.$clr-timeline-step-header-line-height;
-    white-space: nowrap;
+
+    font-weight: var(--clr-timeline-step-header-font-weight, inherit);
+    font-size: var(--clr-timeline-step-header-font-size, timeline-variables.$clr-timeline-step-header-font-size);
+    line-height: var(--clr-timeline-step-header-line-height, timeline-variables.$clr-timeline-step-header-line-height);
+
     @include mixins.css-var(
       margin-bottom,
       clr-timeline-step-internal-margin,
@@ -152,14 +155,14 @@
       timeline-variables.$clr-timeline-step-title-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-title-font-size;
+    font-size: var(--clr-timeline-step-title-font-size, timeline-variables.$clr-timeline-step-title-font-size);
     @include mixins.css-var(
       font-weight,
       clr-timeline-step-title-font-weight,
       timeline-variables.$clr-timeline-step-title-font-weight,
       variables.$clr-use-custom-properties
     );
-    line-height: timeline-variables.$clr-timeline-step-title-line-height;
+    line-height: var(--clr-timeline-step-title-line-height, timeline-variables.$clr-timeline-step-title-line-height);
     @include mixins.css-var(
       margin-top,
       clr-timeline-step-internal-margin,
@@ -181,8 +184,14 @@
       timeline-variables.$clr-timeline-step-description-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-description-font-size;
-    line-height: timeline-variables.$clr-timeline-step-description-line-height;
+    font-size: var(
+      --clr-timeline-step-description-font-size,
+      timeline-variables.$clr-timeline-step-description-font-size
+    );
+    line-height: var(
+      --clr-timeline-step-description-line-height,
+      timeline-variables.$clr-timeline-step-description-line-height
+    );
     button {
       display: block;
       @include mixins.css-var(

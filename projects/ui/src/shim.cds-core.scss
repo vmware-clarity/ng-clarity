@@ -861,6 +861,19 @@
 
   --clr-timeline-vertical-line-lenght: calc(100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)));
   --clr-timeline-internal-margin-0: var(--cds-global-space-0);
+
+  --clr-timeline-step-header-font-size: var(--cds-global-typography-font-size-3);
+  --clr-timeline-step-header-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-timeline-step-header-line-height: var(--cds-global-space-7);
+
+  --clr-timeline-step-title-font-size: var(--cds-global-typography-font-size-3);
+  --clr-timeline-step-title-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-timeline-step-title-line-height: var(--cds-global-space-7);
+
+  --clr-timeline-step-description-font-size: var(--cds-global-typography-font-size-1);
+  --clr-timeline-step-description-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-timeline-step-description-line-height: var(--cds-global-space-7);
+
   /* Toggles */
 
   // colors
