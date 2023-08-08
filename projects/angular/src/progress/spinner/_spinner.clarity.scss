@@ -175,7 +175,41 @@
     }
   }
 
-  //Spinners inside of small buttons
+  //Spinners inside of buttons
+  .btn {
+    .spinner {
+      display: inline-block;
+      margin-right: 0;
+      padding: 0;
+      text-indent: 100%;
+
+      @include mixins.min-equilateral-var(
+        clr-spinner-inside-button-size,
+        variables.$clr_baselineRem_0_65,
+        variables.$clr-use-custom-properties
+      );
+
+      &::before,
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        @include mixins.css-var(
+          border-width,
+          clr-spinner-inside-button-stroke-width,
+          variables.$clr_baselineRem_0_054167,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        @include mixins.min-equilateral-var(
+          clr-spinner-inside-button-size,
+          variables.$clr_baselineRem_0_65,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
+  }
+
   .btn-sm {
     .spinner {
       @include mixins.min-equilateral-var(
@@ -183,6 +217,46 @@
         variables.$clr_baselineRem_0_5416,
         variables.$clr-use-custom-properties
       );
+      &::before,
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        border-style: solid;
+        @include mixins.css-var(
+          border-width,
+          clr-spinner-inside-button-stroke-width,
+          variables.$clr_baselineRem_0_054167,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        @include mixins.min-equilateral-var(
+          clr-spinner-inside-small-button-size,
+          variables.$clr_baselineRem_0_5416,
+          variables.$clr-use-custom-properties
+        );
+      }
+      &::before {
+        content: '';
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-bg-color,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
+          variables.$clr-use-custom-properties
+        );
+      }
+      &::after {
+        content: '';
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-color,
+          spinner-variables.$clr-spinner-color,
+          variables.$clr-use-custom-properties
+        );
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+      }
     }
   }
 
