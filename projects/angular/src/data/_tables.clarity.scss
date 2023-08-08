@@ -43,16 +43,31 @@
       table-variables.$clr-table-font-color,
       variables.$clr-use-custom-properties
     );
-    margin: 0;
-    margin-top: variables.$clr_baselineRem_1;
+    @include mixins.css-var(
+      margin,
+      clr-table-margin,
+      variables.$clr_baselineRem_1 0 0 0,
+      variables.$clr-use-custom-properties
+    );
     max-width: 100%;
     width: 100%;
 
     #{$th},
     #{$td} {
-      font-size: table-variables.$clr-table-fontsize;
-      line-height: table-variables.$clr-table-lineheight;
       border-top-style: solid;
+      @include mixins.css-var(
+        font-size,
+        clr-table-data-cell-font-size,
+        table-variables.$clr-table-fontsize,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-table-data-cell-line-height,
+        table-variables.$clr-table-lineheight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(font-weight, clr-table-data-cell-font-weight, 400, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         border-top-width,
         clr-table-borderwidth,
@@ -65,8 +80,13 @@
         table-variables.$clr-tablerow-bordercolor,
         variables.$clr-use-custom-properties
       );
-      padding: table-variables.$clr-table-topcellpadding table-variables.$clr-table-cellpadding
-        table-variables.$clr-table-bottomcellpadding;
+      @include mixins.css-var(
+        padding,
+        clr-table-cell-padding,
+        table-variables.$clr-table-topcellpadding table-variables.$clr-table-cellpadding
+          table-variables.$clr-table-bottomcellpadding,
+        variables.$clr-use-custom-properties
+      );
       text-align: center;
       vertical-align: top;
 
@@ -74,8 +94,19 @@
         text-align: left;
 
         &:first-child {
-          padding-left: table-variables.$clr-table-smallpadding;
+          // ATM (after token migration)
+          // this padding left must be deleted
+          @include mixins.css-var(
+            padding-left,
+            clr-table-cell-padding-left,
+            table-variables.$clr-table-smallpadding,
+            variables.$clr-use-custom-properties
+          );
         }
+      }
+
+      &.right {
+        text-align: right;
       }
     }
 
@@ -86,16 +117,32 @@
         table-variables.$clr-thead-color,
         variables.$clr-use-custom-properties
       );
-      font-size: table-variables.$clr-thead-font-size;
-      font-weight: table-variables.$clr-thead-font-weight;
       letter-spacing: table-variables.$clr-thead-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-table-header-cell-font-size,
+        table-variables.$clr-thead-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-table-header-cell-line-height,
+        table-variables.$clr-table-lineheight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-table-header-cell-font-weight,
+        table-variables.$clr-thead-font-weight,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-thead-bgcolor,
         table-variables.$clr-thead-bgcolor,
         variables.$clr-use-custom-properties
       );
-      vertical-align: bottom;
+      @include mixins.css-var(vertical-align, clr-table-vertical-align, bottom, variables.$clr-use-custom-properties);
       border-bottom-style: solid;
       @include mixins.css-var(
         border-bottom-width,
@@ -186,8 +233,13 @@
   #{$table}-compact {
     #{$th},
     #{$td} {
-      padding-top: table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
-      padding-bottom: table-variables.$clr-table--compact-verticalPadding;
+      @include mixins.css-var(
+        padding,
+        clr-table-cell-compact-padding,
+        table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px
+          table-variables.$clr-table-cellpadding table-variables.$clr-table--compact-verticalPadding,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 }
@@ -317,13 +369,22 @@
     border-radius: 0;
     box-shadow: none;
     background-color: transparent;
-    border: 0;
+    @include mixins.css-var(border-width, clr-table-noborder-borderwidth, 0, variables.$clr-use-custom-properties);
 
     th {
-      background-color: transparent;
+      // ATM (after token migration)
+      // this background-color must be deleted
+      @include mixins.css-var(
+        background-color,
+        clr-table-noborder-bg-color,
+        transparent,
+        variables.$clr-use-custom-properties
+      );
+      // ATM (after token migration)
+      // this border-bottom-color must be transparent. Delete it.
       @include mixins.css-var(
         border-bottom-color,
-        clr-table-border-color,
+        clr-table-noborder-th-border-color,
         table-variables.$clr-table-border-color,
         variables.$clr-use-custom-properties
       );
@@ -339,8 +400,13 @@
     td {
       border-top: 0 none;
 
+      // ATM (after token migration)
+      // this padding top must be deleted
       // there's no border so we have to adjust padding to preserve baseline.
-      padding-top: table-variables.$clr-table-topcellpadding + table-variables.$clr-table-borderwidth;
+      padding-top: var(
+        --clr-table-cell-padding-vertical,
+        table-variables.$clr-table-topcellpadding + table-variables.$clr-table-borderwidth
+      );
 
       &:first-child {
         border-right: 0 none;
@@ -360,26 +426,47 @@
       border-radius: 0 !important;
 
       &:first-child {
-        padding-left: 0;
+        // ATM (after token migration)
+        // this padding left must be deleted
+        @include mixins.css-var(
+          padding-left,
+          clr-table-noborder-cell-padding-left,
+          0,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
 
+  // ATM
+  // delete all of .table.table-compact padding calculations
   .table.table-compact {
     th,
     td {
       // nudge down to force row to 24px height with border
-      padding-top: table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
-      padding-bottom: table-variables.$clr-table--compact-verticalPadding;
+      padding-top: var(
+        --clr-table-cell-compact-padding-vertical,
+        table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px
+      );
+      padding-bottom: var(
+        --clr-table-cell-compact-padding-vertical,
+        table-variables.$clr-table--compact-verticalPadding
+      );
     }
 
     &.table-noborder {
       th,
       td {
         // nudge down to force row to 24px height with border
-        padding-top: table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_2px;
+        padding-top: var(
+          --clr-table-cell-compact-padding-vertical,
+          table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_2px
+        );
         // account for now missing bottom border
-        padding-bottom: table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px;
+        padding-bottom: var(
+          --clr-table-cell-compact-padding-vertical,
+          table-variables.$clr-table--compact-verticalPadding + variables.$clr_baselineRem_1px
+        );
       }
     }
   }

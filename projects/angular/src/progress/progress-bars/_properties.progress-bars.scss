@@ -15,6 +15,28 @@
       --clr-progress-alt-color-2: var(--clr-color-danger-800); // red
       --clr-progress-alt-color-3: var(--clr-progress-alt-color-2); // red
       --clr-progress-bg-color: var(--clr-color-neutral-200);
+
+      --clr-progress-max-height: #{variables.$clr_baselineRem_0_583};
+      --clr-progress-min-height: #{variables.$clr_baselineRem_4px};
+      --clr-progress-loop-width: 75%;
+      --clr-progress-percantage-label-padding: 3em;
+      --clr-progress-card-margin-bottom: #{variables.$clr_baselineRem_0_5};
+      --clr-progress-block-items-padding-right: #{variables.$clr_baselineRem_0_5};
+      --clr-progress-block-first-item-padding-right: #{variables.$clr_baselineRem_0_75};
+
+      --clr-progress-clr-row-color: inherit;
+      --clr-progress-clr-row-font-weight: inherit;
+      --clr-progress-clr-row-font-size: inherit;
+      --clr-progress-clr-row-line-height: inherit;
+      --clr-progress-clr-row-letter-spacing: inherit;
+
+      --clr-progress-label-color: inherit;
+      --clr-progress-standart-font-weight: inherit;
+      --clr-progress-label-font-weight: 600;
+      --clr-progress-label-font-size: inherit;
+      --clr-progress-label-line-height: inherit;
+      --clr-progress-label-letter-spacing: inherit;
+      --clr-progress-label-max-width: inherit;
     }
   }
 }

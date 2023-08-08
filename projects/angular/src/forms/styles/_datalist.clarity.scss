@@ -10,7 +10,7 @@
 
 input[clrDatalistInput] {
   &::-webkit-calendar-picker-indicator {
-    display: none;
+    opacity: 0;
     cursor: text;
   }
 }
