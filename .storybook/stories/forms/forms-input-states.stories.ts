@@ -14,23 +14,23 @@ const defaultStory: Story = args => ({
   template: `
     <div>
     <form clrForm>
-      <clr-input-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-input-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Text</label>
         <input clrInput name="name" value="Test Value" [ngModel]="name" [disabled]="isDisabled"/>
       </clr-input-container>
-      <clr-input-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-input-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Number</label>
         <input clrInput type="number" [ngModel]="age" name="age" [disabled]="isDisabled"/>
       </clr-input-container>
-      <clr-password-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-password-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Password</label>
         <input clrPassword autocomplete="current-password" [ngModel]="password" name="password" [disabled]="isDisabled"/>
       </clr-password-container>
-      <clr-textarea-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-textarea-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Textarea</label>
         <textarea clrTextarea [ngModel]="description" name="description" [disabled]="isDisabled"></textarea>
       </clr-textarea-container>
-      <clr-select-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-select-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Select</label>
         <select clrSelect [ngModel]="options" name="options" [disabled]="isDisabled">
           <option value="one">One</option>
@@ -38,7 +38,7 @@ const defaultStory: Story = args => ({
           <option value="three">Three</option>
         </select>
       </clr-select-container>
-      <clr-checkbox-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-checkbox-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Checkbox</label>
         <clr-checkbox-wrapper>
           <input type="checkbox" clrCheckbox value="option1" [ngModel]="options1" name="options1" [disabled]="isDisabled"/>
@@ -49,11 +49,11 @@ const defaultStory: Story = args => ({
           <label>Option 2</label>
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
-      <clr-date-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-date-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Datepicker</label>
         <input type="date" autocomplete="off" clrDate [ngModel]="demo" name="demo" [disabled]="isDisabled"/>
       </clr-date-container>
-      <clr-radio-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-radio-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Radio</label>
         <clr-radio-wrapper>
           <input type="radio" clrRadio [ngModel]="radioOpt1" name="radioOpt1" value="radioOpt1" [disabled]="isDisabled"/>
@@ -64,11 +64,11 @@ const defaultStory: Story = args => ({
           <label>Option 2</label>
         </clr-radio-wrapper>
       </clr-radio-container>
-      <clr-range-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-range-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Range</label>
         <input type="range" clrRange [ngModel]="three" name="three" [disabled]="isDisabled"/>
       </clr-range-container>
-      <clr-input-container [ngClass]="{'clr-form-control-disabled': isDisabled,'clr-success': isSuccess,'clr-error': isError}">
+      <clr-input-container [ngClass]="{'clr-success': isSuccess,'clr-error': isError}">
         <label>Helper text</label>
         <input clrInput [ngModel]="name1" name="name1"[disabled]="isDisabled"/>
         <clr-control-helper>Helper text</clr-control-helper>
