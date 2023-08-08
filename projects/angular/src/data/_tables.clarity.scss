@@ -43,7 +43,12 @@
       table-variables.$clr-table-font-color,
       variables.$clr-use-custom-properties
     );
-    margin: variables.$clr_baselineRem_1 0 0 0;
+    @include mixins.css-var(
+      margin,
+      clr-table-margin,
+      variables.$clr_baselineRem_1 0 0 0,
+      variables.$clr-use-custom-properties
+    );
     max-width: 100%;
     width: 100%;
 

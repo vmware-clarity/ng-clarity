@@ -33,6 +33,7 @@
       // Usage: ./data/_tables.clarity.scss
       // Usage: ./data/datagrid/_datagrid.clarity.scss
       --clr-table-font-color: var(--clr-color-neutral-700);
+      --clr-table-margin: #{variables.$clr_baselineRem_1} 0 0 0;
 
       // Table header styles
       --clr-thead-color: #{table-variables.$clr-thead-color};
