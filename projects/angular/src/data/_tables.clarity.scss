@@ -49,9 +49,20 @@
 
     #{$th},
     #{$td} {
-      font-size: table-variables.$clr-table-fontsize;
-      line-height: table-variables.$clr-table-lineheight;
       border-top-style: solid;
+      @include mixins.css-var(
+        font-size,
+        clr-table-data-cell-font-size,
+        table-variables.$clr-table-fontsize,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-table-data-cell-line-height,
+        table-variables.$clr-table-lineheight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(font-weight, clr-table-data-cell-font-weight, 400, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         border-top-width,
         clr-table-borderwidth,
@@ -101,9 +112,25 @@
         table-variables.$clr-thead-color,
         variables.$clr-use-custom-properties
       );
-      font-size: table-variables.$clr-thead-font-size;
-      font-weight: table-variables.$clr-thead-font-weight;
       letter-spacing: table-variables.$clr-thead-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-table-header-cell-font-size,
+        table-variables.$clr-thead-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-table-header-cell-line-height,
+        table-variables.$clr-table-lineheight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-table-header-cell-font-weight,
+        table-variables.$clr-thead-font-weight,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-thead-bgcolor,

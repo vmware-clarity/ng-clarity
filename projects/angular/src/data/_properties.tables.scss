@@ -50,6 +50,9 @@
       --clr-table-noborder-bg-color: transparent;
       --clr-table-noborder-th-border-color: #{table-variables.$clr-table-border-color};
       --clr-table-vertical-align: bottom;
+      --clr-table-data-cell-font-size: #{table-variables.$clr-table-fontsize};
+      --clr-table-data-cell-line-height: #{table-variables.$clr-table-lineheight};
+      --clr-table-data-cell-font-weight: 400;
     }
   }
 }

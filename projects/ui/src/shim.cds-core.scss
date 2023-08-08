@@ -961,6 +961,12 @@
   --clr-table-cell-padding-left: var(--cds-global-space-7); // ATM delete this property
   --clr-table-noborder-cell-padding-left: var(--cds-global-space-7); // ATM delete this property
   --clr-table-vertical-align: middle;
+  --clr-table-data-cell-font-size: var(--cds-global-typography-font-size-4);
+  --clr-table-data-cell-line-height: var(--cds-global-space-7);
+  --clr-table-data-cell-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-table-header-cell-font-size: var(--cds-global-typography-font-size-1);
+  --clr-table-header-cell-line-height: var(--cds-global-space-7);
+  --clr-table-header-cell-font-weight: var(--cds-global-typography-font-weight-semibold);
 
   // Theme variables
   // Usage: ./data/_tables.clarity.scss
