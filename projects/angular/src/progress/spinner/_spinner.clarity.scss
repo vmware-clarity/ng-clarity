@@ -196,6 +196,53 @@
     }
   }
 
+  // Spinners inside treeview
+  .clr-treenode-spinner-container {
+    .spinner {
+      @include mixins.min-equilateral-var(
+        clr-spinner-inside-button-size,
+        variables.$clr_baselineRem_0_65,
+        variables.$clr-use-custom-properties
+      );
+      &::before,
+      &::after {
+        border-style: solid;
+        @include mixins.css-var(
+          border-width,
+          clr-spinner-inside-treeview-stroke-width,
+          variables.$clr_baselineRem_0_054167,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        @include mixins.min-equilateral-var(
+          clr-spinner-inside-button-size,
+          variables.$clr_baselineRem_0_65,
+          variables.$clr-use-custom-properties
+        );
+      }
+      &::before {
+        content: '';
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-bg-color,
+          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
+          variables.$clr-use-custom-properties
+        );
+      }
+      &::after {
+        content: '';
+        @include mixins.css-var(
+          border-color,
+          clr-spinner-fill-color,
+          spinner-variables.$clr-spinner-color,
+          variables.$clr-use-custom-properties
+        );
+        border-right-color: transparent !important;
+        border-bottom-color: transparent !important;
+      }
+    }
+  }
+
   @keyframes spin {
     0% {
       transform: rotate(0deg);
