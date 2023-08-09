@@ -20,11 +20,20 @@
     flex-direction: column;
     width: 100%;
     min-width: timeline-variables.$clr-timeline-step-min-width;
-    margin-left: timeline-variables.$clr-timeline-gutter-width;
+    @include mixins.css-var(
+      margin-left,
+      clr-timeline-step-margin,
+      timeline-variables.$clr-timeline-gutter-width,
+      variables.$clr-use-custom-properties
+    );
 
     cds-icon,
     clr-icon {
-      @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
+      @include mixins.min-equilateral-var(
+        clr-timeline-icon-size,
+        timeline-variables.$clr-timeline-icon-size,
+        variables.$clr-use-custom-properties
+      );
     }
 
     cds-icon[shape='circle'],
@@ -76,10 +85,22 @@
         timeline-variables.$clr-timeline-line-color,
         variables.$clr-use-custom-properties
       );
-      height: timeline-variables.$clr-timeline-line-thickness;
-      width: calc(
-        100% - #{0.5 * timeline-variables.$clr-timeline-icon-size} - #{timeline-variables.$clr-timeline-icon-inner-padding}
+      @include mixins.css-var(
+        height,
+        clr-timeline-line-width,
+        timeline-variables.$clr-timeline-line-thickness,
+        variables.$clr-use-custom-properties
       );
+
+      @include mixins.css-var(
+        width,
+        clr-timeline-horizontal-line-length,
+        calc(
+          100% - #{0.5 * timeline-variables.$clr-timeline-icon-size} - #{timeline-variables.$clr-timeline-icon-inner-padding}
+        ),
+        variables.$clr-use-custom-properties
+      );
+
       transform: translate(
         timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-icon-inner-padding,
         -0.5 * (timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size)
@@ -90,16 +111,38 @@
   // Note: headers (timestamps) are unable to auto-adjust height based on their siblings' using pure CSS.
   // Hence forcing them in one-line by using "nowrap".
   .clr-timeline-step-header {
+    white-space: nowrap;
     @include mixins.css-var(
       color,
       clr-timeline-step-header-color,
       timeline-variables.$clr-timeline-step-header-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-header-font-size;
-    line-height: timeline-variables.$clr-timeline-step-header-line-height;
-    white-space: nowrap;
-    margin-bottom: timeline-variables.$clr-timeline-step-header-padding-bottom;
+    @include mixins.css-var(
+      font-weight,
+      clr-timeline-step-header-font-weight,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-header-font-size,
+      timeline-variables.$clr-timeline-step-header-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-header-line-height,
+      timeline-variables.$clr-timeline-step-header-line-height,
+      variables.$clr-use-custom-properties
+    );
+
+    @include mixins.css-var(
+      margin-bottom,
+      clr-timeline-step-internal-margin,
+      timeline-variables.$clr-timeline-step-header-padding-bottom,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-timeline-step-body {
@@ -126,16 +169,36 @@
       timeline-variables.$clr-timeline-step-title-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-title-font-size;
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-title-font-size,
+      timeline-variables.$clr-timeline-step-title-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-title-line-height,
+      timeline-variables.$clr-timeline-step-title-line-height,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       font-weight,
       clr-timeline-step-title-font-weight,
       timeline-variables.$clr-timeline-step-title-font-weight,
       variables.$clr-use-custom-properties
     );
-    line-height: timeline-variables.$clr-timeline-step-title-line-height;
-    margin-top: timeline-variables.$clr-timeline-step-title-padding-top;
-    margin-bottom: timeline-variables.$clr-timeline-step-title-padding-bottom;
+    @include mixins.css-var(
+      margin-top,
+      clr-timeline-step-internal-margin,
+      timeline-variables.$clr-timeline-step-title-padding-top,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      margin-bottom,
+      clr-timeline-step-internal-margin,
+      timeline-variables.$clr-timeline-step-title-padding-bottom,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-timeline-step-description {
@@ -145,11 +208,32 @@
       timeline-variables.$clr-timeline-step-description-color,
       variables.$clr-use-custom-properties
     );
-    font-size: timeline-variables.$clr-timeline-step-description-font-size;
-    line-height: timeline-variables.$clr-timeline-step-description-line-height;
+    @include mixins.css-var(
+      font-weight,
+      clr-timeline-step-description-font-weight,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-size,
+      clr-timeline-step-description-font-size,
+      timeline-variables.$clr-timeline-step-description-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-timeline-step-description-line-height,
+      timeline-variables.$clr-timeline-step-description-line-height,
+      variables.$clr-use-custom-properties
+    );
     button {
       display: block;
-      margin-top: timeline-variables.$clr-timeline-step-description-button-top-margin;
+      @include mixins.css-var(
+        margin-top,
+        clr-timeline-step-internal-margin,
+        timeline-variables.$clr-timeline-step-description-button-top-margin,
+        variables.$clr-use-custom-properties
+      );
     }
     img {
       width: 100%;
@@ -167,19 +251,39 @@
       position: relative; // required for vertical line to get 100% height of step body it belongs to
 
       &:not(:last-of-type) {
-        margin-bottom: timeline-variables.$clr-timeline-vertical-gutter-width;
+        @include mixins.css-var(
+          margin-bottom,
+          clr-timeline-step-internal-margin,
+          timeline-variables.$clr-timeline-vertical-gutter-width,
+          variables.$clr-use-custom-properties
+        );
       }
 
       // style for the connecting line between icons
       &:not(:last-of-type) .clr-timeline-step-body::before {
         position: absolute;
-        width: timeline-variables.$clr-timeline-line-thickness;
-        height: calc(100% + #{2 * timeline-variables.$clr-timeline-icon-inner-padding});
-        transform: translate(
-          -0.5 * (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-icon-inner-padding -
-            timeline-variables.$clr-timeline-vertical-step-body-left-padding,
-          timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-icon-inner-padding -
-            timeline-variables.$clr-timeline-vertical-step-body-top-padding
+        @include mixins.css-var(
+          width,
+          clr-timeline-line-width,
+          timeline-variables.$clr-timeline-line-thickness,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          height,
+          clr-timeline-vertical-line-length,
+          calc(100% + #{2 * timeline-variables.$clr-timeline-icon-inner-padding}),
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          transform,
+          clr-timeline-vertical-line-position,
+          translate(
+            -0.5 * (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-icon-inner-padding -
+              timeline-variables.$clr-timeline-vertical-step-body-left-padding,
+            timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-icon-inner-padding -
+              timeline-variables.$clr-timeline-vertical-step-body-top-padding
+          ),
+          variables.$clr-use-custom-properties
         );
       }
     }
@@ -190,30 +294,48 @@
       word-break: break-word;
       width: timeline-variables.$clr-timeline-vertical-step-header-min-width;
       min-width: timeline-variables.$clr-timeline-vertical-step-header-min-width;
-      margin-right: timeline-variables.$clr-timeline-vertical-step-header-right-padding;
-      margin-top: timeline-variables.$clr-timeline-vertical-step-header-top-padding;
       margin-bottom: 0;
+      @include mixins.css-var(
+        margin-right,
+        clr-timeline-step-internal-margin,
+        timeline-variables.$clr-timeline-vertical-step-header-right-padding,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-top,
+        clr-timeline-step-internal-margin,
+        timeline-variables.$clr-timeline-vertical-step-header-top-padding,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-timeline-step-title {
-      margin-top: 0;
+      @include mixins.css-var(margin-top, clr-timeline-step-internal-margin, 0, variables.$clr-use-custom-properties);
     }
 
     .clr-timeline-step-body {
       display: flex;
       flex-direction: column;
       min-width: timeline-variables.$clr-timeline-vertical-step-min-width;
-      margin-left: timeline-variables.$clr-timeline-vertical-step-body-left-padding;
-      margin-top: timeline-variables.$clr-timeline-vertical-step-body-top-padding;
-    }
-  }
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
+      // ATM (after token migration)
+      // remove this margin calculation and clr-timeline-vertical-step-body-margin property.
+      // margin-top must be 0.
+      @include mixins.css-var(
+        margin,
+        clr-timeline-vertical-step-body-margin,
+        timeline-variables.$clr-timeline-vertical-step-body-top-padding 0 0
+          timeline-variables.$clr-timeline-vertical-step-body-left-padding,
+        variables.$clr-use-custom-properties
+      );
+      // replace it with
+      //margin-top: 0;
+      //@include mixins.css-var(
+      //    margin-left,
+      //    clr-timeline-step-internal-margin,
+      //    timeline-variables.$clr-timeline-vertical-step-body-left-padding,
+      //    variables.$clr-use-custom-properties
+      //);
     }
   }
 }

@@ -875,15 +875,40 @@
 
   /* Timeline */
 
-  --clr-timeline-line-color: var(--cds-alias-object-border-color-shade); // var(--clr-color-neutral-500);
-  --clr-timeline-step-header-color: var(--cds-alias-status-neutral); //  var(--cds-alias-object-border-color-shade); // var(--clr-color-neutral-600);
-  --clr-timeline-step-title-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
-  --clr-timeline-step-description-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
+  --clr-timeline-line-color: var(--cds-alias-object-interaction-border-color); // var(--clr-color-neutral-500);
+  --clr-timeline-step-header-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); //  var(--cds-alias-object-border-color-shade); // var(--clr-color-neutral-600);
+  --clr-timeline-step-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
+  --clr-timeline-step-description-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
 
-  --clr-timeline-incomplete-step-color: var(--cds-alias-object-border-color-shade); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
+  --clr-timeline-incomplete-step-color: var(--cds-alias-object-interaction-border-color); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
   --clr-timeline-current-step-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-color-action-600);
   --clr-timeline-success-step-color: var(--cds-alias-status-success); // var(--clr-color-success-400);
   --clr-timeline-error-step-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
+
+  --clr-timeline-icon-size: var(--cds-global-space-11);
+  --clr-timeline-line-width: var(--cds-global-space-2);
+  --clr-timeline-step-margin: var(--cds-global-space-5);
+  --clr-timeline-step-internal-margin: var(--cds-global-space-6); // internal property cannot be exposed
+  --clr-timeline-horizontal-line-length: calc(100% - calc(var(--clr-timeline-icon-size) - var(--clr-timeline-step-internal-margin)));
+  --clr-timeline-vertical-step-body-margin: 0 0 0 var(--clr-timeline-step-internal-margin);
+  --clr-timeline-vertical-line-position: translate(
+    calc(-0.5 * calc(var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)) - var(--clr-timeline-step-internal-margin)),
+    calc(var(--clr-timeline-icon-size) - var(--clr-timeline-line-width))
+  );
+
+  --clr-timeline-vertical-line-length: calc(100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)));
+
+  --clr-timeline-step-header-font-size: var(--cds-global-typography-font-size-3);
+  --clr-timeline-step-header-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-timeline-step-header-line-height: var(--cds-global-space-7);
+
+  --clr-timeline-step-title-font-size: var(--cds-global-typography-font-size-3);
+  --clr-timeline-step-title-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-timeline-step-title-line-height: var(--cds-global-space-7);
+
+  --clr-timeline-step-description-font-size: var(--cds-global-typography-font-size-1);
+  --clr-timeline-step-description-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-timeline-step-description-line-height: var(--cds-global-space-7);
 
   /* Toggles */
 
