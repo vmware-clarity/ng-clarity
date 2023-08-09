@@ -633,12 +633,12 @@
 
   // Generic
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
-  --clr-forms-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
+  --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-forms-invalid-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
-  --clr-forms-invalid-text-color: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-800);
+  --clr-forms-invalid-text-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
   --clr-forms-valid-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
-  --clr-forms-valid-text-color: var(--cds-alias-status-success-shade); // var(--clr-color-success-900);
+  --clr-forms-valid-text-color: var(--cds-alias-status-success); // var(--clr-color-success-900);
   --clr-forms-subtext-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300)); // var(--clr-color-neutral-600);
   --clr-forms-placeholder-color: var(--cds-alias-typography-color-200, var(--cds-global-typography-color-200)); // var(--clr-color-neutral-600);
   --clr-forms-border-color: var(--cds-alias-object-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
@@ -677,7 +677,7 @@
   // Select
   --clr-forms-select-hover-background: transparent;
   --clr-forms-select-hover-border-color: var(--cds-alias-object-interaction-color-hover);
-  --clr-forms-select-disabled-border-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-select-disabled-border-color: var(--cds-alias-object-container-background);
   --clr-forms-select-caret-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
   --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
