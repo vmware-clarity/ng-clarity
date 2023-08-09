@@ -56,7 +56,12 @@
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
         #{color.adjust(forms-variables.$clr-forms-invalid-color, $lightness: 30%)};
-
+      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
+        variables.$clr_baselineRem_2px
+        forms-variables.$clr-forms-baseline *
+        2};
+      --clr-forms-textarea-wrapper-margin-left: 0;
+      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       // Select
       --clr-forms-select-hover-background: rgba(
         #{color.red(variables.$clr-color-neutral-300)},
@@ -74,14 +79,6 @@
           forms-variables.$clr-forms-invalid-color,
           $lightness: 30%
         )};
-      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
-        variables.$clr_baselineRem_2px
-        forms-variables.$clr-forms-baseline *
-        2};
-      --clr-forms-textarea-wrapper-margin-left: 0;
-      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-      --clr-forms-textarea-disabled-border-color: #{forms-variables.$clr-forms-border-color};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
