@@ -175,20 +175,29 @@
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    min-height: alert-variables.$clr-alert-item-min-height;
-    margin-bottom: variables.$clr_baselineRem_0_25;
+    @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
 
+    min-height: alert-variables.$clr-alert-item-min-height;
+    @include mixins.css-var(
+      margin-bottom,
+      clr-alert-item-margin-bottom,
+      variables.$clr_baselineRem_0_25,
+      variables.$clr-use-custom-properties
+    );
     &:last-child {
       margin-bottom: 0;
     }
   }
 
   .alert-items {
-    $vertPadding: variables.$clr_baselineRem_10px;
-    $horizPadding: variables.$clr_baselineRem_0_5 - alert-variables.$clr-alert-borderwidth;
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    padding: $vertPadding $horizPadding;
+    @include mixins.css-var(
+      padding,
+      clr-alert-padding,
+      variables.$clr_baselineRem_10px variables.$clr_baselineRem_0_5 - alert-variables.$clr-alert-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     display: flex;
   }
 
@@ -197,11 +206,11 @@
   //close alert button.
   .alert-item > span,
   .alert-text {
-    display: inline-block; //needed for IE11
-    flex-grow: 1;
+    // display: inline-block; //needed for IE11
+    @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 0, variables.$clr-use-custom-properties);
     flex-shrink: 1;
-    flex-basis: 98%; //needed for IE11
-    max-width: 98%; //needed for IE11
+    // flex-basis: 98%; //needed for IE11
+    // max-width: 98%; //needed for IE11
     margin-right: variables.$clr_baselineRem_0_5;
     text-align: left;
   }
@@ -209,8 +218,12 @@
   .alert {
     font-size: alert-variables.$clr-alert-font-size;
     letter-spacing: alert-variables.$clr-alert-letter-spacing;
-
-    line-height: variables.$clr_baselineRem_0_75;
+    @include mixins.css-var(
+      line-height,
+      clr-alert-line-height,
+      variables.$clr_baselineRem_0_75,
+      variables.$clr-use-custom-properties
+    );
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -324,10 +337,20 @@
     }
 
     .close ~ .alert-item > .alert-actions {
-      padding-right: variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding-right,
+        clr-alert-actions-spacing,
+        variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
 
       & > .alert-action:last-child {
-        margin-right: variables.$clr_baselineRem_0_5;
+        @include mixins.css-var(
+          margin-right,
+          clr-alert-actions-spacing,
+          variables.$clr_baselineRem_0_5,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
@@ -359,9 +382,12 @@
     .alert-items {
       // line-height of 24px on .alert-item inside app-level-alert
       // blows out the sizing, so we need vert-padding to be 6px, not 8px
-      $appLevelAlertVertPadding: variables.$clr_baselineRem_0_25;
-      padding-top: $appLevelAlertVertPadding;
-      padding-bottom: $appLevelAlertVertPadding;
+      @include mixins.css-var(
+        padding,
+        clr-alert-app-padding,
+        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_25,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .alert-item {
@@ -376,13 +402,18 @@
       }
     }
 
-    .alert-item > span,
-    .alert-text {
-      flex: 0 1 100%; // IE11 needs 100% here.
-    }
+    // .alert-item > span,
+    // .alert-text {
+    //   flex: 0 1 100%; // IE11 needs 100% here.
+    // }
 
     .alert-icon-wrapper {
-      margin-top: variables.$clr_baselineRem_0_125;
+      @include mixins.css-var(
+        margin-top,
+        clr-alert-icon-wrapper-margin-top,
+        variables.$clr_baselineRem_0_125,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .close {
@@ -402,7 +433,6 @@
   }
 
   .alert-sm {
-    $alertSmallLineHeight: variables.$clr_baselineRem_0_667;
     $alertSmallNudge: variables.$clr_baselineRem_4px;
 
     // need to use 11 instead of 12 here or else vertical alignment is thrown off
@@ -410,7 +440,12 @@
     // sub-pixel required but rounding up to the nearest whole pixel...
     font-size: variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px;
     letter-spacing: normal;
-    line-height: $alertSmallLineHeight;
+    @include mixins.css-var(
+      line-height,
+      clr-alert-sm-line-height,
+      variables.$clr_baselineRem_0_667,
+      variables.$clr-use-custom-properties
+    );
 
     .alert-items {
       padding: ($alertSmallNudge - alert-variables.$clr-alert-borderwidth)
@@ -428,7 +463,7 @@
 
     .alert-icon-wrapper {
       padding-top: 0;
-      height: $alertSmallLineHeight;
+      height: variables.$clr_baselineRem_0_667;
     }
 
     .alert-icon {

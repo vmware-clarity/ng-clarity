@@ -100,6 +100,16 @@
 | --clr-app-alert-warning-pager-bg-color           | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
+| --clr-alert-padding                              | Padding of the alert                                              |
+| --clr-alert-borderradius                         | Alert border radius                                               |
+| --clr-alert-actions-spacing                      | Alert actions spacing                                             |
+| --clr-alert-item-margin-bottom                   | Alert item margin bottom                                          |
+| --clr-alert-line-height                          | Alert line height                                                 |
+| --clr-alert-sm-line-height                       | Alert small line height                                           |
+| --clr-alert-app-padding                          | App level alert padding                                           |
+| --clr-alert-text-flex-grow                       | Alert text flow grow, Use 1 or 0                                  |
+| --clr-alert-icon-wrapper-margin-top              | Alert icon wrapper margin top                                     |
+| --clr-alert-items-gap                            | Gap between items in the alert                                    |
 
 ## CSS Classes
 

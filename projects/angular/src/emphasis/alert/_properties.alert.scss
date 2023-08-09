@@ -29,7 +29,18 @@
 
       // Dimensions & Layout
       // Usage: ./_alert.clarity.scss
+      --clr-alert-padding: #{variables.$clr_baselineRem_10px
+        variables.$clr_baselineRem_0_5 -
+        alert-variables.$clr-alert-borderwidth};
       --clr-alert-borderradius: var(--clr-global-borderradius);
+      --clr-alert-actions-spacing: #{variables.$clr_baselineRem_0_5};
+      --clr-alert-item-margin-bottom: #{variables.$clr_baselineRem_0_25};
+      --clr-alert-line-height: #{variables.$clr_baselineRem_0_75};
+      --clr-alert-sm-line-height: #{variables.$clr_baselineRem_0_667};
+      --clr-alert-app-padding: #{variables.$clr_baselineRem_0_25};
+      --clr-alert-text-flex-grow: 0;
+      --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125};
+      --clr-alert-items-gap: 0;
 
       // Info type
       // Usage: ./_alert.clarity.scss
