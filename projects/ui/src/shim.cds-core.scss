@@ -633,12 +633,12 @@
 
   // Generic
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
-  --clr-forms-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
+  --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-forms-invalid-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
-  --clr-forms-invalid-text-color: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-800);
+  --clr-forms-invalid-text-color: var(--cds-alias-status-danger); // var(--clr-color-danger-800);
   --clr-forms-valid-color: var(--cds-alias-status-success); // var(--clr-color-success-700);
-  --clr-forms-valid-text-color: var(--cds-alias-status-success-shade); // var(--clr-color-success-900);
+  --clr-forms-valid-text-color: var(--cds-alias-status-success); // var(--clr-color-success-900);
   --clr-forms-subtext-color: var(--cds-alias-typography-color-300, var(--cds-global-typography-color-300)); // var(--clr-color-neutral-600);
   --clr-forms-placeholder-color: var(--cds-alias-typography-color-200, var(--cds-global-typography-color-200)); // var(--clr-color-neutral-600);
   --clr-forms-border-color: var(--cds-alias-object-interaction-border-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
@@ -666,10 +666,7 @@
   // Textarea
   --clr-forms-textarea-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-forms-select-caret-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600);
-  --clr-forms-textarea-focus-background: var(--cds-alias-object-interaction-background-selected);
-  --clr-forms-textarea-focus-outline: var(--cds-alias-object-interaction-background-highlight);
   --clr-forms-textarea-disabled-background: var(--cds-alias-object-container-background);
-  --clr-forms-textarea-disabled-border-color: var(--cds-alias-object-interaction-color-disabled);
   --clr-forms-select-caret-color: var(--cds-alias-object-interaction-color); // var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
@@ -677,7 +674,6 @@
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
   --clr-forms-textarea-padding: var(--cds-global-space-7);
   --clr-forms-textarea-border-radius: var(--cds-alias-object-border-radius-100);
-  --clr-forms-textarea-wrapper-margin-left: var(--cds-global-space-5);
   --clr-forms-textarea-wrapper-margin-top: var(--cds-global-space-5);
 
   // Checkbox
