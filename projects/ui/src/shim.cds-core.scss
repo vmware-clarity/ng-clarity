@@ -726,13 +726,10 @@
   --clr-forms-password-eye-icon-min-height: var(--cds-global-space-7); // show/hide icon min-height
   --clr-forms-password-eye-icon-width: var(--cds-global-space-7); // show/hide icon width
 
-  --clr-forms-password-typography-color: var(--cds-alias-typography-color-400); // not present for the moment
-
   // TODO: Make sure this is what we need,
   //  in spec it is --cds-alias-interaction-color, which is gray, hence it's put as fallback here
   --clr-forms-password-eye-icon-color: var(--cds-alias-object-interaction-color);
   --clr-forms-password-disabled-eye-icon-color: var(--cds-alias-status-disabled);
-  --clr-forms-password-disabled-typography-color: var(--cds-alias-typography-disabled, var(--cds-alias-typography-color-400));
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
