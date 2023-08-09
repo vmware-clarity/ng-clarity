@@ -196,7 +196,7 @@
     @include mixins.css-var(
       margin-bottom,
       clr-timeline-step-internal-margin,
-      timeline-variables.$clr-timeline-step-header-padding-bottom,
+      timeline-variables.$clr-timeline-step-title-padding-bottom,
       variables.$clr-use-custom-properties
     );
   }
