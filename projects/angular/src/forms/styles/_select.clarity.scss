@@ -162,23 +162,44 @@
     }
   }
 
-  .clr-error select:not([multiple]) {
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+  .clr-error select {
+    &:not([multiple]) {
+      @include mixins.css-var(
+        border-bottom-color,
+        clr-forms-invalid-color,
+        forms-variables.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &[multiple] {
+      @include mixins.css-var(
+        border-color,
+        clr-forms-invalid-color,
+        forms-variables.$clr-forms-invalid-color,
+        variables.$clr-use-custom-properties
+      );
+    }
   }
 
-  .clr-error select[multiple] {
-    @include mixins.css-var(
-      border-color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+  .clr-success select {
+    &:not([multiple]) {
+      @include mixins.css-var(
+        border-bottom-color,
+        clr-forms-valid-color,
+        forms-variables.$clr-forms-valid-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &[multiple] {
+      @include mixins.css-var(
+        border-color,
+        clr-forms-valid-color,
+        forms-variables.$clr-forms-valid-color,
+        variables.$clr-use-custom-properties
+      );
+    }
   }
+
   .clr-form-control-disabled .clr-select {
     &.disabled {
       @include forms-mixins.disabled-form-fields();
