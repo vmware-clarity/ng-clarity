@@ -209,6 +209,12 @@
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
+      font-weight,
+      clr-timeline-step-description-font-weight,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
       font-size,
       clr-timeline-step-description-font-size,
       timeline-variables.$clr-timeline-step-description-font-size,
@@ -264,7 +270,7 @@
         );
         @include mixins.css-var(
           height,
-          clr-timeline-vertical-line-lenght,
+          clr-timeline-vertical-line-length,
           calc(100% + #{2 * timeline-variables.$clr-timeline-icon-inner-padding}),
           variables.$clr-use-custom-properties
         );
