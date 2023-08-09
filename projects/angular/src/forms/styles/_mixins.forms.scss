@@ -203,17 +203,34 @@
   }
 }
 
+////
 @mixin range-style(
   $height,
+  $height-prop: null,
   $background-color,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
   -webkit-appearance: none;
   left: 0;
-  height: $height;
 
+  @include mixins.css-var(height, $height-prop, $height, $use-custom-props);
   @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+}
+
+@mixin range-border-style(
+  $border-color,
+  $border-color-prop,
+  $border-radius,
+  $border-radius-prop,
+  $border-width,
+  $border-width-prop,
+  $use-custom-props: variables.$clr-use-custom-properties
+) {
+  border-style: solid;
+  @include mixins.css-var(border-color, $border-color-prop, $border-color, $use-custom-props);
+  @include mixins.css-var(border-radius, $border-radius-prop, $border-radius, $use-custom-props);
+  @include mixins.css-var(border-width, $border-width-prop, $border-width, $use-custom-props);
 }
 
 @mixin range-track-style(
@@ -231,14 +248,14 @@
 @mixin range-thumb-style(
   $margin,
   $size,
+  $size-prop,
   $background-color,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
   margin-top: $margin;
   border-radius: 50%;
-  height: $size;
-  width: $size;
 
   @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.equilateral-var($size-prop, $size, $use-custom-props);
 }

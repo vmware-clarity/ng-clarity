@@ -123,7 +123,13 @@
 
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
+      // TODO: ATM - have only one track color
       --clr-forms-range-track-color: var(--clr-color-neutral-200);
+      --clr-forms-range-track-background-color: #{forms-variables.$clr-forms-range-track-color};
+      --clr-forms-range-track-border-color: #{forms-variables.$clr-forms-range-border-color};
+      --clr-forms-range-thumb-height: #{forms-variables.$clr-forms-range-thumb-height};
+      --clr-forms-range-track-height: #{forms-variables.$clr-forms-range-track-height};
+      --clr-forms-range-track-border-radius: #{forms-variables.$clr-forms-range-border-radius};
 
       // Datalist
 
