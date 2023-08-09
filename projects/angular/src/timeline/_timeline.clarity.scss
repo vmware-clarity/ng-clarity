@@ -304,7 +304,6 @@
     }
 
     .clr-timeline-step-title {
-      margin-top: 0;
       @include mixins.css-var(margin-top, clr-timeline-step-internal-margin, 0, variables.$clr-use-custom-properties);
     }
 
