@@ -62,6 +62,8 @@
         2};
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
+      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
+
       // Select
       --clr-forms-select-hover-background: rgba(
         #{color.red(variables.$clr-color-neutral-300)},
