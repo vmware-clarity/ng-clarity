@@ -35,6 +35,19 @@
       --clr-stack-view-stack-block-content-text-color: inherit;
       --clr-stack-view-stack-block-expanded-text-color: var(--clr-color-neutral-1000);
       --clr-stack-view-stack-block-caret-color: var(--clr-global-font-color);
+
+      --clr-stack-view-stack-block-label-padding: #{variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5};
+      --clr-stack-view-key-margin: 0;
+      --clr-stack-view-stack-block-caret-margin-right: #{variables.$clr_baselineRem_0_2};
+      --clr-stack-view-stack-block-caret-dimension: #{variables.$clr_baselineRem_0_583};
+      --clr-stack-view-block-label-before-margin: #{(variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px)
+        variables.$clr_baselineRem_0_2
+        0
+        0}; // ATM remove this property
+      --clr-stack-view-stack-children-block-label-padding-left: #{variables.$clr_baselineRem_1_5};
+      --clr-stack-view-stack-children-block-content-padding-left: #{variables.$clr_baselineRem_0_3}; // ATM remove this property
+      --clr-stack-view-stack-title-btn-margin-right: #{-1 * variables.$clr_baselineRem_0_5}; // ATM remove this property
+      --clr-stack-view-stack-title-padding: #{variables.$clr_baselineRem_0_25 0};
     }
   }
 }

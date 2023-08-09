@@ -35,24 +35,39 @@
       display: block;
       flex: 1 1 auto;
       padding: variables.$clr_baselineRem_0_25 0;
+      @include mixins.css-var(
+        padding,
+        clr-stack-view-stack-title-padding,
+        variables.$clr_baselineRem_0_25 0,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .stack-actions {
       display: block;
       flex: 0 0 auto;
 
+      // ATM
+      // delete entire .stack-action section
+      // all margin and padding overloading is not needed
       .stack-action {
-        margin: 0 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5;
+        margin: 0 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5; // ATM delete this margin
 
         &.btn {
           min-width: 0;
-          padding: 0 variables.$clr_baselineRem_0_5;
+          padding: 0 variables.$clr_baselineRem_0_5; // ATM delete this padding
         }
 
         &.btn-link {
+          // ATM delete this margin right
           // Weird negative margin to make the button aligned with the stack view
           // in its default state. It then looks unaligned on hover only.
-          margin-right: -1 * variables.$clr_baselineRem_0_5;
+          @include mixins.css-var(
+            margin-right,
+            clr-stack-view-stack-title-btn-margin-right,
+            -1 * variables.$clr_baselineRem_0_5,
+            variables.$clr-use-custom-properties
+          );
         }
       }
     }
@@ -151,7 +166,12 @@
     }
 
     .stack-block-label {
-      padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding,
+        clr-stack-view-stack-block-label-padding,
+        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         background-color,
         clr-stack-view-stack-block-label-and-content-bg-color,
@@ -186,12 +206,24 @@
       flex: 1 1 auto;
       display: flex;
 
+      // ATM
+      // before section is caret placeholder remove it and replace it with pure padding right
+      // padding-right: var(--cds-global-space-9);
       &::before {
         display: inline-block;
         content: '';
         float: left;
-        @include mixins.equilateral(variables.$clr_baselineRem_0_583);
-        margin: (variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px) variables.$clr_baselineRem_0_2 0 0;
+        @include mixins.equilateral-var(
+          clr-stack-view-stack-block-caret-dimension,
+          variables.$clr_baselineRem_0_583,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          margin,
+          clr-stack-view-block-label-before-margin,
+          (variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px) variables.$clr_baselineRem_0_2 0 0,
+          variables.$clr-use-custom-properties
+        );
         text-align: center;
       }
 
@@ -204,11 +236,22 @@
     .stack-view-key {
       flex: 0 0 40%;
       max-width: 40%;
+
+      @include mixins.css-var(margin, clr-stack-view-key-margin, 0, variables.$clr-use-custom-properties);
     }
 
     .stack-block-caret {
-      @include mixins.equilateral(variables.$clr_baselineRem_0_583);
-      margin-right: variables.$clr_baselineRem_0_2;
+      @include mixins.equilateral-var(
+        clr-stack-view-stack-block-caret-dimension,
+        variables.$clr_baselineRem_0_583,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-right,
+        clr-stack-view-stack-block-caret-margin-right,
+        variables.$clr_baselineRem_0_2,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         fill,
         clr-stack-view-stack-block-caret-color,
@@ -275,7 +318,11 @@
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           @include images.icon-background-styles();
           transform: rotate(-90deg);
-          @include mixins.equilateral(variables.$clr_baselineRem_0_5);
+          @include mixins.equilateral-var(
+            clr-stack-view-stack-block-caret-dimension,
+            variables.$clr_baselineRem_0_5,
+            variables.$clr-use-custom-properties
+          );
         }
       }
       > .stack-block-label,
@@ -336,14 +383,25 @@
     .stack-children clr-stack-block,
     .stack-children {
       .stack-block-label {
-        padding-left: variables.$clr_baselineRem_1_5;
+        @include mixins.css-var(
+          padding-left,
+          clr-stack-view-stack-children-block-label-padding-left,
+          variables.$clr_baselineRem_1_5,
+          variables.$clr-use-custom-properties
+        );
 
         &::before {
           display: none;
         }
       }
       .stack-block-content {
-        padding-left: variables.$clr_baselineRem_0_3;
+        // ATM remove this padding-left calculation
+        @include mixins.css-var(
+          padding-left,
+          clr-stack-view-stack-children-block-content-padding-left,
+          variables.$clr_baselineRem_0_3,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
