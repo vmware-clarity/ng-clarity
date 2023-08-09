@@ -726,7 +726,7 @@
 
   /* Datepicker */
 
-  --clr-calendar-background-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
+  --clr-calendar-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-calendar-border-color: var(--cds-alias-object-container-border-color); // var(--clr-color-neutral-400);
   --clr-datepicker-trigger-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-datepicker-trigger-hover-color: var(--clr-color-action-800);
@@ -734,10 +734,10 @@
   --clr-calendar-btn-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-calendar-btn-hover-focus-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-global-hover-color);
 
-  --clr-calendar-today-date-cell-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
-  --clr-calendar-active-cell-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
-  --clr-calendar-active-focus-cell-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
-  --clr-calendar-active-cell-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
+  --clr-calendar-today-date-cell-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
+  --clr-calendar-active-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
+  --clr-calendar-active-focus-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
+  --clr-calendar-active-cell-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
 
   /* Dropdown */
 
