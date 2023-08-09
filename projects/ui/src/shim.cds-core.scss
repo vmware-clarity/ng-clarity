@@ -891,7 +891,7 @@
   );
 
   --clr-timeline-vertical-line-lenght: calc(100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)));
-  --clr-timeline-internal-margin-0: var(--cds-global-space-0); // ATM remove this property
+  --clr-timeline-vertical-step-body-margin: 0 0 0 var(--clr-timeline-step-internal-margin); // ATM remove this property
 
   --clr-timeline-step-header-font-size: var(--cds-global-typography-font-size-3);
   --clr-timeline-step-header-font-weight: var(--cds-global-typography-font-weight-medium);

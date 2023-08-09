@@ -311,20 +311,25 @@
       display: flex;
       flex-direction: column;
       min-width: timeline-variables.$clr-timeline-vertical-step-min-width;
-      @include mixins.css-var(
-        margin-left,
-        clr-timeline-step-internal-margin,
-        timeline-variables.$clr-timeline-vertical-step-body-left-padding,
-        variables.$clr-use-custom-properties
-      );
+
       // ATM (after token migration)
-      // remove margin-top or set it to 0
+      // remove this margin calculation and clr-timeline-vertical-step-body-margin property.
+      // margin-top must be 0.
       @include mixins.css-var(
-        margin-top,
-        clr-timeline-internal-margin-0,
-        timeline-variables.$clr-timeline-vertical-step-body-top-padding,
+        margin,
+        clr-timeline-vertical-step-body-margin,
+        timeline-variables.$clr-timeline-vertical-step-body-top-padding 0 0
+          timeline-variables.$clr-timeline-vertical-step-body-left-padding,
         variables.$clr-use-custom-properties
       );
+      // replace it with
+      //margin-top: 0;
+      //@include mixins.css-var(
+      //    margin-left,
+      //    clr-timeline-step-internal-margin,
+      //    timeline-variables.$clr-timeline-vertical-step-body-left-padding,
+      //    variables.$clr-use-custom-properties
+      //);
     }
   }
 }
