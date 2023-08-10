@@ -9,7 +9,7 @@
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables';
 @use 'variables.stack-view' as stack-view-variables;
 
 @mixin lastElementBottomBorder($use-custom-props: true) {
@@ -34,6 +34,13 @@
     .stack-title {
       display: block;
       flex: 1 1 auto;
+
+      @include mixins.css-var(
+        color,
+        clr-stack-view-title-color,
+        variables.$clr-h4-color,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         padding,
         clr-stack-view-stack-title-padding,
@@ -382,11 +389,52 @@
       &:hover:not(.stack-block-expanded) {
         > .stack-block-label {
           @include mixins.css-var(
-            background-color,
+            color,
             clr-stack-view-stack-block-expandable-hover,
+            stack-view-variables.$clr-stack-view-color,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            background-color,
+            clr-stack-view-stack-block-expandable-bg-hover,
             stack-view-variables.$clr-stack-view-stack-block-expandable-hover,
             variables.$clr-use-custom-properties
           );
+
+          .stack-block-caret {
+            @include mixins.css-var(
+              fill,
+              clr-stack-view-stack-block-expandable-hover,
+              stack-view-variables.$clr-stack-view-stack-block-caret-color,
+              variables.$clr-use-custom-properties
+            );
+          }
+        }
+
+        &:active {
+          > .stack-block-label {
+            @include mixins.css-var(
+              color,
+              clr-stack-view-stack-block-expandable-active,
+              stack-view-variables.$clr-stack-view-color,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              background-color,
+              clr-stack-view-stack-block-expandable-bg-active,
+              stack-view-variables.$clr-stack-view-stack-block-expandable-hover,
+              variables.$clr-use-custom-properties
+            );
+
+            .stack-block-caret {
+              @include mixins.css-var(
+                fill,
+                clr-stack-view-stack-block-expandable-active,
+                stack-view-variables.$clr-stack-view-stack-block-caret-color,
+                variables.$clr-use-custom-properties
+              );
+            }
+          }
         }
       }
     }
@@ -429,6 +477,63 @@
           stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
           variables.$clr-use-custom-properties
         );
+
+        .stack-block-caret {
+          @include mixins.css-var(
+            fill,
+            clr-stack-view-stack-block-expanded-text-color,
+            stack-view-variables.$clr-stack-view-stack-block-caret-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+
+        &:hover {
+          @include mixins.css-var(
+            background-color,
+            clr-stack-view-stack-block-expandable-bg-hover,
+            stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            color,
+            clr-stack-view-stack-block-expandable-hover,
+            stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
+            variables.$clr-use-custom-properties
+          );
+
+          .stack-block-caret {
+            @include mixins.css-var(
+              fill,
+              clr-stack-view-stack-block-expandable-hover,
+              stack-view-variables.$clr-stack-view-stack-block-caret-color,
+              variables.$clr-use-custom-properties
+            );
+          }
+
+          &:active {
+            @include mixins.css-var(
+              background-color,
+              clr-stack-view-stack-block-expandable-bg-active,
+              stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              color,
+              clr-stack-view-stack-block-expandable-active,
+              stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
+              variables.$clr-use-custom-properties
+            );
+
+            .stack-block-caret {
+              @include mixins.css-var(
+                fill,
+                clr-stack-view-stack-block-expandable-active,
+                stack-view-variables.$clr-stack-view-stack-block-caret-color,
+                variables.$clr-use-custom-properties
+              );
+            }
+          }
+        }
       }
     }
 
