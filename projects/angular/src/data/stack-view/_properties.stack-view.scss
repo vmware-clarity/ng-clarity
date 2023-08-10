@@ -36,6 +36,7 @@
       --clr-stack-view-stack-block-expanded-text-color: var(--clr-color-neutral-1000);
       --clr-stack-view-stack-block-caret-color: var(--clr-global-font-color);
 
+      --clr-stack-view-border-width: #{stack-view-variables.$clr-stack-view-border-width};
       --clr-stack-view-stack-block-label-padding: #{variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5};
       --clr-stack-view-key-margin: 0;
       --clr-stack-view-stack-block-caret-margin-right: #{variables.$clr_baselineRem_0_2};

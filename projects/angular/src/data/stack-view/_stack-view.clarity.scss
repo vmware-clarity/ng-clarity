@@ -101,9 +101,14 @@
     overflow-y: auto;
     word-wrap: break-word;
     margin-top: 0;
-    border-width: stack-view-variables.$clr-stack-view-border-width;
     border-style: solid;
 
+    @include mixins.css-var(
+      border-width,
+      clr-stack-view-border-width,
+      stack-view-variables.$clr-stack-view-border-width,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       border-color,
       clr-stack-view-border-color,
