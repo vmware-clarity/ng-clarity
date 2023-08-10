@@ -48,6 +48,16 @@
       --clr-stack-view-stack-children-block-content-padding-left: #{variables.$clr_baselineRem_0_3}; // ATM remove this property
       --clr-stack-view-stack-title-btn-margin-right: #{-1 * variables.$clr_baselineRem_0_5}; // ATM remove this property
       --clr-stack-view-stack-title-padding: #{variables.$clr_baselineRem_0_25 0};
+
+      --clr-stack-view-stack-title-font-size: var(--clr-h4-font-size);
+      --clr-stack-view-stack-title-font-weight: var(--clr-h4-font-weight);
+      --clr-stack-view-stack-title-line-height: inherit;
+      --clr-stack-view-stack-title-letter-spacing: inherit;
+
+      --clr-stack-view-stack-row-font-size: #{stack-view-variables.$clr-stack-view-font-size};
+      --clr-stack-view-stack-row-font-weight: #{stack-view-variables.$clr-stack-view-font-weight};
+      --clr-stack-view-stack-row-line-height: #{stack-view-variables.$clr-stack-view-line-height};
+      --clr-stack-view-stack-row-letter-spacing: #{stack-view-variables.$clr-stack-view-letter-spacing};
     }
   }
 }

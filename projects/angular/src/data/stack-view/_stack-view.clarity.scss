@@ -40,6 +40,31 @@
         variables.$clr_baselineRem_0_25 0,
         variables.$clr-use-custom-properties
       );
+
+      @include mixins.css-var(
+        font-weight,
+        clr-stack-view-stack-title-font-weight,
+        200,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-size,
+        clr-stack-view-stack-title-font-size,
+        0.9rem,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-stack-view-stack-title-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-stack-view-stack-title-letter-spacing,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .stack-actions {
@@ -73,16 +98,8 @@
   }
 
   .stack-view {
-    @include mixins.css-var(
-      color,
-      clr-stack-view-color,
-      stack-view-variables.$clr-stack-view-color,
-      variables.$clr-use-custom-properties
-    );
-    font-size: stack-view-variables.$clr-stack-view-font-size;
-    font-weight: stack-view-variables.$clr-stack-view-font-weight;
-    line-height: stack-view-variables.$clr-stack-view-line-height;
-    letter-spacing: stack-view-variables.$clr-stack-view-letter-spacing;
+    overflow-y: auto;
+    word-wrap: break-word;
     margin-top: 0;
     border-width: stack-view-variables.$clr-stack-view-border-width;
     border-style: solid;
@@ -99,14 +116,42 @@
       stack-view-variables.$clr-stack-view-border-radius,
       variables.$clr-use-custom-properties
     );
-    overflow-y: auto;
+    @include mixins.css-var(
+      color,
+      clr-stack-view-color,
+      stack-view-variables.$clr-stack-view-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-stack-view-stack-row-font-weight,
+      stack-view-variables.$clr-stack-view-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-size,
+      clr-stack-view-stack-row-font-size,
+      stack-view-variables.$clr-stack-view-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-stack-view-stack-row-line-height,
+      stack-view-variables.$clr-stack-view-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-stack-view-stack-row-letter-spacing,
+      stack-view-variables.$clr-stack-view-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       background-color,
       clr-stack-view-bg-color,
       stack-view-variables.$clr-stack-view-bg-color,
       variables.$clr-use-custom-properties
     );
-    word-wrap: break-word;
 
     dd,
     dt {
@@ -120,20 +165,20 @@
       display: flex;
       // Wrapping for nested stack-blocks
       flex-flow: row wrap;
+      overflow-y: hidden;
+      border-bottom-style: solid;
       @include mixins.css-var(
         border-bottom-width,
         clr-global-borderwidth,
         variables.$clr-global-borderwidth,
         variables.$clr-use-custom-properties
       );
-      border-bottom-style: solid;
       @include mixins.css-var(
         border-bottom-color,
         clr-stack-view-stack-block-border-bottom,
         stack-view-variables.$clr-stack-view-stack-block-border-bottom,
         variables.$clr-use-custom-properties
       );
-      overflow-y: hidden;
     }
 
     // We have to handle potential nested elements, typically for web components

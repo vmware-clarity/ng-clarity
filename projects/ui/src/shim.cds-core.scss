@@ -865,6 +865,16 @@
   --clr-stack-view-stack-title-padding: 0 0 var(--cds-global-space-5);
   --clr-stack-view-stack-title-btn-margin-right: 0; // ATM remove this property
 
+  --clr-stack-view-stack-title-font-size: var(--cds-global-typography-font-size-5);
+  --clr-stack-view-stack-title-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-stack-view-stack-title-line-height: var(--clr-p3-line-height);
+  --clr-stack-view-stack-title-letter-spacing: var(--clr-p3-letter-spacing);
+
+  --clr-stack-view-stack-row-font-size: var(--cds-global-typography-font-size-3);
+  --clr-stack-view-stack-row-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-stack-view-stack-row-line-height: var(--clr-p4-line-height);
+  --clr-stack-view-stack-row-letter-spacing: var(--clr-p4-letter-spacing);
+
   /* Subnav */
 
   --clr-subnav-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
