@@ -32,7 +32,7 @@
 
       // children of an expanded row
       --clr-stack-view-stack-block-expanded-bg-color: var(--clr-global-selection-color);
-      --clr-stack-view-stack-block-expandable-hover: var(--clr-color-neutral-200);
+      --clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-stack-block-label-text-color);
       --clr-stack-view-stack-block-content-text-color: inherit;
       --clr-stack-view-stack-block-expanded-text-color: var(--clr-color-neutral-1000);
       --clr-stack-view-stack-block-caret-color: var(--clr-global-font-color);
@@ -61,6 +61,11 @@
       --clr-stack-view-stack-row-font-weight: #{stack-view-variables.$clr-stack-view-font-weight};
       --clr-stack-view-stack-row-line-height: #{stack-view-variables.$clr-stack-view-line-height};
       --clr-stack-view-stack-row-letter-spacing: #{stack-view-variables.$clr-stack-view-letter-spacing};
+
+      // ATM: remove and replace all caret occurrences with respected text color
+      --clr-stack-view-stack-block-expanded-caret-color: var(--clr-stack-view-stack-block-caret-color);
+      --clr-stack-view-stack-block-expandable-active-caret-color: var(--clr-stack-view-stack-block-caret-color);
+      --clr-stack-view-stack-block-expandable-hover-caret-color: var(--clr-stack-view-stack-block-caret-color);
     }
   }
 }

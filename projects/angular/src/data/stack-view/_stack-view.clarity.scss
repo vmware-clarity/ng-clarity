@@ -496,7 +496,7 @@
           );
           @include mixins.css-var(
             color,
-            clr-stack-view-stack-block-expandable-hover,
+            clr-stack-view-stack-block-expandable-text-hover,
             stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
             variables.$clr-use-custom-properties
           );
