@@ -23,18 +23,6 @@
     white-space: nowrap;
 
     .fill-input {
-      &::after {
-        content: '';
-        clip-path: circle(8px at calc(100% - 8px) 50%) !important;
-        background-color: var(
-          --clr-forms-range-progress-fill-color,
-          forms-variables.$clr-forms-range-progress-fill-color
-        );
-        display: block;
-        min-height: 5px;
-        transform: translate(1px, -2px);
-      }
-
       position: absolute;
       left: 0;
       display: inline-block;
@@ -76,10 +64,53 @@
       variables.$clr-use-custom-properties
     );
 
-    &:disabled,
+    &:disabled {
+      pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
+      cursor: not-allowed;
+
+      @include forms-mixins.range-style(
+        forms-variables.$clr-forms-range-track-height,
+        clr-forms-range-track-height,
+        forms-variables.$clr-forms-range-track-color-disabled,
+        clr-forms-range-track-color-disabled
+      );
+    }
+
+    &:disabled::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+
+      @include forms-mixins.range-thumb-style(
+        forms-variables.$clr-forms-range-thumb-margin,
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        forms-variables.$clr-forms-range-progress-fill-color-disabled,
+        clr-forms-range-progress-fill-color
+      );
+    }
+    &:disabled::-moz-range-thumb {
+      border: 0;
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+
+      @include forms-mixins.range-thumb-style(
+        forms-variables.$clr-forms-range-thumb-margin,
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        forms-variables.$clr-forms-range-progress-fill-color-disabled,
+        clr-forms-range-progress-fill-color
+      );
+    }
+
     &:disabled + .fill-input {
       pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
       cursor: not-allowed;
+
+      @include mixins.css-var(
+        background-color,
+        clr-forms-range-progress-fill-color-disabled,
+        forms-variables.$clr-form-disabled-background-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
