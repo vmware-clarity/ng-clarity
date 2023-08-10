@@ -30,11 +30,16 @@
 | --clr-accordion-border-left-color-complete       | Color of the left border in the accordion for the complete state.    |
 | --clr-accordion-border-left-color-error          | Color of the left border in the accordion for the error state.       |
 | --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                       |
+| --clr-accordion-header-left-current-indicator    | Left indicator style for the accordion header when on current step.  |
 | --clr-accordion-header-left-complete-indicator   | Left indicator style for the accordion header in the complete state. |
 | --clr-accordion-header-left-error-indicator      | Left indicator style for the accordion header in the error state.    |
 | --clr-accordion-header-button-line-height        | Line height of the button used for the header.                       |
 | --clr-accordion-header-gap                       | Gap between the icon and title text in the accordion header.         |
 | --clr-accordion-status-icon-width                | Width of the icon used for the accordion arrow.                      |
+| --clr-accordion-number-padding                   | Padding for the step number.                                         |
+| --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                               |
+| --clr-accordion-step-title-font-weight           | Font weight for the step title and number.                           |
+| --clr-accordion-header-font-size                 | Header font size.                                                    |
 
 ## CSS Classes
 

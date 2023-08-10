@@ -29,6 +29,7 @@
       --clr-accordion-header-button-font-size: #{variables.$clr_baselineRem_0_5};
       --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
       --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
+      --clr-accordion-number-padding: 0 #{accordion-variables.$clr-accordion-padding};
 
       --clr-accordion-title-font-weight: 500;
       --clr-accordion-title-font-size: #{variables.$clr_baselineRem_0_5416};
@@ -41,6 +42,7 @@
 
       --clr-accordion-border-left-color: #{accordion-variables.$clr-accordion-border-left-color};
       --clr-accordion-border-left-width: #{variables.$clr_baselineRem_0_25};
+      --clr-accordion-border-left-color-current: var(--clr-accordion-border-left-color);
       --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color);
       --clr-accordion-border-left-color-error: var(--clr-accordion-error-color);
 
@@ -50,6 +52,11 @@
         0
         0
         var(--clr-accordion-border-left-color);
+      --clr-accordion-header-left-current-indicator: inset
+        var(--clr-accordion-border-left-width)
+        0
+        0
+        var(--clr-accordion-border-left-color-current);
       --clr-accordion-header-left-complete-indicator: inset
         var(--clr-accordion-border-left-width)
         0
@@ -66,6 +73,9 @@
 
       --clr-accordion-content-color: #{accordion-variables.$clr-accordion-content-color};
       --clr-accordion-content-font-size: #{accordion-variables.$clr-accordion-content-font-size};
+      --clr-accordion-description-margin-left: #{accordion-variables.$clr-accordion-description-margin-left};
+      --clr-accordion-step-title-min-width: #{accordion-variables.$clr-accordion-step-title-min-width};
+      --clr-accordion-step-title-font-weight: #{accordion-variables.$clr-accordion-step-title-font-weight};
     }
   }
 }
