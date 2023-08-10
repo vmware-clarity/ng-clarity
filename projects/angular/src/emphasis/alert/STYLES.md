@@ -107,8 +107,6 @@
 | --clr-alert-line-height                          | Alert line height                                                 |
 | --clr-alert-sm-line-height                       | Alert small line height                                           |
 | --clr-alert-app-padding                          | App level alert padding                                           |
-| --clr-alert-text-flex-grow                       | Alert text flow grow, Use 1 or 0                                  |
-| --clr-alert-icon-wrapper-margin-top              | Alert icon wrapper margin top                                     |
 | --clr-alert-items-gap                            | Gap between items in the alert                                    |
 
 ## CSS Classes

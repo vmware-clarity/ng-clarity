@@ -38,8 +38,8 @@
       --clr-alert-line-height: #{variables.$clr_baselineRem_0_75};
       --clr-alert-sm-line-height: #{variables.$clr_baselineRem_0_667};
       --clr-alert-app-padding: #{variables.$clr_baselineRem_0_25};
-      --clr-alert-text-flex-grow: 0;
-      --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125};
+      --clr-alert-text-flex-grow: 1; // ATM: delete after token migration
+      --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125}; // ATM: delete after token migration
       --clr-alert-items-gap: 0;
 
       // Info type

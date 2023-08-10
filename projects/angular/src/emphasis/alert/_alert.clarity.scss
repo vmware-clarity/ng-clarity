@@ -207,7 +207,7 @@
   .alert-item > span,
   .alert-text {
     // display: inline-block; //needed for IE11
-    @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 1, variables.$clr-use-custom-properties);
     flex-shrink: 1;
     // flex-basis: 98%; //needed for IE11
     // max-width: 98%; //needed for IE11

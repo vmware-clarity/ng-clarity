@@ -457,8 +457,8 @@
   --clr-alert-line-height: var(--cds-global-typography-font-size-7);
   --clr-alert-sm-line-height: var(--cds-global-typography-font-size-6);
   --clr-alert-app-padding: var(--cds-alias-global-space-4);
-  --clr-alert-text-flex-grow: 1;
-  --clr-alert-icon-wrapper-margin-top: 0;
+  --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
+  --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
   --clr-alert-items-gap: var(--cds-alias-global-space-5);
 
   // App Alerts Pager
