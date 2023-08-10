@@ -14,6 +14,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
+    // TODO: Tokenize this
     height: forms-variables.$clr-forms-range-thumb-height;
     white-space: nowrap;
 
@@ -64,6 +65,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    // TODO: Tokenize this
     height: forms-variables.$clr-forms-range-thumb-height;
 
     &:disabled,
