@@ -404,7 +404,7 @@
           .stack-block-caret {
             @include mixins.css-var(
               fill,
-              clr-stack-view-stack-block-expandable-hover,
+              clr-stack-view-stack-block-expandable-hover-caret-color,
               stack-view-variables.$clr-stack-view-stack-block-caret-color,
               variables.$clr-use-custom-properties
             );
@@ -429,7 +429,7 @@
             .stack-block-caret {
               @include mixins.css-var(
                 fill,
-                clr-stack-view-stack-block-expandable-active,
+                clr-stack-view-stack-block-expandable-active-caret-color,
                 stack-view-variables.$clr-stack-view-stack-block-caret-color,
                 variables.$clr-use-custom-properties
               );
@@ -481,7 +481,7 @@
         .stack-block-caret {
           @include mixins.css-var(
             fill,
-            clr-stack-view-stack-block-expanded-text-color,
+            clr-stack-view-stack-block-expanded-caret-color,
             stack-view-variables.$clr-stack-view-stack-block-caret-color,
             variables.$clr-use-custom-properties
           );
@@ -504,7 +504,7 @@
           .stack-block-caret {
             @include mixins.css-var(
               fill,
-              clr-stack-view-stack-block-expandable-hover,
+              clr-stack-view-stack-block-expandable-hover-caret-color,
               stack-view-variables.$clr-stack-view-stack-block-caret-color,
               variables.$clr-use-custom-properties
             );
@@ -527,7 +527,7 @@
             .stack-block-caret {
               @include mixins.css-var(
                 fill,
-                clr-stack-view-stack-block-expandable-active,
+                clr-stack-view-stack-block-expandable-active-caret-color,
                 stack-view-variables.$clr-stack-view-stack-block-caret-color,
                 variables.$clr-use-custom-properties
               );

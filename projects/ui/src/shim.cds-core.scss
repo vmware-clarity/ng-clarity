@@ -855,6 +855,12 @@
   --clr-stack-view-stack-block-content-text-color: var(--cds-alias-object-interaction-color);
   --clr-stack-view-stack-block-caret-color: var(--cds-alias-object-interaction-color); // indirectly mapped
 
+  // ATM
+  // remove and replace all occurrences with respected text color
+  --clr-stack-view-stack-block-expanded-caret-color: var(--clr-stack-view-stack-block-expanded-text-color);
+  --clr-stack-view-stack-block-expandable-active-caret-color: var(--clr-stack-view-stack-block-expandable-active);
+  --clr-stack-view-stack-block-expandable-hover-caret-color: var(--clr-stack-view-stack-block-expandable-hover);
+
   --clr-stack-view-border-width: var(--cds-alias-object-border-width-100);
   --clr-stack-view-block-expanded-border-bottom-style: solid; // ATM: remove this property
   --clr-stack-view-stack-block-label-padding: var(--cds-global-space-5) var(--cds-global-space-6);
