@@ -385,7 +385,7 @@
       @include mixins.css-var(
         padding,
         clr-alert-app-padding,
-        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_25,
+        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_458,
         variables.$clr-use-custom-properties
       );
     }
