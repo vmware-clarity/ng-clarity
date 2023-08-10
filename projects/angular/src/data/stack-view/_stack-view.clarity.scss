@@ -34,7 +34,6 @@
     .stack-title {
       display: block;
       flex: 1 1 auto;
-      padding: variables.$clr_baselineRem_0_25 0;
       @include mixins.css-var(
         padding,
         clr-stack-view-stack-title-padding,

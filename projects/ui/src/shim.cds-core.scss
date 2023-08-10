@@ -834,12 +834,12 @@
   --clr-stack-view-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-50);
   --clr-stack-view-stack-block-border-bottom: var(--cds-alias-object-border-color); // var(--clr-color-neutral-300);
   --clr-stack-view-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
-  --clr-stack-view-stack-block-label-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // indirectly mapped
+  --clr-stack-view-stack-block-label-text-color: var(--cds-alias-object-interaction-color); // indirectly mapped
 
   //border-bottom for stack-view rows (not last)
   --clr-stack-view-border-box-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-300);
   --clr-stack-block-changed-border-top-color: var(--cds-alias-object-border-color); // var(--clr-color-action-600);
-  --clr-stack-view-stack-block-label-and-content-bg-color: var(--cds-alias-object-container-background-tint); // var(--clr-color-neutral-50);
+  --clr-stack-view-stack-block-label-and-content-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-50);
 
   // stack-view row bg color when not expanded
   --clr-stack-view-stack-children-stack-block-border-bottom-color: var(--cds-alias-object-border-color-tint); // var(--clr-color-neutral-200);
@@ -852,7 +852,7 @@
   --clr-stack-view-stack-block-expandable-hover: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-200);
   --clr-stack-view-stack-block-content-text-color: inherit;
   --clr-stack-view-stack-block-expanded-text-color: var(--cds-alias-object-interaction-color-selected); // var(--clr-color-neutral-1000);
-  --clr-stack-view-stack-block-caret-color: var(--cds-alias-object-interaction-color-selected); // indirectly mapped
+  --clr-stack-view-stack-block-caret-color: var(--cds-alias-object-interaction-color); // indirectly mapped
 
   --clr-stack-view-stack-block-label-padding: var(--cds-global-space-5) var(--cds-global-space-6);
   --clr-stack-view-key-margin: 0 var(--cds-global-space-7) 0 0;
