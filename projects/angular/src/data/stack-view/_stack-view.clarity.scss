@@ -174,7 +174,7 @@
       border-bottom-style: solid;
       @include mixins.css-var(
         border-bottom-width,
-        clr-global-borderwidth,
+        clr-stack-view-border-width,
         variables.$clr-global-borderwidth,
         variables.$clr-use-custom-properties
       );
@@ -397,6 +397,26 @@
       }
 
       > .stack-block-label {
+        // ATM
+        // replace the mixin with border-bottom-style: solid
+        @include mixins.css-var(
+          border-bottom-style,
+          clr-stack-view-block-expanded-border-bottom-style,
+          none,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          border-bottom-width,
+          clr-stack-view-border-width,
+          variables.$clr-global-borderwidth,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          border-bottom-color,
+          clr-stack-view-stack-block-border-bottom,
+          stack-view-variables.$clr-stack-view-stack-block-border-bottom,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.css-var(
           background-color,
           clr-stack-view-stack-block-expanded-bg-color,

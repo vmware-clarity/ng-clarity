@@ -855,6 +855,7 @@
   --clr-stack-view-stack-block-caret-color: var(--cds-alias-object-interaction-color); // indirectly mapped
 
   --clr-stack-view-border-width: var(--cds-alias-object-border-width-100);
+  --clr-stack-view-block-expanded-border-bottom-style: solid; // ATM: remove this property
   --clr-stack-view-stack-block-label-padding: var(--cds-global-space-5) var(--cds-global-space-6);
   --clr-stack-view-key-margin: 0 var(--cds-global-space-7) 0 0;
   --clr-stack-view-stack-block-caret-margin-right: var(--cds-global-space-5);
