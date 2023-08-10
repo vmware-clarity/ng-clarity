@@ -205,7 +205,8 @@
         @include forms-mixins.range-thumb-style(
           0,
           forms-variables.$clr-forms-range-thumb-height,
-          clr-forms-range-thumb-height forms-variables.$clr-forms-range-progress-fill-color,
+          clr-forms-range-thumb-height,
+          forms-variables.$clr-forms-range-progress-fill-color,
           clr-forms-range-progress-fill-color
         );
       }
