@@ -14,8 +14,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    // TODO: Tokenize this
-    height: forms-variables.$clr-forms-range-thumb-height;
+    @include mixins.css-var(
+      height,
+      clr-forms-range-thumb-height,
+      forms-variables.$clr-forms-range-thumb-height,
+      variables.$clr-use-custom-properties
+    );
     white-space: nowrap;
 
     .fill-input {
@@ -65,8 +69,12 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    // TODO: Tokenize this
-    height: forms-variables.$clr-forms-range-thumb-height;
+    @include mixins.css-var(
+      height,
+      clr-forms-range-thumb-height,
+      forms-variables.$clr-forms-range-thumb-height,
+      variables.$clr-use-custom-properties
+    );
 
     &:disabled,
     &:disabled + .fill-input {
