@@ -120,7 +120,7 @@
       forms-variables.$clr-forms-range-track-height,
       clr-forms-range-track-height,
       forms-variables.$clr-forms-range-track-color,
-      clr-forms-range-track-color // TODO: Check which one to choose? clr-forms-range-track-background-color
+      clr-forms-range-track-color
     );
 
     @include forms-mixins.range-border-style(
