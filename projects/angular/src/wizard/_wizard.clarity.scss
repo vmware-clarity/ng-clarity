@@ -91,7 +91,18 @@
       flex-direction: row;
       width: 100%;
       // align focus style across modal title
-      line-height: variables.$clr_baselineRem_1_13;
+      @include mixins.css-var(
+        font-size,
+        clr-h4-font-size,
+        modal-variables.$clr-modal-title-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-h4-line-height,
+        variables.$clr_baselineRem_1_13,
+        variables.$clr-use-custom-properties
+      );
       margin-top: -1 * variables.$clr_baselineRem_0_13;
     }
 
@@ -411,8 +422,13 @@
         0 variables.$clr_baselineRem_0_125 0 variables.$clr_baselineRem_0_416,
         variables.$clr-use-custom-properties
       );
-      font-size: variables.$clr_baselineRem_0_583;
       font-weight: inherit;
+      @include mixins.css-var(
+        font-size,
+        clr-wizard-stepnav-link-font-size,
+        variables.$clr_baselineRem_0_583,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         line-height,
         clr-wizard-stepnav-link-line-height,
@@ -469,8 +485,18 @@
         variables.$clr-use-custom-properties
       );
       flex: 0 0 auto;
-      font-size: modal-variables.$clr-modal-title-font-size;
-      line-height: modal-variables.$clr-modal-title-line-height;
+      @include mixins.css-var(
+        font-size,
+        clr-wizard-title-font-size,
+        modal-variables.$clr-modal-title-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-wizard-title-line-height,
+        modal-variables.$clr-modal-title-line-height,
+        variables.$clr-use-custom-properties
+      );
     }
 
     // normal modal ignores this. wizard needs it so the nav and content

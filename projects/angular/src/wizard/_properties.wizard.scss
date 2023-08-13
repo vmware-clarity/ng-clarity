@@ -27,12 +27,14 @@
       --clr-wizard-stepnav-active-border-radius: var(--clr-wizard-border-radius);
 
       --clr-wizard-stepnav-border-color: hsl(0, 0%, 89%);
+      --clr-wizard-box-shadow-color: rgba(0, 0, 0, 0.2);
       --clr-wizard-box-shadow: 0
         #{variables.$clr_baselineRem_1px}
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
-        rgba(0, 0, 0, 0.2);
+        var(--clr-wizard-box-shadow-color);
 
+      --clr-wizard-stepnav-link-font-size: #{variables.$clr_baselineRem_0_583};
       --clr-wizard-stepnav-link-line-height: #{variables.$clr_baselineRem_1};
       --clr-wizard-stepnav-item-padding: #{variables.$clr_baselineRem_0_25}
         0
@@ -62,6 +64,8 @@
         (wizard-variables.$clr-wizard-default-space * 0.5)
         wizard-variables.$clr-wizard-default-space
         wizard-variables.$clr-wizard-default-space};
+      --clr-wizard-title-font-size: #{modal-variables.$clr-modal-title-font-size};
+      --clr-wizard-title-line-height: #{modal-variables.$clr-modal-title-line-height};
       --clr-wizard-content-background-color: #{modal-variables.$clr-modal-bg-color};
       --clr-wizard-header-padding: #{wizard-variables.$clr-wizard-default-space
         (wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_5px)
