@@ -4,23 +4,34 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables';
 
 @include mixins.exports('tab.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../layout/nav/_nav.clarity.scss
       --clr-nav-box-shadow-color: var(--clr-color-neutral-400);
-      --clr-nav-active-box-shadow-color: var(--clr-color-action-600);
+      --clr-nav-active-box-shadow-color: var(--clr-color-action-600); // ATM - remove
+      --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color);
       --clr-nav-active-bg-color: var(--clr-global-selection-color);
       --clr-nav-hover-bg-color: var(--clr-color-neutral-200);
+      --clr-nav-active-border-width: #{variables.$clr_baselineRem_3px};
+      --clr-nav-selected-hover-background-color: var(--clr-nav-active-bg-color);
 
+      --clr-nav-horizontal-gap-size: #{variables.$clr_baselineRem_1};
+      --clr-nav-vertical-gap-size: 0;
+      --clr-nav-link-dropdown-toggle-padding: 0 #{variables.$clr_baselineRem_0_125};
+      --clr-nav-horizontal-link-padding: 0 #{variables.$clr_baselineRem_0_125};
+      --clr-nav-vertical-link-padding: 0 #{variables.$clr_baselineRem_0_5};
       --clr-nav-link-color: var(--clr-color-neutral-700);
       --clr-nav-link-active-color: var(--clr-color-neutral-1000);
 
       --clr-nav-link-font-weight: var(--clr-p1-font-weight);
+      --clr-nav-link-font-size: #{variables.$clr-p1-font-size};
+      --clr-nav-link-line-height: #{variables.$clr_baselineRem_1_5};
 
       --clr-nav-link-active-font-weight: var(--clr-nav-link-font-weight);
+      --clr-nav-item-margin-right: #{variables.$clr_baselineRem_1}; // ATM - remove
     }
   }
 }

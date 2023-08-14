@@ -7,6 +7,7 @@
 @use '../../utils/variables/variables.global';
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as nav-variables;
+@use '../tabs/tabs.clarity' as tabs;
 
 @include mixins.exports('nav.clarity') {
   .nav {
@@ -26,10 +27,15 @@
         var(--clr-nav-box-shadow-color, tabs-variables.$clr-nav-box-shadow-color)
         inset;
     }
+    @include mixins.css-var(
+      gap,
+      clr-nav-horizontal-gap-size,
+      variables.$clr_baselineRem_1,
+      variables.$clr-use-custom-properties
+    );
 
     .nav-item {
       display: inline-block;
-      margin-right: variables.$clr_baselineRem_1;
 
       &.active > .nav-link {
         @include mixins.css-var(
@@ -51,24 +57,39 @@
     }
 
     .nav-link {
+      position: relative;
       @include mixins.css-var(
         color,
         clr-nav-link-color,
         tabs-variables.$clr-nav-link-color,
         variables.$clr-use-custom-properties
       );
-      font-size: tabs-variables.$clr-nav-link-font-size;
+      @include mixins.css-var(
+        font-size,
+        clr-nav-link-font-size,
+        tabs-variables.$clr-nav-link-font-size,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         font-weight,
         clr-nav-link-font-weight,
         tabs-variables.$clr-nav-link-font-weight,
         variables.$clr-use-custom-properties
       );
+      @include mixins.css-var(
+        line-height,
+        clr-nav-link-line-height,
+        nav-variables.$clr-subnav-height,
+        variables.$clr-use-custom-properties
+      );
       letter-spacing: tabs-variables.$clr-nav-link-letter-spacing;
-      line-height: nav-variables.$clr-subnav-height;
+      @include mixins.css-var(
+        padding,
+        clr-nav-horizontal-link-padding,
+        0 variables.$clr_baselineRem_0_125,
+        variables.$clr-use-custom-properties
+      );
       display: inline-block;
-      padding: 0 variables.$clr_baselineRem_0_125;
-      box-shadow: none;
 
       //Clarity Buttons as .nav-links in .nav
       &.btn {
@@ -78,24 +99,42 @@
         border-radius: 0;
       }
 
+      &.dropdown-toggle {
+        @include mixins.css-var(
+          padding,
+          clr-nav-link-dropdown-toggle-padding,
+          0 variables.$clr_baselineRem_0_125,
+          variables.$clr-use-custom-properties
+        );
+        cds-icon {
+          @include mixins.css-var(
+            color,
+            clr-nav-link-color,
+            tabs-variables.$clr-nav-link-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
+
       &:hover,
       &:focus,
       &:active {
         color: inherit;
       }
 
+      // TODO - separate :active and .active, currently .active is being used for selected state.
+      &:active {
+        @include mixins.css-var(
+          background-color,
+          clr-nav-active-bg-color,
+          transparent,
+          variables.$clr-use-custom-properties
+        );
+      }
+
       &:hover,
       &.active {
-        // OldIE/Edge
-        box-shadow: 0 (-1 * variables.$clr_baselineRem_3px) 0 tabs-variables.$clr-nav-active-box-shadow-color inset;
-        @if variables.$clr-use-custom-properties == true {
-          box-shadow: 0
-            (-1 * variables.$clr_baselineRem_3px)
-            0
-            var(--clr-nav-active-box-shadow-color, tabs-variables.$clr-nav-active-box-shadow-color)
-            inset;
-        }
-        transition: box-shadow 0.2s ease-in;
+        @include tabs.nav-link-border-appearence('bottom');
       }
 
       &:hover,
@@ -106,6 +145,14 @@
       }
 
       &.active {
+        &:hover {
+          @include mixins.css-var(
+            background-color,
+            clr-nav-selected-hover-background-color,
+            transparent,
+            variables.$clr-use-custom-properties
+          );
+        }
         @include mixins.css-var(
           color,
           clr-nav-link-active-color,
