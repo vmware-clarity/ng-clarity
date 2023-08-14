@@ -70,7 +70,11 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_0_75);
+        @include mixins.equilateral-var(
+          clr-forms-input-group-icon-action-size,
+          variables.$clr_baselineRem_0_75,
+          variables.$clr-use-custom-properties
+        );
         transform: translate(-1 * variables.$clr_baselineRem_1px, -1 * variables.$clr_baselineRem_1px);
       }
     }

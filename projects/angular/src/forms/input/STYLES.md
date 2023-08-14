@@ -1,5 +1,13 @@
 # Input
 
+## CSS Custom properties
+
+| Class name                               | Description         |
+| ---------------------------------------- | ------------------- |
+| --clr-forms-input-padding                | Input padding       |
+| --clr-forms-input-wrapper-height         | Wrapper height      |
+| --clr-forms-input-group-icon-action-size | Size of action icon |
+
 ## CSS Classes
 
 | Class name                  | Description                                                   |

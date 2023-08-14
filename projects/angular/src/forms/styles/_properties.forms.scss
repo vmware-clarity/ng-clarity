@@ -44,6 +44,9 @@
       --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
       --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
 
+      // Input group
+      --clr-forms-input-group-icon-action-size: #{variables.$clr_baselineRem_0_75};
+
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
