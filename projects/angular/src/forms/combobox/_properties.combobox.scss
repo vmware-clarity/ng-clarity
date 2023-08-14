@@ -6,12 +6,16 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.combobox' as combobox-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 
 @include mixins.exports('combobox.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-combobox-trigger-color: var(--clr-color-neutral-500);
       --clr-combobox-font-size: #{variables.$clr-p2-font-size};
+      --clr-combobox-font-weight: inherit;
+      --clr-combobox-min-height: #{combobox-variables.$clr-combobox-min-height};
+      --clr-combobox-min-width: #{combobox-variables.$clr-combobox-min-width};
       --clr-combobox-border-color: #{combobox-variables.$clr-combobox-border-color};
       --clr-combobox-border-radius: #{combobox-variables.$clr-combobox-border-radius};
       --clr-combobox-input-background-color: #{combobox-variables.$clr-combobox-input-background-color};
@@ -20,6 +24,14 @@
       --clr-combobox-pill-border-radius: #{combobox-variables.$clr-combobox-pill-border-radius};
       --clr-combobox-pill-font-color: #{combobox-variables.$clr-combobox-pill-font-color};
       --clr-combobox-filter-highlight: #{combobox-variables.$clr-combobox-filter-highlight};
+      --clr-combobox-text-color: inherit;
+      --clr-combobox-trigger-font-color: #{combobox-variables.$clr-combobox-pill-font-color};
+      --clr-combobox-hover-background-color: #{combobox-variables.$clr-combobox-input-background-color};
+      --clr-combobox-pill-padding: #{0 variables.$clr_baselineRem_2px 0 variables.$clr_baselineRem_4px};
+      --clr-combobox-pill-margin: #{variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_0_25 0 0};
+      --clr-combobox-pill-remove-icon-color: #{combobox-variables.$clr-combobox-pill-font-color};
+      --clr-combobox-active-background-color: #{dropdown-variables.$clr-dropdown-bg-hover-color};
+      --clr-combobox-caret-icon-size: #{variables.$clr_baselineRem_12px};
     }
   }
 }

@@ -36,6 +36,32 @@
 | --clr-datagrid-column-toggle-fill-active-color       | Background color for active column toggle buttons.                       |
 | --clr-datagrid-column-toggle-text-active-color       | Text color for active column toggle buttons.                             |
 | --clr-datagrid-popovers-box-shadow-color             | Not used.                                                                |
+| --clr-datagrid-popover-padding                       | Padding for popovers                                                     |
+| --clr-datagrid-popover-font-color                    | Font color for popovers.                                                 |
+| --clr-datagrid-pagination-input-size                 | Width and Height for pagination input                                    |
+| --clr-datagrid-detail-header-padding                 | Padding for detail header                                                |
+| --clr-datagrid-detail-header-title-padding           | Padding for detail header title                                          |
+| --clr-datagrid-detail-pane-close-btn-margin          | Margin for detail close button                                           |
+| --clr-datagrid-detail-pane-close-padding             | Padding for detail heade close wrapper                                   |
+| --clr-datagrid-detail-body-padding                   | Padding for detail content body                                          |
+| --clr-datagrid-detail-pane-close-btn-min-width       | Minimal width for detail close button                                    |
+| --clr-datagrid-detail-pane-content-padding           | Padding for detail panel content                                         |
+| --clr-datagrid-detail-pane-close-icon-size           | Width and Height for detail close icon                                   |
+| --clr-datagrid-detail-body-text-color                | Font color for detail body                                               |
+| --clr-datagrid-detail-header-title-color             | Font color for detail header title                                       |
+| --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                        |
+| --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                            |
+| --clr-datagrid-footer-padding                        | Footer padding                                                           |
+| --clr-datagrid-placeholder-padding                   | Placeholder padding                                                      |
+| --clr-datagrid-placeholder-gap                       | Gap size for placeholder elements                                        |
+| --clr-datagrid-placeholder-font-weight               | Font weight for placeholder                                              |
+| --clr-datagrid-placeholder-line-height               | Line height for placeholder                                              |
+| --clr-datagrid-placeholder-letter-spacing            | Letter spacing for placeholder                                           |
+| --clr-datagrid-placeholder-background-color          | Background color for placeholder                                         |
+| --clr-datagrid-column-seperator-height               | Height for column seperator                                              |
+| --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                |
+| --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
+| --clr-datagrid-footer-line-height                    | Line height for footer                                                   |
 
 ## CSS Classes
 

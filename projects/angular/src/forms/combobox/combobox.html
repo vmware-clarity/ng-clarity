@@ -12,6 +12,7 @@
   (click)="focusInput()"
   [class.multi]="multiSelect"
   [class.invalid]="invalid"
+  [class.disabled]="control?.disabled? true: null"
 >
   <span
     *ngIf="multiSelect && optionSelectionService.selectionModel.model"
@@ -79,7 +80,7 @@
     [disabled]="control?.disabled || null"
     [attr.aria-label]="commonStrings.keys.comboboxOpen"
   >
-    <cds-icon shape="angle" direction="down" size="12"></cds-icon>
+    <cds-icon shape="angle" direction="down"></cds-icon>
   </button>
 
   <div class="clr-focus-indicator" [class.clr-focus]="focused"></div>
