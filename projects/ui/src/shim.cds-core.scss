@@ -727,17 +727,25 @@
   /* Datepicker */
 
   --clr-calendar-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
-  --clr-calendar-border-color: var(--cds-alias-object-container-border-color); // var(--clr-color-neutral-400);
-  --clr-datepicker-trigger-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-datepicker-trigger-hover-color: var(--clr-color-action-800);
+  --clr-calendar-border-color: var(--cds-alias-object-border-color-shade); // var(--clr-color-neutral-400);
+  --clr-datepicker-trigger-color: var(--cds-alias-status-info); // ATM: is this needed? No references in demo and in code.v
+  --clr-datepicker-trigger-hover-color: var(--clr-color-action-800); // ATM: is this needed? No references in demo and in code.
 
-  --clr-calendar-btn-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
+  --clr-calendar-btn-color: var(--cds-alias-object-interaction-color); // var(--clr-color-action-600);
+  --clr-calendar-btn-picker-trigger-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color));
+  --clr-calendar-btn-picker-trigger-hover-color: var(--cds-alias-typography-link-color-hover, var(--cds-global-typography-link-color-hover));
+  --clr-calendar-btn-picker-trigger-active-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color));
   --clr-calendar-btn-hover-focus-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-global-hover-color);
+  --clr-calendar-btn-hover-focus-color-text: var(--cds-alias-object-interaction-color-hover);
+  --clr-calendar-btn-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-calendar-btn-active-color-bg: var(--cds-alias-object-interaction-background-active);
 
   --clr-calendar-today-date-cell-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-calendar-active-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
   --clr-calendar-active-focus-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
   --clr-calendar-active-cell-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-calendar-disable-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-calendar-disable-opacity: 1; // ATM to be deleted
 
   /* Dropdown */
 

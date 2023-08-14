@@ -49,6 +49,31 @@
     //Only because we have defined a background color for focus above
     outline: 0;
   }
+
+  &:active {
+    @include mixins.css-var(
+      background,
+      clr-calendar-btn-active-color-bg,
+      datepicker-variables.$clr-calendar-btn-hover-focus-color,
+      variables.$clr-use-custom-properties
+    );
+  }
+}
+
+@mixin generate-calendar-hover-active-color-style($fallback: inherit) {
+  &:hover,
+  &:focus {
+    @include mixins.css-var(
+      color,
+      clr-calendar-btn-hover-focus-color-text,
+      $fallback,
+      variables.$clr-use-custom-properties
+    );
+  }
+
+  &:active {
+    @include mixins.css-var(color, clr-calendar-btn-active-color, $fallback, variables.$clr-use-custom-properties);
+  }
 }
 
 @include mixins.exports('datepicker.clarity') {
@@ -60,6 +85,8 @@
     white-space: nowrap;
   }
 
+  // ATM
+  // is this needed? No references in demo and in code.
   // legacy can be removed when old layout is removed
   .datepicker-trigger {
     @include generate-calendar-button();
@@ -214,6 +241,7 @@
   .day-btn {
     @include generate-calendar-button($padding: 0);
     @include generate-calendar-focus-style();
+    @include generate-calendar-hover-active-color-style();
 
     //Dimensions
     width: 100%;
@@ -237,7 +265,9 @@
     }
 
     &.is-excluded {
-      opacity: 0.4; // consistent with disabled drop down items.
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
 
       &:hover {
         background: none;
@@ -269,7 +299,9 @@
     }
 
     &.is-disabled {
-      opacity: 0.4; // consistent with disabled drop down items.
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
       pointer-events: none;
       &:hover {
         background: none;
@@ -282,6 +314,7 @@
   }
 
   .switcher {
+    @include generate-calendar-hover-active-color-style(datepicker-variables.$clr-calendar-btn-color);
     @include mixins.css-var(
       color,
       clr-calendar-btn-color,
@@ -304,7 +337,7 @@
     //Other Props
     @include mixins.css-var(
       color,
-      clr-calendar-btn-color,
+      clr-calendar-btn-picker-trigger-color,
       datepicker-variables.$clr-calendar-btn-color,
       variables.$clr-use-custom-properties
     );
@@ -338,7 +371,9 @@
       datepicker-variables.$clr-calendar-month-cell-height,
       datepicker-variables.$clr-calendar-month-cell-padding
     );
-    @include generate-calendar-focus-style();
+    @include generate-calendar-hover-active-color-style();
+    // this is already generated through calendar-btn class. Commented for now
+    //@include generate-calendar-focus-style();
 
     //Dimensions
     width: datepicker-variables.$clr-month-year-btn-width;
@@ -349,7 +384,9 @@
     outline-offset: -1 * variables.$clr_baselineRem_5px; //needed for chrome
 
     &.is-disabled {
-      opacity: 0.4;
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
       pointer-events: none;
       &:hover {
         background: none;
