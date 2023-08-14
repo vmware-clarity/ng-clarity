@@ -31,6 +31,7 @@
 | --clr-combobox-pill-margin             | Margin for the combobox multiselection pill element                    |
 | --clr-combobox-pill-height             | Height of the combobox pill element                                    |
 | --clr-combobox-pill-remove-icon-color  | Color of the remove pill icon                                          |
+| --clr-combobox-caret-icon-size         | Size of the combobox caret icon icon                                   |
 
 ## CSS Classes
 

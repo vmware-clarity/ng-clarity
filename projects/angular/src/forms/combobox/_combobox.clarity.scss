@@ -295,6 +295,11 @@
         padding: 0 variables.$clr_baselineRem_8px 0 variables.$clr_baselineRem_4px;
       }
 
+      cds-icon,
+      clr-icon {
+        @include mixins.css-var(margin-top, clr-combobox-item-icon-override, 0, variables.$clr-use-custom-properties);
+      }
+
       cds-icon[shape='window-close'],
       clr-icon[shape='window-close'] {
         @include mixins.css-var(
@@ -311,7 +316,7 @@
       background: none;
     }
 
-    &:hover,
+    &:not(.disabled):hover,
     &:focus-within {
       @include mixins.css-var(
         background-color,
@@ -363,6 +368,12 @@
         color,
         clr-combobox-trigger-font-color,
         combobox-variables.$clr-combobox-pill-font-color,
+        variables.$clr-use-custom-properties
+      );
+
+      @include mixins.min-equilateral-var(
+        clr-combobox-caret-icon-size,
+        variables.$clr_baselineRem_12px,
         variables.$clr-use-custom-properties
       );
     }

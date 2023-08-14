@@ -31,6 +31,7 @@
       --clr-combobox-pill-margin: #{variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_0_25 0 0};
       --clr-combobox-pill-remove-icon-color: #{combobox-variables.$clr-combobox-pill-font-color};
       --clr-combobox-active-background-color: #{dropdown-variables.$clr-dropdown-bg-hover-color};
+      --clr-combobox-caret-icon-size: #{variables.$clr_baselineRem_12px};
     }
   }
 }

@@ -758,12 +758,14 @@
   --clr-combobox-pill-font-size: var(--clr-p6-font-size);
   --clr-combobox-pill-line-height: var(--cds-global-space-7);
   --clr-combobox-pill-letter-spacing: var(--clr-p6-letter-spacing);
+  --clr-combobox-caret-icon-size: var(--cds-global-space-7);
 
   // ATM: Temporary NG overrides. Remove in v17
   --clr-combobox-input-left: 0;
   --clr-combobox-input-height: var(--cds-global-space-7);
   --clr-combobox-input-align: middle;
   --clr-combobox-pill-align-items: center;
+  --clr-combobox-item-icon-override: calc(-1 * var(--cds-global-space-1));
 
   /* Datepicker */
 
