@@ -201,16 +201,10 @@
     display: flex;
   }
 
-  //display: inline-block and max-width were specifically added for IE 10.
-  //Flexbox content wouldn't wrap otherwise :(. 98% was just an estimate to distance the text from the
-  //close alert button.
   .alert-item > span,
   .alert-text {
-    // display: inline-block; //needed for IE11
     @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 1, variables.$clr-use-custom-properties);
     flex-shrink: 1;
-    // flex-basis: 98%; //needed for IE11
-    // max-width: 98%; //needed for IE11
     margin-right: variables.$clr_baselineRem_0_5;
     text-align: left;
   }
@@ -402,11 +396,6 @@
       }
     }
 
-    // .alert-item > span,
-    // .alert-text {
-    //   flex: 0 1 100%; // IE11 needs 100% here.
-    // }
-
     .alert-icon-wrapper {
       @include mixins.css-var(
         margin-top,
@@ -557,7 +546,7 @@
     &.alert-info {
       @include mixins.css-var(
         background,
-        clr-app-alert-info-pager-bg-color,
+        clr-app-alert-info-bg-color,
         variables.$clr-color-action-800,
         variables.$clr-use-custom-properties
       );
@@ -566,7 +555,7 @@
     &.alert-danger {
       @include mixins.css-var(
         background,
-        clr-app-alert-danger-pager-bg-color,
+        clr-app-alert-danger-bg-color,
         variables.$clr-color-danger-900,
         variables.$clr-use-custom-properties
       );
@@ -575,7 +564,7 @@
     &.alert-warning {
       @include mixins.css-var(
         background,
-        clr-app-alert-warning-pager-bg-color,
+        clr-app-alert-warning-bg-color,
         variables.$clr-color-warning-900,
         variables.$clr-use-custom-properties
       );
@@ -585,7 +574,7 @@
     &.alert-success {
       @include mixins.css-var(
         background,
-        clr-color-success-900,
+        clr-app-alert-success-bg-color,
         variables.$clr-color-success-900,
         variables.$clr-use-custom-properties
       );
@@ -605,6 +594,12 @@
         @include mixins.css-var(
           color,
           clr-app-alert-#{$alertType}-pager-font-color,
+          variables.$clr-color-neutral-0,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background,
+          clr-app-alert-#{$alertType}-pager-bg-color,
           variables.$clr-color-neutral-0,
           variables.$clr-use-custom-properties
         );
