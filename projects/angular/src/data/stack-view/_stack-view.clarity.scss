@@ -57,7 +57,7 @@
       @include mixins.css-var(
         font-size,
         clr-stack-view-stack-title-font-size,
-        0.9rem,
+        variables.$clr_baselineRem_0_9,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
