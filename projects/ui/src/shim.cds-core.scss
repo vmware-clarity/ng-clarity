@@ -1151,6 +1151,11 @@
       border: 1px solid var(--clr-alert-danger-border-color);
     }
   }
+
+  // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
+  clr-stepper-panel .clr-accordion-inner-content {
+    padding: var(--cds-global-space-9);
+  }
 }
 
 [cds-theme~='light'] {
