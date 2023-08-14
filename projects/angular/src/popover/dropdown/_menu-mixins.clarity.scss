@@ -21,7 +21,7 @@
 
   //Other
   @include mixins.css-var(
-    background,
+    background-color,
     clr-dropdown-bg-color,
     dropdown-variables.$clr-dropdown-bg-color,
     variables.$clr-use-custom-properties
@@ -41,7 +41,7 @@
   );
   @include mixins.css-var(
     border-radius,
-    clr-global-borderradius,
+    clr-dropdown-border-radius,
     variables.$clr-global-borderradius,
     variables.$clr-use-custom-properties
   );
@@ -55,7 +55,12 @@
       var(--clr-dropdown-box-shadow, dropdown-variables.$clr-dropdown-box-shadow);
   }
   margin-top: variables.$clr_baselineRem_2px;
-  padding: variables.$clr_baselineRem_0_5 0;
+  @include mixins.css-var(
+    padding,
+    clr-dropdown-items-padding,
+    variables.$clr_baselineRem_0_5 0,
+    variables.$clr-use-custom-properties
+  );
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
 }
@@ -104,7 +109,7 @@
 
   &.active {
     @include mixins.css-var(
-      background,
+      background-color,
       clr-dropdown-selection-color,
       dropdown-variables.$clr-dropdown-selection-color,
       variables.$clr-use-custom-properties
@@ -140,10 +145,21 @@
       box-shadow: none;
     }
   }
+
+  // From typography SECONDARY-13RG-exp == P5
+  @include mixins.css-var(font-size, clr-dropdown-font-size, inherit, variables.$clr-use-custom-properties);
+  @include mixins.css-var(letter-spacing, clr-dropdown-letter-spacing, inherit, variables.$clr-use-custom-properties);
+  @include mixins.css-var(line-height, clr-dropdown-line-height, inherit, variables.$clr-use-custom-properties);
 }
 
 @mixin generate-dropdown-item-height() {
   padding: variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1;
+  @include mixins.css-var(
+    padding,
+    clr-dropdown-item-padding,
+    variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1,
+    variables.$clr-use-custom-properties
+  );
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     padding: variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
