@@ -35,8 +35,8 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
 }
 
 @mixin include-slim-outline-style-form-fields() {
-  outline: Highlight auto variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color auto variables.$clr_baselineRem_2px;
+  outline: Highlight solid variables.$clr_baselineRem_2px;
+  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
 }
 
 @mixin include-outline-style-links() {
