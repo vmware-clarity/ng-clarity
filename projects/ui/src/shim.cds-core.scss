@@ -659,6 +659,9 @@
   --clr-forms-input-padding: 0 var(--cds-global-space-5);
   --clr-forms-input-wrapper-height: var(--cds-global-space-9);
 
+  // Input group
+  --clr-forms-input-group-icon-action-size: var(--cds-global-space-7);
+
   // Datalist
 
   --clr-forms-datalist-caret-color: var(--cds-alias-status-neutral);
@@ -721,6 +724,11 @@
   --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
   --clr-forms-range-track-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
 
+  // Password
+  // TODO: ATM Make sure this is what we need,
+  //  in spec it is --cds-alias-interaction-color, which is gray, hence it's put as fallback here
+  --clr-forms-password-eye-icon-color: var(--cds-alias-object-interaction-color);
+  --clr-forms-password-disabled-eye-icon-color: var(--cds-alias-status-disabled);
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);

@@ -44,6 +44,9 @@
       --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
       --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
 
+      // Input group
+      --clr-forms-input-group-icon-action-size: #{variables.$clr_baselineRem_0_75};
+
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
@@ -127,6 +130,10 @@
       --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
+
+      // Password
+      --clr-forms-password-eye-icon-color: var(--clr-forms-focused-color);
+      --clr-forms-password-disabled-eye-icon-color: var(--clr-forms-text-disabled-color);
     }
   }
 }
