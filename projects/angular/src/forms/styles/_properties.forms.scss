@@ -132,8 +132,6 @@
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
 
       // Password
-      --clr-forms-password-eye-icon-min-height: var(--clr-forms-icon-size);
-      --clr-forms-password-eye-icon-width: var(--clr-forms-icon-size);
       --clr-forms-password-eye-icon-color: var(--clr-forms-focused-color);
       --clr-forms-password-disabled-eye-icon-color: var(--clr-forms-text-disabled-color);
     }

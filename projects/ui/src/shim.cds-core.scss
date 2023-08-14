@@ -725,10 +725,7 @@
   --clr-forms-range-track-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
 
   // Password
-  --clr-forms-password-eye-icon-min-height: var(--cds-global-space-7); // show/hide icon min-height
-  --clr-forms-password-eye-icon-width: var(--cds-global-space-7); // show/hide icon width
-
-  // TODO: Make sure this is what we need,
+  // TODO: ATM Make sure this is what we need,
   //  in spec it is --cds-alias-interaction-color, which is gray, hence it's put as fallback here
   --clr-forms-password-eye-icon-color: var(--cds-alias-object-interaction-color);
   --clr-forms-password-disabled-eye-icon-color: var(--cds-alias-status-disabled);
