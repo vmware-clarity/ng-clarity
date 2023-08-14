@@ -171,7 +171,11 @@
         );
 
         // per measurement, this results in an icon that is 16x16...
-        @include mixins.equilateral(variables.$clr_baselineRem_1);
+        @include mixins.equilateral-var(
+          clr-modal-close-icon-size,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
