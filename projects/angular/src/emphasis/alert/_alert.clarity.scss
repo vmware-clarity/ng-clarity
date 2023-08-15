@@ -341,7 +341,11 @@
       clr-icon {
         $alert-close-icon-dims: variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth;
         margin-top: -1 * variables.$clr_baselineRem_0_125;
-        @include mixins.equilateral($alert-close-icon-dims);
+        @include mixins.min-equilateral-var(
+          clr-alert-close-button-dims,
+          $alert-close-icon-dims,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 

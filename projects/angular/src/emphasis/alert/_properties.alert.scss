@@ -41,6 +41,7 @@
       --clr-alert-text-flex-grow: 1; // ATM: delete after token migration
       --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125}; // ATM: delete after token migration
       --clr-alert-items-gap: 0;
+      --clr-alert-close-button-dims: #{variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth};
 
       // Info type
       // Usage: ./_alert.clarity.scss
