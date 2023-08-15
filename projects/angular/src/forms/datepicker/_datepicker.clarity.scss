@@ -297,12 +297,7 @@
     //Other Props
     color: inherit;
 
-    @include mixins.css-var(
-      font-size,
-      clr-calendar-day-font-size,
-      datepicker-variables.$clr-day-font-size,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.css-var(font-size, clr-calendar-day-font-size, inherit, variables.$clr-use-custom-properties);
     @include mixins.css-var(font-weight, clr-calendar-day-font-weight, inherit, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       line-height,
