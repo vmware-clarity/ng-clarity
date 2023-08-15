@@ -500,7 +500,11 @@
         $smallAlertCloseIconDims: variables.$clr_baselineRem_0_83;
         margin-top: -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px);
         margin-right: -1 * variables.$clr_baselineRem_1px;
-        @include mixins.equilateral($smallAlertCloseIconDims);
+        @include mixins.min-equilateral-var(
+          clr-alert-close-button-dims,
+          $smallAlertCloseIconDims,
+          variables.$clr-use-custom-properties
+        );
         line-height: $smallAlertCloseIconDims + variables.$clr_baselineRem_1px;
       }
     }
