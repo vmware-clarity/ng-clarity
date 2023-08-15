@@ -25,13 +25,12 @@
   border: none;
   @include mixins.css-var(
     border-radius,
-    clr-calendar-container-border-radius,
+    clr-calendar-cell-border-radius,
     variables.$clr-global-borderradius,
     variables.$clr-use-custom-properties
   );
   background: none;
   cursor: pointer;
-  //line-height: datepicker-variables.$clr-calendar-click-target;
 }
 
 @mixin generate-calendar-focus-style() {
@@ -160,7 +159,13 @@
       datepicker-variables.$clr-calendar-background-color,
       variables.$clr-use-custom-properties
     );
-    border: variables.$clr-global-borderwidth solid;
+    border-style: solid;
+    @include mixins.css-var(
+      border-width,
+      clr-calendar-container-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       border-color,
       clr-calendar-border-color,
