@@ -31,7 +31,7 @@
   );
   background: none;
   cursor: pointer;
-  line-height: datepicker-variables.$clr-calendar-click-target;
+  //line-height: datepicker-variables.$clr-calendar-click-target;
 }
 
 @mixin generate-calendar-focus-style() {
@@ -236,11 +236,23 @@
   .weekday {
     @include mixins.css-var(
       font-size,
-      clr-day-font-size,
+      clr-calendar-weekday-font-size,
       datepicker-variables.$clr-day-font-size,
       variables.$clr-use-custom-properties
     );
-    font-weight: 600;
+    @include mixins.css-var(font-weight, clr-calendar-weekday-font-weight, 600, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-weekday-line-height,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-weekday-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .calendar-btn {
@@ -260,6 +272,18 @@
       datepicker-variables.$clr-calendar-picker-btn-font-weight,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-picker-btn-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-picker-btn-letter-spacing,
+      normal,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .day-btn {
@@ -272,6 +296,26 @@
 
     //Other Props
     color: inherit;
+
+    @include mixins.css-var(
+      font-size,
+      clr-calendar-day-font-size,
+      datepicker-variables.$clr-day-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(font-weight, clr-calendar-day-font-weight, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-day-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-day-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
 
     &.is-today {
       @include mixins.css-var(
@@ -418,10 +462,32 @@
     );
 
     //Other Props
-    font-size: datepicker-variables.$clr-calendar-picker-btn-font-size;
-    font-weight: datepicker-variables.$clr-calendar-picker-btn-font-weight;
     outline-offset: -1 * variables.$clr_baselineRem_5px; //needed for chrome
 
+    @include mixins.css-var(
+      font-size,
+      clr-calendar-month-year-font-size,
+      datepicker-variables.$clr-calendar-picker-btn-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-calendar-month-year-font-weight,
+      datepicker-variables.$clr-calendar-picker-btn-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-month-year-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-month-year-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
     &.is-disabled {
       //ATM: remove opacity mixin and color calc
       @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);

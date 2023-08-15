@@ -27,7 +27,8 @@
       --clr-calendar-active-focus-cell-background-color: var(--clr-global-selection-color);
       --clr-calendar-active-cell-color: var(--clr-color-neutral-1000);
 
-      --clr-day-font-size: #{variables.$clr_baselineRem_0_5};
+      --clr-day-font-size: #{variables.$clr_baselineRem_0_5}; // ATM remove
+      --clr-calendar-weekday-font-size: var(--clr-day-font-size);
     }
   }
 }

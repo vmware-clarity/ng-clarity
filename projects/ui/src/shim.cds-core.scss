@@ -765,6 +765,24 @@
 
   --clr-calendar-month-year-cell-width: calc(0.5 * var(--clr-calendar-container-width) - var(--clr-calendar-container-padding) - var(--clr-calendar-container-border-width));
 
+  // Typography
+  --clr-calendar-weekday-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-weekday-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-calendar-weekday-line-height: var(--cds-global-space-7);
+  --clr-calendar-weekday-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-day-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-day-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-calendar-day-line-height: var(--cds-global-space-9);
+  --clr-calendar-day-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-month-year-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-month-year-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-calendar-month-year-line-height: var(--cds-global-space-9);
+  --clr-calendar-month-year-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-picker-btn-font-size: var(--cds-global-typography-font-size-6);
+  --clr-calendar-picker-btn-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-calendar-picker-btn-line-height: var(--cds-global-space-9);
+  --clr-calendar-picker-btn-letter-spacing: var(--clr-p6-letter-spacing);
+
   /* Dropdown */
 
   --clr-dropdown-active-text-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-1000);
