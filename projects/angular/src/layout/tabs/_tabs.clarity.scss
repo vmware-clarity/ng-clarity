@@ -10,6 +10,32 @@
 @use 'variables.tabs' as tabs-variables;
 @include meta.load-css('properties.tabs');
 
+@mixin nav-link-border-appearence($position) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-#{$position}-style: solid;
+    @include mixins.css-var(
+      border-#{$position}-color,
+      clr-nav-active-border-color,
+      tabs-variables.$clr-nav-active-box-shadow-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      border-#{$position}-width,
+      clr-nav-active-border-width,
+      variables.$clr_baselineRem_3px,
+      variables.$clr-use-custom-properties
+    );
+    transition: border-#{$position} 0.2s ease-in;
+  }
+}
+
 @include mixins.exports('tabs.clarity') {
   @media screen {
     section[aria-hidden='true'] {
@@ -63,29 +89,42 @@ button.nav-link {
     width: variables.$clr_baselineRem_10;
     min-width: variables.$clr_baselineRem_2;
 
+    @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
+
+    // ATM - remove
+    .nav-item {
+      @include mixins.css-var(
+        margin-right,
+        clr-nav-item-margin-right,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+    }
+
     .nav-link {
       text-align: left;
-      padding: 0 variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding,
+        clr-nav-vertical-link-padding,
+        0 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
       border: none;
-      margin-bottom: variables.$clr_baselineRem_1px;
       flex-shrink: 0;
       margin-top: 0;
       margin-left: 0;
       width: 100%;
 
-      &.nav-item {
-        margin-right: 0;
+      // ATM - remove
+      &.btn {
+        margin-bottom: variables.$clr_baselineRem_1px;
       }
 
       &.active,
       &:hover {
-        // IE/OldEdge
-        box-shadow: inset variables.$clr_baselineRem_3px 0 0 tabs-variables.$clr-nav-active-box-shadow-color;
-        @if variables.$clr-use-custom-properties == true {
-          box-shadow: inset variables.$clr_baselineRem_3px 0 0 var(--clr-nav-active-box-shadow-color);
-        }
+        @include nav-link-border-appearence('left');
       }
-      &.active {
+      &:not(:active).active {
         @include mixins.css-var(
           background-color,
           clr-nav-active-bg-color,

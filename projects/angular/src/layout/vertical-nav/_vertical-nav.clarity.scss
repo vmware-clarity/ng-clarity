@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.vertical-nav' as vertical-nav-variables;
+@use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-link-colors() {
   @include mixins.css-var(
@@ -33,15 +34,7 @@
 
     position: relative;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: variables.$clr_baselineRem_3px;
-      background: var(--clr-nav-active-box-shadow-color);
-    }
+    @include tabs.nav-link-border-appearence('left');
 
     .nav-icon {
       @include mixins.css-var(
