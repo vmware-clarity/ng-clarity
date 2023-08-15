@@ -24,14 +24,13 @@
 
     .fill-input {
       position: absolute;
-      left: 0;
+      left: forms-variables.$clr-forms-range-border-width;
+      margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
-      @include mixins.css-var(
-        height,
-        clr-forms-range-track-height,
-        forms-variables.$clr-forms-range-track-height,
-        variables.$clr-use-custom-properties
-      );
+
+      // TODO: Make use of variable
+      height: calc(var(--clr-forms-range-track-height, forms-variables.$clr-forms-range-track-height) - 2px);
+
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
