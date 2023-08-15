@@ -55,7 +55,7 @@
     cds-icon,
     clr-icon {
       @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
-      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right;
+      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right; // todo
       vertical-align: middle;
     }
   }
@@ -129,7 +129,7 @@
 
   .clr-treenode-children {
     //Dimensions
-    margin-left: tree-view-variables.$clr-tree-node-children-margin;
+    margin-left: tree-view-variables.$clr-tree-node-children-margin; // todo: global-space-9
     will-change: height;
     overflow-y: hidden;
   }
