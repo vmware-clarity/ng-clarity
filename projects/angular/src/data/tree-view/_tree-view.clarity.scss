@@ -34,6 +34,7 @@
     &:first-child {
       padding-left: tree-view-variables.$clr-tree-node-touch-target;
     }
+    border: 1px solid red;
 
     //Others
     border-radius: 0;
@@ -50,7 +51,7 @@
       variables.$clr-use-custom-properties
     );
     line-height: tree-view-variables.$clr-tree-node-touch-target;
-
+    color: red;
     cds-icon,
     clr-icon {
       @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
@@ -64,7 +65,7 @@
     flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
 
     //Dimensions
-    padding: 0;
+    padding: 0px;
     margin: 0;
     @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
 
@@ -86,6 +87,22 @@
         color,
         clr-tree-node-caret-link-hover-color,
         tree-view-variables.$clr-tree-node-caret-link-hover-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &:active {
+      @include mixins.css-var(
+        color,
+        clr-tree-node-caret-link-active-color,
+        tree-view-variables.$clr-tree-node-caret-link-active-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &:disabled {
+      @include mixins.css-var(
+        color,
+        clr-tree-node-caret-link-disabled-color,
+        tree-view-variables.$clr-tree-node-caret-link-disabled-color,
         variables.$clr-use-custom-properties
       );
     }

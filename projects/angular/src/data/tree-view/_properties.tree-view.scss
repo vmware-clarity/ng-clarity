@@ -11,11 +11,15 @@
     :root {
       // Usage: ../data/tree-view/_tree-view.clarity.scss
       --clr-tree-border-radius: var(--clr-global-borderradius);
+
+      --clr-tree-link-hover-color: yellow; // var(--clr-custom-links-hover-color);
+      --clr-tree-link-selection-color: green; //var(--clr-global-selection-color);
+      --clr-tree-link-text-color: blue; //var(--clr-color-neutral-700);
+
       --clr-tree-node-caret-link-hover-color: var(--clr-color-neutral-1000);
-      --clr-tree-link-hover-color: var(--clr-custom-links-hover-color);
-      --clr-tree-link-selection-color: var(--clr-global-selection-color);
-      --clr-tree-link-text-color: var(--clr-color-neutral-700);
       --clr-tree-node-caret-color: var(--clr-color-neutral-500);
+      --clr-tree-node-caret-link-active-color: var(--clr-color-neutral-500);
+      --clr-tree-node-caret-link-disabled-color: var(--clr-color-neutral-500);
     }
   }
 }

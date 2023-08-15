@@ -1081,11 +1081,15 @@
 
   /* Tree View */
 
-  --clr-tree-node-caret-link-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-neutral-1000);
+  --clr-tree-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-tree-node-caret-link-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-tree-node-caret-link-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tree-node-caret-link-disabled-color: var(--cds-alias-object-interaction-color-disabled);
+
   --clr-tree-link-hover-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
   --clr-tree-link-selection-color: var(--clr-global-selection-color); // indirectly mapped
   --clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
-  --clr-tree-node-caret-color: var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
+  --clr-tree-node-caret-color: var(--cds-alias-object-interaction-color, var(--cds-global-color-gray-500));
 
   /* Vertical Nav */
 
