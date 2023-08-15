@@ -28,8 +28,10 @@
       margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
 
-      // TODO: Make use of variable
-      height: calc(var(--clr-forms-range-track-height, forms-variables.$clr-forms-range-track-height) - 2px);
+      height: calc(
+        var(--clr-forms-range-track-height, forms-variables.$clr-forms-range-track-height) - #{forms-variables.$clr-forms-range-border-width *
+          2}
+      );
 
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
