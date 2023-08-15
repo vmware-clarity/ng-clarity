@@ -178,7 +178,12 @@
     flex: 0 0 $alertIconWidth;
     align-self: start;
     padding-top: variables.$clr_baselineRem_1px;
-    height: variables.$clr_baselineRem_0_75;
+    @include mixins.css-var(
+      height,
+      clr-alert-icon-size,
+      variables.$clr_baselineRem_0_75,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .alert-item {
