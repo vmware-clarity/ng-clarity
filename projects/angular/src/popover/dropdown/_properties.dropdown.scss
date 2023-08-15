@@ -34,6 +34,13 @@
       // Dropdown Item
       --clr-dropdown-item-color: var(--clr-color-neutral-700);
       --clr-dropdown-item-font-weight: var(--clr-p1-font-weight);
+      --clr-dropdown-item-padding: #{variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1};
+      --clr-dropdown-font-size: inherit;
+      --clr-dropdown-line-height: inherit;
+      --clr-dropdown-letter-spacing: inherit;
+      // Dropdown Items List
+      --clr-dropdown-items-padding: #{variables.$clr_baselineRem_0_5} 0;
+      --clr-dropdown-border-radius: #{variables.$clr-global-borderradius};
     }
   }
 }
