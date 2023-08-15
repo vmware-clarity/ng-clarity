@@ -28,10 +28,10 @@
       margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
 
-      height: calc(
-        var(--clr-forms-range-track-height, forms-variables.$clr-forms-range-track-height) - #{forms-variables.$clr-forms-range-border-width *
-          2}
-      );
+      //height: calc(
+      //  var(--clr-forms-range-track-height, forms-variables.$clr-forms-range-track-height) - #{forms-variables.$clr-forms-range-border-width *
+      //    2}
+      //);
 
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
@@ -206,7 +206,6 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
-          clr-forms-range-thumb-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
           clr-forms-range-thumb-height,
           forms-variables.$clr-forms-range-progress-fill-color,
@@ -266,7 +265,6 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
-          clr-forms-range-thumb-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
           clr-forms-range-thumb-height // TODO: Thumb color?
           forms-variables.$clr-forms-range-progress-fill-color,
