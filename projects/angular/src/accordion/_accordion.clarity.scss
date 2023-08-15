@@ -225,6 +225,14 @@
   .clr-accordion-header-has-description {
     .clr-accordion-title {
       max-width: variables.$clr_baselineRem_11;
+      @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        @include mixins.css-var(
+          margin-left,
+          clr-accordion-step-title-margin-left,
+          accordion-variables.$clr-accordion-step-title-margin-left,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
   }
 
@@ -574,6 +582,12 @@
 
     .clr-accordion-status {
       min-width: variables.$clr_baselineRem_3;
+      @include mixins.css-var(
+        margin-left,
+        clr-accordion-step-status-margin-left,
+        accordion-variables.$clr-accordion-step-status-margin-left,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-accordion-number {

@@ -597,9 +597,11 @@
   --clr-accordion-header-left-error-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-status-danger);
   --clr-accordion-content-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-accordion-content-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-global-typography-secondary-font-size));
-  --clr-accordion-description-margin-left: var(--cds-global-space-13);
+  --clr-accordion-description-margin-left: calc(var(--cds-global-space-13) - var(--clr-accordion-header-gap));
   --clr-accordion-step-title-min-width: 0;
   --clr-accordion-step-title-font-weight: var(--cds-alias-typography-font-weight-semibold, var(--cds-global-typography-font-weight-semibold));
+  --clr-accordion-step-status-margin-left: var(--cds-global-space-7);
+  --clr-accordion-step-title-margin-left: var(--cds-global-space-9);
   --clr-accordion-header-font-size: var(--cds-alias-typography-body-font-size, var(--cds-global-typography-body-font-size));
 
   // v17 remove var in favor of gap:sm class

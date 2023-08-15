@@ -40,6 +40,8 @@
 | --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                               |
 | --clr-accordion-step-title-font-weight           | Font weight for the step title and number.                           |
 | --clr-accordion-header-font-size                 | Header font size.                                                    |
+| --clr-accordion-step-status-margin-left          | Left margin of the status container                                  |
+| --clr-accordion-step-title-margin-left           | Left margin of the title container                                   |
 
 ## CSS Classes
 
