@@ -76,7 +76,7 @@ export class ClrRangeContainer extends ClrAbstractContainer {
   }
 
   getRangeProgressFillWidth(): string {
-    // TODO: Get actual diameter of thumb
+    // TODO: ATM - Get actual diameter of thumb
     const thumbDiameterInPx = 14;
 
     const input = this.selectRangeElement();
