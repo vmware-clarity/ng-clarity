@@ -77,6 +77,11 @@
       @include mixins.css-var(border-color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
       @include mixins.css-var(background-color, clr-btn-transparent-bg-color, 0, variables.$clr-use-custom-properties);
 
+      cds-icon,
+      clr-icon {
+        @include mixins.css-var(color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
+      }
+
       &:focus,
       &:hover,
       &:active {
@@ -160,7 +165,12 @@
   .alert-icon {
     $alert-icon-dim: variables.$clr_baselineRem_1;
     @include mixins.equilateral($alert-icon-dim);
-    margin-left: -1 * variables.$clr_baselineRem_0_125;
+    @include mixins.css-var(
+      margin-left,
+      clr-alert-icon-margin-left,
+      -1 * variables.$clr_baselineRem_0_125,
+      variables.$clr-use-custom-properties
+    );
     margin-top: -1 * variables.$clr_baselineRem_4px;
   }
 
@@ -205,7 +215,12 @@
   .alert-text {
     @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 1, variables.$clr-use-custom-properties);
     flex-shrink: 1;
-    margin-right: variables.$clr_baselineRem_0_5;
+    @include mixins.css-var(
+      margin-right,
+      clr-alert-items-margin-right,
+      variables.$clr_baselineRem_0_5,
+      variables.$clr-use-custom-properties
+    );
     text-align: left;
   }
 
@@ -315,8 +330,8 @@
 
     .close {
       $closeBtnNudge: variables.$clr_baselineRem_4px;
-      width: variables.$clr_baselineRem_1;
       display: block;
+      width: variables.$clr_baselineRem_1;
       height: variables.$clr_baselineRem_1_5;
       flex: 0 0 (variables.$clr_baselineRem_1 + $closeBtnNudge);
       order: 100;
@@ -456,7 +471,12 @@
     }
 
     .alert-icon {
-      margin-left: -1 * $alertSmallNudge;
+      @include mixins.css-var(
+        margin-left,
+        clr-alert-icon-margin-left,
+        -1 * $alertSmallNudge,
+        variables.$clr-use-custom-properties
+      );
       margin-top: -1 * $alertSmallNudge;
     }
 
@@ -546,7 +566,7 @@
     &.alert-info {
       @include mixins.css-var(
         background,
-        clr-app-alert-info-bg-pager-color,
+        clr-app-alert-info-pager-bg-color,
         variables.$clr-color-action-800,
         variables.$clr-use-custom-properties
       );
@@ -555,7 +575,7 @@
     &.alert-danger {
       @include mixins.css-var(
         background,
-        clr-app-alert-danger-bg-pager-color,
+        clr-app-alert-danger-pager-bg-color,
         variables.$clr-color-danger-900,
         variables.$clr-use-custom-properties
       );
@@ -564,7 +584,7 @@
     &.alert-warning {
       @include mixins.css-var(
         background,
-        clr-app-alert-warning-bg-pager-color,
+        clr-app-alert-warning-pager-bg-color,
         variables.$clr-color-warning-900,
         variables.$clr-use-custom-properties
       );
@@ -573,7 +593,7 @@
     &.alert-success {
       @include mixins.css-var(
         background,
-        clr-app-alert-success-bg-pager-color,
+        clr-app-alert-success-pager-bg-color,
         variables.$clr-color-success-900,
         variables.$clr-use-custom-properties
       );
