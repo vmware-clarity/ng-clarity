@@ -153,6 +153,7 @@
       --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900);
       --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900);
       --clr-app-alert-success-pager-bg-color: var(--clr-color-success-800);
+      --clr-app-alert-pager-width: #{variables.$clr_baselineRem_6};
     }
   }
 }

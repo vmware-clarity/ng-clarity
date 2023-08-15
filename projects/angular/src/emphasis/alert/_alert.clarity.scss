@@ -624,7 +624,12 @@
     float: left;
     min-height: alert-variables.$clr-alert-min-height;
     text-align: center;
-    width: variables.$clr_baselineRem_6;
+    @include mixins.css-var(
+      width,
+      clr-app-alert-pager-width,
+      variables.$clr_baselineRem_6,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .alerts-pager-button {
