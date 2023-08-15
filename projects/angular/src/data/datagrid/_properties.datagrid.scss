@@ -7,6 +7,8 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.datagrid' as datagrid-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../variables.tables' as tables-variables;
 
 @include mixins.exports('datagrid.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -23,11 +25,17 @@
       --clr-datagrid-pagination-input-border-color: var(--clr-datagrid-default-border-color);
       --clr-datagrid-pagination-input-border-focus-color: var(--clr-color-action-400);
       --clr-datagrid-popover-bg-color: var(--clr-color-neutral-0);
+      --clr-datagrid-popover-padding: #{variables.$clr_baselineRem_0_25};
       --clr-datagrid-popover-border-color: var(--clr-datagrid-default-border-color);
       --clr-datagrid-action-popover-hover-color: var(--clr-color-neutral-200);
       --clr-datagrid-row-selected: var(--clr-color-neutral-1000);
       --clr-datagrid-loading-background: #{datagrid-variables.$clr-datagrid-loading-background};
       --clr-datagrid-popovers-box-shadow-color: rgba(140, 140, 140, 0.25);
+      --clr-datagrid-popovers-box-shadow: 0
+        #{variables.$clr_baselineRem_1px}
+        #{variables.$clr_baselineRem_3px}
+        var(--clr-datagrid-popovers-box-shadow-color);
+      --clr-datagrid-popover-font-color: #{dropdown-variables.$clr-dropdown-text-color};
 
       --clr-datagrid-column-switch-header-font-color: var(--clr-color-neutral-500);
       --clr-datagrid-column-switch-header-font-hover-color: var(--clr-color-action-600);
@@ -36,9 +44,9 @@
       --clr-datagrid-detail-caret-icon-open-icon-color: var(--clr-color-neutral-0);
 
       --clr-datagrid-placeholder-color: var(--clr-color-neutral-700);
-      --clr-datagrid-placeholder-font-size: #{variables.$clr-h5-font-size};
 
       --clr-datagrid-pagination-btn-disabled-opacity: #{datagrid-variables.$clr-datagrid-pagination-btn-disabled-opacity};
+      --clr-datagrid-pagination-input-size: #{variables.$clr_baselineRem_1};
 
       --clr-datagrid-column-toggle-gap: #{variables.$clr_baselineRem_4px};
       --clr-datagrid-column-toggle-padding: #{0 variables.$clr_baselineRem_6px};
@@ -53,6 +61,35 @@
       --clr-datagrid-column-toggle-text-active-color: var(--clr-color-neutral-700);
       --clr-datagrid-column-toggle-disabled-color: #{variables.$clr-color-neutral-700};
       --clr-datagrid-column-toggle-disabled-opacity: 0.4;
+
+      --clr-datagrid-detail-header-padding: 0 0 0 #{variables.$clr_baselineRem_1};
+      --clr-datagrid-detail-header-title-padding: #{variables.$clr_baselineRem_0_667 0 0 0};
+      --clr-datagrid-detail-pane-close-btn-margin: #{variables.$clr_baselineRem_0_667} 0 0 0;
+      --clr-datagrid-detail-pane-close-padding: 0 0 0 #{variables.$clr_baselineRem_0_5};
+      --clr-datagrid-detail-body-padding: 0 #{variables.$clr_baselineRem_1};
+      --clr-datagrid-detail-pane-close-btn-min-width: #{variables.$clr_baselineRem_3};
+      --clr-datagrid-detail-pane-content-padding: 0;
+      --clr-datagrid-detail-pane-close-icon-size: #{variables.$clr_baselineRem_1};
+      --clr-datagrid-detail-body-text-color: #{variables.$clr-p1-color};
+      --clr-datagrid-detail-header-title-color: #{variables.$clr-p1-color};
+      --clr-datagrid-detail-pane-bg-color: var(--clr-datagrid-popover-bg-color);
+      --clr-datagrid-detail-pane-border-color: var(--clr-datagrid-default-border-color);
+
+      --clr-datagrid-footer-padding: 0 #{variables.$clr_baselineRem_0_5};
+      --clr-datagrid-placeholder-padding: #{variables.$clr_baselineRem_0_5};
+      --clr-datagrid-placeholder-gap: #{variables.$clr_baselineRem_0_5};
+      --clr-datagrid-placeholder-font-size: #{variables.$clr-h5-font-size};
+      --clr-datagrid-placeholder-font-weight: inherit;
+      --clr-datagrid-placeholder-line-height: inherit;
+      --clr-datagrid-placeholder-letter-spacing: inherit;
+      --clr-datagrid-placeholder-background-color: #{tables-variables.$clr-table-bgcolor};
+      --clr-datagrid-column-seperator-height: calc(
+        100% + #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
+      );
+      --clr-datagrid-filter-toggle-size: #{datagrid-variables.$clr-datagrid-icon-size};
+      --clr-datagrid-row-active-color: var(--clr-datagrid-row-hover-color);
+      --clr-datagrid-footer-line-height: #{variables.$clr_baselineRem_1_5 - (3 * variables.$clr-global-borderwidth)};
+      --clr-datagrid-footer-pagination-line-height: #{variables.$clr_baselineRem_1_5};
     }
   }
 }

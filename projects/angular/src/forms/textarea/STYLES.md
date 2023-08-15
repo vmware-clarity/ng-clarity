@@ -2,13 +2,13 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                          | Description                                       |
-| -------------------------------------------- | ------------------------------------------------- |
-| --clr-forms-textarea-background-color        | Background color for textarea.                    |
-| --clr-forms-textarea-focused-outline         | Outline for focused textarea.                     |
-| --clr-forms-textarea-invalid-focused-outline | Outline for focused textarea in an invalid state. |
-| --clr-forms-textarea-border-radius           | Border radius for textarea.                       |
-| --clr-forms-textarea-padding                 | Textbox padding all sides.                        |
+| CSS Custom Property                      | Description                               |
+| ---------------------------------------- | ----------------------------------------- |
+| --clr-forms-textarea-background-color    | Background color for textarea.            |
+| --clr-forms-textarea-border-radius       | Border radius for textarea.               |
+| --clr-forms-textarea-padding             | Textarea padding all sides.               |
+| --clr-forms-textarea-wrapper-margin-top  | Parent container of text area margin top. |
+| --clr-forms-textarea-disabled-background | Background color of disabled textarea.    |
 
 ## CSS Classes
 
