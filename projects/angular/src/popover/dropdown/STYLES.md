@@ -18,6 +18,9 @@
 | --clr-dropdown-header-font-weight   | Not used.                                                        |
 | --clr-dropdown-item-color           | The color of the dropdown item.                                  |
 | --clr-dropdown-item-font-weight     | Not used.                                                        |
+| --clr-dropdown-item-padding         | Single menu item padding                                         |
+| --clr-dropdown-items-padding        | Menu items list overall padding                                  |
+| --clr-dropdown-border-radius        | Menu items list border radius                                    |
 
 ## CSS Classes
 

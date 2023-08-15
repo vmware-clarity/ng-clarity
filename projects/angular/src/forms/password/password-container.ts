@@ -38,7 +38,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
             class="clr-input-group-icon-action"
             type="button"
           >
-            <cds-icon status="info" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
+            <cds-icon status="info" class="clr-password-eye-icon" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
             <span class="clr-sr-only">
               {{ show ? commonStrings.keys.passwordHide : commonStrings.keys.passwordShow }}
             </span>
