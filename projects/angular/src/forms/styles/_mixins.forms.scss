@@ -246,16 +246,15 @@
 
 @mixin range-thumb-style(
   $margin,
-  $margin-prop,
   $size,
   $size-prop,
   $background-color,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
+  margin-top: $margin;
   border-radius: 50%;
 
-  @include mixins.css-var(margin-top, $margin-prop, $margin, $use-custom-props);
   @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
   @include mixins.equilateral-var($size-prop, $size, $use-custom-props);
 }

@@ -77,11 +77,11 @@
 
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
-      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+      // TODO: ATM Vertically centralize thumb without transform property
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
-        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled,
@@ -90,11 +90,10 @@
     }
     &:disabled::-moz-range-thumb {
       border: 0;
-      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
-        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled,
@@ -135,11 +134,10 @@
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
-        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,
@@ -149,11 +147,10 @@
 
     &::-moz-range-thumb {
       border: 0;
-      transform: translate(0, forms-variables.$clr-forms-range-thumb-translate-y);
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
-        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,

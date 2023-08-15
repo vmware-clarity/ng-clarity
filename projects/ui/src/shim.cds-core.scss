@@ -759,7 +759,7 @@
   --clr-forms-range-progress-fill-color-disabled: var(--cds-alias-object-interaction-color-disabled);
   --clr-forms-range-track-color-disabled: var(--cds-alias-status-disabled-tint);
   --clr-forms-range-track-border-color-disabled: var(--cds-alias-object-interaction-background-highlight);
-  --clr-forms-range-thumb-margin-top: var(--cds-global-space-2); // TODO: ATM - get rid of this
+  --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
 
   // Password
   // TODO: ATM Make sure this is what we need,
