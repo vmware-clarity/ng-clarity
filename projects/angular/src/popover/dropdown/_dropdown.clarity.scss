@@ -214,6 +214,21 @@
           );
         }
       }
+
+      &:active {
+        @include mixins.css-var(
+          color,
+          clr-dropdown-active-text-color,
+          var(--clr-color-neutral-1000),
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background-color,
+          clr-dropdown-active-background-color,
+          var(--clr-global-selection-color),
+          variables.$clr-use-custom-properties
+        );
+      }
     }
 
     .btn,
