@@ -149,8 +149,23 @@
         variables.$clr-use-custom-properties
       );
 
-      padding: 0 variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding,
+        clr-dropdown-header-padding,
+        0 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
       margin: 0;
+
+      & ~ .dropdown-item,
+      & ~ .dropdown > .dropdown-item {
+        @include mixins.css-var(
+          padding-left,
+          clr-dropdown-subsection-offset,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+      }
 
       @extend %dropdown-content;
     }

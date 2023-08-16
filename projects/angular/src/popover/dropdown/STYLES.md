@@ -19,6 +19,7 @@
 | --clr-dropdown-header-font-weight    | Font weight of the dropdown menu header.                         |
 | --clr-dropdown-header-font-size      | Font size of the dropdown menu header.                           |
 | --clr-dropdown-header-line-height    | Line height of the dropdown menu header.                         |
+| --clr-dropdown-header-padding        | Padding of the dropdown menu header.                             |
 | --clr-dropdown-header-letter-spacing | Letter spacing of the dropdown menu header.                      |
 | --clr-dropdown-item-color            | The color of the dropdown item.                                  |
 | --clr-dropdown-item-font-weight      | Font weight of the dropdown item.                                |
@@ -26,6 +27,7 @@
 | --clr-dropdown-items-padding         | Menu items list overall padding                                  |
 | --clr-dropdown-border-radius         | Menu items list border radius                                    |
 | --clr-dropdown-caret-icon-size       | Size of the dropdown menu expander caret.                        |
+| --clr-dropdown-subsection-offset     | Offset of elements in menu with header.                          |
 
 ## CSS Classes
 

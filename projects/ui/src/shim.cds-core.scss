@@ -809,6 +809,9 @@
   --clr-dropdown-header-font-size: var(--clr-p2-font-size);
   --clr-dropdown-header-line-height: var(--clr-p2-line-height);
   --clr-dropdown-header-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-dropdown-header-padding: 0 var(--cds-global-space-7);
+  --clr-dropdown-subsection-offset: var(--cds-global-space-10); //2x16px
+
   --clr-dropdown-caret-icon-size: var(--cds-global-space-7);
   // ATM remove - internal only, while we need a fallback
   // we should rework it to be centered without dependency on a top margin

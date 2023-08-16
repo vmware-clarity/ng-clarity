@@ -34,6 +34,8 @@
       --clr-dropdown-header-font-size: #{dropdown-variables.$clr-dropdown-header-font-size};
       --clr-dropdown-header-line-height: #{variables.$clr_baselineRem_0_75};
       --clr-dropdown-header-letter-spacing: #{dropdown-variables.$clr-dropdown-header-letter-spacing};
+      --clr-dropdown-header-padding: 0 #{variables.$clr_baselineRem_0_5};
+      --clr-dropdown-subsection-offset: #{variables.$clr_baselineRem_1};
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item
