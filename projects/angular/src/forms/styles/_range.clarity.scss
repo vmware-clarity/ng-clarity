@@ -24,8 +24,13 @@
 
     .fill-input {
       position: absolute;
-      left: forms-variables.$clr-forms-range-border-width;
-      margin-bottom: forms-variables.$clr-forms-range-border-width;
+      @include mixins.css-var(left, clr-forms-range-track-border-width, 0, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        margin-bottom,
+        clr-forms-range-track-border-width,
+        0,
+        variables.$clr-use-custom-properties
+      );
       display: inline-block;
       @include mixins.css-var(
         height,
@@ -36,21 +41,19 @@
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
-
       @include mixins.css-var(
         background-color,
         clr-forms-range-progress-fill-color,
         forms-variables.$clr-forms-range-progress-fill-color,
         variables.$clr-use-custom-properties
       );
-      @include forms-mixins.range-border-style(
-        forms-variables.$clr-forms-range-border-color,
-        clr-forms-range-border-color,
+      @include mixins.css-var(
+        border-radius,
+        clr-forms-range-track-border-radius,
         forms-variables.$clr-forms-range-border-radius,
-        clr-forms-range-border-radius,
-        forms-variables.$clr-forms-range-border-width,
-        clr-forms-range-border-width
+        variables.$clr-use-custom-properties
       );
+      border-style: none;
     }
   }
 
@@ -80,10 +83,11 @@
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
       // TODO: ATM Vertically centralize thumb without transform property
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      //transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled,
@@ -96,6 +100,7 @@
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled,
@@ -140,6 +145,7 @@
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,
@@ -149,11 +155,11 @@
 
     &::-moz-range-thumb {
       border: 0;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      //transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
-        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-margin-top forms-variables.$clr-forms-range-thumb-height,
         clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color
@@ -206,6 +212,7 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
+          clr-forms-range-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
           clr-forms-range-thumb-height,
           forms-variables.$clr-forms-range-progress-fill-color,
@@ -265,6 +272,7 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
+          clr-forms-range-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
           clr-forms-range-thumb-height // TODO: Thumb color?
           forms-variables.$clr-forms-range-progress-fill-color,
