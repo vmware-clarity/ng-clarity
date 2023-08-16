@@ -24,11 +24,11 @@
 
     .fill-input {
       position: absolute;
-      @include mixins.css-var(left, clr-forms-range-track-border-width, 0, variables.$clr-use-custom-properties);
+      left: 0;
       @include mixins.css-var(
         margin-bottom,
         clr-forms-range-track-border-width,
-        0,
+        0px,
         variables.$clr-use-custom-properties
       );
       display: inline-block;
