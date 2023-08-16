@@ -63,15 +63,6 @@
       );
     }
 
-    input[type='range']::-webkit-slider-thumb {
-      @include mixins.css-var(
-        background-color,
-        clr-forms-border-disabled-color,
-        forms-variables.$clr-forms-border-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-    }
-
     .clr-subtext {
       @include mixins.css-var(
         color,
