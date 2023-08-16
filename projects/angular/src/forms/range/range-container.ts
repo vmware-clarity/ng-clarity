@@ -76,9 +76,6 @@ export class ClrRangeContainer extends ClrAbstractContainer {
   }
 
   getRangeProgressFillWidth(): string {
-    // TODO: ATM - Get actual diameter of thumb
-    const thumbDiameterInPx = 14;
-
     const input = this.selectRangeElement();
 
     if (!input) {
@@ -97,15 +94,7 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     const inputValue = !!this.control && this.control.value !== undefined ? this.control.value : inputMiddle;
     const valueAsPercent = ((inputValue - inputMinValue) * 100) / (inputMaxValue - inputMinValue);
 
-    let lastRangeValue: number = (valueAsPercent * inputWidth) / 100;
-
-    if (lastRangeValue < thumbDiameterInPx) {
-      lastRangeValue = thumbDiameterInPx;
-    } else if (lastRangeValue > inputWidth - thumbDiameterInPx) {
-      lastRangeValue = inputWidth - thumbDiameterInPx;
-    }
-
-    this.lastRangeProgressFillWidth = lastRangeValue + 'px';
+    this.lastRangeProgressFillWidth = (valueAsPercent * inputWidth) / 100 + 'px';
 
     return this.lastRangeProgressFillWidth;
   }
