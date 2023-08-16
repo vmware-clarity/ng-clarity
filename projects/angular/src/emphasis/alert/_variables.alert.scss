@@ -34,9 +34,9 @@ $clr-icon-dimension-sm: variables.$clr_baselineRem_0_667 !default;
 $clr-alert-icon-dimension-sm: variables.$clr_baselineRem_0_75 !default;
 $clr-alert-top-margin: variables.$clr_baselineRem_0_25 !default;
 $clr-alert-min-height: variables.$clr_baselineRem_1_5 !default;
-$clr-alert-horizontal-padding: variables.$clr_baselineRem_0_5 !default;
-$clr-alert-top-padding: variables.$clr_baselineRem_0_125 !default;
-$clr-alert-bottom-padding: variables.$clr_baselineRem_0_375 !default;
+$clr-alert-horizontal-padding: variables.$clr_baselineRem_0_5 !default; // to be deleted
+$clr-alert-top-padding: variables.$clr_baselineRem_0_125 !default; // to be deleted
+$clr-alert-bottom-padding: variables.$clr_baselineRem_0_375 !default; // to be deleted
 $clr-alert-item-min-height: $clr-alert-icon-dimension-sm !default;
 $clr-alert-borderwidth: variables.$clr-global-borderwidth !default;
 $clr-alert-borderradius: variables.$clr-global-borderradius !default;
