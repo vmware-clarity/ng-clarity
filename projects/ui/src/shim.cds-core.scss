@@ -378,7 +378,7 @@
   // Info type
   // Usage: ./_alert.clarity.scss
   --clr-alert-info-bg-color: var(--cds-alias-status-info-tint); // var(--clr-color-action-50);
-  --clr-alert-info-font-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
+  --clr-alert-info-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
   --clr-alert-info-border-color: var(--cds-alias-status-info); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
   --clr-alert-info-icon-color: var(--clr-alert-info-font-color); // var(--cds-global-color-blue-800); // var(--clr-color-action-800);
   --clr-alert-info-close-icon-color: var(--clr-alert-info-font-color);
@@ -387,7 +387,7 @@
   // Success type
   // Usage: ./_alert.clarity.scss
   --clr-alert-success-bg-color: var(--cds-alias-status-success-tint); // var(--clr-color-success-50);
-  --clr-alert-success-font-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
+  --clr-alert-success-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
   --clr-alert-success-border-color: var(--cds-alias-status-success); // var(--clr-color-success-800);
   --clr-alert-success-icon-color: var(--clr-alert-success-font-color); // var(--clr-color-success-800);
   --clr-alert-success-close-icon-color: var(--clr-alert-success-font-color);
@@ -396,7 +396,7 @@
   // Warning type
   // Usage: ./_alert.clarity.scss
   --clr-alert-warning-bg-color: var(--cds-alias-status-warning-tint); // var(--clr-color-warning-100);
-  --clr-alert-warning-font-color: var(--cds-global-color-construction-900); // var(--clr-color-neutral-900);
+  --clr-alert-warning-font-color: var(--cds-global-color-black); // var(--clr-color-neutral-900);
   --clr-alert-warning-border-color: var(--cds-alias-status-warning); // var(--clr-color-warning-800);
   --clr-alert-warning-icon-color: var(--clr-alert-warning-font-color); // var(--clr-color-warning-800);
   --clr-alert-warning-close-icon-color: var(--clr-alert-warning-font-color);
@@ -405,7 +405,7 @@
   // Danger type
   // Usage: ./_alert.clarity.scss
   --clr-alert-danger-bg-color: var(--cds-alias-status-danger-tint); // var(--clr-color-danger-100);
-  --clr-alert-danger-font-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-700);
+  --clr-alert-danger-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
   --clr-alert-danger-border-color: var(--cds-alias-status-danger); // var(--clr-color-danger-900);
   --clr-alert-danger-icon-color: var(--clr-alert-danger-font-color); // var(--clr-color-danger-900);
   --clr-alert-danger-close-icon-color: var(--clr-alert-danger-font-color);
@@ -424,7 +424,7 @@
   // App Warning type
   // Usage: ./_alert.clarity.scss
   --clr-app-alert-warning-bg-color: var(--cds-alias-status-warning);
-  --clr-app-alert-warning-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // indirectly mapped to CDS token
+  --clr-app-alert-warning-font-color: var(--cds-global-color-black);
   --clr-app-alert-warning-icon-color: var(--clr-app-alert-warning-font-color); // indirectly mapped to CDS token
   --clr-app-alert-warning-close-icon-color: var(--clr-app-alert-warning-font-color); // indirectly mapped to CDS token
   --clr-app-alert-warning-action-color: var(--clr-app-alert-warning-font-color); // indirectly mapped to CDS token
@@ -451,16 +451,35 @@
   --clr-app-alert-success-action-active-color: var(--clr-app-alert-success-font-color);
   --clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-font-color); // indirectly mapped to CDS token
 
+  // Alert Spacing
+  --clr-alert-padding: var(--cds-global-space-5);
+  --clr-alert-borderradius: var(--cds-alias-object-border-radius-100);
+  --clr-alert-actions-spacing: var(--cds-global-space-6);
+  --clr-alert-item-margin-bottom: var(--cds-global-space-2);
+  --clr-alert-line-height: var(--cds-global-typography-font-size-7);
+  --clr-alert-sm-line-height: var(--cds-global-typography-font-size-6);
+  --clr-alert-app-padding: var(--cds-global-space-4);
+  --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-items-gap: var(--cds-global-space-5);
+  --clr-alert-items-margin-right: 0; // ATM: delete after token migration
+  --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
+  --clr-alert-close-icon-size: var(--cds-global-space-7);
+
+  .alert-app-level {
+    --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
+  }
+
   // App Alerts Pager
   --clr-app-alert-pager-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-0, #{$clr-color-neutral-0});
   --clr-app-alert-info-pager-bg-color: var(--cds-alias-status-info-shade); // var(--clr-color-action-800, #{$clr-color-action-800});
   --clr-app-alert-warning-pager-bg-color: var(--cds-alias-status-warning-shade); // var(--clr-color-warning-900, #{$clr-color-warning-900});
   --clr-app-alert-danger-pager-bg-color: var(--cds-alias-status-danger-shade); // var(--clr-color-danger-900, #{$clr-color-danger-900});
+  --clr-app-alert-success-pager-bg-color: var(--cds-alias-status-success-shade);
 
-  --clr-app-alert-info-pager-font-color: var(--cds-global-color-white); // New custom property
+  --clr-app-alert-info-pager-font-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // New custom property
   --clr-app-alert-warning-pager-font-color: var(--cds-global-color-black); // New custom property
-  --clr-app-alert-danger-pager-font-color: var(--cds-global-color-white); // New custom property
-  --clr-app-alert-success-pager-font-color: var(--cds-global-color-white); // New custom property
+  --clr-app-alert-danger-pager-font-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // New custom property
+  --clr-app-alert-success-pager-font-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // New custom property
 
   /* Labels */
 
@@ -795,6 +814,7 @@
   /* Dropdown */
 
   --clr-dropdown-active-text-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-1000);
+  --clr-dropdown-active-background-color: var(--cds-alias-object-interaction-background-active);
   --clr-dropdown-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
   --clr-dropdown-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-dropdown-divider-color: var(--cds-alias-object-border-color-tint); // var(--clr-color-neutral-200);
@@ -813,6 +833,21 @@
   --clr-dropdown-font-size: var(--clr-p5-font-size);
   --clr-dropdown-line-height: var(--clr-p5-line-height);
   --clr-dropdown-letter-spacing: var(--clr-p5-letter-spacing);
+  --clr-dropdown-divider-border-width: var(--cds-global-space-1);
+  --clr-dropdown-divider-margin: var(--cds-global-space-6);
+  --clr-dropdown-header-font-weight: var(--clr-p2-font-weight);
+  --clr-dropdown-header-font-size: var(--clr-p2-font-size);
+  --clr-dropdown-header-line-height: var(--clr-p2-line-height);
+  --clr-dropdown-header-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-dropdown-header-padding: 0 var(--cds-global-space-7);
+  --clr-dropdown-subsection-offset: var(--cds-global-space-10); //2x16px
+  // ATM reimplement component with non-css-only icon and replace with space-7,
+  // We use 6 because the current css-only implementation does not have icon padding.
+  --clr-dropdown-caret-icon-size: var(--cds-global-space-6);
+
+  // ATM remove - internal only, while we need a fallback
+  // we should rework it to be centered without dependency on a top margin
+  --clr-dropdown-caret-icon-margin-top: var(--cds-global-space-4);
 
   /* Header */
 
