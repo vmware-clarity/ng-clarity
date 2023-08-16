@@ -804,6 +804,7 @@
   /* Dropdown */
 
   --clr-dropdown-active-text-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-1000);
+  --clr-dropdown-active-background-color: var(--cds-alias-object-interaction-background-active);
   --clr-dropdown-bg-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
   --clr-dropdown-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
   --clr-dropdown-divider-color: var(--cds-alias-object-border-color-tint); // var(--clr-color-neutral-200);
@@ -822,6 +823,21 @@
   --clr-dropdown-font-size: var(--clr-p5-font-size);
   --clr-dropdown-line-height: var(--clr-p5-line-height);
   --clr-dropdown-letter-spacing: var(--clr-p5-letter-spacing);
+  --clr-dropdown-divider-border-width: var(--cds-global-space-1);
+  --clr-dropdown-divider-margin: var(--cds-global-space-6);
+  --clr-dropdown-header-font-weight: var(--clr-p2-font-weight);
+  --clr-dropdown-header-font-size: var(--clr-p2-font-size);
+  --clr-dropdown-header-line-height: var(--clr-p2-line-height);
+  --clr-dropdown-header-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-dropdown-header-padding: 0 var(--cds-global-space-7);
+  --clr-dropdown-subsection-offset: var(--cds-global-space-10); //2x16px
+  // ATM reimplement component with non-css-only icon and replace with space-7,
+  // We use 6 because the current css-only implementation does not have icon padding.
+  --clr-dropdown-caret-icon-size: var(--cds-global-space-6);
+
+  // ATM remove - internal only, while we need a fallback
+  // we should rework it to be centered without dependency on a top margin
+  --clr-dropdown-caret-icon-margin-top: var(--cds-global-space-4);
 
   /* Header */
 
