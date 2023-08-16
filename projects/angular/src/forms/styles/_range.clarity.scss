@@ -132,7 +132,7 @@
 
     @include forms-mixins.range-border-style(
       forms-variables.$clr-forms-range-border-color,
-      clr-forms-range-border-color,
+      clr-forms-range-track-border-color,
       forms-variables.$clr-forms-range-border-radius,
       clr-forms-range-border-radius,
       forms-variables.$clr-forms-range-border-width,
