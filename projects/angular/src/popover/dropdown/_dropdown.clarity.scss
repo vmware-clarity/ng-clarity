@@ -121,17 +121,35 @@
         dropdown-variables.$clr-dropdown-header-color,
         variables.$clr-use-custom-properties
       );
-      font-size: dropdown-variables.$clr-dropdown-header-font-size;
+
+      // Typography
+      // Paragraph/SECONDARY-13-MD-exp
       @include mixins.css-var(
         font-weight,
         clr-dropdown-header-font-weight,
         dropdown-variables.$clr-dropdown-header-font-weight,
         variables.$clr-use-custom-properties
       );
-      letter-spacing: dropdown-variables.$clr-dropdown-header-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-dropdown-header-font-size,
+        dropdown-variables.$clr-dropdown-header-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-dropdown-header-line-height,
+        variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-dropdown-header-letter-spacing,
+        dropdown-variables.$clr-dropdown-header-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
 
       padding: 0 variables.$clr_baselineRem_0_5;
-      line-height: variables.$clr_baselineRem_0_75;
       margin: 0;
 
       @extend %dropdown-content;
@@ -165,11 +183,20 @@
         &:before {
           content: '';
           float: right;
-          @include mixins.equilateral(variables.$clr_baselineRem_0_5);
+          @include mixins.equilateral-var(
+            clr-dropdown-caret-icon-size,
+            variables.$clr_baselineRem_0_5,
+            variables.$clr-use-custom-properties
+          );
           transform: rotate(-90deg);
           background-image: icons.generateCaretIcon();
           @include images.icon-background-styles();
-          margin-top: $clr-dropdown-caret-margin-top;
+          @include mixins.css-var(
+            margin-top,
+            clr-dropdown-caret-icon-margin-top,
+            $clr-dropdown-caret-margin-top,
+            variables.$clr-use-custom-properties
+          );
         }
       }
     }
@@ -198,7 +225,12 @@
         dropdown-variables.$clr-dropdown-divider-color,
         variables.$clr-use-custom-properties
       );
-      margin: variables.$clr_baselineRem_0_25 0;
+      @include mixins.css-var(
+        margin,
+        clr-dropdown-divider-margin,
+        variables.$clr_baselineRem_0_25 0,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
