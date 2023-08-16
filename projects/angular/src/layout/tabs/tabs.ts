@@ -69,7 +69,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
             >
               <cds-icon
                 shape="ellipsis-horizontal"
-                status="toggleService.open ? 'info' : null"
+                [attr.status]="toggleService.open ? 'info' : null"
                 [attr.title]="commonStrings.keys.more"
               ></cds-icon>
             </button>
