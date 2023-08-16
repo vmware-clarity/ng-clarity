@@ -28,7 +28,8 @@
       margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
       @include mixins.css-var(
-        height clr-forms-range-progress-fill-height,
+        height,
+        clr-forms-range-progress-fill-height,
         forms-variables.$clr-forms-range-progress-height,
         variables.$clr-use-custom-properties
       );
@@ -47,8 +48,8 @@
         clr-forms-range-border-color,
         forms-variables.$clr-forms-range-border-radius,
         clr-forms-range-border-radius,
-        0,
-        0
+        forms-variables.$clr-forms-range-border-width,
+        clr-forms-range-border-width
       );
     }
   }
