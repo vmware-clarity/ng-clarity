@@ -1052,6 +1052,7 @@
   --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color); // var(--clr-color-action-600);
   --clr-nav-active-border-width: var(--cds-alias-object-border-width-300);
   --clr-nav-active-bg-color: var(--cds-alias-object-interaction-background-active); // indirectly mapped
+  --clr-nav-selected-bg-color: var(--cds-alias-object-opacity-0); // indirectly mapped
   --clr-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
   --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected);
 
