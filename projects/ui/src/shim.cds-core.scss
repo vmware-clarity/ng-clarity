@@ -750,8 +750,18 @@
   /// add more radio stuff
 
   // Range
-  --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-range-track-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
+  --clr-forms-range-progress-fill-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-track-color: var(--cds-alias-object-container-background-shade);
+  --clr-forms-range-track-border-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-thumb-height: var(--cds-global-space-7); // 16px
+  --clr-forms-range-track-height: var(--cds-global-space-3); // 4px
+  --clr-forms-range-track-border-radius: var(--cds-global-space-2); // 2px
+  --clr-forms-range-track-border-width: var(--cds-global-space-1); // 1px
+  --clr-forms-range-progress-fill-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-track-color-disabled: var(--cds-alias-status-disabled-tint);
+  --clr-forms-range-track-border-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
+  --clr-forms-range-progress-fill-height: 3px; // TODO: ATM - get rid of this
 
   // Password
   // TODO: ATM Make sure this is what we need,
