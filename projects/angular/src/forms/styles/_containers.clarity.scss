@@ -63,6 +63,16 @@
       );
     }
 
+    input[type='range']::-webkit-slider-thumb,
+    input[type='range']::-moz-range-thumb {
+      @include mixins.css-var(
+        background-color,
+        clr-forms-forms-range-progress-disabled-color,
+        forms-variables.$clr-forms-range-progress-fill-color-disabled,
+        variables.$clr-use-custom-properties
+      );
+    }
+
     .clr-subtext {
       @include mixins.css-var(
         color,
