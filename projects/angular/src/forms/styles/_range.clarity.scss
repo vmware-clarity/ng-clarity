@@ -115,7 +115,7 @@
       @include mixins.css-var(
         background-color,
         clr-forms-range-progress-fill-color-disabled,
-        forms-variables.$clr-form-disabled-background-color,
+        forms-variables.$clr-forms-range-progress-fill-color-disabled,
         variables.$clr-use-custom-properties
       );
     }
