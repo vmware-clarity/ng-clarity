@@ -83,7 +83,7 @@
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
       // TODO: ATM Vertically centralize thumb without transform property
-      //transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
@@ -153,9 +153,20 @@
       );
     }
 
+    &:disabled {
+      @include forms-mixins.range-border-style(
+        forms-variables.$clr-forms-range-border-color-disabled,
+        clr-forms-range-track-border-color-disabled,
+        forms-variables.$clr-forms-range-border-radius,
+        clr-forms-range-border-radius,
+        forms-variables.$clr-forms-range-border-width,
+        clr-forms-range-border-width
+      );
+    }
+
     &::-moz-range-thumb {
       border: 0;
-      //transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
