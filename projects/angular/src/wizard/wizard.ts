@@ -54,6 +54,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = this.commonStrings.keys.wizardStepnavAriaLabel;
 
   /**
+   * Set the role for the content of the wizard. Set using `[clrWizardContentRole]` input. Defaults to "main".
+   */
+  @Input('clrWizardContentRole') contentRole: string;
+
+  /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
    */
   @Input('clrWizardSize') size = 'xl';

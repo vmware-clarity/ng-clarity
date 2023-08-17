@@ -36,9 +36,9 @@
   </div>
 
   <div class="modal-body">
-    <main clr-wizard-pages-wrapper class="clr-wizard-content">
+    <div clr-wizard-pages-wrapper class="clr-wizard-content" [attr.role]="contentRole || 'main'">
       <ng-content></ng-content>
-    </main>
+    </div>
   </div>
   <div class="modal-footer clr-wizard-footer">
     <div class="clr-wizard-footer-buttons">

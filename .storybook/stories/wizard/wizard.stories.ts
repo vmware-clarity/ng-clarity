@@ -63,6 +63,7 @@ const defaultParameters: Parameters = {
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardPreventModalAnimation: { defaultValue: false },
     clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
+    clrWizardContentRole: { defaultValue: 'main' },
     clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },

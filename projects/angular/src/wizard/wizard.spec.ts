@@ -656,6 +656,21 @@ export default function (): void {
           expect(stepnavWrapper.getAttribute('aria-label')).toBe('Updated step navigation label');
         });
       });
+
+      describe('content role', () => {
+        it('sets the content element role to "main"', () => {
+          const contentElement = context.hostElement.querySelector('.clr-wizard-content');
+          expect(contentElement.getAttribute('role')).toBe('main');
+        });
+
+        it('clrWizardContentRole input sets role for the content element', () => {
+          context.hostComponent.contentRole = 'generic';
+          context.detectChanges();
+
+          const contentElement = context.hostElement.querySelector('.clr-wizard-content');
+          expect(contentElement.getAttribute('role')).toBe('generic');
+        });
+      });
     });
 
     describe('Dynamic Content', () => {

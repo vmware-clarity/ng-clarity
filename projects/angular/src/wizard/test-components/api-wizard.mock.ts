@@ -23,6 +23,7 @@ import { ClrWizard } from '../wizard';
       (clrWizardOnFinish)="handleOnFinish()"
       [clrWizardPreventDefaultCancel]="stopCancel"
       [clrWizardStepnavAriaLabel]="stepnavAriaLabel"
+      [clrWizardContentRole]="contentRole"
     >
       <clr-wizard-title [clrHeadingLevel]="titleHeadingLevel">{{ projectedTitle }}</clr-wizard-title>
 
@@ -58,6 +59,7 @@ export class TemplateApiWizardTestComponent {
 
   mySize: string;
   stepnavAriaLabel = 'Label for stepnav';
+  contentRole: string;
   projectedTitle = 'My Great Title';
   projectedPageTitle = 'Title for Page 2';
   titleHeadingLevel: HeadingLevel;
