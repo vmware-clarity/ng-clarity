@@ -457,17 +457,31 @@
   --clr-alert-actions-spacing: var(--cds-global-space-6);
   --clr-alert-item-margin-bottom: var(--cds-global-space-2);
   --clr-alert-line-height: var(--cds-global-typography-font-size-7);
-  --clr-alert-sm-line-height: var(--cds-global-typography-font-size-6);
   --clr-alert-app-padding: var(--cds-global-space-4);
   --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
   --clr-alert-items-gap: var(--cds-global-space-5);
   --clr-alert-items-margin-right: 0; // ATM: delete after token migration
   --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
   --clr-alert-close-icon-size: var(--cds-global-space-7);
+  --clr-alert-icon-size: var(--cds-global-space-9);
 
   .alert-app-level {
     --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
   }
+
+  // Alert small
+  --clr-alert-sm-line-height: var(--clr-p0-line-height);
+  --clr-alert-sm-font-size: var(--cds-global-typography-font-size-4);
+  --clr-alert-sm-letter-spacing: var(--clr-p0-letter-spacing);
+  --clr-alert-sm-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-alert-sm-background-color: var(--cds-alias-object-opacity-0);
+  --clr-alert-sm-border-color: var(--cds-alias-object-opacity-0);
+  --clr-alert-info-icon-sm-color: var(--cds-alias-status-info);
+  --clr-alert-warning-icon-sm-color: var(--cds-alias-status-warning-dark);
+  --clr-alert-danger-icon-sm-color: var(--cds-alias-status-danger);
+  --clr-alert-success-icon-sm-color: var(--cds-alias-status-success);
+  --clr-alert-sm-padding: 0;
+  --clr-alert-item-text-align-items: center;
 
   // App Alerts Pager
   --clr-app-alert-pager-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-0, #{$clr-color-neutral-0});
