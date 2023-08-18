@@ -29,6 +29,12 @@
 
   &.alert-sm {
     @include mixins.css-var(
+      color,
+      clr-alert-sm-text-color,
+      alert-variables.getAlertColor($alertType, color),
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
       background,
       clr-alert-sm-background-color,
       alert-variables.getAlertColor($alertType, bg-color),
@@ -37,7 +43,7 @@
     @include mixins.css-var(
       border-color,
       clr-alert-sm-border-color,
-      alert-variables.getAlertColor($alertType, color),
+      alert-variables.getAlertColor($alertType, border-color),
       variables.$clr-use-custom-properties
     );
     .alert-icon {
