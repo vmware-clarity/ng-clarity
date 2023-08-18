@@ -14,24 +14,46 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    height: forms-variables.$clr-forms-range-thumb-height;
+    @include mixins.css-var(
+      height,
+      clr-forms-range-thumb-height,
+      forms-variables.$clr-forms-range-thumb-height,
+      variables.$clr-use-custom-properties
+    );
     white-space: nowrap;
 
     .fill-input {
       position: absolute;
       left: 0;
+      @include mixins.css-var(
+        margin-bottom,
+        clr-forms-range-track-border-width,
+        0px,
+        variables.$clr-use-custom-properties
+      );
       display: inline-block;
-      height: forms-variables.$clr-forms-range-track-height;
+      @include mixins.css-var(
+        height,
+        clr-forms-range-progress-fill-height,
+        forms-variables.$clr-forms-range-progress-height,
+        variables.$clr-use-custom-properties
+      );
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
-
       @include mixins.css-var(
         background-color,
         clr-forms-range-progress-fill-color,
         forms-variables.$clr-forms-range-progress-fill-color,
         variables.$clr-use-custom-properties
       );
+      @include mixins.css-var(
+        border-radius,
+        clr-forms-range-track-border-radius,
+        forms-variables.$clr-forms-range-border-radius,
+        variables.$clr-use-custom-properties
+      );
+      border-style: none;
     }
   }
 
@@ -39,12 +61,63 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: forms-variables.$clr-forms-range-thumb-height;
+    @include mixins.css-var(
+      height,
+      clr-forms-range-thumb-height,
+      forms-variables.$clr-forms-range-thumb-height,
+      variables.$clr-use-custom-properties
+    );
 
-    &:disabled,
+    &:disabled {
+      pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
+      cursor: not-allowed;
+
+      @include forms-mixins.range-style(
+        forms-variables.$clr-forms-range-track-height,
+        clr-forms-range-track-height,
+        forms-variables.$clr-forms-range-track-color,
+        clr-forms-range-track-color-disabled
+      );
+    }
+
+    &:disabled::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      // TODO: ATM Vertically centralize thumb without transform property
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+
+      @include forms-mixins.range-thumb-style(
+        forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        forms-variables.$clr-forms-range-progress-fill-color,
+        clr-forms-range-progress-fill-color-disabled
+      );
+    }
+    &:disabled::-moz-range-thumb {
+      border: 0;
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+
+      @include forms-mixins.range-thumb-style(
+        forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        forms-variables.$clr-forms-range-progress-fill-color,
+        clr-forms-range-progress-fill-color-disabled
+      );
+    }
+
     &:disabled + .fill-input {
       pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
       cursor: not-allowed;
+
+      @include mixins.css-var(
+        background-color,
+        clr-forms-range-progress-fill-color-disabled,
+        forms-variables.$clr-forms-range-progress-fill-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -52,41 +125,54 @@
     padding: 0;
     @include forms-mixins.range-style(
       forms-variables.$clr-forms-range-track-height,
+      clr-forms-range-track-height,
       forms-variables.$clr-forms-range-track-color,
       clr-forms-range-track-color
     );
 
-    &::-webkit-slider-runnable-track {
-      @include forms-mixins.range-track-style(
-        forms-variables.$clr-forms-range-track-height,
-        forms-variables.$clr-forms-range-track-color,
-        clr-forms-range-track-color
-      );
-    }
+    @include forms-mixins.range-border-style(
+      forms-variables.$clr-forms-range-border-color,
+      clr-forms-range-track-border-color,
+      forms-variables.$clr-forms-range-border-radius,
+      clr-forms-range-track-border-radius,
+      forms-variables.$clr-forms-range-border-width,
+      clr-forms-range-track-border-width
+    );
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color
       );
     }
 
-    &::-moz-range-track {
-      @include forms-mixins.range-track-style(
-        forms-variables.$clr-forms-range-track-height,
-        forms-variables.$clr-forms-range-track-color,
-        clr-forms-range-track-color
+    &:disabled {
+      @include forms-mixins.range-border-style(
+        forms-variables.$clr-forms-range-border-color,
+        clr-forms-range-track-border-color-disabled,
+        forms-variables.$clr-forms-range-border-radius,
+        clr-forms-range-track-border-radius,
+        forms-variables.$clr-forms-range-border-width,
+        clr-forms-range-track-border-width
       );
     }
 
     &::-moz-range-thumb {
       border: 0;
+      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
+        clr-forms-range-thumb-margin-top,
         forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color
       );
@@ -115,8 +201,15 @@
     input[type='range'] {
       border: 0;
       margin: 0;
-      @include forms-mixins.range-style(forms-variables.$clr-forms-range-thumb-height, transparent);
+      // TODO: Thumb?
+      @include forms-mixins.range-style(
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        transparent,
+        null
+      );
 
+      // TODO: Delete?
       &::-ms-track {
         margin: 0;
         border: 0;
@@ -131,7 +224,9 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
+          clr-forms-range-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
+          clr-forms-range-thumb-height,
           forms-variables.$clr-forms-range-progress-fill-color,
           clr-forms-range-progress-fill-color
         );
@@ -146,6 +241,7 @@
       }
 
       &.progress-fill {
+        // TODO: Double check this ms-fill-lower
         input[type='range']::-ms-fill-lower {
           height: forms-variables.$clr-forms-range-track-height;
           @include mixins.css-var(
@@ -165,8 +261,15 @@
     input[type='range'] {
       border: 0;
       margin: 0;
-      @include forms-mixins.range-style(forms-variables.$clr-forms-range-thumb-height, transparent);
+      // TODO: check why this is using thumb?
+      @include forms-mixins.range-style(
+        forms-variables.$clr-forms-range-thumb-height,
+        clr-forms-range-thumb-height,
+        transparent,
+        null
+      );
 
+      // TODO: Delete?
       &::-ms-track {
         border: 0;
         margin: 0;
@@ -181,7 +284,9 @@
         border: 0;
         @include forms-mixins.range-thumb-style(
           0,
+          clr-forms-range-margin-top,
           forms-variables.$clr-forms-range-thumb-height,
+          clr-forms-range-thumb-height // TODO: Thumb color?
           forms-variables.$clr-forms-range-progress-fill-color,
           clr-forms-range-progress-fill-color
         );

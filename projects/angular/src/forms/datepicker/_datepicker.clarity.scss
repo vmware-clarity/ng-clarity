@@ -11,12 +11,12 @@
 @include meta.load-css('properties.datepicker');
 
 @mixin generate-calendar-button(
-  $height: datepicker-variables.$clr-calendar-click-target,
+  $dimension: clr-calendar-cell-width-height,
+  $height-fallback: datepicker-variables.$clr-calendar-click-target,
   $padding: datepicker-variables.$clr-calendar-btn-padding
 ) {
   //Dimensions
-  height: $height;
-  min-width: $height;
+  @include mixins.min-equilateral-var($dimension, $height-fallback, variables.$clr-use-custom-properties);
   padding: 0 $padding;
   margin: 0 !important; //Because stupid forms target buttons directly. We really need to refactor forms.
 
@@ -25,13 +25,12 @@
   border: none;
   @include mixins.css-var(
     border-radius,
-    clr-global-borderradius,
+    clr-calendar-cell-border-radius,
     variables.$clr-global-borderradius,
     variables.$clr-use-custom-properties
   );
   background: none;
   cursor: pointer;
-  line-height: datepicker-variables.$clr-calendar-click-target;
 }
 
 @mixin generate-calendar-focus-style() {
@@ -49,6 +48,31 @@
     //Only because we have defined a background color for focus above
     outline: 0;
   }
+
+  &:active {
+    @include mixins.css-var(
+      background,
+      clr-calendar-btn-active-color-bg,
+      datepicker-variables.$clr-calendar-btn-hover-focus-color,
+      variables.$clr-use-custom-properties
+    );
+  }
+}
+
+@mixin generate-calendar-hover-active-color-style($fallback: inherit) {
+  &:hover,
+  &:focus {
+    @include mixins.css-var(
+      color,
+      clr-calendar-btn-hover-focus-color-text,
+      $fallback,
+      variables.$clr-use-custom-properties
+    );
+  }
+
+  &:active {
+    @include mixins.css-var(color, clr-calendar-btn-active-color, $fallback, variables.$clr-use-custom-properties);
+  }
 }
 
 @include mixins.exports('datepicker.clarity') {
@@ -60,6 +84,8 @@
     white-space: nowrap;
   }
 
+  // ATM
+  // is this needed? No references in demo and in code.
   // legacy can be removed when old layout is removed
   .datepicker-trigger {
     @include generate-calendar-button();
@@ -101,10 +127,30 @@
     flex-direction: column;
 
     //Dimensions
-    padding: datepicker-variables.$clr-calendar-padding;
-    margin-top: datepicker-variables.$clr-calendar-margin-top;
-    width: datepicker-variables.$clr-calendar-width;
-    height: datepicker-variables.$clr-calendar-height;
+    @include mixins.css-var(
+      margin-top,
+      clr-calendar-container-margin-top,
+      datepicker-variables.$clr-calendar-margin-top,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-calendar-container-padding,
+      datepicker-variables.$clr-calendar-padding,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      width,
+      clr-calendar-container-width,
+      datepicker-variables.$clr-calendar-width,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      height,
+      clr-calendar-container-height,
+      datepicker-variables.$clr-calendar-height,
+      variables.$clr-use-custom-properties
+    );
 
     //Other Props
     @include mixins.css-var(
@@ -113,7 +159,13 @@
       datepicker-variables.$clr-calendar-background-color,
       variables.$clr-use-custom-properties
     );
-    border: variables.$clr-global-borderwidth solid;
+    border-style: solid;
+    @include mixins.css-var(
+      border-width,
+      clr-calendar-container-border-width,
+      variables.$clr-global-borderwidth,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       border-color,
       clr-calendar-border-color,
@@ -122,7 +174,7 @@
     );
     @include mixins.css-var(
       border-radius,
-      clr-global-borderradius,
+      clr-calendar-container-border-radius,
       variables.$clr-global-borderradius,
       variables.$clr-use-custom-properties
     );
@@ -167,7 +219,11 @@
   .calendar-cell,
   .calendar-table .calendar-cell {
     //Dimensions
-    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
+    @include mixins.min-equilateral-var(
+      clr-calendar-cell-width-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
     padding: 0;
 
     //Other Props
@@ -185,11 +241,23 @@
   .weekday {
     @include mixins.css-var(
       font-size,
-      clr-day-font-size,
+      clr-calendar-weekday-font-size,
       datepicker-variables.$clr-day-font-size,
       variables.$clr-use-custom-properties
     );
-    font-weight: 600;
+    @include mixins.css-var(font-weight, clr-calendar-weekday-font-weight, 600, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-weekday-line-height,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-weekday-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .calendar-btn {
@@ -209,17 +277,45 @@
       datepicker-variables.$clr-calendar-picker-btn-font-weight,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-picker-btn-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-picker-btn-letter-spacing,
+      normal,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .day-btn {
     @include generate-calendar-button($padding: 0);
     @include generate-calendar-focus-style();
+    @include generate-calendar-hover-active-color-style();
 
     //Dimensions
     width: 100%;
 
     //Other Props
     color: inherit;
+
+    @include mixins.css-var(font-size, clr-calendar-day-font-size, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(font-weight, clr-calendar-day-font-weight, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-day-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-day-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
 
     &.is-today {
       @include mixins.css-var(
@@ -237,7 +333,9 @@
     }
 
     &.is-excluded {
-      opacity: 0.4; // consistent with disabled drop down items.
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
 
       &:hover {
         background: none;
@@ -269,7 +367,9 @@
     }
 
     &.is-disabled {
-      opacity: 0.4; // consistent with disabled drop down items.
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
       pointer-events: none;
       &:hover {
         background: none;
@@ -282,6 +382,7 @@
   }
 
   .switcher {
+    @include generate-calendar-hover-active-color-style(datepicker-variables.$clr-calendar-btn-color);
     @include mixins.css-var(
       color,
       clr-calendar-btn-color,
@@ -298,13 +399,17 @@
   .monthpicker-trigger,
   .yearpicker-trigger {
     //Dimensions
-    min-width: variables.$clr_baselineRem_2;
-    max-width: variables.$clr_baselineRem_2_5;
+    @include mixins.css-var(
+      width,
+      clr-calendar-month-year-button-width,
+      variables.$clr_baselineRem_2,
+      variables.$clr-use-custom-properties
+    );
 
     //Other Props
     @include mixins.css-var(
       color,
-      clr-calendar-btn-color,
+      clr-calendar-btn-picker-trigger-color,
       datepicker-variables.$clr-calendar-btn-color,
       variables.$clr-use-custom-properties
     );
@@ -327,6 +432,10 @@
     overflow: hidden;
   }
 
+  .yearpicker {
+    @include mixins.css-var(gap, clr-calendar-year-picker-gap, 0, variables.$clr-use-custom-properties);
+  }
+
   .monthpicker,
   .years {
     flex-wrap: wrap;
@@ -334,22 +443,55 @@
 
   .month,
   .year {
-    @include generate-calendar-button(
-      datepicker-variables.$clr-calendar-month-cell-height,
-      datepicker-variables.$clr-calendar-month-cell-padding
-    );
-    @include generate-calendar-focus-style();
+    @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-padding);
+    @include generate-calendar-hover-active-color-style();
+    // this is already generated through calendar-btn class. Commented for now
+    //@include generate-calendar-focus-style();
 
-    //Dimensions
-    width: datepicker-variables.$clr-month-year-btn-width;
+    @include mixins.css-var(
+      height,
+      clr-calendar-month-year-cell-height,
+      datepicker-variables.$clr-calendar-month-cell-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      width,
+      clr-calendar-month-year-cell-width,
+      datepicker-variables.$clr-month-year-btn-width,
+      variables.$clr-use-custom-properties
+    );
 
     //Other Props
-    font-size: datepicker-variables.$clr-calendar-picker-btn-font-size;
-    font-weight: datepicker-variables.$clr-calendar-picker-btn-font-weight;
     outline-offset: -1 * variables.$clr_baselineRem_5px; //needed for chrome
 
+    @include mixins.css-var(
+      font-size,
+      clr-calendar-month-year-font-size,
+      datepicker-variables.$clr-calendar-picker-btn-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-calendar-month-year-font-weight,
+      datepicker-variables.$clr-calendar-picker-btn-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-calendar-month-year-line-height,
+      datepicker-variables.$clr-calendar-click-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-calendar-month-year-letter-spacing,
+      inherit,
+      variables.$clr-use-custom-properties
+    );
     &.is-disabled {
-      opacity: 0.4;
+      //ATM: remove opacity mixin and color calc
+      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
       pointer-events: none;
       &:hover {
         background: none;

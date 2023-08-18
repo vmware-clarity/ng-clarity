@@ -14,6 +14,7 @@
       --clr-nav-active-box-shadow-color: var(--clr-color-action-600); // ATM - remove
       --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color);
       --clr-nav-active-bg-color: var(--clr-global-selection-color);
+      --clr-nav-selected-bg-color: var(--clr-global-selection-color);
       --clr-nav-hover-bg-color: var(--clr-color-neutral-200);
       --clr-nav-active-border-width: #{variables.$clr_baselineRem_3px};
       --clr-nav-selected-hover-background-color: var(--clr-nav-active-bg-color);
