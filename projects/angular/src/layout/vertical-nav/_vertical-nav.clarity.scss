@@ -396,8 +396,6 @@
           variables.$clr-use-custom-properties
         );
 
-        border-left: variables.$clr_baselineRem_3px solid var(--clr-nav-active-box-shadow-color);
-
         //Horrible Nesting but nothing I can do.
         .nav-icon {
           @include mixins.css-var(
