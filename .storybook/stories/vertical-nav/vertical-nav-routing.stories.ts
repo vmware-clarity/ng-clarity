@@ -51,10 +51,10 @@ const defaultStory: Story = args => ({
             <clr-vertical-nav-group-children>
               <a clrVerticalNavLink
                 *ngFor="let childNavLink of navLink.children; let index = index"
-                [ngClass]="{ 'active': createId(navLink.text, index) == activeRoute }"
-                (click)="handleClick($event, createId(navLink.text, index))"
+                [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+                (click)="handleClick($event, createRoute(navLink.text, index))"
               >
-                {{createId(navLink.text, index)}}
+                {{createRoute(navLink.text, index)}}
               </a>
             </clr-vertical-nav-group-children>
           </clr-vertical-nav-group>
@@ -80,7 +80,7 @@ const defaultParameters: Parameters = {
     toggleByButton: { control: { disable: true }, table: { disable: true } },
     // story helpers
     navLinks: { control: { disable: true }, table: { disable: true } },
-    createId: { control: { disable: true }, table: { disable: true } },
+    createRoute: { control: { disable: true }, table: { disable: true } },
     handleClick: { control: { disable: true }, table: { disable: true } },
   },
   args: {
@@ -90,7 +90,7 @@ const defaultParameters: Parameters = {
     navLinks,
     activeRoute: 'notifications',
     includeIcons: true,
-    createId: function (text, i) {
+    createRoute: function (text, i) {
       return `${text.toLowerCase()}/${i}`;
     },
     handleClick: function (event, route) {
