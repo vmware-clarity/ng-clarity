@@ -5,6 +5,7 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use 'variables.tree-view' as tree-view-variables;
 
 @include mixins.exports('tree.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -20,6 +21,13 @@
       --clr-tree-node-caret-color: var(--clr-color-neutral-500);
       --clr-tree-node-caret-link-active-color: var(--clr-color-neutral-500);
       --clr-tree-node-caret-link-disabled-color: var(--clr-color-neutral-500);
+
+      --clr-tree-node-font-size: #{tree-view-variables.$clr-tree-node-font-size};
+      --clr-tree-node-font-weight: #{tree-view-variables.$clr-tree-node-font-weight};
+      --clr-tree-node-line-height: #{tree-view-variables.$clr-tree-node-line-height};
+      --clr-tree-node-letter-spacing: #{tree-view-variables.$clr-tree-node-letter-spacing};
+      --clr-treenode-content-padding: 0;
+      --clr-tree-node-content-padding-left: #{tree-view-variables.$clr-tree-node-touch-target};
     }
   }
 }

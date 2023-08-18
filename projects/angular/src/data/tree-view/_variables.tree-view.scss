@@ -28,4 +28,7 @@ $clr-tree-link-text-color: variables.$clr-color-neutral-700 !default;
 $clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - variables.$clr_baselineRem_1) * 0.5 !default;
 $clr-tree-checkbox-padding-left: ($clr-tree-node-touch-target - alert-variables.$clr-icon-dimension-sm) * 0.5 !default;
 $clr-tree-node-caret-color: variables.$clr-color-neutral-500 !default;
-$clr-tree-node-checkbox-label-font-size: variables.$clr-p1-font-size !default;
+$clr-tree-node-font-size: inherit !default;
+$clr-tree-node-font-weight: inherit !default;
+$clr-tree-node-line-height: inherit !default;
+$clr-tree-node-letter-spacing: inherit !default;

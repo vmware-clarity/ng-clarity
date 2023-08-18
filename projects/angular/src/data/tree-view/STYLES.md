@@ -10,6 +10,11 @@
 | --clr-tree-link-selection-color        | Selected link background color  |
 | --clr-tree-link-text-color             | Tree link default font color    |
 | --clr-tree-node-caret-color            | Tree link caret color           |
+| --clr-tree-node-font-size              | Font size of the text           |
+| --clr-tree-node-font-weight            | Font weight of the text         |
+| --clr-tree-node-line-height            | Node line height                |
+| --clr-tree-node-letter-spacing         | Letter spacing of the text      |
+| --clr-treenode-content-padding         | Padding of tree node content    |
 
 ## CSS Classes
 

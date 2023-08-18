@@ -20,6 +20,35 @@
     //Display
     display: flex;
     align-items: center;
+
+    @include mixins.css-var(
+      font-size,
+      clr-tree-node-font-size,
+      tree-view-variables.$clr-tree-node-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-tree-node-font-weight,
+      tree-view-variables.$clr-tree-node-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-tree-node-line-height,
+      tree-view-variables.$clr-tree-node-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-tree-node-letter-spacing,
+      tree-view-variables.$clr-tree-node-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
+
+    &:hover {
+      background-color: red; // todo
+    }
   }
 
   .clr-treenode-content {
@@ -30,11 +59,22 @@
     display: flex;
     align-items: center;
 
+    @include mixins.css-var(
+      padding,
+      clr-treenode-content-padding,
+      tree-view-variables.$clr-tree-node-font-size,
+      variables.$clr-use-custom-properties
+    );
+
     //Dimensions
     &:first-child {
-      padding-left: tree-view-variables.$clr-tree-node-touch-target;
+      @include mixins.css-var(
+        padding-left,
+        clr-tree-node-content-padding-left,
+        tree-view-variables.$clr-tree-node-touch-target,
+        variables.$clr-use-custom-properties
+      );
     }
-    border: 1px solid red;
 
     //Others
     border-radius: 0;
@@ -50,8 +90,14 @@
       tree-view-variables.$clr-tree-border-radius,
       variables.$clr-use-custom-properties
     );
-    line-height: tree-view-variables.$clr-tree-node-touch-target;
-    color: red;
+
+    @include mixins.css-var(
+      line-height,
+      clr-tree-node-touch-target,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
+
     cds-icon,
     clr-icon {
       @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
@@ -62,12 +108,14 @@
 
   .clr-treenode-caret {
     //Display
-    flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
+    flex: 0 0 32px; //tree-view-variables.$clr-tree-node-touch-target;
 
     //Dimensions
-    padding: 0px;
     margin: 0;
-    @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
+    //@include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target); // todo: 16px
+    width: 32px;
+    height: 32px;
+    padding: 8px; // 0px
 
     //Others
     background: none;
@@ -128,8 +176,14 @@
   }
 
   .clr-treenode-children {
-    //Dimensions
-    margin-left: tree-view-variables.$clr-tree-node-children-margin; // todo: global-space-9
+    //Dimensions TODO!!!!!
+    // @include mixins.css-var(
+    //   margin-left,
+    //   32px,
+    //   tree-view-variables.$clr-tree-node-children-margin,
+    //   variables.$clr-use-custom-properties
+    // );
+    margin-left: 32px;
     will-change: height;
     overflow-y: hidden;
   }
@@ -141,7 +195,8 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    padding: 0 0 0 tree-view-variables.$clr-tree-node-link-padding-left;
+    padding: 0;
+    padding-left: tree-view-variables.$clr-tree-node-link-padding-left;
 
     //Others
     background: transparent;
@@ -193,15 +248,12 @@
 
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
     //Dimensions
-    padding-top: tree-view-variables.$clr-tree-checkbox-padding-top;
-    padding-left: tree-view-variables.$clr-tree-checkbox-padding-left;
-
+    // padding-top: tree-view-variables.$clr-tree-checkbox-padding-top;
+    // padding-left: tree-view-variables.$clr-tree-checkbox-padding-left;
+    // todo: overri
+    line-height: 16px; // todo css-var
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target;
-    }
-
-    .clr-control-label {
-      font-size: tree-view-variables.$clr-tree-node-checkbox-label-font-size;
+      margin-left: tree-view-variables.$clr-tree-node-touch-target; // TODO!!!!
     }
   }
 }
