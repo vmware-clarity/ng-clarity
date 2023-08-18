@@ -25,26 +25,28 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
 const defaultStory: Story = args => ({
   template: `
     <div class="main-container">
-      <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-        <clr-vertical-nav-group
-          [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-          (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-        >
-          <cds-icon *ngIf="includeIcons" shape="bars" clrVerticalNavIcon></cds-icon>
-          Menu
-          <clr-vertical-nav-group-children>
-            <a *ngFor="let navLink of navLinks; let index = index"
-              clrVerticalNavLink
-              [ngClass]="{ 'active': index == activeIndex }"
-              href="javascript:void(0)"
-              (click)="activeIndex = index"
-            >
-              <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              {{navLink.text}}
-            </a>
-          </clr-vertical-nav-group-children>
-        </clr-vertical-nav-group>
-      </clr-vertical-nav>
+      <div class="content-container">
+        <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+          <clr-vertical-nav-group
+            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+          >
+            <cds-icon *ngIf="includeIcons" shape="bars" clrVerticalNavIcon></cds-icon>
+            Menu
+            <clr-vertical-nav-group-children>
+              <a *ngFor="let navLink of navLinks; let index = index"
+                clrVerticalNavLink
+                [ngClass]="{ 'active': index == activeIndex }"
+                href="javascript:void(0)"
+                (click)="activeIndex = index"
+              >
+                <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                {{navLink.text}}
+              </a>
+            </clr-vertical-nav-group-children>
+          </clr-vertical-nav-group>
+        </clr-vertical-nav>
+      </div>
     </div>
   `,
   props: { ...args },
