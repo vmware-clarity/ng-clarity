@@ -820,6 +820,7 @@
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
+  --clr-combobox-border-bottom-color: var(--clr-combobox-border-color); // ATM - remove. All borders should be the same.
   --clr-combobox-trigger-color: var(--clr-color-neutral-500);
   --clr-combobox-input-background-color: var(--cds-alias-object-container-background-tint);
   --clr-combobox-pill-background-color: var(--cds-alias-object-interaction-background); // #{$clr-combobox-pill-background-color};

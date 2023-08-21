@@ -165,7 +165,7 @@
 
     @include mixins.css-var(
       border-bottom-color,
-      clr-forms-border-color,
+      clr-combobox-border-bottom-color,
       forms-variables.$clr-forms-border-color,
       variables.$clr-use-custom-properties
     );
