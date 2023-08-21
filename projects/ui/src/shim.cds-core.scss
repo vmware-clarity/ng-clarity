@@ -479,6 +479,8 @@
   --clr-alert-sm-item-text-align-items: center;
   --clr-alert-sm-close-icon-height: var(--cds-global-space-10); // ATM: delete after token migration
   --clr-alert-sm-item-padding-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-items-margin-right: 0; // ATM: delete after token migration
 
   // App Alerts Pager
   --clr-app-alert-pager-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-0, #{$clr-color-neutral-0});

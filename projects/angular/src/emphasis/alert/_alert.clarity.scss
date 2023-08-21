@@ -505,7 +505,7 @@
     .alert-icon {
       @include mixins.min-equilateral-var(
         clr-alert-sm-icon-size,
-        variables.$clr_baselineRem_0_75,
+        variables.$clr_baselineRem_1,
         variables.$clr-use-custom-properties
       );
       @include mixins.css-var(
@@ -516,7 +516,7 @@
       );
       @include mixins.css-var(
         margin-top,
-        clr-alert-icon-wrapper-margin-top,
+        clr-alert-sm-icon-wrapper-margin-top,
         -1 * $alertSmallNudge,
         variables.$clr-use-custom-properties
       );
@@ -560,13 +560,13 @@
         $smallAlertCloseIconDims: variables.$clr_baselineRem_0_83;
         @include mixins.css-var(
           margin-right,
-          clr-alert-items-margin-right,
+          clr-alert-sm-items-margin-right,
           -1 * variables.$clr_baselineRem_1px,
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(
           margin-top,
-          clr-alert-icon-wrapper-margin-top,
+          clr-alert-sm-icon-wrapper-margin-top,
           -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px),
           variables.$clr-use-custom-properties
         );
