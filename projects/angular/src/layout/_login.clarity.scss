@@ -53,9 +53,27 @@
         display: flex;
         width: 100%;
         flex-direction: row;
+        align-items: center;
 
         .actions {
           margin-left: auto;
+        }
+      }
+
+      .login-header {
+        .logo {
+          height: 16px;
+          width: 100%;
+          -webkit-mask: icons.generateLoginVMWareLogo();
+          mask: icons.generateLoginVMWareLogo();
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+          @include mixins.css-var(
+            background-color,
+            clr-login-logo-color,
+            login-variables.$clr-login-logo-color,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
@@ -341,8 +359,10 @@
           &:before {
             content: '';
             display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
-            -webkit-mask: icons.generateErrorIcon("'none'") no-repeat 100% 100%;
-            mask: icons.generateErrorIcon("'none'") no-repeat 100% 100%;
+            -webkit-mask: icons.generateErrorIcon("'none'");
+            mask: icons.generateErrorIcon("'none'");
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
             -webkit-mask-size: cover;
             mask-size: cover;
             @include mixins.css-var(

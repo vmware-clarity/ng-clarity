@@ -1694,4 +1694,5 @@
 
 [cds-theme~='dark'] {
   --clr-datagrid-loading-background: var(--cds-alias-object-opacity-300); // #{$clr-datagrid-loading-background}; // rgba(0, 0, 0, 0.5);
+  --clr-login-logo-color: var(--cds-global-color-white);
 }
