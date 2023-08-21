@@ -58,10 +58,11 @@
 | --clr-datagrid-placeholder-line-height               | Line height for placeholder                                              |
 | --clr-datagrid-placeholder-letter-spacing            | Letter spacing for placeholder                                           |
 | --clr-datagrid-placeholder-background-color          | Background color for placeholder                                         |
-| --clr-datagrid-column-seperator-height               | Height for column seperator                                              |
+| --clr-datagrid-column-separator-height               | Height for column separator                                              |
 | --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                |
 | --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
 | --clr-datagrid-footer-line-height                    | Line height for footer                                                   |
+| --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
 
 ## CSS Classes
 

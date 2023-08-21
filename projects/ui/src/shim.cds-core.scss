@@ -1436,7 +1436,7 @@
   --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
   --clr-datagrid-placeholder-background-color: var(--cds-alias-object-container-background);
   --clr-datagrid-popovers-box-shadow: var(--cds-alias-object-shadow-100);
-  --clr-datagrid-column-seperator-height: var(--cds-global-space-7);
+  --clr-datagrid-column-separator-height: var(--cds-global-space-7);
   --clr-datagrid-filter-toggle-size: var(--cds-global-space-7);
 
   --clr-datagrid-footer-padding: var(--cds-global-space-5) var(--cds-global-space-7);
@@ -1446,6 +1446,12 @@
   --clr-datagrid-footer-select-wrapper-caret-top-position: 30%; // ATM - remove
   --clr-datagrid-footer-pagination-gap: var(--cds-global-space-6);
   --clr-datagrid-footer-pagination-list-margin: var(--cds-global-space-6); // ATM - remove
+  --clr-datagrid-fixed-column-size: var(--cds-global-space-12);
+
+  // ATM - move to _datagrid.clarity as default
+  .datagrid-row-sticky .datagrid-cell:last-child:after {
+    height: var(--clr-datagrid-column-separator-height);
+  }
 
   // Login
   --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
