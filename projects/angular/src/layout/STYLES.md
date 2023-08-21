@@ -34,10 +34,10 @@
 | card-media-block       | A card media block contains and image and description                                                                         |
 | wrap                   | Adding the `wrap` class to a `.card-media-block` element causes the description to be below the image instead of to the right |
 | card-media-image       | An `img` within a card media block                                                                                            |
-| card-media-description | The description within a card media blockIt can contain a title and text                                                      |
+| card-media-description | The description within a card media block. It can contain a title and text                                                    |
 | card-media-title       | The title of a card media block description                                                                                   |
 | card-media-text        | Text within a card media block description                                                                                    |
-| card-footer            | The footer can contain two actions in form of a button or linkFor more actions, use a dropdown                                |
+| card-footer            | The footer can contain two actions in form of a button or link. For more actions, use a dropdown                              |
 | card-link              | A link within a card footer                                                                                                   |
 
 # Login
