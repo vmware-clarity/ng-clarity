@@ -58,13 +58,34 @@
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    min-width: variables.$clr_baselineRem_0_625;
+    @include mixins.css-var(
+      min-width,
+      clr-badge-min-width,
+      variables.$clr_baselineRem_0_625,
+      variables.$clr-use-custom-properties
+    );
     background: label-variables.getLabelColor(gray, bg-color);
-    height: variables.$clr_baselineRem_0_625;
+    @include mixins.css-var(
+      height,
+      clr-badge-height,
+      variables.$clr_baselineRem_0_625,
+      variables.$clr-use-custom-properties
+    );
     line-height: normal;
-    border-radius: variables.$clr_baselineRem_0_416;
+    @include mixins.css-var(
+      border-radius,
+      clr-badge-border-radius,
+      variables.$clr_baselineRem_0_416,
+      variables.$clr-use-custom-properties
+    );
     font-size: variables.$clr_baselineRem_0_416;
-    padding: 0 variables.$clr_baselineRem_4px;
+    @include mixins.css-var(padding-block, clr-badge-vertical-padding, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      padding-inline,
+      clr-badge-horizontal-padding,
+      variables.$clr_baselineRem_4px,
+      variables.$clr-use-custom-properties
+    );
     margin-right: variables.$clr_baselineRem_0_25;
     white-space: nowrap;
     text-align: center;

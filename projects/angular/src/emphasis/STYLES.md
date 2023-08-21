@@ -26,6 +26,11 @@
 | --clr-badge-light-blue-color    | Light-blue badge text color                                  |
 | --clr-badge-font-color-light    | Default, gray, purple, blue and `:visited` badges text color |
 | --clr-badge-font-color-dark     | Orange, light-blue badges text color                         |
+| --clr-badge-vertical-padding    | Sets padding-block                                           |
+| --clr-badge-horizontal-padding  | Sets padding-inline                                          |
+| --clr-badge-height              | Height                                                       |
+| --clr-badge-min-width           | Min width                                                    |
+| --clr-badge-border-radius       | Border radius                                                |
 
 ## CSS Classes
 
