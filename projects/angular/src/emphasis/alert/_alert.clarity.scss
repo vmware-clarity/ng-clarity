@@ -500,6 +500,12 @@
     .alert-icon-wrapper {
       padding-top: 0;
       @include mixins.css-var(flex-basis, clr-alert-sm-icon-size, 1.25rem, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        height,
+        clr-alert-sm-icon-wrapper-height,
+        variables.$clr_baselineRem_0_667,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .alert-icon {
