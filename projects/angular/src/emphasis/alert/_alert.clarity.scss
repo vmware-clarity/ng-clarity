@@ -485,15 +485,30 @@
         variables.$clr-use-custom-properties
       );
 
+      // ATM
+      // remove
       @include mixins.css-var(
         align-items,
         clr-alert-sm-item-text-align-items,
-        center,
+        normal,
         variables.$clr-use-custom-properties
       );
 
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+
+    // ATM
+    // remove
+    &.alert-app-level {
+      .alert-item {
+        @include mixins.css-var(
+          align-items,
+          clr-alert-sm-item-text-align-items,
+          center,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
