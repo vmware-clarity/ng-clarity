@@ -483,41 +483,43 @@
 
   /* Labels */
 
-  --clr-label-font-color-light: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
-  --clr-label-font-color-dark: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
-  --clr-label-default-border-color: var(--cds-alias-status-neutral); // var(--clr-color-neutral-600);
+  --clr-label-default-border-color: var(--cds-alias-utility-grey);
+  --clr-label-default-bg-color: var(--cds-alias-object-opacity-0);
 
-  --clr-label-bg-hover-color: var(--cds-alias-status-neutral-tint); // var(--clr-color-neutral-200);
+  --clr-label-bg-hover-color: var(--cds-alias-object-interaction-background-hover);
+  --clr-label-hover-color: var(--cds-alias-object-interaction-color-hover);
+  // TODO: Confirm we don't need active state colors?
 
-  --clr-label-gray-bg-color: var(--cds-alias-status-neutral); // var(--cds-global-color-gray-600); // var(--clr-color-neutral-600); // actually border color
-  --clr-label-gray-color: var(--clr-label-font-color-light); // indirectly mapped to CDS token
+  --clr-label-gray-bg-color: var(--cds-alias-utility-grey);
+  --clr-label-gray-color: var(--cds-alias-typography-color-500);
 
-  --clr-label-purple-bg-color: var(--cds-global-color-violet-600); // var(--clr-color-secondary-action-500);
-  --clr-label-purple-color: var(--clr-label-font-color-light); // indirectly mapped to CDS token
+  --clr-label-purple-bg-color: var(--cds-alias-utility-violet);
+  --clr-label-purple-color: var(--cds-alias-typography-color-500);
 
-  --clr-label-blue-bg-color: var(--cds-global-color-blue-800); // var(--clr-color-action-800);
-  --clr-label-blue-color: var(--clr-label-font-color-light); // indirectly mapped to CDS token
+  --clr-label-blue-bg-color: var(--cds-alias-utility-dark-blue);
+  --clr-label-blue-color: var(--cds-alias-typography-color-500);
 
-  --clr-label-orange-bg-color: var(--cds-global-color-ochre-800); // var(--clr-color-warning-1000);
-  --clr-label-orange-color: var(--clr-label-font-color-dark); // indirectly mapped to CDS token
+  --clr-label-orange-bg-color: var(--cds-alias-utility-tangerine);
+  --clr-label-orange-color: var(--cds-alias-typography-color-500);
 
-  --clr-label-light-blue-bg-color: var(--cds-global-color-blue-600); // var(--clr-color-action-500);
-  --clr-label-light-blue-color: var(--clr-label-font-color-dark); // indirectly mapped to CDS token
+  // TODO: Confirm it is light-blue and not lightblue as in spec
+  --clr-label-light-blue-bg-color: var(--cds-alias-utility-light-blue);
+  --clr-label-light-blue-color: var(--cds-alias-typography-color-500);
 
   --clr-label-info-bg-color: var(--cds-alias-status-tint); // var(--clr-color-action-50);
-  --clr-label-info-font-color: var(--clr-label-font-color-light); // var(--clr-color-action-800);
+  --clr-label-info-font-color: var(--cds-alias-typography-color-500);
   --clr-label-info-border-color: var(--cds-alias-status-info); // var(--clr-color-action-800);
 
   --clr-label-success-bg-color: var(--cds-alias-status-tint); // var(--clr-color-success-50);
-  --clr-label-success-font-color: var(--clr-label-font-color-light); // var(--clr-color-success-800);
+  --clr-label-success-font-color: var(--cds-alias-typography-color-500);
   --clr-label-success-border-color: var(--cds-alias-status-success); // var(--clr-color-success-800);
 
   --clr-label-warning-bg-color: var(--cds-alias-status-tint); // var(--clr-color-warning-100);
-  --clr-label-warning-font-color: var(--clr-label-font-color-light); // var(--clr-color-neutral-900);
+  --clr-label-warning-font-color: var(--cds-alias-typography-color-500);
   --clr-label-warning-border-color: var(--cds-alias-status-warning); // var(--clr-color-warning-800);
 
   --clr-label-danger-bg-color: var(--cds-alias-status-tint); // var(--clr-color-danger-100);
-  --clr-label-danger-font-color: var(--clr-label-font-color-light); // var(--clr-color-danger-900);
+  --clr-label-danger-font-color: var(--cds-alias-typography-color-500);
   --clr-label-danger-border-color: var(--cds-alias-status-danger); // var(--clr-color-danger-900);
 
   /* Badges */
