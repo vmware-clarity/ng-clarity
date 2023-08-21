@@ -488,7 +488,7 @@
       @include mixins.css-var(
         align-items,
         clr-alert-sm-item-text-align-items,
-        normal,
+        center,
         variables.$clr-use-custom-properties
       );
 
