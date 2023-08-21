@@ -7,6 +7,7 @@
 @use '../../utils/variables/variables';
 @use 'variables.combobox' as combobox-variables;
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../styles/variables.forms' as forms-variables;
 
 @include mixins.exports('combobox.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -17,6 +18,7 @@
       --clr-combobox-min-height: #{combobox-variables.$clr-combobox-min-height};
       --clr-combobox-min-width: #{combobox-variables.$clr-combobox-min-width};
       --clr-combobox-border-color: #{combobox-variables.$clr-combobox-border-color};
+      --clr-combobox-border-bottom-color: #{forms-variables.$clr-forms-border-color};
       --clr-combobox-border-radius: #{combobox-variables.$clr-combobox-border-radius};
       --clr-combobox-input-background-color: #{combobox-variables.$clr-combobox-input-background-color};
       --clr-combobox-pill-background-color: #{combobox-variables.$clr-combobox-pill-background-color};
