@@ -124,14 +124,25 @@
       variables.$clr_baselineRem_0_5,
       variables.$clr-use-custom-properties
     );
-    border: label-variables.$clr-label-borderwidth solid;
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border: solid;
     @include mixins.css-var(
       border-color,
       clr-label-default-border-color,
       label-variables.$clr-label-default-border-color,
       variables.$clr-use-custom-properties
     );
-    height: variables.$clr_baselineRem_0_875;
+    @include mixins.css-var(
+      height,
+      clr-label-height,
+      variables.$clr_baselineRem_0_875,
+      variables.$clr-use-custom-properties
+    );
     margin: 0 variables.$clr_baselineRem_0_25 $label-nudge-for-vertical-alignment 0;
     white-space: nowrap;
     @include mixins.css-var(
