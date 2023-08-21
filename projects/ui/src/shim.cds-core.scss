@@ -506,21 +506,21 @@
   --clr-label-light-blue-bg-color: var(--cds-alias-utility-light-blue);
   --clr-label-light-blue-color: var(--cds-alias-typography-color-500);
 
-  --clr-label-info-bg-color: var(--cds-alias-status-tint); // var(--clr-color-action-50);
+  --clr-label-info-bg-color: var(--cds-alias-utility-blue-tint); // var(--clr-color-action-50);
   --clr-label-info-font-color: var(--cds-alias-typography-color-500);
-  --clr-label-info-border-color: var(--cds-alias-status-info); // var(--clr-color-action-800);
+  --clr-label-info-border-color: var(--cds-alias-utility-blue); // var(--clr-color-action-800);
 
-  --clr-label-success-bg-color: var(--cds-alias-status-tint); // var(--clr-color-success-50);
+  --clr-label-success-bg-color: var(--cds-alias-utility-green-tint); // var(--clr-color-success-50);
   --clr-label-success-font-color: var(--cds-alias-typography-color-500);
-  --clr-label-success-border-color: var(--cds-alias-status-success); // var(--clr-color-success-800);
+  --clr-label-success-border-color: var(--cds-alias-utility-green); // var(--clr-color-success-800);
 
-  --clr-label-warning-bg-color: var(--cds-alias-status-tint); // var(--clr-color-warning-100);
+  --clr-label-warning-bg-color: var(--cds-alias-utility-yellow-tint); // var(--clr-color-warning-100);
   --clr-label-warning-font-color: var(--cds-alias-typography-color-500);
-  --clr-label-warning-border-color: var(--cds-alias-status-warning); // var(--clr-color-warning-800);
+  --clr-label-warning-border-color: var(--cds-alias-utility-yellow); // var(--clr-color-warning-800);
 
-  --clr-label-danger-bg-color: var(--cds-alias-status-tint); // var(--clr-color-danger-100);
+  --clr-label-danger-bg-color: var(--cds-alias-utility-red-tint); // var(--clr-color-danger-100);
   --clr-label-danger-font-color: var(--cds-alias-typography-color-500);
-  --clr-label-danger-border-color: var(--cds-alias-status-danger); // var(--clr-color-danger-900);
+  --clr-label-danger-border-color: var(--cds-alias-utility-red); // var(--clr-color-danger-900);
 
   /* Badges */
 
