@@ -1147,6 +1147,12 @@
   --clr-tree-node-line-height: var(--cds-global-space-7);
   --clr-tree-node-letter-spacing: var(--clr-p3-letter-spacing);
 
+  --clr-tree-caret-size: var(--cds-global-space-7);
+  --clr-tree-node-content-icon-margin-right: var(--cds-global-space-4);
+  --clr-tree-carret-padding: var(--cds-global-space-5);
+
+  --clr-tree-node-children-margin: var(--cds-global-space-10);
+
   /* Vertical Nav */
 
   --clr-vertical-nav-divider-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-700);

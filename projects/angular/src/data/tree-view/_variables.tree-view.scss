@@ -10,6 +10,7 @@
 
 // Usage: ../data/tree-view/_tree-vioew.clarity.scss
 $clr-tree-border-radius: variables.$clr-global-borderradius !default;
+$clr-tree-caret-padding: 0 !default;
 $clr-tree-caret-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-spinner-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-node-touch-target: variables.$clr_baselineRem_1_35 !default;

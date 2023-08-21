@@ -45,10 +45,6 @@
       tree-view-variables.$clr-tree-node-letter-spacing,
       variables.$clr-use-custom-properties
     );
-
-    &:hover {
-      background-color: red; // todo
-    }
   }
 
   .clr-treenode-content {
@@ -100,22 +96,45 @@
 
     cds-icon,
     clr-icon {
-      @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
-      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right; // todo
+      @include mixins.min-equilateral-var(
+        clr-tree-caret-size,
+        tree-view-variables.$clr-tree-caret-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-right,
+        clr-tree-node-content-icon-margin-right,
+        tree-view-variables.$clr-tree-node-content-icon-margin-right,
+        variables.$clr-use-custom-properties
+      );
       vertical-align: middle;
     }
   }
 
   .clr-treenode-caret {
     //Display
-    flex: 0 0 32px; //tree-view-variables.$clr-tree-node-touch-target;
+    flex-grow: 0;
+    flex-shrink: 0;
+    @include mixins.css-var(
+      flex-basis,
+      clr-tree-node-touch-target,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
 
     //Dimensions
     margin: 0;
-    //@include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target); // todo: 16px
-    width: 32px;
-    height: 32px;
-    padding: 8px; // 0px
+    @include mixins.min-equilateral-var(
+      clr-tree-node-touch-target,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-tree-caret-padding,
+      tree-view-variables.$clr-tree-caret-padding,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     background: none;
@@ -158,7 +177,11 @@
 
   .clr-tree-node-caret-icon {
     //Dimensions
-    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
+    @include mixins.equilateral-var(
+      clr-tree-caret-size,
+      tree-view-variables.$clr-tree-caret-size,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     vertical-align: middle;
@@ -176,14 +199,13 @@
   }
 
   .clr-treenode-children {
-    //Dimensions TODO!!!!!
-    // @include mixins.css-var(
-    //   margin-left,
-    //   32px,
-    //   tree-view-variables.$clr-tree-node-children-margin,
-    //   variables.$clr-use-custom-properties
-    // );
-    margin-left: 32px;
+    //Dimensions
+    @include mixins.css-var(
+      margin-left,
+      clr-tree-node-children-margin,
+      tree-view-variables.$clr-tree-node-children-margin,
+      variables.$clr-use-custom-properties
+    );
     will-change: height;
     overflow-y: hidden;
   }
@@ -247,13 +269,13 @@
   }
 
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
-    //Dimensions
-    // padding-top: tree-view-variables.$clr-tree-checkbox-padding-top;
-    // padding-left: tree-view-variables.$clr-tree-checkbox-padding-left;
-    // todo: overri
-    line-height: 16px; // todo css-var
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target; // TODO!!!!
+      @include mixins.css-var(
+        margin-left,
+        clr-tree-node-touch-target,
+        tree-view-variables.$clr-tree-node-touch-target,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 }
