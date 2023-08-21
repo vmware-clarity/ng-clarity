@@ -576,13 +576,13 @@
 
   --clr-progress-standart-font-weight: var(--cds-global-typography-font-weight-regular);
 
-  --clr-progress-clr-row-color: var(--cds-alias-typography-color-400);
+  --clr-progress-clr-row-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-progress-clr-row-font-weight: var(--clr-progress-standart-font-weight);
   --clr-progress-clr-row-font-size: var(--clr-p6-font-size);
   --clr-progress-clr-row-line-height: var(--clr-p6-line-height);
   --clr-progress-clr-row-letter-spacing: var(--clr-p6-letter-spacing);
 
-  --clr-progress-label-color: var(--cds-alias-typography-color-400);
+  --clr-progress-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-progress-label-font-weight: var(--clr-progress-standart-font-weight);
   --clr-progress-label-font-size: var(--cds-global-typography-font-size-3);
   --clr-progress-label-line-height: var(--clr-p6-line-height);
@@ -764,8 +764,18 @@
   /// add more radio stuff
 
   // Range
-  --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-range-track-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
+  --clr-forms-range-progress-fill-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-track-color: var(--cds-alias-object-container-background-shade);
+  --clr-forms-range-track-border-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-thumb-height: var(--cds-global-space-7); // 16px
+  --clr-forms-range-track-height: var(--cds-global-space-3); // 4px
+  --clr-forms-range-track-border-radius: var(--cds-global-space-2); // 2px
+  --clr-forms-range-track-border-width: var(--cds-global-space-1); // 1px
+  --clr-forms-range-progress-fill-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-track-color-disabled: var(--cds-alias-status-disabled-tint);
+  --clr-forms-range-track-border-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
+  --clr-forms-range-progress-fill-height: 3px; // TODO: ATM - get rid of this
 
   // Password
   // TODO: ATM Make sure this is what we need,
@@ -784,7 +794,7 @@
   --clr-combobox-min-height: var(--cds-global-space-9);
   --clr-combobox-font-size: var(--cds-global-typography-secondary-font-size);
   --clr-combobox-font-weight: var(--cds-global-typography-secondary-font-weight);
-  --clr-combobox-text-color: var(--cds-alias-typography-color-400);
+  --clr-combobox-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-combobox-border-radius: var(--cds-alias-object-border-radius-100);
   --clr-combobox-padding-left: var(--cds-global-space-5);
   --clr-combobox-trigger-padding-left: var(--cds-global-space-5);
@@ -1056,6 +1066,7 @@
   --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color); // var(--clr-color-action-600);
   --clr-nav-active-border-width: var(--cds-alias-object-border-width-300);
   --clr-nav-active-bg-color: var(--cds-alias-object-interaction-background-active); // indirectly mapped
+  --clr-nav-selected-bg-color: var(--cds-alias-object-opacity-0); // indirectly mapped
   --clr-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
   --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected);
 
@@ -1213,17 +1224,69 @@
   // Vertical Nav - Align
   --clr-vertical-nav-item-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
   --clr-vertical-nav-item-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-700);
-  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background);
+  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background-shade);
+  --clr-vertical-nav-item-padding: var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-item-child-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-vertical-nav-item-height: var(--cds-global-space-11);
+  --clr-vertical-nav-item-line-height: var(--cds-global-space-7);
+  --clr-vertical-nav-item-font-size: var(--cds-global-typography-font-size-4);
+  --clr-vertical-nav-item-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-vertical-nav-item-caret-icon-size: var(--cds-global-space-7);
+  --clr-vertical-nav-content-gap: var(--cds-global-space-5);
+  --clr-vertical-nav-content-padding-top: var(--cds-global-space-5);
+  --clr-vertical-nav-collapsed-item-margin: var(--cds-global-space-5) 0 var(--cds-global-space-5) var(--cds-global-space-7); // ATM - remove;
 
-  // Note: figure out whether it should be --cds-alias-object-interaction-background-active instead. The problem is, in the dark mode,
-  // --cds-alias-object-interaction-background-active is the same as --cds-alias-object-container-background-shade.
-
-  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-active);
+  --clr-vertical-nav-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-item-top-level-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-400);
 
   // Vertical Nav - Trigger
   --clr-vertical-nav-toggle-icon-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-1000);
+  --clr-vertical-nav-toggle-icon-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-vertical-nav-toggle-icon-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-toggle-icon-disabled-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-vertical-nav-toggle-button-size: var(--cds-global-space-10);
   --clr-vertical-nav-trigger-divider-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
+  --clr-vertical-nav-divider-margin: 0;
+
+  // Vertical Nav - Header
+  --clr-vertical-nav-header-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-vertical-nav-header-padding: var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-header-font-size: var(--clr-p4-font-size);
+  --clr-vertical-nav-header-line-height: var(--cds-global-space-7);
+
+  // ATM - remove
+  --clr-vertical-nav-group-trigger-icon-margin-right: var(--cds-global-space-5);
+
+  // ATM - remove
+  --clr-vertical-nav-toggle-margin-left: var(--cds-global-space-7);
+  --clr-vertical-nav-toggle-margin-right: var(--cds-global-space-3);
+
+  // ATM - Move this to the main file and leave only what is need by spec
+  .clr-vertical-nav .nav-trigger {
+    padding: var(--cds-global-space-5) var(--cds-global-space-7);
+    margin-right: 0 !important; // Override specificity
+    margin-bottom: var(--cds-global-space-3);
+
+    cds-icon {
+      margin-right: 0;
+      width: var(--cds-global-space-7);
+      height: var(--cds-global-space-7);
+    }
+
+    &.on-collapse {
+      display: block;
+      cds-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-vertical-nav.has-icons .nav-group-children .nav-link {
+    padding: var(--clr-vertical-nav-item-child-padding);
+  }
 
   /* Tables */
 
@@ -1338,7 +1401,7 @@
   --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
   --clr-datagrid-placeholder-background-color: var(--cds-alias-object-container-background);
   --clr-datagrid-popovers-box-shadow: var(--cds-alias-object-shadow-100);
-  --clr-datagrid-column-seperator-height: var(--cds-global-space-7);
+  --clr-datagrid-column-separator-height: var(--cds-global-space-7);
   --clr-datagrid-filter-toggle-size: var(--cds-global-space-7);
 
   --clr-datagrid-footer-padding: var(--cds-global-space-5) var(--cds-global-space-7);
@@ -1348,6 +1411,12 @@
   --clr-datagrid-footer-select-wrapper-caret-top-position: 30%; // ATM - remove
   --clr-datagrid-footer-pagination-gap: var(--cds-global-space-6);
   --clr-datagrid-footer-pagination-list-margin: var(--cds-global-space-6); // ATM - remove
+  --clr-datagrid-fixed-column-size: var(--cds-global-space-12);
+
+  // ATM - move to _datagrid.clarity as default
+  .datagrid-row-sticky .datagrid-cell:last-child:after {
+    height: var(--clr-datagrid-column-separator-height);
+  }
 
   // Login
   --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
@@ -1401,12 +1470,6 @@
   clr-stepper-panel .clr-accordion-inner-content {
     padding: var(--cds-global-space-9);
   }
-}
-
-[cds-theme~='light'] {
-  --clr-vertical-nav-bg-color: var(--cds-global-color-gray-200);
-  --clr-vertical-nav-active-bg-color: var(--cds-global-color-gray-0);
-  --clr-vertical-nav-hover-bg-color: var(--cds-global-color-gray-400);
 }
 
 [cds-theme~='dark'] {

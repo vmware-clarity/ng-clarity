@@ -127,7 +127,7 @@ button.nav-link {
       &:not(:active).active {
         @include mixins.css-var(
           background-color,
-          clr-nav-active-bg-color,
+          clr-nav-selected-bg-color,
           variables.$clr-global-selection-color,
           variables.$clr-use-custom-properties
         );

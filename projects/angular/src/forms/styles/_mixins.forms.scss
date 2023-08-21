@@ -205,40 +205,57 @@
 
 @mixin range-style(
   $height,
-  $background-color,
+  $height-prop: null,
+  $background-color-fallback,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
   -webkit-appearance: none;
   left: 0;
-  height: $height;
 
-  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(height, $height-prop, $height, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
+}
+
+@mixin range-border-style(
+  $border-color-fallback,
+  $border-color-prop,
+  $border-radius-fallback,
+  $border-radius-prop,
+  $border-width-fallback,
+  $border-width-prop,
+  $use-custom-props: variables.$clr-use-custom-properties
+) {
+  border-style: solid;
+  @include mixins.css-var(border-color, $border-color-prop, $border-color-fallback, $use-custom-props);
+  @include mixins.css-var(border-radius, $border-radius-prop, $border-radius-fallback, $use-custom-props);
+  @include mixins.css-var(border-width, $border-width-prop, $border-width-fallback, $use-custom-props);
 }
 
 @mixin range-track-style(
   $height,
-  $background-color,
+  $background-color-fallback,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
   height: $height;
   cursor: pointer;
 
-  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
 }
 
 @mixin range-thumb-style(
-  $margin,
-  $size,
-  $background-color,
+  $margin-fallback,
+  $margin-prop,
+  $size-fallback,
+  $size-prop,
+  $background-color-fallback,
   $background-color-prop: null,
   $use-custom-props: variables.$clr-use-custom-properties
 ) {
-  margin-top: $margin;
   border-radius: 50%;
-  height: $size;
-  width: $size;
 
-  @include mixins.css-var(background-color, $background-color-prop, $background-color, $use-custom-props);
+  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
+  @include mixins.css-var(margin-top, $margin-prop, $margin-fallback, $use-custom-props);
+  @include mixins.equilateral-var($size-prop, $size-fallback, $use-custom-props);
 }
