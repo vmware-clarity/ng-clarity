@@ -44,17 +44,39 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                | Description                     |
-| ---------------------------------- | ------------------------------- |
-| --clr-login-title-color            | Color of the title.             |
-| --clr-login-title-font-weight      | Font weight of the title.       |
-| --clr-login-title-font-family      | Font family of the title.       |
-| --clr-login-background-color       | Background color.               |
-| --clr-login-background             | Background image.               |
-| --clr-login-error-background-color | Error message background color. |
-| --clr-login-error-border-radius    | Error message border radius.    |
-| --clr-login-panel-line-color       | Color of the divider line.      |
-| --clr-login-panel-line-opacity     | Opacity to the divider line.    |
+| CSS Custom Property                  | Description                             |
+| ------------------------------------ | --------------------------------------- |
+| --clr-login-title-color              | Color of the title                      |
+| --clr-login-title-font-weight        | Font weight of the title                |
+| --clr-login-title-font-family        | Font family of the title                |
+| --clr-login-background-color         | Background color                        |
+| --clr-login-background               | Background image                        |
+| --clr-login-error-background-color   | Error message background color          |
+| --clr-login-error-border-radius      | Error message border radius             |
+| --clr-login-panel-line-color         | Color of the divider line               |
+| --clr-login-panel-line-opacity       | Opacity to the divider line             |
+| --clr-login-title-font-size          | Font size of the title                  |
+| --clr-login-title-line-height        | Line height of the title                |
+| --clr-login-title-font-weight        | Font weight of the title                |
+| --clr-login-title-letter-spacing     | Letter spacing of the title             |
+| --clr-login-hint-font-size           | Font size of the hint                   |
+| --clr-login-hint-font-weight         | Font weight of the hint                 |
+| --clr-login-hint-line-height         | Line height of the hint                 |
+| --clr-login-hint-letter-spacing      | Letter spacing of the hint              |
+| --clr-login-hint-color               | Font color of the hint                  |
+| --clr-login-group-signup-font-weight | Font weight of the sign up link         |
+| --clr-login-group-signup-line-height | Line height of the sign up link         |
+| --clr-login-group-signup-font-size   | Font size for the sign up link          |
+| --clr-login-footer-gap               | Gap size for the footer                 |
+| --clr-login-footer-font-size         | Font size for footer content            |
+| --clr-login-footer-line-height       | Line height for footer content          |
+| --clr-login-footer-font-weight       | Font weight for footer content          |
+| --clr-login-copyright-color          | Font color for the copyright thumbnail  |
+| --clr-login-copyright-font-size      | Font size for the copyright thumbnail   |
+| --clr-login-copyright-font-weight    | Font weight for the copyright thumbnail |
+| --clr-login-copyright-line-height    | Line height for the copyright thumbnail |
+| --clr-login-welcome-color            | Font color for welcome                  |
+| --clr-login-error-icon-color         | Color for error icon                    |
 
 ## CSS Classes
 

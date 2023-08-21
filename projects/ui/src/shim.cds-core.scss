@@ -1617,22 +1617,38 @@
   }
 
   // Login
-  --clr-login-width: #{baselinePx(580)};
-  --clr-login-padding: var(--cds-global-space-7);
-  --clr-login-group-padding: var(--cds-global-space-13) 0 0 0;
-  --clr-login-group-control-margin: 0 0 var(--cds-global-space-9) 0;
-  --clr-login-group-remember-margin: 0 0 var(--cds-global-space-13) 0;
-  --clr-login-group-error-margin: 0;
-  --clr-login-group-btn-margin: var(--cds-global-space-5) 0;
-  --clr-login-group-width: #{baselinePx(320)};
-  --clr-login-title-width: #{baselinePx(320)};
-  --clr-login-title-margin: 0 0 var(--cds-global-space-13);
-  --clr-login-welcome-margin: 0 0 var(--cds-global-space-5) 0;
-  --clr-login-hint-margin: var(--cds-global-space-5) 0 0 0;
-  --clr-login-group-signup-margin: 0;
+  --clr-login-width: #{baselinePx(580)}; // ATM - remove and use as default
+  --clr-login-padding: var(--cds-global-space-7); // ATM - remove and use as default
+  --clr-login-group-padding: var(--cds-global-space-13) 0 0 0; // ATM - remove and use as default
+  --clr-login-group-control-margin: 0 0 var(--cds-global-space-9) 0; // ATM - remove and use as default
+  --clr-login-group-remember-margin: 0 0 var(--cds-global-space-13) 0; // ATM - remove and use as default
+  --clr-login-group-error-margin: 0; // ATM - remove and use as default
+  --clr-login-group-btn-margin: var(--cds-global-space-5) 0; // ATM - remove and use as default
+  --clr-login-group-width: #{baselinePx(320)}; // ATM - remove and use as default
+  --clr-login-title-width: #{baselinePx(320)}; // ATM - remove and use as default
+  --clr-login-title-margin: 0 0 var(--cds-global-space-13); // ATM - remove and use as default
+  --clr-login-title-font-size: var(--clr-h1-font-size);
+  --clr-login-title-line-height: var(--clr-h1-line-height);
+  --clr-login-title-font-family: var(--clr-h1-font-family);
+  --clr-login-title-font-weight: var(--clr-h1-font-weight);
+  --clr-login-title-letter-spacing: var(--clr-h1-letter-spacing);
+  --clr-login-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-login-welcome-margin: 0 0 var(--cds-global-space-5) 0; // ATM - remove and use as default
+  --clr-login-hint-margin: var(--cds-global-space-5) 0 0 0; // ATM - remove and use as default
+  --clr-login-hint-font-size: var(--clr-h4-font-size);
+  --clr-login-hint-font-weight: var(--clr-h4-font-weight);
+  --clr-login-hint-line-height: var(--clr-h4-line-height);
+  --clr-login-hint-letter-spacing: var(--clr-h4-letter-spacing);
+  --clr-login-hint-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-login-group-signup-margin: 0; // ATM - remove and use as default
+  --clr-login-group-signup-font-weight: var(--clr-p2-font-weight);
+  --clr-login-group-signup-line-height: var(--clr-p2-line-height);
   --clr-login-footer-gap: var(--cds-global-space-7);
   --clr-login-footer-font-size: var(--clr-p6-font-size);
   --clr-login-footer-line-height: var(--clr-p6-line-height);
+  --clr-login-footer-font-weight: var(--clr-p6-font-weight);
+  --clr-login-group-signup-font-size: var(--clr-p1-font-size);
+  --clr-login-copyright-color: var(--cds-alias-typography-link-color);
 
   // Spinner
   --clr-spinner-default-size: var(--cds-global-space-14);
@@ -1651,16 +1667,22 @@
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
     --clr-login-background-color: var(--cds-alias-object-container-background);
-    --clr-login-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
-    --clr-login-copyright-color: var(--cds-alias-typography-link-color);
     --clr-login-welcome-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
-    --clr-login-hint-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
 
     --clr-login-error-background-color: var(--clr-alert-danger-bg-color);
+    --clr-login-error-icon-color: var(--clr-alert-danger-font-color);
 
     .login .login-group .error {
       color: var(--clr-alert-danger-font-color);
       border: 1px solid var(--clr-alert-danger-border-color);
+    }
+
+    .login .title .hint {
+      font-weight: var(--clr-login-hint-font-weight);
+      font-size: var(--clr-login-hint-font-size);
+      line-height: var(--clr-login-hint-line-height);
+      color: var(--clr-login-hint-color);
+      letter-spacing: var(--clr-login-hint-letter-spacing);
     }
   }
 

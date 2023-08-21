@@ -16,9 +16,16 @@
       --clr-login-title-width: 100%;
       --clr-login-group-width: 100%;
 
-      --clr-login-title-color: var(--clr-h1-color);
-      --clr-login-title-font-weight: var(--clr-h1-font-weight);
-      --clr-login-title-font-family: var(--clr-h1-font-family);
+      // Title
+      --clr-login-title-color: #{login-variables.$clr-login-title-color};
+      --clr-login-title-font-weight: #{login-variables.$clr-login-title-font-weight};
+      --clr-login-title-font-family: #{login-variables.$clr-login-title-font-family};
+      --clr-login-title-font-size: #{login-variables.$clr-login-title-font-size};
+      --clr-login-title-line-height: #{login-variables.$clr-login-title-line-height};
+      --clr-login-title-letter-spacing: #{login-variables.$clr-login-title-letter-spacing};
+
+      // Hint
+      --clr-login-hint-margin: #{variables.$clr_baselineRem_1_25} 0 0 0;
 
       // @TODO Is this used? It's not documented on the website or used in the demo app.
       --clr-login-trademark-color: var(--clr-h2-color);
@@ -35,21 +42,26 @@
 
       --clr-login-error-background-color: var(--clr-color-danger-800);
       --clr-login-error-border-radius: var(--clr-global-borderradius);
+      --clr-login-error-icon-color: #{login-variables.$clr-login-background-color};
 
       --clr-login-panel-line-color: var(--clr-color-neutral-1000);
       --clr-login-panel-line-opacity: 0.1;
 
       --clr-login-footer-font-size: inherit;
       --clr-login-footer-line-height: inherit;
+      --clr-login-footer-font-weight: inherit;
+
       --clr-login-footer-gap: #{variables.$clr_baselineRem_0_75};
       --clr-login-welcome-margin: 0;
       --clr-login-group-btn-margin: #{variables.$clr_baselineRem_1} 0 0 0;
       --clr-login-group-error-margin: #{variables.$clr_baselineRem_0_25} 0 0 0;
       --clr-login-group-padding: #{variables.$clr_baselineRem_2} 0 0 0;
-      --clr-login-hint-margin: #{variables.$clr_baselineRem_1_25} 0 0 0;
       --clr-login-group-control-margin: #{variables.$clr_baselineRem_0_25} 0 #{variables.$clr_baselineRem_0_75} 0;
       --clr-login-group-remember-margin: #{variables.$clr_baselineRem_0_25} 0 #{variables.$clr_baselineRem_0_75} 0;
       --clr-login-group-signup-margin: #{variables.$clr_baselineRem_0_5} 0 0 0;
+      --clr-login-group-signup-font-size: #{variables.$clr_baselineRem_0_583};
+      --clr-login-group-signup-font-weight: inherit;
+      --clr-login-group-signup-line-height: inherit;
     }
   }
 }

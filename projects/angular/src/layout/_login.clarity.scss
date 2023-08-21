@@ -68,6 +68,12 @@
         );
         @include mixins.css-var(font-size, clr-login-footer-font-size, inherit, variables.$clr-use-custom-properties);
         @include mixins.css-var(
+          font-weight,
+          clr-login-footer-font-weight,
+          inherit,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
           gap,
           clr-login-footer-gap,
           variables.$clr_baselineRem_0_75,
@@ -78,6 +84,24 @@
             color,
             clr-login-copyright-color,
             variables.$clr-p1-color,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            font-size,
+            clr-login-copyright-font-size,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            font-weight,
+            clr-login-copyright-font-weight,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            line-height,
+            clr-login-copyright-line-height,
+            inherit,
             variables.$clr-use-custom-properties
           );
         }
@@ -111,9 +135,24 @@
           variables.$clr-use-custom-properties
         );
         @include mixins.css-var(width, clr-login-title-width, 100%, variables.$clr-use-custom-properties);
-        font-size: login-variables.$clr-login-title-font-size;
-        letter-spacing: login-variables.$clr-login-title-letter-spacing;
-        line-height: login-variables.$clr-login-title-line-height;
+        @include mixins.css-var(
+          font-size,
+          clr-login-title-font-size,
+          login-variables.$clr-login-title-font-size,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          line-height,
+          clr-login-title-line-height,
+          login-variables.$clr-login-title-line-height,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          letter-spacing,
+          clr-login-title-letter-spacing,
+          login-variables.$clr-login-title-letter-spacing,
+          variables.$clr-use-custom-properties
+        );
 
         .welcome {
           line-height: login-variables.$clr-login-title-line-height;
@@ -300,9 +339,18 @@
           line-height: variables.$clr_baselineRem_0_75;
 
           &:before {
-            display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
             content: '';
-            background: icons.generateErrorIcon(login-variables.$clr-login-background-color);
+            display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
+            -webkit-mask: icons.generateErrorIcon("'none'") no-repeat 100% 100%;
+            mask: icons.generateErrorIcon("'none'") no-repeat 100% 100%;
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            @include mixins.css-var(
+              background-color,
+              clr-login-error-icon-color,
+              login-variables.$clr-login-background-color,
+              variables.$clr-use-custom-properties
+            );
             margin: variables.$clr_baselineRem_1px variables.$clr_baselineRem_0_25 0 0;
             @include mixins.equilateral(login-variables.$clr-login-icon-size);
           }
@@ -333,7 +381,24 @@
             variables.$clr_baselineRem_0_5 0 0 0,
             variables.$clr-use-custom-properties
           );
-          font-size: variables.$clr_baselineRem_0_583;
+          @include mixins.css-var(
+            font-size,
+            clr-login-group-signup-font-size,
+            variables.$clr_baselineRem_0_583,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            font-weight,
+            clr-login-group-signup-font-weight,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            line-height,
+            clr-login-group-signup-line-height,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
           text-align: center;
         }
       }
