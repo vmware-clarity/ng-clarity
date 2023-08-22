@@ -34,6 +34,15 @@
     }
 
     &:active {
+      @include mixins.css-var(
+        background,
+        clr-label-bg-active-color,
+        label-variables.$clr-label-bg-hover-color,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    &:active {
       // OldEdge/IE
       box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
       box-shadow: 0 label-variables.$clr-label-borderwidth 0 0
