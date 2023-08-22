@@ -291,5 +291,32 @@
         variables.$clr-use-custom-properties
       );
     }
+
+    .clr-control-label {
+      @include mixins.css-var(
+        font-size,
+        clr-tree-node-font-size,
+        tree-view-variables.$clr-tree-node-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-tree-node-font-weight,
+        tree-view-variables.$clr-tree-node-font-weight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-tree-node-line-height,
+        tree-view-variables.$clr-tree-node-line-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-tree-node-letter-spacing,
+        tree-view-variables.$clr-tree-node-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+    }
   }
 }
