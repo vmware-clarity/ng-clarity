@@ -57,7 +57,7 @@
 
     @include mixins.css-var(
       padding,
-      clr-treenode-content-padding,
+      clr-tree-node-content-padding,
       tree-view-variables.$clr-tree-node-font-size,
       variables.$clr-use-custom-properties
     );
@@ -108,6 +108,17 @@
         variables.$clr-use-custom-properties
       );
       vertical-align: middle;
+    }
+
+    &:hover,
+    &:focus {
+      @include mixins.css-var(
+        background,
+        clr-tree-node-content-hover-color,
+        transparent,
+        variables.$clr-use-custom-properties
+      );
+      text-decoration: none;
     }
   }
 
@@ -252,6 +263,7 @@
       text-decoration: none;
     }
 
+    // selected
     &.active {
       @include mixins.css-var(
         background,
@@ -269,6 +281,13 @@
   }
 
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
+    @include mixins.css-var(
+      padding,
+      clr-tree-checkbox-wrapper-padding,
+      tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left,
+      variables.$clr-use-custom-properties
+    );
+
     &:first-child {
       @include mixins.css-var(
         margin-left,

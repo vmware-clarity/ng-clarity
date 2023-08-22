@@ -1129,18 +1129,28 @@
   /* Tree View */
 
   --clr-tree-border-radius: var(--cds-alias-object-border-radius-100);
+
+  --clr-tree-node-caret-color: var(--cds-alias-object-interaction-color);
   --clr-tree-node-caret-link-hover-color: var(--cds-alias-object-interaction-color-hover);
   --clr-tree-node-caret-link-active-color: var(--cds-alias-object-interaction-color-active);
   --clr-tree-node-caret-link-disabled-color: var(--cds-alias-object-interaction-color-disabled);
 
   --clr-tree-link-hover-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
-  --clr-tree-link-selection-color: var(--clr-global-selection-color); // indirectly mapped
-  --clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
-  --clr-tree-node-caret-color: var(--cds-alias-object-interaction-color, var(--cds-global-color-gray-500));
+  --clr-tree-link-selection-color: var(--cds-alias-object-interaction-color-hover); // indirectly mapped
+  --clr-tree-link-active-color: var(--cds-alias-object-interaction-color-active); // indirectly mapped
+  --clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
-  --clr-treenode-content-padding: var(--cds-global-space-5);
+  --clr-tree-link-hover-color-bg: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
+  --clr-tree-link-selection-color-bg: var(--cds-alias-object-interaction-color-hover); // indirectly mapped
+  --clr-tree-link-active-color-bg: var(--cds-alias-object-interaction-color-active); // indirectly mapped
+  --clr-tree-link-disabled-color-bg: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+
+  --clr-tree-node-content-hover-color: var(--cds-alias-object-interaction-background-hover);
+
+  --clr-treenode-content-padding: var(--cds-global-space-5); // ATM: remove, deprecated
+  --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
   --clr-tree-node-content-padding-left: var(--cds-global-space-9);
-  --clr-tree-node-touch-target: var(--cds-global-space-7);
+  --clr-tree-node-touch-target: var(--cds-global-space-10);
 
   --clr-tree-node-font-size: var(--cds-global-typography-font-size-3);
   --clr-tree-node-font-weight: var(--cds-global-typography-font-weight-regular);
@@ -1148,9 +1158,9 @@
   --clr-tree-node-letter-spacing: var(--clr-p3-letter-spacing);
 
   --clr-tree-caret-size: var(--cds-global-space-7);
+  --clr-tree-caret-padding: 0;
   --clr-tree-node-content-icon-margin-right: var(--cds-global-space-4);
-  --clr-tree-carret-padding: var(--cds-global-space-5);
-
+  --clr-tree-checkbox-wrapper-padding: 0;
   --clr-tree-node-children-margin: var(--cds-global-space-10);
 
   /* Vertical Nav */

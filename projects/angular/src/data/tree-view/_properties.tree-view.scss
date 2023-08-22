@@ -30,10 +30,16 @@
       --clr-tree-node-font-weight: #{tree-view-variables.$clr-tree-node-font-weight};
       --clr-tree-node-line-height: #{tree-view-variables.$clr-tree-node-line-height};
       --clr-tree-node-letter-spacing: #{tree-view-variables.$clr-tree-node-letter-spacing};
-      --clr-treenode-content-padding: 0;
+      --clr-treenode-content-padding: 0; // ATM: deprecated, remove;
+      --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
       --clr-tree-node-content-padding-left: #{tree-view-variables.$clr-tree-node-touch-target};
 
       --clr-tree-node-children-margin: #{tree-view-variables.$clr-tree-node-children-margin};
+      --clr-tree-checkbox-wrapper-padding: #{tree-view-variables.$clr-tree-checkbox-padding-top
+        0
+        0
+        tree-view-variables.$clr-tree-checkbox-padding-left};
+      --clr-tree-node-content-hover-color: transparent;
     }
   }
 }
