@@ -169,7 +169,13 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0 label-variables.$clr-label-padding-left-right 0;
+    @include mixins.css-var(
+      padding,
+      clr-label-padding,
+      0 label-variables.$clr-label-padding-left-right 0,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(gap, clr-label-gap-size, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-radius,
       clr-label-border-radius,
@@ -190,7 +196,7 @@
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
-      height,
+      min-height,
       clr-label-height,
       variables.$clr_baselineRem_0_875,
       variables.$clr-use-custom-properties

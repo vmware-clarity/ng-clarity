@@ -10,6 +10,9 @@
 @include mixins.exports('label.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
+      --clr-label-padding: 0 #{label-variables.$clr-label-padding-left-right} 0;
+      --clr-label-gap-size: 0;
+
       // COLOR
       // Usage:
       // - ./_labels.clarity.scss
