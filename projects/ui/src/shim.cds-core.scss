@@ -663,6 +663,7 @@
   --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
+  --clr-forms-baseline: var(--cds-global-space-5);
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
   --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
@@ -771,6 +772,7 @@
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
+  --clr-combobox-border-bottom-color: var(--clr-combobox-border-color); // ATM - remove. All borders should be the same.
   --clr-combobox-trigger-color: var(--clr-color-neutral-500);
   --clr-combobox-input-background-color: var(--cds-alias-object-container-background-tint);
   --clr-combobox-pill-background-color: var(--cds-alias-object-interaction-background); // #{$clr-combobox-pill-background-color};
