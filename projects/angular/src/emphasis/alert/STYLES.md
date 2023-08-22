@@ -113,7 +113,6 @@
 | --clr-alert-sm-letter-spacing                    | Small alert letter spacing                                        |
 | --clr-alert-sm-font-weight                       | Small alert font weight                                           |
 | --clr-alert-sm-icon-size                         | Small alert icon size                                             |
-| --clr-alert-sm-item-text-align-items             | Small alert text align items                                      |
 
 ## CSS Classes
 
