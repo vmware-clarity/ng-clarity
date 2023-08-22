@@ -1136,16 +1136,22 @@
   --clr-tree-node-caret-link-disabled-color: var(--cds-alias-object-interaction-color-disabled);
 
   --clr-tree-link-hover-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
-  --clr-tree-link-selection-color: var(--cds-alias-object-interaction-color-hover); // indirectly mapped
-  --clr-tree-link-active-color: var(--cds-alias-object-interaction-color-active); // indirectly mapped
-  --clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  --clr-tree-link-selection-color: var(--cds-alias-object-interaction-background-selected); // indirectly mapped
 
-  --clr-tree-link-hover-color-bg: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
-  --clr-tree-link-selection-color-bg: var(--cds-alias-object-interaction-color-hover); // indirectly mapped
-  --clr-tree-link-active-color-bg: var(--cds-alias-object-interaction-color-active); // indirectly mapped
-  --clr-tree-link-disabled-color-bg: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
+  //--clr-tree-link-active-color: var(--cds-alias-object-interaction-color-active); // indirectly mapped
+  //--clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
-  --clr-tree-node-content-hover-color: var(--cds-alias-object-interaction-background-hover);
+  --clr-tree-node-text-color: var(-cds-alias-object-interaction-color);
+  --clr-tree-node-text-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-tree-node-text-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tree-node-text-selected-color: var(--cds-alias-object-interaction-color-selected);
+  --clr-tree-node-text-disabled-color: var(--cds-alias-typography-disabled);
+
+  --clr-tree-node-content-bg-color: var(--cds-alias-object-opacity-0);
+  --clr-tree-node-content-bg-hover-color: var(--cds-alias-object-interaction-background-hover);
+  --clr-tree-node-content-bg-active-color: var(--cds-alias-object-interaction-background-active);
+  --clr-tree-node-content-bg-selected-color: var(--cds-alias-object-interaction-background-selected);
+  --clr-tree-node-content-bg-disabled-color: var(--cds-alias-object-opacity-0);
 
   --clr-treenode-content-padding: var(--cds-global-space-5); // ATM: remove, deprecated
   --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
