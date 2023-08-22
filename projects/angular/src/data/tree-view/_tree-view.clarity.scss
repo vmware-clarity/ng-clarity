@@ -55,12 +55,7 @@
     display: flex;
     align-items: center;
 
-    @include mixins.css-var(
-      padding,
-      clr-tree-node-content-padding,
-      tree-view-variables.$clr-tree-node-font-size,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.css-var(padding, clr-tree-node-content-padding, 0, variables.$clr-use-custom-properties);
 
     //Dimensions
     &:first-child {
@@ -87,12 +82,12 @@
       variables.$clr-use-custom-properties
     );
 
-    @include mixins.css-var(
-      line-height,
-      clr-tree-node-touch-target,
-      tree-view-variables.$clr-tree-node-touch-target,
-      variables.$clr-use-custom-properties
-    );
+    // @include mixins.css-var(
+    //   line-height,
+    //   clr-tree-node-touch-target,
+    //   tree-view-variables.$clr-tree-node-touch-target,
+    //   variables.$clr-use-custom-properties
+    // );
 
     cds-icon,
     clr-icon {
