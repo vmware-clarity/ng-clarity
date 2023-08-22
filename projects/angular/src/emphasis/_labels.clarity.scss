@@ -158,9 +158,14 @@
       label-variables.$clr-label-letter-spacing,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      line-height,
+      clr-label-line-height,
+      // line-height needed to be adjusted to force center alignment
+      label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
+      variables.$clr-use-custom-properties
+    );
 
-    // line-height needed to be adjusted to force center alignment
-    line-height: label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -212,6 +217,34 @@
     &:hover,
     &:active {
       text-decoration: none;
+    }
+
+    &.clickable {
+      @include mixins.css-var(
+        font-size,
+        clr-label-clickable-font-size,
+        label-variables.$clr-label-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-label-clickable-font-weight,
+        label-variables.$clr-label-font-weight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-label-clickable-letter-spacing,
+        label-variables.$clr-label-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-label-clickable-line-height,
+        // line-height needed to be adjusted to force center alignment
+        label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &.clickable:not(.disabled) {

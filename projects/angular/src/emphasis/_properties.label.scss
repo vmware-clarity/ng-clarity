@@ -5,6 +5,7 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables';
+@use './variables.label' as label-variables;
 
 @include mixins.exports('label.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -22,6 +23,12 @@
       --clr-label-font-size: #{variables.$clr-p7-font-size};
       --clr-label-font-weight: #{variables.$clr-p7-font-weight};
       --clr-label-letter-spacing: #{variables.$clr-p7-letter-spacing};
+      --clr-label-line-height: calc(#{label-variables.$clr-label-font-size} + #{variables.$clr_baselineRem_1px});
+
+      --clr-label-clickable-font-size: var(--clr-label-font-size);
+      --clr-label-clickable-font-weight: var(--clr-label-font-weight);
+      --clr-label-clickable-letter-spacing: var(--clr-label-letter-spacing);
+      --clr-label-clickable-line-height: var(--clr-label-line-height);
 
       --clr-label-border-radius: #{variables.$clr_baselineRem_0_5};
 
