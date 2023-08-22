@@ -4,5 +4,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Import from clr-angular to preserve file structure until sass theming is removed
-@import '../../angular/src/dark-theme';
+@use '@cds/core/styles/theme.dark.min.css';

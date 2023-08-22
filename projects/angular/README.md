@@ -25,3 +25,20 @@
     })
     export class AppModule {    }
     ```
+
+3.  Include the necessary styles in the build. You can do this by either including the compiled/minified css in your angular.json
+    file or by importing the scss/css directly in your top level styles.scss/css file.
+
+```
+  //...
+  "styles": [
+    "node_modules/@clr/ui/clr-ui.min.css",
+    //... any other styles
+  ]
+  //...
+```
+
+```scss
+@use '@clr/ui/clr-ui.min.css';
+@use '@clr/ui/clr-ui-dark.min.css'; // dark theme, omit if not using the dark theme
+```

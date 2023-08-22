@@ -10,5 +10,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
+  },
+  "devDependencies": {
+    "@cds/core": "^6.5.0"
   }
 }
