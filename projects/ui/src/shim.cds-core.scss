@@ -491,35 +491,35 @@
   // TODO: Confirm we don't need active state colors?
 
   --clr-label-gray-bg-color: var(--cds-alias-utility-grey);
-  --clr-label-gray-color: var(--cds-alias-typography-color-500);
+  --clr-label-gray-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-purple-bg-color: var(--cds-alias-utility-violet);
-  --clr-label-purple-color: var(--cds-alias-typography-color-500);
+  --clr-label-purple-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-blue-bg-color: var(--cds-alias-utility-dark-blue);
-  --clr-label-blue-color: var(--cds-alias-typography-color-500);
+  --clr-label-blue-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-orange-bg-color: var(--cds-alias-utility-tangerine);
-  --clr-label-orange-color: var(--cds-alias-typography-color-500);
+  --clr-label-orange-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   // TODO: Confirm it is light-blue and not lightblue as in spec
   --clr-label-light-blue-bg-color: var(--cds-alias-utility-light-blue);
-  --clr-label-light-blue-color: var(--cds-alias-typography-color-500);
+  --clr-label-light-blue-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-info-bg-color: var(--cds-alias-utility-blue-tint); // var(--clr-color-action-50);
-  --clr-label-info-font-color: var(--cds-alias-typography-color-500);
+  --clr-label-info-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
   --clr-label-info-border-color: var(--cds-alias-utility-blue); // var(--clr-color-action-800);
 
   --clr-label-success-bg-color: var(--cds-alias-utility-green-tint); // var(--clr-color-success-50);
-  --clr-label-success-font-color: var(--cds-alias-typography-color-500);
+  --clr-label-success-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
   --clr-label-success-border-color: var(--cds-alias-utility-green); // var(--clr-color-success-800);
 
   --clr-label-warning-bg-color: var(--cds-alias-utility-yellow-tint); // var(--clr-color-warning-100);
-  --clr-label-warning-font-color: var(--cds-alias-typography-color-500);
+  --clr-label-warning-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
   --clr-label-warning-border-color: var(--cds-alias-utility-yellow); // var(--clr-color-warning-800);
 
   --clr-label-danger-bg-color: var(--cds-alias-utility-red-tint); // var(--clr-color-danger-100);
-  --clr-label-danger-font-color: var(--cds-alias-typography-color-500);
+  --clr-label-danger-font-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
   --clr-label-danger-border-color: var(--cds-alias-utility-red); // var(--clr-color-danger-900);
 
   --clr-label-height: var(--cds-global-space-9); // 24px
