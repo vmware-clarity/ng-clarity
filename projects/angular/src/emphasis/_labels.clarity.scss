@@ -112,6 +112,20 @@
       variables.$clr-use-custom-properties
     );
   }
+  &.label-#{'' + $status} > .badge {
+    @include mixins.css-var(
+      background,
+      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($status, bg-color),
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      badges-variables.getBadgeColor($status, color, 'css-var'),
+      badges-variables.getBadgeColor($status, color),
+      variables.$clr-use-custom-properties
+    );
+  }
 }
 
 @include meta.load-css('properties.label');
