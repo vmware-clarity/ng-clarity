@@ -676,7 +676,7 @@
   --clr-accordion-header-gap: var(--cds-global-space-5);
   // v17: remove
   --clr-accordion-status-icon-width: auto;
-  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-11);
 
   /* Cards */
 
@@ -1505,7 +1505,7 @@
 
   // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
   clr-stepper-panel .clr-accordion-inner-content {
-    padding: var(--cds-global-space-9);
+    padding: var(--cds-global-space-9) var(--cds-global-space-11);
   }
 }
 
