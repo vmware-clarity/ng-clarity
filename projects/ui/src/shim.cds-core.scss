@@ -490,7 +490,9 @@
   --clr-label-hover-color: var(--cds-alias-object-interaction-color-hover);
   --clr-label-bg-active-color: var(--cds-alias-object-interaction-background-active);
   --clr-label-active-color: var(--cds-alias-object-interaction-color-active);
-  // TODO: Confirm we don't need active state colors?
+  --clr-label-bg-disabled-color: var(--cds-alias-object-interaction-background-disabled);
+  --clr-label-disabled-color: var(--cds-alias-typography-disabled);
+  --clr-label-disabled-border-color: var(--cds-alias-utility-disabled);
 
   --clr-label-gray-bg-color: var(--cds-alias-utility-grey);
   --clr-label-gray-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));

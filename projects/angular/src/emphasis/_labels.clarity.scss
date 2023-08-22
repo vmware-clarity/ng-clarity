@@ -33,7 +33,7 @@
       );
     }
 
-    &:active {
+    &:active:not(.disabled) {
       @include mixins.css-var(
         background,
         clr-label-bg-active-color,
@@ -42,12 +42,35 @@
       );
     }
 
-    &:active {
+    &:active:not(.disabled) {
       // OldEdge/IE
       box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
       box-shadow: 0 label-variables.$clr-label-borderwidth 0 0
         var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor) inset;
       transform: translateY(0.5px);
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      @include mixins.css-var(
+        background,
+        clr-label-bg-disabled-color,
+        label-variables.$clr-label-bg-disabled-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-label-disabled-color,
+        label-variables.$clr-label-bg-disabled-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-label-disabled-border-color,
+        label-variables.$clr-label-bg-disabled-color,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -176,7 +199,7 @@
       text-decoration: none;
     }
 
-    &.clickable {
+    &.clickable:not(.disabled) {
       &:hover,
       &:active {
         @include mixins.css-var(
