@@ -176,7 +176,7 @@
       label-variables.$clr-label-borderwidth,
       variables.$clr-use-custom-properties
     );
-    border: solid;
+    border-style: solid;
     @include mixins.css-var(
       border-color,
       clr-label-default-border-color,
