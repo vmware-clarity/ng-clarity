@@ -113,7 +113,8 @@
     }
 
     //Others
-    border-radius: 0;
+    // ATM: Combine border radius
+    @include mixins.css-var(border-radius, clr-tree-border-radius, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-top-left-radius,
       clr-tree-border-radius,
