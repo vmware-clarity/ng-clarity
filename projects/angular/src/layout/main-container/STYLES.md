@@ -27,6 +27,8 @@
 | --clr-header-height                      | Header overall height                                  |
 | --clr-header-bg-color                    | Header background color                                |
 | --clr-header-divider-opacity             | Opacity of the header divider                          |
+| --clr-header-divider-width               | Width of the header divider                            |
+| --clr-header-divider-height              | Height of the header divider                           |
 | --clr-header-nav-opacity                 | Header nav item opacity                                |
 | --clr-header-nav-hover-opacity           | Header nav item opacity on hover                       |
 | --clr-header-2-bg-color                  | Second version of header background color              |
@@ -37,6 +39,7 @@
 | --clr-header-7-bg-color                  | Seventh version of header background color             |
 | --clr-header-8-bg-color                  | Eighth version of header background color              |
 | --clr-header-font-color                  | Header text color                                      |
+| --clr-header-font-color-hover            | Header hovered item color                              |
 | --clr-header-title-color                 | Header branding title text color                       |
 | --clr-header-title-font-weight           | Header branding title text fort weight                 |
 | --clr-header-title-font-family           | Header branding title font family                      |

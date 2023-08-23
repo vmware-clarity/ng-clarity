@@ -15,8 +15,8 @@
   position: absolute;
   content: '';
   @include mixins.css-var(
-    background,
-    clr-header-font-color,
+    background-color,
+    clr-header-divider-color,
     header-variables.$clr-header-font-color,
     variables.$clr-use-custom-properties
   );
@@ -26,15 +26,24 @@
     header-variables.$clr-header-divider-opacity,
     variables.$clr-use-custom-properties
   );
-  opacity: header-variables.$clr-header-divider-opacity;
-  height: header-variables.$clr-header-section-divider-height;
+  @include mixins.css-var(
+    height,
+    clr-header-divider-height,
+    header-variables.$clr-header-section-divider-height,
+    variables.$clr-use-custom-properties
+  );
   @include mixins.css-var(
     width,
-    clr-global-borderwidth,
+    clr-header-divider-width,
     variables.$clr-global-borderwidth,
     variables.$clr-use-custom-properties
   );
-  top: (header-variables.$clr-header-height - header-variables.$clr-header-section-divider-height) * 0.5;
+  @include mixins.css-var(
+    top,
+    clr-header-divider-top-override,
+    (header-variables.$clr-header-height - header-variables.$clr-header-section-divider-height) * 0.5,
+    variables.$clr-use-custom-properties
+  );
   left: 0;
 }
 
@@ -45,6 +54,14 @@
     header-variables.$clr-header-font-color,
     variables.$clr-use-custom-properties
   );
+  &:hover {
+    @include mixins.css-var(
+      color,
+      clr-header-font-color-hover,
+      header-variables.$clr-header-font-color,
+      variables.$clr-use-custom-properties
+    );
+  }
   @include mixins.css-var(
     opacity,
     clr-header-nav-opacity,

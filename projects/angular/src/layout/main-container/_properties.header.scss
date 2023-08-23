@@ -13,7 +13,10 @@
       // Usage: ../layout/nav/_header.clarity.scss
       --clr-header-height: #{header-variables.$clr-header-height};
       --clr-header-bg-color: var(--clr-color-neutral-900);
+      --clr-header-divider-color: #{header-variables.$clr-header-font-color};
       --clr-header-divider-opacity: #{header-variables.$clr-header-divider-opacity};
+      --clr-header-divider-width: #{variables.$clr-global-borderwidth};
+      --clr-header-divider-height: #{header-variables.$clr-header-section-divider-height};
       --clr-header-nav-opacity: #{header-variables.$clr-header-nav-opacity};
       --clr-header-nav-hover-opacity: #{header-variables.$clr-header-nav-hover-opacity};
       --clr-header-2-bg-color: #{header-variables.$clr-header-2-bg-color};
@@ -24,6 +27,7 @@
       --clr-header-7-bg-color: #{header-variables.$clr-header-7-bg-color};
       --clr-header-8-bg-color: #{header-variables.$clr-header-8-bg-color};
       --clr-header-font-color: var(--clr-color-neutral-50);
+      --clr-header-font-color-hover: var(--clr-color-neutral-50);
       --clr-header-title-color: var(--clr-header-font-color);
       --clr-header-title-font-weight: var(--clr-h5-font-weight);
       --clr-header-title-font-family: var(--clr-h5-font-family);
