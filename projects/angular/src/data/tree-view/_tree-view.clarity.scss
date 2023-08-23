@@ -370,12 +370,6 @@
         tree-view-variables.$clr-tree-node-font-weight,
         variables.$clr-use-custom-properties
       );
-      // @include mixins.css-var(
-      //   line-height,
-      //   clr-tree-node-line-height,
-      //   tree-view-variables.$clr-tree-node-line-height,
-      //   variables.$clr-use-custom-properties
-      // );
       @include mixins.css-var(
         letter-spacing,
         clr-tree-node-letter-spacing,
