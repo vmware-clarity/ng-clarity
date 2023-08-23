@@ -489,6 +489,7 @@
   --clr-label-font-weight: var(--cds-global-typography-font-weight-regular);
   --clr-label-letter-spacing: var(--clr-p6-letter-spacing);
   --clr-label-line-height: var(--clr-p6-line-height);
+  --clr-label-font-color-light: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-clickable-font-size: var(--clr-label-font-size);
   --clr-label-clickable-font-weight: var(--clr-label-font-weight);
