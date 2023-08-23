@@ -7,6 +7,7 @@
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use '../../forms/styles/variables.forms' as forms-variables;
 @use 'variables.tree-view' as tree-view-variables;
 @include meta.load-css('properties.tree-view');
 
@@ -46,56 +47,48 @@
       variables.$clr-use-custom-properties
     );
 
-    &:hover,
-    &:focus {
-      .clr-treenode-content,
-      .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
-        @include mixins.css-var(color, clr-tree-node-text-color-hover, inherit, variables.$clr-use-custom-properties);
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-hover-color,
-          transparent,
-          variables.$clr-use-custom-properties
-        );
-      }
-      //.clr-treenode-content,
-      //.clr-checkbox-wrapper input[type=checkbox] + .clr-control-label {
-      //  @include mixins.css-var(
-      //    color,
-      //    clr-tree-node-text-color-hover,
-      //    inherit,
-      //    variables.$clr-use-custom-properties
-      //  );
-      //  @include mixins.css-var(
-      //    background,
-      //    clr-tree-node-content-bg-hover-color,
-      //    transparent,
-      //    variables.$clr-use-custom-properties
-      //  );
-      //}
-    }
+    .clr-treenode-content,
+    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
+      &:hover {
+        @if variables.$clr-use-custom-properties == true {
+          color: var(--clr-tree-node-text-color-hover);
+        }
 
-    &:active {
-      .clr-treenode-content,
-      .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
-        @include mixins.css-var(color, clr-tree-node-text-color-active, inherit, variables.$clr-use-custom-properties);
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-active-color,
-          transparent,
-          variables.$clr-use-custom-properties
-        );
+        // ATM: background color changes
+        //@include mixins.css-var(
+        //  background,
+        //  clr-tree-node-content-bg-hover-color,
+        //  transparent,
+        //  variables.$clr-use-custom-properties
+        //);
+      }
+
+      &:active {
+        @if variables.$clr-use-custom-properties == true {
+          color: var(--clr-tree-node-text-color-active);
+        }
+        // ATM: background color changes
+        //@include mixins.css-var(
+        //  background,
+        //  clr-tree-node-content-bg-active-color,
+        //  transparent,
+        //  variables.$clr-use-custom-properties
+        //);
       }
     }
 
+    .clr-treenode-content.active,
     .clr-checkbox-wrapper input[type='checkbox']:checked + .clr-control-label {
-      @include mixins.css-var(color, clr-tree-node-text-color-active, inherit, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        background,
-        clr-tree-node-content-bg-active-color,
-        transparent,
-        variables.$clr-use-custom-properties
-      );
+      @if variables.$clr-use-custom-properties == true {
+        color: var(--clr-tree-node-text-color-selected);
+      }
+      // ATM: background color changes
+      //@include mixins.css-var(
+      //  background,
+      //  clr-tree-node-content-bg-selected-color,
+      //  transparent,
+      //  variables.$clr-use-custom-properties
+      //);
     }
   }
 
@@ -190,7 +183,7 @@
     border: none;
     @include mixins.css-var(
       color,
-      clr-tree-node-caret-color,
+      clr-tree-node-caret-link-color,
       tree-view-variables.$clr-tree-node-caret-color,
       variables.$clr-use-custom-properties
     );
