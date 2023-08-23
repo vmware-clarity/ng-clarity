@@ -10,6 +10,7 @@
 
 // Usage: ../data/tree-view/_tree-vioew.clarity.scss
 $clr-tree-border-radius: variables.$clr-global-borderradius !default;
+$clr-tree-caret-padding: 0 !default;
 $clr-tree-caret-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-spinner-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-node-touch-target: variables.$clr_baselineRem_1_35 !default;
@@ -20,10 +21,15 @@ $clr-tree-node-touch-target-small: variables.$clr_baselineRem_1 !default;
 $clr-tree-node-content-icon-margin-right: variables.$clr_baselineRem_0_25 !default;
 $clr-tree-node-link-padding-left: variables.$clr_baselineRem_0_25 !default;
 $clr-tree-node-caret-link-hover-color: variables.$clr-color-neutral-1000 !default;
+$clr-tree-node-caret-link-active-color: variables.$clr-color-neutral-500 !default;
+$clr-tree-node-caret-link-disabled-color: variables.$clr-color-neutral-500 !default;
 $clr-tree-link-hover-color: nav-variables.$clr-custom-links-hover-color !default;
 $clr-tree-link-selection-color: variables.$clr-global-selection-color !default;
 $clr-tree-link-text-color: variables.$clr-color-neutral-700 !default;
 $clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - variables.$clr_baselineRem_1) * 0.5 !default;
 $clr-tree-checkbox-padding-left: ($clr-tree-node-touch-target - alert-variables.$clr-icon-dimension-sm) * 0.5 !default;
 $clr-tree-node-caret-color: variables.$clr-color-neutral-500 !default;
-$clr-tree-node-checkbox-label-font-size: variables.$clr-p1-font-size !default;
+$clr-tree-node-font-size: inherit !default;
+$clr-tree-node-font-weight: inherit !default;
+$clr-tree-node-line-height: inherit !default;
+$clr-tree-node-letter-spacing: inherit !default;
