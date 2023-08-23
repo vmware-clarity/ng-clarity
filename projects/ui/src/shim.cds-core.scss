@@ -857,6 +857,12 @@
   --clr-combobox-input-align: middle;
   --clr-combobox-pill-align-items: center;
   --clr-combobox-item-icon-override: calc(-1 * var(--cds-global-space-1));
+  --clr-combobox-pill-content-padding: 0;
+
+  .clr-combobox-wrapper .clr-combobox-remove-btn {
+    display: flex;
+    padding: 0;
+  }
 
   /* Datepicker */
 
