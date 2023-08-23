@@ -19,7 +19,7 @@
 
 ## CSS Classes
 
-#### All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
+All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
 
 | Class name     | Description              |
 | -------------- | ------------------------ |
