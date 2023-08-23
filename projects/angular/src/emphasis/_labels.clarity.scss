@@ -45,8 +45,14 @@
     &:active:not(.disabled) {
       // OldEdge/IE
       box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
-      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0
-        var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor) inset;
+      @if variables.$clr-use-custom-properties == true {
+        box-shadow: 0
+          var(--clr-label-border-shadow-box-active-width, label-variables.$clr-label-borderwidth)
+          0
+          0
+          var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor)
+          inset;
+      }
       transform: translateY(0.5px);
     }
 
@@ -268,9 +274,14 @@
         $mySassShadow: label-variables.getLabelColor(gray, bg-color);
         // OldEdge/IE
         box-shadow: 0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset;
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0
-          var(mixins.css-variablize-string(label-variables.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow)
-          inset;
+        @if variables.$clr-use-custom-properties == true {
+          box-shadow: 0
+            var(--clr-label-border-shadow-box-active-width, variables.$clr_baselineRem_1px)
+            0
+            0
+            var(mixins.css-variablize-string(label-variables.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow)
+            inset;
+        }
         transform: translateY(0.5px);
       }
     }
