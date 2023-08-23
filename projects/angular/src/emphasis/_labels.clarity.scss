@@ -122,8 +122,7 @@
     @include mixins.css-var(
       background,
       badges-variables.getBadgeColor($status, bg-color, 'css-var'),
-      // TODO: Get rid of this hardcoded gray background for badges and introduce colorful badges for state labels
-      hsl(198, 0%, 55%),
+      badges-variables.getBadgeColor($status, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
