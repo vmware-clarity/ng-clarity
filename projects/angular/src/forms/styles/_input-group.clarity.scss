@@ -12,6 +12,7 @@
   .clr-input-group {
     @include forms-mixins.form-fields-appearance();
     @include forms-mixins.input-border-bottom-animation();
+    position: relative;
     max-width: 100%;
     height: variables.$clr_baselineRem_1;
 

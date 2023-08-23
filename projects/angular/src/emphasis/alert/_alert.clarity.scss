@@ -448,63 +448,157 @@
   .alert-sm {
     $alertSmallNudge: variables.$clr_baselineRem_4px;
 
-    // need to use 11 instead of 12 here or else vertical alignment is thrown off
-    // by a pixel due to improper browser rounding; browsers aren't rendering on the
-    // sub-pixel required but rounding up to the nearest whole pixel...
-    font-size: variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px;
-    letter-spacing: normal;
     @include mixins.css-var(
-      line-height,
-      clr-alert-sm-line-height,
-      variables.$clr_baselineRem_0_667,
+      font-size,
+      clr-alert-sm-font-size,
+      // need to use 11 instead of 12 here or else vertical alignment is thrown off
+      // by a pixel due to improper browser rounding; browsers aren't rendering on the
+      // sub-pixel required but rounding up to the nearest whole pixel...
+      variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(font-weight, clr-alert-sm-font-weight, 400, variables.$clr-use-custom-properties);
+    @include mixins.css-var(letter-spacing, clr-alert-sm-letter-spacing, normal, variables.$clr-use-custom-properties);
 
     .alert-items {
-      padding: ($alertSmallNudge - alert-variables.$clr-alert-borderwidth)
-        (variables.$clr_baselineRem_0_25 - alert-variables.$clr-alert-borderwidth);
+      @include mixins.css-var(
+        padding,
+        clr-alert-sm-padding,
+        ($alertSmallNudge - alert-variables.$clr-alert-borderwidth)
+          (variables.$clr_baselineRem_0_25 - alert-variables.$clr-alert-borderwidth),
+        variables.$clr-use-custom-properties
+      );
     }
 
     .alert-item {
-      padding-top: variables.$clr_baselineRem_1px;
-      margin-bottom: $alertSmallNudge;
+      @include mixins.css-var(
+        padding-top,
+        clr-alert-sm-item-padding-top,
+        variables.$clr_baselineRem_1px,
+        variables.$clr-use-custom-properties
+      );
+
+      @include mixins.css-var(
+        margin-bottom,
+        clr-alert-sm-item-padding-top,
+        $alertSmallNudge,
+        variables.$clr-use-custom-properties
+      );
+
+      // ATM
+      // remove
+      @include mixins.css-var(
+        align-items,
+        clr-alert-sm-item-text-align-items,
+        normal,
+        variables.$clr-use-custom-properties
+      );
 
       &:last-child {
         margin-bottom: 0;
       }
     }
 
+    // ATM
+    // remove
+    &.alert-app-level {
+      .alert-item {
+        @include mixins.css-var(
+          align-items,
+          clr-alert-sm-item-text-align-items,
+          center,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
+
     .alert-icon-wrapper {
       padding-top: 0;
-      height: variables.$clr_baselineRem_0_667;
+      @include mixins.css-var(display, clr-alert-sm-icon-wrapper-display, block, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        align-self,
+        clr-alert-sm-icon-wrapper-align-self,
+        start,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(flex-basis, clr-alert-sm-icon-size, 1.25rem, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        height,
+        clr-alert-sm-icon-wrapper-height,
+        variables.$clr_baselineRem_0_667,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .alert-icon {
+      @include mixins.min-equilateral-var(
+        clr-alert-sm-icon-size,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         margin-left,
         clr-alert-icon-margin-left,
         -1 * $alertSmallNudge,
         variables.$clr-use-custom-properties
       );
-      margin-top: -1 * $alertSmallNudge;
+      @include mixins.css-var(
+        margin-top,
+        clr-alert-sm-icon-wrapper-margin-top,
+        -1 * $alertSmallNudge,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .alert-item > span,
     .alert-text {
-      margin-right: variables.$clr_baselineRem_0_25;
+      @include mixins.css-var(
+        line-height,
+        clr-alert-sm-line-height,
+        variables.$clr_baselineRem_0_667,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-right,
+        clr-alert-items-margin-right,
+        variables.$clr_baselineRem_0_25,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .close {
       padding-right: 0;
       flex: 0 0 variables.$clr_baselineRem_1;
-      height: variables.$clr_baselineRem_1;
       line-height: variables.$clr_baselineRem_1;
+      @include mixins.css-var(margin, clr-alert-sm-close-icon-margin, 0, variables.$clr-use-custom-properties);
+      @include mixins.css-var(
+        height,
+        clr-alert-sm-close-icon-height,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-size,
+        clr-alert-sm-font-size,
+        variables.$clr_baselineRem_1_5,
+        variables.$clr-use-custom-properties
+      );
 
       cds-icon,
       clr-icon {
         $smallAlertCloseIconDims: variables.$clr_baselineRem_0_83;
-        margin-top: -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px);
-        margin-right: -1 * variables.$clr_baselineRem_1px;
+        @include mixins.css-var(
+          margin-right,
+          clr-alert-sm-items-margin-right,
+          -1 * variables.$clr_baselineRem_1px,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          margin-top,
+          clr-alert-sm-icon-wrapper-margin-top,
+          -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px),
+          variables.$clr-use-custom-properties
+        );
         @include mixins.min-equilateral-var(
           clr-alert-close-icon-size,
           $smallAlertCloseIconDims,

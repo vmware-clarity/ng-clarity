@@ -457,17 +457,34 @@
   --clr-alert-actions-spacing: var(--cds-global-space-6);
   --clr-alert-item-margin-bottom: var(--cds-global-space-2);
   --clr-alert-line-height: var(--cds-global-typography-font-size-7);
-  --clr-alert-sm-line-height: var(--cds-global-typography-font-size-6);
   --clr-alert-app-padding: var(--cds-global-space-4);
   --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
   --clr-alert-items-gap: var(--cds-global-space-5);
   --clr-alert-items-margin-right: 0; // ATM: delete after token migration
   --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
   --clr-alert-close-icon-size: var(--cds-global-space-7);
+  --clr-alert-icon-size: var(--cds-global-space-9);
 
   .alert-app-level {
     --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
   }
+
+  // Alert small
+  --clr-alert-sm-line-height: var(--clr-p2-line-height);
+  --clr-alert-sm-font-size: var(--cds-global-typography-font-size-3);
+  --clr-alert-sm-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-alert-sm-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-alert-sm-icon-size: var(--cds-global-space-7);
+  --clr-alert-sm-icon-wrapper-height: var(--cds-global-space-7);
+  --clr-alert-sm-padding: var(--cds-global-space-3) var(--cds-global-space-6) var(--cds-global-space-3) var(--cds-global-space-5);
+  --clr-alert-sm-item-text-align-items: center; // ATM: delete after token migration
+  --clr-alert-sm-close-icon-margin: var(--cds-global-space-3) var(--cds-global-space-5) var(--cds-global-space-3) var(--cds-global-space-0); // ATM: delete after token migration
+  --clr-alert-sm-close-icon-height: var(--cds-global-space-9); // ATM: delete after token migration
+  --clr-alert-sm-item-padding-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-display: flex; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-align-self: center; // ATM: delete after token migration
+  --clr-alert-sm-items-margin-right: 0; // ATM: delete after token migration
 
   // App Alerts Pager
   --clr-app-alert-pager-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-0, #{$clr-color-neutral-0});
@@ -562,13 +579,13 @@
 
   --clr-progress-standart-font-weight: var(--cds-global-typography-font-weight-regular);
 
-  --clr-progress-clr-row-color: var(--cds-alias-typography-color-400);
+  --clr-progress-clr-row-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-progress-clr-row-font-weight: var(--clr-progress-standart-font-weight);
   --clr-progress-clr-row-font-size: var(--clr-p6-font-size);
   --clr-progress-clr-row-line-height: var(--clr-p6-line-height);
   --clr-progress-clr-row-letter-spacing: var(--clr-p6-letter-spacing);
 
-  --clr-progress-label-color: var(--cds-alias-typography-color-400);
+  --clr-progress-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-progress-label-font-weight: var(--clr-progress-standart-font-weight);
   --clr-progress-label-font-size: var(--cds-global-typography-font-size-3);
   --clr-progress-label-line-height: var(--clr-p6-line-height);
@@ -609,15 +626,25 @@
   ); // secondary line-height is 16px in tokens, but specified as 20px in figma.
   --clr-accordion-header-button-padding: var(--cds-global-space-5) var(--cds-global-space-6);
   --clr-accordion-header-button-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-alias-typography-secondary-font-size));
-
+  --clr-accordion-number-padding: 0 var(--cds-global-space-7);
+  --clr-accordion-header-left-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-status-neutral-tint);
+  --clr-accordion-header-left-current-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-object-interaction-background-highlight);
+  --clr-accordion-header-left-complete-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-status-success);
+  --clr-accordion-header-left-error-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-status-danger);
   --clr-accordion-content-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-accordion-content-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-global-typography-secondary-font-size));
+  --clr-accordion-description-margin-left: calc(var(--cds-global-space-13) - var(--clr-accordion-header-gap));
+  --clr-accordion-step-title-min-width: 0;
+  --clr-accordion-step-title-font-weight: var(--cds-alias-typography-font-weight-semibold, var(--cds-global-typography-font-weight-semibold));
+  --clr-accordion-step-status-margin-left: var(--cds-global-space-7);
+  --clr-accordion-step-title-margin-left: var(--cds-global-space-9);
+  --clr-accordion-header-font-size: var(--cds-alias-typography-body-font-size, var(--cds-global-typography-body-font-size));
 
   // v17 remove var in favor of gap:sm class
   --clr-accordion-header-gap: var(--cds-global-space-5);
   // v17: remove
   --clr-accordion-status-icon-width: auto;
-  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-11);
 
   /* Cards */
 
@@ -653,6 +680,7 @@
   --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
+  --clr-forms-baseline: var(--cds-global-space-5);
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
   --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
@@ -740,8 +768,18 @@
   /// add more radio stuff
 
   // Range
-  --clr-forms-range-progress-fill-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-forms-range-track-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-200);
+  --clr-forms-range-progress-fill-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-track-color: var(--cds-alias-object-container-background-shade);
+  --clr-forms-range-track-border-color: var(--cds-alias-object-interaction-background-highlight);
+  --clr-forms-range-thumb-height: var(--cds-global-space-7); // 16px
+  --clr-forms-range-track-height: var(--cds-global-space-3); // 4px
+  --clr-forms-range-track-border-radius: var(--cds-global-space-2); // 2px
+  --clr-forms-range-track-border-width: var(--cds-global-space-1); // 1px
+  --clr-forms-range-progress-fill-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-track-color-disabled: var(--cds-alias-status-disabled-tint);
+  --clr-forms-range-track-border-color-disabled: var(--cds-alias-object-interaction-color-disabled);
+  --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
+  --clr-forms-range-progress-fill-height: 3px; // TODO: ATM - get rid of this
 
   // Password
   // TODO: ATM Make sure this is what we need,
@@ -751,6 +789,7 @@
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
+  --clr-combobox-border-bottom-color: var(--clr-combobox-border-color); // ATM - remove. All borders should be the same.
   --clr-combobox-trigger-color: var(--clr-color-neutral-500);
   --clr-combobox-input-background-color: var(--cds-alias-object-container-background-tint);
   --clr-combobox-pill-background-color: var(--cds-alias-object-interaction-background); // #{$clr-combobox-pill-background-color};
@@ -760,7 +799,7 @@
   --clr-combobox-min-height: var(--cds-global-space-9);
   --clr-combobox-font-size: var(--cds-global-typography-secondary-font-size);
   --clr-combobox-font-weight: var(--cds-global-typography-secondary-font-weight);
-  --clr-combobox-text-color: var(--cds-alias-typography-color-400);
+  --clr-combobox-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
   --clr-combobox-border-radius: var(--cds-alias-object-border-radius-100);
   --clr-combobox-padding-left: var(--cds-global-space-5);
   --clr-combobox-trigger-padding-left: var(--cds-global-space-5);
@@ -788,18 +827,63 @@
 
   /* Datepicker */
 
-  --clr-calendar-background-color: var(--cds-alias-object-overlay-background); // var(--clr-color-neutral-0);
-  --clr-calendar-border-color: var(--cds-alias-object-container-border-color); // var(--clr-color-neutral-400);
-  --clr-datepicker-trigger-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
-  --clr-datepicker-trigger-hover-color: var(--clr-color-action-800);
+  --clr-calendar-background-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
+  --clr-calendar-border-color: var(--cds-alias-object-border-color-shade); // var(--clr-color-neutral-400);
+  --clr-datepicker-trigger-color: var(--cds-alias-status-info); // ATM: is this needed? No references in demo and in code.v
+  --clr-datepicker-trigger-hover-color: var(--clr-color-action-800); // ATM: is this needed? No references in demo and in code.
 
-  --clr-calendar-btn-color: var(--cds-alias-status-info); // var(--clr-color-action-600);
+  --clr-calendar-btn-color: var(--cds-alias-object-interaction-color); // var(--clr-color-action-600);
+  --clr-calendar-btn-picker-trigger-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color));
+  --clr-calendar-btn-picker-trigger-hover-color: var(--cds-alias-typography-link-color-hover, var(--cds-global-typography-link-color-hover));
+  --clr-calendar-btn-picker-trigger-active-color: var(--cds-alias-typography-link-color, var(--cds-global-typography-link-color));
   --clr-calendar-btn-hover-focus-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-global-hover-color);
+  --clr-calendar-btn-hover-focus-color-text: var(--cds-alias-object-interaction-color-hover);
+  --clr-calendar-btn-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-calendar-btn-active-color-bg: var(--cds-alias-object-interaction-background-active);
 
-  --clr-calendar-today-date-cell-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
-  --clr-calendar-active-cell-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
-  --clr-calendar-active-focus-cell-background-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-global-selection-color);
-  --clr-calendar-active-cell-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-1000);
+  --clr-calendar-today-date-cell-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
+  --clr-calendar-active-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
+  --clr-calendar-active-focus-cell-background-color: var(--cds-alias-object-interaction-background-highlight); // var(--clr-global-selection-color);
+  --clr-calendar-active-cell-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-1000);
+  --clr-calendar-disable-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-calendar-disable-opacity: 1; // ATM to be deleted
+
+  // Dimensions
+  --clr-calendar-container-border-width: var(--cds-alias-object-border-width-100);
+  --clr-calendar-container-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-calendar-cell-border-radius: var(--cds-alias-object-border-radius-100);
+  --clr-calendar-container-padding: var(--cds-global-space-7);
+  --clr-calendar-container-margin-top: var(--cds-global-space-4);
+  --clr-calendar-cell-width-height: var(--cds-global-space-11);
+  --clr-calendar-month-year-button-width: var(--cds-global-space-13);
+  --clr-calendar-month-year-cell-height: var(--cds-global-space-12);
+  --clr-calendar-year-picker-gap: var(--cds-global-space-6);
+  // (7 days in the week * 36px + 2 * 16px padding + 2px for border
+  --clr-calendar-container-width: calc(calc(7 * var(--clr-calendar-cell-width-height)) + calc(2 * var(--clr-calendar-container-padding)) + calc(2 * var(--clr-calendar-container-border-width)));
+
+  //(8 = 6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) + 2 * 16px padding + 2px for border
+  --clr-calendar-container-height: calc(calc(8 * var(--clr-calendar-cell-width-height)) + calc(2 * var(--clr-calendar-container-padding)) + calc(2 * var(--clr-calendar-container-border-width)));
+
+  --clr-calendar-month-year-cell-width: calc(0.5 * var(--clr-calendar-container-width) - var(--clr-calendar-container-padding) - var(--clr-calendar-container-border-width));
+
+  // Typography
+  --clr-calendar-weekday-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-weekday-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-calendar-weekday-line-height: var(--cds-global-space-7);
+  --clr-calendar-weekday-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-day-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-day-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-calendar-day-line-height: var(--cds-global-space-9);
+  --clr-calendar-day-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-month-year-font-size: var(--cds-global-typography-font-size-3);
+  --clr-calendar-month-year-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-calendar-month-year-line-height: var(--cds-global-space-9);
+  --clr-calendar-month-year-letter-spacing: var(--clr-p1-letter-spacing);
+  --clr-calendar-picker-btn-font-size: var(--cds-global-typography-font-size-6);
+  --clr-calendar-picker-btn-font-weight: var(--cds-global-typography-font-weight-medium);
+  --clr-calendar-picker-btn-line-height: var(--cds-global-space-9);
+  --clr-calendar-picker-btn-letter-spacing: var(--clr-p6-letter-spacing);
+  --clr-calendar-today-date-cell-font-weight: (--cds-global-typography-font-weight-semibold);
 
   /* Dropdown */
 
@@ -987,6 +1071,7 @@
   --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color); // var(--clr-color-action-600);
   --clr-nav-active-border-width: var(--cds-alias-object-border-width-300);
   --clr-nav-active-bg-color: var(--cds-alias-object-interaction-background-active); // indirectly mapped
+  --clr-nav-selected-bg-color: var(--cds-alias-object-opacity-0); // indirectly mapped
   --clr-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
   --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected);
 
@@ -1178,17 +1263,69 @@
   // Vertical Nav - Align
   --clr-vertical-nav-item-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
   --clr-vertical-nav-item-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-700);
-  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background);
+  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background-shade);
+  --clr-vertical-nav-item-padding: var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-item-child-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-vertical-nav-item-height: var(--cds-global-space-11);
+  --clr-vertical-nav-item-line-height: var(--cds-global-space-7);
+  --clr-vertical-nav-item-font-size: var(--cds-global-typography-font-size-4);
+  --clr-vertical-nav-item-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-vertical-nav-item-caret-icon-size: var(--cds-global-space-7);
+  --clr-vertical-nav-content-gap: var(--cds-global-space-5);
+  --clr-vertical-nav-content-padding-top: var(--cds-global-space-5);
+  --clr-vertical-nav-collapsed-item-margin: var(--cds-global-space-5) 0 var(--cds-global-space-5) var(--cds-global-space-7); // ATM - remove;
 
-  // Note: figure out whether it should be --cds-alias-object-interaction-background-active instead. The problem is, in the dark mode,
-  // --cds-alias-object-interaction-background-active is the same as --cds-alias-object-container-background-shade.
-
-  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-active);
+  --clr-vertical-nav-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-item-top-level-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-400);
 
   // Vertical Nav - Trigger
   --clr-vertical-nav-toggle-icon-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-1000);
+  --clr-vertical-nav-toggle-icon-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-vertical-nav-toggle-icon-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-toggle-icon-disabled-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-vertical-nav-toggle-button-size: var(--cds-global-space-10);
   --clr-vertical-nav-trigger-divider-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
+  --clr-vertical-nav-divider-margin: 0;
+
+  // Vertical Nav - Header
+  --clr-vertical-nav-header-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-vertical-nav-header-padding: var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-header-font-size: var(--clr-p4-font-size);
+  --clr-vertical-nav-header-line-height: var(--cds-global-space-7);
+
+  // ATM - remove
+  --clr-vertical-nav-group-trigger-icon-margin-right: var(--cds-global-space-5);
+
+  // ATM - remove
+  --clr-vertical-nav-toggle-margin-left: var(--cds-global-space-7);
+  --clr-vertical-nav-toggle-margin-right: var(--cds-global-space-3);
+
+  // ATM - Move this to the main file and leave only what is need by spec
+  .clr-vertical-nav .nav-trigger {
+    padding: var(--cds-global-space-5) var(--cds-global-space-7);
+    margin-right: 0 !important; // Override specificity
+    margin-bottom: var(--cds-global-space-3);
+
+    cds-icon {
+      margin-right: 0;
+      width: var(--cds-global-space-7);
+      height: var(--cds-global-space-7);
+    }
+
+    &.on-collapse {
+      display: block;
+      cds-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-vertical-nav.has-icons .nav-group-children .nav-link {
+    padding: var(--clr-vertical-nav-item-child-padding);
+  }
 
   /* Tables */
 
@@ -1303,7 +1440,7 @@
   --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
   --clr-datagrid-placeholder-background-color: var(--cds-alias-object-container-background);
   --clr-datagrid-popovers-box-shadow: var(--cds-alias-object-shadow-100);
-  --clr-datagrid-column-seperator-height: var(--cds-global-space-7);
+  --clr-datagrid-column-separator-height: var(--cds-global-space-7);
   --clr-datagrid-filter-toggle-size: var(--cds-global-space-7);
 
   --clr-datagrid-footer-padding: var(--cds-global-space-5) var(--cds-global-space-7);
@@ -1313,6 +1450,12 @@
   --clr-datagrid-footer-select-wrapper-caret-top-position: 30%; // ATM - remove
   --clr-datagrid-footer-pagination-gap: var(--cds-global-space-6);
   --clr-datagrid-footer-pagination-list-margin: var(--cds-global-space-6); // ATM - remove
+  --clr-datagrid-fixed-column-size: var(--cds-global-space-12);
+
+  // ATM - move to _datagrid.clarity as default
+  .datagrid-row-sticky .datagrid-cell:last-child:after {
+    height: var(--clr-datagrid-column-separator-height);
+  }
 
   // Login
   --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
@@ -1361,12 +1504,11 @@
       border: 1px solid var(--clr-alert-danger-border-color);
     }
   }
-}
 
-[cds-theme~='light'] {
-  --clr-vertical-nav-bg-color: var(--cds-global-color-gray-200);
-  --clr-vertical-nav-active-bg-color: var(--cds-global-color-gray-0);
-  --clr-vertical-nav-hover-bg-color: var(--cds-global-color-gray-400);
+  // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
+  clr-stepper-panel .clr-accordion-inner-content {
+    padding: var(--cds-global-space-9) var(--cds-global-space-11);
+  }
 }
 
 [cds-theme~='dark'] {

@@ -5,6 +5,7 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use 'variables.datepicker' as datepicker-variables;
 
 @include mixins.exports('datepicker.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -17,17 +18,54 @@
       --clr-calendar-btn-color: var(--clr-color-action-600);
       --clr-calendar-btn-hover-focus-color: var(--clr-global-hover-color);
 
-      --clr-calendar-picker-btn-font-size: #{variables.$clr_baselineRem_0_75};
-      --clr-calendar-picker-btn-font-weight: 200;
-
       --clr-calendar-today-date-cell-color: var(--clr-color-neutral-1000);
-      --clr-calendar-today-date-cell-font-weight: 600;
 
       --clr-calendar-active-cell-background-color: var(--clr-global-selection-color);
       --clr-calendar-active-focus-cell-background-color: var(--clr-global-selection-color);
       --clr-calendar-active-cell-color: var(--clr-color-neutral-1000);
 
-      --clr-day-font-size: #{variables.$clr_baselineRem_0_5};
+      --clr-day-font-size: #{variables.$clr_baselineRem_0_5}; // ATM remove
+
+      // Dimensions
+      --clr-calendar-container-border-width: #{variables.$clr-global-borderwidth};
+      --clr-calendar-container-border-radius: #{variables.$clr-global-borderradius};
+      --clr-calendar-cell-border-radius: #{variables.$clr-global-borderradius};
+      --clr-calendar-container-padding: #{datepicker-variables.$clr-calendar-padding};
+      --clr-calendar-container-margin-top: #{datepicker-variables.$clr-calendar-margin-top};
+      --clr-calendar-cell-width-height: #{datepicker-variables.$clr-calendar-click-target};
+      --clr-calendar-month-year-button-width: #{variables.$clr_baselineRem_2};
+      --clr-calendar-month-year-cell-height: #{datepicker-variables.$clr-calendar-month-cell-height};
+      --clr-calendar-year-picker-gap: 0;
+      // 7 days in the week * 36px + 2 * 16px padding + 2px for border
+      --clr-calendar-container-width: #{(7 * datepicker-variables.$clr-calendar-click-target) +
+        (2 * datepicker-variables.$clr-calendar-padding) +
+        variables.$clr_baselineRem_2px};
+
+      // 8 = (6 date rows + 1 row for day heading + 1 row for calendar switches and month/year pickers) * 36px + 2 * 16px padding + 2px for border
+      --clr-calendar-container-height: #{(8 * datepicker-variables.$clr-calendar-click-target) +
+        (2 * datepicker-variables.$clr-calendar-padding) +
+        variables.$clr_baselineRem_2px};
+
+      --clr-calendar-month-year-cell-width: #{datepicker-variables.$clr-month-year-btn-width};
+
+      // Typography
+      --clr-calendar-weekday-font-size: var(--clr-day-font-size);
+      --clr-calendar-weekday-font-weight: 600;
+      --clr-calendar-weekday-line-height: inherit;
+      --clr-calendar-weekday-letter-spacing: inherit;
+      --clr-calendar-day-font-size: inherit;
+      --clr-calendar-day-font-weight: inherit;
+      --clr-calendar-day-line-height: #{datepicker-variables.$clr-calendar-click-target};
+      --clr-calendar-day-letter-spacing: inherit;
+      --clr-calendar-month-year-font-size-: #{datepicker-variables.$clr-calendar-picker-btn-font-size};
+      --clr-calendar-month-year-font-weight: #{datepicker-variables.$clr-calendar-picker-btn-font-weight};
+      --clr-calendar-month-year-line-height: #{datepicker-variables.$clr-calendar-click-target};
+      --clr-calendar-month-year-letter-spacing: inherit;
+      --clr-calendar-picker-btn-font-size: #{variables.$clr_baselineRem_0_75};
+      --clr-calendar-picker-btn-font-weight: 200;
+      --clr-calendar-picker-btn-line-height: #{datepicker-variables.$clr-calendar-click-target};
+      --clr-calendar-picker-btn-letter-spacing: normal;
+      --clr-calendar-today-date-cell-font-weight: 600;
     }
   }
 }

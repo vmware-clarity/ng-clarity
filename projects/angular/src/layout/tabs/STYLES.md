@@ -10,6 +10,7 @@
 | --clr-nav-link-active-color               | Tabs nav link active color                  |
 | --clr-nav-hover-bg-color                  | Tabs nav hover background color             |
 | --clr-nav-active-bg-color                 | Tabs nav active background color            |
+| --clr-nav-selected-bg-color               | Tabs nav selected background color          |
 | --clr-nav-box-shadow-color                | Tabs nav box shadow color                   |
 | --clr-nav-active-box-shadow-color         | Tabs nav active box shadow color            |
 | --clr-nav-active-border-color             | Tabs nav active border color                |

@@ -100,7 +100,14 @@ $clr-forms-radio-checked-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem
 // Range
 $clr-forms-range-progress-fill-color: variables.$clr-color-action-600 !default;
 $clr-forms-range-track-color: variables.$clr-color-neutral-200 !default;
+$clr-forms-range-border-color: variables.$clr-color-neutral-200 !default;
 $clr-forms-range-track-height: variables.$clr_baselineRem_4px;
+$clr-forms-range-progress-height: variables.$clr_baselineRem_4px;
 $clr-forms-range-thumb-height: variables.$clr_baselineRem_0_583;
-$clr-forms-range-thumb-margin: -1 * variables.$clr_baselineRem_5px;
+$clr-forms-range-thumb-margin: variables.$clr_baselineRem_5px;
 $clr-forms-range-margin: variables.$clr_baselineRem_5px;
+$clr-forms-range-border-width: 0;
+$clr-forms-range-border-radius: 0;
+$clr-forms-range-progress-fill-color-disabled: variables.$clr-color-neutral-600 !default;
+$clr-forms-range-track-color-disabled: variables.$clr-color-neutral-400 !default;
+$clr-forms-range-border-color-disabled: variables.$clr-color-neutral-600 !default;
