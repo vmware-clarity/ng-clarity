@@ -11,6 +11,7 @@
   @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../layout/nav/_header.clarity.scss
+      --clr-header-height: #{header-variables.$clr-header-height};
       --clr-header-bg-color: var(--clr-color-neutral-900);
       --clr-header-divider-opacity: #{header-variables.$clr-header-divider-opacity};
       --clr-header-nav-opacity: #{header-variables.$clr-header-nav-opacity};
@@ -26,6 +27,12 @@
       --clr-header-title-color: var(--clr-header-font-color);
       --clr-header-title-font-weight: var(--clr-h5-font-weight);
       --clr-header-title-font-family: var(--clr-h5-font-family);
+      --clr-header-search-height: #{variables.$clr_baselineRem_1};
+      --clr-header-search-icon-size: #{header-variables.$clr-search-icon-width};
+      --clr-header-search-margin-left: 0;
+      --clr-header-search-margin-right: 0;
+      --clr-header-search-input-font-size: inherit;
+      --clr-header-search-border-active: none;
     }
   }
 }

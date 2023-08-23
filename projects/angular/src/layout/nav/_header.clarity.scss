@@ -418,7 +418,14 @@
       display: inline-block;
       height: header-variables.$clr-header-height;
       line-height: header-variables.$clr-header-height;
-      padding-left: variables.$clr_baselineRem_1;
+      @include mixins.css-var(
+        padding-left,
+        clr-header-search-padding-left,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(margin-left, clr-header-search-margin-left, 0, variables.$clr-use-custom-properties);
+      @include mixins.css-var(margin-right, clr-header-search-margin-right, 0, variables.$clr-use-custom-properties);
       text-align: center;
 
       &::before {
@@ -428,14 +435,29 @@
         background-repeat: no-repeat;
         background-size: contain;
         cursor: pointer;
-        @include mixins.equilateral(header-variables.$clr-search-icon-width);
+        @include mixins.min-equilateral-var(
+          clr-header-search-icon-size,
+          header-variables.$clr-search-icon-width,
+          variables.$clr-use-custom-properties
+        );
         margin: variables.$clr_baselineRem_0_83 0 0;
         vertical-align: top;
+        @include mixins.css-var(
+          margin-right,
+          clr-header-search-icon-margin-right,
+          0,
+          variables.$clr-use-custom-properties
+        );
       }
 
       input {
         line-height: variables.$clr_baselineRem_1;
-        margin: header-variables.$clr-header-nav-text-vertical-padding 0;
+        @include mixins.css-var(
+          margin,
+          clr-header-search-margin,
+          header-variables.$clr-header-nav-text-vertical-padding 0,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -448,8 +470,55 @@
         header-variables.$clr-header-font-color,
         variables.$clr-use-custom-properties
       );
+
+      @include mixins.css-var(
+        height,
+        clr-header-search-height,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+
       padding: 0;
+      @include mixins.css-var(padding-left, clr-header-search-input-padding, 0, variables.$clr-use-custom-properties);
+
       vertical-align: middle;
+
+      // Typography
+      @include mixins.css-var(
+        font-size,
+        clr-header-search-input-font-size,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-header-search-input-font-weight,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      &::placeholder {
+        @include mixins.css-var(
+          font-weight,
+          clr-header-search-placeholder-font-weight,
+          inherit,
+          variables.$clr-use-custom-properties
+        );
+      }
+
+      &:hover {
+        @include mixins.css-var(border, clr-header-search-border-hover, none, variables.$clr-use-custom-properties);
+      }
+
+      &:focus-visible {
+        @include mixins.css-var(
+          outline,
+          clr-header-search-outline,
+          auto variables.$clr_baselineRem_1px Highlight,
+          variables.$clr-use-custom-properties
+        );
+
+        @include mixins.css-var(border, clr-header-search-border-active, none, variables.$clr-use-custom-properties);
+      }
 
       &:focus,
       &:active {
@@ -533,7 +602,12 @@
       header-variables.$clr-header-bgColor,
       variables.$clr-use-custom-properties
     );
-    height: header-variables.$clr-header-height;
+    @include mixins.css-var(
+      height,
+      clr-header-height,
+      header-variables.$clr-header-height,
+      variables.$clr-use-custom-properties
+    );
     white-space: nowrap;
 
     @include header-backgrounds();

@@ -925,8 +925,27 @@
 
   /* Header */
 
-  // NOTE: Header variables are left not mapped to Core Tokens
-  // as they don't have corresponding alias color tokens in Core.
+  // NOTE: Header variables don't always have corresponding alias color or size design token values.
+  // That's why they may be hard-coded until these values get available!
+
+  --clr-header-height: calc(60 * (1rem / var(--clr-global-font-size)));
+  --clr-header-search-height: var(--cds-global-space-11);
+  --clr-header-search-icon-size: var(--cds-global-space-9); // 24px
+  --clr-header-search-margin-left: var(--cds-global-space-5);
+  --clr-header-search-margin-right: var(--cds-global-space-7);
+  --clr-header-search-gap: var(--cds-global-space-5);
+  --clr-header-search-input-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-header-search-placeholder-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-header-search-input-font-size: var(--cds-global-typography-font-size-4);
+  --clr-header-search-border-active: 1px solid Highlight;
+  --clr-header-search-border-hover: 1px solid var(--cds-global-color-construction-400);
+
+  //ATM remove, pre-v17 compensations and overloads
+  --clr-header-search-margin: auto;
+  --clr-header-search-icon-margin-right: calc(-1 * (var(--clr-header-search-icon-size) + var(--clr-header-search-gap)));
+  --clr-header-search-input-padding: calc(var(--clr-header-search-icon-size) + 2 * var(--clr-header-search-gap));
+  --clr-header-search-padding-left: var(--clr-header-search-gap);
+  --clr-header-search-outline: none;
 
   /* Modal */
 
