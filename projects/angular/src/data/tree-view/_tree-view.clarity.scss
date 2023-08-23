@@ -20,6 +20,48 @@
     //Display
     display: flex;
     align-items: center;
+
+    // ATM: text and background color changes for hover and click
+    //.clr-treenode-content,
+    //.clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
+    //  &:hover {
+    //    @if variables.$clr-use-custom-properties == true {
+    //      color: var(--clr-tree-node-text-color-hover);
+    //    }
+    //    @include mixins.css-var(
+    //      background,
+    //      clr-tree-node-content-bg-hover-color,
+    //      transparent,
+    //      variables.$clr-use-custom-properties
+    //    );
+    //  }
+    //
+    //  &:active {
+    //    @if variables.$clr-use-custom-properties == true {
+    //      color: var(--clr-tree-node-text-color-active);
+    //    }
+    //    @include mixins.css-var(
+    //      background,
+    //      clr-tree-node-content-bg-active-color,
+    //      transparent,
+    //      variables.$clr-use-custom-properties
+    //    );
+    //  }
+    //}
+
+    // ATM: text and background color changes for selected
+    //.clr-treenode-content.active,
+    //.clr-checkbox-wrapper input[type='checkbox']:checked + .clr-control-label {
+    //  @if variables.$clr-use-custom-properties == true {
+    //    color: var(--clr-tree-node-text-color-selected);
+    //  }
+    //  @include mixins.css-var(
+    //    background,
+    //    clr-tree-node-content-bg-selected-color,
+    //    transparent,
+    //    variables.$clr-use-custom-properties
+    //  );
+    //}
   }
 
   .clr-treenode-content {
