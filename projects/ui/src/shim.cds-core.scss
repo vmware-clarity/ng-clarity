@@ -644,7 +644,7 @@
   --clr-accordion-header-gap: var(--cds-global-space-5);
   // v17: remove
   --clr-accordion-status-icon-width: auto;
-  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-11);
 
   /* Cards */
 
@@ -680,6 +680,7 @@
   --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
+  --clr-forms-baseline: var(--cds-global-space-5);
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
   --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
@@ -1472,7 +1473,7 @@
 
   // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
   clr-stepper-panel .clr-accordion-inner-content {
-    padding: var(--cds-global-space-9);
+    padding: var(--cds-global-space-9) var(--cds-global-space-11);
   }
 }
 
