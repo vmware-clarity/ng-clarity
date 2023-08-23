@@ -258,7 +258,12 @@
     @include mixins.equilateral(100%);
     margin: 0;
     padding: 0;
-    padding-left: tree-view-variables.$clr-tree-node-link-padding-left;
+    @include mixins.css-var(
+      padding-left,
+      clr-tree-node-link-padding-left,
+      tree-view-variables.$clr-tree-node-link-padding-left,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     background: transparent;
