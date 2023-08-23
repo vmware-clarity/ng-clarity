@@ -71,14 +71,23 @@
       variables.$clr_baselineRem_0_625,
       variables.$clr-use-custom-properties
     );
-    line-height: normal;
     @include mixins.css-var(
       border-radius,
       clr-badge-border-radius,
       variables.$clr_baselineRem_0_416,
       variables.$clr-use-custom-properties
     );
-    font-size: variables.$clr_baselineRem_0_416;
+
+    @include mixins.css-var(
+      font-size,
+      clr-badge-font-size,
+      variables.$clr_baselineRem_0_416,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(font-weight, clr-badge-font-weight, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(letter-spacing, clr-badge-letter-spacing, inherit, variables.$clr-use-custom-properties);
+    @include mixins.css-var(line-height, clr-badge-line-height, normal, variables.$clr-use-custom-properties);
+
     @include mixins.css-var(padding-block, clr-badge-vertical-padding, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       padding-inline,

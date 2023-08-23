@@ -613,6 +613,12 @@
   --clr-badge-min-width: var(--cds-global-space-7); // 16px
   --clr-badge-border-radius: calc(2 * var(--cds-alias-object-border-radius-100));
 
+  --clr-badge-font-size: var(--clr-p7-font-size);
+  --clr-badge-font-weight: var(--clr-p7-font-weight);
+  --clr-badge-letter-spacing: var(--clr-p7-letter-spacing);
+  --clr-badge-line-height: var(--clr-p7-line-height);
+  --clr-badge-font-family: var(--cds-global-typography-font-family);
+
   // TODO: Should we have a token for line height
   //--clr-badge-line-height: var(); //
 
