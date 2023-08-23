@@ -202,7 +202,7 @@
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
-      min-height,
+      height,
       clr-label-height,
       variables.$clr_baselineRem_0_875,
       variables.$clr-use-custom-properties
