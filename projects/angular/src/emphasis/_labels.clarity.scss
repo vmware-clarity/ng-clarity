@@ -32,52 +32,6 @@
         variables.$clr-use-custom-properties
       );
     }
-
-    &:active:not(.disabled) {
-      @include mixins.css-var(
-        background,
-        clr-label-bg-active-color,
-        label-variables.$clr-label-bg-hover-color,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    &:active:not(.disabled) {
-      // OldEdge/IE
-      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
-      @if variables.$clr-use-custom-properties == true {
-        box-shadow: 0
-          var(--clr-label-border-shadow-box-active-width, label-variables.$clr-label-borderwidth)
-          0
-          0
-          var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor)
-          inset;
-      }
-      transform: translateY(0.5px);
-    }
-
-    &.disabled,
-    &:disabled {
-      cursor: not-allowed;
-      @include mixins.css-var(
-        background,
-        clr-label-bg-disabled-color,
-        label-variables.$clr-label-bg-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        color,
-        clr-label-disabled-color,
-        label-variables.$clr-label-bg-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-color,
-        clr-label-disabled-border-color,
-        label-variables.$clr-label-bg-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-    }
   }
 
   &.label-#{'' + $color} > .badge {
@@ -270,18 +224,24 @@
       }
 
       &:active {
-        $mySassShadow: label-variables.getLabelColor(gray, bg-color);
-        // OldEdge/IE
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset;
-        @if variables.$clr-use-custom-properties == true {
-          box-shadow: 0
-            var(--clr-label-border-shadow-box-active-width, variables.$clr_baselineRem_1px)
-            0
-            0
-            var(mixins.css-variablize-string(label-variables.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow)
-            inset;
-        }
-        transform: translateY(0.5px);
+        @include mixins.css-var(
+          background,
+          clr-label-bg-active-color,
+          label-variables.$clr-label-bg-hover-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          box-shadow,
+          clr-label-box-shadow,
+          0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          transform,
+          clr-label-pressed-transform,
+          translateY(0.5px),
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -299,6 +259,38 @@
     & > .badge {
       margin: 0 (-1 * variables.$clr_baselineRem_0_375) 0 variables.$clr_baselineRem_0_25;
       //-0.375 is -9px. 12px initial label padding plus a negative margin of 9
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      @include mixins.css-var(
+        background,
+        clr-label-bg-disabled-color,
+        transparent,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-label-disabled-color,
+        label-variables.$clr-label-font-color-light,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-label-disabled-border-color,
+        label-variables.$clr-label-default-border-color,
+        variables.$clr-use-custom-properties
+      );
+      .badge {
+        @include mixins.css-var(
+          background,
+          clr-label-disabled-color,
+          label-variables.getLabelColor(gray, bg-color),
+          variables.$clr-use-custom-properties
+        );
+      }
     }
   }
 
