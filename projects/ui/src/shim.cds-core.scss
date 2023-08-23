@@ -939,6 +939,23 @@
   --clr-header-search-input-font-size: var(--cds-global-typography-font-size-4);
   --clr-header-search-border-active: 1px solid Highlight;
   --clr-header-search-border-hover: 1px solid var(--cds-global-color-construction-400);
+  --clr-header-branding-min-width: calc(204 * (1rem / var(--clr-global-font-size)));
+  --clr-header-branding-padding: 0 var(--cds-global-space-9);
+  --clr-header-branding-icon-gap: var(--cds-global-space-5);
+
+  --clr-header-title-font-size: var(--cds-global-typography-font-size-5);
+  --clr-header-title-line-height: var(--cds-global-space-9);
+
+  --clr-header-nav-link-padding: var(--cds-global-space-8) var(--cds-global-space-7);
+  --clr-header-nav-link-line-height: var(--cds-global-space-9);
+  --clr-header-nav-link-font-size: var(--cds-global-typography-font-size-4);
+  --clr-header-nav-text-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-header-nav-text-font-weight-active: var(--cds-global-typography-font-weight-semibold);
+  --clr-header-action-caret-right: var(--cds-global-space-7);
+  --clr-header-action-caret-size: var(--cds-global-space-7);
+  --clr-header-action-icon-size: var(--cds-global-space-9);
+  // ATM directly use in CSS; now used via --clr-header-action-cog-right
+  --clr-header-action-caret-gap: var(--cds-global-space-5);
 
   //ATM remove, pre-v17 compensations and overloads
   --clr-header-search-margin: auto;
@@ -946,6 +963,16 @@
   --clr-header-search-input-padding: calc(var(--clr-header-search-icon-size) + 2 * var(--clr-header-search-gap));
   --clr-header-search-padding-left: var(--clr-header-search-gap);
   --clr-header-search-outline: none;
+  --clr-header-action-cog-right: calc(var(--clr-header-action-caret-right) + var(--clr-header-action-caret-gap) + var(--clr-header-action-caret-size));
+  --clr-header-action-caret-top: 38%;
+  --clr-header-dropdown-btn-width: calc(var(--clr-header-action-cog-right) + var(--clr-header-action-icon-size) + var(--cds-global-space-7));
+  .header-actions .nav-link {
+    cds-icon,
+    clr-icon {
+      position: static;
+      transform: none;
+    }
+  }
 
   /* Modal */
 

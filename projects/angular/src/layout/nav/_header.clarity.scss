@@ -145,8 +145,18 @@
   .branding {
     display: flex;
     flex: 0 0 auto;
-    min-width: variables.$clr_baselineRem_8_5;
-    padding: 0 variables.$clr_baselineRem_1;
+    @include mixins.css-var(
+      min-width,
+      clr-header-branding-min-width,
+      variables.$clr_baselineRem_8_5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-header-branding-padding,
+      0 variables.$clr_baselineRem_1,
+      variables.$clr-use-custom-properties
+    );
     height: header-variables.$clr-header-height;
 
     & > a,
@@ -167,7 +177,12 @@
       flex-grow: 0;
       flex-shrink: 0;
       @include mixins.equilateral(header-variables.$clr-logo-width);
-      margin-right: variables.$clr_baselineRem_0_375;
+      @include mixins.css-var(
+        margin-right,
+        clr-header-branding-icon-gap,
+        variables.$clr_baselineRem_0_375,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .title {
@@ -189,9 +204,19 @@
         header-variables.$clr-header-title-font-family,
         variables.$clr-use-custom-properties
       );
-      font-size: header-variables.$clr-header-title-font-size;
+      @include mixins.css-var(
+        font-size,
+        clr-header-title-font-size,
+        header-variables.$clr-header-title-font-size,
+        variables.$clr-use-custom-properties
+      );
       letter-spacing: header-variables.$clr-header-title-letter-spacing;
-      line-height: header-variables.$clr-header-height;
+      @include mixins.css-var(
+        line-height,
+        clr-header-title-line-height,
+        header-variables.$clr-header-height,
+        variables.$clr-use-custom-properties
+      );
       text-decoration: none;
     }
   }
@@ -204,7 +229,7 @@
     height: header-variables.$clr-header-height;
 
     .nav-text {
-      font-weight: 500;
+      @include mixins.css-var(font-weight, clr-header-nav-text-font-weight, 500, variables.$clr-use-custom-properties);
     }
 
     clr-icon {
@@ -224,8 +249,18 @@
       position: relative;
       display: inline-block;
       text-align: center;
-      padding: header-variables.$clr-header-nav-text-vertical-padding
-        header-variables.$clr-header-nav-text-horizontal-padding;
+      @include mixins.css-var(
+        padding,
+        clr-header-nav-link-padding,
+        header-variables.$clr-header-nav-text-vertical-padding header-variables.$clr-header-nav-text-horizontal-padding,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-header-nav-link-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
       text-decoration: none;
       @include header-nav-appearance();
 
@@ -265,9 +300,24 @@
         display: none;
       }
 
+      @include mixins.css-var(
+        font-size,
+        clr-header-nav-link-font-size,
+        var(--clr-p1-font-size),
+        variables.$clr-use-custom-properties
+      );
+
       &.active {
         background: rgba(255, 255, 255, 0.15);
         opacity: 1;
+        .nav-text {
+          @include mixins.css-var(
+            font-weight,
+            clr-header-nav-text-font-weight-active,
+            500,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
 
       &:focus {
@@ -342,16 +392,35 @@
           top: 50%;
           transform: translateY(-50%);
           // Dropdown icons are 2px smaller
-          @include mixins.equilateral(variables.$clr_baselineRem_0_916);
-          right: variables.$clr_baselineRem_1;
+          @include mixins.equilateral-var(
+            clr-header-action-icon-size,
+            variables.$clr_baselineRem_0_916,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            right,
+            clr-header-action-cog-right,
+            variables.$clr_baselineRem_1,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
       .dropdown-toggle.nav-icon {
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: $clr-header-action-caret-icon-right-position;
-          top: 44%;
+          @include mixins.css-var(
+            right,
+            clr-header-action-caret-right,
+            $clr-header-action-caret-icon-right-position,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(top, clr-header-action-caret-top, 44%, variables.$clr-use-custom-properties);
+          @include mixins.equilateral-var(
+            clr-header-action-caret-size,
+            variables.$clr_baselineRem_10px,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
@@ -361,12 +430,27 @@
 
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-nav-text-horizontal-padding;
+          @include mixins.css-var(
+            right,
+            clr-header-action-caret-right,
+            header-variables.$clr-header-nav-text-horizontal-padding,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.equilateral-var(
+            clr-header-action-caret-size,
+            variables.$clr_baselineRem_10px,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
       .dropdown-toggle.nav-icon {
-        width: header-variables.$clr-header-height;
+        @include mixins.css-var(
+          width,
+          clr-header-dropdown-btn-width,
+          header-variables.$clr-header-height,
+          variables.$clr-use-custom-properties
+        );
         padding-right: 0;
       }
 

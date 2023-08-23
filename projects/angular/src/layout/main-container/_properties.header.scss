@@ -27,6 +27,20 @@
       --clr-header-title-color: var(--clr-header-font-color);
       --clr-header-title-font-weight: var(--clr-h5-font-weight);
       --clr-header-title-font-family: var(--clr-h5-font-family);
+      --clr-header-title-font-size: #{header-variables.$clr-header-title-font-size};
+      --clr-header-title-line-height: #{header-variables.$clr-header-height};
+      --clr-header-branding-min-width: #{variables.$clr_baselineRem_8_5};
+      --clr-header-branding-padding: 0 #{variables.$clr_baselineRem_1};
+      --clr-header-branding-icon-gap: #{variables.$clr_baselineRem_0_375};
+      --clr-header-nav-link-padding: #{header-variables.$clr-header-nav-text-vertical-padding}
+        #{header-variables.$clr-header-nav-text-horizontal-padding};
+      --clr-header-nav-link-line-height: inherit;
+      --clr-header-nav-link-font-size: var(--clr-p1-font-size);
+      --clr-header-nav-text-font-weight: 500;
+      --clr-header-nav-text-font-weight-active: 500;
+      // ATM uncomment/return to _properties. Now it has to be overridden in 2 different ways
+      // in the text dropdown and in the icon dropdown.
+      // --clr-header-action-caret-right: #{variables.$clr_baselineRem_0_5};
       --clr-header-search-height: #{variables.$clr_baselineRem_1};
       --clr-header-search-icon-size: #{header-variables.$clr-search-icon-width};
       --clr-header-search-margin-left: 0;
