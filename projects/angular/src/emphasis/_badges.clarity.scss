@@ -93,11 +93,10 @@
     @include mixins.css-var(letter-spacing, clr-badge-letter-spacing, inherit, variables.$clr-use-custom-properties);
     @include mixins.css-var(line-height, clr-badge-line-height, normal, variables.$clr-use-custom-properties);
 
-    @include mixins.css-var(padding-block, clr-badge-vertical-padding, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
-      padding-inline,
-      clr-badge-horizontal-padding,
-      variables.$clr_baselineRem_4px,
+      padding,
+      clr-badge-padding,
+      0 variables.$clr_baselineRem_4px,
       variables.$clr-use-custom-properties
     );
     margin-right: variables.$clr_baselineRem_0_25;
