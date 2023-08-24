@@ -517,7 +517,7 @@
   --clr-label-clickable-letter-spacing: var(--clr-label-letter-spacing);
   --clr-label-clickable-line-height: var(--clr-label-line-height);
 
-  --clr-label-default-border-color: var(--cds-alias-utility-grey);
+  --clr-label-default-border-color: var(--cds-alias-utility-gray);
   --clr-label-default-bg-color: var(--cds-alias-object-opacity-0);
 
   --clr-label-bg-hover-color: var(--cds-alias-object-interaction-background-hover);
@@ -528,7 +528,7 @@
   --clr-label-disabled-color: var(--cds-alias-typography-disabled);
   --clr-label-disabled-border-color: var(--cds-alias-utility-disabled, var(--cds-alias-object-interaction-color-disabled));
 
-  --clr-label-gray-bg-color: var(--cds-alias-utility-grey);
+  --clr-label-gray-bg-color: var(--cds-alias-utility-gray);
   --clr-label-gray-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500));
 
   --clr-label-purple-bg-color: var(--cds-alias-utility-violet);
@@ -584,28 +584,28 @@
 
   /* Badges */
 
-  --clr-badge-background-color: var(--cds-alias-status-neutral-shade); // var(--clr-color-neutral-600);
-  --clr-badge-color: var(--cds-global-color-white); // var(--clr-color-on-neutral-600);
+  --clr-badge-background-color: var(--cds-alias-utility-gray); // var(--clr-color-neutral-600);
+  --clr-badge-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-on-neutral-600);
 
   --clr-badge-info-bg-color: var(--cds-alias-utility-blue); // var(--clr-color-action-800);
-  --clr-badge-info-color: var(--cds-alias-typography-color-100); // var(--clr-color-neutral-0);
+  --clr-badge-info-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
   --clr-badge-success-bg-color: var(--cds-alias-utility-green); // var(--clr-color-success-800);
-  --clr-badge-success-color: var(--cds-alias-typography-color-100, var(--cds-global-color-white)); // var(--clr-color-neutral-0);
+  --clr-badge-success-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
   --clr-badge-warning-bg-color: var(--cds-alias-utility-yellow); // var(--clr-color-warning-1000);
   --clr-badge-warning-color: var(--cds-global-color-black); // var(--clr-color-neutral-0);
   --clr-badge-danger-bg-color: var(--cds-alias-utility-red); // var(--clr-color-danger-900);
-  --clr-badge-danger-color: var(--cds-alias-typography-color-100); // var(--clr-color-neutral-0);
+  --clr-badge-danger-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-color-neutral-0);
 
-  --clr-badge-gray-bg-color: var(--cds-alias-utility-grey); // var(--clr-color-neutral-600);
-  --clr-badge-gray-color: var(--cds-alias-typography-color-100, var(--cds-global-color-white)); // var(--clr-badge-font-color-light);
+  --clr-badge-gray-bg-color: var(--cds-alias-utility-gray); // var(--clr-color-neutral-600);
+  --clr-badge-gray-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
   --clr-badge-purple-bg-color: var(--cds-alias-utility-violet); // var(--clr-color-secondary-action-500);
-  --clr-badge-purple-color: var(--cds-alias-typography-color-100); // var(--clr-badge-font-color-light);
+  --clr-badge-purple-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100)); // var(--clr-badge-font-color-light);
   --clr-badge-blue-bg-color: var(--cds-alias-utility-blue); // var(--clr-color-action-800);
-  --clr-badge-blue-color: var(--cds-alias-typography-color-100, var(--cds-global-color-white)); // var(--clr-badge-font-color-light);
+  --clr-badge-blue-color: var(--cds-alias-typography-color-100, var(--cds-global-typography-color-100));
   --clr-badge-orange-bg-color: var(--cds-alias-utility-tangerine); // var(--clr-color-warning-1000);
   --clr-badge-orange-color: var(--cds-global-color-black); // var(--clr-color-neutral-0);
   --clr-badge-light-blue-bg-color: var(--cds-alias-utility-lightblue); // var(--clr-color-action-500);
-  --clr-badge-light-blue-color: var(--cds-alias-typography-color-500, var(--cds-global-color-black)); // var(--clr-color-neutral-0);
+  --clr-badge-light-blue-color: var(--cds-alias-typography-color-500, var(-cds-global-typography-color-500)); // var(--clr-color-neutral-0);
 
   --clr-badge-vertical-padding: var(--cds-global-space-2); // 2px
   --clr-badge-horizontal-padding: var(--cds-global-space-3); // 4px

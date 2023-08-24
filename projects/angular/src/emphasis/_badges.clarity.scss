@@ -64,7 +64,12 @@
       variables.$clr_baselineRem_0_625,
       variables.$clr-use-custom-properties
     );
-    background: label-variables.getLabelColor(gray, bg-color);
+    @include mixins.css-var(
+      background-color,
+      clr-badge-background-color,
+      label-variables.getLabelColor(gray, bg-color),
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       height,
       clr-badge-height,
@@ -100,7 +105,7 @@
     text-align: center;
     @include mixins.css-var(
       color,
-      clr-badge-font-color-light,
+      clr-badge-color,
       badges-variables.$clr-badge-font-color-light,
       variables.$clr-use-custom-properties
     );
@@ -108,7 +113,7 @@
     &:visited {
       @include mixins.css-var(
         color,
-        clr-badge-font-color-light,
+        clr-badge-color,
         badges-variables.$clr-badge-font-color-light,
         variables.$clr-use-custom-properties
       );
