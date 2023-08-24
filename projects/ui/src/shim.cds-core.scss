@@ -940,28 +940,35 @@
   --clr-header-search-margin-right: var(--cds-global-space-7);
   --clr-header-search-gap: var(--cds-global-space-5);
   --clr-header-search-input-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-header-search-input-font-color: var(--cds-global-color-white);
   --clr-header-search-placeholder-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-header-search-placeholder-text-color: var(--cds-global-color-construction-400);
   --clr-header-search-input-font-size: var(--cds-global-typography-font-size-4);
-  --clr-header-search-border-active: #{baselinePx(1)} solid Highlight;
-  --clr-header-search-border-hover: #{baselinePx(1)} solid var(--cds-global-color-construction-400);
+  --clr-header-search-border-active: var(--cds-global-space-1) solid Highlight;
+  --clr-header-search-border-hover: var(--cds-global-space-1) solid var(--cds-global-color-construction-400);
   --clr-header-branding-min-width: #{baselinePx(204)};
   --clr-header-branding-padding: 0 var(--cds-global-space-9);
   --clr-header-branding-icon-gap: var(--cds-global-space-5);
+  --clr-header-branding-logo-size: #{baselinePx(36)};
 
   --clr-header-font-color: var(--cds-global-color-construction-100);
   --clr-header-font-color-hover: var(--cds-global-color-construction-50);
 
-  --clr-header-title-font-size: var(--cds-global-typography-font-size-5);
-  --clr-header-title-line-height: var(--cds-global-space-9);
+  --clr-header-title-font-size: var(--cds-global-typography-subsection-font-size);
+  --clr-header-title-line-height: var(--cds-global-typography-subsection-line-height);
+  --clr-header-title-letter-spacing: var(--cds-global-typography-subsection-letter-spacing);
 
   --clr-header-divider-color: var(--cds-global-color-construction-100);
-  --clr-header-divider-width: #{baselinePx(1)};
+  --clr-header-divider-width: var(--cds-global-space-1);
   --clr-header-divider-height: var(--cds-global-space-11);
 
   --clr-header-bg-color: var(--cds-global-color-cool-grey-1000);
   --clr-header-2-bg-color: var(--cds-global-color-construction-800);
   --clr-header-3-bg-color: var(--cds-global-color-azure-900);
-  // TODO add colors 4-8 before v16-GA
+  --clr-header-4-bg-color: var(--clr-header-3-bg-color);
+  --clr-header-5-bg-color: var(--clr-header-3-bg-color);
+  --clr-header-6-bg-color: var(--clr-header-bg-color);
+  --clr-header-7-bg-color: var(--clr-header-2-bg-color);
 
   --clr-header-nav-link-padding: var(--cds-global-space-8) var(--cds-global-space-7);
   --clr-header-nav-link-line-height: var(--cds-global-space-9);
@@ -975,6 +982,7 @@
   --clr-header-action-caret-gap: var(--cds-global-space-5);
 
   //ATM remove, pre-v17 compensations and overloads
+  --clr-header-nav-opacity: 1;
   --clr-header-search-margin: auto;
   --clr-header-search-icon-margin-right: calc(-1 * (var(--clr-header-search-icon-size) + var(--clr-header-search-gap)));
   --clr-header-search-input-padding: calc(var(--clr-header-search-icon-size) + 2 * var(--clr-header-search-gap));
@@ -983,12 +991,26 @@
   --clr-header-action-cog-right: calc(var(--clr-header-action-caret-right) + var(--clr-header-action-caret-gap) + var(--clr-header-action-caret-size));
   --clr-header-action-caret-top: 38%;
   --clr-header-dropdown-btn-width: calc(var(--clr-header-action-cog-right) + var(--clr-header-action-icon-size) + var(--cds-global-space-7));
-  --clr-header-divider-top-override: #{baselinePx(13)};
+  --clr-header-divider-top-override: auto;
   .header-actions .nav-link {
+    display: inline-flex;
+    align-items: center;
     cds-icon,
     clr-icon {
       position: static;
       transform: none;
+    }
+    height: var(--clr-header-height);
+  }
+  .search label::before {
+    vertical-align: middle;
+    margin-top: 0;
+  }
+  .header-nav .nav-link {
+    display: inline-flex;
+    align-items: center;
+    &.active {
+      background: inherit;
     }
   }
 
