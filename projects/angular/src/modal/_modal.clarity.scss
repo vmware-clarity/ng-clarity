@@ -134,11 +134,21 @@
         variables.$clr-use-custom-properties
       );
       margin: 0;
-      padding: 0 variables.$clr_baselineRem_0_125;
+      @include mixins.css-var(
+        padding,
+        clr-modal-title-padding,
+        0 variables.$clr_baselineRem_0_125,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .modal-title:not([cds-text]) {
-      font-size: modal-variables.$clr-modal-title-font-size;
+      @include mixins.css-var(
+        font-size,
+        clr-modal-title-font-size,
+        modal-variables.$clr-modal-title-font-size,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.css-var(
         font-family,
         clr-modal-title-font-family,
@@ -151,7 +161,12 @@
         modal-variables.$clr-modal-title-font-weight,
         variables.$clr-use-custom-properties
       );
-      line-height: modal-variables.$clr-modal-title-line-height;
+      @include mixins.css-var(
+        line-height,
+        clr-modal-title-line-height,
+        modal-variables.$clr-modal-title-line-height,
+        variables.$clr-use-custom-properties
+      );
       letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
