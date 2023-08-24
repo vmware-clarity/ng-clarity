@@ -14,11 +14,19 @@
   $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
   $sassVarTextColor: label-variables.getLabelColor($color, color);
   $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
+  $cssVarBorderColor: label-variables.getLabelColor($color, border-color, 'css-var');
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border: label-variables.$clr-label-borderwidth solid;
-    @include mixins.css-var(border-color, $cssVarBgColor, $sassVarBgColor, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border-style: solid;
+    @include mixins.css-var(border-color, $cssVarBorderColor, $sassVarBgColor, variables.$clr-use-custom-properties);
+    @include mixins.css-var(background-color, $cssVarBgColor, transparent, variables.$clr-use-custom-properties);
   }
 
   &.clickable.label-#{'' + $color} {
@@ -64,7 +72,13 @@
       label-variables.getLabelColor($status, color),
       variables.$clr-use-custom-properties
     );
-    border: label-variables.$clr-label-borderwidth solid;
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border-style: solid;
     @include mixins.css-var(
       border-color,
       label-variables.getLabelColor($status, border-color, 'css-var'),
@@ -213,17 +227,28 @@
     }
 
     &.clickable:not(.disabled) {
-      &:hover,
-      &:active {
+      &:hover {
         @include mixins.css-var(
           background,
           clr-label-bg-hover-color,
           label-variables.$clr-label-bg-hover-color,
           variables.$clr-use-custom-properties
         );
+        @include mixins.css-var(
+          color,
+          clr-label-hover-color,
+          label-variables.$clr-label-font-color-light,
+          variables.$clr-use-custom-properties
+        );
       }
 
       &:active {
+        @include mixins.css-var(
+          color,
+          clr-label-active-color,
+          label-variables.$clr-label-font-color-light,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.css-var(
           background,
           clr-label-bg-active-color,
