@@ -532,6 +532,7 @@
     }
 
     .datagrid-column {
+      position: relative;
       text-align: left;
       min-width: variables.$clr_baselineRem_4;
       display: flex;
@@ -819,10 +820,8 @@
 
       .datagrid-column-separator {
         $dg-padding-less-border: variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px;
-        position: relative;
         display: flex;
         align-items: center;
-        left: variables.$clr_baselineRem_0_5;
         flex: 0 0 auto;
         @include mixins.css-var(
           width,
@@ -839,14 +838,15 @@
           position: absolute;
           @include mixins.css-var(
             height,
-            clr-datagrid-column-seperator-height,
+            clr-datagrid-column-separator-height,
             calc(
-              100% + #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
+              100% -
+                (#{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth})
             ),
             variables.$clr-use-custom-properties
           );
           width: variables.$clr_baselineRem_1px;
-          left: 0;
+          right: 0;
           @include mixins.css-var(
             background-color,
             clr-table-border-color,
@@ -912,8 +912,18 @@
       &.datagrid-select,
       &.datagrid-expandable-caret,
       &.datagrid-row-actions {
-        max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
-        min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
+        @include mixins.css-var(
+          max-width,
+          clr-datagrid-fixed-column-size,
+          datagrid-variables.$clr-datagrid-fixed-column-size,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          min-width,
+          clr-datagrid-fixed-column-size,
+          datagrid-variables.$clr-datagrid-fixed-column-size,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -931,8 +941,21 @@
 
       &.datagrid-fixed-column {
         flex: 0 0 datagrid-variables.$clr-datagrid-fixed-column-size;
-        max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
-        min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
+        @if variables.$clr-use-custom-properties == true {
+          flex: 0 0 var(--clr-datagrid-fixed-column-size, datagrid-variables.$clr-datagrid-fixed-column-size);
+        }
+        @include mixins.css-var(
+          max-width,
+          clr-datagrid-fixed-column-size,
+          datagrid-variables.$clr-datagrid-fixed-column-size,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          min-width,
+          clr-datagrid-fixed-column-size,
+          datagrid-variables.$clr-datagrid-fixed-column-size,
+          variables.$clr-use-custom-properties
+        );
       }
 
       &.datagrid-row-actions {
@@ -1573,9 +1596,7 @@
 
     .datagrid-column .datagrid-column-separator {
       &::after {
-        height: calc(
-          100% + 0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
-        );
+        height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
       }
     }
 

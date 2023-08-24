@@ -14,6 +14,11 @@
   @return calc(var(#{$variable}, var(#{$fallback_variable})) + (calc(4 / 20 * 1rem)));
 }
 
+// Reevaluate pixel values based on baseline rem setting.
+@function baselinePx($pixels: 0) {
+  @return calc($pixels * (1rem / var(--clr-global-font-size)));
+}
+
 [cds-theme] {
   /* Global */
   --clr-global-font-size: var(--cds-global-base);
@@ -50,7 +55,7 @@
   --clr-h1-font-size: var(--cds-global-typography-font-size-9);
   --clr-h1-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-h1-font-family: var(--cds-global-typography-font-family);
-  --clr-h1-line-height: calc(44 * (1rem / var(--clr-global-font-size)));
+  --clr-h1-line-height: #{baselinePx(44)};
   --clr-h1-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
   //H2 - login_trademark, page_mainHeading
@@ -58,7 +63,7 @@
   --clr-h2-font-size: var(--cds-global-typography-font-size-8);
   --clr-h2-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-h2-font-family: var(--cds-global-typography-font-family);
-  --clr-h2-line-height: calc(36 * (1rem / var(--clr-global-font-size)));
+  --clr-h2-line-height: #{baselinePx(36)};
   --clr-h2-letter-spacing: calc(-0.4 * (1rem / var(--clr-global-font-size)));
 
   //H3 - login_subtitle, modal_header, page_secondaryHeading
@@ -66,7 +71,7 @@
   --clr-h3-font-size: var(--cds-global-typography-font-size-7);
   --clr-h3-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-h3-font-family: var(--cds-global-typography-font-family);
-  --clr-h3-line-height: calc(32 * (1rem / var(--clr-global-font-size)));
+  --clr-h3-line-height: #{baselinePx(32)};
   --clr-h3-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H4 - card titles, page_tertiaryHeading
@@ -74,7 +79,7 @@
   --clr-h4-font-size: var(--cds-global-typography-font-size-6);
   --clr-h4-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-h4-font-family: var(--cds-global-typography-font-family);
-  --clr-h4-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h4-line-height: #{baselinePx(24)};
   --clr-h4-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
@@ -82,7 +87,7 @@
   --clr-h5-font-size: var(--cds-global-typography-font-size-5);
   --clr-h5-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-h5-font-family: var(--cds-global-typography-font-family);
-  --clr-h5-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h5-line-height: #{baselinePx(24)};
   --clr-h5-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //H6 - toc_header
@@ -90,7 +95,7 @@
   --clr-h6-font-size: var(--cds-global-typography-font-size-5);
   --clr-h6-font-weight: var(--cds-global-typography-font-weight-light);
   --clr-h6-font-family: var(--cds-global-typography-font-family);
-  --clr-h6-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-h6-line-height: #{baselinePx(24)};
   --clr-h6-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   // Non-header text styles
@@ -98,63 +103,63 @@
   --clr-p0-color: var(--cds-alias-typography-color-450);
   --clr-p0-font-weight: var(--cds-global-typography-font-weight-regular);
   --clr-p0-font-size: var(--cds-global-typography-font-size-4);
-  --clr-p0-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p0-line-height: #{baselinePx(20)};
   --clr-p0-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
   --clr-p1-color: var(--cds-alias-typography-color-450);
   --clr-p1-font-weight: var(--cds-global-typography-font-weight-regular);
   --clr-p1-font-size: var(--cds-global-typography-font-size-4);
-  --clr-p1-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p1-line-height: #{baselinePx(20)};
   --clr-p1-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P2 - form_label, stackview_header
   --clr-p2-color: var(--cds-alias-typography-color-450);
   --clr-p2-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-p2-font-size: var(--cds-global-typography-font-size-3);
-  --clr-p2-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p2-line-height: #{baselinePx(24)};
   --clr-p2-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
   --clr-p3-color: var(--cds-alias-typography-color-450);
   --clr-p3-font-weight: var(--cds-global-typography-font-weight-regular);
   --clr-p3-font-size: var(--cds-global-typography-font-size-3);
-  --clr-p3-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p3-line-height: #{baselinePx(24)};
   --clr-p3-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P4 - small alerts, dropdown_header, vertical_nav_header
   --clr-p4-color: var(--cds-alias-typography-color-450);
   --clr-p4-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-p4-font-size: var(--cds-global-typography-font-size-3);
-  --clr-p4-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-p4-line-height: #{baselinePx(20)};
   --clr-p4-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P5
   --clr-p5-color: var(--cds-alias-typography-color-450);
   --clr-p5-font-weight: var(--cds-global-typography-font-weight-regular);
   --clr-p5-font-size: var(--cds-global-typography-font-size-3);
-  --clr-p5-line-height: calc(24 * (1rem / var(--clr-global-font-size)));
+  --clr-p5-line-height: #{baselinePx(24)};
   --clr-p5-letter-spacing: calc(-0.1 * (1rem / var(--clr-global-font-size)));
 
   //P6 - card link btns, form_subtext, table_header
   --clr-p6-color: var(--cds-alias-typography-color-450);
   --clr-p6-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-p6-font-size: var(--cds-global-typography-font-size-1);
-  --clr-p6-line-height: calc(16 * (1rem / var(--clr-global-font-size)));
+  --clr-p6-line-height: #{baselinePx(16)};
   --clr-p6-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
   //P7 - label_text
   --clr-p7-color: var(--cds-alias-typography-color-450);
   --clr-p7-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-p7-font-size: var(--cds-global-typography-font-size-0);
-  --clr-p7-line-height: calc(12 * (1rem / var(--clr-global-font-size)));
+  --clr-p7-line-height: #{baselinePx(12)};
   --clr-p7-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
   //P8
   --clr-p8-color: var(--cds-alias-typography-color-450);
   --clr-p8-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-p8-font-size: var(--cds-global-typography-font-size-0);
-  --clr-p8-line-height: calc(12 * (1rem / var(--clr-global-font-size)));
+  --clr-p8-line-height: #{baselinePx(12)};
   --clr-p8-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
   // List item li
@@ -457,17 +462,34 @@
   --clr-alert-actions-spacing: var(--cds-global-space-6);
   --clr-alert-item-margin-bottom: var(--cds-global-space-2);
   --clr-alert-line-height: var(--cds-global-typography-font-size-7);
-  --clr-alert-sm-line-height: var(--cds-global-typography-font-size-6);
   --clr-alert-app-padding: var(--cds-global-space-4);
   --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
   --clr-alert-items-gap: var(--cds-global-space-5);
   --clr-alert-items-margin-right: 0; // ATM: delete after token migration
   --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
   --clr-alert-close-icon-size: var(--cds-global-space-7);
+  --clr-alert-icon-size: var(--cds-global-space-9);
 
   .alert-app-level {
     --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
   }
+
+  // Alert small
+  --clr-alert-sm-line-height: var(--clr-p2-line-height);
+  --clr-alert-sm-font-size: var(--cds-global-typography-font-size-3);
+  --clr-alert-sm-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-alert-sm-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-alert-sm-icon-size: var(--cds-global-space-7);
+  --clr-alert-sm-icon-wrapper-height: var(--cds-global-space-7);
+  --clr-alert-sm-padding: var(--cds-global-space-3) var(--cds-global-space-6) var(--cds-global-space-3) var(--cds-global-space-5);
+  --clr-alert-sm-item-text-align-items: center; // ATM: delete after token migration
+  --clr-alert-sm-close-icon-margin: var(--cds-global-space-3) var(--cds-global-space-5) var(--cds-global-space-3) var(--cds-global-space-0); // ATM: delete after token migration
+  --clr-alert-sm-close-icon-height: var(--cds-global-space-9); // ATM: delete after token migration
+  --clr-alert-sm-item-padding-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-display: flex; // ATM: delete after token migration
+  --clr-alert-sm-icon-wrapper-align-self: center; // ATM: delete after token migration
+  --clr-alert-sm-items-margin-right: 0; // ATM: delete after token migration
 
   // App Alerts Pager
   --clr-app-alert-pager-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-0, #{$clr-color-neutral-0});
@@ -627,7 +649,7 @@
   --clr-accordion-header-gap: var(--cds-global-space-5);
   // v17: remove
   --clr-accordion-status-icon-width: auto;
-  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-accordion-content-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-11);
 
   /* Cards */
 
@@ -663,6 +685,7 @@
   --clr-form-disabled-background-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-400);
 
   // Generic
+  --clr-forms-baseline: var(--cds-global-space-5);
   --clr-forms-label-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-800);
   --clr-forms-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400)); // var(--clr-color-neutral-1000);
   --clr-forms-label-font-weight: var(--cds-global-typography-font-weight-semibold);
@@ -771,6 +794,7 @@
   /* Combobox */
 
   --clr-combobox-border-color: var(--cds-alias-object-border-color);
+  --clr-combobox-border-bottom-color: var(--clr-combobox-border-color); // ATM - remove. All borders should be the same.
   --clr-combobox-trigger-color: var(--clr-color-neutral-500);
   --clr-combobox-input-background-color: var(--cds-alias-object-container-background-tint);
   --clr-combobox-pill-background-color: var(--cds-alias-object-interaction-background); // #{$clr-combobox-pill-background-color};
@@ -906,33 +930,119 @@
 
   /* Header */
 
-  // NOTE: Header variables are left not mapped to Core Tokens
-  // as they don't have corresponding alias color tokens in Core.
+  // NOTE: Header variables don't always have corresponding alias color or size design token values.
+  // That's why they may be hard-coded until these values get available!
+
+  --clr-header-height: #{baselinePx(60)};
+  --clr-header-search-height: var(--cds-global-space-11);
+  --clr-header-search-icon-size: var(--cds-global-space-9); // 24px
+  --clr-header-search-margin-left: var(--cds-global-space-5);
+  --clr-header-search-margin-right: var(--cds-global-space-7);
+  --clr-header-search-gap: var(--cds-global-space-5);
+  --clr-header-search-input-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-header-search-input-font-color: var(--cds-global-color-white);
+  --clr-header-search-placeholder-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-header-search-placeholder-text-color: var(--cds-global-color-construction-400);
+  --clr-header-search-input-font-size: var(--cds-global-typography-font-size-4);
+  --clr-header-search-border-active: var(--cds-global-space-1) solid Highlight;
+  --clr-header-search-border-hover: var(--cds-global-space-1) solid var(--cds-global-color-construction-400);
+  --clr-header-branding-min-width: #{baselinePx(204)};
+  --clr-header-branding-padding: 0 var(--cds-global-space-9);
+  --clr-header-branding-icon-gap: var(--cds-global-space-5);
+  --clr-header-branding-logo-size: #{baselinePx(36)};
+
+  --clr-header-font-color: var(--cds-global-color-construction-100);
+  --clr-header-font-color-hover: var(--cds-global-color-construction-50);
+
+  --clr-header-title-font-size: var(--cds-global-typography-subsection-font-size);
+  --clr-header-title-line-height: var(--cds-global-typography-subsection-line-height);
+  --clr-header-title-letter-spacing: var(--cds-global-typography-subsection-letter-spacing);
+
+  --clr-header-divider-color: var(--cds-global-color-construction-600);
+  --clr-header-divider-width: var(--cds-global-space-1);
+  --clr-header-divider-height: var(--cds-global-space-11);
+  --clr-header-divider-opacity: 1;
+
+  --clr-header-bg-color: var(--cds-global-color-cool-grey-1000);
+  --clr-header-2-bg-color: var(--cds-global-color-construction-800);
+  --clr-header-3-bg-color: var(--cds-global-color-azure-900);
+  --clr-header-4-bg-color: var(--clr-header-3-bg-color);
+  --clr-header-5-bg-color: var(--clr-header-3-bg-color);
+  --clr-header-6-bg-color: var(--clr-header-bg-color);
+  --clr-header-7-bg-color: var(--clr-header-2-bg-color);
+
+  --clr-header-nav-link-padding: var(--cds-global-space-8) var(--cds-global-space-7);
+  --clr-header-nav-link-line-height: var(--cds-global-space-9);
+  --clr-header-nav-link-font-size: var(--cds-global-typography-font-size-4);
+  --clr-header-nav-text-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-header-nav-text-font-weight-active: var(--cds-global-typography-font-weight-semibold);
+  --clr-header-action-caret-right: var(--cds-global-space-7);
+  --clr-header-action-caret-size: var(--cds-global-space-7);
+  --clr-header-action-icon-size: var(--cds-global-space-9);
+  // ATM directly use in CSS; now used indirectly via --clr-header-action-cog-right
+  --clr-header-action-caret-gap: var(--cds-global-space-5);
+
+  //ATM remove, pre-v17 compensations and overloads
+  --clr-header-nav-opacity: 1;
+  --clr-header-search-margin: auto;
+  --clr-header-search-icon-margin-right: calc(-1 * (var(--clr-header-search-icon-size) + var(--clr-header-search-gap)));
+  --clr-header-search-input-padding: calc(var(--clr-header-search-icon-size) + 2 * var(--clr-header-search-gap));
+  --clr-header-search-padding-left: var(--clr-header-search-gap);
+  --clr-header-search-outline: none;
+  --clr-header-action-cog-right: calc(var(--clr-header-action-caret-right) + var(--clr-header-action-caret-gap) + var(--clr-header-action-caret-size));
+  --clr-header-action-caret-top: 38%;
+  --clr-header-dropdown-btn-width: calc(var(--clr-header-action-cog-right) + var(--clr-header-action-icon-size) + var(--cds-global-space-7));
+  --clr-header-divider-top-override: auto;
+  .header-actions .nav-link {
+    display: inline-flex;
+    align-items: center;
+    cds-icon,
+    clr-icon {
+      position: static;
+      transform: none;
+    }
+    height: var(--clr-header-height);
+  }
+  .search label::before {
+    vertical-align: middle;
+    margin-top: 0;
+  }
+  .header-nav .nav-link {
+    display: inline-flex;
+    align-items: center;
+    &.active {
+      background: inherit;
+    }
+  }
 
   /* Modal */
 
   --clr-modal-border-radius: var(--cds-alias-object-border-radius-100);
   --clr-modal-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-modal-title-line-height: var(--clr-h4-line-height);
+  --clr-modal-title-font-size: var(--clr-h4-font-size);
+  --clr-modal-title-font-weight: var(--clr-h4-font-weight);
   --clr-modal-text-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
-  --clr-modal-close-color: var(--cds-alias-typography-color-450); // var(--clr-color-neutral-600);
+  --clr-modal-close-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-600);
   --clr-modal-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
   --clr-modal-backdrop-color: var(--cds-alias-object-overlay-backdrop-background); // var(--clr-color-neutral-900);
   --clr-modal-content-box-shadow: var(--cds-alias-object-shadow-300);
   --clr-modal-content-border-style: solid;
   --clr-modal-content-border-color: var(--cds-alias-object-container-border-color);
   --clr-modal-content-border-width: var(--cds-alias-object-border-width-100);
-  --clr-modal-content-padding: var(--cds-global-space-9);
-  --clr-modal-sm-content-padding: var(--cds-global-space-9);
-  --clr-modal-header-padding: 0 0 var(--cds-global-space-9) 0;
+  --clr-modal-content-padding: var(--cds-global-space-9); // ATM - remove and use as default
+  --clr-modal-sm-content-padding: var(--cds-global-space-9); // ATM - remove and use as default
+  --clr-modal-header-padding: 0 0 var(--cds-global-space-9) 0; // ATM - remove and use as default
   --clr-modal-sm-header-padding: 0 0 var(--cds-global-space-9) 0;
-  --clr-modal-footer-padding: var(--cds-global-space-9) 0 0 0;
-  --clr-modal-sm-footer-padding: var(--cds-global-space-9) 0 0 0;
+  --clr-modal-footer-padding: var(--cds-global-space-9) 0 0 0; // ATM - remove and use as default
+  --clr-modal-sm-footer-padding: var(--cds-global-space-9) 0 0 0; // ATM - remove and use as default
   --clr-modal-footer-gap: var(--cds-global-space-5);
-  --clr-modal-sm-width: calc(288 * (1rem / var(--clr-global-font-size)));
-  --clr-modal-md-width: calc(576 * (1rem / var(--clr-global-font-size)));
-  --clr-modal-lg-width: calc(864 * (1rem / var(--clr-global-font-size)));
-  --clr-modal-xl-width: calc(1152 * (1rem / var(--clr-global-font-size)));
+  --clr-modal-sm-width: #{baselinePx(288)};
+  --clr-modal-md-width: #{baselinePx(576)};
+  --clr-modal-lg-width: #{baselinePx(864)};
+  --clr-modal-xl-width: #{baselinePx(1152)};
   --clr-modal-close-icon-size: var(--cds-global-space-9);
+  --clr-modal-title-padding: 0; // ATM - remove and use as default
 
   /* Navigation */
 
@@ -1057,7 +1167,7 @@
   --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected);
 
   --clr-nav-link-font-size: var(--cds-global-typography-font-size-4);
-  --clr-nav-link-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-nav-link-line-height: #{baselinePx(20)};
 
   --clr-nav-horizontal-gap-size: var(--cds-global-space-9);
   --clr-nav-vertical-gap-size: var(--cds-global-space-5);
@@ -1158,7 +1268,7 @@
   /* Wizard */
   --clr-wizard-main-padding: var(--cds-global-space-9);
   --clr-wizard-stepnav-link-font-size: var(--cds-global-typography-font-size-4);
-  --clr-wizard-stepnav-link-line-height: calc(20 * (1rem / var(--clr-global-font-size)));
+  --clr-wizard-stepnav-link-line-height: #{baselinePx(20)};
   --clr-wizard-stepnav-item-padding: var(--cds-global-space-4) 0 var(--cds-global-space-4) var(--cds-global-space-3);
   --clr-wizard-stepnav-padding: 0 0 var(--clr-wizard-main-padding) var(--clr-wizard-main-padding);
   --clr-wizard-stepnav-link-padding: var(--cds-global-space-5);
@@ -1194,11 +1304,45 @@
 
   /* Tree View */
 
-  --clr-tree-node-caret-link-hover-color: var(--cds-alias-object-interaction-color-hover); // var(--clr-color-neutral-1000);
+  --clr-tree-border-radius: var(--cds-alias-object-border-radius-100);
+
+  --clr-tree-node-caret-link-color: var(--cds-alias-object-interaction-color);
+  --clr-tree-node-caret-link-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-tree-node-caret-link-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tree-node-caret-link-disabled-color: var(--cds-alias-object-interaction-color-disabled);
+
   --clr-tree-link-hover-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
-  --clr-tree-link-selection-color: var(--clr-global-selection-color); // indirectly mapped
-  --clr-tree-link-text-color: var(--cds-alias-typography-color-500, var(--cds-global-typography-color-500)); // var(--clr-color-neutral-700);
-  --clr-tree-node-caret-color: var(--cds-global-color-gray-500); // var(--clr-color-neutral-500);
+  --clr-tree-link-selection-color: var(--cds-alias-object-interaction-background-selected); // indirectly mapped
+
+  --clr-tree-node-text-color: var(-cds-alias-object-interaction-color);
+  --clr-tree-node-text-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-tree-node-text-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-tree-node-text-selected-color: var(--cds-alias-object-interaction-color-selected);
+  --clr-tree-node-text-disabled-color: var(--cds-alias-typography-disabled);
+
+  --clr-tree-node-content-bg-color: var(--cds-alias-object-opacity-0);
+  --clr-tree-node-content-bg-hover-color: var(--cds-alias-object-interaction-background-hover);
+  --clr-tree-node-content-bg-active-color: var(--cds-alias-object-interaction-background-active);
+  --clr-tree-node-content-bg-selected-color: var(--cds-alias-object-interaction-background-selected);
+  --clr-tree-node-content-bg-disabled-color: var(--cds-alias-object-opacity-0);
+
+  --clr-treenode-content-padding: var(--cds-global-space-5); // ATM: remove, deprecated
+  --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
+  --clr-tree-node-content-padding-left: calc(var(--cds-global-space-10) + var(--cds-global-space-5));
+  --clr-tree-node-content-line-height: var(--cds-global-space-7);
+  --clr-tree-node-touch-target: var(--cds-global-space-10);
+
+  --clr-tree-node-font-size: var(--cds-global-typography-font-size-3);
+  --clr-tree-node-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-tree-node-line-height: var(--cds-global-space-7);
+  --clr-tree-node-letter-spacing: var(--clr-p3-letter-spacing);
+
+  --clr-tree-caret-size: var(--cds-global-space-7);
+  --clr-tree-caret-padding: 0;
+  --clr-tree-node-content-icon-margin-right: var(--cds-global-space-4);
+  --clr-tree-checkbox-wrapper-padding: var(--cds-global-space-3) var(--cds-global-space-5);
+  --clr-tree-node-children-margin: var(--cds-global-space-10);
+  --clr-tree-node-link-padding-left: 0; // ATM: remove later
 
   /* Vertical Nav */
 
@@ -1210,17 +1354,69 @@
   // Vertical Nav - Align
   --clr-vertical-nav-item-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-700);
   --clr-vertical-nav-item-active-color: var(--cds-alias-object-interaction-color-active); // var(--clr-color-neutral-700);
-  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background);
+  --clr-vertical-nav-bg-color: var(--cds-alias-object-container-background-shade);
+  --clr-vertical-nav-item-padding: var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-item-child-padding: var(--cds-global-space-5) var(--cds-global-space-6) var(--cds-global-space-5) var(--cds-global-space-10);
+  --clr-vertical-nav-item-height: var(--cds-global-space-11);
+  --clr-vertical-nav-item-line-height: var(--cds-global-space-7);
+  --clr-vertical-nav-item-font-size: var(--cds-global-typography-font-size-4);
+  --clr-vertical-nav-item-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-vertical-nav-item-caret-icon-size: var(--cds-global-space-7);
+  --clr-vertical-nav-content-gap: var(--cds-global-space-5);
+  --clr-vertical-nav-content-padding-top: var(--cds-global-space-5);
+  --clr-vertical-nav-collapsed-item-margin: var(--cds-global-space-5) 0 var(--cds-global-space-5) var(--cds-global-space-7); // ATM - remove;
 
-  // Note: figure out whether it should be --cds-alias-object-interaction-background-active instead. The problem is, in the dark mode,
-  // --cds-alias-object-interaction-background-active is the same as --cds-alias-object-container-background-shade.
-
-  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-selected); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-background); // var(--clr-color-neutral-0);
+  --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-active);
+  --clr-vertical-nav-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-item-top-level-font-weight: var(--cds-global-typography-font-weight-semibold);
   --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-background-hover); // var(--clr-color-neutral-400);
 
   // Vertical Nav - Trigger
   --clr-vertical-nav-toggle-icon-color: var(--cds-alias-object-interaction-color); // var(--clr-color-neutral-1000);
+  --clr-vertical-nav-toggle-icon-hover-color: var(--cds-alias-object-interaction-color-hover);
+  --clr-vertical-nav-toggle-icon-active-color: var(--cds-alias-object-interaction-color-active);
+  --clr-vertical-nav-toggle-icon-disabled-color: var(--cds-alias-object-interaction-color-disabled);
+  --clr-vertical-nav-toggle-button-size: var(--cds-global-space-10);
   --clr-vertical-nav-trigger-divider-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
+  --clr-vertical-nav-divider-margin: 0;
+
+  // Vertical Nav - Header
+  --clr-vertical-nav-header-font-weight: var(--cds-global-typography-font-weight-semibold);
+  --clr-vertical-nav-header-padding: var(--cds-global-space-5) var(--cds-global-space-7);
+  --clr-vertical-nav-header-font-size: var(--clr-p4-font-size);
+  --clr-vertical-nav-header-line-height: var(--cds-global-space-7);
+
+  // ATM - remove
+  --clr-vertical-nav-group-trigger-icon-margin-right: var(--cds-global-space-5);
+
+  // ATM - remove
+  --clr-vertical-nav-toggle-margin-left: var(--cds-global-space-7);
+  --clr-vertical-nav-toggle-margin-right: var(--cds-global-space-3);
+
+  // ATM - Move this to the main file and leave only what is need by spec
+  .clr-vertical-nav .nav-trigger {
+    padding: var(--cds-global-space-5) var(--cds-global-space-7);
+    margin-right: 0 !important; // Override specificity
+    margin-bottom: var(--cds-global-space-3);
+
+    cds-icon {
+      margin-right: 0;
+      width: var(--cds-global-space-7);
+      height: var(--cds-global-space-7);
+    }
+
+    &.on-collapse {
+      display: block;
+      cds-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-vertical-nav.has-icons .nav-group-children .nav-link {
+    padding: var(--clr-vertical-nav-item-child-padding);
+  }
 
   /* Tables */
 
@@ -1335,7 +1531,7 @@
   --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
   --clr-datagrid-placeholder-background-color: var(--cds-alias-object-container-background);
   --clr-datagrid-popovers-box-shadow: var(--cds-alias-object-shadow-100);
-  --clr-datagrid-column-seperator-height: var(--cds-global-space-7);
+  --clr-datagrid-column-separator-height: var(--cds-global-space-7);
   --clr-datagrid-filter-toggle-size: var(--cds-global-space-7);
 
   --clr-datagrid-footer-padding: var(--cds-global-space-5) var(--cds-global-space-7);
@@ -1345,17 +1541,23 @@
   --clr-datagrid-footer-select-wrapper-caret-top-position: 30%; // ATM - remove
   --clr-datagrid-footer-pagination-gap: var(--cds-global-space-6);
   --clr-datagrid-footer-pagination-list-margin: var(--cds-global-space-6); // ATM - remove
+  --clr-datagrid-fixed-column-size: var(--cds-global-space-12);
+
+  // ATM - move to _datagrid.clarity as default
+  .datagrid-row-sticky .datagrid-cell:last-child:after {
+    height: var(--clr-datagrid-column-separator-height);
+  }
 
   // Login
-  --clr-login-width: calc(580 * (1rem / var(--clr-global-font-size)));
+  --clr-login-width: #{baselinePx(580)};
   --clr-login-padding: var(--cds-global-space-7);
   --clr-login-group-padding: var(--cds-global-space-13) 0 0 0;
   --clr-login-group-control-margin: 0 0 var(--cds-global-space-9) 0;
   --clr-login-group-remember-margin: 0 0 var(--cds-global-space-13) 0;
   --clr-login-group-error-margin: 0;
   --clr-login-group-btn-margin: var(--cds-global-space-5) 0;
-  --clr-login-group-width: calc(320 * (1rem / var(--clr-global-font-size)));
-  --clr-login-title-width: calc(320 * (1rem / var(--clr-global-font-size)));
+  --clr-login-group-width: #{baselinePx(320)};
+  --clr-login-title-width: #{baselinePx(320)};
   --clr-login-title-margin: 0 0 var(--cds-global-space-13);
   --clr-login-welcome-margin: 0 0 var(--cds-global-space-5) 0;
   --clr-login-hint-margin: var(--cds-global-space-5) 0 0 0;
@@ -1396,14 +1598,8 @@
 
   // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
   clr-stepper-panel .clr-accordion-inner-content {
-    padding: var(--cds-global-space-9);
+    padding: var(--cds-global-space-9) var(--cds-global-space-11);
   }
-}
-
-[cds-theme~='light'] {
-  --clr-vertical-nav-bg-color: var(--cds-global-color-gray-200);
-  --clr-vertical-nav-active-bg-color: var(--cds-global-color-gray-0);
-  --clr-vertical-nav-hover-bg-color: var(--cds-global-color-gray-400);
 }
 
 [cds-theme~='dark'] {

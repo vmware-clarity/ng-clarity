@@ -83,13 +83,12 @@
       --clr-datagrid-placeholder-line-height: inherit;
       --clr-datagrid-placeholder-letter-spacing: inherit;
       --clr-datagrid-placeholder-background-color: #{tables-variables.$clr-table-bgcolor};
-      --clr-datagrid-column-seperator-height: calc(
-        100% + #{datagrid-variables.$clr-datagrid-column-separator-expandby} - #{variables.$clr-global-borderwidth}
-      );
+      --clr-datagrid-column-seperator-height: #{variables.$clr_baselineRem_1_0833};
       --clr-datagrid-filter-toggle-size: #{datagrid-variables.$clr-datagrid-icon-size};
       --clr-datagrid-row-active-color: var(--clr-datagrid-row-hover-color);
       --clr-datagrid-footer-line-height: #{variables.$clr_baselineRem_1_5 - (3 * variables.$clr-global-borderwidth)};
       --clr-datagrid-footer-pagination-line-height: #{variables.$clr_baselineRem_1_5};
+      --clr-datagrid-fixed-column-size: #{datagrid-variables.$clr-datagrid-fixed-column-size};
     }
   }
 }
