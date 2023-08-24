@@ -292,7 +292,12 @@
         );
         font-size: variables.$clr-typography-xxsmalltext;
         font-weight: variables.$clr-font-weight-regular;
-        padding: 0 variables.$clr_baselineRem_8px 0 variables.$clr_baselineRem_4px;
+        @include mixins.css-var(
+          padding,
+          clr-combobox-pill-content-padding,
+          0 variables.$clr_baselineRem_8px 0 variables.$clr_baselineRem_4px,
+          variables.$clr-use-custom-properties
+        );
       }
 
       cds-icon,
