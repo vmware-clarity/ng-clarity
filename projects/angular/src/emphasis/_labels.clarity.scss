@@ -30,13 +30,44 @@
   }
 
   &.clickable.label-#{'' + $color} {
-    &:hover,
-    &:active {
+    &:hover {
       text-decoration: none;
       @include mixins.css-var(
         background,
         clr-label-bg-hover-color,
         label-variables.$clr-label-bg-hover-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-label-hover-color,
+        label-variables.$clr-label-font-color-light,
+        variables.$clr-use-custom-properties
+      );
+    }
+    &:active {
+      @include mixins.css-var(
+        color,
+        clr-label-active-color,
+        label-variables.$clr-label-font-color-light,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        background,
+        clr-label-bg-active-color,
+        label-variables.$clr-label-bg-hover-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        box-shadow,
+        clr-label-box-shadow,
+        0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        transform,
+        clr-label-pressed-transform,
+        translateY(0.5px),
         variables.$clr-use-custom-properties
       );
     }
