@@ -6,13 +6,19 @@
     npm install @clr/ui
     ```
 
-2.  Include clr-ui.min.css in your HTML file:
+2.  Include clr-ui.min.css in your HTML file and add the cds-theme attribute to your body tag:
 
     ```
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
-3.  Write your HTML with the Clarity CSS class names and markup.
+3.  Add the `cds-theme="light"` (or `cds-theme="dark"` for dark theme) to the body tag:
+
+    ```
+    <body cds-theme"light">
+    ```
+
+4.  Write your HTML with the Clarity CSS class names and markup.
 
 ## Legacy Styles (pre-v16)
 
@@ -24,6 +30,8 @@ the file from its new location.
 
     ```
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/legacy-clr-ui.min.css">
+    <!-- OR -->
+    <link rel="stylesheet" href="path/to/node_modules/@clr/ui/legacy-clr-ui-dark.min.css">
     ```
 
 ## Versioning

@@ -40,5 +40,4 @@
 
 ```scss
 @use '@clr/ui/clr-ui.min.css';
-@use '@clr/ui/clr-ui-dark.min.css'; // dark theme, omit if not using the dark theme
 ```
