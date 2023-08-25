@@ -57,10 +57,15 @@
       --clr-stack-view-stack-title-line-height: inherit;
       --clr-stack-view-stack-title-letter-spacing: inherit;
 
-      --clr-stack-view-stack-row-font-size: #{stack-view-variables.$clr-stack-view-font-size};
-      --clr-stack-view-stack-row-font-weight: #{stack-view-variables.$clr-stack-view-font-weight};
-      --clr-stack-view-stack-row-line-height: #{stack-view-variables.$clr-stack-view-line-height};
-      --clr-stack-view-stack-row-letter-spacing: #{stack-view-variables.$clr-stack-view-letter-spacing};
+      --clr-stack-view-stack-block-label-font-size: #{stack-view-variables.$clr-stack-view-stack-block-label-font-size};
+      --clr-stack-view-stack-block-label-font-weight: #{stack-view-variables.$clr-stack-view-stack-block-label-font-weight};
+      --clr-stack-view-stack-block-label-line-height: #{stack-view-variables.$clr-stack-view-stack-block-label-line-height};
+      --clr-stack-view-stack-block-label-letter-spacing: #{stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing};
+
+      --clr-stack-view-font-size: #{stack-view-variables.$clr-stack-view-font-size};
+      --clr-stack-view-font-weight: #{stack-view-variables.$clr-stack-view-font-weight};
+      --clr-stack-view-line-height: #{stack-view-variables.$clr-stack-view-line-height};
+      --clr-stack-view-letter-spacing: #{stack-view-variables.$clr-stack-view-letter-spacing};
 
       // ATM: remove and replace all caret occurrences with respected text color
       --clr-stack-view-stack-block-expanded-caret-color: var(--clr-stack-view-stack-block-caret-color);

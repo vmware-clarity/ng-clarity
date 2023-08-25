@@ -136,25 +136,25 @@
     );
     @include mixins.css-var(
       font-weight,
-      clr-stack-view-stack-row-font-weight,
+      clr-stack-view-font-weight,
       stack-view-variables.$clr-stack-view-font-weight,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       font-size,
-      clr-stack-view-stack-row-font-size,
+      clr-stack-view-font-size,
       stack-view-variables.$clr-stack-view-font-size,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       line-height,
-      clr-stack-view-stack-row-line-height,
+      clr-stack-view-line-height,
       stack-view-variables.$clr-stack-view-line-height,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       letter-spacing,
-      clr-stack-view-stack-row-letter-spacing,
+      clr-stack-view-letter-spacing,
       stack-view-variables.$clr-stack-view-letter-spacing,
       variables.$clr-use-custom-properties
     );
@@ -251,10 +251,30 @@
         stack-view-variables.$clr-stack-view-stack-block-label-text-color,
         variables.$clr-use-custom-properties
       );
-      font-size: stack-view-variables.$clr-stack-view-stack-block-label-font-size;
-      font-weight: stack-view-variables.$clr-stack-view-stack-block-label-font-weight;
-      line-height: stack-view-variables.$clr-stack-view-stack-block-label-line-height;
-      letter-spacing: stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-stack-view-stack-block-label-font-size,
+        stack-view-variables.$clr-stack-view-stack-block-label-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-stack-view-stack-block-label-font-weight,
+        stack-view-variables.$clr-stack-view-stack-block-label-font-weight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-stack-view-stack-block-label-line-height,
+        stack-view-variables.$clr-stack-view-stack-block-label-line-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-stack-view-stack-block-label-letter-spacing,
+        stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
 
       // We're doing a non-flexible item.
       // It's just easier to align and stretch everything vertically this way than with
