@@ -1214,10 +1214,15 @@
   --clr-stack-view-stack-title-line-height: var(--clr-p3-line-height);
   --clr-stack-view-stack-title-letter-spacing: var(--clr-p3-letter-spacing);
 
-  --clr-stack-view-stack-row-font-size: var(--cds-global-typography-font-size-3);
-  --clr-stack-view-stack-row-font-weight: var(--cds-global-typography-font-weight-regular);
-  --clr-stack-view-stack-row-line-height: var(--clr-p4-line-height);
-  --clr-stack-view-stack-row-letter-spacing: var(--clr-p4-letter-spacing);
+  --clr-stack-view-stack-block-label-font-size: var(--cds-global-typography-font-size-3);
+  --clr-stack-view-stack-block-label-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-stack-view-stack-block-label-line-height: var(--clr-p4-line-height);
+  --clr-stack-view-stack-block-label-letter-spacing: var(--clr-p4-letter-spacing);
+
+  --clr-stack-view-font-size: var(--cds-global-typography-font-size-3);
+  --clr-stack-view-font-weight: var(--cds-global-typography-font-weight-regular);
+  --clr-stack-view-line-height: var(--clr-p4-line-height);
+  --clr-stack-view-letter-spacing: var(--clr-p4-letter-spacing);
 
   /* Subnav */
 
