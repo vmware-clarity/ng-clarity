@@ -90,7 +90,7 @@ export default function (): void {
     <button
       #anchor
       type="button"
-      class="signpost-action btn btn-small btn-link"
+      class="signpost-action btn btn-sm btn-link"
       [ngClass]="{ active: open }"
       [attr.aria-label]="label"
       clrSignpostTrigger
