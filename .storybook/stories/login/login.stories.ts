@@ -15,6 +15,7 @@ const defaultStory: Story = args => ({
     <div class="login-wrapper">
         <div class="login">
           <div class="login-header">
+              <div class="logo"></div>
               <div class="actions">
                 <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
                   <button class="btn btn-link btn-sm" clrDropdownTrigger>
