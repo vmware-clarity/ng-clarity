@@ -358,7 +358,6 @@
 
           &:before {
             content: '';
-            display: inline-block; //needed for IE. display: none to display:flex on parent doesnt work
             -webkit-mask: icons.generateErrorIcon("'none'");
             mask: icons.generateErrorIcon("'none'");
             -webkit-mask-repeat: no-repeat;
