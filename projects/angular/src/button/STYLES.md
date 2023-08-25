@@ -153,7 +153,7 @@
 | btn-success-outline | Outline success button.                                  |
 | btn-warning-outline | Outline warning button.                                  |
 | btn-danger-outline  | Outline danger button.                                   |
-| btn-small           | Small button.                                            |
+| btn-sm              | Small button.                                            |
 | btn-block           | Block, full-width button.                                |
 | btn-inverse         | Inverse button.                                          |
 | btn-icon            | Icon button.                                             |

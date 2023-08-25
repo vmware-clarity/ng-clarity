@@ -3,12 +3,14 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'properties.forms' as forms-properties;
 @use 'variables.forms' as forms-variables;
 
 input[clrDatalistInput] {
+  position: relative;
   &::-webkit-calendar-picker-indicator {
     opacity: 0;
     cursor: text;
@@ -16,6 +18,12 @@ input[clrDatalistInput] {
 }
 
 .clr-input-group {
+  input[clrDatalistInput] {
+    //Moves the .clr-datalist-caret (arrow) to the back so that clicking over it activates
+    //the dropdown.
+    z-index: map.get(variables.$clr-layers, datalist-box);
+  }
+
   .clr-datalist-caret {
     @include mixins.equilateral-var(
       clr-forms-datalist-caret-icon-size,
@@ -35,6 +43,7 @@ input[clrDatalistInput] {
       forms-variables.$clr-forms-baseline,
       variables.$clr-use-custom-properties
     );
+    cursor: text;
     top: 25%;
   }
 }
