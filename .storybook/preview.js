@@ -18,8 +18,8 @@ import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module
 import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
 
 // Styles that should be watched/reloaded
-import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
-import clrUiDarkStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui-dark.scss';
+import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui.scss';
+import clrUiDarkStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui-dark.scss';
 import shimStyles from 'raw-loader!sass-loader!../projects/ui/src/shim.cds-core.scss';
 
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
