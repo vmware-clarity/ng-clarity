@@ -40,7 +40,11 @@
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user" [clrDgRowAriaLabel]="'Select row for ' + user.name">
+  <clr-dg-row
+    *clrDgItems="let user of users"
+    [clrDgItem]="user"
+    [clrDgRowSelectionLabel]="'Select row for ' + user.name"
+  >
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -74,7 +78,7 @@
   <clr-dg-row
     *clrDgItems="let user of trackByIndexUsers; trackBy: trackByIndex"
     [clrDgItem]="user"
-    [clrDgRowAriaLabel]="'Select row for ' + user.name"
+    [clrDgRowSelectionLabel]="'Select row for ' + user.name"
   >
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
@@ -109,7 +113,7 @@
   <clr-dg-row
     *clrDgItems="let user of trackByIdUsers; trackBy: trackById"
     [clrDgItem]="user"
-    [clrDgRowAriaLabel]="'Select row for ' + user.name"
+    [clrDgRowSelectionLabel]="'Select row for ' + user.name"
   >
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
@@ -148,7 +152,7 @@
   <clr-dg-row
     *ngFor="let user of trackByIdServerUsers; trackBy: trackById"
     [clrDgItem]="user"
-    [clrDgRowAriaLabel]="'Select row for ' + user.name"
+    [clrDgRowSelectionLabel]="'Select row for ' + user.name"
   >
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
