@@ -185,6 +185,18 @@
         //Display
         display: none;
       }
+
+      > .nav-link {
+        &.active,
+        &:active {
+          @include mixins.css-var(
+            font-weight,
+            clr-vertical-nav-item-active-font-weight,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
     }
 
     .nav-group-children {
@@ -492,7 +504,6 @@
     //////
     ///////
     &.has-nav-groups {
-      .nav-link,
       .nav-group .nav-group-text,
       .nav-group .nav-group-trigger {
         @include mixins.css-var(

@@ -1678,6 +1678,7 @@
   --clr-vertical-nav-item-font-size: #{tokens.$cds-global-typography-font-size-4};
   --clr-vertical-nav-item-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
   --clr-vertical-nav-item-caret-icon-size: #{tokens.$cds-global-space-7};
+  --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
   --clr-vertical-nav-content-gap: #{tokens.$cds-global-space-5};
   --clr-vertical-nav-content-padding-top: #{tokens.$cds-global-space-5};
   --clr-vertical-nav-collapsed-item-margin: #{tokens.$cds-global-space-5} 0 #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7}; // ATM - remove;
