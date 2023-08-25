@@ -16,7 +16,6 @@ import tokensStyles from 'raw-loader!../node_modules/@cds/core/styles/module.tok
 import layoutStyles from 'raw-loader!../node_modules/@cds/core/styles/module.layout.min.css';
 import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module.typography.min.css';
 import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
-import highContrastThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.high-contrast.min.css';
 
 // Styles that should be watched/reloaded
 import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
@@ -37,7 +36,6 @@ const cdsCoreAndShimStyles = [
   layoutStyles,
   typographyStyles,
   darkThemeStyles,
-  highContrastThemeStyles,
   shimStyles,
 ];
 
@@ -67,7 +65,6 @@ export const globalTypes = {
         { value: THEMES.NG_DARK, title: '@clr/ui Dark Theme' },
         { value: THEMES.CORE_LIGHT, title: '@cds/core Light Theme' },
         { value: THEMES.CORE_DARK, title: '@cds/core Dark Theme' },
-        { value: THEMES.HIGH_CONTRAST, title: '@cds/core High Contrast Theme' },
       ],
     },
   },

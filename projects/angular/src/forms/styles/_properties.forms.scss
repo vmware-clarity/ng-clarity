@@ -44,6 +44,9 @@
       --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
       --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
 
+      // Input group
+      --clr-forms-input-group-icon-action-size: #{variables.$clr_baselineRem_0_75};
+
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
@@ -56,6 +59,13 @@
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
         #{color.adjust(forms-variables.$clr-forms-invalid-color, $lightness: 30%)};
+      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
+        variables.$clr_baselineRem_2px
+        forms-variables.$clr-forms-baseline *
+        2};
+      --clr-forms-textarea-wrapper-margin-left: 0;
+      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
+      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
 
       // Select
       --clr-forms-select-hover-background: rgba(
@@ -64,6 +74,8 @@
         #{color.blue(variables.$clr-color-neutral-300)},
         0.5
       );
+      --clr-forms-select-hover-border-color: var(--clr-forms-select-hover-background);
+      --clr-forms-select-disabled-border-color: #{forms-variables.$clr-forms-border-color};
       --clr-forms-select-caret-hover-color: var(--clr-color-neutral-600);
       --clr-forms-select-caret-color: var(--clr-color-neutral-500);
       --clr-forms-select-option-color: var(--clr-forms-text-color);
@@ -74,14 +86,6 @@
           forms-variables.$clr-forms-invalid-color,
           $lightness: 30%
         )};
-      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
-        variables.$clr_baselineRem_2px
-        forms-variables.$clr-forms-baseline *
-        2};
-      --clr-forms-textarea-wrapper-margin-left: 0;
-      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-      --clr-forms-textarea-disabled-border-color: #{forms-variables.$clr-forms-border-color};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
@@ -120,12 +124,24 @@
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
       --clr-forms-range-track-color: var(--clr-color-neutral-200);
+      --clr-forms-range-track-border-color: #{forms-variables.$clr-forms-range-border-color};
+      --clr-forms-range-thumb-height: #{forms-variables.$clr-forms-range-thumb-height};
+      --clr-forms-range-track-height: #{forms-variables.$clr-forms-range-track-height};
+      --clr-forms-range-track-border-radius: #{forms-variables.$clr-forms-range-border-radius};
+      --clr-forms-range-track-border-width: #{forms-variables.$clr-forms-range-border-width};
+      --clr-forms-range-progress-fill-color-disabled: #{forms-variables.$clr-forms-range-progress-fill-color};
+      --clr-forms-range-track-color-disabled: #{forms-variables.$clr-forms-range-track-color};
+      --clr-forms-range-track-border-color-disabled: #{forms-variables.$clr-forms-range-border-color-disabled};
 
       // Datalist
 
       --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
+
+      // Password
+      --clr-forms-password-eye-icon-color: var(--clr-forms-focused-color);
+      --clr-forms-password-disabled-eye-icon-color: var(--clr-forms-text-disabled-color);
     }
   }
 }

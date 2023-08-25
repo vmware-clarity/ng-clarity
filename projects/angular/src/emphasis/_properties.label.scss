@@ -5,16 +5,22 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables';
+@use './variables.label' as label-variables;
 
 @include mixins.exports('label.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
+      --clr-label-padding: 0 #{label-variables.$clr-label-padding-left-right} 0;
+      --clr-label-gap-size: 0;
+
       // COLOR
       // Usage:
       // - ./_labels.clarity.scss
       --clr-label-font-color-light: var(--clr-color-neutral-1000);
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
       --clr-label-default-border-color: var(--clr-color-neutral-600);
+      --clr-label-active-color: var(--clr-label-font-color-light);
+      --clr-label-hover-color: var(--clr-label-font-color-light);
 
       // TYPOGRAPHIC STYLES
       // Usage:
@@ -22,26 +28,38 @@
       --clr-label-font-size: #{variables.$clr-p7-font-size};
       --clr-label-font-weight: #{variables.$clr-p7-font-weight};
       --clr-label-letter-spacing: #{variables.$clr-p7-letter-spacing};
+      --clr-label-line-height: calc(#{label-variables.$clr-label-font-size} + #{variables.$clr_baselineRem_1px});
+
+      --clr-label-clickable-font-size: var(--clr-label-font-size);
+      --clr-label-clickable-font-weight: var(--clr-label-font-weight);
+      --clr-label-clickable-letter-spacing: var(--clr-label-letter-spacing);
+      --clr-label-clickable-line-height: var(--clr-label-line-height);
 
       --clr-label-border-radius: #{variables.$clr_baselineRem_0_5};
+      --clr-label-border-width: #{label-variables.$clr-label-borderwidth};
 
       // Usage: ./_labels.clarity.scss
       --clr-label-bg-hover-color: var(--clr-color-neutral-200);
 
       // START: deprecated for removal in 4.0
-      --clr-label-gray-bg-color: var(--clr-color-neutral-600);
+      --clr-label-gray-bg-color: transparent;
+      --clr-label-gray-border-color: var(--clr-color-neutral-600);
       --clr-label-gray-color: var(--clr-label-font-color-light);
 
-      --clr-label-purple-bg-color: var(--clr-color-secondary-action-500);
+      --clr-label-purple-bg-color: transparent;
+      --clr-label-purple-border-color: var(--clr-color-secondary-action-500);
       --clr-label-purple-color: var(--clr-label-font-color-light);
 
-      --clr-label-blue-bg-color: var(--clr-color-action-800);
+      --clr-label-blue-bg-color: transparent;
+      --clr-label-blue-border-color: var(--clr-color-action-800);
       --clr-label-blue-color: var(--clr-label-font-color-light);
 
-      --clr-label-orange-bg-color: var(--clr-color-warning-1000);
+      --clr-label-orange-bg-color: transparent;
+      --clr-label-orange-border-color: var(--clr-color-warning-1000);
       --clr-label-orange-color: var(--clr-label-font-color-dark);
 
-      --clr-label-light-blue-bg-color: var(--clr-color-action-500);
+      --clr-label-light-blue-bg-color: transparent;
+      --clr-label-light-blue-border-color: var(--clr-color-action-500);
       --clr-label-light-blue-color: var(--clr-label-font-color-dark);
 
       --clr-label-info-bg-color: var(--clr-color-action-50);

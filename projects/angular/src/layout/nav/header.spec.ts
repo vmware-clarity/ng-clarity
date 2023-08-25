@@ -69,9 +69,9 @@ describe('Header', () => {
   });
 
   it('should have aria labels for menu buttons', () => {
-    expect(compiled.querySelector('.header-hamburger-trigger').getAttribute('aria-label')).toBe('Navigation menu');
+    expect(compiled.querySelector('.header-hamburger-trigger').getAttribute('aria-label')).toBe('Open navigation menu');
     expect(compiled.querySelector('.header-overflow-trigger').getAttribute('aria-label')).toBe(
-      'Navigation overflow menu'
+      'Open navigation overflow menu'
     );
   });
 });

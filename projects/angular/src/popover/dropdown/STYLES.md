@@ -2,22 +2,33 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                 | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| --clr-dropdown-active-text-color    | The text color of the active dropdown item.                      |
-| --clr-dropdown-bg-color             | The background color of the dropdown.                            |
-| --clr-dropdown-border-color         | The border color of the dropdown.                                |
-| --clr-dropdown-divider-color        | The color of the divider between dropdown items.                 |
-| --clr-dropdown-divider-border-width | Not used.                                                        |
-| --clr-dropdown-child-border-color   | The border color of child dropdown items.                        |
-| --clr-dropdown-bg-hover-color       | The background color of the dropdown when hovering over an item. |
-| --clr-dropdown-selection-color      | The color of the selected dropdown item.                         |
-| --clr-dropdown-box-shadow           | The box shadow of the dropdown.                                  |
-| --clr-dropdown-text-color           | The text color of the dropdown.                                  |
-| --clr-dropdown-header-color         | The color of the dropdown header.                                |
-| --clr-dropdown-header-font-weight   | Not used.                                                        |
-| --clr-dropdown-item-color           | The color of the dropdown item.                                  |
-| --clr-dropdown-item-font-weight     | Not used.                                                        |
+| CSS Custom Property                    | Description                                        |
+| -------------------------------------- | -------------------------------------------------- |
+| --clr-dropdown-active-text-color       | The text color of the active dropdown item.        |
+| --clr-dropdown-active-background-color | The background color of the active dropdown item.  |
+| --clr-dropdown-bg-color                | The background color of the dropdown.              |
+| --clr-dropdown-border-color            | The border color of the dropdown.                  |
+| --clr-dropdown-divider-color           | The color of the divider between dropdown items.   |
+| --clr-dropdown-divider-border-width    | Width of the dropdown items separator.             |
+| --clr-dropdown-divider-margin          | Margin of the dropdown divider.                    |
+| --clr-dropdown-child-border-color      | The border color of child dropdown items.          |
+| --clr-dropdown-bg-hover-color          | The background color of the hovered dropdown item. |
+| --clr-dropdown-selection-color         | The color of the selected dropdown item.           |
+| --clr-dropdown-box-shadow              | The box shadow of the dropdown.                    |
+| --clr-dropdown-text-color              | The text color of the dropdown.                    |
+| --clr-dropdown-header-color            | The color of the dropdown menu header.             |
+| --clr-dropdown-header-font-weight      | Font weight of the dropdown menu header.           |
+| --clr-dropdown-header-font-size        | Font size of the dropdown menu header.             |
+| --clr-dropdown-header-line-height      | Line height of the dropdown menu header.           |
+| --clr-dropdown-header-padding          | Padding of the dropdown menu header.               |
+| --clr-dropdown-header-letter-spacing   | Letter spacing of the dropdown menu header.        |
+| --clr-dropdown-item-color              | The color of the dropdown item.                    |
+| --clr-dropdown-item-font-weight        | Font weight of the dropdown item.                  |
+| --clr-dropdown-item-padding            | Single menu item padding                           |
+| --clr-dropdown-items-padding           | Menu items list overall padding                    |
+| --clr-dropdown-border-radius           | Menu items list border radius                      |
+| --clr-dropdown-caret-icon-size         | Size of the dropdown menu expander caret.          |
+| --clr-dropdown-subsection-offset       | Offset of elements in menu with header.            |
 
 ## CSS Classes
 

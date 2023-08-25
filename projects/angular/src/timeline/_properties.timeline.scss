@@ -5,6 +5,7 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use 'variables.timeline' as timeline-variables;
 
 @include mixins.exports('timeline.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -22,6 +23,44 @@
 
       // body (title)
       --clr-timeline-step-title-font-weight: var(--clr-p2-font-weight);
+      --clr-timeline-step-title-font-size: #{timeline-variables.$clr-timeline-step-title-font-size};
+      --clr-timeline-step-title-line-height: #{timeline-variables.$clr-timeline-step-title-line-height};
+
+      --clr-timeline-icon-size: #{timeline-variables.$clr-timeline-icon-size};
+      --clr-timeline-line-width: #{timeline-variables.$clr-timeline-line-thickness};
+      --clr-timeline-step-margin: #{timeline-variables.$clr-timeline-gutter-width};
+
+      --clr-timeline-horizontal-line-length: calc(
+        100% -
+          #{0.5 *
+          timeline-variables.$clr-timeline-icon-size} -
+          #{timeline-variables.$clr-timeline-icon-inner-padding}
+      );
+      --clr-timeline-vertical-line-position: translate(
+        #{-0.5 *
+          (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness) -
+          timeline-variables.$clr-timeline-icon-inner-padding -
+          timeline-variables.$clr-timeline-vertical-step-body-left-padding,
+        timeline-variables.$clr-timeline-icon-size -
+          timeline-variables.$clr-timeline-icon-inner-padding -
+          timeline-variables.$clr-timeline-vertical-step-body-top-padding}
+      );
+
+      --clr-timeline-vertical-line-length: calc(100% + #{2 * timeline-variables.$clr-timeline-icon-inner-padding});
+      --clr-timeline-vertical-step-body-margin: #{timeline-variables.$clr-timeline-vertical-step-body-top-padding
+        0
+        0
+        timeline-variables.$clr-timeline-vertical-step-body-left-padding}; // ATM remove this property
+
+      // body (header)
+      --clr-timeline-step-header-font-size: #{timeline-variables.$clr-timeline-step-header-font-size};
+      --clr-timeline-step-header-font-weight: inherit;
+      --clr-timeline-step-header-line-height: #{timeline-variables.$clr-timeline-step-header-line-height};
+
+      // body (description)
+      --clr-timeline-step-description-font-size: #{timeline-variables.$clr-timeline-step-description-font-size};
+      --clr-timeline-step-description-font-weight: inherit;
+      --clr-timeline-step-description-line-height: #{timeline-variables.$clr-timeline-step-description-line-height};
     }
   }
 }
