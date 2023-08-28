@@ -103,7 +103,7 @@ const defaultParameters: Parameters = {
     clrDgItem: { control: { disable: true } },
     clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
     clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
-    clrDgRowAriaLabel: { defaultValue: '' },
+    clrDgRowSelectionLabel: { defaultValue: '' },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
