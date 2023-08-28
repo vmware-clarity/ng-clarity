@@ -277,8 +277,8 @@
     // hover-background-color
     $clr-btn-default-hover-color: hsl(194, 78%, 63%),
     // hover-color
-    $clr-btn-default-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-default-active-bg-color: hsl(0, 0%, 0%),
+    // active-bg-color
     $clr-btn-default-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-default-checked-bg-color: hsl(198, 65%, 57%),
@@ -295,8 +295,8 @@
     // hover-background-color
     $clr-btn-default-outline-hover-color: hsl(194, 78%, 63%),
     // hover-color
-    $clr-btn-default-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-default-outline-active-bg-color: hsl(0, 0%, 0%),
+    // active-bg-color
     $clr-btn-default-outline-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-default-outline-checked-bg-color: hsl(198, 65%, 57%),
@@ -317,8 +317,8 @@
     // hover-background-color
     $clr-btn-primary-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-primary-box-shadow-color: hsl(205, 100%, 34%),
-    // active-box-shadow-color
+    $clr-btn-primary-active-bg-color: hsl(205, 100%, 34%),
+    // active-bg-color
     $clr-btn-primary-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-primary-disabled-color: hsl(0, 0%, 0%),
@@ -336,8 +336,8 @@
     // hover-background-color
     $clr-btn-success-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-success-box-shadow-color: hsl(98, 100%, 21%),
-    // active-box-shadow-color
+    $clr-btn-success-active-bg-color: hsl(98, 100%, 21%),
+    // active-bg-color
     $clr-btn-success-checked-bg-color: hsl(83, 77%, 44%),
     // checked-background-color
     $clr-btn-success-disabled-color: hsl(0, 0%, 0%),
@@ -355,8 +355,8 @@
     // hover-background-color
     $clr-btn-success-outline-hover-color: hsl(83, 77%, 44%),
     // hover-color
-    $clr-btn-success-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-success-outline-active-bg-color: hsl(0, 0%, 0%),
+    // active-bg-color
     $clr-btn-success-outline-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-success-outline-disabled-color: hsl(0, 0%, 100%),
@@ -374,8 +374,8 @@
     // hover-background-color
     $clr-btn-danger-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-danger-box-shadow-color: hsl(10, 100%, 39%),
-    // active-box-shadow-color
+    $clr-btn-danger-active-bg-color: hsl(10, 100%, 39%),
+    // active-bg-color
     $clr-btn-danger-checked-bg-color: hsl(10, 100%, 39%),
     // checked-background-color
     $clr-btn-danger-disabled-color: hsl(0, 0%, 0%),
@@ -393,8 +393,8 @@
     // hover-background-color
     $clr-btn-danger-outline-hover-color: hsl(3, 100%, 69%),
     // hover-color
-    $clr-btn-danger-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-danger-outline-active-bg-color: hsl(0, 0%, 0%),
+    // active-bg-color
     $clr-btn-danger-outline-checked-bg-color: hsl(3, 90%, 62%),
     // checked-background-color
     $clr-btn-danger-outline-checked-color: hsl(0, 0%, 100%),
@@ -414,8 +414,8 @@
     // hover-background-color
     $clr-btn-warning-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-warning-box-shadow-color: hsl(10, 100%, 39%),
-    // active-box-shadow-color
+    $clr-btn-warning-active-bg-color: hsl(10, 100%, 39%),
+    // active-bg-color
     $clr-btn-warning-checked-bg-color: hsl(10, 100%, 39%),
     // checked-background-color
     $clr-btn-warning-disabled-color: hsl(0, 0%, 0%),
@@ -433,8 +433,8 @@
     // hover-background-color
     $clr-btn-warning-outline-hover-color: hsl(3, 100%, 69%),
     // hover-color
-    $clr-btn-warning-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-warning-outline-active-bg-color: hsl(0, 0%, 0%),
+    // active-bg-color
     $clr-btn-warning-outline-checked-bg-color: hsl(3, 90%, 62%),
     // checked-background-color
     $clr-btn-warning-outline-checked-color: hsl(0, 0%, 100%),
@@ -465,8 +465,8 @@
     // hover-background-color
     $clr-btn-inverse-hover-color: hsl(0, 0%, 100%),
     // hover-color
-    $clr-btn-inverse-box-shadow-color: hsl(203, 14%, 70%),
-    // active-box-shadow-color
+    $clr-btn-inverse-active-bg-color: hsl(203, 14%, 70%),
+    // active-bg-color
     $clr-btn-inverse-checked-bg-color: hsla(0, 0%, 100%, 0.15),
     // checked-background-color
     $clr-btn-inverse-checked-color: hsl(0, 0%, 100%),

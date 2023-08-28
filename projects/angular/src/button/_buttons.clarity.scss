@@ -116,25 +116,8 @@
   }
 
   &:active {
-    @if $button-type == link {
-      box-shadow: none;
-    } @else {
-      $fallbackColor: getSassButtonColor($button-type, box-shadow-color);
-
-      // ATM (after token migration)
-      // Replace box-shadow section with commented section. Renaming all of clr-btn 'box-shadow' to 'click' color properties is needed.
-      // $buttonColor: 'clr-btn-' + $button-type + '-click-color';
-      // @include mixins.css-var(background-color, $buttonColor, $fallbackColor, variables.$clr-use-custom-properties);
-
-      // IE/OldEdge
-      box-shadow: 0 getActiveWidthBoxShadowTop($button-type) 0 0 $fallbackColor inset;
-
-      box-shadow: 0
-        getActiveWidthBoxShadowTop($button-type)
-        0
-        0
-        var(#{'--clr-btn-' + $button-type + '-' + 'box-shadow-color'}, $fallbackColor)
-        inset;
+    @if $button-type != link {
+      @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
     }
   }
 
@@ -145,7 +128,6 @@
     @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
-    box-shadow: none;
   }
 }
 
