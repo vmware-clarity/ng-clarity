@@ -2,17 +2,20 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                             | Description                            |
-| ----------------------------------------------- | -------------------------------------- |
-| --clr-forms-checkbox-label-color                | Font color of checkbox label           |
-| --clr-forms-checkbox-background-color           | Background color of checkbox           |
-| --clr-forms-checkbox-indeterminate-border-color | Border color of indeterminate checkbox |
-| --clr-forms-checkbox-mark-color                 | Color of checkbox mark                 |
-| --clr-forms-checkbox-disabled-background-color  | Background color of disabled checkbox  |
-| --clr-forms-checkbox-disabled-mark-color        | Color of disabled checkbox mark        |
-| --clr-forms-checkbox-border-radius              | Border radius of checkbox              |
+| CSS Custom Property                             | Description                                |
+| ----------------------------------------------- | ------------------------------------------ |
+| --clr-forms-checkbox-label-color                | Font color of checkbox label               |
+| --clr-forms-checkbox-background-color           | Background color of checkbox               |
+| --clr-forms-checkbox-indeterminate-border-color | Border color of indeterminate checkbox     |
+| --clr-forms-checkbox-mark-color                 | Color of checkbox mark                     |
+| --clr-forms-checkbox-disabled-background-color  | Background color of disabled checkbox      |
+| --clr-forms-checkbox-disabled-mark-color        | Color of disabled checkbox mark            |
+| --clr-forms-checkbox-border-radius              | Border radius of checkbox                  |
+| --clr-forms-checkbox-line-height                | Line height of the checkbox button wrapper |
+| --clr-forms-checkbox-padding-left               | Left padding for checkbox label element    |
+| --clr-forms-checkbox-label-height               | Height of the checkbox label element       |
 
-## Class names
+## CSS Classes
 
 | Class name           | Description                              |
 | -------------------- | ---------------------------------------- |
@@ -35,7 +38,7 @@
 | --clr-toggle-disabled-on-bg-color             | Background color for disabled toggle that is on       |
 | --clr-toggle-disabled-on-handle-border-color  | Handle border color for disabled toggle that is on    |
 
-## Class names
+## CSS Classes
 
 | Class name         | Description                                                       |
 | ------------------ | ----------------------------------------------------------------- |

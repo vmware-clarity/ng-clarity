@@ -3,9 +3,10 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
 
-@include exports('popover.clarity') {
+@include mixins.exports('popover.clarity') {
   .is-off-screen {
-    @include off-screen-styles();
+    @include mixins.off-screen-styles();
   }
 }

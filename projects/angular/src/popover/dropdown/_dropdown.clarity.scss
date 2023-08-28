@@ -3,9 +3,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
-@import './_menu-mixins.clarity.scss';
-@import './properties.dropdown';
+@use 'sass:meta';
+@use 'menu-mixins.clarity.scss' as menu-mixins;
+@use '../../button/variables.buttons' as button-variables;
+@use '../../image/icons.clarity';
+@use '../../image/images.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.dropdown' as dropdown-variables;
+@include meta.load-css('properties.dropdown');
 
 %dropdown-content {
   overflow: hidden;
@@ -13,7 +19,7 @@
   text-align: left;
 }
 
-@include exports('dropdown.clarity') {
+@include mixins.exports('dropdown.clarity') {
   .dropdown {
     position: relative;
     display: inline-block;
@@ -31,7 +37,7 @@
       clr-icon[shape^='angle'] {
         position: absolute;
         color: inherit;
-        @include min-equilateral($clr-dropdown-caret-icon-dimension);
+        @include mixins.min-equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
       }
 
       // NOTE: cds-icon handles direction internally.
@@ -42,15 +48,15 @@
         margin-top: unset;
         position: absolute;
         color: inherit;
-        @include equilateral($clr-dropdown-caret-icon-dimension);
+        @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
         // need custom property override here to force minimum size of
         // cds-icon to be 12px across the shadow dom...
-        --cds-global-space-7: #{$clr-dropdown-caret-icon-dimension};
+        --cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
       }
 
       &.btn {
-        padding-right: $clr-btn-horizontal-padding + $clr-dropdown-caret-icon-dimension +
-          $clr-dropdown-caret-left-margin;
+        padding-right: button-variables.$clr-btn-horizontal-padding +
+          dropdown-variables.$clr-dropdown-caret-icon-dimension + dropdown-variables.$clr-dropdown-caret-left-margin;
         text-overflow: unset;
 
         clr-icon {
@@ -64,17 +70,18 @@
         clr-icon[shape^='caret'],
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: $clr-btn-horizontal-padding;
+          right: button-variables.$clr-btn-horizontal-padding;
         }
       }
 
       &:not(.btn) {
-        padding: 0 $clr-dropdown-caret-icon-dimension + $clr-dropdown-caret-left-margin 0 0;
-        @include css-var(
+        padding: 0 dropdown-variables.$clr-dropdown-caret-icon-dimension +
+          dropdown-variables.$clr-dropdown-caret-left-margin 0 0;
+        @include mixins.css-var(
           color,
           clr-dropdown-active-text-color,
-          $clr-dropdown-active-text-color,
-          $clr-use-custom-properties
+          dropdown-variables.$clr-dropdown-active-text-color,
+          variables.$clr-use-custom-properties
         );
         cds-icon[shape^='caret'],
         clr-icon[shape^='caret'],
@@ -89,11 +96,11 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      @include css-var(
+      @include mixins.css-var(
         color,
         clr-dropdown-active-text-color,
-        $clr-dropdown-active-text-color,
-        $clr-use-custom-properties
+        dropdown-variables.$clr-dropdown-active-text-color,
+        variables.$clr-use-custom-properties
       );
     }
   }
@@ -105,22 +112,60 @@
   }
 
   .dropdown-menu {
-    @include generate-dropdown-menu();
+    @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      @include css-var(color, clr-dropdown-header-color, $clr-dropdown-header-color, $clr-use-custom-properties);
-      font-size: $clr-dropdown-header-font-size;
-      @include css-var(
+      @include mixins.css-var(
+        color,
+        clr-dropdown-header-color,
+        dropdown-variables.$clr-dropdown-header-color,
+        variables.$clr-use-custom-properties
+      );
+
+      // Typography
+      // Paragraph/SECONDARY-13-MD-exp
+      @include mixins.css-var(
         font-weight,
         clr-dropdown-header-font-weight,
-        $clr-dropdown-header-font-weight,
-        $clr-use-custom-properties
+        dropdown-variables.$clr-dropdown-header-font-weight,
+        variables.$clr-use-custom-properties
       );
-      letter-spacing: $clr-dropdown-header-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-dropdown-header-font-size,
+        dropdown-variables.$clr-dropdown-header-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-dropdown-header-line-height,
+        variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-dropdown-header-letter-spacing,
+        dropdown-variables.$clr-dropdown-header-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
 
-      padding: 0 $clr_baselineRem_0_5;
-      line-height: $clr_baselineRem_0_75;
+      @include mixins.css-var(
+        padding,
+        clr-dropdown-header-padding,
+        0 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
       margin: 0;
+
+      & ~ .dropdown-item,
+      & ~ .dropdown > .dropdown-item {
+        @include mixins.css-var(
+          padding-left,
+          clr-dropdown-subsection-offset,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+      }
 
       @extend %dropdown-content;
     }
@@ -140,31 +185,55 @@
     .btn-success,
     .btn-link,
     .dropdown-item {
-      @include generate-dropdown-item();
+      @include menu-mixins.generate-dropdown-item();
 
       @extend %dropdown-content;
 
       &.expandable {
-        $clr-dropdown-caret-margin-top: $clr_baselineRem_0_25;
+        $clr-dropdown-caret-margin-top: variables.$clr_baselineRem_0_25;
 
-        margin-right: $clr_baselineRem_1;
-        padding-right: $clr_baselineRem_0_5;
+        margin-right: variables.$clr_baselineRem_1;
+        padding-right: variables.$clr_baselineRem_0_5;
 
         &:before {
           content: '';
           float: right;
-          @include equilateral($clr_baselineRem_0_5);
+          @include mixins.equilateral-var(
+            clr-dropdown-caret-icon-size,
+            variables.$clr_baselineRem_0_5,
+            variables.$clr-use-custom-properties
+          );
           transform: rotate(-90deg);
-          background-image: generateCaretIcon();
-          @include icon-background-styles();
-          margin-top: $clr-dropdown-caret-margin-top;
+          background-image: icons.generateCaretIcon();
+          @include images.icon-background-styles();
+          @include mixins.css-var(
+            margin-top,
+            clr-dropdown-caret-icon-margin-top,
+            $clr-dropdown-caret-margin-top,
+            variables.$clr-use-custom-properties
+          );
         }
+      }
+
+      &:active {
+        @include mixins.css-var(
+          color,
+          clr-dropdown-active-text-color,
+          var(--clr-color-neutral-1000),
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background-color,
+          clr-dropdown-active-background-color,
+          var(--clr-global-selection-color),
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
     .btn,
     .dropdown-item {
-      @include generate-dropdown-item-height();
+      @include menu-mixins.generate-dropdown-item-height();
     }
 
     a.dropdown-item {
@@ -172,21 +241,26 @@
     }
 
     .dropdown-divider {
-      font-size: $clr-dropdown-header-font-size;
-      @include css-var(
+      font-size: dropdown-variables.$clr-dropdown-header-font-size;
+      @include mixins.css-var(
         border-bottom-width,
         clr-dropdown-divider-border-width,
-        $clr-global-borderwidth,
-        $clr-use-custom-properties
+        variables.$clr-global-borderwidth,
+        variables.$clr-use-custom-properties
       );
       border-bottom-style: solid;
-      @include css-var(
+      @include mixins.css-var(
         border-bottom-color,
         clr-dropdown-divider-color,
-        $clr-dropdown-divider-color,
-        $clr-use-custom-properties
+        dropdown-variables.$clr-dropdown-divider-color,
+        variables.$clr-use-custom-properties
       );
-      margin: $clr_baselineRem_0_25 0;
+      @include mixins.css-var(
+        margin,
+        clr-dropdown-divider-margin,
+        variables.$clr_baselineRem_0_25 0,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 
@@ -194,7 +268,7 @@
   .btn-group-overflow,
   .tabs-overflow,
   .dropdown {
-    $dropdown-menu-positional-nudge: $clr_baselineRem_2px;
+    $dropdown-menu-positional-nudge: variables.$clr_baselineRem_2px;
 
     &.open > .dropdown-menu,
     &.open > .dropdown-menu-wrapper > .dropdown-menu {
@@ -271,16 +345,16 @@
 
     // nested dropdown (submenu)
     .dropdown {
-      $clr-dropdown-submenu-overlap-margin: -1 * $clr_baselineRem_4px;
-      $clr-dropdown-submenu-vertical-margin: (-1 * $clr_baselineRem_0_75) - $clr_baselineRem_1px;
+      $clr-dropdown-submenu-overlap-margin: -1 * variables.$clr_baselineRem_4px;
+      $clr-dropdown-submenu-vertical-margin: (-1 * variables.$clr_baselineRem_0_75) - variables.$clr_baselineRem_1px;
       // -1 is to account for the border that shifts the menu down by 1 pixel
 
       .dropdown-menu {
-        @include css-var(
+        @include mixins.css-var(
           border-color,
           clr-dropdown-child-border-color,
-          $clr-dropdown-child-border-color,
-          $clr-use-custom-properties
+          dropdown-variables.$clr-dropdown-child-border-color,
+          variables.$clr-use-custom-properties
         );
         position: absolute;
       }

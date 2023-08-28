@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatalist, ClrDatalistModule } from '@clr/angular';
+import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
@@ -20,6 +20,8 @@ const defaultStory: Story = args => ({
           <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
         </ng-container>
       </datalist>
+      <clr-control-helper>Helper text</clr-control-helper>
+      <clr-control-error>There was an error</clr-control-error>
     </clr-datalist-container>
   `,
   props: { ...args },
@@ -51,4 +53,4 @@ const variants: Parameters[] = [
   },
 ];
 
-setupStorybook(ClrDatalistModule, defaultStory, defaultParameters, variants);
+setupStorybook([ClrDatalistModule, ClrFormsModule], defaultStory, defaultParameters, variants);

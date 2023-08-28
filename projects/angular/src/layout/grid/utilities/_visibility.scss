@@ -3,21 +3,24 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use '../../../utils/variables/variables.layout';
+@use '../mixins/breakpoint';
 
 // Responsive visibility utilities
 .clr-invisible {
   visibility: hidden !important;
 }
 
-@each $bp in map-keys($clr-grid-breakpoints) {
+@each $bp in map.keys(variables.$clr-grid-breakpoints) {
   .clr-hidden-#{$bp}-up {
-    @include clr-media-breakpoint-up($bp) {
+    @include breakpoint.clr-media-breakpoint-up($bp) {
       display: none !important;
     }
   }
 
   .clr-hidden-#{$bp}-down {
-    @include clr-media-breakpoint-down($bp) {
+    @include breakpoint.clr-media-breakpoint-down($bp) {
       display: none !important;
     }
   }

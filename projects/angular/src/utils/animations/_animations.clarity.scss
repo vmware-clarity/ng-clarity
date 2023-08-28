@@ -1,3 +1,5 @@
+@use '../mixins';
+
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -16,7 +18,7 @@
 $clr-animation-duration: 0.2s;
 $clr-animation-easing: ease-in-out;
 
-@include exports('animations.clarity') {
+@include mixins.exports('animations.clarity') {
   .fade {
     opacity: 0;
     transition: opacity $clr-animation-duration $clr-animation-easing;

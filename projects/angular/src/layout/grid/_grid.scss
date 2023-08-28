@@ -3,16 +3,16 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@import './mixins/breakpoint';
-@import './mixins/grid';
-@import './mixins/grid-framework';
-@import './utilities/align';
-@import './utilities/clearfix';
-@import './utilities/display';
-@import './utilities/flex';
-@import './utilities/float';
-@import './utilities/visibility';
-@import './grid/grid';
+@forward 'mixins/breakpoint';
+@forward 'mixins/grid';
+@forward 'mixins/grid-framework';
+@forward 'utilities/align';
+@forward 'utilities/clearfix';
+@forward 'utilities/display';
+@forward 'utilities/flex';
+@forward 'utilities/float';
+@forward 'utilities/visibility';
+@forward 'grid/grid';
 
 *,
 *:before,

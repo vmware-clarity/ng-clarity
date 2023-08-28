@@ -51,6 +51,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
+  private lastRangeProgressFillWidth: string;
 
   constructor(
     @Optional() layoutService: LayoutService,
@@ -75,7 +76,11 @@ export class ClrRangeContainer extends ClrAbstractContainer {
   }
 
   getRangeProgressFillWidth(): string {
-    const input = this.renderer.selectRootElement('[clrRange]#' + this.idService.id);
+    const input = this.selectRangeElement();
+
+    if (!input) {
+      return this.lastRangeProgressFillWidth;
+    }
 
     const inputWidth = input.offsetWidth;
     const inputMinValue = +input.min;
@@ -89,6 +94,16 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     const inputValue = !!this.control && this.control.value !== undefined ? this.control.value : inputMiddle;
     const valueAsPercent = ((inputValue - inputMinValue) * 100) / (inputMaxValue - inputMinValue);
 
-    return (valueAsPercent * inputWidth) / 100 + 'px';
+    this.lastRangeProgressFillWidth = (valueAsPercent * inputWidth) / 100 + 'px';
+
+    return this.lastRangeProgressFillWidth;
+  }
+
+  private selectRangeElement() {
+    try {
+      return this.renderer.selectRootElement('[clrRange]#' + this.idService.id);
+    } catch {
+      return undefined;
+    }
   }
 }

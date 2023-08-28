@@ -4,13 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 // Theme (Variable overrides)
-@import './utils/theme.dark.clarity';
+@use 'utils/theme.dark.clarity';
 
 // Clarity component code (consumes the variables and theme overrides)
-@import './utils/components.clarity';
+@use 'utils/components.clarity';
 
 // Clarity icons code (overrides icons style)
-@import './utils/theme.dark.icons.clarity';
+@use 'utils/theme.dark.icons.clarity' as dark-icons-theme;
 
 // Metropolis font
-@import './typography/font-metropolis';
+@use 'typography/font-metropolis';

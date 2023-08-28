@@ -3,35 +3,37 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../utils/variables/variables';
 
-$clr-wizard-main-bgcolor: $clr-color-neutral-0 !default;
-$clr-wizard-stepnav-bgcolor: $clr-color-neutral-50 !default;
-$clr-wizard-default-space: $clr_baselineRem_1 !default;
-$clr-wizard-main-text-color: $clr-color-on-neutral-0 !default;
-$clr-wizard-stepnav-text: $clr-color-neutral-900 !default;
-$clr-wizard-stepnav-text--active: $clr-global-on-selection-color !default;
-$clr-wizard-title-text: $clr-color-neutral-1000 !default;
-$clr-wizard-stepnav-border-size: $clr_baselineRem_4px !default;
-$clr-wizard-stepnav-item-border-color: $clr-color-neutral-200 !default;
-$clr-wizard-stepnav-item-border-color--active: $clr-color-success-400 !default;
-$clr-wizard-footer-height: $clr_baselineRem_3_5 !default;
-$clr-wizard-stepnav-active-bgcolor: $clr-global-selection-color !default;
-$clr-wizard-header-action-color: $clr-color-neutral-600 !default;
-$clr-wizard-header-action-color--hovered: $clr-color-neutral-1000 !default;
-$clr-wizard-box-shadow: 0 $clr_baselineRem_1px $clr_baselineRem_2px $clr_baselineRem_2px rgba(0, 0, 0, 0.2);
+$clr-wizard-main-bgcolor: variables.$clr-color-neutral-0 !default;
+$clr-wizard-stepnav-bgcolor: variables.$clr-color-neutral-50 !default;
+$clr-wizard-default-space: variables.$clr_baselineRem_1 !default;
+$clr-wizard-main-text-color: variables.$clr-color-on-neutral-0 !default;
+$clr-wizard-stepnav-text: variables.$clr-color-neutral-900 !default;
+$clr-wizard-stepnav-text--active: variables.$clr-global-on-selection-color !default;
+$clr-wizard-title-text: variables.$clr-color-neutral-1000 !default;
+$clr-wizard-stepnav-border-size: variables.$clr_baselineRem_4px !default;
+$clr-wizard-stepnav-item-border-color: variables.$clr-color-neutral-200 !default;
+$clr-wizard-stepnav-item-border-color--active: variables.$clr-color-success-400 !default;
+$clr-wizard-footer-height: variables.$clr_baselineRem_3_5 !default;
+$clr-wizard-stepnav-active-bgcolor: variables.$clr-global-selection-color !default;
+$clr-wizard-header-action-color: variables.$clr-color-neutral-600 !default;
+$clr-wizard-header-action-color--hovered: variables.$clr-color-neutral-1000 !default;
+$clr-wizard-box-shadow: 0 variables.$clr_baselineRem_1px variables.$clr_baselineRem_2px variables.$clr_baselineRem_2px
+  rgba(0, 0, 0, 0.2);
 $clr-wizard-stepnav-border-color: hsl(0, 0%, 89%) !default;
-$clr-wizard-border-radius: $clr-global-borderradius !default;
+$clr-wizard-border-radius: variables.$clr-global-borderradius !default;
 $clr-wizard-stepnav-active-border-radius: $clr-wizard-border-radius !default;
-$clr-wizard-stepnav-error-color: $clr-color-danger-800 !default;
+$clr-wizard-stepnav-error-color: variables.$clr-color-danger-800 !default;
 
-$clr-wizard-all-dialog-min-width: $clr_baselineRem_10;
-$clr-wizard-all-dialog-min-height: $clr_baselineRem_17_5;
-$clr-wizard-md-nav-min-width: $clr_baselineRem_9;
-$clr-wizard-md-nav-max-width: $clr_baselineRem_10;
-$clr-wizard-md-dialog-max-height: $clr_baselineRem_21;
+$clr-wizard-all-dialog-min-width: variables.$clr_baselineRem_10;
+$clr-wizard-all-dialog-min-height: variables.$clr_baselineRem_17_5;
+$clr-wizard-md-nav-min-width: variables.$clr_baselineRem_9;
+$clr-wizard-md-nav-max-width: variables.$clr_baselineRem_10;
+$clr-wizard-md-dialog-max-height: variables.$clr_baselineRem_21;
 $clr-wizard-lg-nav-min-width: $clr-wizard-all-dialog-min-width;
-$clr-wizard-lg-nav-max-width: $clr_baselineRem_12;
-$clr-wizard-lg-dialog-max-height: $clr_baselineRem_30;
+$clr-wizard-lg-nav-max-width: variables.$clr_baselineRem_12;
+$clr-wizard-lg-dialog-max-height: variables.$clr_baselineRem_30;
 $clr-wizard-xl-nav-min-width: $clr-wizard-all-dialog-min-width;
-$clr-wizard-xl-nav-max-width: $clr_baselineRem_13;
+$clr-wizard-xl-nav-max-width: variables.$clr_baselineRem_13;
 $clr-wizard-xl-dialog-max-height: 75vh;

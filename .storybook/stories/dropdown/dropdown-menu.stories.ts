@@ -18,7 +18,7 @@ const defaultStory: Story = args => ({
           Dropdown
           <cds-icon shape="angle" direction="down"></cds-icon>
         </button>
-        <clr-dropdown-menu [clrPosition]="clrPosition">
+        <clr-dropdown-menu [clrPosition]="clrPosition" *clrIfOpen="true">
           <label class="dropdown-header" aria-hidden="true">Menus</label>
           <clr-dropdown
             *ngFor="let _ of createArray(menuCount); let menuIndex = index"
@@ -49,7 +49,7 @@ const defaultParameters: Parameters = {
   component: ClrDropdownMenu,
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrPosition: { defaultValue: 'top-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },

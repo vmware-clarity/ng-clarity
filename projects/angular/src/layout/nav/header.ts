@@ -20,7 +20,6 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       *ngIf="isNavLevel1OnPage"
       class="header-hamburger-trigger"
       [attr.aria-label]="responsiveNavCommonString"
-      [attr.aria-expanded]="openNavLevel === 1 ? 'true' : 'false'"
       (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
     >
       <span></span>
@@ -31,7 +30,6 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       *ngIf="isNavLevel2OnPage"
       class="header-overflow-trigger"
       [attr.aria-label]="responsiveOverflowCommonString"
-      [attr.aria-expanded]="openNavLevel === 2 ? 'true' : 'false'"
       (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
     >
       <span></span>

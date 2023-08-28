@@ -3,6 +3,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
+@use 'variables.global';
 
 /* stylelint-disable */
 $clr-grid-breakpoints: (
@@ -15,10 +17,10 @@ $clr-grid-breakpoints: (
 /* stylelint-enable */
 
 $clr-grid-columns: 12 !default;
-$clr-grid-gutter-width: $clr_baselineRem_1 !default;
+$clr-grid-gutter-width: variables.$clr_baselineRem_1 !default;
 
 $clr-sizes: () !default;
-$clr-sizes: map-merge(
+$clr-sizes: map.merge(
   (
     25: 25%,
     50: 50%,

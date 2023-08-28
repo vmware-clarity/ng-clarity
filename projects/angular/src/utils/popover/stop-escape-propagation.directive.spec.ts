@@ -63,8 +63,8 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   element.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.Escape, bubbles: true }));
   element.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.Escape, bubbles: true }));
 
-  fixture.detectChanges();
   await fixture.whenStable();
+  fixture.detectChanges();
 }
 
 @Component({

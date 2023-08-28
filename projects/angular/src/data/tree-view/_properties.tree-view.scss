@@ -3,17 +3,43 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.tree-view' as tree-view-variables;
 
-@include exports('tree.properties') {
-  @if $clr-use-custom-properties == true {
+@include mixins.exports('tree.properties') {
+  @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../data/tree-view/_tree-view.clarity.scss
       --clr-tree-border-radius: var(--clr-global-borderradius);
-      --clr-tree-node-caret-link-hover-color: var(--clr-color-neutral-1000);
+
       --clr-tree-link-hover-color: var(--clr-custom-links-hover-color);
       --clr-tree-link-selection-color: var(--clr-global-selection-color);
       --clr-tree-link-text-color: var(--clr-color-neutral-700);
+
+      --clr-tree-caret-size: #{tree-view-variables.$clr-tree-caret-size};
+      --clr-tree-node-touch-target: #{tree-view-variables.$clr-tree-node-touch-target};
+      --clr-tree-caret-padding: #{tree-view-variables.$clr-tree-caret-padding};
+      --clr-tree-node-content-icon-margin-right: #{tree-view-variables.$clr-tree-node-content-icon-margin-right};
+      --clr-tree-node-caret-link-hover-color: var(--clr-color-neutral-1000);
       --clr-tree-node-caret-color: var(--clr-color-neutral-500);
+      --clr-tree-node-caret-link-active-color: var(--clr-color-neutral-500);
+      --clr-tree-node-caret-link-disabled-color: var(--clr-color-neutral-500);
+
+      --clr-tree-node-font-size: #{tree-view-variables.$clr-tree-node-font-size};
+      --clr-tree-node-font-weight: #{tree-view-variables.$clr-tree-node-font-weight};
+      --clr-tree-node-line-height: #{tree-view-variables.$clr-tree-node-line-height};
+      --clr-tree-node-letter-spacing: #{tree-view-variables.$clr-tree-node-letter-spacing};
+      --clr-treenode-content-padding: 0; // ATM: deprecated, remove;
+      --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
+      --clr-tree-node-content-padding-left: #{tree-view-variables.$clr-tree-node-touch-target};
+
+      --clr-tree-node-children-margin: #{tree-view-variables.$clr-tree-node-children-margin};
+      --clr-tree-checkbox-wrapper-padding: #{tree-view-variables.$clr-tree-checkbox-padding-top
+        0
+        0
+        tree-view-variables.$clr-tree-checkbox-padding-left};
+      --clr-tree-node-content-hover-color: transparent;
     }
   }
 }

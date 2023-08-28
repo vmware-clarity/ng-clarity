@@ -3,14 +3,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '../../utils/variables/variables';
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 // TODO: would be nice to key text color in subnav off of the bgColor...
-$clr-subnav-bgColor: $clr-color-neutral-0 !default;
+$clr-subnav-bgColor: variables.$clr-color-neutral-0 !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 // Usage: ../layout/nav/_nav.clarity.scss
-$clr-subnav-height: $clr_baselineRem_1_5 !default;
+$clr-subnav-height: variables.$clr_baselineRem_1_5 !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
-$clr-nav-shadow: 0 (-1 * $clr_baselineRem_1px) 0 $clr-color-neutral-400 inset;
+$clr-nav-shadow: 0 (-1 * variables.$clr_baselineRem_1px) 0 variables.$clr-color-neutral-400 inset !default;

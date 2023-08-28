@@ -11,13 +11,7 @@ import { map, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './combobox.demo.html',
-  styles: [
-    `
-      cds-icon {
-        --color: var(--clr-label-gray-color);
-      }
-    `,
-  ],
+  styles: [],
 })
 export class ComboboxDemo {
   loading = false;

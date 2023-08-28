@@ -14,7 +14,7 @@ export class RadiosDemo {
   vertical = {
     one: '',
     two: '',
-    three: '',
+    three: 'three',
     four: '',
   };
   horizontal = {
