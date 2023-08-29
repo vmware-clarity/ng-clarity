@@ -136,6 +136,16 @@
 | --clr-btn-link-warning-disabled-color           | Warning link button `disabled` text color                                  |
 | --clr-btn-link-warning-disabled-bg-color        | Warning link button `disabled` background color                            |
 | --clr-btn-link-warning-disabled-border-color    | Warning link button `disabled` border color                                |
+| --clr-btn-link-danger-color                     | Danger link button text color                                              |
+| --clr-btn-link-danger-bg-color                  | Danger link button background color                                        |
+| --clr-btn-link-danger-border-color              | Danger link button border color                                            |
+| --clr-btn-link-danger-hover-color               | Danger link button `:hover` text color                                     |
+| --clr-btn-link-danger-hover-bg-color            | Danger link button `:hover` background color                               |
+| --clr-btn-link-danger-active-color              | Danger link button `:active` text color                                    |
+| --clr-btn-link-danger-active-bg-color           | Danger link button `:active` background color                              |
+| --clr-btn-link-danger-disabled-color            | Danger link button `disabled` text color                                   |
+| --clr-btn-link-danger-disabled-bg-color         | Danger link button `disabled` background color                             |
+| --clr-btn-link-danger-disabled-border-color     | Danger link button `disabled` border color                                 |
 | --clr-btn-inverse-color                         | Inverse button text color                                                  |
 | --clr-btn-inverse-bg-color                      | Inverse button background color                                            |
 | --clr-btn-inverse-border-color                  | Inverse button border color                                                |
@@ -193,3 +203,4 @@
 | btn-link-primary    | Link primary button                                    |
 | btn-link-success    | Link success button                                    |
 | btn-link-warning    | Link warning button                                    |
+| btn-link-danger     | Link danger button                                     |
