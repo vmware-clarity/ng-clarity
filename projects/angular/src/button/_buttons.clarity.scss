@@ -112,8 +112,11 @@
   }
 
   &:active {
-    @if $button-type != link {
-      @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
     }
   }
 

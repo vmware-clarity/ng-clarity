@@ -189,8 +189,10 @@
       --clr-btn-link-visited-color: var(--clr-btn-link-color);
       --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
-      --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-color: var(--clr-color-action-800);
+      --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-active-color: var(--clr-btn-link-color);
+      --clr-btn-link-active-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-visited-hover-color: var(--clr-btn-link-hover-color);
       --clr-btn-link-disabled-color: var(--clr-color-neutral-700);
       --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
@@ -204,6 +206,7 @@
       --clr-btn-link-primary-border-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-primary-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-primary-hover-color: var(--clr-color-action-800);
+      --clr-btn-link-primary-active-color: var(--clr-btn-link-primary-color);
       --clr-btn-link-primary-active-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-primary-disabled-color: var(--clr-color-neutral-700);
       --clr-btn-link-primary-disabled-bg-color: var(--clr-btn-transparent-bg-color);
@@ -217,6 +220,7 @@
       --clr-btn-link-success-border-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-success-hover-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-success-hover-color: var(--clr-color-success-900);
+      --clr-btn-link-success-active-color: var(--clr-btn-link-success-color);
       --clr-btn-link-success-active-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-success-disabled-color: var(--clr-color-neutral-700);
       --clr-btn-link-success-disabled-bg-color: var(--clr-btn-transparent-bg-color);

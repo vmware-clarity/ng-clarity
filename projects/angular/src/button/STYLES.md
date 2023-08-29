@@ -101,6 +101,8 @@
 | --clr-btn-link-border-color                     | Link button border color                                                   |
 | --clr-btn-link-hover-color                      | Link button `:hover` text color                                            |
 | --clr-btn-link-hover-bg-color                   | Link button `:hover` background color                                      |
+| --clr-btn-link-active-color                     | Link button `:active` text color                                           |
+| --clr-btn-link-active-bg-color                  | Link button `:active` background color                                     |
 | --clr-btn-link-disabled-color                   | Link button `disabled` text color                                          |
 | --clr-btn-link-disabled-bg-color                | Link button `disabled` background color                                    |
 | --clr-btn-link-disabled-border-color            | Link button `disabled` border color                                        |
@@ -109,6 +111,7 @@
 | --clr-btn-link-primary-border-color             | Primary link button border color                                           |
 | --clr-btn-link-primary-hover-color              | Primary link button `:hover` text color                                    |
 | --clr-btn-link-primary-hover-bg-color           | Primary link button `:hover` background color                              |
+| --clr-btn-link-primary-active-color             | Primary link button `:active` text color                                   |
 | --clr-btn-link-primary-active-bg-color          | Primary link button `:active` background color                             |
 | --clr-btn-link-primary-disabled-color           | Primary link button `disabled` text color                                  |
 | --clr-btn-link-primary-disabled-bg-color        | Primary link button `disabled` background color                            |
@@ -118,6 +121,7 @@
 | --clr-btn-link-success-border-color             | Success link button border color                                           |
 | --clr-btn-link-success-hover-color              | Success link button `:hover` text color                                    |
 | --clr-btn-link-success-hover-bg-color           | Success link button `:hover` background color                              |
+| --clr-btn-link-success-active-color             | Success link button `:active` text color                                   |
 | --clr-btn-link-success-active-bg-color          | Success link button `:active` background color                             |
 | --clr-btn-link-success-disabled-color           | Success link button `disabled` text color                                  |
 | --clr-btn-link-success-disabled-bg-color        | Success link button `disabled` background color                            |

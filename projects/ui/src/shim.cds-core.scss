@@ -319,6 +319,8 @@
   --clr-btn-link-color: var(--cds-alias-status-info);
   --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-active-color: var(--clr-btn-link-color);
+  --clr-btn-link-active-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-hover-color: var(--cds-alias-typography-info-hover); // var(--clr-color-action-800);
 
@@ -337,6 +339,7 @@
   --clr-btn-link-primary-border-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-primary-hover-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-primary-hover-color: var(--cds-alias-typography-info-hover);
+  --clr-btn-link-primary-active-color: var(--clr-btn-link-primary-color);
   --clr-btn-link-primary-active-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-primary-disabled-color: var(--cds-alias-typography-disabled);
   --clr-btn-link-primary-disabled-bg-color: var(--clr-btn-transparent-bg-color);
@@ -350,6 +353,7 @@
   --clr-btn-link-success-border-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-success-hover-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-success-hover-color: var(--cds-alias-typography-success-hover);
+  --clr-btn-link-success-active-color: var(--clr-btn-link-success-color);
   --clr-btn-link-success-active-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-success-disabled-color: var(--cds-alias-typography-disabled);
   --clr-btn-link-success-disabled-bg-color: var(--clr-btn-transparent-bg-color);
