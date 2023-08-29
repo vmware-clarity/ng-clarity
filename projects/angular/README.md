@@ -41,3 +41,14 @@
 ```scss
 @use '@clr/ui/clr-ui.min.css';
 ```
+
+**Note**: The above instructions represent the best practice for Clarity Design System. For information about accommodating legacy themes, see the Legacy Styles section in the @clr/ui package.
+
+4.  Set the Theme
+    Add the `cds-theme=”light”` attribute to the body element in your main HTML file:
+
+```
+<body cds-theme="light" />
+```
+
+You can toggle to dark theme by setting cds-theme="dark".
