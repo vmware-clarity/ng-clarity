@@ -8,30 +8,6 @@
 @use '../utils/variables/variables';
 @use 'variables.buttons' as buttons-variables;
 
-@function getActiveWidthBoxShadowTop($type: default) {
-  @if type == primary {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == outline-success {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == outline-danger {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == link {
-    @return 0;
-  }
-
-  @if type == inverse {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @return variables.$clr_baselineRem_2px;
-}
-
 @function getSassButtonColor($type: default, $property: null) {
   @if not $property {
     @return null;
