@@ -57,10 +57,10 @@
     @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
   }
 
-  //@if $type == link-success {
-  //  @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
-  //}
-  //
+  @if $type == link-success {
+    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  }
+
   //@if $type == link-warning {
   //  @return buttons-variables.lookupFromLinkWarningButtonColors($property);
   //}
@@ -401,6 +401,11 @@
   .btn.btn-link-primary,
   .btn-link-primary .btn {
     @include populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-success,
+  .btn-link-success .btn {
+    @include populateButtonProperties(link-success);
   }
 
   .btn.btn-inverse,
