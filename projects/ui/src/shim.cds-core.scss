@@ -361,6 +361,20 @@
   --clr-btn-link-success-checked-bg-color: var(--clr-btn-transparent-bg-color);
   --clr-btn-link-success-checked-color: var(--clr-btn-link-success-color);
 
+  // Warning Link button colors
+  --clr-btn-link-warning-color: var(--cds-alias-status-warning-dark);
+  --clr-btn-link-warning-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-border-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-hover-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-hover-color: var(--cds-alias-typography-warning-hover);
+  --clr-btn-link-warning-active-color: var(--clr-btn-link-warning-color);
+  --clr-btn-link-warning-active-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-disabled-color: var(--cds-alias-typography-disabled);
+  --clr-btn-link-warning-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-disabled-border-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-checked-bg-color: var(--clr-btn-transparent-bg-color);
+  --clr-btn-link-warning-checked-color: var(--clr-btn-link-warning-color);
+
   // Inverse button colors
   --clr-btn-inverse-color: var(--cds-global-color-white); // var(--clr-color-neutral-0);
   --clr-btn-inverse-border-color: var(--cds-global-color-white); // var(--clr-color-neutral-0);

@@ -685,7 +685,7 @@ $clr-btn-link-primary: (
   @return map-get($clr-btn-link-primary, $property);
 }
 
-// Link primary button colors using map
+// Link success button colors using map
 $clr-btn-link-success: (
   color: variables.$clr-color-success-700,
   bg-color: transparent,
@@ -703,6 +703,26 @@ $clr-btn-link-success: (
 
 @function lookupFromLinkSuccessButtonColors($property: null) {
   @return map-get($clr-btn-link-success, $property);
+}
+
+// Link warning button colors using map
+$clr-btn-link-warning: (
+  color: variables.$clr-color-danger-700,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-color-danger-700,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-color-danger-900,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkWarningButtonColors($property: null) {
+  @return map-get($clr-btn-link-warning, $property);
 }
 
 // Inverse button colors
