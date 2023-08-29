@@ -529,7 +529,7 @@
   --clr-label-active-color: var(--cds-alias-object-interaction-color-active);
   --clr-label-bg-disabled-color: var(--cds-alias-object-interaction-background-disabled);
   --clr-label-disabled-color: var(--cds-alias-typography-disabled);
-  --clr-label-disabled-border-color: var(--cds-alias-utility-disabled, var(--cds-alias-object-interaction-color-disabled));
+  --clr-label-disabled-border-color: var(--cds-alias-status-disabled);
 
   --clr-label-gray-bg-color: var(--cds-alias-object-opacity-0);
   --clr-label-gray-border-color: var(--cds-alias-utility-gray);
@@ -690,7 +690,7 @@
     #{convertCompactToStandardLineHeight(--cds-alias-typography-secondary-line-height, --cds-global-typography-secondary-line-height)}
   ); // secondary line-height is 16px in tokens, but specified as 20px in figma.
   --clr-accordion-header-button-padding: var(--cds-global-space-5) var(--cds-global-space-6);
-  --clr-accordion-header-button-font-size: var(--cds-alias-typography-secondary-font-size, var(--cds-alias-typography-secondary-font-size));
+  --clr-accordion-header-button-font-size: var(--cds-alias-typography-secondary-font-size);
   --clr-accordion-number-padding: 0 var(--cds-global-space-7);
   --clr-accordion-header-left-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-status-neutral-tint);
   --clr-accordion-header-left-current-indicator: inset var(--cds-global-space-5) 0 0 var(--cds-alias-object-interaction-background-highlight);
@@ -760,12 +760,12 @@
   --clr-forms-icon-size: var(--cds-global-space-9);
   --clr-forms-subtext-margin-top: var(--cds-global-space-3);
 
-  --clr-forms-subtext-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-subtext-disabled-color};
+  --clr-forms-subtext-disabled-color: var(--cds-alias-typography-disabled); // #{$clr-forms-subtext-disabled-color};
   --clr-forms-border-disabled-color: var(--cds-alias-object-interaction-color-disabled); // #{$clr-forms-border-disabled-color};
-  --clr-forms-text-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-text-disabled-color};
-  --clr-forms-label-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400)); // #{$clr-forms-label-disabled-color};
+  --clr-forms-text-disabled-color: var(--cds-alias-typography-disabled); // #{$clr-forms-text-disabled-color};
+  --clr-forms-label-disabled-color: var(--cds-alias-typography-disabled); // #{$clr-forms-label-disabled-color};
   --clr-forms-icon-disabled-color: var(--cds-alias-status-disabled);
-  --clr-forms-placeholder-disabled-color: var(--cds-alias-typography-disabled, var(--cds-global-color-construction-400));
+  --clr-forms-placeholder-disabled-color: var(--cds-alias-typography-disabled);
 
   // Input
   --clr-forms-input-padding: 0 var(--cds-global-space-5);
@@ -1385,7 +1385,7 @@
   --clr-tree-link-hover-color: var(--cds-alias-object-interaction-background-hover); // indirectly mapped
   --clr-tree-link-selection-color: var(--cds-alias-object-interaction-background-selected); // indirectly mapped
 
-  --clr-tree-node-text-color: var(-cds-alias-object-interaction-color);
+  --clr-tree-node-text-color: var(--cds-alias-object-interaction-color);
   --clr-tree-node-text-hover-color: var(--cds-alias-object-interaction-color-hover);
   --clr-tree-node-text-active-color: var(--cds-alias-object-interaction-color-active);
   --clr-tree-node-text-selected-color: var(--cds-alias-object-interaction-color-selected);
