@@ -20,7 +20,7 @@
 | --clr-btn-default-border-color                  | Default button border color                                                |
 | --clr-btn-default-hover-color                   | Default button `:hover` text color                                         |
 | --clr-btn-default-hover-bg-color                | Default button `:hover` background color                                   |
-| --clr-btn-default-box-shadow-color              | Default button `:active` background color                                  |
+| --clr-btn-default-active-bg-color               | Default button `:active` background color                                  |
 | --clr-btn-default-disabled-color                | Default button `disabled` text color                                       |
 | --clr-btn-default-disabled-bg-color             | Default button `disabled` background color                                 |
 | --clr-btn-default-disabled-border-color         | Default button `disabled` border color                                     |
