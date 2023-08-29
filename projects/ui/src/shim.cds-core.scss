@@ -1741,6 +1741,8 @@
   --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-status-info-tint};
   --clr-spinner-border-radius: #{tokens.$cds-alias-object-border-radius-300};
 
+  --clr-spinner-inside-button-size: var(--cds-global-space-7);
+
   .login-wrapper {
     // these are set in the ng css, but seem to be getting overridden somewhere
     --clr-login-background-color: #{tokens.$cds-alias-object-container-background};

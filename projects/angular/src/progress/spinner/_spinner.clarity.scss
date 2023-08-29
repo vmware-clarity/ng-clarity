@@ -213,7 +213,7 @@
   .btn-sm {
     .spinner {
       @include mixins.min-equilateral-var(
-        clr-spinner-inside-small-button-size,
+        clr-spinner-inside-button-size,
         variables.$clr_baselineRem_0_5416,
         variables.$clr-use-custom-properties
       );
@@ -232,7 +232,7 @@
         );
         @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
         @include mixins.min-equilateral-var(
-          clr-spinner-inside-small-button-size,
+          clr-spinner-inside-button-size,
           variables.$clr_baselineRem_0_5416,
           variables.$clr-use-custom-properties
         );
