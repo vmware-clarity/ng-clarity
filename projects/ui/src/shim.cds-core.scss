@@ -954,7 +954,7 @@
   --clr-calendar-picker-btn-font-weight: var(--cds-global-typography-font-weight-medium);
   --clr-calendar-picker-btn-line-height: var(--cds-global-space-9);
   --clr-calendar-picker-btn-letter-spacing: var(--clr-p6-letter-spacing);
-  --clr-calendar-today-date-cell-font-weight: (--cds-global-typography-font-weight-semibold);
+  --clr-calendar-today-date-cell-font-weight: var(--cds-global-typography-font-weight-semibold);
 
   /* Dropdown */
 
@@ -1029,7 +1029,7 @@
   --clr-header-divider-height: var(--cds-global-space-11);
   --clr-header-divider-opacity: 1;
 
-  --clr-header-bg-color: var(--cds-global-color-cool-grey-1000);
+  --clr-header-bg-color: var(--cds-global-color-cool-gray-1000);
   --clr-header-2-bg-color: var(--cds-global-color-construction-800);
   --clr-header-3-bg-color: var(--cds-global-color-azure-900);
   --clr-header-4-bg-color: var(--clr-header-3-bg-color);
@@ -1176,12 +1176,12 @@
   --clr-stack-view-title-color: var(--cds-alias-typography-color-400);
   --clr-stack-view-color: var(--cds-alias-object-interaction-color);
   --clr-stack-view-bg-color: var(--cds-alias-object-interaction-background);
-  --clr-stack-view-stack-block-expandable-hover: var(--cds-alias-object-interaction-hover);
+  --clr-stack-view-stack-block-expanded-bg-color: var(--cds-alias-object-interaction-background-selected);
   --clr-stack-view-stack-block-expandable-bg-hover: var(--cds-alias-object-interaction-background-hover);
-  --clr-stack-view-stack-block-expandable-active: var(--cds-alias-object-interaction-active);
   --clr-stack-view-stack-block-expandable-bg-active: var(--cds-alias-object-interaction-background-active);
   --clr-stack-view-stack-block-expanded-text-color: var(--cds-alias-object-interaction-color-selected);
-  --clr-stack-view-stack-block-expanded-bg-color: var(--cds-alias-object-interaction-background-selected);
+  --clr-stack-view-stack-block-expandable-hover: var(--cds-alias-object-interaction-color-hover);
+  --clr-stack-view-stack-block-expandable-active: var(--cds-alias-object-interaction-color-active);
 
   --clr-stack-view-stack-block-content-text-color: var(--cds-alias-object-interaction-color);
 
