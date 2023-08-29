@@ -655,6 +655,24 @@ $clr-btn-link-checked-color: variables.$clr-color-action-800 !default;
   @return null;
 }
 
+// Link primary button colors using map
+$clr-btn-link-primary: (
+  color: variables.$clr-color-action-600,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  hover-color: variables.$clr-color-action-800,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-action-800,
+) !default;
+
+@function lookupFromLinkPrimaryButtonColors($property: null) {
+  @return map-get($clr-btn-link-primary, $property);
+}
+
 // Inverse button colors
 $clr-btn-inverse-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-border-color: variables.$clr-color-neutral-0 !default;

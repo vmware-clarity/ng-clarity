@@ -104,6 +104,14 @@
 | --clr-btn-link-disabled-color                   | Link button `disabled` text color.                                          |
 | --clr-btn-link-disabled-bg-color                | Link button `disabled` background color.                                    |
 | --clr-btn-link-disabled-border-color            | Link button `disabled` border color.                                        |
+| --clr-btn-link-primary-color                    | Primary link button text color.                                             |
+| --clr-btn-link-primary-bg-color                 | Primary link button background color.                                       |
+| --clr-btn-link-primary-border-color             | Primary link button border color.                                           |
+| --clr-btn-link-primary-hover-color              | Primary link button `:hover` text color.                                    |
+| --clr-btn-link-primary-hover-bg-color           | Primary link button `:hover` background color.                              |
+| --clr-btn-link-primary-disabled-color           | Primary link button `disabled` text color.                                  |
+| --clr-btn-link-primary-disabled-bg-color        | Primary link button `disabled` background color.                            |
+| --clr-btn-link-primary-disabled-border-color    | Primary link button `disabled` border color.                                |
 | --clr-btn-inverse-color                         | Inverse button text color.                                                  |
 | --clr-btn-inverse-bg-color                      | Inverse button background color.                                            |
 | --clr-btn-inverse-border-color                  | Inverse button border color.                                                |
@@ -158,3 +166,4 @@
 | btn-inverse         | Inverse button.                                          |
 | btn-icon            | Icon button.                                             |
 | btn-link            | Link button.                                             |
+| btn-link-primary    | Link primary button.                                     |

@@ -77,6 +77,26 @@
     @return buttons-variables.lookupFromLinkButtonColors($property);
   }
 
+  @if $type == link-primary {
+    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+
+  //@if $type == link-success {
+  //  @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  //}
+  //
+  //@if $type == link-warning {
+  //  @return buttons-variables.lookupFromLinkWarningButtonColors($property);
+  //}
+  //
+  //@if $type == link-danger {
+  //  @return buttons-variables.lookupFromLinkDangerButtonColors($property);
+  //}
+  //
+  //@if $type == link-neutral {
+  //  @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
+  //}
+
   @if $type == inverse {
     @return buttons-variables.lookupFromInverseButtonColors($property);
   }
@@ -418,6 +438,11 @@
         }
       }
     }
+  }
+
+  .btn.btn-link-primary,
+  .btn-link-primary .btn {
+    @include populateButtonProperties(link-primary);
   }
 
   .btn.btn-inverse,
