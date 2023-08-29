@@ -19,6 +19,7 @@ const defaultStory: Story = args => ({
       [clrAlertClosable]="clrAlertClosable"
       [clrAlertClosed]="clrAlertClosed"
       [clrAlertIcon]="clrAlertIcon"
+      [clrAlertLightweight]="clrAlertLightweight"
       [clrAlertSizeSmall]="clrAlertSizeSmall"
       [clrAlertType]="clrAlertType"
       [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
@@ -78,6 +79,8 @@ function generateVariants() {
       }
     }
   }
+  variants.push({ clrAlertLightweight: true });
+  variants.push({ clrAlertLightweight: true, clrAlertSizeSmall: true });
 
   return variants;
 }
