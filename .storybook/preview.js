@@ -12,14 +12,15 @@ import { setCompodocJson } from '@storybook/addon-docs/angular';
 import previewStyles from 'raw-loader!./public/preview.css';
 import docs from '../documentation.json';
 import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
-import tokensStyles from 'raw-loader!../node_modules/@cds/core/styles/module.tokens.min.css';
-import layoutStyles from 'raw-loader!../node_modules/@cds/core/styles/module.layout.min.css';
-import typographyStyles from 'raw-loader!../node_modules/@cds/core/styles/module.typography.min.css';
-import darkThemeStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
+import coreTokens from 'raw-loader!../node_modules/@cds/core/global.min.css';
+import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
 
 // Styles that should be watched/reloaded
-import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui.scss';
-import clrUiDarkStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui-dark.scss';
+import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
+
+// Styles that should be watched/reloaded
+import legacyUiStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui.scss';
+import legacyUiDarkStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui-dark.scss';
 import shimStyles from 'raw-loader!sass-loader!../projects/ui/src/shim.cds-core.scss';
 
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
@@ -29,15 +30,7 @@ const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
-const cdsCoreAndShimStyles = [
-  previewStyles,
-  resetStyles,
-  tokensStyles,
-  layoutStyles,
-  typographyStyles,
-  darkThemeStyles,
-  shimStyles,
-];
+const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles, shimStyles];
 
 loadIcons();
 addDocs(docs);
@@ -61,10 +54,10 @@ export const globalTypes = {
       icon: 'paintbrush',
       showName: true,
       items: [
-        { value: THEMES.NG_LIGHT, title: '@clr/ui Light Theme' },
-        { value: THEMES.NG_DARK, title: '@clr/ui Dark Theme' },
         { value: THEMES.CORE_LIGHT, title: '@cds/core Light Theme' },
         { value: THEMES.CORE_DARK, title: '@cds/core Dark Theme' },
+        { value: THEMES.NG_LIGHT, title: 'Legacy @clr/ui Light Theme' },
+        { value: THEMES.NG_DARK, title: 'Legacy @clr/ui Dark Theme' },
       ],
     },
   },
@@ -75,18 +68,18 @@ const themeDecorator = (story, { globals }) => {
 
   switch (theme) {
     case THEMES.NG_LIGHT:
-      styleElement.textContent = clrUiStyles;
+      styleElement.textContent = legacyUiStyles;
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
       break;
     case THEMES.NG_DARK:
-      styleElement.textContent = clrUiDarkStyles;
+      styleElement.textContent = legacyUiDarkStyles;
       document.body.removeAttribute(cdsThemeAttribute);
       document.body.style.backgroundColor = getClrUiAppBackgroundColor(theme);
       break;
     default:
-      styleElement.textContent = `${clrUiStyles}${cdsCoreAndShimStyles.join('')}`;
-      document.body.setAttribute(cdsThemeAttribute, theme);
+      styleElement.textContent = `${cdsCoreAndShimStyles.join('')}`;
+      document.body.setAttribute(cdsThemeAttribute, theme === THEMES.CORE_LIGHT ? 'light' : THEMES.CORE_DARK);
       document.body.style.backgroundColor = null;
       break;
   }
