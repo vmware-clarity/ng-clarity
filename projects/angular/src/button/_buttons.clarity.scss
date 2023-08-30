@@ -41,6 +41,10 @@
     @return buttons-variables.lookupFromNeutralButtonColors($property);
   }
 
+  @if $type == neutral-outline {
+    @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
+  }
+
   @if $type == danger-outline {
     @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
   }
@@ -388,6 +392,13 @@
   .btn-danger-outline .btn,
   .btn-outline-danger .btn {
     @include populateButtonProperties(danger-outline);
+  }
+
+  .btn.btn-neutral-outline,
+  .btn.btn-outline-neutral,
+  .btn-neutral-outline .btn,
+  .btn-outline-neutral .btn {
+    @include populateButtonProperties(neutral-outline);
   }
 
   .btn.btn-link,
