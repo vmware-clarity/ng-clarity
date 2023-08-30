@@ -745,6 +745,26 @@ $clr-btn-link-danger: (
   @return map-get($clr-btn-link-danger, $property);
 }
 
+// Link danger button colors using map
+$clr-btn-link-neutral: (
+  color: variables.$clr-global-color-construction-600,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-global-color-construction-600,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-global-color-construction-700,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-link-neutral, $property);
+}
+
 // Inverse button colors
 $clr-btn-inverse-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-border-color: variables.$clr-color-neutral-0 !default;

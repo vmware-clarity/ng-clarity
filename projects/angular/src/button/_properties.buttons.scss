@@ -256,6 +256,20 @@
       --clr-btn-link-danger-checked-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-danger-checked-color: var(--clr-color-neutral-0);
 
+      // Link danger button colors
+      --clr-btn-link-neutral-color: var(--clr-global-color-construction-600);
+      --clr-btn-link-neutral-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-hover-color: var(--clr-global-color-construction-700);
+      --clr-btn-link-neutral-active-color: var(--clr-btn-link-neutral-color);
+      --clr-btn-link-neutral-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-disabled-color: var(--clr-color-neutral-700);
+      --clr-btn-link-neutral-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-checked-color: var(--clr-color-neutral-0);
+
       // Inverse button colors
       --clr-btn-inverse-color: var(--clr-color-neutral-0);
       --clr-btn-inverse-border-color: var(--clr-color-neutral-0);
