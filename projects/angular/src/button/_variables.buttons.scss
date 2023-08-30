@@ -599,6 +599,25 @@ $clr-btn-warning-outline-checked-color: variables.$clr-color-neutral-0 !default;
   @return null;
 }
 
+// Neutral button colors
+$clr-btn-neutral: (
+  color: variables.$clr-color-neutral-0,
+  bg-color: variables.$clr-global-color-construction-600,
+  border-color: variables.$clr-global-color-construction-600,
+  hover-color: variables.$clr-color-neutral-0,
+  hover-bg-color: variables.$clr-global-color-construction-700,
+  active-color: variables.$clr-color-neutral-0,
+  active-bg-color: variables.$clr-global-color-construction-800,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: variables.$clr-color-neutral-400,
+  disabled-border-color: variables.$clr-color-neutral-400,
+  checked-bg-color: variables.$clr-global-color-construction-700,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+@function lookupFromNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-neutral, $property);
+}
+
 // Link button colors
 $clr-btn-link-color: variables.$clr-color-action-600 !default;
 $clr-btn-link-bg-color: transparent !default;

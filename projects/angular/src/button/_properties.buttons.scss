@@ -184,6 +184,20 @@
       --clr-btn-warning-outline-checked-bg-color: var(--clr-color-danger-800);
       --clr-btn-warning-outline-checked-color: var(--clr-color-neutral-0);
 
+      // Neutral button colors
+      --clr-btn-neutral-color: var(--clr-color-neutral-0);
+      --clr-btn-neutral-bg-color: var(--clr-global-color-construction-600);
+      --clr-btn-neutral-border-color: var(--clr-btn-neutral-bg-color);
+      --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
+      --clr-btn-neutral-hover-bg-color: var(--clr-global-color-construction-700);
+      --clr-btn-neutral-active-color: var(--clr-btn-neutral-color);
+      --clr-btn-neutral-active-bg-color: var(--clr-global-color-construction-800);
+      --clr-btn-neutral-disabled-color: var(--clr-color-neutral-700);
+      --clr-btn-neutral-disabled-bg-color: var(--clr-color-neutral-400);
+      --clr-btn-neutral-disabled-border-color: var(--clr-color-neutral-400);
+      --clr-btn-neutral-checked-bg-color: var(--clr-btn-neutral-hover-bg-color);
+      --clr-btn-neutral-checked-color: var(--clr-btn-neutral-color);
+
       // Link button colors
       --clr-btn-link-color: var(--clr-color-action-600);
       --clr-btn-link-visited-color: var(--clr-btn-link-color);
