@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrEmphasisModule } from '../emphasis.module';
@@ -134,7 +134,7 @@ export default function () {
         fixture = TestBed.createComponent(TestComponent);
         fixture.detectChanges();
         compiled = fixture.nativeElement;
-        alertElements = compiled.querySelectorAll('.alert');
+        alertElements = compiled.querySelectorAll('clr-alert');
         expect(alertElements.length).toEqual(2);
       });
 
@@ -317,6 +317,7 @@ class TestAlertInstance {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class DynamicAlerts {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
