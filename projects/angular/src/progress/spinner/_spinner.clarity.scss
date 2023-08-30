@@ -184,7 +184,7 @@
       text-indent: 100%;
 
       @include mixins.min-equilateral-var(
-        clr-spinner-inside-button-size,
+        clr-spinner-small-size,
         variables.$clr_baselineRem_0_65,
         variables.$clr-use-custom-properties
       );
@@ -202,7 +202,7 @@
         );
         @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
         @include mixins.min-equilateral-var(
-          clr-spinner-inside-button-size,
+          clr-spinner-small-size,
           variables.$clr_baselineRem_0_65,
           variables.$clr-use-custom-properties
         );
@@ -213,7 +213,7 @@
   .btn-sm {
     .spinner {
       @include mixins.min-equilateral-var(
-        clr-spinner-inside-small-button-size,
+        clr-spinner-small-size,
         variables.$clr_baselineRem_0_5416,
         variables.$clr-use-custom-properties
       );
@@ -232,7 +232,7 @@
         );
         @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
         @include mixins.min-equilateral-var(
-          clr-spinner-inside-small-button-size,
+          clr-spinner-small-size,
           variables.$clr_baselineRem_0_5416,
           variables.$clr-use-custom-properties
         );
@@ -263,7 +263,7 @@
   .btn-icon:not(.btn-sm) {
     .spinner {
       @include mixins.min-equilateral-var(
-        clr-spinner-inside-button-size,
+        clr-spinner-small-size,
         variables.$clr_baselineRem_0_65,
         variables.$clr-use-custom-properties
       );
@@ -274,7 +274,7 @@
   .clr-treenode-spinner-container {
     .spinner {
       @include mixins.min-equilateral-var(
-        clr-spinner-inside-button-size,
+        clr-spinner-small-size,
         variables.$clr_baselineRem_0_65,
         variables.$clr-use-custom-properties
       );
@@ -289,7 +289,7 @@
         );
         @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
         @include mixins.min-equilateral-var(
-          clr-spinner-inside-button-size,
+          clr-spinner-small-size,
           variables.$clr_baselineRem_0_65,
           variables.$clr-use-custom-properties
         );

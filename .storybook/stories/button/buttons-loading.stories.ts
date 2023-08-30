@@ -13,6 +13,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <h6>{{stateName}}</h6>
+      <button [clrLoading]="validateState" class="btn btn-sm btn-primary">Validate</button>
       <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
       <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">Submit</button>
   `,
