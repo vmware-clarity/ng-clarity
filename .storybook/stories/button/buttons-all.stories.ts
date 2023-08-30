@@ -21,6 +21,7 @@ const defaultStory: Story = args => ({
     <button class="btn btn-warning">Warning</button>
     <button class="btn btn-danger">Danger</button>
     <button class="btn btn-success">Success</button>
+    <button class="btn btn-neutral">Neutral</button>
 
     <h6>Old Outline Buttons</h6>
     <button class="btn btn-primary-outline">Primary</button>
@@ -28,6 +29,7 @@ const defaultStory: Story = args => ({
     <button class="btn btn-warning-outline">Warning</button>
     <button class="btn btn-danger-outline">Danger</button>
     <button class="btn btn-success-outline">Success</button>
+    <button class="btn btn-neutral-outline">Neutral</button>
 
     <h6>New Outline Buttons</h6>
     <button class="btn btn-outline-primary">Primary</button>
@@ -35,6 +37,7 @@ const defaultStory: Story = args => ({
     <button class="btn btn-outline-warning">Warning</button>
     <button class="btn btn-outline-danger">Danger</button>
     <button class="btn btn-outline-success">Success</button>
+    <button class="btn btn-outline-neutral">Neutral</button>
 
     <h6>Link Buttons</h6>
     <button class="btn btn-link">Default</button>
