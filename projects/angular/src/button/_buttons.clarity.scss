@@ -53,6 +53,26 @@
     @return buttons-variables.lookupFromLinkButtonColors($property);
   }
 
+  @if $type == link-primary {
+    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+
+  @if $type == link-success {
+    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  }
+
+  @if $type == link-warning {
+    @return buttons-variables.lookupFromLinkWarningButtonColors($property);
+  }
+
+  @if $type == link-danger {
+    @return buttons-variables.lookupFromLinkDangerButtonColors($property);
+  }
+
+  @if $type == link-neutral {
+    @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
+  }
+
   @if $type == inverse {
     @return buttons-variables.lookupFromInverseButtonColors($property);
   }
@@ -92,9 +112,13 @@
   }
 
   &:active {
-    @if $button-type != link {
-      @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
-    }
+    @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
+    // TODO: create separate JIRA for active text color and add logic through there
+    //@include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    //cds-icon,
+    //clr-icon {
+    //  @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    //}
   }
 
   &.disabled,
@@ -376,6 +400,31 @@
         }
       }
     }
+  }
+
+  .btn.btn-link-primary,
+  .btn-link-primary .btn {
+    @include populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-success,
+  .btn-link-success .btn {
+    @include populateButtonProperties(link-success);
+  }
+
+  .btn.btn-link-warning,
+  .btn-link-warning .btn {
+    @include populateButtonProperties(link-warning);
+  }
+
+  .btn.btn-link-danger,
+  .btn-link-danger .btn {
+    @include populateButtonProperties(link-danger);
+  }
+
+  .btn.btn-link-neutral,
+  .btn-link-neutral .btn {
+    @include populateButtonProperties(link-neutral);
   }
 
   .btn.btn-inverse,

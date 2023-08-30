@@ -101,9 +101,51 @@
 | --clr-btn-link-border-color                     | Link button border color                                                   |
 | --clr-btn-link-hover-color                      | Link button `:hover` text color                                            |
 | --clr-btn-link-hover-bg-color                   | Link button `:hover` background color                                      |
+| --clr-btn-link-active-color                     | Link button `:active` text color                                           |
+| --clr-btn-link-active-bg-color                  | Link button `:active` background color                                     |
 | --clr-btn-link-disabled-color                   | Link button `disabled` text color                                          |
 | --clr-btn-link-disabled-bg-color                | Link button `disabled` background color                                    |
 | --clr-btn-link-disabled-border-color            | Link button `disabled` border color                                        |
+| --clr-btn-link-primary-color                    | Primary link button text color                                             |
+| --clr-btn-link-primary-bg-color                 | Primary link button background color                                       |
+| --clr-btn-link-primary-border-color             | Primary link button border color                                           |
+| --clr-btn-link-primary-hover-color              | Primary link button `:hover` text color                                    |
+| --clr-btn-link-primary-hover-bg-color           | Primary link button `:hover` background color                              |
+| --clr-btn-link-primary-active-color             | Primary link button `:active` text color                                   |
+| --clr-btn-link-primary-active-bg-color          | Primary link button `:active` background color                             |
+| --clr-btn-link-primary-disabled-color           | Primary link button `disabled` text color                                  |
+| --clr-btn-link-primary-disabled-bg-color        | Primary link button `disabled` background color                            |
+| --clr-btn-link-primary-disabled-border-color    | Primary link button `disabled` border color                                |
+| --clr-btn-link-success-color                    | Success link button text color                                             |
+| --clr-btn-link-success-bg-color                 | Success link button background color                                       |
+| --clr-btn-link-success-border-color             | Success link button border color                                           |
+| --clr-btn-link-success-hover-color              | Success link button `:hover` text color                                    |
+| --clr-btn-link-success-hover-bg-color           | Success link button `:hover` background color                              |
+| --clr-btn-link-success-active-color             | Success link button `:active` text color                                   |
+| --clr-btn-link-success-active-bg-color          | Success link button `:active` background color                             |
+| --clr-btn-link-success-disabled-color           | Success link button `disabled` text color                                  |
+| --clr-btn-link-success-disabled-bg-color        | Success link button `disabled` background color                            |
+| --clr-btn-link-success-disabled-border-color    | Success link button `disabled` border color                                |
+| --clr-btn-link-warning-color                    | Warning link button text color                                             |
+| --clr-btn-link-warning-bg-color                 | Warning link button background color                                       |
+| --clr-btn-link-warning-border-color             | Warning link button border color                                           |
+| --clr-btn-link-warning-hover-color              | Warning link button `:hover` text color                                    |
+| --clr-btn-link-warning-hover-bg-color           | Warning link button `:hover` background color                              |
+| --clr-btn-link-warning-active-color             | Warning link button `:active` text color                                   |
+| --clr-btn-link-warning-active-bg-color          | Warning link button `:active` background color                             |
+| --clr-btn-link-warning-disabled-color           | Warning link button `disabled` text color                                  |
+| --clr-btn-link-warning-disabled-bg-color        | Warning link button `disabled` background color                            |
+| --clr-btn-link-warning-disabled-border-color    | Warning link button `disabled` border color                                |
+| --clr-btn-link-danger-color                     | Danger link button text color                                              |
+| --clr-btn-link-danger-bg-color                  | Danger link button background color                                        |
+| --clr-btn-link-danger-border-color              | Danger link button border color                                            |
+| --clr-btn-link-danger-hover-color               | Danger link button `:hover` text color                                     |
+| --clr-btn-link-danger-hover-bg-color            | Danger link button `:hover` background color                               |
+| --clr-btn-link-danger-active-color              | Danger link button `:active` text color                                    |
+| --clr-btn-link-danger-active-bg-color           | Danger link button `:active` background color                              |
+| --clr-btn-link-danger-disabled-color            | Danger link button `disabled` text color                                   |
+| --clr-btn-link-danger-disabled-bg-color         | Danger link button `disabled` background color                             |
+| --clr-btn-link-danger-disabled-border-color     | Danger link button `disabled` border color                                 |
 | --clr-btn-inverse-color                         | Inverse button text color                                                  |
 | --clr-btn-inverse-bg-color                      | Inverse button background color                                            |
 | --clr-btn-inverse-border-color                  | Inverse button border color                                                |
@@ -158,3 +200,7 @@
 | btn-inverse         | Inverse button                                         |
 | btn-icon            | Icon button                                            |
 | btn-link            | Link button                                            |
+| btn-link-primary    | Link primary button                                    |
+| btn-link-success    | Link success button                                    |
+| btn-link-warning    | Link warning button                                    |
+| btn-link-danger     | Link danger button                                     |

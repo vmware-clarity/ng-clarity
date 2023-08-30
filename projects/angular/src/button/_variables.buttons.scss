@@ -605,6 +605,8 @@ $clr-btn-link-bg-color: transparent !default;
 $clr-btn-link-border-color: transparent !default;
 $clr-btn-link-hover-bg-color: transparent !default;
 $clr-btn-link-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-link-active-color: $clr-btn-link-color !default;
+$clr-btn-link-active-bg-color: transparent !default;
 $clr-btn-link-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-link-disabled-bg-color: transparent !default;
 $clr-btn-link-disabled-border-color: transparent !default;
@@ -632,6 +634,14 @@ $clr-btn-link-checked-color: variables.$clr-color-action-800 !default;
     @return $clr-btn-link-hover-color;
   }
 
+  @if $property == active-color {
+    @return $clr-btn-link-active-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-link-active-bg-color;
+  }
+
   @if $property == disabled-color {
     @return $clr-btn-link-disabled-color;
   }
@@ -653,6 +663,106 @@ $clr-btn-link-checked-color: variables.$clr-color-action-800 !default;
   }
 
   @return null;
+}
+
+// Link primary button colors using map
+$clr-btn-link-primary: (
+  color: variables.$clr-color-action-600,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  hover-color: variables.$clr-color-action-800,
+  disabled-color: variables.$clr-color-neutral-700,
+  active-color: variables.$clr-color-action-600,
+  active-bg-color: transparent,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-action-800,
+) !default;
+
+@function lookupFromLinkPrimaryButtonColors($property: null) {
+  @return map-get($clr-btn-link-primary, $property);
+}
+
+// Link success button colors using map
+$clr-btn-link-success: (
+  color: variables.$clr-color-success-700,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-color-success-700,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-color-success-900,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkSuccessButtonColors($property: null) {
+  @return map-get($clr-btn-link-success, $property);
+}
+
+// Link warning button colors using map
+$clr-btn-link-warning: (
+  color: variables.$clr-color-danger-700,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-color-danger-700,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-color-danger-900,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkWarningButtonColors($property: null) {
+  @return map-get($clr-btn-link-warning, $property);
+}
+
+// Link danger button colors using map
+$clr-btn-link-danger: (
+  color: variables.$clr-color-danger-700,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-color-danger-700,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-color-danger-900,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkDangerButtonColors($property: null) {
+  @return map-get($clr-btn-link-danger, $property);
+}
+
+// Link danger button colors using map
+$clr-btn-link-neutral: (
+  color: variables.$clr-global-color-construction-600,
+  bg-color: transparent,
+  border-color: transparent,
+  hover-bg-color: transparent,
+  active-color: variables.$clr-global-color-construction-600,
+  active-bg-color: transparent,
+  hover-color: variables.$clr-global-color-construction-700,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: transparent,
+  checked-bg-color: transparent,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+
+@function lookupFromLinkNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-link-neutral, $property);
 }
 
 // Inverse button colors
