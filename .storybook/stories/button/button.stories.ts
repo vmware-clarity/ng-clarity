@@ -11,7 +11,7 @@ import { Story } from '@storybook/angular';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const buttonTypes = ['primary', 'success', 'warning', 'danger'];
+const buttonTypes = ['', 'primary', 'success', 'warning', 'danger', 'neutral'];
 const buttonStyles = ['outline', 'solid', 'flat'];
 
 const defaultStory: Story = args => ({
@@ -20,7 +20,7 @@ const defaultStory: Story = args => ({
       <clr-button
         class="btn ${
           args.buttonStyle === 'flat'
-            ? 'btn-link'
+            ? `btn-link-${args.buttonType}`
             : args.buttonStyle === 'solid'
             ? `btn-${args.buttonType}`
             : `btn-${args.buttonType}-outline`
@@ -56,7 +56,6 @@ const defaultParameters: Parameters = {
     buttonType: {
       defaultValue: 'primary',
       control: { type: 'radio', options: buttonTypes },
-      if: { arg: 'buttonStyle', neq: 'flat' },
     },
   },
   args: {
