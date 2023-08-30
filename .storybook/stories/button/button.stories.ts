@@ -11,7 +11,7 @@ import { Story } from '@storybook/angular';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const buttonTypes = ['', 'primary', 'success', 'warning', 'danger', 'neutral'];
+const buttonTypes = ['primary', 'success', 'warning', 'danger', 'neutral'];
 const buttonStyles = ['outline', 'solid', 'flat'];
 
 const defaultStory: Story = args => ({
