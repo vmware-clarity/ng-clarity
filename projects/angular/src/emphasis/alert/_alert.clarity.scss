@@ -192,10 +192,16 @@
       -1 * variables.$clr_baselineRem_0_125,
       variables.$clr-use-custom-properties
     );
-    margin-top: -1 * variables.$clr_baselineRem_4px;
+    @include mixins.css-var(
+      margin-top,
+      clr-alert-icons-margin-top,
+      -1 * variables.$clr_baselineRem_4px,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .alert-icon-wrapper {
+    display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
     @include mixins.css-var(flex-basis, clr-alert-icon-size, $alertIconWidth, variables.$clr-use-custom-properties);
@@ -243,6 +249,7 @@
       variables.$clr-use-custom-properties
     );
     text-align: left;
+    align-self: center;
   }
 
   .alert {
@@ -356,6 +363,14 @@
 
     .close {
       order: 100;
+      flex-grow: 0;
+      flex-shrink: 0;
+      @include mixins.css-var(
+        flex-basis,
+        clr-alert-close-button-size,
+        variables.$clr_baselineRem_1_5,
+        variables.$clr-use-custom-properties
+      );
       @include mixins.equilateral-var(
         clr-alert-close-button-size,
         variables.$clr_baselineRem_1_5,
@@ -365,7 +380,12 @@
       cds-icon,
       clr-icon {
         $alert-close-icon-dims: variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth;
-        margin-top: -1 * variables.$clr_baselineRem_0_125;
+        @include mixins.css-var(
+          margin-top,
+          clr-alert-icons-margin-top,
+          -1 * variables.$clr_baselineRem_0_125,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.min-equilateral-var(
           clr-alert-close-icon-size,
           $alert-close-icon-dims,
@@ -397,27 +417,31 @@
       border: none;
       .alert-items {
         padding: 0;
-      }
-      .alert-item {
-        min-height: 0;
+        .alert-item {
+          min-height: 0;
+          margin: 0;
+        }
+        .alert-text {
+          @include mixins.css-var(
+            font-size,
+            clr-alert-lightweight-font-size,
+            alert-variables.$clr-alert-font-size,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            line-height,
+            clr-alert-lightweight-line-height,
+            variables.$clr_baselineRem_1,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
       .close {
         display: none;
       }
 
-      .alert-text {
-        @include mixins.css-var(
-          font-size,
-          clr-alert-lightweight-font-size,
-          alert-variables.$clr-alert-font-size,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          line-height,
-          clr-alert-lightweight-line-height,
-          variables.$clr_baselineRem_0_75,
-          variables.$clr-use-custom-properties
-        );
+      &:not(.alert-sm) .alert-icon {
+        margin: 0;
       }
 
       @include generateLightweightAlertType(info);
@@ -489,7 +513,12 @@
 
       cds-icon,
       clr-icon {
-        margin-top: -1 * variables.$clr_baselineRem_5px;
+        @include mixins.css-var(
+          margin-top,
+          clr-alert-icons-margin-top,
+          -1 * variables.$clr_baselineRem_5px,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -539,42 +568,14 @@
         variables.$clr-use-custom-properties
       );
 
-      // ATM
-      // remove
-      @include mixins.css-var(
-        align-items,
-        clr-alert-sm-item-text-align-items,
-        normal,
-        variables.$clr-use-custom-properties
-      );
-
       &:last-child {
         margin-bottom: 0;
-      }
-    }
-
-    // ATM
-    // remove
-    &.alert-app-level {
-      .alert-item {
-        @include mixins.css-var(
-          align-items,
-          clr-alert-sm-item-text-align-items,
-          center,
-          variables.$clr-use-custom-properties
-        );
       }
     }
 
     .alert-icon-wrapper {
       padding-top: 0;
       @include mixins.css-var(display, clr-alert-sm-icon-wrapper-display, block, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        align-self,
-        clr-alert-sm-icon-wrapper-align-self,
-        start,
-        variables.$clr-use-custom-properties
-      );
       @include mixins.css-var(flex-basis, clr-alert-sm-icon-size, 1.25rem, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         height,
@@ -598,7 +599,7 @@
       );
       @include mixins.css-var(
         margin-top,
-        clr-alert-sm-icon-wrapper-margin-top,
+        clr-alert-icons-margin-top,
         -1 * $alertSmallNudge,
         variables.$clr-use-custom-properties
       );
@@ -649,7 +650,7 @@
         );
         @include mixins.css-var(
           margin-top,
-          clr-alert-sm-icon-wrapper-margin-top,
+          clr-alert-icons-margin-top,
           -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px),
           variables.$clr-use-custom-properties
         );
@@ -669,31 +670,57 @@
         @include mixins.css-var(
           gap,
           clr-alert-lightweight-sm-padding,
-          variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_5px,
+          variables.$clr_baselineRem_4px,
           variables.$clr-use-custom-properties
         );
-        @include mixins.css-var(
-          padding,
-          clr-alert-lightweight-sm-padding,
-          variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_5px,
-          variables.$clr-use-custom-properties
-        );
-      }
-      .alert-item {
-        min-height: 0;
-        .alert-text {
+        .alert-item {
           @include mixins.css-var(
-            font-size,
-            clr-alert-lightweight-sm-font-size,
-            alert-variables.$clr-alert-font-size,
+            padding,
+            clr-alert-lightweight-sm-padding,
+            variables.$clr_baselineRem_4px 0,
             variables.$clr-use-custom-properties
           );
-          @include mixins.css-var(
-            line-height,
-            clr-alert-lightweight-sm-line-height,
-            variables.$clr_baselineRem_0_667,
-            variables.$clr-use-custom-properties
-          );
+          .alert-text {
+            @include mixins.css-var(
+              font-size,
+              clr-alert-lightweight-sm-font-size,
+              alert-variables.$clr-alert-font-size,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              line-height,
+              clr-alert-lightweight-sm-line-height,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
+          .alert-icon-wrapper {
+            @include mixins.css-var(
+              flex-basis,
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              height,
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
+          .alert-icon {
+            @include mixins.css-var(
+              font-size,
+              clr-alert-lightweight-sm-font-size,
+              alert-variables.$clr-alert-font-size,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.min-equilateral-var(
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
         }
       }
       .close {
@@ -702,7 +729,7 @@
         @include mixins.css-var(
           padding-right,
           clr-alert-lightweight-sm-padding,
-          variables.$clr_baselineRem_0_25,
+          variables.$clr_baselineRem_0_25 0,
           variables.$clr-use-custom-properties
         );
       }

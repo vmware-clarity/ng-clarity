@@ -598,7 +598,8 @@
   --clr-alert-close-icon-size: #{tokens.$cds-global-space-9};
   --clr-alert-icon-size: #{tokens.$cds-global-space-9};
   --clr-alert-close-button-size: #{tokens.$cds-global-space-11};
-  --clr-alert-lightweight-sm-padding: #{tokens.$cds-global-space-3};
+  --clr-alert-lightweight-sm-padding: #{tokens.$cds-global-space-3} 0;
+  --clr-alert-lightweight-sm-icon-size: #{tokens.$cds-global-space-7};
   --clr-alert-lightweight-font-size: #{tokens.$cds-alias-typography-font-size-4};
   --clr-alert-lightweight-line-height: var(--clr-p2-line-height);
   --clr-alert-lightweight-sm-font-size: var(--clr-p6-font-size);
@@ -613,20 +614,18 @@
   }
 
   // Alert small
-  --clr-alert-sm-line-height: var(--clr-p2-line-height);
+  --clr-alert-sm-line-height: var(--clr-p1-line-height);
   --clr-alert-sm-font-size: #{tokens.$cds-global-typography-font-size-3};
-  --clr-alert-sm-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-alert-sm-letter-spacing: var(--clr-p1-letter-spacing);
   --clr-alert-sm-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
   --clr-alert-sm-icon-size: #{tokens.$cds-global-space-9};
   --clr-alert-sm-icon-wrapper-height: #{tokens.$cds-global-space-9};
   --clr-alert-sm-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
-  --clr-alert-sm-item-text-align-items: center; // ATM: delete after token migration
   --clr-alert-sm-close-icon-margin: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-0}; // ATM: delete after token migration
   --clr-alert-sm-close-icon-height: #{tokens.$cds-global-space-9}; // ATM: delete after token migration
   --clr-alert-sm-item-padding-top: 0; // ATM: delete after token migration
-  --clr-alert-sm-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-icons-margin-top: 0; // ATM: delete after token migration
   --clr-alert-sm-icon-wrapper-display: flex; // ATM: delete after token migration
-  --clr-alert-sm-icon-wrapper-align-self: center; // ATM: delete after token migration
   --clr-alert-sm-items-margin-right: 0; // ATM: delete after token migration
 
   // App Alerts Pager
