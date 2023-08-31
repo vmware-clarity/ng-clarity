@@ -398,7 +398,12 @@
     .datagrid-cell:last-child {
       &:after {
         content: '';
-        width: 0.05rem;
+        @include mixins.css-var(
+          width,
+          clr-datagrid-column-separator-width,
+          0.05rem,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.css-var(
           height,
           clr-datagrid-column-separator-height,
@@ -850,7 +855,12 @@
             ),
             variables.$clr-use-custom-properties
           );
-          width: variables.$clr_baselineRem_1px;
+          @include mixins.css-var(
+            width,
+            clr-datagrid-column-separator-width,
+            variables.$clr_baselineRem_1px,
+            variables.$clr-use-custom-properties
+          );
           right: 0;
           @include mixins.css-var(
             background-color,
