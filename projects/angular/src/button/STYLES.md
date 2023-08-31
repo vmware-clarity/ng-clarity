@@ -120,6 +120,7 @@
 | --clr-btn-neutral-border-color                  | Neutral button border color                                                |
 | --clr-btn-neutral-hover-color                   | Neutral button `:hover` text color                                         |
 | --clr-btn-neutral-hover-bg-color                | Neutral button `:hover` background color                                   |
+| --clr-btn-neutral-active-color                  | Neutral button `:active` text color                                        |
 | --clr-btn-neutral-active-bg-color               | Neutral button `:active` background color                                  |
 | --clr-btn-neutral-disabled-color                | Neutral button `disabled` text color                                       |
 | --clr-btn-neutral-disabled-bg-color             | Neutral button `disabled` color                                            |
@@ -129,6 +130,7 @@
 | --clr-btn-neutral-outline-border-color          | Neutral outline button border color                                        |
 | --clr-btn-neutral-outline-hover-color           | Neutral outline button `:hover` text color                                 |
 | --clr-btn-neutral-outline-hover-bg-color        | Neutral outline button `:hover` background color                           |
+| --clr-btn-neutral-outline-active-color          | Neutral outline button `:active` text color                                |
 | --clr-btn-neutral-outline-active-bg-color       | Neutral outline button `:active` background color                          |
 | --clr-btn-neutral-outline-disabled-color        | Neutral outline button `disabled` text color                               |
 | --clr-btn-neutral-outline-disabled-bg-color     | Neutral outline button `disabled` background color                         |
@@ -188,6 +190,7 @@
 | --clr-btn-inverse-border-color                  | Inverse button border color                                                |
 | --clr-btn-inverse-hover-color                   | Inverse button `:hover` text color                                         |
 | --clr-btn-inverse-hover-bg-color                | Inverse button `:hover` background color                                   |
+| --clr-btn-inverse-active-color                  | Inverse button `:active` text color                                        |
 | --clr-btn-inverse-active-bg-color               | Inverse button `:active` background color                                  |
 | --clr-btn-inverse-disabled-color                | Inverse button `disabled` text color                                       |
 | --clr-btn-inverse-disabled-bg-color             | Inverse button `disabled` background color                                 |

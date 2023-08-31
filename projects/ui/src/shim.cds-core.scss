@@ -330,6 +330,7 @@
   --clr-btn-neutral-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-hover};
   --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
   --clr-btn-neutral-active-bg-color: #{tokens.$cds-alias-object-interaction-neutral-click};
+  --clr-btn-neutral-active-color: var(--clr-btn-neutral-color);
 
   --clr-btn-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
   --clr-btn-neutral-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
@@ -447,6 +448,7 @@
   --clr-btn-inverse-hover-bg-color: #{tokens.$cds-alias-object-interaction-inverse-hover};
   --clr-btn-inverse-hover-color: var(--clr-btn-inverse-color); // var(--clr-color-neutral-0);
   --clr-btn-inverse-active-bg-color: #{tokens.$cds-alias-object-interaction-inverse-click};
+  --clr-btn-inverse-active-color: #{tokens.$cds-global-color-white};
 
   --clr-btn-inverse-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-inverse-disabled-bg-color: var(--clr-btn-default-outline-bg-color);

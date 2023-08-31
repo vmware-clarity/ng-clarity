@@ -874,6 +874,7 @@ $clr-btn-inverse-bg-color: transparent !default;
 $clr-btn-inverse-hover-bg-color: rgba(255, 255, 255, 0.15) !default;
 $clr-btn-inverse-hover-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-active-bg-color: rgba(0, 0, 0, 0.25) !default;
+$clr-btn-inverse-active-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-disabled-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-inverse-disabled-bg-color: $clr-btn-inverse-bg-color !default;
 $clr-btn-inverse-disabled-border-color: variables.$clr-color-neutral-0 !default;
@@ -903,6 +904,10 @@ $clr-btn-inverse-checked-color: variables.$clr-color-neutral-0 !default;
 
   @if $property == active-bg-color {
     @return $clr-btn-inverse-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-inverse-active-color;
   }
 
   @if $property == disabled-color {
