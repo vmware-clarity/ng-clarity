@@ -270,6 +270,7 @@
   --clr-btn-danger-hover-bg-color: #{tokens.$cds-alias-object-interaction-danger-hover}; // var(--clr-color-danger-800);
   --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
   --clr-btn-danger-active-bg-color: #{tokens.$cds-alias-object-interaction-danger-click}; // var(--clr-color-danger-900);
+  --clr-btn-danger-active-color: #{tokens.$cds-alias-typography-color-100};
 
   --clr-btn-danger-disabled-color: #{tokens.$cds-alias-typography-disabled-button}; // var(--clr-color-neutral-700);
   --clr-btn-danger-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
@@ -284,6 +285,7 @@
   --clr-btn-danger-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-danger-secondary-hover};
   --clr-btn-danger-outline-hover-color: #{tokens.$cds-alias-typography-danger-hover};
   --clr-btn-danger-outline-active-bg-color: var(--clr-btn-danger-outline-bg-color); // var(--clr-color-danger-200);
+  --clr-btn-danger-outline-active-color: var(--clr-btn-danger-outline-color);
 
   --clr-btn-danger-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);

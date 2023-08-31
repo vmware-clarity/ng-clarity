@@ -80,6 +80,7 @@
 | --clr-btn-danger-border-color                   | Danger button border color                                                 |
 | --clr-btn-danger-hover-color                    | Danger button `:hover` text color                                          |
 | --clr-btn-danger-hover-bg-color                 | Danger button `:hover` background color                                    |
+| --clr-btn-danger-active-color                   | Danger button `:active` text color                                         |
 | --clr-btn-danger-active-bg-color                | Danger button `:active` background color                                   |
 | --clr-btn-danger-disabled-color                 | Danger button `disabled` text color                                        |
 | --clr-btn-danger-disabled-bg-color              | Danger button `disabled` color                                             |
@@ -89,6 +90,7 @@
 | --clr-btn-danger-outline-border-color           | Danger outline button border color                                         |
 | --clr-btn-danger-outline-hover-color            | Danger outline button `:hover` text color                                  |
 | --clr-btn-danger-outline-hover-bg-color         | Danger outline button `:hover` background color                            |
+| --clr-btn-danger-outline-active-color           | Danger outline button `:active` text color                                 |
 | --clr-btn-danger-outline-active-bg-color        | Danger outline button `:active` background color                           |
 | --clr-btn-danger-outline-disabled-color         | Danger outline button `disabled` text color                                |
 | --clr-btn-danger-outline-disabled-bg-color      | Danger outline button `disabled` background color                          |
