@@ -225,6 +225,7 @@
   --clr-btn-primary-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover}; // var(--clr-color-action-50);
   --clr-btn-primary-outline-hover-color: #{tokens.$cds-alias-typography-info-hover}; // var(--clr-color-action-800);
   --clr-btn-primary-outline-active-bg-color: var(--clr-btn-outline-bg-color);
+  --clr-btn-primary-outline-active-color: var(--clr-btn-primary-outline-color);
 
   --clr-btn-primary-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);

@@ -45,6 +45,16 @@
 | --clr-btn-primary-disabled-color                | Primary button `disabled` text color                                       |
 | --clr-btn-primary-disabled-bg-color             | Primary button `disabled` color                                            |
 | --clr-btn-primary-disabled-border-color         | Primary button `disabled` border color                                     |
+| --clr-btn-primary-outline-color                 | Primary outline button text color                                          |
+| --clr-btn-primary-outline-bg-color              | Primary outline button background color                                    |
+| --clr-btn-primary-outline-border-color          | Primary outline button border color                                        |
+| --clr-btn-primary-outline-hover-color           | Primary outline button `:hover` text color                                 |
+| --clr-btn-primary-outline-hover-bg-color        | Primary outline button `:hover` background color                           |
+| --clr-btn-primary-outline-active-color          | Primary outline button `:active` text color                                |
+| --clr-btn-primary-outline-active-bg-color       | Primary outline button `:active` background color                          |
+| --clr-btn-primary-outline-disabled-color        | Primary outline button `disabled` text color                               |
+| --clr-btn-primary-outline-disabled-bg-color     | Primary outline button `disabled` color                                    |
+| --clr-btn-primary-outline-disabled-border-color | Primary outline button `disabled` border color                             |
 | --clr-btn-success-color                         | Success button text color                                                  |
 | --clr-btn-success-bg-color                      | Success button background color                                            |
 | --clr-btn-success-border-color                  | Success button border color                                                |

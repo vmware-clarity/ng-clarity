@@ -25,6 +25,10 @@
     @return buttons-variables.lookupFromPrimaryButtonColors($property);
   }
 
+  @if $type == primary-outline {
+    @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
+  }
+
   @if $type == success {
     @return buttons-variables.lookupFromSuccessButtonColors($property);
   }

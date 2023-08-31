@@ -248,6 +248,26 @@ $clr-btn-primary-checked-color: variables.$clr-color-neutral-0 !default;
   @return null;
 }
 
+// Primary button colors
+$clr-btn-primary-outline: (
+  color: variables.$clr-color-action-600,
+  bg-color: transparent,
+  border-color: variables.$clr-color-action-600,
+  hover-color: variables.$clr-color-action-800,
+  hover-bg-color: variables.$clr-color-action-50,
+  active-color: variables.$clr-color-action-600,
+  active-bg-color: transparent,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: variables.$clr-color-neutral-600,
+  checked-color: variables.$clr-color-neutral-0,
+  checked-bg-color: variables.$clr-color-action-600,
+) !default;
+
+@function lookupFromPrimaryOutlineButtonColors($property: null) {
+  @return map-get($clr-btn-primary-outline, $property);
+}
+
 // Success button colors
 $clr-btn-success-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-success-bg-color: variables.$clr-color-success-700 !default;
