@@ -569,19 +569,19 @@
 
   // Lightweight Info type
   --clr-lightweight-alert-info-icon-color: #{tokens.$cds-alias-status-info};
-  --clr-lightweight-alert-info-color: #{tokens.$cds-alias-typography-color-500};
+  --clr-lightweight-alert-info-font-color: #{tokens.$cds-alias-typography-color-500};
 
   // Lightweight Warning type
   --clr-lightweight-alert-warning-icon-color: #{tokens.$cds-alias-status-warning-dark};
-  --clr-lightweight-alert-warning-color: #{tokens.$cds-alias-typography-color-500};
+  --clr-lightweight-alert-warning-font-color: #{tokens.$cds-alias-typography-color-500};
 
   // Lightweight Danger type
   --clr-lightweight-alert-danger-icon-color: #{tokens.$cds-alias-status-danger};
-  --clr-lightweight-alert-danger-color: #{tokens.$cds-alias-typography-color-500};
+  --clr-lightweight-alert-danger-font-color: #{tokens.$cds-alias-typography-color-500};
 
   // Lightweight Success type
   --clr-lightweight-alert-success-icon-color: #{tokens.$cds-alias-status-success};
-  --clr-lightweight-alert-success-color: #{tokens.$cds-alias-typography-color-500};
+  --clr-lightweight-alert-success-font-color: #{tokens.$cds-alias-typography-color-500};
 
   // Alert Spacing
   --clr-alert-padding: #{tokens.$cds-global-space-5};

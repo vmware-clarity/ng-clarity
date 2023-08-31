@@ -86,7 +86,6 @@ function generateVariants() {
         clrAlertType,
         clrAlertLightweight: true,
         clrAlertSizeSmall,
-        clrAlertClosable: false,
       });
     }
   }

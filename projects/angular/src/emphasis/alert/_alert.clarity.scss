@@ -204,7 +204,6 @@
   .alert-item {
     flex: 1 1 auto;
     display: flex;
-    align-items: center;
     flex-wrap: nowrap;
     @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
 
@@ -403,7 +402,7 @@
         min-height: 0;
       }
       .close {
-        width: auto;
+        display: none;
       }
 
       .alert-text {
