@@ -96,6 +96,24 @@
 | --clr-btn-warning-outline-disabled-color        | Warning outline button `disabled` text color                               |
 | --clr-btn-warning-outline-disabled-bg-color     | Warning outline button `disabled` background color                         |
 | --clr-btn-warning-outline-disabled-border-color | Warning outline button `disabled` border color                             |
+| --clr-btn-neutral-color                         | Neutral button text color                                                  |
+| --clr-btn-neutral-bg-color                      | Neutral button background color                                            |
+| --clr-btn-neutral-border-color                  | Neutral button border color                                                |
+| --clr-btn-neutral-hover-color                   | Neutral button `:hover` text color                                         |
+| --clr-btn-neutral-hover-bg-color                | Neutral button `:hover` background color                                   |
+| --clr-btn-neutral-active-bg-color               | Neutral button `:active` background color                                  |
+| --clr-btn-neutral-disabled-color                | Neutral button `disabled` text color                                       |
+| --clr-btn-neutral-disabled-bg-color             | Neutral button `disabled` color                                            |
+| --clr-btn-neutral-disabled-border-color         | Neutral button `disabled` border color                                     |
+| --clr-btn-neutral-outline-color                 | Neutral outline button text color                                          |
+| --clr-btn-neutral-outline-bg-color              | Neutral outline button background color                                    |
+| --clr-btn-neutral-outline-border-color          | Neutral outline button border color                                        |
+| --clr-btn-neutral-outline-hover-color           | Neutral outline button `:hover` text color                                 |
+| --clr-btn-neutral-outline-hover-bg-color        | Neutral outline button `:hover` background color                           |
+| --clr-btn-neutral-outline-active-bg-color       | Neutral outline button `:active` background color                          |
+| --clr-btn-neutral-outline-disabled-color        | Neutral outline button `disabled` text color                               |
+| --clr-btn-neutral-outline-disabled-bg-color     | Neutral outline button `disabled` background color                         |
+| --clr-btn-neutral-outline-disabled-border-color | Neutral outline button `disabled` border color                             |
 | --clr-btn-link-color                            | Link button text color                                                     |
 | --clr-btn-link-bg-color                         | Link button background color                                               |
 | --clr-btn-link-border-color                     | Link button border color                                                   |
@@ -190,11 +208,13 @@
 | btn-success         | Success button                                         |
 | btn-warning         | Warning button                                         |
 | btn-danger          | Danger button                                          |
+| btn-neutral         | Neutral button                                         |
 | btn-outline         | Outline button                                         |
 | btn-info-outline    | Outline info button                                    |
 | btn-success-outline | Outline success button                                 |
 | btn-warning-outline | Outline warning button                                 |
 | btn-danger-outline  | Outline danger button                                  |
+| btn-neutral-outline | Outline neutral button                                 |
 | btn-sm              | Small button                                           |
 | btn-block           | Block, full-width button                               |
 | btn-inverse         | Inverse button                                         |

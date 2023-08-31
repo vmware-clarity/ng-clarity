@@ -599,6 +599,44 @@ $clr-btn-warning-outline-checked-color: variables.$clr-color-neutral-0 !default;
   @return null;
 }
 
+// Neutral button colors
+$clr-btn-neutral: (
+  color: variables.$clr-color-neutral-0,
+  bg-color: variables.$clr-global-color-construction-600,
+  border-color: variables.$clr-global-color-construction-600,
+  hover-color: variables.$clr-color-neutral-0,
+  hover-bg-color: variables.$clr-global-color-construction-700,
+  active-color: variables.$clr-color-neutral-0,
+  active-bg-color: variables.$clr-global-color-construction-800,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: variables.$clr-color-neutral-400,
+  disabled-border-color: variables.$clr-color-neutral-400,
+  checked-bg-color: variables.$clr-global-color-construction-700,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+@function lookupFromNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-neutral, $property);
+}
+
+// Neutral outline button colors
+$clr-btn-neutral-outline: (
+  color: variables.$clr-global-color-construction-600,
+  bg-color: transparent,
+  border-color: variables.$clr-global-color-construction-600,
+  hover-color: variables.$clr-global-color-construction-700,
+  hover-bg-color: variables.$clr-global-color-construction-50,
+  active-color: variables.$clr-global-color-construction-800,
+  active-bg-color: transparent,
+  disabled-color: variables.$clr-color-neutral-700,
+  disabled-bg-color: transparent,
+  disabled-border-color: variables.$clr-global-color-construction-600,
+  checked-bg-color: variables.$clr-global-color-construction-600,
+  checked-color: variables.$clr-color-neutral-0,
+) !default;
+@function lookupFromNeutralOutlineButtonColors($property: null) {
+  @return map-get($clr-btn-neutral-outline, $property);
+}
+
 // Link button colors
 $clr-btn-link-color: variables.$clr-color-action-600 !default;
 $clr-btn-link-bg-color: transparent !default;
@@ -745,7 +783,7 @@ $clr-btn-link-danger: (
   @return map-get($clr-btn-link-danger, $property);
 }
 
-// Link danger button colors using map
+// Link neutral button colors using map
 $clr-btn-link-neutral: (
   color: variables.$clr-global-color-construction-600,
   bg-color: transparent,

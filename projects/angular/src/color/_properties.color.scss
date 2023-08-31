@@ -179,8 +179,10 @@
       // placeholder text that aligns with core color
       // Added as a fix for https://github.com/vmware/clarity/issues/6439
       // Unifies only form input placeholder color and makes it accessible and align with core form placeholders.
+      --clr-global-color-construction-50: #{variables.$clr-global-color-construction-50};
       --clr-global-color-construction-600: #{variables.$clr-global-color-construction-600};
       --clr-global-color-construction-700: #{variables.$clr-global-color-construction-700};
+      --clr-global-color-construction-800: #{variables.$clr-global-color-construction-800};
     }
   }
 }

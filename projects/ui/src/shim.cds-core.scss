@@ -313,6 +313,35 @@
   --clr-btn-warning-outline-checked-bg-color: var(--clr-btn-warning-outline-bg-color);
   --clr-btn-warning-outline-checked-color: var(--clr-btn-warning-outline-color);
 
+  // Neutral button colors
+  --clr-btn-neutral-color: #{tokens.$cds-alias-typography-color-100};
+  --clr-btn-neutral-bg-color: #{tokens.$cds-alias-status-neutral};
+  --clr-btn-neutral-border-color: var(--clr-btn-neutral-bg-color);
+  --clr-btn-neutral-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-hover};
+  --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
+  --clr-btn-neutral-active-bg-color: #{tokens.$cds-alias-object-interaction-neutral-click};
+
+  --clr-btn-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+  --clr-btn-neutral-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+  --clr-btn-neutral-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+  --clr-btn-neutral-checked-bg-color: var(--clr-btn-neutral-bg-color);
+  --clr-btn-neutral-checked-color: var(--clr-btn-neutral-color);
+
+  // Neutral outline button colors
+  --clr-btn-neutral-outline-color: #{tokens.$cds-alias-status-neutral};
+  --clr-btn-neutral-outline-bg-color: #{tokens.$cds-alias-object-opacity-0};
+  --clr-btn-neutral-outline-border-color: var(--clr-btn-neutral-outline-color);
+  --clr-btn-neutral-outline-hover-color: #{tokens.$cds-alias-typography-neutral-hover};
+  --clr-btn-neutral-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-secondary-hover};
+  --clr-btn-neutral-outline-active-color: #{tokens.$cds-alias-status-neutral};
+  --clr-btn-neutral-outline-active-bg-color: #{tokens.$cds-alias-object-opacity-0};
+
+  --clr-btn-neutral-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+  --clr-btn-neutral-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-neutral-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+  --clr-btn-neutral-outline-checked-bg-color: var(--clr-btn-neutral-outline-bg-color);
+  --clr-btn-neutral-outline-checked-color: var(--clr-btn-neutral-outline-color);
+
   // Link button colors
   --clr-btn-link-color: #{tokens.$cds-alias-status-info};
   --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
