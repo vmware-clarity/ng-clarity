@@ -100,6 +100,7 @@
 | --clr-btn-warning-border-color                  | Warning button border color                                                |
 | --clr-btn-warning-hover-color                   | Warning button `:hover` text color                                         |
 | --clr-btn-warning-hover-bg-color                | Warning button `:hover` background color                                   |
+| --clr-btn-warning-active-color                  | Warning button `:active` text color                                        |
 | --clr-btn-warning-active-bg-color               | Warning button `:active` background color                                  |
 | --clr-btn-warning-disabled-color                | Warning button `disabled` text color                                       |
 | --clr-btn-warning-disabled-bg-color             | Warning button `disabled` color                                            |
@@ -109,6 +110,7 @@
 | --clr-btn-warning-outline-border-color          | Warning outline button border color                                        |
 | --clr-btn-warning-outline-hover-color           | Warning outline button `:hover` text color                                 |
 | --clr-btn-warning-outline-hover-bg-color        | Warning outline button `:hover` background color                           |
+| --clr-btn-warning-outline-active-color          | Warning outline button `:active` text color                                |
 | --clr-btn-warning-outline-active-bg-color       | Warning outline button `:active` background color                          |
 | --clr-btn-warning-outline-disabled-color        | Warning outline button `disabled` text color                               |
 | --clr-btn-warning-outline-disabled-bg-color     | Warning outline button `disabled` background color                         |

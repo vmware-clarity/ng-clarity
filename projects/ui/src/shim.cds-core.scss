@@ -300,6 +300,7 @@
   --clr-btn-warning-hover-bg-color: #{tokens.$cds-alias-object-interaction-warning-hover};
   --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
   --clr-btn-warning-active-bg-color: #{tokens.$cds-alias-object-interaction-warning-click};
+  --clr-btn-warning-active-color: var(--clr-btn-warning-color);
 
   --clr-btn-warning-disabled-color: #{tokens.$cds-alias-typography-disabled-button}; // var(--clr-color-neutral-700);
   --clr-btn-warning-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
@@ -314,6 +315,7 @@
   --clr-btn-warning-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-warning-secondary-hover};
   --clr-btn-warning-outline-hover-color: #{tokens.$cds-alias-typography-warning-hover};
   --clr-btn-warning-outline-active-bg-color: var(--clr-btn-warning-outline-bg-color);
+  --clr-btn-warning-outline-active-color: var(--clr-btn-warning-outline-color);
 
   --clr-btn-warning-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
