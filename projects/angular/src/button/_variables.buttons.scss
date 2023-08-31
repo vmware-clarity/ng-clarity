@@ -340,6 +340,7 @@ $clr-btn-success-outline-bg-color: transparent !default;
 $clr-btn-success-outline-border-color: variables.$clr-color-success-700 !default;
 $clr-btn-success-outline-hover-bg-color: variables.$clr-color-success-50 !default;
 $clr-btn-success-outline-hover-color: variables.$clr-color-success-900 !default;
+$clr-btn-success-outline-active-color: variables.$clr-color-success-700 !default;
 $clr-btn-success-outline-active-bg-color: transparent !default;
 $clr-btn-success-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-success-outline-disabled-bg-color: $clr-btn-success-outline-bg-color !default;
@@ -370,6 +371,9 @@ $clr-btn-success-outline-checked-color: variables.$clr-color-neutral-0 !default;
 
   @if $property == active-bg-color {
     @return $clr-btn-success-outline-active-bg-color;
+  }
+  @if $property == active-color {
+    @return $clr-btn-success-outline-active-color;
   }
 
   @if $property == disabled-color {

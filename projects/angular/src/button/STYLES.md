@@ -70,6 +70,7 @@
 | --clr-btn-success-outline-border-color          | Success outline button border color                                        |
 | --clr-btn-success-outline-hover-color           | Success outline button `:hover` text color                                 |
 | --clr-btn-success-outline-hover-bg-color        | Success outline button `:hover` background color                           |
+| --clr-btn-success-outline-active-color          | Success outline button `:active` text color                                |
 | --clr-btn-success-outline-active-bg-color       | Success outline button `:active` background color                          |
 | --clr-btn-success-outline-disabled-color        | Success outline button `disabled` text color                               |
 | --clr-btn-success-outline-disabled-bg-color     | Success outline button `disabled` background color                         |

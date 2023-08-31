@@ -255,6 +255,7 @@
   --clr-btn-success-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-success-secondary-hover};
   --clr-btn-success-outline-hover-color: #{tokens.$cds-alias-typography-success-hover};
   --clr-btn-success-outline-active-bg-color: var(--clr-btn-success-outline-bg-color); // var(--clr-color-success-400);
+  --clr-btn-success-outline-active-color: var(--clr-btn-success-outline-color);
 
   --clr-btn-success-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-success-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
