@@ -121,12 +121,11 @@
 
   &:active {
     @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
-    // TODO: create separate JIRA for active text color and add logic through there
-    //@include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
-    //cds-icon,
-    //clr-icon {
-    //  @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
-    //}
+    @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    }
   }
 
   &.disabled,

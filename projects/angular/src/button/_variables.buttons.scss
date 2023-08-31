@@ -56,6 +56,7 @@ $clr-btn-default-border-color: $clr-btn-default-color !default;
 $clr-btn-default-bg-color: transparent !default;
 $clr-btn-default-hover-bg-color: variables.$clr-color-action-50 !default;
 $clr-btn-default-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-default-active-color: variables.$clr-color-action-600 !default;
 $clr-btn-default-active-bg-color: variables.$clr-color-action-900 !default;
 $clr-btn-default-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-default-disabled-bg-color: $clr-btn-default-bg-color !default;
@@ -82,6 +83,10 @@ $clr-btn-default-checked-color: variables.$clr-color-neutral-0 !default;
 
   @if $property == hover-color {
     @return $clr-btn-default-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-default-active-color;
   }
 
   @if $property == active-bg-color {
@@ -117,6 +122,7 @@ $clr-btn-default-outline-border-color: $clr-btn-default-outline-color !default;
 $clr-btn-default-outline-bg-color: transparent !default;
 $clr-btn-default-outline-hover-bg-color: variables.$clr-color-action-50 !default;
 $clr-btn-default-outline-hover-color: variables.$clr-color-action-800 !default;
+$clr-btn-default-outline-active-color: variables.$clr-color-action-600 !default;
 $clr-btn-default-outline-active-bg-color: transparent !default;
 $clr-btn-default-outline-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-default-outline-disabled-bg-color: $clr-btn-default-outline-bg-color !default;
@@ -149,6 +155,10 @@ $clr-btn-default-outline-checked-bg-color: $clr-btn-default-outline-color !defau
     @return $clr-btn-default-outline-active-bg-color;
   }
 
+  @if $property == active-color {
+    @return $clr-btn-default-outline-active-color;
+  }
+
   @if $property == disabled-color {
     @return $clr-btn-default-outline-disabled-color;
   }
@@ -179,6 +189,7 @@ $clr-btn-primary-border-color: variables.$clr-color-action-600 !default;
 $clr-btn-primary-hover-bg-color: variables.$clr-color-action-800 !default;
 $clr-btn-primary-hover-color: variables.$clr-color-action-50 !default;
 $clr-btn-primary-active-bg-color: variables.$clr-color-action-900 !default;
+$clr-btn-primary-active-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-primary-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-primary-disabled-bg-color: variables.$clr-color-neutral-400 !default;
 $clr-btn-primary-disabled-border-color: variables.$clr-color-neutral-400 !default;
@@ -204,6 +215,10 @@ $clr-btn-primary-checked-color: variables.$clr-color-neutral-0 !default;
 
   @if $property == hover-color {
     @return $clr-btn-primary-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-primary-active-color;
   }
 
   @if $property == active-bg-color {
@@ -239,6 +254,7 @@ $clr-btn-success-bg-color: variables.$clr-color-success-700 !default;
 $clr-btn-success-border-color: $clr-btn-success-bg-color !default;
 $clr-btn-success-hover-bg-color: variables.$clr-color-success-800 !default;
 $clr-btn-success-hover-color: $clr-btn-success-color !default;
+$clr-btn-success-active-color: variables.$clr-color-neutral-0 !default;
 $clr-btn-success-active-bg-color: variables.$clr-color-success-900 !default;
 $clr-btn-success-disabled-color: variables.$clr-color-neutral-700 !default;
 $clr-btn-success-disabled-bg-color: variables.$clr-color-neutral-400 !default;
@@ -265,6 +281,10 @@ $clr-btn-success-checked-color: $clr-btn-success-color !default;
 
   @if $property == hover-color {
     @return $clr-btn-success-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-success-active-color;
   }
 
   @if $property == active-bg-color {

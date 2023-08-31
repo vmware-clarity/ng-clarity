@@ -179,6 +179,7 @@
   --clr-btn-default-bg-color: var(--clr-btn-outline-bg-color);
   --clr-btn-default-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover}; // var(--clr-color-action-50);
   --clr-btn-default-hover-color: #{tokens.$cds-alias-typography-info-hover}; // var(--clr-color-action-800);
+  --clr-btn-default-active-color: var(--clr-btn-default-color);
   --clr-btn-default-active-bg-color: var(--clr-btn-outline-bg-color);
 
   --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled};
@@ -193,6 +194,7 @@
   --clr-btn-default-outline-bg-color: var(--clr-btn-outline-bg-color);
   --clr-btn-default-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover}; // var(--clr-color-action-50);
   --clr-btn-default-outline-hover-color: #{tokens.$cds-alias-typography-info-hover}; // var(--clr-color-action-800);
+  --clr-btn-default-outline-active-color: var(--clr-btn-default-outline-color);
   --clr-btn-default-outline-active-bg-color: var(--clr-btn-outline-bg-color);
 
   --clr-btn-default-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
@@ -207,6 +209,7 @@
   --clr-btn-primary-border-color: #{tokens.$cds-alias-status-info}; // var(--clr-color-action-600);
   --clr-btn-primary-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover}; // var(--clr-color-action-800);
   --clr-btn-primary-hover-color: var(--clr-btn-primary-color); // var(--clr-color-action-50);
+  --clr-btn-primary-active-color: #{tokens.$cds-alias-typography-color-100};
   --clr-btn-primary-active-bg-color: #{tokens.$cds-alias-object-interaction-info-click}; // var(--clr-color-action-500);
 
   --clr-btn-primary-disabled-color: #{tokens.$cds-alias-typography-disabled-button}; // var(--clr-color-neutral-700);
@@ -235,6 +238,7 @@
   --clr-btn-success-border-color: var(--clr-btn-success-bg-color);
   --clr-btn-success-hover-bg-color: #{tokens.$cds-alias-object-interaction-success-hover}; // var(--clr-color-success-800);
   --clr-btn-success-hover-color: var(--clr-btn-success-color);
+  --clr-btn-success-active-color: #{tokens.$cds-alias-typography-color-100};
   --clr-btn-success-active-bg-color: #{tokens.$cds-alias-object-interaction-success-click}; // var(--clr-color-success-900);
 
   --clr-btn-success-disabled-color: #{tokens.$cds-alias-typography-disabled-button}; // var(--clr-color-neutral-700);

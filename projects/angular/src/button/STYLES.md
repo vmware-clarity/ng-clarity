@@ -20,6 +20,7 @@
 | --clr-btn-default-border-color                  | Default button border color                                                |
 | --clr-btn-default-hover-color                   | Default button `:hover` text color                                         |
 | --clr-btn-default-hover-bg-color                | Default button `:hover` background color                                   |
+| --clr-btn-default-active-color                  | Default button `:active` text color                                        |
 | --clr-btn-default-active-bg-color               | Default button `:active` background color                                  |
 | --clr-btn-default-disabled-color                | Default button `disabled` text color                                       |
 | --clr-btn-default-disabled-bg-color             | Default button `disabled` background color                                 |
@@ -29,6 +30,7 @@
 | --clr-btn-default-outline-border-color          | Default outline button border color                                        |
 | --clr-btn-default-outline-hover-color           | Default outline button `:hover` text color                                 |
 | --clr-btn-default-outline-hover-bg-color        | Default outline button `:hover` background color                           |
+| --clr-btn-default-outline-active-color          | Default outline button `:active` text color                                |
 | --clr-btn-default-outline-active-bg-color       | Default outline button `:active` background color                          |
 | --clr-btn-default-outline-disabled-color        | Default outline button `disabled` text color                               |
 | --clr-btn-default-outline-disabled-bg-color     | Default outline button `disabled` background color                         |
@@ -38,6 +40,7 @@
 | --clr-btn-primary-border-color                  | Primary button border color                                                |
 | --clr-btn-primary-hover-color                   | Primary button `:hover` text color                                         |
 | --clr-btn-primary-hover-bg-color                | Primary button `:hover` background color                                   |
+| --clr-btn-primary-active-color                  | Primary button `:active` text color                                        |
 | --clr-btn-primary-active-bg-color               | Primary button `:active` background color                                  |
 | --clr-btn-primary-disabled-color                | Primary button `disabled` text color                                       |
 | --clr-btn-primary-disabled-bg-color             | Primary button `disabled` color                                            |
@@ -47,6 +50,7 @@
 | --clr-btn-success-border-color                  | Success button border color                                                |
 | --clr-btn-success-hover-color                   | Success button `:hover` text color                                         |
 | --clr-btn-success-hover-bg-color                | Success button `:hover` background color                                   |
+| --clr-btn-success-active-color                  | Success button `:active` text color                                        |
 | --clr-btn-success-active-bg-color               | Success button `:active` background color                                  |
 | --clr-btn-success-disabled-color                | Success button `disabled` text color                                       |
 | --clr-btn-success-disabled-bg-color             | Success button `disabled` color                                            |
