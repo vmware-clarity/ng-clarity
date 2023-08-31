@@ -154,6 +154,22 @@
       --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900);
       --clr-app-alert-success-pager-bg-color: var(--clr-color-success-900);
       --clr-app-alert-pager-width: #{variables.$clr_baselineRem_6};
+
+      // Lightweight Info type
+      --clr-lightweight-alert-info-icon-color: var(--clr-alert-info-icon-color);
+      --clr-lightweight-alert-info-color: var(--clr-alert-info-icon-color);
+
+      // Lightweight Warning type
+      --clr-lightweight-alert-warning-icon-color: var(--clr-alert-warning-icon-color);
+      --clr-lightweight-alert-warning-color: var(--clr-alert-warning-color);
+
+      // Lightweight Danger type
+      --clr-lightweight-alert-danger-icon-color: var(--clr-alert-danger-icon-color);
+      --clr-lightweight-alert-danger-color: var(--clr-alert-danger-color);
+
+      // Lightweight Success type
+      --clr-lightweight-alert-success-icon-color: var(--clr-alert-success-icon-color);
+      --clr-lightweight-alert-success-color: var(--clr-alert-success-color);
     }
   }
 }

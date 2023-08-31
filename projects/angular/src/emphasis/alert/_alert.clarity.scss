@@ -157,6 +157,27 @@
   }
 }
 
+@mixin generateLightweightAlertType($alertType: 'info') {
+  &.alert-#{$alertType} {
+    .alert-text {
+      @include mixins.css-var(
+        color,
+        alert-variables.getAlertColor('lightweight-#{$alertType}', color, 'css-var'),
+        alert-variables.getAlertColor('lightweight-#{$alertType}', color),
+        variables.$clr-use-custom-properties
+      );
+    }
+    .alert-icon {
+      @include mixins.css-var(
+        color,
+        alert-variables.getAlertColor('lightweight-#{$alertType}', icon, 'css-var'),
+        alert-variables.getAlertColor('lightweight-#{$alertType}', icon),
+        variables.$clr-use-custom-properties
+      );
+    }
+  }
+}
+
 @include mixins.exports('alert.clarity') {
   $alertIconWidth: variables.$clr_baselineRem_1 + variables.$clr_baselineRem_1px;
 
@@ -164,7 +185,7 @@
 
   .alert-icon {
     $alert-icon-dim: variables.$clr_baselineRem_1;
-    @include mixins.min-equilateral($alert-icon-dim);
+    @include mixins.min-equilateral-var(clr-alert-icon-size, $alert-icon-dim, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       margin-left,
       clr-alert-icon-margin-left,
@@ -183,6 +204,7 @@
   .alert-item {
     flex: 1 1 auto;
     display: flex;
+    align-items: center;
     flex-wrap: nowrap;
     @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
 
@@ -225,7 +247,12 @@
   }
 
   .alert {
-    font-size: alert-variables.$clr-alert-font-size;
+    @include mixins.css-var(
+      font-size,
+      clr-alert-font-size,
+      alert-variables.$clr-alert-font-size,
+      variables.$clr-use-custom-properties
+    );
     letter-spacing: alert-variables.$clr-alert-letter-spacing;
     @include mixins.css-var(
       line-height,
@@ -378,6 +405,26 @@
       .close {
         width: auto;
       }
+
+      .alert-text {
+        @include mixins.css-var(
+          font-size,
+          clr-alert-lightweight-font-size,
+          alert-variables.$clr-alert-font-size,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          line-height,
+          clr-alert-lightweight-line-height,
+          variables.$clr_baselineRem_0_75,
+          variables.$clr-use-custom-properties
+        );
+      }
+
+      @include generateLightweightAlertType(info);
+      @include generateLightweightAlertType(warning);
+      @include generateLightweightAlertType(danger);
+      @include generateLightweightAlertType(success);
     }
   }
 
@@ -637,6 +684,12 @@
         min-height: 0;
         .alert-text {
           @include mixins.css-var(
+            font-size,
+            clr-alert-lightweight-sm-font-size,
+            alert-variables.$clr-alert-font-size,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
             line-height,
             clr-alert-lightweight-sm-line-height,
             variables.$clr_baselineRem_0_667,
@@ -777,7 +830,12 @@
       }
     }
 
-    font-size: alert-variables.$clr-alert-font-size;
+    @include mixins.css-var(
+      font-size,
+      clr-alert-font-size,
+      alert-variables.$clr-alert-font-size,
+      variables.$clr-use-custom-properties
+    );
     letter-spacing: alert-variables.$clr-alert-letter-spacing;
     min-height: alert-variables.$clr-alert-min-height;
     flex-grow: 1;

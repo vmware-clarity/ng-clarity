@@ -180,6 +180,22 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
     @return lookupAppSuccessAlertColor($property, $var-type);
   }
 
+  @if $type == lightweight-info {
+    @return lookupLightweightInfoAlertColor($property, $var-type);
+  }
+
+  @if $type == lightweight-warning {
+    @return lookupLightweightWarningAlertColor($property, $var-type);
+  }
+
+  @if $type == lightweight-danger {
+    @return lookupLightweightDangerAlertColor($property, $var-type);
+  }
+
+  @if $type == lightweight-success {
+    @return lookupLightweightSuccessAlertColor($property, $var-type);
+  }
+
   @return null;
 }
 
@@ -575,6 +591,70 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
 
   @if $property == action-active {
     @return $clr-app-alert-warning-action-active-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightweightInfoAlertColor($property: color, $type: 'sass-var') {
+  @if $type == 'css-var' {
+    @return getAlertCssVarName('lightweight-alert-info', $property);
+  }
+
+  @if $property == icon {
+    @return $clr-alert-info-icon-color;
+  }
+
+  @if $property == color {
+    @return $clr-alert-warning-font-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightweightDangerAlertColor($property: color, $type: 'sass-var') {
+  @if $type == 'css-var' {
+    @return getAlertCssVarName('lightweight-alert-danger', $property);
+  }
+
+  @if $property == icon {
+    @return $clr-alert-danger-icon-color;
+  }
+
+  @if $property == color {
+    @return $clr-alert-danger-font-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightweightSuccessAlertColor($property: color, $type: 'sass-var') {
+  @if $type == 'css-var' {
+    @return getAlertCssVarName('lightweight-alert-success', $property);
+  }
+
+  @if $property == icon {
+    @return $clr-alert-success-icon-color;
+  }
+
+  @if $property == color {
+    @return $clr-alert-success-font-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightweightWarningAlertColor($property: color, $type: 'sass-var') {
+  @if $type == 'css-var' {
+    @return getAlertCssVarName('lightweight-alert-warning', $property);
+  }
+
+  @if $property == icon {
+    @return $clr-alert-warning-icon-color;
+  }
+
+  @if $property == color {
+    @return $clr-alert-warning-font-color;
   }
 
   @return null;

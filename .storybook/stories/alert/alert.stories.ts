@@ -79,8 +79,17 @@ function generateVariants() {
       }
     }
   }
-  variants.push({ clrAlertLightweight: true });
-  variants.push({ clrAlertLightweight: true, clrAlertSizeSmall: true });
+
+  for (const clrAlertType of ALERT_TYPES) {
+    for (const clrAlertSizeSmall of [false, true]) {
+      variants.push({
+        clrAlertType,
+        clrAlertLightweight: true,
+        clrAlertSizeSmall,
+        clrAlertClosable: false,
+      });
+    }
+  }
 
   return variants;
 }
