@@ -1705,7 +1705,8 @@
   --clr-datagrid-placeholder-letter-spacing: var(--clr-h4-letter-spacing);
   --clr-datagrid-placeholder-background-color: #{tokens.$cds-alias-object-container-background};
   --clr-datagrid-popovers-box-shadow: #{tokens.$cds-alias-object-shadow-100};
-  --clr-datagrid-column-separator-height: #{tokens.$cds-global-space-7};
+  --clr-datagrid-column-separator-height: calc(100% - #{tokens.$cds-global-space-5});
+  --clr-datagrid-column-separator-width: #{tokens.$cds-global-space-1};
   --clr-datagrid-filter-toggle-size: #{tokens.$cds-global-space-7};
 
   --clr-datagrid-footer-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
@@ -1719,7 +1720,7 @@
 
   // ATM - move to _datagrid.clarity as default
   .datagrid-row-sticky .datagrid-cell:last-child:after {
-    height: var(--clr-datagrid-column-separator-height);
+    top: #{tokens.$cds-global-space-3};
   }
 
   // Login
