@@ -43,7 +43,7 @@
 | --clr-btn-primary-active-color                  | Primary button `:active` text color                                        |
 | --clr-btn-primary-active-bg-color               | Primary button `:active` background color                                  |
 | --clr-btn-primary-disabled-color                | Primary button `disabled` text color                                       |
-| --clr-btn-primary-disabled-bg-color             | Primary button `disabled` color                                            |
+| --clr-btn-primary-disabled-bg-color             | Primary button `disabled` background color                                 |
 | --clr-btn-primary-disabled-border-color         | Primary button `disabled` border color                                     |
 | --clr-btn-primary-outline-color                 | Primary outline button text color                                          |
 | --clr-btn-primary-outline-bg-color              | Primary outline button background color                                    |
@@ -53,7 +53,7 @@
 | --clr-btn-primary-outline-active-color          | Primary outline button `:active` text color                                |
 | --clr-btn-primary-outline-active-bg-color       | Primary outline button `:active` background color                          |
 | --clr-btn-primary-outline-disabled-color        | Primary outline button `disabled` text color                               |
-| --clr-btn-primary-outline-disabled-bg-color     | Primary outline button `disabled` color                                    |
+| --clr-btn-primary-outline-disabled-bg-color     | Primary outline button `disabled` background color                         |
 | --clr-btn-primary-outline-disabled-border-color | Primary outline button `disabled` border color                             |
 | --clr-btn-success-color                         | Success button text color                                                  |
 | --clr-btn-success-bg-color                      | Success button background color                                            |
@@ -63,7 +63,7 @@
 | --clr-btn-success-active-color                  | Success button `:active` text color                                        |
 | --clr-btn-success-active-bg-color               | Success button `:active` background color                                  |
 | --clr-btn-success-disabled-color                | Success button `disabled` text color                                       |
-| --clr-btn-success-disabled-bg-color             | Success button `disabled` color                                            |
+| --clr-btn-success-disabled-bg-color             | Success button `disabled` background color                                 |
 | --clr-btn-success-disabled-border-color         | Success button `disabled` border color                                     |
 | --clr-btn-success-outline-color                 | Success outline button text color                                          |
 | --clr-btn-success-outline-bg-color              | Success outline button background color                                    |
@@ -83,7 +83,7 @@
 | --clr-btn-danger-active-color                   | Danger button `:active` text color                                         |
 | --clr-btn-danger-active-bg-color                | Danger button `:active` background color                                   |
 | --clr-btn-danger-disabled-color                 | Danger button `disabled` text color                                        |
-| --clr-btn-danger-disabled-bg-color              | Danger button `disabled` color                                             |
+| --clr-btn-danger-disabled-bg-color              | Danger button `disabled` background color                                  |
 | --clr-btn-danger-disabled-border-color          | Danger button `disabled` border color                                      |
 | --clr-btn-danger-outline-color                  | Danger outline button text color                                           |
 | --clr-btn-danger-outline-bg-color               | Danger outline button background color                                     |
@@ -103,7 +103,7 @@
 | --clr-btn-warning-active-color                  | Warning button `:active` text color                                        |
 | --clr-btn-warning-active-bg-color               | Warning button `:active` background color                                  |
 | --clr-btn-warning-disabled-color                | Warning button `disabled` text color                                       |
-| --clr-btn-warning-disabled-bg-color             | Warning button `disabled` color                                            |
+| --clr-btn-warning-disabled-bg-color             | Warning button `disabled` background color                                 |
 | --clr-btn-warning-disabled-border-color         | Warning button `disabled` border color                                     |
 | --clr-btn-warning-outline-color                 | Warning outline button text color                                          |
 | --clr-btn-warning-outline-bg-color              | Warning outline button background color                                    |
@@ -123,7 +123,7 @@
 | --clr-btn-neutral-active-color                  | Neutral button `:active` text color                                        |
 | --clr-btn-neutral-active-bg-color               | Neutral button `:active` background color                                  |
 | --clr-btn-neutral-disabled-color                | Neutral button `disabled` text color                                       |
-| --clr-btn-neutral-disabled-bg-color             | Neutral button `disabled` color                                            |
+| --clr-btn-neutral-disabled-bg-color             | Neutral button `disabled` background color                                 |
 | --clr-btn-neutral-disabled-border-color         | Neutral button `disabled` border color                                     |
 | --clr-btn-neutral-outline-color                 | Neutral outline button text color                                          |
 | --clr-btn-neutral-outline-bg-color              | Neutral outline button background color                                    |
