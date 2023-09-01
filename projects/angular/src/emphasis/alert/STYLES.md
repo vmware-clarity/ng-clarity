@@ -113,6 +113,19 @@
 | --clr-alert-sm-letter-spacing                    | Small alert letter spacing                                        |
 | --clr-alert-sm-font-weight                       | Small alert font weight                                           |
 | --clr-alert-sm-icon-size                         | Small alert icon size                                             |
+| --clr-lightweight-alert-info-icon-color          | Lightweight alert info icon color                                 |
+| --clr-lightweight-alert-info-font-color          | Lightweight alert info font color                                 |
+| --clr-lightweight-alert-warning-icon-color       | Lightweight alert warning icon color                              |
+| --clr-lightweight-alert-warning-font-color       | Lightweight alert warning font color                              |
+| --clr-lightweight-alert-danger-icon-color        | Lightweight alert danger icon color                               |
+| --clr-lightweight-alert-danger-font-color        | Lightweight alert danger font color                               |
+| --clr-lightweight-alert-success-icon-color       | Lightweight alert success icon color                              |
+| --clr-lightweight-alert-success-font-color       | Lightweight alert success font color                              |
+| --clr-alert-font-size                            | Font size for alert                                               |
+| --clr-alert-lightweight-font-size                | Font size for lightweight alerts                                  |
+| --clr-alert-lightweight-line-height              | Line height for lightweight alerts                                |
+| --clr-alert-lightweight-sm-font-size             | Font size for small lightweight alerts                            |
+| --clr-alert-lightweight-sm-line-height           | Line height for small lightweight alerts                          |
 
 ## CSS Classes
 

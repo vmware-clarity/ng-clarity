@@ -41,7 +41,6 @@
       --clr-alert-text-flex-grow: 1; // ATM: delete after token migration
       --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125}; // ATM: delete after token migration
       --clr-alert-items-gap: 0;
-      --clr-alert-icon-size: #{variables.$clr_baselineRem_0_75};
 
       // Info type
       // Usage: ./_alert.clarity.scss
@@ -155,6 +154,22 @@
       --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900);
       --clr-app-alert-success-pager-bg-color: var(--clr-color-success-900);
       --clr-app-alert-pager-width: #{variables.$clr_baselineRem_6};
+
+      // Lightweight Info type
+      --clr-lightweight-alert-info-icon-color: var(--clr-alert-info-icon-color);
+      --clr-lightweight-alert-info-font-color: var(--clr-alert-info-font-color);
+
+      // Lightweight Warning type
+      --clr-lightweight-alert-warning-icon-color: var(--clr-alert-warning-icon-color);
+      --clr-lightweight-alert-warning-font-color: var(--clr-alert-warning-font-color);
+
+      // Lightweight Danger type
+      --clr-lightweight-alert-danger-icon-color: var(--clr-alert-danger-icon-color);
+      --clr-lightweight-alert-danger-font-color: var(--clr-alert-danger-font-color);
+
+      // Lightweight Success type
+      --clr-lightweight-alert-success-icon-color: var(--clr-alert-success-icon-color);
+      --clr-lightweight-alert-success-font-color: var(--clr-alert-success-font-color);
     }
   }
 }

@@ -157,6 +157,27 @@
   }
 }
 
+@mixin generateLightweightAlertType($alertType: 'info') {
+  &.alert-#{$alertType} {
+    .alert-text {
+      @include mixins.css-var(
+        color,
+        alert-variables.getAlertColor('lightweight-#{$alertType}', color, 'css-var'),
+        alert-variables.getAlertColor('lightweight-#{$alertType}', color),
+        variables.$clr-use-custom-properties
+      );
+    }
+    .alert-icon {
+      @include mixins.css-var(
+        color,
+        alert-variables.getAlertColor('lightweight-#{$alertType}', icon, 'css-var'),
+        alert-variables.getAlertColor('lightweight-#{$alertType}', icon),
+        variables.$clr-use-custom-properties
+      );
+    }
+  }
+}
+
 @include mixins.exports('alert.clarity') {
   $alertIconWidth: variables.$clr_baselineRem_1 + variables.$clr_baselineRem_1px;
 
@@ -164,26 +185,26 @@
 
   .alert-icon {
     $alert-icon-dim: variables.$clr_baselineRem_1;
-    @include mixins.equilateral($alert-icon-dim);
+    @include mixins.min-equilateral-var(clr-alert-icon-size, $alert-icon-dim, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       margin-left,
       clr-alert-icon-margin-left,
       -1 * variables.$clr_baselineRem_0_125,
       variables.$clr-use-custom-properties
     );
-    margin-top: -1 * variables.$clr_baselineRem_4px;
+    @include mixins.css-var(
+      margin-top,
+      clr-alert-icons-margin-top,
+      -1 * variables.$clr_baselineRem_4px,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .alert-icon-wrapper {
-    flex: 0 0 $alertIconWidth;
-    align-self: start;
-    padding-top: variables.$clr_baselineRem_1px;
-    @include mixins.css-var(
-      height,
-      clr-alert-icon-size,
-      variables.$clr_baselineRem_0_75,
-      variables.$clr-use-custom-properties
-    );
+    display: inline-flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    @include mixins.css-var(flex-basis, clr-alert-icon-size, $alertIconWidth, variables.$clr-use-custom-properties);
   }
 
   .alert-item {
@@ -213,6 +234,7 @@
       variables.$clr_baselineRem_10px variables.$clr_baselineRem_0_5 - alert-variables.$clr-alert-borderwidth,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
     display: flex;
   }
 
@@ -227,10 +249,16 @@
       variables.$clr-use-custom-properties
     );
     text-align: left;
+    align-self: center;
   }
 
   .alert {
-    font-size: alert-variables.$clr-alert-font-size;
+    @include mixins.css-var(
+      font-size,
+      clr-alert-font-size,
+      alert-variables.$clr-alert-font-size,
+      variables.$clr-use-custom-properties
+    );
     letter-spacing: alert-variables.$clr-alert-letter-spacing;
     @include mixins.css-var(
       line-height,
@@ -334,18 +362,30 @@
     }
 
     .close {
-      $closeBtnNudge: variables.$clr_baselineRem_4px;
-      display: block;
-      width: variables.$clr_baselineRem_1;
-      height: variables.$clr_baselineRem_1_5;
-      flex: 0 0 (variables.$clr_baselineRem_1 + $closeBtnNudge);
       order: 100;
-      padding-right: $closeBtnNudge;
+      flex-grow: 0;
+      flex-shrink: 0;
+      @include mixins.css-var(
+        flex-basis,
+        clr-alert-close-button-size,
+        variables.$clr_baselineRem_1_5,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.equilateral-var(
+        clr-alert-close-button-size,
+        variables.$clr_baselineRem_1_5,
+        variables.$clr-use-custom-properties
+      );
 
       cds-icon,
       clr-icon {
         $alert-close-icon-dims: variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth;
-        margin-top: -1 * variables.$clr_baselineRem_0_125;
+        @include mixins.css-var(
+          margin-top,
+          clr-alert-icons-margin-top,
+          -1 * variables.$clr_baselineRem_0_125,
+          variables.$clr-use-custom-properties
+        );
         @include mixins.min-equilateral-var(
           clr-alert-close-icon-size,
           $alert-close-icon-dims,
@@ -370,6 +410,44 @@
           variables.$clr-use-custom-properties
         );
       }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+      .alert-items {
+        padding: 0;
+        .alert-item {
+          min-height: 0;
+          margin: 0;
+        }
+        .alert-text {
+          @include mixins.css-var(
+            font-size,
+            clr-alert-lightweight-font-size,
+            alert-variables.$clr-alert-font-size,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            line-height,
+            clr-alert-lightweight-line-height,
+            variables.$clr_baselineRem_1,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
+      .close {
+        display: none;
+      }
+
+      &:not(.alert-sm) .alert-icon {
+        margin: 0;
+      }
+
+      @include generateLightweightAlertType(info);
+      @include generateLightweightAlertType(warning);
+      @include generateLightweightAlertType(danger);
+      @include generateLightweightAlertType(success);
     }
   }
 
@@ -435,7 +513,12 @@
 
       cds-icon,
       clr-icon {
-        margin-top: -1 * variables.$clr_baselineRem_5px;
+        @include mixins.css-var(
+          margin-top,
+          clr-alert-icons-margin-top,
+          -1 * variables.$clr_baselineRem_5px,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -485,42 +568,14 @@
         variables.$clr-use-custom-properties
       );
 
-      // ATM
-      // remove
-      @include mixins.css-var(
-        align-items,
-        clr-alert-sm-item-text-align-items,
-        normal,
-        variables.$clr-use-custom-properties
-      );
-
       &:last-child {
         margin-bottom: 0;
-      }
-    }
-
-    // ATM
-    // remove
-    &.alert-app-level {
-      .alert-item {
-        @include mixins.css-var(
-          align-items,
-          clr-alert-sm-item-text-align-items,
-          center,
-          variables.$clr-use-custom-properties
-        );
       }
     }
 
     .alert-icon-wrapper {
       padding-top: 0;
       @include mixins.css-var(display, clr-alert-sm-icon-wrapper-display, block, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        align-self,
-        clr-alert-sm-icon-wrapper-align-self,
-        start,
-        variables.$clr-use-custom-properties
-      );
       @include mixins.css-var(flex-basis, clr-alert-sm-icon-size, 1.25rem, variables.$clr-use-custom-properties);
       @include mixins.css-var(
         height,
@@ -544,7 +599,7 @@
       );
       @include mixins.css-var(
         margin-top,
-        clr-alert-sm-icon-wrapper-margin-top,
+        clr-alert-icons-margin-top,
         -1 * $alertSmallNudge,
         variables.$clr-use-custom-properties
       );
@@ -595,7 +650,7 @@
         );
         @include mixins.css-var(
           margin-top,
-          clr-alert-sm-icon-wrapper-margin-top,
+          clr-alert-icons-margin-top,
           -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px),
           variables.$clr-use-custom-properties
         );
@@ -605,6 +660,78 @@
           variables.$clr-use-custom-properties
         );
         line-height: $smallAlertCloseIconDims + variables.$clr_baselineRem_1px;
+      }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+      .alert-items {
+        @include mixins.css-var(
+          gap,
+          clr-alert-lightweight-sm-padding,
+          variables.$clr_baselineRem_4px,
+          variables.$clr-use-custom-properties
+        );
+        .alert-item {
+          @include mixins.css-var(
+            padding,
+            clr-alert-lightweight-sm-padding,
+            variables.$clr_baselineRem_4px 0,
+            variables.$clr-use-custom-properties
+          );
+          .alert-text {
+            @include mixins.css-var(
+              font-size,
+              clr-alert-lightweight-sm-font-size,
+              variables.$clr_baselineRem_0_458,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              line-height,
+              clr-alert-lightweight-sm-line-height,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
+          .alert-icon-wrapper {
+            @include mixins.css-var(
+              flex-basis,
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              height,
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
+          .alert-icon {
+            @include mixins.css-var(
+              font-size,
+              clr-alert-lightweight-sm-font-size,
+              alert-variables.$clr-alert-font-size,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.min-equilateral-var(
+              clr-alert-lightweight-sm-icon-size,
+              variables.$clr_baselineRem_0_667,
+              variables.$clr-use-custom-properties
+            );
+          }
+        }
+      }
+      .close {
+        width: auto;
+        margin: 0;
+        @include mixins.css-var(
+          padding-right,
+          clr-alert-lightweight-sm-padding,
+          variables.$clr_baselineRem_0_25 0,
+          variables.$clr-use-custom-properties
+        );
       }
     }
   }
@@ -631,10 +758,6 @@
         // TOCHECK: CALCULATIONS
         padding-left: alert-variables.$clr-alert-icon-dimension-sm + alert-variables.$clr-icon-margin-right;
       }
-    }
-
-    .alerts-pager {
-      margin-top: variables.$clr_baselineRem_0_125;
     }
 
     .alert-app-level {
@@ -670,6 +793,13 @@
 
   //3. Multiple app level alerts
   .alerts {
+    .alerts-wrapper {
+      display: flex;
+      flex-direction: row;
+      clr-alert {
+        flex: 1 1 100%;
+      }
+    }
     &.alert-info {
       @include mixins.css-var(
         background,
@@ -726,13 +856,18 @@
       }
     }
 
-    font-size: alert-variables.$clr-alert-font-size;
-    letter-spacing: alert-variables.$clr-alert-letter-spacing;
-    float: left;
-    min-height: alert-variables.$clr-alert-min-height;
-    text-align: center;
     @include mixins.css-var(
-      width,
+      font-size,
+      clr-alert-font-size,
+      alert-variables.$clr-alert-font-size,
+      variables.$clr-use-custom-properties
+    );
+    letter-spacing: alert-variables.$clr-alert-letter-spacing;
+    min-height: alert-variables.$clr-alert-min-height;
+    flex-grow: 1;
+    flex-shrink: 0;
+    @include mixins.css-var(
+      flex-basis,
       clr-app-alert-pager-width,
       variables.$clr_baselineRem_6,
       variables.$clr-use-custom-properties
@@ -748,6 +883,10 @@
       variables.$clr-use-custom-properties
     );
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+
+    @include mixins.css-var(height, clr-btn-appearance-standard-height, auto, variables.$clr-use-custom-properties);
 
     cds-icon,
     clr-icon {
@@ -773,21 +912,16 @@
 
   .alerts-pager-control {
     display: flex;
-    margin-top: alert-variables.$clr-alert-top-margin;
     white-space: nowrap;
-  }
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    padding: 0 variables.$clr-baselineRem_1;
 
-  $clr-alerts-pager-item-width: 33.33%;
-  .alerts-page-down {
-    margin-left: variables.$clr-baselineRem_1;
-    width: $clr-alerts-pager-item-width;
-  }
-
-  .alerts-page-up {
-    margin-right: variables.$clr_baselineRem_1;
-    width: $clr-alerts-pager-item-width;
-  }
-  .alerts-pager-text {
-    width: $clr-alerts-pager-item-width;
+    > * {
+      display: inline-flex;
+      justify-content: center;
+      flex: 1 1 auto;
+    }
   }
 }
