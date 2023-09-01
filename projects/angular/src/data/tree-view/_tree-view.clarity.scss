@@ -227,7 +227,8 @@
         variables.$clr-use-custom-properties
       );
     }
-    &:disabled {
+    &:disabled,
+    &.disabled {
       @include mixins.css-var(
         color,
         clr-tree-node-caret-link-disabled-color,

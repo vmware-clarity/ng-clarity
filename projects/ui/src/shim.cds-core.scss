@@ -1531,6 +1531,12 @@
   // ATM: move to tree-view.clarity.scss
   .clr-treenode-content {
     height: #{tokens.$cds-global-space-10};
+    color: #{tokens.$cds-alias-typography-color-400};
+  }
+
+  .clr-treenode-content .clr-treenode-link,
+  .clr-tree-node-content-container > .clr-checkbox-wrapper .clr-control-label {
+    border-radius: #{tokens.$cds-alias-object-border-radius-100};
   }
 
   .clr-tree-node-content-container:focus-visible {
