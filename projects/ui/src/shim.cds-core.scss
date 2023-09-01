@@ -567,39 +567,65 @@
   --clr-app-alert-success-action-active-color: var(--clr-app-alert-success-font-color);
   --clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-font-color); // indirectly mapped to CDS token
 
+  // Lightweight Info type
+  --clr-lightweight-alert-info-icon-color: #{tokens.$cds-alias-status-info};
+  --clr-lightweight-alert-info-font-color: #{tokens.$cds-alias-typography-color-500};
+
+  // Lightweight Warning type
+  --clr-lightweight-alert-warning-icon-color: #{tokens.$cds-alias-status-warning-dark};
+  --clr-lightweight-alert-warning-font-color: #{tokens.$cds-alias-typography-color-500};
+
+  // Lightweight Danger type
+  --clr-lightweight-alert-danger-icon-color: #{tokens.$cds-alias-status-danger};
+  --clr-lightweight-alert-danger-font-color: #{tokens.$cds-alias-typography-color-500};
+
+  // Lightweight Success type
+  --clr-lightweight-alert-success-icon-color: #{tokens.$cds-alias-status-success};
+  --clr-lightweight-alert-success-font-color: #{tokens.$cds-alias-typography-color-500};
+
   // Alert Spacing
   --clr-alert-padding: #{tokens.$cds-global-space-5};
   --clr-alert-borderradius: #{tokens.$cds-alias-object-border-radius-100};
   --clr-alert-actions-spacing: #{tokens.$cds-global-space-6};
-  --clr-alert-item-margin-bottom: #{tokens.$cds-global-space-2};
-  --clr-alert-line-height: #{tokens.$cds-global-typography-font-size-7};
+  --clr-alert-item-margin-bottom: 0; // ATM - remove
+  --clr-alert-font-size: var(--clr-p5-font-size);
+  --clr-alert-line-height: var(--clr-p5-line-height);
   --clr-alert-app-padding: #{tokens.$cds-global-space-4};
   --clr-alert-icon-wrapper-margin-top: 0; // ATM: delete after token migration
   --clr-alert-items-gap: #{tokens.$cds-global-space-5};
   --clr-alert-items-margin-right: 0; // ATM: delete after token migration
   --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
-  --clr-alert-close-icon-size: #{tokens.$cds-global-space-7};
+  --clr-alert-close-icon-size: #{tokens.$cds-global-space-9};
   --clr-alert-icon-size: #{tokens.$cds-global-space-9};
+  --clr-alert-close-button-size: #{tokens.$cds-global-space-11}; // ATM: delete after token migration
+  --clr-alert-lightweight-sm-padding: #{tokens.$cds-global-space-3} 0; // ATM: delete after token migration
+  --clr-alert-lightweight-sm-icon-size: #{tokens.$cds-global-space-7}; // ATM: delete after token migration
+  --clr-alert-lightweight-font-size: #{tokens.$cds-alias-typography-font-size-4};
+  --clr-alert-lightweight-line-height: var(--clr-p2-line-height);
+  --clr-alert-lightweight-sm-font-size: var(--clr-p6-font-size);
+  --clr-alert-lightweight-sm-line-height: var(--clr-p6-line-height);
 
+  // ATM - use as default
   .alert-app-level {
     --clr-alert-text-flex-grow: 0; // ATM: delete after token migration
+    .alert-items {
+      align-items: center;
+    }
   }
 
   // Alert small
-  --clr-alert-sm-line-height: var(--clr-p2-line-height);
+  --clr-alert-sm-line-height: var(--clr-p1-line-height);
   --clr-alert-sm-font-size: #{tokens.$cds-global-typography-font-size-3};
-  --clr-alert-sm-letter-spacing: var(--clr-p2-letter-spacing);
+  --clr-alert-sm-letter-spacing: var(--clr-p1-letter-spacing);
   --clr-alert-sm-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
-  --clr-alert-sm-icon-size: #{tokens.$cds-global-space-7};
-  --clr-alert-sm-icon-wrapper-height: #{tokens.$cds-global-space-7};
+  --clr-alert-sm-icon-size: #{tokens.$cds-global-space-9};
+  --clr-alert-sm-icon-wrapper-height: #{tokens.$cds-global-space-9};
   --clr-alert-sm-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
-  --clr-alert-sm-item-text-align-items: center; // ATM: delete after token migration
   --clr-alert-sm-close-icon-margin: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-0}; // ATM: delete after token migration
   --clr-alert-sm-close-icon-height: #{tokens.$cds-global-space-9}; // ATM: delete after token migration
   --clr-alert-sm-item-padding-top: 0; // ATM: delete after token migration
-  --clr-alert-sm-icon-wrapper-margin-top: 0; // ATM: delete after token migration
+  --clr-alert-icons-margin-top: 0; // ATM: delete after token migration
   --clr-alert-sm-icon-wrapper-display: flex; // ATM: delete after token migration
-  --clr-alert-sm-icon-wrapper-align-self: center; // ATM: delete after token migration
   --clr-alert-sm-items-margin-right: 0; // ATM: delete after token migration
 
   // App Alerts Pager

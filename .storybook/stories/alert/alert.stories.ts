@@ -19,6 +19,7 @@ const defaultStory: Story = args => ({
       [clrAlertClosable]="clrAlertClosable"
       [clrAlertClosed]="clrAlertClosed"
       [clrAlertIcon]="clrAlertIcon"
+      [clrAlertLightweight]="clrAlertLightweight"
       [clrAlertSizeSmall]="clrAlertSizeSmall"
       [clrAlertType]="clrAlertType"
       [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
@@ -76,6 +77,16 @@ function generateVariants() {
           });
         }
       }
+    }
+  }
+
+  for (const clrAlertType of ALERT_TYPES) {
+    for (const clrAlertSizeSmall of [false, true]) {
+      variants.push({
+        clrAlertType,
+        clrAlertLightweight: true,
+        clrAlertSizeSmall,
+      });
     }
   }
 

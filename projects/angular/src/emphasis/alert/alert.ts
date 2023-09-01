@@ -4,7 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -15,9 +25,9 @@ import { MultiAlertService } from './providers/multi-alert.service';
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
-  styles: [':host { display: block; }'],
 })
 export class ClrAlert implements OnInit, OnDestroy {
+  @Input('clrAlertLightweight') isLight = false;
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -63,6 +73,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     return this.iconService.iconInfoFromType(this.iconService.alertType).cssClass;
   }
 
+  @HostBinding('class.alert-hidden')
   get hidden() {
     return this._hidden;
   }
