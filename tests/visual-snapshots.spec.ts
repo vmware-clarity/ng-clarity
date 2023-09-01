@@ -39,7 +39,14 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      await expect(page.locator('body')).toHaveScreenshot(screenshotPath.split(path.sep), {
+      const body = await page.locator('body');
+      await body.evaluate(() => {
+        if (document.body.clientHeight < document.body.scrollHeight) {
+          document.body.style.setProperty('height', `${document.body.scrollHeight + 50}px`);
+        }
+      });
+
+      await expect(body).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
         caret: 'hide',
         threshold: 0,
