@@ -1497,24 +1497,23 @@
   --clr-tree-node-caret-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
   --clr-tree-node-caret-link-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
-  --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover}; // indirectly mapped
-  --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected}; // indirectly mapped
+  //--clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+  //--clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
-  --clr-tree-node-text-color: #{tokens.$cds-alias-object-interaction-color};
-  --clr-tree-node-text-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
-  --clr-tree-node-text-active-color: #{tokens.$cds-alias-object-interaction-color-active};
-  --clr-tree-node-text-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
-  --clr-tree-node-text-disabled-color: #{tokens.$cds-alias-typography-disabled};
-
+  --clr-tree-node-content-color: #{tokens.$cds-alias-object-interaction-color};
   --clr-tree-node-content-bg-color: #{tokens.$cds-alias-object-opacity-0};
+  --clr-tree-node-content-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
   --clr-tree-node-content-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+  --clr-tree-node-content-active-color: #{tokens.$cds-alias-object-interaction-color-active};
   --clr-tree-node-content-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+  --clr-tree-node-content-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
   --clr-tree-node-content-bg-selected-color: #{tokens.$cds-alias-object-interaction-background-selected};
+  --clr-tree-node-content-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-tree-node-content-bg-disabled-color: #{tokens.$cds-alias-object-opacity-0};
 
   --clr-treenode-content-padding: #{tokens.$cds-global-space-5}; // ATM: remove, deprecated
   --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
-  --clr-tree-node-content-padding-left: calc(#{tokens.$cds-global-space-10} + #{tokens.$cds-global-space-5});
+  --clr-tree-node-content-padding-left: #{tokens.$cds-global-space-10};
   --clr-tree-node-content-line-height: #{tokens.$cds-global-space-7};
   --clr-tree-node-touch-target: #{tokens.$cds-global-space-10};
 
