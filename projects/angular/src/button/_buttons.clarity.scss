@@ -8,30 +8,6 @@
 @use '../utils/variables/variables';
 @use 'variables.buttons' as buttons-variables;
 
-@function getActiveWidthBoxShadowTop($type: default) {
-  @if type == primary {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == outline-success {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == outline-danger {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @if type == link {
-    @return 0;
-  }
-
-  @if type == inverse {
-    @return variables.$clr_baselineRem_1px;
-  }
-
-  @return variables.$clr_baselineRem_2px;
-}
-
 @function getSassButtonColor($type: default, $property: null) {
   @if not $property {
     @return null;
@@ -49,6 +25,10 @@
     @return buttons-variables.lookupFromPrimaryButtonColors($property);
   }
 
+  @if $type == primary-outline {
+    @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
+  }
+
   @if $type == success {
     @return buttons-variables.lookupFromSuccessButtonColors($property);
   }
@@ -59,6 +39,14 @@
 
   @if $type == danger {
     @return buttons-variables.lookupFromDangerButtonColors($property);
+  }
+
+  @if $type == neutral {
+    @return buttons-variables.lookupFromNeutralButtonColors($property);
+  }
+
+  @if $type == neutral-outline {
+    @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
   }
 
   @if $type == danger-outline {
@@ -75,6 +63,26 @@
 
   @if $type == link {
     @return buttons-variables.lookupFromLinkButtonColors($property);
+  }
+
+  @if $type == link-primary {
+    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+
+  @if $type == link-success {
+    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  }
+
+  @if $type == link-warning {
+    @return buttons-variables.lookupFromLinkWarningButtonColors($property);
+  }
+
+  @if $type == link-danger {
+    @return buttons-variables.lookupFromLinkDangerButtonColors($property);
+  }
+
+  @if $type == link-neutral {
+    @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
   }
 
   @if $type == inverse {
@@ -116,25 +124,11 @@
   }
 
   &:active {
-    @if $button-type == link {
-      box-shadow: none;
-    } @else {
-      $fallbackColor: getSassButtonColor($button-type, box-shadow-color);
-
-      // ATM (after token migration)
-      // Replace box-shadow section with commented section. Renaming all of clr-btn 'box-shadow' to 'click' color properties is needed.
-      // $buttonColor: 'clr-btn-' + $button-type + '-click-color';
-      // @include mixins.css-var(background-color, $buttonColor, $fallbackColor, variables.$clr-use-custom-properties);
-
-      // IE/OldEdge
-      box-shadow: 0 getActiveWidthBoxShadowTop($button-type) 0 0 $fallbackColor inset;
-
-      box-shadow: 0
-        getActiveWidthBoxShadowTop($button-type)
-        0
-        0
-        var(#{'--clr-btn-' + $button-type + '-' + 'box-shadow-color'}, $fallbackColor)
-        inset;
+    @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
     }
   }
 
@@ -145,7 +139,6 @@
     @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
-    box-shadow: none;
   }
 }
 
@@ -357,6 +350,11 @@
     @include populateButtonProperties(danger);
   }
 
+  .btn.btn-neutral,
+  .btn-neutral .btn {
+    @include populateButtonProperties(neutral);
+  }
+
   .btn.btn-outline,
   .btn.btn-outline .btn,
   .btn.btn-secondary-outline,
@@ -399,6 +397,13 @@
     @include populateButtonProperties(danger-outline);
   }
 
+  .btn.btn-neutral-outline,
+  .btn.btn-outline-neutral,
+  .btn-neutral-outline .btn,
+  .btn-outline-neutral .btn {
+    @include populateButtonProperties(neutral-outline);
+  }
+
   .btn.btn-link,
   .btn-link .btn {
     @include populateButtonProperties(link);
@@ -418,6 +423,31 @@
         }
       }
     }
+  }
+
+  .btn.btn-link-primary,
+  .btn-link-primary .btn {
+    @include populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-success,
+  .btn-link-success .btn {
+    @include populateButtonProperties(link-success);
+  }
+
+  .btn.btn-link-warning,
+  .btn-link-warning .btn {
+    @include populateButtonProperties(link-warning);
+  }
+
+  .btn.btn-link-danger,
+  .btn-link-danger .btn {
+    @include populateButtonProperties(link-danger);
+  }
+
+  .btn.btn-link-neutral,
+  .btn-link-neutral .btn {
+    @include populateButtonProperties(link-neutral);
   }
 
   .btn.btn-inverse,

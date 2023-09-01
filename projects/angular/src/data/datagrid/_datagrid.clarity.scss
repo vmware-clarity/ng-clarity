@@ -398,8 +398,18 @@
     .datagrid-cell:last-child {
       &:after {
         content: '';
-        width: 0.05rem;
-        height: calc(100% - 0.5rem);
+        @include mixins.css-var(
+          width,
+          clr-datagrid-column-separator-width,
+          0.05rem,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          height,
+          clr-datagrid-column-separator-height,
+          calc(100% - 0.5rem),
+          variables.$clr-use-custom-properties
+        );
         position: absolute;
         right: 0;
         top: 0.25rem;
@@ -845,7 +855,12 @@
             ),
             variables.$clr-use-custom-properties
           );
-          width: variables.$clr_baselineRem_1px;
+          @include mixins.css-var(
+            width,
+            clr-datagrid-column-separator-width,
+            variables.$clr_baselineRem_1px,
+            variables.$clr-use-custom-properties
+          );
           right: 0;
           @include mixins.css-var(
             background-color,

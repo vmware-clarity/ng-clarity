@@ -45,7 +45,7 @@ const defaultStory: Story = args => ({
         [clrDgDetailOpenLabel]="clrDgDetailOpenLabel"
         [clrDgDetailCloseLabel]="clrDgDetailCloseLabel"
         [clrDgItem]="element"
-        [clrDgRowAriaLabel]="clrDgRowAriaLabel ? clrDgRowAriaLabel + ' ' + element.name : undefined"
+        [clrDgRowSelectionLabel]="clrDgRowSelectionLabel ? clrDgRowSelectionLabel + ' ' + element.name : undefined"
         [ngClass]="{ highlight: highlight && index === 0 }"
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
@@ -83,7 +83,7 @@ const defaultParameters: Parameters = {
     clrDgDetailOpenLabel: { defaultValue: '' },
     clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgRowAriaLabel: { defaultValue: 'Select row for' },
+    clrDgRowSelectionLabel: { defaultValue: 'Select row for' },
     clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
     clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
     // outputs

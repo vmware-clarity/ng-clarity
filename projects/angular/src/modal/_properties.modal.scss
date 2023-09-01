@@ -6,6 +6,7 @@
 @use 'sass:color';
 @use '../utils/mixins';
 @use '../utils/variables/variables';
+@use './variables.modal' as modal-variables;
 
 @include mixins.exports('modal.properties') {
   @if variables.$clr-use-custom-properties == true {
@@ -43,15 +44,18 @@
         #{variables.$clr_baselineRem_1};
 
       // Usage: ../modal/_modal.clarity.scss
-      --clr-modal-title-color: var(--clr-h3-color);
-      --clr-modal-title-font-family: var(--clr-h3-font-family);
-      --clr-modal-title-font-weight: var(--clr-h3-font-weight);
+      --clr-modal-title-color: #{modal-variables.$clr-modal-title-color};
+      --clr-modal-title-font-family: #{modal-variables.$clr-modal-title-font-family};
+      --clr-modal-title-font-weight: #{modal-variables.$clr-modal-title-font-weight};
+      --clr-modal-title-font-size: #{modal-variables.$clr-modal-title-font-size};
+      --clr-modal-title-line-height: #{modal-variables.$clr-modal-title-line-height};
       --clr-modal-header-padding: 0 0 #{variables.$clr_baselineRem_1} 0;
       --clr-modal-sm-header-padding: 0 #{variables.$clr_baselineRem_1} #{variables.$clr_baselineRem_0_5} 0;
       --clr-modal-footer-padding: #{variables.$clr_baselineRem_1} 0 0 0;
       --clr-modal-sm-footer-padding: #{variables.$clr_baselineRem_0_5} #{variables.$clr_baselineRem_1} 0 0;
       --clr-modal-footer-gap: #{variables.$clr_baselineRem_0_5};
       --clr-modal-close-icon-size: #{variables.$clr_baselineRem_1};
+      --clr-modal-title-padding: 0 #{variables.$clr_baselineRem_0_125};
     }
   }
 }

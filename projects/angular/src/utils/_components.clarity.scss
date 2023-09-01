@@ -50,14 +50,6 @@
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity
 @forward '../popover/dropdown/dropdown.clarity';
 
-//Badges
-// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity
-@forward '../emphasis/badges.clarity';
-
-//Labels
-// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity, badges.clarity
-@forward '../emphasis/labels.clarity';
-
 //Login
 //depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, icons.clarity
 @forward '../layout/login.clarity';
@@ -77,6 +69,14 @@
 @forward '../layout/nav/subnav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
 @forward '../layout/vertical-nav/vertical-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
 @forward '../layout/nav/responsive-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+
+//Badges
+// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity
+@forward '../emphasis/badges.clarity';
+
+//Labels
+// depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity, badges.clarity
+@forward '../emphasis/labels.clarity';
 
 //Progress Bars
 //depends on variables.clarity, helpers.clarity, color.clarity, cards.clarity

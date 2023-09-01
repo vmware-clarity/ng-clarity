@@ -31,6 +31,14 @@
 | --clr-stack-view-stack-block-caret-dimension                           | Stack view stack block caret dimension                                |
 | --clr-stack-view-stack-children-block-label-padding-left               | Stack view stack children block label padding                         |
 | --clr-stack-view-stack-title-padding                                   | Stack view stack title padding                                        |
+| --clr-stack-view-stack-block-label-font-size                           | Font size for stack view block label                                  |
+| --clr-stack-view-stack-block-label-font-weight                         | Font weight for stack view block label                                |
+| --clr-stack-view-stack-block-label-line-height                         | Line height for stack view block label                                |
+| --clr-stack-view-stack-block-label-letter-spacing                      | Letter spacing for stack view block label                             |
+| --clr-stack-view-font-size                                             | General font size for stack view                                      |
+| --clr-stack-view-font-weight                                           | General font weight for stack view                                    |
+| --clr-stack-view-line-height                                           | Genral line height for stack view                                     |
+| --clr-stack-view-letter-spacing                                        | Generla letter spacing for stack view                                 |
 
 ## CSS Classes
 

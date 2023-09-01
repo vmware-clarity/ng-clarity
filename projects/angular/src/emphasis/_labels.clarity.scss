@@ -14,31 +14,29 @@
   $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
   $sassVarTextColor: label-variables.getLabelColor($color, color);
   $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
+  $cssVarBorderColor: label-variables.getLabelColor($color, border-color, 'css-var');
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border: label-variables.$clr-label-borderwidth solid;
-    @include mixins.css-var(border-color, $cssVarBgColor, $sassVarBgColor, variables.$clr-use-custom-properties);
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border-style: solid;
+    @include mixins.css-var(border-color, $cssVarBorderColor, $sassVarBgColor, variables.$clr-use-custom-properties);
+    @include mixins.css-var(background-color, $cssVarBgColor, transparent, variables.$clr-use-custom-properties);
   }
 
   &.clickable.label-#{'' + $color} {
-    &:hover,
     &:active {
-      text-decoration: none;
       @include mixins.css-var(
-        background,
-        clr-label-bg-hover-color,
-        label-variables.$clr-label-bg-hover-color,
+        box-shadow,
+        clr-label-box-shadow,
+        0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset,
         variables.$clr-use-custom-properties
       );
-    }
-
-    &:active {
-      // OldEdge/IE
-      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
-      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0
-        var(mixins.css-variablize-string($cssVarBgColor), $sassVarBgColor) inset;
-      transform: translateY(0.5px);
     }
   }
 
@@ -72,11 +70,31 @@
       label-variables.getLabelColor($status, color),
       variables.$clr-use-custom-properties
     );
-    border: label-variables.$clr-label-borderwidth solid;
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border-style: solid;
     @include mixins.css-var(
       border-color,
       label-variables.getLabelColor($status, border-color, 'css-var'),
       label-variables.getLabelColor($status, border-color),
+      variables.$clr-use-custom-properties
+    );
+  }
+  &.label-#{'' + $status} > .badge {
+    @include mixins.css-var(
+      background,
+      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($status, bg-color),
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      color,
+      badges-variables.getBadgeColor($status, color, 'css-var'),
+      badges-variables.getBadgeColor($status, color),
       variables.$clr-use-custom-properties
     );
   }
@@ -111,27 +129,49 @@
       label-variables.$clr-label-letter-spacing,
       variables.$clr-use-custom-properties
     );
+    @include mixins.css-var(
+      line-height,
+      clr-label-line-height,
+      // line-height needed to be adjusted to force center alignment
+      label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
+      variables.$clr-use-custom-properties
+    );
 
-    // line-height needed to be adjusted to force center alignment
-    line-height: label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0 label-variables.$clr-label-padding-left-right 0;
+    @include mixins.css-var(
+      padding,
+      clr-label-padding,
+      0 label-variables.$clr-label-padding-left-right 0,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(gap, clr-label-gap-size, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-radius,
       clr-label-border-radius,
       variables.$clr_baselineRem_0_5,
       variables.$clr-use-custom-properties
     );
-    border: label-variables.$clr-label-borderwidth solid;
+    @include mixins.css-var(
+      border-width,
+      clr-label-border-width,
+      label-variables.$clr-label-borderwidth,
+      variables.$clr-use-custom-properties
+    );
+    border-style: solid;
     @include mixins.css-var(
       border-color,
       clr-label-default-border-color,
       label-variables.$clr-label-default-border-color,
       variables.$clr-use-custom-properties
     );
-    height: variables.$clr_baselineRem_0_875;
+    @include mixins.css-var(
+      height,
+      clr-label-height,
+      variables.$clr_baselineRem_0_875,
+      variables.$clr-use-custom-properties
+    );
     margin: 0 variables.$clr_baselineRem_0_25 $label-nudge-for-vertical-alignment 0;
     white-space: nowrap;
     @include mixins.css-var(
@@ -157,24 +197,75 @@
     }
 
     &.clickable {
-      &:hover,
-      &:active {
+      @include mixins.css-var(
+        font-size,
+        clr-label-clickable-font-size,
+        label-variables.$clr-label-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-label-clickable-font-weight,
+        label-variables.$clr-label-font-weight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-label-clickable-letter-spacing,
+        label-variables.$clr-label-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-label-clickable-line-height,
+        // line-height needed to be adjusted to force center alignment
+        label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
+        variables.$clr-use-custom-properties
+      );
+    }
+
+    &.clickable:not(.disabled) {
+      &:hover {
+        text-decoration: none;
         @include mixins.css-var(
           background,
           clr-label-bg-hover-color,
           label-variables.$clr-label-bg-hover-color,
           variables.$clr-use-custom-properties
         );
+        @include mixins.css-var(
+          color,
+          clr-label-hover-color,
+          label-variables.$clr-label-font-color-light,
+          variables.$clr-use-custom-properties
+        );
       }
 
       &:active {
-        $mySassShadow: label-variables.getLabelColor(gray, bg-color);
-        // OldEdge/IE
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset;
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0
-          var(mixins.css-variablize-string(label-variables.getLabelColor(gray, bg-color, 'css-var')), $mySassShadow)
-          inset;
-        transform: translateY(0.5px);
+        @include mixins.css-var(
+          color,
+          clr-label-active-color,
+          label-variables.$clr-label-font-color-light,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background,
+          clr-label-bg-active-color,
+          label-variables.$clr-label-bg-hover-color,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          box-shadow,
+          clr-label-box-shadow,
+          0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          transform,
+          clr-label-pressed-transform,
+          translateY(0.5px),
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -192,6 +283,38 @@
     & > .badge {
       margin: 0 (-1 * variables.$clr_baselineRem_0_375) 0 variables.$clr_baselineRem_0_25;
       //-0.375 is -9px. 12px initial label padding plus a negative margin of 9
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      @include mixins.css-var(
+        background,
+        clr-label-bg-disabled-color,
+        transparent,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        clr-label-disabled-color,
+        label-variables.$clr-label-font-color-light,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-label-disabled-border-color,
+        label-variables.$clr-label-default-border-color,
+        variables.$clr-use-custom-properties
+      );
+      .badge {
+        @include mixins.css-var(
+          background,
+          clr-label-disabled-color,
+          label-variables.getLabelColor(gray, bg-color),
+          variables.$clr-use-custom-properties
+        );
+      }
     }
   }
 

@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cds-core: ['', '@cds/core@^5.6.0']
         angular: ['Angular v15', 'Angular v16']
     steps:
       - name: Checkout
@@ -26,17 +25,11 @@ jobs:
         if: ${{matrix.angular == 'Angular v16'}}
         run: |
           npx ng update @angular/core@16 @angular/cli@16 @angular/cdk@16 --force
-      - name: Install Alternate @cds/core Version
-        if: ${{matrix.cds-core != ''}}
-        run: npm install ${{matrix.cds-core}}
-      - name: Disable Demo Build
-        if: ${{matrix.cds-core != ''}}
-        run: node ./scripts/clear-npm-script.js _build:demo
       - name: Disable Storybook Build
-        if: ${{matrix.cds-core != '' || matrix.angular != 'Angular v15'}}
+        if: ${{matrix.angular == 'Angular v16'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
       - name: Lint
-        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
+        if: ${{matrix.angular == 'Angular v15'}}
         run: npm run lint
       - name: Build
         run: npm run build
@@ -46,7 +39,7 @@ jobs:
         if: ${{matrix.angular == 'Angular v15'}}
         run: npm run public-api:check
       - name: Upload Docs Artifact
-        if: ${{matrix.cds-core == '' && matrix.angular == 'Angular v15'}}
+        if: ${{matrix.angular == 'Angular v15'}}
         uses: actions/upload-artifact@v3
         with:
           name: docs
