@@ -88,6 +88,9 @@
       }
     }
 
+    // ATM (after token migration)
+    // once shim is fully integrated all rules to be replaced with
+    // &:not([class*='-outline'])
     &.btn-primary,
     &.btn-success,
     &.btn-danger,

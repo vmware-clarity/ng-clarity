@@ -6,10 +6,12 @@
 
 // @deprecated Bootstrap dependencies are deprecated since 1.0. Review for removal of this file before 2.0
 // (note that there is a section at the bottom that's not related to bootstap but may also be candidate for removal by 2.0)
-@use '../layout/nav/properties.nav';
+@use 'sass:map';
+@use 'sass:meta';
 @use '../layout/nav/variables.nav' as nav-variables;
 @use 'mixins';
 @use 'variables/variables.global';
+@include meta.load-css('../layout/nav/properties.nav');
 
 @include mixins.exports('reboot.clarity') {
   // Customizing BS4 reboot file below from Bootstrap 4.0.0-alpha.3

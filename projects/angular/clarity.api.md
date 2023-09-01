@@ -355,6 +355,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     isAppLevel: boolean;
     // (undocumented)
+    isLight: boolean;
+    // (undocumented)
     isSmall: boolean;
     // (undocumented)
     ngOnDestroy(): void;
@@ -363,7 +365,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isLight": "clrAlertLightweight"; "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null]>;
 }
@@ -890,8 +892,8 @@ export interface ClrCommonStrings {
     allColumnsSelected: string;
     close: string;
     collapse: string;
-    columnSeparatorAriaLabel?: string;
-    columnSeparatorDescription?: string;
+    columnSeparatorAriaLabel: string;
+    columnSeparatorDescription: string;
     // (undocumented)
     comboboxDelete: string;
     // (undocumented)
@@ -907,15 +909,15 @@ export interface ClrCommonStrings {
     currentPage: string;
     danger: string;
     // (undocumented)
-    datagridExpandableBeginningOf?: string;
+    datagridExpandableBeginningOf: string;
     // (undocumented)
-    datagridExpandableEndOf?: string;
+    datagridExpandableEndOf: string;
     // (undocumented)
-    datagridExpandableRowContent?: string;
+    datagridExpandableRowContent: string;
     // (undocumented)
-    datagridExpandableRowsHelperText?: string;
-    datagridFilterAriaLabel?: string;
-    datagridFilterDialogAriaLabel?: string;
+    datagridExpandableRowsHelperText: string;
+    datagridFilterAriaLabel: string;
+    datagridFilterDialogAriaLabel: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -939,7 +941,6 @@ export interface ClrCommonStrings {
     datepickerToggleChangeDateLabel: string;
     // (undocumented)
     datepickerToggleChooseDateLabel: string;
-    delete?: string;
     detailExpandableAriaLabel: string;
     detailPaneEnd: string;
     detailPaneStart: string;
@@ -977,7 +978,6 @@ export interface ClrCommonStrings {
     select: string;
     selectAll: string;
     selectedRows: string;
-    selection?: string;
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
@@ -1635,8 +1635,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     currentChanged: EventEmitter<number>;
-    get currentPage(): number | string;
-    set currentPage(page: number | string);
+    get currentPage(): number;
+    set currentPage(page: number);
     // (undocumented)
     currentPageInputRef: ElementRef;
     // (undocumented)
@@ -1645,8 +1645,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     disableCurrentPageInput: boolean;
     get firstItem(): number;
     get lastItem(): number;
-    get lastPage(): number | string;
-    set lastPage(last: number | string);
+    get lastPage(): number;
+    set lastPage(last: number);
     get middlePages(): number[];
     next(): void;
     // (undocumented)
@@ -1654,13 +1654,13 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnInit(): void;
     // (undocumented)
     page: Page;
-    get pageSize(): number | string;
-    set pageSize(size: number | string);
+    get pageSize(): number;
+    set pageSize(size: number);
     // (undocumented)
     _pageSizeComponent: ClrDatagridPageSize;
     previous(): void;
-    get totalItems(): number | string;
-    set totalItems(total: number | string);
+    get totalItems(): number;
+    set totalItems(total: number);
     updateCurrentPage(event: any): void;
     // (undocumented)
     verifyCurrentPage(event: any): void;
@@ -1695,8 +1695,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     get clrDgDetailOpenLabel(): string;
     set clrDgDetailOpenLabel(label: string);
     // (undocumented)
-    get clrDgRowAriaLabel(): string;
-    set clrDgRowAriaLabel(label: string);
+    get clrDgRowSelectionLabel(): string;
+    set clrDgRowSelectionLabel(label: string);
     // (undocumented)
     get clrDgSelectable(): boolean | string;
     set clrDgSelectable(value: boolean | string);
@@ -1767,7 +1767,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowAriaLabel": "clrDgRowAriaLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowSelectionLabel": "clrDgRowSelectionLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
 }
@@ -3498,6 +3498,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get onStackLabelFocus(): boolean;
     // (undocumented)
+    protected preventDefaultIfNotInputEvent(event: Event): void;
+    // (undocumented)
     get role(): string;
     // (undocumented)
     set setChangedValue(value: boolean);
@@ -3506,7 +3508,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get tabIndex(): string;
     // (undocumented)
-    toggleExpand(): void;
+    toggleExpand(event?: Event): void;
     // (undocumented)
     uniqueId: string;
     // (undocumented)

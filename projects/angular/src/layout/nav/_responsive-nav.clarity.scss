@@ -345,7 +345,8 @@
         }
 
         .branding + .header-overflow-trigger,
-        .header-nav + .header-overflow-trigger {
+        .header-nav + .header-overflow-trigger,
+        .header-nav + .cdk-visually-hidden + .header-overflow-trigger {
           margin-left: auto;
         }
       }

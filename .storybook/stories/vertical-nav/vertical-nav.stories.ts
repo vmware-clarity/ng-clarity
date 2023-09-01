@@ -25,22 +25,24 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
 const defaultStory: Story = args => ({
   template: `
     <div class="main-container">
-      <clr-vertical-nav
-        [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
-        [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
-        (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
-      >
-        <a
-          *ngFor="let navLink of navLinks; let index = index"
-          clrVerticalNavLink
-          [ngClass]="{ 'active': index == activeIndex }"
-          href="javascript:void(0)"
-          (click)="activeIndex = index"
+      <div class="content-container">
+        <clr-vertical-nav
+          [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+          [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
+          (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >
-          <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-          {{navLink.text}}
-        </a>
-      </clr-vertical-nav>
+          <a
+            *ngFor="let navLink of navLinks; let index = index"
+            clrVerticalNavLink
+            [ngClass]="{ 'active': index == activeIndex }"
+            href="javascript:void(0)"
+            (click)="activeIndex = index"
+          >
+            <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+            {{navLink.text}}
+          </a>
+        </clr-vertical-nav>
+      </div>
     </div>
   `,
   props: { ...args },

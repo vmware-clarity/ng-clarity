@@ -29,12 +29,12 @@
 | --clr-alert-success-font-color                   | Info alert font color                                             |
 | --clr-alert-success-border-color                 | Info alert border color                                           |
 | --clr-alert-success-icon-color                   | Info alert icon color                                             |
-| --clr-alert-success-action-color                 | Duccess alert action font color                                   |
-| --clr-alert-success-action-active-color          | Duccess alert action font color on focus, hover, active           |
-| --clr-alert-success-close-icon-color             | Duccess alert close icon color                                    |
-| --clr-alert-success-close-icon-opacity           | Duccess alert close icon opacity                                  |
-| --clr-alert-success-close-icon-hover-color       | Duccess alert close icon color on hover                           |
-| --clr-alert-success-close-icon-hover-opacity     | Duccess alert close icon opacity on hover                         |
+| --clr-alert-success-action-color                 | Success alert action font color                                   |
+| --clr-alert-success-action-active-color          | Success alert action font color on focus, hover, active           |
+| --clr-alert-success-close-icon-color             | Success alert close icon color                                    |
+| --clr-alert-success-close-icon-opacity           | Success alert close icon opacity                                  |
+| --clr-alert-success-close-icon-hover-color       | Success alert close icon color on hover                           |
+| --clr-alert-success-close-icon-hover-opacity     | Success alert close icon opacity on hover                         |
 | --clr-alert-warning-bg-color                     | Info alert background color                                       |
 | --clr-alert-warning-font-color                   | Info alert font color                                             |
 | --clr-alert-warning-border-color                 | Info alert border color                                           |
@@ -49,12 +49,12 @@
 | --clr-alert-danger-font-color                    | Info alert font color                                             |
 | --clr-alert-danger-border-color                  | Info alert border color                                           |
 | --clr-alert-danger-icon-color                    | Info alert icon color                                             |
-| --clr-alert-danger-action-color                  | Wanger alert action font color                                    |
-| --clr-alert-danger-action-active-color           | Wanger alert action font color on focus, hover, active            |
-| --clr-alert-danger-close-icon-color              | Wanger alert close icon color                                     |
-| --clr-alert-danger-close-icon-opacity            | Wanger alert close icon opacity                                   |
-| --clr-alert-danger-close-icon-hover-color        | Wanger alert close icon color on hover                            |
-| --clr-alert-danger-close-icon-hover-opacity      | Wanger alert close icon opacity on hover                          |
+| --clr-alert-danger-action-color                  | Danger alert action font color                                    |
+| --clr-alert-danger-action-active-color           | Danger alert action font color on focus, hover, active            |
+| --clr-alert-danger-close-icon-color              | Danger alert close icon color                                     |
+| --clr-alert-danger-close-icon-opacity            | Danger alert close icon opacity                                   |
+| --clr-alert-danger-close-icon-hover-color        | Danger alert close icon color on hover                            |
+| --clr-alert-danger-close-icon-hover-opacity      | Danger alert close icon opacity on hover                          |
 | --clr-app-alert-info-bg-color                    | App level info alert background color                             |
 | --clr-app-alert-info-font-color                  | App level info alert font color                                   |
 | --clr-app-alert-info-border-color                | App level info alert border color                                 |
@@ -100,8 +100,34 @@
 | --clr-app-alert-warning-pager-bg-color           | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
+| --clr-alert-padding                              | Padding of the alert                                              |
+| --clr-alert-borderradius                         | Alert border radius                                               |
+| --clr-alert-actions-spacing                      | Alert actions spacing                                             |
+| --clr-alert-item-margin-bottom                   | Alert item margin bottom                                          |
+| --clr-alert-line-height                          | Alert line height                                                 |
+| --clr-alert-sm-line-height                       | Alert small line height                                           |
+| --clr-alert-app-padding                          | App level alert padding                                           |
+| --clr-alert-items-gap                            | Gap between items in the alert                                    |
+| --clr-alert-sm-line-height                       | Small alert line height                                           |
+| --clr-alert-sm-font-size                         | Small alert font size                                             |
+| --clr-alert-sm-letter-spacing                    | Small alert letter spacing                                        |
+| --clr-alert-sm-font-weight                       | Small alert font weight                                           |
+| --clr-alert-sm-icon-size                         | Small alert icon size                                             |
+| --clr-lightweight-alert-info-icon-color          | Lightweight alert info icon color                                 |
+| --clr-lightweight-alert-info-font-color          | Lightweight alert info font color                                 |
+| --clr-lightweight-alert-warning-icon-color       | Lightweight alert warning icon color                              |
+| --clr-lightweight-alert-warning-font-color       | Lightweight alert warning font color                              |
+| --clr-lightweight-alert-danger-icon-color        | Lightweight alert danger icon color                               |
+| --clr-lightweight-alert-danger-font-color        | Lightweight alert danger font color                               |
+| --clr-lightweight-alert-success-icon-color       | Lightweight alert success icon color                              |
+| --clr-lightweight-alert-success-font-color       | Lightweight alert success font color                              |
+| --clr-alert-font-size                            | Font size for alert                                               |
+| --clr-alert-lightweight-font-size                | Font size for lightweight alerts                                  |
+| --clr-alert-lightweight-line-height              | Line height for lightweight alerts                                |
+| --clr-alert-lightweight-sm-font-size             | Font size for small lightweight alerts                            |
+| --clr-alert-lightweight-sm-line-height           | Line height for small lightweight alerts                          |
 
-## Class names
+## CSS Classes
 
 | Class name           | Description                                                                |
 | -------------------- | -------------------------------------------------------------------------- |

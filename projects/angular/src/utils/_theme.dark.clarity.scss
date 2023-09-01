@@ -143,7 +143,9 @@
   $clr-accordion-text-color: color-variables.$clr-color-neutral-0,
   $clr-accordion-panel-disabled-color: color-variables.$clr-color-neutral-600,
   $clr-accordion-active-background-color: variables.$clr-global-selection-color,
+  $clr-accordion-header-active-background-color: variables.$clr-global-selection-color,
   $clr-accordion-header-hover-background-color: variables.$clr-global-selection-color,
+  $clr-accordion-header-disabled-background-color: variables.$clr-global-selection-color,
   $clr-accordion-content-background-color: hsl(198, 28%, 18%),
   $clr-accordion-header-background-color: hsl(201, 30%, 15%),
   $clr-accordion-border-left-color: hsl(202, 30%, 24%),
@@ -275,8 +277,10 @@
     // hover-background-color
     $clr-btn-default-hover-color: hsl(194, 78%, 63%),
     // hover-color
-    $clr-btn-default-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-default-active-bg-color: transparent,
+    // active-bg-color
+    $clr-btn-default-active-color: hsl(198, 65%, 57%),
+    // active-color
     $clr-btn-default-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-default-checked-bg-color: hsl(198, 65%, 57%),
@@ -293,8 +297,10 @@
     // hover-background-color
     $clr-btn-default-outline-hover-color: hsl(194, 78%, 63%),
     // hover-color
-    $clr-btn-default-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-default-outline-active-bg-color: transparent,
+    // active-bg-color
+    $clr-btn-default-outline-active-color: hsl(198, 65%, 57%),
+    // active-color
     $clr-btn-default-outline-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-default-outline-checked-bg-color: hsl(198, 65%, 57%),
@@ -315,8 +321,11 @@
     // hover-background-color
     $clr-btn-primary-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-primary-box-shadow-color: hsl(205, 100%, 34%),
-    // active-box-shadow-color
+    $clr-btn-primary-active-bg-color: #{color-variables.$clr-color-action-500},
+    // hsl(205, 100%, 34%),
+    // active-bg-color
+    $clr-btn-primary-active-color: hsl(0, 0%, 0%),
+    // active-color
     $clr-btn-primary-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-primary-disabled-color: hsl(0, 0%, 0%),
@@ -325,6 +334,30 @@
     // disabled-bg-color
     $clr-btn-primary-disabled-border-color: hsl(0, 0%, 100%),
     // disabled-border-color
+    // Primary outline button
+    $clr-btn-primary-outline:
+      (
+        color: hsl(198, 65%, 57%),
+        // border-color, color, checked-background-color
+        bg-color: transparent,
+        // background-color, disabled-background-color
+        hover-bg-color: hsla(0, 0%, 100%, 0.1),
+        // hover-background-color
+        hover-color: hsl(194, 78%, 63%),
+        // hover-color
+        active-bg-color: transparent,
+        // active-bg-color
+        active-color: hsl(198, 65%, 57%),
+        // active-color
+        checked-color: hsl(0, 0%, 100%),
+        // checked-color
+        checked-bg-color: hsl(198, 65%, 57%),
+        // checked-color
+        disabled-color: hsl(0, 0%, 100%),
+        // disabled-color
+        disabled-border-color: hsl(0, 0%, 100%),
+        // disabled-border-color
+      ),
     // Success button
     $clr-btn-success-color: hsl(0, 0%, 0%),
     // color, checked-color,
@@ -334,8 +367,11 @@
     // hover-background-color
     $clr-btn-success-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-success-box-shadow-color: hsl(98, 100%, 21%),
-    // active-box-shadow-color
+    $clr-btn-success-active-bg-color: #{color-variables.$clr-color-success-600},
+    // hsl(98, 100%, 21%),
+    // active-bg-color
+    $clr-btn-success-active-color: hsl(0, 0%, 0%),
+    // active-color
     $clr-btn-success-checked-bg-color: hsl(83, 77%, 44%),
     // checked-background-color
     $clr-btn-success-disabled-color: hsl(0, 0%, 0%),
@@ -353,8 +389,10 @@
     // hover-background-color
     $clr-btn-success-outline-hover-color: hsl(83, 77%, 44%),
     // hover-color
-    $clr-btn-success-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-success-outline-active-bg-color: transparent,
+    // active-bg-color
+    $clr-btn-success-outline-active-color: hsl(92, 79%, 40%),
+    // active-color
     $clr-btn-success-outline-checked-color: hsl(0, 0%, 100%),
     // checked-color
     $clr-btn-success-outline-disabled-color: hsl(0, 0%, 100%),
@@ -372,8 +410,10 @@
     // hover-background-color
     $clr-btn-danger-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-danger-box-shadow-color: hsl(10, 100%, 39%),
-    // active-box-shadow-color
+    $clr-btn-danger-active-bg-color: hsl(10, 100%, 39%),
+    // active-bg-color
+    $clr-btn-danger-active-color: hsl(0, 0%, 0%),
+    // active-color
     $clr-btn-danger-checked-bg-color: hsl(10, 100%, 39%),
     // checked-background-color
     $clr-btn-danger-disabled-color: hsl(0, 0%, 0%),
@@ -391,8 +431,10 @@
     // hover-background-color
     $clr-btn-danger-outline-hover-color: hsl(3, 100%, 69%),
     // hover-color
-    $clr-btn-danger-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-danger-outline-active-bg-color: transparent,
+    // active-bg-color
+    $clr-btn-danger-outline-active-color: hsl(3, 90%, 62%),
+    // active-color
     $clr-btn-danger-outline-checked-bg-color: hsl(3, 90%, 62%),
     // checked-background-color
     $clr-btn-danger-outline-checked-color: hsl(0, 0%, 100%),
@@ -412,8 +454,10 @@
     // hover-background-color
     $clr-btn-warning-hover-color: hsl(0, 0%, 0%),
     // hover-color
-    $clr-btn-warning-box-shadow-color: hsl(10, 100%, 39%),
-    // active-box-shadow-color
+    $clr-btn-warning-active-bg-color: hsl(10, 100%, 39%),
+    // active-bg-color
+    $clr-btn-warning-active-color: hsl(0, 0%, 0%),
+    // active-color
     $clr-btn-warning-checked-bg-color: hsl(10, 100%, 39%),
     // checked-background-color
     $clr-btn-warning-disabled-color: hsl(0, 0%, 0%),
@@ -431,8 +475,10 @@
     // hover-background-color
     $clr-btn-warning-outline-hover-color: hsl(3, 100%, 69%),
     // hover-color
-    $clr-btn-warning-outline-box-shadow-color: hsl(0, 0%, 0%),
-    // active-box-shadow-color
+    $clr-btn-warning-outline-active-bg-color: transparent,
+    // active-bg-color
+    $clr-btn-warning-outline-active-color: hsl(3, 90%, 62%),
+    // active-color
     $clr-btn-warning-outline-checked-bg-color: hsl(3, 90%, 62%),
     // checked-background-color
     $clr-btn-warning-outline-checked-color: hsl(0, 0%, 100%),
@@ -459,12 +505,16 @@
     // background-color
     $clr-btn-inverse-color: hsl(210, 16%, 93%),
     // color
-    $clr-btn-inverse-hover-bg-color: rgba(0, 0, 0, 0.1),
+    $clr-btn-inverse-hover-bg-color: hsl(198, 19%, 28%),
+    // new: cds-global-color-construction-700, old: rgba(0, 0, 0, 0.1),
     // hover-background-color
     $clr-btn-inverse-hover-color: hsl(0, 0%, 100%),
     // hover-color
-    $clr-btn-inverse-box-shadow-color: hsl(203, 14%, 70%),
-    // active-box-shadow-color
+    $clr-btn-inverse-active-bg-color: hsl(198, 23%, 23%),
+    // new: cds-global-color-construction-800, old: hsl(203, 14%, 70%),
+    // active-bg-color
+    $clr-btn-inverse-active-color: hsl(210, 16%, 93%),
+    // active-color
     $clr-btn-inverse-checked-bg-color: hsla(0, 0%, 100%, 0.15),
     // checked-background-color
     $clr-btn-inverse-checked-color: hsl(0, 0%, 100%),
@@ -727,6 +777,7 @@
 * - ../image/_icons.clarity.scss (login background image)
 */
 @forward '../layout/variables.login' with (
+  $clr-login-logo-color: color-variables.$clr-color-neutral-0,
   $clr-login-background-color: variables.$clr-global-app-background,
   $clr-login-background:
     '%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3Csvg%20width%3D%22736px%22%20height%3D%22838px%22%20viewBox%3D%220%200%20736%20838%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Ctitle%3Evector%20art%3C%2Ftitle%3E%3Cdesc%3ECreated%20with%20Sketch.%3C%2Fdesc%3E%3Cdefs%3E%3C%2Fdefs%3E%3Cg%20id%3D%22symbols%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20id%3D%22Login%22%20transform%3D%22translate(-504.000000%2C%200.000000)%22%3E%3Cg%20id%3D%22replaceable-image%22%20transform%3D%22translate(504.000000%2C%200.000000)%22%3E%3Cg%20id%3D%22vector-art%22%20transform%3D%22translate(-78.000000%2C%20-82.000000)%22%3E%3Crect%20id%3D%22Rectangle-path%22%20fill%3D%22%2322343E%22%20x%3D%220%22%20y%3D%220.38%22%20width%3D%221127.55%22%20height%3D%22921.62%22%3E%3C%2Frect%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%232F657B%22%20points%3D%220%203.06%200%20599.24%20298.14%20301.43%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%23438597%22%20points%3D%220%20408.65%200%20599.24%2095.29%20504.06%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%232F657B%22%20points%3D%22918.21%20921.95%20818.63%20822.3%20718.89%20921.95%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%233B758E%22%20points%3D%22818.63%20822.3%20298.14%20301.43%200%20599.24%200%20655.02%20266.51%20921.95%20718.89%20921.95%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%23579EB2%22%20points%3D%22512.67%20921.95%2095.29%20504.06%200%20599.24%200%20654.97%20267.06%20921.95%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%23344B57%22%20points%3D%22266.51%20921.95%200%20655.02%200%20921.95%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%23A7C9D5%22%20points%3D%221128%200%20799.58%200%201128%20329.83%22%3E%3C%2Fpolygon%3E%3Cpolygon%20id%3D%22Shape%22%20fill%3D%22%23344B57%22%20points%3D%221128%20329.83%20799.58%200%20599.9%200%20298.14%20301.43%20818.63%20822.3%201128%20513.18%22%3E%3C%2Fpolygon%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'

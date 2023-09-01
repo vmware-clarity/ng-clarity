@@ -3,14 +3,15 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
 @use 'menu-mixins.clarity.scss' as menu-mixins;
-@use 'properties.dropdown';
 @use '../../button/variables.buttons' as button-variables;
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.dropdown' as dropdown-variables;
+@include meta.load-css('properties.dropdown');
 
 %dropdown-content {
   overflow: hidden;
@@ -120,18 +121,51 @@
         dropdown-variables.$clr-dropdown-header-color,
         variables.$clr-use-custom-properties
       );
-      font-size: dropdown-variables.$clr-dropdown-header-font-size;
+
+      // Typography
+      // Paragraph/SECONDARY-13-MD-exp
       @include mixins.css-var(
         font-weight,
         clr-dropdown-header-font-weight,
         dropdown-variables.$clr-dropdown-header-font-weight,
         variables.$clr-use-custom-properties
       );
-      letter-spacing: dropdown-variables.$clr-dropdown-header-letter-spacing;
+      @include mixins.css-var(
+        font-size,
+        clr-dropdown-header-font-size,
+        dropdown-variables.$clr-dropdown-header-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-dropdown-header-line-height,
+        variables.$clr_baselineRem_0_75,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-dropdown-header-letter-spacing,
+        dropdown-variables.$clr-dropdown-header-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
 
-      padding: 0 variables.$clr_baselineRem_0_5;
-      line-height: variables.$clr_baselineRem_0_75;
+      @include mixins.css-var(
+        padding,
+        clr-dropdown-header-padding,
+        0 variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
       margin: 0;
+
+      & ~ .dropdown-item,
+      & ~ .dropdown > .dropdown-item {
+        @include mixins.css-var(
+          padding-left,
+          clr-dropdown-subsection-offset,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+      }
 
       @extend %dropdown-content;
     }
@@ -164,12 +198,36 @@
         &:before {
           content: '';
           float: right;
-          @include mixins.equilateral(variables.$clr_baselineRem_0_5);
+          @include mixins.equilateral-var(
+            clr-dropdown-caret-icon-size,
+            variables.$clr_baselineRem_0_5,
+            variables.$clr-use-custom-properties
+          );
           transform: rotate(-90deg);
           background-image: icons.generateCaretIcon();
           @include images.icon-background-styles();
-          margin-top: $clr-dropdown-caret-margin-top;
+          @include mixins.css-var(
+            margin-top,
+            clr-dropdown-caret-icon-margin-top,
+            $clr-dropdown-caret-margin-top,
+            variables.$clr-use-custom-properties
+          );
         }
+      }
+
+      &:active {
+        @include mixins.css-var(
+          color,
+          clr-dropdown-active-text-color,
+          var(--clr-color-neutral-1000),
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          background-color,
+          clr-dropdown-active-background-color,
+          var(--clr-global-selection-color),
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -197,7 +255,12 @@
         dropdown-variables.$clr-dropdown-divider-color,
         variables.$clr-use-custom-properties
       );
-      margin: variables.$clr_baselineRem_0_25 0;
+      @include mixins.css-var(
+        margin,
+        clr-dropdown-divider-margin,
+        variables.$clr_baselineRem_0_25 0,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 

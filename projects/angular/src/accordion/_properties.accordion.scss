@@ -5,22 +5,32 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use '../utils/variables/variables' as typography-variables;
 @use 'variables.accordion' as accordion-variables;
 
 @include mixins.exports('accordion.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
       --clr-accordion-text-color: var(--clr-global-font-color);
+      --clr-accordion-text-color-hover: var(--clr-global-font-color);
+      --clr-accordion-text-color-active: var(--clr-global-font-color);
+      --clr-accordion-text-color-selected: var(--clr-global-font-color);
       --clr-accordion-panel-disabled-color: var(--clr-color-neutral-500);
 
       --clr-accordion-active-background-color: var(--clr-global-selection-color);
       --clr-accordion-content-background-color: var(--clr-color-neutral-0);
 
       --clr-accordion-header-background-color: var(--clr-color-neutral-50);
+      --clr-accordion-header-disabled-background-color: var(--clr-global-selection-color);
       --clr-accordion-header-hover-background-color: var(--clr-color-neutral-200);
+      --clr-accordion-header-active-background-color: var(--clr-color-neutral-200);
       --clr-accordion-header-font-size: #{variables.$clr_baselineRem_0_65};
 
       --clr-accordion-header-button-font-size: #{variables.$clr_baselineRem_0_5};
+      --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
+      --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
+      --clr-accordion-number-padding: 0 #{accordion-variables.$clr-accordion-padding};
+
       --clr-accordion-title-font-weight: 500;
       --clr-accordion-title-font-size: #{variables.$clr_baselineRem_0_5416};
 
@@ -32,6 +42,7 @@
 
       --clr-accordion-border-left-color: #{accordion-variables.$clr-accordion-border-left-color};
       --clr-accordion-border-left-width: #{variables.$clr_baselineRem_0_25};
+      --clr-accordion-border-left-color-current: var(--clr-accordion-border-left-color);
       --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color);
       --clr-accordion-border-left-color-error: var(--clr-accordion-error-color);
 
@@ -41,6 +52,11 @@
         0
         0
         var(--clr-accordion-border-left-color);
+      --clr-accordion-header-left-current-indicator: inset
+        var(--clr-accordion-border-left-width)
+        0
+        0
+        var(--clr-accordion-border-left-color-current);
       --clr-accordion-header-left-complete-indicator: inset
         var(--clr-accordion-border-left-width)
         0
@@ -51,6 +67,17 @@
         0
         0
         var(--clr-accordion-border-left-color-error);
+
+      --clr-accordion-header-gap: 0;
+      --clr-accordion-status-icon-width: #{variables.$clr_baselineRem_0_8};
+
+      --clr-accordion-content-color: #{accordion-variables.$clr-accordion-content-color};
+      --clr-accordion-content-font-size: #{accordion-variables.$clr-accordion-content-font-size};
+      --clr-accordion-description-margin-left: #{accordion-variables.$clr-accordion-description-margin-left};
+      --clr-accordion-step-title-min-width: #{accordion-variables.$clr-accordion-step-title-min-width};
+      --clr-accordion-step-title-font-weight: #{accordion-variables.$clr-accordion-step-title-font-weight};
+      --clr-accordion-step-status-margin-left: #{accordion-variables.$clr-accordion-step-status-margin-left};
+      --clr-accordion-step-title-margin-left: #{accordion-variables.$clr-accordion-step-title-margin-left};
     }
   }
 }

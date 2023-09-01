@@ -1,6 +1,6 @@
 # Lists
 
-## Class names
+## CSS Classes
 
 | Class name    | Description                                           |
 | ------------- | ----------------------------------------------------- |

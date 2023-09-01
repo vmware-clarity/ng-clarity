@@ -96,7 +96,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   private _selected = false;
   private _detailOpenLabel = '';
   private _detailCloseLabel = '';
-  private _rowAriaLabel = '';
+  private _rowSelectionLabel = '';
   private wrappedInjector: Injector;
   private subscriptions: Subscription[] = [];
 
@@ -216,11 +216,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   // CDE-151: Rename this field to clrDgRowSelectionLabel in v16
   @Input()
-  get clrDgRowAriaLabel(): string {
-    return this._rowAriaLabel ? this._rowAriaLabel : this.commonStrings.keys.select;
+  get clrDgRowSelectionLabel(): string {
+    return this._rowSelectionLabel ? this._rowSelectionLabel : this.commonStrings.keys.select;
   }
-  set clrDgRowAriaLabel(label: string) {
-    this._rowAriaLabel = label;
+  set clrDgRowSelectionLabel(label: string) {
+    this._rowSelectionLabel = label;
   }
 
   get _view() {

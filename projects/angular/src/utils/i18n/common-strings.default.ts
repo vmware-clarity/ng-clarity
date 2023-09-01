@@ -73,10 +73,10 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Stack View
   stackViewChanged: 'Value changed.',
   // Responsive Nav
-  responsiveNavToggleOpen: 'Navigation menu',
-  responsiveNavToggleClose: 'Navigation menu',
-  responsiveNavOverflowOpen: 'Navigation overflow menu',
-  responsiveNavOverflowClose: 'Navigation overflow menu',
+  responsiveNavToggleOpen: 'Open navigation menu',
+  responsiveNavToggleClose: 'Close navigation menu',
+  responsiveNavOverflowOpen: 'Open navigation overflow menu',
+  responsiveNavOverflowClose: 'Close navigation overflow menu',
   //Vertical Nav
   verticalNavToggle: 'Toggle vertical navigation',
   // Timeline steps

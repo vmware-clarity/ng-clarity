@@ -25,3 +25,30 @@
     })
     export class AppModule {    }
     ```
+
+3.  Include the necessary styles in the build. You can do this by either including the compiled/minified css in your angular.json
+    file or by importing the scss/css directly in your top level styles.scss/css file.
+
+```
+  //...
+  "styles": [
+    "node_modules/@clr/ui/clr-ui.min.css",
+    //... any other styles
+  ]
+  //...
+```
+
+```scss
+@use '@clr/ui/clr-ui.min.css';
+```
+
+**Note**: The above instructions represent the best practice for Clarity Design System. For information about accommodating legacy themes, see the Legacy Styles section in the @clr/ui package.
+
+4.  Set the Theme
+    Add the `cds-theme=”light”` attribute to the body element in your main HTML file:
+
+```
+<body cds-theme="light" />
+```
+
+You can toggle to dark theme by setting cds-theme="dark".

@@ -4,11 +4,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables';
 @use 'variables.nav' as nav-variables;
 
 @include mixins.exports('links.clarity') {
   // only imported for demos. gives a static view of links in various states.
+  a:link {
+    /* 
+    * Due to the higher specificity of `a:link` over `.btn` and `.nav-link` it overrides the styles of both 
+    * which is not required. Also `.btn, .nav-link` doesn't need these styles, so we don't add them in these cases.
+    */
+    &:not(.btn, .nav-link) {
+      @include mixins.css-var(font-weight, clr-link-font-weight, inherit, variables.$clr-use-custom-properties);
+      @include mixins.css-var(font-size, clr-link-font-size, inherit, variables.$clr-use-custom-properties);
+      @include mixins.css-var(line-height, clr-link-line-height, inherit, variables.$clr-use-custom-properties);
+      @include mixins.css-var(letter-spacing, clr-link-letter-spacing, inherit, variables.$clr-use-custom-properties);
+    }
+  }
   a.link-normal:link {
     @include mixins.css-var(color, clr-link-color, nav-variables.$clr-link-color, variables.$clr-use-custom-properties);
   }

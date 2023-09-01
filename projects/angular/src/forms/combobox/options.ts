@@ -117,10 +117,14 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
           this.toggleService.open = false;
         }
       }),
-      this.items.changes.subscribe(() => {
-        setTimeout(() => {
-          this.focusHandler.focusFirstActive();
-        });
+      this.items.changes.subscribe(items => {
+        if (items.length) {
+          setTimeout(() => {
+            this.focusHandler.focusFirstActive();
+          });
+        } else {
+          this.focusHandler.pseudoFocus.pop();
+        }
       })
     );
   }
