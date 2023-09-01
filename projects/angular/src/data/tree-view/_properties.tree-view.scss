@@ -35,10 +35,6 @@
       --clr-tree-node-content-padding-left: #{tree-view-variables.$clr-tree-node-touch-target};
 
       --clr-tree-node-children-margin: #{tree-view-variables.$clr-tree-node-children-margin};
-      --clr-tree-checkbox-wrapper-padding: #{tree-view-variables.$clr-tree-checkbox-padding-top
-        0
-        0
-        tree-view-variables.$clr-tree-checkbox-padding-left};
       --clr-tree-node-content-hover-color: transparent;
     }
   }

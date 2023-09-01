@@ -362,12 +362,7 @@
   }
 
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
-    @include mixins.css-var(
-      padding,
-      clr-tree-checkbox-wrapper-padding,
-      tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left,
-      variables.$clr-use-custom-properties
-    );
+    padding: tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left;
 
     &:first-child {
       @include mixins.css-var(

@@ -1525,9 +1525,28 @@
   --clr-tree-caret-size: #{tokens.$cds-global-space-7};
   --clr-tree-caret-padding: 0;
   --clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-4};
-  --clr-tree-checkbox-wrapper-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
   --clr-tree-node-children-margin: #{tokens.$cds-global-space-10};
   --clr-tree-node-link-padding-left: 0; // ATM: remove later
+
+  // ATM: move to tree-view.clarity.scss
+  .clr-tree-node-content-container > .clr-checkbox-wrapper {
+    width: 100%;
+    padding: 0;
+    .clr-control-label {
+      width: 100%;
+      padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-10};
+
+      &:before {
+        left: #{tokens.$cds-global-space-5};
+        top: #{tokens.$cds-global-space-5};
+      }
+
+      &:after {
+        left: #{tokens.$cds-global-space-6};
+        top: #{tokens.$cds-global-space-5};
+      }
+    }
+  }
 
   /* Vertical Nav */
 
