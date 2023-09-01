@@ -1533,6 +1533,21 @@
     height: #{tokens.$cds-global-space-10};
   }
 
+  .clr-tree-node-content-container:focus-visible {
+    outline: none;
+  }
+
+  .clr-treenode-link:focus,
+  .clr-tree-node-content-container:focus > .clr-treenode-content .clr-treenode-link,
+  .clr-tree-node-content-container:focus > .clr-checkbox-wrapper .clr-control-label {
+    outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
+
+    // ATM: Use mixin for outlines
+    // @include mixins.include-slim-outline-style-form-fields();
+    outline: Highlight solid #{tokens.$cds-global-space-2};
+    outline: -webkit-focus-ring-color solid #{tokens.$cds-global-space-2};
+  }
+
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
     width: 100%;
     padding: 0;
