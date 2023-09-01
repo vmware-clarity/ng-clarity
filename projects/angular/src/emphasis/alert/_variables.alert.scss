@@ -602,11 +602,11 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
   }
 
   @if $property == icon {
-    @return $clr-alert-info-icon-color;
+    @return $clr-alert-info-bg-color;
   }
 
   @if $property == color {
-    @return $clr-alert-warning-font-color;
+    @return $clr-alert-info-font-color;
   }
 
   @return null;
@@ -618,7 +618,7 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
   }
 
   @if $property == icon {
-    @return $clr-alert-danger-icon-color;
+    @return $clr-alert-danger-bg-color;
   }
 
   @if $property == color {
@@ -634,7 +634,7 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
   }
 
   @if $property == icon {
-    @return $clr-alert-success-icon-color;
+    @return $clr-alert-success-bg-color;
   }
 
   @if $property == color {
@@ -650,7 +650,7 @@ $clr-app-alert-success-close-icon-hover-opacity: $clr-app-alert-close-icon-hover
   }
 
   @if $property == icon {
-    @return $clr-alert-warning-icon-color;
+    @return $clr-alert-warning-bg-color;
   }
 
   @if $property == color {

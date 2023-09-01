@@ -684,7 +684,7 @@
             @include mixins.css-var(
               font-size,
               clr-alert-lightweight-sm-font-size,
-              alert-variables.$clr-alert-font-size,
+              variables.$clr_baselineRem_0_458,
               variables.$clr-use-custom-properties
             );
             @include mixins.css-var(
