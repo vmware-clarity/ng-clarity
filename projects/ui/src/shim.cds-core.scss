@@ -1529,6 +1529,10 @@
   --clr-tree-node-link-padding-left: 0; // ATM: remove later
 
   // ATM: move to tree-view.clarity.scss
+  .clr-treenode-content {
+    height: #{tokens.$cds-global-space-10};
+  }
+
   .clr-tree-node-content-container > .clr-checkbox-wrapper {
     width: 100%;
     padding: 0;
