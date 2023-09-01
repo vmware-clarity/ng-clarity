@@ -39,10 +39,9 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
+      await expect(page.locator('body')).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
         caret: 'hide',
-        fullPage: true,
         threshold: 0,
       });
     });
