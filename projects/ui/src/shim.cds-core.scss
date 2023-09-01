@@ -597,9 +597,9 @@
   --clr-alert-icon-margin-left: 0; // ATM: delete after token migration
   --clr-alert-close-icon-size: #{tokens.$cds-global-space-9};
   --clr-alert-icon-size: #{tokens.$cds-global-space-9};
-  --clr-alert-close-button-size: #{tokens.$cds-global-space-11};
-  --clr-alert-lightweight-sm-padding: #{tokens.$cds-global-space-3} 0;
-  --clr-alert-lightweight-sm-icon-size: #{tokens.$cds-global-space-7};
+  --clr-alert-close-button-size: #{tokens.$cds-global-space-11}; // ATM: delete after token migration
+  --clr-alert-lightweight-sm-padding: #{tokens.$cds-global-space-3} 0; // ATM: delete after token migration
+  --clr-alert-lightweight-sm-icon-size: #{tokens.$cds-global-space-7}; // ATM: delete after token migration
   --clr-alert-lightweight-font-size: #{tokens.$cds-alias-typography-font-size-4};
   --clr-alert-lightweight-line-height: var(--clr-p2-line-height);
   --clr-alert-lightweight-sm-font-size: var(--clr-p6-font-size);
