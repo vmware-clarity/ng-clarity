@@ -41,7 +41,6 @@ import DatagridRowSpecs from './datagrid-row.spec';
 import DatagridSpecs from './datagrid.spec';
 import { addHelpers } from './helpers.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
-import ColumnsServiceSpec from './providers/columns.service.spec';
 import DisplayModeServiceSpecs from './providers/display-mode.service.spec';
 import FiltersProviderSpecs from './providers/filters.spec';
 import ItemsProviderSpecs from './providers/items.spec';
@@ -73,7 +72,6 @@ describe('Datagrid', function () {
     DisplayModeServiceSpecs();
     TableSizeServiceSpec();
     ColumnResizerServiceSpecs();
-    ColumnsServiceSpec();
   });
 
   describe('Components', function () {

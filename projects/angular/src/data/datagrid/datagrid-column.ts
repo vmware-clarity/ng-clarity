@@ -34,10 +34,10 @@ import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-fil
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
-import { ColumnsService } from './providers/columns.service';
 import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
+import { Page } from './providers/page';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
@@ -156,7 +156,7 @@ export class ClrDatagridColumn<T = any>
     private changeDetectorRef: ChangeDetectorRef,
     private smartPositionService: ClrPopoverPositionService,
     private smartEventsService: ClrPopoverEventsService,
-    private columnsService: ColumnsService
+    private page: Page
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -261,6 +261,9 @@ export class ClrDatagridColumn<T = any>
   @ContentChild(CustomFilter)
   set projectedFilter(custom: any) {
     if (custom) {
+      if (custom.filter && !this.page.activated) {
+        this.subscriptions.push(this.listenForFilterChanges(custom.filter));
+      }
       this.deleteFilter();
       this.customFilter = true;
     }
@@ -381,10 +384,18 @@ export class ClrDatagridColumn<T = any>
     });
   }
 
-  private listenForFilterChanges() {
-    return this.filter.changes
+  /**
+   * Basically we have 2 states of the datagrid.
+   * If we have pagination and page size ( items per page ) then we automatically set a height for the whole datagrid
+   * and height changing is not appearing, so the scroll event is not triggered and the filter popover stays on. Although when there is no
+   * pagination and page size, then we don't set that and basically the height of the datagrid can change based on the items inside.
+   * So now with the update when we don't have a page size we listen for filter changes and stop listening for scroll events while
+   *  aligning the popover to its new position.
+   */
+  private listenForFilterChanges(filter = this.filter) {
+    return filter.changes
       .pipe(
-        skipWhile(() => !!this.columnsService.host?.el?.nativeElement?.style.height),
+        skipWhile(() => !filter || this.page.activated),
         tap(() => {
           this.smartEventsService.removeScrollListener();
           this.smartPositionService.realign();
@@ -409,6 +420,8 @@ export class ClrDatagridColumn<T = any>
       // if this field property is set again
       delete this.initFilterValue;
     }
-    this.subscriptions.push(this.listenForFilterChanges());
+    if (!this.page.activated && this.filter) {
+      this.subscriptions.push(this.listenForFilterChanges());
+    }
   }
 }

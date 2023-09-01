@@ -1138,8 +1138,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     detailService: DetailService;
     // (undocumented)
     _displayedRows: ViewContainerRef;
-    // (undocumented)
-    el: ElementRef;
     // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -1251,7 +1249,7 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, smartPositionService: ClrPopoverPositionService, smartEventsService: ClrPopoverEventsService, columnsService: ColumnsService);
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, smartPositionService: ClrPopoverPositionService, smartEventsService: ClrPopoverEventsService, page: Page);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
