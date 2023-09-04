@@ -45,69 +45,6 @@
       tree-view-variables.$clr-tree-node-letter-spacing,
       variables.$clr-use-custom-properties
     );
-
-    &:disabled {
-      @include mixins.css-var(
-        color,
-        clr-tree-node-content-disabled-color,
-        tree-view-variables.$clr-tree-node-caret-link-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    .clr-treenode-content .clr-treenode-link,
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label,
-    .clr-treenode-content .clr-treenode-link.active,
-    .clr-checkbox-wrapper input[type='checkbox']:checked + .clr-control-label {
-      cds-icon,
-      clr-icon {
-        @include mixins.css-var(color, clr-tree-node-content-color, black, variables.$clr-use-custom-properties);
-      }
-      &:hover {
-        @include mixins.css-var(color, clr-tree-node-content-hover-color, black, variables.$clr-use-custom-properties);
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-hover-color,
-          transparent,
-          variables.$clr-use-custom-properties
-        );
-
-        cds-icon,
-        clr-icon {
-          @include mixins.css-var(
-            color,
-            clr-tree-node-content-hover-color,
-            black,
-            variables.$clr-use-custom-properties
-          );
-        }
-      }
-
-      &:active {
-        @if variables.$clr-use-custom-properties == true {
-          color: var(--clr-tree-node-content-active-color);
-        }
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-active-color,
-          transparent,
-          variables.$clr-use-custom-properties
-        );
-      }
-    }
-
-    .clr-treenode-content .clr-treenode-link.active,
-    .clr-checkbox-wrapper input[type='checkbox']:checked + .clr-control-label {
-      @if variables.$clr-use-custom-properties == true {
-        color: var(--clr-tree-node-content-selected-color);
-      }
-      @include mixins.css-var(
-        background,
-        clr-tree-node-content-bg-selected-color,
-        transparent,
-        variables.$clr-use-custom-properties
-      );
-    }
   }
 
   .clr-treenode-content {
@@ -117,10 +54,6 @@
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-
-    @include mixins.css-var(color, clr-tree-node-content-color, inherit, variables.$clr-use-custom-properties);
-
-    //@include mixins.css-var(padding, clr-tree-node-content-padding, 0, variables.$clr-use-custom-properties);
 
     //Dimensions
     &:first-child {
@@ -156,8 +89,8 @@
       variables.$clr-use-custom-properties
     );
 
-    & > cds-icon,
-    & > clr-icon {
+    cds-icon,
+    clr-icon {
       @include mixins.min-equilateral-var(
         clr-tree-caret-size,
         tree-view-variables.$clr-tree-caret-size,
@@ -227,15 +160,6 @@
         variables.$clr-use-custom-properties
       );
     }
-    &:disabled,
-    &.disabled {
-      @include mixins.css-var(
-        color,
-        clr-tree-node-caret-link-disabled-color,
-        tree-view-variables.$clr-tree-node-caret-link-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-    }
   }
 
   .clr-tree-node-caret-icon {
@@ -280,14 +204,12 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    @include mixins.css-var(padding, clr-tree-node-content-padding, 0, variables.$clr-use-custom-properties);
-    //padding: 0;
-    //@include mixins.css-var(
-    //  padding-left,
-    //  clr-tree-node-link-padding-left,
-    //  tree-view-variables.$clr-tree-node-link-padding-left,
-    //  variables.$clr-use-custom-properties
-    //);
+    @include mixins.css-var(
+      padding,
+      clr-tree-node-content-padding,
+      0 0 0 tree-view-variables.$clr-tree-node-link-padding-left,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     background: transparent;
@@ -321,15 +243,6 @@
       text-decoration: none;
     }
 
-    &:active {
-      @include mixins.css-var(
-        background,
-        clr-tree-node-content-bg-active-color,
-        transparent,
-        variables.$clr-use-custom-properties
-      );
-    }
-
     // selected
     &.active {
       @include mixins.css-var(
@@ -344,21 +257,6 @@
         tree-view-variables.$clr-tree-node-caret-link-hover-color,
         variables.$clr-use-custom-properties
       );
-
-      &:active {
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-active-color,
-          tree-view-variables.$clr-tree-link-selection-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          color,
-          clr-tree-node-caret-link-hover-color,
-          tree-view-variables.$clr-tree-node-caret-link-hover-color,
-          variables.$clr-use-custom-properties
-        );
-      }
     }
   }
 
