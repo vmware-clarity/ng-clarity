@@ -1580,13 +1580,13 @@
   }
 
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-checkbox-wrapper input[type='checkbox']:checked + .clr-control-label {
+  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
     color: var(--clr-tree-node-content-selected-color);
     background-color: var(--clr-tree-node-content-bg-selected-color);
   }
 
   .clr-treenode-content .clr-treenode-link,
-  .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
+  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
     border-radius: #{tokens.$cds-alias-object-border-radius-100};
     color: var(--clr-tree-node-content-color);
     background-color: var(--clr-tree-node-content-bg-color);
@@ -1623,7 +1623,7 @@
 
   .clr-treenode-link:focus,
   .clr-tree-node-content-container:focus > .clr-treenode-content .clr-treenode-link,
-  .clr-tree-node-content-container:focus > .clr-checkbox-wrapper .clr-control-label {
+  .clr-tree-node-content-container:focus > .clr-treenode-checkbox .clr-control-label {
     outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
 
     // ATM: Use mixin for outlines
@@ -1632,7 +1632,7 @@
     outline: -webkit-focus-ring-color solid #{tokens.$cds-global-space-2};
   }
 
-  .clr-tree-node-content-container > .clr-checkbox-wrapper {
+  .clr-tree-node-content-container > .clr-treenode-checkbox {
     width: 100%;
     padding: 0;
     .clr-control-label {
