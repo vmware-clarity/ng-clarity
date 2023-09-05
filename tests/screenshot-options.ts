@@ -4,20 +4,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export const ScreenshotOptions: { [key: string]: { fullPageScreenshot: boolean } } = {
+type ScreenshotOptionsT = {
+  [key: string]: { fullPageScreenshot: boolean };
+};
+
+export const ScreenshotOptions: ScreenshotOptionsT = {
   dropdown: {
     fullPageScreenshot: true,
   },
-  'dropdown-static': {
-    fullPageScreenshot: true,
-  },
-  'headers-static': {
+  'headers-static--variants': {
     fullPageScreenshot: true,
   },
   wizard: {
-    fullPageScreenshot: true,
-  },
-  'wizard-page': {
     fullPageScreenshot: true,
   },
 };
