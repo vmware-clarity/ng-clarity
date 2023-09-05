@@ -1565,6 +1565,11 @@
   //{
   //  color: var(--clr-tree-node-content-disabled-color);
   //  background-color: var(--clr-tree-node-content-bg-disabled-color);
+  //
+  //    cds-icon,
+  //    clr-icon {
+  //      color: var(--clr-tree-node-caret-link-disabled-color);
+  //    }
   //}
 
   // ATM: move to tree-view.clarity.scss
@@ -1581,10 +1586,6 @@
 
   .clr-treenode-content:not(:has(.clr-treenode-link)) {
     padding-left: #{tokens.$cds-global-space-5};
-
-    &:first-child {
-      padding-left: calc(var(--clr-tree-node-content-padding-left) + #{tokens.$cds-global-space-5});
-    }
   }
 
   .clr-treenode-content .clr-treenode-link.active,

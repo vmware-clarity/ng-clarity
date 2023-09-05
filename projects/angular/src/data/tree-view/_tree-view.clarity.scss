@@ -58,7 +58,7 @@
     //Dimensions
     &:first-child {
       @include mixins.css-var(
-        padding-left,
+        margin-left,
         clr-tree-node-content-padding-left,
         tree-view-variables.$clr-tree-node-touch-target,
         variables.$clr-use-custom-properties
