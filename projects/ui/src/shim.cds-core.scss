@@ -1581,6 +1581,10 @@
 
   .clr-treenode-content:not(:has(.clr-treenode-link)) {
     padding-left: #{tokens.$cds-global-space-5};
+
+    &:first-child {
+      padding-left: calc(var(--clr-tree-node-content-padding-left) + #{tokens.$cds-global-space-5});
+    }
   }
 
   .clr-treenode-content .clr-treenode-link.active,
