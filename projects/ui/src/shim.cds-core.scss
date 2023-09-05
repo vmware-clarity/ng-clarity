@@ -1579,6 +1579,10 @@
     }
   }
 
+  .clr-treenode-content:not(:has(.clr-treenode-link)) {
+    padding-left: #{tokens.$cds-global-space-5};
+  }
+
   .clr-treenode-content .clr-treenode-link.active,
   .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
     color: var(--clr-tree-node-content-selected-color);
@@ -1621,8 +1625,7 @@
     outline: none;
   }
 
-  .clr-treenode-link:focus,
-  .clr-tree-node-content-container:focus > .clr-treenode-content .clr-treenode-link,
+  .clr-tree-node-content-container:focus > .clr-treenode-content,
   .clr-tree-node-content-container:focus > .clr-treenode-checkbox .clr-control-label {
     outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
 
