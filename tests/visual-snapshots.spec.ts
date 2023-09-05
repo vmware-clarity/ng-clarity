@@ -41,9 +41,9 @@ for (const { storyId, component } of stories) {
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
       const body = await page.locator('body');
-      if (ScreenshotOptions[component] && ScreenshotOptions[component].fullPageScreenshot) {
+      if (takeFullPageScreenshot(component, storyName)) {
         await body.evaluate(() => {
-          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight + 48}px`);
+          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight}px`);
         });
       }
 
@@ -55,5 +55,9 @@ for (const { storyId, component } of stories) {
     });
   }
 }
+
+const takeFullPageScreenshot = (component, storyName) => {
+  return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
+};
 
 handleUnusedScreenshots(usedScreenshotPaths);
