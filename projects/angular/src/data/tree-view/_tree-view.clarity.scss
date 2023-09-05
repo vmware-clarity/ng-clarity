@@ -59,7 +59,7 @@
     &:first-child {
       @include mixins.css-var(
         margin-left,
-        clr-tree-node-content-padding-left,
+        clr-tree-node-content-margin-left,
         tree-view-variables.$clr-tree-node-touch-target,
         variables.$clr-use-custom-properties
       );
