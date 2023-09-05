@@ -319,23 +319,6 @@
   //     margin-bottom: .5rem;
   // }
 
-  // Work around a Firefox/IE bug where the transparent `button` background
-  // results in a loss of the default `button` focus styles.
-  //
-  // Credit: https://github.com/suitcss/base/
-  button:focus {
-    outline: 2px solid -webkit-focus-ring-color;
-    outline-offset: 1px;
-  }
-
-  button:-moz-focusring,
-  [type='button']:-moz-focusring,
-  [type='reset']:-moz-focusring,
-  [type='submit']:-moz-focusring {
-    outline: 2px solid Highlight;
-    outline-offset: 1px;
-  }
-
   input,
   button,
   select,

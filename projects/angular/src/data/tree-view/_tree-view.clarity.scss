@@ -7,7 +7,6 @@
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use '../../forms/styles/variables.forms' as forms-variables;
 @use 'variables.tree-view' as tree-view-variables;
 @include meta.load-css('properties.tree-view');
 
@@ -56,15 +55,11 @@
     display: flex;
     align-items: center;
 
-    @include mixins.css-var(color, clr-tree-node-text-color, inherit, variables.$clr-use-custom-properties);
-
-    @include mixins.css-var(padding, clr-tree-node-content-padding, 0, variables.$clr-use-custom-properties);
-
     //Dimensions
     &:first-child {
       @include mixins.css-var(
-        padding-left,
-        clr-tree-node-content-padding-left,
+        margin-left,
+        clr-tree-node-content-margin-left,
         tree-view-variables.$clr-tree-node-touch-target,
         variables.$clr-use-custom-properties
       );
@@ -165,14 +160,6 @@
         variables.$clr-use-custom-properties
       );
     }
-    &:disabled {
-      @include mixins.css-var(
-        color,
-        clr-tree-node-caret-link-disabled-color,
-        tree-view-variables.$clr-tree-node-caret-link-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-    }
   }
 
   .clr-tree-node-caret-icon {
@@ -217,11 +204,10 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    padding: 0;
     @include mixins.css-var(
-      padding-left,
-      clr-tree-node-link-padding-left,
-      tree-view-variables.$clr-tree-node-link-padding-left,
+      padding,
+      clr-tree-node-content-padding,
+      0 0 0 tree-view-variables.$clr-tree-node-link-padding-left,
       variables.$clr-use-custom-properties
     );
 
@@ -257,15 +243,6 @@
       text-decoration: none;
     }
 
-    &:active {
-      @include mixins.css-var(
-        background,
-        clr-tree-node-content-bg-active-color,
-        transparent,
-        variables.$clr-use-custom-properties
-      );
-    }
-
     // selected
     &.active {
       @include mixins.css-var(
@@ -280,31 +257,11 @@
         tree-view-variables.$clr-tree-node-caret-link-hover-color,
         variables.$clr-use-custom-properties
       );
-
-      &:active {
-        @include mixins.css-var(
-          background,
-          clr-tree-node-content-bg-active-color,
-          tree-view-variables.$clr-tree-link-selection-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          color,
-          clr-tree-node-caret-link-hover-color,
-          tree-view-variables.$clr-tree-node-caret-link-hover-color,
-          variables.$clr-use-custom-properties
-        );
-      }
     }
   }
 
-  .clr-tree-node-content-container > .clr-checkbox-wrapper {
-    @include mixins.css-var(
-      padding,
-      clr-tree-checkbox-wrapper-padding,
-      tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left,
-      variables.$clr-use-custom-properties
-    );
+  .clr-tree-node-content-container > .clr-treenode-checkbox {
+    padding: tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left;
 
     &:first-child {
       @include mixins.css-var(

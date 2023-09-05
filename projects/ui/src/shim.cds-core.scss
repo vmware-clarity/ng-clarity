@@ -1523,24 +1523,23 @@
   --clr-tree-node-caret-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
   --clr-tree-node-caret-link-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
-  --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover}; // indirectly mapped
-  --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected}; // indirectly mapped
+  // Deprecated replaced by clr-tree-node-content-bg-hover-color and clr-tree-node-content-bg-selected-color
+  --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+  --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
-  --clr-tree-node-text-color: #{tokens.$cds-alias-object-interaction-color};
-  --clr-tree-node-text-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
-  --clr-tree-node-text-active-color: #{tokens.$cds-alias-object-interaction-color-active};
-  --clr-tree-node-text-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
-  --clr-tree-node-text-disabled-color: #{tokens.$cds-alias-typography-disabled};
-
+  --clr-tree-node-content-color: #{tokens.$cds-alias-object-interaction-color};
   --clr-tree-node-content-bg-color: #{tokens.$cds-alias-object-opacity-0};
+  --clr-tree-node-content-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
   --clr-tree-node-content-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+  --clr-tree-node-content-active-color: #{tokens.$cds-alias-object-interaction-color-active};
   --clr-tree-node-content-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+  --clr-tree-node-content-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
   --clr-tree-node-content-bg-selected-color: #{tokens.$cds-alias-object-interaction-background-selected};
+  --clr-tree-node-content-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-tree-node-content-bg-disabled-color: #{tokens.$cds-alias-object-opacity-0};
 
-  --clr-treenode-content-padding: #{tokens.$cds-global-space-5}; // ATM: remove, deprecated
-  --clr-tree-node-content-padding: var(--clr-treenode-content-padding);
-  --clr-tree-node-content-padding-left: calc(#{tokens.$cds-global-space-10} + #{tokens.$cds-global-space-5});
+  --clr-tree-node-content-padding: #{tokens.$cds-global-space-5};
+  --clr-tree-node-content-margin-left: #{tokens.$cds-global-space-10};
   --clr-tree-node-content-line-height: #{tokens.$cds-global-space-7};
   --clr-tree-node-touch-target: #{tokens.$cds-global-space-10};
 
@@ -1551,10 +1550,114 @@
 
   --clr-tree-caret-size: #{tokens.$cds-global-space-7};
   --clr-tree-caret-padding: 0;
-  --clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-4};
-  --clr-tree-checkbox-wrapper-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
+  --clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-5};
   --clr-tree-node-children-margin: #{tokens.$cds-global-space-10};
   --clr-tree-node-link-padding-left: 0; // ATM: remove later
+
+  // ATM: move to tree-view.clarity.scss
+  // TODO: add disabled logic with different JIRA task
+  //.clr-tree-node.disabled .clr-treenode-caret,
+  //.clr-tree-node.disabled .clr-treenode-link,
+  //.clr-tree-node.disabled .clr-treenode-content,
+  //.clr-tree-node.disabled .clr-treenode-checkbox .clr-control-label,
+  //.clr-tree-node.disabled .clr-treenode-checkbox .clr-control-label::before,
+  //.clr-tree-node.disabled .clr-treenode-checkbox .clr-control-label::after
+  //{
+  //  color: var(--clr-tree-node-content-disabled-color);
+  //  background-color: var(--clr-tree-node-content-bg-disabled-color);
+  //
+  //    cds-icon,
+  //    clr-icon {
+  //      color: var(--clr-tree-node-caret-link-disabled-color);
+  //    }
+  //}
+
+  // ATM: move to tree-view.clarity.scss
+  .clr-treenode-content {
+    height: #{tokens.$cds-global-space-10};
+    color: #{tokens.$cds-alias-typography-color-400}; // static text content color
+    background-color: var(--clr-tree-node-content-bg-color);
+
+    cds-icon,
+    clr-icon {
+      color: #{tokens.$cds-alias-typography-color-400}; // static text content color
+    }
+  }
+
+  .clr-treenode-content:not(:has(.clr-treenode-link)) {
+    padding-left: #{tokens.$cds-global-space-5};
+  }
+
+  .clr-treenode-content .clr-treenode-link.active,
+  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+    color: var(--clr-tree-node-content-selected-color);
+    background-color: var(--clr-tree-node-content-bg-selected-color);
+  }
+
+  .clr-treenode-content .clr-treenode-link,
+  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+    border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    color: var(--clr-tree-node-content-color);
+    background-color: var(--clr-tree-node-content-bg-color);
+
+    cds-icon,
+    clr-icon {
+      color: var(--clr-tree-node-content-color);
+    }
+
+    &:hover {
+      color: var(--clr-tree-node-content-hover-color);
+      background-color: var(--clr-tree-node-content-bg-hover-color);
+
+      cds-icon,
+      clr-icon {
+        color: var(--clr-tree-node-content-hover-color);
+      }
+    }
+
+    &:active {
+      color: var(--clr-tree-node-content-active-color);
+      background-color: var(--clr-tree-node-content-bg-active-color);
+
+      cds-icon,
+      clr-icon {
+        color: var(--clr-tree-node-content-active-color);
+      }
+    }
+  }
+
+  .clr-tree-node-content-container:focus-visible {
+    outline: none;
+  }
+
+  .clr-tree-node-content-container:focus > .clr-treenode-content,
+  .clr-tree-node-content-container:focus > .clr-treenode-checkbox .clr-control-label {
+    outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
+
+    // ATM: Use mixin for outlines
+    // @include mixins.include-slim-outline-style-form-fields();
+    outline: Highlight solid #{tokens.$cds-global-space-2};
+    outline: -webkit-focus-ring-color solid #{tokens.$cds-global-space-2};
+  }
+
+  .clr-tree-node-content-container > .clr-treenode-checkbox {
+    width: 100%;
+    padding: 0;
+    .clr-control-label {
+      width: 100%;
+      padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-10};
+
+      &:before {
+        left: #{tokens.$cds-global-space-5};
+        top: #{tokens.$cds-global-space-5};
+      }
+
+      &:after {
+        left: #{tokens.$cds-global-space-6};
+        top: #{tokens.$cds-global-space-5};
+      }
+    }
+  }
 
   /* Vertical Nav */
 
