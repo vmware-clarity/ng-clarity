@@ -40,12 +40,15 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      // const body  await page.locator('body');
-      const fullPage: boolean = !!ScreenshotOptions[component] && ScreenshotOptions[component].fullPageScreenshot;
+      const body = await page.locator('body');
+      if (ScreenshotOptions[component] && ScreenshotOptions[component].fullPageScreenshot) {
+        await body.evaluate(() => {
+          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight + 48}px`);
+        });
+      }
 
-      await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
+      await expect(body).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
-        fullPage,
         caret: 'hide',
         threshold: 0,
       });
