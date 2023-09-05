@@ -43,7 +43,7 @@ for (const { storyId, component } of stories) {
       const body = await page.locator('body');
       if (ScreenshotOptions[component] && ScreenshotOptions[component].fullPageScreenshot) {
         await body.evaluate(() => {
-          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight}px`);
+          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight + 48}px`);
         });
       }
 
