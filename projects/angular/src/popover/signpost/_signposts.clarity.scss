@@ -26,7 +26,7 @@
       // to be removed once shim is fully integrated.
       @include mixins.css-var(
         min-width,
-        clr-signpost-action-icon-dimension,
+        clr-signpost-action-icon-size,
         variables.$clr_baselineRem_1,
         variables.$clr-use-custom-properties
       );
@@ -45,7 +45,7 @@
         // ATM (after token migration)
         // to be removed once shim is fully integrated.
         @include mixins.equilateral-var(
-          clr-signpost-action-icon-dimension,
+          clr-signpost-action-icon-size,
           variables.$clr_baselineRem_1,
           variables.$clr-use-custom-properties
         );
@@ -89,14 +89,11 @@
         variables.$clr-use-custom-properties
       );
 
-      @include mixins.min-equilateral-var(clr-signpost-content-close-button-dimensions, variables.$clr_baselineRem_1);
+      @include mixins.min-equilateral-var(clr-signpost-content-close-button-size, variables.$clr_baselineRem_1);
 
       cds-icon,
       clr-icon {
-        @include mixins.min-equilateral-var(
-          clr-signpost-content-close-icon-dimensions,
-          variables.$clr_baselineRem_0_667
-        );
+        @include mixins.min-equilateral-var(clr-signpost-content-close-icon-size, variables.$clr_baselineRem_0_667);
       }
     }
   }
@@ -604,7 +601,6 @@
       absolute,
       variables.$clr-use-custom-properties
     );
-    @include mixins.css-var(padding, clr-signpost-content-header-padding, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-radius,
       clr-signpost-border-radius,
@@ -614,6 +610,8 @@
   }
 
   .signpost-wrap {
+    @include mixins.css-var(padding, clr-signpost-padding, 0, variables.$clr-use-custom-properties);
+    @include mixins.css-var(gap, clr-signpost-gap-size, 0, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       border-radius,
       clr-signpost-border-radius,
@@ -641,15 +639,12 @@
     );
     z-index: map.get(variables.$clr-layers, tooltips);
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   .signpost-content-body {
-    @include mixins.css-var(
-      padding,
-      clr-signpost-content-padding,
-      variables.$clr_baselineRem_1,
-      variables.$clr-use-custom-properties
-    );
+    padding: variables.$clr_baselineRem_1;
     @include mixins.css-var(
       color,
       clr-signpost-content-color,
