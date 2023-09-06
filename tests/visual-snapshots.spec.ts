@@ -11,6 +11,7 @@ import * as path from 'path';
 import { THEMES } from '../.storybook/helpers/constants';
 import { handleUnusedScreenshots } from './helpers/handle-unused-screenshots';
 import { Story } from './helpers/story.interface';
+import { ScreenshotOptions } from './screenshot-options';
 
 const usedScreenshotPaths: string[] = [];
 
@@ -39,14 +40,24 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
+      const body = await page.locator('body');
+      if (takeFullPageScreenshot(component, storyName)) {
+        await body.evaluate(() => {
+          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight}px`);
+        });
+      }
+
+      await expect(body).toHaveScreenshot(screenshotPath.split(path.sep), {
         animations: 'disabled',
         caret: 'hide',
-        fullPage: true,
         threshold: 0,
       });
     });
   }
 }
+
+const takeFullPageScreenshot = (component, storyName) => {
+  return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
+};
 
 handleUnusedScreenshots(usedScreenshotPaths);
