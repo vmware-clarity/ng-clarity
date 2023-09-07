@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ControlIdService } from './providers/control-id.service';
@@ -34,6 +44,18 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
+  }
+
+  /**
+   * Allowing signposts inside labels to work without disabling default behavior. <label> is spreading a click event to its children so signposts get
+   * automatically closed once clicked inside a <label>.
+   * @param event
+   */
+  @HostListener('click', ['$event'])
+  onClick(event) {
+    if (event.target.hasAttribute('clrSignpostTrigger')) {
+      event.preventDefault();
+    }
   }
 
   ngOnInit() {
