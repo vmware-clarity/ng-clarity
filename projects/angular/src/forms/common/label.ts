@@ -6,6 +6,7 @@
  */
 
 import {
+  ContentChild,
   Directive,
   ElementRef,
   HostBinding,
@@ -18,6 +19,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrSignpost } from '../../popover';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
@@ -28,6 +30,7 @@ import { NgControlService } from './providers/ng-control.service';
 export class ClrLabel implements OnInit, OnDestroy {
   @Input('id') idInput: string;
   @HostBinding('attr.id') idAttr: string;
+  @ContentChild(ClrSignpost, { read: ElementRef }) signpost: ElementRef;
 
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
@@ -53,9 +56,7 @@ export class ClrLabel implements OnInit, OnDestroy {
    */
   @HostListener('click', ['$event'])
   onClick(event) {
-    if (event.target.hasAttribute('clrSignpostTrigger')) {
-      event.preventDefault();
-    }
+    this.preventOnSignpostTarget(event);
   }
 
   ngOnInit() {
@@ -90,5 +91,11 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   disableGrid() {
     this.enableGrid = false;
+  }
+
+  preventOnSignpostTarget(event) {
+    if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target)) {
+      event.preventDefault();
+    }
   }
 }
