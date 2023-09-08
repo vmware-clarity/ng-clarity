@@ -9,9 +9,14 @@ import { AccordionModel } from '../../models/accordion.model';
 
 export class StepperModel extends AccordionModel {
   private stepperModelInitialize = false;
+  private initialPanel: string;
 
   get allPanelsCompleted(): boolean {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
+  }
+
+  get shouldOpenFirstPanel() {
+    return !this.initialPanel || (this._panels && Object.keys(this._panels).length && !this._panels[this.initialPanel]);
   }
 
   override addPanel(id: string, open = false) {
@@ -42,6 +47,7 @@ export class StepperModel extends AccordionModel {
   }
 
   overrideInitialPanel(panelId: string) {
+    this.initialPanel = panelId;
     this.panels
       .filter(() => this._panels[panelId] !== undefined)
       .forEach(panel => {
@@ -81,6 +87,9 @@ export class StepperModel extends AccordionModel {
   }
 
   private openFirstPanel() {
+    if (!this.shouldOpenFirstPanel) {
+      return;
+    }
     const firstPanel = this.getFirstPanel();
     /**
      * You need to call updatePanelOrder first to get the correct order,
