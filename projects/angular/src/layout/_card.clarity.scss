@@ -216,7 +216,7 @@
     @include mixins.css-var(
       font-size,
       clr-card-header-title-font-size,
-      variables.$clr-h3-font-size,
+      card-variables.$clr-card-title-font-size,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -244,7 +244,7 @@
     @include mixins.css-var(
       font-size,
       clr-card-content-title-font-size,
-      variables.$clr-h4-font-size,
+      card-variables.$clr-card-title-font-size,
       variables.$clr-use-custom-properties
     );
   }
