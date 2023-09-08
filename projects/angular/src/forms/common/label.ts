@@ -30,10 +30,10 @@ import { NgControlService } from './providers/ng-control.service';
 export class ClrLabel implements OnInit, OnDestroy {
   @Input('id') idInput: string;
   @HostBinding('attr.id') idAttr: string;
-  @ContentChild(ClrSignpost, { read: ElementRef }) signpost: ElementRef;
 
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
+  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost: ElementRef;
   private enableGrid = true;
   private subscriptions: Subscription[] = [];
 
@@ -47,16 +47,6 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
-  }
-
-  /**
-   * Allowing signposts inside labels to work without disabling default behavior. <label> is spreading a click event to its children so signposts get
-   * automatically closed once clicked inside a <label>.
-   * @param event
-   */
-  @HostListener('click', ['$event'])
-  onClick(event) {
-    this.preventOnSignpostTarget(event);
   }
 
   ngOnInit() {
@@ -91,6 +81,16 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   disableGrid() {
     this.enableGrid = false;
+  }
+
+  /**
+   * Allowing signposts inside labels to work without disabling default behavior. <label> is spreading a click event to its children so signposts get
+   * automatically closed once clicked inside a <label>.
+   * @param event
+   */
+  @HostListener('click', ['$event'])
+  private onClick(event) {
+    this.preventDefaultOnSignpostTarget(event);
   }
 
   private preventDefaultOnSignpostTarget(event) {
