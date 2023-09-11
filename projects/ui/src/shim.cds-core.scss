@@ -22,6 +22,7 @@
   --clr-global-font-size: #{tokens.$cds-global-base};
   --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
   --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
+  --clr-font: #{tokens.$cds-global-typography-font-family};
 
   // app background
   --clr-global-app-background: #{tokens.$cds-alias-object-app-background}; // #{$clr-global-app-background}; // $clr-color-neutral-50

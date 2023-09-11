@@ -18,7 +18,7 @@ const usedScreenshotPaths: string[] = [];
 const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
-  if (!storyId.includes('--variants')) {
+  if (storyId.endsWith('--default') || !component) {
     continue;
   }
 
