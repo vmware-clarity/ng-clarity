@@ -436,3 +436,59 @@
     </div>
   </div>
 </form>
+
+<h3>Stepper with clrIfExpanded directive</h3>
+<h6>Programmatically change step after async call</h6>
+<button (click)="changeStep()" class="btn">Change step on async response</button>
+<form
+  *ngIf="!loading; else loadingTmp"
+  clrStepper
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  [clrInitialStep]="initialStep"
+>
+  <clr-stepper-panel formGroupName="name">
+    <clr-step-title>Legal Name</clr-step-title>
+    <clr-step-description>
+      <span *ngIf="!stepsExpandedState.name; else opened">Closed</span>
+    </clr-step-description>
+    <clr-step-content [(clrIfExpanded)]="stepsExpandedState.name">
+      <clr-input-container>
+        <label>First Name</label>
+        <input clrInput formControlName="first" />
+        <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Last Name</label>
+        <input clrInput formControlName="last" />
+        <clr-control-error *clrIfError="'required'">Last Name Required</clr-control-error>
+      </clr-input-container>
+
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+
+  <clr-stepper-panel formGroupName="contact">
+    <clr-step-title>Contact Information</clr-step-title>
+    <clr-step-description>
+      <span *ngIf="!stepsExpandedState.contact; else opened">Closed</span>
+    </clr-step-description>
+    <clr-step-content [(clrIfExpanded)]="stepsExpandedState.contact">
+      ...
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+
+  <clr-stepper-panel formGroupName="password">
+    <clr-step-title>Password</clr-step-title>
+    <clr-step-description>...</clr-step-description>
+    <clr-step-content [(clrIfExpanded)]="stepsExpandedState.password">
+      ...
+      <button clrStepButton="submit">submit</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+</form>
+
+<ng-template #opened> Opened </ng-template>
+<ng-template #loadingTmp> Loading... </ng-template>
