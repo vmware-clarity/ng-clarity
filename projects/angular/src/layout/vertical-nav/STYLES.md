@@ -30,6 +30,7 @@
 | --clr-vertical-nav-header-padding               | Vertical nav header padding               |
 | --clr-vertical-nav-header-font-size             | Vertical nav header font size             |
 | --clr-vertical-nav-header-line-height           | Vertical nav header line height           |
+| --clr-vertical-nav-item-active-font-weight      | Vertical nav item active font weight      |
 
 ## CSS Classes
 
