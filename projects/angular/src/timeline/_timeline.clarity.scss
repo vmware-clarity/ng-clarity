@@ -7,12 +7,16 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
 @use 'variables.timeline' as timeline-variables;
+@use 'sass:map';
 @include meta.load-css('properties.timeline');
 
 @include mixins.exports('timeline.clarity') {
   .clr-timeline {
     display: flex;
     padding: timeline-variables.$clr-timeline-padding-width;
+    clr-spinner {
+      z-index: map.get(variables.$clr-layers, timeline-spinner);
+    }
   }
 
   .clr-timeline-step {
