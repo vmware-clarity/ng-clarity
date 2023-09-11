@@ -13,65 +13,124 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <form clrForm>
-      <clr-input-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Text</label>
-        <input clrInput name="name" value="Test Value" [ngModel]="name" [disabled]="isDisabled"/>
-      </clr-input-container>
-      <clr-input-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Number</label>
-        <input clrInput type="number" [ngModel]="age" name="age" [disabled]="isDisabled"/>
-      </clr-input-container>
-      <clr-password-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Password</label>
-        <input clrPassword autocomplete="current-password" [ngModel]="password" name="password" [disabled]="isDisabled"/>
-      </clr-password-container>
-      <clr-textarea-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Textarea</label>
-        <textarea clrTextarea [ngModel]="description" name="description" [disabled]="isDisabled"></textarea>
-      </clr-textarea-container>
-      <clr-select-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Select</label>
-        <select clrSelect [ngModel]="options" name="options" [disabled]="isDisabled">
-          <option value="one">One</option>
-          <option value="two">Two</option>
-          <option value="three">Three</option>
-        </select>
-      </clr-select-container>
-      <clr-checkbox-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Checkbox</label>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" clrCheckbox value="option1" [ngModel]="options1" name="options1" [disabled]="isDisabled"/>
-          <label>Option 1</label>
-        </clr-checkbox-wrapper>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" clrCheckbox value="option2" [ngModel]="options2" name="options2" [disabled]="isDisabled"/>
-          <label>Option 2</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label class="clr-control-label">Text</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+          <div class="clr-input-wrapper">
+            <input type="text" class="clr-input" name="name" [ngModel]="name" [disabled]="isDisabled"/>
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Subtext</span>
+        </div>
+      </div>
+      
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label class="clr-control-label">Number</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+          <div class="clr-input-wrapper">
+            <input type="number" class="clr-input" [ngModel]="age" name="age" [disabled]="isDisabled"/>
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Subtext</span>
+        </div>
+      </div>
+
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label for="example" class="clr-control-label">Password</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+          <div class="clr-input-wrapper">
+            <input
+              type="password"
+              autocomplete="current-password"
+              id="example"
+              [ngModel]="password" name="password"
+              placeholder="Password please!"
+              class="clr-input"
+              [disabled]="isDisabled"
+            />
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Subtext</span>
+        </div>
+      </div>
+      
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label for="textarea-basic-error" class="clr-control-label">Textarea</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+          <div class="clr-textarea-wrapper">
+            <textarea class="clr-textarea" [ngModel]="description" name="description" [disabled]="isDisabled"></textarea>
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Subtext</span>
+        </div>
+      </div>
+      
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label class="clr-control-label">Basic select</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess && !isError, 'clr-error': isError}">
+          <div class="clr-select-wrapper">
+            <select class="clr-select" [ngModel]="options" name="options" [disabled]="isDisabled" required>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Subtext</span>
+        </div>
+      </div>
+      
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label class="clr-control-label">Checkbox</label>
+          <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+            <div class="clr-checkbox-wrapper">
+              <input 
+                type="checkbox" 
+                value="option" 
+                id="option1"
+                [ngModel]="option1" name="option1"
+                [disabled]="isDisabled"
+                class="clr-checkbox" />
+              <label for="option1" class="clr-control-label">Option</label>
+            </div>
+            <div class="clr-subtext-wrapper">
+              <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+              <span class="clr-subtext">Subtext</span>
+            </div>
+        </div>
+      </div>
+      
       <clr-date-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
         <label>Datepicker</label>
         <input type="date" autocomplete="off" clrDate [ngModel]="demo" name="demo" [disabled]="isDisabled"/>
       </clr-date-container>
-      <clr-radio-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Radio</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio [ngModel]="radioOpt1" name="radioOpt1" value="radioOpt1" [disabled]="isDisabled"/>
-          <label>Option 1</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio [ngModel]="radioOpt2" name="radioOpt2" value="radioOpt2" [disabled]="isDisabled"/>
-          <label>Option 2</label>
-        </clr-radio-wrapper>
-      </clr-radio-container>
-      <clr-range-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+      
+      <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
+        <label class="clr-control-label">Basic radio</label>
+        <div class="clr-control-container" [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
+          <div class="clr-radio-wrapper">
+            <input type="radio" id="radio1" [ngModel]="radio" name="radio" value="radio1" class="clr-radio" [disabled]="isDisabled"/>
+            <label for="radio1" class="clr-control-label">option1</label>
+          </div>
+          <div class="clr-radio-wrapper">
+            <input type="radio" id="radio2" [ngModel]="radio" name="radio" value="radio2" class="clr-radio" [disabled]="isDisabled"/>
+            <label for="radio2" class="clr-control-label">option2</label>
+          </div>
+          <div class="clr-radio-wrapper">
+            <input type="radio" id="radio3" [ngModel]="radio" name="radio" value="radio3" class="clr-radio" [disabled]="isDisabled"/>
+            <label for="radio3" class="clr-control-label">option3</label>
+          </div>
+          <div class="clr-subtext-wrapper">
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+            <span class="clr-subtext">Subtext</span>
+          </div>
+        </div>
+      </div>
+      
+      <clr-range-container>
         <label>Range</label>
         <input type="range" clrRange [ngModel]="three" name="three" [disabled]="isDisabled"/>
       </clr-range-container>
-      <clr-input-container [ngClass]="{'clr-success': isSuccess, 'clr-error': isError}">
-        <label>Helper text</label>
-        <input clrInput [ngModel]="name1" name="name1"[disabled]="isDisabled"/>
-        <clr-control-helper>Helper text</clr-control-helper>
-      </clr-input-container>
     </form>
   `,
   props: { ...args },
