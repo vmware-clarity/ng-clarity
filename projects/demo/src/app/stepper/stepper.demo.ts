@@ -46,7 +46,7 @@ export class StepperDemo {
   changeStep() {
     this.loading = true;
     setTimeout(() => {
-      this.initialStep = 'contact';
+      this.initialStep = 'password';
       this.loading = false;
     }, 400);
   }
