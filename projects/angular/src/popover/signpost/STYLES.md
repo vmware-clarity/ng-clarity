@@ -12,10 +12,8 @@
 | --clr-signpost-pointer-border           | Signpost pointer border.           |
 | --clr-signpost-pointer-invisible-border | Signpost pointer invisible border. |
 | --clr-signpost-pointer-psuedo-border    | Signpost pointer pseudo border.    |
-| --clr-signpost-content-padding          | Signpost content padding.          |
 | --clr-signpost-content-color            | Signpost content color.            |
 | --clr-signpost-content-header-position  | Signpost content header position.  |
-| --clr-signpost-content-header-padding   | Signpost content header padding.   |
 
 ## CSS Classes
 
