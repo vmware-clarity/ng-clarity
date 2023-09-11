@@ -5,7 +5,7 @@
  */
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: 'stepper.demo.html',
@@ -13,7 +13,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class StepperDemo {
   showSecondStep = true;
-  initialStep = 'contact';
+  initialStep = 'name';
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
@@ -24,8 +24,6 @@ export class StepperDemo {
     password: false,
   };
   loading = false;
-
-  constructor(private formBuilder: FormBuilder) {}
 
   submit() {
     console.log('reactive form submit', this.form.value);
@@ -46,7 +44,7 @@ export class StepperDemo {
   changeStep() {
     this.loading = true;
     setTimeout(() => {
-      this.initialStep = 'password';
+      this.initialStep = 'contact';
       this.loading = false;
     }, 400);
   }
