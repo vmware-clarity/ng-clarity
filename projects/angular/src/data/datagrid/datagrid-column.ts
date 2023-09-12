@@ -53,22 +53,24 @@ import { WrappedColumn } from './wrapped-column';
         ></cds-icon>
       </button>
       <!-- I'm really not happy with that select since it's not very scalable -->
-      <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
+      <div class="clr-dg-filters-wrapper" aria-hidden="true">
+        <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
 
-      <clr-dg-string-filter
-        *ngIf="field && !customFilter && colType == 'string'"
-        [clrFilterPlaceholder]="filterStringPlaceholder"
-        [clrDgStringFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-string-filter>
+        <clr-dg-string-filter
+          *ngIf="field && !customFilter && colType == 'string'"
+          [clrFilterPlaceholder]="filterStringPlaceholder"
+          [clrDgStringFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-string-filter>
 
-      <clr-dg-numeric-filter
-        *ngIf="field && !customFilter && colType == 'number'"
-        [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
-        [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
-        [clrDgNumericFilter]="registered"
-        [(clrFilterValue)]="filterValue"
-      ></clr-dg-numeric-filter>
+        <clr-dg-numeric-filter
+          *ngIf="field && !customFilter && colType == 'number'"
+          [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
+          [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"
+          [clrDgNumericFilter]="registered"
+          [(clrFilterValue)]="filterValue"
+        ></clr-dg-numeric-filter>
+      </div>
 
       <ng-template #columnTitle>
         <ng-content></ng-content>
@@ -78,7 +80,7 @@ import { WrappedColumn } from './wrapped-column';
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
       </span>
 
-      <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
+      <clr-dg-column-separator *ngIf="showSeparator" aria-hidden="true"></clr-dg-column-separator>
     </div>
   `,
   hostDirectives: [ClrPopoverHostDirective],

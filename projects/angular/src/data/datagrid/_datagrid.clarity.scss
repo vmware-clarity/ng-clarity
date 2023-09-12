@@ -555,9 +555,7 @@
         outline-offset: -(variables.$clr_baselineRem_2px);
       }
 
-      clr-dg-filter,
-      clr-dg-string-filter,
-      clr-dg-numeric-filter {
+      .clr-dg-filters-wrapper {
         display: flex;
         order: 99;
         margin-left: auto;
