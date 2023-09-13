@@ -14,9 +14,6 @@
   .clr-timeline {
     display: flex;
     padding: timeline-variables.$clr-timeline-padding-width;
-    clr-spinner {
-      z-index: map.get(variables.$clr-layers, timeline-spinner);
-    }
   }
 
   .clr-timeline-step {
@@ -78,6 +75,24 @@
         timeline-variables.$clr-timeline-error-step-color,
         variables.$clr-use-custom-properties
       );
+    }
+
+    clr-spinner.spinner.spinner-md {
+      --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_33};
+      margin: variables.$clr_baselineRem_2px;
+      @include mixins.min-equilateral-var(
+        clr-spinner-medium-size,
+        variables.$clr_baselineRem_1_33,
+        variables.$clr-use-custom-properties
+      );
+      &::after,
+      &::before {
+        @include mixins.min-equilateral-var(
+          clr-spinner-medium-size,
+          variables.$clr_baselineRem_1_33,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
 
     // style for the connecting line between icons
@@ -342,4 +357,16 @@
       //);
     }
   }
+
+  //.clr-timeline .clr-timeline-step {
+  //  clr-spinner.spinner.spinner-md {
+  //      animation: none;
+  //    --clr-spinner-medium-size: 32px !important;
+  //    height: 32px !important;
+  //    width: 32px !important;
+  //    //--clr-spinner-default-size: 32px !important;
+  //    //--clr-spinner-small-size: 32px !important;
+  //    margin: 2px !important;
+  //  }
+  //}
 }
