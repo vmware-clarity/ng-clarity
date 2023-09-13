@@ -77,7 +77,7 @@
     }
 
     clr-spinner.spinner {
-      --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_33} !important;
+      --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_33};
       margin: variables.$clr_baselineRem_2px;
       &,
       &::after,
