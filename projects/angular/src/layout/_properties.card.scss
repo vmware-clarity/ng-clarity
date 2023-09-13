@@ -41,8 +41,8 @@
       --clr-card-media-description-margin-left: #{variables.$clr_baselineRem_0_5};
       --clr-card-media-description-margin-top: #{variables.$clr_baselineRem_0_25};
       --clr-card-list-group-item-padding: #{variables.$clr_baselineRem_0_5} #{variables.$clr_baselineRem_0_75};
-      --clr-card-header-title-font-size: #{variables.$clr-h3-font-size};
-      --clr-card-content-title-font-size: #{variables.$clr-h4-font-size};
+      --clr-card-header-title-font-size: #{card-variables.$clr-card-title-font-size};
+      --clr-card-content-title-font-size: #{card-variables.$clr-card-title-font-size};
       --clr-card-header-padding: #{card-variables.$card-children-padding-vertical}
         #{card-variables.$card-children-padding-horizontal};
       --clr-card-footer-padding: #{card-variables.$card-children-padding-vertical}

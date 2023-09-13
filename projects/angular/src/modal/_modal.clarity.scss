@@ -60,7 +60,12 @@
       transparent,
       variables.$clr-use-custom-properties
     );
-    overflow: hidden;
+    @include mixins.css-var(
+      background-color,
+      clr-modal-bg-color,
+      modal-variables.$clr-modal-bg-color,
+      variables.$clr-use-custom-properties
+    );
     max-width: 100%;
 
     &.modal-sm {
@@ -96,12 +101,6 @@
         clr-modal-content-padding,
         modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
           modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        background-color,
-        clr-modal-bg-color,
-        modal-variables.$clr-modal-bg-color,
         variables.$clr-use-custom-properties
       );
     }
