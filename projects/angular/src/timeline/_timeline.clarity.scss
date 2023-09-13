@@ -77,13 +77,12 @@
     }
 
     clr-spinner.spinner {
-      --clr-spinner-medium-size: #{variables.$clr_baselineRem_1_33};
       margin: variables.$clr_baselineRem_2px;
       &,
       &::after,
       &::before {
         @include mixins.min-equilateral-var(
-          clr-spinner-medium-size,
+          clr-timeline-spinner-size,
           variables.$clr_baselineRem_1_33,
           variables.$clr-use-custom-properties
         );

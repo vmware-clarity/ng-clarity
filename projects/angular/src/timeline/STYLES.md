@@ -26,6 +26,7 @@
 | --clr-timeline-vertical-line-length         | Timeline vertical line length         |
 | --clr-timeline-vertical-step-body-margin    | Timeline vertical step body margin    |
 | --clr-timeline-icon-size                    | Timeline icon size                    |
+| --clr-timeline-spinner-size                 | Timeline spinner size                 |
 | --clr-timeline-line-width                   | Timeline line width                   |
 | --clr-timeline-step-margin                  | Timeline step outer margin            |
 
