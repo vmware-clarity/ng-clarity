@@ -719,6 +719,7 @@
   // ATM - use as default state for labels
   // Two state: 1. label with text only 2. labels with icons or badges should have lower padding on the right
   .label {
+    text-decoration: none;
     &:has(> .badge),
     &:has(> cds-icon) {
       padding-right: #{tokens.$cds-global-space-3};
@@ -727,7 +728,6 @@
     .badge,
     cds-icon {
       margin: 0;
-      text-decoration: none;
     }
   }
 
