@@ -61,6 +61,9 @@
       --clr-timeline-step-description-font-size: #{timeline-variables.$clr-timeline-step-description-font-size};
       --clr-timeline-step-description-font-weight: inherit;
       --clr-timeline-step-description-line-height: #{timeline-variables.$clr-timeline-step-description-line-height};
+
+      // spinner
+      --clr-timeline-spinner-size: #{timeline-variables.$clr-timeline-spinner-size};
     }
   }
 }

@@ -76,6 +76,19 @@
       );
     }
 
+    clr-spinner.spinner {
+      margin: variables.$clr_baselineRem_2px;
+      &,
+      &::after,
+      &::before {
+        @include mixins.min-equilateral-var(
+          clr-timeline-spinner-size,
+          variables.$clr_baselineRem_1_33,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
+
     // style for the connecting line between icons
     &:not(:last-of-type) .clr-timeline-step-body::before {
       content: '';
