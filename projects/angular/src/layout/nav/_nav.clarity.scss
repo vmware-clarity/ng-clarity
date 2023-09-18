@@ -161,12 +161,6 @@
       );
 
       @include mixins.css-var(
-        padding,
-        clr-header-nav-link-padding,
-        0.9rem 1.2rem,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
         line-height,
         clr-header-nav-link-line-height,
         inherit,
