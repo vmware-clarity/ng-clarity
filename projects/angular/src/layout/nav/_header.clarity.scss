@@ -386,12 +386,6 @@
         position: relative;
       }
 
-      &:first-of-type::before,
-      &:last-of-type::after {
-        @include header-section-divider();
-        left: auto;
-      }
-
       &:first-of-type::before {
         left: 0;
       }

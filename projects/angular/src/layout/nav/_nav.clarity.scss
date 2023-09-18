@@ -126,15 +126,10 @@
       &:active {
         @include mixins.css-var(
           background-color,
-          clr-nav-active-bg-color,
+          clr-vertical-nav-active-bg-color,
           transparent,
           variables.$clr-use-custom-properties
         );
-      }
-
-      &:hover,
-      &.active {
-        @include tabs.nav-link-border-appearence('bottom');
       }
 
       &:hover,
@@ -144,29 +139,39 @@
         text-decoration: none;
       }
 
-      &.active {
-        &:hover {
-          @include mixins.css-var(
-            background-color,
-            clr-nav-selected-hover-background-color,
-            transparent,
-            variables.$clr-use-custom-properties
-          );
-        }
+      &:hover {
         @include mixins.css-var(
-          color,
-          clr-nav-link-active-color,
-          tabs-variables.$clr-nav-link-active-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-weight,
-          clr-nav-link-active-font-weight,
-          tabs-variables.$clr-nav-link-active-font-weight,
+          background-color,
+          clr-nav-selected-hover-background-color,
+          transparent,
           variables.$clr-use-custom-properties
         );
       }
+      @include mixins.css-var(
+        color,
+        clr-nav-link-active-color,
+        tabs-variables.$clr-nav-link-active-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-nav-link-active-font-weight,
+        tabs-variables.$clr-nav-link-active-font-weight,
+        variables.$clr-use-custom-properties
+      );
 
+      @include mixins.css-var(
+        padding,
+        clr-header-nav-link-padding,
+        0.9rem 1.2rem,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-header-nav-link-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
         margin-right: variables.$clr_baselineRem_1;

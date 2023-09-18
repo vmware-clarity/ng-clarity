@@ -278,26 +278,13 @@
           }
 
           .nav-link {
-            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
+            //padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: 0;
-            @include mixins.css-var(
-              border-top-left-radius,
-              clr-global-borderradius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              border-bottom-left-radius,
-              clr-global-borderradius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
 
-            @include vertical-nav.vertical-nav-link-colors();
+            padding: 0.9rem 1.2rem;
 
             &:hover,
             &.active {

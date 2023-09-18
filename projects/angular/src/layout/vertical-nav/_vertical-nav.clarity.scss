@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.vertical-nav' as vertical-nav-variables;
+@use '../main-container/variables.header' as header-variables;
 @use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-link-colors() {
@@ -597,7 +598,7 @@
       width: vertical-nav-variables.$clr-vertical-nav-min-width;
       min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
       // ATM - adress scroll when more items are available, otherwise the content gets hidden
-      max-width: calc(vertical-nav-variables.$clr-vertical-nav-min-width + variables.$clr_baselineRem_0_583);
+      //max-width: calc(vertical-nav-variables.$clr-vertical-nav-min-width + variables.$clr_baselineRem_0_583);
 
       //Others
       cursor: pointer;
