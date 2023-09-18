@@ -589,7 +589,12 @@
     }
 
     &.labeled > .progress-meter {
-      right: 3em;
+      @include utils-mixins.css-var(
+        right,
+        clr-progress-percantage-label-padding,
+        3em,
+        variables.$clr-use-custom-properties
+      );
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
@@ -611,31 +616,28 @@
   .card-footer {
     .progress,
     .progress-static {
+      height: $clr-progressInCard-height;
+      position: absolute;
+      left: 0;
+
       // by default, positioned at the topmost of its card-block container
       margin: 0;
       margin-top: -1 * card-variables.$card-children-padding-vertical;
       @if variables.$clr-use-custom-properties == true {
-        margin-top: calc(-1 * (var(--clr-card-footer-padding, card-variables.$card-children-padding-vertical)));
+        margin-top: calc(-1 * (var(--clr-card-footer-top-padding, card-variables.$card-children-padding-vertical)));
       }
 
-      height: $clr-progressInCard-height;
-      position: absolute;
-      left: 0;
+      &.top {
+        // places progress bar at the top of a card
+        margin-top: 0;
+        top: 0;
+      }
     }
 
     .progress > progress,
     .progress-static > .progress-meter {
       height: $clr-progressInCard-height;
       position: absolute;
-    }
-
-    .progress,
-    .progress-static {
-      &.top {
-        // places progress bar at the top of a card
-        margin-top: 0;
-        top: 0;
-      }
     }
   }
 
@@ -679,19 +681,19 @@
     );
     @include utils-mixins.css-var(
       font-size,
-      clr-progress-label-font-size,
+      clr-progress-block-label-font-size,
       inherit,
       variables.$clr-use-custom-properties
     );
     @include utils-mixins.css-var(
       line-height,
-      clr-progress-label-line-height,
+      clr-progress-block-label-line-height,
       inherit,
       variables.$clr-use-custom-properties
     );
     @include utils-mixins.css-var(
       letter-spacing,
-      clr-progress-label-letter-spacing,
+      clr-progress-block-label-letter-spacing,
       inherit,
       variables.$clr-use-custom-properties
     );
@@ -731,7 +733,7 @@
       );
       @include utils-mixins.css-var(
         font-weight,
-        clr-progress-label-font-weight,
+        clr-progress-standart-font-weight,
         600,
         variables.$clr-use-custom-properties
       );
@@ -753,28 +755,28 @@
         margin-left: 0;
         margin-right: 0;
 
-        @include utils-mixins.css-var(color, clr-progress-clr-row-color, inherit, variables.$clr-use-custom-properties);
+        @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
         @include utils-mixins.css-var(
           font-weight,
-          clr-progress-clr-row-font-weight,
+          clr-progress-standart-font-weight,
           inherit,
           variables.$clr-use-custom-properties
         );
         @include utils-mixins.css-var(
           font-size,
-          clr-progress-clr-row-font-size,
+          clr-progress-label-font-size,
           inherit,
           variables.$clr-use-custom-properties
         );
         @include utils-mixins.css-var(
           line-height,
-          clr-progress-clr-row-line-height,
+          clr-progress-label-line-height,
           inherit,
           variables.$clr-use-custom-properties
         );
         @include utils-mixins.css-var(
           letter-spacing,
-          clr-progress-clr-row-letter-spacing,
+          clr-progress-label-letter-spacing,
           inherit,
           variables.$clr-use-custom-properties
         );
