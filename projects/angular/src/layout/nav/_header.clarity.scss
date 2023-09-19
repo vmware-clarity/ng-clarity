@@ -374,6 +374,12 @@
     display: flex;
     flex: 0 0 auto;
 
+    > a:first-of-type::before,
+    > a:last-of-type::after {
+      @include header-section-divider();
+      left: auto;
+    }
+
     &:last-child {
       & > .nav-link:last-child::after {
         content: none;
@@ -396,6 +402,7 @@
 
       &.active:first-of-type::before,
       &.active:last-of-type::after {
+        @include header-section-divider();
         content: none;
       }
     }

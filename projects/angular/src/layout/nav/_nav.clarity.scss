@@ -122,6 +122,11 @@
         color: inherit;
       }
 
+      &:focus,
+      &:active {
+        @include tabs.nav-link-border-appearence('bottom');
+      }
+
       // TODO - separate :active and .active, currently .active is being used for selected state.
       &:active {
         @include mixins.css-var(
