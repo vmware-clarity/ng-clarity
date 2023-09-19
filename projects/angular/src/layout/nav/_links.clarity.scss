@@ -14,7 +14,7 @@
     * Due to the higher specificity of `a:link` over `.btn` and `.nav-link` it overrides the styles of both 
     * which is not required. Also `.btn, .nav-link` doesn't need these styles, so we don't add them in these cases.
     */
-    &:not(.btn, .nav-link) {
+    &:not(.btn, .nav-link, .badge) {
       @include mixins.css-var(font-weight, clr-link-font-weight, inherit, variables.$clr-use-custom-properties);
       @include mixins.css-var(font-size, clr-link-font-size, inherit, variables.$clr-use-custom-properties);
       @include mixins.css-var(line-height, clr-link-line-height, inherit, variables.$clr-use-custom-properties);
