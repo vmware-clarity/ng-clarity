@@ -11,7 +11,7 @@ import { Story } from '@storybook/angular';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-progress-bar
       [id]="id"
       [clrMax]="clrMax"
@@ -22,8 +22,10 @@ const defaultStory: Story = args => ({
       [clrLoop]="clrLoop"
       [clrSuccess]="clrSuccess"
       [clrDanger]="clrDanger"
+      [clrWarning]="clrWarning"
       [clrFlash]="clrFlash"
       [clrFlashDanger]="clrFlashDanger"
+      [clrCompact]="clrCompact"
     ></clr-progress-bar>
   `,
   props: { ...args },
@@ -34,7 +36,6 @@ const defaultParameters: Parameters = {
   component: ClrProgressBar,
   argTypes: {
     // inputs
-    clrDanger: { defaultValue: false, control: { type: 'boolean' } },
     clrDisplayval: { defaultValue: '' },
     clrFade: { defaultValue: false, control: { type: 'boolean' } },
     clrFlash: { defaultValue: false, control: { type: 'boolean' } },
@@ -43,7 +44,10 @@ const defaultParameters: Parameters = {
     clrLoop: { defaultValue: false, control: { type: 'boolean' } },
     clrMax: { defaultValue: 100, control: { type: 'number' } },
     clrSuccess: { defaultValue: false, control: { type: 'boolean' } },
+    clrWarning: { defaultValue: false, control: { type: 'boolean' } },
+    clrDanger: { defaultValue: false, control: { type: 'boolean' } },
     clrValue: { defaultValue: 0, control: { type: 'number' } },
+    clrCompact: { defaultValue: false, control: { type: 'boolean' } },
     id: { defaultValue: '' },
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
@@ -66,6 +70,11 @@ const variants: Parameters[] = [
   {
     clrValue: 100,
     clrSuccess: true,
+  },
+  {
+    clrValue: 75,
+    clrWarning: true,
+    clrCompact: true,
   },
 ];
 

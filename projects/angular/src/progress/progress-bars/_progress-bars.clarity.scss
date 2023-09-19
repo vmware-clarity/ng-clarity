@@ -42,7 +42,7 @@
     // If we used rem, we would be sizing the bar outside of the context of its
     // placement in the layout.
     // ATM (after token migration)
-    // this will be breaking change must rethink how compact progress bars are created
+    // replace with value from shim
     height: 2em;
     margin: 0;
     overflow: hidden;
