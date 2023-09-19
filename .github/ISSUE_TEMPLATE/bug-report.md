@@ -7,7 +7,7 @@ about: Create a report to help us fix or improve an issue
 For the web-component implementation of Clarity (`@cds`), visit [vmware-clarity/core](https://github.com/vmware-clarity/core).**
 
 ***If you are a VMware employee or a contractor in VMware,
-please use our [support channel in slack](https://vmware.slack.com/archives/C0JF8D2LB) to raise Clarity issues.***
+please use our support channel in slack to raise Clarity issues.***
 
 ## Describe the bug
 
