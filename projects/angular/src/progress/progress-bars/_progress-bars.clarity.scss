@@ -160,7 +160,7 @@
       @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
       @include utils-mixins.css-var(
         font-weight,
-        clr-progress-standart-font-weight,
+        clr-progress-standard-font-weight,
         inherit,
         variables.$clr-use-custom-properties
       );
@@ -675,7 +675,7 @@
     @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
     @include utils-mixins.css-var(
       font-weight,
-      clr-progress-standart-font-weight,
+      clr-progress-standard-font-weight,
       inherit,
       variables.$clr-use-custom-properties
     );
@@ -733,7 +733,7 @@
       );
       @include utils-mixins.css-var(
         font-weight,
-        clr-progress-standart-font-weight,
+        clr-progress-standard-font-weight,
         600,
         variables.$clr-use-custom-properties
       );
@@ -758,7 +758,7 @@
         @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
         @include utils-mixins.css-var(
           font-weight,
-          clr-progress-standart-font-weight,
+          clr-progress-standard-font-weight,
           inherit,
           variables.$clr-use-custom-properties
         );
