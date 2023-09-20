@@ -72,8 +72,13 @@ const variants: Parameters[] = [
     clrSuccess: true,
   },
   {
-    clrValue: 75,
+    clrValue: 50,
     clrWarning: true,
+    clrLabeled: true,
+    clrDisplayVal: '50%',
+  },
+  {
+    clrValue: 75,
     clrCompact: true,
   },
 ];
