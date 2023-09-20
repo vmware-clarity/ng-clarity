@@ -919,7 +919,7 @@
   --clr-card-text-color: #{tokens.$cds-alias-typography-color-400};
   --clr-card-header-padding: #{tokens.$cds-global-space-7};
   --clr-card-footer-top-padding: #{tokens.$cds-global-space-7}; // ATM: internal property to be deleted
-  --clr-card-footer-padding: #{tokens.$cds-global-space-7};
+  --clr-card-footer-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
   --clr-card-block-padding: #{tokens.$cds-global-space-7};
   --clr-card-list-group-item-padding: #{tokens.$cds-global-space-7};
   --clr-card-children-space-between: #{tokens.$cds-global-space-7};
