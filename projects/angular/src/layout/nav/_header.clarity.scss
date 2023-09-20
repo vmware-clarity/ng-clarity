@@ -272,6 +272,7 @@
 
     .nav-text {
       @include mixins.css-var(font-weight, clr-header-nav-text-font-weight, 500, variables.$clr-use-custom-properties);
+      @include mixins.css-var(color, clr-nav-background-color, green, variables.$clr-use-custom-properties);
     }
 
     clr-icon {
