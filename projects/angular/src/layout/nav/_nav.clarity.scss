@@ -8,6 +8,8 @@
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
+@use 'sass:map';
+@use '../../utils/variables/variables' as util-variables;
 
 @include mixins.exports('nav.clarity') {
   .nav {
@@ -114,6 +116,15 @@
             variables.$clr-use-custom-properties
           );
         }
+      }
+
+      @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        @include mixins.css-var(
+          background-color,
+          clr-nav-selected-hover-background-color,
+          transparent,
+          variables.$clr-use-custom-properties
+        );
       }
 
       &:hover,
