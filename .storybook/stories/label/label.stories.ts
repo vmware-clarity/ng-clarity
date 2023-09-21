@@ -24,8 +24,9 @@ enum LabelType {
 const defaultStory: Story = args => ({
   template: `
     <span class="label" [class.clickable]="clickable" [ngClass]="labelType">
-      {{content}}
+      <span class="text">{{content}}</span>
       <span *ngIf="badgeContent" class="badge">{{badgeContent}}</span>
+      <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
     </span>
   `,
   props: { ...args },
@@ -43,6 +44,7 @@ const defaultParameters: Parameters = {
     badgeContent: '',
     labelType: LabelType.Default,
     clickable: false,
+    closeIcon: false,
   },
 };
 
@@ -52,6 +54,7 @@ const variants: Parameters[] = [].concat(
       labelType,
     },
     { labelType, badgeContent: '12' },
+    { labelType, badgeContent: '99+', clickable: true, closeIcon: true },
   ])
 );
 
