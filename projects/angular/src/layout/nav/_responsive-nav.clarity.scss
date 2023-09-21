@@ -278,13 +278,11 @@
           }
 
           .nav-link {
-            //padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
+            padding: variables.$clr_baselineRem_0_9 variables.$clr_baselineRem_1_16;
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-
-            padding: 0.9rem 1.2rem;
 
             &:hover,
             &.active {
