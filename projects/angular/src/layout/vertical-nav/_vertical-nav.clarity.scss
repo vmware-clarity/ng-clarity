@@ -8,7 +8,6 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.vertical-nav' as vertical-nav-variables;
-@use '../main-container/variables.header' as header-variables;
 @use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-link-colors() {
