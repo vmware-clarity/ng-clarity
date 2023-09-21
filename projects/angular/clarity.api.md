@@ -3097,6 +3097,8 @@ export class ClrPopoverToggleService {
 
 // @public (undocumented)
 export class ClrProgressBar {
+    // (undocumented)
+    set clrCompact(value: boolean | string);
     // @deprecated (undocumented)
     set clrDanger(value: boolean | string);
     // (undocumented)
@@ -3111,6 +3113,10 @@ export class ClrProgressBar {
     set clrLoop(value: boolean | string);
     // @deprecated (undocumented)
     set clrSuccess(value: boolean | string);
+    // @deprecated (undocumented)
+    set clrWarning(value: boolean | string);
+    // (undocumented)
+    get compactClass(): boolean;
     // (undocumented)
     get dangerClass(): boolean;
     displayStringValue(): boolean;
@@ -3141,7 +3147,9 @@ export class ClrProgressBar {
     // (undocumented)
     value: number | string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "id": "id"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
+    get warningClass(): boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrWarning": "clrWarning"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
 }
