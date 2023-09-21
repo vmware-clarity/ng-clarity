@@ -142,7 +142,7 @@
       &:active {
         @include mixins.css-var(
           background-color,
-          clr-vertical-nav-active-bg-color,
+          clr-nav-active-bg-color,
           transparent,
           variables.$clr-use-custom-properties
         );
