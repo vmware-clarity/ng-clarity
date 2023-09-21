@@ -33,7 +33,7 @@ const defaultStory: Story = args => ({
       <div *ngIf="actionCount" class="card-footer">
           <button
             *ngFor="let _ of createArray(actionCount); let i = index"
-            class="btn btn-sm btn-link"
+            class="btn btn-sm {{buttonType}}"
           >
             Action {{i + 1}}
           </button>
@@ -43,7 +43,7 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const badgeClasses = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
+const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
 
 const defaultParameters: Parameters = {
   title: 'Card/Card',
@@ -65,8 +65,8 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = badgeClasses.map(badgeClass => ({
-  badgeClass,
+const variants: Parameters[] = buttonTypes.map(buttonType => ({
+  buttonType,
 }));
 
 setupStorybook([], defaultStory, defaultParameters, variants);

@@ -36,8 +36,10 @@ export class ClrProgressBar {
   private _loop: boolean;
   private _success: boolean;
   private _danger: boolean;
+  private _warning: boolean;
   private _flash: boolean;
   private _flashDanger: boolean;
+  private _compact: boolean;
 
   @Input()
   get id() {
@@ -51,6 +53,16 @@ export class ClrProgressBar {
   @HostBinding('class.progress')
   get progressClass() {
     return true;
+  }
+
+  @Input('clrCompact')
+  set clrCompact(value: boolean | string) {
+    this._compact = isBooleanAttributeSet(value);
+  }
+
+  @HostBinding('class.compact')
+  get compactClass() {
+    return this._compact;
   }
 
   @Input('clrLabeled')
@@ -81,6 +93,17 @@ export class ClrProgressBar {
   @HostBinding('class.loop')
   get loopClass() {
     return this._loop;
+  }
+
+  /** @deprecated since 2.0, remove in 4.0 */
+  @Input('clrWarning')
+  set clrWarning(value: boolean | string) {
+    this._warning = isBooleanAttributeSet(value);
+  }
+
+  @HostBinding('class.warning')
+  get warningClass() {
+    return this._warning;
   }
 
   /** @deprecated since 2.0, remove in 4.0 */

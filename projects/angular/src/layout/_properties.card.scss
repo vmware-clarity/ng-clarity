@@ -45,6 +45,7 @@
       --clr-card-content-title-font-size: #{card-variables.$clr-card-title-font-size};
       --clr-card-header-padding: #{card-variables.$card-children-padding-vertical}
         #{card-variables.$card-children-padding-horizontal};
+      --clr-card-footer-vertical-padding: #{card-variables.$card-children-padding-vertical}; // ATM: internal property to be deleted
       --clr-card-footer-padding: #{card-variables.$card-children-padding-vertical}
         #{card-variables.$card-children-padding-horizontal};
       --clr-card-block-padding: #{card-variables.$card-children-padding-vertical}

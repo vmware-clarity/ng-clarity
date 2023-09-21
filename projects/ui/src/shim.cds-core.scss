@@ -782,20 +782,66 @@
   --clr-progress-block-items-padding-right: #{tokens.$cds-global-space-6};
   --clr-progress-block-first-item-padding-right: #{tokens.$cds-global-space-6};
 
-  --clr-progress-standart-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
-
-  --clr-progress-clr-row-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-progress-clr-row-font-weight: var(--clr-progress-standart-font-weight);
-  --clr-progress-clr-row-font-size: var(--clr-p6-font-size);
-  --clr-progress-clr-row-line-height: var(--clr-p6-line-height);
-  --clr-progress-clr-row-letter-spacing: var(--clr-p6-letter-spacing);
+  --clr-progress-standard-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
 
   --clr-progress-label-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-progress-label-font-weight: var(--clr-progress-standart-font-weight);
-  --clr-progress-label-font-size: #{tokens.$cds-global-typography-font-size-3};
+  --clr-progress-label-font-size: var(--clr-p6-font-size);
   --clr-progress-label-line-height: var(--clr-p6-line-height);
-  --clr-progress-label-letter-spacing: var(--clr-p5-letter-spacing);
+  --clr-progress-label-letter-spacing: calc(0.2 * (1rem / var(--clr-global-font-size)));
+
+  --clr-progress-block-label-font-size: #{tokens.$cds-global-typography-font-size-3};
+  --clr-progress-block-label-line-height: var(--clr-p6-line-height);
+  --clr-progress-block-label-letter-spacing: var(--clr-p5-letter-spacing);
+
   --clr-progress-label-max-width: 33%;
+
+  // ATM: move to _progress-bars.clarity.scss
+  .card-block,
+  .card-footer {
+    .progress,
+    .progress-static,
+    .progress > progress,
+    .progress-static > .progress-meter {
+      height: #{tokens.$cds-global-space-3};
+    }
+  }
+
+  .card-block .progress-block {
+    .progress,
+    .progress-static {
+      height: #{tokens.$cds-global-space-6};
+
+      & > progress,
+      & > .progress-meter {
+        height: #{tokens.$cds-global-space-6};
+      }
+    }
+  }
+
+  .progress-block > span {
+    max-width: var(--clr-progress-label-max-width);
+  }
+
+  .progress,
+  .progress-static {
+    height: #{tokens.$cds-global-space-6};
+
+    &.compact:not(.labeled) {
+      height: #{tokens.$cds-global-space-3};
+    }
+
+    &.compact.labeled > .progress-meter {
+      height: #{tokens.$cds-global-space-3};
+      top: #{tokens.$cds-global-space-3};
+    }
+
+    &.labeled > span {
+      line-height: #{tokens.$cds-global-space-6};
+      font-size: #{tokens.$cds-global-typography-font-size-1};
+      top: 0;
+      margin-top: 0;
+    }
+  }
 
   /* Accordion */
 
@@ -872,7 +918,8 @@
   --clr-card-clickable-border-width: #{tokens.$cds-alias-object-border-width-200};
   --clr-card-text-color: #{tokens.$cds-alias-typography-color-400};
   --clr-card-header-padding: #{tokens.$cds-global-space-7};
-  --clr-card-footer-padding: #{tokens.$cds-global-space-7};
+  --clr-card-footer-vertical-padding: #{tokens.$cds-global-space-5}; // ATM: internal property to be deleted
+  --clr-card-footer-padding: var(--clr-card-footer-vertical-padding) #{tokens.$cds-global-space-7};
   --clr-card-block-padding: #{tokens.$cds-global-space-7};
   --clr-card-list-group-item-padding: #{tokens.$cds-global-space-7};
   --clr-card-children-space-between: #{tokens.$cds-global-space-7};
