@@ -155,14 +155,22 @@
         text-decoration: none;
       }
 
-      &:hover {
-        @include mixins.css-var(
-          background-color,
-          clr-nav-selected-hover-background-color,
-          transparent,
-          variables.$clr-use-custom-properties
-        );
+      @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover {
+          @include mixins.css-var(
+            background-color,
+            clr-nav-selected-hover-background-color,
+            transparent,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
+      @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover {
+          @include tabs.nav-link-border-appearence('bottom');
+        }
+      }
+
       @include mixins.css-var(
         color,
         clr-nav-link-active-color,
