@@ -100,3 +100,4 @@
 | label         | Default label class             |
 | label-<color> | Label class with specific color |
 | clickable     | Clickable label class           |
+| text          | Inner text class for the label  |
