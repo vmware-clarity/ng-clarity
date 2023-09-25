@@ -179,6 +179,14 @@
             variables.$clr-use-custom-properties
           );
         }
+        &:active {
+          @include mixins.css-var(
+            background-color,
+            clr-vertical-nav-active-bg-color,
+            transparent,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
 
       @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
