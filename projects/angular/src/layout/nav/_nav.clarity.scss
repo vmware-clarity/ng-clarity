@@ -121,7 +121,6 @@
       @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
         @include mixins.css-var(
           background-color,
-          // TODO: Use vertical nav token
           clr-vertical-nav-bg-color,
           transparent,
           variables.$clr-use-custom-properties
@@ -134,11 +133,6 @@
         color: inherit;
       }
 
-      &:focus,
-      &:active {
-        @include tabs.nav-link-border-appearence('bottom');
-      }
-
       // TODO - separate :active and .active, currently .active is being used for selected state.
       &:active {
         @include mixins.css-var(
@@ -147,6 +141,13 @@
           transparent,
           variables.$clr-use-custom-properties
         );
+      }
+
+      @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover,
+        &.active {
+          @include tabs.nav-link-border-appearence('bottom');
+        }
       }
 
       &:hover,
@@ -172,25 +173,25 @@
         }
       }
 
-      @include mixins.css-var(
-        color,
-        clr-nav-link-active-color,
-        tabs-variables.$clr-nav-link-active-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-weight,
-        clr-nav-link-active-font-weight,
-        tabs-variables.$clr-nav-link-active-font-weight,
-        variables.$clr-use-custom-properties
-      );
-
-      @include mixins.css-var(
-        line-height,
-        clr-header-nav-link-line-height,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
+      //@include mixins.css-var(
+      //  color,
+      //  clr-nav-link-active-color,
+      //  tabs-variables.$clr-nav-link-active-color,
+      //  variables.$clr-use-custom-properties
+      //);
+      //@include mixins.css-var(
+      //  font-weight,
+      //  clr-nav-link-active-font-weight,
+      //  tabs-variables.$clr-nav-link-active-font-weight,
+      //  variables.$clr-use-custom-properties
+      //);
+      //
+      //@include mixins.css-var(
+      //  line-height,
+      //  clr-header-nav-link-line-height,
+      //  inherit,
+      //  variables.$clr-use-custom-properties
+      //);
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
         margin-right: variables.$clr_baselineRem_1;
