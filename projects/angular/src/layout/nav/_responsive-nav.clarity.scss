@@ -22,7 +22,7 @@
   left: $left;
   @include mixins.css-var(
     background,
-    clr-nav-background-color,
+    clr-vertical-nav-bg-color,
     responsive-nav-variables.$clr-nav-background-color,
     variables.$clr-use-custom-properties
   );
@@ -436,14 +436,19 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              background-color: variables.$clr-color-neutral-600;
+              @include mixins.css-var(
+                background-color,
+                clr-header-bg-color,
+                header-variables.$clr-header-bgColor,
+                variables.$clr-use-custom-properties
+              );
               border-radius: variables.$clr-global-borderradius;
             }
 
             .title {
               @include mixins.css-var(
                 color,
-                clr-sliding-panel-text-color,
+                clr-vertical-nav-item-color,
                 responsive-nav-variables.$clr-sliding-panel-text-color,
                 variables.$clr-use-custom-properties
               );

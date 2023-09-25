@@ -121,7 +121,8 @@
       @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
         @include mixins.css-var(
           background-color,
-          clr-nav-background-color,
+          // TODO: Use vertical nav token
+          clr-vertical-nav-bg-color,
           transparent,
           variables.$clr-use-custom-properties
         );
@@ -159,7 +160,7 @@
         &:hover {
           @include mixins.css-var(
             background-color,
-            clr-nav-selected-hover-background-color,
+            clr-vertical-nav-hover-bg-color,
             transparent,
             variables.$clr-use-custom-properties
           );
