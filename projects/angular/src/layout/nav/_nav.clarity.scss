@@ -167,6 +167,19 @@
           );
         }
       }
+
+      @include mixins.css-var(
+        color,
+        clr-nav-link-active-color,
+        tabs-variables.$clr-nav-link-active-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-nav-link-active-font-weight,
+        tabs-variables.$clr-nav-link-active-font-weight,
+        variables.$clr-use-custom-properties
+      );
       @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
         &:hover {
           @include tabs.nav-link-border-appearence('bottom');
