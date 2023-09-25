@@ -172,26 +172,6 @@
           @include tabs.nav-link-border-appearence('bottom');
         }
       }
-
-      //@include mixins.css-var(
-      //  color,
-      //  clr-nav-link-active-color,
-      //  tabs-variables.$clr-nav-link-active-color,
-      //  variables.$clr-use-custom-properties
-      //);
-      //@include mixins.css-var(
-      //  font-weight,
-      //  clr-nav-link-active-font-weight,
-      //  tabs-variables.$clr-nav-link-active-font-weight,
-      //  variables.$clr-use-custom-properties
-      //);
-      //
-      //@include mixins.css-var(
-      //  line-height,
-      //  clr-header-nav-link-line-height,
-      //  inherit,
-      //  variables.$clr-use-custom-properties
-      //);
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
         margin-right: variables.$clr_baselineRem_1;
