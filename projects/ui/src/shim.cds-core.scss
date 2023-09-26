@@ -1261,7 +1261,7 @@
   --clr-header-action-cog-right: calc(var(--clr-header-action-caret-right) + var(--clr-header-action-caret-gap) + var(--clr-header-action-caret-size));
   --clr-header-action-caret-top: 38%;
   --clr-header-dropdown-btn-width: calc(var(--clr-header-action-cog-right) + var(--clr-header-action-icon-size) + #{tokens.$cds-global-space-7});
-  --clr-header-divider-top-override: auto;
+  --clr-header-divider-top-override: #{tokens.$cds-global-space-6};
   .header-actions .nav-link {
     display: inline-flex;
     align-items: center;

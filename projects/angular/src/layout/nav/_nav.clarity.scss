@@ -8,6 +8,8 @@
 @use '../tabs/variables.tabs' as tabs-variables;
 @use 'variables.subnav' as nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
+@use 'sass:map';
+@use '../../utils/variables/variables' as util-variables;
 
 @include mixins.exports('nav.clarity') {
   .nav {
@@ -116,6 +118,15 @@
         }
       }
 
+      @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        @include mixins.css-var(
+          background-color,
+          clr-vertical-nav-bg-color,
+          transparent,
+          variables.$clr-use-custom-properties
+        );
+      }
+
       &:hover,
       &:focus,
       &:active {
@@ -132,9 +143,11 @@
         );
       }
 
-      &:hover,
-      &.active {
-        @include tabs.nav-link-border-appearence('bottom');
+      @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover,
+        &.active {
+          @include tabs.nav-link-border-appearence('bottom');
+        }
       }
 
       &:hover,
@@ -142,17 +155,7 @@
       &:active,
       &.active {
         text-decoration: none;
-      }
 
-      &.active {
-        &:hover {
-          @include mixins.css-var(
-            background-color,
-            clr-nav-selected-hover-background-color,
-            transparent,
-            variables.$clr-use-custom-properties
-          );
-        }
         @include mixins.css-var(
           color,
           clr-nav-link-active-color,
@@ -167,6 +170,30 @@
         );
       }
 
+      @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover {
+          @include mixins.css-var(
+            background-color,
+            clr-vertical-nav-hover-bg-color,
+            transparent,
+            variables.$clr-use-custom-properties
+          );
+        }
+        &:active {
+          @include mixins.css-var(
+            background-color,
+            clr-vertical-nav-active-bg-color,
+            transparent,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
+
+      @media screen and (min-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+        &:hover {
+          @include tabs.nav-link-border-appearence('bottom');
+        }
+      }
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
         margin-right: variables.$clr_baselineRem_1;

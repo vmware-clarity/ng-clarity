@@ -22,7 +22,7 @@
   left: $left;
   @include mixins.css-var(
     background,
-    clr-nav-background-color,
+    clr-vertical-nav-bg-color,
     responsive-nav-variables.$clr-nav-background-color,
     variables.$clr-use-custom-properties
   );
@@ -278,26 +278,11 @@
           }
 
           .nav-link {
-            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
+            padding: variables.$clr_baselineRem_0_583 variables.$clr_baselineRem_1_16;
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: 0;
-            @include mixins.css-var(
-              border-top-left-radius,
-              clr-global-borderradius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              border-bottom-left-radius,
-              clr-global-borderradius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
-
-            @include vertical-nav.vertical-nav-link-colors();
 
             &:hover,
             &.active {
@@ -451,14 +436,19 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              background-color: variables.$clr-color-neutral-600;
+              @include mixins.css-var(
+                background-color,
+                clr-header-bg-color,
+                header-variables.$clr-header-bgColor,
+                variables.$clr-use-custom-properties
+              );
               border-radius: variables.$clr-global-borderradius;
             }
 
             .title {
               @include mixins.css-var(
                 color,
-                clr-sliding-panel-text-color,
+                clr-vertical-nav-item-color,
                 responsive-nav-variables.$clr-sliding-panel-text-color,
                 variables.$clr-use-custom-properties
               );

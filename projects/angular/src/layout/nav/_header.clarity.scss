@@ -374,6 +374,14 @@
     display: flex;
     flex: 0 0 auto;
 
+    @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, lg)) {
+      a:first-of-type::before,
+      a:last-of-type::after {
+        @include header-section-divider();
+        left: auto;
+      }
+    }
+
     &:last-child {
       & > .nav-link:last-child::after {
         content: none;
@@ -384,12 +392,6 @@
       &:first-of-type,
       &:last-of-type {
         position: relative;
-      }
-
-      &:first-of-type::before,
-      &:last-of-type::after {
-        @include header-section-divider();
-        left: auto;
       }
 
       &:first-of-type::before {
