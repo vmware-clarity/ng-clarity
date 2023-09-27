@@ -277,7 +277,12 @@
           gap: 0;
 
           .nav-item {
-            height: variables.$clr_baselineRem_1_5;
+            @include mixins.css-var(
+              height,
+              clr-responsive-nav-item-height,
+              variables.$clr_baselineRem_1_5,
+              variables.$clr-use-custom-properties
+            );
             margin-right: 0;
           }
 
