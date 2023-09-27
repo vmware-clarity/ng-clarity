@@ -13,6 +13,7 @@
 @use 'variables.responsive-nav' as responsive-nav-variables;
 @use '../../utils/variables/variables' as util-variables;
 @use '../tabs/tabs.clarity' as tabs;
+@use 'variables.subnav' as nav-variables;
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;
@@ -285,6 +286,29 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            @include mixins.css-var(
+              line-height,
+              clr-nav-link-line-vertical-height,
+              nav-variables.$clr-subnav-height,
+              variables.$clr-use-custom-properties
+            );
+
+            border-radius: 0;
+            @include mixins.css-var(
+              border-top-left-radius,
+              clr-global-borderradius,
+              variables.$clr-global-borderradius,
+              variables.$clr-use-custom-properties
+            );
+            @include mixins.css-var(
+              border-bottom-left-radius,
+              clr-global-borderradius,
+              variables.$clr-global-borderradius,
+              variables.$clr-use-custom-properties
+            );
+
+            @include vertical-nav.vertical-nav-link-colors();
 
             &:hover,
             &.active {
