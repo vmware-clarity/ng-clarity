@@ -274,6 +274,7 @@
         // TODO: more specificity in classname is preferable to nesting...
         .nav {
           padding-left: 0;
+          gap: 0;
 
           .nav-item {
             height: variables.$clr_baselineRem_1_5;
@@ -281,7 +282,13 @@
           }
 
           .nav-link {
-            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
+            @include mixins.css-var(
+              padding,
+              clr-responsive-nav-link-padding,
+              0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1,
+              variables.$clr-use-custom-properties
+            );
+
             width: 100%;
             max-width: 100%;
             overflow: hidden;
@@ -289,7 +296,7 @@
 
             @include mixins.css-var(
               line-height,
-              clr-responsive-nav-link-line-height,
+              clr-nav-link-line-height,
               nav-variables.$clr-subnav-height,
               variables.$clr-use-custom-properties
             );

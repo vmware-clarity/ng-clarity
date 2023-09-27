@@ -1335,6 +1335,7 @@
   --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
   --clr-responsive-nav-header-backdrop-bg-color: #{tokens.$cds-global-color-gray-1000}; // var(--clr-color-neutral-1000);
   --clr-responsive-nav-link-line-height: #{baselinePx(36)};
+  --clr-responsive-nav-link-padding: #{baselinePx(18)} #{baselinePx(16)};
 
   /* Signpost */
   --clr-signpost-content-color: #{tokens.$cds-alias-typography-color-400};
