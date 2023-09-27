@@ -289,7 +289,7 @@
 
             @include mixins.css-var(
               line-height,
-              clr-nav-link-line-vertical-height,
+              clr-responsive-nav-link-line-height,
               nav-variables.$clr-subnav-height,
               variables.$clr-use-custom-properties
             );
