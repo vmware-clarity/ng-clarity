@@ -315,11 +315,21 @@
               );
             }
 
-            &:hover,
             &.active {
-              &::before {
-                content: none;
-              }
+              @include mixins.css-var(
+                background-color,
+                clr-vertical-nav-selected,
+                transparent,
+                variables.$clr-use-custom-properties
+              );
+            }
+
+            &:hover::before {
+              content: none;
+            }
+
+            &.active {
+              @include tabs.nav-link-border-appearence('left');
             }
           }
         }
