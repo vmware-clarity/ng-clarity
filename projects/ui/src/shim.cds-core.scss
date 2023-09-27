@@ -1457,6 +1457,29 @@
   --clr-nav-link-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-1000);
   --clr-nav-item-margin-right: 0;
 
+  // ATM move to _tabs.clarity.scss
+  .nav .tabs-overflow .dropdown-menu {
+    padding: #{tokens.$cds-global-space-0};
+    box-shadow: #{tokens.$cds-alias-object-shadow-100};
+
+    .btn {
+      line-height: #{baselinePx(20)};
+      font-size: #{tokens.$cds-alias-typography-font-size-4};
+      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
+      border-radius: #{tokens.$cds-global-space-0};
+    }
+
+    .btn:first-of-type {
+      border-top-left-radius: #{tokens.$cds-alias-object-border-radius-100};
+      border-top-right-radius: #{tokens.$cds-alias-object-border-radius-100};
+    }
+
+    .btn:last-of-type {
+      border-bottom-left-radius: #{tokens.$cds-alias-object-border-radius-100};
+      border-bottom-right-radius: #{tokens.$cds-alias-object-border-radius-100};
+    }
+  }
+
   /* Timeline */
 
   --clr-timeline-line-color: #{tokens.$cds-alias-object-interaction-border-color}; // var(--clr-color-neutral-500);
