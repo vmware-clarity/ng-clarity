@@ -291,40 +291,34 @@
               box-shadow: none;
             }
 
-            @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
+            @include mixins.css-var(
+              background-color,
+              clr-vertical-nav-bg-color,
+              transparent,
+              variables.$clr-use-custom-properties
+            );
+
+            &:hover {
               @include mixins.css-var(
                 background-color,
-                clr-vertical-nav-bg-color,
+                clr-vertical-nav-hover-bg-color,
+                transparent,
+                variables.$clr-use-custom-properties
+              );
+            }
+            &:active {
+              @include mixins.css-var(
+                background-color,
+                clr-vertical-nav-active-bg-color,
                 transparent,
                 variables.$clr-use-custom-properties
               );
             }
 
-            @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
-              &:hover {
-                @include mixins.css-var(
-                  background-color,
-                  clr-vertical-nav-hover-bg-color,
-                  transparent,
-                  variables.$clr-use-custom-properties
-                );
-              }
-              &:active {
-                @include mixins.css-var(
-                  background-color,
-                  clr-vertical-nav-active-bg-color,
-                  transparent,
-                  variables.$clr-use-custom-properties
-                );
-              }
-            }
-
-            @media screen and (max-width: map.get(util-variables.$clr-grid-breakpoints, lg)) {
-              &:hover,
-              &.active {
-                &::before {
-                  content: none;
-                }
+            &:hover,
+            &.active {
+              &::before {
+                content: none;
               }
             }
           }
