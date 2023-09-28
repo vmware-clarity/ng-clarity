@@ -1433,6 +1433,9 @@
   /* Subnav */
 
   --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
+  --clr-subnav-sm-link-border-radius: 0; // ATM - default
+  --clr-subnav-sm-item-height: auto; // ATM - remove
+  --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
 
   /* Tabs */
 
