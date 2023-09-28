@@ -1334,9 +1334,6 @@
   --clr-responsive-nav-hover-bg: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
   --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
   --clr-responsive-nav-header-backdrop-bg-color: #{tokens.$cds-global-color-gray-1000}; // var(--clr-color-neutral-1000);
-  --clr-responsive-nav-link-line-height: #{baselinePx(36)};
-  --clr-responsive-nav-item-height: #{baselinePx(60)};
-  --clr-responsive-nav-link-padding: #{baselinePx(18)} #{baselinePx(16)};
 
   /* Signpost */
   --clr-signpost-content-color: #{tokens.$cds-alias-typography-color-400};
@@ -1436,6 +1433,9 @@
   /* Subnav */
 
   --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
+  --clr-subnav-sm-link-border-radius: 0; // ATM - default
+  --clr-subnav-sm-item-height: auto; // ATM - remove
+  --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
 
   /* Tabs */
 
