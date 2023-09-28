@@ -35,4 +35,4 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy  $([[ $GITHUB_REF_NAME == "15.x" ]] && echo "--prod --site v15-storybook-clarity-design" || echo "--alias $GITHUB_REF_NAME")
+        run: npx netlify-cli deploy $([[ $GITHUB_REF_NAME == "15.x" ]] && echo "--prod --site v15-storybook-clarity-design" || echo "--alias $GITHUB_REF_NAME")
