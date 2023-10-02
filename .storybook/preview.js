@@ -78,6 +78,13 @@ const customViewports = {
       height: '1112px',
     },
   },
+  xs: {
+    name: 'xs',
+    styles: {
+      width: '300px',
+      height: '300px',
+    },
+  },
 };
 
 export const parameters = {
