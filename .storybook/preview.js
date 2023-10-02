@@ -35,12 +35,41 @@ const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeC
 loadIcons();
 addDocs(docs);
 
+const customViewports = {
+  large: {
+    name: 'Large',
+    styles: {
+      width: '992px',
+      height: '992px',
+    },
+  },
+  medium: {
+    name: 'Medium',
+    styles: {
+      width: '768px',
+      height: '768px',
+    },
+  },
+  small: {
+    name: 'Small',
+    styles: {
+      width: '576px',
+      height: '576px',
+    },
+  },
+};
+
 export const parameters = {
   docs: { inlineStories: true },
   options: {
     storySort: {
       method: 'alphabetical',
       order: ['Home'],
+    },
+  },
+  viewport: {
+    viewports: {
+      ...customViewports,
     },
   },
 };
