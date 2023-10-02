@@ -23,7 +23,11 @@ const defaultParameters: Parameters = {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { defaultValue: TabsLayout.HORIZONTAL, control: { type: 'inline-radio', options: TabsLayout } },
+    clrLayout: {
+      defaultValue: TabsLayout.HORIZONTAL,
+      control: { type: 'inline-radio', options: TabsLayout },
+      table: { disable: true },
+    },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -34,8 +38,10 @@ const defaultParameters: Parameters = {
     toggleOverflowOnPosition: { control: { disable: true }, table: { disable: true } },
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
-    tabCount: { control: { type: 'number', min: 1, max: 100 } },
-    activeTab: { control: { type: 'number', min: 1, max: 100 } },
+    tabCount: { control: { type: 'number', min: 1, max: 100 }, table: { disable: true } },
+    title: { control: { type: 'text', disable: true }, table: { disable: true } },
+    content: { control: { type: 'text', disable: true }, table: { disable: true } },
+    activeTab: { control: { type: 'number', min: 1, max: 100 }, table: { disable: true } },
   },
   args: {
     // story helpers
