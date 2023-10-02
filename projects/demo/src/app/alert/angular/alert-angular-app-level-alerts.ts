@@ -11,4 +11,6 @@ import { Component } from '@angular/core';
   styleUrls: ['../alert.demo.scss'],
   templateUrl: './alert-angular-app-level-alerts.demo.html',
 })
-export class AlertAngularAppLevelAlertsDemo {}
+export class AlertAngularAppLevelAlertsDemo {
+  alerts = [{ text: 'Message 1' }, { text: 'Message 2' }];
+}

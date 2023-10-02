@@ -51,6 +51,15 @@
         <span class="title">Header</span>
       </div>
     </header>
+
+    <clr-alerts>
+      <clr-alert *ngFor="let alert of alerts; let i = index">
+        <clr-alert-item>
+          <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
+        </clr-alert-item>
+      </clr-alert>
+    </clr-alerts>
+
     <div class="content-container">
       <div class="content-area">
         <p>

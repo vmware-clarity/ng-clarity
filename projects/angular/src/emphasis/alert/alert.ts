@@ -7,13 +7,14 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
-  HostBinding,
   Input,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  Renderer2,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -44,7 +45,9 @@ export class ClrAlert implements OnInit, OnDestroy {
     private iconService: AlertIconAndTypesService,
     private cdr: ChangeDetectorRef,
     @Optional() private multiAlertService: MultiAlertService,
-    private commonStrings: ClrCommonStringsService
+    private commonStrings: ClrCommonStringsService,
+    private renderer: Renderer2,
+    private hostElement: ElementRef
   ) {}
 
   @Input('clrAlertType')
@@ -73,13 +76,19 @@ export class ClrAlert implements OnInit, OnDestroy {
     return this.iconService.iconInfoFromType(this.iconService.alertType).cssClass;
   }
 
-  @HostBinding('class.alert-hidden')
   get hidden() {
     return this._hidden;
   }
   set hidden(value: boolean) {
     if (value !== this._hidden) {
       this._hidden = value;
+
+      // @HostBinding('class.alert-hidden') decoration will raise dev error in console https://angular.io/errors/NG0100
+      if (this._hidden) {
+        this.renderer.addClass(this.hostElement.nativeElement, 'alert-hidden');
+      } else {
+        this.renderer.removeClass(this.hostElement.nativeElement, 'alert-hidden');
+      }
       this.cdr.detectChanges();
     }
   }
