@@ -118,6 +118,22 @@
       );
     }
 
+    // Link badge, default, no color or type specifier. Override a:link setting.
+    &:link {
+      @include mixins.css-var(
+        background-color,
+        badges-variables.getBadgeColor(gray, bg-color, 'css-var'),
+        badges-variables.getBadgeColor(gray, bg-color),
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        color,
+        badges-variables.getBadgeColor(gray, color, 'css-var'),
+        badges-variables.getBadgeColor(gray, color),
+        variables.$clr-use-custom-properties
+      );
+    }
+
     @include generateBadgeStyles(gray, 1);
     @include generateBadgeStyles(purple, 2);
     @include generateBadgeStyles(blue, 3);
