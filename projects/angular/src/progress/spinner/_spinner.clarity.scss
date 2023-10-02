@@ -36,19 +36,21 @@
       top: 0;
       left: 0;
       clip-path: ellipse(100% 53.5% at 0 0);
-      @include mixins.css-var(
-        border-width,
-        clr-spinner-default-stroke-width,
-        variables.$clr_baselineRem_0_25,
-        variables.$clr-use-custom-properties
-      );
+      border-width: var(--clr-spinner-default-stroke-width);
+      //@include mixins.css-var(
+      //  border-width,
+      //  clr-spinner-default-stroke-width,
+      //  variables.$clr_baselineRem_0_25,
+      //  variables.$clr-use-custom-properties
+      //);
       border-style: solid;
-      @include mixins.css-var(
-        border-color,
-        clr-spinner-fill-color,
-        spinner-variables.$clr-spinner-color,
-        variables.$clr-use-custom-properties
-      );
+      border-color: var(--clr-spinner-fill-color);
+      //@include mixins.css-var(
+      //  border-color,
+      //  clr-spinner-fill-color,
+      //  spinner-variables.$clr-spinner-color,
+      //  variables.$clr-use-custom-properties
+      //);
       border-right-color: transparent !important;
       border-bottom-color: transparent !important;
       @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
