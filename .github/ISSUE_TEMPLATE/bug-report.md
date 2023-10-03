@@ -31,9 +31,8 @@ _A clear and concise description of what you expected to happen._
 
 **Clarity version:**
 
-- [ ] v16.x
 - [ ] v15.x
-- [ ] v13.x
+- [ ] v16.x
 - [ ] Other:
 
 **Framework version:**
