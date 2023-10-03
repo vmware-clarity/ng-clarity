@@ -308,7 +308,7 @@ class TestAlertInstance {
 @Component({
   template: `
     <clr-alerts>
-      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertAppLevel]="true">
+      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
         <div class="alert-item">
           <span class="alert-text">
             {{ alert.text }}
@@ -317,7 +317,7 @@ class TestAlertInstance {
       </clr-alert>
     </clr-alerts>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // Using default to test for error NG0100 in console, CDE-1249
 })
 class DynamicAlerts {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
@@ -327,8 +327,8 @@ class DynamicAlerts {
 
   ngOnInit() {
     this.dynamicAlerts = [
-      { type: 'alert-info', text: "I'm an informational" },
-      { type: 'alert-danger', text: 'Watch out!' },
+      { type: 'info', text: "I'm an informational", isAppLevel: true },
+      { type: 'danger', text: 'Watch out!', isAppLevel: false },
     ];
   }
 }
