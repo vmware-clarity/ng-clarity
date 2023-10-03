@@ -1223,6 +1223,8 @@
   --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
   --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
 
+  --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
+  --clr-header-title-font-family: #{tokens.$cds-global-typography-header-font-family};
   --clr-header-title-font-size: #{tokens.$cds-global-typography-subsection-font-size};
   --clr-header-title-line-height: #{tokens.$cds-global-typography-subsection-line-height};
   --clr-header-title-letter-spacing: #{tokens.$cds-global-typography-subsection-letter-spacing};
