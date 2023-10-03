@@ -83,7 +83,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     if (value !== this._hidden) {
       this._hidden = value;
 
-      // @HostBinding('class.alert-hidden') decoration will raise dev error in console https://angular.io/errors/NG0100
+      // CDE-1249 @HostBinding('class.alert-hidden') decoration will raise error in console https://angular.io/errors/NG0100
       if (this._hidden) {
         this.renderer.addClass(this.hostElement.nativeElement, 'alert-hidden');
       } else {

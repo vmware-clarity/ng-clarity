@@ -52,16 +52,21 @@
       </div>
     </header>
 
-    <clr-alerts>
-      <clr-alert *ngFor="let alert of alerts; let i = index">
-        <clr-alert-item>
-          <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
-        </clr-alert-item>
-      </clr-alert>
-    </clr-alerts>
-
     <div class="content-container">
       <div class="content-area">
+        <div>Test for dev error <a href="https://angular.io/errors/NG0100">NG0100</a> in console</div>
+        <!--  CDE-1249 test for dev error NG0100 in console  -->
+        <clr-alerts>
+          <clr-alert
+            *ngFor="let alert of alerts; let i = index"
+            [clrAlertType]="alert.type"
+            [clrAlertAppLevel]="alert.isAppLevel"
+          >
+            <clr-alert-item>
+              <span class="alert-text"> {{ alert.text }} at index {{i}} </span>
+            </clr-alert-item>
+          </clr-alert>
+        </clr-alerts>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam dolorum
           voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem aliquam. Ullam, eaque

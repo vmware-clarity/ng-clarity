@@ -12,5 +12,10 @@ import { Component } from '@angular/core';
   templateUrl: './alert-angular-app-level-alerts.demo.html',
 })
 export class AlertAngularAppLevelAlertsDemo {
-  alerts = [{ text: 'Message 1' }, { text: 'Message 2' }];
+  alerts = [
+    { text: 'Message 1', type: 'info', isAppLevel: false },
+    { text: 'Message 2', type: 'danger', isAppLevel: false },
+    { text: 'Message 3', type: 'warning', isAppLevel: false },
+    { text: 'Message 4', type: 'success', isAppLevel: false },
+  ];
 }
