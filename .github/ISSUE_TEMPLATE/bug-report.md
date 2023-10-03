@@ -37,7 +37,7 @@ _A clear and concise description of what you expected to happen._
 
 **Framework version:**
 
-_ie: Angular 15_
+_ie: Angular 16_
 
 **Device:**
 
