@@ -47,9 +47,7 @@ const StackedModalTemplate: Story = args => ({
 
     <clr-modal [(clrModalOpen)]="modal2Open">
       <h3 class="modal-title">Modal 2</h3>
-      <div class="modal-body">
-        This is modal 2. Pressing escape should only close this modal, not both.
-      </div>
+      <div class="modal-body">This is modal 2. Pressing escape should only close this modal, not both.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="modal2Open = false">Close</button>
       </div>

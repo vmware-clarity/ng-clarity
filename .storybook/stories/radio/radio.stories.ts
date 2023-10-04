@@ -33,10 +33,10 @@ export default {
 };
 
 const RadioTemplate: StoryFn = args => ({
-  template: ` 
+  template: `
     <clr-radio-wrapper>
       <input type="radio" clrRadio value="i + 1" [checked]="checked" [disabled]="disabled" />
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
     </clr-radio-wrapper>
   `,
   props: { ...args },

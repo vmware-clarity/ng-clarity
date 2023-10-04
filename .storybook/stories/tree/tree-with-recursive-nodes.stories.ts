@@ -36,7 +36,7 @@ const RecursiveTreeViewTemplate: Story = args => ({
   template: `
     <clr-tree>
       <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
-        {{file.name}}
+        {{ file.name }}
       </clr-tree-node>
     </clr-tree>
   `,

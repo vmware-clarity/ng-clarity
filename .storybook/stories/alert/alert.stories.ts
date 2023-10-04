@@ -26,7 +26,7 @@ const defaultStory: Story = args => ({
       (clrAlertClosedChange)="clrAlertClosedChange($event)"
     >
       <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{content}} {{i + 1}}</span>
+        <span class="alert-text">{{ content }} {{ i + 1 }}</span>
       </clr-alert-item>
     </clr-alert>
   `,

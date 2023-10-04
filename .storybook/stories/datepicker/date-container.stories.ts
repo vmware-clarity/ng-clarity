@@ -28,10 +28,10 @@ export default {
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-top: 300px; text-align: center;">
-      <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
+    <div style="margin-top: 300px; text-align: center">
+      <clr-date-container style="display: inline-block" [clrPosition]="clrPosition">
         <label>Date</label>
-        <input type="date" autocomplete="off" clrDate>
+        <input type="date" autocomplete="off" clrDate />
       </clr-date-container>
     </div>
   `,
