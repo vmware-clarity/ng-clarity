@@ -172,7 +172,6 @@
   // Shared colors
   --clr-btn-transparent-bg-color: #{tokens.$cds-alias-object-opacity-0};
   --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
-  --clr-btn-disabled-opacity: 1;
 
   // Default button colors
   --clr-btn-default-color: #{tokens.$cds-alias-status-info}; // var(--clr-color-neutral-0);
@@ -461,22 +460,7 @@
   --clr-btn-icon-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
 
   // Button spacings
-  --clr-btn-border-width: #{tokens.$cds-global-space-1};
-  --clr-btn-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-btn-appearance-form-height: #{tokens.$cds-global-space-11}; // this is standard height
-  --clr-btn-appearance-standard-height: #{tokens.$cds-global-space-9}; // this is btn-sm (small) height
-  --clr-btn-appearance-standard-line-height: #{tokens.$cds-global-space-7};
-  --clr-btn-appearance-standard-padding: 0 #{tokens.$cds-global-space-6};
-  --clr-btn-display: inline-flex;
-  --clr-btn-block-display: flex;
-  --clr-btn-appearance-gap: #{tokens.$cds-global-space-5};
-  --clr-btn-appearance-icon-margin: #{tokens.$cds-global-space-0};
-  --clr-btn-appearance-sm-icon-margin: #{tokens.$cds-global-space-0};
-  --clr-btn-appearance-form-font-size: #{tokens.$cds-global-typography-font-size-2};
-  --clr-btn-appearance-standard-font-size: #{tokens.$cds-global-typography-font-size-1};
   --clr-btn-appearance-link-font-size: #{tokens.$cds-global-typography-font-size-4};
-  --clr-btn-appearance-form-letter-spacing: #{tokens.$cds-global-typography-smallcaption-letter-spacing};
-  --clr-btn-appearance-standard-letter-spacing: #{tokens.$cds-global-typography-smallcaption-letter-spacing};
 
   /* Alert Color Properties */
 
@@ -1900,7 +1884,7 @@
   --clr-datagrid-column-toggle-fill-color: #{tokens.$cds-alias-object-opacity-0};
   --clr-datagrid-column-toggle-text-color: #{tokens.$cds-alias-typography-color-400};
   --clr-datagrid-column-toggle-disabled-color: var(--clr-btn-default-disabled-color);
-  --clr-datagrid-column-toggle-disabled-opacity: var(--clr-btn-disabled-opacity);
+  --clr-datagrid-column-toggle-disabled-opacity: 1; // var(--clr-btn-disabled-opacity);
 
   --clr-datagrid-column-toggle-border-hover-color: #{tokens.$cds-alias-object-interaction-color-active};
   --clr-datagrid-column-toggle-fill-hover-color: #{tokens.$cds-alias-object-interaction-background};

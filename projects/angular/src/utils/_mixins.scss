@@ -357,6 +357,16 @@ $typography-tokens: (
     // suitable token not found
     text-transform: uppercase,
   ),
+  'BUTTON-12': (
+    // Buttons
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    font-size: #{tokens.$cds-alias-typography-font-size-2},
+    line-height: #{tokens.$cds-global-space-7},
+    // better token not found
+    letter-spacing: #{baselinePx(1)},
+    // suitable token not found
+    text-transform: uppercase,
+  ),
   'BUTTON-11-SMALL': (
     // Small Buttons
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},

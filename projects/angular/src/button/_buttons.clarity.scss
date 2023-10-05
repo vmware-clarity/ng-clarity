@@ -7,6 +7,7 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.buttons' as buttons-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @function getSassButtonColor($type: default, $property: null) {
   @if not $property {
@@ -100,7 +101,10 @@
   @if $style != null and $styleNickname != null {
     $cssVarName: #{'clr-btn-' + $button-type + '-' + $styleNickname};
     $fallbackStyle: getSassButtonColor($button-type, $styleNickname);
-    @include mixins.css-var($style, $cssVarName, $fallbackStyle, $use-custom-props);
+
+    #{$style}: var(#{'--clr-btn-' + $button-type + '-' + $styleNickname});
+
+    //@include mixins.css-var($style, $cssVarName, $fallbackStyle, $use-custom-props);
   }
 }
 
@@ -136,7 +140,6 @@
   &:disabled {
     @include button-css-var($button-type, color, disabled-color, variables.$clr-use-custom-properties);
     cursor: not-allowed;
-    @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
   }
@@ -176,31 +179,18 @@
 }
 
 @mixin btn-default-border-styles() {
-  @include mixins.css-var(
-    border-radius,
-    clr-btn-border-radius,
-    buttons-variables.$clr-btn-border-radius,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    border-width,
-    clr-btn-border-width,
-    buttons-variables.$clr-btn-border-width,
-    variables.$clr-use-custom-properties
-  );
+  border-radius: var(--clr-btn-border-radius);
+  border-width: var(--clr-btn-border-width);
   border-style: solid;
 }
 
 @mixin btn-appearance() {
   cursor: pointer;
 
-  // ATM (after token migration)
-  // clr-btn-display and clr-btn-appearance-gap variables will be removed
-  // display: inline-flex and gap: var(--cds-global-space-5); will become standard
+  display: inline-flex;
+  gap: #{tokens.$cds-global-space-5};
   align-items: center;
   place-content: center;
-  @include mixins.css-var(display, clr-btn-display, inline-block, variables.$clr-use-custom-properties);
-  @include mixins.css-var(gap, clr-btn-appearance-gap, 8px, variables.$clr-use-custom-properties);
 
   // Overrides a Fix for IOS in BS4 _normalize.scss (~ln 330)
   // `!important` is to override specificity in this instance
@@ -209,42 +199,10 @@
 }
 
 @mixin btn-sm-appearance() {
-  @include mixins.css-var(
-    line-height,
-    clr-btn-appearance-standard-line-height,
-    buttons-variables.$clr-btn-appearance-standard-line-height,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    letter-spacing,
-    clr-btn-appearance-standard-letter-spacing,
-    buttons-variables.$clr-btn-appearance-standard-letter-spacing,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    font-size,
-    clr-btn-appearance-standard-font-size,
-    buttons-variables.$clr-btn-appearance-standard-font-size,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    font-weight,
-    clr-btn-appearance-standard-font-weight,
-    buttons-variables.$clr-btn-appearance-standard-font-weight,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    height,
-    clr-btn-appearance-standard-height,
-    buttons-variables.$clr-btn-appearance-standard-height,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    padding,
-    clr-btn-appearance-standard-padding,
-    buttons-variables.$clr-btn-appearance-standard-padding,
-    variables.$clr-use-custom-properties
-  );
+  @include mixins.generate-typography-token('BUTTON-11-SMALL');
+
+  height: var(--clr-btn-appearance-standard-height);
+  padding: var(--clr-btn-appearance-standard-padding);
 }
 
 @mixin generateButton() {
@@ -261,43 +219,10 @@
   .btn {
     @include generateButton();
     @include populateButtonProperties(default);
+    @include mixins.generate-typography-token('BUTTON-12');
 
-    @include mixins.css-var(
-      line-height,
-      clr-btn-appearance-form-line-height,
-      buttons-variables.$clr-btn-appearance-form-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-btn-appearance-form-letter-spacing,
-      buttons-variables.$clr-btn-appearance-form-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-btn-appearance-form-font-size,
-      buttons-variables.$clr-btn-appearance-form-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-weight,
-      clr-btn-appearance-form-font-weight,
-      buttons-variables.$clr-btn-appearance-form-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      height,
-      clr-btn-appearance-form-height,
-      buttons-variables.$clr-btn-appearance-form-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      padding,
-      clr-btn-appearance-form-padding,
-      buttons-variables.$clr-btn-appearance-form-padding,
-      variables.$clr-use-custom-properties
-    );
+    height: var(--clr-btn-appearance-form-height);
+    padding: var(--clr-btn-appearance-form-padding);
   }
 
   //Clarity Buttons
@@ -305,17 +230,6 @@
   .btn {
     clr-icon {
       transform: translate3d(0, -1 * variables.$clr_baselineRem_2px, 0);
-    }
-    cds-icon {
-      // ATM (after token migration)
-      // clr-btn-appearance-icon-margin variable will be removed
-      // margin-top: var(--cds-global-space-0); will become standard or simply removed
-      @include mixins.css-var(
-        margin-top,
-        clr-btn-appearance-icon-margin,
-        -1.4 * variables.$clr_baselineRem_2px,
-        variables.$clr-use-custom-properties
-      );
     }
   }
 
@@ -461,31 +375,13 @@
   }
 
   .btn-block {
-    @include mixins.css-var(display, clr-btn-block-display, block, variables.$clr-use-custom-properties);
+    display: flex;
     width: 100%;
     max-width: 100%;
   }
 
   .btn {
-    @include mixins.css-var(
-      margin-top,
-      clr-btn-vertical-margin,
-      buttons-variables.$clr-btn-vertical-margin,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      margin-bottom,
-      clr-btn-vertical-margin,
-      buttons-variables.$clr-btn-vertical-margin,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      margin-right,
-      clr-btn-horizontal-margin,
-      buttons-variables.$clr-btn-horizontal-margin,
-      variables.$clr-use-custom-properties
-    );
-    margin-left: 0;
+    margin: var(--clr-btn-vertical-margin) var(--clr-btn-horizontal-margin) var(--clr-btn-vertical-margin) 0;
 
     &.btn-link {
       margin-right: 0;
@@ -524,15 +420,6 @@
         height,
         clr-btn-appearance-standard-icon-size,
         variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      // ATM (after token migration)
-      // clr-btn-appearance-sm-icon-margin variable will be removed
-      // margin-top: var(--cds-global-space-0); will become standard or simply removed
-      @include mixins.css-var(
-        margin-top,
-        clr-btn-appearance-sm-icon-margin,
-        -0.1rem,
         variables.$clr-use-custom-properties
       );
     }

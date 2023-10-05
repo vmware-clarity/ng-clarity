@@ -97,13 +97,8 @@
     &.btn-warning {
       .tooltip:not(:last-child) .btn,
       .btn:not(:last-child) {
-        margin: 0;
-        @include mixins.css-var(
-          margin-right,
-          clr-btn-border-width,
-          button-variables.$clr-btn-border-width,
-          variables.$clr-use-custom-properties
-        );
+        // special margin right based on button border width
+        margin: 0 var(--clr-btn-border-width) 0 0;
       }
     }
 
@@ -121,23 +116,13 @@
     }
 
     > .btn-group-overflow:last-child:not(:first-child) > .btn:first-child {
-      @include mixins.css-var(
-        border-radius,
-        clr-btn-border-radius,
-        button-variables.$clr-btn-border-radius,
-        variables.$clr-use-custom-properties
-      );
+      border-radius: var(--clr-btn-border-radius);
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     > .btn-group-overflow:last-child:first-child > .btn:first-child {
-      @include mixins.css-var(
-        border-radius,
-        clr-btn-border-radius,
-        button-variables.$clr-btn-border-radius,
-        variables.$clr-use-custom-properties
-      );
+      border-radius: var(--clr-btn-border-radius);
     }
 
     //To avoid double borders
