@@ -5,8 +5,6 @@
  */
 @use 'sass:meta';
 @use '../utils/mixins';
-@use '../utils/variables/variables';
-@use 'variables.buttons' as buttons-variables;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin button-css-var($button-type: default, $style: null, $styleNickname: $style) {
@@ -70,8 +68,8 @@
 }
 
 @mixin btn-min-max-widths() {
-  min-width: variables.$clr_baselineRem_3;
-  max-width: variables.$clr_baselineRem_15;
+  min-width: #{tokens.$cds-global-space-14};
+  max-width: mixins.baselinePx(360);
 }
 
 @mixin btn-text-properties() {
@@ -85,9 +83,8 @@
 }
 
 @mixin btn-default-border-styles() {
+  border: var(--clr-btn-border-width) solid;
   border-radius: var(--clr-btn-border-radius);
-  border-width: var(--clr-btn-border-width);
-  border-style: solid;
 }
 
 @mixin btn-appearance() {
@@ -135,7 +132,7 @@
   .btn-group > .btn,
   .btn {
     clr-icon {
-      transform: translate3d(0, -1 * variables.$clr_baselineRem_2px, 0);
+      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-2}), 0);
     }
   }
 
@@ -301,33 +298,13 @@
   //Small Icon Button
   .btn-sm:not(.btn-link) {
     clr-icon {
-      @include mixins.css-var(
-        width,
-        clr-btn-appearance-standard-icon-size,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        height,
-        clr-btn-appearance-standard-icon-size,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      transform: translate3d(0, -1 * variables.$clr_baselineRem_1px, 0);
+      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-1}), 0);
     }
+
+    clr-icon,
     cds-icon {
-      @include mixins.css-var(
-        width,
-        clr-btn-appearance-standard-icon-size,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        height,
-        clr-btn-appearance-standard-icon-size,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      height: var(--clr-btn-appearance-standard-icon-size);
+      width: var(--clr-btn-appearance-standard-icon-size);
     }
   }
 
@@ -339,12 +316,7 @@
   .btn:disabled {
     cds-icon,
     clr-icon {
-      @include mixins.css-var(
-        color,
-        clr-btn-icon-disabled-color,
-        variables.$clr-color-neutral-400,
-        variables.$clr-use-custom-properties
-      );
+      color: var(--clr-btn-icon-disabled-color);
     }
   }
 
@@ -357,12 +329,7 @@
       @include populateButtonProperties(primary);
     }
     &.btn-danger :disabled {
-      @include mixins.css-var(
-        border-color,
-        clr-color-neutral-400,
-        variables.$clr-color-neutral-400,
-        variables.$clr-use-custom-properties
-      );
+      border-color: #{tokens.$cds-alias-status-disabled};
     }
 
     &.btn-link .dropdown-toggle {
@@ -385,7 +352,7 @@
     label {
       display: block;
       line-height: inherit;
-      padding: 0 variables.$clr_baselineRem_0_5;
+      padding: 0 #{tokens.$cds-global-space-6};
       cursor: pointer;
     }
   }

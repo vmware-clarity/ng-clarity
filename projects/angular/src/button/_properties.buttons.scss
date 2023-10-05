@@ -18,11 +18,12 @@
     --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
 
     // Sizing
-    --clr-btn-height: #{button-variables.$clr-btn-height};
-    --clr-btn-height-sm: #{button-variables.$clr-btn-height-sm};
+    --clr-btn-height: #{tokens.$cds-global-space-11}; // this is standard height
+    --clr-btn-height-sm: #{tokens.$cds-global-space-9}; // this is btn-sm (small) height
 
     // Fonts
-    --clr-btn-font-weight: #{button-variables.$clr-btn-font-weight};
+    // not used to be deleted
+    //--clr-btn-font-weight: #{button-variables.$clr-btn-font-weight};
 
     // Borders
     --clr-btn-border-radius: #{tokens.$cds-alias-object-border-radius-100};
@@ -33,20 +34,12 @@
     --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
 
     // Standard button appearance - overrideable but not advertised!
-    --clr-btn-appearance-standard-line-height: #{button-variables.$clr-btn-appearance-standard-line-height};
-    --clr-btn-appearance-standard-letter-spacing: #{button-variables.$clr-btn-appearance-standard-letter-spacing};
-    --clr-btn-appearance-standard-font-size: #{button-variables.$clr-btn-appearance-standard-font-size};
-    --clr-btn-appearance-standard-font-weight: #{button-variables.$clr-btn-appearance-standard-font-weight};
-    --clr-btn-appearance-standard-height: #{tokens.$cds-global-space-9}; // this is btn-sm (small) height
+    --clr-btn-appearance-standard-height: var(--clr-btn-height-sm);
     --clr-btn-appearance-standard-padding: 0 #{tokens.$cds-global-space-6};
-    --clr-btn-appearance-standard-icon-size: #{variables.$clr_baselineRem_0_5};
+    --clr-btn-appearance-standard-icon-size: #{tokens.$cds-global-space-7};
 
     // form-style button appearance styles - overrideable but not advertised!
-    --clr-btn-appearance-form-line-height: #{button-variables.$clr-btn-appearance-form-line-height};
-    --clr-btn-appearance-form-letter-spacing: #{button-variables.$clr-btn-appearance-form-letter-spacing};
-    --clr-btn-appearance-form-font-size: #{button-variables.$clr-btn-appearance-form-font-size};
-    --clr-btn-appearance-form-font-weight: #{button-variables.$clr-btn-appearance-form-font-weight};
-    --clr-btn-appearance-form-height: #{tokens.$cds-global-space-11}; // this is standard height
+    --clr-btn-appearance-form-height: var(--clr-btn-height);
     --clr-btn-appearance-form-padding: var(--clr-btn-padding);
 
     // Default button colors
@@ -57,7 +50,7 @@
     --clr-btn-default-hover-color: var(--clr-color-action-800);
     --clr-btn-default-active-color: var(--clr-color-action-600);
     --clr-btn-default-active-bg-color: #{button-variables.$clr-btn-default-bg-color};
-    --clr-btn-default-disabled-color: var(--clr-color-neutral-700);
+    --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
     --clr-btn-default-disabled-bg-color: var(--clr-btn-default-bg-color);
     --clr-btn-default-disabled-border-color: var(--clr-color-neutral-600);
     --clr-btn-default-checked-bg-color: var(--clr-color-action-600);
@@ -318,10 +311,7 @@
     --clr-btn-inverse-checked-color: var(--clr-color-neutral-0);
 
     // For theme-able icon button color
-    --clr-btn-icon-disabled-color: var(
-      --clr-btn-default-disabled-color,
-      #{button-variables.$clr-btn-default-disabled-color}
-    );
+    --clr-btn-icon-disabled-color: var(--clr-btn-default-disabled-color);
 
     // Button groups
     --clr-btn-group-focus-outline: #{button-variables.$clr-btn-group-focus-outline};
