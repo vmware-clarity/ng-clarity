@@ -9,139 +9,46 @@
 @use 'variables.buttons' as buttons-variables;
 @use '@cds/core/tokens/tokens.scss';
 
-@function getSassButtonColor($type: default, $property: null) {
-  @if not $property {
-    @return null;
-  }
-
-  @if $type == default {
-    @return buttons-variables.lookupFromDefaultButtonColors($property);
-  }
-
-  @if $type == default-outline {
-    @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
-  }
-
-  @if $type == primary {
-    @return buttons-variables.lookupFromPrimaryButtonColors($property);
-  }
-
-  @if $type == primary-outline {
-    @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
-  }
-
-  @if $type == success {
-    @return buttons-variables.lookupFromSuccessButtonColors($property);
-  }
-
-  @if $type == success-outline {
-    @return buttons-variables.lookupFromSuccessOutlineButtonColors($property);
-  }
-
-  @if $type == danger {
-    @return buttons-variables.lookupFromDangerButtonColors($property);
-  }
-
-  @if $type == neutral {
-    @return buttons-variables.lookupFromNeutralButtonColors($property);
-  }
-
-  @if $type == neutral-outline {
-    @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
-  }
-
-  @if $type == danger-outline {
-    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
-  }
-
-  @if $type == warning {
-    @return buttons-variables.lookupFromWarningButtonColors($property);
-  }
-
-  @if $type == warning-outline {
-    @return buttons-variables.lookupFromWarningOutlineButtonColors($property);
-  }
-
-  @if $type == link {
-    @return buttons-variables.lookupFromLinkButtonColors($property);
-  }
-
-  @if $type == link-primary {
-    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
-  }
-
-  @if $type == link-success {
-    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
-  }
-
-  @if $type == link-warning {
-    @return buttons-variables.lookupFromLinkWarningButtonColors($property);
-  }
-
-  @if $type == link-danger {
-    @return buttons-variables.lookupFromLinkDangerButtonColors($property);
-  }
-
-  @if $type == link-neutral {
-    @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
-  }
-
-  @if $type == inverse {
-    @return buttons-variables.lookupFromInverseButtonColors($property);
-  }
-
-  @if $type == icon {
-    @return buttons-variables.lookupFromIconButtonColors($property);
-  }
-
-  @return null;
-}
-
-@mixin button-css-var($button-type: default, $style: null, $styleNickname: null, $use-custom-props: true) {
-  @if $style != null and $styleNickname != null {
-    $cssVarName: #{'clr-btn-' + $button-type + '-' + $styleNickname};
-    $fallbackStyle: getSassButtonColor($button-type, $styleNickname);
-
+@mixin button-css-var($button-type: default, $style: null, $styleNickname: $style) {
+  @if $style {
     #{$style}: var(#{'--clr-btn-' + $button-type + '-' + $styleNickname});
-
-    //@include mixins.css-var($style, $cssVarName, $fallbackStyle, $use-custom-props);
   }
 }
 
 @mixin populateButtonProperties($button-type: default) {
-  @include button-css-var($button-type, border-color, border-color, variables.$clr-use-custom-properties);
-  @include button-css-var($button-type, background-color, bg-color, variables.$clr-use-custom-properties);
-  @include button-css-var($button-type, color, color, variables.$clr-use-custom-properties);
+  @include button-css-var($button-type, border-color);
+  @include button-css-var($button-type, background-color, bg-color);
+  @include button-css-var($button-type, color);
 
   cds-icon,
   clr-icon {
-    @include button-css-var($button-type, color, color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, color);
   }
 
   &:hover {
-    @include button-css-var($button-type, background-color, hover-bg-color, variables.$clr-use-custom-properties);
-    @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, background-color, hover-bg-color);
+    @include button-css-var($button-type, color, hover-color);
     cds-icon,
     clr-icon {
-      @include button-css-var($button-type, color, hover-color, variables.$clr-use-custom-properties);
+      @include button-css-var($button-type, color, hover-color);
     }
   }
 
   &:active {
-    @include button-css-var($button-type, background-color, active-bg-color, variables.$clr-use-custom-properties);
-    @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, background-color, active-bg-color);
+    @include button-css-var($button-type, color, active-color);
     cds-icon,
     clr-icon {
-      @include button-css-var($button-type, color, active-color, variables.$clr-use-custom-properties);
+      @include button-css-var($button-type, color, active-color);
     }
   }
 
   &.disabled,
   &:disabled {
-    @include button-css-var($button-type, color, disabled-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, color, disabled-color);
     cursor: not-allowed;
-    @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
-    @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
+    @include button-css-var($button-type, background-color, disabled-bg-color);
+    @include button-css-var($button-type, border-color, disabled-border-color);
   }
 }
 
@@ -151,8 +58,8 @@
   // override icon colors on inverted backgrounds
   input[type='#{$type}']:checked + label > clr-icon,
   input[type='#{$type}']:checked + label > cds-icon {
-    background-color: getSassButtonColor($button-type, checked-bg-color);
-    color: getSassButtonColor($button-type, checked-color);
+    @include button-css-var($button-type, background-color, checked-bg-color);
+    @include button-css-var($button-type, color, checked-color);
   }
 }
 
@@ -170,7 +77,6 @@
 @mixin btn-text-properties() {
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase;
   vertical-align: middle;
 
   &:hover {
@@ -324,16 +230,16 @@
 
     //To override the visited state of anchor links styled as buttons
     &:visited {
-      @include button-css-var(link, color, visited-color, variables.$clr-use-custom-properties);
+      @include button-css-var(link, color, visited-color);
       cds-icon,
       clr-icon {
-        @include button-css-var(link, color, visited-color, variables.$clr-use-custom-properties);
+        @include button-css-var(link, color, visited-color);
       }
       &:hover {
-        @include button-css-var(link, color, visited-hover-color, variables.$clr-use-custom-properties);
+        @include button-css-var(link, color, visited-hover-color);
         cds-icon,
         clr-icon {
-          @include button-css-var(link, color, visited-hover-color, variables.$clr-use-custom-properties);
+          @include button-css-var(link, color, visited-hover-color);
         }
       }
     }
