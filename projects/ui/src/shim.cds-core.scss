@@ -185,8 +185,8 @@
   --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled};
   --clr-btn-default-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
   --clr-btn-default-disabled-border-color: #{tokens.$cds-alias-status-disabled};
-  --clr-btn-default-checked-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-neutral-0);
-  --clr-btn-default-checked-bg-color: var(--clr-btn-default-outline-bg-color);
+  --clr-btn-default-checked-color: #{tokens.$cds-alias-typography-color-100};
+  --clr-btn-default-checked-bg-color: var(--clr-btn-default-color);
 
   // Default outline button
   --clr-btn-default-outline-color: #{tokens.$cds-alias-status-info}; // var(--clr-color-neutral-0);

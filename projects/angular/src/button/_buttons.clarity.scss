@@ -350,10 +350,9 @@
     padding: 0;
 
     label {
-      display: block;
-      line-height: inherit;
+      @include btn-appearance();
+
       padding: 0 #{tokens.$cds-global-space-6};
-      cursor: pointer;
     }
   }
 
