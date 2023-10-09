@@ -46,7 +46,7 @@ export default {
   },
 };
 
-const Template = `
+const template = `
     <div style="margin-top: 100px; text-align: center;">
       <clr-signpost>
         <clr-signpost-content [clrPosition]="clrPosition">
@@ -57,7 +57,7 @@ const Template = `
   `;
 
 export const Initial: Story = args => ({
-  template: Template,
+  template,
   props: args,
 });
 
