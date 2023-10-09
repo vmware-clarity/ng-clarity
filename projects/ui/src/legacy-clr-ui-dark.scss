@@ -5,4 +5,5 @@
  */
 
 // Import from clr-angular to preserve file structure until sass theming is removed
-@import '../../angular/src/dark-theme';
+@use '@cds/core/global.min.css'; // provides the Clarity Core design tokens
+@use '../../angular/src/dark-theme';
