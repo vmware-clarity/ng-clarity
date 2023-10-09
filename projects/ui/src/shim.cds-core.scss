@@ -1022,9 +1022,11 @@
   --clr-header-font-color: var(--cds-global-color-construction-100);
   --clr-header-font-color-hover: var(--cds-global-color-construction-50);
 
-  --clr-header-title-font-size: var(--cds-global-typography-subsection-font-size);
-  --clr-header-title-line-height: var(--cds-global-typography-subsection-line-height);
-  --clr-header-title-letter-spacing: var(--cds-global-typography-subsection-letter-spacing);
+  --clr-header-title-font-weight: var(--cds-alias-typography-subsection-font-weight, var(--cds-global-typography-subsection-font-weight));
+  --clr-header-title-font-family: var(--cds-alias-typography-header-font-family, var(--cds-global-typography-header-font-family));
+  --clr-header-title-font-size: var(--cds-alias-typography-subsection-font-size, var(--cds-global-typography-subsection-font-size));
+  --clr-header-title-line-height: var(--cds-alias-typography-subsection-line-height, var(--cds-global-typography-subsection-line-height));
+  --clr-header-title-letter-spacing: var(--cds-alias-typography-subsection-letter-spacing, var(--cds-global-typography-subsection-letter-spacing));
 
   --clr-header-divider-color: var(--cds-global-color-construction-600);
   --clr-header-divider-width: var(--cds-global-space-1);
