@@ -31,19 +31,20 @@ _A clear and concise description of what you expected to happen._
 
 **Clarity version:**
 
-- [ ] v13.x
 - [ ] v15.x
+- [ ] v16.x
 - [ ] Other:
 
 **Framework version:**
-_ie: Angular 15_
+
+_ie: Angular 16_
 
 **Device:**
 
 - Type: [e.g. MacBook]
 - OS: [e.g. iOS]
-- Browser [e.g. chrome, safari]
-- Version [e.g. 22]
+- Browser: [e.g. chrome, safari]
+- Version: [e.g. 22]
 
 ## Additional notes
 
