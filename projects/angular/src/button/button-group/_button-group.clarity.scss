@@ -5,8 +5,6 @@
  */
 
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use '../variables.buttons' as button-variables;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin square-off-btngroup-btns($dir: left) {
@@ -45,24 +43,11 @@
       // remove when detailed radio/checkbox groups are implemented
       input[type='radio']:hover,
       input[type='checkbox']:hover {
-        $outline-shadow: 0 0 variables.$clr_baselineRem_5px
-          var(--clr-btn-group-focus-outline, button-variables.$clr-btn-group-focus-outline);
-        $ie-outline-shadow: 0 0 variables.$clr_baselineRem_5px button-variables.$clr-btn-group-focus-outline;
         appearance: none;
         opacity: 1;
         top: 0;
         @include mixins.equilateral(100%);
-        box-shadow: $ie-outline-shadow;
-        box-shadow: $outline-shadow;
-        padding: variables.$clr_baselineRem_3px 0 variables.$clr_baselineRem_3px variables.$clr_baselineRem_3px;
-        border-width: variables.$clr_baselineRem_1px;
-        border-style: solid;
-        @include mixins.css-var(
-          border-color,
-          clr-btn-group-focus-outline,
-          button-variables.$clr-btn-group-focus-outline,
-          variables.$clr-use-custom-properties
-        );
+        border: #{tokens.$cds-alias-object-interaction-outline};
 
         &::-ms-check {
           display: none;

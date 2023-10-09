@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use 'variables.buttons' as button-variables;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('button.properties') {
@@ -19,10 +18,6 @@
     // Sizing
     --clr-btn-height: #{tokens.$cds-global-space-11}; // this is standard height
     --clr-btn-height-sm: #{tokens.$cds-global-space-9}; // this is btn-sm (small) height
-
-    // Fonts
-    // not used to be deleted
-    //--clr-btn-font-weight: #{button-variables.$clr-btn-font-weight};
 
     // Borders
     --clr-btn-border-radius: #{tokens.$cds-alias-object-border-radius-100};
@@ -329,8 +324,5 @@
     --clr-btn-inverse-disabled-border-color: #{tokens.$cds-alias-status-disabled};
     --clr-btn-inverse-checked-bg-color: var(--clr-btn-inverse-bg-color);
     --clr-btn-inverse-checked-color: var(--clr-btn-inverse-color);
-
-    // Button groups
-    --clr-btn-group-focus-outline: #{button-variables.$clr-btn-group-focus-outline};
   }
 }
