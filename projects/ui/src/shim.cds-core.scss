@@ -918,6 +918,7 @@
   --clr-card-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
   --clr-card-divider-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-300);
   --clr-card-title-color: #{tokens.$cds-alias-typography-color-400};
+  --clr-card-title-font-weight: #{tokens.$cds-global-typography-section-font-weight};
   --clr-card-header-title-color: var(--clr-card-title-color);
   --clr-card-content-title-color: var(--clr-card-title-color);
   --clr-card-header-title-font-size: #{tokens.$cds-global-typography-section-font-size};
