@@ -715,9 +715,10 @@
 
   /* Cards */
 
-  --clr-card-bg-color: var(--cds-alias-object-container-background); // var(--clr-color-neutral-0);
-  --clr-card-divider-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-300);
+  --clr-card-bg-color: var(--cds-alias-object-container-background);
+  --clr-card-divider-color: var(--cds-alias-object-border-color);
   --clr-card-title-color: var(--cds-alias-typography-color-400, var(--cds-global-typography-color-400));
+  --clr-card-title-font-weight: var(--cds-alias-typography-section-font-weight, var(--cds-global-typography-section-font-weight));
   --clr-card-header-title-color: var(--clr-card-title-color);
   --clr-card-content-title-color: var(--clr-card-title-color);
   --clr-card-header-title-font-size: var(--cds-global-typography-section-font-size);
