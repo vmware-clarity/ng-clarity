@@ -41,6 +41,8 @@
         height: 100%;
       }
 
+      // ATM after token migration (alpha or beta v17)
+      // remove when detailed radio/checkbox groups are implemented
       input[type='radio']:hover,
       input[type='checkbox']:hover {
         $outline-shadow: 0 0 variables.$clr_baselineRem_5px
@@ -95,20 +97,12 @@
     &.btn-success,
     &.btn-danger,
     &.btn-warning {
-      .tooltip:not(:last-child) .btn,
-      .btn:not(:last-child) {
+      .tooltip:not(:last-child) > .btn,
+      > .btn:not(:last-child) {
+        // apply only to direct .btn children
         // special margin right based on button border width
         margin: 0 var(--clr-btn-border-width) 0 0;
       }
-    }
-
-    //I couldn't reduce the nesting here :-(
-    //TODO: Try to reduce the nesting here later.
-    &.btn-primary .dropdown-menu .btn,
-    &.btn-success .dropdown-menu .btn,
-    &.btn-danger .dropdown-menu .btn,
-    &.btn-warning .dropdown-menu .btn {
-      margin: 0;
     }
 
     > .btn-group-overflow {

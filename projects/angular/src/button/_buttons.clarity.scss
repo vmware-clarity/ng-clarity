@@ -47,17 +47,57 @@
     cursor: not-allowed;
     @include button-css-var($button-type, background-color, disabled-bg-color);
     @include button-css-var($button-type, border-color, disabled-border-color);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, color, disabled-color);
+    }
   }
 }
 
 @mixin btn-checked-styles($button-type: default, $type: checkbox) {
   // add semantic prop: group-checked-font-color
-  input[type='#{$type}']:checked + label,
-  // override icon colors on inverted backgrounds
-  input[type='#{$type}']:checked + label > clr-icon,
-  input[type='#{$type}']:checked + label > cds-icon {
+  input[type='#{$type}']:checked + label {
     @include button-css-var($button-type, background-color, checked-bg-color);
     @include button-css-var($button-type, color, checked-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-color);
+    }
+
+    &:hover {
+      @include button-css-var($button-type, background-color, checked-hover-bg-color);
+      @include button-css-var($button-type, color, checked-hover-color);
+
+      // override icon colors on inverted backgrounds
+      & > clr-icon,
+      & > cds-icon {
+        @include button-css-var($button-type, color, checked-hover-color);
+      }
+    }
+
+    &:active {
+      @include button-css-var($button-type, background-color, checked-active-bg-color);
+      @include button-css-var($button-type, color, checked-active-color);
+
+      // override icon colors on inverted backgrounds
+      & > clr-icon,
+      & > cds-icon {
+        @include button-css-var($button-type, color, checked-active-color);
+      }
+    }
+  }
+
+  &.disabled input[type='#{$type}']:checked + label,
+  &:disabled input[type='#{$type}']:checked + label {
+    @include button-css-var($button-type, color, checked-disabled-color);
+    @include button-css-var($button-type, background-color, checked-disabled-bg-color);
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
+      @include button-css-var($button-type, color, checked-disabled-color);
+    }
   }
 }
 
@@ -312,14 +352,6 @@
     min-width: 0;
   }
 
-  .btn.disabled,
-  .btn:disabled {
-    cds-icon,
-    clr-icon {
-      color: var(--clr-btn-icon-disabled-color);
-    }
-  }
-
   //Overflow
   .btn-group {
     &.btn-primary .dropdown-toggle,
@@ -353,6 +385,11 @@
       @include btn-appearance();
 
       padding: 0 #{tokens.$cds-global-space-6};
+    }
+
+    &.disabled label,
+    &:disabled label {
+      cursor: not-allowed;
     }
   }
 
