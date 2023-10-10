@@ -17,8 +17,6 @@ import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/the
 
 // Styles that should be watched/reloaded
 import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
-
-// Styles that should be watched/reloaded
 import shimStyles from 'raw-loader!sass-loader!../projects/ui/src/shim.cds-core.scss';
 
 import { THEMES } from './helpers/constants';
@@ -62,7 +60,7 @@ const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
   styleElement.textContent = `${cdsCoreAndShimStyles.join('')}`;
-  document.body.setAttribute(cdsThemeAttribute, theme === THEMES.CORE_LIGHT ? 'light' : THEMES.CORE_DARK);
+  document.body.setAttribute(cdsThemeAttribute, theme);
   document.body.style.backgroundColor = null;
 
   return story();
