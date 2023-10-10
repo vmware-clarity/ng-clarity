@@ -3,10 +3,13 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:meta';
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.spinner' as spinner-variables;
+@use 'properties.spinner' as spinner-properties;
+@include meta.load-css('properties.spinner');
 
 @include mixins.exports('spinner.clarity') {
   .spinner {
@@ -37,23 +40,11 @@
       left: 0;
       clip-path: ellipse(100% 53.5% at 0 0);
       border-width: var(--clr-spinner-default-stroke-width);
-      //@include mixins.css-var(
-      //  border-width,
-      //  clr-spinner-default-stroke-width,
-      //  variables.$clr_baselineRem_0_25,
-      //  variables.$clr-use-custom-properties
-      //);
       border-style: solid;
       border-color: var(--clr-spinner-fill-color);
-      //@include mixins.css-var(
-      //  border-color,
-      //  clr-spinner-fill-color,
-      //  spinner-variables.$clr-spinner-color,
-      //  variables.$clr-use-custom-properties
-      //);
       border-right-color: transparent !important;
       border-bottom-color: transparent !important;
-      @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+      border-radius: var(--clr-spinner-border-radius);
     }
 
     &::before {
@@ -66,20 +57,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      @include mixins.css-var(
-        border-width,
-        clr-spinner-default-stroke-width,
-        variables.$clr_baselineRem_0_25,
-        variables.$clr-use-custom-properties
-      );
+      border-width: var(--clr-spinner-default-stroke-width);
       border-style: solid;
-      @include mixins.css-var(
-        border-color,
-        clr-spinner-fill-bg-color,
-        rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+      border-color: var(--clr-spinner-fill-bg-color);
+      border-radius: var(--clr-spinner-border-radius);
     }
 
     &.spinner-md {
@@ -90,12 +71,7 @@
           variables.$clr_baselineRem_1_5,
           variables.$clr-use-custom-properties
         );
-        @include mixins.css-var(
-          border-width,
-          clr-spinner-medium-stroke-width,
-          variables.$clr_baselineRem_0_125,
-          variables.$clr-use-custom-properties
-        );
+        border-width: var(--clr-spinner-medium-stroke-width);
       }
       @include mixins.min-equilateral-var(
         clr-spinner-medium-size,
@@ -113,12 +89,7 @@
           variables.$clr_baselineRem_0_75,
           variables.$clr-use-custom-properties
         );
-        @include mixins.css-var(
-          border-width,
-          clr-spinner-small-stroke-width,
-          variables.$clr_baselineRem_0_1,
-          variables.$clr-use-custom-properties
-        );
+        border-width: (--clr-spinner-small-stroke-width);
       }
       @include mixins.min-equilateral-var(
         clr-spinner-small-size,
@@ -129,38 +100,23 @@
 
     &.spinner-inline {
       vertical-align: text-bottom; //To align with text properly
-      @include mixins.css-var(margin-right, clr-spinner-margin-right, 0, variables.$clr-use-custom-properties);
+      margin-right: var(--clr-spinner-margin-right);
     }
 
     &.spinner-inverse {
       // TODO: get ux input on direction here
       &::after {
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-inverse-color,
-          spinner-variables.$clr-spinner-inverse-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-inverse-color);
       }
       &::before {
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-inverse-bg-color,
-          rgba(spinner-variables.$clr-spinner-inverse-bg-color, 0.15),
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-inverse-bg-color);
       }
     }
 
     &.spinner-neutral-0 {
       // needed for loading banner alerts in core
       &::after {
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-color,
-          spinner-variables.$clr-spinner-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-color);
       }
       &::before {
         border-color: rgba(transparent, 1);
@@ -196,13 +152,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        @include mixins.css-var(
-          border-width,
-          clr-spinner-inside-button-stroke-width,
-          variables.$clr_baselineRem_0_054167,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        border-width: var(--clr-spinner-inside-button-stroke-width);
+        border-radius: var(--clr-spinner-border-radius);
         @include mixins.min-equilateral-var(
           clr-spinner-small-size,
           variables.$clr_baselineRem_0_65,
@@ -226,13 +177,8 @@
         left: 0;
 
         border-style: solid;
-        @include mixins.css-var(
-          border-width,
-          clr-spinner-inside-button-stroke-width,
-          variables.$clr_baselineRem_0_054167,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        border-width: var(--clr-spinner-inside-button-stroke-width);
+        border-radius: var(--clr-spinner-border-radius);
         @include mixins.min-equilateral-var(
           clr-spinner-small-size,
           variables.$clr_baselineRem_0_5416,
@@ -241,21 +187,11 @@
       }
       &::before {
         content: '';
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-bg-color,
-          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-bg-color);
       }
       &::after {
         content: '';
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-color,
-          spinner-variables.$clr-spinner-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-color);
         border-right-color: transparent !important;
         border-bottom-color: transparent !important;
       }
@@ -283,13 +219,8 @@
       &::before,
       &::after {
         border-style: solid;
-        @include mixins.css-var(
-          border-width,
-          clr-spinner-inside-treeview-stroke-width,
-          variables.$clr_baselineRem_0_054167,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(border-radius, clr-spinner-border-radius, 50%, variables.$clr-use-custom-properties);
+        border-width: var(--clr-spinner-inside-treeview-stroke-width);
+        border-radius: var(--clr-spinner-border-radius);
         @include mixins.min-equilateral-var(
           clr-spinner-small-size,
           variables.$clr_baselineRem_0_65,
@@ -298,21 +229,11 @@
       }
       &::before {
         content: '';
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-bg-color,
-          rgba(spinner-variables.$clr-spinner-bg-color, spinner-variables.$clr-spinner-opacity),
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-bg-color);
       }
       &::after {
         content: '';
-        @include mixins.css-var(
-          border-color,
-          clr-spinner-fill-color,
-          spinner-variables.$clr-spinner-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: var(--clr-spinner-fill-color);
         border-right-color: transparent !important;
         border-bottom-color: transparent !important;
       }
