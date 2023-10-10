@@ -61,7 +61,6 @@ const themeDecorator = (story, { globals }) => {
 
   styleElement.textContent = `${cdsCoreAndShimStyles.join('')}`;
   document.body.setAttribute(cdsThemeAttribute, theme);
-  document.body.style.backgroundColor = null;
 
   return story();
 };
