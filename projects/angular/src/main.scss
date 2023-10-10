@@ -3,8 +3,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '@cds/core/styles/theme.dark.min.css'; // dark theme
-@use '@cds/core/global.min.css'; // provides the Clarity Core design tokens
+
+// OG Theme: This is for generating the OG Clarity Theme
 
 // Clarity component code (consumes the variables and theme overrides)
 @use 'utils/components.clarity';
