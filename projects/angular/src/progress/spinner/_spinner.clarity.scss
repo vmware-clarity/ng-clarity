@@ -89,7 +89,7 @@
           variables.$clr_baselineRem_0_75,
           variables.$clr-use-custom-properties
         );
-        border-width: (--clr-spinner-small-stroke-width);
+        border-width: var(--clr-spinner-small-stroke-width);
       }
       @include mixins.min-equilateral-var(
         clr-spinner-small-size,
