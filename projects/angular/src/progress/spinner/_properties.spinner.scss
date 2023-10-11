@@ -9,22 +9,25 @@
 @use '@cds/core/tokens/tokens.scss';
 
 :root {
-  --clr-spinner-default-size: #{tokens.$cds-global-space-14};
-  --clr-spinner-medium-size: #{tokens.$cds-global-space-11};
-  --clr-spinner-small-size: #{tokens.$cds-global-space-8};
-  --clr-spinner-margin-right: #{tokens.$cds-global-space-6};
+  [cds-theme] {
+    --clr-spinner-default-size: #{tokens.$cds-global-space-14};
+    ---clr-spinner-medium-size: #{tokens.$cds-global-space-11};
+    --clr-spinner-small-size: #{tokens.$cds-global-space-8};
+    --clr-spinner-margin-right: #{tokens.$cds-global-space-6};
 
-  --clr-spinner-inside-button-stroke-width: #{mixins.baselinePx(1.3)};
-  --clr-spinner-inside-treeview-stroke-width: #{mixins.baselinePx(1.3)};
+    // TODO: As discussed this will be equal to cds-global-space-7
+    --clr-spinner-inside-button-stroke-width: #{mixins.baselinePx(1.3)};
+    --clr-spinner-inside-treeview-stroke-width: #{mixins.baselinePx(1.3)};
 
-  --clr-spinner-default-stroke-width: #{tokens.$cds-global-space-4};
-  --clr-spinner-medium-stroke-width: #{tokens.$cds-global-space-3};
-  --clr-spinner-small-stroke-width: #{tokens.$cds-global-space-2};
+    --clr-spinner-default-stroke-width: #{tokens.$cds-global-space-4};
+    --clr-spinner-medium-stroke-width: #{tokens.$cds-global-space-3};
+    --clr-spinner-small-stroke-width: #{tokens.$cds-global-space-2};
 
-  --clr-spinner-fill-bg-color: #{tokens.$cds-alias-object-container-background-shade};
-  --clr-spinner-fill-inverse-bg-color: #{tokens.$cds-alias-object-container-background-inverse};
-  --clr-spinner-fill-color: #{tokens.$cds-alias-status-info};
-  --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-status-info-tint};
+    --clr-spinner-fill-bg-color: #{tokens.$cds-alias-object-container-background-shade};
+    --clr-spinner-fill-inverse-bg-color: #{tokens.$cds-alias-object-container-background-inverse};
+    --clr-spinner-fill-color: #{tokens.$cds-alias-status-info};
+    --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-status-info-tint};
 
-  --clr-spinner-border-radius: #{tokens.$cds-alias-object-border-radius-300};
+    --clr-spinner-border-radius: #{tokens.$cds-alias-object-border-radius-300};
+  }
 }
