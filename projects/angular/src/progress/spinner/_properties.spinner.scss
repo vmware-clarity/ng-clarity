@@ -14,8 +14,8 @@
   --clr-spinner-small-size: #{tokens.$cds-global-space-8};
   --clr-spinner-margin-right: #{tokens.$cds-global-space-6};
 
-  --clr-spinner-inside-button-stroke-width: #{variables.$clr_baselineRem_0_054167};
-  --clr-spinner-inside-treeview-stroke-width: #{variables.$clr_baselineRem_0_054167};
+  --clr-spinner-inside-button-stroke-width: #{mixins.baselinePx(1.3)};
+  --clr-spinner-inside-treeview-stroke-width: #{mixins.baselinePx(1.3)};
 
   --clr-spinner-default-stroke-width: #{tokens.$cds-global-space-4};
   --clr-spinner-medium-stroke-width: #{tokens.$cds-global-space-3};
