@@ -442,7 +442,8 @@ class SimpleTest {
 }
 
 describe('Form layouts', () => {
-  const base = 6;
+  const base = 6; // base might be changed to meet CDS base (20). Why the base is 6?
+  const cdsHeightFix = 2; // used to translate CLR base height to CDS (2 or 4 px) difference in calculations
   let native, instance, fixture;
 
   function height(selector) {
@@ -453,7 +454,7 @@ describe('Form layouts', () => {
     const computed = height(selector);
     expect(Math.round(computed)).toEqual(Math.round(value));
     if (verticalRhythm) {
-      expect(value % 6).toEqual(0);
+      expect(value % base).toEqual(0);
     }
   }
 
@@ -463,7 +464,7 @@ describe('Form layouts', () => {
 
   function verticalTests() {
     describe('text', () => {
-      it('control height', () => verifyHeight('#text', base * 10)); // 229.34
+      it('control height', () => verifyHeight('#text', base * 10 - cdsHeightFix, false)); // 229.34
       it('label height', () => verifyHeight('#text .clr-control-label', base * 3)); // 24
       it('wrapper height', () => verifyHeight('#text .clr-input-wrapper', base * 4)); // 181.34
       it('input height', () => verifyHeight('#text .clr-input', base * 4)); // 20.12
@@ -471,11 +472,11 @@ describe('Form layouts', () => {
     });
 
     describe('checkbox', () => {
-      it('control height', () => verifyHeight('#checkbox', base * 18));
+      it('control height', () => verifyHeight('#checkbox', base * 18 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#checkbox .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#checkbox .clr-control-container', base * 15));
+      it('container height', () => verifyHeight('#checkbox .clr-control-container', base * 15 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#checkbox .clr-checkbox-wrapper', base * 4));
 
@@ -487,11 +488,12 @@ describe('Form layouts', () => {
     });
 
     describe('checkbox inline', () => {
-      it('control height', () => verifyHeight('#checkbox-inline', base * 10));
+      it('control height', () => verifyHeight('#checkbox-inline', base * 10 - cdsHeightFix, false)); // CDS tokens height fix.
 
       it('label height', () => verifyHeight('#checkbox-inline .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#checkbox-inline .clr-control-container', base * 7));
+      it('container height', () =>
+        verifyHeight('#checkbox-inline .clr-control-container', base * 7 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#checkbox-inline .clr-checkbox-wrapper', base * 4));
 
@@ -504,11 +506,11 @@ describe('Form layouts', () => {
     });
 
     describe('radio', () => {
-      it('control height', () => verifyHeight('#radio', base * 18));
+      it('control height', () => verifyHeight('#radio', base * 18 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#radio .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#radio .clr-control-container', base * 15));
+      it('container height', () => verifyHeight('#radio .clr-control-container', base * 15 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#radio .clr-radio-wrapper', base * 4));
 
@@ -520,11 +522,12 @@ describe('Form layouts', () => {
     });
 
     describe('radio inline', () => {
-      it('control height', () => verifyHeight('#radio-inline', base * 10));
+      it('control height', () => verifyHeight('#radio-inline', base * 10 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#radio-inline .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#radio-inline .clr-control-container', base * 7));
+      it('container height', () =>
+        verifyHeight('#radio-inline .clr-control-container', base * 7 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#radio-inline .clr-radio-wrapper', base * 4));
 
@@ -536,7 +539,7 @@ describe('Form layouts', () => {
     });
 
     describe('file', () => {
-      it('control height', () => verifyHeight('#file', base * 12));
+      it('control height', () => verifyHeight('#file', base * 12 - 2 * cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#file .clr-control-label', base * 3));
 
@@ -556,7 +559,7 @@ describe('Form layouts', () => {
         fileInput = height('#file-plain input');
       });
 
-      it('control height', () => verifyHeight('#file-plain', fileInput + base * 8, false));
+      it('control height', () => verifyHeight('#file-plain', fileInput + base * 8 - 2 * cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#file-plain .clr-control-label', base * 3));
 
@@ -584,7 +587,7 @@ describe('Form layouts', () => {
     });
 
     describe('select', () => {
-      it('control height', () => verifyHeight('#select', base * 10));
+      it('control height', () => verifyHeight('#select', base * 10 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#select .clr-control-label', base * 3));
 
@@ -605,7 +608,7 @@ describe('Form layouts', () => {
         multiselect = height('#multiselect select');
       });
 
-      it('control height', () => verifyHeight('#multiselect', multiselect + base * 6, false));
+      it('control height', () => verifyHeight('#multiselect', multiselect + base * 6 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#multiselect .clr-control-label', base * 3));
 
@@ -619,7 +622,7 @@ describe('Form layouts', () => {
 
   function horizontalTests() {
     describe('text', () => {
-      it('control height', () => verifyHeight('#text', base * 7));
+      it('control height', () => verifyHeight('#text', base * 7 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#text .clr-control-label', base * 3));
 
@@ -631,11 +634,11 @@ describe('Form layouts', () => {
     });
 
     describe('checkbox', () => {
-      it('control height', () => verifyHeight('#checkbox', base * 15));
+      it('control height', () => verifyHeight('#checkbox', base * 15 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#checkbox .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#checkbox .clr-control-container', base * 15));
+      it('container height', () => verifyHeight('#checkbox .clr-control-container', base * 15 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#checkbox .clr-checkbox-wrapper', base * 4));
 
@@ -643,15 +646,16 @@ describe('Form layouts', () => {
 
       it('checkbox label height', () => verifyHeight('#checkbox .clr-checkbox-wrapper .clr-control-label', base * 4));
 
-      it('subtext height', () => verifyHeight('#checkbox .clr-subtext-wrapper', base * 3));
+      it('subtext height', () => verifyHeight('#checkbox .clr-subtext-wrapper', base * 3 - cdsHeightFix, false));
     });
 
     describe('checkbox inline', () => {
-      it('control height', () => verifyHeight('#checkbox-inline', base * 7));
+      it('control height', () => verifyHeight('#checkbox-inline', base * 7 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#checkbox-inline .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#checkbox-inline .clr-control-container', base * 7));
+      it('container height', () =>
+        verifyHeight('#checkbox-inline .clr-control-container', base * 7 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#checkbox-inline .clr-checkbox-wrapper', base * 4));
 
@@ -660,15 +664,15 @@ describe('Form layouts', () => {
       it('checkbox label height', () =>
         verifyHeight('#checkbox-inline .clr-checkbox-wrapper .clr-control-label', base * 4));
 
-      it('subtext height', () => verifyHeight('#checkbox-inline .clr-subtext-wrapper', base * 3));
+      it('subtext height', () => verifyHeight('#checkbox-inline .clr-subtext-wrapper', base * 3 - cdsHeightFix, false));
     });
 
     describe('radio', () => {
-      it('control height', () => verifyHeight('#radio', base * 15));
+      it('control height', () => verifyHeight('#radio', base * 15 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#radio .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#radio .clr-control-container', base * 15));
+      it('container height', () => verifyHeight('#radio .clr-control-container', base * 15 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#radio .clr-radio-wrapper', base * 4));
 
@@ -676,15 +680,16 @@ describe('Form layouts', () => {
 
       it('radio label height', () => verifyHeight('#radio .clr-radio-wrapper .clr-control-label', base * 4));
 
-      it('subtext height', () => verifyHeight('#radio .clr-subtext-wrapper', base * 3));
+      it('subtext height', () => verifyHeight('#radio .clr-subtext-wrapper', base * 3 - cdsHeightFix, false));
     });
 
     describe('radio inline', () => {
-      it('control height', () => verifyHeight('#radio-inline', base * 7));
+      it('control height', () => verifyHeight('#radio-inline', base * 7 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#radio-inline .clr-control-label', base * 3));
 
-      it('container height', () => verifyHeight('#radio-inline .clr-control-container', base * 7));
+      it('container height', () =>
+        verifyHeight('#radio-inline .clr-control-container', base * 7 - cdsHeightFix, false));
 
       it('wrapper height', () => verifyHeight('#radio-inline .clr-radio-wrapper', base * 4));
 
@@ -692,11 +697,11 @@ describe('Form layouts', () => {
 
       it('radio label height', () => verifyHeight('#radio-inline .clr-radio-wrapper .clr-control-label', base * 4));
 
-      it('subtext height', () => verifyHeight('#radio-inline .clr-subtext-wrapper', base * 3));
+      it('subtext height', () => verifyHeight('#radio-inline .clr-subtext-wrapper', base * 3 - cdsHeightFix, false));
     });
 
     describe('file', () => {
-      it('control height', () => verifyHeight('#file', base * 9));
+      it('control height', () => verifyHeight('#file', base * 9 - 2 * cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#file .clr-control-label', base * 3));
 
@@ -716,7 +721,7 @@ describe('Form layouts', () => {
         fileInput = height('#file-plain input');
       });
 
-      it('control height', () => verifyHeight('#file-plain', fileInput + base * 5, false));
+      it('control height', () => verifyHeight('#file-plain', fileInput + base * 5 - 2 * cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#file-plain .clr-control-label', base * 3, false));
 
@@ -744,7 +749,7 @@ describe('Form layouts', () => {
     });
 
     describe('select', () => {
-      it('control height', () => verifyHeight('#select', base * 7));
+      it('control height', () => verifyHeight('#select', base * 7 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#select .clr-control-label', base * 3));
 
@@ -762,7 +767,7 @@ describe('Form layouts', () => {
         multiselect = height('#multiselect select');
       });
 
-      it('control height', () => verifyHeight('#multiselect', multiselect + base * 3, false));
+      it('control height', () => verifyHeight('#multiselect', multiselect + base * 3 - cdsHeightFix, false));
 
       it('label height', () => verifyHeight('#multiselect .clr-control-label', base * 3, false));
 
