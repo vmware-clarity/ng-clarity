@@ -14,35 +14,15 @@
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},
   &.badge-#{$alias} {
-    @include mixins.css-var(
-      background,
-      badges-variables.getBadgeColor($color, bg-color, 'css-var'),
-      badges-variables.getBadgeColor($color, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      badges-variables.getBadgeColor($color, color, 'css-var'),
-      badges-variables.getBadgeColor($color, color),
-      variables.$clr-use-custom-properties
-    );
+    background: var(--#{badges-variables.getBadgeColor($color, bg-color, 'css-var')});
+    color: var(--#{badges-variables.getBadgeColor($color, color, 'css-var')});
   }
 }
 
 @mixin generateStatusBadgeStyles($status: info) {
   &.badge-#{$status} {
-    @include mixins.css-var(
-      background,
-      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
-      badges-variables.getBadgeColor($status, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      badges-variables.getBadgeColor($status, color, 'css-var'),
-      badges-variables.getBadgeColor($status, color),
-      variables.$clr-use-custom-properties
-    );
+    background: var(--#{badges-variables.getBadgeColor($status, bg-color, 'css-var')});
+    color: var(--#{badges-variables.getBadgeColor($status, color, 'css-var')});
   }
 }
 
@@ -58,80 +38,30 @@
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    @include mixins.css-var(
-      min-width,
-      clr-badge-min-width,
-      variables.$clr_baselineRem_0_625,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      background-color,
-      clr-badge-background-color,
-      label-variables.getLabelColor(gray, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      height,
-      clr-badge-height,
-      variables.$clr_baselineRem_0_625,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-radius,
-      clr-badge-border-radius,
-      variables.$clr_baselineRem_0_416,
-      variables.$clr-use-custom-properties
-    );
+    min-width: var(--clr-badge-min-width);
+    background-color: var(--clr-badge-background-color);
+    height: var(--clr-badge-height);
+    border-radius: var(--clr-badge-border-radius);
+    font-size: var(--clr-badge-font-size);
+    font-weight: var(--clr-badge-font-weight);
+    letter-spacing: var(--clr-badge-letter-spacing);
+    line-height: var(--clr-badge-line-height);
 
-    @include mixins.css-var(
-      font-size,
-      clr-badge-font-size,
-      variables.$clr_baselineRem_0_416,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(font-weight, clr-badge-font-weight, inherit, variables.$clr-use-custom-properties);
-    @include mixins.css-var(letter-spacing, clr-badge-letter-spacing, inherit, variables.$clr-use-custom-properties);
-    @include mixins.css-var(line-height, clr-badge-line-height, normal, variables.$clr-use-custom-properties);
-
-    @include mixins.css-var(
-      padding,
-      clr-badge-padding,
-      0 variables.$clr_baselineRem_4px,
-      variables.$clr-use-custom-properties
-    );
+    padding: var(--clr-badge-padding);
+    // TODO: Should we refactor/tokenize this?
     margin-right: variables.$clr_baselineRem_0_25;
     white-space: nowrap;
     text-align: center;
-    @include mixins.css-var(
-      color,
-      clr-badge-color,
-      badges-variables.$clr-badge-font-color-light,
-      variables.$clr-use-custom-properties
-    );
+    color: var(--clr-badge-color);
 
     &:visited {
-      @include mixins.css-var(
-        color,
-        clr-badge-color,
-        badges-variables.$clr-badge-font-color-light,
-        variables.$clr-use-custom-properties
-      );
+      color: var(--clr-badge-color);
     }
 
     // Link badge, default, no color or type specifier. Override a:link setting.
     &:link {
-      @include mixins.css-var(
-        background-color,
-        badges-variables.getBadgeColor(gray, bg-color, 'css-var'),
-        badges-variables.getBadgeColor(gray, bg-color),
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        color,
-        badges-variables.getBadgeColor(gray, color, 'css-var'),
-        badges-variables.getBadgeColor(gray, color),
-        variables.$clr-use-custom-properties
-      );
+      background-color: var(--#{badges-variables.getBadgeColor(gray, bg-color, 'css-var')});
+      color: var(--#{badges-variables.getBadgeColor(gray, color, 'css-var')});
     }
 
     @include generateBadgeStyles(gray, 1);
