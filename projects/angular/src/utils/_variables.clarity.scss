@@ -41,11 +41,6 @@
 @forward '../emphasis/variables.label';
 // END: Label
 
-// Badge
-//Has code sharing with labels
-@forward '../emphasis/variables.badges';
-// END: Badge
-
 // Button
 // Disabled states are global for all buttons, independent of status or type
 @forward '../button/variables.buttons';
