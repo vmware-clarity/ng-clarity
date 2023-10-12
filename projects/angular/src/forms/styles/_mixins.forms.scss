@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
 @use '../../utils/variables/variables.global';
 @use 'variables.forms' as forms-variables;
 
@@ -29,7 +31,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: forms-variables.$clr-forms-baseline * 2;
+    margin-right: #{tokens.$cds-global-space-6};
     width: auto;
   }
 }
@@ -39,37 +41,21 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: forms-variables.$clr-forms-baseline;
+    margin-left: #{tokens.$cds-global-space-4};
   }
 }
 
 // Standard Clarity Input Bottom Border Animation
-@mixin input-border-bottom-animation(
-  $border-color-sass: forms-variables.$clr-forms-focused-color,
-  $border-color-prop: clr-forms-focused-color,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin input-border-bottom-animation($border-color-prop: --clr-forms-focused-color) {
   // Border-bottom animation on focus
-  @if $use-custom-props != true {
-    background: linear-gradient(to bottom, transparent 95%, $border-color-sass 95%) no-repeat;
-  } @else {
-    background: linear-gradient(
-        to bottom,
-        transparent 95%,
-        var(mixins.css-variablize-string($border-color-prop), $border-color-sass) 95%
-      )
-      no-repeat;
-  }
+  background: linear-gradient(to bottom, transparent 95%, var($border-color-prop) 95%) no-repeat;
+
   background-size: 0 100%;
   transition: background-size 0.2s ease;
 
   &:focus,
   &.clr-focus {
-    @if not $border-color-prop or $use-custom-props != true {
-      border-bottom-color: $border-color-sass;
-    } @else {
-      @include mixins.css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
-    }
+    border-bottom-color: var($border-color-prop);
     background-size: 100% 100%;
   }
 }
@@ -90,31 +76,14 @@
   }
 }
 
-@mixin form-fields-appearance(
-  $border-color-sass: forms-variables.$clr-forms-border-color,
-  $text-color-sass: forms-variables.$clr-forms-text-color,
-  $border-color-prop: clr-forms-border-color,
-  $text-color-prop: clr-forms-text-color,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
-  @if $use-custom-props != true {
-    color: $text-color-sass;
-    border-bottom: variables.$clr-global-borderwidth solid $border-color-sass;
-  } @else {
-    @include mixins.css-var(color, $text-color-prop, $text-color-sass, $use-custom-props);
-    border-bottom: variables.$clr-global-borderwidth solid;
-    @include mixins.css-var(border-bottom-color, $border-color-prop, $border-color-sass, $use-custom-props);
-  }
+@mixin form-fields-appearance($border-color-prop: --clr-forms-border-color, $text-color-prop: --clr-forms-text-color) {
+  color: var($border-color-prop);
+  border-bottom: #{tokens.$cds-alias-object-border-width-100} solid var($text-color-prop);
   display: inline-block;
 }
 
 @mixin disabled-form-fields() {
-  @include mixins.css-var(
-    color,
-    clr-forms-text-disabled-color,
-    forms-variables.$clr-forms-text-disabled-color,
-    variables.$clr-use-custom-properties
-  );
+  color: var(--clr-forms-text-disabled-color);
   cursor: not-allowed;
 }
 

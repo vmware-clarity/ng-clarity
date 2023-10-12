@@ -4,35 +4,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables';
-@use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.wrappers') {
   .clr-form {
-    padding: forms-variables.$clr-forms-baseline;
+    padding: #{tokens.$cds-global-space-4};
   }
 
   .clr-form-group {
-    padding: forms-variables.$clr-forms-baseline;
+    padding: #{tokens.$cds-global-space-4};
   }
 
   .clr-required-mark {
     &::after {
       content: '*';
-      @include mixins.css-var(
-        color,
-        clr-forms-invalid-color,
-        forms-variables.$clr-forms-invalid-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        fill,
-        clr-forms-invalid-color,
-        forms-variables.$clr-forms-invalid-color,
-        variables.$clr-use-custom-properties
-      );
-      font-size: variables.$clr-p3-font-size;
-      margin-left: variables.$clr_baselineRem_0_25;
+      color: var(--clr-forms-invalid-color);
+      fill: var(--clr-forms-invalid-color);
+
+      font-size: #{tokens.$cds-alias-typography-font-size-3};
+      margin-left: #{tokens.$cds-global-space-4};
     }
   }
 }
