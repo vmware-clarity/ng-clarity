@@ -39,10 +39,18 @@ import { panelAnimation } from './utils/animation';
   providers: [IfExpandService],
 })
 export class ClrAccordionPanel implements OnInit, OnChanges {
+  /**
+   * Whether the panel is disabled.
+   */
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
+  /**
+   * Whether the panel is open.
+   */
   @Input('clrAccordionPanelOpen') panelOpen = false;
-
-  @Output('clrAccordionPanelOpenChange') panelOpenChange = new EventEmitter<boolean>();
+  /**
+   * Event that is emitted when the panel is opened or closed. The boolean emitted indicates the current state.
+   */
+  @Output('clrAccordionPanelOpenChange') panelOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
@@ -89,6 +97,9 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Toggles this panel open or closed.
+   */
   togglePanel() {
     this.accordionService.togglePanel(this.id);
   }
