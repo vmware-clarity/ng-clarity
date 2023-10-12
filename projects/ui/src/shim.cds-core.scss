@@ -944,39 +944,6 @@
 
   /* Forms */
 
-  // Structure
-  --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-400);
-
-  // Generic
-  --clr-forms-baseline: #{tokens.$cds-global-space-5};
-  --clr-forms-label-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-800);
-  --clr-forms-text-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-1000);
-  --clr-forms-label-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-  --clr-forms-invalid-color: #{tokens.$cds-alias-status-danger}; // var(--clr-color-danger-800);
-  --clr-forms-invalid-text-color: #{tokens.$cds-alias-status-danger}; // var(--clr-color-danger-800);
-  --clr-forms-valid-color: #{tokens.$cds-alias-status-success}; // var(--clr-color-success-700);
-  --clr-forms-valid-text-color: #{tokens.$cds-alias-status-success}; // var(--clr-color-success-900);
-  --clr-forms-subtext-color: #{tokens.$cds-alias-typography-color-300}; // var(--clr-color-neutral-600);
-  --clr-forms-placeholder-color: #{tokens.$cds-alias-typography-color-200}; // var(--clr-color-neutral-600);
-  --clr-forms-border-color: #{tokens.$cds-alias-object-interaction-border-color}; // #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
-  --clr-forms-focused-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-500);
-  --clr-forms-icon-size: #{tokens.$cds-global-space-9};
-  --clr-forms-subtext-margin-top: #{tokens.$cds-global-space-3};
-
-  --clr-forms-subtext-disabled-color: #{tokens.$cds-alias-typography-disabled}; // #{$clr-forms-subtext-disabled-color};
-  --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled}; // #{$clr-forms-border-disabled-color};
-  --clr-forms-text-disabled-color: #{tokens.$cds-alias-typography-disabled}; // #{$clr-forms-text-disabled-color};
-  --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled}; // var(--cds-forms-label-disabled-color);
-  --clr-forms-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
-  --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
-
-  // Input
-  --clr-forms-input-padding: 0 #{tokens.$cds-global-space-5};
-  --clr-forms-input-wrapper-height: #{tokens.$cds-global-space-9};
-
-  // Input group
-  --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
-
   // Datalist
 
   --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
