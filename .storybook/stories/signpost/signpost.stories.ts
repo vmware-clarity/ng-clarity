@@ -5,10 +5,9 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const positions: string[] = [
   'top-left',
@@ -25,22 +24,14 @@ const positions: string[] = [
   'left-top',
 ];
 
-const defaultStory: Story = args => ({
-  template: ` 
-    <div style="margin-top: 100px; text-align: center;">
-      <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
-          {{content}}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Signpost/Signpost',
   component: ClrSignpostContent,
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrSignpostModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrPosition: { defaultValue: 'right-middle', control: { type: 'radio', options: positions } },
@@ -55,6 +46,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const template = `
+    <div style="margin-top: 100px; text-align: center;">
+      <clr-signpost>
+        <clr-signpost-content [clrPosition]="clrPosition">
+          {{content}}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `;
 
-setupStorybook(ClrSignpostModule, defaultStory, defaultParameters, variants);
+export const Initial: Story = args => ({
+  template,
+  props: args,
+});
+
+export const Opened: Story = Initial.bind({});
+Opened.play = async ({ canvasElement }) => {
+  canvasElement.querySelector('button').click();
+};

@@ -15,6 +15,9 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   'headers-static--variants': {
     fullPageScreenshot: true,
   },
+  'signpost--opened': {
+    fullPageScreenshot: true,
+  },
   wizard: {
     fullPageScreenshot: true,
   },
