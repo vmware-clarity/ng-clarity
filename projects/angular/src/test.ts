@@ -13,6 +13,8 @@ import 'jasmine-expect';
 import { getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
+document.body.setAttribute('cds-theme', '');
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
   teardown: { destroyAfterEach: false },
