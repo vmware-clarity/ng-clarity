@@ -11,6 +11,7 @@
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.tabs');
 
+// TODO: Fix this typo
 @mixin nav-link-border-appearence($position) {
   &::before {
     content: '';
