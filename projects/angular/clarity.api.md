@@ -213,7 +213,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AccordionService" needs to be exported by the entry point index.d.ts
     constructor(accordionService: AccordionService);
-    // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)
     ngAfterViewInit(): void;
@@ -282,7 +281,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
     disabled: boolean;
     // (undocumented)
     getAccordionContentId(id: string): string;
@@ -305,11 +303,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     panel: Observable<AccordionPanelModel>;
     // (undocumented)
     get panelNumber(): number;
-    // (undocumented)
     panelOpen: boolean;
-    // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
-    // (undocumented)
     togglePanel(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
