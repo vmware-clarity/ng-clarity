@@ -15,7 +15,7 @@
 @include mixins.exports('button-group.clarity') {
   .btn-group {
     display: inline-flex;
-    margin-right: #{tokens.$cds-global-space-6};
+    margin-right: tokens.$cds-global-space-6;
 
     clr-dropdown {
       .dropdown-toggle {
@@ -47,7 +47,7 @@
         opacity: 1;
         top: 0;
         @include mixins.equilateral(100%);
-        border: #{tokens.$cds-alias-object-interaction-outline};
+        border: tokens.$cds-alias-object-interaction-outline;
 
         &::-ms-check {
           display: none;

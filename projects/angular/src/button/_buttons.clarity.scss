@@ -108,7 +108,7 @@
 }
 
 @mixin btn-min-max-widths() {
-  min-width: #{tokens.$cds-global-space-14};
+  min-width: tokens.$cds-global-space-14;
   max-width: mixins.baselinePx(360);
 }
 
@@ -131,7 +131,7 @@
   cursor: pointer;
 
   display: inline-flex;
-  gap: #{tokens.$cds-global-space-5};
+  gap: tokens.$cds-global-space-5;
   align-items: center;
   place-content: center;
 
@@ -361,7 +361,7 @@
       @include populateButtonProperties(primary);
     }
     &.btn-danger :disabled {
-      border-color: #{tokens.$cds-alias-status-disabled};
+      border-color: tokens.$cds-alias-status-disabled;
     }
 
     &.btn-link .dropdown-toggle {
@@ -384,7 +384,7 @@
     label {
       @include btn-appearance();
 
-      padding: 0 #{tokens.$cds-global-space-6};
+      padding: 0 tokens.$cds-global-space-6;
     }
 
     &.disabled label,
