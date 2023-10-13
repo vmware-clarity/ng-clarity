@@ -92,14 +92,14 @@ button.nav-link {
     box-shadow: none;
     flex-direction: column;
     align-items: stretch;
-    margin-right: variables.$clr_baselineRem_1;
+    margin-right: #{tokens.$cds-global-space-9};
     overflow: auto;
     flex-shrink: 0;
-    padding: variables.$clr_baselineRem_4px;
-    width: variables.$clr_baselineRem_10;
-    min-width: variables.$clr_baselineRem_2;
+    padding: #{tokens.$cds-global-space-3};
+    width: calc(10 * #{tokens.$cds-global-space-9});
+    min-width: #{tokens.$cds-global-space-12};
 
-    @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
+    gap: var(--clr-nav-vertical-gap-size);
 
     .nav-link {
       text-align: left;
@@ -117,7 +117,7 @@ button.nav-link {
 
       // ATM - remove
       &.btn {
-        margin-bottom: variables.$clr_baselineRem_1px;
+        margin-bottom: #{tokens.$cds-global-space-1};
       }
 
       &.active,
