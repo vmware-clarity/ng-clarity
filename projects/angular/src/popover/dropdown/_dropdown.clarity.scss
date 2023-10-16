@@ -55,8 +55,9 @@
       }
 
       &.btn {
-        padding-right: button-variables.$clr-btn-horizontal-padding +
-          dropdown-variables.$clr-dropdown-caret-icon-dimension + dropdown-variables.$clr-dropdown-caret-left-margin;
+        padding-right: calc(
+          #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{dropdown-variables.$clr-dropdown-caret-left-margin}
+        );
         text-overflow: unset;
 
         clr-icon {
