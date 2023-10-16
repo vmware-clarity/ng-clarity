@@ -216,8 +216,6 @@ $clr-btn-primary-checked-bg-color: var(--clr-btn-primary-checked-bg-color) !defa
 $clr-btn-primary-checked-color: var(--clr-btn-primary-checked-color) !default;
 
 @function lookupFromPrimaryButtonColors($property: null) {
-  @return #{$property};
-
   @if $property == color {
     @return $clr-btn-primary-color;
   }
