@@ -33,6 +33,8 @@
       --clr-btn-appearance-form-height: var(--clr-btn-height);
       --clr-btn-appearance-form-padding: var(--clr-btn-padding);
 
+      --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
+
       // Shared colors
       --clr-btn-transparent-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
@@ -54,7 +56,7 @@
       --clr-btn-default-checked-hover-color: var(--clr-btn-default-checked-color);
       --clr-btn-default-checked-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover};
       --clr-btn-default-checked-active-color: var(--clr-btn-default-checked-color);
-      --clr-btn-default-checked-active-bg-color: #{tokens.$cds-alias-object-interaction-info-click};
+      --clr-btn-default-checked-active-bg-color: var(--clr-btn-default-color);
       --clr-btn-default-checked-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-default-checked-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
 

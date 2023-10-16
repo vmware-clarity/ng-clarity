@@ -5,11 +5,100 @@
  */
 @use 'sass:meta';
 @use '../utils/mixins';
+@use 'variables.buttons' as buttons-variables;
 @use '@cds/core/tokens/tokens.scss';
+
+@function getSassButtonColor($type: default, $property: null) {
+  @if not $property {
+    @return null;
+  }
+
+  @if $type == default {
+    @return buttons-variables.lookupFromDefaultButtonColors($property);
+  }
+
+  @if $type == default-outline {
+    @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
+  }
+
+  @if $type == primary {
+    @return buttons-variables.lookupFromPrimaryButtonColors($property);
+  }
+
+  @if $type == primary-outline {
+    @return buttons-variables.lookupFromPrimaryOutlineButtonColors($property);
+  }
+
+  @if $type == success {
+    @return buttons-variables.lookupFromSuccessButtonColors($property);
+  }
+
+  @if $type == success-outline {
+    @return buttons-variables.lookupFromSuccessOutlineButtonColors($property);
+  }
+
+  @if $type == danger {
+    @return buttons-variables.lookupFromDangerButtonColors($property);
+  }
+
+  @if $type == neutral {
+    @return buttons-variables.lookupFromNeutralButtonColors($property);
+  }
+
+  @if $type == neutral-outline {
+    @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
+  }
+
+  @if $type == danger-outline {
+    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
+  }
+
+  @if $type == warning {
+    @return buttons-variables.lookupFromWarningButtonColors($property);
+  }
+
+  @if $type == warning-outline {
+    @return buttons-variables.lookupFromWarningOutlineButtonColors($property);
+  }
+
+  @if $type == link {
+    @return buttons-variables.lookupFromLinkButtonColors($property);
+  }
+
+  @if $type == link-primary {
+    @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+
+  @if $type == link-success {
+    @return buttons-variables.lookupFromLinkSuccessButtonColors($property);
+  }
+
+  @if $type == link-warning {
+    @return buttons-variables.lookupFromLinkWarningButtonColors($property);
+  }
+
+  @if $type == link-danger {
+    @return buttons-variables.lookupFromLinkDangerButtonColors($property);
+  }
+
+  @if $type == link-neutral {
+    @return buttons-variables.lookupFromLinkNeutralButtonColors($property);
+  }
+
+  @if $type == inverse {
+    @return buttons-variables.lookupFromInverseButtonColors($property);
+  }
+
+  @if $type == icon {
+    @return buttons-variables.lookupFromIconButtonColors($property);
+  }
+
+  @return null;
+}
 
 @mixin button-css-var($button-type: default, $style: null, $styleNickname: $style) {
   @if $style {
-    #{$style}: var(#{'--clr-btn-' + $button-type + '-' + $styleNickname});
+    #{$style}: getSassButtonColor($button-type, $styleNickname);
   }
 }
 
@@ -65,27 +154,27 @@
     & > cds-icon {
       @include button-css-var($button-type, color, checked-color);
     }
+  }
 
-    &:hover {
-      @include button-css-var($button-type, background-color, checked-hover-bg-color);
+  input[type='#{$type}']:checked:hover + label {
+    @include button-css-var($button-type, background-color, checked-hover-bg-color);
+    @include button-css-var($button-type, color, checked-hover-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
       @include button-css-var($button-type, color, checked-hover-color);
-
-      // override icon colors on inverted backgrounds
-      & > clr-icon,
-      & > cds-icon {
-        @include button-css-var($button-type, color, checked-hover-color);
-      }
     }
+  }
 
-    &:active {
-      @include button-css-var($button-type, background-color, checked-active-bg-color);
+  input[type='#{$type}']:checked:active + label {
+    @include button-css-var($button-type, background-color, checked-active-bg-color);
+    @include button-css-var($button-type, color, checked-active-color);
+
+    // override icon colors on inverted backgrounds
+    & > clr-icon,
+    & > cds-icon {
       @include button-css-var($button-type, color, checked-active-color);
-
-      // override icon colors on inverted backgrounds
-      & > clr-icon,
-      & > cds-icon {
-        @include button-css-var($button-type, color, checked-active-color);
-      }
     }
   }
 
@@ -123,8 +212,8 @@
 }
 
 @mixin btn-default-border-styles() {
-  border: var(--clr-btn-border-width) solid;
-  border-radius: var(--clr-btn-border-radius);
+  border: buttons-variables.$clr-btn-border-width solid;
+  border-radius: buttons-variables.$clr-btn-border-radius;
 }
 
 @mixin btn-appearance() {
@@ -144,8 +233,8 @@
 @mixin btn-sm-appearance() {
   @include mixins.generate-typography-token('BUTTON-11-SMALL');
 
-  height: var(--clr-btn-appearance-standard-height);
-  padding: var(--clr-btn-appearance-standard-padding);
+  height: buttons-variables.$clr-btn-appearance-standard-height;
+  padding: buttons-variables.$clr-btn-appearance-standard-padding;
 }
 
 @mixin generateButton() {
@@ -164,8 +253,8 @@
     @include populateButtonProperties(default);
     @include mixins.generate-typography-token('BUTTON-12');
 
-    height: var(--clr-btn-appearance-form-height);
-    padding: var(--clr-btn-appearance-form-padding);
+    height: buttons-variables.$clr-btn-appearance-form-height;
+    padding: buttons-variables.$clr-btn-appearance-form-padding;
   }
 
   //Clarity Buttons
@@ -324,7 +413,8 @@
   }
 
   .btn {
-    margin: var(--clr-btn-vertical-margin) var(--clr-btn-horizontal-margin) var(--clr-btn-vertical-margin) 0;
+    margin: buttons-variables.$clr-btn-vertical-margin buttons-variables.$clr-btn-horizontal-margin
+      buttons-variables.$clr-btn-vertical-margin 0;
 
     &.btn-link {
       margin-right: 0;
@@ -343,8 +433,8 @@
 
     clr-icon,
     cds-icon {
-      height: var(--clr-btn-appearance-standard-icon-size);
-      width: var(--clr-btn-appearance-standard-icon-size);
+      height: buttons-variables.$clr-btn-appearance-standard-icon-size;
+      width: buttons-variables.$clr-btn-appearance-standard-icon-size;
     }
   }
 

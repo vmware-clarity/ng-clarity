@@ -5,6 +5,7 @@
  */
 
 @use '../../utils/mixins';
+@use '../variables.buttons' as buttons-variables;
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin square-off-btngroup-btns($dir: left) {
@@ -25,8 +26,8 @@
 
       &:last-child {
         .dropdown-toggle {
-          border-top-right-radius: var(--clr-btn-border-radius);
-          border-bottom-right-radius: var(--clr-btn-border-radius);
+          border-top-right-radius: buttons-variables.$clr-btn-border-radius;
+          border-bottom-right-radius: buttons-variables.$clr-btn-border-radius;
         }
       }
     }
@@ -75,18 +76,12 @@
       }
     }
 
-    // ATM (after token migration)
-    // once shim is fully integrated all rules to be replaced with
-    // &:not([class*='-outline'])
-    &.btn-primary,
-    &.btn-success,
-    &.btn-danger,
-    &.btn-warning {
+    &:not([class*='-outline'])g {
       .tooltip:not(:last-child) > .btn,
       > .btn:not(:last-child) {
         // apply only to direct .btn children
         // special margin right based on button border width
-        margin: 0 var(--clr-btn-border-width) 0 0;
+        margin: 0 buttons-variables.$clr-btn-border-width 0 0;
       }
     }
 
@@ -95,13 +90,11 @@
     }
 
     > .btn-group-overflow:last-child:not(:first-child) > .btn:first-child {
-      border-radius: var(--clr-btn-border-radius);
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-radius: 0 buttons-variables.$clr-btn-border-radius buttons-variables.$clr-btn-border-radius 0;
     }
 
     > .btn-group-overflow:last-child:first-child > .btn:first-child {
-      border-radius: var(--clr-btn-border-radius);
+      border-radius: buttons-variables.$clr-btn-border-radius;
     }
 
     //To avoid double borders
