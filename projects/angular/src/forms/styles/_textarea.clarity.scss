@@ -52,13 +52,14 @@
     @include mixins.css-var(
       border-radius,
       clr-forms-textarea-border-radius,
-      forms-variables.$clr-forms-baseline * 0.5,
+      calc(#{forms-variables.$clr-forms-baseline} * 0.5),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       padding,
       clr-forms-textarea-padding,
-      forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
+      calc(#{forms-variables.$clr-forms-baseline} + #{variables.$clr_baselineRem_2px})
+        calc(#{forms-variables.$clr-forms-baseline} * 2),
       variables.$clr-use-custom-properties
     );
 

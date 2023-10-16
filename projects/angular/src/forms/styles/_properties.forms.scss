@@ -16,6 +16,7 @@
       [cds-theme] {
         // Structure
         --clr-forms-baseline: #{tokens.$cds-global-space-5};
+        --clr-forms-icon-size: #{tokens.$cds-global-space-9};
         --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background};
 
         // Generic
@@ -29,7 +30,6 @@
         --clr-forms-placeholder-color: #{tokens.$cds-alias-typography-color-200};
         --clr-forms-border-color: #{tokens.$cds-alias-object-interaction-border-color};
         --clr-forms-focused-color: #{tokens.$cds-alias-object-interaction-background-highlight};
-        --clr-forms-icon-size: #{tokens.$cds-global-space-9};
 
         --clr-forms-subtext-disabled-color: #{tokens.$cds-alias-typography-disabled};
         --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
@@ -57,11 +57,9 @@
         0
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
-        #{color.adjust(forms-variables.$clr-forms-invalid-color, $lightness: 30%)};
-      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
-        variables.$clr_baselineRem_2px
-        forms-variables.$clr-forms-baseline *
-        2};
+        #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
+      --clr-forms-textarea-padding: calc(#{forms-variables.$clr-forms-baseline} + #{variables.$clr_baselineRem_2px})
+        calc(#{forms-variables.$clr-forms-baseline} * 2);
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
@@ -81,10 +79,7 @@
       --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
       --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);
       --clr-forms-select-multiple-option-color: var(--clr-forms-text-color);
-      --clr-forms-select-multiple-error-focus-color: #{color.adjust(
-          forms-variables.$clr-forms-invalid-color,
-          $lightness: 30%
-        )};
+      --clr-forms-select-multiple-error-focus-color: #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);

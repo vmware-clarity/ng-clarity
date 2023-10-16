@@ -442,7 +442,7 @@ class SimpleTest {
 }
 
 describe('Form layouts', () => {
-  const base = 4; // base might be changed to meet CDS base (20). Why the base is 6?
+  const base = 4;
   let native, instance, fixture;
 
   function height(selector) {

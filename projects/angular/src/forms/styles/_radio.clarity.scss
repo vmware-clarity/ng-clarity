@@ -126,7 +126,7 @@
   .clr-form-compact .clr-radio-wrapper {
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
-    height: forms-variables.$clr-forms-baseline * 4;
+    height: calc(#{forms-variables.$clr-forms-baseline} * 4);
 
     .clr-control-label {
       margin-top: 0;
