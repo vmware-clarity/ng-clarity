@@ -32,10 +32,10 @@
     margin-top: 0;
 
     & ~ .clr-validate-icon {
-      line-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
+      line-height: calc(#{forms-variables.$clr-forms-baseline} * 3);
     }
     & ~ .clr-subtext {
-      line-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
+      line-height: calc(#{forms-variables.$clr-forms-baseline} * 3);
       margin-top: 0;
     }
     .clr-control-label {

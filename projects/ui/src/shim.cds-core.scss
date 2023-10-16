@@ -1506,7 +1506,7 @@
   --clr-toggle-icon-margin: calc(#{tokens.$cds-global-space-11} + #{tokens.$cds-global-space-5});
   --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));
   --clr-toggle-switch-left-spacing: calc(var(--clr-toggle-switch-base-width) - #{tokens.$cds-global-space-3});
-  --clr-toggle-switch-left-spacing-negative: calc(-1 * (var(--clr-toggle-switch-left-spacing)));
+  --clr-toggle-switch-left-spacing-negative: calc(-1 * var(--clr-toggle-switch-left-spacing));
   --clr-toggle-dot-diameter: #{tokens.$cds-global-space-7};
   --clr-toggle-icon-dot-place: calc(-1 * var(--clr-toggle-icon-margin));
   --clr-toggle-icon-top: #{tokens.$cds-global-space-3};
