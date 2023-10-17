@@ -16,15 +16,15 @@
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},
   &.badge-#{$alias} {
-    background: var(--#{getBadgeCssVarName($color, bg-color)});
-    color: var(--#{getBadgeCssVarName($color, color)});
+    background: var(#{getBadgeCssVarName($color, bg-color)});
+    color: var(#{getBadgeCssVarName($color, color)});
   }
 }
 
 @mixin generateStatusBadgeStyles($status: info) {
   &.badge-#{$status} {
-    background: var(--#{getBadgeCssVarName($status, bg-color)});
-    color: var(--#{getBadgeCssVarName($status, color)});
+    background: var(#{getBadgeCssVarName($status, bg-color)});
+    color: var(#{getBadgeCssVarName($status, color)});
   }
 }
 
@@ -59,8 +59,8 @@
 
     // Link badge, default, no color or type specifier. Override a:link setting.
     &:link {
-      background-color: var(--#{getBadgeCssVarName(gray, bg-color)});
-      color: var(--#{getBadgeCssVarName(gray, color)});
+      background-color: var(#{getBadgeCssVarName(gray, bg-color)});
+      color: var(#{getBadgeCssVarName(gray, color)});
     }
 
     @include generateBadgeStyles(gray, 1);
