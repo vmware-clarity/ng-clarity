@@ -10,7 +10,7 @@
 @include meta.load-css('properties.badges');
 
 @function getBadgeCssVarName($type: gray, $prop: color) {
-  @return #{'clr-badge-' + $type + '-' + $prop};
+  @return #{'--clr-badge-' + $type + '-' + $prop};
 }
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
