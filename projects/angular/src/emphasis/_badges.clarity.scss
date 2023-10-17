@@ -44,10 +44,7 @@
     background-color: var(--clr-badge-background-color);
     height: var(--clr-badge-height);
     border-radius: var(--clr-badge-border-radius);
-    font-size: var(--clr-badge-font-size);
-    font-weight: var(--clr-badge-font-weight);
-    letter-spacing: var(--clr-badge-letter-spacing);
-    line-height: var(--clr-badge-line-height);
+@include mixins.generate-typography-token('CAPTION-SM-10');
 
     padding: var(--clr-badge-padding);
     // TODO: Should we refactor/tokenize this?
