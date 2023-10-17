@@ -9,32 +9,32 @@
 @include mixins.exports('badge.properties') {
   :root {
     [cds-theme] {
-      --clr-badge-background-color: #{tokens.$cds-alias-utility-gray}; // var(--clr-color-neutral-600);
-      --clr-badge-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-on-neutral-600);
+      --clr-badge-background-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-color: #{tokens.$cds-alias-typography-color-100};
 
-      --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue}; // var(--clr-color-action-800);
-      --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-neutral-0);
-      --clr-badge-success-bg-color: #{tokens.$cds-alias-utility-green}; // var(--clr-color-success-800);
+      --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue};
+      --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-success-bg-color: #{tokens.$cds-alias-utility-green};
       --clr-badge-success-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-badge-warning-bg-color: #{tokens.$cds-alias-utility-yellow}; // var(--clr-color-warning-1000);
-      --clr-badge-warning-color: #{tokens.$cds-global-color-black}; // var(--clr-color-neutral-0);
-      --clr-badge-danger-bg-color: #{tokens.$cds-alias-utility-red}; // var(--clr-color-danger-900);
-      --clr-badge-danger-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-neutral-0);
+      --clr-badge-warning-bg-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-badge-warning-color: #{tokens.$cds-global-color-black};
+      --clr-badge-danger-bg-color: #{tokens.$cds-alias-utility-red};
+      --clr-badge-danger-color: #{tokens.$cds-alias-typography-color-100};
 
-      --clr-badge-gray-bg-color: #{tokens.$cds-alias-utility-gray}; // var(--clr-color-neutral-600);
+      --clr-badge-gray-bg-color: #{tokens.$cds-alias-utility-gray};
       --clr-badge-gray-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-badge-purple-bg-color: #{tokens.$cds-alias-utility-violet}; // var(--clr-color-secondary-action-500);
-      --clr-badge-purple-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-badge-font-color-light);
-      --clr-badge-blue-bg-color: #{tokens.$cds-alias-utility-dark-blue}; // var(--clr-color-action-800);
+      --clr-badge-purple-bg-color: #{tokens.$cds-alias-utility-violet};
+      --clr-badge-purple-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-blue-bg-color: #{tokens.$cds-alias-utility-dark-blue};
       --clr-badge-blue-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-badge-orange-bg-color: #{tokens.$cds-alias-utility-tangerine}; // var(--clr-color-warning-1000);
-      --clr-badge-orange-color: #{tokens.$cds-global-color-black}; // var(--clr-color-neutral-0);
-      --clr-badge-light-blue-bg-color: #{tokens.$cds-alias-utility-light-blue}; // var(--clr-color-action-500);
-      --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500}; // var(--clr-color-neutral-0);
+      --clr-badge-orange-bg-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-badge-orange-color: #{tokens.$cds-global-color-black};
+      --clr-badge-light-blue-bg-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500};
 
-      --clr-badge-padding: #{tokens.$cds-global-space-2} #{tokens.$cds-global-space-3}; // 2px 4px
-      --clr-badge-height: #{tokens.$cds-global-space-7}; // 16px
-      --clr-badge-min-width: #{tokens.$cds-global-space-7}; // 16px
+      --clr-badge-padding: #{tokens.$cds-global-space-2} #{tokens.$cds-global-space-3};
+      --clr-badge-height: #{tokens.$cds-global-space-7};
+      --clr-badge-min-width: #{tokens.$cds-global-space-7};
       --clr-badge-border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
 
       --clr-badge-font-size: var(--clr-p7-font-size);
