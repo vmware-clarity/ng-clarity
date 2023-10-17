@@ -39,11 +39,10 @@
         --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
         --clr-forms-text-disabled-color: #{tokens.$cds-alias-typography-disabled};
         --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
-        // --clr-forms-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
         --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
 
         // Input
-        --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
+        --clr-forms-input-padding: 0 calc(4 * #{forms-variables.$clr-forms-baseline} / 3);
         --clr-forms-input-wrapper-height: calc(4 * #{forms-variables.$clr-forms-baseline});
 
         // Input group
