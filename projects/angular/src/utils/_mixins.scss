@@ -354,14 +354,14 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
     // suitable token not found
   ),
-  'BUTTON-13': (
+  'BUTTON-12': (
     // Buttons
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
-    font-size: #{tokens.$cds-alias-typography-font-size-3},
+    font-size: #{tokens.$cds-alias-typography-font-size-2},
     line-height: #{tokens.$cds-global-space-7},
     // better token not found
-    letter-spacing: #{baselinePx(0.2)},
-    // suitable token not found
+    letter-spacing: #{tokens.$cds-global-space-1},
+    // better token not found
     text-transform: uppercase,
   ),
   'BUTTON-11-SMALL': (
