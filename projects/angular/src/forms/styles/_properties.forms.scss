@@ -43,8 +43,8 @@
         --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
 
         // Input
-        --clr-forms-input-padding: 0 #{tokens.$cds-global-space-5};
-        --clr-forms-input-wrapper-height: #{tokens.$cds-global-space-9};
+        --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
+        --clr-forms-input-wrapper-height: #{4 * forms-variables.$clr-forms-baseline};
 
         // Input group
         --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};

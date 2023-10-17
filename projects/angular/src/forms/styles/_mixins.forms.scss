@@ -31,7 +31,7 @@
 
   .clr-control-label {
     display: inline-block;
-    margin-right: #{tokens.$cds-global-space-6};
+    margin-right: calc(2 * #{forms-variables.$clr-forms-baseline});
     width: auto;
   }
 }
@@ -41,21 +41,21 @@
   max-width: 100%;
 
   & ~ .clr-subtext {
-    margin-left: #{tokens.$cds-global-space-4};
+    margin-left: forms-variables.$clr-forms-baseline;
   }
 }
 
 // Standard Clarity Input Bottom Border Animation
-@mixin input-border-bottom-animation($border-color-prop: --clr-forms-focused-color) {
+@mixin input-border-bottom-animation($border-color: forms-variables.$clr-forms-focused-color) {
   // Border-bottom animation on focus
-  background: linear-gradient(to bottom, transparent 95%, var($border-color-prop) 95%) no-repeat;
+  background: linear-gradient(to bottom, transparent 95%, #{$border-color} 95%) no-repeat;
 
   background-size: 0 100%;
   transition: background-size 0.2s ease;
 
   &:focus,
   &.clr-focus {
-    border-bottom-color: var($border-color-prop);
+    border-bottom-color: $border-color;
     background-size: 100% 100%;
   }
 }
@@ -76,14 +76,17 @@
   }
 }
 
-@mixin form-fields-appearance($border-color-prop: --clr-forms-border-color, $text-color-prop: --clr-forms-text-color) {
-  color: var($border-color-prop);
-  border-bottom: #{tokens.$cds-alias-object-border-width-100} solid var($text-color-prop);
+@mixin form-fields-appearance(
+  $border-color: forms-variables.$clr-forms-border-color,
+  $text-color: forms-variables.$clr-forms-text-color
+) {
+  color: $text-color;
+  border-bottom: #{tokens.$cds-alias-object-border-width-100} solid #{$border-color};
   display: inline-block;
 }
 
 @mixin disabled-form-fields() {
-  color: var(--clr-forms-text-disabled-color);
+  color: forms-variables.$clr-forms-text-disabled-color;
   cursor: not-allowed;
 }
 

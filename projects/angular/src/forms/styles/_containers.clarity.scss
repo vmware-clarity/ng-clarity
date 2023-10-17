@@ -17,7 +17,7 @@
   }
 
   .clr-form-control {
-    margin-top: tokens.$cds-global-space-9;
+    margin-top: calc(4 * #{forms-variables.$clr-forms-baseline});
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -122,7 +122,7 @@
   .clr-form-horizontal {
     .clr-form-control > .clr-control-label,
     .clr-form-control > .clr-form-control.clr-form-control-multi .clr-control-label {
-      width: mixins.baselinePx(192);
+      width: calc(32 * #{forms-variables.$clr-forms-baseline});
       flex-shrink: 0;
       margin-top: tokens.$cds-global-space-3;
     }
@@ -138,8 +138,8 @@
 
   .clr-form-compact {
     .clr-form-control > .clr-control-label {
-      width: mixins.baselinePx(192);
-      min-width: mixins.baselinePx(192);
+      width: calc(32 * #{forms-variables.$clr-forms-baseline});
+      min-width: calc(32 * #{forms-variables.$clr-forms-baseline});
     }
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
@@ -153,7 +153,7 @@
     .clr-form-control {
       display: flex;
       flex-direction: row;
-      margin-top: tokens.$cds-global-space-6;
+      margin-top: calc(2 * #{forms-variables.$clr-forms-baseline});
     }
 
     .clr-control-container {
@@ -162,7 +162,7 @@
 
     .clr-subtext {
       display: inline-block;
-      margin-top: tokens.$cds-global-space-4;
+      margin-top: forms-variables.$clr-forms-baseline;
 
       // special margin left based on --clr-forms-icon-size
       // to align subtexts when error/success icon is missing.

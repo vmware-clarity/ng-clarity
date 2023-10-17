@@ -73,7 +73,7 @@
         forms-variables.$clr-forms-checkbox-mark-color,
         variables.$clr-use-custom-properties
       );
-      top: calc(calc(#{forms-variables.$clr-forms-baseline} * 3 - #{alert-variables.$clr-icon-dimension-sm}) * 0.5);
+      top: calc(calc(#{forms-variables.$clr-forms-baseline} * 4 - #{alert-variables.$clr-icon-dimension-sm}) * 0.5);
       left: $mark-half-size;
       transform: translate(0, $mark-half-size) rotate(-45deg);
     }
@@ -191,7 +191,7 @@
   .clr-form-compact .clr-checkbox-wrapper {
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
-    height: calc(#{forms-variables.$clr-forms-baseline} * 3);
+    height: calc(#{forms-variables.$clr-forms-baseline} * 4);
 
     .clr-control-label {
       margin-top: 0;

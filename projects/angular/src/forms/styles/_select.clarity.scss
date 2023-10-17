@@ -27,8 +27,7 @@
         @include mixins.include-slim-outline-style-form-fields();
       }
       position: relative;
-      padding: 0 calc(#{forms-variables.$clr-forms-select-caret-size} + #{forms-variables.$clr-forms-baseline} * 2) 0
-        forms-variables.$clr-forms-baseline;
+      padding: 0 calc(#{forms-variables.$clr-forms-select-caret-size} + #{forms-variables.$clr-forms-baseline} * 2) 0 #{forms-variables.$clr-forms-baseline};
       cursor: pointer;
       font-size: forms-variables.$clr-forms-field-font-size;
 
@@ -83,14 +82,14 @@
   }
 
   .clr-select-wrapper {
-    max-height: calc(#{forms-variables.$clr-forms-baseline} * 3);
+    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
     display: inline-block;
 
     &::after {
       position: absolute;
       content: '';
       @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
-      top: calc(#{forms-variables.$clr-forms-baseline} * 3 - #{forms-variables.$clr-forms-select-caret-size} * 0.5);
+      top: calc(4 * #{forms-variables.$clr-forms-baseline} - #{forms-variables.$clr-forms-select-caret-size} * 0.5);
       right: forms-variables.$clr-forms-baseline;
       // TODO: get rid of generated icons?
       background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);

@@ -393,7 +393,7 @@
     .clr-control-label {
       display: block;
       font-weight: 400;
-      line-height: calc(#{forms-variables.$clr-forms-baseline} * 3);
+      line-height: calc(4 * #{forms-variables.$clr-forms-baseline});
     }
   }
 

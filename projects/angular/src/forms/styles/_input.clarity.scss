@@ -5,20 +5,20 @@
  */
 @use '../../utils/mixins';
 @use 'mixins.forms' as forms-mixins;
-@use '@cds/core/tokens/tokens.scss';
+@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.input') {
   .clr-input-wrapper {
     white-space: nowrap;
-    max-height: var(--clr-forms-input-wrapper-height);
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
   }
 
   .clr-input {
-    @include forms-mixins.custom-inputs-reset(#{tokens.$cds-global-space-9});
+    @include forms-mixins.custom-inputs-reset(calc(4 * #{forms-variables.$clr-forms-baseline}));
     @include forms-mixins.form-fields-appearance();
 
-    padding: var(--clr-forms-input-padding);
-    max-height: #{tokens.$cds-global-space-9};
+    padding: forms-variables.$clr-forms-input-padding;
+    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     &[readonly] {
@@ -32,23 +32,23 @@
     &:disabled {
       @include forms-mixins.disabled-form-fields();
       @include mixins.input-placeholder-wrapper() {
-        color: var(--clr-forms-placeholder-disabled-color);
+        color: forms-variables.$clr-forms-placeholder-disabled-color;
       }
     }
   }
 
   .clr-error .clr-input:not([readonly]) {
-    border-bottom-color: var(--clr-forms-invalid-color);
-    @include forms-mixins.input-border-bottom-animation(--clr-forms-invalid-color);
+    border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-success .clr-input:not([readonly]) {
-    border-bottom-color: var(--clr-forms-valid-color);
-    @include forms-mixins.input-border-bottom-animation(--clr-forms-valid-color);
+    border-bottom-color: forms-variables.$clr-forms-valid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-form-control.row .clr-input-wrapper {
-    max-width: calc(100% - #{tokens.$cds-global-space-9});
+    max-width: calc(100% - #{forms-variables.$clr-forms-icon-size});
   }
 
   .clr-form-compact .clr-input {
@@ -60,13 +60,13 @@
   }
 
   .clr-form-control-multi .clr-input {
-    max-width: calc(100% + #{tokens.$cds-global-space-9});
+    max-width: calc(100% + #{forms-variables.$clr-forms-icon-size});
   }
 
   /**
    Placeholder
    **/
   @include mixins.input-placeholder-wrapper() {
-    color: var(--clr-forms-placeholder-color);
+    color: forms-variables.$clr-forms-placeholder-color;
   }
 }
