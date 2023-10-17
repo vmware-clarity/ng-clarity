@@ -36,12 +36,6 @@
       --clr-badge-height: #{tokens.$cds-global-space-7};
       --clr-badge-min-width: #{tokens.$cds-global-space-7};
       --clr-badge-border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
-
-      --clr-badge-font-size: var(--clr-p7-font-size);
-      --clr-badge-font-weight: var(--clr-p7-font-weight);
-      --clr-badge-letter-spacing: var(--clr-p7-letter-spacing);
-      --clr-badge-line-height: var(--clr-p7-line-height);
-      --clr-badge-font-family: #{tokens.$cds-global-typography-font-family};
     }
   }
 }

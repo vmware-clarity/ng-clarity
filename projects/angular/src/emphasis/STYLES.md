@@ -28,11 +28,6 @@
 | --clr-badge-height              | Height                            |
 | --clr-badge-min-width           | Min width                         |
 | --clr-badge-border-radius       | Border radius                     |
-| --clr-badge-font-size           | Font size                         |
-| --clr-badge-font-weight         | Font weight                       |
-| --clr-badge-letter-spacing      | Letter spacing                    |
-| --clr-badge-line-height         | Line height                       |
-| --clr-badge-font-family         | Font family                       |
 
 ## CSS Classes
 
