@@ -945,7 +945,7 @@
   /* Forms */
 
   // Datalist
-
+  --clr-forms-datalist-caret-right: #{tokens.$cds-global-space-5};
   --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
   --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
   --clr-forms-datalist-caret-icon-size: #{tokens.$cds-global-space-7};
