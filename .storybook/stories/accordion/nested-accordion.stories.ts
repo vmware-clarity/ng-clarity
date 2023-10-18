@@ -5,13 +5,34 @@
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
+export default {
+  title: 'Accordion/Nested Accordion',
+  argTypes: {
+    // story helpers
+    openIndex: { control: { disable: true }, table: { disable: true } },
+    nestedOpenIndex: { control: { disable: true }, table: { disable: true } },
+    createArray: { control: { disable: true }, table: { disable: true } },
+    panelCount: { control: { type: 'number', min: 1, max: 100 } },
+  },
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrAccordionModule],
+    }),
+  ],
+  args: {
+    // story helpers
+    openIndex: undefined,
+    nestedOpenIndex: undefined,
+    createArray: n => new Array(n),
+    panelCount: 4,
+  },
+};
+
+const template = `
     <clr-accordion>
       <clr-accordion-panel
         *ngFor="let _ of createArray(panelCount); let i = index"
@@ -28,36 +49,16 @@ const defaultStory: Story = args => ({
         </clr-accordion-content>
       </clr-accordion-panel>
     </clr-accordion>
-  `,
-  props: { ...args },
+  `;
+
+export const Closed: Story = args => ({
+  template,
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Accordion/Nested Accordion',
-  argTypes: {
-    // story helpers
-    openIndex: { control: { disable: true }, table: { disable: true } },
-    nestedOpenIndex: { control: { disable: true }, table: { disable: true } },
-    createArray: { control: { disable: true }, table: { disable: true } },
-    panelCount: { control: { type: 'number', min: 1, max: 100 } },
-  },
-  args: {
-    // story helpers
-    openIndex: undefined,
-    nestedOpenIndex: undefined,
-    createArray: n => new Array(n),
-    panelCount: 4,
-  },
+export const Opened: Story = Closed.bind({});
+Opened.args = {
+  ...Closed.args,
+  openIndex: 0,
+  nestedOpenIndex: 0,
 };
-
-const variants: Parameters[] = [
-  {
-    openIndex: 0,
-  },
-  {
-    openIndex: 0,
-    nestedOpenIndex: 0,
-  },
-];
-
-setupStorybook(ClrAccordionModule, defaultStory, defaultParameters, variants);

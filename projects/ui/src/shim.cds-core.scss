@@ -918,6 +918,7 @@
   --clr-card-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
   --clr-card-divider-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-300);
   --clr-card-title-color: #{tokens.$cds-alias-typography-color-400};
+  --clr-card-title-font-weight: #{tokens.$cds-global-typography-section-font-weight};
   --clr-card-header-title-color: var(--clr-card-title-color);
   --clr-card-content-title-color: var(--clr-card-title-color);
   --clr-card-header-title-font-size: #{tokens.$cds-global-typography-section-font-size};
@@ -1223,6 +1224,8 @@
   --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
   --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
 
+  --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
+  --clr-header-title-font-family: #{tokens.$cds-global-typography-header-font-family};
   --clr-header-title-font-size: #{tokens.$cds-global-typography-subsection-font-size};
   --clr-header-title-line-height: #{tokens.$cds-global-typography-subsection-line-height};
   --clr-header-title-letter-spacing: #{tokens.$cds-global-typography-subsection-letter-spacing};
@@ -1291,6 +1294,7 @@
   --clr-modal-title-line-height: var(--clr-h4-line-height);
   --clr-modal-title-font-size: var(--clr-h4-font-size);
   --clr-modal-title-font-weight: var(--clr-h4-font-weight);
+  --clr-modal-title-font-family: #{tokens.$cds-alias-typography-header-font-family};
   --clr-modal-text-color: #{tokens.$cds-alias-typography-color-400};
   --clr-modal-close-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-600);
   --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
@@ -1755,7 +1759,7 @@
   --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
   --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background-shade};
   --clr-vertical-nav-item-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
-  --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-10};
+  --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-11};
   --clr-vertical-nav-item-height: #{tokens.$cds-global-space-11};
   --clr-vertical-nav-item-line-height: #{tokens.$cds-global-space-7};
   --clr-vertical-nav-item-font-size: #{tokens.$cds-global-typography-font-size-4};
