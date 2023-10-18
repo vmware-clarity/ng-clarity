@@ -10,10 +10,6 @@
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.badges');
 
-@function getBadgeCssVarName($type: gray, $prop: color) {
-  @return #{'--clr-badge-' + $type + '-' + $prop};
-}
-
 @mixin generateBadgeStyles($color: gray, $alias: 1) {
   &.badge-#{'' + $color},
   &.badge-#{$alias} {
