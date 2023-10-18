@@ -6,11 +6,8 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use 'variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
-
-@function getBadgeInLabelColor($type: gray, $prop: color) {
-  @return #{'clr-badge-' + $type + '-' + $prop};
-}
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
   $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
@@ -46,14 +43,14 @@
   &.label-#{'' + $color} > .badge {
     @include mixins.css-var(
       background,
-      getBadgeInLabelColor($color, bg-color),
-      getBadgeInLabelColor($color, bg-color),
+      badges-variables.getBadgeColor($color, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($color, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      getBadgeInLabelColor($color, color),
-      getBadgeInLabelColor($color, color),
+      badges-variables.getBadgeColor($color, color, 'css-var'),
+      badges-variables.getBadgeColor($color, color),
       variables.$clr-use-custom-properties
     );
   }
@@ -90,14 +87,14 @@
   &.label-#{'' + $status} > .badge {
     @include mixins.css-var(
       background,
-      getBadgeInLabelColor($status, bg-color),
-      getBadgeInLabelColor($status, bg-color),
+      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
+      badges-variables.getBadgeColor($status, bg-color),
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
       color,
-      getBadgeInLabelColor($status, color),
-      getBadgeInLabelColor($status, color),
+      badges-variables.getBadgeColor($status, color, 'css-var'),
+      badges-variables.getBadgeColor($status, color),
       variables.$clr-use-custom-properties
     );
   }
