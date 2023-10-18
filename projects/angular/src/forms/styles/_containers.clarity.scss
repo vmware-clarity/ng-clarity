@@ -69,6 +69,7 @@
     display: block;
     color: forms-variables.$clr-forms-label-color;
     @include mixins.generate-typography-token('SECONDARY-13-SB-CPT');
+    font-weight: forms-variables.$clr-forms-label-font-weight;
   }
 
   .clr-control-container {

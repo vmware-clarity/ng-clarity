@@ -41,6 +41,8 @@
         --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
         --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
 
+        --clr-forms-label-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+
         // Input
         --clr-forms-input-padding: 0 calc(4 * #{forms-variables.$clr-forms-baseline} / 3);
         --clr-forms-input-wrapper-height: calc(4 * #{forms-variables.$clr-forms-baseline});

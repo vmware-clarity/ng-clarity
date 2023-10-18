@@ -41,17 +41,8 @@ $clr-forms-input-wrapper-height: var(--clr-forms-input-wrapper-height);
 $clr-forms-input-group-icon-action-size: var(--clr-forms-input-group-icon-action-size);
 
 // Typographic - obsolete should be removed ATM
-$clr-forms-label-font-size: variables.$clr-p2-font-size !default;
-$clr-forms-label-font-weight: variables.$clr-font-weight-bold !default;
-$clr-forms-block-label-font-size: variables.$clr-h5-font-size !default;
-$clr-forms-block-label-font-weight: variables.$clr-h5-font-weight !default;
-$clr-forms-block-label-letter-spacing: variables.$clr-h5-letter-spacing !default;
-$clr-forms-text-font-size: variables.$clr-p3-font-size !default;
-$clr-forms-text-font-weight: variables.$clr-p3-font-weight !default;
-$clr-forms-text-letter-spacing: variables.$clr-p3-letter-spacing !default;
-$clr-forms-subtext-font-size: variables.$clr-p6-font-size !default;
-$clr-forms-subtext-line-height: variables.$clr-p6-line-height !default;
-$clr-forms-field-font-size: $clr-forms-label-font-size !default;
+$clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
+$clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 
 // Textarea
 $clr-forms-textarea-background-color: variables.$clr-color-neutral-0 !default;
