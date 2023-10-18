@@ -26,6 +26,8 @@ import shimStyles from 'raw-loader!sass-loader!../projects/ui/src/shim.cds-core.
 import { getClrUiAppBackgroundColor } from './helpers/clr-ui-theme.helpers';
 import { THEMES } from './helpers/constants';
 
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
@@ -70,6 +72,7 @@ export const parameters = {
   viewport: {
     viewports: {
       ...customViewports,
+      ...INITIAL_VIEWPORTS,
     },
   },
 };
