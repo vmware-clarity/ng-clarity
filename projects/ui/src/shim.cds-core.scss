@@ -1888,8 +1888,8 @@
   --clr-datagrid-action-popover-hover-color: #{tokens.$cds-alias-object-interaction-background-hover}; // var(--clr-color-neutral-200);
   --clr-datagrid-row-selected: #{tokens.$cds-alias-typography-color-500}; // var(--clr-color-neutral-1000);
 
-  --clr-datagrid-column-switch-header-font-color: #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
-  --clr-datagrid-column-switch-header-font-hover-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-600);
+  --clr-datagrid-column-switch-header-font-color: #{tokens.$cds-alias-object-interaction-color};
+  --clr-datagrid-column-switch-header-font-hover-color: #{tokens.$cds-alias-object-interaction-background-highlight};
 
   --clr-datagrid-detail-caret-icon-open-bg-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-600);
   --clr-datagrid-detail-caret-icon-open-icon-color: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
