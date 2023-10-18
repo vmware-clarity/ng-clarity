@@ -5,34 +5,33 @@
  */
 @use '../utils/variables/variables.color';
 
-// Usage:
-// - ./_labels.clarity.scss
-$clr-badge-font-color-light: variables.$clr-color-neutral-0 !default;
-$clr-badge-font-color-dark: variables.$clr-color-neutral-0 !default;
+$clr-badge-background-color: var(--clr-badge-background-color);
+$clr-badge-color: var(--clr-badge-color);
 
-$clr-badge-info-bg-color: variables.$clr-color-action-800 !default;
-$clr-badge-info-color: variables.$clr-color-neutral-0 !default;
-$clr-badge-success-bg-color: variables.$clr-color-success-800 !default;
-$clr-badge-success-color: variables.$clr-color-neutral-0 !default;
-$clr-badge-warning-bg-color: variables.$clr-color-warning-1000 !default;
-$clr-badge-warning-color: variables.$clr-color-neutral-0 !default;
-$clr-badge-danger-bg-color: variables.$clr-color-danger-900 !default;
-$clr-badge-danger-color: variables.$clr-color-neutral-0 !default;
+$clr-badge-info-bg-color: var(--clr-badge-info-bg-color);
+$clr-badge-info-color: var(--clr-badge-info-color);
+$clr-badge-success-bg-color: var(--clr-badge-success-bg-color);
+$clr-badge-success-color: var(--clr-badge-success-color);
+$clr-badge-warning-bg-color: var(--clr-badge-warning-bg-color);
+$clr-badge-warning-color: var(--clr-badge-warning-color);
+$clr-badge-danger-bg-color: var(--clr-badge-danger-bg-color);
+$clr-badge-danger-color: var(--clr-badge-danger-color);
 
-$clr-badge-gray-bg-color: variables.$clr-color-neutral-600 !default;
-$clr-badge-gray-color: $clr-badge-font-color-light !default;
-$clr-badge-purple-bg-color: variables.$clr-color-secondary-action-500 !default;
-$clr-badge-purple-color: $clr-badge-font-color-light !default;
-$clr-badge-blue-bg-color: variables.$clr-color-action-800 !default;
-$clr-badge-blue-color: $clr-badge-font-color-light !default;
-$clr-badge-orange-bg-color: variables.$clr-color-warning-1000 !default;
-$clr-badge-orange-color: $clr-badge-font-color-dark !default;
-$clr-badge-light-blue-bg-color: variables.$clr-color-action-500 !default;
-$clr-badge-light-blue-color: $clr-badge-font-color-dark !default;
+$clr-badge-gray-bg-color: var(--clr-badge-gray-bg-color);
+$clr-badge-gray-color: var(--clr-badge-gray-color);
+$clr-badge-purple-bg-color: var(--clr-badge-purple-bg-color);
+$clr-badge-purple-color: var(--clr-badge-purple-color);
+$clr-badge-blue-bg-color: var(--clr-badge-blue-bg-color);
+$clr-badge-blue-color: var(--clr-badge-blue-color);
+$clr-badge-orange-bg-color: var(--clr-badge-orange-bg-color);
+$clr-badge-orange-color: var(--clr-badge-orange-color);
+$clr-badge-light-blue-bg-color: var(--clr-badge-light-blue-bg-color);
+$clr-badge-light-blue-color: var(--clr-badge-light-blue-color);
 
-@function getBadgeCssVarName($type: gray, $prop: color) {
-  @return #{'clr-badge-' + $type + '-' + $prop};
-}
+$clr-badge-padding: var(--clr-badge-padding);
+$clr-badge-height: var(--clr-badge-height);
+$clr-badge-min-width: var(--clr-badge-min-width);
+$clr-badge-border-radius: var(--clr-badge-border-radius);
 
 @function getBadgeColor($type: gray, $property: color, $var-type: 'sass-var') {
   @if $var-type == 'css-var' {

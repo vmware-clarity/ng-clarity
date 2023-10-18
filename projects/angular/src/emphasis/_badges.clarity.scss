@@ -6,6 +6,7 @@
 
 @use 'sass:meta';
 @use '../utils/mixins';
+@use 'variables.badges' as badges-variables;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.badges');
 
@@ -40,21 +41,20 @@
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    min-width: var(--clr-badge-min-width);
-    background-color: var(--clr-badge-background-color);
-    height: var(--clr-badge-height);
-    border-radius: var(--clr-badge-border-radius);
+    min-width: badges-variables.$clr-badge-min-width;
+    background-color: badges-variables.$clr-badge-background-color;
+    height: badges-variables.$clr-badge-height;
+    border-radius: badges-variables.$clr-badge-border-radius;
     @include mixins.generate-typography-token('CAPTION-SM-10');
 
-    padding: var(--clr-badge-padding);
-    // TODO: Should we refactor/tokenize this?
+    padding: badges-variables.$clr-badge-padding;
     margin-right: #{tokens.$cds-global-space-4};
     white-space: nowrap;
     text-align: center;
-    color: var(--clr-badge-color);
+    color: badges-variables.$clr-badge-color;
 
     &:visited {
-      color: var(--clr-badge-color);
+      color: badges-variables.$clr-badge-color;
     }
 
     // Link badge, default, no color or type specifier. Override a:link setting.
