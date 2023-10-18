@@ -30,12 +30,62 @@ const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeC
 loadIcons();
 addDocs(docs);
 
+const customViewports = {
+  large: {
+    name: 'CLR Large',
+    styles: {
+      width: '992px',
+      height: '100%',
+    },
+  },
+  medium: {
+    name: 'CLR Medium',
+    styles: {
+      width: '768px',
+      height: '100%',
+    },
+  },
+  small: {
+    name: 'CLR Small',
+    styles: {
+      width: '576px',
+      height: '100%',
+    },
+  },
+  smallMobile: {
+    name: 'Small mobile',
+    styles: {
+      width: '320px',
+      height: '568px',
+    },
+  },
+  largeMobile: {
+    name: 'Large mobile',
+    styles: {
+      width: '414px',
+      height: '896px',
+    },
+  },
+  tablet: {
+    name: 'Tablet',
+    styles: {
+      width: '834px',
+      height: '1112px',
+    },
+  },
+};
+
 export const parameters = {
   docs: { inlineStories: true },
   options: {
     storySort: {
       method: 'alphabetical',
       order: ['Home'],
+    },
+  },
+  viewport: {
+    viewports: {
+      ...customViewports,
     },
   },
 };
