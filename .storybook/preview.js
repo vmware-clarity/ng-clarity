@@ -39,24 +39,45 @@ addDocs(docs);
 
 const customViewports = {
   large: {
-    name: 'Large',
+    name: 'CLR Large',
     styles: {
       width: '992px',
-      height: '992px',
+      height: '100%',
     },
   },
   medium: {
-    name: 'Medium',
+    name: 'CLR Medium',
     styles: {
       width: '768px',
-      height: '768px',
+      height: '100%',
     },
   },
   small: {
-    name: 'Small',
+    name: 'CLR Small',
     styles: {
       width: '576px',
-      height: '576px',
+      height: '100%',
+    },
+  },
+  smallMobile: {
+    name: 'Small mobile',
+    styles: {
+      width: '320px',
+      height: '568px',
+    },
+  },
+  largeMobile: {
+    name: 'Large mobile',
+    styles: {
+      width: '414px',
+      height: '896px',
+    },
+  },
+  tablet: {
+    name: 'Tablet',
+    styles: {
+      width: '834px',
+      height: '1112px',
     },
   },
 };
@@ -72,7 +93,6 @@ export const parameters = {
   viewport: {
     viewports: {
       ...customViewports,
-      ...INITIAL_VIEWPORTS,
     },
   },
 };
