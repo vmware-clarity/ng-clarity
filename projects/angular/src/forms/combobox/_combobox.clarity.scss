@@ -144,7 +144,7 @@
     }
 
     //Mixins
-    @include styles-mixins.form-fields-appearance(forms-variables.$clr-forms-border-color);
+    @include styles-mixins.form-fields-appearance();
 
     // override the above mixin for combobox-specific styles
     @include mixins.css-var(

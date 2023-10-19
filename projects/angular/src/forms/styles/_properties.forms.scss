@@ -5,47 +5,51 @@
  */
 @use 'sass:color';
 @use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
 @use '../../utils/variables/variables';
 @use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
-      // Structure
-      --clr-forms-baseline: #{variables.$clr_baselineRem_0_25};
-      --clr-form-disabled-background-color: var(--clr-color-neutral-400);
+      [cds-theme] {
+        // Structure
 
-      // Generic
-      --clr-forms-label-color: var(--clr-color-neutral-800);
-      --clr-forms-text-color: var(--clr-color-neutral-1000);
-      --clr-forms-invalid-color: var(--clr-color-danger-800);
-      --clr-forms-invalid-text-color: var(--clr-color-danger-800);
-      --clr-forms-valid-color: var(--clr-color-success-700);
-      --clr-forms-valid-text-color: var(--clr-color-success-900);
-      --clr-forms-subtext-color: var(--clr-color-neutral-600);
-      --clr-forms-placeholder-color: var(--clr-global-color-construction-600);
-      --clr-forms-border-color: #{forms-variables.$clr-forms-border-color};
-      --clr-forms-focused-color: var(--clr-color-action-600);
+        // Legacy CLR form base line (6px). Baked deeply in all form calculations.
+        // Don't change it unless you know exactly what you are doing.
+        --clr-forms-baseline: #{tokens.$cds-global-space-4};
 
-      --clr-forms-subtext-disabled-color: #{forms-variables.$clr-forms-subtext-disabled-color};
-      --clr-forms-border-disabled-color: #{forms-variables.$clr-forms-border-color};
-      --clr-forms-text-disabled-color: #{forms-variables.$clr-forms-text-disabled-color};
-      --clr-forms-label-disabled-color: #{forms-variables.$clr-forms-label-disabled-color};
-      --clr-forms-icon-size: #{variables.$clr_baselineRem_1};
-      --clr-forms-placeholder-disabled-color: #{forms-variables.$clr-forms-placeholder-color};
-      --clr-forms-subtext-margin-top: #{forms-variables.$clr-forms-baseline};
+        --clr-forms-icon-size: #{tokens.$cds-global-space-9};
+        --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background};
 
-      // Typographic
-      --clr-forms-label-font-weight: var(--clr-font-weight-bold);
-      --clr-forms-block-label-font-weight: #{variables.$clr-h5-font-weight};
-      --clr-forms-text-font-weight: #{variables.$clr-p3-font-weight};
+        // Generic
+        --clr-forms-label-color: #{tokens.$cds-alias-typography-color-400};
+        --clr-forms-text-color: #{tokens.$cds-alias-typography-color-400};
+        --clr-forms-invalid-color: #{tokens.$cds-alias-status-danger};
+        --clr-forms-invalid-text-color: #{tokens.$cds-alias-status-danger};
+        --clr-forms-valid-color: #{tokens.$cds-alias-status-success};
+        --clr-forms-valid-text-color: #{tokens.$cds-alias-status-success};
+        --clr-forms-subtext-color: #{tokens.$cds-alias-typography-color-300};
+        --clr-forms-placeholder-color: #{tokens.$cds-alias-typography-color-200};
+        --clr-forms-border-color: #{tokens.$cds-alias-object-interaction-border-color};
+        --clr-forms-focused-color: #{tokens.$cds-alias-object-interaction-background-highlight};
 
-      // Input
-      --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
-      --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
+        --clr-forms-subtext-disabled-color: #{tokens.$cds-alias-typography-disabled};
+        --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+        --clr-forms-text-disabled-color: #{tokens.$cds-alias-typography-disabled};
+        --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
+        --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
 
-      // Input group
-      --clr-forms-input-group-icon-action-size: #{variables.$clr_baselineRem_0_75};
+        --clr-forms-label-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+
+        // Input
+        --clr-forms-input-padding: 0 calc(4 * #{forms-variables.$clr-forms-baseline} / 3);
+        --clr-forms-input-wrapper-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+
+        // Input group
+        --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
+      }
 
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
@@ -58,11 +62,9 @@
         0
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
-        #{color.adjust(forms-variables.$clr-forms-invalid-color, $lightness: 30%)};
-      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
-        variables.$clr_baselineRem_2px
-        forms-variables.$clr-forms-baseline *
-        2};
+        #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
+      --clr-forms-textarea-padding: calc(#{forms-variables.$clr-forms-baseline} + #{variables.$clr_baselineRem_2px})
+        calc(#{forms-variables.$clr-forms-baseline} * 2);
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
@@ -82,10 +84,7 @@
       --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
       --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);
       --clr-forms-select-multiple-option-color: var(--clr-forms-text-color);
-      --clr-forms-select-multiple-error-focus-color: #{color.adjust(
-          forms-variables.$clr-forms-invalid-color,
-          $lightness: 30%
-        )};
+      --clr-forms-select-multiple-error-focus-color: #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
 
       // Checkbox
       --clr-forms-checkbox-label-color: var(--clr-forms-label-color);

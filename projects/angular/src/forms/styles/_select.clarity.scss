@@ -27,8 +27,7 @@
         @include mixins.include-slim-outline-style-form-fields();
       }
       position: relative;
-      padding: 0 (forms-variables.$clr-forms-select-caret-size + forms-variables.$clr-forms-baseline * 2) 0
-        forms-variables.$clr-forms-baseline;
+      padding: 0 calc(#{forms-variables.$clr-forms-select-caret-size} + #{forms-variables.$clr-forms-baseline} * 2) 0 #{forms-variables.$clr-forms-baseline};
       cursor: pointer;
       font-size: forms-variables.$clr-forms-field-font-size;
 
@@ -83,14 +82,16 @@
   }
 
   .clr-select-wrapper {
-    max-height: forms-variables.$clr-forms-baseline * 4;
+    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
     display: inline-block;
 
     &::after {
       position: absolute;
       content: '';
       @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
-      top: (forms-variables.$clr-forms-baseline * 4 - forms-variables.$clr-forms-select-caret-size) * 0.5;
+      top: calc(
+        0.5 * calc(4 * #{forms-variables.$clr-forms-baseline} - #{forms-variables.$clr-forms-select-caret-size})
+      );
       right: forms-variables.$clr-forms-baseline;
       // TODO: get rid of generated icons?
       background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);
@@ -105,7 +106,7 @@
 
   .clr-error .clr-select-wrapper::after,
   .clr-success .clr-select-wrapper::after {
-    right: forms-variables.$clr-forms-icon-size + forms-variables.$clr-forms-baseline;
+    right: calc(#{forms-variables.$clr-forms-icon-size} + #{forms-variables.$clr-forms-baseline});
   }
 
   .clr-multiselect-wrapper {
@@ -152,7 +153,7 @@
       );
     }
     option {
-      padding: (forms-variables.$clr-forms-baseline * 0.5) forms-variables.$clr-forms-baseline;
+      padding: calc(#{forms-variables.$clr-forms-baseline} * 0.5) forms-variables.$clr-forms-baseline;
       @include mixins.css-var(
         color,
         clr-forms-select-multiple-option-color,
