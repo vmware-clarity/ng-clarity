@@ -4,32 +4,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.input') {
   .clr-input-wrapper {
     white-space: nowrap;
-    @include mixins.css-var(
-      max-height,
-      clr-forms-input-wrapper-height,
-      forms-variables.$clr-forms-baseline * 4,
-      variables.$clr-use-custom-properties
-    );
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
   }
 
   .clr-input {
-    @include forms-mixins.custom-inputs-reset(forms-variables.$clr-forms-baseline * 4);
+    @include forms-mixins.custom-inputs-reset(calc(4 * #{forms-variables.$clr-forms-baseline}));
     @include forms-mixins.form-fields-appearance();
-    @include mixins.css-var(
-      padding,
-      clr-forms-input-padding,
-      0 forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
-    max-height: forms-variables.$clr-forms-baseline * 4;
-    font-size: forms-variables.$clr-forms-field-font-size;
+
+    padding: forms-variables.$clr-forms-input-padding;
+    max-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     &[readonly] {
       border: none;
@@ -42,42 +32,19 @@
     &:disabled {
       @include forms-mixins.disabled-form-fields();
       @include mixins.input-placeholder-wrapper() {
-        @include mixins.css-var(
-          color,
-          clr-forms-placeholder-disabled-color,
-          forms-variables.$clr-forms-placeholder-color,
-          variables.$clr-use-custom-properties
-        );
+        color: forms-variables.$clr-forms-placeholder-disabled-color;
       }
     }
   }
 
   .clr-error .clr-input:not([readonly]) {
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
-    @include forms-mixins.input-border-bottom-animation(
-      forms-variables.$clr-forms-invalid-color,
-      clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+    border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-success .clr-input:not([readonly]) {
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-forms-valid-color,
-      forms-variables.$clr-forms-valid-color,
-      variables.$clr-use-custom-properties
-    );
-    @include forms-mixins.input-border-bottom-animation(
-      forms-variables.$clr-forms-valid-color,
-      clr-forms-valid-color,
-      variables.$clr-use-custom-properties
-    );
+    border-bottom-color: forms-variables.$clr-forms-valid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-form-control.row .clr-input-wrapper {
@@ -100,11 +67,6 @@
    Placeholder
    **/
   @include mixins.input-placeholder-wrapper() {
-    @include mixins.css-var(
-      color,
-      clr-forms-placeholder-color,
-      forms-variables.$clr-forms-placeholder-color,
-      variables.$clr-use-custom-properties
-    );
+    color: forms-variables.$clr-forms-placeholder-color;
   }
 }

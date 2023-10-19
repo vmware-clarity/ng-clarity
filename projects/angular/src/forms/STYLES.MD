@@ -19,8 +19,6 @@
 | --clr-forms-text-disabled-color                 | Font color for disabled input text                               |
 | --clr-forms-label-disabled-color                | Font color for labels in disabled form controls                  |
 | --clr-forms-label-font-weight                   | Font weight for form labels                                      |
-| --clr-forms-block-label-font-weight             | Not used                                                         |
-| --clr-forms-text-font-weight                    | Not used                                                         |
 | --clr-forms-textarea-background-color           | Background color of textarea                                     |
 | --clr-forms-textarea-focused-outline            | Not used                                                         |
 | --clr-forms-textarea-invalid-focused-outline    | Not used                                                         |
