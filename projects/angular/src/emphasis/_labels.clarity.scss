@@ -10,41 +10,43 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
-  $cssVarBgColor: label-variables.getLabelCssVarName($color, bg-color);
-  $cssVarTextColor: label-variables.getLabelCssVarName($color, color);
-  $cssVarBorderColor: label-variables.getLabelCssVarName($color, border-color);
+  $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
+  $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
+  $sassVarTextColor: label-variables.getLabelColor($color, color);
+  $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
+  $cssVarBorderColor: label-variables.getLabelColor($color, border-color, 'css-var');
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border-width: var(--clr-label-border-width);
+    border-width: label-variables.$clr-label-borderwidth;
     border-style: solid;
-    border-color: var(--#{$cssVarBorderColor});
-    background-color: var(--#{$cssVarBgColor});
+    border-color: $cssVarBorderColor;
+    background-color: $cssVarBgColor;
   }
 
   &.clickable.label-#{'' + $color} {
     &:active {
-      box-shadow: var(--clr-label-box-shadow);
+      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
     }
   }
 
   &.label-#{'' + $color} > .badge {
-    background: var(--#{getLabelBadgeCssVarName($color, bg-color)});
-    color: var(--#{getLabelBadgeCssVarName($color, color)});
+    background: badges-variables.getBadgeColor($color, bg-color);
+    color: badges-variables.getBadgeColor($color, color);
   }
 }
 
 @mixin generateStatusLabelStyles($status: info) {
   &.label-#{$status} {
-    background: var(--#{getLabelCssVarName($status, bg-color)});
-    color: var(--#{getLabelCssVarName($status, color)});
-    border-width: var(--clr-label-border-width);
+    background: label-variables.getLabelColor($status, bg-color);
+    color: label-variables.getLabelColor($status, color);
+    border-width: label-variables.$clr-label-borderwidth;
     border-style: solid;
-    border-color: var(--#{getLabelCssVarName($status, border-color)});
+    border-color: label-variables.getLabelColor($status, border-color);
   }
   &.label-#{'' + $status} > .badge {
-    background: var(--#{getLabelBadgeCssVarName($status, bg-color)});
-    color: var(--#{getLabelBadgeCssVarName($status, color)});
+    background: badges-variables.getBadgeColor($status, bg-color);
+    color: badges-variables.getBadgeColor($status, color);
   }
 }
 
@@ -58,24 +60,24 @@
   .label,
   a.label {
     //default
-    font-size: var(--clr-label-font-size);
-    font-weight: var(--clr-label-font-weight);
-    letter-spacing: var(--clr-label-letter-spacing);
-    line-height: var(--clr-label-line-height);
+    font-size: label-variables.$clr-label-font-size;
+    font-weight: label-variables.$clr-label-font-weight;
+    letter-spacing: label-variables.$clr-label-letter-spacing;
+    line-height: label-variables.$clr-label-line-height;
 
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: var(--clr-label-padding);
-    gap: var(--clr-label-gap-size);
-    border-radius: var(--clr-label-border-radius);
-    border-width: var(--clr-label-border-width);
+    padding: label-variables.$clr-label-padding;
+    gap: label-variables.$clr-label-gap-size;
+    border-radius: label-variables.$clr-label-border-radius;
+    border-width: label-variables.$clr-label-border-width;
     border-style: solid;
-    border-color: var(--clr-label-default-border-color);
-    height: var(--clr-label-height);
+    border-color: label-variables.$clr-label-default-border-color;
+    height: label-variables.$clr-label-height;
     margin: 0;
     white-space: nowrap;
-    color: var(--clr-label-font-color-light);
+    color: label-variables.$clr-label-font-color-light;
     text-decoration: none;
 
     &:has(> .badge),
@@ -102,7 +104,7 @@
     }
 
     &:visited {
-      color: var(--clr-label-font-color-light);
+      color: label-variables.$clr-label-font-color-light;
     }
 
     &:focus,
@@ -112,24 +114,24 @@
     }
 
     &.clickable {
-      font-size: var(--clr-label-clickable-font-size);
-      font-weight: var(--clr-label-clickable-font-weight);
-      letter-spacing: var(--clr-label-clickable-letter-spacing);
-      line-height: var(--clr-label-clickable-line-height);
+      font-size: label-variables.$clr-label-clickable-font-size;
+      font-weight: label-variables.$clr-label-clickable-font-weight;
+      letter-spacing: label-variables.$clr-label-clickable-letter-spacing;
+      line-height: label-variables.$clr-label-clickable-line-height;
     }
 
     &.clickable:not(.disabled) {
       &:hover {
         text-decoration: none;
-        background: var(--clr-label-bg-hover-color);
-        color: var(--clr-label-hover-color);
+        background: label-variables.$clr-label-bg-hover-color;
+        color: label-variables.$clr-label-hover-color;
       }
 
       &:active {
-        color: var(--clr-label-active-color);
-        background: var(--clr-label-bg-active-color);
-        box-shadow: var(--clr-label-box-shadow);
-        transform: var(--clr-label-pressed-transform);
+        color: label-variables.$clr-label-active-color;
+        background: label-variables.$clr-label-bg-active-color;
+        box-shadow: label-variables.$clr-label-box-shadow;
+        transform: label-variables.$clr-label-pressed-transform;
       }
     }
 
@@ -152,11 +154,11 @@
     &:disabled {
       cursor: not-allowed;
       pointer-events: none;
-      background: var(--clr-label-bg-disabled-color);
-      color: var(--clr-label-disabled-color);
-      border-color: var(--clr-label-disabled-border-color);
+      background: label-variables.$clr-label-bg-disabled-color;
+      color: label-variables.$clr-label-disabled-color;
+      border-color: label-variables.$clr-label-disabled-border-color;
       .badge {
-        background: var(--clr-label-disabled-color);
+        background: label-variables.$clr-label-disabled-color;
       }
     }
   }
