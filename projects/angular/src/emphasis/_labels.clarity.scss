@@ -9,19 +9,21 @@
 @use 'variables.label' as label-variables;
 @use '@cds/core/tokens/tokens.scss';
 
+@include meta.load-css('properties.label');
+
 @mixin generateLabelStyles($color: gray, $alias: 1) {
   $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
-  $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
+  $cssVarBgColor: label-variables.getLabelColor($color, bg-color);
   $sassVarTextColor: label-variables.getLabelColor($color, color);
   $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
-  $cssVarBorderColor: label-variables.getLabelColor($color, border-color, 'css-var');
+  $sassVarBorderColor: label-variables.getLabelColor($color, border-color);
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
     border-width: label-variables.$clr-label-borderwidth;
     border-style: solid;
-    border-color: $cssVarBorderColor;
-    background-color: $cssVarBgColor;
+    border-color: $sassVarBorderColor;
+    background-color: $sassVarBgColor;
   }
 
   &.clickable.label-#{'' + $color} {
@@ -49,8 +51,6 @@
     color: badges-variables.getBadgeColor($status, color);
   }
 }
-
-@include meta.load-css('properties.label');
 
 @include mixins.exports('labels.clarity') {
   //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values

@@ -28,18 +28,23 @@ $clr-label-letter-spacing: var(--clr-label-letter-spacing) !default;
 $clr-label-bg-hover-color: var(--clr-label-bg-hover-color) !default;
 
 $clr-label-gray-bg-color: var(--clr-label-gray-bg-color) !default;
+$clr-label-gray-border-color: var(--clr-label-gray-border-color) !default;
 $clr-label-gray-color: var(--clr-label-gray-color) !default;
 
 $clr-label-purple-bg-color: var(--clr-label-purple-bg-color) !default;
+$clr-label-purple-border-color: var(--clr-label-purple-border-color) !default;
 $clr-label-purple-color: var(--clr-label-purple-color) !default;
 
 $clr-label-blue-bg-color: var(--clr-label-blue-bg-color) !default;
+$clr-label-blue-border-color: var(--clr-label-blue-border-color) !default;
 $clr-label-blue-color: var(--clr-label-blue-color) !default;
 
 $clr-label-orange-bg-color: var(--clr-label-orange-bg-color) !default;
+$clr-label-orange-border-color: var(--clr-label-orange-border-color) !default;
 $clr-label-orange-color: var(--clr-label-orange-color) !default;
 
 $clr-label-light-blue-bg-color: var(--clr-label-light-blue-bg-color) !default;
+$clr-label-light-blue-border-color: var(--clr-label-light-blue-border-color) !default;
 $clr-label-light-blue-color: var(--clr-label-light-blue-color) !default;
 
 $clr-label-info-bg-color: var(--clr-label-info-bg-color) !default;
@@ -140,6 +145,10 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
     @return $clr-label-gray-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-gray-border-color;
+  }
+
   @return null;
 }
 
@@ -150,6 +159,10 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 
   @if $property == bg-color {
     @return $clr-label-purple-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-purple-border-color;
   }
 
   @return null;
@@ -164,6 +177,10 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
     @return $clr-label-blue-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-blue-border-color;
+  }
+
   @return null;
 }
 
@@ -176,6 +193,10 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
     @return $clr-label-orange-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-orange-border-color;
+  }
+
   @return null;
 }
 
@@ -186,6 +207,10 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 
   @if $property == bg-color {
     @return $clr-label-light-blue-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-light-blue-border-color;
   }
 
   @return null;
