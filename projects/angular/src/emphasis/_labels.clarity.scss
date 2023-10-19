@@ -13,9 +13,6 @@
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
   $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
-  $cssVarBgColor: label-variables.getLabelColor($color, bg-color);
-  $sassVarTextColor: label-variables.getLabelColor($color, color);
-  $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
   $sassVarBorderColor: label-variables.getLabelColor($color, border-color);
 
   &.label-#{'' + $color},

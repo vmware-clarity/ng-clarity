@@ -17,7 +17,7 @@
       // ATM - remove and use as default or think a better way express clicked state
       --clr-label-pressed-transform: translateY(#{tokens.$cds-global-space-2});
 
-      // COLOR
+      // TYPOGRAPHIC STYLES
       --clr-label-font-size: var(--clr-p6-font-size);
       --clr-label-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
       --clr-label-letter-spacing: var(--clr-p6-letter-spacing);
@@ -25,7 +25,7 @@
       --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
 
-      // TYPOGRAPHIC STYLES
+      // COLOR
       --clr-label-clickable-font-size: var(--clr-label-font-size);
       --clr-label-clickable-font-weight: var(--clr-label-font-weight);
       --clr-label-clickable-letter-spacing: var(--clr-label-letter-spacing);
