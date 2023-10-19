@@ -57,10 +57,7 @@
   .label,
   a.label {
     //default
-    font-size: label-variables.$clr-label-font-size;
-    font-weight: label-variables.$clr-label-font-weight;
-    letter-spacing: label-variables.$clr-label-letter-spacing;
-    line-height: label-variables.$clr-label-line-height;
+    @include mixins.generate-typography-token('CAPTION-LG-11');
 
     display: inline-flex;
     justify-content: center;
