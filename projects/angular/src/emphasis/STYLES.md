@@ -24,15 +24,6 @@
 | --clr-badge-orange-color        | Orange badge text color           |
 | --clr-badge-light-blue-bg-color | Light-blue badge background color |
 | --clr-badge-light-blue-color    | Light-blue badge text color       |
-| --clr-badge-padding             | Padding                           |
-| --clr-badge-height              | Height                            |
-| --clr-badge-min-width           | Min width                         |
-| --clr-badge-border-radius       | Border radius                     |
-| --clr-badge-font-size           | Font size                         |
-| --clr-badge-font-weight         | Font weight                       |
-| --clr-badge-letter-spacing      | Letter spacing                    |
-| --clr-badge-line-height         | Line height                       |
-| --clr-badge-font-family         | Font family                       |
 
 ## CSS Classes
 
