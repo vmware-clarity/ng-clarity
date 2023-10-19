@@ -662,23 +662,6 @@
   --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
 
-  // Checkbox
-  --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token #{tokens.$cds-global-typography-color-400}
-  --clr-forms-checkbox-background-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-600);
-  --clr-forms-checkbox-indeterminate-border-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-600);
-  --clr-forms-checkbox-mark-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-0);
-
-  --clr-forms-checkbox-disabled-label-color: var(--clr-forms-label-disabled-color); // indirectly mapped to CDS token #{tokens.$cds-global-typography-color-400}
-  --clr-forms-checkbox-disabled-background-color: var(--clr-btn-default-bg-color); // indirectly mapped to CDS token #{tokens.$cds-alias-object-interaction-background}
-  --clr-forms-checkbox-disabled-checked-background-color: #{tokens.$cds-alias-status-disabled}; // indirectly mapped to CDS token #{tokens.$cds-alias-object-interaction-background}
-  --clr-forms-checkbox-disabled-border-color: #{tokens.$cds-alias-status-disabled}; // var(--clr-color-action-600);
-  --clr-forms-checkbox-disabled-indeterminate-color: #{tokens.$cds-alias-status-disabled}; // var(--clr-color-action-600);
-  --clr-forms-checkbox-disabled-mark-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-1000);
-
-  --clr-forms-checkbox-line-height: #{tokens.$cds-global-space-9};
-  --clr-forms-checkbox-padding-left: #{tokens.$cds-global-space-9};
-  --clr-forms-checkbox-label-height: #{tokens.$cds-global-space-9};
-
   // Radio
   --clr-forms-radio-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token #{tokens.$cds-global-typography-color-400}
   --clr-forms-radio-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
