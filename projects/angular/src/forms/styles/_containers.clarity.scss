@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
+@use '@cds/core/tokens/tokens.scss';
 @use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.containers') {
@@ -17,7 +17,7 @@
   }
 
   .clr-form-control {
-    margin-top: forms-variables.$clr-forms-baseline * 4;
+    margin-top: calc(4 * #{forms-variables.$clr-forms-baseline});
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -29,57 +29,30 @@
   }
 
   .clr-form-control-disabled {
-    @include mixins.css-var(
-      color,
-      clr-forms-text-disabled-color,
-      forms-variables.$clr-forms-text-disabled-color,
-      variables.$clr-use-custom-properties
-    );
+    color: forms-variables.$clr-forms-text-disabled-color;
 
     label,
     .clr-control-label {
-      @include mixins.css-var(
-        color,
-        clr-forms-label-disabled-color,
-        forms-variables.$clr-forms-label-disabled-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-label-disabled-color;
     }
 
     .clr-input,
     .clr-textarea,
     .clr-select {
-      @include mixins.css-var(
-        color,
-        clr-forms-text-disabled-color,
-        forms-variables.$clr-forms-text-disabled-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-forms-border-disabled-color,
-        forms-variables.$clr-forms-border-disabled-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-text-disabled-color;
+      border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }
 
     input[type='range']::-webkit-slider-thumb,
     input[type='range']::-moz-range-thumb {
-      @include mixins.css-var(
-        background-color,
-        clr-forms-forms-range-progress-disabled-color,
-        forms-variables.$clr-forms-range-progress-fill-color-disabled,
-        variables.$clr-use-custom-properties
+      background-color: var(
+        --clr-forms-range-progress-fill-color-disabled,
+        forms-variables.$clr-forms-range-progress-fill-color-disabled
       );
     }
 
     .clr-subtext {
-      @include mixins.css-var(
-        color,
-        clr-forms-subtext-disabled-color,
-        forms-variables.$clr-forms-subtext-disabled-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-subtext-disabled-color;
     }
   }
 
@@ -94,20 +67,9 @@
 
   .clr-control-label {
     display: block;
-    @include mixins.css-var(
-      color,
-      clr-forms-label-color,
-      forms-variables.$clr-forms-label-color,
-      variables.$clr-use-custom-properties
-    );
-    font-size: forms-variables.$clr-forms-label-font-size;
-    @include mixins.css-var(
-      font-weight,
-      clr-forms-label-font-weight,
-      forms-variables.$clr-forms-label-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    line-height: forms-variables.$clr-forms-baseline * 3;
+    color: forms-variables.$clr-forms-label-color;
+    @include mixins.generate-typography-token('SECONDARY-13-SB-CPT');
+    font-weight: forms-variables.$clr-forms-label-font-weight;
   }
 
   .clr-control-container {
@@ -120,30 +82,9 @@
 
   .clr-subtext {
     display: block;
-    @include mixins.css-var(
-      font-size,
-      clr-forms-subtext-font-size,
-      forms-variables.$clr-forms-subtext-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-forms-subtext-line-height,
-      forms-variables.$clr-forms-subtext-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      clr-forms-subtext-color,
-      forms-variables.$clr-forms-subtext-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      margin-top,
-      clr-forms-subtext-margin-top,
-      forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.generate-typography-token('CAPTION-LG-11');
+    color: forms-variables.$clr-forms-subtext-color;
+    margin-top: tokens.$cds-global-space-3;
   }
 
   .clr-subtext-wrapper {
@@ -152,49 +93,20 @@
   }
 
   .clr-validate-icon {
-    @include mixins.min-equilateral-var(
-      clr-forms-icon-size,
-      forms-variables.$clr-forms-icon-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      fill,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
+    color: forms-variables.$clr-forms-invalid-color;
+    fill: forms-variables.$clr-forms-invalid-color;
     display: none;
   }
 
   .clr-success {
     .clr-validate-icon {
       display: inline-block;
-      @include mixins.css-var(
-        color,
-        clr-forms-valid-color,
-        forms-variables.$clr-forms-valid-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        fill,
-        clr-forms-valid-color,
-        forms-variables.$clr-forms-valid-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-valid-color;
+      fill: forms-variables.$clr-forms-valid-color;
     }
     .clr-subtext {
-      @include mixins.css-var(
-        color,
-        clr-forms-valid-text-color,
-        forms-variables.$clr-forms-valid-text-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-valid-text-color;
     }
   }
 
@@ -204,21 +116,16 @@
     }
 
     .clr-subtext {
-      @include mixins.css-var(
-        color,
-        clr-forms-invalid-text-color,
-        forms-variables.$clr-forms-invalid-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-invalid-text-color;
     }
   }
 
   .clr-form-horizontal {
     .clr-form-control > .clr-control-label,
     .clr-form-control > .clr-form-control.clr-form-control-multi .clr-control-label {
-      width: forms-variables.$clr-forms-baseline * 32;
+      width: calc(32 * #{forms-variables.$clr-forms-baseline});
       flex-shrink: 0;
-      margin-top: variables.$clr_baselineRem_0_125;
+      margin-top: tokens.$cds-global-space-3;
     }
     &.clr-row .clr-control-label {
       width: auto;
@@ -232,8 +139,8 @@
 
   .clr-form-compact {
     .clr-form-control > .clr-control-label {
-      width: forms-variables.$clr-forms-baseline * 32;
-      min-width: forms-variables.$clr-forms-baseline * 32;
+      width: calc(32 * #{forms-variables.$clr-forms-baseline});
+      min-width: calc(32 * #{forms-variables.$clr-forms-baseline});
     }
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
@@ -241,13 +148,13 @@
     }
 
     .clr-control-label {
-      margin-top: forms-variables.$clr-forms-baseline * 0.5;
+      margin-top: tokens.$cds-global-space-3;
     }
 
     .clr-form-control {
       display: flex;
       flex-direction: row;
-      margin-top: forms-variables.$clr-forms-baseline * 2;
+      margin-top: calc(2 * #{forms-variables.$clr-forms-baseline});
     }
 
     .clr-control-container {
@@ -257,6 +164,9 @@
     .clr-subtext {
       display: inline-block;
       margin-top: forms-variables.$clr-forms-baseline;
+
+      // special margin left based on --clr-forms-icon-size
+      // to align subtexts when error/success icon is missing.
       margin-left: forms-variables.$clr-forms-icon-size;
     }
 

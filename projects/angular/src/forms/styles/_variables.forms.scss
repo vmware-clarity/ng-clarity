@@ -10,38 +10,39 @@
 @use '../../utils/variables/variables';
 
 // Structure
-$clr-forms-baseline: variables.$clr_baselineRem_0_25;
-$clr-forms-icon-size: variables.$clr_baselineRem_1;
-$clr-form-disabled-background-color: variables.$clr-color-neutral-400 !default;
+$clr-forms-baseline: var(--clr-forms-baseline);
+$clr-forms-icon-size: var(--clr-forms-icon-size);
+$clr-form-disabled-background-color: var(--clr-form-disabled-background-color) !default;
 
 // Generic
-$clr-forms-label-color: variables.$clr-color-neutral-800 !default;
-$clr-forms-text-color: variables.$clr-color-neutral-1000 !default;
-$clr-forms-invalid-color: variables.$clr-color-danger-800 !default;
-$clr-forms-valid-color: variables.$clr-color-success-700 !default;
-$clr-forms-valid-text-color: variables.$clr-color-success-900 !default;
-$clr-forms-subtext-color: variables.$clr-color-neutral-600 !default;
-$clr-forms-placeholder-color: variables.$clr-global-color-construction-600 !default;
+$clr-forms-label-color: var(--clr-forms-label-color) !default;
+$clr-forms-text-color: var(--clr-forms-text-color) !default;
+$clr-forms-invalid-color: var(--clr-forms-invalid-color) !default;
+$clr-forms-invalid-text-color: var(--clr-forms-invalid-text-color) !default;
+$clr-forms-valid-color: var(--clr-forms-valid-color) !default;
+$clr-forms-valid-text-color: var(--clr-forms-valid-text-color) !default;
+$clr-forms-subtext-color: var(--clr-forms-subtext-color) !default;
+$clr-forms-placeholder-color: var(--clr-forms-placeholder-color) !default;
 // Accessibility fox for vpat-7719; this aligns with core
-$clr-forms-border-color: hsl(198, 10%, 46%) !default;
-$clr-forms-focused-color: variables.$clr-color-action-600 !default;
-$clr-forms-subtext-disabled-color: variables.$clr-color-neutral-600 !default;
-$clr-forms-border-disabled-color: variables.$clr-color-neutral-500 !default;
-$clr-forms-text-disabled-color: variables.$clr-color-neutral-500 !default;
-$clr-forms-label-disabled-color: variables.$clr-color-neutral-600 !default;
+$clr-forms-border-color: var(--clr-forms-border-color) !default;
+$clr-forms-focused-color: var(--clr-forms-focused-color) !default;
 
-// Typographic
-$clr-forms-label-font-size: variables.$clr-p2-font-size !default;
-$clr-forms-label-font-weight: variables.$clr-font-weight-bold !default;
-$clr-forms-block-label-font-size: variables.$clr-h5-font-size !default;
-$clr-forms-block-label-font-weight: variables.$clr-h5-font-weight !default;
-$clr-forms-block-label-letter-spacing: variables.$clr-h5-letter-spacing !default;
-$clr-forms-text-font-size: variables.$clr-p3-font-size !default;
-$clr-forms-text-font-weight: variables.$clr-p3-font-weight !default;
-$clr-forms-text-letter-spacing: variables.$clr-p3-letter-spacing !default;
-$clr-forms-subtext-font-size: variables.$clr-p6-font-size !default;
-$clr-forms-subtext-line-height: variables.$clr-p6-line-height !default;
-$clr-forms-field-font-size: $clr-forms-label-font-size !default;
+$clr-forms-subtext-disabled-color: var(--clr-forms-subtext-disabled-color) !default;
+$clr-forms-border-disabled-color: var(--clr-forms-border-disabled-color) !default;
+$clr-forms-text-disabled-color: var(--clr-forms-text-disabled-color) !default;
+$clr-forms-label-disabled-color: var(--clr-forms-label-disabled-color) !default;
+$clr-forms-placeholder-disabled-color: var(--clr-forms-placeholder-disabled-color) !default;
+
+// Input
+$clr-forms-input-padding: var(--clr-forms-input-padding);
+$clr-forms-input-wrapper-height: var(--clr-forms-input-wrapper-height);
+
+// Input group
+$clr-forms-input-group-icon-action-size: var(--clr-forms-input-group-icon-action-size);
+
+// Typographic - obsolete should be removed ATM
+$clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
+$clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 
 // Textarea
 $clr-forms-textarea-background-color: variables.$clr-color-neutral-0 !default;
@@ -73,8 +74,8 @@ $clr-forms-checkbox-disabled-background-color: $clr-form-disabled-background-col
 $clr-forms-checkbox-disabled-mark-color: variables.$clr-color-neutral-1000 !default;
 $clr-forms-checkbox-border-radius: variables.$clr-global-borderradius !default;
 
-$clr-forms-checkbox-label-height: $clr-forms-baseline * 4;
-$clr-forms-checkbox-top: ($clr-forms-checkbox-label-height - $clr-forms-checkbox-height) * 0.5 !default;
+$clr-forms-checkbox-label-height: calc(#{$clr-forms-baseline} * 4);
+$clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
 
 $clr-forms-checkbox-size: variables.$clr_baselineRem_0_667;
 $clr-forms-checkbox-padding-left: $clr-forms-checkbox-height + variables.$clr_baselineRem_0_25;
