@@ -7,9 +7,9 @@
 @use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@include meta.load-css('properties.tabs');
 @use 'variables.tabs' as tabs-variables;
 @use '@cds/core/tokens/tokens.scss';
-@include meta.load-css('properties.tabs');
 
 // TODO: Fix this typo
 @mixin nav-link-border-appearence($position) {
@@ -100,7 +100,7 @@ button.nav-link {
     width: calc(10 * #{tokens.$cds-global-space-9});
     min-width: #{tokens.$cds-global-space-12};
 
-    gap: var(--clr-nav-vertical-gap-size);
+    gap: tabs-variables.$clr-nav-vertical-gap-size;
 
     .nav-link {
       text-align: left;
@@ -132,6 +132,7 @@ button.nav-link {
           variables.$clr-global-selection-color,
           variables.$clr-use-custom-properties
         );
+        background-color: tabs-variables.$clr-nav-selected-bg-color;
       }
 
       &:not(.active):hover {
@@ -141,6 +142,7 @@ button.nav-link {
           tabs-variables.$clr-nav-hover-bg-color,
           variables.$clr-use-custom-properties
         );
+        background-color: tabs-variables.$clr-nav-hover-bg-color;
       }
     }
   }

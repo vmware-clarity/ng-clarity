@@ -14,9 +14,9 @@
       --clr-nav-active-box-shadow-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // ATM - remove
       --clr-nav-active-border-color: var(--clr-nav-active-box-shadow-color); // var(--clr-color-action-600);
       --clr-nav-active-border-width: #{tokens.$cds-alias-object-border-width-300};
-      --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active}; // indirectly mapped
-      --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0}; // indirectly mapped
-      --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover}; // indirectly mapped
+      --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
       --clr-nav-selected-hover-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
       --clr-nav-horizontal-gap-size: #{tokens.$cds-global-space-9};
