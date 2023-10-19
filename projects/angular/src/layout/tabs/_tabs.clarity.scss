@@ -126,22 +126,10 @@ button.nav-link {
         @include nav-link-border-appearence('left');
       }
       &:not(:active).active {
-        @include mixins.css-var(
-          background-color,
-          clr-nav-selected-bg-color,
-          variables.$clr-global-selection-color,
-          variables.$clr-use-custom-properties
-        );
         background-color: tabs-variables.$clr-nav-selected-bg-color;
       }
 
       &:not(.active):hover {
-        @include mixins.css-var(
-          background-color,
-          clr-nav-hover-bg-color,
-          tabs-variables.$clr-nav-hover-bg-color,
-          variables.$clr-use-custom-properties
-        );
         background-color: tabs-variables.$clr-nav-hover-bg-color;
       }
     }
