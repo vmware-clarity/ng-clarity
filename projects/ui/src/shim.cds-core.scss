@@ -434,42 +434,6 @@
     }
   }
 
-  /* Badges */
-
-  --clr-badge-background-color: #{tokens.$cds-alias-utility-gray}; // var(--clr-color-neutral-600);
-  --clr-badge-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-on-neutral-600);
-
-  --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue}; // var(--clr-color-action-800);
-  --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-neutral-0);
-  --clr-badge-success-bg-color: #{tokens.$cds-alias-utility-green}; // var(--clr-color-success-800);
-  --clr-badge-success-color: #{tokens.$cds-alias-typography-color-100};
-  --clr-badge-warning-bg-color: #{tokens.$cds-alias-utility-yellow}; // var(--clr-color-warning-1000);
-  --clr-badge-warning-color: #{tokens.$cds-global-color-black}; // var(--clr-color-neutral-0);
-  --clr-badge-danger-bg-color: #{tokens.$cds-alias-utility-red}; // var(--clr-color-danger-900);
-  --clr-badge-danger-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-color-neutral-0);
-
-  --clr-badge-gray-bg-color: #{tokens.$cds-alias-utility-gray}; // var(--clr-color-neutral-600);
-  --clr-badge-gray-color: #{tokens.$cds-alias-typography-color-100};
-  --clr-badge-purple-bg-color: #{tokens.$cds-alias-utility-violet}; // var(--clr-color-secondary-action-500);
-  --clr-badge-purple-color: #{tokens.$cds-alias-typography-color-100}; // var(--clr-badge-font-color-light);
-  --clr-badge-blue-bg-color: #{tokens.$cds-alias-utility-dark-blue}; // var(--clr-color-action-800);
-  --clr-badge-blue-color: #{tokens.$cds-alias-typography-color-100};
-  --clr-badge-orange-bg-color: #{tokens.$cds-alias-utility-tangerine}; // var(--clr-color-warning-1000);
-  --clr-badge-orange-color: #{tokens.$cds-global-color-black}; // var(--clr-color-neutral-0);
-  --clr-badge-light-blue-bg-color: #{tokens.$cds-alias-utility-light-blue}; // var(--clr-color-action-500);
-  --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500}; // var(--clr-color-neutral-0);
-
-  --clr-badge-padding: #{tokens.$cds-global-space-2} #{tokens.$cds-global-space-3}; // 2px 4px
-  --clr-badge-height: #{tokens.$cds-global-space-7}; // 16px
-  --clr-badge-min-width: #{tokens.$cds-global-space-7}; // 16px
-  --clr-badge-border-radius: calc(2 * #{tokens.$cds-alias-object-border-radius-100});
-
-  --clr-badge-font-size: var(--clr-p7-font-size);
-  --clr-badge-font-weight: var(--clr-p7-font-weight);
-  --clr-badge-letter-spacing: var(--clr-p7-letter-spacing);
-  --clr-badge-line-height: var(--clr-p7-line-height);
-  --clr-badge-font-family: #{tokens.$cds-global-typography-font-family};
-
   /* Progress Bars */
 
   --clr-progress-default-color: #{tokens.$cds-alias-status-info}; // var(--clr-color-action-600);
@@ -634,41 +598,8 @@
 
   /* Forms */
 
-  // Structure
-  --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-400);
-
-  // Generic
-  --clr-forms-baseline: #{tokens.$cds-global-space-5};
-  --clr-forms-label-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-800);
-  --clr-forms-text-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-1000);
-  --clr-forms-label-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-  --clr-forms-invalid-color: #{tokens.$cds-alias-status-danger}; // var(--clr-color-danger-800);
-  --clr-forms-invalid-text-color: #{tokens.$cds-alias-status-danger}; // var(--clr-color-danger-800);
-  --clr-forms-valid-color: #{tokens.$cds-alias-status-success}; // var(--clr-color-success-700);
-  --clr-forms-valid-text-color: #{tokens.$cds-alias-status-success}; // var(--clr-color-success-900);
-  --clr-forms-subtext-color: #{tokens.$cds-alias-typography-color-300}; // var(--clr-color-neutral-600);
-  --clr-forms-placeholder-color: #{tokens.$cds-alias-typography-color-200}; // var(--clr-color-neutral-600);
-  --clr-forms-border-color: #{tokens.$cds-alias-object-interaction-border-color}; // #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
-  --clr-forms-focused-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-500);
-  --clr-forms-icon-size: #{tokens.$cds-global-space-9};
-  --clr-forms-subtext-margin-top: #{tokens.$cds-global-space-3};
-
-  --clr-forms-subtext-disabled-color: #{tokens.$cds-alias-typography-disabled}; // #{$clr-forms-subtext-disabled-color};
-  --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled}; // #{$clr-forms-border-disabled-color};
-  --clr-forms-text-disabled-color: #{tokens.$cds-alias-typography-disabled}; // #{$clr-forms-text-disabled-color};
-  --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled}; // var(--cds-forms-label-disabled-color);
-  --clr-forms-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
-  --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
-
-  // Input
-  --clr-forms-input-padding: 0 #{tokens.$cds-global-space-5};
-  --clr-forms-input-wrapper-height: #{tokens.$cds-global-space-9};
-
-  // Input group
-  --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
-
   // Datalist
-
+  --clr-forms-datalist-caret-right: #{tokens.$cds-global-space-5};
   --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
   --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
   --clr-forms-datalist-caret-icon-size: #{tokens.$cds-global-space-7};
@@ -1232,7 +1163,7 @@
   --clr-toggle-icon-margin: calc(#{tokens.$cds-global-space-11} + #{tokens.$cds-global-space-5});
   --clr-toggle-icon-margin-negative: calc(-1 * (var(--clr-toggle-icon-margin)));
   --clr-toggle-switch-left-spacing: calc(var(--clr-toggle-switch-base-width) - #{tokens.$cds-global-space-3});
-  --clr-toggle-switch-left-spacing-negative: calc(-1 * (var(--clr-toggle-switch-left-spacing)));
+  --clr-toggle-switch-left-spacing-negative: calc(-1 * var(--clr-toggle-switch-left-spacing));
   --clr-toggle-dot-diameter: #{tokens.$cds-global-space-7};
   --clr-toggle-icon-dot-place: calc(-1 * var(--clr-toggle-icon-margin));
   --clr-toggle-icon-top: #{tokens.$cds-global-space-3};
