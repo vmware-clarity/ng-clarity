@@ -79,7 +79,7 @@
 
   @include mixins.fixForMsEdge {
     .badge {
-      padding: #{tokens.$cds-global-space-2} calc(#{tokens.$cds-global-space-1} + #{tokens.$cds-global-space-2}) 0;
+      padding: #{tokens.$cds-global-space-2} #{mixins.baselinePx(3)} 0;
     }
   }
 }
