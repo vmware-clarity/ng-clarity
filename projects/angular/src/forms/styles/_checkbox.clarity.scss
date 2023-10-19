@@ -24,7 +24,8 @@
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-checkbox-label-height,
         forms-variables.$clr-forms-checkbox-padding-left,
-        forms-variables.$clr-forms-checkbox-label-color
+        forms-variables.$clr-forms-checkbox-label-color,
+        'SECONDARY-13-RG-EXP'
       );
     }
 

@@ -104,7 +104,7 @@
   @include mixins.equilateral($size);
 }
 
-@mixin checkbox-radio-label-styles($min-height, $padding-left, $color) {
+@mixin checkbox-radio-label-styles($min-height, $padding-left, $color, $typography) {
   //Positioning
   position: relative;
 
@@ -113,9 +113,9 @@
   margin-top: 0;
   cursor: pointer;
   min-height: $min-height;
-  padding-left: $padding-left;
-  line-height: calc(#{forms-variables.$clr-forms-baseline} * 4);
+  padding: #{tokens.$cds-global-space-3} 0 #{tokens.$cds-global-space-3} $padding-left;
   color: $color;
+  @include mixins.generate-typography-token($typography);
 }
 
 @mixin checkbox-radio-shared-inactive(
