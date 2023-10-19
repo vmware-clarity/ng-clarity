@@ -5,24 +5,14 @@
  */
 @use 'sass:meta';
 @use '../utils/mixins';
+@use 'variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
 @use '@cds/core/tokens/tokens.scss';
 
-@function getLabelCssVarName($type: gray, $prop: color) {
-  @if $prop == color {
-    @return #{'clr-label-' + $type + '-font-' + $prop};
-  } @else {
-    @return #{'clr-label-' + $type + '-' + $prop};
-  }
-}
-
-@function getLabelBadgeCssVarName($type: gray, $prop: color) {
-  @return #{'clr-badge-' + $type + '-' + $prop};
-}
-
 @mixin generateLabelStyles($color: gray, $alias: 1) {
-  $cssVarBgColor: getLabelCssVarName($color, bg-color);
-  $cssVarTextColor: getLabelCssVarName($color, color);
-  $cssVarBorderColor: getLabelCssVarName($color, border-color);
+  $cssVarBgColor: label-variables.getLabelCssVarName($color, bg-color);
+  $cssVarTextColor: label-variables.getLabelCssVarName($color, color);
+  $cssVarBorderColor: label-variables.getLabelCssVarName($color, border-color);
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
