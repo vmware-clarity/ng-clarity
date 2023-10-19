@@ -28,7 +28,7 @@ $clr-badge-orange-color: var(--clr-badge-orange-color) !default;
 $clr-badge-light-blue-bg-color: var(--clr-badge-light-blue-bg-color) !default;
 $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
-@function getBadgeColor($type: gray, $property: color, $var-type: 'sass-var') {
+@function getBadgeColor($type: gray, $property: color) {
   @if $type == gray {
     @return lookupGrayBadgeColor($property);
   }

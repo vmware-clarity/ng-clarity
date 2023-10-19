@@ -92,11 +92,7 @@ $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
   }
 }
 
-@function getLabelColor($type: gray, $property: color, $var-type: 'sass-var') {
-  @if $var-type == 'css-var' {
-    @return getLabelCssVarName($type, $property);
-  }
-
+@function getLabelColor($type: gray, $property: color) {
   @if $type == gray {
     @return lookupGrayLabelColor($property);
   }
