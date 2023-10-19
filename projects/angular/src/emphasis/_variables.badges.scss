@@ -28,11 +28,6 @@ $clr-badge-orange-color: var(--clr-badge-orange-color) !default;
 $clr-badge-light-blue-bg-color: var(--clr-badge-light-blue-bg-color) !default;
 $clr-badge-light-blue-color: var(--clr-badge-light-blue-color) !default;
 
-$clr-badge-padding: var(--clr-badge-padding) !default;
-$clr-badge-height: var(--clr-badge-height) !default;
-$clr-badge-min-width: var(--clr-badge-min-width) !default;
-$clr-badge-border-radius: var(--clr-badge-border-radius) !default;
-
 @function getBadgeColor($type: gray, $property: color, $var-type: 'sass-var') {
   @if $type == gray {
     @return lookupGrayBadgeColor($property);
