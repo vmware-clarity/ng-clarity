@@ -88,7 +88,6 @@ $clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-
 
 $clr-forms-checkbox-size: #{tokens.$cds-global-space-7};
 $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
-$clr-forms-checkbox-checked-shadow: inset 0 0 0 variables.$clr_baselineRem_0_25 $clr-forms-checkbox-background-color !default;
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);
 
