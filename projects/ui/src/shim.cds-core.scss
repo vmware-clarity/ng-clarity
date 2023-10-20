@@ -1322,7 +1322,7 @@
     padding: 0;
     .clr-control-label {
       width: 100%;
-      padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-10};
+      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-10};
 
       &:before {
         left: #{tokens.$cds-global-space-5};
