@@ -52,6 +52,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    gap: label-variables.$clr-label-gap-size;
     padding: label-variables.$clr-label-padding;
     border: label-variables.$clr-label-border-width solid label-variables.$clr-label-default-border-color;
     border-radius: label-variables.$clr-label-border-radius;
