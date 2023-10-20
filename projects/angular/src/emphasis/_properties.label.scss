@@ -18,6 +18,7 @@
       --clr-label-line-height: var(--clr-p6-line-height);
       --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
+      --clr-label-letter-spacing: var(--clr-p6-letter-spacing);
 
       // COLOR
       --clr-label-default-border-color: #{tokens.$cds-alias-utility-gray};
