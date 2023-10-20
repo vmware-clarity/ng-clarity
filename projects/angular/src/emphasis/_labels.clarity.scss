@@ -121,7 +121,7 @@
     @include generateStatusLabelStyles(danger);
 
     & > .badge {
-      margin: 0 (-1 * #{tokens.$cds-global-space-5}) 0 #{tokens.$cds-global-space-4};
+      margin: 0 calc(-1 * #{tokens.$cds-global-space-5}) 0 #{tokens.$cds-global-space-4};
     }
 
     &.disabled,
