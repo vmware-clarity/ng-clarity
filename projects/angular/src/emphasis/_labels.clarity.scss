@@ -17,16 +17,8 @@
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border-width: label-variables.$clr-label-borderwidth;
-    border-style: solid;
-    border-color: $sassVarBorderColor;
+    border: label-variables.$clr-label-borderwidth solid $sassVarBorderColor;
     background-color: $sassVarBgColor;
-  }
-
-  &.clickable.label-#{'' + $color} {
-    &:active {
-      box-shadow: 0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset;
-    }
   }
 
   &.label-#{'' + $color} > .badge {
@@ -39,9 +31,7 @@
   &.label-#{$status} {
     background: label-variables.getLabelColor($status, bg-color);
     color: label-variables.getLabelColor($status, color);
-    border-width: label-variables.$clr-label-borderwidth;
-    border-style: solid;
-    border-color: label-variables.getLabelColor($status, border-color);
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($status, border-color);
   }
   &.label-#{'' + $status} > .badge {
     background: badges-variables.getBadgeColor($status, bg-color);
@@ -63,11 +53,8 @@
     justify-content: center;
     align-items: center;
     padding: label-variables.$clr-label-padding;
-    gap: label-variables.$clr-label-gap-size;
+    border: label-variables.$clr-label-border-width solid label-variables.$clr-label-default-border-color;
     border-radius: label-variables.$clr-label-border-radius;
-    border-width: label-variables.$clr-label-border-width;
-    border-style: solid;
-    border-color: label-variables.$clr-label-default-border-color;
     height: label-variables.$clr-label-height;
     margin: 0;
     white-space: nowrap;
@@ -105,13 +92,6 @@
     &:hover,
     &:active {
       text-decoration: none;
-    }
-
-    &.clickable {
-      font-size: label-variables.$clr-label-clickable-font-size;
-      font-weight: label-variables.$clr-label-clickable-font-weight;
-      letter-spacing: label-variables.$clr-label-clickable-letter-spacing;
-      line-height: label-variables.$clr-label-clickable-line-height;
     }
 
     &.clickable:not(.disabled) {
