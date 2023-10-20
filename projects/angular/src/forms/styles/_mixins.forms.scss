@@ -118,14 +118,7 @@
   @include mixins.generate-typography-token($typography);
 }
 
-@mixin checkbox-radio-shared-inactive(
-  $size,
-  $top,
-  $left,
-  $border-color,
-  $border-color-prop: null,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin checkbox-radio-shared-inactive($size, $top, $left, $border-color) {
   //Positioning
   position: absolute;
   top: $top;
@@ -135,13 +128,7 @@
   content: '';
   display: inline-block;
   @include mixins.equilateral($size);
-  border: variables.$clr-global-borderwidth solid;
-
-  @if $use-custom-props != true or not $border-color-prop {
-    border-color: $border-color;
-  } @else {
-    @include mixins.css-var(border-color, $border-color-prop, $border-color, $use-custom-props);
-  }
+  border: variables.$clr-global-borderwidth solid $border-color;
 }
 
 @mixin custom-inputs($height) {
