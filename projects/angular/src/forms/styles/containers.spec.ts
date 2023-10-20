@@ -786,7 +786,7 @@ describe('Form layouts', () => {
 
       it('input height', () => verifyHeight('#text .clr-input', base * 6));
 
-      it('subtext height', () => verifyHeight('#text .clr-subtext', base * 4.5, false));
+      it('subtext height', () => verifyHeight('#text .clr-subtext', base * 5, false));
     });
 
     describe('checkbox', () => {
@@ -921,7 +921,7 @@ describe('Form layouts', () => {
 
       it('textarea height', () => verifyHeight('#textarea .clr-textarea', textarea, false));
 
-      it('subtext height', () => verifyHeight('#textarea .clr-subtext', textarea - base * 1.5, false));
+      it('subtext height', () => verifyHeight('#textarea .clr-subtext', textarea - base, false));
     });
 
     describe('select', () => {
@@ -933,7 +933,7 @@ describe('Form layouts', () => {
 
       it('select height', () => verifyHeight('#select select', base * 6));
 
-      it('subtext height', () => verifyHeight('#select .clr-subtext', base * 4.5, false));
+      it('subtext height', () => verifyHeight('#select .clr-subtext', base * 5, false));
     });
 
     describe('multiselect', () => {
@@ -951,7 +951,7 @@ describe('Form layouts', () => {
 
       it('select height', () => verifyHeight('#multiselect select', multiselect, false));
 
-      it('subtext height', () => verifyHeight('#multiselect .clr-subtext', multiselect - base * 1.5, false));
+      it('subtext height', () => verifyHeight('#multiselect .clr-subtext', multiselect - base, false));
     });
   }
 
