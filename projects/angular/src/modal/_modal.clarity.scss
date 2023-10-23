@@ -142,31 +142,7 @@
     }
 
     .modal-title:not([cds-text]) {
-      @include mixins.css-var(
-        font-size,
-        clr-modal-title-font-size,
-        modal-variables.$clr-modal-title-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-family,
-        clr-modal-title-font-family,
-        modal-variables.$clr-modal-title-font-family,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-weight,
-        clr-modal-title-font-weight,
-        modal-variables.$clr-modal-title-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-modal-title-line-height,
-        modal-variables.$clr-modal-title-line-height,
-        variables.$clr-use-custom-properties
-      );
-      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
+      @include mixins.generate-typography-token('SECTION-20-STD');
     }
 
     .close {
