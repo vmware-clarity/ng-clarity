@@ -37,27 +37,12 @@
 
       &:hover,
       &:active {
-        @include mixins.css-var(
-          border-color,
-          clr-forms-select-hover-border-color,
-          forms-variables.$clr-forms-select-hover-border-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          background,
-          clr-forms-select-hover-background,
-          forms-variables.$clr-forms-select-hover-background,
-          variables.$clr-use-custom-properties
-        );
+        border-color: forms-variables.$clr-forms-select-hover-border-color;
+        background: forms-variables.$clr-forms-select-hover-background;
 
         &:disabled {
           cursor: not-allowed;
-          @include mixins.css-var(
-            border-color,
-            clr-forms-select-disabled-border-color,
-            forms-variables.$clr-forms-select-disabled-border-color,
-            variables.$clr-use-custom-properties
-          );
+          border-color: forms-variables.$clr-forms-select-disabled-border-color;
         }
       }
 
@@ -66,12 +51,7 @@
       }
 
       option {
-        @include mixins.css-var(
-          color,
-          clr-forms-select-option-color,
-          forms-variables.$clr-forms-select-option-color,
-          variables.$clr-use-custom-properties
-        );
+        color: forms-variables.$clr-forms-select-option-color;
       }
     }
 
@@ -93,10 +73,14 @@
         0.5 * calc(4 * #{forms-variables.$clr-forms-baseline} - #{forms-variables.$clr-forms-select-caret-size})
       );
       right: forms-variables.$clr-forms-baseline;
-      // TODO: get rid of generated icons?
-      background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-color);
-      @include images.icon-background-styles();
       margin: 0;
+      // Using mask instead of background-image so we can use the CSS properties
+      // and support both light / dark themes.
+      -webkit-mask: icons.generateCaretIcon();
+      mask: icons.generateCaretIcon();
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      background-color: forms-variables.$clr-forms-select-caret-color;
     }
 
     &:hover::after {
@@ -120,84 +104,40 @@
   //Multiple Select
   select[multiple],
   select[size] {
-    $multiSassBgVar: forms-variables.$clr-forms-select-multiple-background-color;
-    $multiCssBgVar: clr-forms-select-multiple-background-color;
-    $multiSassBorderVar: forms-variables.$clr-forms-select-multiple-border-color;
-    $multiCssBorderVar: clr-forms-select-multiple-border-color;
     padding: 0;
-    @include mixins.css-var(background, $multiCssBgVar, $multiSassBgVar, variables.$clr-use-custom-properties);
     border: variables.$clr-global-borderwidth solid;
-    @include mixins.css-var(
-      border-color,
-      $multiCssBorderVar,
-      $multiSassBorderVar,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-radius,
-      clr-global-borderradius,
-      variables.$clr-global-borderradius,
-      variables.$clr-use-custom-properties
-    );
+    background: forms-variables.$clr-forms-select-multiple-background-color;
+    border-color: forms-variables.$clr-forms-select-multiple-border-color;
+    border-radius: var(--clr-global-borderradius);
     height: auto;
     min-width: variables.$clr_baselineRem_5;
 
     &:hover,
     &:active {
-      @include mixins.css-var(background, $multiCssBgVar, $multiSassBgVar, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        border-color,
-        $multiCssBorderVar,
-        $multiSassBorderVar,
-        variables.$clr-use-custom-properties
-      );
+      background: forms-variables.$clr-forms-select-multiple-background-color;
+      border-color: forms-variables.$clr-forms-select-multiple-border-color;
     }
     option {
       padding: calc(#{forms-variables.$clr-forms-baseline} * 0.5) forms-variables.$clr-forms-baseline;
-      @include mixins.css-var(
-        color,
-        clr-forms-select-multiple-option-color,
-        forms-variables.$clr-forms-select-multiple-option-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-select-multiple-option-color;
     }
   }
 
   .clr-error select {
     &:not([multiple]) {
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-forms-invalid-color,
-        forms-variables.$clr-forms-invalid-color,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-color: var(--clr-forms-invalid-color);
     }
     &[multiple] {
-      @include mixins.css-var(
-        border-color,
-        clr-forms-invalid-color,
-        forms-variables.$clr-forms-invalid-color,
-        variables.$clr-use-custom-properties
-      );
+      border-color: var(--clr-forms-invalid-color);
     }
   }
 
   .clr-success select {
     &:not([multiple]) {
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-forms-valid-color,
-        forms-variables.$clr-forms-valid-color,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-color: var(--clr-forms-valid-color);
     }
     &[multiple] {
-      @include mixins.css-var(
-        border-color,
-        clr-forms-valid-color,
-        forms-variables.$clr-forms-valid-color,
-        variables.$clr-use-custom-properties
-      );
+      border-color: var(--clr-forms-valid-color);
     }
   }
 
@@ -206,12 +146,7 @@
       @include forms-mixins.disabled-form-fields();
 
       &:hover::after {
-        @include mixins.css-var(
-          color,
-          clr-forms-select-caret-color,
-          forms-variables.$clr-forms-select-caret-color,
-          variables.$clr-use-custom-properties
-        );
+        color: forms-variables.$clr-forms-select-caret-color;
       }
     }
 
@@ -220,12 +155,7 @@
       @include forms-mixins.disabled-form-fields();
       &:hover {
         background: none;
-        @include mixins.css-var(
-          border-color,
-          clr-forms-border-color,
-          forms-variables.$clr-forms-border-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: forms-variables.$clr-forms-border-color;
       }
     }
   }

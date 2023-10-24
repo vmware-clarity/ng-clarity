@@ -90,8 +90,18 @@
           0
           #{tokens.$cds-global-space-4}
           #{tokens.$cds-alias-object-interaction-color-disabled};
-      }
 
+        // Select
+        --clr-forms-select-hover-background: transparent;
+        --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
+        --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-container-background};
+        --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+        --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color};
+        --clr-forms-select-option-color: #{tokens.$cds-alias-typography-color-400};
+        --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};
+        --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color};
+        --clr-forms-select-multiple-option-color: #{tokens.$cds-alias-typography-color-400};
+      }
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
@@ -109,23 +119,6 @@
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-
-      // Select
-      --clr-forms-select-hover-background: rgba(
-        #{color.red(variables.$clr-color-neutral-300)},
-        #{color.green(variables.$clr-color-neutral-300)},
-        #{color.blue(variables.$clr-color-neutral-300)},
-        0.5
-      );
-      --clr-forms-select-hover-border-color: var(--clr-forms-select-hover-background);
-      --clr-forms-select-disabled-border-color: #{forms-variables.$clr-forms-border-color};
-      --clr-forms-select-caret-hover-color: var(--clr-color-neutral-600);
-      --clr-forms-select-caret-color: var(--clr-color-neutral-500);
-      --clr-forms-select-option-color: var(--clr-forms-text-color);
-      --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
-      --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);
-      --clr-forms-select-multiple-option-color: var(--clr-forms-text-color);
-      --clr-forms-select-multiple-error-focus-color: #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
 
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
