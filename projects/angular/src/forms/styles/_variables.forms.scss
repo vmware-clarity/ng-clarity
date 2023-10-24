@@ -8,6 +8,7 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 // Structure
 $clr-forms-baseline: var(--clr-forms-baseline);
@@ -65,38 +66,48 @@ $clr-forms-select-multiple-border-color: variables.$clr-color-neutral-400 !defau
 $clr-forms-select-multiple-option-color: $clr-forms-text-color !default;
 
 // Checkbox
-$clr-forms-checkbox-label-color: $clr-forms-label-color !default;
-$clr-forms-checkbox-height: alert-variables.$clr-icon-dimension-sm !default;
-$clr-forms-checkbox-background-color: variables.$clr-color-action-600 !default;
-$clr-forms-checkbox-indeterminate-border-color: variables.$clr-color-action-600 !default;
-$clr-forms-checkbox-mark-color: variables.$clr-color-neutral-0 !default;
-$clr-forms-checkbox-disabled-background-color: $clr-form-disabled-background-color !default;
-$clr-forms-checkbox-disabled-mark-color: variables.$clr-color-neutral-1000 !default;
+$clr-forms-checkbox-height: #{tokens.$cds-global-space-7} !default;
 $clr-forms-checkbox-border-radius: variables.$clr-global-borderradius !default;
+
+$clr-forms-checkbox-label-color: $clr-forms-label-color !default;
+$clr-forms-checkbox-background-color: var(--clr-forms-checkbox-background-color) !default;
+$clr-forms-checkbox-indeterminate-border-color: var(--clr-forms-checkbox-indeterminate-border-color) !default;
+$clr-forms-checkbox-mark-color: var(--clr-forms-checkbox-mark-color) !default;
+
+$clr-forms-checkbox-disabled-label-color: $clr-forms-label-disabled-color !default;
+$clr-forms-checkbox-disabled-background-color: $clr-form-disabled-background-color !default;
+$clr-forms-checkbox-disabled-checked-background-color: var(
+  --clr-forms-checkbox-disabled-checked-background-color
+) !default;
+$clr-forms-checkbox-disabled-border-color: var(--clr-forms-checkbox-disabled-border-color) !default;
+$clr-forms-checkbox-disabled-indeterminate-color: var(--clr-forms-checkbox-disabled-indeterminate-color) !default;
+$clr-forms-checkbox-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color) !default;
 
 $clr-forms-checkbox-label-height: calc(#{$clr-forms-baseline} * 4);
 $clr-forms-checkbox-top: calc(calc(#{$clr-forms-checkbox-label-height} - #{$clr-forms-checkbox-height}) * 0.5) !default;
 
-$clr-forms-checkbox-size: variables.$clr_baselineRem_0_667;
-$clr-forms-checkbox-padding-left: $clr-forms-checkbox-height + variables.$clr_baselineRem_0_25;
-$clr-forms-checkbox-checked-shadow: inset 0 0 0 variables.$clr_baselineRem_0_25 $clr-forms-checkbox-background-color !default;
-$clr-forms-checkbox-mark-size: $clr-forms-checkbox-height * 0.5;
-$clr-forms-checkbox-mark-border-size: ($clr-forms-checkbox-height * 0.125);
+$clr-forms-checkbox-size: #{tokens.$cds-global-space-7};
+$clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.$cds-global-space-5});
+$clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
+$clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);
 
 // Radio
-$clr-forms-radio-label-color: $clr-forms-checkbox-label-color !default;
-$clr-forms-radio-disabled-background-color: variables.$clr-color-neutral-700 !default;
-$clr-forms-radio-disabled-mark-color: $clr-forms-checkbox-disabled-mark-color !default;
+$clr-forms-radio-label-color: var(--clr-forms-radio-label-color) !default;
+$clr-forms-radio-label-disabled-color: var(--clr-forms-radio-label-disabled-color);
+$clr-forms-radio-disabled-background-color: var(--clr-forms-radio-disabled-background-color) !default;
+$clr-forms-radio-disabled-mark-color: var(--clr-forms-radio-disabled-mark-color) !default;
+$clr-forms-radio-selected-shadow: var(--clr-forms-radio-selected-shadow) !default;
+$clr-forms-radio-checked-disabled-shadow: var(--clr-forms-radio-checked-disabled-shadow) !default;
+
+// to be deleted
+//$clr-forms-radio-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_5 variables.$clr-color-neutral-200 !default;
+//$clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;
 
 $clr-forms-radio-size: $clr-forms-checkbox-size;
 $clr-forms-radio-label-height: $clr-forms-checkbox-label-height;
 $clr-forms-radio-height: $clr-forms-checkbox-height;
 $clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
 $clr-forms-radio-top: $clr-forms-checkbox-top;
-$clr-forms-radio-selected-shadow: $clr-forms-checkbox-checked-shadow !default;
-$clr-forms-radio-focused-shadow: 0 0 mixins.$clr-outline-blur mixins.$clr-outline-spread mixins.$clr-outline-color !default;
-$clr-forms-radio-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_5 variables.$clr-color-neutral-200 !default;
-$clr-forms-radio-checked-disabled-shadow: inset 0 0 0 variables.$clr_baselineRem_0_25 variables.$clr-color-neutral-200;
 
 // Range
 $clr-forms-range-progress-fill-color: variables.$clr-color-action-600 !default;
