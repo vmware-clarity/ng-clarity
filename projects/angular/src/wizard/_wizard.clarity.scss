@@ -161,25 +161,12 @@
 
     .clr-wizard-stepnav-item {
       display: block;
-      // IE/OldEdge
-      border-left-style: solid;
-      border-left-width: wizard-variables.$clr-wizard-stepnav-border-size;
-      border-color: wizard-variables.$clr-wizard-stepnav-item-border-color;
+      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
+        wizard-variables.$clr-wizard-stepnav-item-border-color;
 
       margin: 0 0 (-1 * variables.$clr-global-borderwidth) 0;
-      @include mixins.css-var(
-        padding,
-        clr-wizard-stepnav-item-padding,
-        variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_4px,
-        variables.$clr-use-custom-properties
-      );
+      padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
       color: wizard-variables.$clr-wizard-stepnav-text;
-      @include mixins.css-var(
-        font-weight,
-        clr-font-weight-regular,
-        variables.$clr-font-weight-regular,
-        variables.$clr-use-custom-properties
-      );
 
       &:not(.disabled):hover .clr-wizard-stepnav-link {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
@@ -188,19 +175,10 @@
 
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
-        @include mixins.css-var(
-          font-weight,
-          clr-font-weight-semibold,
-          variables.$clr-font-weight-semibold,
-          variables.$clr-use-custom-properties
-        );
-
         .clr-wizard-stepnav-link {
           color: wizard-variables.$clr-wizard-stepnav-text--active;
           background-color: wizard-variables.$clr-wizard-stepnav-active-bgcolor;
-          border-radius: 0;
-          border-top-left-radius: wizard-variables.$clr-wizard-border-radius;
-          border-bottom-left-radius: wizard-variables.$clr-wizard-border-radius;
+          border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
         }
       }
 
@@ -223,19 +201,21 @@
       width: 100%;
       display: flex;
       place-content: normal;
-      gap: tokens.$cds-global-space-5;
+      gap: 0;
       color: inherit;
       align-items: center;
       text-align: left;
       text-transform: none;
       margin: 0;
+      padding: tokens.$cds-global-space-5;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
       .clr-wizard-stepnav-link-suffix {
         display: flex;
         justify-content: center;
-        min-width: variables.$clr_baselineRem_1;
+        min-width: tokens.$cds-global-space-9;
+        padding-right: tokens.$cds-global-space-5;
 
         .clr-wizard-stepnav-item-error-icon {
           transform: none;
