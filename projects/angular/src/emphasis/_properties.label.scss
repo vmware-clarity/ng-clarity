@@ -10,10 +10,8 @@
   :root {
     [cds-theme] {
       // TYPOGRAPHIC STYLES
-      --clr-label-line-height: var(--clr-p6-line-height); // REMOVE THIS
       --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
-      --clr-label-letter-spacing: var(--clr-p6-letter-spacing); // REMOVE THIS
 
       // COLOR
       --clr-label-default-border-color: #{tokens.$cds-alias-utility-gray};

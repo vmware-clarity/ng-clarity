@@ -48,10 +48,6 @@
   a.label {
     //default
     @include mixins.generate-typography-token('CAPTION-LG-11');
-    // TODO: Check why there is discrepancy between spec and previous styling for letter-spacing and line-height
-    letter-spacing: var(--clr-label-letter-spacing, 0.03em);
-    line-height: var(--clr-label-line-height, 0.6rem);
-
     display: inline-flex;
     justify-content: center;
     align-items: center;
