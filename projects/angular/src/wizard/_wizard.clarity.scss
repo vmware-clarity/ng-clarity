@@ -37,7 +37,7 @@
       border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
       background-color: var(--clr-wizard-content-background-color);
       box-shadow: none;
-      padding: 0;
+      padding: wizard-variables.$clr-wizard-default-space;
       flex: 2 2 auto;
       width: 66%;
       height: initial;
@@ -45,13 +45,13 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
+      gap: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding: wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0
-        wizard-variables.$clr-wizard-default-space;
+      padding-bottom: wizard-variables.$clr-wizard-default-space;
     }
 
     .modal-title {
@@ -67,22 +67,14 @@
       width: 100%;
     }
 
-    .modal-footer {
+    .modal-footer.clr-wizard-footer {
       display: block;
       width: 100%;
       flex: 0 0 wizard-variables.$clr-wizard-footer-height;
-      @if variables.$clr-use-custom-properties == true {
-        flex: 0 0 var(--clr-wizard-footer-height);
-      }
       height: wizard-variables.$clr-wizard-footer-height;
       min-height: wizard-variables.$clr-wizard-footer-height;
       max-height: wizard-variables.$clr-wizard-footer-height;
-      @include mixins.css-var(
-        padding,
-        clr-wizard-footer-padding,
-        wizard-variables.$clr-wizard-default-space wizard-variables.$clr-wizard-default-space 0 0,
-        variables.$clr-use-custom-properties
-      );
+      padding: 0;
     }
 
     .clr-wizard-btn {
@@ -333,7 +325,7 @@
       display: flex;
       flex-grow: 1;
       width: 100%;
-      padding: wizard-variables.$clr-wizard-main-padding;
+      padding: 0;
     }
 
     &.wizard-md {
