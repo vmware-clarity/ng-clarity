@@ -11,8 +11,6 @@
     [cds-theme] {
       --clr-label-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
       --clr-label-gap-size: #{tokens.$cds-global-space-5};
-      // ATM - remove and use as default or think a better way express clicked state
-      --clr-label-pressed-transform: translateY(#{tokens.$cds-global-space-2});
 
       // TYPOGRAPHIC STYLES
       --clr-label-line-height: var(--clr-p6-line-height);

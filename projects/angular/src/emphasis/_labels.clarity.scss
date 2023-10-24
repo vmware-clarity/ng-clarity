@@ -109,7 +109,7 @@
         color: label-variables.$clr-label-active-color;
         background: label-variables.$clr-label-bg-active-color;
         box-shadow: label-variables.$clr-label-box-shadow;
-        transform: label-variables.$clr-label-pressed-transform;
+        transform: translateY(#{tokens.$cds-global-space-2});
       }
     }
 
