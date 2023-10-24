@@ -49,6 +49,47 @@
 
         // Input group
         --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
+
+        // Checkbox
+        --clr-forms-checkbox-height: #{tokens.$cds-global-space-7};
+        --clr-forms-checkbox-border-radius: var(--clr-global-borderradius);
+
+        --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
+        --clr-forms-checkbox-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-checkbox-indeterminate-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-checkbox-mark-color: #{tokens.$cds-alias-object-interaction-background};
+
+        --clr-forms-checkbox-disabled-label-color: var(--clr-forms-label-disabled-color);
+        --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
+        --clr-forms-checkbox-disabled-checked-background-color: #{tokens.$cds-alias-status-disabled};
+        --clr-forms-checkbox-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+        --clr-forms-checkbox-disabled-indeterminate-color: #{tokens.$cds-alias-status-disabled};
+        --clr-forms-checkbox-disabled-mark-color: #{tokens.$cds-alias-object-interaction-background};
+
+        // Radio
+        //--clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
+        //--clr-forms-radio-focused-shadow: 0
+        //  0
+        //  #{mixins.$clr-outline-blur}
+        //  #{mixins.$clr-outline-spread}
+        //  #{mixins.$clr-outline-color};
+
+        --clr-forms-radio-label-color: var(--clr-forms-label-color);
+        --clr-forms-radio-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
+        --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color);
+        --clr-forms-radio-disabled-mark-color: #{tokens.$cds-alias-typography-color-100};
+        --clr-forms-radio-selected-shadow: inset
+          0
+          0
+          0
+          #{tokens.$cds-global-space-4}
+          #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-radio-checked-disabled-shadow: inset
+          0
+          0
+          0
+          #{tokens.$cds-global-space-4}
+          #{tokens.$cds-alias-object-interaction-color-disabled};
       }
 
       // Textarea
@@ -85,40 +126,6 @@
       --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);
       --clr-forms-select-multiple-option-color: var(--clr-forms-text-color);
       --clr-forms-select-multiple-error-focus-color: #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
-
-      // Checkbox
-      --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
-      --clr-forms-checkbox-background-color: var(--clr-color-action-600);
-      --clr-forms-checkbox-indeterminate-border-color: var(--clr-color-action-600);
-      --clr-forms-checkbox-mark-color: var(--clr-color-neutral-0);
-      --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
-      --clr-forms-checkbox-disabled-mark-color: var(--clr-color-neutral-1000);
-      --clr-forms-checkbox-border-radius: var(--clr-global-borderradius);
-      --clr-forms-checkbox-line-height: #{forms-variables.$clr-forms-icon-size};
-      --clr-forms-checkbox-padding-left: #{forms-variables.$clr-forms-checkbox-padding-left};
-      --clr-forms-checkbox-label-height: #{forms-variables.$clr-forms-checkbox-label-height};
-      --clr-forms-checkbox-checked-shadow: inset
-        0
-        0
-        0
-        #{variables.$clr_baselineRem_0_25}
-        var(--clr-forms-checkbox-background-color);
-
-      // Radio
-      --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color);
-      --clr-forms-radio-label-disabled-color: #{forms-variables.$clr-forms-radio-label-color};
-      --clr-forms-radio-disabled-background-color: var(--clr-color-neutral-700);
-      --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color);
-      --clr-forms-radio-selected-shadow: var(--clr-forms-checkbox-checked-shadow);
-      --clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
-      --clr-forms-radio-line-height: #{forms-variables.$clr-forms-icon-size};
-      --clr-forms-radio-padding-left: #{forms-variables.$clr-forms-radio-padding-left};
-      --clr-forms-radio-label-height: #{forms-variables.$clr-forms-radio-label-height};
-      --clr-forms-radio-focused-shadow: 0
-        0
-        #{mixins.$clr-outline-blur}
-        #{mixins.$clr-outline-spread}
-        #{mixins.$clr-outline-color};
 
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
