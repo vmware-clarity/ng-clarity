@@ -14,7 +14,6 @@
 @use 'sass:meta';
 @use '../modal/variables.modal' as modal-variables;
 @use '../utils/mixins';
-@use '../utils/variables/variables';
 @use 'variables.wizard' as wizard-variables;
 
 @use '@cds/core/tokens/tokens.scss';
@@ -95,8 +94,8 @@
 
     .modal-header-actions-wrapper {
       flex: 1 0 auto;
-      padding-left: variables.$clr_baselineRem_0_5;
-      padding-right: variables.$clr_baselineRem_4px;
+      padding-left: tokens.$cds-global-space-6;
+      padding-right: tokens.$cds-global-space-3;
     }
 
     .clr-wizard-header-action {
@@ -105,7 +104,7 @@
       margin: 0;
       min-width: wizard-variables.$clr-wizard-default-space;
       line-height: wizard-variables.$clr-wizard-default-space;
-      font-size: wizard-variables.$clr-wizard-default-space + variables.$clr_baselineRem_2px;
+      font-size: wizard-variables.$clr-wizard-default-space;
       color: wizard-variables.$clr-wizard-header-action-color;
       transition: color linear 0.2s;
 
@@ -121,7 +120,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space - variables.$clr_baselineRem_2px);
+        @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
       }
     }
 
@@ -164,7 +163,7 @@
       border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
         wizard-variables.$clr-wizard-stepnav-item-border-color;
 
-      margin: 0 0 (-1 * variables.$clr-global-borderwidth) 0;
+      margin: 0 0 calc(-1 * #{tokens.$cds-alias-object-border-width-100}) 0;
       padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
       color: wizard-variables.$clr-wizard-stepnav-text;
 
@@ -263,14 +262,6 @@
 
     .clr-wizard-btn-wrapper {
       flex: 0 1 auto;
-
-      // GAP have no effect. Why is it here?
-      @include mixins.css-var(
-        gap,
-        clr-wizard-footer-btn-wrapper-min-width,
-        variables.$clr_baselineRem_3_5,
-        variables.$clr-use-custom-properties
-      );
     }
 
     .clr-wizard-btn-wrapper[aria-hidden='true'] {
@@ -393,7 +384,7 @@
     }
 
     .clr-wizard-stepnav {
-      padding-top: variables.$clr_baselineRem_1;
+      padding-top: tokens.$cds-global-space-9;
     }
   }
 
@@ -407,6 +398,6 @@
 @include mixins.fixForMsEdge {
   // Edge is pushing header actions down. This aligns them with the close btn.
   .clr-wizard .clr-wizard-header-action {
-    margin-top: -1 * variables.$clr_baselineRem_0_125;
+    margin-top: mixins.baselinePx(-3);
   }
 }

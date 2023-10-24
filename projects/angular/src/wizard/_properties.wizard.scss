@@ -35,9 +35,8 @@
 
       --clr-wizard-title-text: #{tokens.$cds-alias-typography-color-400};
       --clr-wizard-footer-height: auto;
-      --clr-wizard-footer-btn-wrapper-min-width: auto; // ATM - remove
-      --clr-wizard-header-action-color: #{tokens.$cds-global-color-gray-600}; // wth? var(--clr-color-neutral-600);
-      --clr-wizard-header-action-color--hovered: #{tokens.$cds-global-color-gray-1000}; // wth? var(--clr-color-neutral-1000);
+      --clr-wizard-header-action-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-wizard-header-action-color--hovered: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-wizard-box-shadow: #{tokens.$cds-alias-object-shadow-300};
       --clr-wizard-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
