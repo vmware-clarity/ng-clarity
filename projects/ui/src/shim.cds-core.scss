@@ -907,35 +907,6 @@
     }
   }
 
-  /* Modal */
-
-  --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-modal-title-line-height: var(--clr-h4-line-height);
-  --clr-modal-title-font-size: var(--clr-h4-font-size);
-  --clr-modal-title-font-weight: var(--clr-h4-font-weight);
-  --clr-modal-text-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-modal-close-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-600);
-  --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
-  --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background}; // var(--clr-color-neutral-900);
-  --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
-  --clr-modal-content-border-style: solid;
-  --clr-modal-content-border-color: #{tokens.$cds-alias-object-container-border-color};
-  --clr-modal-content-border-width: #{tokens.$cds-alias-object-border-width-100};
-  --clr-modal-content-padding: #{tokens.$cds-global-space-9}; // ATM - remove and use as default
-  --clr-modal-sm-content-padding: #{tokens.$cds-global-space-9}; // ATM - remove and use as default
-  --clr-modal-header-padding: 0 0 #{tokens.$cds-global-space-9} 0; // ATM - remove and use as default
-  --clr-modal-sm-header-padding: 0 0 #{tokens.$cds-global-space-9} 0;
-  --clr-modal-footer-padding: #{tokens.$cds-global-space-9} 0 0 0; // ATM - remove and use as default
-  --clr-modal-sm-footer-padding: #{tokens.$cds-global-space-9} 0 0 0; // ATM - remove and use as default
-  --clr-modal-footer-gap: #{tokens.$cds-global-space-5};
-  --clr-modal-sm-width: #{baselinePx(288)};
-  --clr-modal-md-width: #{baselinePx(576)};
-  --clr-modal-lg-width: #{baselinePx(864)};
-  --clr-modal-xl-width: #{baselinePx(1152)};
-  --clr-modal-close-icon-size: #{tokens.$cds-global-space-9};
-  --clr-modal-title-padding: 0; // ATM - remove and use as default
-
   /* Navigation */
 
   --clr-link-active-color: #{tokens.$cds-alias-typography-link-color};

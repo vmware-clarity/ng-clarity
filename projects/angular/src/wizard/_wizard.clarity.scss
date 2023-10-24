@@ -35,7 +35,6 @@
 
     .modal-content {
       border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
-      background-color: var(--clr-wizard-content-background-color);
       box-shadow: none;
       padding: wizard-variables.$clr-wizard-default-space;
       flex: 2 2 auto;

@@ -9,6 +9,8 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.modal' as modal-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
@@ -23,97 +25,43 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: variables.$clr_baselineRem_2;
+    padding: tokens.$cds-global-space-12;
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: variables.$clr_baselineRem_0_5;
+      padding: tokens.$cds-global-space-6;
     }
   }
 
   .modal-dialog {
     position: relative;
     z-index: map.get(variables.$clr-layers, modal);
-    @include mixins.css-var(
-      width,
-      clr-modal-md-width,
-      modal-variables.$clr-modal-md-width,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-radius,
-      clr-modal-border-radius,
-      modal-variables.$clr-modal-border-radius,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      box-shadow,
-      clr-modal-content-box-shadow,
-      0 variables.$clr_baselineRem_1px variables.$clr_baselineRem_2px variables.$clr_baselineRem_2px
-        modal-variables.$clr-modal-content-box-shadow-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(border-style, clr-modal-content-border-style, none, variables.$clr-use-custom-properties);
-    @include mixins.css-var(border-width, clr-modal-content-border-width, 0, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      border-color,
-      clr-modal-content-border-color,
-      transparent,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      background-color,
-      clr-modal-bg-color,
-      modal-variables.$clr-modal-bg-color,
-      variables.$clr-use-custom-properties
-    );
+    width: modal-variables.$clr-modal-md-width;
+    border-radius: modal-variables.$clr-modal-border-radius;
+    box-shadow: modal-variables.$clr-modal-content-box-shadow;
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    background-color: modal-variables.$clr-modal-bg-color;
     max-width: 100%;
 
     &.modal-sm {
-      @include mixins.css-var(
-        width,
-        clr-modal-sm-width,
-        modal-variables.$clr-modal-sm-width,
-        variables.$clr-use-custom-properties
-      );
+      width: modal-variables.$clr-modal-sm-width;
     }
 
     &.modal-lg {
-      @include mixins.css-var(
-        width,
-        clr-modal-lg-width,
-        modal-variables.$clr-modal-lg-width,
-        variables.$clr-use-custom-properties
-      );
+      width: modal-variables.$clr-modal-lg-width;
     }
 
     &.modal-xl {
-      @include mixins.css-var(
-        width,
-        clr-modal-xl-width,
-        modal-variables.$clr-modal-xl-width,
-        variables.$clr-use-custom-properties
-      );
+      width: modal-variables.$clr-modal-xl-width;
     }
 
     .modal-content {
-      @include mixins.css-var(
-        padding,
-        clr-modal-content-padding,
-        modal-variables.$clr-modal-content-padding-top modal-variables.$clr-modal-content-padding-right
-          modal-variables.$clr-modal-content-padding-bottom modal-variables.$clr-modal-content-padding-left,
-        variables.$clr-use-custom-properties
-      );
+      padding: modal-variables.$clr-modal-default-space;
     }
   }
 
   .modal-header {
     border-bottom: none;
-    @include mixins.css-var(
-      padding,
-      clr-modal-header-padding,
-      0 0 variables.$clr_baselineRem_1 0,
-      variables.$clr-use-custom-properties
-    );
+    padding: 0 0 modal-variables.$clr-modal-default-space 0;
 
     // TODO: This class is used only in the clr-modal template.
     // It should be merged this with `.modal-header` in a major version
@@ -126,46 +74,29 @@
     }
 
     .modal-title {
-      @include mixins.css-var(
-        color,
-        clr-modal-title-color,
-        modal-variables.$clr-modal-title-color,
-        variables.$clr-use-custom-properties
-      );
+      color: modal-variables.$clr-modal-title-color;
+      @include mixins.generate-typography-token('SECTION-20-STD');
       margin: 0;
-      @include mixins.css-var(
-        padding,
-        clr-modal-title-padding,
-        0 variables.$clr_baselineRem_0_125,
-        variables.$clr-use-custom-properties
-      );
     }
 
     .modal-title:not([cds-text]) {
-      @include mixins.generate-typography-token('SECTION-20-STD');
+      font-family: modal-variables.$clr-modal-title-font-family;
+      font-size: modal-variables.$clr-modal-title-font-size;
+      font-weight: modal-variables.$clr-modal-title-font-weight;
+      line-height: modal-variables.$clr-modal-title-line-height;
+      letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
     .close {
-      margin-top: -1 * variables.$clr_baselineRem_1px;
-      margin-right: -1 * variables.$clr_baselineRem_5px;
-      font-size: variables.$clr_baselineRem_1_0833;
-      line-height: variables.$clr_baselineRem_1;
+      font-size: initial;
+      line-height: initial;
 
       cds-icon,
       clr-icon {
-        @include mixins.css-var(
-          fill,
-          clr-modal-close-color,
-          modal-variables.$clr-modal-close-color,
-          variables.$clr-use-custom-properties
-        );
+        fill: modal-variables.$clr-modal-close-color;
 
-        // per measurement, this results in an icon that is 16x16...
-        @include mixins.equilateral-var(
-          clr-modal-close-icon-size,
-          variables.$clr_baselineRem_1,
-          variables.$clr-use-custom-properties
-        );
+        // per measurement, this results in an icon that is 24x24...
+        @include mixins.equilateral(modal-variables.$clr-modal-default-space);
       }
     }
   }
@@ -184,15 +115,10 @@
     max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 variables.$clr_baselineRem_0_125;
 
     .modal-body {
-      @include mixins.css-var(
-        color,
-        clr-modal-text-color,
-        variables.$clr-p1-color,
-        variables.$clr-use-custom-properties
-      );
+      color: tokens.$cds-alias-typography-color-400;
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
 
     & > :first-child {
@@ -206,18 +132,8 @@
   .modal-footer {
     display: flex;
     justify-content: flex-end;
-    @include mixins.css-var(
-      padding,
-      clr-modal-footer-padding,
-      variables.$clr_baselineRem_1 0 0 0,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      gap,
-      clr-modal-footer-gap,
-      variables.$clr_baselineRem_0_5,
-      variables.$clr-use-custom-properties
-    );
+    padding: modal-variables.$clr-modal-default-space 0 0 0;
+    gap: tokens.$cds-global-space-5;
 
     .btn {
       //switched right margin to left because footer is right aligned
@@ -232,57 +148,18 @@
   }
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-    .modal-content {
-      @include mixins.css-var(
-        padding,
-        clr-modal-sm-content-padding,
-        variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    .modal-header {
-      @include mixins.css-var(
-        padding,
-        clr-modal-sm-header-padding,
-        0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_0_5 0,
-        variables.$clr-use-custom-properties
-      );
-    }
-
     .modal-body-wrapper {
       max-height: 55vh;
-    }
-
-    .modal-footer {
-      @include mixins.css-var(
-        padding,
-        clr-modal-sm-footer-padding,
-        variables.$clr_baselineRem_0_5 variables.$clr_baselineRem_1 0 0,
-        variables.$clr-use-custom-properties
-      );
     }
   }
 
   .modal-backdrop {
-    $clr-backdrop-opacity: 0.85;
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
-    @include mixins.css-var(
-      background-color,
-      clr-modal-backdrop-color,
-      modal-variables.$clr-modal-backdrop-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      opacity,
-      clr-modal-backdrop-opacity,
-      $clr-backdrop-opacity,
-      variables.$clr-use-custom-properties
-    );
+    background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
   }
 
