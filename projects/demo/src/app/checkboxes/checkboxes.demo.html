@@ -47,7 +47,13 @@
     <label>Inline</label>
     <clr-checkbox-wrapper>
       <label>One</label>
-      <input clrCheckbox type="checkbox" [(ngModel)]="vertical.inline.one" name="vertical.inline.one" />
+      <input
+        clrCheckbox
+        class="clr-indeterminate"
+        type="checkbox"
+        [(ngModel)]="vertical.inline.one"
+        name="vertical.inline.one"
+      />
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
       <label>Two</label>

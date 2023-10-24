@@ -94,7 +94,7 @@
   //Positioning
   position: absolute;
   opacity: 0;
-  top: variables.$clr_baselineRem_5px;
+  top: #{tokens.$cds-global-space-3};
   left: 0;
 
   //Display
@@ -104,17 +104,7 @@
   @include mixins.equilateral($size);
 }
 
-@mixin checkbox-radio-label-styles(
-  $min-height,
-  $min-height-fallback,
-  $padding-left,
-  $padding-left-fallback,
-  $line-height,
-  $line-height-fallback,
-  $color: forms-variables.$clr-forms-checkbox-label-color,
-  $color-prop: clr-forms-checkbox-label-color,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin checkbox-radio-label-styles($min-height, $padding-left, $color, $typography) {
   //Positioning
   position: relative;
 
@@ -122,26 +112,13 @@
   display: block;
   margin-top: 0;
   cursor: pointer;
-
-  @include mixins.css-var(min-height, $min-height, $min-height-fallback, variables.$clr-use-custom-properties);
-  @include mixins.css-var(padding-left, $padding-left, $padding-left-fallback, variables.$clr-use-custom-properties);
-  @include mixins.css-var(line-height, $line-height, $line-height-fallback, variables.$clr-use-custom-properties);
-
-  @if $use-custom-props != true {
-    color: $color;
-  } @else {
-    @include mixins.css-var(color, $color-prop, $color, $use-custom-props);
-  }
+  min-height: $min-height;
+  padding: #{tokens.$cds-global-space-3} 0 #{tokens.$cds-global-space-3} $padding-left;
+  color: $color;
+  @include mixins.generate-typography-token($typography);
 }
 
-@mixin checkbox-radio-shared-inactive(
-  $size,
-  $top,
-  $left,
-  $border-color,
-  $border-color-prop: null,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin checkbox-radio-shared-inactive($size, $top, $left, $border-color) {
   //Positioning
   position: absolute;
   top: $top;
@@ -151,13 +128,7 @@
   content: '';
   display: inline-block;
   @include mixins.equilateral($size);
-  border: variables.$clr-global-borderwidth solid;
-
-  @if $use-custom-props != true or not $border-color-prop {
-    border-color: $border-color;
-  } @else {
-    @include mixins.css-var(border-color, $border-color-prop, $border-color, $use-custom-props);
-  }
+  border: variables.$clr-global-borderwidth solid $border-color;
 }
 
 @mixin custom-inputs($height) {
