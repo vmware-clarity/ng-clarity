@@ -6,8 +6,6 @@
 @use '../utils/variables/variables';
 
 // Usage: ./_labels.clarity.scss
-$clr-label-padding-top-bottom: variables.$clr_baselineRem_0_125 !default;
-$clr-label-padding-left-right: variables.$clr_baselineRem_0_5 !default;
 $clr-label-borderwidth: var(--clr-label-border-width) !default;
 
 // COLOR
@@ -58,9 +56,6 @@ $clr-label-danger-font-color: var(--clr-label-danger-font-color) !default;
 $clr-label-danger-border-color: var(--clr-label-danger-border-color) !default;
 
 // New variables
-$clr-label-padding: var(--clr-label-padding) !default;
-$clr-label-border-radius: var(--clr-label-border-radius) !default;
-$clr-label-gap-size: var(--clr-label-gap-size) !default;
 $clr-label-border-width: var(--clr-label-border-width) !default;
 $clr-label-height: var(--clr-label-height) !default;
 $clr-label-hover-color: var(--clr-label-hover-color) !default;
