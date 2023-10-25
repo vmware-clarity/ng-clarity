@@ -49,7 +49,7 @@
     .modal-header--accessible {
       flex: 0 0 auto;
       width: 100%;
-      padding-bottom: wizard-variables.$clr-wizard-default-space;
+      padding: 0;
     }
 
     .modal-title {
@@ -94,12 +94,18 @@
 
     .modal-header-actions-wrapper {
       flex: 1 0 auto;
+      height: wizard-variables.$clr-wizard-default-space;
       padding-left: tokens.$cds-global-space-6;
       padding-right: tokens.$cds-global-space-3;
     }
 
+    .clr-wizard-header-action-wrapper {
+      display: inline-flex;
+    }
+
     .clr-wizard-header-action {
       @include mixins.equilateral(wizard-variables.$clr-wizard-default-space);
+      border: 0;
       padding: 0;
       margin: 0;
       min-width: wizard-variables.$clr-wizard-default-space;
@@ -295,7 +301,7 @@
       display: flex;
       flex-grow: 1;
       width: 100%;
-      padding: 0;
+      padding-top: tokens.$cds-global-space-6;
     }
 
     &.wizard-md {
