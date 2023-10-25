@@ -51,12 +51,12 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    gap: #{tokens.$cds-global-space-5};
-    padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
+    gap: tokens.$cds-global-space-5;
+    padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
     border: label-variables.$clr-label-border-width solid label-variables.$clr-label-default-border-color;
-    border-radius: #{tokens.$cds-alias-object-border-radius-200};
+    border-radius: tokens.$cds-alias-object-border-radius-200;
     height: label-variables.$clr-label-height;
-    margin: 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-1} 0;
+    margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
     white-space: nowrap;
     color: label-variables.$clr-label-font-color-light;
     text-decoration: none;
