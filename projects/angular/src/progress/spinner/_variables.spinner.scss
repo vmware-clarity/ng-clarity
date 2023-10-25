@@ -7,16 +7,18 @@
 
 $clr-spinner-color: variables.$clr-color-action-600 !default;
 
-$clr-spinner-default-stroke-width: var(--clr-spinner-default-stroke-width) !default;
-$clr-spinner-medium-stroke-width: var(--clr-spinner-medium-stroke-width) !default;
-$clr-spinner-small-stroke-width: var(--clr-spinner-small-stroke-width) !default;
+$clr-spinner-default-size: var(--clr-spinner-default-size) !default;
+$clr-spinner-medium-size: var(--clr-spinner-medium-size) !default;
+$clr-spinner-small-size: var(--clr-spinner-small-size) !default;
+$clr-spinner-inside-button-size: var(--clr-spinner-inside-button-size) !default;
+$clr-spinner-inside-treeview-size: var(--clr-spinner-inside-treeview-size) !default;
 
 $clr-spinner-inside-button-stroke-width: var(--clr-spinner-inside-button-stroke-width) !default;
 $clr-spinner-inside-treeview-stroke-width: var(--clr-spinner-inside-treeview-stroke-width) !default;
 
-$clr-spinner-default-size: var(--clr-spinner-default-size) !default;
-$clr-spinner-medium-size: var(--clr-spinner-medium-size) !default;
-$clr-spinner-small-size: var(--clr-spinner-small-size) !default;
+$clr-spinner-default-stroke-width: var(--clr-spinner-default-stroke-width) !default;
+$clr-spinner-medium-stroke-width: var(--clr-spinner-medium-stroke-width) !default;
+$clr-spinner-small-stroke-width: var(--clr-spinner-small-stroke-width) !default;
 
 $clr-spinner-fill-color: var(--clr-spinner-fill-color) !default;
 $clr-spinner-fill-bg-color: var(--clr-spinner-fill-bg-color) !default;

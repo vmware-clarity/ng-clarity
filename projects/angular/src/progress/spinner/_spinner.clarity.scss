@@ -112,7 +112,7 @@
       padding: 0;
       text-indent: 100%;
 
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
 
       &::before,
       &::after {
@@ -121,14 +121,14 @@
         left: 0;
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
       }
     }
   }
 
   .btn-sm {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
       &::before,
       &::after {
         position: absolute;
@@ -138,7 +138,7 @@
         border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
       }
       &::before {
         content: '';
@@ -155,20 +155,20 @@
 
   .btn-icon:not(.btn-sm) {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
     }
   }
 
   // Spinners inside treeview
   .clr-treenode-spinner-container {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-treeview-size);
       &::before,
       &::after {
         border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-treeview-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
+        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-treeview-size);
       }
       &::before {
         content: '';
