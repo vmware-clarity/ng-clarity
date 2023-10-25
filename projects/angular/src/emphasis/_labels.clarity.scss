@@ -17,8 +17,8 @@
 
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    border: label-variables.$clr-label-borderwidth solid $sassVarBorderColor;
-    background-color: $sassVarBgColor;
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
+    background-color: label-variables.getLabelColor($color, bg-color);
   }
 
   &.label-#{'' + $color} > .badge {
