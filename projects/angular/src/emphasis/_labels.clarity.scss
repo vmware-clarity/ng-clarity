@@ -12,9 +12,6 @@
 @include meta.load-css('properties.label');
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
-  $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
-  $sassVarBorderColor: label-variables.getLabelColor($color, border-color);
-
   &.label-#{'' + $color},
   &.label-#{$alias} {
     border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
@@ -63,7 +60,7 @@
 
     &:has(> .badge),
     &:has(> cds-icon) {
-      padding-right: #{tokens.$cds-global-space-3};
+      padding-right: tokens.$cds-global-space-3;
     }
 
     .badge,
@@ -73,7 +70,7 @@
     }
 
     &:has(.badge) {
-      gap: #{tokens.$cds-global-space-3};
+      gap: tokens.$cds-global-space-3;
     }
 
     &.clickable:not(:has(.text)) {
@@ -104,7 +101,7 @@
       &:active {
         color: label-variables.$clr-label-active-color;
         background: label-variables.$clr-label-bg-active-color;
-        transform: translateY(#{tokens.$cds-global-space-2});
+        transform: translateY(tokens.$cds-global-space-2);
       }
     }
 
