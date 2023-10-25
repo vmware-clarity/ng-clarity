@@ -5,7 +5,6 @@
  */
 @use '../../utils/variables/variables.color';
 
-// Usage: ../progress/spinner/_spinner.clarity.scss
 $clr-spinner-color: variables.$clr-color-action-600 !default;
 $clr-spinner-bg-color: variables.$clr-color-neutral-1000 !default;
 
