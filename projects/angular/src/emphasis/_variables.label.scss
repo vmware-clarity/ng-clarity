@@ -63,10 +63,8 @@ $clr-label-box-shadow: var(--clr-label-box-shadow) !default;
 $clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
 $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
-$clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 
 // APPEARANCE
-$clr-label-border-width: var(--clr-label-border-width) !default;
 $clr-label-height: var(--clr-label-height) !default;
 
 @function getLabelCssVarName($type: gray, $prop: color) {

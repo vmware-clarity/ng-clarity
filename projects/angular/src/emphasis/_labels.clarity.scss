@@ -53,7 +53,7 @@
     align-items: center;
     gap: tokens.$cds-global-space-5;
     padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
-    border: label-variables.$clr-label-border-width solid label-variables.$clr-label-default-border-color;
+    border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-200;
     height: label-variables.$clr-label-height;
     margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
