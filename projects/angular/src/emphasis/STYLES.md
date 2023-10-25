@@ -50,8 +50,8 @@
 | --clr-label-font-color-dark      | Font color for dark labels             |
 | --clr-label-default-border-color | Default border color for labels        |
 | --clr-label-bg-hover-color       | Background color on hover for labels   |
-| --clr-label-gray-bg-color        | Not used                               |
-| --clr-label-gray-color           | Not used                               |
+| --clr-label-gray-bg-color        | Background color for gray labels       |
+| --clr-label-gray-color           | Font color for gray labels             |
 | --clr-label-purple-bg-color      | Background color for purple labels     |
 | --clr-label-purple-color         | Font color for purple labels           |
 | --clr-label-blue-bg-color        | Background color for blue labels       |
