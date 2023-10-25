@@ -64,9 +64,6 @@ $clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
 $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
 
-// APPEARANCE
-$clr-label-height: var(--clr-label-height) !default;
-
 @function getLabelCssVarName($type: gray, $prop: color) {
   @if $prop == color {
     @return #{'clr-label-' + $type + '-font-' + $prop};
