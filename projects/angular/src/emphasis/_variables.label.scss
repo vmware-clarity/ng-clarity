@@ -6,57 +6,63 @@
 @use '../utils/variables/variables';
 
 // Usage: ./_labels.clarity.scss
-$clr-label-padding-top-bottom: variables.$clr_baselineRem_0_125 !default;
-$clr-label-padding-left-right: variables.$clr_baselineRem_0_5 !default;
-$clr-label-borderwidth: variables.$clr-global-borderwidth !default;
+$clr-label-borderwidth: var(--clr-label-border-width) !default;
 
 // COLOR
 // Usage:
 // - ./_labels.clarity.scss
-$clr-label-font-color-light: variables.$clr-color-neutral-1000 !default;
-$clr-label-font-color-dark: variables.$clr-color-neutral-1000 !default;
-$clr-label-default-border-color: variables.$clr-color-neutral-600 !default;
+$clr-label-font-color-light: var(--clr-label-font-color-light) !default;
+$clr-label-font-color-dark: var(--clr-label-font-color-dark) !default;
+$clr-label-default-border-color: var(--clr-label-default-border-color) !default;
 
 // TYPOGRAPHIC STYLES
-// Usage:
-// - ./_labels.clarity.scss
-$clr-label-font-size: variables.$clr-p7-font-size !default;
-$clr-label-font-weight: variables.$clr-p7-font-weight !default;
-$clr-label-letter-spacing: variables.$clr-p7-letter-spacing !default;
-
 // Usage: ./_labels.clarity.scss
-$clr-label-bg-hover-color: variables.$clr-color-neutral-200 !default;
+$clr-label-bg-hover-color: var(--clr-label-bg-hover-color) !default;
 
-$clr-label-gray-bg-color: variables.$clr-color-neutral-600 !default;
-$clr-label-gray-color: $clr-label-font-color-light !default;
+$clr-label-gray-bg-color: var(--clr-label-gray-bg-color) !default;
+$clr-label-gray-border-color: var(--clr-label-gray-border-color) !default;
+$clr-label-gray-color: var(--clr-label-gray-color) !default;
 
-$clr-label-purple-bg-color: variables.$clr-color-secondary-action-500 !default;
-$clr-label-purple-color: $clr-label-font-color-light !default;
+$clr-label-purple-bg-color: var(--clr-label-purple-bg-color) !default;
+$clr-label-purple-border-color: var(--clr-label-purple-border-color) !default;
+$clr-label-purple-color: var(--clr-label-purple-color) !default;
 
-$clr-label-blue-bg-color: variables.$clr-color-action-800 !default;
-$clr-label-blue-color: $clr-label-font-color-light !default;
+$clr-label-blue-bg-color: var(--clr-label-blue-bg-color) !default;
+$clr-label-blue-border-color: var(--clr-label-blue-border-color) !default;
+$clr-label-blue-color: var(--clr-label-blue-color) !default;
 
-$clr-label-orange-bg-color: variables.$clr-color-warning-1000 !default;
-$clr-label-orange-color: $clr-label-font-color-dark !default;
+$clr-label-orange-bg-color: var(--clr-label-orange-bg-color) !default;
+$clr-label-orange-border-color: var(--clr-label-orange-border-color) !default;
+$clr-label-orange-color: var(--clr-label-orange-color) !default;
 
-$clr-label-light-blue-bg-color: variables.$clr-color-action-500 !default;
-$clr-label-light-blue-color: $clr-label-font-color-dark !default;
+$clr-label-light-blue-bg-color: var(--clr-label-light-blue-bg-color) !default;
+$clr-label-light-blue-border-color: var(--clr-label-light-blue-border-color) !default;
+$clr-label-light-blue-color: var(--clr-label-light-blue-color) !default;
 
-$clr-label-info-bg-color: variables.$clr-color-action-50 !default;
-$clr-label-info-font-color: variables.$clr-color-action-800 !default;
-$clr-label-info-border-color: variables.$clr-color-action-800 !default;
+$clr-label-info-bg-color: var(--clr-label-info-bg-color) !default;
+$clr-label-info-font-color: var(--clr-label-info-font-color) !default;
+$clr-label-info-border-color: var(--clr-label-info-border-color) !default;
 
-$clr-label-success-bg-color: variables.$clr-color-success-50 !default;
-$clr-label-success-font-color: variables.$clr-color-success-800 !default;
-$clr-label-success-border-color: variables.$clr-color-success-800 !default;
+$clr-label-success-bg-color: var(--clr-label-success-bg-color) !default;
+$clr-label-success-font-color: var(--clr-label-success-font-color) !default;
+$clr-label-success-border-color: var(--clr-label-success-border-color) !default;
 
-$clr-label-warning-bg-color: variables.$clr-color-warning-100 !default;
-$clr-label-warning-font-color: variables.$clr-color-neutral-900 !default;
-$clr-label-warning-border-color: variables.$clr-color-warning-800 !default;
+$clr-label-warning-bg-color: var(--clr-label-warning-bg-color) !default;
+$clr-label-warning-font-color: var(--clr-label-warning-font-color) !default;
+$clr-label-warning-border-color: var(--clr-label-warning-border-color) !default;
 
-$clr-label-danger-bg-color: variables.$clr-color-danger-100 !default;
-$clr-label-danger-font-color: variables.$clr-color-danger-900 !default;
-$clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
+$clr-label-danger-bg-color: var(--clr-label-danger-bg-color) !default;
+$clr-label-danger-font-color: var(--clr-label-danger-font-color) !default;
+$clr-label-danger-border-color: var(--clr-label-danger-border-color) !default;
+
+// ACTION COLORS
+$clr-label-hover-color: var(--clr-label-hover-color) !default;
+$clr-label-active-color: var(--clr-label-active-color) !default;
+$clr-label-bg-active-color: var(--clr-label-bg-active-color) !default;
+$clr-label-box-shadow: var(--clr-label-box-shadow) !default;
+$clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
+$clr-label-disabled-color: var(--clr-label-disabled-color) !default;
+$clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
 
 @function getLabelCssVarName($type: gray, $prop: color) {
   @if $prop == color {
@@ -66,11 +72,7 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
   }
 }
 
-@function getLabelColor($type: gray, $property: color, $var-type: 'sass-var') {
-  @if $var-type == 'css-var' {
-    @return getLabelCssVarName($type, $property);
-  }
-
+@function getLabelColor($type: gray, $property: color) {
   @if $type == gray {
     @return lookupGrayLabelColor($property);
   }
@@ -119,6 +121,10 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
     @return $clr-label-gray-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-gray-border-color;
+  }
+
   @return null;
 }
 
@@ -129,6 +135,10 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
 
   @if $property == bg-color {
     @return $clr-label-purple-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-purple-border-color;
   }
 
   @return null;
@@ -143,6 +153,10 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
     @return $clr-label-blue-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-blue-border-color;
+  }
+
   @return null;
 }
 
@@ -155,6 +169,10 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
     @return $clr-label-orange-bg-color;
   }
 
+  @if $property == border-color {
+    @return $clr-label-orange-border-color;
+  }
+
   @return null;
 }
 
@@ -165,6 +183,10 @@ $clr-label-danger-border-color: variables.$clr-color-danger-900 !default;
 
   @if $property == bg-color {
     @return $clr-label-light-blue-bg-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-label-light-blue-border-color;
   }
 
   @return null;
