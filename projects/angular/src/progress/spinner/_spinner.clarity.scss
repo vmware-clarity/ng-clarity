@@ -6,7 +6,6 @@
 @use 'sass:meta';
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'variables.spinner' as spinner-variables;
 @use 'properties.spinner' as spinner-properties;
 @include meta.load-css('properties.spinner');
@@ -129,11 +128,7 @@
 
   .btn-sm {
     .spinner {
-      @include mixins.min-equilateral-var(
-        clr-spinner-small-size,
-        variables.$clr_baselineRem_0_5416,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
       &::before,
       &::after {
         position: absolute;
@@ -167,11 +162,7 @@
   // Spinners inside treeview
   .clr-treenode-spinner-container {
     .spinner {
-      @include mixins.min-equilateral-var(
-        clr-spinner-small-size,
-        variables.$clr_baselineRem_0_65,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.min-equilateral(spinner-variables.$clr-spinner-small-size);
       &::before,
       &::after {
         border-style: solid;
