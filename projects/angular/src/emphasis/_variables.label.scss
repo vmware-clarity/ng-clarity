@@ -55,9 +55,7 @@ $clr-label-danger-bg-color: var(--clr-label-danger-bg-color) !default;
 $clr-label-danger-font-color: var(--clr-label-danger-font-color) !default;
 $clr-label-danger-border-color: var(--clr-label-danger-border-color) !default;
 
-// New variables
-$clr-label-border-width: var(--clr-label-border-width) !default;
-$clr-label-height: var(--clr-label-height) !default;
+// ACTION COLORS
 $clr-label-hover-color: var(--clr-label-hover-color) !default;
 $clr-label-active-color: var(--clr-label-active-color) !default;
 $clr-label-bg-active-color: var(--clr-label-bg-active-color) !default;
@@ -66,6 +64,10 @@ $clr-label-bg-disabled-color: var(--clr-label-bg-disabled-color) !default;
 $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
 $clr-label-disabled-border-color: var(--clr-label-disabled-border-color) !default;
 $clr-label-disabled-color: var(--clr-label-disabled-color) !default;
+
+// APPEARANCE
+$clr-label-border-width: var(--clr-label-border-width) !default;
+$clr-label-height: var(--clr-label-height) !default;
 
 @function getLabelCssVarName($type: gray, $prop: color) {
   @if $prop == color {
