@@ -10,6 +10,7 @@
 @use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.select') {
   .clr-select-wrapper,
@@ -84,7 +85,7 @@
     }
 
     &:hover::after {
-      background-image: icons.generateCaretIcon(forms-variables.$clr-forms-select-caret-hover-color);
+      background-color: forms-variables.$clr-forms-select-caret-hover-color;
     }
   }
 
@@ -105,12 +106,11 @@
   select[multiple],
   select[size] {
     padding: 0;
-    border: variables.$clr-global-borderwidth solid;
+    border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-select-multiple-border-color;
     background: forms-variables.$clr-forms-select-multiple-background-color;
-    border-color: forms-variables.$clr-forms-select-multiple-border-color;
-    border-radius: var(--clr-global-borderradius);
+    border-radius: tokens.$cds-alias-object-border-radius-100;
     height: auto;
-    min-width: variables.$clr_baselineRem_5;
+    min-width: mixins.baselinePx(120);
 
     &:hover,
     &:active {
@@ -125,19 +125,19 @@
 
   .clr-error select {
     &:not([multiple]) {
-      border-bottom-color: var(--clr-forms-invalid-color);
+      border-bottom-color: forms-variables.$clr-forms-invalid-color;
     }
     &[multiple] {
-      border-color: var(--clr-forms-invalid-color);
+      border-color: forms-variables.$clr-forms-invalid-color;
     }
   }
 
   .clr-success select {
     &:not([multiple]) {
-      border-bottom-color: var(--clr-forms-valid-color);
+      border-bottom-color: forms-variables.$clr-forms-valid-color;
     }
     &[multiple] {
-      border-color: var(--clr-forms-valid-color);
+      border-color: forms-variables.$clr-forms-valid-color;
     }
   }
 

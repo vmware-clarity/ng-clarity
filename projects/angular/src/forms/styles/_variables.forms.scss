@@ -49,10 +49,6 @@ $clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 $clr-forms-textarea-background-color: variables.$clr-color-neutral-0 !default;
 
 // Select
-$clr-forms-select-caret-hover-color: variables.$clr-color-neutral-600 !default;
-$clr-forms-select-caret-size: dropdown-variables.$clr-dropdown-caret-icon-dimension;
-
-// NEW
 $clr-forms-select-hover-border-color: var(--clr-forms-select-hover-border-color) !default;
 $clr-forms-select-hover-background: var(--clr-forms-select-hover-background) !default;
 $clr-forms-select-disabled-border-color: var(--clr-forms-select-disabled-border-color) !default;
@@ -61,6 +57,8 @@ $clr-forms-select-multiple-background-color: var(--clr-forms-select-multiple-bac
 $clr-forms-select-multiple-border-color: var(--clr-forms-select-multiple-border-color) !default;
 $clr-forms-select-multiple-option-color: var(--clr-forms-select-multiple-option-color) !default;
 $clr-forms-select-caret-color: var(--clr-forms-select-caret-color) !default;
+$clr-forms-select-caret-hover-color: var(--clr-forms-select-caret-hover-color) !default;
+$clr-forms-select-caret-size: var(--clr-forms-select-caret-size) !default;
 
 // Checkbox
 $clr-forms-checkbox-height: #{tokens.$cds-global-space-7} !default;
