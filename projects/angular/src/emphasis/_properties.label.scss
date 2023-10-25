@@ -9,7 +9,7 @@
 @include mixins.exports('label.properties') {
   :root {
     [cds-theme] {
-      // TYPOGRAPHIC STYLES
+      // COLOR
       --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
       --clr-label-font-color-dark: var(--clr-color-neutral-1000);
 
