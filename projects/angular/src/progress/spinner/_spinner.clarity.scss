@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use 'variables.spinner' as spinner-variables;
 @use 'properties.spinner' as spinner-properties;
+@use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.spinner');
 
 @include mixins.exports('spinner.clarity') {
@@ -112,7 +113,7 @@
       padding: 0;
       text-indent: 100%;
 
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
 
       &::before,
       &::after {
@@ -121,14 +122,14 @@
         left: 0;
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
       }
     }
   }
 
   .btn-sm {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
       &::before,
       &::after {
         position: absolute;
@@ -138,7 +139,7 @@
         border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
       }
       &::before {
         content: '';
@@ -155,20 +156,20 @@
 
   .btn-icon:not(.btn-sm) {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-button-size);
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
     }
   }
 
   // Spinners inside treeview
   .clr-treenode-spinner-container {
     .spinner {
-      @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-treeview-size);
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
       &::before,
       &::after {
         border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-treeview-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
-        @include mixins.min-equilateral(spinner-variables.$clr-spinner-inside-treeview-size);
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
       }
       &::before {
         content: '';

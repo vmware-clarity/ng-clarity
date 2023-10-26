@@ -13,8 +13,6 @@
     --clr-spinner-default-size: #{tokens.$cds-global-space-14};
     --clr-spinner-medium-size: #{tokens.$cds-global-space-11};
     --clr-spinner-small-size: #{tokens.$cds-global-space-8};
-    --clr-spinner-inside-button-size: #{tokens.$cds-global-space-7};
-    --clr-spinner-inside-treeview-size: #{tokens.$cds-global-space-7};
 
     --clr-spinner-inside-button-stroke-width: #{mixins.baselinePx(1.3)};
     --clr-spinner-inside-treeview-stroke-width: #{mixins.baselinePx(1.3)};
