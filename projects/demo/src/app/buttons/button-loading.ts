@@ -20,7 +20,7 @@ export class ButtonLoadingDemo {
   disabledStateDisabled = false;
   enabledStateDisabled = false;
 
-  validateSmState = false;
+  validateSmState = true;
   submitSmState: ClrLoadingState = ClrLoadingState.DEFAULT;
   validateFalsyState: any;
 
@@ -57,8 +57,8 @@ export class ButtonLoadingDemo {
   validateSmDemo() {
     this.validateSmState = true;
     setTimeout(() => {
-      this.validateSmState = false;
-    }, 1500);
+      this.validateSmState = true;
+    }, 1500000000);
   }
 
   submitSmDemo() {

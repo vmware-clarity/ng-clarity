@@ -35,8 +35,8 @@
       border-width: spinner-variables.$clr-spinner-default-stroke-width;
       border-style: solid;
       border-color: spinner-variables.$clr-spinner-fill-color;
-      border-right-color: transparent !important;
-      border-bottom-color: transparent !important;
+      border-right-color: transparent; // !important;
+      border-bottom-color: transparent; // !important;
       border-radius: spinner-variables.$clr-spinner-border-radius;
     }
 
@@ -115,13 +115,9 @@
   //Spinners inside of buttons
   .btn {
     .spinner {
-      display: inline-block;
       margin-right: 0;
-      padding: 0;
-      text-indent: 100%;
 
       @include mixins.min-equilateral(tokens.$cds-global-space-7);
-
       &::before,
       &::after {
         position: absolute;
@@ -139,6 +135,7 @@
       @include mixins.min-equilateral(tokens.$cds-global-space-7);
       &::before,
       &::after {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -147,16 +144,6 @@
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
         @include mixins.min-equilateral(tokens.$cds-global-space-7);
-      }
-      &::before {
-        content: '';
-        border-color: spinner-variables.$clr-spinner-fill-bg-color;
-      }
-      &::after {
-        content: '';
-        border-color: spinner-variables.$clr-spinner-fill-color;
-        border-right-color: transparent !important;
-        border-bottom-color: transparent !important;
       }
     }
   }
