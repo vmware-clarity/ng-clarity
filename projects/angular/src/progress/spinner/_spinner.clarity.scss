@@ -101,7 +101,7 @@
       &::before {
         border: none;
       }
-      background: icons.generateCheckIcon(tokens.$cds-global-color-blue-700);
+      background: icons.generateCheckIcon(spinner-variables.$clr-spinner-color);
     }
   }
 

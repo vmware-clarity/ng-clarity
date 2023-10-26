@@ -5,6 +5,8 @@
  */
 @use '../../utils/variables/variables.color';
 
+$clr-spinner-color: variables.$clr-color-action-600 !default;
+
 $clr-spinner-default-size: var(--clr-spinner-default-size) !default;
 $clr-spinner-medium-size: var(--clr-spinner-medium-size) !default;
 $clr-spinner-small-size: var(--clr-spinner-small-size) !default;
