@@ -126,17 +126,6 @@
     }
   }
 
-  .btn-sm {
-    .spinner {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
-      &::before,
-      &::after {
-        border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
-      }
-    }
-  }
-
   .btn-icon:not(.btn-sm) {
     .spinner {
       @include mixins.min-equilateral(tokens.$cds-global-space-7);
@@ -151,14 +140,6 @@
       &::after {
         border-width: spinner-variables.$clr-spinner-inside-treeview-stroke-width;
         @include mixins.min-equilateral(tokens.$cds-global-space-7);
-      }
-      &::before {
-        border-color: spinner-variables.$clr-spinner-fill-bg-color;
-      }
-      &::after {
-        border-color: spinner-variables.$clr-spinner-fill-color;
-        border-right-color: transparent;
-        border-bottom-color: transparent;
       }
     }
   }
