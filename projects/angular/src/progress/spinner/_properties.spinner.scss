@@ -4,8 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use './variables.spinner' as spinner-variables;
 @use '@cds/core/tokens/tokens.scss';
 
 :root {
