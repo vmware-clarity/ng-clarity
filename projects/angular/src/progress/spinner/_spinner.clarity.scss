@@ -32,11 +32,9 @@
       top: 0;
       left: 0;
       clip-path: ellipse(100% 53.5% at 0 0);
-      border-width: spinner-variables.$clr-spinner-default-stroke-width;
-      border-style: solid;
-      border-color: spinner-variables.$clr-spinner-fill-color;
-      border-right-color: transparent; // !important;
-      border-bottom-color: transparent; // !important;
+      border: spinner-variables.$clr-spinner-default-stroke-width solid spinner-variables.$clr-spinner-fill-color;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
       border-radius: spinner-variables.$clr-spinner-border-radius;
     }
 
@@ -46,9 +44,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      border-width: spinner-variables.$clr-spinner-default-stroke-width;
-      border-style: solid;
-      border-color: spinner-variables.$clr-spinner-fill-bg-color;
+      border: spinner-variables.$clr-spinner-default-stroke-width solid spinner-variables.$clr-spinner-fill-bg-color;
       border-radius: spinner-variables.$clr-spinner-border-radius;
     }
 
