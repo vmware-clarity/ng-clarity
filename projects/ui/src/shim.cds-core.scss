@@ -1821,6 +1821,9 @@
   .clr-vertical-nav.has-icons .nav-group-children .nav-link {
     padding: var(--clr-vertical-nav-item-child-padding);
   }
+  .clr-vertical-nav.has-nav-groups .nav-group-content > .nav-link {
+    font-weight: var(--clr-vertical-nav-item-top-level-font-weight);
+  }
 
   /* Tables */
 

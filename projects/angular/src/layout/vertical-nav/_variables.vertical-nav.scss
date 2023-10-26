@@ -6,10 +6,6 @@
 @use '../../utils/variables/variables';
 
 // Usage: ./_vertical-nav.clarity.scss
-//Vertical Nav: Links
-$clr-vertical-nav-link-padding-right: variables.$clr_baselineRem_0_5 !default;
-$clr-vertical-nav-link-padding-left: variables.$clr_baselineRem_1 !default;
-
 //Vertical Nav: Divider
 $clr-vertical-nav-divider-color: variables.$clr-color-neutral-700 !default;
 $clr-vertical-nav-divider-margin: variables.$clr_baselineRem_0_5 !default;
