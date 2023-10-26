@@ -166,8 +166,8 @@
       &::after {
         content: '';
         border-color: spinner-variables.$clr-spinner-fill-color;
-        border-right-color: transparent !important;
-        border-bottom-color: transparent !important;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
       }
     }
   }
