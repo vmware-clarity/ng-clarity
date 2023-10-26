@@ -29,7 +29,6 @@
 | --clr-forms-select-multiple-background-color    | Background color of multiple select                   |
 | --clr-forms-select-multiple-border-color        | Border color of multiple select                       |
 | --clr-forms-select-multiple-option-color        | Font color of options in multiple select              |
-| --clr-forms-select-multiple-error-focus-color   | Not used                                              |
 | --clr-forms-checkbox-label-color                | Font color of checkbox label                          |
 | --clr-forms-checkbox-background-color           | Background color of checkbox                          |
 | --clr-forms-checkbox-indeterminate-border-color | Border color of indeterminate checkbox                |
