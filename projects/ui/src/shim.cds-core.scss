@@ -510,17 +510,6 @@
   --clr-forms-textarea-wrapper-margin-left: #{tokens.$cds-global-space-5};
   --clr-forms-textarea-wrapper-margin-top: #{tokens.$cds-global-space-5};
 
-  // Select
-  --clr-forms-select-hover-background: transparent;
-  --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
-  --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-container-background};
-  --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover}; // #{tokens.$cds-global-color-gray-600}; // var(--clr-color-neutral-600);
-  --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color}; // #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
-  --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
-  --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
-  --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
-  --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
-
   // Range
   --clr-forms-range-progress-fill-color: #{tokens.$cds-alias-object-interaction-background-highlight};
   --clr-forms-range-track-color: #{tokens.$cds-alias-object-container-background-shade};
