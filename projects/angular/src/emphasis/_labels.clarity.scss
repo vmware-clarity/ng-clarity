@@ -48,7 +48,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    gap: tokens.$cds-global-space-5;
+    gap: tokens.$cds-global-space-3;
     padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
     border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-200;
@@ -58,23 +58,22 @@
     color: label-variables.$clr-label-font-color-light;
     text-decoration: none;
 
-    &:has(> .badge),
-    &:has(> cds-icon) {
-      padding-right: tokens.$cds-global-space-3;
-    }
-
-    .badge,
-    cds-icon {
+    > .badge,
+    > cds-icon {
       margin: 0;
       text-decoration: none;
     }
 
-    &:has(.badge) {
-      gap: tokens.$cds-global-space-3;
+    cds-icon {
+      margin-left: tokens.$cds-global-space-3;
     }
 
-    &.clickable:not(:has(.text)) {
-      text-decoration: underline;
+    .badge + cds-icon {
+      margin-left: 0;
+    }
+
+    & > *:last-child {
+      margin-right: calc(-1 * #{tokens.$cds-global-space-3});
     }
 
     &.clickable > .text {
@@ -115,10 +114,6 @@
     @include generateStatusLabelStyles(success);
     @include generateStatusLabelStyles(warning);
     @include generateStatusLabelStyles(danger);
-
-    & > .badge {
-      margin: 0;
-    }
 
     &.disabled,
     &:disabled {
