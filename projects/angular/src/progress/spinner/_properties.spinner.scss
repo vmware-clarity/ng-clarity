@@ -11,8 +11,8 @@
     --clr-spinner-medium-size: #{tokens.$cds-global-space-11};
     --clr-spinner-small-size: #{tokens.$cds-global-space-8};
 
-    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-global-space-1};
-    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-global-space-1};
+    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-alias-object-border-width-100};
+    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-alias-object-border-width-100};
 
     --clr-spinner-default-stroke-width: #{tokens.$cds-global-space-4};
     --clr-spinner-medium-stroke-width: #{tokens.$cds-alias-object-border-width-400};
