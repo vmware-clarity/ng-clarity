@@ -5,102 +5,36 @@
  */
 @use 'sass:meta';
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
 @use 'variables.badges' as badges-variables;
 @use 'variables.label' as label-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.label');
 
 @mixin generateLabelStyles($color: gray, $alias: 1) {
-  $sassVarBgColor: label-variables.getLabelColor($color, bg-color);
-  $cssVarBgColor: label-variables.getLabelColor($color, bg-color, 'css-var');
-  $sassVarTextColor: label-variables.getLabelColor($color, color);
-  $cssVarTextColor: label-variables.getLabelColor($color, color, 'css-var');
-  $cssVarBorderColor: label-variables.getLabelColor($color, border-color, 'css-var');
-
   &.label-#{'' + $color},
   &.label-#{$alias} {
-    @include mixins.css-var(
-      border-width,
-      clr-label-border-width,
-      label-variables.$clr-label-borderwidth,
-      variables.$clr-use-custom-properties
-    );
-    border-style: solid;
-    @include mixins.css-var(border-color, $cssVarBorderColor, $sassVarBgColor, variables.$clr-use-custom-properties);
-    @include mixins.css-var(background-color, $cssVarBgColor, transparent, variables.$clr-use-custom-properties);
-  }
-
-  &.clickable.label-#{'' + $color} {
-    &:active {
-      @include mixins.css-var(
-        box-shadow,
-        clr-label-box-shadow,
-        0 label-variables.$clr-label-borderwidth 0 0 $sassVarBgColor inset,
-        variables.$clr-use-custom-properties
-      );
-    }
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($color, border-color);
+    background-color: label-variables.getLabelColor($color, bg-color);
   }
 
   &.label-#{'' + $color} > .badge {
-    @include mixins.css-var(
-      background,
-      badges-variables.getBadgeColor($color, bg-color, 'css-var'),
-      badges-variables.getBadgeColor($color, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      badges-variables.getBadgeColor($color, color, 'css-var'),
-      badges-variables.getBadgeColor($color, color),
-      variables.$clr-use-custom-properties
-    );
+    background: badges-variables.getBadgeColor($color, bg-color);
+    color: badges-variables.getBadgeColor($color, color);
   }
 }
 
 @mixin generateStatusLabelStyles($status: info) {
   &.label-#{$status} {
-    @include mixins.css-var(
-      background,
-      label-variables.getLabelColor($status, bg-color, 'css-var'),
-      label-variables.getLabelColor($status, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      label-variables.getLabelColor($status, color, 'css-var'),
-      label-variables.getLabelColor($status, color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-width,
-      clr-label-border-width,
-      label-variables.$clr-label-borderwidth,
-      variables.$clr-use-custom-properties
-    );
-    border-style: solid;
-    @include mixins.css-var(
-      border-color,
-      label-variables.getLabelColor($status, border-color, 'css-var'),
-      label-variables.getLabelColor($status, border-color),
-      variables.$clr-use-custom-properties
-    );
+    background: label-variables.getLabelColor($status, bg-color);
+    color: label-variables.getLabelColor($status, color);
+    border: label-variables.$clr-label-borderwidth solid label-variables.getLabelColor($status, border-color);
   }
   &.label-#{'' + $status} > .badge {
-    @include mixins.css-var(
-      background,
-      badges-variables.getBadgeColor($status, bg-color, 'css-var'),
-      badges-variables.getBadgeColor($status, bg-color),
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      badges-variables.getBadgeColor($status, color, 'css-var'),
-      badges-variables.getBadgeColor($status, color),
-      variables.$clr-use-custom-properties
-    );
+    background: badges-variables.getBadgeColor($status, bg-color);
+    color: badges-variables.getBadgeColor($status, color);
   }
 }
-
-@include meta.load-css('properties.label');
 
 @include mixins.exports('labels.clarity') {
   //NOTE: Had to use inline-flex, reset line-height to normal, and had to use change a few values
@@ -110,84 +44,45 @@
   .label,
   a.label {
     //default
-    $label-nudge-for-vertical-alignment: variables.$clr_baselineRem_1px;
-    @include mixins.css-var(
-      font-size,
-      clr-label-font-size,
-      label-variables.$clr-label-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-weight,
-      clr-label-font-weight,
-      label-variables.$clr-label-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-label-letter-spacing,
-      label-variables.$clr-label-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-label-line-height,
-      // line-height needed to be adjusted to force center alignment
-      label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
-      variables.$clr-use-custom-properties
-    );
-
+    @include mixins.generate-typography-token('CAPTION-LG-11');
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    @include mixins.css-var(
-      padding,
-      clr-label-padding,
-      0 label-variables.$clr-label-padding-left-right 0,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(gap, clr-label-gap-size, 0, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      border-radius,
-      clr-label-border-radius,
-      variables.$clr_baselineRem_0_5,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-width,
-      clr-label-border-width,
-      label-variables.$clr-label-borderwidth,
-      variables.$clr-use-custom-properties
-    );
-    border-style: solid;
-    @include mixins.css-var(
-      border-color,
-      clr-label-default-border-color,
-      label-variables.$clr-label-default-border-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      height,
-      clr-label-height,
-      variables.$clr_baselineRem_0_875,
-      variables.$clr-use-custom-properties
-    );
-    margin: 0 variables.$clr_baselineRem_0_25 $label-nudge-for-vertical-alignment 0;
+    gap: tokens.$cds-global-space-5;
+    padding: tokens.$cds-global-space-3 tokens.$cds-global-space-5;
+    border: label-variables.$clr-label-borderwidth solid label-variables.$clr-label-default-border-color;
+    border-radius: tokens.$cds-alias-object-border-radius-200;
+    height: tokens.$cds-global-space-9;
+    margin: 0 tokens.$cds-global-space-4 tokens.$cds-global-space-1 0;
     white-space: nowrap;
-    @include mixins.css-var(
-      color,
-      clr-label-font-color-light,
-      label-variables.$clr-label-font-color-light,
-      variables.$clr-use-custom-properties
-    );
+    color: label-variables.$clr-label-font-color-light;
+    text-decoration: none;
+
+    &:has(> .badge),
+    &:has(> cds-icon) {
+      padding-right: tokens.$cds-global-space-3;
+    }
+
+    .badge,
+    cds-icon {
+      margin: 0;
+      text-decoration: none;
+    }
+
+    &:has(.badge) {
+      gap: tokens.$cds-global-space-3;
+    }
+
+    &.clickable:not(:has(.text)) {
+      text-decoration: underline;
+    }
+
+    &.clickable > .text {
+      text-decoration: underline;
+    }
 
     &:visited {
-      @include mixins.css-var(
-        color,
-        clr-label-font-color-light,
-        label-variables.$clr-label-font-color-light,
-        variables.$clr-use-custom-properties
-      );
+      color: label-variables.$clr-label-font-color-light;
     }
 
     &:focus,
@@ -196,76 +91,17 @@
       text-decoration: none;
     }
 
-    &.clickable {
-      @include mixins.css-var(
-        font-size,
-        clr-label-clickable-font-size,
-        label-variables.$clr-label-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-weight,
-        clr-label-clickable-font-weight,
-        label-variables.$clr-label-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-label-clickable-letter-spacing,
-        label-variables.$clr-label-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-label-clickable-line-height,
-        // line-height needed to be adjusted to force center alignment
-        label-variables.$clr-label-font-size + variables.$clr_baselineRem_1px,
-        variables.$clr-use-custom-properties
-      );
-    }
-
     &.clickable:not(.disabled) {
       &:hover {
         text-decoration: none;
-        @include mixins.css-var(
-          background,
-          clr-label-bg-hover-color,
-          label-variables.$clr-label-bg-hover-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          color,
-          clr-label-hover-color,
-          label-variables.$clr-label-font-color-light,
-          variables.$clr-use-custom-properties
-        );
+        background: label-variables.$clr-label-bg-hover-color;
+        color: label-variables.$clr-label-hover-color;
       }
 
       &:active {
-        @include mixins.css-var(
-          color,
-          clr-label-active-color,
-          label-variables.$clr-label-font-color-light,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          background,
-          clr-label-bg-active-color,
-          label-variables.$clr-label-bg-hover-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          box-shadow,
-          clr-label-box-shadow,
-          0 variables.$clr_baselineRem_1px 0 0 label-variables.getLabelColor(gray, bg-color) inset,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          transform,
-          clr-label-pressed-transform,
-          translateY(0.5px),
-          variables.$clr-use-custom-properties
-        );
+        color: label-variables.$clr-label-active-color;
+        background: label-variables.$clr-label-bg-active-color;
+        transform: translateY(tokens.$cds-global-space-2);
       }
     }
 
@@ -281,39 +117,18 @@
     @include generateStatusLabelStyles(danger);
 
     & > .badge {
-      margin: 0 (-1 * variables.$clr_baselineRem_0_375) 0 variables.$clr_baselineRem_0_25;
-      //-0.375 is -9px. 12px initial label padding plus a negative margin of 9
+      margin: 0;
     }
 
     &.disabled,
     &:disabled {
       cursor: not-allowed;
       pointer-events: none;
-      @include mixins.css-var(
-        background,
-        clr-label-bg-disabled-color,
-        transparent,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        color,
-        clr-label-disabled-color,
-        label-variables.$clr-label-font-color-light,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-color,
-        clr-label-disabled-border-color,
-        label-variables.$clr-label-default-border-color,
-        variables.$clr-use-custom-properties
-      );
+      background: label-variables.$clr-label-bg-disabled-color;
+      color: label-variables.$clr-label-disabled-color;
+      border-color: label-variables.$clr-label-disabled-border-color;
       .badge {
-        @include mixins.css-var(
-          background,
-          clr-label-disabled-color,
-          label-variables.getLabelColor(gray, bg-color),
-          variables.$clr-use-custom-properties
-        );
+        background: label-variables.$clr-label-disabled-color;
       }
     }
   }
