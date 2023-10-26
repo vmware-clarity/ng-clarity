@@ -76,6 +76,8 @@
       // TODO: get ux input on direction here
       &::after {
         border-color: spinner-variables.$clr-spinner-fill-inverse-color;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
       }
       &::before {
         border-color: spinner-variables.$clr-spinner-fill-inverse-bg-color;
