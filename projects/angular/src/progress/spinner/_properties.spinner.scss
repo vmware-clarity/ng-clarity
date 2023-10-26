@@ -3,7 +3,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
 
 :root {
@@ -12,8 +11,8 @@
     --clr-spinner-medium-size: #{tokens.$cds-global-space-11};
     --clr-spinner-small-size: #{tokens.$cds-global-space-8};
 
-    --clr-spinner-inside-button-stroke-width: #{mixins.baselinePx(1.3)};
-    --clr-spinner-inside-treeview-stroke-width: #{mixins.baselinePx(1.3)};
+    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-global-space-1};
+    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-global-space-1};
 
     --clr-spinner-default-stroke-width: #{tokens.$cds-global-space-4};
     --clr-spinner-medium-stroke-width: #{tokens.$cds-global-space-3};

@@ -7,6 +7,7 @@
 @use '../../image/icons.clarity';
 @use '../../utils/mixins';
 @use 'variables.spinner' as spinner-variables;
+@use '../../button/variables.buttons' as button-variables;
 @use 'properties.spinner' as spinner-properties;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.spinner');
@@ -101,7 +102,13 @@
       &::before {
         border: none;
       }
-      background: icons.generateCheckIcon(spinner-variables.$clr-spinner-color);
+      // Using mask instead of background-image so we can use the CSS properties
+      // and support both light / dark themes.
+      -webkit-mask: icons.generateCheckIcon();
+      mask: icons.generateCheckIcon();
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      background-color: button-variables.$clr-btn-success-checked-color;
     }
   }
 
