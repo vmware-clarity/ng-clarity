@@ -136,7 +136,6 @@
         top: 0;
         left: 0;
 
-        border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-button-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
         @include mixins.min-equilateral(tokens.$cds-global-space-7);
@@ -156,7 +155,6 @@
       @include mixins.min-equilateral(tokens.$cds-global-space-7);
       &::before,
       &::after {
-        border-style: solid;
         border-width: spinner-variables.$clr-spinner-inside-treeview-stroke-width;
         border-radius: spinner-variables.$clr-spinner-border-radius;
         @include mixins.min-equilateral(tokens.$cds-global-space-7);
