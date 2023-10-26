@@ -18,6 +18,7 @@
     position: relative;
     display: inline-block;
     @include mixins.min-equilateral(spinner-variables.$clr-spinner-default-size);
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
     animation: spin 1s linear infinite;
     margin-right: 0;
     padding: 0;
