@@ -65,7 +65,7 @@
       width: 100%;
     }
 
-    .modal-footer.clr-wizard-footer {
+    .modal-footer {
       display: block;
       width: 100%;
       flex: 0 0 wizard-variables.$clr-wizard-footer-height;
@@ -175,7 +175,7 @@
 
       &:not(.disabled):hover .clr-wizard-stepnav-link {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
-        background-color: transparent;
+        background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
       }
 
       &.active {
@@ -285,7 +285,6 @@
 
     .clr-wizard-page:not([aria-hidden='true']) {
       display: block;
-      padding: 0;
     }
   }
 
