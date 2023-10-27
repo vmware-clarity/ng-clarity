@@ -19,6 +19,8 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string; children }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications', children: childLinks },
   { iconShapeTuple: homeIcon, text: 'Dashboard', children: childLinks },
   { iconShapeTuple: searchIcon, text: 'Search', children: childLinks },
+];
+const navButtonLinks: { iconShapeTuple: IconShapeTuple; text: string; children }[] = [
   { iconShapeTuple: calendarIcon, text: 'Calendar', children: childLinks },
   { iconShapeTuple: folderIcon, text: 'Files', children: childLinks },
   { iconShapeTuple: userIcon, text: 'Profile', children: childLinks },
@@ -26,41 +28,72 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string; children }[] = [
 
 const defaultStory: Story = args => ({
   template: `
-    <div class="main-container">
-      <div class="content-container">
-        <clr-vertical-nav
-          [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
-          [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
-          (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
+<div class="main-container">
+  <div class="content-container">
+    <clr-vertical-nav
+      [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+      [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
+      (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
+    >
+      <!-- Example of a top-level link without a group -->
+      <a
+        (click)="handleClick($event, 'settings')"
+        [ngClass]="{ 'active': 'Settings'.toLowerCase() == activeRoute }"
+        clrVerticalNavLink
+        href="javascript:void(0)"
+      >
+        <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLinks[2].iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+        Settings
+      </a>
+      <!-- Example of a top-level link with a group -->
+      <clr-vertical-nav-group
+        *ngFor="let navLink of navLinks"
+        [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+        [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+        (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+      >
+        <a
+          (click)="handleClick($event, navLink.text.toLowerCase())"
+          [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+          clrVerticalNavLink
+          href="javascript:void(0)"
         >
-          <clr-vertical-nav-group 
-            *ngFor="let navLink of navLinks" 
-            [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
-            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+          <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+          {{navLink.text}}
+        </a>
+        <clr-vertical-nav-group-children>
+          <a clrVerticalNavLink
+             *ngFor="let childNavLink of navLink.children; let index = index"
+             [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+             (click)="handleClick($event, createRoute(navLink.text, index))"
+             href="javascript:void(0)"
           >
-            <a
-                (click)="handleClick($event, navLink.text.toLowerCase())"
-              [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
-              clrVerticalNavLink
-              href="javascript:void(0)"
-            >
-              <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              {{navLink.text}}
-            </a>
-            <clr-vertical-nav-group-children>
-              <a clrVerticalNavLink
-                *ngFor="let childNavLink of navLink.children; let index = index"
-                [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
-                (click)="handleClick($event, createRoute(navLink.text, index))"
-              >
-                {{createRoute(navLink.text, index)}}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-        </clr-vertical-nav>
-      </div>
-    </div>
+            {{createRoute(navLink.text, index)}}
+          </a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+      <!-- Example of a top-level text with a group -->
+      <clr-vertical-nav-group
+        *ngFor="let navButtonLink of navButtonLinks"
+        [ngClass]="{ 'active': navButtonLink.text.toLowerCase() == activeRoute }"
+        [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+        (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+      >
+        <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+        {{navButtonLink.text}}
+        <clr-vertical-nav-group-children>
+          <a clrVerticalNavLink
+             *ngFor="let childNavLink of navButtonLink.children; let index = index"
+             [ngClass]="{ 'active': createRoute(navButtonLink.text, index) == activeRoute }"
+             (click)="handleClick($event, createRoute(navButtonLink.text, index))"
+          >
+            {{createRoute(navButtonLink.text, index)}}
+          </a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  </div>
+</div>
   `,
   props: { ...args },
 });
@@ -80,21 +113,23 @@ const defaultParameters: Parameters = {
     toggleByButton: { control: { disable: true }, table: { disable: true } },
     // story helpers
     navLinks: { control: { disable: true }, table: { disable: true } },
+    navButtonLinks: { control: { disable: true }, table: { disable: true } },
     createRoute: { control: { disable: true }, table: { disable: true } },
     handleClick: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
+    clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
     // story helpers
     navLinks,
+    navButtonLinks,
     activeRoute: 'notifications',
     includeIcons: true,
     createRoute: function (text, i) {
       return `${text.toLowerCase()}/${i}`;
     },
     handleClick: function (event, route) {
-      event.stopPropagation();
       this.activeRoute = route;
     },
   },
