@@ -761,36 +761,6 @@
     }
   }
 
-  /* Modal */
-
-  --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-modal-title-line-height: var(--clr-h4-line-height);
-  --clr-modal-title-font-size: var(--clr-h4-font-size);
-  --clr-modal-title-font-weight: var(--clr-h4-font-weight);
-  --clr-modal-title-font-family: #{tokens.$cds-alias-typography-header-font-family};
-  --clr-modal-text-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-modal-close-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-600);
-  --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
-  --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background}; // var(--clr-color-neutral-900);
-  --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
-  --clr-modal-content-border-style: solid;
-  --clr-modal-content-border-color: #{tokens.$cds-alias-object-container-border-color};
-  --clr-modal-content-border-width: #{tokens.$cds-alias-object-border-width-100};
-  --clr-modal-content-padding: #{tokens.$cds-global-space-9}; // ATM - remove and use as default
-  --clr-modal-sm-content-padding: #{tokens.$cds-global-space-9}; // ATM - remove and use as default
-  --clr-modal-header-padding: 0 0 #{tokens.$cds-global-space-9} 0; // ATM - remove and use as default
-  --clr-modal-sm-header-padding: 0 0 #{tokens.$cds-global-space-9} 0;
-  --clr-modal-footer-padding: #{tokens.$cds-global-space-9} 0 0 0; // ATM - remove and use as default
-  --clr-modal-sm-footer-padding: #{tokens.$cds-global-space-9} 0 0 0; // ATM - remove and use as default
-  --clr-modal-footer-gap: #{tokens.$cds-global-space-5};
-  --clr-modal-sm-width: #{baselinePx(288)};
-  --clr-modal-md-width: #{baselinePx(576)};
-  --clr-modal-lg-width: #{baselinePx(864)};
-  --clr-modal-xl-width: #{baselinePx(1152)};
-  --clr-modal-close-icon-size: #{tokens.$cds-global-space-9};
-  --clr-modal-title-padding: 0; // ATM - remove and use as default
-
   /* Navigation */
 
   --clr-link-active-color: #{tokens.$cds-alias-typography-link-color};
@@ -1038,43 +1008,6 @@
   --clr-tooltip-arrow-height: #{tokens.$cds-global-space-5};
   --clr-tooltip-arrow-horizontal-size: calc(-1 * #{tokens.$cds-global-space-6});
   --clr-tooltip-arrow-vertical-size: calc(-1 * #{tokens.$cds-global-space-6});
-
-  /* Wizard */
-  --clr-wizard-main-padding: #{tokens.$cds-global-space-9};
-  --clr-wizard-stepnav-link-font-size: #{tokens.$cds-global-typography-font-size-4};
-  --clr-wizard-stepnav-link-line-height: #{baselinePx(20)};
-  --clr-wizard-stepnav-item-padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
-  --clr-wizard-stepnav-padding: 0 0 var(--clr-wizard-main-padding) var(--clr-wizard-main-padding);
-  --clr-wizard-stepnav-link-padding: #{tokens.$cds-global-space-5};
-  --clr-wizard-stepnav-link-suffix-padding: 0 #{tokens.$cds-global-space-5} 0 0;
-  --clr-wizard-stepnav-link-error-icon-color: #{tokens.$cds-alias-status-danger};
-  --clr-wizard-stepnav-item-error-border-color: transparent;
-  --clr-wizard-box-shadow: #{tokens.$cds-alias-object-shadow-300};
-  --clr-wizard-content-background-color: #{tokens.$cds-alias-object-container-background};
-
-  --clr-wizard-main-bgcolor: #{tokens.$cds-alias-object-overlay-background}; // var(--clr-color-neutral-0);
-  --clr-wizard-stepnav-bgcolor: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-50);
-  --clr-wizard-main-text-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-on-neutral-0);
-  --clr-wizard-stepnav-text: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-900);
-  --clr-wizard-stepnav-text--active: #{tokens.$cds-alias-object-interaction-color-selected}; // indirectly mapped
-  --clr-wizard-title-text: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-1000);
-  --clr-wizard-title-padding: var(--clr-wizard-main-padding);
-  --clr-wizard-stepnav-item-border-color: #{tokens.$cds-alias-status-neutral-tint}; // var(--clr-color-neutral-200);
-  --clr-wizard-stepnav-border-size: #{tokens.$cds-global-space-3};
-  --clr-wizard-stepnav-item-border-color--active: #{tokens.$cds-alias-status-success}; // var(--clr-color-success-400);
-  --clr-wizard-stepnav-active-bgcolor: #{tokens.$cds-alias-object-interaction-background-selected}; // indirectly mapped
-  --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover}; // indirectly mapped
-  --clr-wizard-header-action-color: #{tokens.$cds-global-color-gray-600}; // wth? var(--clr-color-neutral-600);
-  --clr-wizard-header-action-color--hovered: #{tokens.$cds-global-color-gray-1000}; // wth? var(--clr-color-neutral-1000);
-
-  --clr-wizard-stepnav-border-color: #{tokens.$cds-alias-object-container-border-color};
-  --clr-wizard-page-padding: 0;
-  --clr-wizard-footer-padding: 0 var(--clr-wizard-main-padding) var(--clr-wizard-main-padding) var(--clr-wizard-main-padding);
-  --clr-wizard-footer-height: auto;
-  --clr-wizard-footer-btn-wrapper-min-width: auto; // ATM - remove
-  --clr-wizard-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-wizard-header-padding: var(--clr-wizard-main-padding) var(--clr-wizard-main-padding) 0 var(--clr-wizard-main-padding);
-  --clr-wizard-footer-buttons-wrapper-gap: #{tokens.$cds-global-space-7};
 
   /* Tree View */
 
