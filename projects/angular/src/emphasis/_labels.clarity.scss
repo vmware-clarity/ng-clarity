@@ -72,7 +72,8 @@
       margin-left: 0;
     }
 
-    & > *:last-child {
+    // not span will cover for inner text and combobox pills
+    & > *:last-child:not(span) {
       margin-right: calc(-1 * #{tokens.$cds-global-space-3});
     }
 
