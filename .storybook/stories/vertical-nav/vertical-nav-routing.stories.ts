@@ -28,72 +28,72 @@ const navButtonLinks: { iconShapeTuple: IconShapeTuple; text: string; children }
 
 const defaultStory: Story = args => ({
   template: `
-<div class="main-container">
-  <div class="content-container">
-    <clr-vertical-nav
-      [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
-      [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
-      (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
-    >
-      <!-- Example of a top-level link without a group -->
-      <a
-        (click)="handleClick($event, 'settings')"
-        [ngClass]="{ 'active': 'Settings'.toLowerCase() == activeRoute }"
-        clrVerticalNavLink
-        href="javascript:void(0)"
-      >
-        <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLinks[2].iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-        Settings
-      </a>
-      <!-- Example of a top-level link with a group -->
-      <clr-vertical-nav-group
-        *ngFor="let navLink of navLinks"
-        [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
-        [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-        (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-      >
-        <a
-          (click)="handleClick($event, navLink.text.toLowerCase())"
-          [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
-          clrVerticalNavLink
-          href="javascript:void(0)"
+    <div class="main-container">
+      <div class="content-container">
+        <clr-vertical-nav
+          [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+          [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
+          (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >
-          <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-          {{navLink.text}}
-        </a>
-        <clr-vertical-nav-group-children>
-          <a clrVerticalNavLink
-             *ngFor="let childNavLink of navLink.children; let index = index"
-             [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
-             (click)="handleClick($event, createRoute(navLink.text, index))"
-             href="javascript:void(0)"
+          <!-- Example of a top-level link without a group -->
+          <a
+            (click)="handleClick($event, 'settings')"
+            [ngClass]="{ 'active': 'Settings'.toLowerCase() == activeRoute }"
+            clrVerticalNavLink
+            href="javascript:void(0)"
           >
-            {{createRoute(navLink.text, index)}}
+            <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLinks[2].iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+            Settings
           </a>
-        </clr-vertical-nav-group-children>
-      </clr-vertical-nav-group>
-      <!-- Example of a top-level text with a group -->
-      <clr-vertical-nav-group
-        *ngFor="let navButtonLink of navButtonLinks"
-        [ngClass]="{ 'active': navButtonLink.text.toLowerCase() == activeRoute }"
-        [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-        (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-      >
-        <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-        {{navButtonLink.text}}
-        <clr-vertical-nav-group-children>
-          <a clrVerticalNavLink
-             *ngFor="let childNavLink of navButtonLink.children; let index = index"
-             [ngClass]="{ 'active': createRoute(navButtonLink.text, index) == activeRoute }"
-             (click)="handleClick($event, createRoute(navButtonLink.text, index))"
+          <!-- Example of a top-level link with a group -->
+          <clr-vertical-nav-group
+            *ngFor="let navLink of navLinks"
+            [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
-            {{createRoute(navButtonLink.text, index)}}
-          </a>
-        </clr-vertical-nav-group-children>
-      </clr-vertical-nav-group>
-    </clr-vertical-nav>
-  </div>
-</div>
+            <a
+              (click)="handleClick($event, navLink.text.toLowerCase())"
+              [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+              clrVerticalNavLink
+              href="javascript:void(0)"
+            >
+              <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+              {{navLink.text}}
+            </a>
+            <clr-vertical-nav-group-children>
+              <a clrVerticalNavLink
+                 *ngFor="let childNavLink of navLink.children; let index = index"
+                 [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+                 (click)="handleClick($event, createRoute(navLink.text, index))"
+                 href="javascript:void(0)"
+              >
+                {{createRoute(navLink.text, index)}}
+              </a>
+            </clr-vertical-nav-group-children>
+          </clr-vertical-nav-group>
+          <!-- Example of a top-level text with a group -->
+          <clr-vertical-nav-group
+            *ngFor="let navButtonLink of navButtonLinks"
+            [ngClass]="{ 'active': navButtonLink.text.toLowerCase() == activeRoute }"
+            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+          >
+            <cds-icon *ngIf="includeIcons" [attr.shape]="navButtonLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+            {{navButtonLink.text}}
+            <clr-vertical-nav-group-children>
+              <a clrVerticalNavLink
+                 *ngFor="let childNavLink of navButtonLink.children; let index = index"
+                 [ngClass]="{ 'active': createRoute(navButtonLink.text, index) == activeRoute }"
+                 (click)="handleClick($event, createRoute(navButtonLink.text, index))"
+              >
+                {{createRoute(navButtonLink.text, index)}}
+              </a>
+            </clr-vertical-nav-group-children>
+          </clr-vertical-nav-group>
+        </clr-vertical-nav>
+      </div>
+    </div>
   `,
   props: { ...args },
 });
