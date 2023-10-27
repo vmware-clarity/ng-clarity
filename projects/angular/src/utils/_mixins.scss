@@ -260,7 +260,7 @@ $typography-tokens: (
     letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing},
   ),
   'SECTION-20-STD': (
-    // H4, Card, Signpost Heading
+    // H4, Card, Signpost Heading, Wizard Sidenav Title
     font-size: #{tokens.$cds-alias-typography-section-font-size},
     font-weight: #{tokens.$cds-alias-typography-section-font-weight},
     line-height: #{tokens.$cds-alias-typography-section-line-height},
@@ -288,7 +288,7 @@ $typography-tokens: (
     letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
   'BODY-14-MD-STD': (
-    // Not used yet
+    // Wizard sidenav link
     font-size: #{tokens.$cds-alias-typography-body-font-size},
     font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
     line-height: #{tokens.$cds-alias-typography-body-line-height},
