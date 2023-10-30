@@ -1670,10 +1670,10 @@
     clr-icon {
       color: #{tokens.$cds-alias-typography-color-400}; // static text content color
     }
-  }
 
-  .clr-treenode-content:not(:has(.clr-treenode-link)) {
-    padding-left: #{tokens.$cds-global-space-5};
+    &.clr-treenode-text-only {
+      padding-left: #{tokens.$cds-global-space-5};
+    }
   }
 
   .clr-treenode-content .clr-treenode-link.active,
