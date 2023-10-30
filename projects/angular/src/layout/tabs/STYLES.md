@@ -21,8 +21,6 @@
 | --clr-nav-link-dropdown-toggle-padding    | Tabs nav dropdown toggle padding            |
 | --clr-nav-horizontal-link-padding         | Tabs nav horizontal link padding            |
 | --clr-nav-vertical-link-padding           | Tabs nav vertical link padding              |
-| --clr-nav-link-font-size                  | Tabs nav link font size                     |
-| --clr-nav-link-line-height                | Tabs nav link line height                   |
 
 ## Class names
 

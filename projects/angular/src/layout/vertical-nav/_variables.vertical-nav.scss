@@ -3,8 +3,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
-
 // Usage: ./_vertical-nav.clarity.scss
 /* Vertical Nav */
 $clr-vertical-nav-divider-color: var(--clr-vertical-nav-divider-color) !default;
@@ -23,11 +21,7 @@ $clr-vertical-nav-item-padding: var(--clr-vertical-nav-item-padding) !default;
 $clr-vertical-nav-item-child-padding: var(--clr-vertical-nav-item-child-padding) !default;
 $clr-vertical-nav-item-height: var(--clr-vertical-nav-item-height) !default;
 $clr-vertical-nav-min-width: var(--clr-vertical-nav-min-width) !default;
-$clr-vertical-nav-item-caret-icon-size: var(--clr-vertical-nav-item-caret-icon-size) !default;
 $clr-vertical-nav-item-active-font-weight: var(--clr-vertical-nav-item-active-font-weight) !default;
-$clr-vertical-nav-content-gap: var(--clr-vertical-nav-content-gap) !default;
-$clr-vertical-nav-content-padding-top: var(--clr-vertical-nav-content-padding-top) !default;
-$clr-vertical-nav-collapsed-item-margin: var(--clr-vertical-nav-collapsed-item-margin) !default;
 
 $clr-vertical-nav-selected-bg-color: var(--clr-vertical-nav-selected-bg-color) !default;
 $clr-vertical-nav-active-bg-color: var(--clr-vertical-nav-active-bg-color) !default;
@@ -43,7 +37,6 @@ $clr-vertical-nav-toggle-icon-active-color: var(--clr-vertical-nav-toggle-icon-a
 $clr-vertical-nav-toggle-icon-disabled-color: var(--clr-vertical-nav-toggle-icon-disabled-color) !default;
 $clr-vertical-nav-toggle-button-size: var(--clr-vertical-nav-toggle-button-size) !default;
 $clr-vertical-nav-trigger-divider-border-color: var(--clr-vertical-nav-trigger-divider-border-color) !default;
-$clr-vertical-nav-divider-margin: var(--clr-vertical-nav-divider-margin) !default;
 $clr-vertical-nav-trigger-divider-border-width: var(--clr-vertical-nav-trigger-divider-border-width) !default;
 
 // Vertical Nav - Header

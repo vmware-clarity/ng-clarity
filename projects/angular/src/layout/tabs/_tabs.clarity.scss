@@ -65,7 +65,7 @@ button.nav-link {
   }
 
   .btn {
-    line-height: baselinePx(20);
+    line-height: mixins.baselinePx(20);
     font-size: tokens.$cds-alias-typography-font-size-4;
     padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
     border-radius: tokens.$cds-global-space-0;

@@ -13,7 +13,6 @@
 | --clr-vertical-nav-hover-bg-color               | Vertical nav hover background color       |
 | --clr-vertical-nav-trigger-divider-border-width | Vertical nav trigger divider border width |
 | --clr-vertical-nav-trigger-divider-border-color | Vertical nav trigger divider border color |
-| --clr-vertical-nav-header-font-weight           | Vertical nav header font weight           |
 | --clr-vertical-nav-active-bg-color              | Vertical nav active background color      |
 | --clr-vertical-nav-active-color                 | Vertical nav active color                 |
 | --clr-vertical-nav-toggle-icon-hover-color      | Vertical nav trigger icon hover color     |
@@ -25,10 +24,8 @@
 | --clr-vertical-nav-item-line-height             | Vertical nav item line height             |
 | --clr-vertical-nav-item-font-size               | Vertical nav item font size               |
 | --clr-vertical-nav-item-font-weight             | Vertical nav item font weight             |
-| --clr-vertical-nav-content-gap                  | Vertical nav content gap                  |
 | --clr-vertical-nav-toggle-button-size           | Vertical nav toggle buton size            |
 | --clr-vertical-nav-header-padding               | Vertical nav header padding               |
-| --clr-vertical-nav-header-font-size             | Vertical nav header font size             |
 | --clr-vertical-nav-header-line-height           | Vertical nav header line height           |
 | --clr-vertical-nav-item-active-font-weight      | Vertical nav item active font weight      |
 

@@ -61,7 +61,6 @@
       border-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
       border-style: solid;
       border-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
-      margin: vertical-nav-variables.$clr-vertical-nav-divider-margin;
     }
 
     .nav-content {
@@ -69,7 +68,7 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-      gap: vertical-nav-variables.$clr-vertical-nav-content-gap;
+      gap: tokens.$cds-global-space-5;
 
       //Others
       overflow-y: auto;
@@ -137,11 +136,11 @@
     .nav-trigger,
     .nav-group-trigger {
       //Display
-      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
 
       //Dims
       border: none;
-      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      height: vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
       padding: 0;
 
       //Others
@@ -212,8 +211,8 @@
 
         //Dims
         width: vertical-nav-variables.$clr-vertical-nav-icon-size;
+        margin: tokens.$cds-global-space-5;
         align-self: center;
-        margin-right: tokens.$cds-global-space-5;
 
         //Others
         transition: all 0.2s ease-in-out;
@@ -222,13 +221,6 @@
 
     //Parent .nav-trigger
     .nav-trigger-icon {
-      //Dims
-      margin-left: auto;
-      margin-right: calc(
-        (vertical-nav-variables.$clr-vertical-nav-item-height - vertical-nav-variables.$clr-vertical-nav-icon-size) *
-          0.5
-      );
-
       //Others
       transition: all 0.2s ease-in-out;
     }
@@ -237,7 +229,7 @@
       //Dims
       border-top-color: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
       border-top-width: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width;
-      padding-top: vertical-nav-variables.$clr-vertical-nav-content-padding-top;
+      padding-top: tokens.$cds-global-space-5;
       border-top-style: solid;
     }
 
@@ -248,7 +240,7 @@
       padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
 
       //Others
-      @include mixins.generate-typography-token('BODY-14-RG-STD');
+      @include mixins.generate-typography-token('BODY-14-RG-CPT');
       display: flex;
       align-items: center;
       outline-offset: variables.$clr-outline-offset;
@@ -317,12 +309,12 @@
     & > .nav-link,
     .nav-content > .nav-link {
       //Display
-      flex: 0 0 var(--clr-vertical-nav-toggle-button-size, vertical-nav-variables.$clr-vertical-nav-item-height);
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
     }
 
     .nav-link + .nav-group-trigger {
       //Display
-      flex: 0 0 var(--clr-vertical-nav-toggle-button-size, vertical-nav-variables.$clr-vertical-nav-item-height);
+      flex: 0 0 vertical-nav-variables.$clr-vertical-nav-toggle-button-size;
 
       .nav-group-text {
         display: none;
@@ -397,7 +389,7 @@
 
       .nav-icon {
         //Dims
-        margin: vertical-nav-variables.$clr-vertical-nav-collapsed-item-margin;
+        margin: tokens.$cds-global-space-5 0 tokens.$cds-global-space-5 tokens.$cds-global-space-7;
       }
 
       .nav-group-content {
@@ -408,8 +400,11 @@
 
         .nav-link ~ .nav-group-trigger {
           //Display
-          flex: 0 0 vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size +
-            vertical-nav-variables.$clr-vertical-nav-icon-right-margin;
+          flex: 0 0
+            calc(
+              vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size +
+                vertical-nav-variables.$clr-vertical-nav-icon-right-margin
+            );
 
           //Others
           transform: translateX(calc(-1 * vertical-nav-variables.$clr-vertical-nav-icon-size));
@@ -433,13 +428,14 @@
         clr-icon.nav-group-trigger-icon {
           //Dims
           height: vertical-nav-variables.$clr-vertical-nav-item-height;
-          width: vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size;
+          width: tokens.$cds-global-space-7;
           margin-left: mixins.baselinePx(3);
           margin-right: 0;
         }
 
         cds-icon.nav-group-trigger-icon {
-          width: vertical-nav-variables.$clr-vertical-nav-collapsed-caret-size;
+          width: tokens.$cds-global-space-7;
+          margin: 0;
         }
       }
 

@@ -34,7 +34,7 @@
     .nav-link {
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
-      @include mixins.generate-typography-token('BODY-14-RG-STD');
+      @include mixins.generate-typography-token('BODY-14-RG-CPT');
       padding: tabs-variables.$clr-nav-horizontal-link-padding;
       display: inline-block;
 
@@ -80,7 +80,6 @@
           background-color: tabs-variables.$clr-nav-selected-hover-background-color;
         }
         color: tabs-variables.$clr-nav-link-active-color;
-        font-weight: tokens.$cds-global-typography-font-weight-regular;
       }
 
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem

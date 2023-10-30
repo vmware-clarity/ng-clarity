@@ -301,6 +301,12 @@ $typography-tokens: (
     line-height: #{tokens.$cds-alias-typography-body-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
+  'BODY-14-RG-CPT': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-global-space-7},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'SECONDARY-13-MD-EXP': (
     // P2, Section Header
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},

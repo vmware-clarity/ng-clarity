@@ -28,13 +28,9 @@
         #{tokens.$cds-global-space-7};
       --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
         #{tokens.$cds-global-space-10};
-      --clr-vertical-nav-item-height: #{tokens.$cds-global-space-11};
+      --clr-vertical-nav-item-height: #{tokens.$cds-global-space-10};
       --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
-      --clr-vertical-nav-item-caret-icon-size: #{tokens.$cds-global-space-7};
       --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-      --clr-vertical-nav-content-gap: #{tokens.$cds-global-space-5};
-      --clr-vertical-nav-content-padding-top: #{tokens.$cds-global-space-5};
-      --clr-vertical-nav-collapsed-item-margin: #{tokens.$cds-global-space-5} 0 #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7}; // ATM - remove;
 
       --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-0);
       --clr-vertical-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
@@ -49,15 +45,11 @@
       --clr-vertical-nav-toggle-icon-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
       --clr-vertical-nav-toggle-button-size: #{tokens.$cds-global-space-10};
       --clr-vertical-nav-trigger-divider-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
-      --clr-vertical-nav-divider-margin: 0;
       --clr-vertical-nav-trigger-divider-border-width: var(--clr-global-borderwidth);
       --clr-vertical-nav-trigger-collapsed-margin: mixins.baselinePx(3);
 
       // Vertical Nav - Header
-      --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
       --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
-      --clr-vertical-nav-header-font-size: var(--clr-p4-font-size);
-      --clr-vertical-nav-header-line-height: #{tokens.$cds-global-space-7};
     }
   }
 }

@@ -20,9 +20,6 @@
       --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover}; // indirectly mapped
       --clr-nav-selected-hover-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
-      --clr-nav-link-font-size: #{tokens.$cds-global-typography-font-size-4};
-      --clr-nav-link-line-height: #{baselinePx(20)};
-
       --clr-nav-horizontal-gap-size: #{tokens.$cds-global-space-9};
       --clr-nav-vertical-gap-size: #{tokens.$cds-global-space-5};
       --clr-nav-link-dropdown-toggle-padding: #{tokens.$cds-global-space-5};
