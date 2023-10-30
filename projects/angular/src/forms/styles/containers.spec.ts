@@ -450,7 +450,15 @@ describe('Form layouts', () => {
   }
 
   function verifyHeight(selector: string, value: number, verticalRhythm = true) {
-    const computed = height(selector);
+    let computed = height(selector);
+    /**
+     * @NOTE
+     * Helper text is now always visible so we should use it
+     * in calculations when it's the whole container.
+     */
+    if (['control', 'container'].includes(selector)) {
+      computed += height(`${selector} clr-control-helper`);
+    }
     expect(Math.round(computed)).toEqual(Math.round(value));
     if (verticalRhythm) {
       expect(value % base).toEqual(0);

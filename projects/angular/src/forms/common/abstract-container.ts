@@ -54,27 +54,27 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
 
   /**
    * @NOTE
-   * Helper control is a bit different than the others, it must be visible most of the time:
-   *   - Helper must NOT be visible when CONTROL_STATE is not NONE and Success or Error components are \
-   * defined.
-   *
-   * For example user implement only Error control then if CONTROL_STATE is VALID then helper
-   * control must be visible.
+   * Helper control is a bit different than the others, it must be always visible:
+   *   -  Labels and instructions must always accompany forms and are persistent.
+   *   -  The recommendation here is to always have helper text or anything instructions visible.
+   *   -  The expectation is to have error text + helper text in the errored state. this way all users will have the helper text information always available.
    */
   get showHelper(): boolean {
-    // without existence of helper component there is no need of additional checks.
-    if (!!this.controlHelperComponent === false) {
-      return false;
-    }
-
-    return (
-      /* Helper Component exist and the state of the form is NONE (not touched) */
-      (!!this.controlHelperComponent && (!this.touched || this.state === CONTROL_STATE.NONE)) ||
-      /* or there is no success component but the state of the form is VALID - show helper information */
-      (!!this.controlSuccessComponent === false && this.state === CONTROL_STATE.VALID) ||
-      /* or there is no error component but the state of the form is INVALID - show helper information */
-      (!!this.controlErrorComponent === false && this.state === CONTROL_STATE.INVALID)
-    );
+    /**
+     * @NOTE
+     * Saving the previous version in case something is changed. We'll return always true so we can be flexible
+     * and keep the condition per components.
+     *
+     * return (
+     * Helper Component exist and the state of the form is NONE (not touched)
+     * (!!this.controlHelperComponent && (!this.touched || this.state === CONTROL_STATE.NONE)) ||
+     * or there is no success component but the state of the form is VALID - show helper information
+     * (!!this.controlSuccessComponent === false && this.state === CONTROL_STATE.VALID) ||
+     * or there is no error component but the state of the form is INVALID - show helper information
+     * (!!this.controlErrorComponent === false && this.state === CONTROL_STATE.INVALID)
+     * );
+     */
+    return Boolean(this.controlHelperComponent);
   }
 
   get showValid(): boolean {
