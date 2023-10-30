@@ -72,8 +72,9 @@
       margin-left: 0;
     }
 
-    // not span will cover for inner text and combobox pills
-    & > *:last-child:not(span) {
+    // constrain to cds-icon (close) and badge class, so combobox pills should not be affected
+    & > cds-icon:last-child,
+    & > span:last-child.badge {
       margin-right: calc(-1 * #{tokens.$cds-global-space-3});
     }
 
