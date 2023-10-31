@@ -376,7 +376,7 @@ $typography-tokens: (
   ),
 );
 
-@mixin generate-typography-header-token($name, $addFontFamily: false, $addColor: false) {
+@mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
   @if ($addFontFamily) {
     font-family: #{tokens.$cds-alias-typography-header-font-family};
   }
@@ -385,10 +385,10 @@ $typography-tokens: (
     color: #{tokens.$cds-alias-typography-color-300};
   }
 
-  @include generate-typography-token($name);
+  @include generate-typography-token($name, $fallbacks);
 }
 
-@mixin generate-typography-body-token($name, $addFontFamily: false, $addColor: false) {
+@mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
   @if ($addFontFamily) {
     font-family: #{tokens.$cds-alias-typography-font-family};
   }
@@ -397,11 +397,15 @@ $typography-tokens: (
     color: #{tokens.$cds-alias-typography-color-450};
   }
 
-  @include generate-typography-token($name);
+  @include generate-typography-token($name, $fallbacks);
 }
 
-@mixin generate-typography-token($name) {
+@mixin generate-typography-token($name, $fallbacks: ()) {
   @each $key, $value in map.get($typography-tokens, $name) {
-    #{$key}: $value;
+    @if (map.has-key($fallbacks, $key)) {
+      #{$key}: map.get($fallbacks, $key);
+    } @else {
+      #{$key}: $value;
+    }
   }
 }
