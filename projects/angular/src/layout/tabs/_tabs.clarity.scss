@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tabs' as tabs-variables;
+@use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.tabs');
 
 @mixin nav-link-border-appearence($position) {
@@ -57,8 +58,17 @@ button.nav-link {
 .tabs-overflow {
   position: relative;
 
-  .nav-item {
-    margin-right: 0;
+  .dropdown-menu {
+    padding: tokens.$cds-global-space-0;
+    box-shadow: tokens.$cds-alias-object-shadow-100;
+    overflow: hidden;
+  }
+
+  .btn {
+    line-height: mixins.baselinePx(20);
+    font-size: tokens.$cds-alias-typography-font-size-4;
+    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+    border-radius: tokens.$cds-global-space-0;
   }
 }
 
@@ -90,16 +100,6 @@ button.nav-link {
     min-width: variables.$clr_baselineRem_2;
 
     @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
-
-    // ATM - remove
-    .nav-item {
-      @include mixins.css-var(
-        margin-right,
-        clr-nav-item-margin-right,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-    }
 
     .nav-link {
       text-align: left;

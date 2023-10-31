@@ -13,6 +13,7 @@
 | --clr-nav-selected-bg-color               | Tabs nav selected background color          |
 | --clr-nav-box-shadow-color                | Tabs nav box shadow color                   |
 | --clr-nav-active-box-shadow-color         | Tabs nav active box shadow color            |
+| --clr-vertical-nav-header-font-weight     | Vertical nav header font weight             |
 | --clr-nav-active-border-color             | Tabs nav active border color                |
 | --clr-nav-active-border-width             | Tabs nav active border width                |
 | --clr-nav-selected-hover-background-color | Tabs nav selected background color on hover |
@@ -21,8 +22,6 @@
 | --clr-nav-link-dropdown-toggle-padding    | Tabs nav dropdown toggle padding            |
 | --clr-nav-horizontal-link-padding         | Tabs nav horizontal link padding            |
 | --clr-nav-vertical-link-padding           | Tabs nav vertical link padding              |
-| --clr-nav-link-font-size                  | Tabs nav link font size                     |
-| --clr-nav-link-line-height                | Tabs nav link line height                   |
 
 ## Class names
 

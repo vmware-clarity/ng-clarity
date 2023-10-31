@@ -6,15 +6,19 @@
 @use '../../utils/variables/variables';
 
 // Usage: ../layout/nav/_nav.clarity.scss
-$clr-nav-box-shadow-color: variables.$clr-color-neutral-400 !default;
-$clr-nav-active-box-shadow-color: variables.$clr-color-action-600 !default;
+$clr-nav-box-shadow-color: var(--clr-nav-box-shadow-color) !default; // var(--clr-color-neutral-400);
+$clr-nav-active-box-shadow-color: var(--clr-nav-active-box-shadow-color) !default;
+$clr-nav-active-border-color: var(--clr-nav-active-border-color) !default;
+$clr-nav-active-border-width: var(--clr-nav-active-border-width) !default;
+$clr-nav-active-bg-color: var(--clr-nav-active-bg-color) !default;
+$clr-nav-selected-bg-color: var(--clr-nav-selected-bg-color) !default;
+$clr-nav-hover-bg-color: var(--clr-nav-hover-bg-color) !default;
+$clr-nav-selected-hover-background-color: var(--clr-nav-selected-hover-background-color) !default;
 
-$clr-nav-link-color: variables.$clr-color-neutral-700 !default;
-$clr-nav-link-active-color: variables.$clr-color-neutral-1000 !default;
-$clr-nav-hover-bg-color: variables.$clr-color-neutral-200 !default;
-
-$clr-nav-link-font-size: variables.$clr-p1-font-size !default;
-$clr-nav-link-font-weight: variables.$clr-p1-font-weight !default;
-$clr-nav-link-letter-spacing: variables.$clr-p1-letter-spacing !default;
-
-$clr-nav-link-active-font-weight: $clr-nav-link-font-weight !default;
+$clr-nav-horizontal-gap-size: var(--clr-nav-horizontal-gap-size) !default;
+$clr-nav-vertical-gap-size: var(--clr-nav-vertical-gap-size) !default;
+$clr-nav-link-dropdown-toggle-padding: var(--clr-nav-link-dropdown-toggle-padding) !default;
+$clr-nav-vertical-link-padding: var(--clr-nav-vertical-link-padding) !default;
+$clr-nav-horizontal-link-padding: var(--clr-nav-horizontal-link-padding) !default;
+$clr-nav-link-color: var(--clr-nav-link-color) !default;
+$clr-nav-link-active-color: var(--clr-nav-link-active-color) !default;
