@@ -21,12 +21,8 @@
 | --clr-vertical-nav-item-padding                 | Vertical nav item padding                 |
 | --clr-vertical-nav-item-child-padding           | Vertical nav sub items padding            |
 | --clr-vertical-nav-item-height                  | Vertical nav item height                  |
-| --clr-vertical-nav-item-line-height             | Vertical nav item line height             |
-| --clr-vertical-nav-item-font-size               | Vertical nav item font size               |
-| --clr-vertical-nav-item-font-weight             | Vertical nav item font weight             |
 | --clr-vertical-nav-toggle-button-size           | Vertical nav toggle buton size            |
 | --clr-vertical-nav-header-padding               | Vertical nav header padding               |
-| --clr-vertical-nav-header-line-height           | Vertical nav header line height           |
 | --clr-vertical-nav-item-active-font-weight      | Vertical nav item active font weight      |
 
 ## CSS Classes
