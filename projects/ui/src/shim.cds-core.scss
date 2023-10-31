@@ -901,9 +901,12 @@
   --clr-accordion-header-left-error-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-danger};
   --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-400};
   --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
-  --clr-accordion-description-margin-left: calc(#{tokens.$cds-global-space-13} - var(--clr-accordion-header-gap));
+  --clr-accordion-description-margin-left: calc(#{tokens.$cds-global-space-12} - var(--clr-accordion-header-gap));
 
-  --clr-accordion-step-title-min-width: 0;
+  // TODO(CDE-1262): Refactor min/max width to just width in v17
+  // The stepper title min-width now matches the max-width so the description is visually
+  // consistent when the stepper titles contain varying length content.
+  --clr-accordion-step-title-min-width: 13.2rem;
   --clr-accordion-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
   --clr-accordion-step-status-margin-left: #{tokens.$cds-global-space-7};
   --clr-accordion-step-title-margin-left: #{tokens.$cds-global-space-9};
