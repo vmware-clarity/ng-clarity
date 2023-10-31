@@ -34,7 +34,7 @@
     .nav-link {
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
-      @include mixins.generate-typography-token('BODY-14-RG-CPT');
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
       padding: tabs-variables.$clr-nav-horizontal-link-padding;
       display: inline-block;
 
