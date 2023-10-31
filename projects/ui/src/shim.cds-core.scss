@@ -643,7 +643,7 @@
 
   /* Labels */
   --clr-label-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5};
-  --clr-label-gap-size: #{tokens.$cds-global-space-5};
+  --clr-label-gap-size: #{tokens.$cds-global-space-3};
   --clr-label-box-shadow: 0;
 
   // ATM - remove and use as default or think a better way express clicked state
@@ -721,23 +721,25 @@
   .label,
   a.label {
     text-decoration: none;
-    &:has(> .badge),
-    &:has(> cds-icon) {
-      padding-right: #{tokens.$cds-global-space-3};
-    }
 
-    .badge,
-    cds-icon {
+    > .badge,
+    > cds-icon {
       margin: 0;
       text-decoration: none;
     }
 
-    &:has(.badge) {
-      gap: #{tokens.$cds-global-space-3};
+    cds-icon {
+      margin-left: tokens.$cds-global-space-3;
     }
 
-    &.clickable:not(:has(.text)) {
-      text-decoration: underline;
+    .badge + cds-icon {
+      margin-left: 0;
+    }
+
+    // constrain to cds-icon (close) and badge class, so combobox pills should not be affected
+    & > cds-icon:last-child,
+    & > span:last-child.badge {
+      margin-right: calc(-1 * #{tokens.$cds-global-space-3});
     }
 
     &.clickable > .text {
