@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/variables/variables';
+
+$clr-nav-box-shadow-color: variables.$clr-color-neutral-400 !default;
+$clr-nav-link-color: variables.$clr-color-neutral-700 !default;
+$clr-nav-link-active-color: variables.$clr-color-neutral-1000 !default;
+$clr-nav-link-letter-spacing: variables.$clr-p1-letter-spacing !default;
+$clr-nav-link-font-size: variables.$clr-p1-font-size !default;
+$clr-nav-link-font-weight: variables.$clr-p1-font-weight !default;
+$clr-nav-link-active-font-weight: $clr-nav-link-font-weight !default;
