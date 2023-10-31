@@ -47,7 +47,7 @@ const POSITIONS: string[] = [
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
       </div>
-      <div class="signpost-content-body">
+      <div class="signpost-content-body" tabindex="0">
         <ng-content></ng-content>
       </div>
     </div>
