@@ -49,6 +49,7 @@
       --clr-vertical-nav-trigger-collapsed-margin: mixins.baselinePx(3);
 
       // Vertical Nav - Header
+      --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
       --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
     }
   }

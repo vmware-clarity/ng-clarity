@@ -268,7 +268,12 @@
       padding: vertical-nav-variables.$clr-vertical-nav-header-padding;
 
       //Others
-      @include mixins.generate-typography-token('SECONDARY-13-SB-CPT');
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-SB-CPT',
+        (
+          font-weight: vertical-nav-variables.$clr-vertical-nav-header-font-weight,
+        )
+      );
     }
 
     //Parent .nav-text
