@@ -6,7 +6,6 @@
 @use 'sass:meta';
 @use '../../utils/a11y';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'variables.vertical-nav' as vertical-nav-variables;
 @use '@cds/core/tokens/tokens.scss';
 @use '../tabs/tabs.clarity' as tabs;
@@ -164,7 +163,7 @@
       }
       background-color: transparent;
       cursor: pointer;
-      outline-offset: variables.$clr-outline-offset;
+      outline-offset: calc(-1 * mixins.baselinePx(5));
     }
 
     .nav-trigger {
@@ -243,7 +242,7 @@
       @include mixins.generate-typography-token('BODY-14-RG-CPT');
       display: flex;
       align-items: center;
-      outline-offset: variables.$clr-outline-offset;
+      outline-offset: calc(-1 * mixins.baselinePx(5));
     }
 
     .nav-group-text,
@@ -303,7 +302,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      outline-offset: variables.$clr-outline-offset;
+      outline-offset: calc(-1 * mixins.baselinePx(5));
     }
 
     & > .nav-link,
