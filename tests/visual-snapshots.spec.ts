@@ -30,6 +30,10 @@ for (const { storyId, component } of stories) {
     const screenshotPath = path.join(component, `${storyName}-${normalizedThemeKey}.png`);
     usedScreenshotPaths.push(screenshotPath);
 
+    test.use({
+      viewport: { width: 300, height: 1200 },
+    });
+
     test(screenshotPath, async ({ page }) => {
       const storyParams = new URLSearchParams({
         id: storyId,
