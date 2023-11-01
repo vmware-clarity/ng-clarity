@@ -24,8 +24,8 @@ $clr-app-alert-close-icon-hover-opacity: 1 !default;
 
 // TYPOGRAPHIC STYLES
 // Usage: ./_alert.clarity.scss
-$clr-alert-font-size: variables.$clr-p3-font-size !default;
-$clr-alert-letter-spacing: variables.$clr-p3-letter-spacing !default;
+$clr-alert-font-size: var(--clr-alert-font-size) !default;
+$clr-alert-letter-spacing: var(--clr-alert-letter-spacing) !default;
 
 // Dimensions & Layout
 // Usage: ./_alert.clarity.scss
@@ -39,7 +39,7 @@ $clr-alert-top-padding: variables.$clr_baselineRem_0_125 !default; // to be dele
 $clr-alert-bottom-padding: variables.$clr_baselineRem_0_375 !default; // to be deleted
 $clr-alert-item-min-height: $clr-alert-icon-dimension-sm !default;
 $clr-alert-borderwidth: variables.$clr-global-borderwidth !default;
-$clr-alert-borderradius: variables.$clr-global-borderradius !default;
+$clr-alert-borderradius: var(--clr-alert-borderradius) !default;
 
 // Info type
 // Usage: ./_alert.clarity.scss

@@ -100,19 +100,8 @@
 | --clr-app-alert-warning-pager-bg-color           | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
-| --clr-alert-padding                              | Padding of the alert                                              |
-| --clr-alert-borderradius                         | Alert border radius                                               |
 | --clr-alert-actions-spacing                      | Alert actions spacing                                             |
-| --clr-alert-item-margin-bottom                   | Alert item margin bottom                                          |
-| --clr-alert-line-height                          | Alert line height                                                 |
-| --clr-alert-sm-line-height                       | Alert small line height                                           |
-| --clr-alert-app-padding                          | App level alert padding                                           |
-| --clr-alert-items-gap                            | Gap between items in the alert                                    |
-| --clr-alert-sm-line-height                       | Small alert line height                                           |
 | --clr-alert-sm-font-size                         | Small alert font size                                             |
-| --clr-alert-sm-letter-spacing                    | Small alert letter spacing                                        |
-| --clr-alert-sm-font-weight                       | Small alert font weight                                           |
-| --clr-alert-sm-icon-size                         | Small alert icon size                                             |
 | --clr-lightweight-alert-info-icon-color          | Lightweight alert info icon color                                 |
 | --clr-lightweight-alert-info-font-color          | Lightweight alert info font color                                 |
 | --clr-lightweight-alert-warning-icon-color       | Lightweight alert warning icon color                              |
@@ -122,8 +111,6 @@
 | --clr-lightweight-alert-success-icon-color       | Lightweight alert success icon color                              |
 | --clr-lightweight-alert-success-font-color       | Lightweight alert success font color                              |
 | --clr-alert-font-size                            | Font size for alert                                               |
-| --clr-alert-lightweight-font-size                | Font size for lightweight alerts                                  |
-| --clr-alert-lightweight-line-height              | Line height for lightweight alerts                                |
 | --clr-alert-lightweight-sm-font-size             | Font size for small lightweight alerts                            |
 | --clr-alert-lightweight-sm-line-height           | Line height for small lightweight alerts                          |
 
