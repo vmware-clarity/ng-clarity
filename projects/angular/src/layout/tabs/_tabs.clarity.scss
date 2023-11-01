@@ -100,9 +100,8 @@ button.nav-link {
       margin-left: 0;
       width: 100%;
 
-      // ATM - remove
       &.btn {
-        margin-bottom: mixins.baselinePx(1);
+        margin-bottom: tokens.$cds-global-space-1;
       }
 
       &.active,
