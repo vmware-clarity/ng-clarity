@@ -177,7 +177,9 @@
   .clr-treenode-spinner-container {
     //Dimensions
     @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
-    padding: (tree-view-variables.$clr-tree-node-touch-target - tree-view-variables.$clr-tree-spinner-size) * 0.5;
+    padding: calc(
+      calc(#{tree-view-variables.$clr-tree-node-touch-target} - #{tree-view-variables.$clr-tree-spinner-size}) * 0.5
+    );
   }
 
   .clr-treenode-spinner {

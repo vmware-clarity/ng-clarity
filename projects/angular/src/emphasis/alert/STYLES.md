@@ -12,7 +12,6 @@
 | --clr-alert-close-icon-hover-opacity             | Close icon default opacity on hover                               |
 | --clr-app-level-alert-color                      | Default font color for app level alerts                           |
 | --clr-app-alert-close-icon-color                 | Close icon default color for app level alerts                     |
-| --clr-app-alert-close-icon-opacity               | Close icon default opacity for app level alerts                   |
 | --clr-app-alert-close-icon-hover-opacity         | Close icon default opacity on hover for app level alerts          |
 | --clr-alert-borderradius                         | Border radius                                                     |
 | --clr-alert-info-bg-color                        | Info alert background color                                       |
