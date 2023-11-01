@@ -276,20 +276,10 @@
     }
 
     .close ~ .alert-item > .alert-actions {
-      @include mixins.css-var(
-        padding-right,
-        clr-alert-actions-spacing,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding-right: tokens.$cds-global-space-6;
 
       & > .alert-action:last-child {
-        @include mixins.css-var(
-          margin-right,
-          clr-alert-actions-spacing,
-          variables.$clr_baselineRem_0_5,
-          variables.$clr-use-custom-properties
-        );
+        margin-right: tokens.$cds-global-space-6;
       }
     }
 
@@ -551,112 +541,50 @@
         flex: 1 1 100%;
       }
     }
-    &.alert-info {
-      background: var(--clr-app-alert-info-pager-bg-color);
-      @include mixins.css-var(
-        background,
-        clr-app-alert-info-pager-bg-color,
-        variables.$clr-color-action-800,
-        variables.$clr-use-custom-properties
-      );
-    }
 
-    &.alert-danger {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-danger-pager-bg-color,
-        variables.$clr-color-danger-900,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    &.alert-warning {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-warning-pager-bg-color,
-        variables.$clr-color-warning-900,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    &.alert-success {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-success-pager-bg-color,
-        variables.$clr-color-success-900,
-        variables.$clr-use-custom-properties
-      );
+    @each $alertType in $alertTypes {
+      &.alert-#{$alertType} {
+        background: var(--clr-app-alert-#{$alertType}-pager-bg-color);
+      }
     }
   }
 
   .alerts-pager {
-    @include mixins.css-var(
-      color,
-      clr-app-alert-pager-text-color,
-      variables.$clr-color-neutral-0,
-      variables.$clr-use-custom-properties
-    );
+    color: var(--clr-app-alert-pager-text-color);
 
     @each $alertType in $alertTypes {
       .alert-#{$alertType} & {
-        @include mixins.css-var(
-          color,
-          clr-app-alert-#{$alertType}-pager-font-color,
-          variables.$clr-color-neutral-0,
-          variables.$clr-use-custom-properties
-        );
+        color: var(--clr-app-alert-#{$alertType}-pager-font-color);
       }
     }
 
-    @include mixins.css-var(
-      font-size,
-      clr-alert-font-size,
-      alert-variables.$clr-alert-font-size,
-      variables.$clr-use-custom-properties
-    );
-    letter-spacing: alert-variables.$clr-alert-letter-spacing;
+    // todo check typography token
+    //@include mixins.css-var(
+    //  font-size,
+    //  clr-alert-font-size,
+    //  alert-variables.$clr-alert-font-size,
+    //  variables.$clr-use-custom-properties
+    //);
+    //letter-spacing: alert-variables.$clr-alert-letter-spacing;
     min-height: alert-variables.$clr-alert-min-height;
-    flex-grow: 1;
-    flex-shrink: 0;
-    @include mixins.css-var(
-      flex-basis,
-      clr-app-alert-pager-width,
-      variables.$clr_baselineRem_6,
-      variables.$clr-use-custom-properties
-    );
+    flex: 1 0 var(--clr-app-alert-pager-width);
   }
 
   .alerts-pager-button {
     @include mixins.clr-no-styles-button();
-    @include mixins.css-var(
-      color,
-      clr-app-alert-pager-text-color,
-      variables.$clr-color-neutral-0,
-      variables.$clr-use-custom-properties
-    );
+    color: var(--clr-app-alert-pager-text-color);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-
-    @include mixins.css-var(height, clr-btn-appearance-standard-height, auto, variables.$clr-use-custom-properties);
+    height: var(--clr-btn-appearance-standard-height);
 
     cds-icon,
     clr-icon {
-      @include mixins.css-var(
-        color,
-        clr-app-alert-pager-text-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
+      color: var(--clr-app-alert-pager-text-color);
 
       @each $alertType in $alertTypes {
         .alert-#{$alertType} & {
-          @include mixins.css-var(
-            color,
-            clr-app-alert-#{$alertType}-pager-font-color,
-            variables.$clr-color-neutral-0,
-            variables.$clr-use-custom-properties
-          );
+          color: var(--clr-app-alert-#{$alertType}-pager-font-color);
         }
       }
     }

@@ -100,7 +100,6 @@
 | --clr-app-alert-warning-pager-bg-color           | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
-| --clr-alert-actions-spacing                      | Alert actions spacing                                             |
 | --clr-alert-sm-font-size                         | Small alert font size                                             |
 | --clr-lightweight-alert-info-icon-color          | Lightweight alert info icon color                                 |
 | --clr-lightweight-alert-info-font-color          | Lightweight alert info font color                                 |
