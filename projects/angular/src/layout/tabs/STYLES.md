@@ -10,7 +10,6 @@
 | --clr-nav-active-bg-color                 | Tabs nav active background color            |
 | --clr-nav-selected-bg-color               | Tabs nav selected background color          |
 | --clr-nav-box-shadow-color                | Tabs nav box shadow color                   |
-| --clr-nav-active-box-shadow-color         | Tabs nav active box shadow color            |
 | --clr-vertical-nav-header-font-weight     | Vertical nav header font weight             |
 | --clr-nav-selected-hover-background-color | Tabs nav selected background color on hover |
 | --clr-nav-horizontal-gap-size             | Tabs nav horizontal gap size                |

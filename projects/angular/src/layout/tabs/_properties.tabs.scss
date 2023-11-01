@@ -11,7 +11,6 @@
     [cds-theme] {
       // Usage: ../layout/nav/_nav.clarity.scss
       --clr-nav-box-shadow-color: #{tokens.$cds-alias-object-border-color};
-      --clr-nav-active-box-shadow-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // ATM - remove
       --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
