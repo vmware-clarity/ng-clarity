@@ -6,7 +6,6 @@
 
 @use 'sass:meta';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'variables.tabs' as tabs-variables;
 @use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.tabs');
@@ -22,18 +21,8 @@
     width: 100%;
     border: none;
     border-#{$position}-style: solid;
-    @include mixins.css-var(
-      border-#{$position}-color,
-      clr-nav-active-border-color,
-      tabs-variables.$clr-nav-active-box-shadow-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-#{$position}-width,
-      clr-nav-active-border-width,
-      variables.$clr_baselineRem_3px,
-      variables.$clr-use-custom-properties
-    );
+    border-#{$position}-color: tabs-variables.$clr-nav-active-box-shadow-color;
+    border-#{$position}-width: mixins.baselinePx(3);
     transition: border-#{$position} 0.2s ease-in;
   }
 }
@@ -104,12 +93,7 @@ button.nav-link {
 
     .nav-link {
       text-align: left;
-      @include mixins.css-var(
-        padding,
-        clr-nav-vertical-link-padding,
-        0 variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding: 0 tokens.$cds-global-space-6;
       border: none;
       flex-shrink: 0;
       margin-top: 0;
