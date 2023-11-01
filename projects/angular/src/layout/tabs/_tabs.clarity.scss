@@ -100,11 +100,6 @@ button.nav-link {
       margin-left: 0;
       width: 100%;
 
-      // ATM - remove
-      &.btn {
-        margin-bottom: #{tokens.$cds-global-space-1};
-      }
-
       &.active,
       &:hover {
         @include nav-link-border-appearence('left');
