@@ -11,7 +11,6 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
-
 @use '@cds/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.alert');
@@ -88,14 +87,6 @@
   .close {
     color: alert-variables.getAlertColor($alertType, close-icon);
 
-    // TODO remove opacity
-    //@include mixins.css-var(
-    //  opacity,
-    //  alert-variables.getAlertColor($alertType, close-icon-opacity, 'css-var'),
-    //  alert-variables.getAlertColor($alertType, close-icon-opacity),
-    //  variables.$clr-use-custom-properties
-    //);
-
     cds-icon,
     clr-icon {
       fill: alert-variables.getAlertColor($alertType, close-icon);
@@ -105,14 +96,6 @@
     &:hover,
     &:active {
       color: alert-variables.getAlertColor($alertType, close-icon-hover);
-
-      // TODO remove opacity
-      //@include mixins.css-var(
-      //  opacity,
-      //  alert-variables.getAlertColor($alertType, close-icon-hover-opacity, 'css-var'),
-      //  alert-variables.getAlertColor($alertType, close-icon-hover-opacity),
-      //  variables.$clr-use-custom-properties
-      //);
     }
   }
 }
@@ -129,8 +112,6 @@
 }
 
 @include mixins.exports('alert.clarity') {
-  $alertIconWidth: variables.$clr_baselineRem_1 + variables.$clr_baselineRem_1px;
-
   $alertTypes: info, warning, danger, success;
 
   .alert-icon {
@@ -177,7 +158,7 @@
 
   .alert {
     @include mixins.generate-typography-token(
-      'SECONDARY-13-RG-EXP',
+      'SECONDARY-13-RG-STD',
       (
         font-size: alert-variables.$clr-alert-font-size,
         letter-spacing: alert-variables.$clr-alert-letter-spacing,
@@ -227,10 +208,11 @@
     .alert-actions {
       flex: 0 0 auto;
       white-space: nowrap;
+      align-self: center;
 
       .dropdown:last-child {
         // used to align far-right dropdown inside an alert
-        margin-right: -1 * variables.$clr_baselineRem_2px;
+        //margin-right: calc(-1 * #{tokens.$cds-global-space-2});
       }
 
       .dropdown-item {
@@ -242,7 +224,7 @@
     }
 
     .alert-action:not(:last-child) {
-      margin-right: variables.$clr_baselineRem_0_5;
+      margin-right: tokens.$cds-global-space-6;
     }
 
     .alert-action,
@@ -265,8 +247,9 @@
 
     .close {
       order: 100;
-      flex: 0 0 tokens.$cds-global-space-11;
-      @include mixins.equilateral(tokens.$cds-global-space-11);
+      flex: 0 0 tokens.$cds-global-space-9;
+      @include mixins.equilateral(tokens.$cds-global-space-9);
+      margin: tokens.$cds-global-space-5;
 
       cds-icon,
       clr-icon {
@@ -343,7 +326,7 @@
     .alert-item {
       justify-content: center;
       align-items: center;
-      min-height: variables.$clr_baselineRem_1;
+      min-height: tokens.$cds-global-space-9;
 
       .btn {
         @extend .btn-inverse;
@@ -358,7 +341,7 @@
     }
 
     .close {
-      height: variables.$clr_baselineRem_1_5;
+      height: tokens.$cds-global-space-11;
       overflow: hidden;
 
       cds-icon,
@@ -380,27 +363,14 @@
         tokens.$cds-global-space-5;
     }
 
-    .alert-item {
-      // TODO check are paddings needed
-      padding-top: 0;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
     .alert-icon-wrapper {
-      // TODO check are paddings needed
-      padding-top: 0;
       display: flex;
       flex-basis: tokens.$cds-global-space-9;
       height: tokens.$cds-global-space-9;
     }
 
     .alert-icon {
-      @include mixins.min-equilateral(tokens.$cds-global-space-7);
-      margin-left: 0;
-      margin-top: 0;
+      @include mixins.min-equilateral(tokens.$cds-global-space-9);
     }
 
     .alert-item > span,
@@ -412,27 +382,17 @@
       //  variables.$clr_baselineRem_0_667,
       //  variables.$clr-use-custom-properties
       //);
-      margin-right: 0;
     }
 
     .close {
-      padding-right: 0;
       flex: 0 0 tokens.$cds-global-space-9;
       margin: tokens.$cds-global-space-3 tokens.$cds-global-space-5 tokens.$cds-global-space-3
         tokens.$cds-global-space-0;
       height: tokens.$cds-global-space-9;
-      // todo are line-height and font-size needed
-      line-height: tokens.$cds-global-space-9;
-      font-size: tokens.$cds-global-typography-font-size-3;
 
       cds-icon,
       clr-icon {
         @include mixins.min-equilateral(tokens.$cds-global-space-9);
-        // TODO check are margins needed
-        margin-right: 0;
-        margin-top: 0;
-        // TODO check is line-height needed
-        line-height: variables.$clr_baselineRem_0_83 + variables.$clr_baselineRem_1px;
       }
     }
 
@@ -500,7 +460,7 @@
 
       .alert-actions {
         flex: 1 0 100%;
-        padding-top: variables.$clr_baselineRem_0_125;
+        padding-top: mixins.baselinePx(3);
         // TOCHECK: CALCULATIONS
         padding-left: alert-variables.$clr-alert-icon-dimension-sm + alert-variables.$clr-icon-margin-right;
       }
@@ -508,7 +468,7 @@
 
     .alert-app-level {
       .alert-actions {
-        margin-left: variables.$clr_baselineRem_1_875;
+        margin-left: tokens.$cds-global-space-12;
       }
     }
   }
@@ -528,7 +488,7 @@
   //2. Modal
   .modal {
     .alert + .modal-header {
-      margin-top: variables.$clr_baselineRem_0_5;
+      margin-top: tokens.$cds-global-space-6;
     }
   }
 
@@ -596,7 +556,7 @@
     height: 100%;
     align-items: center;
     text-align: center;
-    padding: 0 variables.$clr-baselineRem_1;
+    padding: 0 tokens.$cds-global-space-9;
 
     > * {
       display: inline-flex;

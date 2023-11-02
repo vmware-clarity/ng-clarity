@@ -29,7 +29,7 @@ $clr-tree-link-selection-color: variables.$clr-global-selection-color !default;
 $clr-tree-link-text-color: variables.$clr-color-neutral-700 !default;
 $clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - variables.$clr_baselineRem_1) * 0.5 !default;
 $clr-tree-checkbox-padding-left: calc(
-  calc($clr-tree-node-touch-target - #{alert-variables.$clr-icon-dimension-sm}) * 0.5
+  calc(#{$clr-tree-node-touch-target} - #{alert-variables.$clr-icon-dimension-sm}) * 0.5
 ) !default;
 $clr-tree-node-caret-color: variables.$clr-color-neutral-500 !default;
 $clr-tree-node-font-size: inherit !default;
