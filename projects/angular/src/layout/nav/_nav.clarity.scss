@@ -4,22 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use '../tabs/variables.tabs' as tabs-variables;
-@use 'variables.subnav' as nav-variables;
+@use 'variables.subnav' as subnav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('nav.clarity') {
   .nav {
     display: flex; //For the elements inside the nav
-    height: nav-variables.$clr-subnav-height;
+    height: subnav-variables.$clr-subnav-height;
     list-style-type: none;
     align-items: center;
     margin: 0;
     width: 100%;
     white-space: nowrap;
-    box-shadow: 0 calc(-1 * tokens.$cds-global-space-1) 0 tabs-variables.$clr-nav-box-shadow-color inset;
+    box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 tabs-variables.$clr-nav-box-shadow-color inset;
     gap: tabs-variables.$clr-nav-horizontal-gap-size;
 
     .nav-item {
@@ -27,7 +26,7 @@
 
       &.active > .nav-link {
         color: tabs-variables.$clr-nav-link-active-color;
-        box-shadow: 0 calc(-1 * tokens.$cds-global-space-1) 0 tabs-variables.$clr-nav-box-shadow-color inset;
+        box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 tabs-variables.$clr-nav-box-shadow-color inset;
       }
     }
 
@@ -42,7 +41,7 @@
       &.btn {
         text-transform: none;
         margin: 0;
-        margin-bottom: -1 * variables.$clr-global-borderwidth; //-1px to account for the border of the button
+        margin-bottom: calc(-1 * #{tokens.$cds-global-space-1}); //-1px to account for the border of the button
         border-radius: 0;
       }
 
@@ -84,7 +83,7 @@
 
       // When using clrTabLink directive, DOM has both .nav-link and .nav-item in the same elem
       &.nav-item {
-        margin-right: variables.$clr_baselineRem_1;
+        margin-right: tokens.$cds-global-space-9;
       }
     }
   }
