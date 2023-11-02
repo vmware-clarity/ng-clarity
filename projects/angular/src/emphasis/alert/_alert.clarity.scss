@@ -143,7 +143,7 @@
   .alert-items {
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    padding: tokens.$cds-global-space-5;
+    padding: tokens.$cds-global-space-5 0;
     gap: tokens.$cds-global-space-5;
     display: flex;
   }
@@ -151,7 +151,6 @@
   .alert-item > span,
   .alert-text {
     flex: 1 1;
-    margin-right: 0;
     text-align: left;
     align-self: center;
   }
@@ -171,6 +170,8 @@
     width: auto;
     border-radius: alert-variables.$clr-alert-borderradius;
     margin-top: alert-variables.$clr-alert-top-margin;
+    padding: 0 tokens.$cds-global-space-5;
+    gap: tokens.$cds-global-space-6;
 
     @include generateAlertType(info);
 
@@ -191,6 +192,12 @@
     }
 
     .alert-item {
+      > span,
+      .alert-text,
+      .alert-actions {
+        padding: tokens.$cds-global-space-2 0;
+      }
+
       .clr-icon {
         @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
         margin-right: alert-variables.$clr-icon-margin-right;
@@ -206,14 +213,10 @@
     }
 
     .alert-actions {
+      display: inline-flex;
+      gap: tokens.$cds-global-space-5;
       flex: 0 0 auto;
       white-space: nowrap;
-      align-self: center;
-
-      .dropdown:last-child {
-        // used to align far-right dropdown inside an alert
-        //margin-right: calc(-1 * #{tokens.$cds-global-space-2});
-      }
 
       .dropdown-item {
         color: dropdown-variables.$clr-dropdown-text-color;
@@ -221,10 +224,6 @@
         line-height: dropdown-variables.$clr-dropdown-line-height;
         letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
       }
-    }
-
-    .alert-action:not(:last-child) {
-      margin-right: tokens.$cds-global-space-6;
     }
 
     .alert-action,
@@ -249,7 +248,7 @@
       order: 100;
       flex: 0 0 tokens.$cds-global-space-9;
       @include mixins.equilateral(tokens.$cds-global-space-9);
-      margin: tokens.$cds-global-space-5;
+      margin: tokens.$cds-global-space-5 0;
 
       cds-icon,
       clr-icon {
