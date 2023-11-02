@@ -124,59 +124,59 @@ $clr-app-alert-success-action-color: var(--clr-app-alert-success-action-color) !
 $clr-app-alert-success-action-active-color: var(--clr-app-alert-success-action-active-color) !default;
 $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close-icon-hover-color) !default;
 
-@function getAlertColor($type: info, $property: color, $var-type: 'sass-var') {
+@function getAlertColor($type: info, $property: color) {
   @if $type == info {
-    @return lookupInfoAlertColor($property, $var-type);
+    @return lookupInfoAlertColor($property);
   }
 
   @if $type == success {
-    @return lookupSuccessAlertColor($property, $var-type);
+    @return lookupSuccessAlertColor($property);
   }
 
   @if $type == warning {
-    @return lookupWarningAlertColor($property, $var-type);
+    @return lookupWarningAlertColor($property);
   }
 
   @if $type == danger {
-    @return lookupDangerAlertColor($property, $var-type);
+    @return lookupDangerAlertColor($property);
   }
 
   @if $type == app-info {
-    @return lookupAppInfoAlertColor($property, $var-type);
+    @return lookupAppInfoAlertColor($property);
   }
 
   @if $type == app-warning {
-    @return lookupAppWarningAlertColor($property, $var-type);
+    @return lookupAppWarningAlertColor($property);
   }
 
   @if $type == app-danger {
-    @return lookupAppDangerAlertColor($property, $var-type);
+    @return lookupAppDangerAlertColor($property);
   }
 
   @if $type == app-success {
-    @return lookupAppSuccessAlertColor($property, $var-type);
+    @return lookupAppSuccessAlertColor($property);
   }
 
   @if $type == lightweight-info {
-    @return lookupLightweightInfoAlertColor($property, $var-type);
+    @return lookupLightweightInfoAlertColor($property);
   }
 
   @if $type == lightweight-warning {
-    @return lookupLightweightWarningAlertColor($property, $var-type);
+    @return lookupLightweightWarningAlertColor($property);
   }
 
   @if $type == lightweight-danger {
-    @return lookupLightweightDangerAlertColor($property, $var-type);
+    @return lookupLightweightDangerAlertColor($property);
   }
 
   @if $type == lightweight-success {
-    @return lookupLightweightSuccessAlertColor($property, $var-type);
+    @return lookupLightweightSuccessAlertColor($property);
   }
 
   @return null;
 }
 
-@function lookupInfoAlertColor($property: color, $type: 'sass-var') {
+@function lookupInfoAlertColor($property: color) {
   @if $property == color {
     @return $clr-alert-info-font-color;
   }
@@ -212,7 +212,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupSuccessAlertColor($property: color, $type: 'sass-var') {
+@function lookupSuccessAlertColor($property: color) {
   @if $property == color {
     @return $clr-alert-success-font-color;
   }
@@ -248,7 +248,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupWarningAlertColor($property: color, $type: 'sass-var') {
+@function lookupWarningAlertColor($property: color) {
   @if $property == color {
     @return $clr-alert-warning-font-color;
   }
@@ -284,7 +284,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupDangerAlertColor($property: color, $type: 'sass-var') {
+@function lookupDangerAlertColor($property: color) {
   @if $property == color {
     @return $clr-alert-danger-font-color;
   }
@@ -320,7 +320,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupAppDangerAlertColor($property: color, $type: 'sass-var') {
+@function lookupAppDangerAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-danger-font-color;
   }
@@ -357,7 +357,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
 }
 
 // Deprecated in 3.0 for removal in 4.0
-@function lookupAppSuccessAlertColor($property: color, $type: 'sass-var') {
+@function lookupAppSuccessAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-success-font-color;
   }
@@ -393,7 +393,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupAppInfoAlertColor($property: color, $type: 'sass-var') {
+@function lookupAppInfoAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-info-font-color;
   }
@@ -429,7 +429,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupAppWarningAlertColor($property: color, $type: 'sass-var') {
+@function lookupAppWarningAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-warning-font-color;
   }
@@ -465,7 +465,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupLightweightInfoAlertColor($property: color, $type: 'sass-var') {
+@function lookupLightweightInfoAlertColor($property: color) {
   @if $property == icon {
     @return $clr-alert-info-bg-color;
   }
@@ -477,7 +477,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupLightweightDangerAlertColor($property: color, $type: 'sass-var') {
+@function lookupLightweightDangerAlertColor($property: color) {
   @if $property == icon {
     @return $clr-alert-danger-bg-color;
   }
@@ -489,7 +489,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupLightweightSuccessAlertColor($property: color, $type: 'sass-var') {
+@function lookupLightweightSuccessAlertColor($property: color) {
   @if $property == icon {
     @return $clr-alert-success-bg-color;
   }
@@ -501,7 +501,7 @@ $clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-close
   @return null;
 }
 
-@function lookupLightweightWarningAlertColor($property: color, $type: 'sass-var') {
+@function lookupLightweightWarningAlertColor($property: color) {
   @if $property == icon {
     @return $clr-alert-warning-bg-color;
   }
