@@ -14,12 +14,6 @@
       --clr-alert-borderradius: #{tokens.$cds-alias-object-border-radius-100};
       --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
 
-      // TYPOGRAPHIC STYLES
-      --clr-alert-font-size: #{tokens.$cds-alias-typography-font-size-3};
-      --clr-alert-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
-      --clr-alert-lightweight-sm-font-size: #{tokens.$cds-alias-typography-font-size-1};
-      --clr-alert-lightweight-sm-line-height: #{tokens.$cds-alias-typography-font-size-6};
-
       /* Alert Color Properties */
 
       // Usage: ./_alert.clarity.scss

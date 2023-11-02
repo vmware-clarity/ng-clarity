@@ -8,8 +8,8 @@
 
 // TYPOGRAPHIC STYLES
 // Usage: ./_alert.clarity.scss
-$clr-alert-font-size: var(--clr-alert-font-size) !default;
-$clr-alert-letter-spacing: var(--clr-alert-letter-spacing) !default;
+$clr-alert-font-size: #{tokens.$cds-alias-typography-font-size-3} !default;
+$clr-alert-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing} !default;
 
 // Dimensions & Layout
 // Usage: ./_alert.clarity.scss

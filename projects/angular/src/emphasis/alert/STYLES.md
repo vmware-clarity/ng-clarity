@@ -12,7 +12,6 @@
 | --clr-alert-close-icon-hover-opacity             | Close icon default opacity on hover                               |
 | --clr-app-level-alert-color                      | Default font color for app level alerts                           |
 | --clr-app-alert-close-icon-color                 | Close icon default color for app level alerts                     |
-| --clr-app-alert-close-icon-hover-opacity         | Close icon default opacity on hover for app level alerts          |
 | --clr-alert-borderradius                         | Border radius                                                     |
 | --clr-alert-info-bg-color                        | Info alert background color                                       |
 | --clr-alert-info-font-color                      | Info alert font color                                             |
@@ -99,7 +98,6 @@
 | --clr-app-alert-warning-pager-bg-color           | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color            | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color           | Danger success pager font color                                   |
-| --clr-alert-sm-font-size                         | Small alert font size                                             |
 | --clr-lightweight-alert-info-icon-color          | Lightweight alert info icon color                                 |
 | --clr-lightweight-alert-info-font-color          | Lightweight alert info font color                                 |
 | --clr-lightweight-alert-warning-icon-color       | Lightweight alert warning icon color                              |
@@ -109,8 +107,6 @@
 | --clr-lightweight-alert-success-icon-color       | Lightweight alert success icon color                              |
 | --clr-lightweight-alert-success-font-color       | Lightweight alert success font color                              |
 | --clr-alert-font-size                            | Font size for alert                                               |
-| --clr-alert-lightweight-sm-font-size             | Font size for small lightweight alerts                            |
-| --clr-alert-lightweight-sm-line-height           | Line height for small lightweight alerts                          |
 
 ## CSS Classes
 
@@ -131,6 +127,7 @@
 | alert-icon           | Icon used in alert items                                                   |
 | alert-icon-wrapper   | Wrapper for icons                                                          |
 | alert-sm             | Alert with a smaller size                                                  |
+| alert-lightweight    | Light weight alert                                                         |
 | alert-hidden         | Hide alert                                                                 |
 | alerts               | Main alerts element \*should be used with `alert-info` or equivalent class |
 | alerts-pager         | Alerts pager element                                                       |
