@@ -146,6 +146,11 @@
     align-self: center;
   }
 
+  // To be deleted with refactoring task
+  .alerts .alert {
+    margin-top: 0;
+  }
+
   .alert {
     @include mixins.generate-typography-token(
       'SECONDARY-13-RG-STD',
@@ -154,15 +159,16 @@
         letter-spacing: alert-variables.$clr-alert-letter-spacing,
       )
     );
-    position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     width: auto;
     border-radius: alert-variables.$clr-alert-borderradius;
-    margin-top: alert-variables.$clr-alert-top-margin;
     padding: 0 tokens.$cds-global-space-5;
     gap: tokens.$cds-global-space-6;
+
+    // To be deleted with refactoring task
+    margin-top: alert-variables.$clr-alert-top-margin;
 
     @include generateAlertType(info);
 
@@ -243,7 +249,6 @@
 
       cds-icon,
       clr-icon {
-        margin-top: 0;
         @include mixins.min-equilateral(tokens.$cds-global-space-9);
       }
     }
@@ -264,9 +269,12 @@
         .alert-item {
           min-height: 0;
           margin: 0;
-        }
-        .alert-text {
-          @include mixins.generate-typography-token('BODY-14-RG-STD');
+
+          > span,
+          .alert-actions,
+          .alert-text {
+            @include mixins.generate-typography-token('BODY-14-RG-STD');
+          }
         }
       }
       .close {
@@ -323,21 +331,14 @@
         @extend .btn-sm;
         margin: 0;
       }
-    }
 
-    .alert-icon-wrapper {
-      // TODO check is it needed
-      margin-top: 0;
+      .alert-actions {
+        padding: 0;
+      }
     }
 
     .close {
-      height: tokens.$cds-global-space-11;
-      overflow: hidden;
-
-      cds-icon,
-      clr-icon {
-        margin-top: 0;
-      }
+      margin: var(--cds-global-space-4) 0;
     }
 
     .alert-action,
@@ -380,38 +381,17 @@
         gap: tokens.$cds-global-space-3;
 
         .alert-item {
-          padding: #{tokens.$cds-global-space-3} 0;
+          padding: tokens.$cds-global-space-3 0;
 
+          > span,
+          .alert-actions,
           .alert-text {
-            // TODO check are font-size and line-height needed
-            //@include mixins.css-var(
-            //  font-size,
-            //  clr-alert-lightweight-sm-font-size,
-            //  variables.$clr_baselineRem_0_458,
-            //  variables.$clr-use-custom-properties
-            //);
-            //@include mixins.css-var(
-            //  line-height,
-            //  clr-alert-lightweight-sm-line-height,
-            //  variables.$clr_baselineRem_0_667,
-            //  variables.$clr-use-custom-properties
-            //);
+            @include mixins.generate-typography-token('CAPTION-LG-11');
           }
 
           .alert-icon-wrapper {
             flex-basis: tokens.$cds-global-space-7;
             height: tokens.$cds-global-space-7;
-          }
-
-          .alert-icon {
-            // TODO check are font-size needed
-            //@include mixins.css-var(
-            //  font-size,
-            //  clr-alert-lightweight-sm-font-size,
-            //  alert-variables.$clr-alert-font-size,
-            //  variables.$clr-use-custom-properties
-            //);
-            @include mixins.min-equilateral(tokens.$cds-global-space-7);
           }
         }
       }
@@ -425,23 +405,19 @@
     .alert {
       .alert-item {
         flex-wrap: wrap;
-      }
 
-      .alert-text {
-        margin-right: 0;
-        //90% was just an estimate to distance the text from the
-        //close alert button on medium and smaller breakpoints.
-        max-width: 90%;
-        //needed for safari
-        width: 90%;
-        flex-basis: 90%;
-      }
+        .alert-text {
+          //90% was just an estimate to distance the text from the
+          //close alert button on medium and smaller breakpoints.
+          max-width: 90%;
+          //needed for safari
+          width: 90%;
+          flex-basis: 90%;
+        }
 
-      .alert-actions {
-        flex: 1 0 100%;
-        padding-top: mixins.baselinePx(3);
-        // TOCHECK: CALCULATIONS
-        padding-left: alert-variables.$clr-alert-icon-dimension-sm + alert-variables.$clr-icon-margin-right;
+        .alert-actions {
+          flex: 1 0 100%;
+        }
       }
     }
 
@@ -497,14 +473,6 @@
       }
     }
 
-    // todo check typography token
-    //@include mixins.css-var(
-    //  font-size,
-    //  clr-alert-font-size,
-    //  alert-variables.$clr-alert-font-size,
-    //  variables.$clr-use-custom-properties
-    //);
-    //letter-spacing: alert-variables.$clr-alert-letter-spacing;
     min-height: alert-variables.$clr-alert-min-height;
     flex: 1 0 var(--clr-app-alert-pager-width);
   }
