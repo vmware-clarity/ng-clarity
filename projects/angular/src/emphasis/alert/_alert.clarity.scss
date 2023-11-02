@@ -375,10 +375,13 @@
     &.alert-lightweight {
       background: none;
       border: none;
+
       .alert-items {
         gap: tokens.$cds-global-space-3;
+
         .alert-item {
           padding: #{tokens.$cds-global-space-3} 0;
+
           .alert-text {
             // TODO check are font-size and line-height needed
             //@include mixins.css-var(
