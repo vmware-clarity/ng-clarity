@@ -35,11 +35,10 @@
   }
 
   $myActionSassVar: alert-variables.getAlertColor($alertType, action);
-  $myActionActiveSassVar: alert-variables.getAlertColor($alertType, action-active);
 
   .alert-actions .dropdown .dropdown-toggle {
     color: $myActionSassVar;
-    border-color: $myActionActiveSassVar;
+    border-color: alert-variables.getAlertColor($alertType, action-active);
   }
 
   .alert-action,
@@ -48,39 +47,20 @@
 
     &.btn {
       border-color: $myActionSassVar;
-      background-color: var(--clr-btn-transparent-bg-color);
+      color: $myActionSassVar;
 
       cds-icon,
       clr-icon {
         color: $myActionSassVar;
       }
 
-      &:focus,
-      &:hover,
       &:active {
-        border-color: $myActionActiveSassVar;
+        color: $myActionSassVar;
+        cds-icon,
+        clr-icon {
+          color: $myActionSassVar;
+        }
       }
-
-      // ATM (after token migration)
-      // &:active section to be removed alert buttons should act as outline buttons
-      //&:active {
-      //  // OldEdge + IE
-      //  box-shadow: 0 variables.$clr_baselineRem_1px 0 0 $myActionActiveSassVar inset;
-      //  @if variables.$clr-use-custom-properties == true {
-      //    box-shadow: 0
-      //      variables.$clr_baselineRem_1px
-      //      0
-      //      0
-      //      var(mixins.css-variablize-string($myActionActiveCssVar), $myActionActiveSassVar)
-      //      inset;
-      //  }
-      //}
-    }
-
-    &:focus,
-    &:hover,
-    &:active {
-      color: $myActionActiveSassVar;
     }
   }
 
@@ -300,20 +280,40 @@
 
     @include generateAlertType(app-info);
 
+    .alert-item .btn {
+      @extend .btn;
+      @extend .btn-sm;
+      margin: 0;
+    }
+
     &.alert-info {
       @include generateAlertType(app-info);
+
+      .alert-item .btn {
+        @extend .btn-info-outline;
+      }
     }
 
     &.alert-danger {
       @include generateAlertType(app-danger);
+
+      .alert-item .btn {
+        @extend .btn-danger-outline;
+      }
     }
 
     &.alert-warning {
       @include generateAlertType(app-warning);
+      .alert-item .btn {
+        @extend .btn-warning-outline;
+      }
     }
 
     &.alert-success {
       @include generateAlertType(app-success);
+      .alert-item .btn {
+        @extend .btn-success-outline;
+      }
     }
 
     .alert-items {
@@ -325,12 +325,6 @@
       justify-content: center;
       align-items: center;
       min-height: tokens.$cds-global-space-9;
-
-      .btn {
-        @extend .btn-inverse;
-        @extend .btn-sm;
-        margin: 0;
-      }
 
       .alert-actions {
         padding: 0;
