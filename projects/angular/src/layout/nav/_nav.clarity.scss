@@ -19,7 +19,7 @@
     width: 100%;
     white-space: nowrap;
     box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 tabs-variables.$clr-nav-box-shadow-color inset;
-    gap: tabs-variables.$clr-nav-horizontal-gap-size;
+    gap: tokens.$cds-global-space-9;
 
     .nav-item {
       display: inline-block;
@@ -34,7 +34,7 @@
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: tabs-variables.$clr-nav-horizontal-link-padding;
+      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3};
       display: inline-block;
 
       //Clarity Buttons as .nav-links in .nav
@@ -46,7 +46,7 @@
       }
 
       &.dropdown-toggle {
-        padding: tabs-variables.$clr-nav-link-dropdown-toggle-padding;
+        padding: tokens.$cds-global-space-5;
         cds-icon {
           color: tabs-variables.$clr-nav-link-color;
         }

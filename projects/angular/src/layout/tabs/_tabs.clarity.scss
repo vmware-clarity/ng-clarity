@@ -88,7 +88,7 @@ button.nav-link {
     width: calc(10 * #{tokens.$cds-global-space-9});
     min-width: #{tokens.$cds-global-space-12};
 
-    gap: tabs-variables.$clr-nav-vertical-gap-size;
+    gap: tokens.$cds-global-space-5;
 
     .nav-link {
       text-align: left;

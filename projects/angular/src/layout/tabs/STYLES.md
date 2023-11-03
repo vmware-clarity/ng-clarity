@@ -12,10 +12,6 @@
 | --clr-nav-box-shadow-color                | Tabs nav box shadow color                   |
 | --clr-vertical-nav-header-font-weight     | Vertical nav header font weight             |
 | --clr-nav-selected-hover-background-color | Tabs nav selected background color on hover |
-| --clr-nav-horizontal-gap-size             | Tabs nav horizontal gap size                |
-| --clr-nav-vertical-gap-size               | Tabs nav vertical gap size                  |
-| --clr-nav-link-dropdown-toggle-padding    | Tabs nav dropdown toggle padding            |
-| --clr-nav-horizontal-link-padding         | Tabs nav horizontal link padding            |
 
 ## Class names
 
