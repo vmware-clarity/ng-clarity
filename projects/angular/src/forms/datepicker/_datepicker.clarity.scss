@@ -8,6 +8,8 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.datepicker' as datepicker-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.datepicker');
 
 @mixin generate-calendar-button(
@@ -333,9 +335,7 @@
     }
 
     &.is-excluded {
-      //ATM: remove opacity mixin and color calc
-      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
-      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
+      color: tokens.$cds-alias-object-interaction-color-disabled;
 
       &:hover {
         background: none;
@@ -367,9 +367,7 @@
     }
 
     &.is-disabled {
-      //ATM: remove opacity mixin and color calc
-      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
-      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
+      color: tokens.$cds-alias-object-interaction-color-disabled;
       pointer-events: none;
       &:hover {
         background: none;
@@ -489,9 +487,7 @@
       variables.$clr-use-custom-properties
     );
     &.is-disabled {
-      //ATM: remove opacity mixin and color calc
-      @include mixins.css-var(opacity, clr-calendar-disable-opacity, 0.4, variables.$clr-use-custom-properties);
-      @include mixins.css-var(color, clr-calendar-disable-color, inherit, variables.$clr-use-custom-properties);
+      color: tokens.$cds-alias-object-interaction-color-disabled;
       pointer-events: none;
       &:hover {
         background: none;
