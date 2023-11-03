@@ -86,6 +86,10 @@ $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);
 
+// Password
+$clr-forms-password-eye-icon-color: var(--clr-forms-password-eye-icon-color) !default;
+$clr-forms-password-disabled-eye-icon-color: var(--clr-forms-password-disabled-eye-icon-color) !default;
+
 // Radio
 $clr-forms-radio-label-color: var(--clr-forms-radio-label-color) !default;
 $clr-forms-radio-label-disabled-color: var(--clr-forms-radio-label-disabled-color);
