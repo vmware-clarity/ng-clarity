@@ -126,11 +126,6 @@
     align-self: center;
   }
 
-  // To be deleted with refactoring task
-  .alerts .alert {
-    margin-top: 0;
-  }
-
   .alert {
     @include mixins.generate-typography-token(
       'SECONDARY-13-RG-STD',
@@ -427,22 +422,13 @@
   }
 
   //alert padding/margin adjustments
-  //1.cards
-  .card {
-    .alert {
-      margin: 0 0 tokens.$cds-global-space-5 0;
-    }
-  }
-
-  //2. Modal
-  .modal {
-    .alert + .modal-header {
-      margin-top: tokens.$cds-global-space-6;
-    }
-  }
-
-  //3. Multiple app level alerts
+  //Multiple app level alerts
   .alerts {
+    // To be deleted with refactoring task
+    .alert {
+      margin-top: 0;
+    }
+
     .alerts-wrapper {
       display: flex;
       flex-direction: row;
