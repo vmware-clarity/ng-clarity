@@ -18,18 +18,7 @@
 | --clr-calendar-active-cell-color                  | Active cell font color                                              |
 | --clr-calendar-active-focus-cell-background-color | Focused cell background color                                       |
 | --clr-day-font-size                               | Week day font size. Depricated use `clr-calendar-weekday-font-size` |
-| --clr-calendar-container-border-width             | Calendar container border width                                     |
-| --clr-calendar-container-border-radius            | Calendar container border radius                                    |
-| --clr-calendar-container-padding                  | Calendar container padding                                          |
-| --clr-calendar-container-margin-top               | Calendar container margin top                                       |
-| --clr-calendar-container-width                    | Calendar container width                                            |
 | --clr-calendar-container-height                   | Calendar container height                                           |
-| --clr-calendar-cell-border-radius                 | Calendar cell border radius                                         |
-| --clr-calendar-cell-width-height                  | Calendar cell width and height                                      |
-| --clr-calendar-month-year-button-width            | Calendar month and year button width                                |
-| --clr-calendar-month-year-cell-height             | Calendar month and year cell height                                 |
-| --clr-calendar-month-year-cell-width              | Calendar month and year cell width                                  |
-| --clr-calendar-year-picker-gap                    | Calendar year picker gap                                            |
 | --clr-calendar-weekday-font-size                  | Calendar week day font size                                         |
 | --clr-calendar-weekday-font-weight                | Calendar week day font weight                                       |
 | --clr-calendar-weekday-line-height                | Calendar week day line height                                       |

@@ -13,24 +13,19 @@
 @include meta.load-css('properties.datepicker');
 
 @mixin generate-calendar-button(
-  $dimension: clr-calendar-cell-width-height,
-  $height-fallback: datepicker-variables.$clr-calendar-click-target,
+  $height: datepicker-variables.$clr-calendar-click-target,
   $padding: datepicker-variables.$clr-calendar-btn-padding
 ) {
   //Dimensions
-  @include mixins.min-equilateral-var($dimension, $height-fallback, variables.$clr-use-custom-properties);
+  @include mixins.min-equilateral($height);
   padding: 0 $padding;
   margin: 0 !important; //Because stupid forms target buttons directly. We really need to refactor forms.
 
   //Other Props
   color: inherit;
   border: none;
-  @include mixins.css-var(
-    border-radius,
-    clr-calendar-cell-border-radius,
-    variables.$clr-global-borderradius,
-    variables.$clr-use-custom-properties
-  );
+  border-radius: tokens.$cds-alias-object-border-radius-100;
+
   background: none;
   cursor: pointer;
 }
@@ -129,30 +124,10 @@
     flex-direction: column;
 
     //Dimensions
-    @include mixins.css-var(
-      margin-top,
-      clr-calendar-container-margin-top,
-      datepicker-variables.$clr-calendar-margin-top,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      padding,
-      clr-calendar-container-padding,
-      datepicker-variables.$clr-calendar-padding,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      width,
-      clr-calendar-container-width,
-      datepicker-variables.$clr-calendar-width,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      height,
-      clr-calendar-container-height,
-      datepicker-variables.$clr-calendar-height,
-      variables.$clr-use-custom-properties
-    );
+    margin-top: datepicker-variables.$clr-calendar-margin-top;
+    padding: datepicker-variables.$clr-calendar-padding;
+    width: datepicker-variables.$clr-calendar-width;
+    height: datepicker-variables.$clr-calendar-height;
 
     //Other Props
     @include mixins.css-var(
@@ -162,24 +137,14 @@
       variables.$clr-use-custom-properties
     );
     border-style: solid;
-    @include mixins.css-var(
-      border-width,
-      clr-calendar-container-border-width,
-      variables.$clr-global-borderwidth,
-      variables.$clr-use-custom-properties
-    );
+    border-width: tokens.$cds-alias-object-border-width-100;
     @include mixins.css-var(
       border-color,
       clr-calendar-border-color,
       datepicker-variables.$clr-calendar-border-color,
       variables.$clr-use-custom-properties
     );
-    @include mixins.css-var(
-      border-radius,
-      clr-calendar-container-border-radius,
-      variables.$clr-global-borderradius,
-      variables.$clr-use-custom-properties
-    );
+    border-radius: tokens.$cds-alias-object-border-radius-100;
     // OldIE/Edge
     box-shadow: 0 variables.$clr-global-borderwidth variables.$clr_baselineRem_0_125
       variables.$clr-popover-box-shadow-color;
@@ -221,11 +186,7 @@
   .calendar-cell,
   .calendar-table .calendar-cell {
     //Dimensions
-    @include mixins.min-equilateral-var(
-      clr-calendar-cell-width-height,
-      datepicker-variables.$clr-calendar-click-target,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-click-target);
     padding: 0;
 
     //Other Props
@@ -397,12 +358,7 @@
   .monthpicker-trigger,
   .yearpicker-trigger {
     //Dimensions
-    @include mixins.css-var(
-      width,
-      clr-calendar-month-year-button-width,
-      variables.$clr_baselineRem_2,
-      variables.$clr-use-custom-properties
-    );
+    width: #{tokens.$cds-global-space-13};
 
     //Other Props
     @include mixins.css-var(
@@ -431,7 +387,7 @@
   }
 
   .yearpicker {
-    @include mixins.css-var(gap, clr-calendar-year-picker-gap, 0, variables.$clr-use-custom-properties);
+    gap: tokens.$cds-global-space-6;
   }
 
   .monthpicker,
@@ -445,19 +401,8 @@
     @include generate-calendar-hover-active-color-style();
     // this is already generated through calendar-btn class. Commented for now
     //@include generate-calendar-focus-style();
-
-    @include mixins.css-var(
-      height,
-      clr-calendar-month-year-cell-height,
-      datepicker-variables.$clr-calendar-month-cell-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      width,
-      clr-calendar-month-year-cell-width,
-      datepicker-variables.$clr-month-year-btn-width,
-      variables.$clr-use-custom-properties
-    );
+    height: datepicker-variables.$clr-calendar-month-cell-height;
+    width: datepicker-variables.$clr-month-year-btn-width;
 
     //Other Props
     outline-offset: -1 * variables.$clr_baselineRem_5px; //needed for chrome
