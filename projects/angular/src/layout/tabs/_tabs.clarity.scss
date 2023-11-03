@@ -20,9 +20,8 @@
     left: 0;
     width: 100%;
     border: none;
-    border-#{$position}-style: solid;
-    border-#{$position}-color: tokens.$cds-alias-object-interaction-background-highlight;
-    border-#{$position}-width: mixins.baselinePx(3);
+    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
+      tokens.$cds-alias-object-interaction-background-highlight;
     transition: border-#{$position} 0.2s ease-in;
   }
 }
