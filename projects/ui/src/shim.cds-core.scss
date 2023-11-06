@@ -361,11 +361,6 @@
   --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
   --clr-forms-range-progress-fill-height: 3px; // TODO: ATM - get rid of this
 
-  // Password
-  // TODO: ATM Make sure this is what we need,
-  //  in spec it is #{tokens.$cds-alias-interaction-color}, which is gray, hence it's put as fallback here
-  --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
-  --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
   /* Combobox */
 
   --clr-combobox-border-color: #{tokens.$cds-alias-object-border-color};
