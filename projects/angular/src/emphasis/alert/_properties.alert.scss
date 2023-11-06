@@ -4,172 +4,146 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables';
-@use 'variables.alert' as alert-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('alert.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
+  :root {
+    [cds-theme] {
+      /* Dimensions & Layout */
+      // Usage: ./_alert.clarity.scss
+      --clr-alert-borderradius: #{tokens.$cds-alias-object-border-radius-100};
+      --clr-app-alert-pager-width: #{mixins.baselinePx(144)};
+
+      /* Alert Color Properties */
+
       // Usage: ./_alert.clarity.scss
       // Used for 'toggle' button for dropdowns on the right side of an alert
-      --clr-alert-action-color: var(--clr-color-neutral-700);
-      --clr-alert-action-active-color: var(--clr-color-secondary-action-900);
+      --clr-alert-action-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-alert-action-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
       // standard alert close
       --clr-alert-close-icon-color: var(--clr-alert-action-color);
       --clr-alert-close-icon-hover-color: var(--clr-alert-action-active-color);
-      --clr-alert-close-icon-opacity: #{alert-variables.$clr-alert-close-icon-opacity};
-      --clr-alert-close-icon-hover-opacity: #{alert-variables.$clr-alert-close-icon-hover-opacity};
 
       // Close icon colors for APP-LEVEL ALERTS
-      --clr-app-level-alert-color: var(--clr-color-neutral-0);
+      --clr-app-level-alert-color: #{tokens.$cds-global-color-white};
       --clr-app-alert-close-icon-color: var(--clr-app-level-alert-color);
-      --clr-app-alert-close-icon-opacity: #{alert-variables.$clr-app-alert-close-icon-opacity};
-      --clr-app-alert-close-icon-hover-opacity: #{alert-variables.$clr-app-alert-close-icon-hover-opacity};
-
-      // Dimensions & Layout
-      // Usage: ./_alert.clarity.scss
-      --clr-alert-padding: #{variables.$clr_baselineRem_10px
-        variables.$clr_baselineRem_0_5 -
-        alert-variables.$clr-alert-borderwidth};
-      --clr-alert-borderradius: var(--clr-global-borderradius);
-      --clr-alert-actions-spacing: #{variables.$clr_baselineRem_0_5};
-      --clr-alert-item-margin-bottom: #{variables.$clr_baselineRem_0_25};
-      --clr-alert-line-height: #{variables.$clr_baselineRem_0_75};
-      --clr-alert-sm-line-height: #{variables.$clr_baselineRem_0_667};
-      --clr-alert-app-padding: #{variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_458};
-      --clr-alert-text-flex-grow: 1; // ATM: delete after token migration
-      --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125}; // ATM: delete after token migration
-      --clr-alert-items-gap: 0;
 
       // Info type
       // Usage: ./_alert.clarity.scss
-      --clr-alert-info-bg-color: var(--clr-color-action-50);
-      --clr-alert-info-font-color: var(--clr-color-neutral-700);
-      --clr-alert-info-border-color: var(--clr-color-action-800);
-      --clr-alert-info-icon-color: var(--clr-color-action-800);
-      --clr-alert-info-action-color: var(--clr-alert-action-color);
+      --clr-alert-info-bg-color: #{tokens.$cds-alias-status-info-tint};
+      --clr-alert-info-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-alert-info-border-color: #{tokens.$cds-alias-status-info};
+      --clr-alert-info-icon-color: var(--clr-alert-info-font-color);
+      --clr-alert-info-close-icon-color: var(--clr-alert-info-font-color);
+      --clr-alert-info-action-color: var(--clr-alert-info-font-color);
       --clr-alert-info-action-active-color: var(--clr-alert-action-active-color);
-      --clr-alert-info-close-icon-color: var(--clr-alert-close-icon-color);
-      --clr-alert-info-close-icon-opacity: var(--clr-alert-close-icon-opacity);
       --clr-alert-info-close-icon-hover-color: var(--clr-alert-close-icon-hover-color);
-      --clr-alert-info-close-icon-hover-opacity: var(--clr-alert-close-icon-hover-opacity);
 
       // Success type
       // Usage: ./_alert.clarity.scss
-      --clr-alert-success-bg-color: var(--clr-color-success-50);
-      --clr-alert-success-font-color: var(--clr-color-neutral-700);
-      --clr-alert-success-border-color: var(--clr-color-success-800);
-      --clr-alert-success-icon-color: var(--clr-color-success-800);
-      --clr-alert-success-action-color: var(--clr-alert-action-color);
+      --clr-alert-success-bg-color: #{tokens.$cds-alias-status-success-tint};
+      --clr-alert-success-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-alert-success-border-color: #{tokens.$cds-alias-status-success};
+      --clr-alert-success-icon-color: var(--clr-alert-success-font-color);
+      --clr-alert-success-close-icon-color: var(--clr-alert-success-font-color);
+      --clr-alert-success-action-color: var(--clr-alert-success-font-color);
       --clr-alert-success-action-active-color: var(--clr-alert-action-active-color);
-      --clr-alert-success-close-icon-color: var(--clr-alert-close-icon-color);
-      --clr-alert-success-close-icon-opacity: var(--clr-alert-close-icon-opacity);
       --clr-alert-success-close-icon-hover-color: var(--clr-alert-close-icon-hover-color);
-      --clr-alert-success-close-icon-hover-opacity: var(--clr-alert-close-icon-hover-opacity);
 
       // Warning type
       // Usage: ./_alert.clarity.scss
-      --clr-alert-warning-bg-color: var(--clr-color-warning-100);
-      --clr-alert-warning-font-color: var(--clr-color-neutral-900);
-      --clr-alert-warning-border-color: var(--clr-color-warning-800);
-      --clr-alert-warning-icon-color: var(--clr-color-warning-800);
-      --clr-alert-warning-action-color: var(--clr-alert-action-color);
+      --clr-alert-warning-bg-color: #{tokens.$cds-alias-status-warning-tint};
+      --clr-alert-warning-font-color: #{tokens.$cds-global-color-black};
+      --clr-alert-warning-border-color: #{tokens.$cds-alias-status-warning};
+      --clr-alert-warning-icon-color: var(--clr-alert-warning-font-color);
+      --clr-alert-warning-close-icon-color: var(--clr-alert-warning-font-color);
+      --clr-alert-warning-action-color: var(--clr-alert-warning-font-color);
       --clr-alert-warning-action-active-color: var(--clr-alert-action-active-color);
-      --clr-alert-warning-close-icon-color: var(--clr-alert-close-icon-color);
-      --clr-alert-warning-close-icon-opacity: var(--clr-alert-close-icon-opacity);
       --clr-alert-warning-close-icon-hover-color: var(--clr-alert-close-icon-hover-color);
-      --clr-alert-warning-close-icon-hover-opacity: var(--clr-alert-close-icon-hover-opacity);
 
       // Danger type
       // Usage: ./_alert.clarity.scss
-      --clr-alert-danger-bg-color: var(--clr-color-danger-100);
-      --clr-alert-danger-font-color: var(--clr-color-neutral-700);
-      --clr-alert-danger-border-color: var(--clr-color-danger-900);
-      --clr-alert-danger-icon-color: var(--clr-color-danger-900);
-      --clr-alert-danger-action-color: var(--clr-alert-action-color);
+      --clr-alert-danger-bg-color: #{tokens.$cds-alias-status-danger-tint};
+      --clr-alert-danger-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-alert-danger-border-color: #{tokens.$cds-alias-status-danger};
+      --clr-alert-danger-icon-color: var(--clr-alert-danger-font-color);
+      --clr-alert-danger-close-icon-color: var(--clr-alert-danger-font-color);
+      --clr-alert-danger-action-color: var(--clr-alert-danger-font-color);
       --clr-alert-danger-action-active-color: var(--clr-alert-action-active-color);
-      --clr-alert-danger-close-icon-color: var(--clr-alert-close-icon-color);
-      --clr-alert-danger-close-icon-opacity: var(--clr-alert-close-icon-opacity);
       --clr-alert-danger-close-icon-hover-color: var(--clr-alert-close-icon-hover-color);
-      --clr-alert-danger-close-icon-hover-opacity: var(--clr-alert-close-icon-hover-opacity);
 
       // App Info type
       // Usage: ./_alert.clarity.scss
-      --clr-app-alert-info-bg-color: var(--clr-color-action-600);
-      --clr-app-alert-info-font-color: var(--clr-app-level-alert-color);
+      --clr-app-alert-info-bg-color: #{tokens.$cds-alias-status-info};
+      --clr-app-alert-info-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-info-border-color: none;
-      --clr-app-alert-info-icon-color: var(--clr-app-alert-close-icon-color);
+      --clr-app-alert-info-icon-color: var(--clr-app-alert-info-font-color);
       --clr-app-alert-info-action-color: var(--clr-app-alert-info-font-color);
       --clr-app-alert-info-action-active-color: var(--clr-app-alert-info-font-color);
-      --clr-app-alert-info-close-icon-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-info-close-icon-opacity: var(--clr-app-alert-close-icon-opacity);
-      --clr-app-alert-info-close-icon-hover-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-info-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
+      --clr-app-alert-info-close-icon-color: var(--clr-app-alert-info-font-color);
+      --clr-app-alert-info-close-icon-hover-color: var(--clr-app-alert-info-font-color);
 
       // App Warning type
       // Usage: ./_alert.clarity.scss
-      // TODO-UX: why is the next color not in our color palettes?
-      --clr-app-alert-warning-bg-color: hsl(26, 100%, 38%);
+      --clr-app-alert-warning-bg-color: #{tokens.$cds-alias-status-warning};
+      --clr-app-alert-warning-font-color: #{tokens.$cds-global-color-black};
       --clr-app-alert-warning-border-color: none;
-      --clr-app-alert-warning-icon-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-warning-font-color: var(--clr-app-level-alert-color);
-      --clr-app-alert-warning-close-icon-color: var(--clr-app-alert-close-icon-color);
+      --clr-app-alert-warning-icon-color: var(--clr-app-alert-warning-font-color);
+      --clr-app-alert-warning-close-icon-color: var(--clr-app-alert-warning-font-color);
       --clr-app-alert-warning-action-color: var(--clr-app-alert-warning-font-color);
       --clr-app-alert-warning-action-active-color: var(--clr-app-alert-warning-font-color);
-      --clr-app-alert-warning-close-icon-opacity: var(--clr-app-alert-close-icon-opacity);
-      --clr-app-alert-warning-close-icon-hover-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-warning-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
+      --clr-app-alert-warning-close-icon-hover-color: var(--clr-app-alert-warning-font-color);
 
       // App Danger type
       // Usage: ./_alert.clarity.scss
-      --clr-app-alert-danger-bg-color: var(--clr-color-danger-800);
+      --clr-app-alert-danger-bg-color: #{tokens.$cds-alias-status-danger};
+      --clr-app-alert-danger-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-danger-border-color: none;
-      --clr-app-alert-danger-icon-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-danger-font-color: var(--clr-app-level-alert-color);
-      --clr-app-alert-danger-close-icon-color: var(--clr-app-alert-close-icon-color);
+      --clr-app-alert-danger-icon-color: var(--clr-app-alert-danger-font-color);
+      --clr-app-alert-danger-close-icon-color: var(--clr-app-alert-danger-font-color);
       --clr-app-alert-danger-action-color: var(--clr-app-alert-danger-font-color);
       --clr-app-alert-danger-action-active-color: var(--clr-app-alert-danger-font-color);
-      --clr-app-alert-danger-close-icon-opacity: var(--clr-app-alert-close-icon-opacity);
-      --clr-app-alert-danger-close-icon-hover-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-danger-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
+      --clr-app-alert-danger-close-icon-hover-color: var(--clr-app-alert-danger-font-color);
 
       // App Success type
       // Usage: ./_alert.clarity.scss
+      --clr-app-alert-success-bg-color: #{tokens.$cds-alias-status-success};
+      --clr-app-alert-success-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-success-border-color: none;
-      --clr-app-alert-success-bg-color: var(--clr-color-success-700);
-      --clr-app-alert-success-icon-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-success-font-color: var(--clr-app-level-alert-color);
-      --clr-app-alert-success-close-icon-color: var(--clr-app-alert-close-icon-color);
+      --clr-app-alert-success-icon-color: var(--clr-app-alert-success-font-color);
+      --clr-app-alert-success-close-icon-color: var(--clr-app-alert-success-font-color);
       --clr-app-alert-success-action-color: var(--clr-app-alert-success-font-color);
       --clr-app-alert-success-action-active-color: var(--clr-app-alert-success-font-color);
-      --clr-app-alert-success-close-icon-opacity: var(--clr-app-alert-close-icon-opacity);
-      --clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-close-icon-color);
-      --clr-app-alert-success-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
+      --clr-app-alert-success-close-icon-hover-color: var(--clr-app-alert-success-font-color);
 
       // App Alerts Pager
-      --clr-app-alert-pager-text-color: var(--clr-color-neutral-0);
-      --clr-app-alert-info-pager-bg-color: var(--clr-color-action-800);
-      --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900);
-      --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900);
-      --clr-app-alert-success-pager-bg-color: var(--clr-color-success-900);
-      --clr-app-alert-pager-width: #{variables.$clr_baselineRem_6};
+      --clr-app-alert-pager-text-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-app-alert-info-pager-bg-color: #{tokens.$cds-alias-status-info-shade};
+      --clr-app-alert-warning-pager-bg-color: #{tokens.$cds-alias-status-warning-shade};
+      --clr-app-alert-danger-pager-bg-color: #{tokens.$cds-alias-status-danger-shade};
+      --clr-app-alert-success-pager-bg-color: #{tokens.$cds-alias-status-success-shade};
+
+      --clr-app-alert-info-pager-font-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-app-alert-warning-pager-font-color: #{tokens.$cds-global-color-black};
+      --clr-app-alert-danger-pager-font-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-app-alert-success-pager-font-color: #{tokens.$cds-alias-typography-color-100};
 
       // Lightweight Info type
-      --clr-lightweight-alert-info-icon-color: var(--clr-alert-info-icon-color);
-      --clr-lightweight-alert-info-font-color: var(--clr-alert-info-font-color);
+      --clr-lightweight-alert-info-icon-color: #{tokens.$cds-alias-status-info};
+      --clr-lightweight-alert-info-font-color: #{tokens.$cds-alias-typography-color-500};
 
       // Lightweight Warning type
-      --clr-lightweight-alert-warning-icon-color: var(--clr-alert-warning-icon-color);
-      --clr-lightweight-alert-warning-font-color: var(--clr-alert-warning-font-color);
+      --clr-lightweight-alert-warning-icon-color: #{tokens.$cds-alias-status-warning-dark};
+      --clr-lightweight-alert-warning-font-color: #{tokens.$cds-alias-typography-color-500};
 
       // Lightweight Danger type
-      --clr-lightweight-alert-danger-icon-color: var(--clr-alert-danger-icon-color);
-      --clr-lightweight-alert-danger-font-color: var(--clr-alert-danger-font-color);
+      --clr-lightweight-alert-danger-icon-color: #{tokens.$cds-alias-status-danger};
+      --clr-lightweight-alert-danger-font-color: #{tokens.$cds-alias-typography-color-500};
 
       // Lightweight Success type
-      --clr-lightweight-alert-success-icon-color: var(--clr-alert-success-icon-color);
-      --clr-lightweight-alert-success-font-color: var(--clr-alert-success-font-color);
+      --clr-lightweight-alert-success-icon-color: #{tokens.$cds-alias-status-success};
+      --clr-lightweight-alert-success-font-color: #{tokens.$cds-alias-typography-color-500};
     }
   }
 }

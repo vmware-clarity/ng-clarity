@@ -314,12 +314,27 @@ $typography-tokens: (
     line-height: #{tokens.$cds-alias-typography-secondary-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
+  'SECONDARY-13-RG-CPT': (
+    // Checkbox and radio labels, Spinner
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
   'SECONDARY-13-RG-EXP': (
     // P3, Form Labels and Column Headers
     // P5, Table footer and chart data
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
-    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    line-height: #{baselinePx(24)},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-RG-STD': (
+    // P4, Form Labels and Column Headers
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{baselinePx(20)},
+    // suitable token not found
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-SB-STD': (
