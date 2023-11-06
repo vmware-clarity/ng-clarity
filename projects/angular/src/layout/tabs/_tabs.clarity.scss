@@ -84,9 +84,9 @@ button.nav-link {
     margin-right: tokens.$cds-global-space-9;
     overflow: auto;
     flex-shrink: 0;
-    padding: #{tokens.$cds-global-space-3};
+    padding: tokens.$cds-global-space-3;
     width: calc(10 * #{tokens.$cds-global-space-9});
-    min-width: #{tokens.$cds-global-space-12};
+    min-width: tokens.$cds-global-space-12;
 
     gap: tokens.$cds-global-space-5;
 
