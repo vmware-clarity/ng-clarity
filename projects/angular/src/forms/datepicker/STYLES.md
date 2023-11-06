@@ -19,7 +19,6 @@
 | --clr-calendar-active-focus-cell-background-color | Focused cell background color                   |
 | --clr-calendar-container-height                   | Calendar container height                       |
 | --clr-calendar-weekday-font-size                  | Calendar week day font size                     |
-| --clr-calendar-today-date-cell-font-weight        | Calendar toady font weight                      |
 | --clr-calendar-picker-btn-font-size               | Calendar picker button font size                |
 | --clr-calendar-picker-btn-font-weight             | Calendar picker button font weight              |
 
