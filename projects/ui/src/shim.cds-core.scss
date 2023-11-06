@@ -717,10 +717,6 @@
   --clr-subnav-sm-item-height: auto; // ATM - remove
   --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
 
-  /* Tabs */
-
-  // ATM move to _tabs.clarity.scss
-
   /* Timeline */
 
   --clr-timeline-line-color: #{tokens.$cds-alias-object-interaction-border-color}; // var(--clr-color-neutral-500);
