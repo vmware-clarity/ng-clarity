@@ -19,22 +19,9 @@
 | --clr-calendar-active-focus-cell-background-color | Focused cell background color                   |
 | --clr-calendar-container-height                   | Calendar container height                       |
 | --clr-calendar-weekday-font-size                  | Calendar week day font size                     |
-| --clr-calendar-weekday-font-weight                | Calendar week day font weight                   |
-| --clr-calendar-weekday-line-height                | Calendar week day line height                   |
-| --clr-calendar-weekday-letter-spacing             | Calendar week day letter spacing                |
-| --clr-calendar-day-font-size                      | Calendar day font size                          |
-| --clr-calendar-day-font-weight                    | Calendar day font weight                        |
-| --clr-calendar-day-line-height                    | Calendar day line height                        |
-| --clr-calendar-day-letter-spacing                 | Calendar day letter spacing                     |
 | --clr-calendar-today-date-cell-font-weight        | Calendar toady font weight                      |
-| --clr-calendar-month-year-font-size-              | Calendar month year font size                   |
-| --clr-calendar-month-year-font-weight             | Calendar month year font weight                 |
-| --clr-calendar-month-year-line-height             | Calendar month year line height                 |
-| --clr-calendar-month-year-letter-spacing          | Calendar month year letter spacing              |
 | --clr-calendar-picker-btn-font-size               | Calendar picker button font size                |
 | --clr-calendar-picker-btn-font-weight             | Calendar picker button font weight              |
-| --clr-calendar-picker-btn-line-height             | Calendar picker button line height              |
-| --clr-calendar-picker-btn-letter-spacing          | Calendar picker button letter spacing           |
 
 ## CSS Classes
 
