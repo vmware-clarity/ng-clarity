@@ -95,7 +95,6 @@ export class ClrProgressBar {
     return this._loop;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
   @Input('clrWarning')
   set clrWarning(value: boolean | string) {
     this._warning = isBooleanAttributeSet(value);
@@ -106,7 +105,6 @@ export class ClrProgressBar {
     return this._warning;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
   @Input('clrSuccess')
   set clrSuccess(value: boolean | string) {
     this._success = isBooleanAttributeSet(value);
@@ -117,7 +115,6 @@ export class ClrProgressBar {
     return this._success;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
   @Input('clrDanger')
   set clrDanger(value: boolean | string) {
     this._danger = isBooleanAttributeSet(value);
@@ -138,7 +135,6 @@ export class ClrProgressBar {
     return this._flash;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
   @Input('clrFlashDanger')
   set clrFlashDanger(value: boolean | string) {
     this._flashDanger = isBooleanAttributeSet(value);
