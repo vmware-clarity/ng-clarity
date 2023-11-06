@@ -27,6 +27,10 @@
     align-items: center;
     padding: tokens.$cds-global-space-12;
 
+    .alert + .modal-header {
+      margin-top: tokens.$cds-global-space-6;
+    }
+
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
       padding: tokens.$cds-global-space-6;
     }

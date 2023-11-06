@@ -11,148 +11,71 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.alert');
 
 @mixin generateAlertType($alertType: 'info') {
-  @include mixins.css-var(
-    background,
-    alert-variables.getAlertColor($alertType, bg-color, 'css-var'),
-    alert-variables.getAlertColor($alertType, bg-color),
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    color,
-    alert-variables.getAlertColor($alertType, color, 'css-var'),
-    alert-variables.getAlertColor($alertType, color),
-    variables.$clr-use-custom-properties
-  );
+  background: alert-variables.getAlertColor($alertType, bg-color);
+  color: alert-variables.getAlertColor($alertType, color);
 
   & a {
-    @include mixins.css-var(
-      color,
-      alert-variables.getAlertColor($alertType, color, 'css-var'),
-      alert-variables.getAlertColor($alertType, color),
-      variables.$clr-use-custom-properties
-    );
+    color: alert-variables.getAlertColor($alertType, color);
   }
 
   $border-prop: alert-variables.getAlertColor($alertType, border-color);
-
   @if $border-prop != 'none' {
-    border: alert-variables.$clr-alert-borderwidth solid;
-    @include mixins.css-var(
-      border-color,
-      alert-variables.getAlertColor($alertType, border-color, 'css-var'),
-      $border-prop,
-      variables.$clr-use-custom-properties
-    );
+    border: alert-variables.$clr-alert-borderwidth solid $border-prop;
   } @else {
     border: none;
   }
 
   .alert-icon {
-    @include mixins.css-var(
-      color,
-      alert-variables.getAlertColor($alertType, icon, 'css-var'),
-      alert-variables.getAlertColor($alertType, icon),
-      variables.$clr-use-custom-properties
-    );
+    color: alert-variables.getAlertColor($alertType, icon);
   }
 
-  $myActionCssVar: alert-variables.getAlertColor($alertType, action, 'css-var');
   $myActionSassVar: alert-variables.getAlertColor($alertType, action);
-  $myActionActiveCssVar: alert-variables.getAlertColor($alertType, action-active, 'css-var');
-  $myActionActiveSassVar: alert-variables.getAlertColor($alertType, action-active);
 
   .alert-actions .dropdown .dropdown-toggle {
-    @include mixins.css-var(color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
-    @include mixins.css-var(border-color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
+    color: $myActionSassVar;
+    border-color: alert-variables.getAlertColor($alertType, action-active);
   }
 
   .alert-action,
   .dropdown-toggle {
-    @include mixins.css-var(color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
+    color: $myActionSassVar;
 
     &.btn {
-      @include mixins.css-var(border-color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
-      @include mixins.css-var(background-color, clr-btn-transparent-bg-color, 0, variables.$clr-use-custom-properties);
+      border-color: $myActionSassVar;
+      color: $myActionSassVar;
 
       cds-icon,
       clr-icon {
-        @include mixins.css-var(color, $myActionCssVar, $myActionSassVar, variables.$clr-use-custom-properties);
+        color: $myActionSassVar;
       }
 
-      &:focus,
-      &:hover,
       &:active {
-        @include mixins.css-var(
-          border-color,
-          $myActionActiveCssVar,
-          $myActionActiveSassVar,
-          variables.$clr-use-custom-properties
-        );
-      }
-
-      // ATM (after token migration)
-      // &:active section to be removed alert buttons should act as outline buttons
-      &:active {
-        // OldEdge + IE
-        box-shadow: 0 variables.$clr_baselineRem_1px 0 0 $myActionActiveSassVar inset;
-        @if variables.$clr-use-custom-properties == true {
-          box-shadow: 0
-            variables.$clr_baselineRem_1px
-            0
-            0
-            var(mixins.css-variablize-string($myActionActiveCssVar), $myActionActiveSassVar)
-            inset;
+        color: $myActionSassVar;
+        cds-icon,
+        clr-icon {
+          color: $myActionSassVar;
         }
       }
-    }
-
-    &:focus,
-    &:hover,
-    &:active {
-      @include mixins.css-var(
-        color,
-        $myActionActiveCssVar,
-        $myActionActiveSassVar,
-        variables.$clr-use-custom-properties
-      );
     }
   }
 
   .close {
-    $myCloseIconSassVar: alert-variables.getAlertColor($alertType, close-icon);
-    $myCloseIconCssVar: alert-variables.getAlertColor($alertType, close-icon, 'css-var');
-
-    @include mixins.css-var(color, $myCloseIconCssVar, $myCloseIconSassVar, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      opacity,
-      alert-variables.getAlertColor($alertType, close-icon-opacity, 'css-var'),
-      alert-variables.getAlertColor($alertType, close-icon-opacity),
-      variables.$clr-use-custom-properties
-    );
+    color: alert-variables.getAlertColor($alertType, close-icon);
 
     cds-icon,
     clr-icon {
-      @include mixins.css-var(fill, $myCloseIconCssVar, $myCloseIconSassVar, variables.$clr-use-custom-properties);
+      fill: alert-variables.getAlertColor($alertType, close-icon);
     }
 
     &:focus,
     &:hover,
     &:active {
-      @include mixins.css-var(
-        color,
-        alert-variables.getAlertColor($alertType, close-icon-hover, 'css-var'),
-        alert-variables.getAlertColor($alertType, close-icon-hover),
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        opacity,
-        alert-variables.getAlertColor($alertType, close-icon-hover-opacity, 'css-var'),
-        alert-variables.getAlertColor($alertType, close-icon-hover-opacity),
-        variables.$clr-use-custom-properties
-      );
+      color: alert-variables.getAlertColor($alertType, close-icon-hover);
     }
   }
 }
@@ -160,123 +83,66 @@
 @mixin generateLightweightAlertType($alertType: 'info') {
   &.alert-#{$alertType} {
     .alert-text {
-      @include mixins.css-var(
-        color,
-        alert-variables.getAlertColor('lightweight-#{$alertType}', color, 'css-var'),
-        alert-variables.getAlertColor('lightweight-#{$alertType}', color),
-        variables.$clr-use-custom-properties
-      );
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
     }
     .alert-icon {
-      @include mixins.css-var(
-        color,
-        alert-variables.getAlertColor('lightweight-#{$alertType}', icon, 'css-var'),
-        alert-variables.getAlertColor('lightweight-#{$alertType}', icon),
-        variables.$clr-use-custom-properties
-      );
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
     }
   }
 }
 
 @include mixins.exports('alert.clarity') {
-  $alertIconWidth: variables.$clr_baselineRem_1 + variables.$clr_baselineRem_1px;
-
   $alertTypes: info, warning, danger, success;
 
   .alert-icon {
-    $alert-icon-dim: variables.$clr_baselineRem_1;
-    @include mixins.min-equilateral-var(clr-alert-icon-size, $alert-icon-dim, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      margin-left,
-      clr-alert-icon-margin-left,
-      -1 * variables.$clr_baselineRem_0_125,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      margin-top,
-      clr-alert-icons-margin-top,
-      -1 * variables.$clr_baselineRem_4px,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.min-equilateral(tokens.$cds-global-space-9);
   }
 
   .alert-icon-wrapper {
     display: inline-flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    @include mixins.css-var(flex-basis, clr-alert-icon-size, $alertIconWidth, variables.$clr-use-custom-properties);
+    flex: 0 0 tokens.$cds-global-space-9;
   }
 
   .alert-item {
     flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
-    @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
-
+    gap: tokens.$cds-global-space-5;
     min-height: alert-variables.$clr-alert-item-min-height;
-    @include mixins.css-var(
-      margin-bottom,
-      clr-alert-item-margin-bottom,
-      variables.$clr_baselineRem_0_25,
-      variables.$clr-use-custom-properties
-    );
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 
   .alert-items {
     flex: 1 1 auto;
     flex-flow: column nowrap;
-    @include mixins.css-var(
-      padding,
-      clr-alert-padding,
-      variables.$clr_baselineRem_10px variables.$clr_baselineRem_0_5 - alert-variables.$clr-alert-borderwidth,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(gap, clr-alert-items-gap, 0, variables.$clr-use-custom-properties);
+    padding: tokens.$cds-global-space-5 0;
+    gap: tokens.$cds-global-space-5;
     display: flex;
   }
 
   .alert-item > span,
   .alert-text {
-    @include mixins.css-var(flex-grow, clr-alert-text-flex-grow, 1, variables.$clr-use-custom-properties);
-    flex-shrink: 1;
-    @include mixins.css-var(
-      margin-right,
-      clr-alert-items-margin-right,
-      variables.$clr_baselineRem_0_5,
-      variables.$clr-use-custom-properties
-    );
+    flex: 1 1;
     text-align: left;
     align-self: center;
   }
 
   .alert {
-    @include mixins.css-var(
-      font-size,
-      clr-alert-font-size,
-      alert-variables.$clr-alert-font-size,
-      variables.$clr-use-custom-properties
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-RG-STD',
+      (
+        font-size: alert-variables.$clr-alert-font-size,
+        letter-spacing: alert-variables.$clr-alert-letter-spacing,
+      )
     );
-    letter-spacing: alert-variables.$clr-alert-letter-spacing;
-    @include mixins.css-var(
-      line-height,
-      clr-alert-line-height,
-      variables.$clr_baselineRem_0_75,
-      variables.$clr-use-custom-properties
-    );
-    position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     width: auto;
-    @include mixins.css-var(
-      border-radius,
-      clr-alert-borderradius,
-      alert-variables.$clr-alert-borderradius,
-      variables.$clr-use-custom-properties
-    );
+    border-radius: alert-variables.$clr-alert-borderradius;
+    padding: 0 tokens.$cds-global-space-5;
+    gap: tokens.$cds-global-space-6;
+
+    // To be deleted with refactoring task
     margin-top: alert-variables.$clr-alert-top-margin;
 
     @include generateAlertType(info);
@@ -298,6 +164,12 @@
     }
 
     .alert-item {
+      > span,
+      .alert-text,
+      .alert-actions {
+        padding: tokens.$cds-global-space-2 0;
+      }
+
       .clr-icon {
         @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
         margin-right: alert-variables.$clr-icon-margin-right;
@@ -313,29 +185,17 @@
     }
 
     .alert-actions {
+      display: inline-flex;
+      gap: tokens.$cds-global-space-5;
       flex: 0 0 auto;
       white-space: nowrap;
 
-      .dropdown:last-child {
-        // used to align far-right dropdown inside an alert
-        margin-right: -1 * variables.$clr_baselineRem_2px;
-      }
-
       .dropdown-item {
-        @include mixins.css-var(
-          color,
-          clr-dropdown-text-color,
-          dropdown-variables.$clr-dropdown-text-color,
-          variables.$clr-use-custom-properties
-        );
+        color: dropdown-variables.$clr-dropdown-text-color;
         font-size: dropdown-variables.$clr-dropdown-font-size;
         line-height: dropdown-variables.$clr-dropdown-line-height;
         letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
       }
-    }
-
-    .alert-action:not(:last-child) {
-      margin-right: variables.$clr_baselineRem_0_5;
     }
 
     .alert-action,
@@ -347,12 +207,7 @@
       button.dropdown-toggle:not(.btn) {
         background: transparent;
         cursor: pointer;
-        @include mixins.css-var(
-          color,
-          clr-dropdown-text-color,
-          dropdown-variables.$clr-dropdown-text-color,
-          variables.$clr-use-custom-properties
-        );
+        color: dropdown-variables.$clr-dropdown-text-color;
       }
     }
     .dropdown-toggle:not(.btn) {
@@ -363,52 +218,21 @@
 
     .close {
       order: 100;
-      flex-grow: 0;
-      flex-shrink: 0;
-      @include mixins.css-var(
-        flex-basis,
-        clr-alert-close-button-size,
-        variables.$clr_baselineRem_1_5,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.equilateral-var(
-        clr-alert-close-button-size,
-        variables.$clr_baselineRem_1_5,
-        variables.$clr-use-custom-properties
-      );
+      flex: 0 0 tokens.$cds-global-space-9;
+      @include mixins.equilateral(tokens.$cds-global-space-9);
+      margin: tokens.$cds-global-space-5 0;
 
       cds-icon,
       clr-icon {
-        $alert-close-icon-dims: variables.$clr_baselineRem_1 - alert-variables.$clr-alert-borderwidth;
-        @include mixins.css-var(
-          margin-top,
-          clr-alert-icons-margin-top,
-          -1 * variables.$clr_baselineRem_0_125,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.min-equilateral-var(
-          clr-alert-close-icon-size,
-          $alert-close-icon-dims,
-          variables.$clr-use-custom-properties
-        );
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
       }
     }
 
     .close ~ .alert-item > .alert-actions {
-      @include mixins.css-var(
-        padding-right,
-        clr-alert-actions-spacing,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding-right: tokens.$cds-global-space-6;
 
       & > .alert-action:last-child {
-        @include mixins.css-var(
-          margin-right,
-          clr-alert-actions-spacing,
-          variables.$clr_baselineRem_0_5,
-          variables.$clr-use-custom-properties
-        );
+        margin-right: tokens.$cds-global-space-6;
       }
     }
 
@@ -420,20 +244,12 @@
         .alert-item {
           min-height: 0;
           margin: 0;
-        }
-        .alert-text {
-          @include mixins.css-var(
-            font-size,
-            clr-alert-lightweight-font-size,
-            alert-variables.$clr-alert-font-size,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            line-height,
-            clr-alert-lightweight-line-height,
-            variables.$clr_baselineRem_1,
-            variables.$clr-use-custom-properties
-          );
+
+          > span,
+          .alert-actions,
+          .alert-text {
+            @include mixins.generate-typography-token('BODY-14-RG-STD');
+          }
         }
       }
       .close {
@@ -459,67 +275,59 @@
 
     @include generateAlertType(app-info);
 
+    .alert-item .btn {
+      @extend .btn;
+      @extend .btn-sm;
+      margin: 0;
+    }
+
     &.alert-info {
       @include generateAlertType(app-info);
+
+      .alert-item .btn {
+        @extend .btn-info-outline;
+      }
     }
 
     &.alert-danger {
       @include generateAlertType(app-danger);
+
+      .alert-item .btn {
+        @extend .btn-danger-outline;
+      }
     }
 
     &.alert-warning {
       @include generateAlertType(app-warning);
+      .alert-item .btn {
+        @extend .btn-warning-outline;
+      }
     }
 
     &.alert-success {
       @include generateAlertType(app-success);
+      .alert-item .btn {
+        @extend .btn-success-outline;
+      }
     }
 
     .alert-items {
-      // line-height of 24px on .alert-item inside app-level-alert
-      // blows out the sizing, so we need vert-padding to be 6px, not 8px
-      @include mixins.css-var(
-        padding,
-        clr-alert-app-padding,
-        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_458,
-        variables.$clr-use-custom-properties
-      );
+      align-items: center;
+      padding: tokens.$cds-global-space-4;
     }
 
     .alert-item {
       justify-content: center;
       align-items: center;
-      min-height: variables.$clr_baselineRem_1;
+      min-height: tokens.$cds-global-space-9;
 
-      .btn {
-        @extend .btn-inverse;
-        @extend .btn-sm;
-        margin: 0;
+      .alert-actions {
+        padding: 0;
       }
-    }
-
-    .alert-icon-wrapper {
-      @include mixins.css-var(
-        margin-top,
-        clr-alert-icon-wrapper-margin-top,
-        variables.$clr_baselineRem_0_125,
-        variables.$clr-use-custom-properties
-      );
     }
 
     .close {
-      height: variables.$clr_baselineRem_1_5;
-      overflow: hidden;
-
-      cds-icon,
-      clr-icon {
-        @include mixins.css-var(
-          margin-top,
-          clr-alert-icons-margin-top,
-          -1 * variables.$clr_baselineRem_5px,
-          variables.$clr-use-custom-properties
-        );
-      }
+      margin: var(--cds-global-space-4) 0;
     }
 
     .alert-action,
@@ -529,209 +337,55 @@
   }
 
   .alert-sm {
-    $alertSmallNudge: variables.$clr_baselineRem_4px;
-
-    @include mixins.css-var(
-      font-size,
-      clr-alert-sm-font-size,
-      // need to use 11 instead of 12 here or else vertical alignment is thrown off
-      // by a pixel due to improper browser rounding; browsers aren't rendering on the
-      // sub-pixel required but rounding up to the nearest whole pixel...
-      variables.$clr_baselineRem_0_5 - variables.$clr_baselineRem_1px,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(font-weight, clr-alert-sm-font-weight, 400, variables.$clr-use-custom-properties);
-    @include mixins.css-var(letter-spacing, clr-alert-sm-letter-spacing, normal, variables.$clr-use-custom-properties);
-
-    .alert-items {
-      @include mixins.css-var(
-        padding,
-        clr-alert-sm-padding,
-        ($alertSmallNudge - alert-variables.$clr-alert-borderwidth)
-          (variables.$clr_baselineRem_0_25 - alert-variables.$clr-alert-borderwidth),
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    .alert-item {
-      @include mixins.css-var(
-        padding-top,
-        clr-alert-sm-item-padding-top,
-        variables.$clr_baselineRem_1px,
-        variables.$clr-use-custom-properties
-      );
-
-      @include mixins.css-var(
-        margin-bottom,
-        clr-alert-sm-item-padding-top,
-        $alertSmallNudge,
-        variables.$clr-use-custom-properties
-      );
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+    .alert-items .alert-item {
+      min-height: tokens.$cds-global-space-7;
     }
 
     .alert-icon-wrapper {
-      padding-top: 0;
-      @include mixins.css-var(display, clr-alert-sm-icon-wrapper-display, block, variables.$clr-use-custom-properties);
-      @include mixins.css-var(flex-basis, clr-alert-sm-icon-size, 1.25rem, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        height,
-        clr-alert-sm-icon-wrapper-height,
-        variables.$clr_baselineRem_0_667,
-        variables.$clr-use-custom-properties
-      );
+      display: flex;
+      flex-basis: tokens.$cds-global-space-7;
+      height: tokens.$cds-global-space-7;
     }
 
     .alert-icon {
-      @include mixins.min-equilateral-var(
-        clr-alert-sm-icon-size,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin-left,
-        clr-alert-icon-margin-left,
-        -1 * $alertSmallNudge,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin-top,
-        clr-alert-icons-margin-top,
-        -1 * $alertSmallNudge,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
     }
 
     .alert-item > span,
-    .alert-text {
-      @include mixins.css-var(
-        line-height,
-        clr-alert-sm-line-height,
-        variables.$clr_baselineRem_0_667,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin-right,
-        clr-alert-items-margin-right,
-        variables.$clr_baselineRem_0_25,
-        variables.$clr-use-custom-properties
-      );
+    .alert-item .alert-text,
+    .alert-item .alert-actions {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: 0;
     }
 
     .close {
-      padding-right: 0;
-      flex: 0 0 variables.$clr_baselineRem_1;
-      line-height: variables.$clr_baselineRem_1;
-      @include mixins.css-var(margin, clr-alert-sm-close-icon-margin, 0, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        height,
-        clr-alert-sm-close-icon-height,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-alert-sm-font-size,
-        variables.$clr_baselineRem_1_5,
-        variables.$clr-use-custom-properties
-      );
-
-      cds-icon,
-      clr-icon {
-        $smallAlertCloseIconDims: variables.$clr_baselineRem_0_83;
-        @include mixins.css-var(
-          margin-right,
-          clr-alert-sm-items-margin-right,
-          -1 * variables.$clr_baselineRem_1px,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          margin-top,
-          clr-alert-icons-margin-top,
-          -1 * ($alertSmallNudge + variables.$clr_baselineRem_1px),
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.min-equilateral-var(
-          clr-alert-close-icon-size,
-          $smallAlertCloseIconDims,
-          variables.$clr-use-custom-properties
-        );
-        line-height: $smallAlertCloseIconDims + variables.$clr_baselineRem_1px;
-      }
+      margin: tokens.$cds-global-space-3 0;
     }
 
     &.alert-lightweight {
       background: none;
       border: none;
+
       .alert-items {
-        @include mixins.css-var(
-          gap,
-          clr-alert-lightweight-sm-padding,
-          variables.$clr_baselineRem_4px,
-          variables.$clr-use-custom-properties
-        );
+        gap: tokens.$cds-global-space-3;
+
         .alert-item {
-          @include mixins.css-var(
-            padding,
-            clr-alert-lightweight-sm-padding,
-            variables.$clr_baselineRem_4px 0,
-            variables.$clr-use-custom-properties
-          );
+          padding: tokens.$cds-global-space-3 0;
+
+          > span,
+          .alert-actions,
           .alert-text {
-            @include mixins.css-var(
-              font-size,
-              clr-alert-lightweight-sm-font-size,
-              variables.$clr_baselineRem_0_458,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              line-height,
-              clr-alert-lightweight-sm-line-height,
-              variables.$clr_baselineRem_0_667,
-              variables.$clr-use-custom-properties
-            );
+            @include mixins.generate-typography-token('CAPTION-LG-11');
           }
+
           .alert-icon-wrapper {
-            @include mixins.css-var(
-              flex-basis,
-              clr-alert-lightweight-sm-icon-size,
-              variables.$clr_baselineRem_0_667,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              height,
-              clr-alert-lightweight-sm-icon-size,
-              variables.$clr_baselineRem_0_667,
-              variables.$clr-use-custom-properties
-            );
-          }
-          .alert-icon {
-            @include mixins.css-var(
-              font-size,
-              clr-alert-lightweight-sm-font-size,
-              alert-variables.$clr-alert-font-size,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.min-equilateral-var(
-              clr-alert-lightweight-sm-icon-size,
-              variables.$clr_baselineRem_0_667,
-              variables.$clr-use-custom-properties
-            );
+            flex-basis: tokens.$cds-global-space-7;
+            height: tokens.$cds-global-space-7;
           }
         }
       }
       .close {
-        width: auto;
-        margin: 0;
-        @include mixins.css-var(
-          padding-right,
-          clr-alert-lightweight-sm-padding,
-          variables.$clr_baselineRem_0_25 0,
-          variables.$clr-use-custom-properties
-        );
+        display: none;
       }
     }
   }
@@ -740,29 +394,25 @@
     .alert {
       .alert-item {
         flex-wrap: wrap;
-      }
 
-      .alert-text {
-        margin-right: 0;
-        //90% was just an estimate to distance the text from the
-        //close alert button on medium and smaller breakpoints.
-        max-width: 90%;
-        //needed for safari
-        width: 90%;
-        flex-basis: 90%;
-      }
+        .alert-text {
+          //90% was just an estimate to distance the text from the
+          //close alert button on medium and smaller breakpoints.
+          max-width: 90%;
+          //needed for safari
+          width: 90%;
+          flex-basis: 90%;
+        }
 
-      .alert-actions {
-        flex: 1 0 100%;
-        padding-top: variables.$clr_baselineRem_0_125;
-        // TOCHECK: CALCULATIONS
-        padding-left: alert-variables.$clr-alert-icon-dimension-sm + alert-variables.$clr-icon-margin-right;
+        .alert-actions {
+          flex: 1 0 100%;
+        }
       }
     }
 
     .alert-app-level {
       .alert-actions {
-        margin-left: variables.$clr_baselineRem_1_875;
+        margin-left: tokens.$cds-global-space-12;
       }
     }
   }
@@ -772,27 +422,13 @@
   }
 
   //alert padding/margin adjustments
-  //1.cards
-  .card {
-    .alert {
-      @include mixins.css-var(
-        margin,
-        clr-card-alert-margin,
-        variables.$clr_baselineRem_0_25 0,
-        variables.$clr-use-custom-properties
-      );
-    }
-  }
-
-  //2. Modal
-  .modal {
-    .alert + .modal-header {
-      margin-top: variables.$clr_baselineRem_0_5;
-    }
-  }
-
-  //3. Multiple app level alerts
+  //Multiple app level alerts
   .alerts {
+    // To be deleted with refactoring task
+    .alert {
+      margin-top: 0;
+    }
+
     .alerts-wrapper {
       display: flex;
       flex-direction: row;
@@ -800,111 +436,42 @@
         flex: 1 1 100%;
       }
     }
-    &.alert-info {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-info-pager-bg-color,
-        variables.$clr-color-action-800,
-        variables.$clr-use-custom-properties
-      );
-    }
 
-    &.alert-danger {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-danger-pager-bg-color,
-        variables.$clr-color-danger-900,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    &.alert-warning {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-warning-pager-bg-color,
-        variables.$clr-color-warning-900,
-        variables.$clr-use-custom-properties
-      );
-    }
-
-    &.alert-success {
-      @include mixins.css-var(
-        background,
-        clr-app-alert-success-pager-bg-color,
-        variables.$clr-color-success-900,
-        variables.$clr-use-custom-properties
-      );
+    @each $alertType in $alertTypes {
+      &.alert-#{$alertType} {
+        background: var(--clr-app-alert-#{$alertType}-pager-bg-color);
+      }
     }
   }
 
   .alerts-pager {
-    @include mixins.css-var(
-      color,
-      clr-app-alert-pager-text-color,
-      variables.$clr-color-neutral-0,
-      variables.$clr-use-custom-properties
-    );
+    color: var(--clr-app-alert-pager-text-color);
 
     @each $alertType in $alertTypes {
       .alert-#{$alertType} & {
-        @include mixins.css-var(
-          color,
-          clr-app-alert-#{$alertType}-pager-font-color,
-          variables.$clr-color-neutral-0,
-          variables.$clr-use-custom-properties
-        );
+        color: var(--clr-app-alert-#{$alertType}-pager-font-color);
       }
     }
 
-    @include mixins.css-var(
-      font-size,
-      clr-alert-font-size,
-      alert-variables.$clr-alert-font-size,
-      variables.$clr-use-custom-properties
-    );
-    letter-spacing: alert-variables.$clr-alert-letter-spacing;
     min-height: alert-variables.$clr-alert-min-height;
-    flex-grow: 1;
-    flex-shrink: 0;
-    @include mixins.css-var(
-      flex-basis,
-      clr-app-alert-pager-width,
-      variables.$clr_baselineRem_6,
-      variables.$clr-use-custom-properties
-    );
+    flex: 1 0 var(--clr-app-alert-pager-width);
   }
 
   .alerts-pager-button {
     @include mixins.clr-no-styles-button();
-    @include mixins.css-var(
-      color,
-      clr-app-alert-pager-text-color,
-      variables.$clr-color-neutral-0,
-      variables.$clr-use-custom-properties
-    );
+    color: var(--clr-app-alert-pager-text-color);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-
-    @include mixins.css-var(height, clr-btn-appearance-standard-height, auto, variables.$clr-use-custom-properties);
+    height: var(--clr-btn-appearance-standard-height);
 
     cds-icon,
     clr-icon {
-      @include mixins.css-var(
-        color,
-        clr-app-alert-pager-text-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
+      color: var(--clr-app-alert-pager-text-color);
 
       @each $alertType in $alertTypes {
         .alert-#{$alertType} & {
-          @include mixins.css-var(
-            color,
-            clr-app-alert-#{$alertType}-pager-font-color,
-            variables.$clr-color-neutral-0,
-            variables.$clr-use-custom-properties
-          );
+          color: var(--clr-app-alert-#{$alertType}-pager-font-color);
         }
       }
     }
@@ -916,7 +483,7 @@
     height: 100%;
     align-items: center;
     text-align: center;
-    padding: 0 variables.$clr-baselineRem_1;
+    padding: 0 tokens.$cds-global-space-9;
 
     > * {
       display: inline-flex;
