@@ -202,12 +202,7 @@
   }
 
   .weekday {
-    @include mixins.css-var(
-      font-size,
-      clr-calendar-weekday-font-size,
-      datepicker-variables.$clr-day-font-size,
-      variables.$clr-use-custom-properties
-    );
+    font-size: datepicker-variables.$clr-calendar-weekday-font-size;
     @include mixins.css-var(font-weight, clr-calendar-weekday-font-weight, 600, variables.$clr-use-custom-properties);
     @include mixins.css-var(
       line-height,

@@ -28,8 +28,6 @@
       --clr-calendar-active-focus-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
       --clr-calendar-active-cell-color: #{tokens.$cds-alias-typography-color-100};
 
-      --clr-day-font-size: #{variables.$clr_baselineRem_0_5}; // ATM remove
-
       --clr-calendar-btn-picker-trigger-color: #{tokens.$cds-alias-typography-link-color};
       --clr-calendar-btn-picker-trigger-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
       --clr-calendar-btn-picker-trigger-active-color: #{tokens.$cds-alias-typography-link-color};
