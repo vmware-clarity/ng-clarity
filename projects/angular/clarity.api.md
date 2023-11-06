@@ -3094,21 +3094,21 @@ export class ClrPopoverToggleService {
 export class ClrProgressBar {
     // (undocumented)
     set clrCompact(value: boolean | string);
-    // @deprecated (undocumented)
+    // (undocumented)
     set clrDanger(value: boolean | string);
     // (undocumented)
     set clrFade(value: boolean | string);
     // (undocumented)
     set clrFlash(value: boolean | string);
-    // @deprecated (undocumented)
+    // (undocumented)
     set clrFlashDanger(value: boolean | string);
     // (undocumented)
     set clrLabeled(value: boolean | string);
     // (undocumented)
     set clrLoop(value: boolean | string);
-    // @deprecated (undocumented)
+    // (undocumented)
     set clrSuccess(value: boolean | string);
-    // @deprecated (undocumented)
+    // (undocumented)
     set clrWarning(value: boolean | string);
     // (undocumented)
     get compactClass(): boolean;
