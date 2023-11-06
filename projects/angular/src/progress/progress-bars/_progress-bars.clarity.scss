@@ -129,8 +129,6 @@
 
   // Variations
   .progress {
-    // @deprecated in 3.0
-    /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
     @each $type, $color,
       $prop in (success, progress-bars-variables.$clr-progress-success-color, clr-progress-alt-color-1),
       (warning, progress-bars-variables.$clr-progress-warning-color, clr-progress-alt-color-3),
