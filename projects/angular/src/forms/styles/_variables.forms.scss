@@ -27,6 +27,7 @@ $clr-forms-placeholder-color: var(--clr-forms-placeholder-color) !default;
 // Accessibility fox for vpat-7719; this aligns with core
 $clr-forms-border-color: var(--clr-forms-border-color) !default;
 $clr-forms-focused-color: var(--clr-forms-focused-color) !default;
+$clr-forms-icon-color: #{tokens.$cds-alias-object-interaction-color} !default;
 
 $clr-forms-subtext-disabled-color: var(--clr-forms-subtext-disabled-color) !default;
 $clr-forms-border-disabled-color: var(--clr-forms-border-disabled-color) !default;
