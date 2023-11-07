@@ -146,18 +146,12 @@
   }
 }
 
-@mixin range-style(
-  $height,
-  $height-prop: null,
-  $background-color-fallback,
-  $background-color-prop: null,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin range-style($height, $background-color) {
   -webkit-appearance: none;
   left: 0;
 
-  @include mixins.css-var(height, $height-prop, $height, $use-custom-props);
-  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
+  height: $height;
+  background-color: $background-color;
 }
 
 @mixin range-border-style(
