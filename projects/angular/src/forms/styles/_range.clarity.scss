@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
 
@@ -14,45 +13,20 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    @include mixins.css-var(
-      height,
-      clr-forms-range-thumb-height,
-      forms-variables.$clr-forms-range-thumb-height,
-      variables.$clr-use-custom-properties
-    );
+    height: forms-variables.$clr-forms-range-thumb-height;
     white-space: nowrap;
 
     .fill-input {
       position: absolute;
       left: 0;
-      @include mixins.css-var(
-        margin-bottom,
-        clr-forms-range-track-border-width,
-        0px,
-        variables.$clr-use-custom-properties
-      );
+      margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
-      @include mixins.css-var(
-        height,
-        clr-forms-range-progress-fill-height,
-        forms-variables.$clr-forms-range-progress-height,
-        variables.$clr-use-custom-properties
-      );
+      height: forms-variables.$clr-forms-range-progress-height;
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
-      @include mixins.css-var(
-        background-color,
-        clr-forms-range-progress-fill-color,
-        forms-variables.$clr-forms-range-progress-fill-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-radius,
-        clr-forms-range-track-border-radius,
-        forms-variables.$clr-forms-range-border-radius,
-        variables.$clr-use-custom-properties
-      );
+      background-color: forms-variables.$clr-forms-range-progress-fill-color;
+      border-radius: forms-variables.$clr-forms-range-border-radius;
       border-style: none;
     }
   }
@@ -61,12 +35,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    @include mixins.css-var(
-      height,
-      clr-forms-range-thumb-height,
-      forms-variables.$clr-forms-range-thumb-height,
-      variables.$clr-use-custom-properties
-    );
+    height: forms-variables.$clr-forms-range-thumb-height;
 
     &:disabled {
       pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
@@ -112,12 +81,7 @@
       pointer-events: auto; // needed for correct chrome behavior for disabled w/ progress
       cursor: not-allowed;
 
-      @include mixins.css-var(
-        background-color,
-        clr-forms-range-progress-fill-color-disabled,
-        forms-variables.$clr-forms-range-progress-fill-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: forms-variables.$clr-forms-range-progress-fill-color;
     }
   }
 
@@ -188,12 +152,7 @@
       &.progress-fill {
         input[type='range']::-ms-fill-lower {
           height: forms-variables.$clr-forms-range-track-height;
-          @include mixins.css-var(
-            background-color,
-            clr-forms-range-progress-fill-color,
-            forms-variables.$clr-forms-range-progress-fill-color,
-            variables.$clr-use-custom-properties
-          );
+          background-color: forms-variables.$clr-forms-range-progress-fill-color;
         }
       }
     }
@@ -244,12 +203,7 @@
         // TODO: Double check this ms-fill-lower
         input[type='range']::-ms-fill-lower {
           height: forms-variables.$clr-forms-range-track-height;
-          @include mixins.css-var(
-            background-color,
-            clr-forms-range-progress-fill-color,
-            forms-variables.$clr-forms-range-progress-fill-color,
-            variables.$clr-use-custom-properties
-          );
+          background-color: forms-variables.$clr-forms-range-progress-fill-color;
         }
       }
     }

@@ -95,6 +95,18 @@
         --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
         --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
 
+        // Range
+        --clr-forms-range-progress-fill-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-range-track-color: #{tokens.$cds-alias-object-container-background-shade};
+        --clr-forms-range-track-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-range-thumb-height: #{tokens.$cds-global-space-7}; // 16px
+        --clr-forms-range-track-height: #{tokens.$cds-global-space-3}; // 4px
+        --clr-forms-range-track-border-radius: #{tokens.$cds-global-space-2}; // 2px
+        --clr-forms-range-track-border-width: #{tokens.$cds-global-space-1}; // 1px
+        --clr-forms-range-progress-fill-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+        --clr-forms-range-track-color-disabled: #{tokens.$cds-alias-status-disabled-tint};
+        --clr-forms-range-track-border-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+
         // Select
         --clr-forms-select-hover-background: transparent;
         --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
@@ -124,18 +136,6 @@
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-
-      // Range
-      --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
-      --clr-forms-range-track-color: var(--clr-color-neutral-200);
-      --clr-forms-range-track-border-color: #{forms-variables.$clr-forms-range-border-color};
-      --clr-forms-range-thumb-height: #{forms-variables.$clr-forms-range-thumb-height};
-      --clr-forms-range-track-height: #{forms-variables.$clr-forms-range-track-height};
-      --clr-forms-range-track-border-radius: #{forms-variables.$clr-forms-range-border-radius};
-      --clr-forms-range-track-border-width: #{forms-variables.$clr-forms-range-border-width};
-      --clr-forms-range-progress-fill-color-disabled: #{forms-variables.$clr-forms-range-progress-fill-color};
-      --clr-forms-range-track-color-disabled: #{forms-variables.$clr-forms-range-track-color};
-      --clr-forms-range-track-border-color-disabled: #{forms-variables.$clr-forms-range-border-color-disabled};
 
       // Datalist
 
