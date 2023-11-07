@@ -11,10 +11,6 @@
     [cds-theme] {
       --clr-calendar-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-calendar-border-color: #{tokens.$cds-alias-object-border-color-shade};
-      --clr-datepicker-trigger-color: #{tokens.$cds-alias-status-info}; // ATM: is this needed? No references in demo and in code.v
-      --clr-datepicker-trigger-hover-color: var(
-        --clr-color-action-800
-      ); // ATM: is this needed? No references in demo and in code.
 
       --clr-calendar-btn-color: #{tokens.$cds-alias-object-interaction-color};
 

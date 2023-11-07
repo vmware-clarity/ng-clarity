@@ -58,42 +58,6 @@
 }
 
 @include mixins.exports('datepicker.clarity') {
-  .date-container {
-    display: inline-flex;
-    align-items: center;
-
-    //Other Props
-    white-space: nowrap;
-  }
-
-  // ATM
-  // is this needed? No references in demo and in code.
-  // legacy can be removed when old layout is removed
-  .datepicker-trigger {
-    @include generate-calendar-button();
-
-    .datepicker-trigger-icon {
-      fill: datepicker-variables.$clr-datepicker-trigger-color;
-
-      &:hover {
-        fill: datepicker-variables.$clr-datepicker-trigger-hover-color;
-      }
-    }
-  }
-  .datepicker-trigger:disabled {
-    cursor: not-allowed;
-  }
-  .clr-form-control {
-    .datepicker-trigger {
-      line-height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_2px;
-      height: variables.$clr_baselineRem_1 - variables.$clr_baselineRem_2px;
-    }
-  }
-
-  .date-input {
-    flex: 1 1 auto;
-  }
-
   .datepicker {
     display: flex;
     flex-direction: column;
