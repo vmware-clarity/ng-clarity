@@ -181,18 +181,10 @@
   @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
 }
 
-@mixin range-thumb-style(
-  $margin-fallback,
-  $margin-prop,
-  $size-fallback,
-  $size-prop,
-  $background-color-fallback,
-  $background-color-prop: null,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin range-thumb-style($margin, $size, $background-color) {
   border-radius: 50%;
 
-  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
-  @include mixins.css-var(margin-top, $margin-prop, $margin-fallback, $use-custom-props);
-  @include mixins.equilateral-var($size-prop, $size-fallback, $use-custom-props);
+  background-color: $background-color;
+  margin-top: $margin;
+  @include mixins.equilateral($size);
 }
