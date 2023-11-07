@@ -91,6 +91,10 @@
           #{tokens.$cds-global-space-4}
           #{tokens.$cds-alias-object-interaction-color-disabled};
 
+        // Password
+        --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
+        --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
+
         // Select
         --clr-forms-select-hover-background: transparent;
         --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
@@ -120,11 +124,6 @@
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-
-      // Password
-
-      --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
-      --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
 
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
