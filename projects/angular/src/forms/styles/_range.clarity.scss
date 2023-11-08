@@ -20,7 +20,6 @@
     .fill-input {
       position: absolute;
       left: 0;
-      margin-bottom: forms-variables.$clr-forms-range-border-width;
       display: inline-block;
       height: tokens.$cds-global-space-3;
       pointer-events: none; // needed for correct chrome behavior with progress
