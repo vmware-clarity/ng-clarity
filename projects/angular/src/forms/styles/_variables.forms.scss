@@ -110,16 +110,17 @@ $clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
 $clr-forms-radio-top: $clr-forms-checkbox-top;
 
 // Range
-$clr-forms-range-progress-fill-color: variables.$clr-color-action-600 !default;
-$clr-forms-range-track-color: variables.$clr-color-neutral-200 !default;
-$clr-forms-range-border-color: variables.$clr-color-neutral-200 !default;
-$clr-forms-range-track-height: variables.$clr_baselineRem_4px;
-$clr-forms-range-progress-height: variables.$clr_baselineRem_4px;
-$clr-forms-range-thumb-height: variables.$clr_baselineRem_0_583;
-$clr-forms-range-thumb-margin: variables.$clr_baselineRem_5px;
-$clr-forms-range-margin: variables.$clr_baselineRem_5px;
-$clr-forms-range-border-width: 0;
-$clr-forms-range-border-radius: 0;
-$clr-forms-range-progress-fill-color-disabled: variables.$clr-color-neutral-600 !default;
-$clr-forms-range-track-color-disabled: variables.$clr-color-neutral-400 !default;
-$clr-forms-range-border-color-disabled: variables.$clr-color-neutral-600 !default;
+$clr-forms-range-progress-fill-color: var(--clr-forms-range-progress-fill-color) !default;
+$clr-forms-range-track-color: var(--clr-forms-range-track-color) !default;
+$clr-forms-range-border-color: var(--clr-forms-range-track-border-color) !default;
+$clr-forms-range-track-height: var(--clr-forms-range-track-height) !default;
+$clr-forms-range-progress-height: variables.$clr_baselineRem_4px; // no prop? -> use tokens inside _clarity file
+$clr-forms-range-thumb-height: var(--clr-forms-range-thumb-height) !default;
+$clr-forms-range-thumb-margin: variables.$clr_baselineRem_5px; // no prop? -> use tokens inside _clarity file
+$clr-forms-range-margin: variables.$clr_baselineRem_5px; // no prop? -> use tokens inside _clarity file
+$clr-forms-range-border-width: var(--clr-forms-range-track-border-width) !default;
+$clr-forms-range-border-radius: var(--clr-forms-range-track-border-radius) !default;
+
+$clr-forms-range-progress-fill-color-disabled: var(--clr-forms-range-progress-fill-color-disabled) !default;
+$clr-forms-range-track-color-disabled: var(--clr-forms-range-track-color-disabled) !default;
+$clr-forms-range-border-color-disabled: var(--clr-forms-range-track-border-color-disabled) !default;
