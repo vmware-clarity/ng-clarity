@@ -9,6 +9,8 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.card' as card-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.card');
 
 @include mixins.exports('card.clarity') {
@@ -100,6 +102,10 @@
     width: 100%;
     margin-top: variables.$clr_baselineRem_1;
     @extend %card-border-appearance;
+
+    .alert {
+      margin: 0 0 tokens.$cds-global-space-5 0;
+    }
 
     .btn-link {
       min-width: 0;

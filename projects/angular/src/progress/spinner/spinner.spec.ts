@@ -87,6 +87,7 @@ describe('ClrSpinner component', () => {
           fix.debugElement.query(By.directive(ClrSpinner)).nativeElement.getBoundingClientRect().height
         );
       }
+
       it(`.${SPINNER_SMALL_SIZE} should have the size ot 18x18`, () => {
         const fixtureSmall = TestBed.createComponent(TestSmallComponent);
         fixtureSmall.detectChanges();

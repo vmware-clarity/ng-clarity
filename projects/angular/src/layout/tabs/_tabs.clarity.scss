@@ -6,10 +6,11 @@
 
 @use 'sass:meta';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'variables.tabs' as tabs-variables;
+@use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.tabs');
 
+// TODO: Fix this typo
 @mixin nav-link-border-appearence($position) {
   &::before {
     content: '';
@@ -19,19 +20,8 @@
     left: 0;
     width: 100%;
     border: none;
-    border-#{$position}-style: solid;
-    @include mixins.css-var(
-      border-#{$position}-color,
-      clr-nav-active-border-color,
-      tabs-variables.$clr-nav-active-box-shadow-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-#{$position}-width,
-      clr-nav-active-border-width,
-      variables.$clr_baselineRem_3px,
-      variables.$clr-use-custom-properties
-    );
+    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
+      tokens.$cds-alias-object-interaction-background-highlight;
     transition: border-#{$position} 0.2s ease-in;
   }
 }
@@ -57,8 +47,17 @@ button.nav-link {
 .tabs-overflow {
   position: relative;
 
-  .nav-item {
-    margin-right: 0;
+  .dropdown-menu {
+    padding: tokens.$cds-global-space-0;
+    box-shadow: tokens.$cds-alias-object-shadow-100;
+    overflow: hidden;
+  }
+
+  .btn {
+    line-height: mixins.baselinePx(20);
+    font-size: tokens.$cds-alias-typography-font-size-4;
+    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+    border-radius: tokens.$cds-global-space-0;
   }
 }
 
@@ -82,42 +81,26 @@ button.nav-link {
     box-shadow: none;
     flex-direction: column;
     align-items: stretch;
-    margin-right: variables.$clr_baselineRem_1;
+    margin-right: tokens.$cds-global-space-9;
     overflow: auto;
     flex-shrink: 0;
-    padding: variables.$clr_baselineRem_4px;
-    width: variables.$clr_baselineRem_10;
-    min-width: variables.$clr_baselineRem_2;
+    padding: tokens.$cds-global-space-3;
+    width: mixins.baselinePx(240);
+    min-width: tokens.$cds-global-space-12;
 
-    @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
-
-    // ATM - remove
-    .nav-item {
-      @include mixins.css-var(
-        margin-right,
-        clr-nav-item-margin-right,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-    }
+    gap: tokens.$cds-global-space-5;
 
     .nav-link {
       text-align: left;
-      @include mixins.css-var(
-        padding,
-        clr-nav-vertical-link-padding,
-        0 variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding: 0 tokens.$cds-global-space-6;
       border: none;
       flex-shrink: 0;
       margin-top: 0;
       margin-left: 0;
       width: 100%;
 
-      // ATM - remove
       &.btn {
-        margin-bottom: variables.$clr_baselineRem_1px;
+        margin-bottom: tokens.$cds-global-space-1;
       }
 
       &.active,
@@ -125,21 +108,11 @@ button.nav-link {
         @include nav-link-border-appearence('left');
       }
       &:not(:active).active {
-        @include mixins.css-var(
-          background-color,
-          clr-nav-selected-bg-color,
-          variables.$clr-global-selection-color,
-          variables.$clr-use-custom-properties
-        );
+        background-color: tabs-variables.$clr-nav-selected-bg-color;
       }
 
       &:not(.active):hover {
-        @include mixins.css-var(
-          background-color,
-          clr-nav-hover-bg-color,
-          tabs-variables.$clr-nav-hover-bg-color,
-          variables.$clr-use-custom-properties
-        );
+        background-color: tabs-variables.$clr-nav-hover-bg-color;
       }
     }
   }

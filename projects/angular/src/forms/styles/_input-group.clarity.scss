@@ -4,9 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
 @use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.input-group') {
   .clr-input-group {
@@ -14,7 +14,7 @@
     @include forms-mixins.input-border-bottom-animation();
     position: relative;
     max-width: 100%;
-    height: variables.$clr_baselineRem_1;
+    height: tokens.$cds-global-space-9;
 
     &.clr-focus {
       width: auto;
@@ -43,90 +43,48 @@
     }
 
     .clr-input-group-addon {
-      @include mixins.css-var(
-        color,
-        clr-forms-subtext-color,
-        forms-variables.$clr-forms-subtext-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-subtext-color;
 
       &:first-child {
-        padding: 0 0 0 (forms-variables.$clr-forms-baseline * 1.5);
+        padding: 0 0 0 #{tokens.$cds-global-space-11};
       }
 
       &:last-child {
-        padding: 0 (forms-variables.$clr-forms-baseline * 1.5) 0 0;
+        padding: 0 #{tokens.$cds-global-space-11} 0 0;
       }
     }
 
     .clr-input-group-icon-action {
       @include mixins.clr-no-styles-button();
-      @include mixins.css-var(
-        color,
-        clr-forms-focused-color,
-        forms-variables.$clr-forms-focused-color,
-        variables.$clr-use-custom-properties
-      );
-      padding: 0 forms-variables.$clr-forms-baseline * 1.5;
+      padding: 0 calc(1.5 * #{forms-variables.$clr-forms-baseline});
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral-var(
-          clr-forms-input-group-icon-action-size,
-          variables.$clr_baselineRem_0_75,
-          variables.$clr-use-custom-properties
-        );
-        transform: translate(-1 * variables.$clr_baselineRem_1px, -1 * variables.$clr_baselineRem_1px);
+        fill: forms-variables.$clr-forms-icon-color;
+        @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+        transform: translate(calc(-1 * #{tokens.$cds-global-space-1}), calc(-1 * #{tokens.$cds-global-space-1}));
       }
     }
   }
 
   .clr-form-control-disabled {
     .clr-input-group {
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-forms-border-disabled-color,
-        forms-variables.$clr-forms-border-color,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
     }
     .clr-input-group-icon-action {
-      @include mixins.css-var(
-        color,
-        clr-forms-text-disabled-color,
-        forms-variables.$clr-forms-text-disabled-color,
-        variables.$clr-use-custom-properties
-      );
+      color: forms-variables.$clr-forms-text-disabled-color;
       cursor: not-allowed;
     }
   }
 
   .clr-error .clr-input-group {
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
-    @include forms-mixins.input-border-bottom-animation(
-      forms-variables.$clr-forms-invalid-color,
-      clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+    border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
   }
 
   .clr-success .clr-input-group {
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-forms-valid-color,
-      forms-variables.$clr-forms-valid-color,
-      variables.$clr-use-custom-properties
-    );
-    @include forms-mixins.input-border-bottom-animation(
-      forms-variables.$clr-forms-valid-color,
-      clr-forms-valid-color,
-      variables.$clr-use-custom-properties
-    );
+    border-bottom-color: forms-variables.$clr-forms-valid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
   }
 
   .clr-form-horizontal .clr-input-group {

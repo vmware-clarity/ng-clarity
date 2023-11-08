@@ -5,8 +5,6 @@
  */
 
 export const THEMES = {
-  NG_LIGHT: 'clr-ui',
-  NG_DARK: 'clr-ui-dark',
   CORE_LIGHT: '',
   CORE_DARK: 'dark',
 };

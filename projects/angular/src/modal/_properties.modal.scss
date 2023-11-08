@@ -8,54 +8,32 @@
 @use '../utils/variables/variables';
 @use './variables.modal' as modal-variables;
 
-@include mixins.exports('modal.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../modal/_modal.clarity.scss
-      --clr-modal-sm-width: #{variables.$clr_baselineRem_12};
-      --clr-modal-md-width: #{variables.$clr_baselineRem_24};
-      --clr-modal-lg-width: #{variables.$clr_baselineRem_36};
-      --clr-modal-xl-width: #{variables.$clr_baselineRem_48};
-      --clr-modal-text-color: #{variables.$clr-p1-color};
-      --clr-modal-close-color: var(--clr-color-neutral-600);
-      --clr-modal-bg-color: var(--clr-color-neutral-0);
-      --clr-modal-content-box-shadow-color: rgba(
-        #{color.red(variables.$clr-color-neutral-1000)},
-        #{color.green(variables.$clr-color-neutral-1000)},
-        #{color.blue(variables.$clr-color-neutral-1000)},
-        0.2
-      );
-      --clr-modal-content-box-shadow: 0
-        #{variables.$clr_baselineRem_1px}
-        #{variables.$clr_baselineRem_2px}
-        #{variables.$clr_baselineRem_2px}
-        var(--clr-modal-content-box-shadow-color);
-      --clr-modal-backdrop-color: var(--clr-color-neutral-900);
-      --clr-modal-backdrop-opacity: 0.85;
-      --clr-modal-border-radius: var(--clr-global-borderradius);
-      --clr-modal-content-border-style: none;
-      --clr-modal-content-border-color: transparent;
-      --clr-modal-content-border-width: 0;
-      --clr-modal-content-border-radius: unset;
-      --clr-modal-content-padding: #{variables.$clr_baselineRem_1};
-      --clr-modal-sm-content-padding: #{variables.$clr_baselineRem_0_5}
-        0
-        #{variables.$clr_baselineRem_0_5}
-        #{variables.$clr_baselineRem_1};
+@use '@cds/core/tokens/tokens.scss';
 
-      // Usage: ../modal/_modal.clarity.scss
-      --clr-modal-title-color: #{modal-variables.$clr-modal-title-color};
-      --clr-modal-title-font-family: #{modal-variables.$clr-modal-title-font-family};
-      --clr-modal-title-font-weight: #{modal-variables.$clr-modal-title-font-weight};
-      --clr-modal-title-font-size: #{modal-variables.$clr-modal-title-font-size};
-      --clr-modal-title-line-height: #{modal-variables.$clr-modal-title-line-height};
-      --clr-modal-header-padding: 0 0 #{variables.$clr_baselineRem_1} 0;
-      --clr-modal-sm-header-padding: 0 #{variables.$clr_baselineRem_1} #{variables.$clr_baselineRem_0_5} 0;
-      --clr-modal-footer-padding: #{variables.$clr_baselineRem_1} 0 0 0;
-      --clr-modal-sm-footer-padding: #{variables.$clr_baselineRem_0_5} #{variables.$clr_baselineRem_1} 0 0;
-      --clr-modal-footer-gap: #{variables.$clr_baselineRem_0_5};
-      --clr-modal-close-icon-size: #{variables.$clr_baselineRem_1};
-      --clr-modal-title-padding: 0 #{variables.$clr_baselineRem_0_125};
+@include mixins.exports('modal.properties') {
+  :root {
+    [cds-theme] {
+      --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+
+      // color
+      --clr-modal-close-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
+      --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background};
+
+      // sizes
+      --clr-modal-sm-width: #{mixins.baselinePx(288)};
+      --clr-modal-md-width: #{mixins.baselinePx(576)};
+      --clr-modal-lg-width: #{mixins.baselinePx(864)};
+      --clr-modal-xl-width: #{mixins.baselinePx(1152)};
+
+      // title
+      --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-modal-title-font-size: #{tokens.$cds-alias-typography-section-font-size};
+      --clr-modal-title-font-family: #{tokens.$cds-alias-typography-header-font-family};
+      --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
+      --clr-modal-title-line-height: #{tokens.$cds-alias-typography-section-line-height};
+      --clr-modal-title-letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing};
     }
   }
 }

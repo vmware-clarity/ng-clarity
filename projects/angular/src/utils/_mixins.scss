@@ -5,8 +5,10 @@
  */
 
 @use 'sass:list';
+@use 'sass:map';
 @use 'sass:selector';
 @use 'variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 // NOTE: file added to prettierignore because it was added unwanted spaces in the css-var() mixin
 
@@ -228,5 +230,203 @@ $opp-directions: (
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   @include optional-at-root('::placeholder') {
     @content;
+  }
+}
+
+@function baselinePx($pixels: 0) {
+  @return calc($pixels * (1rem / #{tokens.$cds-global-base}));
+}
+
+$typography-tokens: (
+  'DISPLAY-40': (
+    // H1, Login Header
+    font-size: #{tokens.$cds-alias-typography-display-font-size},
+    font-weight: #{tokens.$cds-alias-typography-display-font-weight},
+    line-height: #{tokens.$cds-alias-typography-display-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-display-letter-spacing},
+  ),
+  'HEADLINE-32': (
+    // H2, Page Header
+    font-size: #{tokens.$cds-alias-typography-headline-font-size},
+    font-weight: #{tokens.$cds-alias-typography-headline-font-weight},
+    line-height: #{tokens.$cds-alias-typography-headline-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-headline-letter-spacing},
+  ),
+  'TITLE-24-EXP': (
+    // H3, Modal, Wizard Heading
+    font-size: #{tokens.$cds-alias-typography-title-font-size},
+    font-weight: #{tokens.$cds-alias-typography-title-font-weight},
+    line-height: #{tokens.$cds-alias-typography-title-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing},
+  ),
+  'SECTION-20-STD': (
+    // H4, Card, Signpost Heading, Wizard Sidenav Title
+    font-size: #{tokens.$cds-alias-typography-section-font-size},
+    font-weight: #{tokens.$cds-alias-typography-section-font-weight},
+    line-height: #{tokens.$cds-alias-typography-section-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing},
+  ),
+  'SUBSECTION-16-EXP': (
+    // H5, Stack View Heading
+    font-size: #{tokens.$cds-alias-typography-subsection-font-size},
+    font-weight: #{tokens.$cds-alias-typography-subsection-font-weight},
+    line-height: #{tokens.$cds-alias-typography-subsection-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-subsection-letter-spacing},
+  ),
+  'MESSAGE-16-EXP': (
+    // H6, Heading
+    font-size: #{tokens.$cds-alias-typography-message-font-size},
+    font-weight: #{tokens.$cds-alias-typography-message-font-weight},
+    line-height: #{tokens.$cds-alias-typography-message-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-message-letter-spacing},
+  ),
+  'BODY-14-SB-STD': (
+    // Not used yet
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{tokens.$cds-alias-typography-body-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-MD-STD': (
+    // Wizard sidenav link
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{tokens.$cds-alias-typography-body-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-RG-STD': (
+    // P0, P1, Body text
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-alias-typography-body-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-RG-CPT': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-global-space-7},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'SECONDARY-13-MD-EXP': (
+    // P2, Section Header
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-RG-CPT': (
+    // Checkbox and radio labels, Spinner
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-RG-EXP': (
+    // P3, Form Labels and Column Headers
+    // P5, Table footer and chart data
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{baselinePx(24)},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-RG-STD': (
+    // P4, Form Labels and Column Headers
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{baselinePx(20)},
+    // suitable token not found
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-SB-STD': (
+    // P4, Form Labels and Column Headers
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{baselinePx(20)},
+    // suitable token not found
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'SECONDARY-13-SB-CPT': (
+    // P4, Form Labels and Column Headers
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
+  'CAPTION-LG-11': (
+    // P6, Small Headers
+    font-size: #{tokens.$cds-alias-typography-caption-font-size},
+    font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
+    line-height: #{tokens.$cds-alias-typography-caption-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-caption-letter-spacing},
+  ),
+  'CAPTION-SM-10': (
+    // P7, P8, Badges, Tag and Labels
+    font-size: #{tokens.$cds-alias-typography-smallcaption-font-size},
+    font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight},
+    line-height: #{tokens.$cds-alias-typography-smallcaption-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-smallcaption-letter-spacing},
+  ),
+  'LINK-13': (
+    // Link Text, Link Text Inverse
+    font-weight: #{tokens.$cds-alias-typography-font-weight-regular},
+    font-size: #{tokens.$cds-alias-typography-font-size-3},
+    line-height: #{tokens.$cds-global-space-7},
+    // better token not found
+    letter-spacing: #{baselinePx(-0.1)},
+    // suitable token not found
+  ),
+  'BUTTON-12': (
+    // Buttons
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    font-size: #{tokens.$cds-alias-typography-font-size-2},
+    line-height: #{tokens.$cds-global-space-7},
+    // better token not found
+    letter-spacing: #{tokens.$cds-global-space-1},
+    // better token not found
+    text-transform: uppercase,
+  ),
+  'BUTTON-11-SMALL': (
+    // Small Buttons
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    font-size: #{tokens.$cds-alias-typography-font-size-1},
+    line-height: #{tokens.$cds-global-space-7},
+    // better token not found
+    letter-spacing: #{baselinePx(0.2)},
+    // suitable token not found
+    text-transform: uppercase,
+  ),
+);
+
+@mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
+  @if ($addFontFamily) {
+    font-family: #{tokens.$cds-alias-typography-header-font-family};
+  }
+
+  @if ($addColor) {
+    color: #{tokens.$cds-alias-typography-color-300};
+  }
+
+  @include generate-typography-token($name, $fallbacks);
+}
+
+@mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
+  @if ($addFontFamily) {
+    font-family: #{tokens.$cds-alias-typography-font-family};
+  }
+
+  @if ($addColor) {
+    color: #{tokens.$cds-alias-typography-color-450};
+  }
+
+  @include generate-typography-token($name, $fallbacks);
+}
+
+@mixin generate-typography-token($name, $fallbacks: ()) {
+  @each $key, $value in map.get($typography-tokens, $name) {
+    @if (map.has-key($fallbacks, $key)) {
+      #{$key}: map.get($fallbacks, $key);
+    } @else {
+      #{$key}: $value;
+    }
   }
 }
