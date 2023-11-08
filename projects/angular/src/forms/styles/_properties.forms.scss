@@ -118,9 +118,10 @@
         --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};
         --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color};
         --clr-forms-select-multiple-option-color: #{tokens.$cds-alias-typography-color-400};
+
+        // Textarea
+        --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
       }
-      // Textarea
-      --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
         0
         #{variables.$clr_baselineRem_2px}
@@ -135,7 +136,7 @@
         calc(#{forms-variables.$clr-forms-baseline} * 2);
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
+      --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
 
       // Datalist
 
