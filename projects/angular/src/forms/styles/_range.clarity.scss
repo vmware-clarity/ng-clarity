@@ -86,11 +86,8 @@
 
     @include forms-mixins.range-border-style(
       forms-variables.$clr-forms-range-border-color,
-      clr-forms-range-track-border-color,
       forms-variables.$clr-forms-range-border-radius,
-      clr-forms-range-track-border-radius,
-      forms-variables.$clr-forms-range-border-width,
-      clr-forms-range-track-border-width
+      forms-variables.$clr-forms-range-border-width
     );
 
     &::-webkit-slider-thumb {
@@ -106,12 +103,10 @@
 
     &:disabled {
       @include forms-mixins.range-border-style(
+        // TODO: Use disabled color
         forms-variables.$clr-forms-range-border-color,
-        clr-forms-range-track-border-color-disabled,
         forms-variables.$clr-forms-range-border-radius,
-        clr-forms-range-track-border-radius,
-        forms-variables.$clr-forms-range-border-width,
-        clr-forms-range-track-border-width
+        forms-variables.$clr-forms-range-border-width
       );
     }
 
@@ -153,8 +148,7 @@
         border: 0;
         @include forms-mixins.range-track-style(
           forms-variables.$clr-forms-range-track-height,
-          forms-variables.$clr-forms-range-track-color,
-          clr-forms-range-track-color
+          forms-variables.$clr-forms-range-track-color
         );
       }
 
@@ -200,8 +194,7 @@
         margin: 0;
         @include forms-mixins.range-track-style(
           forms-variables.$clr-forms-range-track-height,
-          forms-variables.$clr-forms-range-track-color,
-          clr-forms-range-track-color
+          forms-variables.$clr-forms-range-track-color
         );
       }
 

@@ -149,41 +149,23 @@
 @mixin range-style($height, $background-color) {
   -webkit-appearance: none;
   left: 0;
-
   height: $height;
   background-color: $background-color;
 }
 
-@mixin range-border-style(
-  $border-color-fallback,
-  $border-color-prop,
-  $border-radius-fallback,
-  $border-radius-prop,
-  $border-width-fallback,
-  $border-width-prop,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
-  border-style: solid;
-  @include mixins.css-var(border-color, $border-color-prop, $border-color-fallback, $use-custom-props);
-  @include mixins.css-var(border-radius, $border-radius-prop, $border-radius-fallback, $use-custom-props);
-  @include mixins.css-var(border-width, $border-width-prop, $border-width-fallback, $use-custom-props);
+@mixin range-border-style($border-color, $border-radius, $border-width) {
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
 }
 
-@mixin range-track-style(
-  $height,
-  $background-color-fallback,
-  $background-color-prop: null,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin range-track-style($height, $background-color-fallback) {
   height: $height;
   cursor: pointer;
-
-  @include mixins.css-var(background-color, $background-color-prop, $background-color-fallback, $use-custom-props);
+  background-color: $background-color-fallback;
 }
 
 @mixin range-thumb-style($margin, $size, $background-color) {
   border-radius: 50%;
-
   background-color: $background-color;
   margin-top: $margin;
   @include mixins.equilateral($size);
