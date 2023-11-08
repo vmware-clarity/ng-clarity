@@ -24,7 +24,11 @@ jobs:
       - name: Update to Angular v16
         if: ${{matrix.angular == 'Angular v16'}}
         run: |
-          npx ng update @angular/core@16 @angular/common@16 @angular/cli@16 @angular/cdk@16 --force
+          npx ng update @angular/core@16 --force
+      - name: Update Angular v16 cli and cdk
+        if: ${{matrix.angular == 'Angular v16'}}
+        run: |
+          npm install @angular/cli@16 @angular/cdk@16
       - name: Disable Storybook Build
         if: ${{matrix.angular == 'Angular v16'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
