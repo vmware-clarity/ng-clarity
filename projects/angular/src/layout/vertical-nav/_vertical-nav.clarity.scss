@@ -173,7 +173,13 @@
 
       .nav-text {
         //Dims
-        padding-left: vertical-nav-variables.$clr-vertical-nav-link-padding-left;
+        @include mixins.css-var(
+          padding,
+          clr-vertical-nav-item-padding,
+          0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+            vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+          variables.$clr-use-custom-properties
+        );
       }
 
       .nav-icon + .nav-text {
@@ -504,6 +510,7 @@
     //////
     ///////
     &.has-nav-groups {
+      .nav-group-content > .nav-link,
       .nav-group .nav-group-text,
       .nav-group .nav-group-trigger {
         @include mixins.css-var(
