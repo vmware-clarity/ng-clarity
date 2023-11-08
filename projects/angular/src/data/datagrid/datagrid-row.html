@@ -118,7 +118,11 @@
             <clr-spinner *ngIf="expand.loading" clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
           </ng-container>
         </div>
-        <div *ngIf="detailService.enabled" class="datagrid-detail-caret datagrid-fixed-column datagrid-cell">
+        <div
+          *ngIf="detailService.enabled"
+          class="datagrid-detail-caret datagrid-fixed-column datagrid-cell"
+          role="gridcell"
+        >
           <button
             (click)="detailService.toggle(item, detailButton)"
             type="button"
