@@ -5,50 +5,51 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
-@use 'variables.dropdown' as dropdown-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('dropdown.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
+  :root {
+    [cds-theme] {
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
-      --clr-dropdown-active-text-color: var(--clr-color-neutral-1000);
-      --clr-dropdown-active-background-color: var(--clr-global-selection-color);
-      --clr-dropdown-bg-color: var(--clr-color-neutral-0);
-      --clr-dropdown-border-color: var(--clr-color-neutral-400);
-      --clr-dropdown-divider-color: var(--clr-color-neutral-200);
-      --clr-dropdown-divider-border-width: var(--clr-global-borderwidth);
-      --clr-dropdown-divider-margin: #{variables.$clr_baselineRem_0_25 0};
-      --clr-dropdown-child-border-color: var(--clr-color-neutral-500);
-      --clr-dropdown-bg-hover-color: var(--clr-global-hover-color);
-      --clr-dropdown-selection-color: var(--clr-global-selection-color);
+      --clr-dropdown-active-text-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-dropdown-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-dropdown-bg-color: #{tokens.$cds-alias-object-overlay-background};
+      --clr-dropdown-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-dropdown-divider-color: #{tokens.$cds-alias-object-border-color-tint};
+      --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
+      --clr-dropdown-divider-margin: #{tokens.$cds-global-space-6};
+      --clr-dropdown-child-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-dropdown-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-dropdown-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
       --clr-dropdown-box-shadow: var(--clr-popover-box-shadow-color);
-      --clr-dropdown-caret-icon-size: #{variables.$clr_baselineRem_0_5};
 
       // Usage:  ../data/datagrid/_datagrid.clarity.scss
       // Usage:  ../emphasis/alert/_alert.clarity.scss
-      --clr-dropdown-text-color: var(--clr-p1-color);
+      --clr-dropdown-text-color: var(--clr-global-font-color);
 
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       // Dropdown Header
-      --clr-dropdown-header-color: var(--clr-color-neutral-900);
-      --clr-dropdown-header-font-weight: #{dropdown-variables.$clr-dropdown-header-font-weight};
-      --clr-dropdown-header-font-size: #{dropdown-variables.$clr-dropdown-header-font-size};
-      --clr-dropdown-header-line-height: #{variables.$clr_baselineRem_0_75};
-      --clr-dropdown-header-letter-spacing: #{dropdown-variables.$clr-dropdown-header-letter-spacing};
-      --clr-dropdown-header-padding: 0 #{variables.$clr_baselineRem_0_5};
-      --clr-dropdown-subsection-offset: #{variables.$clr_baselineRem_1};
+      --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-dropdown-header-padding: 0 #{tokens.$cds-global-space-7};
+      --clr-dropdown-subsection-offset: #{tokens.$cds-global-space-10}; //2x16px
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item
-      --clr-dropdown-item-color: var(--clr-color-neutral-700);
-      --clr-dropdown-item-font-weight: var(--clr-p1-font-weight);
-      --clr-dropdown-item-padding: #{variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1};
-      --clr-dropdown-font-size: inherit;
-      --clr-dropdown-line-height: inherit;
-      --clr-dropdown-letter-spacing: inherit;
+      --clr-dropdown-item-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
+      // ATM replace with typography mixin. Check why these are redefined in datagrid and alert
+      --clr-dropdown-font-size: var(--clr-p5-font-size);
+      --clr-dropdown-line-height: var(--clr-p5-line-height);
+      --clr-dropdown-font-weight: var(--clr-p5-font-weight);
+      --clr-dropdown-letter-spacing: var(--clr-p5-letter-spacing);
       // Dropdown Items List
-      --clr-dropdown-items-padding: #{variables.$clr_baselineRem_0_5} 0;
-      --clr-dropdown-border-radius: #{variables.$clr-global-borderradius};
+      --clr-dropdown-items-padding: #{tokens.$cds-global-space-6} 0;
+      --clr-dropdown-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+
+      // ATM reimplement component with non-css-only icon and replace with space-7,
+      // We use 6 because the current css-only implementation does not have icon padding.
+      --clr-dropdown-caret-icon-size: #{tokens.$cds-global-space-6}; // dropdown submenu caret
+      --clr-dropdown-trigger-caret-icon-size: #{mixins.baselinePx(10)}; // dropdown trigger-button caret
     }
   }
 }
