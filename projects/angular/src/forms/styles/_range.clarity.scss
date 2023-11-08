@@ -103,8 +103,7 @@
 
     &:disabled {
       @include forms-mixins.range-border-style(
-        // TODO: Use disabled color
-        forms-variables.$clr-forms-range-border-color,
+        forms-variables.$clr-forms-range-border-color-disabled,
         forms-variables.$clr-forms-range-border-radius,
         forms-variables.$clr-forms-range-border-width
       );
