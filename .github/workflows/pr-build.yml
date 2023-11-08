@@ -21,10 +21,12 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install Dependencies
         run: npm ci
-      - name: Update to Angular v16
+      - name: Use Angular v16
         if: ${{matrix.angular == 'Angular v16'}}
-        run: |
-          npx ng update @angular/core@16 @angular/cli@16 @angular/cdk@16 --force
+        uses: dtsanevmw/angular-versions-action@v0.0.2
+        with:
+          angular-version: '16.0.x'
+      - run: npm install
       - name: Disable Storybook Build
         if: ${{matrix.angular == 'Angular v16'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
