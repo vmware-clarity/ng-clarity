@@ -115,7 +115,7 @@
 
       input[type='checkbox']:checked + label::before {
         border-color: toggle-variables.$clr-toggle-disabled-on-border-color;
-        background-color: toggle-variables.$clr-toggle-disabled-on-border-color;
+        background-color: toggle-variables.$clr-toggle-disabled-on-bg-color;
       }
     }
 
@@ -133,7 +133,7 @@
       &::after {
         // toggle handle color for disabled/off and inner part of handle disabled/on
         background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
-        border: solid toggle-variables.$clr-toggle-disabled-off-handle-border-color;
+        border-color: toggle-variables.$clr-toggle-disabled-off-handle-border-color;
         @include mixins.equilateral(toggle-variables.$clr-toggle-switch-base-height);
         top: tokens.$cds-global-space-3;
       }
