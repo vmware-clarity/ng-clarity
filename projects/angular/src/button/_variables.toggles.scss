@@ -18,11 +18,11 @@ $clr-toggle-switch-height: #{tokens.$cds-global-space-7} !default;
 $clr-toggle-dot-diameter: $clr-toggle-switch-height !default;
 
 // deprecated in favor of $clr-toggle-switch-base-spacing
-$clr-toggle-switch-base-left-spacing: #{tokens.$cds-global-space-6} !default;
+$clr-toggle-switch-base-left-spacing: #{tokens.$cds-global-space-5} !default;
 $clr-toggle-switch-base-spacing: #{$clr-toggle-switch-base-left-spacing} !default;
 
 // deprecated in favor of $clr-toggle-switch-spacing
-$clr-toggle-switch-left-spacing: calc(#{$clr-toggle-switch-base-width} - #{tokens.$cds-global-space-3}) !default;
+$clr-toggle-switch-left-spacing: calc(#{$clr-toggle-switch-base-width} - #{$clr-toggle-switch-base-spacing}) !default;
 $clr-toggle-switch-spacing: $clr-toggle-switch-left-spacing !default;
 
 $clr-toggle-transition-time: 0.15s !default;
