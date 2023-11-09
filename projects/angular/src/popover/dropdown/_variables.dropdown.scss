@@ -25,12 +25,21 @@ $clr-dropdown-text-color: var(--clr-dropdown-text-color) !default;
 // Dropdown Header
 $clr-dropdown-header-color: var(--clr-dropdown-header-color) !default;
 $clr-dropdown-header-padding: var(--clr-dropdown-header-padding) !default;
+$clr-dropdown-header-font-weight: var(--clr-dropdown-header-font-weight) !default;
+$clr-dropdown-header-font-size: var(--clr-dropdown-header-font-size) !default;
+$clr-dropdown-header-line-height: var(--clr-dropdown-header-line-height) !default;
+$clr-dropdown-header-letter-spacing: var(--clr-dropdown-header-letter-spacing) !default;
 $clr-dropdown-subsection-offset: var(--clr-dropdown-subsection-offset) !default; //2x16px
 
 // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
 // Dropdown Item
 $clr-dropdown-item-color: var(--clr-dropdown-item-color) !default;
+$clr-dropdown-item-hover-color: var(--clr-dropdown-item-hover-color) !default;
 $clr-dropdown-item-padding: var(--clr-dropdown-item-padding) !default;
+$clr-dropdown-item-font-size: var(--clr-dropdown-item-font-size) !default;
+$clr-dropdown-item-font-weight: var(--clr-dropdown-item-font-weight) !default;
+$clr-dropdown-item-letter-spacing: var(--clr-dropdown-item-letter-spacing) !default;
+$clr-dropdown-item-line-height: var(--clr-dropdown-item-line-height) !default;
 $clr-dropdown-font-size: var(--clr-dropdown-font-size) !default;
 $clr-dropdown-line-height: var(--clr-dropdown-line-height) !default;
 $clr-dropdown-font-weight: var(--clr-dropdown-font-weight) !default;

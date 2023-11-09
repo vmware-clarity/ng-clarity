@@ -18,8 +18,16 @@
 | --clr-dropdown-text-color              | The text color of the dropdown.                    |
 | --clr-dropdown-header-color            | The color of the dropdown menu header.             |
 | --clr-dropdown-header-padding          | Padding of the dropdown menu header.               |
+| --clr-dropdown-header-font-weight      | Dropdown menu header font weight                   |
+| --clr-dropdown-header-font-size        | Dropdown menu header font size                     |
+| --clr-dropdown-header-line-height      | Dropdown menu header font height                   |
+| --clr-dropdown-header-letter-spacing   | Dropdown menu header letter spacing                |
 | --clr-dropdown-item-color              | The color of the dropdown item.                    |
 | --clr-dropdown-item-padding            | Single menu item padding                           |
+| --clr-dropdown-item-font-weight        | Dropdown menu item font weight                     |
+| --clr-dropdown-item-font-size          | Dropdown menu item font size                       |
+| --clr-dropdown-item-line-height        | Dropdown menu item font height                     |
+| --clr-dropdown-item-letter-spacing     | Dropdown menu item letter spacing                  |
 | --clr-dropdown-items-padding           | Menu items list overall padding                    |
 | --clr-dropdown-border-radius           | Menu items list border radius                      |
 | --clr-dropdown-trigger-caret-icon-size | Size of the dropdown trigger button caret.         |

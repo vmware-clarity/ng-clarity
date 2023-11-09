@@ -58,8 +58,7 @@
       $clr-dropdown-caret-left-margin: tokens.$cds-global-space-2;
       &.btn {
         padding-right: calc(
-          button-variables.$clr-btn-horizontal-padding + dropdown-variables.$clr-dropdown-caret-icon-dimension +
-            $clr-dropdown-caret-left-margin
+          #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}
         );
         text-overflow: unset;
 
@@ -79,7 +78,8 @@
       }
 
       &:not(.btn) {
-        padding: 0 calc(dropdown-variables.$clr-dropdown-caret-icon-dimension + $clr-dropdown-caret-left-margin) 0 0;
+        padding: 0 calc(#{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}) 0
+          0;
         color: dropdown-variables.$clr-dropdown-active-text-color;
 
         cds-icon[shape^='caret'],
@@ -112,7 +112,15 @@
       color: dropdown-variables.$clr-dropdown-header-color;
 
       // Typography
-      @include mixins.generate-typography-token('SECONDARY-13-MD-EXP');
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-MD-EXP',
+        (
+          font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+          font-size: dropdown-variables.$clr-dropdown-header-font-size,
+          line-height: dropdown-variables.$clr-dropdown-header-line-height,
+          letter-spacing: dropdown-variables.$clr-dropdown-header-letter-spacing,
+        )
+      );
 
       padding: dropdown-variables.$clr-dropdown-header-padding;
       margin: 0;
@@ -268,8 +276,8 @@
 
     // nested dropdown (submenu)
     .dropdown {
-      $clr-dropdown-submenu-overlap-margin: calc(-1 * tokens.$cds-global-space-3);
-      $clr-dropdown-submenu-vertical-margin: calc((-1 * tokens.$cds-global-space-8) - tokens.$cds-global-space-1);
+      $clr-dropdown-submenu-overlap-margin: calc(-1 * #{tokens.$cds-global-space-3});
+      $clr-dropdown-submenu-vertical-margin: calc((-1 * #{tokens.$cds-global-space-8}) - #{tokens.$cds-global-space-1});
       // -1 is to account for the border that shifts the menu down by 1 pixel
 
       .dropdown-menu {

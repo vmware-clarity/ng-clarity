@@ -23,12 +23,12 @@
   //Other
   background-color: dropdown-variables.$clr-dropdown-bg-color;
 
-  border-width: variables.$clr-global-borderwidth;
+  border-width: tokens.$cds-alias-object-border-width-100;
   border-style: solid;
   border-color: dropdown-variables.$clr-dropdown-border-color;
   border-radius: dropdown-variables.$clr-dropdown-border-radius;
 
-  box-shadow: 0 variables.$clr-global-borderwidth mixins.baselinePx(3) dropdown-variables.$clr-dropdown-box-shadow;
+  box-shadow: tokens.$cds-alias-object-shadow-300;
 
   margin-top: tokens.$cds-global-space-2;
   padding: dropdown-variables.$clr-dropdown-items-padding;
@@ -37,7 +37,15 @@
 }
 
 @mixin generate-dropdown-item() {
-  @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-RG-EXP',
+    (
+      font-size: dropdown-variables.$clr-dropdown-item-font-size,
+      font-weight: dropdown-variables.$clr-dropdown-item-font-weight,
+      line-height: dropdown-variables.$clr-dropdown-item-line-height,
+      letter-spacing: dropdown-variables.$clr-dropdown-item-letter-spacing,
+    )
+  );
 
   color: dropdown-variables.$clr-dropdown-item-color;
   background: transparent;
@@ -51,7 +59,7 @@
 
   &:hover {
     background-color: dropdown-variables.$clr-dropdown-bg-hover-color;
-    color: dropdown-variables.$clr-dropdown-item-color;
+    color: dropdown-variables.$clr-dropdown-item-hover-color;
     text-decoration: none;
   }
 

@@ -25,18 +25,28 @@
 
       // Usage:  ../data/datagrid/_datagrid.clarity.scss
       // Usage:  ../emphasis/alert/_alert.clarity.scss
-      --clr-dropdown-text-color: var(--clr-global-font-color);
+      --clr-dropdown-text-color: tokens.$cds-alias-object-interaction-color;
 
       // Usage: ../popover/dropdown/_dropdown.clarity.scss
       // Dropdown Header
       --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400};
       --clr-dropdown-header-padding: 0 #{tokens.$cds-global-space-7};
+      --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
+      --clr-dropdown-header-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+      --clr-dropdown-header-line-height: #{tokens.$cds-global-space-9};
+      --clr-dropdown-header-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
       --clr-dropdown-subsection-offset: #{tokens.$cds-global-space-10}; //2x16px
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item
-      --clr-dropdown-item-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-dropdown-item-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-dropdown-item-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
+      --clr-dropdown-item-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+      --clr-dropdown-item-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+      --clr-dropdown-item-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+      --clr-dropdown-item-line-height: #{tokens.$cds-global-space-9};
+
       // ATM replace with typography mixin. Check why these are redefined in datagrid and alert
       --clr-dropdown-font-size: var(--clr-p5-font-size);
       --clr-dropdown-line-height: var(--clr-p5-line-height);
