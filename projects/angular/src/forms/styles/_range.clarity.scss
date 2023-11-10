@@ -54,7 +54,6 @@
 
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
-      // TODO: ATM Vertically centralize thumb without transform property
       transform: translate(0, #{$thumb-y-translation});
 
       @include forms-mixins.range-thumb-style(
