@@ -406,44 +406,6 @@
     padding: 0;
   }
 
-  /* Dropdown */
-
-  --clr-dropdown-active-text-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-1000);
-  --clr-dropdown-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
-  --clr-dropdown-bg-color: #{tokens.$cds-alias-object-overlay-background}; // var(--clr-color-neutral-0);
-  --clr-dropdown-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
-  --clr-dropdown-divider-color: #{tokens.$cds-alias-object-border-color-tint}; // var(--clr-color-neutral-200);
-  --clr-dropdown-child-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-500);
-  --clr-dropdown-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover}; // var(--clr-global-hover-color);
-  --clr-dropdown-selection-color: #{tokens.$cds-alias-object-interaction-background-selected}; // var(--clr-global-selection-color);
-  --clr-dropdown-box-shadow: var(--clr-popover-box-shadow-color);
-
-  --clr-dropdown-text-color: var(--clr-global-font-color);
-  --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400}; // var(--clr-color-neutral-900);
-  --clr-dropdown-item-color: #{tokens.$cds-alias-typography-color-300}; // var(--clr-color-neutral-700);
-  --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
-  --clr-dropdown-items-padding: #{tokens.$cds-global-space-6} 0;
-  --clr-dropdown-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-dropdown-font-weight: var(--clr-p5-font-weight);
-  --clr-dropdown-font-size: var(--clr-p5-font-size);
-  --clr-dropdown-line-height: var(--clr-p5-line-height);
-  --clr-dropdown-letter-spacing: var(--clr-p5-letter-spacing);
-  --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
-  --clr-dropdown-divider-margin: #{tokens.$cds-global-space-6};
-  --clr-dropdown-header-font-weight: var(--clr-p2-font-weight);
-  --clr-dropdown-header-font-size: var(--clr-p2-font-size);
-  --clr-dropdown-header-line-height: var(--clr-p2-line-height);
-  --clr-dropdown-header-letter-spacing: var(--clr-p2-letter-spacing);
-  --clr-dropdown-header-padding: 0 #{tokens.$cds-global-space-7};
-  --clr-dropdown-subsection-offset: #{tokens.$cds-global-space-10}; //2x16px
-  // ATM reimplement component with non-css-only icon and replace with space-7,
-  // We use 6 because the current css-only implementation does not have icon padding.
-  --clr-dropdown-caret-icon-size: #{tokens.$cds-global-space-6};
-
-  // ATM remove - internal only, while we need a fallback
-  // we should rework it to be centered without dependency on a top margin
-  --clr-dropdown-caret-icon-margin-top: #{tokens.$cds-global-space-4};
-
   /* Header */
 
   // NOTE: Header variables don't always have corresponding alias color or size design token values.
