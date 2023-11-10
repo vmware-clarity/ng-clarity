@@ -26,7 +26,7 @@
       position: absolute;
       left: 0;
       display: inline-block;
-      height: tokens.$cds-global-space-3;
+      height: forms-variables.$clr-forms-range-track-height;
       pointer-events: none; // needed for correct chrome behavior with progress
       cursor: pointer;
       z-index: 10;
