@@ -50,7 +50,7 @@
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
       // TODO: ATM Vertically centralize thumb without transform property
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-margin);
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
@@ -60,7 +60,7 @@
     }
     &:disabled::-moz-range-thumb {
       border: 0;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-margin);
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
@@ -92,7 +92,7 @@
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-margin);
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
@@ -111,7 +111,7 @@
 
     &::-moz-range-thumb {
       border: 0;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
+      transform: translate(0, forms-variables.$clr-forms-range-thumb-margin);
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
