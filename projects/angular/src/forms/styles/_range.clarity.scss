@@ -9,6 +9,11 @@
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('forms.range') {
+  // Thumb should move down to match its center with track center
+  $thumb-y-translation: calc(
+    #{forms-variables.$clr-forms-range-thumb-height} / 2 - #{forms-variables.$clr-forms-range-track-height} / 2 + #{forms-variables.$clr-forms-range-border-width}
+  );
+
   .clr-range-wrapper {
     position: relative;
     display: flex;
@@ -50,10 +55,9 @@
     &:disabled::-webkit-slider-thumb {
       -webkit-appearance: none;
       // TODO: ATM Vertically centralize thumb without transform property
-      transform: translate(0, mixins.baselinePx(7));
+      transform: translate(0, #{$thumb-y-translation});
 
       @include forms-mixins.range-thumb-style(
-        mixins.baselinePx(7),
         forms-variables.$clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled
       );
@@ -62,7 +66,6 @@
       border: 0;
 
       @include forms-mixins.range-thumb-style(
-        mixins.baselinePx(7),
         forms-variables.$clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color-disabled
       );
@@ -91,10 +94,9 @@
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      transform: translate(0, mixins.baselinePx(7));
+      transform: translate(0, #{$thumb-y-translation});
 
       @include forms-mixins.range-thumb-style(
-        mixins.baselinePx(7),
         forms-variables.$clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color
       );
@@ -112,7 +114,6 @@
       border: 0;
 
       @include forms-mixins.range-thumb-style(
-        mixins.baselinePx(7),
         forms-variables.$clr-forms-range-thumb-height,
         forms-variables.$clr-forms-range-progress-fill-color
       );
@@ -152,7 +153,6 @@
       &::-ms-thumb {
         border: 0;
         @include forms-mixins.range-thumb-style(
-          0,
           forms-variables.$clr-forms-range-thumb-height,
           forms-variables.$clr-forms-range-progress-fill-color
         );
@@ -198,7 +198,6 @@
       &::-ms-thumb {
         border: 0;
         @include forms-mixins.range-thumb-style(
-          0,
           forms-variables.$clr-forms-range-thumb-height,
           forms-variables.$clr-forms-range-progress-fill-color
         );

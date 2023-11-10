@@ -164,9 +164,8 @@
   background-color: $background-color-fallback;
 }
 
-@mixin range-thumb-style($margin, $size, $background-color) {
+@mixin range-thumb-style($size, $background-color) {
   border-radius: 50%;
   background-color: $background-color;
-  margin-top: $margin;
   @include mixins.equilateral($size);
 }
