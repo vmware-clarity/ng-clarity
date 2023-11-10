@@ -139,7 +139,7 @@
       // TODO: Thumb?
       @include forms-mixins.range-style(forms-variables.$clr-forms-range-thumb-height, transparent);
 
-      // TODO: Delete?
+      // TODO: Delete when getting rid of IE custom rules
       &::-ms-track {
         margin: 0;
         border: 0;
@@ -185,7 +185,7 @@
       // TODO: check why this is using thumb?
       @include forms-mixins.range-style(forms-variables.$clr-forms-range-thumb-height, transparent);
 
-      // TODO: Delete?
+      // TODO: Delete when getting rid of IE custom rules
       &::-ms-track {
         border: 0;
         margin: 0;
