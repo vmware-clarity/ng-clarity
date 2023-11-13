@@ -116,6 +116,15 @@
     }
 
     .label-combobox-pill {
+      @include mixins.generate-typography-token(
+        'CAPTION-LG-11',
+        (
+          font-weight: combobox-variables.$clr-combobox-pill-font-weight,
+          font-size: combobox-variables.$clr-combobox-pill-font-size,
+          line-height: combobox-variables.$clr-combobox-pill-line-height,
+          letter-spacing: combobox-variables.$clr-combobox-pill-letter-spacing,
+        )
+      );
       height: combobox-variables.$clr-combobox-pill-height;
       margin: combobox-variables.$clr-combobox-pill-margin;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
@@ -129,15 +138,8 @@
       padding: combobox-variables.$clr-combobox-pill-padding;
 
       .clr-combobox-pill-content {
-        @include mixins.generate-typography-token(
-          'CAPTION-LG-11',
-          (
-            font-weight: combobox-variables.$clr-combobox-pill-font-weight,
-            font-size: combobox-variables.$clr-combobox-pill-font-size,
-            line-height: combobox-variables.$clr-combobox-pill-line-height,
-            letter-spacing: combobox-variables.$clr-combobox-pill-letter-spacing,
-          )
-        );
+        font-size: tokens.$cds-alias-typography-caption-font-size;
+        font-weight: tokens.$cds-alias-typography-caption-font-weight;
         color: combobox-variables.$clr-combobox-pill-font-color;
         padding: 0;
       }
