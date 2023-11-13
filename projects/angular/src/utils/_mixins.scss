@@ -319,7 +319,7 @@ $typography-tokens: (
     // P2, Section Header
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
-    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    line-height: #{tokens.$cds-global-space-9},
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-RG-CPT': (
@@ -334,7 +334,7 @@ $typography-tokens: (
     // P5, Table footer and chart data
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
-    line-height: #{baselinePx(24)},
+    line-height: #{tokens.$cds-global-space-9},
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-RG-STD': (
