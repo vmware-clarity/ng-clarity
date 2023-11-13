@@ -4,80 +4,85 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
 @use '../utils/variables/variables' as typography-variables;
+@use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
 
 @include mixins.exports('accordion.properties') {
-  @if variables.$clr-use-custom-properties == true {
+  [cds-theme] {
     :root {
-      --clr-accordion-text-color: var(--clr-global-font-color);
-      --clr-accordion-text-color-hover: var(--clr-global-font-color);
-      --clr-accordion-text-color-active: var(--clr-global-font-color);
-      --clr-accordion-text-color-selected: var(--clr-global-font-color);
-      --clr-accordion-panel-disabled-color: var(--clr-color-neutral-500);
+      --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-accordion-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-accordion-text-color-selected: #{tokens.$cds-alias-object-interaction-color-selected};
 
-      --clr-accordion-active-background-color: var(--clr-global-selection-color);
-      --clr-accordion-content-background-color: var(--clr-color-neutral-0);
+      --clr-accordion-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
-      --clr-accordion-header-background-color: var(--clr-color-neutral-50);
-      --clr-accordion-header-disabled-background-color: var(--clr-global-selection-color);
-      --clr-accordion-header-hover-background-color: var(--clr-color-neutral-200);
-      --clr-accordion-header-active-background-color: var(--clr-color-neutral-200);
-      --clr-accordion-header-font-size: #{variables.$clr_baselineRem_0_65};
+      --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-accordion-content-background-color: #{tokens.$cds-alias-object-app-background};
 
-      --clr-accordion-header-button-font-size: #{variables.$clr_baselineRem_0_5};
-      --clr-accordion-header-button-line-height: #{variables.$clr_baselineRem_1};
-      --clr-accordion-header-button-padding: #{variables.$clr_baselineRem_0_25} #{variables.$clr_baselineRem_0_5};
-      --clr-accordion-number-padding: 0 #{accordion-variables.$clr-accordion-padding};
+      --clr-accordion-header-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-accordion-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
 
-      --clr-accordion-title-font-weight: 500;
-      --clr-accordion-title-font-size: #{variables.$clr_baselineRem_0_5416};
+      --clr-accordion-header-button-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
+      --clr-accordion-header-button-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
 
-      --clr-accordion-error-color: var(--clr-global-error-color);
-      --clr-accordion-complete-color: var(--clr-global-success-color);
+      --clr-accordion-header-font-size: #{tokens.$cds-alias-typography-body-font-size};
 
-      --clr-accordion-border-color: var(--clr-color-neutral-400);
+      --clr-accordion-header-button-line-height: var(
+        // TODO: Why do we need clr prop instead of only token?
+        --clr-p1-line-height,
+        #{convertCompactToStandardLineHeight(
+            #{tokens.$cds-alias-typography-secondary-line-height},
+            #{tokens.$cds-global-typography-secondary-line-height}
+          )}
+      ); // secondary line-height is 16px in tokens, but specified as 20px in figma.
+
+      --clr-accordion-number-padding: 0 #{tokens.$cds-global-space-7};
+
+      --clr-accordion-title-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+      --clr-accordion-title-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+
+      --clr-accordion-error-color: #{tokens.$cds-alias-status-danger}; // var(--clr-global-error-color);
+      --clr-accordion-complete-color: #{tokens.$cds-alias-status-success}; // var(--clr-global-success-color);
+
+      --clr-accordion-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
+
+      // TODO: Why don't we have a token mapping in the shim for this? - CDS tokens (as Valio suggested)
       --clr-accordion-border-radius: var(--clr-global-borderradius);
 
-      --clr-accordion-border-left-color: #{accordion-variables.$clr-accordion-border-left-color};
-      --clr-accordion-border-left-width: #{variables.$clr_baselineRem_0_25};
+      --clr-accordion-border-left-color: #{tokens.$cds-alias-object-border-color-tint}; // #{$clr-accordion-border-left-color};
+      //--clr-accordion-border-left-width: #{variables.$clr_baselineRem_0_25};
       --clr-accordion-border-left-color-current: var(--clr-accordion-border-left-color);
-      --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color);
-      --clr-accordion-border-left-color-error: var(--clr-accordion-error-color);
 
-      // compound properties
-      --clr-accordion-header-left-indicator: inset
-        var(--clr-accordion-border-left-width)
-        0
-        0
-        var(--clr-accordion-border-left-color);
-      --clr-accordion-header-left-current-indicator: inset
-        var(--clr-accordion-border-left-width)
-        0
-        0
-        var(--clr-accordion-border-left-color-current);
-      --clr-accordion-header-left-complete-indicator: inset
-        var(--clr-accordion-border-left-width)
-        0
-        0
-        var(--clr-accordion-border-left-color-complete);
-      --clr-accordion-header-left-error-indicator: inset
-        var(--clr-accordion-border-left-width)
-        0
-        0
-        var(--clr-accordion-border-left-color-error);
+      --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color); // indirectly mapped to CDS token
+      --clr-accordion-border-left-color-error: var(--clr-accordion-error-color); // indirectly mapped to CDS token
 
-      --clr-accordion-header-gap: 0;
-      --clr-accordion-status-icon-width: #{variables.$clr_baselineRem_0_8};
+      --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
+      --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-accordion-header-left-complete-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-success};
+      --clr-accordion-header-left-error-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-danger};
 
-      --clr-accordion-content-color: #{accordion-variables.$clr-accordion-content-color};
-      --clr-accordion-content-font-size: #{accordion-variables.$clr-accordion-content-font-size};
-      --clr-accordion-description-margin-left: #{accordion-variables.$clr-accordion-description-margin-left};
-      --clr-accordion-step-title-min-width: #{accordion-variables.$clr-accordion-step-title-min-width};
-      --clr-accordion-step-title-font-weight: #{accordion-variables.$clr-accordion-step-title-font-weight};
-      --clr-accordion-step-status-margin-left: #{accordion-variables.$clr-accordion-step-status-margin-left};
-      --clr-accordion-step-title-margin-left: #{accordion-variables.$clr-accordion-step-title-margin-left};
+      //--clr-accordion-header-gap: 0;
+      // v17 remove var in favor of gap:sm class
+      --clr-accordion-header-gap: #{tokens.$cds-global-space-5};
+      // v17: remove
+      --clr-accordion-status-icon-width: auto;
+
+      --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+
+      --clr-accordion-description-margin-left: calc(#{tokens.$cds-global-space-13} - var(--clr-accordion-header-gap));
+      --clr-accordion-step-title-min-width: 0;
+      --clr-accordion-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+
+      --clr-accordion-step-status-margin-left: #{tokens.$cds-global-space-7};
+      --clr-accordion-step-title-margin-left: #{tokens.$cds-global-space-9};
+
+      --clr-accordion-content-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
+        #{tokens.$cds-global-space-11};
     }
   }
 }

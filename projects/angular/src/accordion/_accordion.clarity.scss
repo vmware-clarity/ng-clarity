@@ -8,13 +8,14 @@
 @use '../utils/a11y';
 @use '../utils/mixins';
 @use '../utils/variables/variables.global';
+@use '@cds/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
 @include meta.load-css('properties.accordion');
 
 @include mixins.exports('accordion.clarity') {
   .clr-accordion {
     display: block;
-    margin-bottom: variables.$clr_baselineRem_1;
+    margin-bottom: tokens.$cds-global-space-9;
   }
 
   .clr-accordion-panel {
@@ -30,7 +31,7 @@
       accordion-variables.$clr-accordion-text-color,
       variables.$clr-use-custom-properties
     );
-    border: variables.$clr_baselineRem_1px solid;
+    border: tokens.$cds-global-space-1 solid;
     @include mixins.css-var(
       border-color,
       clr-accordion-border-color,
@@ -196,7 +197,7 @@
   }
 
   .clr-accordion-status {
-    width: variables.$clr_baselineRem_1_5;
+    width: tokens.$cds-global-space-11;
     display: inline-block;
     vertical-align: top;
   }
@@ -224,7 +225,7 @@
 
   .clr-accordion-header-has-description {
     .clr-accordion-title {
-      max-width: variables.$clr_baselineRem_11;
+      max-width: mixins.baselinePx(264);
       @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
         @include mixins.css-var(
           margin-left,
@@ -238,7 +239,7 @@
 
   .clr-accordion-description {
     display: inline-block;
-    max-width: variables.$clr_baselineRem_650px;
+    max-width: mixins.baselinePx(650);
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       @include mixins.css-var(
@@ -272,7 +273,7 @@
     );
     border-bottom: 0;
     overflow: hidden;
-    padding: variables.$clr_baselineRem_0_75;
+    padding: tokens.$cds-global-space-8;
     display: none;
 
     .clr-form {
@@ -284,7 +285,7 @@
     }
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: variables.$clr_baselineRem_0_75 variables.$clr_baselineRem_2_25;
+      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
     }
   }
 
@@ -292,7 +293,7 @@
     padding: accordion-variables.$clr-accordion-padding;
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      padding: variables.$clr_baselineRem_0_75 variables.$clr_baselineRem_2_25;
+      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
     }
   }
 
@@ -303,10 +304,10 @@
 
   .clr-accordion-error-icon,
   .clr-accordion-complete-icon {
-    @include mixins.equilateral(variables.$clr_baselineRem_1);
+    @include mixins.equilateral(tokens.$cds-global-space-9);
     display: none;
     padding: 0;
-    margin: 0 variables.$clr_baselineRem_0_5;
+    margin: 0 tokens.$cds-global-space-6;
   }
 
   // panel states
@@ -558,7 +559,7 @@
 
       cds-icon,
       clr-icon {
-        @include mixins.equilateral(variables.$clr_baselineRem_0_583);
+        @include mixins.equilateral(mixins.baselinePx(14));
       }
     }
   }
@@ -581,7 +582,7 @@
     }
 
     .clr-accordion-status {
-      min-width: variables.$clr_baselineRem_3;
+      min-width: tokens.$cds-global-space-14;
       @include mixins.css-var(
         margin-left,
         clr-accordion-step-status-margin-left,
@@ -597,6 +598,6 @@
 
   .clr-step-button {
     display: block;
-    margin-top: variables.$clr_baselineRem_1;
+    margin-top: tokens.$cds-global-space-9;
   }
 }
