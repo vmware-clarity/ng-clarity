@@ -25,14 +25,6 @@
     #{$th},
     #{$td} {
       border-top-style: solid;
-      @include mixins.generate-typography-token(
-        'CAPTION-LG-11',
-        (
-          font-size: table-variables.$clr-table-data-cell-font-size,
-          line-height: table-variables.$clr-table-data-cell-line-height,
-          font-weight: table-variables.$clr-table-data-cell-font-weight,
-        )
-      );
       border-top-width: table-variables.$clr-table-borderwidth;
       border-top-color: table-variables.$clr-tablerow-bordercolor;
       padding: table-variables.$clr-table-cell-padding;
@@ -43,9 +35,7 @@
         text-align: left;
 
         &:first-child {
-          // ATM (after token migration)
-          // this padding left must be deleted
-          padding-left: table-variables.$clr-table-cell-padding-left;
+          padding-left: tokens.$cds-global-space-7;
         }
       }
 
@@ -54,9 +44,20 @@
       }
     }
 
+    #{$td} {
+      @include mixins.generate-typography-token(
+        'SECONDARY-14-RG-CPT',
+        (
+          font-size: table-variables.$clr-table-data-cell-font-size,
+          line-height: table-variables.$clr-table-data-cell-line-height,
+          font-weight: table-variables.$clr-table-data-cell-font-weight,
+        )
+      );
+    }
+
     #{$th} {
       color: table-variables.$clr-thead-color;
-      @include mixins.generate-typography-token('SECONDARY-13-SB-STD');
+      @include mixins.generate-typography-token('CAPTION-LG-11-SB');
       background-color: table-variables.$clr-thead-bgcolor;
       vertical-align: table-variables.$clr-table-vertical-align;
       border-bottom-style: solid;
@@ -189,16 +190,10 @@
     border-radius: 0;
     box-shadow: none;
     background-color: transparent;
-    border-width: table-variables.$clr-table-noborder-borderwidth;
+    border-width: 0;
 
     th {
-      // ATM (after token migration)
-      // this background-color must be deleted
-      background-color: table-variables.$clr-table-noborder-bg-color;
-      // ATM (after token migration)
-      // this border-bottom-color must be transparent. Delete it.
-      border-bottom-color: table-variables.$clr-table-noborder-th-border-color;
-
+      border-bottom-color: transparent;
       border-top: 0 none;
 
       &:first-child {
@@ -209,11 +204,7 @@
 
     td {
       border-top: 0 none;
-
-      // ATM (after token migration)
-      // this padding top must be deleted
-      // there's no border so we have to adjust padding to preserve baseline.
-      padding-top: table-variables.$clr-table-cell-padding-vertical;
+      padding-top: tokens.$cds-global-space-5;
 
       &:first-child {
         border-right: 0 none;
@@ -233,28 +224,7 @@
       border-radius: 0 !important;
 
       &:first-child {
-        // ATM (after token migration)
-        // this padding left must be deleted
-        padding-left: table-variables.$clr-table-noborder-cell-padding-left;
-      }
-    }
-  }
-
-  // ATM
-  // delete all of .table.table-compact padding calculations
-  .table.table-compact {
-    th,
-    td {
-      // nudge down to force row to 24px height with border
-      padding: table-variables.$clr-table-cell-compact-padding-vertical 0
-        table-variables.$clr-table-cell-compact-padding-vertical 0;
-    }
-
-    &.table-noborder {
-      th,
-      td {
-        padding: table-variables.$clr-table-cell-compact-padding-vertical 0
-          table-variables.$clr-table-cell-compact-padding-vertical 0;
+        padding-left: tokens.$cds-global-space-7;
       }
     }
   }

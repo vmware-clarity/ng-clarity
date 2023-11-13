@@ -13,15 +13,9 @@
     --clr-table-borderwidth: #{tokens.$cds-global-space-1};
     --clr-table-border-radius: #{tokens.$cds-alias-object-border-radius-100};
     --clr-table-cornercellradius: #{tokens.$cds-alias-object-border-radius-100};
-    --clr-table-cell-padding-horizontal: #{tokens.$cds-global-space-7};
-    --clr-table-cell-padding-vertical: #{tokens.$cds-global-space-5};
-    --clr-table-cell-padding: var(--clr-table-cell-padding-vertical) var(--clr-table-cell-padding-horizontal);
-    --clr-table-cell-compact-padding-vertical: #{tokens.$cds-global-space-3};
-    --clr-table-cell-compact-padding: var(--clr-table-cell-compact-padding-vertical)
-      var(--clr-table-cell-padding-horizontal);
+    --clr-table-cell-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
+    --clr-table-cell-compact-padding: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-7};
     --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
-    --clr-table-cell-padding-left: #{tokens.$cds-global-space-7}; // ATM delete this property
-    --clr-table-noborder-cell-padding-left: #{tokens.$cds-global-space-7}; // ATM delete this property
     --clr-table-vertical-align: middle;
     --clr-table-data-cell-font-size: #{tokens.$cds-global-typography-font-size-4};
     --clr-table-data-cell-line-height: #{tokens.$cds-global-space-7};
@@ -35,8 +29,6 @@
     // Usage: ./data/datagrid/_datagrid.clarity.scss
     --clr-table-bgcolor: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
     --clr-thead-bgcolor: #{tokens.$cds-alias-object-container-background-tint}; // var(--clr-color-neutral-50);
-    --clr-table-noborder-bg-color: var(--clr-thead-bgcolor);
-    --clr-table-noborder-th-border-color: #{tokens.$cds-alias-object-opacity-0};
 
     // Usage: ./data/datagrid/_datagrid.clarity.scss
     --clr-table-header-border-bottom-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);

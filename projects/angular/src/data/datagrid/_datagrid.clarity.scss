@@ -23,7 +23,6 @@
 }
 
 @mixin clr-datagrid-popover-shadows {
-  $fallbackShadowColor: rgba(140, 140, 140, 0.25);
   box-shadow: datagrid-variables.$clr-datagrid-popovers-box-shadow;
 }
 
@@ -33,10 +32,10 @@
   padding: datagrid-variables.$clr-datagrid-popover-padding;
   margin-left: tokens.$cds-global-space-4;
   border-style: solid;
-  border-width: variables.$clr-global-borderwidth;
+  border-width: tokens.$cds-alias-object-border-width-100;
   border-color: datagrid-variables.$clr-datagrid-popover-border-color;
   @include clr-datagrid-popover-shadows;
-  border-radius: variables.$clr-global-borderradius;
+  border-radius: tokens.$cds-alias-object-border-radius-100;
   font-weight: normal;
   white-space: nowrap;
 
@@ -370,7 +369,7 @@
 
       border-top: none;
       border-bottom-style: solid;
-      border-bottom-width: variables.$clr-global-borderwidth;
+      border-bottom-width: tokens.$cds-alias-object-border-width-100;
       border-bottom-color: tables-variables.$clr-table-border-color;
 
       .datagrid-row-sticky {
@@ -525,7 +524,7 @@
         display: flex;
         align-items: center;
         flex: 0 0 auto;
-        width: variables.$clr-global-borderwidth;
+        width: tokens.$cds-alias-object-border-width-100;
         order: 100;
         margin-left: auto;
         height: 100%;
@@ -546,7 +545,7 @@
           right: calc(-1 * tokens.$cds-global-space-4);
           top: calc(-1 * tokens.$cds-global-space-4);
           cursor: col-resize;
-          height: calc(100% + #{tokens.$cds-global-space-6} - #{variables.$clr-global-borderwidth});
+          height: calc(100% + #{tokens.$cds-global-space-6} - #{tokens.$cds-alias-object-border-width-100});
           z-index: map.get(variables.$clr-layers, datagrid-header);
         }
 
@@ -558,7 +557,7 @@
           height: 0;
           border-right-style: dotted;
           border-right-color: variables.$clr-color-action-300;
-          border-right-width: variables.$clr-global-borderwidth;
+          border-right-width: tokens.$cds-alias-object-border-width-100;
           transform: translateX(0px);
           cursor: col-resize;
 
@@ -569,7 +568,7 @@
 
         .exceeded-max {
           // TODO: CSS property here?
-          border-right: variables.$clr-global-borderwidth dotted rgba(219, 33, 0, 0.3);
+          border-right: tokens.$cds-alias-object-border-width-100 dotted rgba(219, 33, 0, 0.3);
         }
       }
 
@@ -657,7 +656,7 @@
       justify-content: center;
       border-top-style: solid;
       border-top-color: tables-variables.$clr-table-border-color;
-      border-top-width: variables.$clr-global-borderwidth;
+      border-top-width: tokens.$cds-alias-object-border-width-100;
     }
 
     .datagrid-placeholder {
@@ -727,7 +726,7 @@
       }
 
       &.datagrid-container {
-        border-top: variables.$clr-global-borderwidth solid tables-variables.$clr-table-border-color;
+        border-top: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
 
         .datagrid-cell {
           border-top: none;
@@ -748,11 +747,11 @@
     background-color: tables-variables.$clr-thead-bgcolor;
     border-style: solid;
     border-color: tables-variables.$clr-table-footer-border-top-color;
-    border-width: variables.$clr-global-borderwidth;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-top: none;
     border-radius: 0;
-    border-bottom-right-radius: variables.$clr-global-borderradius;
-    border-bottom-left-radius: variables.$clr-global-borderradius;
+    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
+    border-bottom-left-radius: tokens.$cds-alias-object-border-radius-100;
 
     .pagination {
       display: flex;
@@ -982,9 +981,9 @@
       background: none;
       background-color: forms-variables.$clr-forms-textarea-background-color;
       border-color: datagrid-variables.$clr-datagrid-pagination-input-border-color;
-      border-width: variables.$clr-global-borderwidth;
+      border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
-      border-radius: variables.$clr-global-borderradius;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
       min-width: datagrid-variables.$clr-datagrid-pagination-input-size;
       text-align: center;
       transition: none !important;
@@ -992,15 +991,10 @@
       &:focus,
       &.clr-focus {
         background: none;
-        border: variables.$clr-global-borderwidth solid;
+        border: tokens.$cds-alias-object-border-width-100 solid;
         border-color: datagrid-variables.$clr-datagrid-pagination-input-border-focus-color;
-        box-shadow: 0 0 variables.$clr-global-borderwidth
+        box-shadow: 0 0 tokens.$cds-alias-object-border-width-100
           datagrid-variables.$clr-datagrid-pagination-input-border-focus-color;
-        box-shadow: 0 0 var(--clr-global-borderwidth, variables.$clr-global-borderwidth)
-          var(
-            --clr-datagrid-pagination-input-border-focus-color,
-            datagrid-variables.$clr-datagrid-pagination-input-border-focus-color
-          );
       }
     }
 
@@ -1172,12 +1166,12 @@
 
   .datagrid-detail-pane {
     margin-top: tokens.$cds-global-space-6;
-    border-width: variables.$clr-global-borderwidth;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
     border-left: none;
-    border-top-right-radius: variables.$clr-global-borderradius;
-    border-bottom-right-radius: variables.$clr-global-borderradius;
+    border-top-right-radius: tokens.$cds-alias-object-border-radius-100;
+    border-bottom-right-radius: tokens.$cds-alias-object-border-radius-100;
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
     overflow: hidden;
     display: block;
@@ -1250,7 +1244,7 @@
 
       &.is-open {
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
-        border-radius: variables.$clr-global-borderradius;
+        border-radius: tokens.$cds-alias-object-border-radius-100;
 
         .datagrid-detail-caret-icon {
           color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
@@ -1303,10 +1297,10 @@
    * Smart popover contents
    */
   .column-switch {
-    border-radius: variables.$clr-global-borderradius;
+    border-radius: tokens.$cds-alias-object-border-radius-100;
     padding: tokens.$cds-global-space-8;
     background-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-    border-width: variables.$clr-global-borderwidth;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
     @include clr-datagrid-popover-shadows();
@@ -1354,7 +1348,7 @@
     .switch-content {
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: tokens.$cds-global-space-9 + variables.$clr-global-borderwidth; // prevents scrollbars in IE.
+      min-height: tokens.$cds-global-space-9 + tokens.$cds-alias-object-border-width-100; // prevents scrollbars in IE.
 
       li {
         line-height: tokens.$cds-global-space-9;
@@ -1378,12 +1372,12 @@
   .datagrid-filter {
     margin-top: tokens.$cds-global-space-3;
     background: datagrid-variables.$clr-datagrid-popover-bg-color;
-    border-width: variables.$clr-global-borderwidth;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-popover-border-color;
     padding: tokens.$cds-global-space-8;
     @include clr-datagrid-popover-shadows;
-    border-radius: variables.$clr-global-borderradius;
+    border-radius: tokens.$cds-alias-object-border-radius-100;
     font-weight: normal;
 
     .datagrid-filter-close-wrapper {
