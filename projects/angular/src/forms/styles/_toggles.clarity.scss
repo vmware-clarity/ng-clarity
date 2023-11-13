@@ -133,7 +133,7 @@
         // toggle handle color for disabled/off and inner part of handle disabled/on
         background-color: toggle-variables.$clr-toggle-disabled-off-bg-color;
         border-color: toggle-variables.$clr-toggle-disabled-off-handle-border-color;
-        @include mixins.equilateral(toggle-variables.$clr-toggle-switch-base-height);
+        @include mixins.equilateral(toggle-variables.$clr-toggle-dot-diameter);
         top: tokens.$cds-global-space-3;
       }
     }
