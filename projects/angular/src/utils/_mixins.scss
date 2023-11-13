@@ -266,6 +266,14 @@ $typography-tokens: (
     line-height: #{tokens.$cds-alias-typography-section-line-height},
     letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing},
   ),
+  'SECTION-12-SB-CPT': (
+    font-size: #{tokens.$cds-alias-typography-font-size-2},
+    font-weight: #{tokens.$cds-global-typography-font-weight-semibold},
+    line-height: 1.333333em,
+    // #{tokens.$cds-global-space-7} // 16px
+    letter-spacing: -0.00833333em,
+    //#{baselinePx(-0.1)} // -0.1px
+  ),
   'SUBSECTION-16-EXP': (
     // H5, Stack View Heading
     font-size: #{tokens.$cds-alias-typography-subsection-font-size},
