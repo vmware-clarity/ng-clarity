@@ -39,7 +39,7 @@
     width: 0;
     transition: width 0.2s ease;
     position: absolute;
-    bottom: -(tokens.$cds-global-space-1);
+    bottom: calc(-1 * #{tokens.$cds-global-space-1});
     left: 0;
     border-bottom-left-radius: combobox-variables.$clr-combobox-border-radius;
     border-bottom-right-radius: combobox-variables.$clr-combobox-border-radius;
