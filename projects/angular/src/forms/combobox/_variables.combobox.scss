@@ -5,21 +5,34 @@
  */
 @use '../../utils/variables/variables';
 
-$clr-combobox-min-height: variables.$clr_baselineRem_1 !default;
-$clr-combobox-min-width: variables.$clr_baselineRem_7 !default;
-$clr-ng-multiselect-min-width: variables.$clr_baselineRem_15 !default;
-
-$clr-combobox-trigger-dimensions: variables.$clr_baselineRem_1 !default;
-$clr-combobox-trigger-left-padding: variables.$clr_baselineRem_0_25 !default;
-$clr-combobox-trigger-right-padding: variables.$clr_baselineRem_1 !default;
-
-$clr-combobox-font-size: variables.$clr-p2-font-size !default;
-$clr-combobox-border-color: variables.$clr-color-neutral-200 !default;
-$clr-combobox-border-radius: variables.$clr_baselineRem_3px !default;
-
-$clr-combobox-input-background-color: variables.$clr-color-neutral-100 !default;
-$clr-combobox-pill-background-color: variables.$clr-color-neutral-0 !default;
-$clr-combobox-pill-border-color: variables.$clr-color-neutral-700 !default;
-$clr-combobox-pill-border-radius: variables.$clr_baselineRem_3px !default;
-$clr-combobox-pill-font-color: variables.$clr-color-neutral-800 !default;
-$clr-combobox-filter-highlight: variables.$clr-color-neutral-800 !default;
+$clr-combobox-border-color: var(--clr-combobox-border-color);
+$clr-combobox-trigger-color: var(--clr-combobox-trigger-color);
+$clr-combobox-input-background-color: var(--clr-combobox-input-background-color);
+$clr-combobox-pill-background-color: var(--clr-combobox-pill-background-color);
+$clr-combobox-pill-border-color: var(--clr-combobox-pill-border-color);
+$clr-combobox-pill-font-color: var(--clr-combobox-pill-font-color);
+$clr-combobox-filter-highlight: var(--clr-combobox-filter-highlight);
+$clr-combobox-min-width: var(--clr-combobox-min-width);
+$clr-combobox-multi-min-width: var(--clr-combobox-multi-min-width);
+$clr-combobox-min-height: var(--clr-combobox-min-height);
+$clr-combobox-font-size: var(--clr-combobox-font-size);
+$clr-combobox-font-weight: var(--clr-combobox-font-weight);
+$clr-combobox-text-color: var(--clr-combobox-text-color);
+$clr-combobox-border-radius: var(--clr-combobox-border-radius);
+$clr-combobox-padding-left: var(--clr-combobox-padding-left);
+$clr-combobox-trigger-padding-left: var(--clr-combobox-trigger-padding-left);
+$clr-combobox-trigger-padding-right: var(--clr-combobox-trigger-padding-right);
+$clr-combobox-trigger-gap: var(--clr-combobox-trigger-gap);
+$clr-combobox-trigger-font-color: var(--clr-combobox-trigger-font-color);
+$clr-combobox-hover-background-color: var(--clr-combobox-hover-background-color);
+$clr-combobox-active-background-color: var(--clr-combobox-active-background-color);
+$clr-combobox-pill-padding: var(--clr-combobox-pill-padding);
+$clr-combobox-pill-margin: var(--clr-combobox-pill-margin);
+$clr-combobox-pill-height: var(--clr-combobox-pill-height);
+$clr-combobox-pill-remove-icon-color: var(--clr-combobox-pill-remove-icon-color);
+$clr-combobox-pill-font-weight: var(--clr-combobox-pill-font-weight);
+$clr-combobox-pill-font-size: var(--clr-combobox-pill-font-size);
+$clr-combobox-pill-line-height: var(--clr-combobox-pill-line-height);
+$clr-combobox-pill-letter-spacing: var(--clr-combobox-pill-letter-spacing);
+$clr-combobox-caret-icon-size: var(--clr-combobox-caret-icon-size);
+$clr-combobox-pill-border-radius: var(--clr-combobox-pill-border-radius);

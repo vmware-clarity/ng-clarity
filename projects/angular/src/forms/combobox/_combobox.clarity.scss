@@ -6,36 +6,20 @@
 
 @use 'sass:meta';
 @use '../../popover/dropdown/menu-mixins.clarity';
-@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use '../../utils/mixins';
-@use '../../utils/variables/variables';
 @use '../styles/mixins.forms' as styles-mixins;
 @use '../styles/variables.forms' as forms-variables;
 @use 'variables.combobox' as combobox-variables;
+@use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.combobox');
 
 @function caret-gap() {
-  // ATM (after token migration)
-  // Remove after the shim is gone.
-  // css-var mixin won't work here for the padding-right, as it's a composition of several different tokens and static sizes
-  // reworking the structure to join these items can only be done after the shim is gone.
-  // NOTE: --clr-combobox-trigger-gap and --clr-combobox-trigger-padding-right should NOT be declared in the _properties file
-  // for this to work!
-  $clr-caret-icon-size: variables.$clr_baselineRem_12px;
-  $clr-input-field-padding: variables.$clr_baselineRem_0_25;
-  @if variables.$clr-use-custom-properties == true AND var(--clr-combobox-trigger-gap) {
-    // This assignment compensates the static icon size value so it can be included in the right padding as part of the
-    // trigger-gap token.
-    // Additional compensation is needed for the removed input field padding
-    @return calc(
-      var(
-          --clr-combobox-trigger-gap,
-          calc(combobox-variables.$clr-combobox-trigger-right-padding - $clr-caret-icon-size)
-        ) + $clr-caret-icon-size + var(--clr-combobox-trigger-padding-right, $clr-input-field-padding)
-    );
-  } @else {
-    @return calc(combobox-variables.$clr-combobox-trigger-right-padding + $clr-input-field-padding);
-  }
+  // ATM Rework the DOM to remove absolute positioning from the icon.
+  // May also remove function then.
+  $clr-caret-icon-size: tokens.$cds-global-space-6;
+  @return calc(
+    #{combobox-variables.$clr-combobox-trigger-gap} + #{$clr-caret-icon-size} + #{combobox-variables.$clr-combobox-trigger-padding-right}
+  );
 }
 
 @include mixins.exports('combobox.clarity') {
@@ -50,132 +34,59 @@
 
   // Focus indicator, this is a custom implementation compared with other controls due to DOM structure and potential growth of height
   .clr-focus-indicator {
-    @include mixins.css-var(
-      background-color,
-      clr-forms-focused-color,
-      forms-variables.$clr-forms-focused-color,
-      variables.$clr-use-custom-properties
-    );
-    height: variables.$clr_baselineRem_2px;
+    background-color: forms-variables.$clr-forms-focused-color;
+    height: tokens.$cds-global-space-2;
     width: 0;
     transition: width 0.2s ease;
     position: absolute;
-    bottom: -(variables.$clr_baselineRem_1px);
+    bottom: -(tokens.$cds-global-space-1);
     left: 0;
-    @include mixins.css-var(
-      border-bottom-left-radius,
-      clr-combobox-border-radius,
-      combobox-variables.$clr-combobox-border-radius,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-bottom-right-radius,
-      clr-combobox-border-radius,
-      combobox-variables.$clr-combobox-border-radius,
-      variables.$clr-use-custom-properties
-    );
+    border-bottom-left-radius: combobox-variables.$clr-combobox-border-radius;
+    border-bottom-right-radius: combobox-variables.$clr-combobox-border-radius;
   }
   .clr-focus {
     width: 100%;
   }
   .clr-error .clr-focus-indicator {
-    @include mixins.css-var(
-      background-color,
-      clr-forms-invalid-color,
-      forms-variables.$clr-forms-invalid-color,
-      variables.$clr-use-custom-properties
-    );
+    background-color: forms-variables.$clr-forms-invalid-color;
   }
 
   .clr-combobox-wrapper {
     position: relative;
 
     //Dimensions
-    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
-    @include mixins.css-var(
-      padding-left,
-      clr-combobox-padding-left,
-      combobox-variables.$clr-combobox-trigger-left-padding,
-      variables.$clr-use-custom-properties
-    );
+    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-left: combobox-variables.$clr-combobox-padding-left;
 
-    @include mixins.css-var(
-      min-height,
-      clr-combobox-min-height,
-      combobox-variables.$clr-combobox-min-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      min-width,
-      clr-combobox-min-width,
-      combobox-variables.$clr-combobox-min-width,
-      variables.$clr-use-custom-properties
-    );
+    min-height: combobox-variables.$clr-combobox-min-height;
+    min-width: combobox-variables.$clr-combobox-min-width;
     .clr-input {
-      padding-right: 0;
-      @include mixins.css-var(
-        padding-left,
-        clr-combobox-input-left,
-        variables.$clr_baselineRem_0_25,
-        variables.$clr-use-custom-properties
-      );
-      // ATM remove
-      @include mixins.css-var(
-        max-height,
-        clr-combobox-input-height,
-        variables.$clr_baselineRem_1_25,
-        variables.$clr-use-custom-properties
-      );
+      padding: 0;
+      max-height: tokens.$cds-global-space-7;
+
       &:not(:disabled) {
-        @include mixins.css-var(color, clr-combobox-text-color, inherit, variables.$clr-use-custom-properties);
+        color: combobox-variables.$clr-combobox-text-color;
       }
     }
-    @include mixins.css-var(
-      font-size,
-      clr-combobox-font-size,
-      combobox-variables.$clr-combobox-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(font-weight, clr-combobox-font-weight, inherit, variables.$clr-use-custom-properties);
+    font-size: combobox-variables.$clr-combobox-font-size;
+    font-weight: combobox-variables.$clr-combobox-font-weight;
 
     &.multi {
-      min-width: calc(min(combobox-variables.$clr-ng-multiselect-min-width, 100%));
-      padding-bottom: variables.$clr_baselineRem_0_125;
+      min-width: calc(min(combobox-variables.$clr-combobox-multi-min-width, 100%));
+      padding-bottom: mixins.baselinePx(3);
     }
 
     //Mixins
     @include styles-mixins.form-fields-appearance();
 
     // override the above mixin for combobox-specific styles
-    @include mixins.css-var(
-      background-color,
-      clr-combobox-input-background-color,
-      combobox-variables.$clr-combobox-input-background-color,
-      variables.$clr-use-custom-properties
-    );
+    background-color: combobox-variables.$clr-combobox-input-background-color;
 
-    border-width: variables.$clr-global-borderwidth;
+    border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
-    @include mixins.css-var(
-      border-color,
-      clr-combobox-border-color,
-      combobox-variables.$clr-combobox-border-color,
-      variables.$clr-use-custom-properties
-    );
+    border-color: combobox-variables.$clr-combobox-border-color;
 
-    @include mixins.css-var(
-      border-bottom-color,
-      clr-combobox-border-bottom-color,
-      forms-variables.$clr-forms-border-color,
-      variables.$clr-use-custom-properties
-    );
-
-    @include mixins.css-var(
-      border-radius,
-      clr-combobox-border-radius,
-      combobox-variables.$clr-combobox-border-radius,
-      variables.$clr-use-custom-properties
-    );
+    border-radius: combobox-variables.$clr-combobox-border-radius;
 
     // the border color is on the component; we don't want it on the input itself
     .clr-input.clr-combobox-input:focus {
@@ -190,129 +101,55 @@
     .clr-combobox-input {
       background: none;
       border-bottom: none;
-      @include mixins.css-var(vertical-align, clr-combobox-input-align, baseline, variables.$clr-use-custom-properties);
+      vertical-align: middle;
     }
 
     .clr-combobox-remove-btn {
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: variables.$clr_baselineRem_3px variables.$clr_baselineRem_3px;
+      display: flex;
+      padding: 0;
       color: combobox-variables.$clr-combobox-pill-font-color;
-      @include mixins.css-var(
-        color,
-        clr-combobox-pill-remove-icon-color,
-        combobox-variables.$clr-combobox-pill-font-color,
-        variables.$clr-use-custom-properties
-      );
+
+      color: combobox-variables.$clr-combobox-pill-remove-icon-color;
     }
 
     .label-combobox-pill {
-      // Utility/CAPTION-LG-11 implemented as P6 in Design Tokens
-      // but original NG theme implemented as P7
-      @include mixins.css-var(
-        font-weight,
-        clr-combobox-pill-font-weight,
-        variables.$clr-p7-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-combobox-pill-font-size,
-        variables.$clr-p7-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-combobox-pill-line-height,
-        variables.$clr-p7-font-size + variables.$clr_baselineRem_1px,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-combobox-pill-letter-spacing,
-        variables.$clr-p7-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-
-      @include mixins.css-var(
-        height,
-        clr-combobox-pill-height,
-        variables.$clr_baselineRem_0_875,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin,
-        clr-combobox-pill-margin,
-        variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_0_25 0 0,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        background-color,
-        clr-combobox-pill-background-color,
-        combobox-variables.$clr-combobox-pill-background-color,
-        variables.$clr-use-custom-properties
-      );
-      border-width: variables.$clr_baselineRem_1px;
+      height: combobox-variables.$clr-combobox-pill-height;
+      margin: combobox-variables.$clr-combobox-pill-margin;
+      background-color: combobox-variables.$clr-combobox-pill-background-color;
+      border-width: tokens.$cds-global-space-1;
       border-style: solid;
+      align-items: center;
 
-      // ATM Remove fallback and property
-      @include mixins.css-var(
-        align-items,
-        clr-combobox-pill-align-items,
-        baseline,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-radius,
-        clr-combobox-pill-border-radius,
-        combobox-variables.$clr-combobox-pill-border-radius,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-color,
-        clr-combobox-pill-border-color,
-        combobox-variables.$clr-combobox-pill-border-color,
-        variables.$clr-use-custom-properties
-      );
+      border-radius: combobox-variables.$clr-combobox-pill-border-radius;
+      border-color: combobox-variables.$clr-combobox-pill-border-color;
 
-      @include mixins.css-var(
-        padding,
-        clr-combobox-pill-padding,
-        0 variables.$clr_baselineRem_2px 0 variables.$clr_baselineRem_4px,
-        variables.$clr-use-custom-properties
-      );
+      padding: combobox-variables.$clr-combobox-pill-padding;
 
       .clr-combobox-pill-content {
-        @include mixins.css-var(
-          color,
-          clr-combobox-pill-font-color,
-          combobox-variables.$clr-combobox-pill-font-color,
-          variables.$clr-use-custom-properties
+        @include mixins.generate-typography-token(
+          'CAPTION-LG-11',
+          (
+            font-weight: combobox-variables.$clr-combobox-pill-font-weight,
+            font-size: combobox-variables.$clr-combobox-pill-font-size,
+            line-height: combobox-variables.$clr-combobox-pill-line-height,
+            letter-spacing: combobox-variables.$clr-combobox-pill-letter-spacing,
+          )
         );
-        font-size: variables.$clr-typography-xxsmalltext;
-        font-weight: variables.$clr-font-weight-regular;
-        @include mixins.css-var(
-          padding,
-          clr-combobox-pill-content-padding,
-          0 variables.$clr_baselineRem_8px 0 variables.$clr_baselineRem_4px,
-          variables.$clr-use-custom-properties
-        );
+        color: combobox-variables.$clr-combobox-pill-font-color;
+        padding: 0;
       }
 
       cds-icon,
       clr-icon {
-        @include mixins.css-var(margin-top, clr-combobox-item-icon-override, 0, variables.$clr-use-custom-properties);
+        margin-top: calc(-1 * #{tokens.$cds-global-space-1});
       }
 
       cds-icon[shape='window-close'],
       clr-icon[shape='window-close'] {
-        @include mixins.css-var(
-          color,
-          clr-combobox-pill-font-color,
-          combobox-variables.$clr-combobox-pill-font-color,
-          variables.$clr-use-custom-properties
-        );
+        color: combobox-variables.$clr-combobox-pill-font-color;
       }
     }
 
@@ -323,36 +160,20 @@
 
     &:not(.disabled):hover,
     &:focus-within {
-      @include mixins.css-var(
-        background-color,
-        clr-combobox-hover-background-color,
-        combobox-variables.$clr-combobox-input-background-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: combobox-variables.$clr-combobox-hover-background-color;
     }
   }
 
   .clr-combobox-trigger {
     &:disabled {
+      // ATM remove opacity - change to fixed color
       color: var(--clr-btn-link-disabled-color, #666);
       opacity: 0.4;
     }
 
     //Dimensions
-    @include mixins.css-var(
-      padding-left,
-      clr-combobox-trigger-padding-left,
-      combobox-variables.$clr-combobox-trigger-left-padding,
-      variables.$clr-use-custom-properties
-    );
-
-    @include mixins.css-var(
-      padding-right,
-      clr-combobox-trigger-padding-right,
-      // not an error; we're reusing "left" variable for the "right" fallback
-      combobox-variables.$clr-combobox-trigger-left-padding,
-      variables.$clr-use-custom-properties
-    );
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
 
     margin: auto;
     position: absolute;
@@ -369,18 +190,9 @@
 
     cds-icon[shape='angle'],
     clr-icon[shape='angle'] {
-      @include mixins.css-var(
-        color,
-        clr-combobox-trigger-font-color,
-        combobox-variables.$clr-combobox-pill-font-color,
-        variables.$clr-use-custom-properties
-      );
+      color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral-var(
-        clr-combobox-caret-icon-size,
-        variables.$clr_baselineRem_12px,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.min-equilateral(clr-combobox-caret-icon-size);
     }
   }
 
@@ -388,21 +200,21 @@
     @include menu-mixins.generate-dropdown-menu();
     position: static;
 
-    max-height: variables.$clr_baselineRem_10;
+    max-height: mixins.baselinePx(240);
     overflow-y: scroll;
 
     visibility: visible;
 
     .clr-combobox-options-loading {
-      padding: variables.$clr_baselineRem_0_125 variables.$clr_baselineRem_1;
+      padding: mixins.baselinePx(3) tokens.$cds-global-space-1;
 
       .clr-combobox-options-loading-text {
-        padding-left: variables.$clr_baselineRem_0_25;
+        padding-left: tokens.$cds-global-space-4;
       }
     }
 
     .clr-combobox-options-empty-text {
-      padding-left: variables.$clr_baselineRem_0_5;
+      padding-left: tokens.$cds-global-space-6;
     }
   }
 
@@ -410,30 +222,13 @@
     @include menu-mixins.generate-dropdown-item();
     // Manual pseudo focus handling
     &.clr-focus {
-      @include mixins.css-var(
-        background-color,
-        clr-combobox-active-background-color,
-        dropdown-variables.$clr-dropdown-bg-hover-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: combobox-variables.$clr-combobox-active-background-color;
     }
   }
 
   //NOTE: Adjust the height of the option only when it's in the options menu
   .clr-combobox-options .clr-combobox-option {
     @include menu-mixins.generate-dropdown-item-height();
-  }
-
-  .clr-combobox-options .clr-combobox-option {
-    &:hover,
-    &.active {
-      @include mixins.css-var(
-        color,
-        clr-dropdown-item-color,
-        dropdown-variables.$clr-dropdown-item-color,
-        variables.$clr-use-custom-properties
-      );
-    }
   }
 
   .clr-combobox-disabled {
@@ -447,12 +242,7 @@
   }
 
   .clr-filter-highlight b {
-    font-weight: variables.$clr-font-weight-semibold;
-    @include mixins.css-var(
-      color,
-      clr-combobox-filter-highlight,
-      combobox-variables.$clr-combobox-filter-highlight,
-      variables.$clr-use-custom-properties
-    );
+    font-weight: tokens.$cds-global-typography-font-weight-semibold;
+    color: combobox-variables.$clr-combobox-filter-highlight;
   }
 }
