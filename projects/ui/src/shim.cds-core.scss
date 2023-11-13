@@ -1793,7 +1793,7 @@
   // Vertical Nav - Header
   --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
   --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
-  --clr-vertical-nav-header-font-size: var(--clr-p4-font-size);
+  --clr-vertical-nav-header-font-size: #{tokens.$cds-global-typography-font-size-2};
   --clr-vertical-nav-header-line-height: #{tokens.$cds-global-space-7};
 
   // ATM - remove
