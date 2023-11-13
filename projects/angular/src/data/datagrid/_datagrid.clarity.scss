@@ -541,7 +541,7 @@
         .datagrid-column-handle {
           @include mixins.clr-no-styles-button();
           position: absolute;
-          width: tokens.$cds-global-space-6 + tokens.$cds-global-space-1;
+          width: calc(tokens.$cds-global-space-6 + tokens.$cds-global-space-1);
           right: calc(-1 * tokens.$cds-global-space-4);
           top: calc(-1 * tokens.$cds-global-space-4);
           cursor: col-resize;
@@ -928,7 +928,7 @@
       }
 
       &.datagrid-column {
-        padding-top: tables-variables.$clr-table-compact-vertical-padding + tokens.$cds-global-space-1;
+        padding-top: calc(tables-variables.$clr-table-compact-vertical-padding + tokens.$cds-global-space-1);
         padding-bottom: tables-variables.$clr-table-compact-vertical-padding;
       }
     }
@@ -1348,7 +1348,9 @@
     .switch-content {
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: tokens.$cds-global-space-9 + tokens.$cds-alias-object-border-width-100; // prevents scrollbars in IE.
+      min-height: calc(
+        tokens.$cds-global-space-9 + tokens.$cds-alias-object-border-width-100
+      ); // prevents scrollbars in IE.
 
       li {
         line-height: tokens.$cds-global-space-9;
