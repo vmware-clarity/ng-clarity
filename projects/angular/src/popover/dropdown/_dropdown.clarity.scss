@@ -9,8 +9,9 @@
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use 'variables.dropdown' as dropdown-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.dropdown');
 
 %dropdown-content {
@@ -54,9 +55,10 @@
         --cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
       }
 
+      $clr-dropdown-caret-left-margin: tokens.$cds-global-space-2;
       &.btn {
         padding-right: calc(
-          #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{dropdown-variables.$clr-dropdown-caret-left-margin}
+          #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}
         );
         text-overflow: unset;
 
@@ -76,14 +78,10 @@
       }
 
       &:not(.btn) {
-        padding: 0 dropdown-variables.$clr-dropdown-caret-icon-dimension +
-          dropdown-variables.$clr-dropdown-caret-left-margin 0 0;
-        @include mixins.css-var(
-          color,
-          clr-dropdown-active-text-color,
-          dropdown-variables.$clr-dropdown-active-text-color,
-          variables.$clr-use-custom-properties
-        );
+        padding: 0 calc(#{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}) 0
+          0;
+        color: dropdown-variables.$clr-dropdown-active-text-color;
+
         cds-icon[shape^='caret'],
         clr-icon[shape^='caret'],
         cds-icon[shape^='angle'],
@@ -97,12 +95,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      @include mixins.css-var(
-        color,
-        clr-dropdown-active-text-color,
-        dropdown-variables.$clr-dropdown-active-text-color,
-        variables.$clr-use-custom-properties
-      );
+      color: dropdown-variables.$clr-dropdown-active-text-color;
     }
   }
 
@@ -116,56 +109,25 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      @include mixins.css-var(
-        color,
-        clr-dropdown-header-color,
-        dropdown-variables.$clr-dropdown-header-color,
-        variables.$clr-use-custom-properties
-      );
+      color: dropdown-variables.$clr-dropdown-header-color;
 
       // Typography
-      // Paragraph/SECONDARY-13-MD-exp
-      @include mixins.css-var(
-        font-weight,
-        clr-dropdown-header-font-weight,
-        dropdown-variables.$clr-dropdown-header-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-dropdown-header-font-size,
-        dropdown-variables.$clr-dropdown-header-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-dropdown-header-line-height,
-        variables.$clr_baselineRem_0_75,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-dropdown-header-letter-spacing,
-        dropdown-variables.$clr-dropdown-header-letter-spacing,
-        variables.$clr-use-custom-properties
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-MD-EXP',
+        (
+          font-weight: dropdown-variables.$clr-dropdown-header-font-weight,
+          font-size: dropdown-variables.$clr-dropdown-header-font-size,
+          line-height: dropdown-variables.$clr-dropdown-header-line-height,
+          letter-spacing: dropdown-variables.$clr-dropdown-header-letter-spacing,
+        )
       );
 
-      @include mixins.css-var(
-        padding,
-        clr-dropdown-header-padding,
-        0 variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding: dropdown-variables.$clr-dropdown-header-padding;
       margin: 0;
 
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
-        @include mixins.css-var(
-          padding-left,
-          clr-dropdown-subsection-offset,
-          variables.$clr_baselineRem_1,
-          variables.$clr-use-custom-properties
-        );
+        padding-left: dropdown-variables.$clr-dropdown-subsection-offset;
       }
 
       @extend %dropdown-content;
@@ -191,44 +153,28 @@
       @extend %dropdown-content;
 
       &.expandable {
-        $clr-dropdown-caret-margin-top: variables.$clr_baselineRem_0_25;
+        $clr-dropdown-caret-margin-top: tokens.$cds-global-space-4;
 
-        margin-right: variables.$clr_baselineRem_1;
-        padding-right: variables.$clr_baselineRem_0_5;
+        margin-right: tokens.$cds-global-space-9;
+        padding-right: tokens.$cds-global-space-6;
 
         &:before {
           content: '';
           float: right;
-          @include mixins.equilateral-var(
-            clr-dropdown-caret-icon-size,
-            variables.$clr_baselineRem_0_5,
-            variables.$clr-use-custom-properties
-          );
+          @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-size);
           transform: rotate(-90deg);
+          // ATM remove - don't use CSS generated icon
           background-image: icons.generateCaretIcon();
           @include images.icon-background-styles();
-          @include mixins.css-var(
-            margin-top,
-            clr-dropdown-caret-icon-margin-top,
-            $clr-dropdown-caret-margin-top,
-            variables.$clr-use-custom-properties
-          );
+          // ATM remove - internal only, while we need a fallback
+          // we should rework it to be centered without dependency on a top margin
+          margin-top: tokens.$cds-global-space-4;
         }
       }
 
       &:active {
-        @include mixins.css-var(
-          color,
-          clr-dropdown-active-text-color,
-          var(--clr-color-neutral-1000),
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          background-color,
-          clr-dropdown-active-background-color,
-          var(--clr-global-selection-color),
-          variables.$clr-use-custom-properties
-        );
+        color: dropdown-variables.$clr-dropdown-active-text-color;
+        background-color: dropdown-variables.$clr-dropdown-active-background-color;
       }
     }
 
@@ -242,26 +188,10 @@
     }
 
     .dropdown-divider {
-      font-size: dropdown-variables.$clr-dropdown-header-font-size;
-      @include mixins.css-var(
-        border-bottom-width,
-        clr-dropdown-divider-border-width,
-        variables.$clr-global-borderwidth,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-width: dropdown-variables.$clr-dropdown-divider-border-width;
       border-bottom-style: solid;
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-dropdown-divider-color,
-        dropdown-variables.$clr-dropdown-divider-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin,
-        clr-dropdown-divider-margin,
-        variables.$clr_baselineRem_0_25 0,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-color: dropdown-variables.$clr-dropdown-divider-color;
+      margin: dropdown-variables.$clr-dropdown-divider-margin;
     }
   }
 
@@ -269,7 +199,7 @@
   .btn-group-overflow,
   .tabs-overflow,
   .dropdown {
-    $dropdown-menu-positional-nudge: variables.$clr_baselineRem_2px;
+    $dropdown-menu-positional-nudge: tokens.$cds-global-space-2;
 
     &.open > .dropdown-menu,
     &.open > .dropdown-menu-wrapper > .dropdown-menu {
@@ -346,17 +276,12 @@
 
     // nested dropdown (submenu)
     .dropdown {
-      $clr-dropdown-submenu-overlap-margin: -1 * variables.$clr_baselineRem_4px;
-      $clr-dropdown-submenu-vertical-margin: (-1 * variables.$clr_baselineRem_0_75) - variables.$clr_baselineRem_1px;
+      $clr-dropdown-submenu-overlap-margin: calc(-1 * #{tokens.$cds-global-space-3});
+      $clr-dropdown-submenu-vertical-margin: calc((-1 * #{tokens.$cds-global-space-8}) - #{tokens.$cds-global-space-1});
       // -1 is to account for the border that shifts the menu down by 1 pixel
 
       .dropdown-menu {
-        @include mixins.css-var(
-          border-color,
-          clr-dropdown-child-border-color,
-          dropdown-variables.$clr-dropdown-child-border-color,
-          variables.$clr-use-custom-properties
-        );
+        border-color: dropdown-variables.$clr-dropdown-child-border-color;
         position: absolute;
       }
 
