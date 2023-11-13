@@ -7,8 +7,6 @@
 
 // Usage: ../button/_toggles.clarity.scss
 // Toggle
-//$clr-toggle-switch-left-spacing: $clr-toggle-switch-base-width - $clr-toggle-switch-base-left-spacing +
-//  variables.$clr_baselineRem_1px !default;
 $clr-toggle-height: #{tokens.$cds-global-space-9} !default;
 $clr-toggle-switch-base-height: #{tokens.$cds-global-space-7} !default;
 $clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;

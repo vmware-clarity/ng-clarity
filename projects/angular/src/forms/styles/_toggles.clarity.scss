@@ -20,8 +20,8 @@
   $clr-toggle-icon-margin: calc(
     #{toggle-variables.$clr-toggle-switch-base-width} + #{toggle-variables.$clr-toggle-switch-base-spacing}
   );
-  $clr-toggle-icon-margin-negative: calc(-1 * $clr-toggle-icon-margin);
-  $clr-toggle-icon-dot-place: calc(-1 * $clr-toggle-icon-margin);
+  $clr-toggle-icon-margin-negative: calc(-1 * #{$clr-toggle-icon-margin});
+  $clr-toggle-icon-dot-place: calc(-1 * #{$clr-toggle-icon-margin});
 
   //Remove the default checkbox appearance
   %custom-checkbox {
