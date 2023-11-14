@@ -47,7 +47,7 @@ $clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
 $clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 
 // Textarea
-$clr-forms-textarea-background-color: variables.$clr-color-neutral-0 !default;
+$clr-forms-textarea-background-color: var(--clr-forms-textarea-background-color) !default;
 
 // Select
 $clr-forms-select-hover-border-color: var(--clr-forms-select-hover-border-color) !default;
