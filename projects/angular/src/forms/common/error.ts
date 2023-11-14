@@ -15,6 +15,7 @@ import { ControlIdService } from './providers/control-id.service';
   template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-subtext]': 'true',
+    '[class.error]': 'true',
     '[attr.id]': 'id',
   },
 })

@@ -89,6 +89,14 @@
     @include mixins.generate-typography-token('CAPTION-LG-11');
     color: forms-variables.$clr-forms-subtext-color;
     margin-top: tokens.$cds-global-space-3;
+
+    &.error {
+      color: forms-variables.$clr-forms-invalid-text-color;
+    }
+
+    &.success {
+      color: forms-variables.$clr-forms-valid-text-color;
+    }
   }
 
   .clr-subtext-wrapper {
@@ -109,18 +117,11 @@
       color: forms-variables.$clr-forms-valid-color;
       fill: forms-variables.$clr-forms-valid-color;
     }
-    .clr-subtext {
-      color: forms-variables.$clr-forms-valid-text-color;
-    }
   }
 
   .clr-error {
     .clr-validate-icon {
       display: inline-block;
-    }
-
-    .clr-subtext {
-      color: forms-variables.$clr-forms-invalid-text-color;
     }
   }
 
@@ -141,17 +142,12 @@
     }
   }
 
-  .clr-form:not(.clr-form-compact) {
-    .clr-error,
-    .clr-success {
-      .clr-checkbox-wrapper,
-      .clr-toggle-wrapper,
-      .clr-file-wrapper,
-      .clr-radio-wrapper {
-        & + .clr-subtext-wrapper,
-        & + .clr-validate-icon {
-          margin-left: calc(-1 * #{tokens.$cds-global-space-3});
-        }
+  .clr-form:not(.clr-form-compact) .clr-control-container {
+    &.clr-error,
+    &.clr-success {
+      & > .clr-subtext-wrapper,
+      & > .clr-validate-icon {
+        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
       }
     }
   }
