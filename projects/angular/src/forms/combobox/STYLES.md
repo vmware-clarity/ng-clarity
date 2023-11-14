@@ -15,6 +15,8 @@
 | --clr-combobox-pill-font-color         | Text color of the selected items pills in a multiselect combobox       |
 | --clr-combobox-filter-highlight        | Combobox filter highlight color                                        |
 | --clr-combobox-min-height              | Minimal height of the combobox                                         |
+| --clr-combobox-min-width               | Minimal width of the combobox                                          |
+| --clr-combobox-multi-min-width         | Minimal width of the multi-select combobox                             |
 | --clr-combobox-font-size               | Combobox input font size                                               |
 | --clr-combobox-font-weight             | Combobox input font weight                                             |
 | --clr-combobox-line-height             | Combobox input line height                                             |
