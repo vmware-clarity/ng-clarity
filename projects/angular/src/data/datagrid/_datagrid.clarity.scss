@@ -987,9 +987,7 @@
       &:focus,
       &.clr-focus {
         background: none;
-        border: tokens.$cds-alias-object-border-width-100 solid;
-        border-color: datagrid-variables.$clr-datagrid-pagination-input-border-focus-color;
-        box-shadow: 0 0 tokens.$cds-alias-object-border-width-100
+        border: tokens.$cds-alias-object-border-width-100 solid
           datagrid-variables.$clr-datagrid-pagination-input-border-focus-color;
       }
     }

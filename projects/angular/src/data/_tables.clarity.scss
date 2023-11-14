@@ -59,7 +59,7 @@
       color: table-variables.$clr-thead-color;
       @include mixins.generate-typography-token('TableHeaders-11-SB-CPT');
       background-color: table-variables.$clr-thead-bgcolor;
-      vertical-align: table-variables.$clr-table-vertical-align;
+      vertical-align: middle;
       border-bottom-style: solid;
       border-bottom-width: table-variables.$clr-table-borderwidth;
       border-bottom-color: table-variables.$clr-table-border-color;
