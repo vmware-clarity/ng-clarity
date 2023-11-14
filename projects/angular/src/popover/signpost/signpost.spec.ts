@@ -56,6 +56,12 @@ export default function (): void {
         expect(signpostContent).toBeNull();
         expect(this.toggleService.open).toBe(false);
       });
+
+      it('has a default aria-label on the default trigger', function (this: Context) {
+        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+        expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
+      });
     });
 
     describe('focus management', function () {
