@@ -55,8 +55,7 @@
     position: relative;
 
     //Dimensions
-    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-padding-left;
-    padding-left: combobox-variables.$clr-combobox-padding-left;
+    padding: 0 caret-gap() 0 combobox-variables.$clr-combobox-trigger-left-padding;
 
     min-height: combobox-variables.$clr-combobox-min-height;
     min-width: combobox-variables.$clr-combobox-min-width;
@@ -114,15 +113,7 @@
     }
 
     .label-combobox-pill {
-      @include mixins.generate-typography-token(
-        'CAPTION-LG-11',
-        (
-          font-weight: combobox-variables.$clr-combobox-pill-font-weight,
-          font-size: combobox-variables.$clr-combobox-pill-font-size,
-          line-height: combobox-variables.$clr-combobox-pill-line-height,
-          letter-spacing: combobox-variables.$clr-combobox-pill-letter-spacing,
-        )
-      );
+      @include mixins.generate-typography-token('CAPTION-LG-11');
       height: combobox-variables.$clr-combobox-pill-height;
       margin: combobox-variables.$clr-combobox-pill-margin;
       background-color: combobox-variables.$clr-combobox-pill-background-color;
@@ -173,7 +164,7 @@
       }
     }
     //Dimensions
-    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-left: combobox-variables.$clr-combobox-trigger-left-padding;
     padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
 
     margin: auto;

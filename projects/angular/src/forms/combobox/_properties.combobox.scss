@@ -10,7 +10,6 @@
   :root {
     [cds-theme] {
       --clr-combobox-border-color: #{tokens.$cds-alias-object-border-color};
-      --clr-combobox-trigger-color: var(--clr-color-neutral-500);
       --clr-combobox-input-background-color: #{tokens.$cds-alias-object-container-background-tint};
       --clr-combobox-pill-background-color: #{tokens.$cds-alias-object-interaction-background};
       --clr-combobox-pill-border-color: #{tokens.$cds-alias-object-border-color};
@@ -35,7 +34,7 @@
       --clr-combobox-pill-height: #{tokens.$cds-global-space-7}; //16px
       --clr-combobox-pill-remove-icon-color: #{tokens.$cds-alias-object-interaction-color};
       --clr-combobox-caret-icon-size: #{tokens.$cds-global-space-7};
-      --clr-combobox-pill-border-radius: #{mixins.baselinePx(3)};
+      --clr-combobox-pill-border-radius: #{tokens.$cds-alias-object-border-radius-100};
     }
   }
 }
