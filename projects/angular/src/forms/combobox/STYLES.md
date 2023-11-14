@@ -4,7 +4,6 @@
 
 | CSS Custom Property                    | Description                                                            |
 | -------------------------------------- | ---------------------------------------------------------------------- |
-| --clr-combobox-trigger-color           | Combobox trigger color                                                 |
 | --clr-combobox-font-size               | Combobox font size                                                     |
 | --clr-combobox-border-color            | Combobox border color                                                  |
 | --clr-combobox-border-radius           | Combobox corners radius                                                |
