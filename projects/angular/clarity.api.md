@@ -3410,13 +3410,11 @@ export class ClrSignpostModule {
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(toggleService: ClrPopoverToggleService, el: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    constructor(toggleService: ClrPopoverToggleService, el: ElementRef, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
     ariaExpanded: boolean;
-    // (undocumented)
-    commonStrings: ClrCommonStringsService;
     // (undocumented)
     isOpen: boolean;
     // (undocumented)
