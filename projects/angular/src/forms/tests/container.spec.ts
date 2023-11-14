@@ -138,11 +138,18 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
-    it("doesn't display the helper text when invalid", () => {
+    it('display the helper text when invalid', () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
       setValid(false);
       fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeFalsy();
+      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
+    });
+
+    it('display the helper text when valid', () => {
+      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
+      setValid(true);
+      fixture.detectChanges();
+      expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
     it('sets error classes and displays the icon when invalid', () => {
@@ -164,7 +171,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('projects the success content when valid', () => {
       setValid(true);
       fixture.detectChanges();
-      expect(containerEl.querySelector('clr-control-helper')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
     });

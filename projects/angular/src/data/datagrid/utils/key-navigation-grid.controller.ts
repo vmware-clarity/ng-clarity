@@ -166,8 +166,7 @@ export class KeyNavigationGridController implements OnDestroy {
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
 
-    const itemsPerPage =
-      Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
+    const itemsPerPage = this.rows.length || 0;
 
     if (e.code === 'ArrowUp' && y !== 0) {
       y = y - 1;
