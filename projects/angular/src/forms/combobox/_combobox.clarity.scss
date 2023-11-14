@@ -110,8 +110,6 @@
       cursor: pointer;
       display: flex;
       padding: 0;
-      color: combobox-variables.$clr-combobox-pill-font-color;
-
       color: combobox-variables.$clr-combobox-pill-remove-icon-color;
     }
 
@@ -168,11 +166,12 @@
 
   .clr-combobox-trigger {
     &:disabled {
-      // ATM remove opacity - change to fixed color
-      color: var(--clr-btn-link-disabled-color, #666);
-      opacity: 0.4;
+      color: tokens.$cds-alias-object-interaction-color-disabled;
+      cds-icon[shape='angle'],
+      clr-icon[shape='angle'] {
+        color: tokens.$cds-alias-object-interaction-color-disabled;
+      }
     }
-
     //Dimensions
     padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
     padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
