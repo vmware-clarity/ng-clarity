@@ -54,7 +54,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl,
+    private ngControl: NgControl | null,
     renderer: Renderer2,
     el: ElementRef
   ) {
@@ -115,7 +115,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService) {
+    if (this.ngControlService && this.ngControl) {
       this.ngControlService.setControl(this.ngControl);
     }
   }
@@ -144,8 +144,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   }
 
   private markAsTouched(): void {
-    this.ngControl.control.markAsTouched();
-    this.ngControl.control.updateValueAndValidity();
+    if (this.ngControl) {
+      this.ngControl.control.markAsTouched();
+      this.ngControl.control.updateValueAndValidity();
+    }
   }
 
   private setAriaDescribedBy(helpers: Helpers) {
