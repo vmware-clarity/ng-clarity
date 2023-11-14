@@ -29,7 +29,7 @@
 @mixin datagrid-action-overflow-appearance {
   position: absolute;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
-  padding: datagrid-variables.$clr-datagrid-popover-padding;
+  padding: tokens.$cds-global-space-5;
   margin-left: tokens.$cds-global-space-4;
   border-style: solid;
   border-width: tokens.$cds-alias-object-border-width-100;
@@ -76,9 +76,8 @@
     border: 0;
     cursor: pointer;
     display: block;
-    line-height: dropdown-variables.$clr-dropdown-line-height - tokens.$cds-global-space-1;
     margin: 0;
-    padding: tokens.$cds-global-space-1 tokens.$cds-global-space-9 0;
+    padding: 0 tokens.$cds-global-space-9 0 tokens.$cds-global-space-7;
     text-align: left;
     width: 100%;
 
@@ -451,27 +450,27 @@
 
         cds-icon,
         clr-icon {
-          color: variables.$clr-color-neutral-600;
+          color: tokens.$cds-alias-object-interaction-color;
         }
 
         &:hover {
           cds-icon,
           clr-icon {
-            color: variables.$clr-color-action-600;
+            color: tokens.$cds-alias-object-interaction-color-hover;
           }
         }
 
         &.datagrid-filter-open {
           cds-icon,
           clr-icon {
-            color: variables.$clr-color-action-600;
+            color: tokens.$cds-alias-object-interaction-color-active;
           }
         }
 
         &.datagrid-filtered {
           cds-icon,
           clr-icon {
-            color: variables.$clr-color-action-600;
+            color: tokens.$cds-alias-object-interaction-color-selected;
           }
         }
       }
@@ -512,15 +511,21 @@
         }
 
         .sort-icon {
-          color: variables.$clr-color-action-600;
+          color: tokens.$cds-alias-object-interaction-color;
           margin-left: auto; // pushes icon to rhs b/c of parents display: flex
           @include mixins.equilateral(datagrid-variables.$clr-datagrid-icon-size);
           vertical-align: middle;
+
+          &:hover {
+            color: tokens.$cds-alias-object-interaction-color-hover;
+          }
+          &:active {
+            color: tokens.$cds-alias-object-interaction-color-active;
+          }
         }
       }
 
       .datagrid-column-separator {
-        $dg-padding-less-border: tokens.$cds-global-space-6 - tokens.$cds-global-space-1;
         display: flex;
         align-items: center;
         flex: 0 0 auto;
@@ -556,7 +561,7 @@
           width: tokens.$cds-global-space-1;
           height: 0;
           border-right-style: dotted;
-          border-right-color: variables.$clr-color-action-300;
+          border-right-color: tokens.$cds-global-color-blue-300;
           border-right-width: tokens.$cds-alias-object-border-width-100;
           transform: translateX(0px);
           cursor: col-resize;
@@ -568,7 +573,7 @@
 
         .exceeded-max {
           // TODO: CSS property here?
-          border-right: tokens.$cds-alias-object-border-width-100 dotted rgba(219, 33, 0, 0.3);
+          border-right: tokens.$cds-alias-object-border-width-100 dotted tokens.$cds-alias-status-danger-dark;
         }
       }
 
@@ -604,9 +609,6 @@
 
       &.datagrid-fixed-column {
         flex: 0 0 datagrid-variables.$clr-datagrid-fixed-column-size;
-        @if variables.$clr-use-custom-properties == true {
-          flex: 0 0 datagrid-variables.$clr-datagrid-fixed-column-size;
-        }
         max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
         min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
       }
@@ -670,8 +672,8 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
-        gap: datagrid-variables.$clr-datagrid-placeholder-gap;
-        padding: datagrid-variables.$clr-datagrid-placeholder-padding;
+        gap: tokens.$cds-global-space-9;
+        padding: tokens.$cds-global-space-9;
         @include mixins.generate-typography-token(
           'SECTION-20-STD',
           (
@@ -741,7 +743,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: datagrid-variables.$clr-datagrid-footer-padding;
+    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-7;
     // Account for borders
     @include mixins.generate-typography-token('CAPTION-LG-11');
     background-color: tables-variables.$clr-thead-bgcolor;
@@ -807,7 +809,6 @@
         &.disabled:active,
         &:disabled:active {
           cursor: not-allowed;
-          opacity: datagrid-variables.$clr-datagrid-column-toggle-disabled-opacity;
           border-color: datagrid-variables.$clr-datagrid-column-toggle-disabled-color;
           color: datagrid-variables.$clr-datagrid-column-toggle-disabled-color;
           background-color: datagrid-variables.$clr-datagrid-column-toggle-fill-color;
@@ -841,12 +842,7 @@
     margin-right: tokens.$cds-global-space-5;
 
     &::before {
-      background-color: variables.$clr-color-neutral-600;
-    }
-
-    &::after {
-      border-left-color: variables.$clr-color-neutral-0;
-      border-bottom-color: variables.$clr-color-neutral-0;
+      background-color: forms-variables.$clr-forms-label-disabled-color;
     }
   }
 
@@ -984,7 +980,7 @@
       border-width: tokens.$cds-alias-object-border-width-100;
       border-style: solid;
       border-radius: tokens.$cds-alias-object-border-radius-100;
-      min-width: datagrid-variables.$clr-datagrid-pagination-input-size;
+      min-width: tokens.$cds-global-space-9;
       text-align: center;
       transition: none !important;
 
@@ -1119,7 +1115,7 @@
 
     .datagrid-placeholder-container,
     .datagrid-row {
-      border-right: tokens.$cds-global-space-1 solid tables-variables.$clr-table-border-color;
+      border-right: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
     }
 
     .datagrid-footer {
@@ -1149,7 +1145,7 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: tables-variables.$clr-table-border-color;
-      top: tokens.$cds-global-space-6 - tokens.$cds-global-space-2;
+      top: mixins.baselinePx(10);
       right: 0;
     }
 
@@ -1159,7 +1155,7 @@
       position: absolute;
       border: tokens.$cds-global-space-5 solid transparent;
       border-right-color: datagrid-variables.$clr-datagrid-popover-bg-color;
-      top: tokens.$cds-global-space-6 - tokens.$cds-global-space-1;
+      top: mixins.baselinePx(11);
       right: calc(-1 * tokens.$cds-global-space-1);
     }
   }
@@ -1189,21 +1185,19 @@
 
   .datagrid-detail-body {
     flex: 1 1 auto;
-    padding: datagrid-variables.$clr-datagrid-detail-body-padding;
+    padding: tokens.$cds-global-space-7 0;
     color: datagrid-variables.$clr-datagrid-detail-body-text-color;
   }
 
   .datagrid-detail-header {
     flex: 0 0 auto;
     @include mixins.generate-typography-token('SECTION-20-STD');
-    padding: datagrid-variables.$clr-datagrid-detail-header-padding;
     margin-top: 0;
     display: flex;
     flex-direction: row;
 
     .datagrid-detail-header-title {
       flex: 1 1 auto;
-      padding: datagrid-variables.$clr-datagrid-detail-header-title-padding;
       color: datagrid-variables.$clr-datagrid-detail-header-title-color;
     }
 
@@ -1211,13 +1205,10 @@
       flex: 1 1 tokens.$cds-global-space-11;
       display: flex;
       justify-content: flex-end;
-      padding: datagrid-variables.$clr-datagrid-detail-pane-close-padding;
 
       .btn.btn-link {
-        min-width: datagrid-variables.$clr-datagrid-detail-pane-close-btn-min-width;
-
-        margin: datagrid-variables.$clr-datagrid-detail-pane-close-btn-margin;
-
+        min-width: auto;
+        margin: 0;
         padding-right: 0;
 
         cds-icon {
@@ -1274,9 +1265,9 @@
     }
 
     .datagrid-detail-pane {
-      border-left: tokens.$cds-global-space-1 solid;
+      border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-global-space-3;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
     }
   }
 
@@ -1287,9 +1278,9 @@
     }
 
     .datagrid-detail-pane {
-      border-left: tokens.$cds-global-space-1 solid;
+      border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-      border-radius: tokens.$cds-global-space-3;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
     }
   }
 
@@ -1444,7 +1435,6 @@
           padding: tables-variables.$clr-table-topcellpadding tables-variables.$clr-table-cellpadding
             tables-variables.$clr-table-bottomcellpadding;
           vertical-align: top;
-          @include mixins.css-var(color, clr-p6-color, variables.$clr-p6-color, variables.$clr-use-custom-properties);
           @include mixins.generate-typography-token('CAPTION-LG-11');
           margin-top: tokens.$cds-global-space-9;
           margin-bottom: 0;

@@ -40,10 +40,10 @@ $clr-table-fontsize: var(--clr-table-fontsize) !default;
 $clr-table-lineheight: var(--clr-table-lineheight) !default;
 $clr-table-cellpadding: var(--clr-table-cellpadding) !default;
 
-// @deprecated in v17
+// @deprecated in v17 in favor of $clr-table-compact-row-height
 $clr-table--compact-rowHeight: var(--clr-table-compact-row-height) !default; // Leaving for backwards compatibility
 $clr-table-compact-row-height: $clr-table--compact-rowHeight;
-// @deprecated in v17
+// @deprecated in v17 in favor of clr-table-compact-vertical-padding
 $clr-table--compact-verticalPadding: var(
   --clr-table-compact-vertical-padding
 ) !default; // Leaving for backwards compatibility

@@ -24,8 +24,6 @@
     --clr-datagrid-pagination-btn-disabled-color: #{tokens.$cds-alias-status-disabled};
     --clr-datagrid-pagination-input-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-datagrid-pagination-input-border-focus-color: var(--clr-color-action-400);
-    --clr-datagrid-pagination-input-size: #{tokens.$cds-global-space-9};
-    --clr-datagrid-popover-padding: #{tokens.$cds-global-space-5};
     --clr-datagrid-popover-bg-color: #{tokens.$cds-alias-object-container-background};
     --clr-datagrid-popover-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-datagrid-popover-font-color: #{tokens.$cds-alias-typography-color-400};
@@ -50,7 +48,6 @@
     --clr-datagrid-column-toggle-fill-color: #{tokens.$cds-alias-object-opacity-0};
     --clr-datagrid-column-toggle-text-color: #{tokens.$cds-alias-typography-color-400};
     --clr-datagrid-column-toggle-disabled-color: var(--clr-btn-default-disabled-color);
-    --clr-datagrid-column-toggle-disabled-opacity: 1;
 
     --clr-datagrid-column-toggle-border-hover-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-datagrid-column-toggle-fill-hover-color: #{tokens.$cds-alias-object-interaction-background};
@@ -60,12 +57,6 @@
     --clr-datagrid-column-toggle-fill-active-color: #{tokens.$cds-alias-object-opacity-0};
     --clr-datagrid-column-toggle-text-active-color: #{tokens.$cds-alias-typography-color-400};
 
-    --clr-datagrid-detail-header-padding: 0;
-    --clr-datagrid-detail-header-title-padding: 0;
-    --clr-datagrid-detail-pane-close-btn-margin: 0;
-    --clr-datagrid-detail-pane-close-padding: 0;
-    --clr-datagrid-detail-body-padding: #{tokens.$cds-global-space-7} 0;
-    --clr-datagrid-detail-pane-close-btn-min-width: auto;
     --clr-datagrid-detail-pane-content-padding: #{tokens.$cds-global-space-7};
     --clr-datagrid-detail-pane-close-icon-size: #{tokens.$cds-global-space-9};
     --clr-datagrid-detail-body-text-color: #{tokens.$cds-alias-typography-color-400};
@@ -73,8 +64,6 @@
     --clr-datagrid-detail-pane-bg-color: #{tokens.$cds-alias-object-container-background};
     --clr-datagrid-detail-pane-border-color: #{tokens.$cds-alias-object-border-color};
 
-    --clr-datagrid-placeholder-padding: #{tokens.$cds-global-space-9};
-    --clr-datagrid-placeholder-gap: #{tokens.$cds-global-space-9};
     --clr-datagrid-placeholder-font-size: var(--clr-h4-font-size);
     --clr-datagrid-placeholder-font-weight: var(--clr-h4-font-weight);
     --clr-datagrid-placeholder-line-height: var(--clr-h4-line-height);
@@ -85,7 +74,6 @@
     --clr-datagrid-column-separator-width: #{tokens.$cds-global-space-1};
     --clr-datagrid-filter-toggle-size: #{tokens.$cds-global-space-7};
 
-    --clr-datagrid-footer-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
     --clr-datagrid-footer-pagination-gap: #{tokens.$cds-global-space-6};
     --clr-datagrid-fixed-column-size: #{tokens.$cds-global-space-12};
 
