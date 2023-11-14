@@ -8,7 +8,6 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Directive, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -41,7 +40,6 @@ export class ClrSignpostTrigger implements OnDestroy {
   constructor(
     private toggleService: ClrPopoverToggleService,
     private el: ElementRef,
-    public commonStrings: ClrCommonStringsService,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(DOCUMENT) document: any,
@@ -68,7 +66,6 @@ export class ClrSignpostTrigger implements OnDestroy {
       }),
       this.signpostIdService.id.subscribe(idChange => (this.ariaControl = idChange))
     );
-    this.addDefaultAriaLabel(this.el.nativeElement);
   }
 
   ngOnDestroy() {
@@ -83,12 +80,6 @@ export class ClrSignpostTrigger implements OnDestroy {
   @HostListener('click', ['$event'])
   onSignpostTriggerClick(event: Event): void {
     this.toggleService.toggleWithEvent(event);
-  }
-
-  private addDefaultAriaLabel(el: HTMLElement) {
-    if (!el.hasAttribute('aria-label')) {
-      el.setAttribute('aria-label', this.commonStrings.keys.signpostToggle);
-    }
   }
 
   private focusOnClose() {
