@@ -6,65 +6,51 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use './variables.vertical-nav' as vertical-nav-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('vertical-nav.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ./_vertical-nav.clarity.scss
-      //Vertical Nav - Divider
-      --clr-vertical-nav-divider-color: var(--clr-color-neutral-700);
+  :root {
+    [cds-theme] {
+      /* Vertical Nav */
+      --clr-vertical-nav-divider-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-700);
 
-      //Vertical Nav - Icons
-      --clr-vertical-nav-icon-active-color: var(--clr-color-action-600);
+      // Vertical Nav - Icons
+      --clr-vertical-nav-icon-size: #{tokens.$cds-global-space-7};
+      --clr-vertical-nav-icon-active-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-vertical-nav-icon-right-margin: #{tokens.$cds-global-space-4};
+      --clr-vertical-nav-collapsed-caret-size: #{tokens.$cds-global-space-10};
 
-      //Vertical Nav - Align
-      --clr-vertical-nav-item-color: var(--clr-color-neutral-700);
-      --clr-vertical-nav-item-active-color: var(--clr-color-neutral-700);
-      --clr-vertical-nav-bg-color: var(--clr-color-neutral-200);
-      --clr-vertical-nav-selected-bg-color: var(--clr-color-neutral-0);
-      --clr-vertical-nav-active-bg-color: var(--clr-color-neutral-400);
-      --clr-vertical-nav-active-color: var(--clr-vertical-nav-item-color);
-      --clr-vertical-nav-hover-bg-color: var(--clr-color-neutral-400);
+      // Vertical Nav - Align
+      --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
+      --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
+      --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background-shade};
+      --clr-vertical-nav-item-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5}
+        #{tokens.$cds-global-space-7};
+      --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
+        #{tokens.$cds-global-space-10};
+      --clr-vertical-nav-item-height: #{tokens.$cds-global-space-10};
+      --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
+      --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
-      //Vertical Nav - Trigger
-      --clr-vertical-nav-toggle-icon-color: var(--clr-color-neutral-1000);
-      --clr-vertical-nav-toggle-icon-hover-color: var(--clr-color-neutral-1000);
-      --clr-vertical-nav-toggle-icon-active-color: var(--clr-color-neutral-1000);
-      --clr-vertical-nav-toggle-icon-disabled-color: var(--clr-color-neutral-1000);
-      --clr-vertical-nav-toggle-button-size: #{vertical-nav-variables.$clr-vertical-nav-item-height};
+      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-0);
+      --clr-vertical-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
+      --clr-vertical-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover}; // var(--clr-color-neutral-400);
+
+      // Vertical Nav - Trigger
+      --clr-vertical-nav-toggle-icon-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-1000);
+      --clr-vertical-nav-toggle-icon-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-vertical-nav-toggle-icon-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-vertical-nav-toggle-icon-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-vertical-nav-toggle-button-size: #{tokens.$cds-global-space-10};
+      --clr-vertical-nav-trigger-divider-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
       --clr-vertical-nav-trigger-divider-border-width: var(--clr-global-borderwidth);
-
-      // ATM - remove
-      --clr-vertical-nav-toggle-margin-left: #{vertical-nav-variables.$clr-vertical-nav-link-padding-left};
-      --clr-vertical-nav-toggle-margin-right: #{vertical-nav-variables.$clr-vertical-nav-icon-right-margin};
-
-      // TODO: we need to do better with this here hsla() isn't translating across variables
-      --clr-vertical-nav-trigger-divider-border-color: var(--clr-color-neutral-400);
-      --clr-vertical-nav-divider-margin: #{vertical-nav-variables.$clr-vertical-nav-divider-margin 0};
+      --clr-vertical-nav-trigger-collapsed-margin: mixins.baselinePx(3);
 
       // Vertical Nav - Header
-      --clr-vertical-nav-header-font-weight: var(--clr-p4-font-weight);
-      --clr-vertical-nav-header-padding: #{0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-right
-        0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-left};
-      --clr-vertical-nav-header-font-size: #{vertical-nav-variables.$clr-vertical-nav-header-font-size};
-      --clr-vertical-nav-header-line-height: #{vertical-nav-variables.$clr-vertical-nav-item-height};
-
-      --clr-vertical-nav-item-padding: #{0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-right
-        0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-left};
-      --clr-vertical-nav-item-child-padding: #{0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-right
-        0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-left};
-      --clr-vertical-nav-item-height: #{vertical-nav-variables.$clr-vertical-nav-item-height};
-
-      --clr-vertical-nav-item-line-height: inherit;
-      --clr-vertical-nav-item-font-size: inherit;
-      --clr-vertical-nav-item-font-weight: normal;
-      --clr-vertical-nav-content-gap: 0;
+      --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
+      --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
     }
   }
 }

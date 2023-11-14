@@ -91,6 +91,22 @@
           #{tokens.$cds-global-space-4}
           #{tokens.$cds-alias-object-interaction-color-disabled};
 
+        // Password
+        --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
+        --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
+
+        // Range
+        --clr-forms-range-progress-fill-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-range-track-color: #{tokens.$cds-alias-object-container-background-shade};
+        --clr-forms-range-track-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+        --clr-forms-range-thumb-height: #{tokens.$cds-global-space-7};
+        --clr-forms-range-track-height: #{tokens.$cds-global-space-3};
+        --clr-forms-range-track-border-radius: #{tokens.$cds-global-space-2};
+        --clr-forms-range-track-border-width: #{tokens.$cds-global-space-1};
+        --clr-forms-range-progress-fill-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+        --clr-forms-range-track-color-disabled: #{tokens.$cds-alias-status-disabled-tint};
+        --clr-forms-range-track-border-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+
         // Select
         --clr-forms-select-hover-background: transparent;
         --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
@@ -102,9 +118,10 @@
         --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};
         --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color};
         --clr-forms-select-multiple-option-color: #{tokens.$cds-alias-typography-color-400};
+
+        // Textarea
+        --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
       }
-      // Textarea
-      --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
       --clr-forms-textarea-focused-outline: 0
         0
         #{variables.$clr_baselineRem_2px}
@@ -119,29 +136,13 @@
         calc(#{forms-variables.$clr-forms-baseline} * 2);
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
-
-      // Range
-      --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
-      --clr-forms-range-track-color: var(--clr-color-neutral-200);
-      --clr-forms-range-track-border-color: #{forms-variables.$clr-forms-range-border-color};
-      --clr-forms-range-thumb-height: #{forms-variables.$clr-forms-range-thumb-height};
-      --clr-forms-range-track-height: #{forms-variables.$clr-forms-range-track-height};
-      --clr-forms-range-track-border-radius: #{forms-variables.$clr-forms-range-border-radius};
-      --clr-forms-range-track-border-width: #{forms-variables.$clr-forms-range-border-width};
-      --clr-forms-range-progress-fill-color-disabled: #{forms-variables.$clr-forms-range-progress-fill-color};
-      --clr-forms-range-track-color-disabled: #{forms-variables.$clr-forms-range-track-color};
-      --clr-forms-range-track-border-color-disabled: #{forms-variables.$clr-forms-range-border-color-disabled};
+      --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
 
       // Datalist
 
       --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
-
-      // Password
-      --clr-forms-password-eye-icon-color: var(--clr-forms-focused-color);
-      --clr-forms-password-disabled-eye-icon-color: var(--clr-forms-text-disabled-color);
     }
   }
 }

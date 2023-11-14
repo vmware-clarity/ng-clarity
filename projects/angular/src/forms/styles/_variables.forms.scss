@@ -27,6 +27,7 @@ $clr-forms-placeholder-color: var(--clr-forms-placeholder-color) !default;
 // Accessibility fox for vpat-7719; this aligns with core
 $clr-forms-border-color: var(--clr-forms-border-color) !default;
 $clr-forms-focused-color: var(--clr-forms-focused-color) !default;
+$clr-forms-icon-color: #{tokens.$cds-alias-object-interaction-color} !default;
 
 $clr-forms-subtext-disabled-color: var(--clr-forms-subtext-disabled-color) !default;
 $clr-forms-border-disabled-color: var(--clr-forms-border-disabled-color) !default;
@@ -46,7 +47,7 @@ $clr-forms-label-font-weight: var(--clr-forms-label-font-weight) !default;
 $clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 
 // Textarea
-$clr-forms-textarea-background-color: variables.$clr-color-neutral-0 !default;
+$clr-forms-textarea-background-color: var(--clr-forms-textarea-background-color) !default;
 
 // Select
 $clr-forms-select-hover-border-color: var(--clr-forms-select-hover-border-color) !default;
@@ -86,6 +87,10 @@ $clr-forms-checkbox-padding-left: calc(#{$clr-forms-checkbox-height} + #{tokens.
 $clr-forms-checkbox-mark-size: calc(#{$clr-forms-checkbox-height} * 0.5);
 $clr-forms-checkbox-mark-border-size: calc(#{$clr-forms-checkbox-height} * 0.125);
 
+// Password
+$clr-forms-password-eye-icon-color: var(--clr-forms-password-eye-icon-color) !default;
+$clr-forms-password-disabled-eye-icon-color: var(--clr-forms-password-disabled-eye-icon-color) !default;
+
 // Radio
 $clr-forms-radio-label-color: var(--clr-forms-radio-label-color) !default;
 $clr-forms-radio-label-disabled-color: var(--clr-forms-radio-label-disabled-color);
@@ -105,16 +110,14 @@ $clr-forms-radio-padding-left: $clr-forms-checkbox-padding-left;
 $clr-forms-radio-top: $clr-forms-checkbox-top;
 
 // Range
-$clr-forms-range-progress-fill-color: variables.$clr-color-action-600 !default;
-$clr-forms-range-track-color: variables.$clr-color-neutral-200 !default;
-$clr-forms-range-border-color: variables.$clr-color-neutral-200 !default;
-$clr-forms-range-track-height: variables.$clr_baselineRem_4px;
-$clr-forms-range-progress-height: variables.$clr_baselineRem_4px;
-$clr-forms-range-thumb-height: variables.$clr_baselineRem_0_583;
-$clr-forms-range-thumb-margin: variables.$clr_baselineRem_5px;
-$clr-forms-range-margin: variables.$clr_baselineRem_5px;
-$clr-forms-range-border-width: 0;
-$clr-forms-range-border-radius: 0;
-$clr-forms-range-progress-fill-color-disabled: variables.$clr-color-neutral-600 !default;
-$clr-forms-range-track-color-disabled: variables.$clr-color-neutral-400 !default;
-$clr-forms-range-border-color-disabled: variables.$clr-color-neutral-600 !default;
+$clr-forms-range-progress-fill-color: var(--clr-forms-range-progress-fill-color) !default;
+$clr-forms-range-track-color: var(--clr-forms-range-track-color) !default;
+$clr-forms-range-border-color: var(--clr-forms-range-track-border-color) !default;
+$clr-forms-range-track-height: var(--clr-forms-range-track-height) !default;
+$clr-forms-range-thumb-height: var(--clr-forms-range-thumb-height) !default;
+$clr-forms-range-border-width: var(--clr-forms-range-track-border-width) !default;
+$clr-forms-range-border-radius: var(--clr-forms-range-track-border-radius) !default;
+
+$clr-forms-range-progress-fill-color-disabled: var(--clr-forms-range-progress-fill-color-disabled) !default;
+$clr-forms-range-track-color-disabled: var(--clr-forms-range-track-color-disabled) !default;
+$clr-forms-range-border-color-disabled: var(--clr-forms-range-track-border-color-disabled) !default;

@@ -14,8 +14,9 @@ $clr-tree-caret-padding: 0 !default;
 $clr-tree-caret-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-spinner-size: alert-variables.$clr-icon-dimension-sm !default;
 $clr-tree-node-touch-target: variables.$clr_baselineRem_1_35 !default;
-$clr-tree-node-children-margin: $clr-tree-node-touch-target - $clr-tree-caret-size * 0.5 -
-  variables.$clr_baselineRem_1px !default;
+$clr-tree-node-children-margin: calc(
+  #{$clr-tree-node-touch-target} - #{$clr-tree-caret-size} * 0.5 - #{variables.$clr_baselineRem_1px}
+) !default;
 $clr-tree-node-touch-target-big: variables.$clr_baselineRem_1_5 !default;
 $clr-tree-node-touch-target-small: variables.$clr_baselineRem_1 !default;
 $clr-tree-node-content-icon-margin-right: variables.$clr_baselineRem_0_25 !default;
@@ -27,7 +28,9 @@ $clr-tree-link-hover-color: nav-variables.$clr-custom-links-hover-color !default
 $clr-tree-link-selection-color: variables.$clr-global-selection-color !default;
 $clr-tree-link-text-color: variables.$clr-color-neutral-700 !default;
 $clr-tree-checkbox-padding-top: ($clr-tree-node-touch-target - variables.$clr_baselineRem_1) * 0.5 !default;
-$clr-tree-checkbox-padding-left: ($clr-tree-node-touch-target - alert-variables.$clr-icon-dimension-sm) * 0.5 !default;
+$clr-tree-checkbox-padding-left: calc(
+  (#{$clr-tree-node-touch-target} - #{alert-variables.$clr-icon-dimension-sm}) * 0.5
+) !default;
 $clr-tree-node-caret-color: variables.$clr-color-neutral-500 !default;
 $clr-tree-node-font-size: inherit !default;
 $clr-tree-node-font-weight: inherit !default;
