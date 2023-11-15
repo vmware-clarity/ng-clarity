@@ -266,10 +266,6 @@
     }
   }
 
-  .nav-item .progress::after {
-    top: 0;
-  }
-
   .progress-static {
     position: relative;
     border: none;
@@ -547,30 +543,6 @@
     .progress > progress,
     .progress-static > .progress-meter {
       height: $clr-progressInCard-height;
-      position: absolute;
-    }
-  }
-
-  // Inside Nav Items
-  $clr-progress-in-nav-height: tokens.$cds-global-space-4;
-  .nav-item {
-    .progress,
-    .progress-static {
-      // by default, positioned at the topmost of its card-block container
-      margin: 0;
-      height: $clr-progress-in-nav-height;
-      min-height: $clr-progress-in-nav-height;
-      max-height: $clr-progress-in-nav-height;
-      left: 0;
-    }
-
-    .progress > progress,
-    .progress-static > .progress-meter {
-      // we are sledge-hammering this value because we get weird variants
-      // across browsers if we don't.
-      height: $clr-progress-in-nav-height;
-      min-height: $clr-progress-in-nav-height;
-      max-height: $clr-progress-in-nav-height;
       position: absolute;
     }
   }
