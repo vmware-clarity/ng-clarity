@@ -15,15 +15,5 @@
     --clr-progress-alt-color-3: #{tokens.$cds-alias-status-warning}; // yellow
     --clr-progress-bg-color: #{tokens.$cds-alias-object-container-background-shade};
     --clr-progress-label-color: #{tokens.$cds-alias-typography-color-400};
-
-    // new from TM
-    --clr-progress-label-font-size: var(--clr-p6-font-size);
-    --clr-progress-label-line-height: var(--clr-p6-line-height);
-    --clr-progress-label-letter-spacing: calc(0.2 * (1rem / var(--clr-global-font-size)));
-
-    // new
-    --clr-progress-block-label-font-size: #{tokens.$cds-global-typography-font-size-3};
-    --clr-progress-block-label-line-height: var(--clr-p6-line-height);
-    --clr-progress-block-label-letter-spacing: var(--clr-p5-letter-spacing);
   }
 }

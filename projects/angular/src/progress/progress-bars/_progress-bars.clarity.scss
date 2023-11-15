@@ -40,11 +40,11 @@
     background-color: transparent;
     border-radius: 0;
     font-size: inherit;
-    height: #{tokens.$cds-global-space-6};
+    height: tokens.$cds-global-space-6;
     margin: 0;
     overflow: hidden;
-    max-height: #{tokens.$cds-global-space-6};
-    min-height: #{tokens.$cds-global-space-3};
+    max-height: tokens.$cds-global-space-6;
+    min-height: tokens.$cds-global-space-3;
     display: block;
     width: 100%;
   }
@@ -118,25 +118,6 @@
       position: relative;
       padding-right: tokens.$cds-global-space-11;
       color: progress-bars-variables.$clr-progress-label-color;
-      font-weight: tokens.$cds-global-typography-font-weight-regular;
-      @include utils-mixins.css-var(
-        font-size,
-        clr-progress-label-font-size,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        line-height,
-        clr-progress-label-line-height,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        letter-spacing,
-        clr-progress-label-letter-spacing,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
 
       // We have to use this span hack because browsers (Firefox, Safari, and IE) do
       // not currently support using either the :before or :after pseudoelements on
@@ -150,17 +131,21 @@
         right: 0;
         top: 0;
         margin-top: 0;
-        line-height: #{tokens.$cds-global-space-6};
-        font-size: #{tokens.$cds-global-typography-font-size-1};
+        @include utils-mixins.generate-typography-token(
+          'CAPTION-LG-11',
+          (
+            line-height: tokens.$cds-global-space-6,
+          )
+        );
       }
 
       &.compact:not(.labeled) {
-        height: #{tokens.$cds-global-space-3};
+        height: tokens.$cds-global-space-3;
       }
 
       &.compact.labeled > .progress-meter {
-        height: #{tokens.$cds-global-space-3};
-        top: #{tokens.$cds-global-space-3};
+        height: tokens.$cds-global-space-3;
+        top: tokens.$cds-global-space-3;
       }
     }
   }
@@ -571,11 +556,11 @@
   .card-block .progress-block {
     .progress,
     .progress-static {
-      height: #{tokens.$cds-global-space-6};
+      height: tokens.$cds-global-space-6;
 
       & > progress,
       & > .progress-meter {
-        height: #{tokens.$cds-global-space-6};
+        height: tokens.$cds-global-space-6;
       }
     }
   }
@@ -613,36 +598,11 @@
 
     color: progress-bars-variables.$clr-progress-label-color;
 
-    font-weight: tokens.$cds-global-typography-font-weight-regular;
-    @include utils-mixins.css-var(
-      font-size,
-      clr-progress-block-label-font-size,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      line-height,
-      clr-progress-block-label-line-height,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      letter-spacing,
-      clr-progress-block-label-letter-spacing,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
+    @include utils-mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
     & > * {
       flex: 0 0 auto;
       padding-right: tokens.$cds-global-space-6;
-      // vertically center???
-
-      // ATM (after token migration)
-      // remove first child padding right
-      &:first-child {
-        padding-right: tokens.$cds-global-space-6;
-      }
 
       &:last-child {
         padding-right: 0;
@@ -672,25 +632,7 @@
         margin-right: 0;
 
         color: progress-bars-variables.$clr-progress-label-color;
-        font-weight: tokens.$cds-global-typography-font-weight-regular;
-        @include utils-mixins.css-var(
-          font-size,
-          clr-progress-label-font-size,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include utils-mixins.css-var(
-          line-height,
-          clr-progress-label-line-height,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include utils-mixins.css-var(
-          letter-spacing,
-          clr-progress-label-letter-spacing,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
+        @include utils-mixins.generate-typography-token('CAPTION-LG-11');
 
         & > [class*='clr-col-'] {
           padding-left: 0;
