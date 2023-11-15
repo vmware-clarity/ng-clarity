@@ -85,6 +85,7 @@
           variables.$clr-use-custom-properties
         );
 
+        .copyright,
         a {
           @include mixins.css-var(
             line-height,
@@ -106,24 +107,6 @@
             color,
             clr-login-copyright-color,
             variables.$clr-p1-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            font-size,
-            clr-login-copyright-font-size,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            font-weight,
-            clr-login-copyright-font-weight,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            line-height,
-            clr-login-copyright-line-height,
-            inherit,
             variables.$clr-use-custom-properties
           );
         }
