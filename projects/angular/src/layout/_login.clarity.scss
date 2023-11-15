@@ -79,24 +79,28 @@
 
       .login-footer {
         @include mixins.css-var(
-          line-height,
-          clr-login-footer-line-height,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(font-size, clr-login-footer-font-size, inherit, variables.$clr-use-custom-properties);
-        @include mixins.css-var(
-          font-weight,
-          clr-login-footer-font-weight,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
           gap,
           clr-login-footer-gap,
           variables.$clr_baselineRem_0_75,
           variables.$clr-use-custom-properties
         );
+
+        a {
+          @include mixins.css-var(
+            line-height,
+            clr-login-footer-line-height,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(font-size, clr-login-footer-font-size, inherit, variables.$clr-use-custom-properties);
+          @include mixins.css-var(
+            font-weight,
+            clr-login-footer-font-weight,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+        }
+
         .copyright {
           @include mixins.css-var(
             color,
