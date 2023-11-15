@@ -4,23 +4,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('nav.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../utils/_reboot.scss
-      // Usage: ./_links.scss
-      // Link colors
-      --clr-link-active-color: var(--clr-color-secondary-action-500);
-      --clr-link-color: var(--clr-color-action-600);
-      --clr-link-hover-color: var(--clr-color-action-600);
-      --clr-link-visited-color: hsl(238, 41%, 53%);
-      --clr-custom-links-hover-color: var(--clr-color-neutral-200);
-      --clr-link-font-weight: inherit;
-      --clr-link-font-size: inherit;
-      --clr-link-line-height: inherit;
-      --clr-link-letter-spacing: inherit;
-    }
+  :root [cds-theme] {
+    // Usage: ../utils/_reboot.scss
+    // Usage: ./_links.scss
+    // Link colors
+    --clr-link-active-color: #{tokens.$cds-alias-typography-link-color};
+    --clr-link-color: #{tokens.$cds-alias-typography-link-color};
+    --clr-link-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
+    --clr-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
+    --clr-link-visited-color-hover: #{tokens.$cds-alias-typography-link-color-visited-hover};
+
+    // @deprecated in v17 to be deleted in v18. Used in legacy CLR theme in tree-view.
+    --clr-custom-links-hover-color: #{tokens.$cds-global-color-gray-200};
   }
 }

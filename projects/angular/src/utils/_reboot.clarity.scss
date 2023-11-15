@@ -410,41 +410,22 @@
   }
 
   a:link {
-    @include mixins.css-var(color, clr-link-color, nav-variables.$clr-link-color, variables.$clr-use-custom-properties);
+    color: nav-variables.$clr-link-color;
   }
 
   a:visited {
-    @include mixins.css-var(
-      color,
-      clr-link-visited-color,
-      nav-variables.$clr-link-visited-color,
-      variables.$clr-use-custom-properties
-    );
+    color: nav-variables.$clr-link-visited-color;
+
     &:hover {
-      @include mixins.css-var(
-        color,
-        clr-link-visited-color-hover,
-        nav-variables.$clr-link-visited-color,
-        variables.$clr-use-custom-properties
-      );
+      color: nav-variables.$clr-link-visited-color;
     }
   }
 
   a:hover {
-    @include mixins.css-var(
-      color,
-      clr-link-hover-color,
-      nav-variables.$clr-link-hover-color,
-      variables.$clr-use-custom-properties
-    );
+    color: nav-variables.$clr-link-hover-color;
   }
 
   a:active {
-    @include mixins.css-var(
-      color,
-      clr-link-active-color,
-      nav-variables.$clr-link-active-color,
-      variables.$clr-use-custom-properties
-    );
+    color: nav-variables.$clr-link-active-color;
   }
 }
