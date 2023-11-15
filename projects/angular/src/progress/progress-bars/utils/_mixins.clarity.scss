@@ -9,7 +9,10 @@
   // for IE...
   color: $color;
 
-  &::-webkit-progress-value,
+  &::-webkit-progress-value {
+    background-color: $color;
+  }
+
   &::-moz-progress-bar {
     background-color: $color;
   }
