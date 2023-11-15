@@ -10,6 +10,8 @@
 @use '../utils/mixins';
 @use '../utils/variables/variables';
 @use 'variables.login' as login-variables;
+@use '../emphasis/alert/variables.alert' as alert-variables;
+@use '@cds/core/tokens/tokens.scss';
 @include meta.load-css('properties.login');
 
 @include mixins.exports('login.clarity') {
@@ -18,35 +20,20 @@
     height: 100%;
     background: icons.generateLoginBackground();
     background-size: 100%;
-    background-position: login-variables.$clr-login-width 0;
+    background-position: mixins.baselinePx(580) 0;
     background-repeat: no-repeat;
 
     .login {
-      @include mixins.css-var(
-        background,
-        clr-login-background-color,
-        login-variables.$clr-login-background-color,
-        variables.$clr-use-custom-properties
-      );
+      background: login-variables.$clr-login-background-color;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      @include mixins.css-var(
-        padding,
-        clr-login-padding,
-        variables.$clr_baselineRem_1 variables.$clr_baselineRem_2_5,
-        variables.$clr-use-custom-properties
-      );
+      padding: tokens.$cds-global-space-7;
       height: auto;
       min-height: 100vh;
-      @include mixins.css-var(
-        width,
-        clr-login-width,
-        login-variables.$clr-login-width,
-        variables.$clr-use-custom-properties
-      );
+      width: mixins.baselinePx(580);
 
       .login-footer,
       .login-header {
@@ -68,47 +55,16 @@
           mask: icons.generateLoginVMWareLogo();
           -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
-          @include mixins.css-var(
-            background-color,
-            clr-login-logo-color,
-            login-variables.$clr-login-logo-color,
-            variables.$clr-use-custom-properties
-          );
+          background-color: login-variables.$clr-login-logo-color;
         }
       }
 
       .login-footer {
-        @include mixins.css-var(
-          gap,
-          clr-login-footer-gap,
-          variables.$clr_baselineRem_0_75,
-          variables.$clr-use-custom-properties
-        );
-
-        .copyright,
-        a {
-          @include mixins.css-var(
-            line-height,
-            clr-login-footer-line-height,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(font-size, clr-login-footer-font-size, inherit, variables.$clr-use-custom-properties);
-          @include mixins.css-var(
-            font-weight,
-            clr-login-footer-font-weight,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
-        }
-
+        gap: login-variables.$clr-login-footer-gap;
+        a,
         .copyright {
-          @include mixins.css-var(
-            color,
-            clr-login-copyright-color,
-            variables.$clr-p1-color,
-            variables.$clr-use-custom-properties
-          );
+          @include mixins.generate-typography-token('CAPTION-LG-11');
+          color: login-variables.$clr-login-copyright-color;
         }
       }
 
@@ -118,134 +74,31 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        width: mixins.baselinePx(320);
       }
 
       .title {
-        @include mixins.css-var(
-          color,
-          clr-login-title-color,
-          login-variables.$clr-login-title-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-weight,
-          clr-login-title-font-weight,
-          login-variables.$clr-login-title-font-weight,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-family,
-          clr-login-title-font-family,
-          login-variables.$clr-login-title-font-family,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(width, clr-login-title-width, 100%, variables.$clr-use-custom-properties);
-        @include mixins.css-var(
-          font-size,
-          clr-login-title-font-size,
-          login-variables.$clr-login-title-font-size,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          line-height,
-          clr-login-title-line-height,
-          login-variables.$clr-login-title-line-height,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          letter-spacing,
-          clr-login-title-letter-spacing,
-          login-variables.$clr-login-title-letter-spacing,
-          variables.$clr-use-custom-properties
-        );
+        @include mixins.generate-typography-token('DISPLAY-40');
+        color: login-variables.$clr-login-title-color;
 
         .welcome {
-          line-height: login-variables.$clr-login-title-line-height;
-          @include mixins.css-var(
-            color,
-            clr-login-welcome-color,
-            variables.$clr-h3-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(margin, clr-login-welcome-margin, 0, variables.$clr-use-custom-properties);
+          color: login-variables.$clr-login-welcome-color;
+          margin: 0 0 #{tokens.$cds-global-space-5} 0;
         }
 
+        .trademark // @deprecated in v17
+        .subtitle, // @deprecated in v17
         .hint {
-          @include mixins.css-var(
-            color,
-            clr-login-hint-color,
-            login-variables.$clr-login-title-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            margin,
-            clr-login-hint-margin,
-            variables.$clr_baselineRem_1_25 0 0,
-            variables.$clr-use-custom-properties
-          );
-          font-size: variables.$clr_baselineRem_0_583;
+          @include mixins.generate-typography-token('SECTION-20-std');
+          color: login-variables.$clr-login-hint-color;
+          margin: #{tokens.$cds-global-space-5} 0 0 0;
         }
       }
-
-      // @TODO Is this used? It's not documented on the website or used in the demo app.
-      .trademark {
-        @include mixins.css-var(
-          color,
-          clr-login-trademark-color,
-          login-variables.$clr-login-trademark-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-weight,
-          clr-login-trademark-font-weight,
-          login-variables.$clr-login-trademark-font-weight,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-family,
-          clr-login-trademark-font-family,
-          login-variables.$clr-login-trademark-font-family,
-          variables.$clr-use-custom-properties
-        );
-        font-size: login-variables.$clr-login-trademark-font-size;
-        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
-      }
-
-      // @TODO Is this used? It's not documented on the website or used in the demo app.
-      .subtitle {
-        @include mixins.css-var(
-          font-weight,
-          clr-login-subtitle-font-weight,
-          login-variables.$clr-login-subtitle-font-weight,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          color,
-          clr-login-subtitle-color,
-          login-variables.$clr-login-subtitle-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          font-family,
-          clr-login-subtitle-font-family,
-          login-variables.$clr-login-subtitle-font-family,
-          variables.$clr-use-custom-properties
-        );
-        font-size: login-variables.$clr-login-subtitle-font-size;
-        letter-spacing: login-variables.$clr-login-subtitle-letter-spacing;
-        line-height: login-variables.$clr-login-subtitle-line-height;
-      }
-
       .login-group {
         display: flex;
         flex-direction: column;
-        @include mixins.css-var(
-          padding,
-          clr-login-group-padding,
-          variables.$clr_baselineRem_2 0 0 0,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(width, clr-login-group-width, 100%, variables.$clr-use-custom-properties);
+        padding-top: #{tokens.$cds-global-space-13};
+        width: 100%;
 
         // @TODO Are these used? Some are documented on the website but not actually used. Some are neither documented nor used.
         .auth-source,
@@ -253,21 +106,11 @@
         .password,
         .checkbox,
         .clr-form-control {
-          @include mixins.css-var(
-            margin,
-            clr-login-group-control-margin,
-            variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0,
-            variables.$clr-use-custom-properties
-          );
+          margin: 0 0 #{tokens.$cds-global-space-9} 0;
         }
 
         .clr-checkbox-wrapper {
-          @include mixins.css-var(
-            margin,
-            clr-login-group-remember-margin,
-            variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_75 0,
-            variables.$clr-use-custom-properties
-          );
+          margin: 0 0 #{tokens.$cds-global-space-13} 0;
         }
 
         // Overrides for new forms layouts to match original login layout
@@ -293,10 +136,10 @@
             & > .clr-input-group {
               max-width: 100%;
               width: 100%;
-              padding-right: variables.$clr_baselineRem_0_4;
+              padding-right: mixins.baselinePx(10);
 
               & > .clr-input {
-                width: calc(100% - #{variables.$clr_baselineRem_1});
+                width: calc(100% - tokens.$cds-global-space-9);
               }
             }
           }
@@ -304,7 +147,7 @@
 
         // @TODO Is this used? It's not documented on the website or used in the demo app.
         .tooltip-validation {
-          margin-top: variables.$clr_baselineRem_0_25;
+          margin-top: tokens.$cds-global-space-4;
         }
 
         // @TODO Is this used? It's not documented on the website or used in the demo app.
@@ -315,33 +158,13 @@
         }
 
         .error {
+          @include mixins.generate-typography-token('SECONDARY-13-RG-std');
           display: none;
-          @include mixins.css-var(
-            margin,
-            clr-login-group-error-margin,
-            variables.$clr_baselineRem_0_25 0 0 0,
-            variables.$clr-use-custom-properties
-          );
-          padding: variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5;
-          @include mixins.css-var(
-            background,
-            clr-login-error-background-color,
-            variables.$clr-color-danger-800,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            color,
-            clr-login-background-color,
-            login-variables.$clr-login-background-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            border-radius,
-            clr-login-error-border-radius,
-            variables.$clr-global-borderradius,
-            variables.$clr-use-custom-properties
-          );
-          line-height: variables.$clr_baselineRem_0_75;
+          padding: tokens.$cds-global-space-5;
+          background: login-variables.$clr-login-error-background-color;
+          color: alert-variables.$clr-alert-danger-font-color;
+          border-radius: tokens.$cds-alias-object-border-radius-100;
+          border: tokens.$cds-alias-object-border-width-100 solid alert-variables.$clr-alert-danger-border-color;
 
           &:before {
             content: '';
@@ -351,13 +174,8 @@
             mask-repeat: no-repeat;
             -webkit-mask-size: cover;
             mask-size: cover;
-            @include mixins.css-var(
-              background-color,
-              clr-login-error-icon-color,
-              login-variables.$clr-login-background-color,
-              variables.$clr-use-custom-properties
-            );
-            margin: variables.$clr_baselineRem_1px variables.$clr_baselineRem_0_25 0 0;
+            background-color: login-variables.$clr-login-error-icon-color;
+            margin: tokens.$cds-global-space-1 tokens.$cds-global-space-4 0 0;
             @include mixins.equilateral(login-variables.$clr-login-icon-size);
           }
 
@@ -371,40 +189,12 @@
         }
 
         .btn {
-          @include mixins.css-var(
-            margin,
-            clr-login-group-btn-margin,
-            variables.$clr_baselineRem_1 0 0 0,
-            variables.$clr-use-custom-properties
-          );
+          margin: #{tokens.$cds-global-space-5} 0;
           max-width: none;
         }
 
         .signup {
-          @include mixins.css-var(
-            margin,
-            clr-login-group-signup-margin,
-            variables.$clr_baselineRem_0_5 0 0 0,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            font-size,
-            clr-login-group-signup-font-size,
-            variables.$clr_baselineRem_0_583,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            font-weight,
-            clr-login-group-signup-font-weight,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            line-height,
-            clr-login-group-signup-line-height,
-            inherit,
-            variables.$clr-use-custom-properties
-          );
+          @include mixins.generate-typography-token('LINK-14');
           text-align: center;
         }
       }
@@ -413,17 +203,12 @@
         position: absolute;
         content: '';
         display: block;
-        width: variables.$clr_baselineRem_1px;
+        width: tokens.$cds-global-space-1;
         height: 100%;
-        @include mixins.css-var(
-          background,
-          clr-login-panel-line-color,
-          variables.$clr-color-neutral-1000,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(opacity, clr-login-panel-line-opacity, 0.1, variables.$clr-use-custom-properties);
+        background: tokens.$cds-global-color-black;
+        opacity: 0.1;
         top: 0;
-        right: -1 * variables.$clr_baselineRem_2px;
+        right: calc(-1 * tokens.$cds-global-space-2);
       }
     }
   }
@@ -431,17 +216,12 @@
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
     .login-wrapper {
       justify-content: center;
-      @include mixins.css-var(
-        background,
-        clr-login-background-color,
-        login-variables.$clr-login-background-color,
-        variables.$clr-use-custom-properties
-      );
+      background: login-variables.$clr-login-background-color;
 
       .login {
         width: 100%;
         margin-left: 0;
-        padding: variables.$clr_baselineRem_1 20%;
+        padding: tokens.$cds-global-space-9 20%;
 
         &:after {
           content: none;
@@ -453,7 +233,7 @@
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     .login-wrapper {
       .login {
-        padding: variables.$clr_baselineRem_1 15%;
+        padding: tokens.$cds-global-space-9 15%;
       }
     }
   }
