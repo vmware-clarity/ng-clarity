@@ -8,6 +8,7 @@
 @use '../../utils/variables/variables';
 @use 'properties.forms' as forms-properties;
 @use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 input[clrDatalistInput] {
   position: relative;
@@ -26,35 +27,16 @@ input[clrDatalistInput] {
 
   .clr-datalist-caret {
     position: absolute;
-    cursor: text;
     top: 25%;
-    @include mixins.equilateral-var(
-      clr-forms-datalist-caret-icon-size,
-      variables.$clr_baselineRem_0_667,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      clr-forms-datalist-caret-color,
-      variables.$clr-color-neutral-600,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      right,
-      clr-forms-datalist-caret-right,
-      forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
+    right: tokens.$cds-global-space-5;
+    color: forms-variables.$clr-forms-datalist-caret-color;
+    cursor: text;
+    @include mixins.equilateral(forms-variables.$clr-forms-datalist-caret-icon-size);
   }
 }
 
 .clr-form-control-disabled .clr-datalist-caret {
-  @include mixins.css-var(
-    color,
-    clr-forms-datalist-caret-disabled-color,
-    variables.$clr-color-neutral-600,
-    variables.$clr-use-custom-properties
-  );
+  color: forms-variables.$clr-forms-datalist-caret-disabled-color;
 }
 
 // Keeps the browser added datalist toggle on the right side of the input underline
