@@ -21,7 +21,7 @@
   }
 
   .clr-textarea {
-    max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
+    max-width: calc(100% - forms-variables.$clr-forms-baseline);
     height: auto;
     resize: vertical;
     border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-border-color;
@@ -61,7 +61,7 @@
   }
 
   .clr-form-control.row .clr-textarea-wrapper {
-    max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
+    max-width: calc(100% - forms-variables.$clr-forms-baseline);
   }
 
   .clr-form-compact .clr-textarea-wrapper {
