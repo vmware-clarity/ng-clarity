@@ -38,9 +38,3 @@ $clr-tree-checkbox-padding-left: 0 !default;
 // $clr-tree-node-caret-color is deprecated in v17.
 $clr-tree-node-caret-color: var(--clr-tree-node-caret-link-color) !default;
 $clr-tree-node-caret-link-color: $clr-tree-node-caret-color !default;
-
-// to delete introduced in TM
-$clr-tree-node-font-size: inherit !default;
-$clr-tree-node-font-weight: inherit !default;
-$clr-tree-node-line-height: inherit !default;
-$clr-tree-node-letter-spacing: inherit !default;

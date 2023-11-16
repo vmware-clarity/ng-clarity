@@ -14,4 +14,5 @@ $clr-link-visited-color: var(--clr-link-visited-color) !default;
 $clr-link-visited-color-hover: var(--clr-link-visited-color-hover) !default;
 
 // @deprecated in v17 to be deleted in v18. Used in legacy CLR theme in tree-view.
+// It's safe to delete no more references.
 $clr-custom-links-hover-color: var(--clr-custom-links-hover-color) !default;
