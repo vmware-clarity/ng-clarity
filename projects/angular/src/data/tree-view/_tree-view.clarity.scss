@@ -113,12 +113,7 @@
 
     //Dimensions
     &:first-child {
-      @include mixins.css-var(
-        margin-left,
-        clr-tree-node-content-margin-left,
-        tree-view-variables.$clr-tree-node-touch-target,
-        variables.$clr-use-custom-properties
-      );
+      margin-left: tree-view-variables.$clr-tree-node-touch-target;
     }
 
     &.clr-treenode-text-only {
@@ -157,12 +152,7 @@
         tree-view-variables.$clr-tree-caret-size,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        margin-right,
-        clr-tree-node-content-icon-margin-right,
-        tree-view-variables.$clr-tree-node-content-icon-margin-right,
-        variables.$clr-use-custom-properties
-      );
+      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right;
       vertical-align: middle;
     }
   }
@@ -223,12 +213,7 @@
       tree-view-variables.$clr-tree-node-touch-target,
       variables.$clr-use-custom-properties
     );
-    @include mixins.css-var(
-      padding,
-      clr-tree-caret-padding,
-      tree-view-variables.$clr-tree-caret-padding,
-      variables.$clr-use-custom-properties
-    );
+    padding: 0;
 
     //Others
     background: none;
@@ -263,11 +248,7 @@
 
   .clr-tree-node-caret-icon {
     //Dimensions
-    @include mixins.equilateral-var(
-      clr-tree-caret-size,
-      tree-view-variables.$clr-tree-caret-size,
-      variables.$clr-use-custom-properties
-    );
+    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
 
     //Others
     vertical-align: middle;
@@ -288,12 +269,7 @@
 
   .clr-treenode-children {
     //Dimensions
-    @include mixins.css-var(
-      margin-left,
-      clr-tree-node-children-margin,
-      tree-view-variables.$clr-tree-node-children-margin,
-      variables.$clr-use-custom-properties
-    );
+    margin-left: tree-view-variables.$clr-tree-node-children-margin;
     will-change: height;
     overflow-y: hidden;
   }
@@ -305,12 +281,7 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    @include mixins.css-var(
-      padding,
-      clr-tree-node-content-padding,
-      0 0 0 tree-view-variables.$clr-tree-node-link-padding-left,
-      variables.$clr-use-custom-properties
-    );
+    padding: tree-view-variables.$clr-tree-node-content-padding;
 
     //Others
     background: transparent;

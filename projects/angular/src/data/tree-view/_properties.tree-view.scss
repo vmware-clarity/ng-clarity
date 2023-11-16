@@ -39,21 +39,9 @@
     --clr-tree-link-text-color: var(--clr-color-neutral-700);
     --clr-tree-node-content-line-height: #{tokens.$cds-global-space-7};
     // new to remove?
-    --clr-tree-caret-size: #{tokens.$cds-global-space-7};
-    --clr-tree-node-touch-target: #{tokens.$cds-global-space-10};
-    --clr-tree-caret-padding: 0;
-    --clr-tree-node-content-icon-margin-right: #{tokens.$cds-global-space-5};
-
-    --clr-tree-node-link-padding-left: 0; // ATM: remove later
-
     --clr-tree-node-font-size: #{tokens.$cds-global-typography-font-size-3};
     --clr-tree-node-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-tree-node-line-height: #{tokens.$cds-global-space-7};
     --clr-tree-node-letter-spacing: var(--clr-p3-letter-spacing);
-
-    --clr-tree-node-content-padding: #{tokens.$cds-global-space-5};
-    --clr-tree-node-content-margin-left: #{tokens.$cds-global-space-10};
-
-    --clr-tree-node-children-margin: #{tokens.$cds-global-space-10};
   }
 }
