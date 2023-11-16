@@ -3,22 +3,17 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../../utils/mixins';
-@use '../../../utils/variables/variables';
+@use '../variables.progress-bars' as progress-bars-variables;
 
-@mixin clr-progress-color(
-  $color: variables.$clr-color-action-600,
-  $color-prop: clr-color-action-600,
-  $use-custom-props: variables.$clr-use-custom-properties
-) {
+@mixin clr-progress-color($color: progress-bars-variables.$clr-progress-default-color) {
   // for IE...
-  @include mixins.css-var(color, $color-prop, $color, $use-custom-props);
+  color: $color;
 
   &::-webkit-progress-value {
-    @include mixins.css-var(background-color, $color-prop, $color, $use-custom-props);
+    background-color: $color;
   }
 
   &::-moz-progress-bar {
-    @include mixins.css-var(background-color, $color-prop, $color, $use-custom-props);
+    background-color: $color;
   }
 }
