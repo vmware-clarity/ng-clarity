@@ -8,12 +8,31 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tree-view' as tree-view-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.tree-view');
 
 @include mixins.exports('tree-view.clarity') {
   .clr-tree-node {
     //Display
     display: block;
+
+    // TODO: add disabled logic with different JIRA task
+    //&.disabled .clr-treenode-caret,
+    //&.disabled .clr-treenode-link,
+    //&.disabled .clr-treenode-content,
+    //&.disabled .clr-treenode-checkbox .clr-control-label,
+    //&.disabled .clr-treenode-checkbox .clr-control-label::before,
+    //&.disabled .clr-treenode-checkbox .clr-control-label::after
+    //{
+    //  color: var(--clr-tree-node-content-disabled-color);
+    //  background-color: var(--clr-tree-node-content-bg-disabled-color);
+    //
+    //    cds-icon,
+    //    clr-icon {
+    //      color: var(--clr-tree-node-caret-link-disabled-color);
+    //    }
+    //}
   }
 
   .clr-tree-node-content-container {
@@ -45,6 +64,40 @@
       tree-view-variables.$clr-tree-node-letter-spacing,
       variables.$clr-use-custom-properties
     );
+
+    & > .clr-treenode-checkbox {
+      width: 100%;
+      padding: 0;
+
+      .clr-control-label {
+        width: 100%;
+        padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-10};
+
+        &:before {
+          left: #{tokens.$cds-global-space-5};
+          top: #{tokens.$cds-global-space-5};
+        }
+
+        &:after {
+          left: #{tokens.$cds-global-space-6};
+          top: #{tokens.$cds-global-space-5};
+        }
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      & > .clr-treenode-content,
+      & > .clr-treenode-checkbox .clr-control-label {
+        outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
+
+        // ATM: Use mixin for outlines
+        // @include mixins.include-slim-outline-style-form-fields();
+        outline: Highlight solid #{tokens.$cds-global-space-2};
+        outline: -webkit-focus-ring-color solid #{tokens.$cds-global-space-2};
+      }
+    }
   }
 
   .clr-treenode-content {
@@ -54,6 +107,9 @@
     flex: 1 1 auto;
     display: flex;
     align-items: center;
+    height: tokens.$cds-global-space-10;
+    color: tokens.$cds-alias-typography-color-400; // static text content color
+    background-color: var(--clr-tree-node-content-bg-color);
 
     //Dimensions
     &:first-child {
@@ -63,6 +119,10 @@
         tree-view-variables.$clr-tree-node-touch-target,
         variables.$clr-use-custom-properties
       );
+    }
+
+    &.clr-treenode-text-only {
+      padding-left: #{tokens.$cds-global-space-5};
     }
 
     //Others
@@ -91,6 +151,7 @@
 
     cds-icon,
     clr-icon {
+      color: #{tokens.$cds-alias-typography-color-400}; // static text content color
       @include mixins.min-equilateral-var(
         clr-tree-caret-size,
         tree-view-variables.$clr-tree-caret-size,
@@ -103,6 +164,44 @@
         variables.$clr-use-custom-properties
       );
       vertical-align: middle;
+    }
+  }
+
+  .clr-treenode-content .clr-treenode-link.active,
+  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+    color: var(--clr-tree-node-content-selected-color);
+    background-color: var(--clr-tree-node-content-bg-selected-color);
+  }
+
+  .clr-treenode-content .clr-treenode-link,
+  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+    border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    color: var(--clr-tree-node-content-color);
+    background-color: var(--clr-tree-node-content-bg-color);
+
+    cds-icon,
+    clr-icon {
+      color: var(--clr-tree-node-content-color);
+    }
+
+    &:hover {
+      color: var(--clr-tree-node-content-hover-color);
+      background-color: var(--clr-tree-node-content-bg-hover-color);
+
+      cds-icon,
+      clr-icon {
+        color: var(--clr-tree-node-content-hover-color);
+      }
+    }
+
+    &:active {
+      color: var(--clr-tree-node-content-active-color);
+      background-color: var(--clr-tree-node-content-bg-active-color);
+
+      cds-icon,
+      clr-icon {
+        color: var(--clr-tree-node-content-active-color);
+      }
     }
   }
 
