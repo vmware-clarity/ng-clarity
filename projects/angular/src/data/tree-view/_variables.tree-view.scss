@@ -24,6 +24,8 @@ $clr-tree-node-link-padding-left: variables.$clr_baselineRem_0_25 !default;
 $clr-tree-node-caret-link-hover-color: variables.$clr-color-neutral-1000 !default;
 $clr-tree-node-caret-link-active-color: variables.$clr-color-neutral-500 !default;
 $clr-tree-node-caret-link-disabled-color: variables.$clr-color-neutral-500 !default;
+// $clr-custom-links-hover-color is deprecated in v17 to be deleted in v18.
+// Remove reference during shim removal.
 $clr-tree-link-hover-color: nav-variables.$clr-custom-links-hover-color !default;
 $clr-tree-link-selection-color: variables.$clr-global-selection-color !default;
 $clr-tree-link-text-color: variables.$clr-color-neutral-700 !default;

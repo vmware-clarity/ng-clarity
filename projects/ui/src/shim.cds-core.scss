@@ -359,20 +359,6 @@
     }
   }
 
-  /* Navigation */
-
-  --clr-link-active-color: #{tokens.$cds-alias-typography-link-color};
-  --clr-link-color: #{tokens.$cds-alias-typography-link-color}; // var(--clr-color-action-600);
-  --clr-link-hover-color: #{tokens.$cds-alias-typography-link-color-hover}; // var(--clr-color-action-600);
-  --clr-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
-  --clr-link-visited-color-hover: #{tokens.$cds-alias-typography-link-color-visited-hover};
-  --clr-link-font-weight: inherit;
-  --clr-link-font-size: inherit;
-  --clr-link-line-height: inherit;
-  --clr-link-letter-spacing: inherit;
-
-  --clr-custom-links-hover-color: #{tokens.$cds-global-color-gray-200}; // var(--clr-color-neutral-200);
-
   /* Responsive Navigation */
 
   --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // var(--clr-color-neutral-700);
