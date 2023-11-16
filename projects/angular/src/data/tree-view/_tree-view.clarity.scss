@@ -69,13 +69,13 @@
 
     &:focus-visible {
       outline: none;
+    }
 
-      & > .clr-treenode-content,
-      & > .clr-treenode-checkbox .clr-control-label {
-        outline-offset: calc(-1 * #{tokens.$cds-alias-object-border-width-200});
+    &:focus > .clr-treenode-content,
+    &:focus > .clr-treenode-checkbox .clr-control-label {
+      outline-offset: calc(-1 * tokens.$cds-alias-object-border-width-200);
 
-        @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
-      }
+      @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
     }
   }
 
@@ -182,9 +182,7 @@
   .clr-treenode-spinner-container {
     //Dimensions
     @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
-    padding: calc(
-      (#{tree-view-variables.$clr-tree-node-touch-target} - #{tree-view-variables.$clr-tree-spinner-size}) * 0.5
-    );
+    padding: calc((tree-view-variables.$clr-tree-node-touch-target - tree-view-variables.$clr-tree-spinner-size) * 0.5);
   }
 
   .clr-treenode-spinner {
