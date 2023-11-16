@@ -25,12 +25,11 @@
     $box-shadow-default: inset accordion-variables.$clr-accordion-border-left-width 0 0
       accordion-variables.$clr-accordion-border-left-color;
     color: accordion-variables.$clr-accordion-text-color;
-    border: tokens.$cds-global-space-1 solid;
-    border-color: accordion-variables.$clr-accordion-border-color;
     box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
     background: accordion-variables.$clr-accordion-header-background-color;
     transition: all 200ms ease-in-out;
-    border-bottom: 0;
+    border: solid accordion-variables.$clr-accordion-border-color;
+    border-bottom-width: 0;
     width: 100%;
     font-size: accordion-variables.$clr-accordion-header-font-size;
     text-align: left;
@@ -90,7 +89,7 @@
     text-align: left;
     cursor: pointer;
     color: inherit;
-    gap: 0;
+    gap: accordion-variables.$clr-accordion-header-gap;
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       flex-flow: row;
     }
