@@ -25,7 +25,7 @@ jobs:
       - name: Update to Angular v16
         if: ${{matrix.angular == 'Angular v16'}}
         run: |
-          npx ng update @angular/core@16 @angular/cli@16 @angular/cdk@16 --force
+          npx ng update @angular/core@16 @angular/common@16 @angular/cli@16 @angular/cdk@16 --force
       - name: Install Alternate @cds/core Version
         if: ${{matrix.cds-core != ''}}
         run: npm install ${{matrix.cds-core}}
