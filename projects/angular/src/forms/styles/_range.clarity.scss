@@ -96,7 +96,6 @@
     }
     &:disabled::-moz-range-thumb {
       border: 0;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
@@ -166,7 +165,6 @@
 
     &::-moz-range-thumb {
       border: 0;
-      transform: translate(0, var(--clr-forms-range-thumb-margin-top, forms-variables.$clr-forms-range-thumb-margin));
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-margin,
