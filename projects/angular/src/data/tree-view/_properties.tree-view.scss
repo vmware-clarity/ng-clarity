@@ -14,28 +14,33 @@
 
     // @deprecated in v17 replaced by clr-tree-node-caret-link-color. Will be removed in v18.
     --clr-tree-node-caret-color: #{tokens.$cds-alias-object-interaction-color};
+    // @deprecated in v17 in favor of clr-tree-node-content-bg-hover-color
+    --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+    // @deprecated in v17 in favor of clr-tree-node-content-bg-selected-color
+    --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    // @deprecated in v17 in favor of clr-tree-node-content-color
+    --clr-tree-link-text-color: #{tokens.$cds-alias-object-interaction-color};
+
     --clr-tree-node-caret-link-color: var(--clr-tree-node-caret-color);
     --clr-tree-node-caret-link-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-tree-node-caret-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-tree-node-caret-link-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
-    // @deprecated  in v17 in favor of clr-tree-node-content-bg-hover-color
-    --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
-    // @deprecated  in v17 in favor of clr-tree-node-content-bg-selected-color
-    --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-tree-node-content-text-only-color: #{tokens.$cds-alias-typography-color-400};
 
-    --clr-tree-node-content-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-tree-node-content-color: var(--clr-tree-link-text-color);
     --clr-tree-node-content-bg-color: #{tokens.$cds-alias-object-opacity-0};
+
     --clr-tree-node-content-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-tree-node-content-bg-hover-color: var(--clr-tree-link-hover-color);
+
     --clr-tree-node-content-active-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-tree-node-content-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+
     --clr-tree-node-content-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
     --clr-tree-node-content-bg-selected-color: var(--clr-tree-link-selection-color);
+
     --clr-tree-node-content-disabled-color: #{tokens.$cds-alias-typography-disabled};
     --clr-tree-node-content-bg-disabled-color: #{tokens.$cds-alias-object-opacity-0};
-
-    //unknown
-    --clr-tree-link-text-color: var(--clr-color-neutral-700);
   }
 }
