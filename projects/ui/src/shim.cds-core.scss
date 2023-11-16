@@ -336,16 +336,6 @@
   --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
   --clr-forms-datalist-caret-icon-size: #{tokens.$cds-global-space-7};
 
-  // Textarea
-  --clr-forms-textarea-focus-background: #{tokens.$cds-alias-object-interaction-background-selected};
-  --clr-forms-textarea-focus-outline: #{tokens.$cds-alias-object-interaction-background-highlight};
-  --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
-  --clr-forms-textarea-disabled-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
-  --clr-forms-textarea-padding: #{tokens.$cds-global-space-7};
-  --clr-forms-textarea-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-forms-textarea-wrapper-margin-left: #{tokens.$cds-global-space-5};
-  --clr-forms-textarea-wrapper-margin-top: #{tokens.$cds-global-space-5};
-
   /* Header */
 
   // NOTE: Header variables don't always have corresponding alias color or size design token values.

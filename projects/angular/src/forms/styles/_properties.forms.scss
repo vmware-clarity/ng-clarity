@@ -121,25 +121,10 @@
 
         // Textarea
         --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
+        --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
+        --clr-forms-textarea-border-radius: #{tokens.$cds-alias-object-border-radius-100};
       }
-      --clr-forms-textarea-focused-outline: 0
-        0
-        #{variables.$clr_baselineRem_2px}
-        #{variables.$clr_baselineRem_2px}
-        #{mixins.$clr-outline-color};
-      --clr-forms-textarea-invalid-focused-outline: 0
-        0
-        #{variables.$clr_baselineRem_2px}
-        #{variables.$clr_baselineRem_2px}
-        #{color.adjust(variables.$clr-color-danger-800, $lightness: 30%)};
-      --clr-forms-textarea-padding: calc(#{forms-variables.$clr-forms-baseline} + #{variables.$clr_baselineRem_2px})
-        calc(#{forms-variables.$clr-forms-baseline} * 2);
-      --clr-forms-textarea-wrapper-margin-left: 0;
-      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
-      --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
-
       // Datalist
-
       --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
       --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
