@@ -36,9 +36,9 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   outline-offset: variables.$clr_baselineRem_1px;
 }
 
-@mixin include-slim-outline-style-form-fields() {
-  outline: Highlight solid variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+@mixin include-slim-outline-style-form-fields($width: variables.$clr_baselineRem_2px) {
+  outline: Highlight solid $width;
+  outline: -webkit-focus-ring-color solid $width;
 }
 
 @mixin include-outline-style-links() {
