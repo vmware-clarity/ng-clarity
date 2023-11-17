@@ -78,8 +78,14 @@
       }
 
       .title {
-        @include mixins.generate-typography-token('DISPLAY-40');
+        @include mixins.generate-typography-token(
+          'DISPLAY-40',
+          (
+            font-weight: login-variables.$clr-login-title-font-weight,
+          )
+        );
         color: login-variables.$clr-login-title-color;
+        font-family: login-variables.$clr-login-title-font-family;
 
         .welcome {
           color: login-variables.$clr-login-welcome-color;
@@ -89,7 +95,7 @@
         .trademark // @deprecated in v17
         .subtitle, // @deprecated in v17
         .hint {
-          @include mixins.generate-typography-token('SECTION-20-std');
+          @include mixins.generate-typography-token('SECTION-20-STD');
           color: login-variables.$clr-login-hint-color;
           margin: #{tokens.$cds-global-space-5} 0 0 0;
         }
@@ -158,7 +164,7 @@
         }
 
         .error {
-          @include mixins.generate-typography-token('SECONDARY-13-RG-std');
+          @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
           display: none;
           padding: tokens.$cds-global-space-5;
           background: login-variables.$clr-login-error-background-color;
