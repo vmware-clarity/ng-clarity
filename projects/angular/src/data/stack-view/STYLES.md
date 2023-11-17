@@ -4,6 +4,7 @@
 
 | CSS Custom Property                                                    | Description                                                           |
 | ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| --clr-stack-view-border-width                                          | Stack view border width                                               |
 | --clr-stack-view-border-radius                                         | Border radius of stack view                                           |
 | --clr-stack-view-border-color                                          | Border color of stack view                                            |
 | --clr-stack-view-bg-color                                              | Background color of stack view                                        |
@@ -24,13 +25,6 @@
 | --clr-stack-view-stack-block-expandable-bg-hover                       | Stack view stack block expandable background color                    |
 | --clr-stack-view-stack-block-expandable-active                         | Stack view stack block expandable active (opened) color               |
 | --clr-stack-view-stack-block-expandable-bg-active                      | Stack view stack-block expandable active background color             |
-| --clr-stack-view-border-width                                          | Stack view border width                                               |
-| --clr-stack-view-stack-block-label-padding                             | Stack view stack block label padding                                  |
-| --clr-stack-view-key-margin                                            | Stack view key block margin                                           |
-| --clr-stack-view-border-radius                                         | Stack view border radius                                              |
-| --clr-stack-view-stack-block-caret-dimension                           | Stack view stack block caret dimension                                |
-| --clr-stack-view-stack-children-block-label-padding-left               | Stack view stack children block label padding                         |
-| --clr-stack-view-stack-title-padding                                   | Stack view stack title padding                                        |
 | --clr-stack-view-stack-block-label-font-size                           | Font size for stack view block label                                  |
 | --clr-stack-view-stack-block-label-font-weight                         | Font weight for stack view block label                                |
 | --clr-stack-view-stack-block-label-line-height                         | Line height for stack view block label                                |

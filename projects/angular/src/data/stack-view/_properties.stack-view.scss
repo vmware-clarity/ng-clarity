@@ -41,16 +41,6 @@
 
     --clr-stack-view-stack-block-content-text-color: #{tokens.$cds-alias-object-interaction-color};
 
-    --clr-stack-view-stack-block-label-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
-    --clr-stack-view-key-margin: 0 #{tokens.$cds-global-space-7} 0 0;
-    --clr-stack-view-stack-block-caret-margin-right: #{tokens.$cds-global-space-5}; // ATM: remove this property
-    --clr-stack-view-stack-block-caret-dimension: #{tokens.$cds-global-space-7};
-    --clr-stack-view-block-label-before-margin: #{tokens.$cds-global-space-3} #{tokens.$cds-global-space-5} 0 0; // ATM remove this property
-    --clr-stack-view-stack-children-block-label-padding-left: #{tokens.$cds-global-space-12};
-    --clr-stack-view-stack-children-block-content-padding-left: 0; // ATM remove this property
-    --clr-stack-view-stack-title-padding: 0 0 #{tokens.$cds-global-space-5};
-    --clr-stack-view-stack-title-btn-margin-right: 0; // ATM remove this property
-
     // ATM remove typography property
     --clr-stack-view-stack-title-font-size: #{tokens.$cds-global-typography-font-size-5};
     --clr-stack-view-stack-title-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
@@ -66,8 +56,6 @@
     --clr-stack-view-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-stack-view-line-height: var(--clr-p4-line-height);
     --clr-stack-view-letter-spacing: var(--clr-p4-letter-spacing);
-
-    --clr-stack-view-block-expanded-border-bottom-style: solid; // ATM: remove this property
 
     // ATM: remove and replace all caret occurrences with respected text color
     --clr-stack-view-stack-block-caret-color: #{tokens.$cds-alias-object-interaction-color};

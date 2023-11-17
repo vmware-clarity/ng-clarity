@@ -11,6 +11,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.stack-view' as stack-view-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @mixin lastElementBottomBorder($use-custom-props: true) {
   border-bottom: none;
@@ -41,12 +42,7 @@
         variables.$clr-h4-color,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        padding,
-        clr-stack-view-stack-title-padding,
-        variables.$clr_baselineRem_0_25 0,
-        variables.$clr-use-custom-properties
-      );
+      padding: 0 0 tokens.$cds-global-space-5;
 
       @include mixins.css-var(
         font-weight,
@@ -90,15 +86,7 @@
         }
 
         &.btn-link {
-          // ATM delete this margin right
-          // Weird negative margin to make the button aligned with the stack view
-          // in its default state. It then looks unaligned on hover only.
-          @include mixins.css-var(
-            margin-right,
-            clr-stack-view-stack-title-btn-margin-right,
-            -1 * variables.$clr_baselineRem_0_5,
-            variables.$clr-use-custom-properties
-          );
+          margin-right: 0;
         }
       }
     }
@@ -109,13 +97,8 @@
     word-wrap: break-word;
     margin-top: 0;
     border-style: solid;
+    border-width: stack-view-variables.$clr-stack-view-border-width;
 
-    @include mixins.css-var(
-      border-width,
-      clr-stack-view-border-width,
-      stack-view-variables.$clr-stack-view-border-width,
-      variables.$clr-use-custom-properties
-    );
     @include mixins.css-var(
       border-color,
       clr-stack-view-border-color,
@@ -179,12 +162,7 @@
       flex-flow: row wrap;
       overflow-y: hidden;
       border-bottom-style: solid;
-      @include mixins.css-var(
-        border-bottom-width,
-        clr-stack-view-border-width,
-        variables.$clr-global-borderwidth,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
       @include mixins.css-var(
         border-bottom-color,
         clr-stack-view-stack-block-border-bottom,
@@ -222,12 +200,8 @@
     }
 
     .stack-block-label {
-      @include mixins.css-var(
-        padding,
-        clr-stack-view-stack-block-label-padding,
-        variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+
       @include mixins.css-var(
         background-color,
         clr-stack-view-stack-block-label-and-content-bg-color,
@@ -289,17 +263,8 @@
         display: inline-block;
         content: '';
         float: left;
-        @include mixins.equilateral-var(
-          clr-stack-view-stack-block-caret-dimension,
-          variables.$clr_baselineRem_0_583,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          margin,
-          clr-stack-view-block-label-before-margin,
-          (variables.$clr_baselineRem_0_25 + variables.$clr_baselineRem_1px) variables.$clr_baselineRem_0_2 0 0,
-          variables.$clr-use-custom-properties
-        );
+        @include mixins.equilateral(tokens.$cds-global-space-7);
+        margin: tokens.$cds-global-space-3 tokens.$cds-global-space-5 0 0;
         text-align: center;
       }
 
@@ -312,22 +277,12 @@
     .stack-view-key {
       flex: 0 0 40%;
       max-width: 40%;
-
-      @include mixins.css-var(margin, clr-stack-view-key-margin, 0, variables.$clr-use-custom-properties);
+      margin: 0 tokens.$cds-global-space-7 0 0;
     }
 
     .stack-block-caret {
-      @include mixins.equilateral-var(
-        clr-stack-view-stack-block-caret-dimension,
-        variables.$clr_baselineRem_0_583,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        margin-right,
-        clr-stack-view-stack-block-caret-margin-right,
-        variables.$clr_baselineRem_0_2,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.equilateral(tokens.$cds-global-space-7);
+      margin-right: tokens.$cds-global-space-5;
       @include mixins.css-var(
         fill,
         clr-stack-view-stack-block-caret-color,
@@ -394,11 +349,7 @@
           background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           @include images.icon-background-styles();
           transform: rotate(-90deg);
-          @include mixins.equilateral-var(
-            clr-stack-view-stack-block-caret-dimension,
-            variables.$clr_baselineRem_0_5,
-            variables.$clr-use-custom-properties
-          );
+          @include mixins.equilateral(tokens.$cds-global-space-7);
         }
       }
       > .stack-block-label,
@@ -465,20 +416,8 @@
       }
 
       > .stack-block-label {
-        // ATM
-        // replace the mixin with border-bottom-style: solid
-        @include mixins.css-var(
-          border-bottom-style,
-          clr-stack-view-block-expanded-border-bottom-style,
-          none,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          border-bottom-width,
-          clr-stack-view-border-width,
-          variables.$clr-global-borderwidth,
-          variables.$clr-use-custom-properties
-        );
+        border-bottom-style: solid;
+        border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
         @include mixins.css-var(
           border-bottom-color,
           clr-stack-view-stack-block-border-bottom,
@@ -577,25 +516,11 @@
     .stack-children clr-stack-block,
     .stack-children {
       .stack-block-label {
-        @include mixins.css-var(
-          padding-left,
-          clr-stack-view-stack-children-block-label-padding-left,
-          variables.$clr_baselineRem_1_5,
-          variables.$clr-use-custom-properties
-        );
+        padding-left: tokens.$cds-global-space-12;
 
         &::before {
           display: none;
         }
-      }
-      .stack-block-content {
-        // ATM remove this padding-left calculation
-        @include mixins.css-var(
-          padding-left,
-          clr-stack-view-stack-children-block-content-padding-left,
-          variables.$clr_baselineRem_0_3,
-          variables.$clr-use-custom-properties
-        );
       }
     }
   }
