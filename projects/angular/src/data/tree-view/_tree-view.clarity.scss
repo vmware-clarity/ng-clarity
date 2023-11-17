@@ -29,7 +29,7 @@
     //
     //    cds-icon,
     //    clr-icon {
-    //      color: var(--clr-tree-node-caret-link-disabled-color);
+    //      color: var(--clr-tree-node-caret-disabled-color);
     //    }
     //}
   }
@@ -161,13 +161,13 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: tree-view-variables.$clr-tree-node-caret-link-color;
+    color: tree-view-variables.$clr-tree-node-caret-color;
 
     &:hover {
-      color: tree-view-variables.$clr-tree-node-caret-link-hover-color;
+      color: tree-view-variables.$clr-tree-node-caret-hover-color;
     }
     &:active {
-      color: tree-view-variables.$clr-tree-node-caret-link-active-color;
+      color: tree-view-variables.$clr-tree-node-caret-active-color;
     }
   }
 

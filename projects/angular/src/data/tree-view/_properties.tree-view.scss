@@ -12,19 +12,23 @@
     // Usage: ../data/tree-view/_tree-view.clarity.scss
     --clr-tree-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
-    // @deprecated in v17 replaced by clr-tree-node-caret-link-color. Will be removed in v18.
-    --clr-tree-node-caret-color: #{tokens.$cds-alias-object-interaction-color};
     // @deprecated in v17 in favor of clr-tree-node-content-bg-hover-color
     --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     // @deprecated in v17 in favor of clr-tree-node-content-bg-selected-color
     --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
     // @deprecated in v17 in favor of clr-tree-node-content-color
     --clr-tree-link-text-color: #{tokens.$cds-alias-object-interaction-color};
-
-    --clr-tree-node-caret-link-color: var(--clr-tree-node-caret-color);
+    // @deprecated in v17 favor of clr-tree-node-caret-hover-color. Will be removed in v18.
     --clr-tree-node-caret-link-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+    // @deprecated in v17 favor of clr-tree-node-caret-active-color. Will be removed in v18.
     --clr-tree-node-caret-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+    // @deprecated in v17 favor of clr-tree-node-caret-disabled-color. Will be removed in v18.
     --clr-tree-node-caret-link-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+
+    --clr-tree-node-caret-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-tree-node-caret-hover-color: var(--clr-tree-node-caret-link-hover-color);
+    --clr-tree-node-caret-active-color: var(--clr-tree-node-caret-link-active-color);
+    --clr-tree-node-caret-disabled-color: var(--clr-tree-node-caret-link-disabled-color);
 
     --clr-tree-node-content-text-only-color: #{tokens.$cds-alias-typography-color-400};
 

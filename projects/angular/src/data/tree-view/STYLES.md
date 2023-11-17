@@ -5,14 +5,16 @@
 | CSS Custom Property                       | Description                                                               |
 | ----------------------------------------- | ------------------------------------------------------------------------- |
 | --clr-tree-border-radius                  | Tree node content border radius                                           |
-| --clr-tree-node-caret-color               | Deprecated in v17 in favor of `--clr-tree-node-caret-link-color`          |
+| --clr-tree-node-caret-link-hover-color    | Deprecated in v17 in favor of `--clr-tree-node-caret-hover-color`         |
+| --clr-tree-node-caret-link-active-color   | Deprecated in v17 in favor of `--clr-tree-node-caret-active-color`        |
+| --clr-tree-node-caret-link-disabled-color | Deprecated in v17 in favor of `--clr-tree-node-caret-disabled-color`      |
 | --clr-tree-link-hover-color               | Deprecated in v17 in favor of `--clr-tree-node-content-bg-hover-color`    |
 | --clr-tree-link-selection-color           | Deprecated in v17 in favor of `--clr-tree-node-content-bg-selected-color` |
 | --clr-tree-link-text-color                | Deprecated in v17 in favor of `--clr-tree-node-content-color`             |
-| --clr-tree-node-caret-link-color          | Tree node caret color                                                     |
-| --clr-tree-node-caret-link-hover-color    | Caret hover color                                                         |
-| --clr-tree-node-caret-link-active-color   | Caret active color                                                        |
-| --clr-tree-node-caret-link-disabled-color | Caret disabled color                                                      |
+| --clr-tree-node-caret-color               | Tree node caret color                                                     |
+| --clr-tree-node-caret-hover-color         | Tree node caret hover color                                               |
+| --clr-tree-node-caret-active-color        | Tree node caret active color                                              |
+| --clr-tree-node-caret-disabled-color      | Tree node caret disabled color                                            |
 | --clr-tree-node-content-text-only-color   | Tree node content text only color                                         |
 | --clr-tree-node-content-color             | Tree node content color                                                   |
 | --clr-tree-node-content-bg-color          | Tree node content background color                                        |

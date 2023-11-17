@@ -27,13 +27,17 @@ $clr-tree-link-hover-color: var(--clr-tree-node-content-bg-hover-color) !default
 $clr-tree-link-selection-color: var(--clr-tree-node-content-bg-selected-color) !default;
 // @deprecated in v17 in favor of clr-tree-node-content-color
 $clr-tree-link-text-color: var(--clr-tree-node-content-color) !default;
-// $clr-tree-node-caret-color is deprecated in v17.
-$clr-tree-node-caret-color: var(--clr-tree-node-caret-link-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-hover-color
+$clr-tree-node-caret-link-hover-color: var(--clr-tree-node-caret-hover-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-active-color
+$clr-tree-node-caret-link-active-color: var(--clr-tree-node-caret-active-color) !default;
+// @deprecated in v17 in favor of $clr-tree-node-caret-disabled-color
+$clr-tree-node-caret-link-disabled-color: var(--clr-tree-node-caret-disabled-color) !default;
 
-$clr-tree-node-caret-link-color: $clr-tree-node-caret-color !default;
-$clr-tree-node-caret-link-hover-color: var(--clr-tree-node-caret-link-hover-color) !default;
-$clr-tree-node-caret-link-active-color: var(--clr-tree-node-caret-link-active-color) !default;
-$clr-tree-node-caret-link-disabled-color: var(--clr-tree-node-caret-link-disabled-color) !default;
+$clr-tree-node-caret-color: var(--clr-tree-node-caret-color) !default;
+$clr-tree-node-caret-hover-color: $clr-tree-node-caret-link-hover-color !default;
+$clr-tree-node-caret-active-color: $clr-tree-node-caret-link-active-color !default;
+$clr-tree-node-caret-disabled-color: $clr-tree-node-caret-link-disabled-color !default;
 
 $clr-tree-node-content-text-only-color: var(--clr-tree-node-content-text-only-color) !default;
 
