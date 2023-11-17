@@ -36,9 +36,11 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   outline-offset: variables.$clr_baselineRem_1px;
 }
 
-@mixin include-slim-outline-style-form-fields() {
-  outline: Highlight solid variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: solid;
+  outline-width: $width;
 }
 
 @mixin include-outline-style-links() {
