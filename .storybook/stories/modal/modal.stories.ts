@@ -25,6 +25,7 @@ const defaultStory: Story = args => ({
       [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
       [clrModalLabelledById]="clrModalLabelledById"
       [clrModalOpen]="clrModalOpen"
+      [clrModalOverrideScrollService]="clrModalOverrideScrollService"
       [clrModalPreventClose]="clrModalPreventClose"
       [clrModalSize]="clrModalSize"
       [clrModalSkipAnimation]="clrModalSkipAnimation"
