@@ -2,18 +2,28 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                    | Description                     |
-| -------------------------------------- | ------------------------------- |
-| --clr-tree-border-radius               | Tree node content border radius |
-| --clr-tree-node-caret-link-hover-color | Caret hover color               |
-| --clr-tree-link-hover-color            | Tree link hover color           |
-| --clr-tree-link-selection-color        | Selected link background color  |
-| --clr-tree-link-text-color             | Tree link default font color    |
-| --clr-tree-node-caret-color            | Tree link caret color           |
-| --clr-tree-node-font-size              | Font size of the text           |
-| --clr-tree-node-font-weight            | Font weight of the text         |
-| --clr-tree-node-line-height            | Node line height                |
-| --clr-tree-node-letter-spacing         | Letter spacing of the text      |
+| CSS Custom Property                       | Description                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------- |
+| --clr-tree-border-radius                  | Tree node content border radius                                           |
+| --clr-tree-node-caret-link-hover-color    | Deprecated in v17 in favor of `--clr-tree-node-caret-hover-color`         |
+| --clr-tree-node-caret-link-active-color   | Deprecated in v17 in favor of `--clr-tree-node-caret-active-color`        |
+| --clr-tree-node-caret-link-disabled-color | Deprecated in v17 in favor of `--clr-tree-node-caret-disabled-color`      |
+| --clr-tree-link-hover-color               | Deprecated in v17 in favor of `--clr-tree-node-content-bg-hover-color`    |
+| --clr-tree-link-selection-color           | Deprecated in v17 in favor of `--clr-tree-node-content-bg-selected-color` |
+| --clr-tree-link-text-color                | Deprecated in v17 in favor of `--clr-tree-node-content-color`             |
+| --clr-tree-node-caret-color               | Tree node caret color                                                     |
+| --clr-tree-node-caret-hover-color         | Tree node caret hover color                                               |
+| --clr-tree-node-caret-active-color        | Tree node caret active color                                              |
+| --clr-tree-node-caret-disabled-color      | Tree node caret disabled color                                            |
+| --clr-tree-node-content-text-only-color   | Tree node content text only color                                         |
+| --clr-tree-node-content-color             | Tree node content color                                                   |
+| --clr-tree-node-content-bg-color          | Tree node content background color                                        |
+| --clr-tree-node-content-hover-color       | Tree node content hover color                                             |
+| --clr-tree-node-content-bg-hover-color    | Tree node content background hover color                                  |
+| --clr-tree-node-content-color             | Tree node content selected color                                          |
+| --clr-tree-node-content-bg-selected-color | Tree node content background selected color                               |
+| --clr-tree-node-content-disabled-color    | Tree node content disabled color                                          |
+| --clr-tree-node-content-bg-disabled-color | Tree node content background disabled color                               |
 
 ## CSS Classes
 
