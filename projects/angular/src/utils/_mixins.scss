@@ -397,6 +397,14 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
     // suitable token not found
   ),
+  'LINK-14': (
+    // Link Text, Link Text Inverse
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    line-height: #{tokens.$cds-global-space-9},
+    // 1.7142857em
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'BUTTON-12': (
     // Buttons
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
