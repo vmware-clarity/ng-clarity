@@ -9,6 +9,7 @@
 | --clr-progress-alt-color-2   | Danger color     |
 | --clr-progress-alt-color-3   | Warning color    |
 | --clr-progress-bg-color      | Background color |
+| --clr-progress-label-color   | Label color      |
 
 ## CSS Classes
 
