@@ -78,14 +78,8 @@
       }
 
       .title {
-        @include mixins.generate-typography-token(
-          'DISPLAY-40',
-          (
-            font-weight: login-variables.$clr-login-title-font-weight,
-          )
-        );
+        @include mixins.generate-typography-token('DISPLAY-40');
         color: login-variables.$clr-login-title-color;
-        font-family: login-variables.$clr-login-title-font-family;
 
         .welcome {
           color: login-variables.$clr-login-welcome-color;

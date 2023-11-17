@@ -7,8 +7,6 @@
 @use '../emphasis/alert/variables.alert' as alert-variables;
 
 $clr-login-title-color: var(--clr-login-title-color) !default;
-$clr-login-title-font-weight: var(--clr-login-title-font-weight) !default;
-$clr-login-title-font-family: var(--clr-login-title-font-family) !default;
 $clr-login-hint-color: var(--clr-login-hint-color) !default;
 $clr-login-footer-gap: var(--clr-login-footer-gap) !default;
 $clr-login-copyright-color: var(--clr-login-copyright-color) !default;

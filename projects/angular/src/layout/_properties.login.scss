@@ -12,8 +12,6 @@
   :root {
     [cds-theme] {
       --clr-login-title-color: #{tokens.$cds-alias-typography-color-400};
-      --clr-login-title-font-weight: #{tokens.$cds-alias-typography-display-font-weight};
-      --clr-login-title-font-family: inherit;
       --clr-login-hint-color: #{tokens.$cds-alias-typography-color-400};
       --clr-login-footer-gap: #{tokens.$cds-global-space-7};
       --clr-login-copyright-color: #{tokens.$cds-alias-typography-link-color};
