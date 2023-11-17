@@ -121,6 +121,11 @@
 
         // Textarea
         --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
+
+        // Datalist
+        --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
+        --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
+        --clr-forms-datalist-caret-icon-size: #{tokens.$cds-global-space-7};
       }
       --clr-forms-textarea-focused-outline: 0
         0
@@ -137,12 +142,6 @@
       --clr-forms-textarea-wrapper-margin-left: 0;
       --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
       --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
-
-      // Datalist
-
-      --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
-      --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
-      --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
     }
   }
 }
