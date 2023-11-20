@@ -28,7 +28,7 @@
     box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
     background: accordion-variables.$clr-accordion-header-background-color;
     transition: all 200ms ease-in-out;
-    border: solid accordion-variables.$clr-accordion-border-color;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom-width: 0;
     width: 100%;
     font-size: accordion-variables.$clr-accordion-header-font-size;
