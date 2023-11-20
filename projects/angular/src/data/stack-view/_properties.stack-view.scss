@@ -41,21 +41,10 @@
 
     --clr-stack-view-stack-block-content-text-color: #{tokens.$cds-alias-object-interaction-color};
 
-    // ATM remove typography property
-    --clr-stack-view-stack-title-font-size: #{tokens.$cds-global-typography-font-size-5};
-    --clr-stack-view-stack-title-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-    --clr-stack-view-stack-title-line-height: var(--clr-p3-line-height);
-    --clr-stack-view-stack-title-letter-spacing: var(--clr-p3-letter-spacing);
-
     --clr-stack-view-stack-block-label-font-size: #{tokens.$cds-global-typography-font-size-3};
     --clr-stack-view-stack-block-label-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-stack-view-stack-block-label-line-height: var(--clr-p4-line-height);
     --clr-stack-view-stack-block-label-letter-spacing: var(--clr-p4-letter-spacing);
-
-    --clr-stack-view-font-size: #{tokens.$cds-global-typography-font-size-3};
-    --clr-stack-view-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
-    --clr-stack-view-line-height: var(--clr-p4-line-height);
-    --clr-stack-view-letter-spacing: var(--clr-p4-letter-spacing);
 
     // ATM: remove and replace all caret occurrences with respected text color
     --clr-stack-view-stack-block-caret-color: #{tokens.$cds-alias-object-interaction-color};

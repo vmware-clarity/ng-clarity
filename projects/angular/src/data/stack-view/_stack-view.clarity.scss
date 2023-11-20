@@ -13,81 +13,35 @@
 @use 'variables.stack-view' as stack-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
-@mixin lastElementBottomBorder($use-custom-props: true) {
+@mixin lastElementBottomBorder() {
   border-bottom: none;
-  $fallbackShadow: 0 variables.$clr_baselineRem_1px 0 stack-view-variables.$clr-stack-view-border-box-color;
-  $shadow: 0 variables.$clr_baselineRem_1px 0 var(--clr-stack-view-border-box-color);
   // IE/OldEdge
-  box-shadow: $fallbackShadow;
-  @if $use-custom-props == true {
-    box-shadow: $shadow;
-  }
+  box-shadow: 0 tokens.$cds-global-space-1 0 stack-view-variables.$clr-stack-view-border-box-color;
 }
 
 @include meta.load-css('properties.stack-view');
 
 @include mixins.exports('stack-view.clarity') {
   .stack-header {
-    font-weight: stack-view-variables.$clr-stack-view-font-weight;
     display: flex;
     align-items: flex-end;
 
     .stack-title {
       display: block;
       flex: 1 1 auto;
+      margin: 0;
+      padding: tokens.$cds-global-space-5 0;
+      color: tokens.$cds-alias-typography-color-400;
 
-      @include mixins.css-var(
-        color,
-        clr-stack-view-title-color,
-        variables.$clr-h4-color,
-        variables.$clr-use-custom-properties
-      );
-      padding: 0 0 tokens.$cds-global-space-5;
-
-      @include mixins.css-var(
-        font-weight,
-        clr-stack-view-stack-title-font-weight,
-        200,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-stack-view-stack-title-font-size,
-        variables.$clr_baselineRem_0_9,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-stack-view-stack-title-line-height,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-stack-view-stack-title-letter-spacing,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.generate-typography-token('SUBSECTION-16-EXP');
     }
 
     .stack-actions {
       display: block;
       flex: 0 0 auto;
 
-      // ATM
-      // delete entire .stack-action section
-      // all margin and padding overloading is not needed
       .stack-action {
-        margin: 0 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_5; // ATM delete this margin
-
-        &.btn {
-          min-width: 0;
-          padding: 0 variables.$clr_baselineRem_0_5; // ATM delete this padding
-        }
-
-        &.btn-link {
-          margin-right: 0;
-        }
+        min-width: tokens.$cds-global-space-11;
       }
     }
   }
@@ -96,57 +50,10 @@
     overflow-y: auto;
     word-wrap: break-word;
     margin-top: 0;
-    border-style: solid;
-    border-width: stack-view-variables.$clr-stack-view-border-width;
-
-    @include mixins.css-var(
-      border-color,
-      clr-stack-view-border-color,
-      stack-view-variables.$clr-stack-view-border-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-radius,
-      clr-stack-view-border-radius,
-      stack-view-variables.$clr-stack-view-border-radius,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      clr-stack-view-color,
-      stack-view-variables.$clr-stack-view-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-weight,
-      clr-stack-view-font-weight,
-      stack-view-variables.$clr-stack-view-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-stack-view-font-size,
-      stack-view-variables.$clr-stack-view-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-stack-view-line-height,
-      stack-view-variables.$clr-stack-view-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-stack-view-letter-spacing,
-      stack-view-variables.$clr-stack-view-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      background-color,
-      clr-stack-view-bg-color,
-      stack-view-variables.$clr-stack-view-bg-color,
-      variables.$clr-use-custom-properties
-    );
+    border: stack-view-variables.$clr-stack-view-border-width solid stack-view-variables.$clr-stack-view-border-color;
+    border-radius: stack-view-variables.$clr-stack-view-border-radius;
+    color: stack-view-variables.$clr-stack-view-color;
+    background-color: stack-view-variables.$clr-stack-view-bg-color;
 
     dd,
     dt {
@@ -161,14 +68,9 @@
       // Wrapping for nested stack-blocks
       flex-flow: row wrap;
       overflow-y: hidden;
-      border-bottom-style: solid;
       border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-stack-view-stack-block-border-bottom,
-        stack-view-variables.$clr-stack-view-stack-block-border-bottom,
-        variables.$clr-use-custom-properties
-      );
+      border-bottom-style: solid;
+      border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
     }
 
     // We have to handle potential nested elements, typically for web components
@@ -177,37 +79,20 @@
       // This way we keep a border-bottom on the last element if the stack view is higher
       // than the total height of the  blocks it contains, but we do not have a
       // weird 1px scroll when both heights match exactly.
-      @include lastElementBottomBorder(variables.$clr-use-custom-properties);
+      @include lastElementBottomBorder();
     }
 
     .stack-block-changed {
       > .stack-block-label {
-        margin-left: -1 * variables.$clr_baselineRem_0_375;
+        padding-left: 0;
       }
       &::before {
         content: ' ';
         position: relative;
         @include mixins.equilateral(0);
-        border-top: variables.$clr_baselineRem_0_375 solid;
-        @include mixins.css-var(
-          border-top-color,
-          clr-stack-block-changed-border-top-color,
-          stack-view-variables.$clr-stack-block-changed-border-top-color,
-          variables.$clr-use-custom-properties
-        );
-        border-right: variables.$clr_baselineRem_0_375 solid transparent;
+        border-top: tokens.$cds-global-space-6 solid stack-view-variables.$clr-stack-block-changed-border-top-color;
+        border-right: tokens.$cds-global-space-6 solid transparent;
       }
-    }
-
-    .stack-block-label {
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
-
-      @include mixins.css-var(
-        background-color,
-        clr-stack-view-stack-block-label-and-content-bg-color,
-        stack-view-variables.$clr-stack-view-stack-block-label-and-content-bg-color,
-        variables.$clr-use-custom-properties
-      );
     }
 
     .stack-block-content {
@@ -219,35 +104,18 @@
     }
 
     .stack-block-label {
-      @include mixins.css-var(
-        color,
-        clr-stack-view-stack-block-label-text-color,
-        stack-view-variables.$clr-stack-view-stack-block-label-text-color,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-stack-view-stack-block-label-font-size,
-        stack-view-variables.$clr-stack-view-stack-block-label-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-weight,
-        clr-stack-view-stack-block-label-font-weight,
-        stack-view-variables.$clr-stack-view-stack-block-label-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-stack-view-stack-block-label-line-height,
-        stack-view-variables.$clr-stack-view-stack-block-label-line-height,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-stack-view-stack-block-label-letter-spacing,
-        stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing,
-        variables.$clr-use-custom-properties
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+      background-color: stack-view-variables.$clr-stack-view-stack-block-label-and-content-bg-color;
+      color: stack-view-variables.$clr-stack-view-stack-block-label-text-color;
+
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-STD',
+        (
+          font-size: stack-view-variables.$clr-stack-view-stack-block-label-font-size,
+          font-weight: stack-view-variables.$clr-stack-view-stack-block-label-font-weight,
+          line-height: stack-view-variables.$clr-stack-view-stack-block-label-line-height,
+          letter-spacing: stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing,
+        )
       );
 
       // We're doing a non-flexible item.
@@ -269,8 +137,11 @@
       }
 
       &:focus {
-        outline: variables.$clr_baselineRem_1px auto -webkit-focus-ring-color;
-        outline-offset: -(variables.$clr_baselineRem_1px);
+        outline-color: Highlight;
+        outline-color: -webkit-focus-ring-color;
+        outline-style: auto;
+        outline-width: tokens.$cds-global-space-1;
+        outline-offset: calc(-1 * tokens.$cds-global-space-1);
       }
     }
 
@@ -283,25 +154,14 @@
     .stack-block-caret {
       @include mixins.equilateral(tokens.$cds-global-space-7);
       margin-right: tokens.$cds-global-space-5;
-      @include mixins.css-var(
-        fill,
-        clr-stack-view-stack-block-caret-color,
-        stack-view-variables.$clr-stack-view-stack-block-caret-color,
-        variables.$clr-use-custom-properties
-      );
+      fill: stack-view-variables.$clr-stack-view-stack-block-caret-color;
     }
 
     .stack-block-content {
-      @include mixins.css-var(
-        color,
-        clr-stack-view-stack-block-content-text-color,
-        stack-view-variables.$clr-stack-view-stack-block-content-text-color,
-        variables.$clr-use-custom-properties
-      );
+      color: stack-view-variables.$clr-stack-view-stack-block-content-text-color;
       flex: 1 1 auto;
       width: 60%;
       margin-bottom: 0;
-      font-weight: stack-view-variables.$clr-stack-view-font-weight;
 
       @include mixins.clr-container;
     }
@@ -311,29 +171,20 @@
       width: 100%;
 
       .stack-block {
-        @include mixins.css-var(
-          border-bottom-color,
-          clr-stack-view-stack-children-stack-block-border-bottom-color,
-          stack-view-variables.$clr-stack-view-stack-children-stack-block-border-bottom-color,
-          variables.$clr-use-custom-properties
-        );
+        border-bottom-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-border-bottom-color;
       }
+
       > .stack-block:last-child,
       > :last-child .stack-block:last-of-type {
         // This way we keep a border-bottom on the last element if the stack view is higher
         // than the total height of the  blocks it contains, but we do not have a
         // weird 1px scroll when both heights match exactly.
-        @include lastElementBottomBorder(variables.$clr-use-custom-properties);
+        @include lastElementBottomBorder();
       }
 
       .stack-block-label,
       .stack-block-content {
-        @include mixins.css-var(
-          background-color,
-          clr-stack-view-stack-children-stack-block-label-and-content-bg-color,
-          stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color,
-          variables.$clr-use-custom-properties
-        );
+        background-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color;
       }
 
       .stack-block-label {
@@ -352,6 +203,7 @@
           @include mixins.equilateral(tokens.$cds-global-space-7);
         }
       }
+
       > .stack-block-label,
       > .stack-block-content {
         transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -359,51 +211,21 @@
 
       &:hover:not(.stack-block-expanded) {
         > .stack-block-label {
-          @include mixins.css-var(
-            color,
-            clr-stack-view-stack-block-expandable-hover,
-            stack-view-variables.$clr-stack-view-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            background-color,
-            clr-stack-view-stack-block-expandable-bg-hover,
-            stack-view-variables.$clr-stack-view-stack-block-expandable-hover,
-            variables.$clr-use-custom-properties
-          );
+          color: var(--clr-stack-view-stack-block-expandable-hover);
+          background-color: var(--clr-stack-view-stack-block-expandable-bg-hover);
 
           .stack-block-caret {
-            @include mixins.css-var(
-              fill,
-              clr-stack-view-stack-block-expandable-hover-caret-color,
-              stack-view-variables.$clr-stack-view-stack-block-caret-color,
-              variables.$clr-use-custom-properties
-            );
+            fill: var(--clr-stack-view-stack-block-expandable-hover-caret-color);
           }
         }
 
         &:active {
           > .stack-block-label {
-            @include mixins.css-var(
-              color,
-              clr-stack-view-stack-block-expandable-active,
-              stack-view-variables.$clr-stack-view-color,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              background-color,
-              clr-stack-view-stack-block-expandable-bg-active,
-              stack-view-variables.$clr-stack-view-stack-block-expandable-hover,
-              variables.$clr-use-custom-properties
-            );
+            color: var(--clr-stack-view-stack-block-expandable-active);
+            background-color: var(--clr-stack-view-stack-block-expandable-bg-active);
 
             .stack-block-caret {
-              @include mixins.css-var(
-                fill,
-                clr-stack-view-stack-block-expandable-active-caret-color,
-                stack-view-variables.$clr-stack-view-stack-block-caret-color,
-                variables.$clr-use-custom-properties
-              );
+              fill: var(--clr-stack-view-stack-block-expandable-active-caret-color);
             }
           }
         }
@@ -416,80 +238,31 @@
       }
 
       > .stack-block-label {
-        border-bottom-style: solid;
         border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
-        @include mixins.css-var(
-          border-bottom-color,
-          clr-stack-view-stack-block-border-bottom,
-          stack-view-variables.$clr-stack-view-stack-block-border-bottom,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          background-color,
-          clr-stack-view-stack-block-expanded-bg-color,
-          stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color,
-          variables.$clr-use-custom-properties
-        );
-        @include mixins.css-var(
-          color,
-          clr-stack-view-stack-block-expanded-text-color,
-          stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
-          variables.$clr-use-custom-properties
-        );
+        border-bottom-style: solid;
+        border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+
+        color: stack-view-variables.$clr-stack-view-stack-block-expanded-text-color;
+        background-color: stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color;
 
         .stack-block-caret {
-          @include mixins.css-var(
-            fill,
-            clr-stack-view-stack-block-expanded-caret-color,
-            stack-view-variables.$clr-stack-view-stack-block-caret-color,
-            variables.$clr-use-custom-properties
-          );
+          fill: var(--clr-stack-view-stack-block-expanded-caret-color);
         }
 
         &:hover {
-          @include mixins.css-var(
-            background-color,
-            clr-stack-view-stack-block-expandable-bg-hover,
-            stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color,
-            variables.$clr-use-custom-properties
-          );
-          @include mixins.css-var(
-            color,
-            clr-stack-view-stack-block-expandable-text-hover,
-            stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
-            variables.$clr-use-custom-properties
-          );
+          color: var(--clr-stack-view-stack-block-expandable-text-hover);
+          background-color: var(--clr-stack-view-stack-block-expandable-bg-hover);
 
           .stack-block-caret {
-            @include mixins.css-var(
-              fill,
-              clr-stack-view-stack-block-expandable-hover-caret-color,
-              stack-view-variables.$clr-stack-view-stack-block-caret-color,
-              variables.$clr-use-custom-properties
-            );
+            fill: var(--clr-stack-view-stack-block-expandable-hover-caret-color);
           }
 
           &:active {
-            @include mixins.css-var(
-              background-color,
-              clr-stack-view-stack-block-expandable-bg-active,
-              stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              color,
-              clr-stack-view-stack-block-expandable-active,
-              stack-view-variables.$clr-stack-view-stack-block-expanded-text-color,
-              variables.$clr-use-custom-properties
-            );
+            color: var(--clr-stack-view-stack-block-expandable-active);
+            background-color: var(--clr-stack-view-stack-block-expandable-bg-active);
 
             .stack-block-caret {
-              @include mixins.css-var(
-                fill,
-                clr-stack-view-stack-block-expandable-active-caret-color,
-                stack-view-variables.$clr-stack-view-stack-block-caret-color,
-                variables.$clr-use-custom-properties
-              );
+              fill: var(--clr-stack-view-stack-block-expandable-active-caret-color);
             }
           }
         }

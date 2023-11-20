@@ -29,10 +29,6 @@
 | --clr-stack-view-stack-block-label-font-weight                         | Font weight for stack view block label                                |
 | --clr-stack-view-stack-block-label-line-height                         | Line height for stack view block label                                |
 | --clr-stack-view-stack-block-label-letter-spacing                      | Letter spacing for stack view block label                             |
-| --clr-stack-view-font-size                                             | General font size for stack view                                      |
-| --clr-stack-view-font-weight                                           | General font weight for stack view                                    |
-| --clr-stack-view-line-height                                           | Genral line height for stack view                                     |
-| --clr-stack-view-letter-spacing                                        | Generla letter spacing for stack view                                 |
 
 ## CSS Classes
 
