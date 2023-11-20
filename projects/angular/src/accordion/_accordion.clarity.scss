@@ -186,8 +186,7 @@
   // panel states
   .clr-accordion-panel-open {
     .clr-accordion-header {
-      box-shadow: inset accordion-variables.$clr-accordion-border-left-width 0 0
-        accordion-variables.$clr-accordion-border-left-current-color;
+      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
     .clr-accordion-panel-complete {
       .clr-accordion-header {
