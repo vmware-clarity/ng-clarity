@@ -13,12 +13,6 @@
 @use 'variables.stack-view' as stack-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
-@mixin lastElementBottomBorder() {
-  border-bottom: none;
-  // IE/OldEdge
-  box-shadow: 0 tokens.$cds-global-space-1 0 stack-view-variables.$clr-stack-view-border-box-color;
-}
-
 @include meta.load-css('properties.stack-view');
 
 @include mixins.exports('stack-view.clarity') {
@@ -79,7 +73,7 @@
       // This way we keep a border-bottom on the last element if the stack view is higher
       // than the total height of the  blocks it contains, but we do not have a
       // weird 1px scroll when both heights match exactly.
-      @include lastElementBottomBorder();
+      border-bottom: none;
     }
 
     .stack-block-changed::before {
@@ -174,7 +168,7 @@
         // This way we keep a border-bottom on the last element if the stack view is higher
         // than the total height of the  blocks it contains, but we do not have a
         // weird 1px scroll when both heights match exactly.
-        @include lastElementBottomBorder();
+        border-bottom: none;
       }
 
       .stack-block-label,
@@ -204,60 +198,54 @@
         transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
       }
 
-      &:hover:not(.stack-block-expanded) {
-        > .stack-block-label {
-          color: var(--clr-stack-view-stack-block-expandable-hover);
-          background-color: var(--clr-stack-view-stack-block-expandable-bg-hover);
+      &:not(.stack-block-expanded) > .stack-block-label:hover {
+        color: var(--clr-stack-view-expandable-hover);
+        background-color: var(--clr-stack-view-expandable-bg-hover);
 
-          .stack-block-caret {
-            fill: var(--clr-stack-view-stack-block-expandable-hover-caret-color);
-          }
+        .stack-block-caret {
+          fill: var(--clr-stack-view-expandable-hover-caret-color);
         }
 
         &:active {
-          > .stack-block-label {
-            color: var(--clr-stack-view-stack-block-expandable-active);
-            background-color: var(--clr-stack-view-stack-block-expandable-bg-active);
+          color: var(--clr-stack-view-expandable-active);
+          background-color: var(--clr-stack-view-expandable-bg-active);
 
-            .stack-block-caret {
-              fill: var(--clr-stack-view-stack-block-expandable-active-caret-color);
-            }
+          .stack-block-caret {
+            fill: var(--clr-stack-view-expandable-active-caret-color);
           }
         }
       }
-    }
 
-    .stack-block-expanded {
-      > .stack-block-label::before {
-        transform: rotate(0deg);
-      }
-
-      > .stack-block-label {
+      &.stack-block-expanded > .stack-block-label {
         border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
         border-bottom-style: solid;
         border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
 
-        color: stack-view-variables.$clr-stack-view-stack-block-expanded-text-color;
-        background-color: stack-view-variables.$clr-stack-view-stack-block-expanded-bg-color;
+        color: stack-view-variables.$clr-stack-view-expanded-text-color;
+        background-color: stack-view-variables.$clr-stack-view-expanded-bg-color;
+
+        &::before {
+          transform: rotate(0deg);
+        }
 
         .stack-block-caret {
-          fill: var(--clr-stack-view-stack-block-expanded-caret-color);
+          fill: var(--clr-stack-view-expanded-caret-color);
         }
 
         &:hover {
-          color: var(--clr-stack-view-stack-block-expandable-text-hover);
-          background-color: var(--clr-stack-view-stack-block-expandable-bg-hover);
+          color: var(--clr-stack-view-expandable-hover);
+          background-color: var(--clr-stack-view-expandable-bg-hover);
 
           .stack-block-caret {
-            fill: var(--clr-stack-view-stack-block-expandable-hover-caret-color);
+            fill: var(--clr-stack-view-expandable-hover-caret-color);
           }
 
           &:active {
-            color: var(--clr-stack-view-stack-block-expandable-active);
-            background-color: var(--clr-stack-view-stack-block-expandable-bg-active);
+            color: var(--clr-stack-view-expandable-active);
+            background-color: var(--clr-stack-view-expandable-bg-active);
 
             .stack-block-caret {
-              fill: var(--clr-stack-view-stack-block-expandable-active-caret-color);
+              fill: var(--clr-stack-view-expandable-active-caret-color);
             }
           }
         }

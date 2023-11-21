@@ -9,15 +9,18 @@ $clr-stack-view-border-width: var(--clr-stack-view-border-width) !default;
 $clr-stack-view-border-radius: var(--clr-stack-view-border-radius) !default;
 $clr-stack-view-border-color: var(--clr-stack-view-border-color) !default;
 $clr-stack-view-bg-color: var(--clr-stack-view-bg-color) !default;
+
+// @deprecated in v17. in favor of using $clr-stack-view-border-color
 $clr-stack-view-stack-block-border-bottom: var(--clr-stack-view-stack-block-border-bottom) !default;
 
+// @deprecated in v17. in favor of using $clr-stack-view-border-color
 //border-bottom for stack-view rows (not last)
-$clr-stack-view-border-box-color: var(--clr-stack-view-border-box-color) !default;
 $clr-stack-block-changed-border-top-color: var(--clr-stack-block-changed-border-top-color) !default;
 $clr-stack-view-stack-block-label-and-content-bg-color: var(
   --clr-stack-view-stack-block-label-and-content-bg-color
 ) !default;
 
+// @deprecated in v17. in favor of using $clr-stack-view-border-color
 // stack view row bg color when not expanded
 $clr-stack-view-stack-children-stack-block-border-bottom-color: var(
   --clr-stack-view-stack-children-stack-block-border-bottom-color
@@ -29,10 +32,10 @@ $clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(
 ) !default;
 
 // children of an expanded row
-$clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-stack-block-expanded-bg-color) !default;
-$clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-stack-block-expandable-hover) !default;
+$clr-stack-view-expanded-bg-color: var(--clr-stack-view-expanded-bg-color) !default;
+$clr-stack-view-expandable-hover: var(--clr-stack-view-expandable-hover) !default;
 $clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-stack-block-content-text-color) !default;
-$clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-stack-block-expanded-text-color) !default;
+$clr-stack-view-expanded-text-color: var(--clr-stack-view-expanded-text-color) !default;
 
 // @deprecated ?
 $clr-stack-view-stack-block-caret-color: var(--clr-stack-view-stack-block-caret-color) !default;
@@ -40,7 +43,13 @@ $clr-stack-view-stack-block-caret-color: var(--clr-stack-view-stack-block-caret-
 $clr-stack-view-color: var(--clr-stack-view-color) !default;
 $clr-stack-view-stack-block-label-text-color: var(--clr-stack-view-stack-block-label-text-color) !default;
 
-$clr-stack-view-stack-block-label-font-size: var(--clr-stack-view-stack-block-label-font-size) !default;
-$clr-stack-view-stack-block-label-font-weight: var(--clr-stack-view-stack-block-label-font-weight) !default;
-$clr-stack-view-stack-block-label-line-height: var(--clr-stack-view-stack-block-label-line-height) !default;
-$clr-stack-view-stack-block-label-letter-spacing: var(--clr-stack-view-stack-block-label-letter-spacing) !default;
+$clr-stack-view-row-font-size: var(--clr-stack-view-stack-block-label-font-size) !default;
+$clr-stack-view-row-font-weight: var(--clr-stack-view-stack-block-label-font-weight) !default;
+$clr-stack-view-row-line-height: var(--clr-stack-view-stack-block-label-line-height) !default;
+$clr-stack-view-row-letter-spacing: var(--clr-stack-view-stack-block-label-letter-spacing) !default;
+
+// @deprecared in v17 All variables after this comment are in favor of their value and will be removed in v18
+$clr-stack-view-stack-block-label-font-size: $clr-stack-view-row-font-size !default;
+$clr-stack-view-stack-block-label-font-weight: $clr-stack-view-row-font-weight !default;
+$clr-stack-view-stack-block-label-line-height: $clr-stack-view-row-line-height !default;
+$clr-stack-view-stack-block-label-letter-spacing: $clr-stack-view-row-letter-spacing !default;
