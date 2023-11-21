@@ -29,7 +29,8 @@
     border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom-width: 0;
     width: 100%;
-    font-size: accordion-variables.$clr-accordion-header-font-size;
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
     text-align: left;
 
     &:hover {
@@ -113,7 +114,7 @@
   }
 
   clr-step-title.clr-accordion-title {
-    font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
+    //font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
     }
@@ -279,14 +280,14 @@
     }
 
     .clr-accordion-title {
-      font-weight: accordion-variables.$clr-accordion-title-font-weight;
-      font-size: accordion-variables.$clr-accordion-title-font-size;
+      //font-weight: accordion-variables.$clr-accordion-title-font-weight;
+      //font-size: accordion-variables.$clr-accordion-title-font-size;
     }
 
     .clr-accordion-header-button {
-      font-size: accordion-variables.$clr-accordion-header-button-font-size;
+      //font-size: accordion-variables.$clr-accordion-header-button-font-size;
       padding: accordion-variables.$clr-accordion-header-button-padding;
-      line-height: accordion-variables.$clr-accordion-header-button-line-height;
+      //line-height: accordion-variables.$clr-accordion-header-button-line-height;
     }
 
     .clr-accordion-content {
