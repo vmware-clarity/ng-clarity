@@ -22,8 +22,6 @@
   }
 
   .clr-accordion-header {
-    $box-shadow-default: inset accordion-variables.$clr-accordion-border-left-width 0 0
-      accordion-variables.$clr-accordion-border-left-color;
     color: accordion-variables.$clr-accordion-text-color;
     box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
     background: accordion-variables.$clr-accordion-header-background-color;
