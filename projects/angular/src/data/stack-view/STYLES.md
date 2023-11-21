@@ -37,7 +37,7 @@
 | --clr-stack-view-stack-block-caret-color                               | Deprecated in favor of `--clr-stack-view-expandable-row-color`  |
 | --clr-stack-view-stack-block-expanded-bg-color                         | Deprecated in favor of `--clr-stack-view-expanded-row-bg-color` |
 | --clr-stack-view-stack-block-expandable-hover                          | Deprecated in favor of `--clr-stack-view-expandable-row-hover`  |
-| --clr-stack-view-stack-block-content-text-color                        | Deprecated in favor of `--clr-stack-view-row-color`             |
+| --clr-stack-view-stack-block-content-text-color                        | DELETED. Replaced with `--clr-stack-view-row-color`             |
 | --clr-stack-view-stack-block-expanded-text-color                       | Deprecated in favor of `--clr-stack-view-expanded-row-color`    |
 
 ## CSS Classes

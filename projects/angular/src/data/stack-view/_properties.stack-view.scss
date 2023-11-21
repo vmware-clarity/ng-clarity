@@ -60,8 +60,8 @@
 
     // @deprecated in v17. in favor of using --clr-stack-view-row-font-size
     --clr-stack-view-stack-block-label-font-size: var(--clr-stack-view-row-font-size);
-    // @deprecated in v17. in favor of using --clr-stack-row-font-weight
-    --clr-stack-view-stack-block-label-font-weight: var(--clr-stack-row-font-weight);
+    // @deprecated in v17. in favor of using --clr-stack-view-row-font-weight
+    --clr-stack-view-stack-block-label-font-weight: var(--clr-stack-view-row-font-weight);
     // @deprecated in v17. in favor of using --clr-stack-view-row-line-height
     --clr-stack-view-stack-block-label-line-height: var(--clr-stack-view-row-line-height);
     // @deprecated in v17. in favor of using --clr-stack-view-row-letter-spacing
@@ -71,8 +71,6 @@
     --clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-expanded-row-bg-color);
     // @deprecated in v17. in favor of using clr-stack-view-expandable-row-hover
     --clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-expandable-row-hover);
-    // @deprecated in v17. in favor of using clr-stack-view-row-color
-    --clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-row-color);
     // @deprecated in v17. in favor of using --clr-stack-view-expanded-row-color
     --clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-expanded-row-color);
   }
