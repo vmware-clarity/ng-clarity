@@ -73,7 +73,7 @@
   }
 
   .clr-accordion-number {
-    padding: 0 16px;
+    padding: 0 tokens.$cds-global-space-7;
     font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
     display: none;
   }
@@ -84,7 +84,7 @@
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    padding: accordion-variables.$clr-accordion-padding;
+    padding: mixins.baselinePx(18);
     background: transparent;
     text-align: left;
     cursor: pointer;
@@ -163,7 +163,7 @@
   }
 
   .clr-accordion-inner-content {
-    padding: accordion-variables.$clr-accordion-padding;
+    padding: mixins.baselinePx(18);
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       padding: tokens.$cds-global-space-8 mixins.baselinePx(54);

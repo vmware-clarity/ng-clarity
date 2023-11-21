@@ -43,7 +43,6 @@ $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, s
 $clr-accordion-error-color: variables.$clr-global-error-color !default;
 $clr-accordion-complete-color: variables.$clr-global-success-color !default;
 $clr-accordion-border-color: var(--clr-accordion-border-color) !default;
-$clr-accordion-padding: variables.$clr_baselineRem_18px !default;
 $clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
 $clr-accordion-border-left-width: variables.$clr_baselineRem_0_25 !default;
 $clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
