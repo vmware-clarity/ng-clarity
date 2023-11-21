@@ -110,7 +110,7 @@
 
       // ATM
       // before section is caret placeholder remove it and replace it with pure padding right
-      // padding-right: var(--cds-global-space-9);
+      // padding-right: tokens.$cds-global-space-9;
       &::before {
         display: inline-block;
         content: '';
@@ -177,6 +177,9 @@
     }
 
     .stack-block-expandable {
+      color: stack-view-variables.$clr-stack-view-expandable-row-color;
+      background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
+
       > .stack-block-label {
         cursor: pointer;
 
@@ -194,19 +197,19 @@
       }
 
       &:not(.stack-block-expanded) > .stack-block-label:hover {
-        color: var(--clr-stack-view-expandable-row-hover);
-        background-color: var(--clr-stack-view-expandable-row-bg-hover);
+        color: stack-view-variables.$clr-stack-view-expandable-row-hover;
+        background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-hover;
 
         .stack-block-caret {
-          fill: var(--clr-stack-view-expandable-row-hover);
+          fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
         }
 
         &:active {
-          color: var(--clr-stack-view-expandable-row-active);
-          background-color: var(--clr-stack-view-expandable-row-bg-active);
+          color: stack-view-variables.$clr-stack-view-expandable-row-active;
+          background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-active;
 
           .stack-block-caret {
-            fill: var(--clr-stack-view-expandable-row-active);
+            fill: stack-view-variables.$clr-stack-view-expandable-row-active;
           }
         }
       }
@@ -215,7 +218,6 @@
         border-bottom-width: stack-view-variables.$clr-stack-view-border-width;
         border-bottom-style: solid;
         border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
-
         color: stack-view-variables.$clr-stack-view-expanded-row-color;
         background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
 
@@ -228,19 +230,19 @@
         }
 
         &:hover {
-          color: var(--clr-stack-view-expandable-row-hover);
-          background-color: var(--clr-stack-view-expandable-row-bg-hover);
+          color: stack-view-variables.$clr-stack-view-expandable-row-hover;
+          background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-hover;
 
           .stack-block-caret {
-            fill: var(--clr-stack-view-expandable-row-hover);
+            fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
           }
 
           &:active {
-            color: var(--clr-stack-view-expandable-row-active);
-            background-color: var(--clr-stack-view-expandable-row-bg-active);
+            color: stack-view-variables.$clr-stack-view-expandable-row-active;
+            background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-active;
 
             .stack-block-caret {
-              fill: var(--clr-stack-view-expandable-row-active);
+              fill: stack-view-variables.$clr-stack-view-expandable-row-active;
             }
           }
         }

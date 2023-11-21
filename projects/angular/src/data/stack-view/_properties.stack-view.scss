@@ -48,12 +48,10 @@
     // stack view row bg color when not expanded
     --clr-stack-view-stack-children-stack-block-border-bottom-color: var(--clr-stack-view-border-color);
 
-    // @deprecated in v17. in favor of using clr-stack-view-row-color
-    --clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-color);
     // @deprecated in v17. in favor of using clr-stack-view-row-bg-color
     --clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(--clr-stack-view-bg-color);
     // @deprecated in v17. in favor of using clr-stack-view-expandable-row-color
-    --clr-stack-view-stack-block-caret-color: var(--clr-stack-view-expandable-color);
+    --clr-stack-view-stack-block-caret-color: var(--clr-stack-view-expandable-row-color);
 
     // @deprecated in v17. in favor of using --clr-stack-view-row-color
     --clr-stack-view-color: var(--clr-stack-view-row-color);
@@ -69,8 +67,13 @@
     // @deprecated in v17. in favor of using --clr-stack-view-row-letter-spacing
     --clr-stack-view-stack-block-label-letter-spacing: var(--clr-stack-view-row-letter-spacing);
 
-    // ATM: remove and replace all occurrences with clr-stack-view-expandable-row-hover
-    // @deprecated in v17. in favor of using clr-stack-view-expandable-color ????
-    --clr-stack-view-stack-block-expandable-text-hover: var(--clr-stack-view-expandable-row-hover);
+    // @deprecated in v17. in favor of using --clr-stack-view-expanded-row-bg-color
+    --clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-expanded-row-bg-color);
+    // @deprecated in v17. in favor of using clr-stack-view-expandable-row-hover
+    --clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-expandable-row-hover);
+    // @deprecated in v17. in favor of using clr-stack-view-row-color
+    --clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-row-color);
+    // @deprecated in v17. in favor of using --clr-stack-view-expanded-row-color
+    --clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-expanded-row-color);
   }
 }
