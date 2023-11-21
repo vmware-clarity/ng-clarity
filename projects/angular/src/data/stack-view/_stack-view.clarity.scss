@@ -81,10 +81,6 @@
       border-right: tokens.$cds-global-space-5 solid transparent;
     }
 
-    .stack-block-content {
-      background-color: inherit;
-    }
-
     .stack-block-caret {
       align-self: center;
     }
@@ -176,10 +172,9 @@
     }
 
     .stack-block-expandable {
-      color: stack-view-variables.$clr-stack-view-expandable-row-color;
-      background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
-
       > .stack-block-label {
+        color: stack-view-variables.$clr-stack-view-expandable-row-color;
+        background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
 
         &::before {
