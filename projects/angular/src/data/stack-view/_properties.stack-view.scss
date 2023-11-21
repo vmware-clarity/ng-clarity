@@ -48,13 +48,13 @@
     // stack view row bg color when not expanded
     --clr-stack-view-stack-children-stack-block-border-bottom-color: var(--clr-stack-view-border-color);
 
-    // @deprecated in v17. in favor of using clr-stack-view-color
+    // @deprecated in v17. in favor of using clr-stack-view-row-color
     --clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-color);
-    // @deprecated in v17. in favor of using clr-stack-view-bg-color
+    // @deprecated in v17. in favor of using clr-stack-view-row-bg-color
     --clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(--clr-stack-view-bg-color);
-    // @deprecated in v17. in favor of using clr-stack-view-color
+    // @deprecated in v17. in favor of using clr-stack-view-row-color
     --clr-stack-view-stack-block-label-and-content-bg-color: var(--clr-stack-view-bg-color);
-    // @deprecated in v17. in favor of using clr-stack-view-expandable-color
+    // @deprecated in v17. in favor of using clr-stack-view-expandable-row-color
     --clr-stack-view-stack-block-caret-color: var(--clr-stack-view-expandable-color);
 
     // @deprecated in v17. in favor of using --clr-stack-view-row-color

@@ -25,7 +25,7 @@
       flex: 1 1 auto;
       margin: 0;
       padding: tokens.$cds-global-space-5 0;
-      color: tokens.$cds-alias-typography-color-400;
+      color: stack-view-variables.$clr-stack-view-title-color;
 
       @include mixins.generate-typography-token('SUBSECTION-16-EXP');
     }
@@ -100,10 +100,10 @@
       @include mixins.generate-typography-token(
         'SECONDARY-13-RG-STD',
         (
-          font-size: stack-view-variables.$clr-stack-view-stack-block-label-font-size,
-          font-weight: stack-view-variables.$clr-stack-view-stack-block-label-font-weight,
-          line-height: stack-view-variables.$clr-stack-view-stack-block-label-line-height,
-          letter-spacing: stack-view-variables.$clr-stack-view-stack-block-label-letter-spacing,
+          font-size: stack-view-variables.$clr-stack-view-row-font-size,
+          font-weight: stack-view-variables.$clr-stack-view-row-font-weight,
+          line-height: stack-view-variables.$clr-stack-view-row-line-height,
+          letter-spacing: stack-view-variables.$clr-stack-view-row-letter-spacing,
         )
       );
 
