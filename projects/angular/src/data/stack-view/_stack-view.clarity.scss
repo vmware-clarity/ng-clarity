@@ -9,7 +9,6 @@
 @use '../../image/icons.clarity';
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
-@use '../../utils/variables/variables';
 @use 'variables.stack-view' as stack-view-variables;
 @use '@cds/core/tokens/tokens.scss';
 
@@ -46,8 +45,6 @@
     margin-top: 0;
     border: stack-view-variables.$clr-stack-view-border-width solid stack-view-variables.$clr-stack-view-border-color;
     border-radius: stack-view-variables.$clr-stack-view-border-radius;
-    color: stack-view-variables.$clr-stack-view-color;
-    background-color: stack-view-variables.$clr-stack-view-bg-color;
 
     dd,
     dt {
@@ -94,8 +91,8 @@
 
     .stack-block-label {
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
-      background-color: stack-view-variables.$clr-stack-view-stack-block-label-and-content-bg-color;
-      color: stack-view-variables.$clr-stack-view-stack-block-label-text-color;
+      color: stack-view-variables.$clr-stack-view-row-color;
+      background-color: stack-view-variables.$clr-stack-view-row-bg-color;
 
       @include mixins.generate-typography-token(
         'SECONDARY-13-RG-STD',
@@ -107,11 +104,9 @@
         )
       );
 
-      // We're doing a non-flexible item.
-      // It's just easier to align and stretch everything vertically this way than with
-      // floats or inline-blocks.
       flex: 1 1 auto;
       display: flex;
+      align-items: center;
 
       // ATM
       // before section is caret placeholder remove it and replace it with pure padding right
@@ -177,7 +172,7 @@
       }
 
       .stack-block-label {
-        padding-left: variables.$clr_baselineRem_1;
+        padding-left: tokens.$cds-global-space-9;
       }
     }
 
@@ -199,19 +194,19 @@
       }
 
       &:not(.stack-block-expanded) > .stack-block-label:hover {
-        color: var(--clr-stack-view-expandable-hover);
-        background-color: var(--clr-stack-view-expandable-bg-hover);
+        color: var(--clr-stack-view-expandable-row-hover);
+        background-color: var(--clr-stack-view-expandable-row-bg-hover);
 
         .stack-block-caret {
-          fill: var(--clr-stack-view-expandable-hover-caret-color);
+          fill: var(--clr-stack-view-expandable-row-hover);
         }
 
         &:active {
-          color: var(--clr-stack-view-expandable-active);
-          background-color: var(--clr-stack-view-expandable-bg-active);
+          color: var(--clr-stack-view-expandable-row-active);
+          background-color: var(--clr-stack-view-expandable-row-bg-active);
 
           .stack-block-caret {
-            fill: var(--clr-stack-view-expandable-active-caret-color);
+            fill: var(--clr-stack-view-expandable-row-active);
           }
         }
       }
@@ -221,31 +216,31 @@
         border-bottom-style: solid;
         border-bottom-color: stack-view-variables.$clr-stack-view-stack-block-border-bottom;
 
-        color: stack-view-variables.$clr-stack-view-expanded-text-color;
-        background-color: stack-view-variables.$clr-stack-view-expanded-bg-color;
+        color: stack-view-variables.$clr-stack-view-expanded-row-color;
+        background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
 
         &::before {
           transform: rotate(0deg);
         }
 
         .stack-block-caret {
-          fill: var(--clr-stack-view-expanded-caret-color);
+          fill: stack-view-variables.$clr-stack-view-expanded-row-color;
         }
 
         &:hover {
-          color: var(--clr-stack-view-expandable-hover);
-          background-color: var(--clr-stack-view-expandable-bg-hover);
+          color: var(--clr-stack-view-expandable-row-hover);
+          background-color: var(--clr-stack-view-expandable-row-bg-hover);
 
           .stack-block-caret {
-            fill: var(--clr-stack-view-expandable-hover-caret-color);
+            fill: var(--clr-stack-view-expandable-row-hover);
           }
 
           &:active {
-            color: var(--clr-stack-view-expandable-active);
-            background-color: var(--clr-stack-view-expandable-bg-active);
+            color: var(--clr-stack-view-expandable-row-active);
+            background-color: var(--clr-stack-view-expandable-row-bg-active);
 
             .stack-block-caret {
-              fill: var(--clr-stack-view-expandable-active-caret-color);
+              fill: var(--clr-stack-view-expandable-row-active);
             }
           }
         }

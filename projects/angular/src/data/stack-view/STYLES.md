@@ -10,9 +10,6 @@
 | --clr-stack-block-changed-border-top-color                             | Changed stack block border top color                                  |
 | --clr-stack-view-row-color                                             | Font color of stack view                                              |
 | --clr-stack-view-row-bg-color                                          | Background color of stack view                                        |
-| --clr-stack-view-stack-block-label-text-color                          | Font color of stack block label                                       |
-| --clr-stack-view-stack-block-label-and-content-bg-color                | Background color of stack block label and content                     |
-| --clr-stack-view-stack-children-stack-block-label-and-content-bg-color | Background color of stack block children's label and content          |
 | --clr-stack-view-stack-block-expanded-bg-color                         | Background color of expanded stack block label and content            |
 | --clr-stack-view-stack-block-expandable-hover                          | Background color of expandable stack block label and content on hover |
 | --clr-stack-view-stack-block-content-text-color                        | Font color of stack block content                                     |
@@ -34,6 +31,9 @@
 | --clr-stack-view-stack-block-label-letter-spacing                      | Deprecated in favor of `--clr-stack-view-row-letter-spacing`          |
 | --clr-stack-view-color                                                 | Deprecated in favor of `--clr-stack-view-row-color`                   |
 | --clr-stack-view-bg-color                                              | Deprecated in favor of `--clr-stack-view-row-bg-color`                |
+| --clr-stack-view-stack-block-label-text-color                          | DELETED. Replaced with `--clr-stack-view-row-color`                   |
+| --clr-stack-view-stack-block-label-and-content-bg-color                | DELETED. Replaced with `--clr-stack-view-row-bg-color`                |
+| --clr-stack-view-stack-children-stack-block-label-and-content-bg-color | Deprecated in favor of `--clr-stack-view-row-bg-color`                |
 
 ## CSS Classes
 

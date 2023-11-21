@@ -32,7 +32,7 @@
     --clr-stack-view-expandable-row-bg-hover: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-stack-view-expandable-row-active: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-stack-view-expandable-row-bg-active: #{tokens.$cds-alias-object-interaction-background-active};
-    --clr-stack-view-expanded-row-text-color: #{tokens.$cds-alias-object-interaction-color-selected};
+    --clr-stack-view-expanded-row-color: #{tokens.$cds-alias-object-interaction-color-selected};
     --clr-stack-view-expanded-row-bg-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
     /// Typography override
@@ -41,7 +41,7 @@
     --clr-stack-view-row-line-height: #{mixins.baselinePx(20)};
     --clr-stack-view-row-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
 
-    // @deprecated in v17. All properties in favor of their value.
+    // @deprecated in v17 and will be removed in v18
     // @deprecated in v17. in favor of using clr-stack-view-border-color
     --clr-stack-view-stack-block-border-bottom: var(--clr-stack-view-border-color);
     // @deprecated in v17. in favor of using clr-stack-view-border-color
@@ -52,8 +52,6 @@
     --clr-stack-view-stack-block-content-text-color: var(--clr-stack-view-color);
     // @deprecated in v17. in favor of using clr-stack-view-row-bg-color
     --clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(--clr-stack-view-bg-color);
-    // @deprecated in v17. in favor of using clr-stack-view-row-color
-    --clr-stack-view-stack-block-label-and-content-bg-color: var(--clr-stack-view-bg-color);
     // @deprecated in v17. in favor of using clr-stack-view-expandable-row-color
     --clr-stack-view-stack-block-caret-color: var(--clr-stack-view-expandable-color);
 
@@ -70,11 +68,6 @@
     --clr-stack-view-stack-block-label-line-height: var(--clr-stack-view-row-line-height);
     // @deprecated in v17. in favor of using --clr-stack-view-row-letter-spacing
     --clr-stack-view-stack-block-label-letter-spacing: var(--clr-stack-view-row-letter-spacing);
-
-    // ATM: remove and replace all caret occurrences with respected text color
-    --clr-stack-view-stack-block-expanded-caret-color: var(--clr-stack-view-expanded-row-text-color);
-    --clr-stack-view-stack-block-expandable-active-caret-color: var(--clr-stack-view-expandable-row-active);
-    --clr-stack-view-stack-block-expandable-hover-caret-color: var(--clr-stack-view-expandable-row-hover);
 
     // ATM: remove and replace all occurrences with clr-stack-view-expandable-row-hover
     // @deprecated in v17. in favor of using clr-stack-view-expandable-color ????
