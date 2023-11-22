@@ -7,7 +7,6 @@
 | --clr-accordion-text-color                       | Text color of the accordion component.                               |
 | --clr-accordion-text-color-hover                 | Text color of the accordion header when hovered.                     |
 | --clr-accordion-text-color-active                | Text color of the accordion header when active.                      |
-| --clr-accordion-text-color-selected              | Text color of the accordion header when selected.                    |
 | --clr-accordion-active-background-color          | Background color of the active accordion panel.                      |
 | --clr-accordion-content-background-color         | Background color of the accordion content area.                      |
 | --clr-accordion-content-color                    | Color of the text in the accordion content area.                     |
