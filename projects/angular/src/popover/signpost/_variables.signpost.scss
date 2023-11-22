@@ -15,6 +15,7 @@ $clr-signpost-action-active-color: var(--clr-signpost-action-active-color) !defa
 
 $clr-signpost-border-radius: var(--clr-signpost-border-radius) !default;
 
+// @deprecated in v17 to be removed in v18 in favor of $clr-signpost-pointer-size
 $clr-signpost-border-size: var(--clr-signpost-border-size) !default;
 $clr-signpost-pointer-size: $clr-signpost-border-size !default;
 $clr-signpost-pointer-border: var(--clr-signpost-pointer-border) !default;
