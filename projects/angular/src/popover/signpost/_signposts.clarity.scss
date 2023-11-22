@@ -24,18 +24,9 @@
     }
 
     .signpost-action {
-      // ATM (after token migration)
-      // to be removed once shim is fully integrated.
-      // min-width: tokens.$cds-global-space-9;
-      //@include mixins.css-var(
-      //  min-width,
-      //  clr-signpost-action-icon-size,
-      //  variables.$clr_baselineRem_1,
-      //  variables.$clr-use-custom-properties
-      //);
-
       margin: 0;
       padding: 0;
+      border-width: 0;
       color: signpost-variables.$clr-signpost-action-color;
 
       cds-icon,
