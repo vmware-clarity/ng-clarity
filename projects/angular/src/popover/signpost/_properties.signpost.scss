@@ -7,30 +7,39 @@
 @use '../../utils/variables/variables';
 @use 'variables.signpost' as signpost-variables;
 
+@use '@cds/core/tokens/tokens.scss';
+
 @include mixins.exports('signpost.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
       // Usage: ../signpost/_signpost.clarity.scss
-      --clr-signpost-content-bg-color: var(--clr-color-neutral-0);
-      --clr-signpost-content-border-color: var(--clr-color-neutral-500);
+      --clr-signpost-content-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-signpost-content-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-signpost-content-border-color: #{tokens.$cds-alias-object-interaction-border-color};
 
-      --clr-signpost-action-icon-size: #{variables.$clr_baselineRem_1}; // to be removed when shim is fully integrated
-      --clr-signpost-action-color: var(--clr-color-neutral-600);
-      --clr-signpost-action-icon-color: var(--clr-btn-link-color);
-      --clr-signpost-action-hover-color: var(--clr-color-action-700);
-      --clr-signpost-action-active-color: var(--clr-color-action-700);
+      --clr-signpost-action-icon-size: #{tokens.$cds-global-space-9}; // to be removed when shim is fully integrated
+      --clr-signpost-action-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-signpost-action-icon-color: var(--clr-signpost-action-color);
+      --clr-signpost-action-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-signpost-action-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
-      --clr-signpost-border-radius: var(--clr-global-borderradius);
+      --clr-signpost-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+      // NOTE: I had to use hardcoded border size value in order to avoid sass variables
+      --clr-signpost-border-size: #{tokens.$cds-global-space-6}; // ATM remove ???
 
-      --clr-signpost-pointer-border: #{signpost-variables.$clr-signpost-pointer-border};
+      --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
+      --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
       --clr-signpost-pointer-invisible-border: #{signpost-variables.$clr-signpost-pointer-invisible-border};
-      --clr-signpost-pointer-psuedo-border: #{signpost-variables.$clr-signpost-pointer-psuedo-border};
-      --clr-signpost-content-color: var(--clr-color-neutral-700);
 
-      --clr-signpost-content-header-position: absolute;
-      --clr-signpost-content-close-button-line-height: inherit;
-      --clr-signpost-content-close-button-size: #{variables.$clr_baselineRem_1};
-      --clr-signpost-content-close-icon-size: #{variables.$clr_baselineRem_0_667};
+      // ATM remove ???
+      --clr-signpost-content-close-button-line-height: 0; // ATM - set as default ???
+      --clr-signpost-content-close-button-size: #{tokens.$cds-global-space-7}; // ATM - set as default
+      --clr-signpost-content-close-icon-size: #{tokens.$cds-global-space-7}; // ATM - set as default
+      --clr-signpost-padding: #{tokens.$cds-global-space-7}; // ATM - set as default
+      --clr-signpost-gap-size: #{tokens.$cds-global-space-5}; // ATM - set as default
+
+      // --clr-signpost-content-header-position: absolute; old value
+      --clr-signpost-content-header-position: static;
     }
   }
 }
