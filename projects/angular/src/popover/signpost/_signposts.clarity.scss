@@ -391,5 +391,7 @@
     text-align: left;
     max-height: mixins.baselinePx(480);
     overflow-y: auto;
+
+    @include mixins.generate-typography-token('BODY-14-RG-CPT');
   }
 }
