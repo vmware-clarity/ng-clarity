@@ -3,18 +3,18 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
 
 // Usage: ../signpost/_signpost.clarity.scss
-$clr-signpost-content-bg-color: variables.$clr-color-neutral-0 !default;
-$clr-signpost-content-border-color: variables.$clr-color-neutral-500 !default;
+$clr-signpost-content-color: var(--clr-signpost-content-color) !default;
+$clr-signpost-content-bg-color: var(--clr-signpost-content-bg-color) !default;
+$clr-signpost-content-border-color: var(--clr-signpost-content-border-color) !default;
 
-$clr-signpost-action-color: variables.$clr-color-neutral-600 !default;
-$clr-signpost-action-hover-color: variables.$clr-color-action-700 !default;
+$clr-signpost-action-color: var(--clr-signpost-action-color) !default;
+$clr-signpost-action-hover-color: var(--clr-signpost-action-hover-color) !default;
 
-$clr-signpost-border-size: variables.$clr_baselineRem_0_5 !default;
-$clr-signpost-border-radius: variables.$clr-global-borderradius !default;
+$clr-signpost-border-size: var(--clr-signpost-border-size) !default;
+$clr-signpost-border-radius: var(--clr-signpost-border-radius) !default;
 
-$clr-signpost-pointer-border: $clr-signpost-border-size solid $clr-signpost-content-border-color !default;
-$clr-signpost-pointer-invisible-border: $clr-signpost-border-size solid transparent !default;
-$clr-signpost-pointer-psuedo-border: $clr-signpost-border-size solid $clr-signpost-content-bg-color !default;
+$clr-signpost-pointer-border: var(--clr-signpost-pointer-border) !default;
+$clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-invisible-border) !default;
+$clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-psuedo-border) !default;
