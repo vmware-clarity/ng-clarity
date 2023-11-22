@@ -11,10 +11,15 @@ $clr-signpost-content-border-color: var(--clr-signpost-content-border-color) !de
 
 $clr-signpost-action-color: var(--clr-signpost-action-color) !default;
 $clr-signpost-action-hover-color: var(--clr-signpost-action-hover-color) !default;
+$clr-signpost-action-active-color: var(--clr-signpost-action-active-color) !default;
 
-$clr-signpost-border-size: var(--clr-signpost-border-size) !default;
 $clr-signpost-border-radius: var(--clr-signpost-border-radius) !default;
 
+$clr-signpost-border-size: var(--clr-signpost-border-size) !default;
+$clr-signpost-pointer-size: $clr-signpost-border-size !default;
 $clr-signpost-pointer-border: var(--clr-signpost-pointer-border) !default;
 $clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-invisible-border) !default;
+
+// @deprecated in v17 to be removed in v18 in favor of $clr-signpost-pointer-pseudo-border
 $clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-psuedo-border) !default;
+$clr-signpost-pointer-pseudo-border: $clr-signpost-pointer-psuedo-border !default;

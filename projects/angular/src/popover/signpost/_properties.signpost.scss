@@ -13,28 +13,20 @@
     --clr-signpost-content-bg-color: #{tokens.$cds-alias-object-container-background};
     --clr-signpost-content-border-color: #{tokens.$cds-alias-object-interaction-border-color};
 
-    --clr-signpost-action-icon-size: #{tokens.$cds-global-space-9}; // to be removed when shim is fully integrated
     --clr-signpost-action-color: #{tokens.$cds-alias-object-interaction-color};
-    --clr-signpost-action-icon-color: var(--clr-signpost-action-color);
     --clr-signpost-action-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-signpost-action-active-color: #{tokens.$cds-alias-object-interaction-color-active};
 
     --clr-signpost-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-    // NOTE: I had to use hardcoded border size value in order to avoid sass variables
-    --clr-signpost-border-size: #{tokens.$cds-global-space-6}; // ATM remove ???
 
-    --clr-signpost-pointer-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-border-color);
-    --clr-signpost-pointer-invisible-border: var(--clr-signpost-border-size) solid transparent;
-    --clr-signpost-pointer-psuedo-border: var(--clr-signpost-border-size) solid var(--clr-signpost-content-bg-color);
+    --clr-signpost-pointer-size: #{tokens.$cds-global-space-6};
+    --clr-signpost-pointer-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-border-color);
+    --clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-size) solid transparent;
+    --clr-signpost-pointer-pseudo-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-bg-color);
 
-    // ATM remove ???
-    --clr-signpost-content-close-button-line-height: 0; // ATM - set as default ???
-    --clr-signpost-content-close-button-size: #{tokens.$cds-global-space-7}; // ATM - set as default
-    --clr-signpost-content-close-icon-size: #{tokens.$cds-global-space-7}; // ATM - set as default
-    --clr-signpost-padding: #{tokens.$cds-global-space-7}; // ATM - set as default
-    --clr-signpost-gap-size: #{tokens.$cds-global-space-5}; // ATM - set as default
-
-    // --clr-signpost-content-header-position: absolute; old value
-    --clr-signpost-content-header-position: static;
+    // @deprecated in v17 to be removed in v18 in favor of --clr-signpost-pointer-pseudo-border
+    --clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-pseudo-border);
+    // @deprecated in v17 to be removed in v18 in favor of --clr-signpost-pointer-size
+    --clr-signpost-border-size: var(--clr-signpost-pointer-size);
   }
 }
