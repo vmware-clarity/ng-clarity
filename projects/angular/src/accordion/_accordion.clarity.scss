@@ -65,9 +65,7 @@
   .clr-accordion-panel:last-child {
     .clr-accordion-content,
     .clr-accordion-header {
-      border-bottom-style: solid;
-      border-bottom-width: tokens.$cds-global-space-1;
-      border-bottom-color: accordion-variables.$clr-accordion-border-color;
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     }
   }
 
@@ -140,9 +138,7 @@
 
   .clr-accordion-content {
     background: accordion-variables.$clr-accordion-content-background-color;
-    border-width: tokens.$cds-global-space-1;
-    border-style: solid;
-    border-color: accordion-variables.$clr-accordion-border-color;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom: 0;
     overflow: hidden;
     padding: tokens.$cds-global-space-8;
@@ -239,8 +235,7 @@
   .clr-accordion-panel-error {
     .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      border-bottom: tokens.$cds-global-space-1 solid;
-      border-color: accordion-variables.$clr-accordion-border-left-color-error;
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
       background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
