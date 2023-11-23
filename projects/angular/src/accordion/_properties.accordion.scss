@@ -70,7 +70,7 @@
       --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-400};
       --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
 
-      --clr-accordion-description-margin-left: calc(#{tokens.$cds-global-space-13} - var(--clr-accordion-header-gap));
+      --clr-accordion-description-margin-left: 40px;
       --clr-accordion-step-title-min-width: 0;
       --clr-accordion-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 
