@@ -83,7 +83,7 @@
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    padding: mixins.baselinePx(18);
+    padding: tokens.$cds-global-space-8;
     background: transparent;
     text-align: left;
     cursor: pointer;
@@ -306,6 +306,7 @@
     border-bottom: 0 !important;
   }
 
+  // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
   // stepper forms mode
   .clr-stepper-forms {
     .clr-accordion-panel-inactive .clr-accordion-angle {
@@ -349,5 +350,9 @@
       display: block;
       margin-top: tokens.$cds-global-space-9;
     }
+  }
+
+  clr-stepper-panel .clr-accordion-inner-content {
+    padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
   }
 }
