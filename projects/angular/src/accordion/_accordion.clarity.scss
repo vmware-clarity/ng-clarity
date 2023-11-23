@@ -71,7 +71,6 @@
 
   .clr-accordion-number {
     padding: 0 tokens.$cds-global-space-7;
-    font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
     display: none;
   }
 
@@ -112,7 +111,6 @@
   }
 
   clr-step-title.clr-accordion-title {
-    font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
     }
@@ -320,7 +318,6 @@
     .clr-accordion-number {
       @include mixins.generate-typography-token('BODY-14-SB-STD');
       padding: 0 tokens.$cds-global-space-7;
-      font-weight: accordion-variables.$clr-accordion-step-title-font-weight;
       display: inline-block;
     }
 
