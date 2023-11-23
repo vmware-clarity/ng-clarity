@@ -1,0 +1,46 @@
+<h1>Reproduce Step</h1>
+<ol>
+  <li>Select ECS, Public signed radio is automatically selected. Click Signature (empty textarea).</li>
+  <li style="color: red">
+    When switching platform dropdown to Cloudian, signature textarea has value, but its successful state is not updated.
+    clr-success not show
+  </li>
+</ol>
+
+<form clrForm [formGroup]="form">
+  <clr-select-container>
+    <label>{{ 'CHOOSE_PLATFORM' }}</label>
+    <select class="w-60" clrSelect formControlName="platform">
+      <option value="CLOUDIAN">CLOUDIAN</option>
+      <option value="ECS">ECS</option>
+    </select>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-select-container>
+
+  <clr-input-container>
+    <label>{{ 'S3_URL' }}</label>
+    <input clrInput type="text" [formControl]="$any(form)?.get('s3')?.get('url')" />
+    <clr-control-error>{{ 'INVALID_HTTPS_DESC' }}</clr-control-error>
+  </clr-input-container>
+
+  <clr-radio-container clrInline>
+    <label>{{ 'CERTIFICATE_VALIDATION' }}</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [name]="'s3-cert-validate'" value="tlsSignature" [formControl]="certValidation" />
+      <label>{{ 'SIGNATURE' }}</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [name]="'s3-cert-validate'" value="publicSigned" [formControl]="certValidation" />
+      <label>{{ 'PUBLIC_SIGNED' }}</label>
+    </clr-radio-wrapper>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-radio-container>
+
+  <clr-textarea-container *ngIf="certValidation.value === 'tlsSignature'">
+    <label>{{ 'SIGNATURE' }}</label>
+    <textarea clrTextarea [formControl]="$any(form).get('s3').get('tlsSignature')"></textarea>
+    <clr-control-helper>{{ 'SIGNATURE_DESC' }}</clr-control-helper>
+    <clr-control-success>I should show when successful!!!</clr-control-success>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-textarea-container>
+</form>
