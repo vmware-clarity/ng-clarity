@@ -100,11 +100,16 @@
 
     .title {
       color: header-variables.$clr-header-title-color;
-      font-weight: header-variables.$clr-header-title-font-weight;
       font-family: header-variables.$clr-header-title-font-family;
-      font-size: header-variables.$clr-header-title-font-size;
-      letter-spacing: header-variables.$clr-header-title-letter-spacing;
-      line-height: header-variables.$clr-header-title-line-height;
+      @include mixins.generate-typography-token(
+        'SUBSECTION-16-EXP',
+        (
+          font-weight: header-variables.$clr-header-title-font-weight,
+          font-size: header-variables.$clr-header-title-font-size,
+          letter-spacing: header-variables.$clr-header-title-letter-spacing,
+          line-height: header-variables.$clr-header-title-line-height,
+        )
+      );
       text-decoration: none;
     }
   }
@@ -117,7 +122,7 @@
     height: header-variables.$clr-header-height;
 
     .nav-text {
-      font-weight: header-variables.$clr-header-nav-text-font-weight;
+      @include mixins.generate-typography-token('BODY-14-RG-EXP');
     }
 
     clr-icon {
@@ -173,7 +178,7 @@
 
       &.active {
         .nav-text {
-          font-weight: header-variables.$clr-header-nav-text-font-weight-active;
+          @include mixins.generate-typography-token('BODY-14-SB-EXP');
         }
       }
 
@@ -264,10 +269,8 @@
         }
       }
 
-      $dropdown-nav-text-dist: tokens.$cds-global-space-11;
-
       .dropdown-toggle.nav-text {
-        padding: 0 $dropdown-nav-text-dist 0 header-variables.$clr-header-nav-text-horizontal-padding;
+        padding: 0 tokens.$cds-global-space-11 0 header-variables.$clr-header-nav-text-horizontal-padding;
 
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
@@ -319,7 +322,7 @@
     display: flex;
     align-items: center;
     flex: 0 0 auto;
-    max-width: mixins.baselinePx(12 * 24);
+    max-width: mixins.baselinePx(288);
     padding: 0;
     height: header-variables.$clr-header-height;
     @include header-nav-appearance();
@@ -362,7 +365,7 @@
       border: none;
       background: none;
       color: header-variables.$clr-header-search-input-font-color;
-
+      border-radius: tokens.$cds-alias-object-border-radius-100;
       height: header-variables.$clr-header-search-height;
 
       padding: 0;
@@ -371,12 +374,11 @@
       vertical-align: middle;
 
       // Typography
-      font-size: header-variables.$clr-header-search-input-font-size;
-      font-weight: header-variables.$clr-header-search-input-font-weight;
+      @include mixins.generate-typography-token('BODY-14-SB-EXP');
 
       &::placeholder {
-        font-weight: header-variables.$clr-header-search-placeholder-font-weight;
         color: header-variables.$clr-header-search-placeholder-text-color;
+        @include mixins.generate-typography-token('BODY-14-RG-EXP');
       }
 
       &:hover {
@@ -384,7 +386,7 @@
       }
 
       &:focus-visible {
-        outline: none; // do we need it?
+        outline: none;
         border: header-variables.$clr-header-search-border-active;
       }
 
