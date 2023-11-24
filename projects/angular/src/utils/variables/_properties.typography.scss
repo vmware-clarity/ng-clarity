@@ -9,15 +9,15 @@
 
 @include mixins.exports('typography.properties') {
   :root [cds-theme] {
-    --clr-font: #{tokens.$cds-alias-typography-font-family};
-    --clr-display-font: #{tokens.$cds-alias-typography-header-font-family};
     --clr-body-font: #{tokens.$cds-alias-typography-font-family};
+    --clr-font: var(--clr-body-font);
+    --clr-display-font: #{tokens.$cds-alias-typography-header-font-family};
 
-    //--clr-font-weight-light: #{variables.$clr-font-weight-light};
-    //--clr-font-weight-regular: #{variables.$clr-font-weight-regular};
-    //--clr-font-weight-semibold: #{variables.$clr-font-weight-semibold};
-    //--clr-font-weight-bold: #{variables.$clr-font-weight-bold};
-    //--clr-font-weight-extrabold: #{variables.$clr-font-weight-extrabold};
+    --clr-font-weight-light: #{tokens.$cds-alias-typography-font-weight-light};
+    --clr-font-weight-regular: #{tokens.$cds-alias-typography-font-weight-regular};
+    --clr-font-weight-semibold: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-font-weight-bold: #{tokens.$cds-alias-typography-font-weight-bold};
+    --clr-font-weight-extrabold: #{tokens.$cds-alias-typography-font-weight-extrabold};
 
     // Header styles
     //H1 - login_productName
