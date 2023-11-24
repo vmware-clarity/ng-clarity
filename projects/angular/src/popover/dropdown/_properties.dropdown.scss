@@ -39,7 +39,7 @@
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
       // Dropdown Item
-      --clr-dropdown-item-color: var(-clr-dropdown-text-color);
+      --clr-dropdown-item-color: var(--clr-dropdown-text-color);
       --clr-dropdown-item-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
       --clr-dropdown-item-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
