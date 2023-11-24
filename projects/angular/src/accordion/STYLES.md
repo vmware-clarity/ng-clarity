@@ -27,7 +27,6 @@
 | --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                      |
 | --clr-accordion-header-left-current-indicator    | Left indicator style for the accordion header when on current step. |
 | --clr-accordion-header-gap                       | Gap between the icon and title text in the accordion header.        |
-| --clr-accordion-status-icon-width                | Width of the icon used for the accordion arrow.                     |
 | --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                              |
 | --clr-accordion-step-status-margin-left          | Left margin of the status container                                 |
 | --clr-accordion-step-title-margin-left           | Left margin of the title container                                  |

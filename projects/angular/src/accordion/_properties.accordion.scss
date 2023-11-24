@@ -35,15 +35,13 @@
       --clr-accordion-border-radius: #{tokens.$cds-global-space-3};
       --clr-accordion-border-left-color: #{tokens.$cds-alias-object-border-color-tint};
 
-      --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color); // indirectly mapped to CDS token
-      --clr-accordion-border-left-color-error: var(--clr-accordion-error-color); // indirectly mapped to CDS token
+      --clr-accordion-border-left-color-complete: #{tokens.$cds-alias-status-success};
+      --clr-accordion-border-left-color-error: #{tokens.$cds-alias-status-danger};
 
       --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
       --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
       --clr-accordion-header-gap: #{tokens.$cds-global-space-5};
-      // TODO: v17: remove
-      --clr-accordion-status-icon-width: auto;
 
       --clr-accordion-step-title-min-width: 0;
 
