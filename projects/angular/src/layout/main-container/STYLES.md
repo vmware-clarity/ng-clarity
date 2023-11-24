@@ -26,6 +26,7 @@
 | ------------------------------------------- | ------------------------------------------------------ |
 | --clr-header-height                         | Header overall height                                  |
 | --clr-header-bg-color                       | Header background color                                |
+| --clr-header-divider-color                  | Color of the header divider                            |
 | --clr-header-divider-opacity                | Opacity of the header divider                          |
 | --clr-header-divider-width                  | Width of the header divider                            |
 | --clr-header-divider-height                 | Height of the header divider                           |
@@ -63,15 +64,20 @@
 | --clr-header-search-gap                     | Gap between the subelements of the header search field |
 | --clr-header-search-input-font-size         | Header search field font size                          |
 | --clr-header-search-input-font-color        | Header search field text color                         |
+| --clr-header-search-input-font-weight       | Header search field font weight                        |
 | --clr-header-search-border-active           | Border of active/focused search field                  |
 | --clr-header-search-border-hover            | Border of hovered search field                         |
 | --clr-header-search-placeholder-font-weight | Font weight of the header search placeholder           |
 | --clr-header-search-placeholder-text-color  | Text color of the header search placeholder            |
+| --clr-header-action-caret-size              | Header action dropdown caret size                      |
+| --clr-header-action-icon-size               | Header action icon size                                |
+| --clr-header-action-caret-gap               | Header action dropdown caret gap                       |
 
 ## CSS Classes
 
 | Class name               | Description                          |
 | ------------------------ | ------------------------------------ |
 | clr-header               | Application header element           |
+| clr-header > search      | Header search field                  |
 | header-hamburger-trigger | Hamburger icon for responsive header |
 | header-actions           | Responsive header actions            |

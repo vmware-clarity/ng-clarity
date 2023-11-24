@@ -3,47 +3,66 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/mixins';
 
-// Usage: ../layout/main-containter/_layout.clarity.scss
-// Usage: ../layout/nav/_header.clarity.scss
-// Usage: ../layout/nav/_responsive-nav.clarity.scss
-$clr-header-height: variables.$clr_baselineRem_2_5 !default;
+$clr-header-action-caret-gap: tokens.$cds-global-space-5;
+$clr-header-action-cog-right: calc(
+  var(--clr-header-action-caret-right) + $clr-header-action-caret-gap + var(--clr-header-action-caret-size)
+);
 
-// Usage: ../layout/nav/_header.clarity.scss
-$clr-header-bgColor: variables.$clr-color-neutral-900 !default;
-$clr-logo-width: variables.$clr_baselineRem_1_5 !default;
-$clr-nav-icon-size: variables.$clr_baselineRem_0_916 !default;
-$clr-header-section-divider-height: variables.$clr_baselineRem_1_66 !default;
-$clr-search-icon-width: variables.$clr_baselineRem_0_83 !default;
-$clr-header-divider-opacity: 0.15 !default;
-$clr-header-nav-opacity: 0.65 !default;
-$clr-header-nav-hover-opacity: 1 !default;
-$clr-header-outline-offset: -1 * variables.$clr_baselineRem_5px !default;
-$clr-header-clarity-icons-size: variables.$clr_baselineRem_1 !default;
-$clr-header-nav-text-horizontal-padding: variables.$clr_baselineRem_1 !default;
-$clr-header-nav-text-vertical-padding: variables.$clr_baselineRem_0_75 !default;
-$clr-header-2-bg-color: hsl(
-  209,
-  19%,
-  35%
-) !default; // Hard coded because this color is not in the color palette. Its reserved for headers only
-$clr-header-3-bg-color: variables.$clr-color-secondary-action-1000 !default;
-// Hard coded because this color is not in the color palette. Its reserved for headers only
-$clr-header-4-bg-color: hsl(202, 66%, 41%) !default;
-$clr-header-5-bg-color: variables.$clr-color-action-800 !default;
-$clr-header-6-bg-color: variables.$clr-color-action-1000 !default;
-$clr-header-7-bg-color: hsl(
-  206,
-  25%,
-  25%
-) !default; // Hard coded because this color is not in the color palette. Its reserved for headers only
+// deprecated in v17 in favor or $clr-header-bg-color
+$clr-header-bgColor: var(--clr-header-bg-color) !default;
+$clr-logo-width: tokens.$cds-global-space-11 !default;
+// deprecated in v17 in favor or $clr-header-search-icon-size
+$clr-search-icon-width: var(--clr-header-search-icon-size) !default;
+$clr-header-outline-offset: calc(-1 * mixins.baselinePx(5)) !default;
+$clr-header-clarity-icons-size: tokens.$cds-global-space-9 !default;
+$clr-header-nav-text-horizontal-padding: tokens.$cds-global-space-9 !default;
+$clr-header-nav-text-vertical-padding: tokens.$cds-global-space-8 !default;
+
+$clr-header-height: var(--clr-header-height) !default;
+$clr-header-divider-color: var(--clr-header-divider-color) !default;
+$clr-header-divider-width: var(--clr-header-divider-width) !default;
+$clr-header-divider-height: var(--clr-header-divider-height) !default;
+$clr-header-bg-color: $clr-header-bgColor !default;
+$clr-header-2-bg-color: var(--clr-header-2-bg-color) !default;
+$clr-header-3-bg-color: var(--clr-header-3-bg-color) !default;
+$clr-header-4-bg-color: var(--clr-header-4-bg-color) !default;
+$clr-header-5-bg-color: var(--clr-header-5-bg-color) !default;
+$clr-header-6-bg-color: var(--clr-header-6-bg-color) !default;
+$clr-header-7-bg-color: var(--clr-header-7-bg-color) !default;
 $clr-header-8-bg-color: #0f171c !default; // dark theme only header added by external team to workaround lack of header-7 in dark theme
-
-$clr-header-font-color: variables.$clr-color-neutral-50 !default;
-
+$clr-header-font-color: var(--clr-header-font-color) !default;
+$clr-header-font-color-hover: var(--clr-header-font-color-hover) !default;
 $clr-header-title-color: $clr-header-font-color !default;
-$clr-header-title-font-size: variables.$clr-h5-font-size !default;
-$clr-header-title-font-weight: variables.$clr-h5-font-weight !default;
-$clr-header-title-font-family: variables.$clr-h5-font-family !default;
-$clr-header-title-letter-spacing: variables.$clr-h5-letter-spacing !default;
+$clr-header-title-font-weight: var(--clr-header-title-font-weight) !default;
+$clr-header-title-font-family: var(--clr-header-title-font-family) !default;
+$clr-header-title-font-size: var(--clr-header-title-font-size) !default;
+$clr-header-title-line-height: var(--clr-header-title-line-height) !default;
+$clr-header-title-letter-spacing: var(--clr-header-title-letter-spacing) !default;
+$clr-header-branding-min-width: var(--clr-header-branding-min-width) !default;
+$clr-header-branding-padding: var(--clr-header-branding-padding) !default;
+$clr-header-branding-icon-gap: var(--clr-header-branding-icon-gap) !default;
+$clr-header-branding-logo-size: var(--clr-header-branding-logo-size) !default;
+$clr-header-nav-link-padding: var(--clr-header-nav-link-padding) !default;
+$clr-header-nav-link-line-height: var(--clr-header-nav-link-line-height) !default;
+$clr-header-nav-link-font-size: var(--clr-header-nav-link-font-size) !default;
+$clr-header-nav-text-font-weight: var(--clr-header-nav-text-font-weight) !default;
+$clr-header-nav-text-font-weight-active: var(--clr-header-nav-text-font-weight-active) !default;
+$clr-header-search-height: var(--clr-header-search-height) !default;
+$clr-header-search-icon-size: $clr-search-icon-width !default;
+$clr-header-search-margin-left: var(--clr-header-search-margin-left) !default;
+$clr-header-search-margin-right: var(--clr-header-search-margin-right) !default;
+$clr-header-search-gap: var(--clr-header-search-gap) !default;
+$clr-header-search-input-font-size: var(--clr-header-search-input-font-size) !default;
+$clr-header-search-input-font-color: var(--clr-header-search-input-font-color) !default;
+$clr-header-search-input-font-weight: var(--clr-header-search-input-font-weight) !default;
+$clr-header-search-placeholder-font-weight: var(--clr-header-search-placeholder-font-weight) !default;
+$clr-header-search-placeholder-text-color: var(--clr-header-search-placeholder-text-color) !default;
+$clr-header-search-border-active: var(--clr-header-search-border-active) !default;
+$clr-header-search-border-hover: var(--clr-header-search-border-hover) !default;
+$clr-header-action-caret-right: var(--clr-header-action-caret-right) !default;
+$clr-header-action-caret-size: var(--clr-header-action-caret-size) !default;
+$clr-header-action-icon-size: var(--clr-header-action-icon-size) !default;
+$clr-header-action-caret-gap: var(--clr-header-action-caret-gap) !default;
