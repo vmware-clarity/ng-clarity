@@ -26,23 +26,6 @@
       --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
 
       --clr-accordion-header-button-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
-      --clr-accordion-header-button-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
-
-      --clr-accordion-header-font-size: #{tokens.$cds-alias-typography-body-font-size};
-
-      --clr-accordion-header-button-line-height: var(
-        // TODO: Why do we need clr prop instead of only token?
-        --clr-p1-line-height,
-        #{convertCompactToStandardLineHeight(
-            #{tokens.$cds-alias-typography-secondary-line-height},
-            #{tokens.$cds-global-typography-secondary-line-height}
-          )}
-      ); // secondary line-height is 16px in tokens, but specified as 20px in figma.
-
-      --clr-accordion-number-padding: 0 #{tokens.$cds-global-space-7};
-
-      --clr-accordion-title-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
-      --clr-accordion-title-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
 
       --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
       --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
@@ -52,16 +35,11 @@
       --clr-accordion-border-radius: #{tokens.$cds-global-space-3};
 
       --clr-accordion-border-left-color: #{tokens.$cds-alias-object-border-color-tint};
-      --clr-accordion-border-left-color-current: var(
-        --clr-accordion-border-left-color
-      ); // indirectly mapped to CDS token
       --clr-accordion-border-left-color-complete: var(--clr-accordion-complete-color); // indirectly mapped to CDS token
       --clr-accordion-border-left-color-error: var(--clr-accordion-error-color); // indirectly mapped to CDS token
 
       --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
       --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
-      --clr-accordion-header-left-complete-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-success};
-      --clr-accordion-header-left-error-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-danger};
 
       --clr-accordion-header-gap: #{tokens.$cds-global-space-5};
       // v17: remove
