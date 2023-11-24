@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:map';
+@use '@cds/core/tokens/tokens.scss';
 @use '../utils/variables/variables';
 
 $clr-accordion-text-color: var(--clr-accordion-text-color) !default;
@@ -26,7 +27,8 @@ $clr-accordion-header-gap: var(--clr-accordion-header-gap) !default;
 $clr-accordion-status-icon-width: var(--clr-accordion-status-icon-width) !default;
 $clr-accordion-content-color: var(--clr-accordion-content-color) !default;
 $clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !default;
-$clr-accordion-content-padding: var(--clr-accordion-content-padding) !default;
+$clr-accordion-content-padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
+  tokens.$cds-global-space-11 !default;
 
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 $clr-accordion-error-color: variables.$clr-global-error-color !default;
@@ -36,7 +38,7 @@ $clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
 $clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
 $clr-accordion-border-left-color-error: var(--clr-accordion-border-left-color-error) !default;
 $clr-accordion-content-color: variables.$clr-p1-color !default;
-$clr-accordion-description-margin-left: var(--clr-accordion-description-margin-left) !default;
+$clr-accordion-description-margin-left: 40px !default;
 $clr-accordion-step-title-min-width: 0rem !default;
 $clr-accordion-step-status-margin-left: var(--clr-accordion-step-status-margin-left) !default;
 $clr-accordion-step-title-margin-left: var(--clr-accordion-step-title-margin-left) !default;

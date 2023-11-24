@@ -42,17 +42,13 @@
       --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
       --clr-accordion-header-gap: #{tokens.$cds-global-space-5};
-      // v17: remove
+      // TODO: v17: remove
       --clr-accordion-status-icon-width: auto;
 
-      --clr-accordion-description-margin-left: 40px;
       --clr-accordion-step-title-min-width: 0;
 
       --clr-accordion-step-status-margin-left: #{tokens.$cds-global-space-7};
       --clr-accordion-step-title-margin-left: #{tokens.$cds-global-space-9};
-
-      --clr-accordion-content-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
-        #{tokens.$cds-global-space-11};
     }
   }
 }
