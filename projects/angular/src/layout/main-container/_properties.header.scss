@@ -4,59 +4,48 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'variables.header' as header-variables;
-@use '../../forms/styles/variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('header.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../layout/nav/_header.clarity.scss
-      --clr-header-height: #{header-variables.$clr-header-height};
-      --clr-header-divider-color: #{header-variables.$clr-header-font-color};
-      --clr-header-divider-opacity: #{header-variables.$clr-header-divider-opacity};
-      --clr-header-divider-width: #{variables.$clr-global-borderwidth};
-      --clr-header-divider-height: #{header-variables.$clr-header-section-divider-height};
-      --clr-header-nav-opacity: #{header-variables.$clr-header-nav-opacity};
-      --clr-header-nav-hover-opacity: #{header-variables.$clr-header-nav-hover-opacity};
-      --clr-header-bg-color: var(--clr-color-neutral-900);
-      --clr-header-2-bg-color: #{header-variables.$clr-header-2-bg-color};
-      --clr-header-3-bg-color: var(--clr-color-secondary-action-1000);
-      --clr-header-4-bg-color: #{header-variables.$clr-header-4-bg-color};
-      --clr-header-5-bg-color: var(--clr-color-action-800);
-      --clr-header-6-bg-color: var(--clr-color-action-1000);
-      --clr-header-7-bg-color: #{header-variables.$clr-header-7-bg-color};
-      --clr-header-8-bg-color: #{header-variables.$clr-header-8-bg-color};
-      --clr-header-font-color: var(--clr-color-neutral-50);
-      --clr-header-font-color-hover: var(--clr-color-neutral-50);
-      --clr-header-title-color: var(--clr-header-font-color);
-      --clr-header-title-font-weight: var(--clr-h5-font-weight);
-      --clr-header-title-font-family: var(--clr-h5-font-family);
-      --clr-header-title-font-size: #{header-variables.$clr-header-title-font-size};
-      --clr-header-title-line-height: #{header-variables.$clr-header-height};
-      --clr-header-title-letter-spacing: #{header-variables.$clr-header-title-letter-spacing};
-      --clr-header-branding-min-width: #{variables.$clr_baselineRem_8_5};
-      --clr-header-branding-padding: 0 #{variables.$clr_baselineRem_1};
-      --clr-header-branding-icon-gap: #{variables.$clr_baselineRem_0_375};
-      --clr-header-branding-logo-size: #{header-variables.$clr-logo-width};
-      --clr-header-nav-link-padding: #{header-variables.$clr-header-nav-text-vertical-padding}
-        #{header-variables.$clr-header-nav-text-horizontal-padding};
-      --clr-header-nav-link-line-height: inherit;
-      --clr-header-nav-link-font-size: var(--clr-p1-font-size);
-      --clr-header-nav-text-font-weight: 500;
-      --clr-header-nav-text-font-weight-active: 500;
-      // ATM uncomment/return to _properties. Now it has to be overridden in 2 different ways
-      // in the text dropdown and in the icon dropdown.
-      // --clr-header-action-caret-right: #{variables.$clr_baselineRem_0_5};
-      --clr-header-search-height: #{variables.$clr_baselineRem_1};
-      --clr-header-search-icon-size: #{header-variables.$clr-search-icon-width};
-      --clr-header-search-margin-left: 0;
-      --clr-header-search-margin-right: 0;
-      --clr-header-search-input-font-size: inherit;
-      --clr-header-search-input-font-color: #{header-variables.$clr-header-font-color};
-      --clr-header-search-placeholder-font-weight: inherit;
-      --clr-header-search-placeholder-text-color: #{forms-variables.$clr-forms-placeholder-color};
-      --clr-header-search-border-active: none;
-    }
+  :root [cds-theme] {
+    --clr-header-height: #{mixins.baselinePx(60)};
+    --clr-header-divider-color: #{tokens.$cds-global-color-construction-600};
+    --clr-header-divider-width: #{tokens.$cds-global-space-1};
+    --clr-header-divider-height: #{tokens.$cds-global-space-11};
+    --clr-header-bg-color: #{tokens.$cds-global-color-cool-gray-1000};
+    --clr-header-2-bg-color: #{tokens.$cds-global-color-construction-800};
+    --clr-header-3-bg-color: #{tokens.$cds-global-color-azure-900};
+    --clr-header-4-bg-color: var(--clr-header-3-bg-color);
+    --clr-header-5-bg-color: var(--clr-header-3-bg-color);
+    --clr-header-6-bg-color: var(--clr-header-bg-color);
+    --clr-header-7-bg-color: var(--clr-header-2-bg-color);
+    --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
+    --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
+    --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
+    --clr-header-title-font-family: #{tokens.$cds-global-typography-header-font-family};
+    --clr-header-title-font-size: #{tokens.$cds-global-typography-subsection-font-size};
+    --clr-header-title-line-height: #{tokens.$cds-global-typography-subsection-line-height};
+    --clr-header-title-letter-spacing: #{tokens.$cds-global-typography-subsection-letter-spacing};
+    --clr-header-branding-min-width: #{mixins.baselinePx(204)};
+    --clr-header-branding-padding: 0 #{tokens.$cds-global-space-9};
+    --clr-header-branding-icon-gap: #{tokens.$cds-global-space-5};
+    --clr-header-branding-logo-size: #{tokens.$cds-global-space-11};
+    --clr-header-nav-link-padding: #{tokens.$cds-global-space-8} #{tokens.$cds-global-space-7};
+    --clr-header-nav-link-line-height: #{tokens.$cds-global-space-9};
+    --clr-header-nav-link-font-size: #{tokens.$cds-global-typography-font-size-4};
+    --clr-header-search-height: #{tokens.$cds-global-space-11};
+    --clr-header-search-icon-size: #{tokens.$cds-global-space-9};
+    --clr-header-search-margin-left: #{tokens.$cds-global-space-5};
+    --clr-header-search-margin-right: #{tokens.$cds-global-space-7};
+    --clr-header-search-gap: #{tokens.$cds-global-space-5};
+    --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};
+    --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
+    --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
+    --clr-header-search-border-active: #{tokens.$cds-global-space-1} solid Highlight;
+    --clr-header-search-border-hover: #{tokens.$cds-global-space-1} solid #{tokens.$cds-global-color-construction-400};
+    --clr-header-action-caret-right: #{tokens.$cds-global-space-7};
+    --clr-header-action-caret-size: #{tokens.$cds-global-space-7};
+    --clr-header-action-icon-size: #{tokens.$cds-global-space-9};
+    --clr-header-action-caret-gap: #{tokens.$cds-global-space-5};
   }
 }
