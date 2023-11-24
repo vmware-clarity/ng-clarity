@@ -346,7 +346,6 @@ $typography-tokens: (
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-RG-STD': (
-    // P4, Form Labels and Column Headers
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
     line-height: #{baselinePx(20)},
@@ -362,7 +361,6 @@ $typography-tokens: (
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-SB-CPT': (
-    // P4, Form Labels and Column Headers
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
     line-height: #{tokens.$cds-alias-typography-secondary-line-height},
