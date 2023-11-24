@@ -7,6 +7,7 @@
 | --clr-accordion-text-color                       | Text color of the accordion component.                              |
 | --clr-accordion-text-color-hover                 | Text color of the accordion header when hovered.                    |
 | --clr-accordion-text-color-active                | Text color of the accordion header when active.                     |
+| --clr-accordion-panel-disabled-color             | Text color of the accordion header when disabled.                   |
 | --clr-accordion-active-background-color          | Background color of the active accordion panel.                     |
 | --clr-accordion-content-background-color         | Background color of the accordion content area.                     |
 | --clr-accordion-content-color                    | Color of the text in the accordion content area.                    |
@@ -21,7 +22,6 @@
 | --clr-accordion-border-color                     | Color of the accordion border.                                      |
 | --clr-accordion-border-radius                    | Border radius of the accordion.                                     |
 | --clr-accordion-border-left-color                | Color of the left border in the accordion.                          |
-| --clr-accordion-border-left-width                | Width of the left border in the accordion.                          |
 | --clr-accordion-border-left-color-complete       | Color of the left border in the accordion for the complete state.   |
 | --clr-accordion-border-left-color-error          | Color of the left border in the accordion for the error state.      |
 | --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                      |
@@ -29,7 +29,6 @@
 | --clr-accordion-header-gap                       | Gap between the icon and title text in the accordion header.        |
 | --clr-accordion-status-icon-width                | Width of the icon used for the accordion arrow.                     |
 | --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                              |
-| --clr-accordion-step-title-font-weight           | Font weight for the step title and number.                          |
 | --clr-accordion-step-status-margin-left          | Left margin of the status container                                 |
 | --clr-accordion-step-title-margin-left           | Left margin of the title container                                  |
 
