@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'lists';
+@use 'code';
 @use '../utils/mixins';
 @use '../utils/variables/variables.typography';
 @use '@cds/core/tokens/tokens.scss';
