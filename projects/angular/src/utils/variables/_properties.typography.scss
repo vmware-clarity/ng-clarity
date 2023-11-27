@@ -58,7 +58,7 @@
 
     //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
     //'SUBSECTION-16-EXP'
-    --clr-h5-color: #{tokens.$cds-alias-typography-color-450};
+    --clr-h5-color: #{tokens.$cds-alias-typography-color-300};
     --clr-h5-font-size: #{tokens.$cds-alias-typography-subsection-font-size};
     --clr-h5-font-weight: #{tokens.$cds-alias-typography-subsection-font-weight};
     --clr-h5-font-family: var(--clr-display-font);
@@ -67,7 +67,7 @@
 
     //H6 - Heading
     //'MESSAGE-16-EXP'
-    --clr-h6-color: var(--clr-color-neutral-900);
+    --clr-h6-color: #{tokens.$cds-alias-typography-color-300};
     --clr-h6-font-size: #{tokens.$cds-alias-typography-message-font-size};
     --clr-h6-font-weight: #{tokens.$cds-alias-typography-message-font-weight};
     --clr-h6-font-family: var(--clr-display-font);
