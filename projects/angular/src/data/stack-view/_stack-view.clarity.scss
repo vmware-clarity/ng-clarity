@@ -104,9 +104,6 @@
       display: flex;
       align-items: center;
 
-      // ATM
-      // before section is caret placeholder remove it and replace it with pure padding right
-      // padding-right: tokens.$cds-global-space-9;
       &::before {
         display: inline-block;
         content: '';

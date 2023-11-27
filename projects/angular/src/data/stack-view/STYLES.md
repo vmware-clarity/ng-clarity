@@ -39,6 +39,10 @@
 | --clr-stack-view-stack-block-expandable-hover                          | Deprecated in favor of `--clr-stack-view-expandable-row-hover`  |
 | --clr-stack-view-stack-block-content-text-color                        | DELETED. Replaced with `--clr-stack-view-row-color`             |
 | --clr-stack-view-stack-block-expanded-text-color                       | Deprecated in favor of `--clr-stack-view-expanded-row-color`    |
+| --clr-stack-view-font-size                                             | DELETED. Replaced with `--clr-stack-view-row-font-size`         |
+| --clr-stack-view-font-weight                                           | DELETED. Replaced with `--clr-stack-view-row-font-weight`       |
+| --clr-stack-view-line-height                                           | DELETED. Replaced with `--clr-stack-view-row-line-height`       |
+| --clr-stack-view-letter-spacing                                        | DELETED. Replaced with `--clr-stack-view-row-letter-spacing`    |
 
 ## CSS Classes
 
