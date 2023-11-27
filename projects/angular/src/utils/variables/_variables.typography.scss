@@ -11,28 +11,11 @@ $clr-font: var(--clr-font) !default;
 $clr-body-font: $clr-font;
 $clr-altFont: $clr-font !default; //TODO: TBD. Alternative font for Clarity
 
-// Usage: ../typography/_typography.clarity.scss
-// Usage: ../utils/_helpers.clarity.scss
-// $clr-font-base-size: 14 !default; // Moved to general for now. Needs a better general name
-
 $clr-font-weight-light: var(--clr-font-weight-light) !default;
 $clr-font-weight-regular: var(--clr-font-weight-regular) !default;
 $clr-font-weight-semibold: var(--clr-font-weight-semibold) !default;
 $clr-font-weight-bold: var(--clr-font-weight-bold) !default;
 $clr-font-weight-extrabold: var(--clr-font-weight-extrabold) !default;
-
-// NOT USED commented for now
-//$clr-kerning-lotsatext: normal !default; // 14px, but a lot of it
-//$clr-kerning-smalltext: normal !default; // 14px-12px
-//$clr-kerning-bigtext: 0.01em !default; // some types of 16px over dark background
-//$clr-kerning-tinytext: 0.03em !default; // 11px and lower
-
-// Paragraphs
-// NOT USED commented for now
-//$clr-typography-smalltext: globals-variables.$clr_baselineRem_0_5416 !default; // 13px
-//$clr-typography-xsmalltext: globals-variables.$clr_baselineRem_0_5 !default; // 12px
-//$clr-typography-xxsmalltext: globals-variables.$clr_baselineRem_0_458 !default; // 11px
-//$clr-typography-tinytext: globals-variables.$clr_baselineRem_0_416 !default; // 10px
 
 $clr-global-typography-margin-top: #{tokens.$cds-global-space-9} !default;
 $clr-global-typography-margin-bottom: 0 !default;
