@@ -64,7 +64,7 @@
     &:disabled::-moz-range-thumb {
       border: 40px;
 
-      @include forms-mixins.range-thumb-style(green, purple);
+      @include forms-mixins.range-thumb-style(red, blue);
     }
 
     &:disabled + .fill-input {
