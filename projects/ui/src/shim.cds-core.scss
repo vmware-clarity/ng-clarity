@@ -161,12 +161,6 @@
   --clr-p8-line-height: #{baselinePx(12)};
   --clr-p8-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
-  // List item li
-  --clr-list-item-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-list-item-margin-left: #{tokens.$cds-global-space-6};
-  --clr-list-item-line-height: var(--clr-p1-line-height);
-  --clr-list-item-compact-margin-bottom: #{tokens.$cds-global-space-0};
-
   /* Accordion */
 
   --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
