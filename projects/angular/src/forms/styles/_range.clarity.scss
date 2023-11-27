@@ -62,12 +62,9 @@
       );
     }
     &:disabled::-moz-range-thumb {
-      border: 0;
+      border: 40px;
 
-      @include forms-mixins.range-thumb-style(
-        forms-variables.$clr-forms-range-thumb-height,
-        forms-variables.$clr-forms-range-progress-fill-color-disabled
-      );
+      @include forms-mixins.range-thumb-style(green, purple);
     }
 
     &:disabled + .fill-input {
@@ -110,7 +107,7 @@
     }
 
     &::-moz-range-thumb {
-      border: 0;
+      border: 20px;
 
       @include forms-mixins.range-thumb-style(
         forms-variables.$clr-forms-range-thumb-height,
