@@ -36,9 +36,11 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   outline-offset: variables.$clr_baselineRem_1px;
 }
 
-@mixin include-slim-outline-style-form-fields() {
-  outline: Highlight solid variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: solid;
+  outline-width: $width;
 }
 
 @mixin include-outline-style-links() {
@@ -315,6 +317,18 @@ $typography-tokens: (
     line-height: #{tokens.$cds-global-space-7},
     letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
+  'BODY-14-RG-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-SB-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'SECONDARY-14-RG-CPT': (
     font-size: #{tokens.$cds-global-typography-font-size-4},
     font-weight: #{tokens.$cds-global-typography-secondary-font-weight},
@@ -394,6 +408,14 @@ $typography-tokens: (
     // better token not found
     letter-spacing: #{baselinePx(-0.1)},
     // suitable token not found
+  ),
+  'LINK-14': (
+    // Link Text, Link Text Inverse
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    line-height: #{tokens.$cds-global-space-9},
+    // 1.7142857em
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
   'BUTTON-12': (
     // Buttons

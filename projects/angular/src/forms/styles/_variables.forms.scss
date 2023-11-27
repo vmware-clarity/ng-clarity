@@ -48,6 +48,8 @@ $clr-forms-field-font-size: variables.$clr-p2-font-size !default;
 
 // Textarea
 $clr-forms-textarea-background-color: var(--clr-forms-textarea-background-color) !default;
+$clr-forms-textarea-disabled-background: var(--clr-forms-textarea-disabled-background);
+$clr-forms-textarea-border-radius: var(--clr-forms-textarea-border-radius);
 
 // Select
 $clr-forms-select-hover-border-color: var(--clr-forms-select-hover-border-color) !default;
@@ -121,3 +123,8 @@ $clr-forms-range-border-radius: var(--clr-forms-range-track-border-radius) !defa
 $clr-forms-range-progress-fill-color-disabled: var(--clr-forms-range-progress-fill-color-disabled) !default;
 $clr-forms-range-track-color-disabled: var(--clr-forms-range-track-color-disabled) !default;
 $clr-forms-range-border-color-disabled: var(--clr-forms-range-track-border-color-disabled) !default;
+
+// Datalist
+$clr-forms-datalist-caret-color: var(--clr-forms-datalist-caret-color);
+$clr-forms-datalist-caret-disabled-color: var(--clr-forms-datalist-caret-disabled-color);
+$clr-forms-datalist-caret-icon-size: var(--clr-forms-datalist-caret-icon-size);

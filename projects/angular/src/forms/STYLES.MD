@@ -20,8 +20,6 @@
 | --clr-forms-label-disabled-color                | Font color for labels in disabled form controls       |
 | --clr-forms-label-font-weight                   | Font weight for form labels                           |
 | --clr-forms-textarea-background-color           | Background color of textarea                          |
-| --clr-forms-textarea-focused-outline            | Not used                                              |
-| --clr-forms-textarea-invalid-focused-outline    | Not used                                              |
 | --clr-forms-select-hover-background             | Background and border color of select on hover        |
 | --clr-forms-select-caret-hover-color            | Color of select caret on hover                        |
 | --clr-forms-select-caret-color                  | Color of select caret                                 |
