@@ -317,6 +317,18 @@ $typography-tokens: (
     line-height: #{tokens.$cds-global-space-7},
     letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
+  'BODY-14-RG-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-SB-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'SECONDARY-14-RG-CPT': (
     font-size: #{tokens.$cds-global-typography-font-size-4},
     font-weight: #{tokens.$cds-global-typography-secondary-font-weight},
