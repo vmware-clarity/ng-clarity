@@ -149,4 +149,4 @@ $clr-p8-letter-spacing: $clr-kerning-tinytext !default;
 $clr-p8-line-height: globals-variables.$clr_baselineRem_0_5 !default;
 
 // Lists
-$clr-list-item-color: var(--clr-list-item-color);
+$clr-list-item-color: var(--clr-list-item-color) !default;
