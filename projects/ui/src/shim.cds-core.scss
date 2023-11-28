@@ -217,35 +217,6 @@
   --clr-accordion-status-icon-width: auto;
   --clr-accordion-content-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-11};
 
-  /* Cards */
-
-  --clr-card-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
-  --clr-card-divider-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-300);
-  --clr-card-title-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-card-title-font-weight: #{tokens.$cds-global-typography-section-font-weight};
-  --clr-card-header-title-color: var(--clr-card-title-color);
-  --clr-card-content-title-color: var(--clr-card-title-color);
-  --clr-card-header-title-font-size: #{tokens.$cds-global-typography-section-font-size};
-  --clr-card-content-title-font-size: #{tokens.$cds-global-typography-subsection-font-size};
-  --clr-card-text-font-size: #{tokens.$cds-global-typography-body-font-size};
-  --clr-card-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-300);
-  --clr-card-box-shadow: #{tokens.$cds-alias-object-shadow-300}; // indirectly mapped to CDS token
-  --clr-card-clickable-border-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-500);
-  --clr-card-clickable-box-shadow: #{tokens.$cds-alias-object-shadow-300}; // indirectly mapped to CDS token
-  --clr-card-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-card-border-width: #{tokens.$cds-alias-object-border-width-100};
-  --clr-card-clickable-border-width: #{tokens.$cds-alias-object-border-width-200};
-  --clr-card-text-color: #{tokens.$cds-alias-typography-color-400};
-  --clr-card-header-padding: #{tokens.$cds-global-space-7};
-  --clr-card-footer-vertical-padding: #{tokens.$cds-global-space-5}; // ATM: internal property to be deleted
-  --clr-card-footer-padding: var(--clr-card-footer-vertical-padding) #{tokens.$cds-global-space-7};
-  --clr-card-block-padding: #{tokens.$cds-global-space-7};
-  --clr-card-list-group-item-padding: #{tokens.$cds-global-space-7};
-  --clr-card-children-space-between: #{tokens.$cds-global-space-7};
-  --clr-card-media-description-margin-left: #{tokens.$cds-global-space-7};
-  --clr-card-media-description-margin-top: #{tokens.$cds-global-space-7};
-  --clr-card-footer-gap: #{tokens.$cds-global-space-5};
-
   /* Responsive Navigation */
 
   --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // var(--clr-color-neutral-700);
