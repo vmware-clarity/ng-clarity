@@ -135,13 +135,8 @@
 
   h4.card-title,
   .card-title {
-    @include mixins.generate-typography-token('SECTION-20-STD');
+    @include mixins.generate-typography-token('SUBSECTION-16-EXP');
     color: card-variables.$clr-card-content-title-color;
-  }
-
-  .card-header,
-  .card-title {
-    @include mixins.generate-typography-token('SECTION-20-STD');
   }
 
   h1,
