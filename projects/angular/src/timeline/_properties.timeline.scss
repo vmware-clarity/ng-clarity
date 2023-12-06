@@ -4,66 +4,59 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use '../utils/variables/variables.global';
 @use 'variables.timeline' as timeline-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('timeline.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // colors
-      --clr-timeline-line-color: var(--clr-color-neutral-500);
-      --clr-timeline-step-header-color: var(--clr-color-neutral-600);
-      --clr-timeline-step-title-color: var(--clr-color-neutral-700);
-      --clr-timeline-step-description-color: var(--clr-color-neutral-700);
+  :root [cds-theme] {
+    // colors
+    --clr-timeline-line-color: #{tokens.$cds-alias-object-interaction-border-color};
+    --clr-timeline-step-header-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-timeline-step-title-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-timeline-step-description-color: #{tokens.$cds-alias-typography-color-400};
 
-      --clr-timeline-incomplete-step-color: var(--clr-color-neutral-600);
-      --clr-timeline-current-step-color: var(--clr-color-action-600);
-      --clr-timeline-success-step-color: var(--clr-color-success-400);
-      --clr-timeline-error-step-color: var(--clr-color-danger-800);
+    --clr-timeline-incomplete-step-color: #{tokens.$cds-alias-object-interaction-border-color};
+    --clr-timeline-current-step-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+    --clr-timeline-success-step-color: #{tokens.$cds-alias-status-success};
+    --clr-timeline-error-step-color: #{tokens.$cds-alias-status-danger};
 
-      // body (title)
-      --clr-timeline-step-title-font-weight: var(--clr-p2-font-weight);
-      --clr-timeline-step-title-font-size: #{timeline-variables.$clr-timeline-step-title-font-size};
-      --clr-timeline-step-title-line-height: #{timeline-variables.$clr-timeline-step-title-line-height};
+    // body (title)
+    --clr-timeline-step-title-font-weight: var(--clr-p2-font-weight);
+    --clr-timeline-step-title-font-size: #{timeline-variables.$clr-timeline-step-title-font-size};
+    --clr-timeline-step-title-line-height: #{timeline-variables.$clr-timeline-step-title-line-height};
 
-      --clr-timeline-icon-size: #{timeline-variables.$clr-timeline-icon-size};
-      --clr-timeline-line-width: #{timeline-variables.$clr-timeline-line-thickness};
-      --clr-timeline-step-margin: #{timeline-variables.$clr-timeline-gutter-width};
+    // ATM to remove?
+    --clr-timeline-icon-size: #{tokens.$cds-global-space-11};
+    --clr-timeline-line-width: #{tokens.$cds-global-space-2};
+    --clr-timeline-step-margin: #{tokens.$cds-global-space-5};
+    --clr-timeline-step-internal-margin: #{tokens.$cds-global-space-6}; // internal property cannot be exposed
 
-      --clr-timeline-horizontal-line-length: calc(
-        100% -
-          #{0.5 *
-          timeline-variables.$clr-timeline-icon-size} -
-          #{timeline-variables.$clr-timeline-icon-inner-padding}
-      );
-      --clr-timeline-vertical-line-position: translate(
-        #{-0.5 *
-          (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-line-thickness) -
-          timeline-variables.$clr-timeline-icon-inner-padding -
-          timeline-variables.$clr-timeline-vertical-step-body-left-padding,
-        timeline-variables.$clr-timeline-icon-size -
-          timeline-variables.$clr-timeline-icon-inner-padding -
-          timeline-variables.$clr-timeline-vertical-step-body-top-padding}
-      );
+    --clr-timeline-horizontal-line-length: calc(
+      100% - calc(var(--clr-timeline-icon-size) - var(--clr-timeline-step-internal-margin))
+    );
+    --clr-timeline-vertical-step-body-margin: 0 0 0 var(--clr-timeline-step-internal-margin); // ATM remove this property
+    --clr-timeline-vertical-line-position: translate(
+      calc(
+        -0.5 * (var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)) - var(--clr-timeline-step-internal-margin)
+      ),
+      calc(var(--clr-timeline-icon-size) - var(--clr-timeline-line-width))
+    );
 
-      --clr-timeline-vertical-line-length: calc(100% + #{2 * timeline-variables.$clr-timeline-icon-inner-padding});
-      --clr-timeline-vertical-step-body-margin: #{timeline-variables.$clr-timeline-vertical-step-body-top-padding
-        0
-        0
-        timeline-variables.$clr-timeline-vertical-step-body-left-padding}; // ATM remove this property
+    --clr-timeline-vertical-line-length: calc(
+      100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width))
+    );
 
-      // body (header)
-      --clr-timeline-step-header-font-size: #{timeline-variables.$clr-timeline-step-header-font-size};
-      --clr-timeline-step-header-font-weight: inherit;
-      --clr-timeline-step-header-line-height: #{timeline-variables.$clr-timeline-step-header-line-height};
+    // body (header)
+    --clr-timeline-step-header-font-size: #{tokens.$cds-global-typography-font-size-3};
+    --clr-timeline-step-header-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
+    --clr-timeline-step-header-line-height: #{tokens.$cds-global-space-7};
 
-      // body (description)
-      --clr-timeline-step-description-font-size: #{timeline-variables.$clr-timeline-step-description-font-size};
-      --clr-timeline-step-description-font-weight: inherit;
-      --clr-timeline-step-description-line-height: #{timeline-variables.$clr-timeline-step-description-line-height};
+    // body (description)
+    --clr-timeline-step-description-font-size: #{tokens.$cds-global-typography-font-size-1};
+    --clr-timeline-step-description-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
+    --clr-timeline-step-description-line-height: #{tokens.$cds-global-space-7};
 
-      // spinner
-      --clr-timeline-spinner-size: #{timeline-variables.$clr-timeline-spinner-size};
-    }
+    // spinner
+    --clr-timeline-spinner-size: #{tokens.$cds-global-space-10};
   }
 }
