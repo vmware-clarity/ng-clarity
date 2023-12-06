@@ -45,7 +45,12 @@ const variants: Parameters[] = [
     stateName: 'Default Buttons',
     validateState: ClrLoadingState.DEFAULT,
     submitState: ClrLoadingState.DEFAULT,
-  }, // Loading state buttons were removed because they are flaky
+  },
+  {
+    stateName: 'Loading Buttons',
+    validateState: ClrLoadingState.LOADING,
+    submitState: ClrLoadingState.LOADING,
+  },
   {
     stateName: 'Success Buttons',
     validateState: ClrLoadingState.SUCCESS,
