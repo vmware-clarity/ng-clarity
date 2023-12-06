@@ -26,7 +26,7 @@ and example usage, see [our website](https://angular.clarity.design).
 The Clarity project team welcomes contributions from the community. For more
 detailed information, see [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
-## License
+## Licenses
 
 - The Clarity Design System is licensed under the MIT license.
 - The font is licensed under the Open Font License (OFL).
