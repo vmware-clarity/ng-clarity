@@ -102,8 +102,7 @@
   }
 
   .clr-timeline-step-title {
-    margin-top: timeline-variables.$clr-timeline-step-internal-spacing;
-    margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
+    margin: timeline-variables.$clr-timeline-step-internal-spacing 0;
     color: timeline-variables.$clr-timeline-step-title-color;
 
     @include mixins.generate-typography-token(
@@ -165,13 +164,8 @@
       word-break: break-word;
       width: mixins.baselinePx(60);
       min-width: mixins.baselinePx(60);
-      margin-bottom: 0;
-      margin-right: timeline-variables.$clr-timeline-step-internal-spacing;
-      margin-top: timeline-variables.$clr-timeline-step-internal-spacing;
-    }
-
-    .clr-timeline-step-title {
-      margin-top: timeline-variables.$clr-timeline-step-internal-spacing;
+      margin: timeline-variables.$clr-timeline-step-internal-spacing
+        timeline-variables.$clr-timeline-step-internal-spacing 0 0;
     }
 
     .clr-timeline-step-body {
