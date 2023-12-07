@@ -5,53 +5,27 @@
  */
 @use 'sass:map';
 @use 'sass:meta';
+@use '@cds/core/tokens/tokens.scss';
 @use '../../button/variables.buttons' as button-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tooltip' as tooltip-variables;
 
 @mixin common-tooltip-styles {
-  @include mixins.css-var(
-    color,
-    clr-tooltip-color,
-    tooltip-variables.$clr-tooltip-color,
-    variables.$clr-use-custom-properties
-  );
-  font-size: tooltip-variables.$clr-tooltip-font-size;
-  @include mixins.css-var(
-    font-weight,
-    clr-tooltip-font-weight,
-    tooltip-variables.$clr-tooltip-font-weight,
-    variables.$clr-use-custom-properties
-  );
-  letter-spacing: tooltip-variables.$clr-tooltip-letter-spacing;
-
-  @include mixins.css-var(
-    background-color,
-    clr-tooltip-background-color,
-    tooltip-variables.$clr-tooltip-background-color,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    border-radius,
-    clr-tooltip-border-radius,
-    tooltip-variables.$clr-tooltip-border-radius,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    padding,
-    clr-tooltip-content-padding,
-    variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5,
-    variables.$clr-use-custom-properties
-  );
-  @include mixins.css-var(
-    line-height,
-    clr-tooltip-content-line-height,
-    variables.$clr_baselineRem_0_75,
-    variables.$clr-use-custom-properties
-  );
   margin: 0; //Resetting any margin that might be applied to span/div elements inside forms
-  width: tooltip-variables.$clr-tooltip-default-width;
+  width: mixins.baselinePx(240);
+  border-radius: tooltip-variables.$clr-tooltip-border-radius;
+  padding: tokens.$cds-global-space-6;
+
+  color: tooltip-variables.$clr-tooltip-color;
+  background-color: tooltip-variables.$clr-tooltip-background-color;
+
+  @include mixins.generate-typography-token(
+    'BODY-14-RG-CPT',
+    (
+      font-weight: tooltip-variables.$clr-tooltip-font-weight,
+    )
+  );
 }
 
 @mixin vertical-tooltip-generator($dirA: top, $dirB: right) {
@@ -67,70 +41,21 @@
   #{$dirB}: auto;
 
   border-#{$oppA}-#{$oppB}-radius: 0;
-  @include mixins.css-var(
-    margin-#{$oppA},
-    clr-tooltip-content-margin,
-    tooltip-variables.$clr-tooltip-adjusted-margin,
-    variables.$clr-use-custom-properties
-  );
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
     position: absolute;
+    pointer-events: none;
     #{$oppB}: 0;
     #{$dirA}: auto;
     #{$dirB}: auto;
-    @include mixins.css-var(
-      #{$oppA},
-      clr-tooltip-arrow-vertical-size,
-      -1 * variables.$clr_baselineRem_0_35,
-      variables.$clr-use-custom-properties
-    );
+    #{$oppA}: calc(-1 * #{tokens.$cds-global-space-6});
 
-    border-style: solid;
-    @include mixins.css-var(
-      border-#{$oppB}-width,
-      clr-tooltip-arrow-height,
-      tooltip-variables.$arrow-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-#{$oppB}-color,
-      clr-tooltip-background-color,
-      tooltip-variables.$clr-tooltip-background-color,
-      variables.$clr-use-custom-properties
-    );
-
-    @include mixins.css-var(
-      border-#{$dirA}-width,
-      clr-tooltip-arrow-width,
-      tooltip-variables.$arrow-width,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-#{$dirA}-color,
-      clr-tooltip-background-color,
-      tooltip-variables.$clr-tooltip-background-color,
-      variables.$clr-use-custom-properties
-    );
-
-    border-#{$oppA}-color: transparent;
-    @include mixins.css-var(
-      border-#{$oppA}-width,
-      clr-tooltip-arrow-width,
-      tooltip-variables.$arrow-width,
-      variables.$clr-use-custom-properties
-    );
-
-    border-#{$dirB}-color: transparent;
-    @include mixins.css-var(
-      border-#{$dirB}-width,
-      clr-tooltip-arrow-width,
-      tooltip-variables.$arrow-width,
-      variables.$clr-use-custom-properties
-    );
-
-    pointer-events: none;
+    border-#{$oppB}: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
+    border-#{$dirB}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
   }
 }
 
@@ -146,71 +71,21 @@
   @include common-tooltip-styles;
 
   border-top-#{$oppA}-radius: 0;
-  @include mixins.css-var(
-    margin-#{$oppA},
-    clr-tooltip-content-margin,
-    tooltip-variables.$clr-tooltip-adjusted-margin,
-    variables.$clr-use-custom-properties
-  );
+  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
     position: absolute;
+    pointer-events: none;
     top: 0;
     bottom: auto;
     #{$dirA}: auto;
-    @include mixins.css-var(
-      #{$oppA},
-      clr-tooltip-arrow-horizontal-size,
-      -1 * variables.$clr_baselineRem_0_375,
-      variables.$clr-use-custom-properties
-    );
+    #{$oppA}: calc(-1 * #{tokens.$cds-global-space-6});
 
-    border-style: solid;
-
-    @include mixins.css-var(
-      border-top-width,
-      clr-tooltip-arrow-height,
-      tooltip-variables.$arrow-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-top-color,
-      clr-tooltip-background-color,
-      tooltip-variables.$clr-tooltip-background-color,
-      variables.$clr-use-custom-properties
-    );
-
-    @include mixins.css-var(
-      border-#{$dirA}-width,
-      clr-tooltip-arrow-width,
-      tooltip-variables.$arrow-width,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-#{$dirA}-color,
-      clr-tooltip-background-color,
-      tooltip-variables.$clr-tooltip-background-color,
-      variables.$clr-use-custom-properties
-    );
-
-    border-bottom-color: transparent;
-    @include mixins.css-var(
-      border-top-width,
-      clr-tooltip-arrow-height,
-      tooltip-variables.$arrow-height,
-      variables.$clr-use-custom-properties
-    );
-
-    border-#{$oppA}-color: transparent;
-    @include mixins.css-var(
-      border-#{$oppA}-width,
-      clr-tooltip-arrow-width,
-      tooltip-variables.$arrow-width,
-      variables.$clr-use-custom-properties
-    );
-
-    pointer-events: none;
+    border-top: tooltip-variables.$clr-tooltip-arrow-height solid tooltip-variables.$clr-tooltip-background-color;
+    border-#{$dirA}: tooltip-variables.$clr-tooltip-arrow-width solid tooltip-variables.$clr-tooltip-background-color;
+    border-bottom: tooltip-variables.$clr-tooltip-arrow-height solid transparent;
+    border-#{$oppA}: tooltip-variables.$clr-tooltip-arrow-width solid transparent;
   }
 }
 
@@ -263,10 +138,8 @@
     }
 
     &:focus > :first-child {
-      outline-offset: variables.$clr_baselineRem_1px;
-      outline-width: variables.$clr_baselineRem_1px;
-      outline-color: rgb(59, 153, 252); //Color that Chrome uses
-      outline-style: solid;
+      outline-offset: tokens.$cds-alias-object-interaction-outline-offset;
+      outline: tokens.$cds-alias-object-interaction-outline;
     }
 
     //Tooltip directions
@@ -305,22 +178,22 @@
     //Tooltips Size
     &.tooltip-xs > .tooltip-content,
     .tooltip-content.tooltip-xs {
-      width: variables.$clr_baselineRem_3;
+      width: tokens.$cds-global-space-14;
     }
 
     &.tooltip-sm > .tooltip-content,
     .tooltip-content.tooltip-sm {
-      width: variables.$clr_baselineRem_5;
+      width: mixins.baselinePx(120);
     }
 
     &.tooltip-md > .tooltip-content,
     .tooltip-content.tooltip-md {
-      width: tooltip-variables.$clr-tooltip-default-width;
+      width: mixins.baselinePx(240);
     }
 
     &.tooltip-lg > .tooltip-content,
     .tooltip-content.tooltip-lg {
-      width: variables.$clr_baselineRem_15;
+      width: mixins.baselinePx(360);
     }
   }
 

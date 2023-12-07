@@ -232,21 +232,6 @@
   --clr-subnav-sm-item-height: auto; // ATM - remove
   --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
 
-  /* Tooltips */
-
-  --clr-tooltip-background-color: #{tokens.$cds-alias-object-interaction-color-active};
-  --clr-tooltip-color: #{tokens.$cds-alias-typography-color-100};
-  --clr-tooltip-border-radius: #{tokens.$cds-alias-object-border-radius-100};
-  --clr-tooltip-font-weight: #{tokens.$cds-global-typography-body-font-weight};
-  --clr-tooltip-content-margin: #{tokens.$cds-global-space-9};
-  --clr-tooltip-content-padding: #{tokens.$cds-global-space-6};
-  --clr-tooltip-content-line-height: #{tokens.$cds-global-space-7};
-
-  --clr-tooltip-arrow-width: #{tokens.$cds-global-space-5};
-  --clr-tooltip-arrow-height: #{tokens.$cds-global-space-5};
-  --clr-tooltip-arrow-horizontal-size: calc(-1 * #{tokens.$cds-global-space-6});
-  --clr-tooltip-arrow-vertical-size: calc(-1 * #{tokens.$cds-global-space-6});
-
   // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
   clr-stepper-panel .clr-accordion-inner-content {
     padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
