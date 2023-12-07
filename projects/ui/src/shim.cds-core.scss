@@ -1009,6 +1009,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover}; // #{tokens.$cds-global-color-gray-600}; // var(--clr-color-neutral-600);
   --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color}; // #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
+  --clr-forms-select-option-background-color: #{tokens.$cds-alias-object-interaction-background};
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
   --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token

@@ -73,6 +73,12 @@
           forms-variables.$clr-forms-select-option-color,
           variables.$clr-use-custom-properties
         );
+        @include mixins.css-var(
+          background-color,
+          clr-forms-select-option-background-color,
+          forms-variables.$clr-forms-select-option-background-color,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
