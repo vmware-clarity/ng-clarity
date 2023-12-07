@@ -17,12 +17,14 @@
   @return calc($pixels * (1rem / var(--clr-global-font-size)));
 }
 
+$metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
 [cds-theme] {
   /* Global */
   --clr-global-font-size: #{tokens.$cds-global-base};
   --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
   --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
-  --clr-font: #{tokens.$cds-global-typography-font-family};
+  // Revert v16 font change.
+  --clr-font: #{$metropolis-font-family};
 
   // app background
   --clr-global-app-background: #{tokens.$cds-alias-object-app-background}; // #{$clr-global-app-background}; // $clr-color-neutral-50
@@ -53,7 +55,7 @@
   --clr-h1-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h1-font-size: #{tokens.$cds-global-typography-font-size-9};
   --clr-h1-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-  --clr-h1-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h1-font-family: #{$metropolis-font-family};
   --clr-h1-line-height: #{baselinePx(44)};
   --clr-h1-letter-spacing: calc(-0.5 * (1rem / var(--clr-global-font-size)));
 
@@ -61,7 +63,7 @@
   --clr-h2-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h2-font-size: #{tokens.$cds-global-typography-font-size-8};
   --clr-h2-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-  --clr-h2-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h2-font-family: #{$metropolis-font-family};
   --clr-h2-line-height: #{baselinePx(36)};
   --clr-h2-letter-spacing: calc(-0.4 * (1rem / var(--clr-global-font-size)));
 
@@ -69,7 +71,7 @@
   --clr-h3-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h3-font-size: #{tokens.$cds-global-typography-font-size-7};
   --clr-h3-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-  --clr-h3-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h3-font-family: #{$metropolis-font-family};
   --clr-h3-line-height: #{baselinePx(32)};
   --clr-h3-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
@@ -77,7 +79,7 @@
   --clr-h4-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h4-font-size: #{tokens.$cds-global-typography-font-size-6};
   --clr-h4-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-  --clr-h4-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h4-font-family: #{$metropolis-font-family};
   --clr-h4-line-height: #{baselinePx(24)};
   --clr-h4-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
@@ -85,7 +87,7 @@
   --clr-h5-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h5-font-size: #{tokens.$cds-global-typography-font-size-5};
   --clr-h5-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-  --clr-h5-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h5-font-family: #{$metropolis-font-family};
   --clr-h5-line-height: #{baselinePx(24)};
   --clr-h5-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
@@ -93,7 +95,7 @@
   --clr-h6-color: #{tokens.$cds-alias-typography-color-300};
   --clr-h6-font-size: #{tokens.$cds-global-typography-font-size-5};
   --clr-h6-font-weight: #{tokens.$cds-global-typography-font-weight-light};
-  --clr-h6-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-h6-font-family: #{$metropolis-font-family};
   --clr-h6-line-height: #{baselinePx(24)};
   --clr-h6-letter-spacing: calc(-0.2 * (1rem / var(--clr-global-font-size)));
 
@@ -781,7 +783,7 @@
   --clr-badge-font-weight: var(--clr-p7-font-weight);
   --clr-badge-letter-spacing: var(--clr-p7-letter-spacing);
   --clr-badge-line-height: var(--clr-p7-line-height);
-  --clr-badge-font-family: #{tokens.$cds-global-typography-font-family};
+  --clr-badge-font-family: #{$metropolis-font-family};
 
   /* Progress Bars */
 

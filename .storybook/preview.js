@@ -17,7 +17,6 @@ import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/the
 
 // Styles that should be watched/reloaded
 import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
-import clarityCity from 'raw-loader!sass-loader!../projects/ui/src/font-clarity-city.scss';
 
 // Styles that should be watched/reloaded
 import legacyUiStyles from 'raw-loader!sass-loader!../projects/ui/src/legacy-clr-ui.scss';
@@ -31,15 +30,7 @@ const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
-const cdsCoreAndShimStyles = [
-  clarityCity,
-  previewStyles,
-  resetStyles,
-  coreTokens,
-  darkThemeCoreStyles,
-  clrUiStyles,
-  shimStyles,
-];
+const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles, shimStyles];
 
 loadIcons();
 addDocs(docs);
