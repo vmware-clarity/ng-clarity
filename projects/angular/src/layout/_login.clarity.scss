@@ -94,6 +94,16 @@
           margin: #{tokens.$cds-global-space-5} 0 0 0;
         }
       }
+
+      // @deprecated in v17. to be removed in v18
+      .trademark {
+        color: login-variables.$clr-login-trademark-color;
+        font-weight: login-variables.$clr-login-trademark-font-weight;
+        font-family: login-variables.$clr-login-trademark-font-family;
+        font-size: login-variables.$clr-login-trademark-font-size;
+        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
+      }
+
       .login-group {
         display: flex;
         flex-direction: column;
