@@ -21,42 +21,8 @@
     --clr-timeline-error-step-color: #{tokens.$cds-alias-status-danger};
 
     // body (title)
-    --clr-timeline-step-title-font-weight: var(--clr-p2-font-weight);
-    --clr-timeline-step-title-font-size: #{timeline-variables.$clr-timeline-step-title-font-size};
-    --clr-timeline-step-title-line-height: #{timeline-variables.$clr-timeline-step-title-line-height};
+    --clr-timeline-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 
-    // ATM to remove?
-    --clr-timeline-icon-size: #{tokens.$cds-global-space-11};
-    --clr-timeline-line-width: #{tokens.$cds-global-space-2};
-    --clr-timeline-step-margin: #{tokens.$cds-global-space-5};
-    --clr-timeline-step-internal-margin: #{tokens.$cds-global-space-6}; // internal property cannot be exposed
-
-    --clr-timeline-horizontal-line-length: calc(
-      100% - calc(var(--clr-timeline-icon-size) - var(--clr-timeline-step-internal-margin))
-    );
-    --clr-timeline-vertical-step-body-margin: 0 0 0 var(--clr-timeline-step-internal-margin); // ATM remove this property
-    --clr-timeline-vertical-line-position: translate(
-      calc(
-        -0.5 * (var(--clr-timeline-icon-size) + var(--clr-timeline-line-width)) - var(--clr-timeline-step-internal-margin)
-      ),
-      calc(var(--clr-timeline-icon-size) - var(--clr-timeline-line-width))
-    );
-
-    --clr-timeline-vertical-line-length: calc(
-      100% - calc(0.5 * var(--clr-timeline-icon-size) + var(--clr-timeline-line-width))
-    );
-
-    // body (header)
-    --clr-timeline-step-header-font-size: #{tokens.$cds-global-typography-font-size-3};
-    --clr-timeline-step-header-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
-    --clr-timeline-step-header-line-height: #{tokens.$cds-global-space-7};
-
-    // body (description)
-    --clr-timeline-step-description-font-size: #{tokens.$cds-global-typography-font-size-1};
-    --clr-timeline-step-description-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
-    --clr-timeline-step-description-line-height: #{tokens.$cds-global-space-7};
-
-    // spinner
-    --clr-timeline-spinner-size: #{tokens.$cds-global-space-10};
+    --clr-timeline-step-internal-spacing: #{tokens.$cds-global-space-6}; // internal property cannot be exposed
   }
 }

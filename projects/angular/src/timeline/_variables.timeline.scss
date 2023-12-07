@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 $clr-timeline-line-color: var(--clr-timeline-line-color) !default;
 $clr-timeline-step-header-color: var(--clr-timeline-step-header-color) !default;
@@ -15,46 +15,11 @@ $clr-timeline-current-step-color: var(--clr-timeline-current-step-color) !defaul
 $clr-timeline-success-step-color: var(--clr-timeline-success-step-color) !default;
 $clr-timeline-error-step-color: var(--clr-timeline-error-step-color) !default;
 
-// 1rem = 24px
-
 // overall
-$clr-timeline-icon-size: var(--clr-timeline-icon-size) !default;
-$clr-timeline-spinner-size: var(--clr-timeline-spinner-size) !default;
-$clr-timeline-default-icon-size: variables.$clr_baselineRem_0_667;
-$clr-timeline-icon-inner-padding: variables.$clr_baselineRem_2px;
-$clr-timeline-padding-width: variables.$clr_baselineRem_0_5;
-$clr-timeline-line-thickness: variables.$clr_baselineRem_2px;
-$clr-timeline-gutter-width: variables.$clr_baselineRem_0_5;
-
-// timeline step (horizontal)
-$clr-timeline-step-min-width: variables.$clr_baselineRem_7_29167;
-
-// header (timestamp)
-$clr-timeline-step-header-font-size: var(--clr-timeline-step-header-font-size) !default;
-$clr-timeline-step-header-line-height: var(--clr-timeline-step-header-line-height) !default;
-$clr-timeline-step-header-padding-bottom: variables.$clr_baselineRem_8px;
+$clr-timeline-icon-size: #{tokens.$cds-global-space-11};
+$clr-timeline-default-icon-size: #{tokens.$cds-global-space-7};
+$clr-timeline-line-thickness: #{tokens.$cds-global-space-2};
+$clr-timeline-step-internal-spacing: var(--clr-timeline-step-internal-spacing);
 
 // body (title)
-$clr-timeline-step-title-font-size: variables.$clr-p2-font-size;
-$clr-timeline-step-title-font-weight: variables.$clr-p2-font-weight;
-$clr-timeline-step-title-line-height: variables.$clr_baselineRem_0_75;
-$clr-timeline-step-title-padding-top: variables.$clr_baselineRem_8px;
-$clr-timeline-step-title-padding-bottom: variables.$clr_baselineRem_0_25;
-
-// body (description)
-$clr-timeline-step-description-font-size: var(--clr-timeline-step-description-font-size) !default;
-$clr-timeline-step-description-line-height: var(--clr-timeline-step-description-line-height) !default;
-$clr-timeline-step-description-button-top-margin: variables.$clr_baselineRem_8px;
-$clr-timeline-step-description-img-top-margin: variables.$clr_baselineRem_8px;
-
-// vertical specific
-$clr-timeline-vertical-step-header-min-width: variables.$clr_baselineRem_2_5;
-$clr-timeline-vertical-step-header-top-padding: variables.$clr_baselineRem_0_25;
-$clr-timeline-vertical-step-header-right-padding: variables.$clr_baselineRem_0_5;
-
-$clr-timeline-vertical-step-body-top-padding: variables.$clr_baselineRem_0_25;
-$clr-timeline-vertical-step-body-left-padding: variables.$clr_baselineRem_0_5;
-
-$clr-timeline-vertical-min-width: variables.$clr_baselineRem_13_33;
-$clr-timeline-vertical-step-min-width: variables.$clr_baselineRem_7_33;
-$clr-timeline-vertical-gutter-width: variables.$clr_baselineRem_1_5;
+$clr-timeline-step-title-font-weight: var(--clr-timeline-step-title-font-weight);
