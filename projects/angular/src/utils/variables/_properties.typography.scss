@@ -80,7 +80,7 @@
     --clr-p0-color: #{tokens.$cds-alias-typography-color-450};
     --clr-p0-font-size: #{tokens.$cds-alias-typography-body-font-size};
     --clr-p0-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
-    --clr-p0-line-height: #{tokens.$cds-alias-typography-body-line-height};
+    --clr-p0-line-height: 1.4285714em; // #{tokens.$cds-alias-typography-body-line-height};
     --clr-p0-letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing};
 
     //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
@@ -88,7 +88,7 @@
     --clr-p1-color: #{tokens.$cds-alias-typography-color-450};
     --clr-p1-font-size: #{tokens.$cds-alias-typography-body-font-size};
     --clr-p1-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
-    --clr-p1-line-height: #{tokens.$cds-alias-typography-body-line-height};
+    --clr-p1-line-height: 1.4285714em; // #{tokens.$cds-alias-typography-body-line-height};
     --clr-p1-letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing};
 
     //P2 - form_label, stackview_header
