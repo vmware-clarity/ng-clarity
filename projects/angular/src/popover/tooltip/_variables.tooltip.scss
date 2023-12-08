@@ -1,20 +1,16 @@
-@use '../../utils/variables/variables';
-
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '@cds/core/tokens/tokens.scss';
 
 // Usage: ../popover/tooltip/_tooltips.clarity.scss
-$clr-tooltip-background-color: variables.$clr-color-neutral-1000 !default;
-$clr-tooltip-border-radius: variables.$clr_baselineRem_0_125 !default;
-$clr-tooltip-default-width: variables.$clr_baselineRem_10 !default;
-$arrow-height: variables.$clr_baselineRem_0_25 !default;
-$arrow-width: variables.$clr_baselineRem_5px !default;
-$clr-tooltip-adjusted-margin: variables.$clr_baselineRem_0_667 !default;
+$clr-tooltip-arrow-height: #{tokens.$cds-global-space-5} !default;
+$clr-tooltip-arrow-width: #{tokens.$cds-global-space-5} !default;
+$clr-tooltip-adjusted-margin: #{tokens.$cds-global-space-9} !default;
 
-$clr-tooltip-color: variables.$clr-color-neutral-0 !default;
-$clr-tooltip-font-size: variables.$clr-p3-font-size !default;
-$clr-tooltip-font-weight: variables.$clr-p3-font-weight !default;
-$clr-tooltip-letter-spacing: variables.$clr-p3-letter-spacing !default;
+$clr-tooltip-color: var(--clr-tooltip-color) !default;
+$clr-tooltip-background-color: var(--clr-tooltip-background-color) !default;
+$clr-tooltip-border-radius: var(--clr-tooltip-border-radius) !default;
+$clr-tooltip-font-weight: var(--clr-tooltip-font-weight) !default;
