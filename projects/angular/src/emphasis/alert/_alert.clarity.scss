@@ -79,7 +79,7 @@
 
       cds-icon,
       clr-icon {
-        fill: alert-variables.getAlertColor($alertType, close-icon-hover) !important;
+        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
       }
     }
   }
