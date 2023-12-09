@@ -34,7 +34,7 @@ import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
 
-export enum CHANGES_KEYS {
+export enum CHANGE_KEYS {
   FORM = 'form',
   MODEL = 'model',
 }
@@ -121,7 +121,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
       if (changes) {
         changes.forEachChangedItem(change => {
           if (
-            (change.key === CHANGES_KEYS.FORM || change.key === CHANGES_KEYS.MODEL) &&
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
             change.currentValue !== change.previousValue
           ) {
             this.triggerValidation();

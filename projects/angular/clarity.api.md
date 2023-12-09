@@ -65,7 +65,7 @@ export class CdsIconCustomTag {
 }
 
 // @public (undocumented)
-export enum CHANGES_KEYS {
+export enum CHANGE_KEYS {
     // (undocumented)
     FORM = "form",
     // (undocumented)

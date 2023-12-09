@@ -219,7 +219,7 @@ class WithDynamicFormControl {
     <form-wrapper>
       <test-wrapper3>
         <label> Label </label>
-        <textarea testControl3 [(ngModel)]="object['control']"></textarea>
+        <textarea testControl3 [(ngModel)]="form['control']"></textarea>
         <clr-control-success>Successful!</clr-control-success>
       </test-wrapper3>
       <form-wrapper> </form-wrapper
@@ -227,9 +227,9 @@ class WithDynamicFormControl {
   `,
 })
 class WithDynamicNgControl {
-  object = {};
+  form = {};
   addControl() {
-    this.object['control'] = 'TEST';
+    this.form['control'] = 'TEST';
   }
 }
 
