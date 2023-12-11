@@ -34,10 +34,10 @@ $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, s
 $clr-accordion-error-color: var(--clr-accordion-error-color) !default;
 $clr-accordion-complete-color: var(--clr-accordion-complete-color) !default;
 
-$clr-accordion-border-color: tokens.$cds-alias-object-border-color !default;
-$clr-accordion-border-radius: tokens.$cds-global-space-3 !default;
-$clr-accordion-border-left-color-complete: tokens.$cds-alias-status-success !default;
-$clr-accordion-border-left-color-error: tokens.$cds-alias-status-danger !default;
+$clr-accordion-border-color: var(--clr-accordion-border-color) !default;
+$clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
+$clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
+$clr-accordion-border-left-color-error: var(--clr-accordion-border-left-color-error) !default;
 
 $clr-accordion-content-color: variables.$clr-p1-color !default;
 $clr-accordion-description-margin-left: 40px !default;

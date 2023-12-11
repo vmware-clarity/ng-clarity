@@ -22,7 +22,6 @@
 | --clr-accordion-complete-color                   | Color representing a completed state in the accordion.              |
 | --clr-accordion-border-color                     | Color of the accordion border.                                      |
 | --clr-accordion-border-radius                    | Border radius of the accordion.                                     |
-| --clr-accordion-border-left-color                | Color of the left border in the accordion.                          |
 | --clr-accordion-border-left-color-complete       | Color of the left border in the accordion for the complete state.   |
 | --clr-accordion-border-left-color-error          | Color of the left border in the accordion for the error state.      |
 | --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                      |
