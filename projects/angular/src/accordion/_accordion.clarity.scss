@@ -274,7 +274,7 @@
     .clr-accordion-inner-content {
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
         tokens.$cds-global-space-11;
-      color: accordion-variables.$clr-accordion-content-color;
+      color: tokens.$cds-alias-typography-color-450;
       font-size: accordion-variables.$clr-accordion-content-font-size;
     }
 
