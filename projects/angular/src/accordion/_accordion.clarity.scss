@@ -341,7 +341,6 @@
 
     .clr-accordion-header-has-description {
       .clr-accordion-title {
-        min-width: mixins.baselinePx(264);
         @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
           margin-left: tokens.$cds-global-space-9;
         }
@@ -351,11 +350,5 @@
 
   clr-stepper-panel .clr-accordion-inner-content {
     padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
-  }
-
-  clr-step-title.clr-accordion-title {
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-      min-width: accordion-variables.$clr-accordion-step-title-min-width;
-    }
   }
 }
