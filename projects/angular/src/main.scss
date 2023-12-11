@@ -5,6 +5,7 @@
  */
 
 // OG Theme: This is for generating the OG Clarity Theme
+@use '@cds/city/css/bundles/default.min.css';
 
 // Clarity component code (consumes the variables and theme overrides)
 @use 'utils/components.clarity';
