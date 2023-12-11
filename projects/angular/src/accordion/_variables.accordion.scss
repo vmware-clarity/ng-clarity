@@ -31,8 +31,8 @@ $clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !defaul
 
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 
-$clr-accordion-error-color: variables.$clr-global-error-color !default;
-$clr-accordion-complete-color: variables.$clr-global-success-color !default;
+$clr-accordion-error-color: var(--clr-accordion-error-color) !default;
+$clr-accordion-complete-color: var(--clr-accordion-complete-color) !default;
 
 $clr-accordion-border-color: tokens.$cds-alias-object-border-color !default;
 $clr-accordion-border-radius: tokens.$cds-global-space-3 !default;
