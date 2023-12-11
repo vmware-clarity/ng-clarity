@@ -44,8 +44,8 @@
     --clr-h3-font-size: #{tokens.$cds-alias-typography-title-font-size};
     --clr-h3-font-weight: #{tokens.$cds-alias-typography-title-font-weight};
     --clr-h3-font-family: var(--clr-display-font);
-    --clr-h3-line-height: #{tokens.$cds-alias-typography-title-line-height};
-    --clr-h3-letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing};
+    --clr-h3-line-height: 1.333333em; // #{tokens.$cds-alias-typography-title-line-height};
+    --clr-h3-letter-spacing: -0.00833333em; // #{tokens.$cds-alias-typography-title-letter-spacing};
 
     //H4 - card titles, page_tertiaryHeading
     //'SECTION-20-STD'
@@ -62,7 +62,7 @@
     --clr-h5-font-size: #{tokens.$cds-alias-typography-subsection-font-size};
     --clr-h5-font-weight: #{tokens.$cds-alias-typography-subsection-font-weight};
     --clr-h5-font-family: var(--clr-display-font);
-    --clr-h5-line-height: #{tokens.$cds-alias-typography-subsection-line-height};
+    --clr-h5-line-height: 1.5em; // #{tokens.$cds-alias-typography-subsection-line-height};
     --clr-h5-letter-spacing: #{tokens.$cds-alias-typography-subsection-letter-spacing};
 
     //H6 - Heading
@@ -71,7 +71,7 @@
     --clr-h6-font-size: #{tokens.$cds-alias-typography-message-font-size};
     --clr-h6-font-weight: #{tokens.$cds-alias-typography-message-font-weight};
     --clr-h6-font-family: var(--clr-display-font);
-    --clr-h6-line-height: #{tokens.$cds-alias-typography-message-line-height};
+    --clr-h6-line-height: 1.5em; // #{tokens.$cds-alias-typography-message-line-height};
     --clr-h6-letter-spacing: #{tokens.$cds-alias-typography-message-letter-spacing};
 
     // Non-header text styles
