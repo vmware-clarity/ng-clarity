@@ -2,43 +2,47 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                                                    | Description                                                           |
-| ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| --clr-stack-view-border-radius                                         | Border radius of stack view                                           |
-| --clr-stack-view-border-color                                          | Border color of stack view                                            |
-| --clr-stack-view-bg-color                                              | Background color of stack view                                        |
-| --clr-stack-view-color                                                 | Font color of stack view                                              |
-| --clr-stack-view-stack-block-border-bottom                             | Bottom border color of stack block                                    |
-| --clr-stack-view-stack-block-label-text-color                          | Font color of stack block label                                       |
-| --clr-stack-view-border-box-color                                      | Last stack block element shadow color                                 |
-| --clr-stack-block-changed-border-top-color                             | Changed stack block border top color                                  |
-| --clr-stack-view-stack-block-label-and-content-bg-color                | Background color of stack block label and content                     |
-| --clr-stack-view-stack-children-stack-block-border-bottom-color        | Bottom border color of stack block children                           |
-| --clr-stack-view-stack-children-stack-block-label-and-content-bg-color | Background color of stack block children's label and content          |
-| --clr-stack-view-stack-block-expanded-bg-color                         | Background color of expanded stack block label and content            |
-| --clr-stack-view-stack-block-expandable-hover                          | Background color of expandable stack block label and content on hover |
-| --clr-stack-view-stack-block-content-text-color                        | Font color of stack block content                                     |
-| --clr-stack-view-stack-block-expanded-text-color                       | Font color of expanded stack block label and content                  |
-| --clr-stack-view-stack-block-caret-color                               | Color of stack block caret                                            |
-| --clr-stack-view-title-color                                           | Stack view title color                                                |
-| --clr-stack-view-stack-block-expandable-bg-hover                       | Stack view stack block expandable background color                    |
-| --clr-stack-view-stack-block-expandable-active                         | Stack view stack block expandable active (opened) color               |
-| --clr-stack-view-stack-block-expandable-bg-active                      | Stack view stack-block expandable active background color             |
-| --clr-stack-view-border-width                                          | Stack view border width                                               |
-| --clr-stack-view-stack-block-label-padding                             | Stack view stack block label padding                                  |
-| --clr-stack-view-key-margin                                            | Stack view key block margin                                           |
-| --clr-stack-view-border-radius                                         | Stack view border radius                                              |
-| --clr-stack-view-stack-block-caret-dimension                           | Stack view stack block caret dimension                                |
-| --clr-stack-view-stack-children-block-label-padding-left               | Stack view stack children block label padding                         |
-| --clr-stack-view-stack-title-padding                                   | Stack view stack title padding                                        |
-| --clr-stack-view-stack-block-label-font-size                           | Font size for stack view block label                                  |
-| --clr-stack-view-stack-block-label-font-weight                         | Font weight for stack view block label                                |
-| --clr-stack-view-stack-block-label-line-height                         | Line height for stack view block label                                |
-| --clr-stack-view-stack-block-label-letter-spacing                      | Letter spacing for stack view block label                             |
-| --clr-stack-view-font-size                                             | General font size for stack view                                      |
-| --clr-stack-view-font-weight                                           | General font weight for stack view                                    |
-| --clr-stack-view-line-height                                           | Genral line height for stack view                                     |
-| --clr-stack-view-letter-spacing                                        | Generla letter spacing for stack view                                 |
+| CSS Custom Property                                                    | Description                                                     |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------- |
+| --clr-stack-view-border-width                                          | Stack view border width                                         |
+| --clr-stack-view-border-radius                                         | Border radius of stack view                                     |
+| --clr-stack-view-border-color                                          | Border color of stack view                                      |
+| --clr-stack-block-changed-border-top-color                             | Changed stack block border top color                            |
+| --clr-stack-view-title-color                                           | Stack view title color                                          |
+| --clr-stack-view-row-color                                             | Text and caret color of not expandable stack view row           |
+| --clr-stack-view-row-bg-color                                          | Background color of not expandable stack view row               |
+| --clr-stack-view-expandable-row-color                                  | Text and caret color of expandable stack view row               |
+| --clr-stack-view-expandable-row-bg-color                               | Background color of expandable stack view row                   |
+| --clr-stack-view-expandable-row-hover                                  | Text and caret `:hover` color of expandable stack view row      |
+| --clr-stack-view-expandable-row-bg-hover                               | Background `:hover` color of expandable stack view row          |
+| --clr-stack-view-expandable-row-active                                 | Text and caret` :active` color of expandable stack view row     |
+| --clr-stack-view-expandable-row-bg-active                              | Background `:active` color of expandable stack view row         |
+| --clr-stack-view-expanded-row-color                                    | Text and caret color of expanded stack view row                 |
+| --clr-stack-view-expanded-row-bg-color                                 | Background color of expanded stack view row                     |
+| --clr-stack-view-row-font-size                                         | Font size for stack view row                                    |
+| --clr-stack-view-row-font-weight                                       | Font weight for stack view row                                  |
+| --clr-stack-view-row-line-height                                       | Line height for stack view row                                  |
+| --clr-stack-view-row-letter-spacing                                    | Letter spacing for stack view row                               |
+| --clr-stack-view-stack-block-border-bottom                             | Deprecated. Use `--clr-stack-view-border-color` instead         |
+| --clr-stack-view-stack-children-stack-block-border-bottom-color        | Deprecated. Use `--clr-stack-view-border-color` instead         |
+| --clr-stack-view-stack-block-label-font-size                           | Deprecated in favor of `--clr-stack-view-row-font-size`         |
+| --clr-stack-view-stack-block-label-font-weight                         | Deprecated in favor of `--clr-stack-view-row-font-weight`       |
+| --clr-stack-view-stack-block-label-line-height                         | Deprecated in favor of `--clr-stack-view-row-line-height`       |
+| --clr-stack-view-stack-block-label-letter-spacing                      | Deprecated in favor of `--clr-stack-view-row-letter-spacing`    |
+| --clr-stack-view-color                                                 | Deprecated in favor of `--clr-stack-view-row-color`             |
+| --clr-stack-view-bg-color                                              | Deprecated in favor of `--clr-stack-view-row-bg-color`          |
+| --clr-stack-view-stack-block-label-text-color                          | DELETED. Replaced with `--clr-stack-view-row-color`             |
+| --clr-stack-view-stack-block-label-and-content-bg-color                | DELETED. Replaced with `--clr-stack-view-row-bg-color`          |
+| --clr-stack-view-stack-children-stack-block-label-and-content-bg-color | Deprecated in favor of `--clr-stack-view-row-bg-color`          |
+| --clr-stack-view-stack-block-caret-color                               | Deprecated in favor of `--clr-stack-view-expandable-row-color`  |
+| --clr-stack-view-stack-block-expanded-bg-color                         | Deprecated in favor of `--clr-stack-view-expanded-row-bg-color` |
+| --clr-stack-view-stack-block-expandable-hover                          | Deprecated in favor of `--clr-stack-view-expandable-row-hover`  |
+| --clr-stack-view-stack-block-content-text-color                        | DELETED. Replaced with `--clr-stack-view-row-color`             |
+| --clr-stack-view-stack-block-expanded-text-color                       | Deprecated in favor of `--clr-stack-view-expanded-row-color`    |
+| --clr-stack-view-font-size                                             | DELETED. Replaced with `--clr-stack-view-row-font-size`         |
+| --clr-stack-view-font-weight                                           | DELETED. Replaced with `--clr-stack-view-row-font-weight`       |
+| --clr-stack-view-line-height                                           | DELETED. Replaced with `--clr-stack-view-row-line-height`       |
+| --clr-stack-view-letter-spacing                                        | DELETED. Replaced with `--clr-stack-view-row-letter-spacing`    |
 
 ## CSS Classes
 

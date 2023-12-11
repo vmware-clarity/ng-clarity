@@ -2,18 +2,23 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                   | Description                      |
-| ------------------------------------- | -------------------------------- |
-| --clr-card-bg-color                   | Card background color            |
-| --clr-card-divider-color              | Card divider color               |
-| --clr-card-title-color                | Card text color header           |
-| --clr-card-title-font-weight          | Card thickness title             |
-| --clr-card-border-width               | Card border width                |
-| --clr-card-border-radius              | Card border radius               |
-| --clr-card-border-color               | Card border color                |
-| --clr-card-box-shadow-color           | Card background shadow color     |
-| --clr-card-clickable-border-color     | Clickable cards background color |
-| --clr-card-clickable-box-shadow-color | Clickable cards shadow color     |
+| CSS Custom Property                   | Description                                            |
+| ------------------------------------- | ------------------------------------------------------ |
+| --clr-card-bg-color                   | Card background color                                  |
+| --clr-card-divider-color              | Card divider color                                     |
+| --clr-card-title-color                | Card base title color                                  |
+| --clr-card-title-font-weight          | Card thickness title                                   |
+| --clr-card-border-width               | Card border width                                      |
+| --clr-card-border-radius              | Card border radius                                     |
+| --clr-card-border-color               | Card border color                                      |
+| --clr-card-box-shadow-color           | Card background shadow color                           |
+| --clr-card-clickable-border-color     | DEPRECATED in favor of `clr-card-box-shadow`           |
+| --clr-card-clickable-box-shadow-color | DEPRECATED in favor of `clr-card-clickable-box-shadow` |
+| clr-card-box-shadow                   | Card background shadow                                 |
+| clr-card-clickable-box-shadow         | Clickable cards shadow                                 |
+| clr-card-header-title-color           | Header title font color                                |
+| clr-card-content-title-color          | Content title font color                               |
+| clr-card-text-color                   | Card text font color                                   |
 
 ## CSS Classes
 

@@ -5,6 +5,7 @@
  */
 @use '../utils/mixins';
 @use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('lists.clarity') {
   %kill-list-styles {
@@ -18,8 +19,8 @@
   }
 
   li {
-    @include mixins.css-var(color, clr-list-item-color, inherit, variables.$clr-use-custom-properties);
-    @include mixins.css-var(line-height, clr-list-item-line-height, inherit, variables.$clr-use-custom-properties);
+    color: variables.$clr-list-item-color;
+    @include mixins.generate-typography-token('BODY-14-RG-STD');
   }
 
   ul:not([cds-list]),
@@ -34,32 +35,11 @@
   ul.list:not([cds-list]),
   ol.list:not([cds-list]) {
     list-style-position: outside;
-    @include mixins.css-var(
-      margin-left,
-      clr-list-item-margin-left,
-      variables.$clr-list-style-padding,
-      variables.$clr-use-custom-properties
-    );
+    margin-left: tokens.$cds-global-space-6;
 
     &.compact {
-      @include mixins.css-var(
-        line-height,
-        clr-list-item-line-height,
-        variables.$clr_baselineRem_0_75,
-        variables.$clr-use-custom-properties
-      );
-
       & > li {
-        @include mixins.css-var(
-          margin-bottom,
-          clr-list-item-compact-margin-bottom,
-          variables.$clr_baselineRem_0_25,
-          variables.$clr-use-custom-properties
-        );
-
-        &:last-child {
-          margin-bottom: 0;
-        }
+        margin-bottom: 0;
       }
     }
   }
@@ -70,12 +50,7 @@
   ul:not(.list-unstyled):not([cds-list]),
   ol:not([cds-list]) {
     & > li > ul.list-unstyled {
-      @include mixins.css-var(
-        margin-left,
-        clr-list-item-margin-left,
-        variables.$clr-list-style-padding,
-        variables.$clr-use-custom-properties
-      );
+      margin-left: tokens.$cds-global-space-6;
     }
   }
 
@@ -85,12 +60,7 @@
 
   li > ul:not([cds-list]) {
     margin-top: 0;
-    @include mixins.css-var(
-      margin-left,
-      clr-list-item-margin-left,
-      variables.$clr-list-style-padding,
-      variables.$clr-use-custom-properties
-    );
+    margin-left: tokens.$cds-global-space-6;
   }
 
   ul.list-group:not([cds-list]) {
@@ -100,7 +70,7 @@
   ul:not([cds-list]),
   ol:not([cds-list]) {
     &.list-spacer {
-      margin-top: variables.$clr_baselineRem_1;
+      margin-top: tokens.$cds-global-space-9;
     }
   }
 }

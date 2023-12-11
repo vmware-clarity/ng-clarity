@@ -19,6 +19,7 @@ const defaultStory: Story = args => ({
         [clrSbExpanded]="clrSbExpanded"
         [clrStackViewLevel]="clrStackViewLevel"
         (clrSbExpandedChange)="clrSbExpandedChange($event)"
+        [clrSbNotifyChange]="clrSbNotifyChange"
       >
         <clr-stack-label>{{ label }}</clr-stack-label>
         <clr-stack-content>{{ content }}</clr-stack-content>
@@ -56,6 +57,11 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [{ clrSbExpandable: false }, { clrSbExpanded: false }, { clrSbExpanded: true }];
+const variants: Parameters[] = [
+  { clrSbExpandable: false },
+  { clrSbExpanded: false },
+  { clrSbExpanded: true },
+  { clrSbNotifyChange: true },
+];
 
 setupStorybook(ClrStackViewModule, defaultStory, defaultParameters, variants);

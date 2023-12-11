@@ -3,38 +3,66 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '../../utils/variables/variables';
+
+/// @DEPRECATED variables
+
+// @deprecated in v17. in favor of using $clr-stack-view-border-color in _stack-view.clarity.scss
+$clr-stack-view-stack-block-border-bottom: var(--clr-stack-view-stack-block-border-bottom) !default;
+
+// @deprecated in v17. in favor of using $clr-stack-view-border-color in _stack-view.clarity.scss
+$clr-stack-view-stack-children-stack-block-border-bottom-color: var(
+  --clr-stack-view-stack-children-stack-block-border-bottom-color
+) !default;
+
+// @deprecared in v17 and will be removed in v18
+// All variables after this comment are in favor of their value in where are used
+$clr-stack-view-stack-block-label-font-size: var(--clr-stack-view-stack-block-label-font-size) !default;
+$clr-stack-view-stack-block-label-font-weight: var(--clr-stack-view-stack-block-label-font-weight) !default;
+$clr-stack-view-stack-block-label-line-height: var(--clr-stack-view-stack-block-label-line-height) !default;
+$clr-stack-view-stack-block-label-letter-spacing: var(--clr-stack-view-stack-block-label-letter-spacing) !default;
+
+// children of an expanded row
+// @deprecated in v17. in favor of using clr-stack-view-row-bg-color
+$clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(
+  --clr-stack-view-stack-children-stack-block-label-and-content-bg-color
+) !default;
+// @deprecated in v17. in favor of using clr-stack-view-expandable-row-color
+$clr-stack-view-stack-block-caret-color: var(--clr-stack-view-stack-block-caret-color) !default;
+
+// children of an expanded row
+$clr-stack-view-color: var(--clr-stack-view-color) !default;
+$clr-stack-view-bg-color: var(--clr-stack-view-bg-color) !default;
+$clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-stack-block-expandable-hover) !default;
+$clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-stack-block-expanded-text-color) !default;
+$clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-stack-block-expanded-bg-color) !default;
+
+/// END DEPRECATED variables
 
 // Usage: ../stack-view/_stack-view.clarity.scss
-$clr-stack-view-border-width: variables.$clr-global-borderwidth !default;
-$clr-stack-view-border-radius: variables.$clr-global-borderradius !default;
-$clr-stack-view-border-color: variables.$clr-color-neutral-400 !default; // Border for stack view container
-$clr-stack-view-bg-color: variables.$clr-color-neutral-50 !default;
-$clr-stack-view-stack-block-border-bottom: variables.$clr-color-neutral-300 !default;
-//border-bottom for stack-view rows (not last)
-$clr-stack-view-border-box-color: variables.$clr-color-neutral-300 !default;
-$clr-stack-block-changed-border-top-color: variables.$clr-color-action-600 !default;
-$clr-stack-view-stack-block-label-and-content-bg-color: variables.$clr-color-neutral-50 !default;
-// stkvw row bg color when not expanded
-$clr-stack-view-stack-children-stack-block-border-bottom-color: variables.$clr-color-neutral-200 !default;
-// children of an expanded row
-$clr-stack-view-stack-children-stack-block-label-and-content-bg-color: variables.$clr-color-neutral-0 !default;
-// children of an expanded row
-$clr-stack-view-stack-block-expanded-bg-color: variables.$clr-global-selection-color !default;
-$clr-stack-view-stack-block-expandable-hover: variables.$clr-color-neutral-200 !default;
-$clr-stack-view-stack-block-content-text-color: inherit !default;
-$clr-stack-view-stack-block-expanded-text-color: variables.$clr-color-neutral-1000 !default;
-$clr-stack-view-stack-block-caret-color: variables.$clr-global-font-color !default;
+$clr-stack-view-border-width: var(--clr-stack-view-border-width) !default;
+$clr-stack-view-border-radius: var(--clr-stack-view-border-radius) !default;
+$clr-stack-view-border-color: var(--clr-stack-view-border-color) !default;
+// top-left-border-color of changed stack view row
+$clr-stack-block-changed-border-top-color: var(--clr-stack-block-changed-border-top-color) !default;
 
-$clr-stack-view-font-weight: variables.$clr-p3-font-weight !default;
-$clr-stack-view-color: variables.$clr-p3-color !default;
-$clr-stack-view-font-size: variables.$clr-p3-font-size !default;
-$clr-stack-view-font-weight: variables.$clr-p3-font-weight !default;
-$clr-stack-view-line-height: variables.$clr-p3-line-height !default;
-$clr-stack-view-letter-spacing: variables.$clr-p3-letter-spacing !default;
+// Stack view title text color
+$clr-stack-view-title-color: var(--clr-stack-view-title-color) !default;
 
-$clr-stack-view-stack-block-label-text-color: variables.$clr-global-font-color !default;
-$clr-stack-view-stack-block-label-font-size: variables.$clr-p2-font-size !default;
-$clr-stack-view-stack-block-label-font-weight: variables.$clr-p2-font-weight !default;
-$clr-stack-view-stack-block-label-line-height: variables.$clr-p2-line-height !default;
-$clr-stack-view-stack-block-label-letter-spacing: variables.$clr-p2-letter-spacing !default;
+// non expandable row background and text/icon colors
+$clr-stack-view-row-color: $clr-stack-view-color !default;
+$clr-stack-view-row-bg-color: $clr-stack-view-bg-color !default;
+
+// expandable row background and text/icon colors
+$clr-stack-view-expandable-row-color: var(--clr-stack-view-expandable-row-color) !default;
+$clr-stack-view-expandable-row-bg-color: var(--clr-stack-view-expandable-row-bg-color) !default;
+$clr-stack-view-expandable-row-hover: $clr-stack-view-stack-block-expandable-hover !default;
+$clr-stack-view-expandable-row-bg-hover: var(--clr-stack-view-expandable-row-bg-hover) !default;
+$clr-stack-view-expandable-row-active: var(--clr-stack-view-expandable-row-active) !default;
+$clr-stack-view-expandable-row-bg-active: var(--clr-stack-view-expandable-row-bg-active) !default;
+$clr-stack-view-expanded-row-color: $clr-stack-view-stack-block-expanded-text-color !default;
+$clr-stack-view-expanded-row-bg-color: $clr-stack-view-stack-block-expanded-bg-color !default;
+
+$clr-stack-view-row-font-size: $clr-stack-view-stack-block-label-font-size !default;
+$clr-stack-view-row-font-weight: $clr-stack-view-stack-block-label-font-weight !default;
+$clr-stack-view-row-line-height: $clr-stack-view-stack-block-label-line-height !default;
+$clr-stack-view-row-letter-spacing: $clr-stack-view-stack-block-label-letter-spacing !default;

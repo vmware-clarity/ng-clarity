@@ -4,25 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
-@use 'variables.tooltip' as tooltip-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('tooltip.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../popover/tooltip/_tooltips.clarity.scss
-      --clr-tooltip-background-color: var(--clr-color-neutral-1000);
-      --clr-tooltip-border-radius: var(--clr-global-borderradius);
-      --clr-tooltip-color: var(--clr-color-neutral-0);
-      --clr-tooltip-font-weight: var(--clr-p3-font-weight);
-      --clr-tooltip-content-padding: #{variables.$clr_baselineRem_0_375 variables.$clr_baselineRem_0_5};
-      --clr-tooltip-content-line-height: #{variables.$clr_baselineRem_0_75};
-      --clr-tooltip-content-margin: #{tooltip-variables.$clr-tooltip-adjusted-margin};
-
-      --clr-tooltip-arrow-width: #{tooltip-variables.$arrow-width};
-      --clr-tooltip-arrow-height: #{tooltip-variables.$arrow-height};
-      --clr-tooltip-arrow-horizontal-size: #{-1 * variables.$clr_baselineRem_0_375};
-      --clr-tooltip-arrow-vertical-size: #{-1 * variables.$clr_baselineRem_0_35};
-    }
+  :root [cds-theme] {
+    // Usage: ../popover/tooltip/_tooltips.clarity.scss
+    --clr-tooltip-background-color: #{tokens.$cds-alias-object-interaction-color-active};
+    --clr-tooltip-color: #{tokens.$cds-alias-typography-color-100};
+    --clr-tooltip-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-tooltip-font-weight: #{tokens.$cds-global-typography-body-font-weight};
   }
 }
