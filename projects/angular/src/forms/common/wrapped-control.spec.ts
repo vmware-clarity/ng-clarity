@@ -201,8 +201,7 @@ class WithControlAndSuccess {
         <textarea testControl3 [formControl]="form.get('control') || form.get('alternative')"></textarea>
         <clr-control-success>Successful!</clr-control-success>
       </test-wrapper3>
-      <form-wrapper> </form-wrapper
-    ></form-wrapper>
+    </form-wrapper>
   `,
 })
 class WithDynamicFormControl {
@@ -222,8 +221,7 @@ class WithDynamicFormControl {
         <textarea testControl3 [(ngModel)]="form['control']"></textarea>
         <clr-control-success>Successful!</clr-control-success>
       </test-wrapper3>
-      <form-wrapper> </form-wrapper
-    ></form-wrapper>
+    </form-wrapper>
   `,
 })
 class WithDynamicNgControl {

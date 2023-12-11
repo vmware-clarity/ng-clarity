@@ -1,46 +1,46 @@
-<h1>Reproduce Step</h1>
-<ol>
-  <li>Select ECS, Public signed radio is automatically selected. Click Signature (empty textarea).</li>
-  <li style="color: red">
-    When switching platform dropdown to Cloudian, signature textarea has value, but its successful state is not updated.
-    clr-success not show
-  </li>
-</ol>
+<h1>Dynamic Control Demo</h1>
 
-<form clrForm [formGroup]="form">
+<p>
+  We have a State service which have three statuses: NONE, INVALID, VALID. Success and Error messages are shown based on
+  the value of this state service but if you bind formControl \ ngModel to a control that is currently not available and
+  then add it dynamically while marking it as touched and updateValueValidility status change doesn't trigger and state
+  service value is not updated.
+</p>
+<br />
+<label for="steps"> Steps to test:</label>
+<ul id="steps" style="list-style-type: none">
+  <li>1. Choose scenario two ( text area appears but the control binded to formControl is missing )</li>
+  <li>2. Choose platform two which is adding the control used in the binding with a initial value.</li>
+  <li>3. Control should be valid and in success state.</li>
+</ul>
+
+<h2>Reactive form</h2>
+<form [formGroup]="form">
   <clr-select-container>
-    <label>{{ 'CHOOSE_PLATFORM' }}</label>
+    <label>Choose Platform</label>
     <select class="w-60" clrSelect formControlName="platform">
-      <option value="CLOUDIAN">CLOUDIAN</option>
-      <option value="ECS">ECS</option>
+      <option value="one">One</option>
+      <option value="two">Two</option>
     </select>
-    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+    <clr-control-error> Required </clr-control-error>
   </clr-select-container>
-
-  <clr-input-container>
-    <label>{{ 'S3_URL' }}</label>
-    <input clrInput type="text" [formControl]="$any(form)?.get('s3')?.get('url')" />
-    <clr-control-error>{{ 'INVALID_HTTPS_DESC' }}</clr-control-error>
-  </clr-input-container>
-
   <clr-radio-container clrInline>
-    <label>{{ 'CERTIFICATE_VALIDATION' }}</label>
+    <label>Scenario</label>
     <clr-radio-wrapper>
-      <input type="radio" clrRadio [name]="'s3-cert-validate'" value="tlsSignature" [formControl]="certValidation" />
-      <label>{{ 'SIGNATURE' }}</label>
+      <input type="radio" clrRadio [name]="'scenario'" value="one" formControlName="scenario" />
+      <label>One</label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
-      <input type="radio" clrRadio [name]="'s3-cert-validate'" value="publicSigned" [formControl]="certValidation" />
-      <label>{{ 'PUBLIC_SIGNED' }}</label>
+      <input type="radio" clrRadio [name]="'scenario'" value="two" formControlName="scenario" />
+      <label>Two</label>
     </clr-radio-wrapper>
     <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
   </clr-radio-container>
-
-  <clr-textarea-container *ngIf="certValidation.value === 'tlsSignature'">
-    <label>{{ 'SIGNATURE' }}</label>
-    <textarea clrTextarea [formControl]="$any(form).get('s3').get('tlsSignature')"></textarea>
-    <clr-control-helper>{{ 'SIGNATURE_DESC' }}</clr-control-helper>
-    <clr-control-success>I should show when successful!!!</clr-control-success>
-    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  <clr-textarea-container *ngIf="form.get('scenario')?.value === 'two'">
+    <label>Label</label>
+    <textarea clrTextarea [formControl]="$any(form).get('control')" required></textarea>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-success>Successful</clr-control-success>
+    <clr-control-error>Required error</clr-control-error>
   </clr-textarea-container>
 </form>
