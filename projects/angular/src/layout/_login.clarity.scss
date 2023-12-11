@@ -86,7 +86,6 @@
           margin: 0 0 #{tokens.$cds-global-space-5} 0;
         }
 
-        .trademark // @deprecated in v17
         .subtitle, // @deprecated in v17
         .hint {
           @include mixins.generate-typography-token('SECTION-20-STD');
