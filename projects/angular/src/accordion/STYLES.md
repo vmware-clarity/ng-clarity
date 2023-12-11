@@ -26,7 +26,6 @@
 | --clr-accordion-border-left-color-error          | Color of the left border in the accordion for the error state.      |
 | --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                      |
 | --clr-accordion-header-left-current-indicator    | Left indicator style for the accordion header when on current step. |
-| --clr-accordion-header-gap                       | Gap between the icon and title text in the accordion header.        |
 | --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                              |
 
 ## CSS Classes
