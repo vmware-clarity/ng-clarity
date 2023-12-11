@@ -9,44 +9,37 @@
 @use 'variables.accordion' as accordion-variables;
 
 @include mixins.exports('accordion.properties') {
-  :root {
-    [cds-theme] {
-      --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
-      --clr-accordion-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
-      --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
-      --clr-accordion-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+  :root [cds-theme] {
+    --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-accordion-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+    --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
+    --clr-accordion-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
 
-      --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
-      --clr-accordion-content-background-color: #{tokens.$cds-alias-object-app-background};
-      --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-400};
-      --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
+    --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-accordion-content-background-color: #{tokens.$cds-alias-object-app-background};
+    --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-accordion-content-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
 
-      --clr-accordion-header-background-color: #{tokens.$cds-alias-object-container-background};
-      --clr-accordion-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
-      --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
-      --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+    --clr-accordion-header-background-color: #{tokens.$cds-alias-object-container-background};
+    --clr-accordion-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
+    --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
+    --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
 
-      --clr-accordion-header-button-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
+    --clr-accordion-header-button-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
 
-      --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
-      --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
+    --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
+    --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
 
-      --clr-accordion-border-color: #{tokens.$cds-alias-object-border-color};
-      --clr-accordion-border-radius: #{tokens.$cds-global-space-3};
-      --clr-accordion-border-left-color: #{tokens.$cds-alias-object-border-color-tint};
+    --clr-accordion-border-color: #{tokens.$cds-alias-object-border-color};
+    --clr-accordion-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-accordion-border-left-color: #{tokens.$cds-alias-object-border-color-tint};
 
-      --clr-accordion-border-left-color-complete: #{tokens.$cds-alias-status-success};
-      --clr-accordion-border-left-color-error: #{tokens.$cds-alias-status-danger};
+    --clr-accordion-border-left-color-complete: #{tokens.$cds-alias-status-success};
+    --clr-accordion-border-left-color-error: #{tokens.$cds-alias-status-danger};
 
-      --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
-      --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
+    --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
+    --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
-      --clr-accordion-header-gap: #{tokens.$cds-global-space-5};
-
-      --clr-accordion-step-title-min-width: 0;
-
-      --clr-accordion-step-status-margin-left: #{tokens.$cds-global-space-7};
-      --clr-accordion-step-title-margin-left: #{tokens.$cds-global-space-9};
-    }
+    --clr-accordion-step-title-min-width: 0;
   }
 }

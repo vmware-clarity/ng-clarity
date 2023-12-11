@@ -7,11 +7,12 @@
 | --clr-accordion-text-color                       | Text color of the accordion component.                              |
 | --clr-accordion-text-color-hover                 | Text color of the accordion header when hovered.                    |
 | --clr-accordion-text-color-active                | Text color of the accordion header when active.                     |
+| --clr-accordion-text-color-selected              | Text color of the accordion header when selected.                   |
 | --clr-accordion-panel-disabled-color             | Text color of the accordion header when disabled.                   |
 | --clr-accordion-active-background-color          | Background color of the active accordion panel.                     |
 | --clr-accordion-content-background-color         | Background color of the accordion content area.                     |
 | --clr-accordion-content-color                    | Color of the text in the accordion content area.                    |
-| --clr-accordion-content-font-size                | Font size of the text in the accordion content area.                |
+| --clr-accordion-content-font-size                | DEPRECATED Font size of the text in the accordion content area.     |
 | --clr-accordion-header-background-color          | Background color of the accordion header.                           |
 | --clr-accordion-header-disabled-background-color | Background color of the accordion header when disabled.             |
 | --clr-accordion-header-hover-background-color    | Background color of the accordion header on hover.                  |
@@ -28,8 +29,6 @@
 | --clr-accordion-header-left-current-indicator    | Left indicator style for the accordion header when on current step. |
 | --clr-accordion-header-gap                       | Gap between the icon and title text in the accordion header.        |
 | --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                              |
-| --clr-accordion-step-status-margin-left          | Left margin of the status container                                 |
-| --clr-accordion-step-title-margin-left           | Left margin of the title container                                  |
 
 ## CSS Classes
 
