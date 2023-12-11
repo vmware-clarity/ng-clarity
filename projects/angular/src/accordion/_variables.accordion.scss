@@ -28,6 +28,7 @@ $clr-accordion-content-color: var(--clr-accordion-content-color) !default;
 
 // @Deprecated in v17
 $clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !default;
+$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
 
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 
