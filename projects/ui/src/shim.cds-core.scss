@@ -44,18 +44,7 @@
 
   /* Responsive Navigation */
 
-  --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // var(--clr-color-neutral-700);
-  --clr-nav-background-color: #{tokens.$cds-global-color-gray-200}; // var(--clr-color-neutral-200);
-  --clr-responsive-nav-hover-bg: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
   --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
-  --clr-responsive-nav-header-backdrop-bg-color: #{tokens.$cds-global-color-gray-1000}; // var(--clr-color-neutral-1000);
-
-  /* Subnav */
-
-  --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
-  --clr-subnav-sm-link-border-radius: 0; // ATM - default
-  --clr-subnav-sm-item-height: auto; // ATM - remove
-  --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
 }
 
 [cds-theme~='dark'] {
