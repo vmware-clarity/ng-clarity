@@ -56,11 +56,6 @@
   --clr-subnav-sm-link-border-radius: 0; // ATM - default
   --clr-subnav-sm-item-height: auto; // ATM - remove
   --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
-
-  // TODO(CDE-884): Clean up accordion styles and properly separate accordion/stepper styles
-  clr-stepper-panel .clr-accordion-inner-content {
-    padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
-  }
 }
 
 [cds-theme~='dark'] {
