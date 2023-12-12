@@ -35,4 +35,4 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || ([[ $GITHUB_REF_NAME == "beta" ]] && echo "--prod --site v16-storybook-clarity-design" || echo "alias $GITHUB_REF_NAME"))
+        run: npx netlify-cli deploy $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || ([[ $GITHUB_REF_NAME == "alpha" ]] && echo "--prod --site v17-storybook-clarity-design" || echo "alias $GITHUB_REF_NAME"))
