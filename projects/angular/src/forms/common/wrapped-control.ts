@@ -40,7 +40,7 @@ export enum CHANGE_KEYS {
 }
 
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy, DoCheck {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
   protected renderer: Renderer2;
@@ -115,22 +115,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     }
   }
 
-  ngDoCheck() {
-    if (this.differ) {
-      const changes = this.differ.diff(this.ngControl);
-      if (changes) {
-        changes.forEachChangedItem(change => {
-          if (
-            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
-            change.currentValue !== change.previousValue
-          ) {
-            this.triggerValidation();
-          }
-        });
-      }
-    }
-  }
-
   ngOnInit() {
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
@@ -148,6 +132,22 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
 
     if (this.ngControlService) {
       this.ngControlService.setControl(this.ngControl);
+    }
+  }
+
+  ngDoCheck() {
+    if (this.differ) {
+      const changes = this.differ.diff(this.ngControl);
+      if (changes) {
+        changes.forEachChangedItem(change => {
+          if (
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
+            change.currentValue !== change.previousValue
+          ) {
+            this.triggerValidation();
+          }
+        });
+      }
     }
   }
 

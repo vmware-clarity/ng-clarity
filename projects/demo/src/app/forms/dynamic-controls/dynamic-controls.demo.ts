@@ -7,7 +7,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'dynamic-controls-demo',
@@ -25,18 +25,20 @@ export class DynamicControlsDemo {
   ngOnInit() {
     this.form
       .get('platform')
-      ?.valueChanges.pipe(takeUntil(this.destroyed))
-      .subscribe(res => {
-        console.log(res);
-        if (res === 'two') {
+      ?.valueChanges.pipe(
+        filter(value => value === 'two'),
+        tap(() => {
           this.form.addControl('control', new FormControl('test'));
           this.form.get('control')?.markAsTouched();
           this.form.get('control')?.updateValueAndValidity();
-        }
-      });
+        }),
+        takeUntil(this.destroyed)
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {
+    this.destroyed.next();
     this.destroyed.complete();
   }
 }

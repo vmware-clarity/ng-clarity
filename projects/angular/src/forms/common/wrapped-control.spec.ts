@@ -213,6 +213,7 @@ class WithDynamicFormControl {
     this.form.addControl('control', new FormControl('TEST'));
   }
 }
+
 @Component({
   template: `
     <form-wrapper>
@@ -388,6 +389,7 @@ export default function (): void {
         expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
         sub.unsubscribe();
       });
+
       it('with ng-control directive', function (this: TestContext) {
         setupTest(this, WithDynamicNgControl, TestControl3);
         const cb = jasmine.createSpy('cb');
