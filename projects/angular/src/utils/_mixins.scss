@@ -373,6 +373,12 @@ $typography-tokens: (
     // suitable token not found
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
+  'SECONDARY-13-MD-CPT': (
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
   'SECONDARY-13-SB-CPT': (
     // P4, Form Labels and Column Headers
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
