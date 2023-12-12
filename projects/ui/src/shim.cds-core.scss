@@ -43,10 +43,6 @@
   --clr-global-success-color: #{tokens.$cds-alias-status-success}; // #{$clr-global-success-color}; // hsl(93, 67%, 38%)
   --clr-global-error-color: #{tokens.$cds-alias-status-danger}; // #{$clr-global-error-color}; // hsl(9, 100%, 38%)
 
-  // component close icon colors
-  --clr-close-color--normal: #{tokens.$cds-alias-object-interaction-color}; // #{$clr-close-color--normal}; // $clr-color-neutral-600
-  --clr-close-color--hover: #{tokens.$cds-alias-object-interaction-color-hover}; // #{$clr-close-color--hover}; // $clr-color-neutral-1000
-
   /* Typography */
 
   //H1
