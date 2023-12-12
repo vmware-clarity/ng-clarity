@@ -4,34 +4,35 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:map';
+@use '@cds/core/tokens/tokens.scss';
 @use '../utils/variables/variables';
 
-$clr-accordion-text-color: variables.$clr-global-font-color !default;
-$clr-accordion-text-color-hover: variables.$clr-global-font-color !default;
-$clr-accordion-text-color-active: variables.$clr-global-font-color !default;
-$clr-accordion-text-color-selected: variables.$clr-global-font-color !default;
-$clr-accordion-panel-disabled-color: variables.$clr-color-neutral-500 !default;
-$clr-accordion-active-background-color: variables.$clr-global-selection-color !default;
-$clr-accordion-content-background-color: variables.$clr-color-neutral-0 !default;
-$clr-accordion-header-background-color: variables.$clr-color-neutral-50 !default;
-$clr-accordion-header-disabled-background-color: variables.$clr-color-neutral-200 !default;
-$clr-accordion-header-hover-background-color: variables.$clr-color-neutral-200 !default;
-$clr-accordion-header-active-background-color: variables.$clr-color-neutral-200 !default;
-$clr-accordion-border-left-color: variables.$clr-color-neutral-200 !default;
-$clr-accordion-border-left-current-color: $clr-accordion-border-left-color !default;
+$clr-accordion-text-color: var(--clr-accordion-text-color) !default;
+$clr-accordion-text-color-hover: var(--clr-accordion-text-color-hover) !default;
+$clr-accordion-text-color-active: var(--clr-accordion-text-color-active) !default;
+$clr-accordion-panel-disabled-color: var(--clr-accordion-panel-disabled-color) !default;
+$clr-accordion-active-background-color: var(--clr-accordion-active-background-color) !default;
+$clr-accordion-content-background-color: var(--clr-accordion-content-background-color) !default;
+$clr-accordion-header-background-color: var(--clr-accordion-header-background-color) !default;
+$clr-accordion-header-disabled-background-color: var(--clr-accordion-header-disabled-background-color) !default;
+$clr-accordion-header-hover-background-color: var(--clr-accordion-header-hover-background-color) !default;
+$clr-accordion-header-active-background-color: var(--clr-accordion-header-active-background-color) !default;
+
+$clr-accordion-header-button-padding: var(--clr-accordion-header-button-padding) !default;
+$clr-accordion-error-color: var(--clr-accordion-error-color) !default;
+$clr-accordion-complete-color: var(--clr-accordion-complete-color) !default;
+$clr-accordion-header-left-indicator: var(--clr-accordion-header-left-indicator) !default;
+$clr-accordion-header-left-current-indicator: var(--clr-accordion-header-left-current-indicator) !default;
+
+$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+
+// @Deprecated in v17
+$clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !default;
+$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+
 $clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
-$clr-accordion-error-color: variables.$clr-global-error-color !default;
-$clr-accordion-complete-color: variables.$clr-global-success-color !default;
-$clr-accordion-border-color: variables.$clr-color-neutral-400 !default;
-$clr-accordion-padding: variables.$clr_baselineRem_18px !default;
-$clr-accordion-border-radius: variables.$clr-global-borderradius !default;
-$clr-accordion-border-left-width: variables.$clr_baselineRem_0_25 !default;
-$clr-accordion-border-left-color-complete: $clr-accordion-complete-color !default;
-$clr-accordion-border-left-color-error: $clr-accordion-error-color !default;
-$clr-accordion-content-color: variables.$clr-p1-color !default;
-$clr-accordion-content-font-size: variables.$clr-p1-font-size !default;
-$clr-accordion-description-margin-left: variables.$clr_baselineRem_1_5 !default;
-$clr-accordion-step-title-min-width: variables.$clr_baselineRem_7_2 !default;
-$clr-accordion-step-title-font-weight: variables.$clr-p1-font-weight !default;
-$clr-accordion-step-status-margin-left: 0 !default;
-$clr-accordion-step-title-margin-left: 0 !default;
+
+$clr-accordion-border-color: var(--clr-accordion-border-color) !default;
+$clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
+$clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
+$clr-accordion-border-left-color-error: var(--clr-accordion-border-left-color-error) !default;

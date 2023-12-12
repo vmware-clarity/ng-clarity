@@ -76,6 +76,11 @@
     &:hover,
     &:active {
       color: alert-variables.getAlertColor($alertType, close-icon-hover);
+
+      cds-icon,
+      clr-icon {
+        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
+      }
     }
   }
 }
