@@ -43,8 +43,8 @@
     --clr-h3-font-size: #{tokens.$cds-alias-typography-title-font-size};
     --clr-h3-font-weight: #{tokens.$cds-alias-typography-title-font-weight};
     --clr-h3-font-family: var(--clr-display-font);
-    --clr-h3-line-height: 1.333333em; // #{tokens.$cds-alias-typography-title-line-height};
-    --clr-h3-letter-spacing: -0.00833333em; // #{tokens.$cds-alias-typography-title-letter-spacing};
+    --clr-h3-line-height: #{tokens.$cds-alias-typography-title-line-height};
+    --clr-h3-letter-spacing: #{tokens.$cds-alias-typography-title-letter-spacing};
 
     //H4 - card titles, page_tertiaryHeading
     //'SECTION-20-STD'
