@@ -1055,6 +1055,12 @@
   --clr-forms-range-thumb-margin-top: 7px; // TODO: ATM - get rid of this
   --clr-forms-range-progress-fill-height: 3px; // TODO: ATM - get rid of this
 
+  // Fix for disabled range thumb color on CDS theme (when using ngModel)
+  .clr-form-control-disabled input[type='range']::-webkit-slider-thumb,
+  .clr-form-control-disabled input[type='range']::-moz-range-thumb {
+    background-color: var(--clr-forms-range-progress-fill-color-disabled);
+  }
+
   // Password
   // TODO: ATM Make sure this is what we need,
   //  in spec it is #{tokens.$cds-alias-interaction-color}, which is gray, hence it's put as fallback here
