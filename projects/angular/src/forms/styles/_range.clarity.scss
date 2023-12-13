@@ -105,12 +105,6 @@
         forms-variables.$clr-forms-range-progress-fill-color,
         clr-forms-range-progress-fill-color-disabled
       );
-      // When used with ngModel range template is changed so we need to overwrite background-color
-      // Every theme except for dark CLR is using custom properties
-      background-color: var(
-        --clr-forms-range-progress-fill-color-disabled,
-        forms-variables.$clr-forms-range-progress-fill-color
-      ) !important;
     }
 
     &:disabled + .fill-input {
