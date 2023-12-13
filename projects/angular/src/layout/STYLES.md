@@ -89,3 +89,4 @@
 | error         | Error messageThe error message is hidden by default                              |
 | active        | Adding the `active` class to the `.error` element makes the error message appear |
 | trademark     | DEPRECATED in v17. To be removed in v18.                                         |
+| subtitle      | DEPRECATED in v17. To be removed in v18.                                         |
