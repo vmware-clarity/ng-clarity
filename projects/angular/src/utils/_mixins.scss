@@ -453,7 +453,11 @@ $typography-tokens: (
 
 @mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
-    @include setValue(font-family, $fallbacks, tokens.$cds-alias-typography-header-font-family);
+    @include setValue(
+      font-family,
+      $fallbacks,
+      variables.$clr-metropolis-font-family
+    ); // tokens.$cds-alias-typography-header-font-family);
   }
 
   @if ($addColor) {
@@ -465,7 +469,11 @@ $typography-tokens: (
 
 @mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
-    @include setValue(font-family, $fallbacks, tokens.$cds-alias-typography-font-family);
+    @include setValue(
+      font-family,
+      $fallbacks,
+      variables.$clr-metropolis-font-family
+    ); // tokens.$cds-alias-typography-font-family);
   }
 
   @if ($addColor) {

@@ -314,7 +314,7 @@
   //HTML
   html:not([cds-text]) {
     color: tokens.$cds-alias-typography-color-450;
-    font-family: tokens.$cds-alias-typography-font-family;
+    font-family: variables.$clr-metropolis-font-family;
     // font-size should be deleted probably. Actual base comes from CDS reset file
     font-size: calc((tokens.$cds-global-base / 16) * 100%);
   }

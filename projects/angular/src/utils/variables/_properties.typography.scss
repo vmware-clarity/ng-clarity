@@ -8,9 +8,12 @@
 
 @include mixins.exports('typography.properties') {
   :root [cds-theme] {
-    --clr-body-font: #{tokens.$cds-alias-typography-font-family};
+    // Temporal internal use only. Should be removed once CDS token based family is available.
+    --clr-metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+
+    --clr-body-font: var(--clr-metropolis-font-family); // #{tokens.$cds-alias-typography-font-family};
     --clr-font: var(--clr-body-font);
-    --clr-display-font: #{tokens.$cds-alias-typography-header-font-family};
+    --clr-display-font: var(--clr-metropolis-font-family); //#{tokens.$cds-alias-typography-header-font-family};
 
     --clr-font-weight-light: #{tokens.$cds-alias-typography-font-weight-light};
     --clr-font-weight-regular: #{tokens.$cds-alias-typography-font-weight-regular};

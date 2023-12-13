@@ -7,6 +7,9 @@
 
 // Usage: ../typography/_typography.clarity.scss
 $clr-fontSkipBase64: false !default;
+
+// Temporal internal use only. Should be removed once CDS token based family is available.
+$clr-metropolis-font-family: var(--clr-metropolis-font-family);
 $clr-font: var(--clr-font) !default;
 $clr-body-font: $clr-font;
 $clr-altFont: $clr-font !default; //TODO: TBD. Alternative font for Clarity
