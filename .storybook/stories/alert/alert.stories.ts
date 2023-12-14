@@ -84,7 +84,7 @@ function generateVariants() {
     for (const clrAlertSizeSmall of [false, true]) {
       variants.push({
         clrAlertType,
-        clrAlertLightweight: clrAlertType !== 'neutral',
+        clrAlertLightweight: true,
         clrAlertSizeSmall,
       });
     }
