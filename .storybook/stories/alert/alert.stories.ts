@@ -13,7 +13,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-alert
       [clrAlertAppLevel]="clrAlertAppLevel"
       [clrAlertClosable]="clrAlertClosable"
@@ -84,7 +84,7 @@ function generateVariants() {
     for (const clrAlertSizeSmall of [false, true]) {
       variants.push({
         clrAlertType,
-        clrAlertLightweight: true,
+        clrAlertLightweight: clrAlertType !== 'neutral',
         clrAlertSizeSmall,
       });
     }
