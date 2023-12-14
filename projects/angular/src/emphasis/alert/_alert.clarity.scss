@@ -97,7 +97,7 @@
 }
 
 @include mixins.exports('alert.clarity') {
-  $alertTypes: info, warning, danger, success, 'neutral';
+  $alertTypes: info, warning, danger, success, neutral;
 
   .alert-icon {
     @include mixins.min-equilateral(tokens.$cds-global-space-9);
