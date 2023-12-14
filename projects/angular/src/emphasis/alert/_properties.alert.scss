@@ -168,6 +168,10 @@
       // Lightweight Success type
       --clr-lightweight-alert-success-icon-color: #{tokens.$cds-alias-status-success};
       --clr-lightweight-alert-success-font-color: #{tokens.$cds-alias-typography-color-500};
+
+      // Lightweight Neutral type
+      --clr-lightweight-alert-neutral-icon-color: #{tokens.$cds-alias-status-neutral-shade};
+      --clr-lightweight-alert-neutral-font-color: #{tokens.$cds-alias-typography-color-500};
     }
   }
 }

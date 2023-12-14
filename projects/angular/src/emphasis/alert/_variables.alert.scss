@@ -162,6 +162,10 @@ $clr-lightweight-alert-danger-font-color: var(--clr-lightweight-alert-danger-fon
 $clr-lightweight-alert-success-icon-color: var(--clr-lightweight-alert-success-icon-color) !default;
 $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-font-color) !default;
 
+// Lightweight Neutral type
+$clr-lightweight-alert-neutral-icon-color: var(--clr-lightweight-alert-neutral-icon-color) !default;
+$clr-lightweight-alert-neutral-font-color: var(--clr-lightweight-alert-neutral-font-color) !default;
+
 @function getAlertColor($type: info, $property: color) {
   @if $type == info {
     @return lookupInfoAlertColor($property);
@@ -217,6 +221,10 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
 
   @if $type == lightweight-success {
     @return lookupLightweightSuccessAlertColor($property);
+  }
+
+  @if $type == lightweight-neutral {
+    @return lookupLightweightNeutralAlertColor($property);
   }
 
   @return null;
@@ -626,6 +634,18 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
 
   @if $property == color {
     @return $clr-lightweight-alert-warning-font-color;
+  }
+
+  @return null;
+}
+
+@function lookupLightweightNeutralAlertColor($property: color) {
+  @if $property == icon {
+    @return $clr-lightweight-alert-neutral-icon-color;
+  }
+
+  @if $property == color {
+    @return $clr-lightweight-alert-neutral-font-color;
   }
 
   @return null;
