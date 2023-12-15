@@ -96,6 +96,7 @@
 | --clr-app-alert-warning-pager-bg-color         | Warning alert pager font color                                    |
 | --clr-app-alert-danger-pager-bg-color          | Danger alert pager font color                                     |
 | --clr-app-alert-success-pager-bg-color         | Danger success pager font color                                   |
+| --clr-app-alert-neutral-pager-bg-color         | Danger neutral pager font color                                   |
 | --clr-lightweight-alert-info-icon-color        | Lightweight alert info icon color                                 |
 | --clr-lightweight-alert-info-font-color        | Lightweight alert info font color                                 |
 | --clr-lightweight-alert-warning-icon-color     | Lightweight alert warning icon color                              |
