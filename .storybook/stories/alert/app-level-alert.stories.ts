@@ -87,15 +87,15 @@ export const Alert: Story = args => ({
 });
 
 export const DifferentIcon: Story = Alert.bind({});
-DifferentIcon.argTypes = {
-  ...Alert.argTypes,
-  clrAlertIcon: { defaultValue: 'settings', control: false },
+DifferentIcon.args = {
+  ...Alert.args,
+  clrAlertIcon: 'settings',
 };
 
 export const Closable: Story = Alert.bind({});
-Closable.argTypes = {
-  ...Alert.argTypes,
-  clrAlertClosable: { defaultValue: true, control: false },
+Closable.args = {
+  ...Alert.args,
+  clrAlertClosable: true
 };
 
 export const Paginated: Story = args => ({
@@ -118,11 +118,23 @@ export const Paginated: Story = args => ({
   </clr-alerts>`,
   props: args,
 });
-Paginated.argTypes = {
-  ...Alert.argTypes,
-  clrCloseButtonAriaLabel: { control: false, table: false },
-  clrAlertClosable: { control: false, table: false },
-  itemCount: { control: false, table: false },
-  clrAlertClosedChange: { control: false, table: false },
-  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' },
+Paginated.args = {
+  ...Paginated.args,
+  clrAlertClosable: false,
 };
+Paginated.argTypes = {
+  ...Paginated.argTypes,
+  clrCloseButtonAriaLabel: { control: false, table: {disable: true}},
+  itemCount: { control: false, table: {disable: true}},
+  clrAlertClosedChange: { control: false, table: {disable: true}},
+  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' },
+  close: { control: false, table: {disable: true}},
+  open: { control: false, table: {disable: true}},
+};
+
+export const PaginatedClosable = Paginated.bind({});
+PaginatedClosable.args = {
+  ...PaginatedClosable.args,
+  clrAlertClosable: true,
+  clrCloseButtonAriaLabel: 'Dismiss alert',
+}
