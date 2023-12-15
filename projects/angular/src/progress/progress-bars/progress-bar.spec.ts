@@ -30,16 +30,7 @@ class TestDisplayValueComponent {}
 
 @Component({
   template: `
-    <clr-progress-bar
-      clrLabeled
-      clrFade
-      clrLoop
-      clrSuccess
-      clrDanger
-      clrFlash
-      clrFlashDanger
-      class="random"
-    ></clr-progress-bar>
+    <clr-progress-bar clrLabeled clrFade clrLoop clrColor clrFlash clrFlashDanger class="random"></clr-progress-bar>
   `,
 })
 class TestStylesComponent {}

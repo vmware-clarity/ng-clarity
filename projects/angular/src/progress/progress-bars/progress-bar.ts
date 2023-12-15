@@ -95,10 +95,29 @@ export class ClrProgressBar {
     return this._loop;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrWarning')
-  set clrWarning(value: boolean | string) {
-    this._warning = isBooleanAttributeSet(value);
+  @Input('clrColor')
+  set clrColor(value: string) {
+    switch (value) {
+      case 'success':
+        this._success = true;
+        this._warning = false;
+        this._danger = false;
+        break;
+      case 'warning':
+        this._success = false;
+        this._warning = true;
+        this._danger = false;
+        break;
+      case 'danger':
+        this._success = false;
+        this._warning = false;
+        this._danger = true;
+        break;
+      default:
+        this._success = false;
+        this._warning = false;
+        this._danger = false;
+    }
   }
 
   @HostBinding('class.warning')
@@ -106,21 +125,9 @@ export class ClrProgressBar {
     return this._warning;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrSuccess')
-  set clrSuccess(value: boolean | string) {
-    this._success = isBooleanAttributeSet(value);
-  }
-
   @HostBinding('class.success')
   get successClass() {
     return this._success;
-  }
-
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrDanger')
-  set clrDanger(value: boolean | string) {
-    this._danger = isBooleanAttributeSet(value);
   }
 
   @HostBinding('class.danger')

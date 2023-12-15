@@ -20,9 +20,7 @@ const defaultStory: Story = args => ({
       [clrLabeled]="clrLabeled"
       [clrFade]="clrFade"
       [clrLoop]="clrLoop"
-      [clrSuccess]="clrSuccess"
-      [clrDanger]="clrDanger"
-      [clrWarning]="clrWarning"
+      [clrColor]="clrColor"
       [clrFlash]="clrFlash"
       [clrFlashDanger]="clrFlashDanger"
       [clrCompact]="clrCompact"
@@ -43,10 +41,8 @@ const defaultParameters: Parameters = {
     clrLabeled: { defaultValue: false, control: { type: 'boolean' } },
     clrLoop: { defaultValue: false, control: { type: 'boolean' } },
     clrMax: { defaultValue: 100, control: { type: 'number' } },
-    clrSuccess: { defaultValue: false, control: { type: 'boolean' } },
-    clrWarning: { defaultValue: false, control: { type: 'boolean' } },
-    clrDanger: { defaultValue: false, control: { type: 'boolean' } },
-    clrValue: { defaultValue: 0, control: { type: 'number' } },
+    clrColor: { defaultValue: '', control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
+    clrValue: { defaultValue: 33, control: { type: 'number' } },
     clrCompact: { defaultValue: false, control: { type: 'boolean' } },
     id: { defaultValue: '' },
     // methods
@@ -63,17 +59,17 @@ const variants: Parameters[] = [
   },
   {
     clrValue: 66,
-    clrDanger: true,
+    clrColor: 'danger',
     clrLabeled: true,
     clrDisplayVal: '66%',
   },
   {
     clrValue: 100,
-    clrSuccess: true,
+    clrColor: 'success',
   },
   {
     clrValue: 50,
-    clrWarning: true,
+    clrColor: 'warning',
     clrLabeled: true,
     clrDisplayVal: '50%',
   },
