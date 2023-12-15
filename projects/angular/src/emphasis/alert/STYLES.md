@@ -83,6 +83,14 @@
 | --clr-app-alert-success-action-active-color    | App level success alert action font color on focus, hover, active |
 | --clr-app-alert-success-close-icon-color       | App level success alert close icon color                          |
 | --clr-app-alert-success-close-icon-hover-color | App level success alert close icon color on hover                 |
+| --clr-app-alert-neutral-border-color           | App level neutral alert border color                              |
+| --clr-app-alert-neutral-bg-color               | App level neutral alert background color                          |
+| --clr-app-alert-neutral-icon-color             | App level neutral alert icon color                                |
+| --clr-app-alert-neutral-font-color             | App level neutral alert font color                                |
+| --clr-app-alert-neutral-action-color           | App level neutral alert action font color                         |
+| --clr-app-alert-neutral-action-active-color    | App level neutral alert action font color on focus, hover, active |
+| --clr-app-alert-neutral-close-icon-color       | App level neutral alert close icon color                          |
+| --clr-app-alert-neutral-close-icon-hover-color | App level neutral alert close icon color on hover                 |
 | --clr-app-alert-pager-text-color               | Alert pager default font color                                    |
 | --clr-app-alert-info-pager-bg-color            | Info alert pager font color                                       |
 | --clr-app-alert-warning-pager-bg-color         | Warning alert pager font color                                    |
