@@ -70,6 +70,10 @@ export interface ClrCommonStrings {
    */
   danger: string;
   /**
+   * Alert levels: unknown
+   */
+  unknown: string;
+  /**
    * Datagrid: row actions
    */
   rowActions: string;

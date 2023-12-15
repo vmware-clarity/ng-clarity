@@ -12,9 +12,11 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
   selector: 'clr-alert-item',
   template: `
     <div class="alert-icon-wrapper">
+      <clr-spinner class="alert-spinner" clrInline *ngIf="iconService.alertIconShape === 'loading'"></clr-spinner>
       <cds-icon
         class="alert-icon"
         role="img"
+        *ngIf="iconService.alertIconShape !== 'loading'"
         [attr.shape]="iconService.alertIconShape"
         [attr.aria-label]="iconService.alertIconTitle"
       ></cds-icon>

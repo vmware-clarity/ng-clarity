@@ -55,6 +55,12 @@ export class ClrAlert implements OnInit, OnDestroy {
     return this.iconService.alertType;
   }
   set alertType(val: string) {
+    console.log(this.isLight);
+    if (!this.isLight && (val === 'loading' || val === 'unknown')) {
+      this.iconService.alertType = 'info';
+      return;
+    }
+
     this.iconService.alertType = val;
   }
 
