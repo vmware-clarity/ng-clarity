@@ -18,6 +18,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;
   @Input('clrDisplayval') displayval: string;
+  @Input('clrColor') color: string;
 
   /*
    * No need to convert to `number` cause we could have
@@ -34,9 +35,6 @@ export class ClrProgressBar {
   private _labeled: boolean;
   private _fade: boolean;
   private _loop: boolean;
-  private _success: boolean;
-  private _danger: boolean;
-  private _warning: boolean;
   private _flash: boolean;
   private _flashDanger: boolean;
   private _compact: boolean;
@@ -95,44 +93,19 @@ export class ClrProgressBar {
     return this._loop;
   }
 
-  @Input('clrColor')
-  set clrColor(value: string) {
-    switch (value) {
-      case 'success':
-        this._success = true;
-        this._warning = false;
-        this._danger = false;
-        break;
-      case 'warning':
-        this._success = false;
-        this._warning = true;
-        this._danger = false;
-        break;
-      case 'danger':
-        this._success = false;
-        this._warning = false;
-        this._danger = true;
-        break;
-      default:
-        this._success = false;
-        this._warning = false;
-        this._danger = false;
-    }
-  }
-
   @HostBinding('class.warning')
   get warningClass() {
-    return this._warning;
+    return this.color === 'warning';
   }
 
   @HostBinding('class.success')
   get successClass() {
-    return this._success;
+    return this.color === 'success';
   }
 
   @HostBinding('class.danger')
   get dangerClass() {
-    return this._danger;
+    return this.color === 'danger';
   }
 
   @Input('clrFlash')
