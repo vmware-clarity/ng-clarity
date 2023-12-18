@@ -12,6 +12,7 @@
 @use 'header.clarity';
 @use 'variables.responsive-nav' as responsive-nav-variables;
 @use '../../utils/variables/variables' as util-variables;
+@use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
 
@@ -165,12 +166,7 @@
     & > span::after {
       display: inline-block;
       @include mixins.equilateral(variables.$clr_baselineRem_4px);
-      @include mixins.css-var(
-        background,
-        clr-responsive-nav-trigger-bg-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
+      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
       // TODO: Use border radius token?
       border-radius: mixins.baselinePx(4);
     }
@@ -264,40 +260,18 @@
           @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
 
           .nav-item {
-            @include mixins.css-var(
-              height,
-              clr-subnav-sm-item-height,
-              variables.$clr_baselineRem_1_5,
-              variables.$clr-use-custom-properties
-            );
+            height: mixins.baselinePx(36);
             margin-right: 0;
           }
 
           .nav-link {
-            @include mixins.css-var(
-              padding,
-              clr-subnav-sm-link-padding,
-              0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1,
-              variables.$clr-use-custom-properties
-            );
+            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
 
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: 0;
-            @include mixins.css-var(
-              border-top-left-radius,
-              clr-subnav-sm-link-border-radius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              border-bottom-left-radius,
-              clr-subnav-sm-link-border-radius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
+            border-radius: variables.$clr-global-borderradius 0 0 variables.$clr-global-borderradius;
 
             @include vertical-nav.vertical-nav-link-colors();
 
@@ -370,12 +344,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            @include mixins.css-var(
-              background,
-              clr-responsive-nav-header-backdrop-bg-color,
-              variables.$clr-color-neutral-1000,
-              variables.$clr-use-custom-properties
-            );
+            background: variables.$clr-color-neutral-1000;
             opacity: 0.85;
             cursor: pointer;
             z-index: responsive-nav-variables.$clr-sliding-panel-backdrop-z-index;
@@ -454,22 +423,12 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              @include mixins.css-var(
-                background-color,
-                clr-header-bg-color,
-                header-variables.$clr-header-bgColor,
-                variables.$clr-use-custom-properties
-              );
+              background-color: header-variables.$clr-header-bgColor;
               border-radius: variables.$clr-global-borderradius;
             }
 
             .title {
-              @include mixins.css-var(
-                color,
-                clr-vertical-nav-item-color,
-                responsive-nav-variables.$clr-sliding-panel-text-color,
-                variables.$clr-use-custom-properties
-              );
+              color: vertical-nav-variables.$clr-vertical-nav-item-color;
               text-overflow: ellipsis;
               overflow: hidden;
             }
