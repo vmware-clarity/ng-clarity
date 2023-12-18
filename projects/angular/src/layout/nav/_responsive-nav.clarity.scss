@@ -23,12 +23,7 @@
   right: $right;
   bottom: $bottom;
   left: $left;
-  @include mixins.css-var(
-    background,
-    clr-vertical-nav-bg-color,
-    responsive-nav-variables.$clr-nav-background-color,
-    variables.$clr-use-custom-properties
-  );
+  background: responsive-nav-variables.$clr-nav-background-color;
   z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
   height: 100vh;
 }
@@ -105,10 +100,10 @@
 
     &:hover,
     &:focus {
-      --color: var(--clr-responsive-nav-trigger-bg-color);
+      color: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
     }
 
-    --color: var(--clr-color-neutral-500);
+    color: var(--clr-color-neutral-500);
   }
 
   .header-hamburger-trigger,
@@ -132,12 +127,8 @@
         variables.$clr-color-neutral-0,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        border-radius,
-        clr-responsive-nav-hamburger-border-radius,
-        variables.$clr-global-borderradius,
-        variables.$clr-use-custom-properties
-      );
+      // TODO: Use CDS token?
+      border-radius: 0.15rem;
     }
 
     & > span {
@@ -180,12 +171,8 @@
         variables.$clr-color-neutral-0,
         variables.$clr-use-custom-properties
       );
-      @include mixins.css-var(
-        border-radius,
-        clr-responsive-nav-overflow-border-radius,
-        variables.$clr_baselineRem_4px,
-        variables.$clr-use-custom-properties
-      );
+      // TODO: Use border radius token?
+      border-radius: mixins.baselinePx(4);
     }
 
     & > span {
@@ -241,7 +228,7 @@
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include sliding-nav-positioning();
-        transform: translateX(-1 * responsive-nav-variables.$clr-sliding-panel-width);
+        transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width}));
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
       }
 
@@ -389,12 +376,7 @@
               variables.$clr-color-neutral-1000,
               variables.$clr-use-custom-properties
             );
-            @include mixins.css-var(
-              opacity,
-              clr-responsive-nav-header-backdrop-opacity,
-              0.85,
-              variables.$clr-use-custom-properties
-            );
+            opacity: 0.85;
             cursor: pointer;
             z-index: responsive-nav-variables.$clr-sliding-panel-backdrop-z-index;
           }
@@ -525,7 +507,7 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * responsive-nav-variables.$clr-trigger-position));
+          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position})));
           @include overflow-menu-trigger-animation();
         }
       }
@@ -567,7 +549,7 @@
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
-        transform: translateX(-1 * responsive-nav-variables.$clr-sliding-panel-width-sm);
+        transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width-sm}));
       }
 
       .header-nav.clr-nav-level-2,
@@ -611,7 +593,7 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * responsive-nav-variables.$clr-trigger-position-sm));
+          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position-sm})));
         }
       }
     }

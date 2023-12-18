@@ -19,8 +19,8 @@
     :root {
       --clr-basefont-size: #{variables.$clr-basefont-size};
       // app borders
-      --clr-global-borderradius: #{variables.$clr-global-borderradius};
-      --clr-global-borderwidth: #{variables.$clr-global-borderwidth};
+      --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
+      --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
 
       // app background
       --clr-global-app-background: #{variables.$clr-global-app-background};

@@ -6,21 +6,8 @@
 @use '@cds/core/tokens/tokens.scss';
 /* This shim file maps the custom properties of @clr/ui to Core tokens. Thus, it is only needed for apps currently dependent on @clr/ui and wanting to apply Core look and feel. */
 
-// Line height tokens are implemented as the smallest version in the figma specs but some
-// styles have a standard and/or expanded styles with larger line heights.
-@function convertCompactToStandardLineHeight($variable, $fallback_variable) {
-  @return calc(#{$variable} + (calc(4 / 20 * 1rem)));
-}
-
-// Reevaluate pixel values based on baseline rem setting.
-@function baselinePx($pixels: 0) {
-  @return calc($pixels * (1rem / var(--clr-global-font-size)));
-}
-
 [cds-theme] {
   /* Global */
-  --clr-global-font-size: #{tokens.$cds-global-base};
-  --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
   --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
 
   // app background
@@ -41,10 +28,6 @@
   // app success/error colors
   --clr-global-success-color: #{tokens.$cds-alias-status-success}; // #{$clr-global-success-color}; // hsl(93, 67%, 38%)
   --clr-global-error-color: #{tokens.$cds-alias-status-danger}; // #{$clr-global-error-color}; // hsl(9, 100%, 38%)
-
-  /* Responsive Navigation */
-
-  --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // var(--clr-color-neutral-0);
 }
 
 [cds-theme~='dark'] {
