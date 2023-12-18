@@ -39,7 +39,7 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
-  private _isLight: boolean;
+  private _isLight = false;
   private _origAlertType: string;
 
   constructor(
