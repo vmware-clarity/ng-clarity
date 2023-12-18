@@ -5,15 +5,18 @@
  */
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('subnav.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../layout/nav/_subnav.clarity.scss
-      --clr-subnav-bg-color: var(--clr-color-neutral-0);
+  :root [cds-theme] {
+    // Usage: ../layout/nav/_subnav.clarity.scss
+    --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
 
-      // Usage: ../layout/nav/_subnav.clarity.scss
-      --clr-nav-box-shadow-color: var(--clr-color-neutral-400);
-    }
+    // Usage: ../layout/nav/_subnav.clarity.scss
+    --clr-nav-box-shadow-color: var(--clr-color-neutral-400);
+
+    --clr-subnav-sm-link-border-radius: 0; // ATM - default
+    --clr-subnav-sm-item-height: auto; // ATM - remove
+    --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
   }
 }

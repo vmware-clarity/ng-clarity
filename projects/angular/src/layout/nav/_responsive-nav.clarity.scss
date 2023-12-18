@@ -122,12 +122,7 @@
       display: inline-block;
       height: variables.$clr_baselineRem_2px;
       width: variables.$clr_baselineRem_1;
-      @include mixins.css-var(
-        background,
-        clr-responsive-nav-trigger-bg-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
+      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
       // TODO: Use CDS token?
       border-radius: 0.15rem;
     }
@@ -344,6 +339,7 @@
             bottom: 0;
             left: 0;
             right: 0;
+            // TODO: Use CDS token
             background: variables.$clr-color-neutral-1000;
             opacity: 0.85;
             cursor: pointer;

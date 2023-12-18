@@ -8,7 +8,7 @@
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 // TODO: would be nice to key text color in subnav off of the bgColor...
-$clr-subnav-bgColor: variables.$clr-color-neutral-0 !default;
+$clr-subnav-bgColor: var(--clr-subnav-bg-color) !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
 // Usage: ../layout/nav/_nav.clarity.scss
