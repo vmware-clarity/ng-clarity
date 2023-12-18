@@ -28,7 +28,6 @@ import { MultiAlertService } from './providers/multi-alert.service';
   templateUrl: './alert.html',
 })
 export class ClrAlert implements OnInit, OnDestroy {
-  @Input('clrAlertLightweight') isLight = false;
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -40,6 +39,8 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
+  private _isLight: boolean;
+  private _origAlertType: string;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -50,18 +51,24 @@ export class ClrAlert implements OnInit, OnDestroy {
     private hostElement: ElementRef
   ) {}
 
+  @Input('clrAlertLightweight')
+  get isLight(): boolean {
+    return this._isLight;
+  }
+  set isLight(val: boolean) {
+    this._isLight = val;
+
+    this.configAlertType(this._origAlertType);
+  }
+
   @Input('clrAlertType')
   get alertType(): string {
     return this.iconService.alertType;
   }
   set alertType(val: string) {
-    console.log(this.isLight);
-    if (!this.isLight && (val === 'loading' || val === 'unknown')) {
-      this.iconService.alertType = 'info';
-      return;
-    }
+    this._origAlertType = val;
 
-    this.iconService.alertType = val;
+    this.configAlertType(val);
   }
 
   @Input('clrAlertIcon')
@@ -111,6 +118,14 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  configAlertType(val: string) {
+    if (!this._isLight && (val === 'loading' || val === 'unknown')) {
+      this.iconService.alertType = 'info';
+    }
+
+    this.iconService.alertType = val;
   }
 
   open(): void {
