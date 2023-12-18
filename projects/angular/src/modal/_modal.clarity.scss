@@ -102,6 +102,20 @@
         // per measurement, this results in an icon that is 24x24...
         @include mixins.equilateral(modal-variables.$clr-modal-default-space);
       }
+
+      &:hover {
+        cds-icon,
+        clr-icon {
+          fill: variables.$clr-close-color-hover;
+        }
+
+        &:active {
+          cds-icon,
+          clr-icon {
+            fill: variables.$clr-close-color-active;
+          }
+        }
+      }
     }
   }
 

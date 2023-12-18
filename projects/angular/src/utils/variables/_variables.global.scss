@@ -252,10 +252,13 @@ $grid-gutter-widths: (
 
 // Close button colors
 // Usage: ../emphasis/alert/_alert.clarity.scss
-$clr-close-color--normal: variables.$clr-color-neutral-600 !default;
-$clr-close-color--normal-opacity: 0.2 !default;
-$clr-close-color--hover: variables.$clr-color-neutral-1000 !default;
-$clr-close-color--hover-opacity: 0.5 !default;
+// Usage: ../modal/_modal.clarity.scss
+// Usage: ../popover/signpost/_signpost.clarity.scss
+$clr-close-color--normal: var(--clr-close-color) !default;
+$clr-close-color: $clr-close-color--normal !default;
+$clr-close-color--hover: var(--clr-close-color-hover) !default;
+$clr-close-color-hover: $clr-close-color--hover !default;
+$clr-close-color-active: var(--clr-close-color-active) !default;
 
 // Box Shadow
 $clr-popover-box-shadow-color: rgba(140, 140, 140, 0.25) !default;

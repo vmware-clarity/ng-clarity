@@ -16,7 +16,7 @@
       --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
       // color
-      --clr-modal-close-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-modal-close-color: var(--clr-close-color);
       --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background};
       --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
       --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background};
@@ -30,7 +30,7 @@
       // title
       --clr-modal-title-color: #{tokens.$cds-alias-typography-color-400};
       --clr-modal-title-font-size: #{tokens.$cds-alias-typography-section-font-size};
-      --clr-modal-title-font-family: #{tokens.$cds-alias-typography-header-font-family};
+      --clr-modal-title-font-family: #{variables.$clr-metropolis-font-family}; // #{tokens.$cds-alias-typography-header-font-family};
       --clr-modal-title-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
       --clr-modal-title-line-height: #{tokens.$cds-alias-typography-section-line-height};
       --clr-modal-title-letter-spacing: #{tokens.$cds-alias-typography-section-letter-spacing};
