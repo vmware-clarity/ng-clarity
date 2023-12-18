@@ -121,11 +121,13 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   configAlertType(val: string) {
-    if (!this._isLight && (val === 'loading' || val === 'unknown')) {
-      this.iconService.alertType = 'info';
+    let innerVal = val;
+
+    if (!this._isLight && (innerVal === 'loading' || innerVal === 'unknown')) {
+      innerVal = 'info';
     }
 
-    this.iconService.alertType = val;
+    this.iconService.alertType = innerVal;
   }
 
   open(): void {
