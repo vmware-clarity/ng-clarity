@@ -15,4 +15,4 @@ $clr-subnav-bgColor: var(--clr-subnav-bg-color) !default;
 $clr-subnav-height: tokens.$cds-global-space-11 !default;
 
 // Usage: ../layout/nav/_subnav.clarity.scss
-$clr-nav-shadow: 0 (-1 * variables.$clr_baselineRem_1px) 0 variables.$clr-color-neutral-400 inset !default;
+$clr-nav-shadow: 0 calc(-1 * tokens.$cds-alias-object-border-width-100) 0 var(--clr-nav-box-shadow-color) inset !default;
