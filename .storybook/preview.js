@@ -24,7 +24,7 @@ const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
-const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles];
+const cdsCoreStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles];
 
 loadIcons();
 addDocs(docs);
@@ -108,7 +108,7 @@ export const globalTypes = {
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
-  styleElement.textContent = `${cdsCoreAndShimStyles.join('')}`;
+  styleElement.textContent = `${cdsCoreStyles.join('')}`;
   document.body.setAttribute(cdsThemeAttribute, theme);
 
   return story();
