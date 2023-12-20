@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 $clr-sliding-panel-text-color: var(--clr-sliding-panel-text-color) !default;
 $clr-nav-background-color: var(--clr-nav-background-color) !default;
@@ -15,14 +16,11 @@ $clr-responsive-nav-trigger-bg-color: var(--clr-responsive-nav-trigger-bg-color)
 
 $clr-sliding-panel-width: mixins.baselinePx(360) !default;
 $clr-sliding-panel-width-sm: mixins.baselinePx(288) !default;
-$clr-trigger-position: calc(#{mixins.baselinePx(360)} + #{mixins.baselinePx(12)}) !default; // TODO: Use vars
-$clr-trigger-position-sm: calc(#{mixins.baselinePx(288)} + #{mixins.baselinePx(12)}) !default; // TODO: Use vars
+$clr-trigger-position: calc(#{mixins.baselinePx(360)} + #{tokens.$cds-global-space-6}) !default;
+$clr-trigger-position-sm: calc(#{mixins.baselinePx(288)} + #{tokens.$cds-global-space-6}) !default;
 
-$clr-sliding-panel-z-index: map.get(variables.$clr-layers, sidepanel); // TODO: Get rid of variables?
-$clr-sliding-panel-backdrop-z-index: map.get(
-  variables.$clr-layers,
-  sidepanel-bg
-) !default; // TODO: Get rid of variables?
+$clr-sliding-panel-z-index: map.get(variables.$clr-layers, sidepanel);
+$clr-sliding-panel-backdrop-z-index: map.get(variables.$clr-layers, sidepanel-bg) !default;
 $clr-sliding-transition-time: 0.3s !default;
 $clr-transition-style: ease !default;
 

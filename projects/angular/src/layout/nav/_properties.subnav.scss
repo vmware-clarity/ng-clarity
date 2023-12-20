@@ -4,17 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
 @use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('subnav.properties') {
   :root [cds-theme] {
     // Usage: ../layout/nav/_subnav.clarity.scss
-    --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
-
-    // Usage: ../layout/nav/_subnav.clarity.scss
-    --clr-subnav-sm-link-border-radius: 0; // ATM - default
-    --clr-subnav-sm-item-height: auto; // ATM - remove
-    --clr-subnav-sm-link-padding: var(--clr-vertical-nav-item-padding); // ATM - default
+    --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background};
   }
 }

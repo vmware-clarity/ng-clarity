@@ -15,6 +15,7 @@
 @use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;
@@ -24,7 +25,7 @@
   right: $right;
   bottom: $bottom;
   left: $left;
-  background: responsive-nav-variables.$clr-nav-background-color;
+  background: vertical-nav-variables.$clr-vertical-nav-bg-color;
   z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
   height: 100vh;
 }
@@ -49,7 +50,7 @@
 
     &::before,
     &::after {
-      left: variables.$clr_baselineRem_0_125;
+      left: tokens.$cds-global-space-3;
       transform-origin: 9%;
       transition: responsive-nav-variables.$clr-trigger-animation;
     }
@@ -65,7 +66,7 @@
 }
 
 @mixin clr-nav-close-trigger-animation() {
-  left: variables.$clr_baselineRem_0_125;
+  left: tokens.$cds-global-space-3;
   transform-origin: 9%;
   transition: responsive-nav-variables.$clr-trigger-animation;
 }
@@ -76,9 +77,9 @@
 
     &::before,
     &::after {
-      height: variables.$clr_baselineRem_2px;
-      width: variables.$clr_baselineRem_1;
-      left: -1 * variables.$clr_baselineRem_0_25;
+      height: tokens.$cds-global-space-2;
+      width: tokens.$cds-global-space-9;
+      left: calc(-1 * tokens.$cds-global-space-4);
       transform-origin: -3%;
       transition: responsive-nav-variables.$clr-trigger-animation;
     }
@@ -97,14 +98,15 @@
 
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
-    margin: 0.75rem;
+    margin: tokens.$cds-global-space-7;
+    --color: #{tokens.$cds-alias-object-interaction-color};
+    --background: #{tokens.$cds-alias-object-interaction-background};
 
     &:hover,
     &:focus {
-      color: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
+      --color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --background: #{tokens.$cds-alias-object-interaction-background-hover};
     }
-
-    color: var(--clr-color-neutral-500);
   }
 
   .header-hamburger-trigger,
@@ -114,14 +116,14 @@
 
   .header-hamburger-trigger,
   .clr-nav-close {
-    $trigger-span-psuedo-positioning: -1 * variables.$clr_baselineRem_7px;
+    $trigger-span-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      height: variables.$clr_baselineRem_2px;
-      width: variables.$clr_baselineRem_1;
+      height: tokens.$cds-global-space-2;
+      width: tokens.$cds-global-space-9;
       background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
       // TODO: Use CDS token?
       border-radius: 0.15rem;
@@ -154,16 +156,16 @@
 
   .header-overflow-trigger,
   .clr-nav-close {
-    $overflow-trigger-psuedo-positioning: -1 * variables.$clr_baselineRem_8px;
+    $overflow-trigger-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      @include mixins.equilateral(variables.$clr_baselineRem_4px);
+      @include mixins.equilateral(tokens.$cds-global-space-3);
       background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
       // TODO: Use border radius token?
-      border-radius: mixins.baselinePx(4);
+      border-radius: tokens.$cds-global-space-3;
     }
 
     & > span {
@@ -200,15 +202,17 @@
         border: none;
         background: none;
         cursor: pointer;
-        font-size: variables.$clr_baselineRem_1;
+        font-size: tokens.$cds-global-space-9;
         @include mixins.equilateral(header-variables.$clr-header-height);
-        padding: 0 0 variables.$clr_baselineRem_4px 0;
+        padding: 0 0 tokens.$cds-global-space-3 0;
         //4px to vertically align the trigger lines. display flex was not working on all browsers.
         text-align: center;
         white-space: nowrap;
 
         &:focus {
-          outline-offset: -1 * variables.$clr_baselineRem_5px; //So that the outline styles aren't hidden because of the browser
+          outline-offset: calc(
+            -1 * tokens.$cds-global-space-4
+          ); //So that the outline styles aren't hidden because of the browser
         }
 
         @include header.header-nav-appearance();
@@ -252,21 +256,21 @@
         // TODO: more specificity in classname is preferable to nesting...
         .nav {
           padding-left: 0;
-          @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
+          gap: tokens.$cds-global-space-5;
 
           .nav-item {
-            height: mixins.baselinePx(36);
+            height: tokens.$cds-global-space-11;
             margin-right: 0;
           }
 
           .nav-link {
-            padding: 0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1;
+            padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
 
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: variables.$clr-global-borderradius 0 0 variables.$clr-global-borderradius;
+            border-radius: tokens.$cds-alias-object-border-radius-100 0 0 tokens.$cds-alias-object-border-radius-100;
 
             @include vertical-nav.vertical-nav-link-colors();
 
@@ -357,17 +361,10 @@
               }
 
               .nav-text {
-                $nav-text-height: variables.$clr_baselineRem_1;
-
                 display: inline-block;
-                @include mixins.css-var(
-                  color,
-                  clr-sliding-panel-text-color,
-                  responsive-nav-variables.$clr-sliding-panel-text-color,
-                  variables.$clr-use-custom-properties
-                );
-                line-height: $nav-text-height;
-                padding: variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
+                color: responsive-nav-variables.$clr-sliding-panel-text-color;
+                line-height: tokens.$cds-global-space-9;
+                padding: tokens.$cds-global-space-4 0 tokens.$cds-global-space-4 tokens.$cds-global-space-9;
                 white-space: normal;
                 font-weight: normal;
               }
@@ -402,7 +399,7 @@
             width: responsive-nav-variables.$clr-sliding-panel-width;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
-            padding-left: variables.$clr_baselineRem_1;
+            padding-left: tokens.$cds-global-space-9;
 
             & > .nav-link {
               overflow: hidden;
@@ -419,8 +416,8 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              background-color: header-variables.$clr-header-bgColor;
-              border-radius: variables.$clr-global-borderradius;
+              background-color: header-variables.$clr-header-bg-color;
+              border-radius: tokens.$cds-alias-object-border-radius-100;
             }
 
             .title {
@@ -440,7 +437,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: header-variables.$clr-header-height + variables.$clr_baselineRem_1;
+          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -458,7 +455,7 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2 {
-          padding-top: variables.$clr_baselineRem_1;
+          padding-top: tokens.$cds-global-space-9;
         }
 
         .clr-nav-close {
@@ -494,7 +491,7 @@
     .main-container {
       .header {
         .branding {
-          max-width: variables.$clr_baselineRem_6;
+          max-width: mixins.baselinePx(144);
           min-width: 0;
           overflow: hidden;
         }
