@@ -15,7 +15,7 @@
 
   pre {
     // TODO: Make use of global variables once we refactor them to use CDS tokens
-    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-global-color-construction-400;
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-100;
   }
 
@@ -27,7 +27,7 @@
   // @deprecated Bootstrap dependencies are deprecated since 1.0. Review and edit before 2.0 if needed.
   code {
     &.clr-code {
-      color: tokens.$cds-alias-status-danger-shade;
+      color: tokens.$cds-alias-utility-red;
       padding: 0;
       background: transparent;
     }
