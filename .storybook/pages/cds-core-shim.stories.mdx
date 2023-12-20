@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="cds-core shim" />
+
+# v16 Updates
+
+As of v16, the Clarity shim will be included in applications by default when importing the `@clr/ui/clr-ui.min.css`
+file. In order to opt out of the core styles, you can instead import the `@clr/ui/legacy-clr-ui.min.css` file. The
+legacy fall back will be removed in v17, so teams are encouraged to migrate their components and applications to the
+design system tokens as soon as possible.
+
+## Dark Mode
+
+Clarity Core's dark mode should replace the `@clr/ui` dark mode. Remove any reference to the `@clr/ui`
+dark mode file from the source code and toggle dark mode by changing the `cds-theme` attribute to "dark."
