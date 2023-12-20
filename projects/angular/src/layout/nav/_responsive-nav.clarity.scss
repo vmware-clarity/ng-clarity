@@ -99,13 +99,11 @@
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
     margin: tokens.$cds-global-space-7;
-    --color: #{tokens.$cds-alias-object-interaction-color};
-    --background: #{tokens.$cds-alias-object-interaction-background};
+    --color: #{tokens.$cds-global-color-white};
 
     &:hover,
     &:focus {
-      --color: #{tokens.$cds-alias-object-interaction-color-hover};
-      --background: #{tokens.$cds-alias-object-interaction-background-hover};
+      --color: #{tokens.$cds-global-color-warm-gray-100};
     }
   }
 
@@ -125,8 +123,7 @@
       height: tokens.$cds-global-space-2;
       width: tokens.$cds-global-space-9;
       background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
-      // TODO: Use CDS token?
-      border-radius: 0.15rem;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
     }
 
     & > span {
@@ -210,9 +207,8 @@
         white-space: nowrap;
 
         &:focus {
-          outline-offset: calc(
-            -1 * tokens.$cds-global-space-4
-          ); //So that the outline styles aren't hidden because of the browser
+          // So that the outline styles aren't hidden because of the browser
+          outline-offset: calc(-1 * tokens.$cds-global-space-4);
         }
 
         @include header.header-nav-appearance();
@@ -308,7 +304,7 @@
 
       .header {
         .branding {
-          max-width: variables.$clr_baselineRem_10;
+          max-width: mixins.baselinePx(240);
           min-width: 0;
           overflow: hidden;
         }
@@ -343,9 +339,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            // TODO: Use CDS token
-            background: variables.$clr-color-neutral-1000;
-            opacity: 0.85;
+            background: tokens.$cds-alias-object-overlay-backdrop-background;
             cursor: pointer;
             z-index: responsive-nav-variables.$clr-sliding-panel-backdrop-z-index;
           }
@@ -362,10 +356,11 @@
 
               .nav-text {
                 display: inline-block;
-                color: responsive-nav-variables.$clr-sliding-panel-text-color;
-                line-height: tokens.$cds-global-space-9;
                 padding: tokens.$cds-global-space-4 0 tokens.$cds-global-space-4 tokens.$cds-global-space-9;
                 white-space: normal;
+                // color, line-height and font-weight should be removed or refactored in separate JIRA
+                color: responsive-nav-variables.$clr-sliding-panel-text-color;
+                line-height: tokens.$cds-global-space-9;
                 font-weight: normal;
               }
 
