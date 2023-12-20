@@ -34,8 +34,7 @@ class TestDisplayValueComponent {}
       clrLabeled
       clrFade
       clrLoop
-      clrSuccess
-      clrDanger
+      clrColor="danger"
       clrFlash
       clrFlashDanger
       class="random"
@@ -100,13 +99,13 @@ describe('ClrProgressBar component', () => {
         clrProgressBar = fixture.debugElement.query(By.directive(ClrProgressBar)).nativeElement;
       });
 
-      it('should add classes based on attributes "labeled fade loop success danger flash flash-danger"', () => {
+      it('should add classes based on attributes "labeled fade loop danger flash flash-danger"', () => {
         const klasses = clrProgressBar
           .getAttribute('class')
           .split(' ')
           .sort((a, b) => (a > b ? 1 : -1))
           .join(' ');
-        expect(klasses).toContain('danger flash flash-danger labeled loop progress progress-fade random success');
+        expect(klasses).toContain('danger flash flash-danger labeled loop progress progress-fade random');
       });
 
       it('should be able to add custom class if needed', () => {

@@ -3100,8 +3100,6 @@ export class ClrPopoverToggleService {
 export class ClrProgressBar {
     // (undocumented)
     set clrCompact(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrDanger(value: boolean | string);
     // (undocumented)
     set clrFade(value: boolean | string);
     // (undocumented)
@@ -3112,10 +3110,8 @@ export class ClrProgressBar {
     set clrLabeled(value: boolean | string);
     // (undocumented)
     set clrLoop(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrSuccess(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrWarning(value: boolean | string);
+    // (undocumented)
+    color: string;
     // (undocumented)
     get compactClass(): boolean;
     // (undocumented)
@@ -3150,7 +3146,7 @@ export class ClrProgressBar {
     // (undocumented)
     get warningClass(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrWarning": "clrWarning"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "color": "clrColor"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
 }
