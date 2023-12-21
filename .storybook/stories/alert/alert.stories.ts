@@ -33,6 +33,14 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
+const labeledAlertTypes = ALERT_TYPES.reduce((a, val) => {
+  let innerVal = val;
+  if (innerVal === 'loading' || innerVal === 'unknown') {
+    innerVal += ' - only works with "clrAlertLightweight" set to TRUE';
+  }
+  return { ...a, [val]: innerVal };
+}, {});
+
 const defaultParameters: Parameters = {
   title: 'Alert/Alert',
   component: ClrAlert,
@@ -41,7 +49,14 @@ const defaultParameters: Parameters = {
     clrAlertClosed: { defaultValue: false },
     clrAlertLightweight: { defaultValue: false },
     clrAlertIcon: { defaultValue: '' },
-    clrAlertType: { defaultValue: 'info', control: { type: 'radio', options: ALERT_TYPES } },
+    clrAlertType: {
+      defaultValue: 'info',
+      control: {
+        type: 'radio',
+        options: ALERT_TYPES,
+        labels: labeledAlertTypes,
+      },
+    },
     clrCloseButtonAriaLabel: { defaultValue: commonStringsDefault.alertCloseButtonAriaLabel },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
