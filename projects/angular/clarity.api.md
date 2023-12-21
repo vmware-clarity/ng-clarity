@@ -65,6 +65,14 @@ export class CdsIconCustomTag {
 }
 
 // @public (undocumented)
+export enum CHANGE_KEYS {
+    // (undocumented)
+    FORM = "form",
+    // (undocumented)
+    MODEL = "model"
+}
+
+// @public (undocumented)
 export class ClarityModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
@@ -4828,7 +4836,7 @@ export const TOGGLE_SERVICE_PROVIDER: {
 export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef);
     // (undocumented)
     protected controlIdService: ControlIdService;
@@ -4845,6 +4853,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected index: number;
     // (undocumented)
     protected ngControlService: NgControlService;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
