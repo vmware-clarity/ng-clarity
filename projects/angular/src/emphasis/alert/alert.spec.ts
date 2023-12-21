@@ -20,6 +20,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [clrAlertClosable]="isClosable"
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
+      [clrAlertLightweight]="isLight"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
     >
       <div class="alert-item">
@@ -36,6 +37,7 @@ class TestComponent {
   isClosable = false;
   closed = false;
   isAppLevel = false;
+  isLight = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
 
   alertMsg = 'This is an alert!';
@@ -106,6 +108,13 @@ export default function (): void {
 
       expect(compiled.querySelector('.alert-warning')).toBeNull();
       expect(compiled.querySelector('.alert-success')).not.toBeNull();
+
+      // set neutral
+      fixture.componentInstance.type = 'neutral';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert-success')).toBeNull();
+      expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
     });
 
     it('Removes the alert from the DOM when closed', () => {
@@ -145,6 +154,16 @@ export default function (): void {
       fixture.componentInstance.isAppLevel = true;
       fixture.detectChanges();
       expect(compiled.querySelector('.alert-app-level')).not.toBeNull();
+    });
+
+    it('supports a clrAlertLightweight option', () => {
+      fixture.componentInstance.isLight = false;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert-lightweight')).toBeNull();
+
+      fixture.componentInstance.isLight = true;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });
   });
 }

@@ -13,7 +13,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-alert
       [clrAlertAppLevel]="clrAlertAppLevel"
       [clrAlertClosable]="clrAlertClosable"

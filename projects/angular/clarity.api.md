@@ -965,6 +965,7 @@ export interface ClrCommonStrings {
     modalContentEnd: string;
     modalContentStart: string;
     more: string;
+    neutral: string;
     next: string;
     nextPage: string;
     open: string;

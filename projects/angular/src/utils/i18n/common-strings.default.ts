@@ -23,6 +23,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   success: 'Success',
   warning: 'Warning',
   danger: 'Error',
+  neutral: 'Neutral',
   rowActions: 'Available actions',
   pickColumns: 'Manage Columns',
   showColumns: 'Show Columns',
