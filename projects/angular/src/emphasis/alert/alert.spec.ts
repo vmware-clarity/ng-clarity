@@ -38,7 +38,6 @@ class TestComponent {
   isLight = false;
   closed = false;
   isAppLevel = false;
-  isLight = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
 
   alertMsg = 'This is an alert!';
