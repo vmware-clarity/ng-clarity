@@ -13,7 +13,6 @@
   }
 
   pre {
-    // TODO: Make use of global variables once we refactor them to use CDS tokens
     border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
     border-radius: tokens.$cds-alias-object-border-radius-100;
   }
