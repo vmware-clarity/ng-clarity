@@ -18,7 +18,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [clrAlertType]="type"
       [clrAlertSizeSmall]="isSmall"
       [clrAlertClosable]="isClosable"
-      [clrAlertLightweight]="isLight"
+      [clrAlertLightweight]="isLightweight"
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
@@ -35,7 +35,7 @@ class TestComponent {
   type = '';
   isSmall = false;
   isClosable = false;
-  isLight = false;
+  isLightweight = false;
   closed = false;
   isAppLevel = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
@@ -123,7 +123,7 @@ export default function (): void {
 
       // set lightweight loading
       fixture.componentInstance.type = 'loading';
-      fixture.componentInstance.isLight = true;
+      fixture.componentInstance.isLightweight = true;
       fixture.detectChanges();
 
       expect(compiled.querySelector('.alert-info')).toBeNull();
@@ -138,7 +138,7 @@ export default function (): void {
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
 
       // remove lightweight and leave only unknown -> should behave like regular info
-      fixture.componentInstance.isLight = false;
+      fixture.componentInstance.isLightweight = false;
       fixture.detectChanges();
 
       expect(compiled.querySelector('.alert-neutral')).toBeNull();
@@ -186,11 +186,11 @@ export default function (): void {
     });
 
     it('supports a clrAlertLightweight option', () => {
-      fixture.componentInstance.isLight = false;
+      fixture.componentInstance.isLightweight = false;
       fixture.detectChanges();
       expect(compiled.querySelector('.alert-lightweight')).toBeNull();
 
-      fixture.componentInstance.isLight = true;
+      fixture.componentInstance.isLightweight = true;
       fixture.detectChanges();
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });

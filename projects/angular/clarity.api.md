@@ -365,8 +365,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     isAppLevel: boolean;
     // (undocumented)
-    get isLight(): boolean;
-    set isLight(val: boolean);
+    get isLightweight(): boolean;
+    set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
     // (undocumented)
@@ -376,7 +376,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "isLight": "clrAlertLightweight"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "isLightweight": "clrAlertLightweight"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }

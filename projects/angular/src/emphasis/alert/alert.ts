@@ -39,7 +39,7 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
-  private _isLight = false;
+  private _isLightweight = false;
   private _origAlertType: string;
 
   constructor(
@@ -52,11 +52,11 @@ export class ClrAlert implements OnInit, OnDestroy {
   ) {}
 
   @Input('clrAlertLightweight')
-  get isLight(): boolean {
-    return this._isLight;
+  get isLightweight(): boolean {
+    return this._isLightweight;
   }
-  set isLight(val: boolean) {
-    this._isLight = val;
+  set isLightweight(val: boolean) {
+    this._isLightweight = val;
 
     this.configAlertType(this._origAlertType);
   }
@@ -123,7 +123,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   configAlertType(val: string) {
     let innerVal = val;
 
-    if (!this._isLight && (innerVal === 'loading' || innerVal === 'unknown')) {
+    if (!this._isLightweight && (innerVal === 'loading' || innerVal === 'unknown')) {
       innerVal = 'info';
     }
 
