@@ -21,7 +21,6 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [clrAlertLightweight]="isLight"
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
-      [clrAlertLightweight]="isLight"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
     >
       <div class="alert-item">
@@ -139,7 +138,7 @@ export default function (): void {
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
 
-      // set unknown -> should behave like regular info
+      // remove lightweight and leave only unknown -> should behave like regular info
       fixture.componentInstance.isLight = false;
       fixture.detectChanges();
 

@@ -39,6 +39,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrAlertClosed: { defaultValue: false },
+    clrAlertLightweight: { defaultValue: false },
     clrAlertIcon: { defaultValue: '' },
     clrAlertType: { defaultValue: 'info', control: { type: 'radio', options: ALERT_TYPES } },
     clrCloseButtonAriaLabel: { defaultValue: commonStringsDefault.alertCloseButtonAriaLabel },
