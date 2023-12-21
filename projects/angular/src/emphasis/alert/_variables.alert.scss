@@ -79,17 +79,6 @@ $clr-alert-danger-action-active-color: var(--clr-alert-danger-action-active-colo
 $clr-alert-danger-close-icon-color: var(--clr-alert-danger-close-icon-color) !default;
 $clr-alert-danger-close-icon-hover-color: var(--clr-alert-danger-close-icon-hover-color) !default;
 
-// App Neutral type
-// Usage: ./_alert.clarity.scss
-$clr-alert-neutral-bg-color: var(--clr-alert-neutral-bg-color) !default;
-$clr-alert-neutral-font-color: var(--clr-alert-neutral-font-color) !default;
-$clr-alert-neutral-border-color: var(--clr-alert-neutral-border-color) !default;
-$clr-alert-neutral-icon-color: var(--clr-alert-neutral-icon-color) !default;
-$clr-alert-neutral-action-color: var(--clr-alert-neutral-action-color) !default;
-$clr-alert-neutral-action-active-color: var(--clr-alert-neutral-action-active-color) !default;
-$clr-alert-neutral-close-icon-color: var(--clr-alert-neutral-close-icon-color) !default;
-$clr-alert-neutral-close-icon-hover-color: var(--clr-alert-neutral-close-icon-hover-color) !default;
-
 // App Info type
 // Usage: ./_alert.clarity.scss
 $clr-app-alert-info-bg-color: var(--clr-app-alert-info-bg-color) !default;
@@ -123,17 +112,6 @@ $clr-app-alert-danger-action-color: var(--clr-app-alert-danger-action-color) !de
 $clr-app-alert-danger-action-active-color: var(--clr-app-alert-danger-action-active-color) !default;
 $clr-app-alert-danger-close-icon-hover-color: var(--clr-app-alert-danger-close-icon-hover-color) !default;
 
-// App Neutral type
-// Usage: ./_alert.clarity.scss
-$clr-app-alert-neutral-bg-color: var(--clr-app-alert-neutral-bg-color) !default;
-$clr-app-alert-neutral-icon-color: var(--clr-app-alert-neutral-icon-color) !default;
-$clr-app-alert-neutral-font-color: var(--clr-app-alert-neutral-font-color) !default;
-$clr-app-alert-neutral-border-color: var(--clr-app-alert-neutral-border-color) !default;
-$clr-app-alert-neutral-close-icon-color: var(--clr-app-alert-neutral-close-icon-color) !default;
-$clr-app-alert-neutral-action-color: var(--clr-app-alert-neutral-action-color) !default;
-$clr-app-alert-neutral-action-active-color: var(--clr-app-alert-neutral-action-active-color) !default;
-$clr-app-alert-neutral-close-icon-hover-color: var(--clr-app-alert-neutral-close-icon-hover-color) !default;
-
 // App Success type
 // Usage: ./_alert.clarity.scss
 // Deprecated in 3.0 for removal in 4.0
@@ -161,10 +139,6 @@ $clr-lightweight-alert-danger-font-color: var(--clr-lightweight-alert-danger-fon
 // Lightweight Success type
 $clr-lightweight-alert-success-icon-color: var(--clr-lightweight-alert-success-icon-color) !default;
 $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-font-color) !default;
-
-// Lightweight Neutral type
-$clr-lightweight-alert-neutral-icon-color: var(--clr-lightweight-alert-neutral-icon-color) !default;
-$clr-lightweight-alert-neutral-font-color: var(--clr-lightweight-alert-neutral-font-color) !default;
 
 @function getAlertColor($type: info, $property: color) {
   @if $type == info {
@@ -374,40 +348,20 @@ $clr-lightweight-alert-neutral-font-color: var(--clr-lightweight-alert-neutral-f
   @return null;
 }
 
+// App Neutral type
+// Usage: ./_alert.clarity.scss
+$clr-alert-neutral: (
+  bg-color: var(--clr-alert-neutral-bg-color),
+  color: var(--clr-alert-neutral-font-color),
+  border-color: var(--clr-alert-neutral-border-color),
+  icon-color: var(--clr-alert-neutral-icon-color),
+  action-color: var(--clr-alert-neutral-action-color),
+  action-active-color: var(--clr-alert-neutral-action-active-color),
+  close-icon-color: var(--clr-alert-neutral-close-icon-color),
+  close-icon-hover-color: var(--clr-alert-neutral-close-icon-hover-color),
+) !default;
 @function lookupNeutralAlertColor($property: color) {
-  @if $property == color {
-    @return $clr-alert-neutral-font-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-alert-neutral-bg-color;
-  }
-
-  @if $property == icon {
-    @return $clr-alert-neutral-icon-color;
-  }
-
-  @if $property == border-color {
-    @return $clr-alert-neutral-border-color;
-  }
-
-  @if $property == close-icon {
-    @return $clr-alert-neutral-close-icon-color;
-  }
-
-  @if $property == close-icon-hover {
-    @return $clr-alert-neutral-close-icon-hover-color;
-  }
-
-  @if $property == action {
-    @return $clr-alert-neutral-action-color;
-  }
-
-  @if $property == action-active {
-    @return $clr-alert-neutral-action-active-color;
-  }
-
-  @return null;
+  @return map-get($clr-alert-neutral, $property);
 }
 
 @function lookupAppDangerAlertColor($property: color) {
@@ -555,40 +509,21 @@ $clr-lightweight-alert-neutral-font-color: var(--clr-lightweight-alert-neutral-f
   @return null;
 }
 
+// App Neutral type
+// Usage: ./_alert.clarity.scss
+$clr-app-alert-neutral: (
+  bg-color: var(--clr-app-alert-neutral-bg-color),
+  icon-color: var(--clr-app-alert-neutral-icon-color),
+  color: var(--clr-app-alert-neutral-font-color),
+  border-color: var(--clr-app-alert-neutral-border-color),
+  close-icon-color: var(--clr-app-alert-neutral-close-icon-color),
+  action-color: var(--clr-app-alert-neutral-action-color),
+  action-active-color: var(--clr-app-alert-neutral-action-active-color),
+  close-icon-hover-color: var(--clr-app-alert-neutral-close-icon-hover-color),
+) !default;
+
 @function lookupAppNeutralAlertColor($property: color) {
-  @if $property == color {
-    @return $clr-app-alert-neutral-font-color;
-  }
-
-  @if $property == bg-color {
-    @return $clr-app-alert-neutral-bg-color;
-  }
-
-  @if $property == icon {
-    @return $clr-app-alert-neutral-icon-color;
-  }
-
-  @if $property == border-color {
-    @return $clr-app-alert-neutral-border-color;
-  }
-
-  @if $property == close-icon {
-    @return $clr-app-alert-neutral-close-icon-color;
-  }
-
-  @if $property == close-icon-hover {
-    @return $clr-app-alert-neutral-close-icon-hover-color;
-  }
-
-  @if $property == action {
-    @return $clr-app-alert-neutral-action-color;
-  }
-
-  @if $property == action-active {
-    @return $clr-app-alert-neutral-action-active-color;
-  }
-
-  @return null;
+  @return map-get($clr-app-alert-neutral, $property);
 }
 
 @function lookupLightweightInfoAlertColor($property: color) {
@@ -639,14 +574,11 @@ $clr-lightweight-alert-neutral-font-color: var(--clr-lightweight-alert-neutral-f
   @return null;
 }
 
+// Lightweight Neutral type
+$clr-lightweight-alert-neutral: (
+  icon-color: var(--clr-lightweight-alert-neutral-icon-color),
+  font-color: var(--clr-lightweight-alert-neutral-font-color),
+) !default;
 @function lookupLightweightNeutralAlertColor($property: color) {
-  @if $property == icon {
-    @return $clr-lightweight-alert-neutral-icon-color;
-  }
-
-  @if $property == color {
-    @return $clr-lightweight-alert-neutral-font-color;
-  }
-
-  @return null;
+  @return map-get($clr-lightweight-alert-neutral, $property);
 }
