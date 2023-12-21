@@ -1,0 +1,46 @@
+<h1>Dynamic Control Demo</h1>
+
+<p>
+  We have a State service which have three statuses: NONE, INVALID, VALID. Success and Error messages are shown based on
+  the value of this state service but if you bind formControl \ ngModel to a control that is currently not available and
+  then add it dynamically with initial value while marking it as touched and updateValueValidility status change doesn't
+  trigger and state service value is not updated.
+</p>
+<br />
+<label for="steps"> Steps to test:</label>
+<ul id="steps" style="list-style-type: none">
+  <li>1. Choose scenario two ( text area appears but the control binded to formControl is missing )</li>
+  <li>2. Choose platform two which is adding the control used in the binding with a initial value.</li>
+  <li>3. Control should be valid and in success state.</li>
+</ul>
+
+<h2>Reactive form</h2>
+<form [formGroup]="form">
+  <clr-select-container>
+    <label>Choose Platform</label>
+    <select class="w-60" clrSelect formControlName="platform">
+      <option value="one">One</option>
+      <option value="two">Two</option>
+    </select>
+    <clr-control-error> Required </clr-control-error>
+  </clr-select-container>
+  <clr-radio-container clrInline>
+    <label>Scenario</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [name]="'scenario'" value="one" formControlName="scenario" />
+      <label>One</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio [name]="'scenario'" value="two" formControlName="scenario" />
+      <label>Two</label>
+    </clr-radio-wrapper>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-radio-container>
+  <clr-textarea-container *ngIf="form.get('scenario')?.value === 'two'">
+    <label>Label</label>
+    <textarea clrTextarea [formControl]="$any(form).get('control')" required></textarea>
+    <clr-control-helper>Helper Message</clr-control-helper>
+    <clr-control-success>Successful</clr-control-success>
+    <clr-control-error>Required error</clr-control-error>
+  </clr-textarea-container>
+</form>
