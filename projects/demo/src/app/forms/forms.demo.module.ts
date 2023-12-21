@@ -17,6 +17,7 @@ import { FormsRadioDemo } from './controls/radio';
 import { FormsSelectDemo } from './controls/select';
 import { FormsTextDemo } from './controls/text';
 import { FormsTextareaDemo } from './controls/textarea';
+import { DynamicControlsDemo } from './dynamic-controls/dynamic-controls.demo';
 import { FormsDemo } from './forms.demo';
 import { ROUTING } from './forms.demo.routing';
 import { FormsGenericContainerDemo } from './generic-container/generic-container';
@@ -69,6 +70,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsA11yDemo,
     FormsGenericContainerDemo,
     FormsValidationDemo,
+    DynamicControlsDemo,
   ],
   exports: [
     FormsDemo,
@@ -97,6 +99,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsA11yDemo,
     FormsGenericContainerDemo,
     FormsValidationDemo,
+    DynamicControlsDemo,
   ],
 })
 export class FormsDemoModule {}

@@ -29,6 +29,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
     '[class.alert-info]': "this.currentAlertType == 'info'",
     '[class.alert-success]': "this.currentAlertType == 'success'",
     '[class.alert-warning]': "this.currentAlertType == 'warning'",
+    '[class.alert-neutral]': "this.currentAlertType == 'neutral'",
   },
   styles: [':host { display: block }'],
 })

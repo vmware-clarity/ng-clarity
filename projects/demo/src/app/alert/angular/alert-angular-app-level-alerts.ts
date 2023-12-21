@@ -17,5 +17,6 @@ export class AlertAngularAppLevelAlertsDemo {
     { text: 'Message 2', type: 'danger', isAppLevel: false },
     { text: 'Message 3', type: 'warning', isAppLevel: false },
     { text: 'Message 4', type: 'success', isAppLevel: false },
+    { text: 'Message 5', type: 'neutral', isAppLevel: false },
   ];
 }
