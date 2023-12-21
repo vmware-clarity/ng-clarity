@@ -576,8 +576,8 @@ $clr-app-alert-neutral: (
 
 // Lightweight Neutral type
 $clr-lightweight-alert-neutral: (
-  icon-color: var(--clr-lightweight-alert-neutral-icon-color),
-  font-color: var(--clr-lightweight-alert-neutral-font-color),
+  icon: var(--clr-lightweight-alert-neutral-icon-color),
+  color: var(--clr-lightweight-alert-neutral-font-color),
 ) !default;
 @function lookupLightweightNeutralAlertColor($property: color) {
   @return map-get($clr-lightweight-alert-neutral, $property);
