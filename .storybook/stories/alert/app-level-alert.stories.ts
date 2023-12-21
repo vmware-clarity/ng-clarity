@@ -95,7 +95,7 @@ DifferentIcon.args = {
 export const Closable: Story = Alert.bind({});
 Closable.args = {
   ...Alert.args,
-  clrAlertClosable: true
+  clrAlertClosable: true,
 };
 
 export const Paginated: Story = args => ({
@@ -124,12 +124,12 @@ Paginated.args = {
 };
 Paginated.argTypes = {
   ...Paginated.argTypes,
-  clrCloseButtonAriaLabel: { control: false, table: {disable: true}},
-  itemCount: { control: false, table: {disable: true}},
-  clrAlertClosedChange: { control: false, table: {disable: true}},
+  clrCloseButtonAriaLabel: { control: false, table: { disable: true } },
+  itemCount: { control: false, table: { disable: true } },
+  clrAlertClosedChange: { control: false, table: { disable: true } },
   clrCurrentAlertIndex: { defaultValue: 0, type: 'number' },
-  close: { control: false, table: {disable: true}},
-  open: { control: false, table: {disable: true}},
+  close: { control: false, table: { disable: true } },
+  open: { control: false, table: { disable: true } },
 };
 
 export const PaginatedClosable = Paginated.bind({});
@@ -137,4 +137,4 @@ PaginatedClosable.args = {
   ...PaginatedClosable.args,
   clrAlertClosable: true,
   clrCloseButtonAriaLabel: 'Dismiss alert',
-}
+};
