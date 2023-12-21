@@ -110,7 +110,7 @@ Closable.args = {
 };
 
 export const Lightweight: Story = Alert.bind({});
-Lightweight.argTypes = {
+Lightweight.args = {
   ...Alert.args,
   clrAlertLightweight: { defaultValue: true, control: false },
   clrCloseButtonAriaLabel: { table: { disable: true } },
@@ -118,7 +118,7 @@ Lightweight.argTypes = {
 };
 
 export const DifferentIcon: Story = Alert.bind({});
-DifferentIcon.argTypes = {
-  ...Alert.argTypes,
-  clrAlertIcon: { defaultValue: 'settings', control: false },
+DifferentIcon.args = {
+  ...Alert.args,
+  clrAlertIcon: 'settings',
 };
