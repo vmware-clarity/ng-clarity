@@ -65,6 +65,14 @@ export class CdsIconCustomTag {
 }
 
 // @public (undocumented)
+export enum CHANGE_KEYS {
+    // (undocumented)
+    FORM = "form",
+    // (undocumented)
+    MODEL = "model"
+}
+
+// @public (undocumented)
 export class ClarityModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
@@ -960,6 +968,7 @@ export interface ClrCommonStrings {
     modalContentEnd: string;
     modalContentStart: string;
     more: string;
+    neutral: string;
     next: string;
     nextPage: string;
     open: string;
@@ -3103,8 +3112,6 @@ export class ClrPopoverToggleService {
 export class ClrProgressBar {
     // (undocumented)
     set clrCompact(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrDanger(value: boolean | string);
     // (undocumented)
     set clrFade(value: boolean | string);
     // (undocumented)
@@ -3115,10 +3122,8 @@ export class ClrProgressBar {
     set clrLabeled(value: boolean | string);
     // (undocumented)
     set clrLoop(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrSuccess(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrWarning(value: boolean | string);
+    // (undocumented)
+    color: string;
     // (undocumented)
     get compactClass(): boolean;
     // (undocumented)
@@ -3153,7 +3158,7 @@ export class ClrProgressBar {
     // (undocumented)
     get warningClass(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrWarning": "clrWarning"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "color": "clrColor"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
 }
@@ -4830,7 +4835,7 @@ export const TOGGLE_SERVICE_PROVIDER: {
 export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl, renderer: Renderer2, el: ElementRef);
     // (undocumented)
     protected controlIdService: ControlIdService;
@@ -4847,6 +4852,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected index: number;
     // (undocumented)
     protected ngControlService: NgControlService;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

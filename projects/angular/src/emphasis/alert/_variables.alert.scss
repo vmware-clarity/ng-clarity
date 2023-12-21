@@ -157,6 +157,10 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
     @return lookupDangerAlertColor($property);
   }
 
+  @if $type == neutral {
+    @return lookupNeutralAlertColor($property);
+  }
+
   @if $type == app-info {
     @return lookupAppInfoAlertColor($property);
   }
@@ -173,6 +177,10 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
     @return lookupAppSuccessAlertColor($property);
   }
 
+  @if $type == app-neutral {
+    @return lookupAppNeutralAlertColor($property);
+  }
+
   @if $type == lightweight-info {
     @return lookupLightweightInfoAlertColor($property);
   }
@@ -187,6 +195,10 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
 
   @if $type == lightweight-success {
     @return lookupLightweightSuccessAlertColor($property);
+  }
+
+  @if $type == lightweight-neutral {
+    @return lookupLightweightNeutralAlertColor($property);
   }
 
   @return null;
@@ -336,6 +348,22 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
   @return null;
 }
 
+// App Neutral type
+// Usage: ./_alert.clarity.scss
+$clr-alert-neutral: (
+  bg-color: var(--clr-alert-neutral-bg-color),
+  color: var(--clr-alert-neutral-font-color),
+  border-color: var(--clr-alert-neutral-border-color),
+  icon-color: var(--clr-alert-neutral-icon-color),
+  action-color: var(--clr-alert-neutral-action-color),
+  action-active-color: var(--clr-alert-neutral-action-active-color),
+  close-icon-color: var(--clr-alert-neutral-close-icon-color),
+  close-icon-hover-color: var(--clr-alert-neutral-close-icon-hover-color),
+) !default;
+@function lookupNeutralAlertColor($property: color) {
+  @return map-get($clr-alert-neutral, $property);
+}
+
 @function lookupAppDangerAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-danger-font-color;
@@ -481,6 +509,23 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
   @return null;
 }
 
+// App Neutral type
+// Usage: ./_alert.clarity.scss
+$clr-app-alert-neutral: (
+  bg-color: var(--clr-app-alert-neutral-bg-color),
+  icon-color: var(--clr-app-alert-neutral-icon-color),
+  color: var(--clr-app-alert-neutral-font-color),
+  border-color: var(--clr-app-alert-neutral-border-color),
+  close-icon-color: var(--clr-app-alert-neutral-close-icon-color),
+  action-color: var(--clr-app-alert-neutral-action-color),
+  action-active-color: var(--clr-app-alert-neutral-action-active-color),
+  close-icon-hover-color: var(--clr-app-alert-neutral-close-icon-hover-color),
+) !default;
+
+@function lookupAppNeutralAlertColor($property: color) {
+  @return map-get($clr-app-alert-neutral, $property);
+}
+
 @function lookupLightweightInfoAlertColor($property: color) {
   @if $property == icon {
     @return $clr-lightweight-alert-info-icon-color;
@@ -527,4 +572,13 @@ $clr-lightweight-alert-success-font-color: var(--clr-lightweight-alert-success-f
   }
 
   @return null;
+}
+
+// Lightweight Neutral type
+$clr-lightweight-alert-neutral: (
+  icon: var(--clr-lightweight-alert-neutral-icon-color),
+  color: var(--clr-lightweight-alert-neutral-font-color),
+) !default;
+@function lookupLightweightNeutralAlertColor($property: color) {
+  @return map-get($clr-lightweight-alert-neutral, $property);
 }

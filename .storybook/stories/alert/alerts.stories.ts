@@ -53,7 +53,7 @@ const defaultParameters: Parameters = {
     clrCurrentAlertIndexChange: action('clrCurrentAlertIndexChange'),
     // story helpers
     content: 'Hello World!',
-    alertCount: 4,
+    alertCount: 5,
     createArray: n => new Array(n),
     alertTypes: ALERT_TYPES,
   },

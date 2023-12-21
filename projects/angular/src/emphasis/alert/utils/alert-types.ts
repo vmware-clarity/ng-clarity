@@ -5,4 +5,4 @@
  */
 
 // @TODO Make this an enum
-export const ALERT_TYPES: string[] = ['info', 'warning', 'danger', 'success', 'unknown', 'loading'];
+export const ALERT_TYPES: string[] = ['info', 'warning', 'danger', 'success', 'neutral', 'unknown', 'loading'];
