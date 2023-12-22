@@ -18,9 +18,9 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [clrAlertType]="type"
       [clrAlertSizeSmall]="isSmall"
       [clrAlertClosable]="isClosable"
+      [clrAlertLightweight]="isLightweight"
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
-      [clrAlertLightweight]="isLight"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
     >
       <div class="alert-item">
@@ -35,9 +35,9 @@ class TestComponent {
   type = '';
   isSmall = false;
   isClosable = false;
+  isLightweight = false;
   closed = false;
   isAppLevel = false;
-  isLight = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
 
   alertMsg = 'This is an alert!';
@@ -117,6 +117,35 @@ export default function (): void {
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
     });
 
+    it('loading and unknown types with regular and lightweight alerts', () => {
+      // default info class
+      expect(compiled.querySelector('.alert-info')).not.toBeNull();
+
+      // set lightweight loading
+      fixture.componentInstance.type = 'loading';
+      fixture.componentInstance.isLightweight = true;
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert-info')).toBeNull();
+      expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
+      expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
+
+      // set lightweight unknown
+      fixture.componentInstance.type = 'unknown';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
+      expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
+
+      // remove lightweight and leave only unknown -> should behave like regular info
+      fixture.componentInstance.isLightweight = false;
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert-neutral')).toBeNull();
+      expect(compiled.querySelector('.alert-lightweight')).toBeNull();
+      expect(compiled.querySelector('.alert-info')).not.toBeNull();
+    });
+
     it('Removes the alert from the DOM when closed', () => {
       const instance: ClrAlert = fixture.componentInstance.alertInstance;
 
@@ -157,11 +186,11 @@ export default function (): void {
     });
 
     it('supports a clrAlertLightweight option', () => {
-      fixture.componentInstance.isLight = false;
+      fixture.componentInstance.isLightweight = false;
       fixture.detectChanges();
       expect(compiled.querySelector('.alert-lightweight')).toBeNull();
 
-      fixture.componentInstance.isLight = true;
+      fixture.componentInstance.isLightweight = true;
       fixture.detectChanges();
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });
