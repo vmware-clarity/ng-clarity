@@ -14,6 +14,7 @@ import { FormsRadioDemo } from './controls/radio';
 import { FormsSelectDemo } from './controls/select';
 import { FormsTextDemo } from './controls/text';
 import { FormsTextareaDemo } from './controls/textarea';
+import { DynamicControlsDemo } from './dynamic-controls/dynamic-controls.demo';
 import { FormsDemo } from './forms.demo';
 import { FormsGenericContainerDemo } from './generic-container/generic-container';
 import { FormsInputGroupDemo } from './input-group/input-group';
@@ -67,6 +68,7 @@ const ROUTES: Routes = [
       { path: 'a11y', component: FormsA11yDemo },
       { path: 'generic-container', component: FormsGenericContainerDemo },
       { path: 'validation', component: FormsValidationDemo },
+      { path: 'dynamic-controls', component: DynamicControlsDemo },
     ],
   },
 ];

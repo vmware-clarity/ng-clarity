@@ -97,7 +97,7 @@
 }
 
 @include mixins.exports('alert.clarity') {
-  $alertTypes: info, warning, danger, success;
+  $alertTypes: info, warning, danger, success, neutral;
 
   .alert-icon {
     @include mixins.min-equilateral(tokens.$cds-global-space-9);
@@ -166,6 +166,10 @@
 
     &.alert-danger {
       @include generateAlertType(danger);
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(neutral);
     }
 
     .alert-item {
@@ -269,6 +273,26 @@
       @include generateLightweightAlertType(warning);
       @include generateLightweightAlertType(danger);
       @include generateLightweightAlertType(success);
+      @include generateLightweightAlertType(neutral);
+
+      .alert-spinner {
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        margin: 0;
+
+        &::before,
+        &::after {
+          @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        }
+      }
+
+      &.alert-sm .alert-spinner {
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+
+        &::before,
+        &::after {
+          @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        }
+      }
     }
   }
 
@@ -299,6 +323,14 @@
 
       .alert-item .btn {
         @extend .btn-danger-outline;
+      }
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(app-neutral);
+
+      .alert-item .btn {
+        @extend .btn-neutral-outline;
       }
     }
 

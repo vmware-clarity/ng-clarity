@@ -6,7 +6,7 @@
 
 import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormsModule, NgControl } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
@@ -15,7 +15,7 @@ import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.m
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './error';
 import { ClrControlHelper } from './helper';
-import { IfControlStateService } from './if-control-state/if-control-state.service';
+import { CONTROL_STATE, IfControlStateService } from './if-control-state/if-control-state.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
@@ -193,6 +193,45 @@ class WithControlAndSuccess {
   model = '';
 }
 
+@Component({
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <label> Label </label>
+        <textarea testControl3 [formControl]="form.get('control') || form.get('alternative')"></textarea>
+        <clr-control-success>Successful!</clr-control-success>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
+})
+class WithDynamicFormControl {
+  form = new FormGroup<any>({
+    alternative: new FormControl(),
+  });
+
+  addControl() {
+    this.form.addControl('control', new FormControl('TEST'));
+  }
+}
+
+@Component({
+  template: `
+    <form-wrapper>
+      <test-wrapper3>
+        <label> Label </label>
+        <textarea testControl3 [(ngModel)]="form['control']"></textarea>
+        <clr-control-success>Successful!</clr-control-success>
+      </test-wrapper3>
+    </form-wrapper>
+  `,
+})
+class WithDynamicNgControl {
+  form = {};
+  addControl() {
+    this.form['control'] = 'TEST';
+  }
+}
+
 interface TestContext {
   fixture: ComponentFixture<any>;
   wrapper: TestWrapper;
@@ -210,7 +249,7 @@ export default function (): void {
   describe('WrappedFormControl', () => {
     function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any) {
       TestBed.configureTestingModule({
-        imports: [WrappedFormControlTestModule, FormsModule],
+        imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
       });
       testContext.fixture = TestBed.createComponent(testComponent);
@@ -336,6 +375,30 @@ export default function (): void {
       it('implements ngOnDestroy', function (this: TestContext) {
         setupTest(this, WithControl, TestControl3);
         expect(this.control.ngOnDestroy).toBeDefined();
+      });
+    });
+
+    describe('with dynamic controls', function () {
+      it('with form-control directive', function (this: TestContext) {
+        setupTest(this, WithDynamicFormControl, TestControl3);
+        const cb = jasmine.createSpy('cb');
+        const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
+        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
+        this.fixture.componentInstance.addControl();
+        this.fixture.detectChanges();
+        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
+        sub.unsubscribe();
+      });
+
+      it('with ng-control directive', function (this: TestContext) {
+        setupTest(this, WithDynamicNgControl, TestControl3);
+        const cb = jasmine.createSpy('cb');
+        const sub = this.ifControlStateService.statusChanges.subscribe((control: CONTROL_STATE) => cb(control));
+        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.NONE);
+        this.fixture.componentInstance.addControl();
+        this.fixture.detectChanges();
+        expect(cb).toHaveBeenCalledWith(CONTROL_STATE.VALID);
+        sub.unsubscribe();
       });
     });
 
