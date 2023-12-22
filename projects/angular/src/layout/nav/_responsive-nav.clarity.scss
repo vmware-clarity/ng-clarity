@@ -12,8 +12,10 @@
 @use 'header.clarity';
 @use 'variables.responsive-nav' as responsive-nav-variables;
 @use '../../utils/variables/variables' as util-variables;
+@use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;
@@ -23,12 +25,7 @@
   right: $right;
   bottom: $bottom;
   left: $left;
-  @include mixins.css-var(
-    background,
-    clr-vertical-nav-bg-color,
-    responsive-nav-variables.$clr-nav-background-color,
-    variables.$clr-use-custom-properties
-  );
+  background: vertical-nav-variables.$clr-vertical-nav-bg-color;
   z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
   height: 100vh;
 }
@@ -53,7 +50,7 @@
 
     &::before,
     &::after {
-      left: variables.$clr_baselineRem_0_125;
+      left: tokens.$cds-global-space-3;
       transform-origin: 9%;
       transition: responsive-nav-variables.$clr-trigger-animation;
     }
@@ -69,7 +66,7 @@
 }
 
 @mixin clr-nav-close-trigger-animation() {
-  left: variables.$clr_baselineRem_0_125;
+  left: tokens.$cds-global-space-3;
   transform-origin: 9%;
   transition: responsive-nav-variables.$clr-trigger-animation;
 }
@@ -80,9 +77,9 @@
 
     &::before,
     &::after {
-      height: variables.$clr_baselineRem_2px;
-      width: variables.$clr_baselineRem_1;
-      left: -1 * variables.$clr_baselineRem_0_25;
+      height: tokens.$cds-global-space-2;
+      width: tokens.$cds-global-space-9;
+      left: calc(-1 * tokens.$cds-global-space-4);
       transform-origin: -3%;
       transition: responsive-nav-variables.$clr-trigger-animation;
     }
@@ -101,14 +98,13 @@
 
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
-    margin: 0.75rem;
+    margin: tokens.$cds-global-space-7;
+    --color: #{tokens.$cds-global-color-white};
 
     &:hover,
     &:focus {
-      --color: var(--clr-responsive-nav-trigger-bg-color);
+      --color: #{tokens.$cds-global-color-warm-gray-100};
     }
-
-    --color: var(--clr-color-neutral-500);
   }
 
   .header-hamburger-trigger,
@@ -118,26 +114,16 @@
 
   .header-hamburger-trigger,
   .clr-nav-close {
-    $trigger-span-psuedo-positioning: -1 * variables.$clr_baselineRem_7px;
+    $trigger-span-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      height: variables.$clr_baselineRem_2px;
-      width: variables.$clr_baselineRem_1;
-      @include mixins.css-var(
-        background,
-        clr-responsive-nav-trigger-bg-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-radius,
-        clr-responsive-nav-hamburger-border-radius,
-        variables.$clr-global-borderradius,
-        variables.$clr-use-custom-properties
-      );
+      height: tokens.$cds-global-space-2;
+      width: tokens.$cds-global-space-9;
+      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
     }
 
     & > span {
@@ -167,25 +153,16 @@
 
   .header-overflow-trigger,
   .clr-nav-close {
-    $overflow-trigger-psuedo-positioning: -1 * variables.$clr_baselineRem_8px;
+    $overflow-trigger-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
     & > span::before,
     & > span::after {
       display: inline-block;
-      @include mixins.equilateral(variables.$clr_baselineRem_4px);
-      @include mixins.css-var(
-        background,
-        clr-responsive-nav-trigger-bg-color,
-        variables.$clr-color-neutral-0,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        border-radius,
-        clr-responsive-nav-overflow-border-radius,
-        variables.$clr_baselineRem_4px,
-        variables.$clr-use-custom-properties
-      );
+      @include mixins.equilateral(tokens.$cds-global-space-3);
+      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
+      // TODO: Use border radius token?
+      border-radius: tokens.$cds-global-space-3;
     }
 
     & > span {
@@ -222,15 +199,16 @@
         border: none;
         background: none;
         cursor: pointer;
-        font-size: variables.$clr_baselineRem_1;
+        font-size: tokens.$cds-global-space-9;
         @include mixins.equilateral(header-variables.$clr-header-height);
-        padding: 0 0 variables.$clr_baselineRem_4px 0;
+        padding: 0 0 tokens.$cds-global-space-3 0;
         //4px to vertically align the trigger lines. display flex was not working on all browsers.
         text-align: center;
         white-space: nowrap;
 
         &:focus {
-          outline-offset: -1 * variables.$clr_baselineRem_5px; //So that the outline styles aren't hidden because of the browser
+          // So that the outline styles aren't hidden because of the browser
+          outline-offset: calc(-1 * tokens.$cds-global-space-4);
         }
 
         @include header.header-nav-appearance();
@@ -241,7 +219,7 @@
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include sliding-nav-positioning();
-        transform: translateX(-1 * responsive-nav-variables.$clr-sliding-panel-width);
+        transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width}));
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
       }
 
@@ -274,43 +252,21 @@
         // TODO: more specificity in classname is preferable to nesting...
         .nav {
           padding-left: 0;
-          @include mixins.css-var(gap, clr-nav-vertical-gap-size, 0, variables.$clr-use-custom-properties);
+          gap: tokens.$cds-global-space-5;
 
           .nav-item {
-            @include mixins.css-var(
-              height,
-              clr-subnav-sm-item-height,
-              variables.$clr_baselineRem_1_5,
-              variables.$clr-use-custom-properties
-            );
+            height: tokens.$cds-global-space-11;
             margin-right: 0;
           }
 
           .nav-link {
-            @include mixins.css-var(
-              padding,
-              clr-subnav-sm-link-padding,
-              0 variables.$clr_baselineRem_0_5 0 variables.$clr_baselineRem_1,
-              variables.$clr-use-custom-properties
-            );
+            padding: vertical-nav-variables.$clr-vertical-nav-item-padding;
 
             width: 100%;
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: 0;
-            @include mixins.css-var(
-              border-top-left-radius,
-              clr-subnav-sm-link-border-radius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              border-bottom-left-radius,
-              clr-subnav-sm-link-border-radius,
-              variables.$clr-global-borderradius,
-              variables.$clr-use-custom-properties
-            );
+            border-radius: tokens.$cds-alias-object-border-radius-100 0 0 tokens.$cds-alias-object-border-radius-100;
 
             @include vertical-nav.vertical-nav-link-colors();
 
@@ -348,7 +304,7 @@
 
       .header {
         .branding {
-          max-width: variables.$clr_baselineRem_10;
+          max-width: mixins.baselinePx(240);
           min-width: 0;
           overflow: hidden;
         }
@@ -383,18 +339,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            @include mixins.css-var(
-              background,
-              clr-responsive-nav-header-backdrop-bg-color,
-              variables.$clr-color-neutral-1000,
-              variables.$clr-use-custom-properties
-            );
-            @include mixins.css-var(
-              opacity,
-              clr-responsive-nav-header-backdrop-opacity,
-              0.85,
-              variables.$clr-use-custom-properties
-            );
+            background: tokens.$cds-alias-object-overlay-backdrop-background;
             cursor: pointer;
             z-index: responsive-nav-variables.$clr-sliding-panel-backdrop-z-index;
           }
@@ -410,18 +355,12 @@
               }
 
               .nav-text {
-                $nav-text-height: variables.$clr_baselineRem_1;
-
                 display: inline-block;
-                @include mixins.css-var(
-                  color,
-                  clr-sliding-panel-text-color,
-                  responsive-nav-variables.$clr-sliding-panel-text-color,
-                  variables.$clr-use-custom-properties
-                );
-                line-height: $nav-text-height;
-                padding: variables.$clr_baselineRem_0_25 0 variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_1;
+                padding: tokens.$cds-global-space-4 0 tokens.$cds-global-space-4 tokens.$cds-global-space-9;
                 white-space: normal;
+                // color, line-height and font-weight should be removed or refactored in separate JIRA
+                color: responsive-nav-variables.$clr-sliding-panel-text-color;
+                line-height: tokens.$cds-global-space-9;
                 font-weight: normal;
               }
 
@@ -455,7 +394,7 @@
             width: responsive-nav-variables.$clr-sliding-panel-width;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
-            padding-left: variables.$clr_baselineRem_1;
+            padding-left: tokens.$cds-global-space-9;
 
             & > .nav-link {
               overflow: hidden;
@@ -472,22 +411,12 @@
             cds-icon[shape='vm-bug'],
             clr-icon[shape='vm-bug'],
             .clr-vmw-logo {
-              @include mixins.css-var(
-                background-color,
-                clr-header-bg-color,
-                header-variables.$clr-header-bgColor,
-                variables.$clr-use-custom-properties
-              );
-              border-radius: variables.$clr-global-borderradius;
+              background-color: header-variables.$clr-header-bg-color;
+              border-radius: tokens.$cds-alias-object-border-radius-100;
             }
 
             .title {
-              @include mixins.css-var(
-                color,
-                clr-vertical-nav-item-color,
-                responsive-nav-variables.$clr-sliding-panel-text-color,
-                variables.$clr-use-custom-properties
-              );
+              color: vertical-nav-variables.$clr-vertical-nav-item-color;
               text-overflow: ellipsis;
               overflow: hidden;
             }
@@ -503,7 +432,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: header-variables.$clr-header-height + variables.$clr_baselineRem_1;
+          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -521,11 +450,11 @@
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
         .sub-nav.clr-nav-level-2 {
-          padding-top: variables.$clr_baselineRem_1;
+          padding-top: tokens.$cds-global-space-9;
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * responsive-nav-variables.$clr-trigger-position));
+          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position})));
           @include overflow-menu-trigger-animation();
         }
       }
@@ -557,7 +486,7 @@
     .main-container {
       .header {
         .branding {
-          max-width: variables.$clr_baselineRem_6;
+          max-width: mixins.baselinePx(144);
           min-width: 0;
           overflow: hidden;
         }
@@ -567,7 +496,7 @@
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
-        transform: translateX(-1 * responsive-nav-variables.$clr-sliding-panel-width-sm);
+        transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width-sm}));
       }
 
       .header-nav.clr-nav-level-2,
@@ -611,7 +540,7 @@
         }
 
         .clr-nav-close {
-          @include menu-trigger(0, auto, (-1 * responsive-nav-variables.$clr-trigger-position-sm));
+          @include menu-trigger(0, auto, (calc(-1 * #{responsive-nav-variables.$clr-trigger-position-sm})));
         }
       }
     }

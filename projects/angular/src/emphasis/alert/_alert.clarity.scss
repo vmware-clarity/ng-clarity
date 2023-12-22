@@ -274,6 +274,25 @@
       @include generateLightweightAlertType(danger);
       @include generateLightweightAlertType(success);
       @include generateLightweightAlertType(neutral);
+
+      .alert-spinner {
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        margin: 0;
+
+        &::before,
+        &::after {
+          @include mixins.min-equilateral(tokens.$cds-global-space-9);
+        }
+      }
+
+      &.alert-sm .alert-spinner {
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+
+        &::before,
+        &::after {
+          @include mixins.min-equilateral(tokens.$cds-global-space-7);
+        }
+      }
     }
   }
 

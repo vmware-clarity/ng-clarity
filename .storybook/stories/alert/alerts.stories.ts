@@ -60,7 +60,7 @@ const defaultParameters: Parameters = {
 };
 
 const variants: Parameters[] = [
-  ...ALERT_TYPES.map((_, index) => ({
+  ...ALERT_TYPES.slice(0, defaultParameters.args.alertCount).map((_, index) => ({
     clrCurrentAlertIndex: index,
   })),
 ];

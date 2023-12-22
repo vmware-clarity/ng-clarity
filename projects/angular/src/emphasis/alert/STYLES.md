@@ -137,3 +137,4 @@
 | alerts-page-down     | Page down wrapper                                                          |
 | alerts-page-up       | Page up wrapper                                                            |
 | alerts-pager-text    | Page identifier in pager                                                   |
+| alerts-spinner       | Using spinner instead of an icon                                           |

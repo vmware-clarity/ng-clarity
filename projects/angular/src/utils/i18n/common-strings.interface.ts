@@ -74,6 +74,10 @@ export interface ClrCommonStrings {
    */
   neutral: string;
   /**
+   * Alert levels: unknown
+   */
+  unknown: string;
+  /**
    * Datagrid: row actions
    */
   rowActions: string;

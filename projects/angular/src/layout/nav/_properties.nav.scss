@@ -16,8 +16,5 @@
     --clr-link-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
     --clr-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
     --clr-link-visited-color-hover: #{tokens.$cds-alias-typography-link-color-visited-hover};
-
-    // @deprecated in v17 to be deleted in v18. Used in legacy CLR theme in tree-view.
-    --clr-custom-links-hover-color: #{tokens.$cds-global-color-gray-200};
   }
 }

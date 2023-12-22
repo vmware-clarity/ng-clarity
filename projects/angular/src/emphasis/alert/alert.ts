@@ -28,7 +28,6 @@ import { MultiAlertService } from './providers/multi-alert.service';
   templateUrl: './alert.html',
 })
 export class ClrAlert implements OnInit, OnDestroy {
-  @Input('clrAlertLightweight') isLight = false;
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -40,6 +39,8 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
+  private _isLightweight = false;
+  private _origAlertType: string;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -50,12 +51,24 @@ export class ClrAlert implements OnInit, OnDestroy {
     private hostElement: ElementRef
   ) {}
 
+  @Input('clrAlertLightweight')
+  get isLightweight(): boolean {
+    return this._isLightweight;
+  }
+  set isLightweight(val: boolean) {
+    this._isLightweight = val;
+
+    this.configAlertType(this._origAlertType);
+  }
+
   @Input('clrAlertType')
   get alertType(): string {
     return this.iconService.alertType;
   }
   set alertType(val: string) {
-    this.iconService.alertType = val;
+    this._origAlertType = val;
+
+    this.configAlertType(val);
   }
 
   @Input('clrAlertIcon')
@@ -105,6 +118,16 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  configAlertType(val: string) {
+    let innerVal = val;
+
+    if (!this._isLightweight && (innerVal === 'loading' || innerVal === 'unknown')) {
+      innerVal = 'info';
+    }
+
+    this.iconService.alertType = innerVal;
   }
 
   open(): void {
