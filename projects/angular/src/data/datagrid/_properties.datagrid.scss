@@ -41,7 +41,7 @@
 
     --clr-datagrid-placeholder-color: #{tokens.$cds-alias-typography-color-200};
 
-    --clr-datagrid-loading-background: #{tokens.$cds-alias-object-opacity-100};
+    --clr-datagrid-loading-background: #{tokens.$cds-alias-object-overlay-backdrop-background};
 
     --clr-datagrid-column-toggle-gap: #{tokens.$cds-global-space-3};
     --clr-datagrid-column-toggle-padding: 0 #{tokens.$cds-global-space-5};
@@ -83,9 +83,5 @@
     --clr-datagrid-action-arrow-size: #{tokens.$cds-global-space-4};
     --clr-datagrid-compact-outline-offset: calc(-1 * tokens.$cds-global-space-3);
     --clr-datagrid-horizontal-padding: mixins.baselinePx(9);
-  }
-
-  :root [cds-theme~='dark'] {
-    --clr-datagrid-loading-background: #{tokens.$cds-alias-object-opacity-300};
   }
 }
