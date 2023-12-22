@@ -213,7 +213,7 @@ $clr-global-borderwidth: $clr_baselineRem_1px !default;
 $clr-outline-offset: -1 * $clr_baselineRem_5px;
 
 // App bg color
-$clr-global-app-background: variables.$clr-color-neutral-50 !default;
+$clr-global-app-background: var(--clr-global-app-background) !default;
 
 // App selection color
 $clr-global-selection-color: hsl(201, 29%, 88%) !default;
