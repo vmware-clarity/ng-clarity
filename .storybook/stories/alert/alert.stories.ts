@@ -34,11 +34,14 @@ const defaultStory: Story = args => ({
 });
 
 const labeledAlertTypes = ALERT_TYPES.reduce((a, val) => {
-  let innerVal = val;
-  if (innerVal === 'loading' || innerVal === 'unknown') {
-    innerVal += ' - only works with "clrAlertLightweight" set to TRUE';
+  let label = val;
+  if (val === 'loading' || val === 'unknown') {
+    label += ' - only works with "clrAlertLightweight" set to TRUE';
   }
-  return { ...a, [val]: innerVal };
+
+  a[val] = label;
+
+  return a;
 }, {});
 
 const defaultParameters: Parameters = {
