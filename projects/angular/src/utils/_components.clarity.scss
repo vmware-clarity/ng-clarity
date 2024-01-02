@@ -139,8 +139,11 @@
 // Signposts
 @forward '../popover/signpost/signposts.clarity';
 
-// Stepper
+// Accordion
 @forward '../accordion/accordion.clarity';
+
+// Stepper
+@forward '../accordion/stepper/stepper.clarity';
 
 // Timeline
 @forward '../timeline/timeline.clarity';
