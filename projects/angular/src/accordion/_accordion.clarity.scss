@@ -35,31 +35,31 @@
 
         &:hover {
           color: accordion-variables.$clr-accordion-text-color-hover;
-          background-color: accordion-variables.$clr-accordion-header-hover-background-color;
+          background-color: accordion-variables.$clr-accordion-header-hover-background-color !important;
         }
 
         &:active {
           color: accordion-variables.$clr-accordion-text-color-active;
-          background-color: accordion-variables.$clr-accordion-header-active-background-color;
+          background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
         }
 
         // TODO: Double check
         .clr-accordion-panel-disabled > div > & {
-          background-color: accordion-variables.$clr-accordion-header-background-color;
+          background-color: accordion-variables.$clr-accordion-header-background-color !important;
 
           &:hover,
           &:active {
-            background-color: accordion-variables.$clr-accordion-header-background-color;
+            background-color: accordion-variables.$clr-accordion-header-background-color !important;
           }
         }
 
         // TODO: Double check
         .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
-          background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+          background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
 
           &:hover,
           &:active {
-            background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+            background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
           }
         }
 
@@ -108,7 +108,7 @@
           }
 
           .clr-accordion-status {
-            width: tokens.$cds-global-space-11;
+            width: tokens.$cds-global-space-7;
             display: inline-block;
             vertical-align: top;
 
@@ -178,11 +178,11 @@
       border-bottom-right-radius: 0 !important;
       border-bottom: 0 !important;
 
-      background: accordion-variables.$clr-accordion-active-background-color;
+      background: accordion-variables.$clr-accordion-active-background-color !important;
 
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
-        background-color: accordion-variables.$clr-accordion-header-active-background-color;
+        background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
       }
 
       .clr-accordion-angle {
