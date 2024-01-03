@@ -103,6 +103,13 @@ Small.args = {
   clrAlertSizeSmall: true,
 };
 
+export const SmallLightweight: Story = Alert.bind({});
+SmallLightweight.args = {
+  ...Alert.args,
+  clrAlertSizeSmall: true,
+  clrAlertLightweight: true,
+};
+
 export const Closable: Story = Alert.bind({});
 Closable.args = {
   ...Alert.args,
@@ -112,7 +119,7 @@ Closable.args = {
 export const Lightweight: Story = Alert.bind({});
 Lightweight.args = {
   ...Alert.args,
-  clrAlertLightweight: { defaultValue: true, control: false },
+  clrAlertLightweight: true,
   clrCloseButtonAriaLabel: { table: { disable: true } },
   clrAlertClosable: { value: false, table: { disable: true } },
 };
