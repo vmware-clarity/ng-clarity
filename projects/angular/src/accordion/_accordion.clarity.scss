@@ -17,6 +17,20 @@
     margin-bottom: tokens.$cds-global-space-9;
 
     .clr-accordion-panel {
+      // TODO: Double check
+      &.clr-accordion-panel-disabled {
+        //background-color: accordion-variables.$clr-accordion-header-background-color !important;
+        background-color: transparent !important;
+
+        .clr-accordion-panel-open .clr-accordion-header {
+          background-color: transparent !important;
+        }
+        &:hover,
+        &:active {
+          background-color: transparent !important;
+          //background-color: accordion-variables.$clr-accordion-header-background-color !important;
+        }
+      }
       .clr-accordion-angle {
         transition: all 200ms ease-in-out !important;
         transform: rotate(90deg);
@@ -41,16 +55,6 @@
         &:active {
           color: accordion-variables.$clr-accordion-text-color-active;
           background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
-        }
-
-        // TODO: Double check
-        .clr-accordion-panel-disabled > div > & {
-          background-color: accordion-variables.$clr-accordion-header-background-color !important;
-
-          &:hover,
-          &:active {
-            background-color: accordion-variables.$clr-accordion-header-background-color !important;
-          }
         }
 
         // TODO: Double check
@@ -179,7 +183,7 @@
       border-bottom-right-radius: 0 !important;
       border-bottom: 0 !important;
 
-      //background: accordion-variables.$clr-accordion-active-background-color !important;
+      background: accordion-variables.$clr-accordion-active-background-color !important;
 
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
