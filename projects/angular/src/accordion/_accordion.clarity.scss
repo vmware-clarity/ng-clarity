@@ -23,7 +23,7 @@
         background-color: transparent !important;
 
         .clr-accordion-panel-open .clr-accordion-header {
-          background-color: transparent !important;
+          background-color: accordion-variables.$clr-accordion-header-background-color !important;
         }
         &:hover,
         &:active {
