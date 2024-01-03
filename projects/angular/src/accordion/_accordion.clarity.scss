@@ -22,7 +22,8 @@
         //background-color: accordion-variables.$clr-accordion-header-background-color !important;
         background-color: transparent !important;
 
-        .clr-accordion-panel-open .clr-accordion-header {
+        // We need the immediate child selector modifier for nested accordions
+        .clr-accordion-panel-open > .clr-accordion-header {
           background-color: accordion-variables.$clr-accordion-header-background-color !important;
         }
         &:hover,
@@ -175,7 +176,7 @@
 
   // panel states
   .clr-accordion-panel-open {
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
 
       // override the border bottom style when last panel is open
