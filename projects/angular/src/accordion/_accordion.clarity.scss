@@ -103,7 +103,8 @@
 
             .clr-accordion-status,
             .clr-accordion-title {
-              color: accordion-variables.$clr-accordion-panel-disabled-color;
+              color: accordion-variables.$clr-accordion-panel-disabled-color !important;
+              //color: accordion-variables.$clr-accordion-panel-disabled-color;
             }
           }
 
@@ -178,7 +179,7 @@
       border-bottom-right-radius: 0 !important;
       border-bottom: 0 !important;
 
-      background: accordion-variables.$clr-accordion-active-background-color !important;
+      //background: accordion-variables.$clr-accordion-active-background-color !important;
 
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
