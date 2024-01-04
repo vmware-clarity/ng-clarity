@@ -5,29 +5,18 @@
  */
 
 import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
-      <clr-accordion-panel
-        *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="!!openIndices[i]"
-      >
-        <clr-accordion-title>{{title}} {{i + 1}}</clr-accordion-title>
-        <clr-accordion-content>{{content}} {{i + 1}}</clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Accordion/Accordion',
   component: ClrAccordion,
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrAccordionModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrAccordionMultiPanel: { defaultValue: false, control: { type: 'boolean' } },
@@ -46,32 +35,35 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrAccordionMultiPanel: false,
-    panelCount: 4,
-    openIndices: [],
-  },
-  {
-    clrAccordionMultiPanel: false,
-    panelCount: 4,
-    openIndices: [true],
-  },
-  {
-    clrAccordionMultiPanel: false,
-    panelCount: 4,
-    openIndices: [false, false, false, true],
-  },
-  {
-    clrAccordionMultiPanel: true,
-    panelCount: 4,
-    openIndices: [false, true, true, false],
-  },
-  {
-    clrAccordionMultiPanel: true,
-    panelCount: 4,
-    openIndices: [true, true, true, true],
-  },
-];
+const template = `
+    <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
+      <clr-accordion-panel
+        *ngFor="let _ of createArray(panelCount); let i = index"
+        [clrAccordionPanelOpen]="!!openIndices[i]"
+      >
+        <clr-accordion-title>{{title}} {{i + 1}}</clr-accordion-title>
+        <clr-accordion-content>{{content}} {{i + 1}}</clr-accordion-content>
+      </clr-accordion-panel>
+    </clr-accordion>
+  `;
 
-setupStorybook(ClrAccordionModule, defaultStory, defaultParameters, variants);
+export const Initial: Story = args => ({
+  template,
+  props: args,
+});
+
+export const SinglePanelOpened: Story = Initial.bind({});
+SinglePanelOpened.args = {
+  ...Initial.args,
+  openIndices: [true, false, false, false],
+};
+
+export const MultiplePanelsOpened: Story = Initial.bind({});
+MultiplePanelsOpened.argTypes = {
+  ...Initial.argTypes,
+  clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+};
+MultiplePanelsOpened.args = {
+  ...Initial.args,
+  openIndices: [true, true, false, false],
+};
