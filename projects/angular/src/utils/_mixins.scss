@@ -10,8 +10,6 @@
 @use 'variables/variables';
 @use '@cds/core/tokens/tokens.scss';
 
-// NOTE: file added to prettierignore because it was added unwanted spaces in the css-var() mixin
-
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once
 $imported-modules: () !default;
@@ -90,30 +88,9 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   }
 }
 
-@mixin css-var($style: null, $var: null, $fallback: '', $do-custom-prop: true) {
-  @if $style != null and $var != null {
-    /* #{$var} */
-    #{$style}: $fallback;
-    @if $do-custom-prop == true {
-      #{$style}: var(css-variablize-string($var), $fallback);
-    }
-  }
-}
-
 @mixin equilateral($size: 1.2rem) {
   height: $size;
   width: $size;
-}
-
-@mixin equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
-  @include css-var(height, $var, $fallback, $do-custom-prop);
-  @include css-var(width, $var, $fallback, $do-custom-prop);
-}
-
-@mixin min-equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
-  @include equilateral-var($var, $fallback, $do-custom-prop);
-  @include css-var(min-height, $var, $fallback, $do-custom-prop);
-  @include css-var(min-width, $var, $fallback, $do-custom-prop);
 }
 
 @mixin min-equilateral($size: 1.2rem) {
@@ -126,12 +103,6 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   @include equilateral($size);
   max-height: $size;
   max-width: $size;
-}
-
-@function css-variablize-string($str: null) {
-  @if $str {
-    @return #{'--' + $str};
-  }
 }
 
 @mixin clr-appearance-normal() {

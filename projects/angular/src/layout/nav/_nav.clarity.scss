@@ -18,7 +18,7 @@
     margin: 0;
     width: 100%;
     white-space: nowrap;
-    box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 tabs-variables.$clr-nav-box-shadow-color inset;
+    box-shadow: subnav-variables.$clr-nav-shadow;
     gap: tokens.$cds-global-space-9;
 
     .nav-item {
@@ -26,7 +26,7 @@
 
       &.active > .nav-link {
         color: tabs-variables.$clr-nav-link-active-color;
-        box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 tabs-variables.$clr-nav-box-shadow-color inset;
+        box-shadow: subnav-variables.$clr-nav-shadow;
       }
     }
 
@@ -34,14 +34,14 @@
       position: relative;
       color: tabs-variables.$clr-nav-link-color;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
-      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-3};
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-3;
       display: inline-block;
 
       //Clarity Buttons as .nav-links in .nav
       &.btn {
         text-transform: none;
-        margin: 0;
-        margin-bottom: calc(-1 * #{tokens.$cds-global-space-1}); //-1px to account for the border of the button
+        //-1px to account for the border of the button
+        margin: 0 0 calc(-1 * #{tokens.$cds-global-space-1});
         border-radius: 0;
       }
 

@@ -4,34 +4,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/mixins';
-@use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('code.clarity') {
   //Styles for Clarity Code Snippets
   pre {
-    margin: variables.$clr_baselineRem_0_5 0;
+    margin: tokens.$cds-global-space-6 0;
   }
 
   pre {
-    @include mixins.css-var(
-      border-color,
-      clr-color-neutral-400,
-      variables.$clr-color-neutral-400,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      border-width,
-      clr-global-borderwidth,
-      variables.$clr-global-borderwidth,
-      variables.$clr-use-custom-properties
-    );
-    border-style: solid;
-    @include mixins.css-var(
-      border-radius,
-      clr-global-borderradius,
-      variables.$clr-global-borderradius,
-      variables.$clr-use-custom-properties
-    );
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    border-radius: tokens.$cds-alias-object-border-radius-100;
   }
 
   pre code {
@@ -42,12 +25,7 @@
   // @deprecated Bootstrap dependencies are deprecated since 1.0. Review and edit before 2.0 if needed.
   code {
     &.clr-code {
-      @include mixins.css-var(
-        color,
-        clr-color-danger-800,
-        variables.$clr-color-danger-800,
-        variables.$clr-use-custom-properties
-      );
+      color: tokens.$cds-alias-utility-red;
       padding: 0;
       background: transparent;
     }
