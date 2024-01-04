@@ -35,7 +35,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
    * Whether the accordion supports multiple panels opened at the same time.
    */
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
-  @ContentChildren(ClrAccordionPanel, { descendants: true }) panels: QueryList<ClrAccordionPanel>;
+  @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
   subscriptions: Subscription[] = [];
 
   constructor(private accordionService: AccordionService) {}
