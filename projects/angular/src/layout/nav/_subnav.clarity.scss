@@ -26,12 +26,7 @@
     }
     justify-content: space-between; //nav to the first and aside to the very right
     align-items: center;
-    @include mixins.css-var(
-      background-color,
-      clr-subnav-bg-color,
-      subnav-variables.$clr-subnav-bgColor,
-      variables.$clr-use-custom-properties
-    );
+    background-color: subnav-variables.$clr-subnav-bgColor;
     height: subnav-variables.$clr-subnav-height;
 
     .nav {
