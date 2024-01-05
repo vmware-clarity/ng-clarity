@@ -53,14 +53,14 @@ const defaultParameters: Parameters = {
     clrCurrentAlertIndexChange: action('clrCurrentAlertIndexChange'),
     // story helpers
     content: 'Hello World!',
-    alertCount: 4,
+    alertCount: 5,
     createArray: n => new Array(n),
     alertTypes: ALERT_TYPES,
   },
 };
 
 const variants: Parameters[] = [
-  ...ALERT_TYPES.map((_, index) => ({
+  ...ALERT_TYPES.slice(0, defaultParameters.args.alertCount).map((_, index) => ({
     clrCurrentAlertIndex: index,
   })),
 ];

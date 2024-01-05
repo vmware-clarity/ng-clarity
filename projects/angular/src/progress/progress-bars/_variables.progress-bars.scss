@@ -8,15 +8,8 @@
 // @deprecated in v17 in favor of $clr-progress-default-color
 $clr-progress-defaultBarColor: var(--clr-progress-default-color) !default;
 $clr-progress-default-color: $clr-progress-defaultBarColor !default;
-
-// @deprecated in 3.0
-//  warning, success, and danger distinctions for progress bars are deprecated in 3.0
 $clr-progress-success-color: var(--clr-progress-alt-color-1) !default;
-
-// @deprecated in 3.0
 $clr-progress-danger-color: var(--clr-progress-alt-color-2) !default;
-
-// @deprecated in 3.0
 $clr-progress-warning-color: var(--clr-progress-alt-color-3) !default;
 
 // @deprecated in v17 in favor of $clr-progress-bg-color

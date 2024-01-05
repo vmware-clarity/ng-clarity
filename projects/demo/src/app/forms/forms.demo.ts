@@ -46,6 +46,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./a11y']">a11y</a></li>
       <li><a [routerLink]="['./generic-container']">Generic Container</a></li>
       <li><a [routerLink]="['./validation']">Validation</a></li>
+      <li><a [routerLink]="['./dynamic-controls']">Dynamic Controls Reproduction</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,

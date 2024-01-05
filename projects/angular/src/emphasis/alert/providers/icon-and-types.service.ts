@@ -64,6 +64,21 @@ export class AlertIconAndTypesService {
         returnObj.cssClass = 'alert-success';
         returnObj.title = this.commonStrings.keys.success;
         break;
+      case 'neutral':
+        returnObj.shape = 'note-edit';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.neutral;
+        break;
+      case 'unknown':
+        returnObj.shape = 'help';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.unknown;
+        break;
+      case 'loading':
+        returnObj.shape = 'loading';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.unknown;
+        break;
       default:
         returnObj.shape = this.defaultIconShape;
         returnObj.cssClass = 'alert-info';

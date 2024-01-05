@@ -4,23 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../../utils/mixins';
-@use '../../utils/variables/variables.global';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('responsive-nav.properties') {
-  @if variables.$clr-use-custom-properties == true {
-    :root {
-      // Usage: ../layout/nav/_responsive-nav.clarity.scss
-      --clr-sliding-panel-text-color: var(--clr-color-neutral-700);
-      --clr-nav-background-color: var(--clr-color-neutral-200);
-      --clr-responsive-nav-hover-bg: var(--clr-color-neutral-0);
+  :root [cds-theme] {
+    --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // CDS token
+    --clr-nav-background-color: #{tokens.$cds-alias-object-container-background-dark};
+    --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // CDS token
 
-      --clr-responsive-nav-trigger-bg-color: var(--clr-color-neutral-0);
-      --clr-responsive-nav-trigger-border-radius: var(--clr-global-borderradius);
-      --clr-responsive-nav-hamburger-border-radius: var(--clr-responsive-nav-trigger-border-radius);
-      --clr-responsive-nav-overflow-border-radius: #{variables.$clr_baselineRem_4px};
-
-      --clr-responsive-nav-header-backdrop-bg-color: var(--clr-color-neutral-1000);
-      --clr-responsive-nav-header-backdrop-opacity: 0.85;
-    }
+    --clr-responsive-nav-trigger-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-responsive-nav-overflow-border-radius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-responsive-nav-hamburger-border-radius: #{tokens.$cds-alias-object-border-radius-100};
   }
 }

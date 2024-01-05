@@ -90,5 +90,26 @@
         </p>
       </div>
     </div>
+
+    <h3>Unknown and loading</h3>
+    <div class="content-container">
+      <div class="content-area">
+        <clr-alert clrAlertType="unknown" [clrAlertLightweight]="true">
+          <clr-alert-item>
+            <span class="alert-text">Unknown Lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert clrAlertType="loading" [clrAlertLightweight]="true">
+          <clr-alert-item>
+            <span class="alert-text">Loading Lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert clrAlertType="loading" [clrAlertLightweight]="false">
+          <clr-alert-item>
+            <span class="alert-text">Loading NOT lightweight alert</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
   </div>
 </div>

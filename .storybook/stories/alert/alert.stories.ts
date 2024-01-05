@@ -13,7 +13,7 @@ import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
-  template: ` 
+  template: `
     <clr-alert
       [clrAlertAppLevel]="clrAlertAppLevel"
       [clrAlertClosable]="clrAlertClosable"
@@ -33,14 +33,33 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
+const labeledAlertTypes = ALERT_TYPES.reduce((a, val) => {
+  let label = val;
+  if (val === 'loading' || val === 'unknown') {
+    label += ' - only works with "clrAlertLightweight" set to TRUE';
+  }
+
+  a[val] = label;
+
+  return a;
+}, {});
+
 const defaultParameters: Parameters = {
   title: 'Alert/Alert',
   component: ClrAlert,
   argTypes: {
     // inputs
     clrAlertClosed: { defaultValue: false },
+    clrAlertLightweight: { defaultValue: false },
     clrAlertIcon: { defaultValue: '' },
-    clrAlertType: { defaultValue: 'info', control: { type: 'radio', options: ALERT_TYPES } },
+    clrAlertType: {
+      defaultValue: 'info',
+      control: {
+        type: 'radio',
+        options: ALERT_TYPES,
+        labels: labeledAlertTypes,
+      },
+    },
     clrCloseButtonAriaLabel: { defaultValue: commonStringsDefault.alertCloseButtonAriaLabel },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
@@ -69,6 +88,10 @@ function generateVariants() {
     for (const clrAlertAppLevel of [true, false]) {
       for (const clrAlertSizeSmall of [false, true]) {
         for (const clrAlertClosable of [true, false]) {
+          if (clrAlertType === 'loading' || clrAlertType === 'unknown') {
+            continue;
+          }
+
           variants.push({
             clrAlertType,
             clrAlertAppLevel,

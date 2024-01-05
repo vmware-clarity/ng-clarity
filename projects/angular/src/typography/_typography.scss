@@ -4,259 +4,132 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'code';
 @use 'lists';
+@use 'code';
 @use '../utils/mixins';
-@use '../utils/variables/variables';
+@use '../utils/variables/variables.typography';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('typography.clarity') {
   //Headings
   h1:not([cds-text]) {
-    @include mixins.css-var(color, clr-h1-color, variables.$clr-h1-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h1-font-weight,
-      variables.$clr-h1-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h1-font-family,
-      variables.$clr-h1-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h1-font-size,
-      variables.$clr-h1-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h1-line-height,
-      variables.$clr-h1-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h1-letter-spacing,
-      variables.$clr-h1-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'DISPLAY-40',
+      (
+        color: variables.$clr-h1-color,
+        font-family: variables.$clr-h1-font-family,
+        font-weight: variables.$clr-h1-font-weight,
+        font-size: variables.$clr-h1-font-size,
+        line-height: variables.$clr-h1-line-height,
+        letter-spacing: variables.$clr-h1-letter-spacing,
+      )
+    );
   }
 
   h2:not([cds-text]) {
-    @include mixins.css-var(color, clr-h2-color, variables.$clr-h2-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h2-font-weight,
-      variables.$clr-h2-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h2-font-family,
-      variables.$clr-h2-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h2-font-size,
-      variables.$clr-h2-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h2-line-height,
-      variables.$clr-h2-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h2-letter-spacing,
-      variables.$clr-h2-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'HEADLINE-32',
+      (
+        color: variables.$clr-h2-color,
+        font-family: variables.$clr-h2-font-family,
+        font-weight: variables.$clr-h2-font-weight,
+        font-size: variables.$clr-h2-font-size,
+        line-height: variables.$clr-h2-line-height,
+        letter-spacing: variables.$clr-h2-letter-spacing,
+      )
+    );
   }
 
   h3:not([cds-text]) {
-    @include mixins.css-var(color, clr-h3-color, variables.$clr-h3-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h3-font-weight,
-      variables.$clr-h3-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h3-font-family,
-      variables.$clr-h3-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h3-font-size,
-      variables.$clr-h3-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h3-line-height,
-      variables.$clr-h3-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h3-letter-spacing,
-      variables.$clr-h3-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'TITLE-24-EXP',
+      (
+        color: variables.$clr-h3-color,
+        font-family: variables.$clr-h3-font-family,
+        font-weight: variables.$clr-h3-font-weight,
+        font-size: variables.$clr-h3-font-size,
+        line-height: variables.$clr-h3-line-height,
+        letter-spacing: variables.$clr-h3-letter-spacing,
+      )
+    );
   }
 
   h4:not([cds-text]) {
-    @include mixins.css-var(color, clr-h4-color, variables.$clr-h4-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h4-font-weight,
-      variables.$clr-h4-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h4-font-family,
-      variables.$clr-h4-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h4-font-size,
-      variables.$clr-h4-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h4-line-height,
-      variables.$clr-h4-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h4-letter-spacing,
-      variables.$clr-h4-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'SECTION-20-STD',
+      (
+        color: variables.$clr-h4-color,
+        font-family: variables.$clr-h4-font-family,
+        font-weight: variables.$clr-h4-font-weight,
+        font-size: variables.$clr-h4-font-size,
+        line-height: variables.$clr-h4-line-height,
+        letter-spacing: variables.$clr-h4-letter-spacing,
+      )
+    );
   }
 
   h5:not([cds-text]) {
-    @include mixins.css-var(color, clr-h5-color, variables.$clr-h5-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h5-font-weight,
-      variables.$clr-h5-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h5-font-family,
-      variables.$clr-h5-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h5-font-size,
-      variables.$clr-h5-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h5-line-height,
-      variables.$clr-h5-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h5-letter-spacing,
-      variables.$clr-h5-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'SUBSECTION-16-EXP',
+      (
+        color: variables.$clr-h5-color,
+        font-family: variables.$clr-h5-font-family,
+        font-weight: variables.$clr-h5-font-weight,
+        font-size: variables.$clr-h5-font-size,
+        line-height: variables.$clr-h5-line-height,
+        letter-spacing: variables.$clr-h5-letter-spacing,
+      )
+    );
   }
 
   h6:not([cds-text]) {
-    @include mixins.css-var(color, clr-h6-color, variables.$clr-h6-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-h6-font-weight,
-      variables.$clr-h6-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-family,
-      clr-h6-font-family,
-      variables.$clr-h6-font-family,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-h6-font-size,
-      variables.$clr-h6-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-h6-line-height,
-      variables.$clr-h6-line-height,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-h6-letter-spacing,
-      variables.$clr-h6-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
     margin-top: variables.$clr-global-typography-margin-top;
     margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-header-token(
+      'MESSAGE-16-EXP',
+      (
+        color: variables.$clr-h6-color,
+        font-family: variables.$clr-h6-font-family,
+        font-weight: variables.$clr-h6-font-weight,
+        font-size: variables.$clr-h6-font-size,
+        line-height: variables.$clr-h6-line-height,
+        letter-spacing: variables.$clr-h6-letter-spacing,
+      )
+    );
   }
 
   //Body.
   body:not([cds-text]) {
-    @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
-    @include mixins.css-var(
-      font-weight,
-      clr-p1-font-weight,
-      variables.$clr-p1-font-weight,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-p1-font-size,
-      variables.$clr-p1-font-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      letter-spacing,
-      clr-p1-letter-spacing,
-      variables.$clr-p1-letter-spacing,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      line-height,
-      clr-p1-line-height,
-      variables.$clr-p1-line-height,
-      variables.$clr-use-custom-properties
-    );
-    margin-bottom: variables.$clr-global-typography-margin-bottom;
-    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
     margin-top: 0 !important;
+    margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+    @include mixins.generate-typography-body-token(
+      'BODY-14-RG-STD',
+      (
+        color: variables.$clr-p1-color,
+        font-family: variables.$clr-body-font,
+        font-weight: variables.$clr-p1-font-weight,
+        font-size: variables.$clr-p1-font-size,
+        line-height: variables.$clr-p1-line-height,
+        letter-spacing: variables.$clr-p1-letter-spacing,
+      )
+    );
   }
 
   //Paragraph
@@ -266,291 +139,160 @@
 
   body {
     p:not([cds-text]) {
-      @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p1-font-weight,
-        variables.$clr-p1-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p1-font-size,
-        variables.$clr-p1-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p1-letter-spacing,
-        variables.$clr-p1-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p1-line-height,
-        variables.$clr-p1-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'BODY-14-RG-STD',
+        (
+          color: variables.$clr-p1-color,
+          font-weight: variables.$clr-p1-font-weight,
+          font-size: variables.$clr-p1-font-size,
+          line-height: variables.$clr-p1-line-height,
+          letter-spacing: variables.$clr-p1-letter-spacing,
+        )
+      );
     }
 
     .p0:not([cds-text]),
     p.p0:not([cds-text]) {
-      @include mixins.css-var(color, clr-p0-color, variables.$clr-p0-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p0-font-weight,
-        variables.$clr-p0-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p0-font-size,
-        variables.$clr-p0-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p0-letter-spacing,
-        variables.$clr-p0-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p0-line-height,
-        variables.$clr-p0-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'BODY-14-RG-STD',
+        (
+          color: variables.$clr-p0-color,
+          font-weight: variables.$clr-p0-font-weight,
+          font-size: variables.$clr-p0-font-size,
+          line-height: variables.$clr-p0-line-height,
+          letter-spacing: variables.$clr-p0-letter-spacing,
+        )
+      );
     }
 
     .p2:not([cds-text]),
     p.p2:not([cds-text]) {
-      @include mixins.css-var(color, clr-p2-color, variables.$clr-p2-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p2-font-weight,
-        variables.$clr-p2-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p2-font-size,
-        variables.$clr-p2-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p2-letter-spacing,
-        variables.$clr-p2-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p2-line-height,
-        variables.$clr-p2-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-MD-EXP',
+        (
+          color: variables.$clr-p2-color,
+          font-weight: variables.$clr-p2-font-weight,
+          font-size: variables.$clr-p2-font-size,
+          line-height: variables.$clr-p2-line-height,
+          letter-spacing: variables.$clr-p2-letter-spacing,
+        )
+      );
     }
 
     .p3:not([cds-text]),
     p.p3:not([cds-text]) {
-      @include mixins.css-var(color, clr-p3-color, variables.$clr-p3-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p3-font-weight,
-        variables.$clr-p3-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p3-font-size,
-        variables.$clr-p3-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p3-letter-spacing,
-        variables.$clr-p3-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p3-line-height,
-        variables.$clr-p3-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-RG-EXP',
+        (
+          color: variables.$clr-p3-color,
+          font-weight: variables.$clr-p3-font-weight,
+          font-size: variables.$clr-p3-font-size,
+          line-height: variables.$clr-p3-line-height,
+          letter-spacing: variables.$clr-p3-letter-spacing,
+        )
+      );
     }
 
     .p4:not([cds-text]),
     p.p4:not([cds-text]) {
-      @include mixins.css-var(color, clr-p4-color, variables.$clr-p4-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p4-font-weight,
-        variables.$clr-p4-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p4-font-size,
-        variables.$clr-p4-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p4-letter-spacing,
-        variables.$clr-p4-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p4-line-height,
-        variables.$clr-p4-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-SB-STD',
+        (
+          color: variables.$clr-p4-color,
+          font-weight: variables.$clr-p4-font-weight,
+          font-size: variables.$clr-p4-font-size,
+          line-height: variables.$clr-p4-line-height,
+          letter-spacing: variables.$clr-p4-letter-spacing,
+        )
+      );
     }
 
     .p5:not([cds-text]),
     p.p5:not([cds-text]) {
-      @include mixins.css-var(color, clr-p5-color, variables.$clr-p5-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p5-font-weight,
-        variables.$clr-p5-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p5-font-size,
-        variables.$clr-p5-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p5-letter-spacing,
-        variables.$clr-p5-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p5-line-height,
-        variables.$clr-p5-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'SECONDARY-13-RG-EXP',
+        (
+          color: variables.$clr-p5-color,
+          font-weight: variables.$clr-p5-font-weight,
+          font-size: variables.$clr-p5-font-size,
+          line-height: variables.$clr-p5-line-height,
+          letter-spacing: variables.$clr-p5-letter-spacing,
+        )
+      );
     }
 
     .p6:not([cds-text]),
     p.p6:not([cds-text]) {
-      @include mixins.css-var(color, clr-p6-color, variables.$clr-p6-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p6-font-weight,
-        variables.$clr-p6-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p6-font-size,
-        variables.$clr-p6-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p6-letter-spacing,
-        variables.$clr-p6-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p6-line-height,
-        variables.$clr-p6-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-LG-11',
+        (
+          color: variables.$clr-p6-color,
+          font-weight: variables.$clr-p6-font-weight,
+          font-size: variables.$clr-p6-font-size,
+          line-height: variables.$clr-p6-line-height,
+          letter-spacing: variables.$clr-p6-letter-spacing,
+        )
+      );
     }
 
     .p7:not([cds-text]),
     p.p7:not([cds-text]) {
-      @include mixins.css-var(color, clr-p7-color, variables.$clr-p7-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p7-font-weight,
-        variables.$clr-p7-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p7-font-size,
-        variables.$clr-p7-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p7-letter-spacing,
-        variables.$clr-p7-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p7-line-height,
-        variables.$clr-p7-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-SM-10',
+        (
+          color: variables.$clr-p7-color,
+          font-weight: variables.$clr-p7-font-weight,
+          font-size: variables.$clr-p7-font-size,
+          line-height: variables.$clr-p7-line-height,
+          letter-spacing: variables.$clr-p7-letter-spacing,
+        )
+      );
     }
 
     .p8:not([cds-text]),
     p.p8:not([cds-text]) {
-      @include mixins.css-var(color, clr-p8-color, variables.$clr-p8-color, variables.$clr-use-custom-properties);
-      @include mixins.css-var(
-        font-weight,
-        clr-p8-font-weight,
-        variables.$clr-p8-font-weight,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        font-size,
-        clr-p8-font-size,
-        variables.$clr-p8-font-size,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        letter-spacing,
-        clr-p8-letter-spacing,
-        variables.$clr-p8-letter-spacing,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        line-height,
-        clr-p8-line-height,
-        variables.$clr-p8-line-height,
-        variables.$clr-use-custom-properties
-      );
       margin-top: variables.$clr-global-typography-margin-top;
       margin-bottom: variables.$clr-global-typography-margin-bottom;
+
+      @include mixins.generate-typography-body-token(
+        'CAPTION-SM-10',
+        (
+          color: variables.$clr-p8-color,
+          font-weight: variables.$clr-p8-font-weight,
+          font-size: variables.$clr-p8-font-size,
+          line-height: variables.$clr-p8-line-height,
+          letter-spacing: variables.$clr-p8-letter-spacing,
+        )
+      );
     }
   }
 
   .text-light {
-    @include mixins.css-var(
-      font-weight,
-      clr-font-weight-light,
-      variables.$clr-font-weight-light,
-      variables.$clr-use-custom-properties
-    );
+    font-weight: variables.$clr-font-weight-light;
   }
 
   .text-right {
@@ -571,18 +313,9 @@
 
   //HTML
   html:not([cds-text]) {
-    @include mixins.css-var(
-      color,
-      clr-global-font-color,
-      variables.$clr-global-font-color,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      font-size,
-      clr-basefont-size,
-      variables.$clr-basefont-size,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(font-family, clr-font, variables.$clr-font, variables.$clr-use-custom-properties);
+    color: tokens.$cds-alias-typography-color-450;
+    font-family: variables.$clr-metropolis-font-family;
+    // font-size should be deleted probably. Actual base comes from CDS reset file
+    font-size: calc((tokens.$cds-global-base / 16) * 100%);
   }
 }

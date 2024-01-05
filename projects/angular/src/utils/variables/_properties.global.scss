@@ -5,39 +5,41 @@
  */
 @use '../mixins';
 @use 'variables.global';
+@use '@cds/core/tokens/tokens.scss';
 
 @include mixins.exports('global.properties') {
+  :root [cds-theme] {
+    // component close icon colors
+    --clr-close-color: #{tokens.$cds-alias-object-interaction-color};
+    --clr-close-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+    --clr-close-color-active: #{tokens.$cds-alias-object-interaction-color-active};
+
+    --clr-basefont-size: #{variables.$clr-basefont-size};
+    // app borders
+    --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
+
+    // app background
+    --clr-global-app-background: #{tokens.$cds-alias-object-app-background};
+
+    // app selection colors
+    --clr-global-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-global-on-selection-color: #{tokens.$cds-alias-object-interaction-color-selected};
+
+    // app hover colors
+    --clr-global-hover-color: #{tokens.$cds-global-typography-link-color-hover};
+
+    // app font colors
+    --clr-global-content-header-font-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-global-font-color: #{tokens.$cds-alias-typography-color-500};
+
+    // app success/error colors
+    --clr-global-success-color: #{tokens.$cds-alias-status-success};
+    --clr-global-error-color: #{tokens.$cds-alias-status-danger};
+  }
+
   @if variables.$clr-use-custom-properties == true {
     :root {
-      --clr-basefont-size: #{variables.$clr-basefont-size};
-      // app borders
-      --clr-global-borderradius: #{variables.$clr-global-borderradius};
-      --clr-global-borderwidth: #{variables.$clr-global-borderwidth};
-
-      // app background
-      --clr-global-app-background: #{variables.$clr-global-app-background};
-
-      // app selection colors
-      --clr-global-selection-color: #{variables.$clr-global-selection-color};
-      --clr-global-on-selection-color: #{variables.$clr-global-on-selection-color};
-
-      // app hover colors
-      --clr-global-hover-color: #{variables.$clr-global-hover-color};
-
-      // app font colors
-      --clr-global-content-header-font-color: #{variables.$clr-global-content-header-font-color};
-      --clr-global-font-color: #{variables.$clr-global-font-color};
-
-      // app success/error colors
-      --clr-global-success-color: #{variables.$clr-global-success-color};
-      --clr-global-error-color: #{variables.$clr-global-error-color};
-
-      // component close icon colors
-      --clr-close-color--normal: #{variables.$clr-close-color--normal};
-      --clr-close-color--normal-opacity: #{variables.$clr-close-color--normal-opacity};
-      --clr-close-color--hover: #{variables.$clr-close-color--hover};
-      --clr-close-color--hover-opacity: #{variables.$clr-close-color--hover-opacity};
-
       // global box-shadows
       --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
     }
