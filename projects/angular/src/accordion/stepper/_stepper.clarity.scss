@@ -76,7 +76,7 @@
 }
 
 clr-stepper-panel .clr-accordion-inner-content {
-  padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
+  padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11} !important;
 }
 
 .clr-accordion-panel-complete {
