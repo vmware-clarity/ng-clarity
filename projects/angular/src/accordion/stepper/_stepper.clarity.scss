@@ -41,7 +41,7 @@
   .clr-accordion-number {
     @include mixins.generate-typography-token('BODY-14-SB-STD');
     padding: 0 tokens.$cds-global-space-7;
-    display: inline-block;
+    display: inline-block !important;
   }
 
   .clr-accordion-description {
