@@ -13,8 +13,20 @@
 // TODO: Add properties file
 
 .clr-stepper-forms {
+  .clr-accordion-panel {
+    .clr-accordion-header-button {
+      padding: 0.9rem;
+    }
+  }
+
   .clr-accordion-panel-inactive .clr-accordion-angle {
     visibility: hidden;
+  }
+
+  .clr-accordion-panel-open {
+    .clr-accordion-header {
+      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator !important;
+    }
   }
 
   .clr-accordion-panel-open > .clr-accordion-header .clr-accordion-angle {
@@ -78,7 +90,7 @@ clr-stepper-panel .clr-accordion-inner-content {
   }
 
   .clr-accordion-header {
-    box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete !important;
   }
 
   .ng-trigger.clr-accordion-content {
