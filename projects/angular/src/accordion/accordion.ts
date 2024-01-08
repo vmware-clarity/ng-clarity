@@ -32,7 +32,7 @@ import { AccordionService } from './providers/accordion.service';
 })
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
-  @ContentChildren(ClrAccordionPanel, { descendants: true }) panels: QueryList<ClrAccordionPanel>;
+  @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
   subscriptions: Subscription[] = [];
 
   constructor(private accordionService: AccordionService) {}
