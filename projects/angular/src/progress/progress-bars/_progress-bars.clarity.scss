@@ -8,8 +8,9 @@
 @use 'utils/mixins.clarity';
 @use '../../utils/mixins' as utils-mixins;
 @use '../../layout/variables.card' as card-variables;
-@use '../../utils/variables/variables.global';
 @use 'variables.progress-bars' as progress-bars-variables;
+@use '@cds/core/tokens/tokens.scss';
+
 @include meta.load-css('properties.progress-bars');
 
 @include utils-mixins.exports('progress-bars.clarity') {
@@ -38,28 +39,11 @@
     background-color: transparent;
     border-radius: 0;
     font-size: inherit;
-    // We want this to be em so that it will follow the font-size of its container.
-    // If we used rem, we would be sizing the bar outside of the context of its
-    // placement in the layout.
-    // ATM (after token migration)
-    // replace with value from shim
-    height: 2em;
+    height: tokens.$cds-global-space-6;
     margin: 0;
     overflow: hidden;
-
-    @include utils-mixins.css-var(
-      max-height,
-      clr-progress-max-height,
-      variables.$clr_baselineRem_0_583,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      min-height,
-      clr-progress-min-height,
-      variables.$clr_baselineRem_4px,
-      variables.$clr-use-custom-properties
-    );
-
+    max-height: tokens.$cds-global-space-6;
+    min-height: tokens.$cds-global-space-3;
     display: block;
     width: 100%;
   }
@@ -70,19 +54,11 @@
   .progress {
     > progress {
       @include utils-mixins.clr-appearance-normal();
-      @include mixins.clr-progress-color(
-        progress-bars-variables.$clr-progress-defaultBarColor,
-        clr-progress-default-color
-      );
+      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-default-color);
 
       display: block;
 
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-bg-color,
-        progress-bars-variables.$clr-progress-bgColor,
-        variables.$clr-use-custom-properties
-      );
+      background-color: progress-bars-variables.$clr-progress-bg-color;
       border: none;
       @include utils-mixins.equilateral(100%);
 
@@ -90,13 +66,8 @@
         // Firefox doesn't allow transition or animation on the progress bar. So it's going to be jumpy for now.
         @include utils-mixins.clr-appearance-normal();
 
-        @include utils-mixins.css-var(
-          color,
-          clr-progress-bg-color,
-          progress-bars-variables.$clr-progress-bgColor,
-          variables.$clr-use-custom-properties
-        );
-        min-width: variables.$clr_baselineRem_2;
+        color: progress-bars-variables.$clr-progress-bg-color; // why us this using bg color
+        min-width: tokens.$cds-global-space-12;
         background-color: transparent;
         background-image: none;
       }
@@ -108,12 +79,7 @@
 
       &::-webkit-progress-bar {
         border-radius: 0;
-        @include utils-mixins.css-var(
-          background-color,
-          clr-progress-bg-color,
-          progress-bars-variables.$clr-progress-bgColor,
-          variables.$clr-use-custom-properties
-        );
+        background-color: progress-bars-variables.$clr-progress-bg-color;
       }
 
       &::-webkit-progress-inner-element {
@@ -131,13 +97,12 @@
   .progress {
     // @deprecated in 3.0
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
-    @each $type, $color,
-      $prop in (success, progress-bars-variables.$clr-progress-success-color, clr-progress-alt-color-1),
-      (warning, progress-bars-variables.$clr-progress-warning-color, clr-progress-alt-color-3),
-      (danger, progress-bars-variables.$clr-progress-danger-color, clr-progress-alt-color-2)
+    @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
+      (warning, progress-bars-variables.$clr-progress-warning-color),
+      (danger, progress-bars-variables.$clr-progress-danger-color)
     {
       &.#{$type} > progress {
-        @include mixins.clr-progress-color($color, $prop);
+        @include mixins.clr-progress-color($color);
       }
     }
   }
@@ -150,38 +115,8 @@
       // font-sizes. if we used rems we would have to have many, many different
       // sizes of labels.
       position: relative;
-      @include utils-mixins.css-var(
-        padding-right,
-        clr-progress-percantage-label-padding,
-        3em,
-        variables.$clr-use-custom-properties
-      );
-
-      @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
-      @include utils-mixins.css-var(
-        font-weight,
-        clr-progress-standard-font-weight,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        font-size,
-        clr-progress-label-font-size,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        line-height,
-        clr-progress-label-line-height,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        letter-spacing,
-        clr-progress-label-letter-spacing,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
+      padding-right: tokens.$cds-global-space-11;
+      color: progress-bars-variables.$clr-progress-label-color;
 
       // We have to use this span hack because browsers (Firefox, Safari, and IE) do
       // not currently support using either the :before or :after pseudoelements on
@@ -191,13 +126,26 @@
       // shortcomings in browser support.
       & > span {
         display: block;
-        font-size: 1em;
         position: absolute;
-        top: 50%;
         right: 0;
-        line-height: 1em;
-        margin-top: -0.375em;
+        top: 0;
+        margin-top: 0;
+        @include utils-mixins.generate-typography-token(
+          'CAPTION-LG-11',
+          (
+            line-height: tokens.$cds-global-space-6,
+          )
+        );
       }
+    }
+
+    &.compact:not(.labeled) {
+      height: tokens.$cds-global-space-3;
+    }
+
+    &.compact.labeled > .progress-meter {
+      height: tokens.$cds-global-space-3;
+      top: tokens.$cds-global-space-3;
     }
   }
 
@@ -248,7 +196,7 @@
     @extend %clr-progress-animatedTransition;
 
     &[value='100'] {
-      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-success-color, clr-progress-alt-color-1);
+      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-success-color);
     }
   }
 
@@ -265,7 +213,7 @@
     @extend %clr-progress-animatedTransition;
 
     &[value='100'] {
-      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-danger-color, clr-progress-alt-color-2);
+      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-danger-color);
     }
   }
 
@@ -301,46 +249,21 @@
       left: 0;
       position: absolute;
       display: block;
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-default-color,
-        progress-bars-variables.$clr-progress-defaultBarColor,
-        variables.$clr-use-custom-properties
-      );
-
-      @include utils-mixins.css-var(width, clr-progress-loop-width, 75%, variables.$clr-use-custom-properties);
+      background-color: progress-bars-variables.$clr-progress-default-color;
+      width: 50%;
     }
 
     &.danger::after {
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-alt-color-2,
-        progress-bars-variables.$clr-progress-danger-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: progress-bars-variables.$clr-progress-danger-color;
     }
 
     &.warning::after {
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-alt-color-3,
-        progress-bars-variables.$clr-progress-warning-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: progress-bars-variables.$clr-progress-warning-color;
     }
 
     &.success::after {
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-alt-color-1,
-        progress-bars-variables.$clr-progress-success-color,
-        variables.$clr-use-custom-properties
-      );
+      background-color: progress-bars-variables.$clr-progress-success-color;
     }
-  }
-
-  .nav-item .progress::after {
-    top: 0;
   }
 
   .progress-static {
@@ -350,12 +273,7 @@
 
     // by default, looping progress bars cannot be labeled.
     & > .progress-meter {
-      @include utils-mixins.css-var(
-        background-color,
-        clr-progress-bg-color,
-        progress-bars-variables.$clr-progress-bgColor,
-        variables.$clr-use-custom-properties
-      );
+      background-color: progress-bars-variables.$clr-progress-bg-color;
       display: block;
       position: absolute;
       top: 0;
@@ -364,12 +282,7 @@
       right: 0;
 
       &::before {
-        @include utils-mixins.css-var(
-          background-color,
-          clr-progress-default-color,
-          progress-bars-variables.$clr-progress-defaultBarColor,
-          variables.$clr-use-custom-properties
-        );
+        background-color: progress-bars-variables.$clr-progress-default-color;
         top: 0;
         bottom: 0;
         left: 0;
@@ -589,31 +502,24 @@
     }
 
     &.labeled > .progress-meter {
-      @include utils-mixins.css-var(
-        right,
-        clr-progress-percantage-label-padding,
-        3em,
-        variables.$clr-use-custom-properties
-      );
+      right: tokens.$cds-global-space-11;
     }
 
     /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
-    @each $type, $color,
-      $prop in (success, progress-bars-variables.$clr-progress-success-color, clr-progress-alt-color-1),
-      (warning, progress-bars-variables.$clr-progress-warning-color, clr-progress-alt-color-3),
-      (danger, progress-bars-variables.$clr-progress-danger-color, clr-progress-alt-color-2)
+    @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
+      (warning, progress-bars-variables.$clr-progress-warning-color),
+      (danger, progress-bars-variables.$clr-progress-danger-color)
     {
       &.#{$type} > .progress-meter::before {
-        @include utils-mixins.css-var(background-color, $prop, $color, variables.$clr-use-custom-properties);
+        background-color: $color;
       }
     }
   }
 
   // Inside Cards
-
-  $clr-progressInCard-height: variables.$clr_baselineRem_0_15625;
   .card-block,
   .card-footer {
+    $clr-progressInCard-height: tokens.$cds-global-space-3;
     .progress,
     .progress-static {
       height: $clr-progressInCard-height;
@@ -621,48 +527,22 @@
       left: 0;
 
       // by default, positioned at the topmost of its card-block container
-      margin: 0;
-      margin-top: -1 * card-variables.$card-children-padding-vertical;
-      @if variables.$clr-use-custom-properties == true {
-        margin-top: calc(
-          -1 * (var(--clr-card-footer-vertical-padding, card-variables.$card-children-padding-vertical))
-        );
-      }
+      margin: calc(-1 * tokens.$cds-global-space-5) 0 0;
 
       &.top {
         // places progress bar at the top of a card
         margin-top: 0;
         top: 0;
+
+        // ATM During card shim removal. Set proper tokens.
+        border-top-left-radius: var(--clr-card-border-radius, tokens.$cds-alias-object-border-radius-100);
+        border-top-right-radius: var(--clr-card-border-radius, tokens.$cds-alias-object-border-radius-100);
       }
     }
 
     .progress > progress,
     .progress-static > .progress-meter {
       height: $clr-progressInCard-height;
-      position: absolute;
-    }
-  }
-
-  // Inside Nav Items
-  $clr-progressInNav-height: variables.$clr_baselineRem_0_2;
-  .nav-item {
-    .progress,
-    .progress-static {
-      // by default, positioned at the topmost of its card-block container
-      margin: 0;
-      height: $clr-progressInNav-height;
-      min-height: $clr-progressInNav-height;
-      max-height: $clr-progressInNav-height;
-      left: 0;
-    }
-
-    .progress > progress,
-    .progress-static > .progress-meter {
-      // we are sledge-hammering this value because we get weird variants
-      // across browsers if we don't.
-      height: $clr-progressInNav-height;
-      min-height: $clr-progressInNav-height;
-      max-height: $clr-progressInNav-height;
       position: absolute;
     }
   }
@@ -673,72 +553,22 @@
     width: 100%;
     align-items: center;
     justify-content: center;
+    color: progress-bars-variables.$clr-progress-label-color;
 
-    @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
-    @include utils-mixins.css-var(
-      font-weight,
-      clr-progress-standard-font-weight,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      font-size,
-      clr-progress-block-label-font-size,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      line-height,
-      clr-progress-block-label-line-height,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
-    @include utils-mixins.css-var(
-      letter-spacing,
-      clr-progress-block-label-letter-spacing,
-      inherit,
-      variables.$clr-use-custom-properties
-    );
+    @include utils-mixins.generate-typography-token('SECONDARY-13-RG-CPT');
 
     & > * {
       flex: 0 0 auto;
-      @include utils-mixins.css-var(
-        padding-right,
-        clr-progress-block-items-padding-right,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-      // vertically center???
-
-      // ATM (after token migration)
-      // remove first child padding right
-      &:first-child {
-        @include utils-mixins.css-var(
-          padding-right,
-          clr-progress-block-first-item-padding-right,
-          variables.$clr_baselineRem_0_75,
-          variables.$clr-use-custom-properties
-        );
-      }
+      padding-right: tokens.$cds-global-space-6;
 
       &:last-child {
         padding-right: 0;
       }
     }
 
-    & > label {
-      @include utils-mixins.css-var(
-        max-width,
-        clr-progress-label-max-width,
-        inherit,
-        variables.$clr-use-custom-properties
-      );
-      @include utils-mixins.css-var(
-        font-weight,
-        clr-progress-standard-font-weight,
-        600,
-        variables.$clr-use-custom-properties
-      );
+    & > label,
+    & > span {
+      max-width: 33%;
     }
 
     & > .progress,
@@ -756,32 +586,9 @@
       .clr-row {
         margin-left: 0;
         margin-right: 0;
+        color: progress-bars-variables.$clr-progress-label-color;
 
-        @include utils-mixins.css-var(color, clr-progress-label-color, inherit, variables.$clr-use-custom-properties);
-        @include utils-mixins.css-var(
-          font-weight,
-          clr-progress-standard-font-weight,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include utils-mixins.css-var(
-          font-size,
-          clr-progress-label-font-size,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include utils-mixins.css-var(
-          line-height,
-          clr-progress-label-line-height,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
-        @include utils-mixins.css-var(
-          letter-spacing,
-          clr-progress-label-letter-spacing,
-          inherit,
-          variables.$clr-use-custom-properties
-        );
+        @include utils-mixins.generate-typography-token('CAPTION-LG-11');
 
         & > [class*='clr-col-'] {
           padding-left: 0;
@@ -791,14 +598,9 @@
     }
   }
 
-  $clr-progressInline__inCard-height: variables.$clr_baselineRem_0_53329167;
+  $clr-progress-in-card-height: tokens.$cds-global-space-6;
   .card-block .progress-block {
-    @include utils-mixins.css-var(
-      margin-bottom,
-      clr-progress-card-margin-bottom,
-      variables.$clr_baselineRem_0_5,
-      variables.$clr-use-custom-properties
-    );
+    margin-bottom: tokens.$cds-global-space-7;
     padding: 0;
 
     &:last-child {
@@ -807,18 +609,17 @@
 
     & > label {
       max-width: 33%;
-      line-height: variables.$clr_baselineRem_0_75;
     }
 
     .progress,
     .progress-static {
       position: relative;
-      height: $clr-progressInline__inCard-height;
+      height: $clr-progress-in-card-height;
       margin-top: 0;
 
       & > progress,
       & > .progress-meter {
-        height: $clr-progressInline__inCard-height;
+        height: $clr-progress-in-card-height;
       }
     }
   }

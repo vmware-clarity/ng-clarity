@@ -1178,7 +1178,7 @@
     flex-direction: column;
     overflow: auto;
     height: 100%;
-    @include mixins.css-var(padding, clr-datagrid-detail-pane-content-padding, 0, variables.$clr-use-custom-properties);
+    padding: datagrid-variables.$clr-datagrid-detail-pane-content-padding;
   }
 
   .datagrid-detail-body {
@@ -1311,7 +1311,7 @@
       h4,
       h5,
       h6 {
-        @include mixins.css-var(color, clr-p1-color, variables.$clr-p1-color, variables.$clr-use-custom-properties);
+        color: variables.$clr-p1-color;
         @include mixins.generate-typography-token('SUBSECTION-16-EXP');
         margin: 0;
       }

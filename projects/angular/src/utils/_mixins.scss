@@ -10,8 +10,6 @@
 @use 'variables/variables';
 @use '@cds/core/tokens/tokens.scss';
 
-// NOTE: file added to prettierignore because it was added unwanted spaces in the css-var() mixin
-
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once
 $imported-modules: () !default;
@@ -31,14 +29,16 @@ $clr-outline-blur: variables.$clr_baselineRem_2px;
 $clr-outline-spread: variables.$clr_baselineRem_2px;
 
 @mixin include-outline-style-form-fields() {
-  outline: Highlight solid variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
-  outline-offset: variables.$clr_baselineRem_1px;
+  outline: tokens.$cds-alias-object-interaction-outline;
+  outline-color: -webkit-focus-ring-color;
+  outline-offset: tokens.$cds-alias-object-interaction-outline-offset;
 }
 
-@mixin include-slim-outline-style-form-fields() {
-  outline: Highlight solid variables.$clr_baselineRem_2px;
-  outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: solid;
+  outline-width: $width;
 }
 
 @mixin include-outline-style-links() {
@@ -88,30 +88,9 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   }
 }
 
-@mixin css-var($style: null, $var: null, $fallback: '', $do-custom-prop: true) {
-  @if $style != null and $var != null {
-    /* #{$var} */
-    #{$style}: $fallback;
-    @if $do-custom-prop == true {
-      #{$style}: var(css-variablize-string($var), $fallback);
-    }
-  }
-}
-
 @mixin equilateral($size: 1.2rem) {
   height: $size;
   width: $size;
-}
-
-@mixin equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
-  @include css-var(height, $var, $fallback, $do-custom-prop);
-  @include css-var(width, $var, $fallback, $do-custom-prop);
-}
-
-@mixin min-equilateral-var($var: null, $fallback: '', $do-custom-prop: true) {
-  @include equilateral-var($var, $fallback, $do-custom-prop);
-  @include css-var(min-height, $var, $fallback, $do-custom-prop);
-  @include css-var(min-width, $var, $fallback, $do-custom-prop);
 }
 
 @mixin min-equilateral($size: 1.2rem) {
@@ -124,12 +103,6 @@ $clr-outline-spread: variables.$clr_baselineRem_2px;
   @include equilateral($size);
   max-height: $size;
   max-width: $size;
-}
-
-@function css-variablize-string($str: null) {
-  @if $str {
-    @return #{'--' + $str};
-  }
 }
 
 @mixin clr-appearance-normal() {
@@ -315,6 +288,18 @@ $typography-tokens: (
     line-height: #{tokens.$cds-global-space-7},
     letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
   ),
+  'BODY-14-RG-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
+  'BODY-14-SB-EXP': (
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{tokens.$cds-global-space-9},
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'SECONDARY-14-RG-CPT': (
     font-size: #{tokens.$cds-global-typography-font-size-4},
     font-weight: #{tokens.$cds-global-typography-secondary-font-weight},
@@ -344,7 +329,6 @@ $typography-tokens: (
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
   'SECONDARY-13-RG-STD': (
-    // P4, Form Labels and Column Headers
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
     line-height: #{baselinePx(20)},
@@ -359,8 +343,13 @@ $typography-tokens: (
     // suitable token not found
     letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
   ),
+  'SECONDARY-13-MD-CPT': (
+    font-size: #{tokens.$cds-alias-typography-secondary-font-size},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{tokens.$cds-alias-typography-secondary-line-height},
+    letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing},
+  ),
   'SECONDARY-13-SB-CPT': (
-    // P4, Form Labels and Column Headers
     font-size: #{tokens.$cds-alias-typography-secondary-font-size},
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
     line-height: #{tokens.$cds-alias-typography-secondary-line-height},
@@ -395,6 +384,14 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
     // suitable token not found
   ),
+  'LINK-14': (
+    // Link Text, Link Text Inverse
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    font-size: #{tokens.$cds-alias-typography-body-font-size},
+    line-height: #{tokens.$cds-global-space-9},
+    // 1.7142857em
+    letter-spacing: #{tokens.$cds-alias-typography-body-letter-spacing},
+  ),
   'BUTTON-12': (
     // Buttons
     font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
@@ -417,25 +414,41 @@ $typography-tokens: (
   ),
 );
 
-@mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
+@mixin setValue($key, $map: (), $value) {
+  @if (map.has-key($map, $key)) {
+    #{$key}: map.get($map, $key);
+  } @else {
+    #{$key}: $value;
+  }
+}
+
+@mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
-    font-family: #{tokens.$cds-alias-typography-header-font-family};
+    @include setValue(
+      font-family,
+      $fallbacks,
+      variables.$clr-metropolis-font-family
+    ); // tokens.$cds-alias-typography-header-font-family);
   }
 
   @if ($addColor) {
-    color: #{tokens.$cds-alias-typography-color-300};
+    @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-300);
   }
 
   @include generate-typography-token($name, $fallbacks);
 }
 
-@mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: false, $addColor: false) {
+@mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
   @if ($addFontFamily) {
-    font-family: #{tokens.$cds-alias-typography-font-family};
+    @include setValue(
+      font-family,
+      $fallbacks,
+      variables.$clr-metropolis-font-family
+    ); // tokens.$cds-alias-typography-font-family);
   }
 
   @if ($addColor) {
-    color: #{tokens.$cds-alias-typography-color-450};
+    @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-450);
   }
 
   @include generate-typography-token($name, $fallbacks);
@@ -443,10 +456,6 @@ $typography-tokens: (
 
 @mixin generate-typography-token($name, $fallbacks: ()) {
   @each $key, $value in map.get($typography-tokens, $name) {
-    @if (map.has-key($fallbacks, $key)) {
-      #{$key}: map.get($fallbacks, $key);
-    } @else {
-      #{$key}: $value;
-    }
+    @include setValue($key, $fallbacks, $value);
   }
 }

@@ -7,8 +7,8 @@
 
 // Usage: ../utils/_reboot.scss
 // Link colors
-$clr-link-active-color: variables.$clr-color-secondary-action-500 !default;
-$clr-link-color: variables.$clr-color-action-600 !default;
-$clr-link-hover-color: variables.$clr-color-action-600 !default;
-$clr-link-visited-color: hsl(238, 41%, 53%) !default;
-$clr-custom-links-hover-color: variables.$clr-color-neutral-200 !default;
+$clr-link-active-color: var(--clr-link-active-color) !default;
+$clr-link-color: var(--clr-link-color) !default;
+$clr-link-hover-color: var(--clr-link-hover-color) !default;
+$clr-link-visited-color: var(--clr-link-visited-color) !default;
+$clr-link-visited-color-hover: var(--clr-link-visited-color-hover) !default;

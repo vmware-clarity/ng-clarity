@@ -2,18 +2,23 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                   | Description                      |
-| ------------------------------------- | -------------------------------- |
-| --clr-card-bg-color                   | Card background color            |
-| --clr-card-divider-color              | Card divider color               |
-| --clr-card-title-color                | Card text color header           |
-| --clr-card-title-font-weight          | Card thickness title             |
-| --clr-card-border-width               | Card border width                |
-| --clr-card-border-radius              | Card border radius               |
-| --clr-card-border-color               | Card border color                |
-| --clr-card-box-shadow-color           | Card background shadow color     |
-| --clr-card-clickable-border-color     | Clickable cards background color |
-| --clr-card-clickable-box-shadow-color | Clickable cards shadow color     |
+| CSS Custom Property                   | Description                                            |
+| ------------------------------------- | ------------------------------------------------------ |
+| --clr-card-bg-color                   | Card background color                                  |
+| --clr-card-divider-color              | Card divider color                                     |
+| --clr-card-title-color                | Card base title color                                  |
+| --clr-card-title-font-weight          | Card thickness title                                   |
+| --clr-card-border-width               | Card border width                                      |
+| --clr-card-border-radius              | Card border radius                                     |
+| --clr-card-border-color               | Card border color                                      |
+| --clr-card-box-shadow-color           | Card background shadow color                           |
+| --clr-card-clickable-border-color     | DEPRECATED in favor of `clr-card-box-shadow`           |
+| --clr-card-clickable-box-shadow-color | DEPRECATED in favor of `clr-card-clickable-box-shadow` |
+| clr-card-box-shadow                   | Card background shadow                                 |
+| clr-card-clickable-box-shadow         | Clickable cards shadow                                 |
+| clr-card-header-title-color           | Header title font color                                |
+| clr-card-content-title-color          | Content title font color                               |
+| clr-card-text-color                   | Card text font color                                   |
 
 ## CSS Classes
 
@@ -44,40 +49,26 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                  | Description                             |
-| ------------------------------------ | --------------------------------------- |
-| --clr-login-title-color              | Color of the title                      |
-| --clr-login-title-font-weight        | Font weight of the title                |
-| --clr-login-title-font-family        | Font family of the title                |
-| --clr-login-background-color         | Background color                        |
-| --clr-login-background               | Background image                        |
-| --clr-login-error-background-color   | Error message background color          |
-| --clr-login-error-border-radius      | Error message border radius             |
-| --clr-login-panel-line-color         | Color of the divider line               |
-| --clr-login-panel-line-opacity       | Opacity to the divider line             |
-| --clr-login-title-font-size          | Font size of the title                  |
-| --clr-login-title-line-height        | Line height of the title                |
-| --clr-login-title-font-weight        | Font weight of the title                |
-| --clr-login-title-letter-spacing     | Letter spacing of the title             |
-| --clr-login-hint-font-size           | Font size of the hint                   |
-| --clr-login-hint-font-weight         | Font weight of the hint                 |
-| --clr-login-hint-line-height         | Line height of the hint                 |
-| --clr-login-hint-letter-spacing      | Letter spacing of the hint              |
-| --clr-login-hint-color               | Font color of the hint                  |
-| --clr-login-group-signup-font-weight | Font weight of the sign up link         |
-| --clr-login-group-signup-line-height | Line height of the sign up link         |
-| --clr-login-group-signup-font-size   | Font size for the sign up link          |
-| --clr-login-footer-gap               | Gap size for the footer                 |
-| --clr-login-footer-font-size         | Font size for footer content            |
-| --clr-login-footer-line-height       | Line height for footer content          |
-| --clr-login-footer-font-weight       | Font weight for footer content          |
-| --clr-login-copyright-color          | Font color for the copyright thumbnail  |
-| --clr-login-copyright-font-size      | Font size for the copyright thumbnail   |
-| --clr-login-copyright-font-weight    | Font weight for the copyright thumbnail |
-| --clr-login-copyright-line-height    | Line height for the copyright thumbnail |
-| --clr-login-welcome-color            | Font color for welcome                  |
-| --clr-login-error-icon-color         | Color for error icon                    |
-| --clr-login-logo-color               | Color of VMware logo                    |
+| CSS Custom Property                  | Description                              |
+| ------------------------------------ | ---------------------------------------- |
+| --clr-login-title-color              | Color of the title                       |
+| --clr-login-background-color         | Background color                         |
+| --clr-login-background               | Background image                         |
+| --clr-login-error-background-color   | Error message background color           |
+| --clr-login-error-border-radius      | Error message border radius              |
+| --clr-login-panel-line-color         | Color of the divider line                |
+| --clr-login-panel-line-opacity       | Opacity to the divider line              |
+| --clr-login-hint-color               | Font color of the hint                   |
+| --clr-login-footer-gap               | Gap size for the footer                  |
+| --clr-login-copyright-color          | Font color for the copyright thumbnail   |
+| --clr-login-welcome-color            | Font color for welcome                   |
+| --clr-login-error-icon-color         | Color for error icon                     |
+| --clr-login-logo-color               | Color of VMware logo                     |
+| --clr-login-trademark-color          | DEPRECATED in v17. to be removed in v18. |
+| --clr-login-trademark-font-weight    | DEPRECATED in v17. to be removed in v18. |
+| --clr-login-trademark-font-family    | DEPRECATED in v17. to be removed in v18. |
+| --clr-login-trademark-font-size      | DEPRECATED in v17. to be removed in v18. |
+| --clr-login-trademark-letter-spacing | DEPRECATED in v17. to be removed in v18. |
 
 ## CSS Classes
 
@@ -97,3 +88,5 @@
 | login-group   | Contains the login form controls                                                 |
 | error         | Error messageThe error message is hidden by default                              |
 | active        | Adding the `active` class to the `.error` element makes the error message appear |
+| trademark     | DEPRECATED in v17. To be removed in v18.                                         |
+| subtitle      | DEPRECATED in v17. To be removed in v18.                                         |
