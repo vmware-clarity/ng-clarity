@@ -15,155 +15,153 @@
   .clr-accordion {
     display: block;
     margin-bottom: tokens.$cds-global-space-9;
+  }
 
-    .clr-accordion-panel {
-      // TODO: Double check
-      &.clr-accordion-panel-disabled {
-        //background-color: accordion-variables.$clr-accordion-header-background-color !important;
-        background-color: transparent !important;
+  .clr-accordion-header {
+    color: accordion-variables.$clr-accordion-text-color;
+    box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
+    background: accordion-variables.$clr-accordion-header-background-color;
+    //transition: all 200ms ease-in-out !important;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom-width: 0;
+    width: 100%;
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
-        // We need the immediate child selector modifier for nested accordions
-        .clr-accordion-panel-open > .clr-accordion-header {
-          background-color: accordion-variables.$clr-accordion-header-background-color !important;
-        }
-        &:hover,
-        &:active {
-          background-color: transparent !important;
-          //background-color: accordion-variables.$clr-accordion-header-background-color !important;
-        }
-      }
-      .clr-accordion-angle {
-        transition: all 200ms ease-in-out !important;
-        transform: rotate(90deg);
-      }
-      .clr-accordion-header {
-        color: accordion-variables.$clr-accordion-text-color;
-        box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
-        background: accordion-variables.$clr-accordion-header-background-color;
-        //transition: all 200ms ease-in-out !important;
-        border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
-        border-bottom-width: 0;
-        width: 100%;
-        @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+    text-align: left;
 
-        text-align: left;
-
-        &:hover {
-          color: accordion-variables.$clr-accordion-text-color-hover;
-          background-color: accordion-variables.$clr-accordion-header-hover-background-color !important;
-        }
-
-        &:active {
-          color: accordion-variables.$clr-accordion-text-color-active;
-          background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
-        }
-
-        // TODO: Double check
-        .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
-          background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
-
-          &:hover,
-          &:active {
-            background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
-          }
-        }
-
-        &.clr-accordion-header-has-description {
-          .clr-accordion-title {
-            max-width: mixins.baselinePx(264);
-            @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-              margin-left: tokens.$cds-global-space-7;
-            }
-          }
-
-          .clr-accordion-description {
-            display: inline-block;
-            max-width: mixins.baselinePx(650);
-
-            @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-              margin-left: mixins.baselinePx(40);
-            }
-          }
-        }
-
-        .clr-accordion-header-button {
-          display: flex;
-          flex-flow: row wrap;
-          flex: 1 1 0;
-          width: 100%;
-          border: 0;
-          // TODO: Double check
-          //padding: tokens.$cds-global-space-8;
-          background: transparent;
-          text-align: left;
-          cursor: pointer;
-          color: inherit;
-          gap: tokens.$cds-global-space-5;
-          @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-            flex-flow: row;
-          }
-
-          &:disabled {
-            cursor: not-allowed;
-
-            .clr-accordion-status,
-            .clr-accordion-title {
-              color: accordion-variables.$clr-accordion-panel-disabled-color !important;
-              //color: accordion-variables.$clr-accordion-panel-disabled-color;
-            }
-          }
-
-          .clr-accordion-status {
-            width: tokens.$cds-global-space-7;
-            display: inline-block;
-            vertical-align: top;
-
-            .clr-accordion-angle {
-              //transition: all 200ms ease-in-out !important;
-              //transform: rotate(90deg) !important;
-            }
-
-            // TODO: Check whether this is even used (display: none)
-            .clr-accordion-number {
-              padding: 0 tokens.$cds-global-space-7;
-              display: none;
-            }
-          }
-
-          .clr-accordion-title {
-            display: inline-block;
-          }
-        }
-      }
-
-      .clr-accordion-content {
-        background: accordion-variables.$clr-accordion-content-background-color;
-        border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
-        border-bottom: 0;
-        overflow: hidden;
-        padding: tokens.$cds-global-space-8;
-        display: none;
-
-        .clr-form {
-          padding: 0;
-        }
-
-        &.ng-trigger {
-          padding: 0; // inner element/padding to prevent extra hight in ng animation
-        }
-
-        @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-          padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-        }
-      }
+    &:hover {
+      color: accordion-variables.$clr-accordion-text-color-hover;
+      background-color: accordion-variables.$clr-accordion-header-hover-background-color !important;
     }
 
-    .clr-accordion-panel:last-child {
-      .clr-accordion-content,
-      .clr-accordion-header {
-        border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    &:active {
+      color: accordion-variables.$clr-accordion-text-color-active;
+      background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
+    }
+
+    // TODO: Double check
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
+      background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
       }
     }
+  }
+
+  .clr-accordion-panel:last-child {
+    .clr-accordion-content,
+    .clr-accordion-header {
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    }
+  }
+
+  // TODO: Check whether this is even used (display: none)
+  .clr-accordion-number {
+    padding: 0 tokens.$cds-global-space-7;
+    display: none;
+  }
+
+  .clr-accordion-header-button {
+    // TODO: Add missing props
+    padding: accordion-variables.$clr-accordion-header-button-padding;
+  }
+
+  .clr-accordion-header-button {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 1 0;
+    width: 100%;
+    border: 0;
+    // TODO: Double check
+    //padding: tokens.$cds-global-space-8;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    gap: tokens.$cds-global-space-5;
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      flex-flow: row;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .clr-accordion-status,
+      .clr-accordion-title {
+        color: accordion-variables.$clr-accordion-panel-disabled-color !important;
+        //color: accordion-variables.$clr-accordion-panel-disabled-color;
+      }
+    }
+  }
+
+  .clr-accordion-status {
+    width: tokens.$cds-global-space-7;
+    display: inline-block;
+    vertical-align: top;
+
+    .clr-accordion-angle {
+      //transition: all 200ms ease-in-out !important;
+      //transform: rotate(90deg) !important;
+    }
+  }
+
+  .clr-accordion-title {
+    display: inline-block;
+  }
+
+  .clr-accordion-header-has-description {
+    .clr-accordion-title {
+      max-width: mixins.baselinePx(264);
+      @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        margin-left: tokens.$cds-global-space-7;
+      }
+    }
+  }
+
+  .clr-accordion-description {
+    display: inline-block;
+    max-width: mixins.baselinePx(650);
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      margin-left: mixins.baselinePx(40);
+    }
+  }
+
+  .clr-accordion-content {
+    background: accordion-variables.$clr-accordion-content-background-color;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom: 0;
+    overflow: hidden;
+    padding: tokens.$cds-global-space-8;
+    display: none;
+
+    .clr-form {
+      padding: 0;
+    }
+
+    &.ng-trigger {
+      padding: 0; // inner element/padding to prevent extra hight in ng animation
+    }
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
+    }
+  }
+
+  .clr-accordion-inner-content {
+    padding: tokens.$cds-global-space-9;
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
+      //padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
+    }
+  }
+
+  .clr-accordion-angle {
+    transition: all 200ms ease-in-out;
+    transform: rotate(90deg);
   }
 
   .clr-accordion-error-icon,
@@ -176,33 +174,14 @@
 
   // panel states
   .clr-accordion-panel-open {
-    & > .clr-accordion-header {
+    .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
-
-      // override the border bottom style when last panel is open
-      border-bottom-left-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-      border-bottom: 0 !important;
-
-      background: accordion-variables.$clr-accordion-active-background-color !important;
-
-      &:active {
-        color: accordion-variables.$clr-accordion-text-color-active;
-        background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
-      }
-
-      .clr-accordion-angle {
-        visibility: visible;
-        transform: rotate(180deg);
-      }
     }
-    // TODO: Move to stepper
     .clr-accordion-panel-complete {
       .clr-accordion-header {
         box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
       }
     }
-    // TODO: Move to stepper
     .clr-accordion-panel-error {
       .clr-accordion-header {
         box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
@@ -211,15 +190,59 @@
 
     & > .clr-accordion-content-region .clr-accordion-content {
       display: block;
-      .clr-accordion-inner-content {
-        padding: tokens.$cds-global-space-9;
+    }
 
-        @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-          padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-          //padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-        }
+    & > .clr-accordion-header {
+      background: accordion-variables.$clr-accordion-active-background-color;
+
+      &:active {
+        color: accordion-variables.$clr-accordion-text-color-active;
+        background-color: accordion-variables.$clr-accordion-header-active-background-color;
+      }
+
+      .clr-accordion-angle {
+        visibility: visible;
+        transform: rotate(180deg);
       }
     }
+  }
+
+  .clr-accordion-panel-complete {
+    .clr-accordion-complete-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-complete-color;
+    }
+
+    .clr-accordion-angle {
+      visibility: visible;
+    }
+
+    .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    }
+
+    .ng-trigger.clr-accordion-content {
+      display: block;
+    }
+  }
+
+  .clr-accordion-panel-error {
+    .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+      border-color: accordion-variables.$clr-accordion-error-color;
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
+      background-color: accordion-variables.$clr-accordion-active-background-color;
+    }
+
+    .clr-accordion-error-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-error-color;
+    }
+  }
+
+  .clr-accordion-panel-error .clr-accordion-number,
+  .clr-accordion-panel-complete .clr-accordion-number {
+    @include a11y.screen-reader-only();
   }
 
   // temporary overrides to match stackview until stepper, accordion and stackview are aligned
@@ -251,9 +274,8 @@
     }
 
     .clr-accordion-inner-content {
-      // TODO: Use shorthand, get rid of important
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
-        tokens.$cds-global-space-11 !important;
+        tokens.$cds-global-space-11;
       color: accordion-variables.$clr-accordion-content-color;
       font-size: accordion-variables.$clr-accordion-content-font-size;
     }
@@ -261,15 +283,17 @@
     .clr-accordion-status {
       width: auto;
 
-      //.clr-accordion-angle {
-      //  transition: all 200ms ease-in-out;
-      //  transform: rotate(90deg);
-      //}
-
       cds-icon,
       clr-icon {
         @include mixins.equilateral(tokens.$cds-global-space-7);
       }
     }
+  }
+
+  // override the border bottom style when last panel is open
+  .clr-accordion-panel-open > .clr-accordion-header {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: 0 !important;
   }
 }
