@@ -21,7 +21,7 @@
     color: accordion-variables.$clr-accordion-text-color;
     box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
     background: accordion-variables.$clr-accordion-header-background-color;
-    //transition: all 200ms ease-in-out !important;
+    transition: all 200ms ease-in-out;
     border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
     border-bottom-width: 0;
     width: 100%;
@@ -31,21 +31,21 @@
 
     &:hover {
       color: accordion-variables.$clr-accordion-text-color-hover;
-      background-color: accordion-variables.$clr-accordion-header-hover-background-color !important;
+      background-color: accordion-variables.$clr-accordion-header-hover-background-color;
     }
 
     &:active {
       color: accordion-variables.$clr-accordion-text-color-active;
-      background-color: accordion-variables.$clr-accordion-header-active-background-color !important;
+      background-color: accordion-variables.$clr-accordion-header-active-background-color;
     }
 
     // TODO: Double check
     .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
-      background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
+      background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
 
       &:hover,
       &:active {
-        background-color: accordion-variables.$clr-accordion-header-disabled-background-color !important;
+        background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
       }
     }
   }
@@ -90,8 +90,7 @@
 
       .clr-accordion-status,
       .clr-accordion-title {
-        color: accordion-variables.$clr-accordion-panel-disabled-color !important;
-        //color: accordion-variables.$clr-accordion-panel-disabled-color;
+        color: accordion-variables.$clr-accordion-panel-disabled-color;
       }
     }
   }
@@ -100,11 +99,6 @@
     width: tokens.$cds-global-space-7;
     display: inline-block;
     vertical-align: top;
-
-    .clr-accordion-angle {
-      //transition: all 200ms ease-in-out !important;
-      //transform: rotate(90deg) !important;
-    }
   }
 
   .clr-accordion-title {
@@ -155,7 +149,6 @@
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
       padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
-      //padding: tokens.$cds-global-space-8 mixins.baselinePx(54);
     }
   }
 
