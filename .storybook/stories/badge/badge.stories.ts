@@ -4,35 +4,32 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+const modifierClasses = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
 
-const defaultStory: Story = args => ({
-  template: `
-    <span class="badge" [ngClass]="badgeClass">{{context}}</span>
-    <a href="#" class="badge" [ngClass]="badgeClass">{{context}}</a>
-  `,
-  props: { ...args },
-});
-
-const badgeClasses = ['', 'badge-info', 'badge-success', 'badge-warning', 'badge-danger'];
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Badge/Badge',
   argTypes: {
     // story helpers
-    badgeClass: { defaultValue: '', control: { type: 'radio', options: badgeClasses } },
+    modifierClasses: {
+      description: `Class can be none, \`badge-info\`, \`badge-success\`, \`badge-warning\`, or \`badge-danger\``,
+      table: false,
+      control: false,
+    },
   },
   args: {
     // story helpers
     context: '42',
+    modifierClasses,
   },
 };
-
-const variants: Parameters[] = badgeClasses.map(badgeClass => ({
-  badgeClass,
-}));
-
-setupStorybook([], defaultStory, defaultParameters, variants);
+export const Initial: Story = args => ({
+  template: `
+    <div style="margin-top: 5px;" *ngFor="let status of modifierClasses">
+        <span class="badge" [ngClass]="status">{{context}}</span>
+        <a href="#" class="badge" [ngClass]="status">{{context}}</a>
+    </div>
+  `,
+  props: args,
+});

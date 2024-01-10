@@ -6,13 +6,11 @@
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
+const template = `
     <clr-accordion>
       <clr-accordion-panel
         [clrAccordionPanelOpen]="clrAccordionPanelOpen"
@@ -23,16 +21,16 @@ const defaultStory: Story = args => ({
         <clr-accordion-content>{{ content }}</clr-accordion-content>
       </clr-accordion-panel>
     </clr-accordion>
-  `,
-  props: { ...args },
-});
+  `;
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Accordion/Accordion Panel',
   component: ClrAccordionPanel,
   argTypes: {
     // outputs
     clrAccordionPanelOpenChange: { control: { disable: true } },
+    title: { description: 'Rendered within the `<clr-accordion-title>` element' },
+    content: { description: 'Rendered within the `<clr-accordion-content>` element' },
     // methods
     togglePanel: { control: { disable: true } },
     collapsePanelOnAnimationDone: { control: { disable: true }, table: { disable: true } },
@@ -40,32 +38,41 @@ const defaultParameters: Parameters = {
     getAccordionHeaderId: { control: { disable: true }, table: { disable: true } },
     getPanelStateClasses: { control: { disable: true }, table: { disable: true } },
   },
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrAccordionModule],
+    }),
+  ],
   args: {
     // outputs
     clrAccordionPanelOpenChange: action('clrAccordionPanelOpenChange'),
     // story helpers
     title: 'Title',
     content: 'Hello World!',
+    clrAccordionPanelDisabled: false,
+    clrAccordionPanelOpen: false,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrAccordionPanelOpen: false,
-    clrAccordionPanelDisabled: false,
-  },
-  {
-    clrAccordionPanelOpen: false,
-    clrAccordionPanelDisabled: true,
-  },
-  {
-    clrAccordionPanelOpen: true,
-    clrAccordionPanelDisabled: false,
-  },
-  {
-    clrAccordionPanelOpen: true,
-    clrAccordionPanelDisabled: true,
-  },
-];
+export const PanelClosed: Story = args => ({
+  template,
+  props: args,
+});
 
-setupStorybook(ClrAccordionModule, defaultStory, defaultParameters, variants);
+export const PanelOpened: Story = PanelClosed.bind({});
+PanelOpened.args = {
+  ...PanelClosed.args,
+  clrAccordionPanelOpen: true,
+};
+
+export const PanelClosedDisabled: Story = PanelClosed.bind({});
+PanelClosedDisabled.args = {
+  ...PanelClosed.args,
+  clrAccordionPanelDisabled: true,
+};
+
+export const PanelOpenedDisabled: Story = PanelOpened.bind({});
+PanelOpenedDisabled.args = {
+  ...PanelOpened.args,
+  clrAccordionPanelDisabled: true,
+};
