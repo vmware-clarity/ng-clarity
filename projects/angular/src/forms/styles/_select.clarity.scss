@@ -5,7 +5,6 @@
  */
 @use 'sass:map';
 @use '../../image/icons.clarity';
-@use '../../image/images.clarity';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;
@@ -19,8 +18,15 @@
     white-space: nowrap;
 
     select {
-      @include forms-mixins.custom-inputs(variables.$clr_baselineRem_1);
+      @include forms-mixins.custom-inputs(tokens.$cds-global-space-9);
       @include forms-mixins.form-fields-appearance();
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-EXP',
+        (
+          font-size: forms-variables.$clr-forms-field-font-size,
+        )
+      );
+
       &:not([multiple]) {
         @include forms-mixins.input-border-bottom-animation();
       }
@@ -30,7 +36,6 @@
       position: relative;
       padding: 0 calc(#{forms-variables.$clr-forms-select-caret-size} + #{forms-variables.$clr-forms-baseline} * 2) 0 #{forms-variables.$clr-forms-baseline};
       cursor: pointer;
-      font-size: forms-variables.$clr-forms-field-font-size;
 
       //Moves the :after pseudo element (arrow) to the back so that clicking over it activates
       //the dropdown.
