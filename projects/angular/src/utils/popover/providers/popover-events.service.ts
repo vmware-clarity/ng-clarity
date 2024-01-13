@@ -36,11 +36,11 @@ export class ClrPopoverEventsService implements OnDestroy {
     this.subscriptions.push(
       smartOpenService.openChange.subscribe(open => {
         if (open) {
-          this.addEscapeListener();
-          this.addClickListener();
-          this.addScrollListener();
+          // this.addEscapeListener();
+          // this.addClickListener();
+          // this.addScrollListener();
         } else {
-          this.removeAllEventListeners();
+          // this.removeAllEventListeners();
         }
       }),
       smartOpenService.getEventChange().subscribe(event => {

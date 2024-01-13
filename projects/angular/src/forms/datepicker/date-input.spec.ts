@@ -12,7 +12,6 @@ import { By } from '@angular/platform-browser';
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -787,7 +786,7 @@ export default function () {
       (clrDateChange)="dateChanged($event)"
     />
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, FocusService],
 })
 class TestComponent {
   date: Date;
@@ -824,7 +823,7 @@ class TestComponentWithClrDate {
       <input id="dateControl" type="date" clrDate (clrDateChange)="dateChanged($event)" formControlName="date" />
     </form>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, FocusService],
 })
 class TestComponentWithReactiveForms {
   dateInput = '01/01/2015';

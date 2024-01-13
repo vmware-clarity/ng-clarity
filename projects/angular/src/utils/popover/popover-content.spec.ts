@@ -15,7 +15,6 @@ import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
 import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 
 @Component({
@@ -29,11 +28,11 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
       Popover content
     </div>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
 })
 @Component({
   template: ``,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
@@ -58,7 +57,6 @@ export default function (): void {
       testComponent: SimpleContent;
       clarityDirective: ClrPopoverModuleNext;
       eventService: ClrPopoverEventsService;
-      positionService: ClrPopoverPositionService;
       toggleService: ClrPopoverToggleService;
     };
 
@@ -77,7 +75,6 @@ export default function (): void {
       this.testComponent = this.fixture.componentInstance;
       this.clarityDirective = this.fixture.componentInstance.content;
       this.eventService = this.fixture.debugElement.injector.get(ClrPopoverEventsService);
-      this.positionService = this.fixture.debugElement.injector.get(ClrPopoverPositionService);
       this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
     });
 
