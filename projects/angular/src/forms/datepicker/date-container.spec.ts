@@ -12,7 +12,6 @@ import { TestContext } from '../../data/datagrid/helpers.spec';
 import { PopoverPosition } from '../../popover/common/popover-positions';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
@@ -238,7 +237,7 @@ export default function () {
       <clr-control-success>Valid</clr-control-success>
     </clr-date-container>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, FocusService],
+  providers: [ClrPopoverEventsService, FocusService],
 })
 class TestComponent {
   model = '';

@@ -27,6 +27,8 @@
 @forward '../image/icons.clarity'; // depends on variables.clarity
 @forward '../image/images.clarity'; // depends on variables.clarity, mixins.clarity, icons.clarity
 
+@forward 'custom-popover/custom-popover';
+
 //Popover
 @forward '../popover/common/popover.clarity';
 
