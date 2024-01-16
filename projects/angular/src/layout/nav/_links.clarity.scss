@@ -32,4 +32,8 @@
   a.link-visited:link {
     color: nav-variables.$clr-link-visited-color;
   }
+
+  a.link-visited-hover:link {
+    color: nav-variables.$clr-link-visited-color-hover;
+  }
 }
