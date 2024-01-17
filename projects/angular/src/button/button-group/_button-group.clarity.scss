@@ -76,8 +76,9 @@
       &:not(:last-child) {
         @include square-off-btngroup-btns(right);
       }
+
       &:disabled:not(:last-child) {
-        border-right:none;
+        border-right: none;
       }
     }
 
