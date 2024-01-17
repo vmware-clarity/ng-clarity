@@ -51,6 +51,17 @@ const variants: Parameters[] = [
     validateState: ClrLoadingState.LOADING,
     submitState: ClrLoadingState.LOADING,
   },
+  // These are flaky due to animations. The final state is the same as the default buttons.
+  // {
+  //   stateName: 'Success Buttons',
+  //   validateState: ClrLoadingState.SUCCESS,
+  //   submitState: ClrLoadingState.SUCCESS,
+  // },
+  // {
+  //   stateName: 'Error Buttons',
+  //   validateState: ClrLoadingState.ERROR,
+  //   submitState: ClrLoadingState.ERROR,
+  // },
 ];
 
 setupStorybook([ClrLoadingModule, ClrButtonModule], defaultStory, defaultParameters, variants);
