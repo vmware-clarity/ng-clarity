@@ -4,7 +4,7 @@ on:
     workflows: [PR Build]
 jobs:
   pr-visual-snapshot-update-bot:
-    if: ${{github.event.workflow_run.conclusion == 'failure'}}
+    if: ${{github.event.workflow_run.conclusion == 'success'}}
     runs-on: ubuntu-latest
     steps:
       - uses: haya14busa/action-workflow_run-status@v1
@@ -13,6 +13,12 @@ jobs:
         with:
           repo: ${{github.event.workflow_run.head_repository.full_name}}
           ref: ${{github.event.workflow_run.head_sha}}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
@@ -22,42 +28,56 @@ jobs:
       - name: Download Changes
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: visual-snapshot-changes.diff
+          name: visual-snapshot-changes-.+\.diff
+          name_is_regexp: true
           path: .
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
+      - name: Apply Changes
+        id: apply-changes
+        run: |
+          # apply changes
+          git apply visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+          rm visual-snapshot-changes-*.diff/visual-snapshot-changes-*.diff
+
+          # delete unused screenshots
+          npm run ts-node -- ./scripts/delete-unused-screenshots.ts
+      - name: Check for Changes
+        id: diff
+        run: |
+          git add .
+
+          if git diff-index --quiet HEAD
+          then
+            echo "status=clean" >> $GITHUB_OUTPUT
+          else
+            echo "status=dirty" >> $GITHUB_OUTPUT
+          fi
       - name: Push Changes
+        if: ${{steps.diff.outputs.status == 'dirty'}}
         id: push-changes
         run: |
           repositoryUrl=${{github.server_url}}/${{github.repository}}.git
           updateBranchName=visual-snapshot-update/pr-${{steps.get-pr-event.outputs.pullRequestNumber}}
 
-          if test -f visual-snapshot-changes.diff
-          then
-            # configure git
-            git config user.name "GitHub"
-            git config user.email "noreply@github.com"
+          # configure git
+          git config user.name "GitHub"
+          git config user.email "noreply@github.com"
 
-            # apply changes
-            git apply visual-snapshot-changes.diff
-            rm visual-snapshot-changes.diff
+          # commit changes
+          git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
 
-            # commit changes
-            git add .
-            git commit --message 'chore: update visual snapshots for `${{steps.get-pr-event.outputs.sourceHeadBranch}}`'
+          # push changes
+          git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
 
-            # push changes
-            git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
+          # delete branch (it's not needed, only the commit needs to be in the repo)
+          git push $repositoryUrl -d $updateBranchName
 
-            # delete branch (it's not needed, only the commit needs to be in the repo)
-            git push $repositoryUrl -d $updateBranchName
-
-            # set commit-sha for next step
-            echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          fi
+          # set commit-sha for next step
+          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Comment
-        if: ${{steps.push-changes.outputs.commit-sha}}
+        if: ${{steps.diff.outputs.status == 'dirty'}}
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
@@ -71,3 +91,6 @@ jobs:
             git cherry-pick ${{steps.push-changes.outputs.commit-sha}}
             git push
             ```
+      - name: Fail if Visual Snapshots Changed
+        if: ${{steps.diff.outputs.status == 'dirty'}}
+        run: exit 1
