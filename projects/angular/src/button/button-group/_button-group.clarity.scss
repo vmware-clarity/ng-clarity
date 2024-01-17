@@ -76,6 +76,9 @@
       &:not(:last-child) {
         @include square-off-btngroup-btns(right);
       }
+      &:disabled:not(:last-child) {
+        border-right:none;
+      }
     }
 
     .tooltip {
@@ -141,7 +144,7 @@
     }
 
     //To avoid double borders
-    .btn + .btn {
+    .btn:not([disabled]) + .btn {
       border-left: none;
     }
 
