@@ -9,7 +9,7 @@ import '@cds/core/icon/register.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
-import previewStyles from 'raw-loader!./public/preview.css';
+import previewStyles from 'raw-loader!sass-loader!./public/preview.scss';
 import docs from '../documentation.json';
 import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
 import coreTokens from 'raw-loader!../node_modules/@cds/core/global.min.css';
@@ -31,6 +31,10 @@ const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
 const cdsCoreAndShimStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles, shimStyles];
+
+if (process.env['CI'] === 'true') {
+  document.body.classList.add('disable-animations');
+}
 
 loadIcons();
 addDocs(docs);

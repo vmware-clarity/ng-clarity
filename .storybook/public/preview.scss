@@ -7,3 +7,9 @@
 body.sb-main-padded.sb-main-padded {
   padding: var(--cds-global-layout-space-lg);
 }
+
+body.disable-animations {
+  .spinner {
+    animation: none;
+  }
+}
