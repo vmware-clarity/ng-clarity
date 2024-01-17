@@ -50,11 +50,11 @@ jobs:
             # push changes
             git push $repositoryUrl HEAD:refs/heads/$updateBranchName --force
 
+            # delete branch (it's not needed, only the commit needs to be in the repo)
+            git push $repositoryUrl -d $updateBranchName
+
             # set commit-sha for next step
             echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          else
-            # delete branch if it exists
-            git push $repositoryUrl -d $updateBranchName || true
           fi
       - name: Comment
         if: ${{steps.push-changes.outputs.commit-sha}}
