@@ -1,4 +1,4 @@
-name: Delete Stale Visual Snapshot Branches Preview
+name: Delete Stale Visual Snapshot Branches
 
 on:
   # Allow workflow to be manually run from the GitHub UI
