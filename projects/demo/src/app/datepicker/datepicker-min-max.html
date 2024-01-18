@@ -4,24 +4,35 @@
  * The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<div clrForm>
-  <h6>Min/Max Dates</h6>
-  <p></p>
+<h3>Min/Max Dates</h3>
+<p></p>
+<h6>Reactive Form</h6>
+<form clrForm [formGroup]="reactiveDateForm" novalidate>
+  <clr-date-container>
+    <label for="dateControl">Date</label>
+    <input id="dateControl" name="date" type="date" clrDate formControlName="date" [min]="minDate" [max]="maxDate" />
+    <clr-control-error *clrIfError="'min'">Value must be on or after min date</clr-control-error>
+    <clr-control-error *clrIfError="'max'">Value must be on or before max date</clr-control-error>
+  </clr-date-container>
+</form>
+
+<form clrForm>
+  <h6>Template Driven Form</h6>
   <clr-date-container>
     <label>Date</label>
-    <input type="date" autocomplete="off" [(ngModel)]="model" clrDate [min]="minDate" [max]="maxDate" />
+    <input type="date" autocomplete="off" name="model" [(ngModel)]="model" clrDate [min]="minDate" [max]="maxDate" />
     <clr-control-error *clrIfError="'min'">Value must be on or after min date</clr-control-error>
     <clr-control-error *clrIfError="'max'">Value must be on or before max date</clr-control-error>
   </clr-date-container>
   <clr-input-container>
     <label>Min Date</label>
-    <input type="text" [(ngModel)]="minDate" clrInput />
+    <input type="text" name="minDate" [(ngModel)]="minDate" clrInput />
   </clr-input-container>
   <clr-input-container>
     <label>Max Date</label>
-    <input type="text" [(ngModel)]="maxDate" clrInput />
+    <input type="text" name="maxDate" [(ngModel)]="maxDate" clrInput />
   </clr-input-container>
-</div>
+</form>
 
 <button class="btn" (click)="toggleMinDate()">{{ minDate ? 'Remove' : 'Add'}} Min</button>
 <button class="btn" (click)="toggleMaxDate()">{{ maxDate ? 'Remove' : 'Add'}} Max</button>
