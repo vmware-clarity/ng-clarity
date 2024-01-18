@@ -16,7 +16,7 @@ const defaultStory: Story = args => ({
       <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
         <clr-button
           *ngFor="let _ of createArray(buttonCount); let i = index"
-          [clrInMenu]="false"
+          [clrInMenu]="false" [disabled]="disabledButtonsPosition.split(',').includes(i+1+'')"
         >
           {{content}} {{i + 1}}
         </clr-button>
@@ -48,6 +48,7 @@ const defaultParameters: Parameters = {
     createArray: { control: { disable: true }, table: { disable: true } },
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
+    disabledButtonsPosition: { description: 'Enter comma separated numbers (1,2..)', control: { type: 'text' } },
   },
   args: {
     // story helpers
@@ -56,6 +57,7 @@ const defaultParameters: Parameters = {
     content: 'Hello World!',
     buttonCount: 3,
     inMenuButtonCount: 3,
+    disabledButtonsPosition: '',
   },
 };
 
