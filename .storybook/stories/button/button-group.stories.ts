@@ -61,6 +61,16 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+setupStorybook(ClrButtonGroupModule, defaultStory, defaultParameters, generateVariants());
 
-setupStorybook(ClrButtonGroupModule, defaultStory, defaultParameters, variants);
+function generateVariants() {
+  const variants: Parameters[] = [];
+
+  for (const disabledButtonsPosition of ['', '2', '2,3']) {
+    variants.push({
+      disabledButtonsPosition,
+    });
+  }
+
+  return variants;
+}
