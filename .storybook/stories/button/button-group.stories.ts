@@ -49,7 +49,7 @@ const defaultParameters: Parameters = {
     createArray: { control: { disable: true }, table: { disable: true } },
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
-    disabledButtonsPosition: { description: 'Enter JSON array (e.g. `[2,3]`', control: { type: 'array' } },
+    disabledButtonsPosition: { description: 'Enter JSON array (e.g. `[2,3]`)', control: { type: 'array' } },
   },
   args: {
     // story helpers
