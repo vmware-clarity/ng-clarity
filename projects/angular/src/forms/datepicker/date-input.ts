@@ -196,8 +196,9 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
   private triggerControlValidation() {
     if (this.datepickerHasFormControl()) {
-      this.control?.control?.updateValueAndValidity({ emitEvent: false }); // Added emitEvent purposefully inorder to prevent unnecessary valuechange triggers
-      this.control?.control?.setErrors(this.control?.control.errors); // Inorder to revalidate and apply validation errors(if any) only when form control is touched & trigger status change event.
+      // Set `emitEvent` to false to prevent unnecessary value change event. Status change event will be emitted by `setErrors` below.
+      this.control.control?.updateValueAndValidity({ emitEvent: false });
+      this.control.control?.setErrors(this.control.control.errors);
     }
   }
 
