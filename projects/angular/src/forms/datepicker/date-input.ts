@@ -98,13 +98,13 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   @Input()
   set min(dateString: string) {
     this.dateIOService.setMinDate(dateString);
-    this.retriggerValidation();
+    this.triggerControlValidation();
   }
 
   @Input()
   set max(dateString: string) {
     this.dateIOService.setMaxDate(dateString);
-    this.retriggerValidation();
+    this.triggerControlValidation();
   }
 
   get disabled() {
@@ -191,6 +191,15 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   private setFocus(focus: boolean) {
     if (this.focusService) {
       this.focusService.focused = focus;
+    }
+  }
+
+  private triggerControlValidation() {
+    if (this.datepickerHasFormControl()) {
+      this.control?.control?.updateValueAndValidity({ emitEvent: false }); // Added emitEvent purposefully inorder to prevent unnecessary valuechange triggers
+      if (this.control.control && this.control.control.touched) {
+        this.control.control.setErrors(this.control.control.errors); // Inorder to revalidate and apply validation errors(if any) only when form control is touched & trigger status change event.
+      }
     }
   }
 
@@ -300,14 +309,5 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     return this.dateNavigationService.selectedDayChange
       .pipe(filter(date => !!date))
       .subscribe(() => this.datepickerFocusService.focusInput(this.el.nativeElement));
-  }
-
-  private retriggerValidation() {
-    if (this.datepickerHasFormControl() && !this.usingNativeDatepicker()) {
-      this.control?.control?.updateValueAndValidity({ onlySelf: true, emitEvent: false }); // Added onlySelf, emitEvent purposefully inorder to prevent unnecessary valuechange triggers
-      if (this.control.control && this.control.control.touched) {
-        this.control.control.setErrors(this.control.control.errors); // Inorder to revalidate and apply validation errors(if any) only when form control is touched.
-      }
-    }
   }
 }
