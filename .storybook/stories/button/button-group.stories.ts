@@ -16,7 +16,8 @@ const defaultStory: Story = args => ({
       <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
         <clr-button
           *ngFor="let _ of createArray(buttonCount); let i = index"
-          [clrInMenu]="false" [disabled]="disabledButtonsPosition.split(',').includes(i+1+'')"
+          [clrInMenu]="false"
+          [disabled]="disabledButtonsPosition.split(',').includes(i+1+'')"
         >
           {{content}} {{i + 1}}
         </clr-button>
