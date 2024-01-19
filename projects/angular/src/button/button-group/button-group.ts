@@ -161,15 +161,13 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   private handleFocusOnMenuOpen() {
-    if (this.menuButtons.length) {
-      this.toggleService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
-        if (visible) {
-          this.focusHandler.initialize({
-            menu: this.menu.nativeElement,
-            menuToggle: this.menuToggle.nativeElement,
-          });
-        }
-      });
-    }
+    this.toggleService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
+      if (visible) {
+        this.focusHandler.initialize({
+          menu: this.menu.nativeElement,
+          menuToggle: this.menuToggle.nativeElement,
+        });
+      }
+    });
   }
 }
