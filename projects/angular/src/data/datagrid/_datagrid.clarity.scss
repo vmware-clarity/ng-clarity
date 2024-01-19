@@ -244,9 +244,9 @@
       align-items: center;
 
       .clr-checkbox-wrapper {
-        display: block;
+        //display: block;
         // compensate for the default checkbox margin, defined in its ::before section
-        margin-top: calc(-1 * tokens.$cds-global-space-4);
+        //margin-top: calc(-1 * tokens.$cds-global-space-4);
       }
 
       &,
@@ -608,6 +608,7 @@
       }
 
       &.datagrid-fixed-column {
+        display: flex;
         flex: 0 0 datagrid-variables.$clr-datagrid-fixed-column-size;
         max-width: datagrid-variables.$clr-datagrid-fixed-column-size;
         min-width: datagrid-variables.$clr-datagrid-fixed-column-size;
@@ -860,16 +861,17 @@
 
   .datagrid-select {
     .clr-control-label {
+      max-height: tokens.$cds-global-space-7;
       min-height: tokens.$cds-global-space-6;
-      margin-top: calc(-1 * tokens.$cds-global-space-3);
-      padding-left: tokens.$cds-global-space-7;
+      //margin-top: calc(-1 * tokens.$cds-global-space-3);
+      //padding-left: tokens.$cds-global-space-7;
     }
   }
 
   .datagrid-table > .datagrid-row .datagrid-select {
     .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before,
     .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::after {
-      top: 50%;
+      //top: 50%;
     }
   }
 
@@ -949,7 +951,7 @@
       }
 
       .clr-form-control-disabled .datagrid-footer-select.clr-checkbox-wrapper input[type='checkbox']:checked + label {
-        top: 0;
+        //top: 0;
       }
     }
   }

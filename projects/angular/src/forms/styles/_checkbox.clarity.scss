@@ -20,8 +20,8 @@
     position: relative;
     display: flex;
 
-    .clr-control-label.clr-control-label:not(:has(> .clr-checkbox-label-text)),
-    .clr-control-label:has(> .clr-checkbox-label-text) > .clr-checkbox-label-text {
+    //.clr-control-label.clr-control-label:not(:has(> .clr-checkbox-label-text)),
+    .clr-control-label > .clr-checkbox-label-text {
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-checkbox-label-height,
         forms-variables.$clr-forms-checkbox-padding-left,
@@ -39,9 +39,9 @@
       & > .clr-checkbox-label-text {
         display: inline-flex;
         min-height: tokens.$cds-global-space-5;
-        padding: 0 0 0 tokens.$cds-global-space-7;
+        padding: 0;
 
-        @include mixins.generate-typography-token('CAPTION-SM-10');
+        //@include mixins.generate-typography-token('CAPTION-SM-10');
       }
     }
 
@@ -53,9 +53,7 @@
 
     //Checkbox base
     input[type='checkbox'] + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before {
+    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::before {
       @include forms-mixins.checkbox-radio-shared-inactive(
         forms-variables.$clr-forms-checkbox-height,
         forms-variables.$clr-forms-checkbox-top,
@@ -67,17 +65,13 @@
     }
 
     input[type='checkbox']:focus + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']:focus
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:focus + .clr-control-label > .clr-checkbox-input-visualization::before {
       @include mixins.include-outline-style-form-fields();
     }
 
     //Checkmark
     input[type='checkbox'] + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox']
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::after {
+    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::after {
       position: absolute;
       content: '';
       display: none;
@@ -92,45 +86,46 @@
       transform: translate(0, $mark-half-size) rotate(-45deg);
     }
 
+    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization {
+      display: inline-flex;
+      &::before {
+        position: static;
+        display: inline-flex;
+      }
+
+      &::after {
+        top: auto;
+      }
+    }
+
     input[type='checkbox']:checked + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']:checked
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::before {
       background: forms-variables.$clr-forms-checkbox-background-color;
       border: none;
     }
 
     input[type='checkbox']:checked + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox']:checked
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::after {
-      display: inline-block;
+    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::after {
+      display: inline-flex;
     }
 
-    input[type='checkbox'].clr-indeterminate
-      + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']:indeterminate + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox'].clr-indeterminate
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before,
-    input[type='checkbox']:indeterminate
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before {
-      border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+    input[type='checkbox'].clr-indeterminate + .clr-control-label,
+    input[type='checkbox']:indeterminate + .clr-control-label {
+      &:not(:has(> .clr-checkbox-input-visualization))::before,
+      & > .clr-checkbox-input-visualization::before {
+        border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+      }
     }
 
-    input[type='checkbox'].clr-indeterminate + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox']:indeterminate + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox'].clr-indeterminate
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::after,
-    input[type='checkbox']:indeterminate
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::after {
-      border-left: none;
-      border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
-      display: inline-block;
-      transform: translate(0, $mark-half-size);
+    input[type='checkbox'].clr-indeterminate + .clr-control-label,
+    input[type='checkbox']:indeterminate + .clr-control-label {
+      &:not(:has(> .clr-checkbox-input-visualization))::after,
+      & > .clr-checkbox-input-visualization::after {
+        border-left: none;
+        border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+        display: inline-block;
+        transform: translate(0, $mark-half-size);
+      }
     }
 
     &.clr-checkbox-inline {
@@ -138,16 +133,11 @@
     }
   }
 
-  .clr-error
-    .clr-checkbox-wrapper
-    input[type='checkbox']
-    + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-  .clr-error
-    .clr-checkbox-wrapper
-    input[type='checkbox']
-    + .clr-control-label:has(> .clr-checkbox-input-visualization)
-    > .clr-checkbox-input-visualization::before {
-    border-color: forms-variables.$clr-forms-invalid-color;
+  .clr-error .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
+    &:not(:has(> .clr-checkbox-input-visualization))::before,
+    & > .clr-checkbox-input-visualization::before {
+      border-color: forms-variables.$clr-forms-invalid-color;
+    }
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
@@ -157,20 +147,20 @@
       color: forms-variables.$clr-forms-label-disabled-color;
     }
 
-    input[type='checkbox'] + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']
-      + .clr-control-label:has(> .clr-checkbox-input-visualization)
-      > .clr-checkbox-input-visualization::before {
+    input[type='checkbox'] + .clr-control-label::before,
+    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::before {
       background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
       border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
     }
 
-    input[type='checkbox']:checked + .clr-control-label::before {
+    input[type='checkbox']:checked + .clr-control-label::before,
+    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::before {
       background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
       border: none;
     }
 
-    input[type='checkbox']:checked + .clr-control-label::after {
+    input[type='checkbox']:checked + .clr-control-label::after,
+    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::after {
       border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
     }
 

@@ -59,6 +59,7 @@
             />
             <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
             <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
+              <span class="clr-checkbox-input-visualization"> </span>
               <span class="clr-sr-only">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>
             </label>
           </clr-checkbox-wrapper>
