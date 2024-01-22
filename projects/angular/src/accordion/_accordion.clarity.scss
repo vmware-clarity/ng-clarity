@@ -80,7 +80,7 @@
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    padding: accordion-variables.$clr-accordion-header-button-padding;
+    padding: tokens.$cds-global-space-8;
     background: transparent;
     text-align: left;
     cursor: pointer;
@@ -101,7 +101,7 @@
   }
 
   .clr-accordion-status {
-    width: tokens.$cds-global-space-7;
+    width: tokens.$cds-global-space-11;
     display: inline-block;
     vertical-align: top;
   }
