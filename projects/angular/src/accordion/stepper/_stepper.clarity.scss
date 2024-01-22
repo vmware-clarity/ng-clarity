@@ -10,7 +10,7 @@
 @use '@cds/core/tokens/tokens.scss';
 @use '../variables.accordion' as accordion-variables;
 @include meta.load-css('../properties.accordion');
-// TODO: Add properties file
+// TODO: Add properties file if needed
 
 .clr-stepper-forms {
   .clr-accordion-panel {
@@ -25,7 +25,7 @@
 
   .clr-accordion-panel-open {
     .clr-accordion-header {
-      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator !important;
+      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
   }
 
@@ -41,7 +41,7 @@
   .clr-accordion-number {
     @include mixins.generate-typography-token('BODY-14-SB-STD');
     padding: 0 tokens.$cds-global-space-7;
-    display: inline-block !important;
+    display: inline-block;
   }
 
   .clr-accordion-description {
@@ -76,7 +76,7 @@
 }
 
 clr-stepper-panel .clr-accordion-inner-content {
-  padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11} !important;
+  padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
 }
 
 .clr-accordion-panel-complete {
@@ -90,7 +90,7 @@ clr-stepper-panel .clr-accordion-inner-content {
   }
 
   .clr-accordion-header {
-    box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete !important;
+    box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
   }
 
   .ng-trigger.clr-accordion-content {
