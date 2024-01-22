@@ -1183,6 +1183,11 @@
   --clr-signpost-content-close-button-dimensions: var(--cds-global-space-7);
   --clr-signpost-content-close-icon-dimensions: var(--cds-global-space-7);
 
+  // ATM - set as default
+  .signpost-content-body {
+    margin-top: 0;
+  }
+
   /* StackView */
 
   --clr-stack-view-border-color: var(--cds-alias-object-border-color); // var(--clr-color-neutral-400);
