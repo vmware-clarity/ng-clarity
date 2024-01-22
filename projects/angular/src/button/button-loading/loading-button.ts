@@ -36,7 +36,7 @@ const MIN_BUTTON_WIDTH = 42;
   animations: [
     trigger('parent', [
       // Skip :enter animation on first render.
-      // The button text/content should only be faded when transitioning from a non-default state.
+      // The button text/content should only be faded when transitioning to or from a non-default state.
       transition(':enter', []),
     ]),
     trigger('defaultButton', [
