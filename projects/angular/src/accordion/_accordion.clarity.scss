@@ -52,7 +52,6 @@
       }
     }
 
-    // TODO: Double check
     .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
       background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
 
@@ -70,7 +69,6 @@
     }
   }
 
-  // TODO: Check whether this is even used (display: none)
   .clr-accordion-number {
     padding: 0 tokens.$cds-global-space-7;
     display: none;

@@ -10,7 +10,6 @@
 @use '@cds/core/tokens/tokens.scss';
 @use '../variables.accordion' as accordion-variables;
 @include meta.load-css('../properties.accordion');
-// TODO: Add properties file if needed
 
 .clr-stepper-forms {
   .clr-accordion-panel {
