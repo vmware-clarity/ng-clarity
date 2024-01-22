@@ -3,12 +3,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use 'sass:color';
 @use '../../utils/mixins';
 @use '@cds/core/tokens/tokens.scss';
-
-@use '../../utils/variables/variables';
-@use 'variables.forms' as forms-variables;
 
 @include mixins.exports('forms.properties') {
   :root [cds-theme] {
@@ -42,15 +38,15 @@
     --clr-forms-label-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
 
     // Input
-    --clr-forms-input-padding: 0 calc(4 * #{forms-variables.$clr-forms-baseline} / 3);
-    --clr-forms-input-wrapper-height: calc(4 * #{forms-variables.$clr-forms-baseline});
+    --clr-forms-input-padding: 0 calc(4 * var(--clr-forms-baseline) / 3);
+    --clr-forms-input-wrapper-height: calc(4 * var(--clr-forms-baseline));
 
     // Input group
     --clr-forms-input-group-icon-action-size: #{tokens.$cds-global-space-7};
 
     // Checkbox
     --clr-forms-checkbox-height: #{tokens.$cds-global-space-7};
-    --clr-forms-checkbox-border-radius: var(--clr-global-borderradius);
+    --clr-forms-checkbox-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
     --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
     --clr-forms-checkbox-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
@@ -65,13 +61,6 @@
     --clr-forms-checkbox-disabled-mark-color: #{tokens.$cds-alias-object-interaction-background};
 
     // Radio
-    //--clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
-    //--clr-forms-radio-focused-shadow: 0
-    //  0
-    //  #{mixins.$clr-outline-blur}
-    //  #{mixins.$clr-outline-spread}
-    //  #{mixins.$clr-outline-color};
-
     --clr-forms-radio-label-color: var(--clr-forms-label-color);
     --clr-forms-radio-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
     --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color);
