@@ -5,6 +5,7 @@
  */
 
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'clr-datepicker-min-max-demo',
@@ -15,10 +16,11 @@ export class DatepickerMinMaxDemo {
   minDate = '2017-04-01';
   maxDate = '2017-04-30';
   model = '04/15/2017';
+  reactiveDateForm = new FormGroup({ date: new FormControl('04/15/2017') });
 
   toggleMaxDate() {
-    if (this.minDate) {
-      this.maxDate = '';
+    if (this.maxDate) {
+      this.maxDate = null;
     } else {
       this.maxDate = '2019-11-19';
     }
