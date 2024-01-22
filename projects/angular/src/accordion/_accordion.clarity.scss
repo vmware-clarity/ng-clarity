@@ -17,6 +17,10 @@
     margin-bottom: tokens.$cds-global-space-9;
   }
 
+  .clr-accordion-panel {
+    display: block;
+  }
+
   .clr-accordion-header {
     color: accordion-variables.$clr-accordion-text-color;
     box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
@@ -37,6 +41,15 @@
     &:active {
       color: accordion-variables.$clr-accordion-text-color-active;
       background-color: accordion-variables.$clr-accordion-header-active-background-color;
+    }
+
+    .clr-accordion-panel-disabled > div > & {
+      background-color: accordion-variables.$clr-accordion-header-background-color;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-background-color;
+      }
     }
 
     // TODO: Double check
@@ -64,18 +77,12 @@
   }
 
   .clr-accordion-header-button {
-    // TODO: Add missing props
-    padding: accordion-variables.$clr-accordion-header-button-padding;
-  }
-
-  .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
     flex: 1 1 0;
     width: 100%;
     border: 0;
-    // TODO: Double check
-    //padding: tokens.$cds-global-space-8;
+    padding: accordion-variables.$clr-accordion-header-button-padding;
     background: transparent;
     text-align: left;
     cursor: pointer;
