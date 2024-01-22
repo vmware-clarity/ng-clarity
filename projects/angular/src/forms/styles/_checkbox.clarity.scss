@@ -20,7 +20,7 @@
     position: relative;
     display: flex;
 
-    .clr-control-label.clr-control-label:not(:has(> .clr-checkbox-input-visualization)),
+    .clr-control-label:not(:has(> .clr-checkbox-input-visualization)),
     .clr-control-label > .clr-checkbox-label-text {
       @include forms-mixins.checkbox-radio-label-styles(
         forms-variables.$clr-forms-checkbox-label-height,
@@ -142,7 +142,8 @@
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
-    .clr-control-label {
+    .clr-control-label,
+    .clr-control-label > .clr-checkbox-label-text {
       cursor: not-allowed;
 
       color: forms-variables.$clr-forms-label-disabled-color;
