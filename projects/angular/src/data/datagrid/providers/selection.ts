@@ -86,13 +86,11 @@ export class Selection<T = any> {
 
             // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
             if (this.currentSingle && !this.prevSingleSelectionRef) {
-              if (this._items.canTrackBy()) {
-                this.prevSingleSelectionRef = this._items.trackBy(this.currentSingle);
-              }
+              this.prevSingleSelectionRef = this._items.trackBy(this.currentSingle);
             }
 
-            updatedItems.forEach((item, index) => {
-              const ref = this._items.trackBy(item, index);
+            updatedItems.forEach(item => {
+              const ref = this._items.trackBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
               if (this.prevSingleSelectionRef === ref) {
                 newSingle = item;
@@ -129,12 +127,10 @@ export class Selection<T = any> {
 
             // if the current has been set before data was loaded, we look up and save the ref from current data set
             if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
-              if (this._items.canTrackBy()) {
-                this.prevSelectionRefs = [];
-                this.current.forEach(item => {
-                  this.prevSelectionRefs.push(this._items.trackBy(item));
-                });
-              }
+              this.prevSelectionRefs = [];
+              this.current.forEach(item => {
+                this.prevSelectionRefs.push(this._items.trackBy(item));
+              });
             }
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -142,8 +138,8 @@ export class Selection<T = any> {
             // locked or not and update it. When only add items that are found in the lockedRefs back.
             //
             // The both loops below that goes over updatedItems could be combined into one.
-            updatedItems.forEach((item, index) => {
-              const ref = this._items.trackBy(item, index);
+            updatedItems.forEach(item => {
+              const ref = this._items.trackBy(item);
               if (this.lockedRefs.indexOf(ref) > -1) {
                 updateLockedRef.push(ref);
               }
@@ -153,8 +149,8 @@ export class Selection<T = any> {
             // currently, the selection is cleared when filter is applied, so the logic inside
             // the if statement below results in broken behavior.
             if (leftOver.length > 0) {
-              updatedItems.forEach((item, index) => {
-                const ref = this._items.trackBy(item, index);
+              updatedItems.forEach(item => {
+                const ref = this._items.trackBy(item);
                 // Look in current selected refs array if item is selected, and update actual value
                 const selectedIndex = this.prevSelectionRefs.indexOf(ref);
                 if (selectedIndex > -1) {
@@ -228,7 +224,7 @@ export class Selection<T = any> {
     }
 
     this._currentSingle = value;
-    if (this._items.canTrackBy() && value) {
+    if (value) {
       this.prevSingleSelectionRef = this._items.trackBy(value);
     }
     this.emitChange();
@@ -386,10 +382,8 @@ export class Selection<T = any> {
    */
   private selectItem(item: T): void {
     this.current = this.current.concat(item);
-    if (this._items.canTrackBy()) {
-      // Push selected ref onto array
-      this.prevSelectionRefs.push(this._items.trackBy(item));
-    }
+    // Push selected ref onto array
+    this.prevSelectionRefs.push(this._items.trackBy(item));
   }
 
   /**
@@ -409,7 +403,7 @@ export class Selection<T = any> {
    * Make sure that it could be locked
    */
   private canItBeLocked(): boolean {
-    return this._selectionType !== SelectionType.None && this._items.canTrackBy();
+    return this._selectionType !== SelectionType.None;
   }
 
   private emitChange() {
