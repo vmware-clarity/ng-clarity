@@ -237,6 +237,35 @@ export default function () {
       });
     });
   });
+
+  describe('with an initially-closed alert', () => {
+    @Component({
+      template: `
+        <clr-alerts>
+          <clr-alert [clrAlertClosed]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is the alert!</span>
+            </clr-alert-item>
+          </clr-alert>
+        </clr-alerts>
+      `,
+    })
+    class InitiallyClosedAlertTestComponent {}
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrEmphasisModule],
+        declarations: [InitiallyClosedAlertTestComponent],
+      });
+    });
+
+    it('does not throw an error', () => {
+      const fixture = TestBed.createComponent(InitiallyClosedAlertTestComponent);
+      fixture.detectChanges();
+
+      // test will pass if no error is thrown
+    });
+  });
 }
 
 @Component({
