@@ -31,10 +31,7 @@
       // Dropdown Header
       --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400};
       --clr-dropdown-header-padding: 0 #{tokens.$cds-global-space-7};
-      --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium}; // keep only font-weight
-      --clr-dropdown-header-font-size: #{tokens.$cds-alias-typography-secondary-font-size};
-      --clr-dropdown-header-line-height: #{tokens.$cds-global-space-9};
-      --clr-dropdown-header-letter-spacing: #{tokens.$cds-alias-typography-secondary-letter-spacing};
+      --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
       --clr-dropdown-subsection-offset: #{tokens.$cds-global-space-10}; //2x16px
 
       // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
