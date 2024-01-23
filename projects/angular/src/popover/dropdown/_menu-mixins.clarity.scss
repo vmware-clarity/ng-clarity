@@ -40,7 +40,7 @@
   @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
   color: dropdown-variables.$clr-dropdown-item-color;
-  background: transparent;
+  background-color: dropdown-variables.$clr-dropdown-item-bg-color;
   border: 0;
   cursor: pointer;
   display: flex;
@@ -51,19 +51,22 @@
   width: 100%;
   text-transform: none;
 
+  &.active:hover,
   &:hover {
-    background-color: dropdown-variables.$clr-dropdown-bg-hover-color;
     color: dropdown-variables.$clr-dropdown-item-hover-color;
+    background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
     text-decoration: none;
   }
 
   &.active {
-    background-color: dropdown-variables.$clr-dropdown-selection-color;
-    color: dropdown-variables.$clr-dropdown-active-text-color;
+    color: dropdown-variables.$clr-dropdown-item-selected-color;
+    background-color: dropdown-variables.$clr-dropdown-item-selected-bg-color;
   }
 
+  &.active:active,
   &:active {
-    box-shadow: none;
+    color: dropdown-variables.$clr-dropdown-item-active-color;
+    background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
   }
 
   &:focus {
@@ -74,6 +77,7 @@
   &:disabled {
     pointer-events: none;
     color: dropdown-variables.$clr-dropdown-item-disabled-color;
+    background-color: dropdown-variables.$clr-dropdown-item-disabled-bg-color;
     user-select: none;
 
     &:hover {

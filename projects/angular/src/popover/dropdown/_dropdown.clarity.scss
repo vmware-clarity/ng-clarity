@@ -164,17 +164,23 @@
           transform: rotate(-90deg);
         }
 
+        &:hover:after {
+          background-color: dropdown-variables.$clr-dropdown-item-hover-color;
+        }
+        &:active:after {
+          background-color: dropdown-variables.$clr-dropdown-item-active-color;
+        }
+
+        &.active:after {
+          background-color: dropdown-variables.$clr-dropdown-item-selected-color;
+        }
+
         &.disabled,
         &:disabled {
           &:after {
             background-color: dropdown-variables.$clr-dropdown-item-disabled-color;
           }
         }
-      }
-
-      &:active {
-        color: dropdown-variables.$clr-dropdown-active-text-color;
-        background-color: dropdown-variables.$clr-dropdown-active-background-color;
       }
     }
 
