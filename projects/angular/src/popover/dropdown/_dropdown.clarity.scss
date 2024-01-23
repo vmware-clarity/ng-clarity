@@ -166,6 +166,13 @@
           @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-size);
           transform: rotate(-90deg);
         }
+
+        &.disabled,
+        &:disabled {
+          &:after {
+            background-color: dropdown-variables.$clr-dropdown-item-disabled-color;
+          }
+        }
       }
 
       &:active {

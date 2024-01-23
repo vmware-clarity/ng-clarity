@@ -73,7 +73,7 @@
   &.disabled,
   &:disabled {
     pointer-events: none;
-    opacity: 0.4;
+    color: dropdown-variables.$clr-dropdown-item-disabled-color;
     user-select: none;
 
     &:hover {

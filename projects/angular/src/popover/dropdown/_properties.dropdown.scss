@@ -41,6 +41,7 @@
       // Dropdown Item
       --clr-dropdown-item-color: var(--clr-dropdown-text-color);
       --clr-dropdown-item-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-dropdown-item-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
       --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
 
       // ATM replace with typography mixin. Check why these are redefined in datagrid and alert
