@@ -101,7 +101,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
     const isCurrentAlert = this.multiAlertService?.currentAlert === this;
     this._closed = true;
-    if (this.multiAlertService) {
+    if (this.multiAlertService?.activeAlerts) {
       this.multiAlertService.close(isCurrentAlert);
     }
     this._closedChanged.emit(true);
