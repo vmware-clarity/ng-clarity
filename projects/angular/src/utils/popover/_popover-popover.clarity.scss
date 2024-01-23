@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use '../mixins';
 @use '../variables/variables.global';
+@use '@angular/cdk/overlay-prebuilt.css';
 
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.

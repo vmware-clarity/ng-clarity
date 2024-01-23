@@ -83,10 +83,6 @@ export default function (): void {
         expect(this.eventService).toBeDefined();
       });
 
-      it('declares a Popover PositionService', function (this: Context) {
-        expect(this.positionService).toBeDefined();
-      });
-
       it('declares a Popover ToggleService', function (this: Context) {
         expect(this.toggleService).toBeDefined();
       });
@@ -112,7 +108,6 @@ export default function (): void {
         this.testComponent.openState = true; // Add content to the DOM
         this.fixture.detectChanges();
         expect(alignContentSpy).not.toHaveBeenCalled();
-        this.positionService.realign();
         this.fixture.detectChanges();
         tick();
         // Make sure it has been called exactly one time
@@ -127,19 +122,6 @@ export default function (): void {
         expect(this.toggleService.open).toBe(false);
         this.testComponent.openState = false;
         expect(this.toggleService.open).toBe(false);
-      });
-
-      it('binds to [clrPopoverContentAt] position', function (this: Context) {
-        expect(this.testComponent.smartPosition).toEqual(this.positionService.position);
-        const newPosition: ClrPopoverPosition = {
-          anchor: ClrAlignment.CENTER,
-          axis: ClrAxis.HORIZONTAL,
-          content: ClrAlignment.CENTER,
-          side: ClrSide.AFTER,
-        };
-        this.testComponent.smartPosition = newPosition;
-        this.fixture.detectChanges();
-        expect(this.positionService.position).toEqual(newPosition);
       });
 
       it('binds to [clrPopoverContentOutsideClickToClose]', function (this: Context) {

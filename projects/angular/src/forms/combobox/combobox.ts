@@ -37,7 +37,6 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';
@@ -116,7 +115,6 @@ export class ClrCombobox<T>
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
     private toggleService: ClrPopoverToggleService,
-    private positionService: ClrPopoverPositionService,
     @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -243,7 +241,6 @@ export class ClrCombobox<T>
 
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
-    this.positionService.realign();
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
       this.focusFirstActive();
     }
@@ -314,9 +311,6 @@ export class ClrCombobox<T>
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
-        if (this.multiSelect) {
-          this.positionService.realign();
-        }
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
           this.toggleService.open = false;
         }
