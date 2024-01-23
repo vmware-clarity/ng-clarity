@@ -162,6 +162,7 @@
           background-color: dropdown-variables.$clr-dropdown-item-color;
           @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-size);
           transform: rotate(-90deg);
+          margin-left: auto;
         }
 
         &:hover:after {

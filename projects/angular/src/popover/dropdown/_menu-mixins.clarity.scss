@@ -44,8 +44,8 @@
   border: 0;
   cursor: pointer;
   display: flex;
+  gap: tokens.$cds-global-space-3;
   align-items: center;
-  justify-content: space-between;
   height: auto;
   margin: 0;
   width: 100%;
