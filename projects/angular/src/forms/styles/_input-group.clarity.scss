@@ -57,6 +57,7 @@
     .clr-input-group-icon-action {
       @include mixins.clr-no-styles-button();
       padding: 0 calc(1.5 * #{forms-variables.$clr-forms-baseline});
+      cursor: pointer;
 
       cds-icon,
       clr-icon {
