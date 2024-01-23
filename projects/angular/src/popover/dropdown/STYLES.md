@@ -14,7 +14,6 @@
 | --clr-dropdown-child-border-color      | The border color of child dropdown items.          |
 | --clr-dropdown-bg-hover-color          | The background color of the hovered dropdown item. |
 | --clr-dropdown-selection-color         | The color of the selected dropdown item.           |
-| --clr-dropdown-box-shadow              | The box shadow of the dropdown.                    |
 | --clr-dropdown-text-color              | The text color of the dropdown.                    |
 | --clr-dropdown-header-color            | The color of the dropdown menu header.             |
 | --clr-dropdown-header-padding          | Padding of the dropdown menu header.               |
