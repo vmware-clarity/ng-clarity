@@ -280,10 +280,6 @@
       }
 
       .dropdown-toggle.nav-icon {
-        width: calc(
-          header-variables.$clr-header-action-cog-right + header-variables.$clr-header-action-icon-size +
-            tokens.$cds-global-space-7
-        );
         padding-right: 0;
       }
 

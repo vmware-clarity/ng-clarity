@@ -36,7 +36,7 @@
 
       clr-icon[shape^='caret'],
       clr-icon[shape^='angle'] {
-        position: absolute;
+        //position: absolute;
         color: inherit;
         @include mixins.min-equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
       }
@@ -47,19 +47,19 @@
       cds-icon[shape^='caret'],
       cds-icon[shape^='angle'] {
         margin-top: unset;
-        position: absolute;
+        //position: absolute;
         color: inherit;
         @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
         // need custom property override here to force minimum size of
         // cds-icon to be 12px across the shadow dom...
-        --cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
+        //--cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
       }
 
       $clr-dropdown-caret-left-margin: tokens.$cds-global-space-2;
       &.btn {
-        padding-right: calc(
-          #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}
-        );
+        //padding-right: calc(
+        //  #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}
+        //);
         text-overflow: unset;
 
         clr-icon {
@@ -78,8 +78,7 @@
       }
 
       &:not(.btn) {
-        padding: 0 calc(#{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}) 0
-          0;
+        padding: 0; // calc(#{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}) 0 0;
         color: dropdown-variables.$clr-dropdown-active-text-color;
 
         cds-icon[shape^='caret'],
@@ -153,22 +152,19 @@
       @extend %dropdown-content;
 
       &.expandable {
-        $clr-dropdown-caret-margin-top: tokens.$cds-global-space-4;
+        padding-right: tokens.$cds-global-space-5;
 
-        margin-right: tokens.$cds-global-space-9;
-        padding-right: tokens.$cds-global-space-6;
-
-        &:before {
+        &:after {
           content: '';
-          float: right;
+          -webkit-mask: icons.generateCaretIcon("'none'");
+          mask: icons.generateCaretIcon("'none'");
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+          -webkit-mask-size: cover;
+          mask-size: cover;
+          background-color: dropdown-variables.$clr-dropdown-item-color;
           @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-size);
           transform: rotate(-90deg);
-          // ATM remove - don't use CSS generated icon
-          background-image: icons.generateCaretIcon();
-          @include images.icon-background-styles();
-          // ATM remove - internal only, while we need a fallback
-          // we should rework it to be centered without dependency on a top margin
-          margin-top: tokens.$cds-global-space-4;
         }
       }
 

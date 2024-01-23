@@ -37,21 +37,15 @@
 }
 
 @mixin generate-dropdown-item() {
-  @include mixins.generate-typography-token(
-    'SECONDARY-13-RG-EXP',
-    (
-      font-size: dropdown-variables.$clr-dropdown-item-font-size,
-      font-weight: dropdown-variables.$clr-dropdown-item-font-weight,
-      line-height: dropdown-variables.$clr-dropdown-item-line-height,
-      letter-spacing: dropdown-variables.$clr-dropdown-item-letter-spacing,
-    )
-  );
+  @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
   color: dropdown-variables.$clr-dropdown-item-color;
   background: transparent;
   border: 0;
   cursor: pointer;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: auto;
   margin: 0;
   width: 100%;
