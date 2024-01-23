@@ -10,13 +10,12 @@ import { Observable } from 'rxjs';
 
 import { Keys } from '../../enums/keys.enum';
 import { ClrPopoverEventsService } from './popover-events.service';
-import { ClrPopoverPositionService } from './popover-position.service';
 import { ClrPopoverToggleService } from './popover-toggle.service';
 
 @Component({
   selector: 'test-host',
   template: '',
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
+  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
 })
 class TestHost {}
 

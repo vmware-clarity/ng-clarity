@@ -8,7 +8,6 @@ import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
@@ -20,7 +19,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverEventsService],
 })
 class FullTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -34,7 +33,7 @@ class FullTest {
       <li *clrOptionItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverEventsService],
 })
 class TrackByIndexTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
@@ -48,7 +47,7 @@ class TrackByIndexTest {
       <li *clrOptionItems="let n of numbers; field: 'a'">{{ n.a }}</li>
     </ul>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverEventsService],
 })
 class ObjectDataTest {
   @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;

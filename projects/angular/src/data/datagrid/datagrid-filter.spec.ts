@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrDatagridFilter } from './datagrid-filter';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
@@ -210,7 +209,7 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       </clr-dg-filter>
     </clr-dg-column>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
+  providers: [ClrPopoverEventsService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
