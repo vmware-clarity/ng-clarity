@@ -68,6 +68,7 @@
         variables.$clr-use-custom-properties
       );
       padding: 0 forms-variables.$clr-forms-baseline * 1.5;
+      cursor: pointer;
 
       cds-icon,
       clr-icon {
