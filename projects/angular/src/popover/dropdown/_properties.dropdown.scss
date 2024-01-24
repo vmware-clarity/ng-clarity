@@ -50,11 +50,6 @@
       --clr-dropdown-item-disabled-bg-color: #{tokens.$cds-alias-object-interaction-background-disabled};
       --clr-dropdown-item-padding: 0 #{tokens.$cds-global-space-7};
 
-      // ATM replace with typography mixin. Check why these are redefined in datagrid and alert
-      --clr-dropdown-font-size: var(--clr-p5-font-size);
-      --clr-dropdown-line-height: var(--clr-p5-line-height);
-      --clr-dropdown-font-weight: var(--clr-p5-font-weight);
-      --clr-dropdown-letter-spacing: var(--clr-p5-letter-spacing);
       // Dropdown Items List
       --clr-dropdown-items-padding: #{tokens.$cds-global-space-6} 0;
       --clr-dropdown-border-radius: #{tokens.$cds-alias-object-border-radius-100};
