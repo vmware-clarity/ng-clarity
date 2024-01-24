@@ -21,6 +21,7 @@
 | --clr-dropdown-item-color              | The color of the dropdown item.                    |
 | --clr-dropdown-item-disabled-color     | The color of disabled dropdown item.               |
 | --clr-dropdown-item-padding            | Single menu item padding                           |
+| --clr-dropdown-item-font-weight        | Dropdown menu item font weight                     |
 | --clr-dropdown-items-padding           | Menu items list overall padding                    |
 | --clr-dropdown-border-radius           | Menu items list border radius                      |
 | --clr-dropdown-trigger-caret-icon-size | Size of the dropdown trigger button caret.         |

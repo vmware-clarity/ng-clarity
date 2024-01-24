@@ -37,7 +37,12 @@
 }
 
 @mixin generate-dropdown-item() {
-  @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+  @include mixins.generate-typography-token(
+    'SECONDARY-13-RG-EXP',
+    (
+      font-weight: dropdown-variables.$clr-dropdown-item-font-weight,
+    )
+  );
 
   color: dropdown-variables.$clr-dropdown-item-color;
   background-color: dropdown-variables.$clr-dropdown-item-bg-color;
