@@ -95,7 +95,7 @@ export default function (): void {
       toggle.click();
       context.detectChanges();
 
-      const actionItem: HTMLElement = document.querySelector('.clr-popover-content > .action-item');
+      const actionItem: HTMLElement = document.querySelector('.clr-popover-content .action-item');
       actionItem.click();
       context.detectChanges();
       expect(context.clarityDirective.open).toBe(false);
