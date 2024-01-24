@@ -16,6 +16,7 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { DoCheck } from '@angular/core';
 import { ElementRef } from '@angular/core';
@@ -39,6 +40,8 @@ import { Observable } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
@@ -735,7 +738,7 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
 export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -828,7 +831,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": "placeholder"; "multiSelect": "clrMulti"; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -2826,7 +2829,7 @@ export class ClrOption<T> implements OnInit {
 
 // @public (undocumented)
 export class ClrOptionItems<T> implements DoCheck, OnDestroy {
-    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, optionService: OptionSelectionService<T>, positionService: ClrPopoverPositionService, vcr: ViewContainerRef);
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, optionService: OptionSelectionService<T>, vcr: ViewContainerRef);
     // (undocumented)
     set field(field: string);
     // (undocumented)
@@ -2956,12 +2959,10 @@ export class ClrPopoverAnchor {
 }
 
 // @public (undocumented)
-export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
-    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, smartPositionService: ClrPopoverPositionService, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
+export class ClrPopoverContent implements OnDestroy {
+    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
     // (undocumented)
-    set contentAt(position: ClrPopoverPosition);
-    // (undocumented)
-    ngAfterContentChecked(): void;
+    set contentAt(position: ClrPopoverPosition | ConnectedPosition[]);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -2979,14 +2980,7 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrPopoverEventsService implements OnDestroy {
-    constructor(renderer: Renderer2, smartOpenService: ClrPopoverToggleService, document: HTMLDocument);
-    // (undocumented)
-    addClickListener(): void;
-    // (undocumented)
-    addEscapeListener(): void;
-    // (undocumented)
-    addScrollListener(): void;
+export class ClrPopoverEventsService {
     // (undocumented)
     anchorButtonRef: ElementRef;
     // (undocumented)
@@ -2994,17 +2988,7 @@ export class ClrPopoverEventsService implements OnDestroy {
     // (undocumented)
     contentRef: ElementRef;
     // (undocumented)
-    ignoredEvent: any;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     outsideClickClose: boolean;
-    // (undocumented)
-    removeClickListener(): void;
-    // (undocumented)
-    removeEscapeListener(): void;
-    // (undocumented)
-    removeScrollListener(): void;
     // (undocumented)
     scrollToClose: boolean;
     // (undocumented)
@@ -3048,27 +3032,6 @@ export interface ClrPopoverPosition {
     content: ClrAlignment;
     // (undocumented)
     side: ClrSide;
-}
-
-// @public (undocumented)
-export class ClrPopoverPositionService {
-    constructor(eventService: ClrPopoverEventsService, platformId: any);
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverContentOffset" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    alignContent(content: HTMLElement): ClrPopoverContentOffset;
-    // (undocumented)
-    platformId: any;
-    // (undocumented)
-    position: ClrPopoverPosition;
-    // (undocumented)
-    realign(): void;
-    // (undocumented)
-    shouldRealign: Observable<void>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverPositionService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverPositionService>;
 }
 
 // @public (undocumented)
