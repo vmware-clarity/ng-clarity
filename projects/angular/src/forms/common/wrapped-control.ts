@@ -6,12 +6,15 @@
 
 import {
   Directive,
+  DoCheck,
   ElementRef,
   HostBinding,
   HostListener,
   InjectionToken,
   Injector,
   Input,
+  KeyValueDiffer,
+  KeyValueDiffers,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -31,8 +34,13 @@ import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
 
+export enum CHANGE_KEYS {
+  FORM = 'form',
+  MODEL = 'model',
+}
+
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
   protected renderer: Renderer2;
@@ -47,6 +55,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
+  private differs: KeyValueDiffers;
+  private differ: KeyValueDiffer<any, any>;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -54,19 +64,19 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl,
+    private ngControl: NgControl | null,
     renderer: Renderer2,
     el: ElementRef
   ) {
     this.renderer = renderer;
     this.el = el;
-    try {
-      this.ngControlService = injector.get(NgControlService);
-      this.ifControlStateService = injector.get(IfControlStateService);
-      this.controlClassService = injector.get(ControlClassService);
-      this.markControlService = injector.get(MarkControlService);
-    } catch (e) {
-      // Swallow errors
+
+    if (injector) {
+      this.ngControlService = injector.get(NgControlService, null);
+      this.ifControlStateService = injector.get(IfControlStateService, null);
+      this.controlClassService = injector.get(ControlClassService, null);
+      this.markControlService = injector.get(MarkControlService, null);
+      this.differs = injector.get(KeyValueDiffers, null);
     }
 
     if (this.controlClassService) {
@@ -87,6 +97,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
         })
       );
     }
+
+    if (ngControl) {
+      this.differ = this.differs.find(ngControl).create();
+    }
   }
 
   @Input()
@@ -105,14 +119,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
 
-    try {
-      this.containerIdService = this._containerInjector.get(ContainerIdService);
-    } catch (_injectorError) {
-      /**
-       * We suppress error, not all containers will provide `ContainerIdService` so
-       * there could be exception that is not provided.
-       */
-    }
+    /**
+     * not all containers will provide `ContainerIdService`
+     */
+    this.containerIdService = this._containerInjector.get(ContainerIdService, null);
 
     if (this._id) {
       this.controlIdService.id = this._id;
@@ -120,8 +130,24 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService) {
+    if (this.ngControlService && this.ngControl) {
       this.ngControlService.setControl(this.ngControl);
+    }
+  }
+
+  ngDoCheck() {
+    if (this.differ) {
+      const changes = this.differ.diff(this.ngControl);
+      if (changes) {
+        changes.forEachChangedItem(change => {
+          if (
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
+            change.currentValue !== change.previousValue
+          ) {
+            this.triggerValidation();
+          }
+        });
+      }
     }
   }
 
@@ -149,8 +175,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   }
 
   private markAsTouched(): void {
-    this.ngControl.control.markAsTouched();
-    this.ngControl.control.updateValueAndValidity();
+    if (this.ngControl) {
+      this.ngControl.control.markAsTouched();
+      this.ngControl.control.updateValueAndValidity();
+    }
   }
 
   private setAriaDescribedBy(helpers: Helpers) {

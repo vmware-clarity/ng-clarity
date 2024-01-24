@@ -27,10 +27,10 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
          from scrolling when a stack block is toggled via the space key. -->
     <div
       class="stack-block-label"
-      (click)="toggleExpand()"
-      (keyup.enter)="toggleExpand()"
-      (keyup.space)="toggleExpand()"
-      (keydown.space)="$event.preventDefault()"
+      (click)="toggleExpand($event)"
+      (keyup.enter)="toggleExpand($event)"
+      (keyup.space)="toggleExpand($event)"
+      (keydown.space)="preventDefaultIfNotInputEvent($event)"
       (focus)="focused = true"
       (blur)="focused = false"
       [id]="uniqueId"
@@ -179,7 +179,11 @@ export class ClrStackBlock implements OnInit {
     this.expandable = true;
   }
 
-  toggleExpand(): void {
+  toggleExpand(event?: Event): void {
+    if (eventIsInputEvent(event)) {
+      return;
+    }
+
     if (this.expandable) {
       this.expanded = !this.expanded;
       this.expandedChange.emit(this.expanded);
@@ -189,4 +193,18 @@ export class ClrStackBlock implements OnInit {
   getStackChildrenId() {
     return this.expanded ? `clr-stack-children-${this.uniqueId}` : null;
   }
+
+  protected preventDefaultIfNotInputEvent(event: Event) {
+    if (eventIsInputEvent(event)) {
+      return;
+    }
+
+    event.preventDefault();
+  }
+}
+
+function eventIsInputEvent(event?: Event) {
+  const targetElement = event?.target as HTMLElement;
+
+  return targetElement?.tagName === 'INPUT';
 }

@@ -16,7 +16,12 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   selector: 'clr-signpost',
   template: `
     <ng-container *ngIf="!useCustomTrigger">
-      <button type="button" class="signpost-action btn btn-small btn-link" clrSignpostTrigger>
+      <button
+        type="button"
+        class="signpost-action btn btn-sm btn-icon btn-link"
+        clrSignpostTrigger
+        [attr.aria-label]="commonStrings.keys.signpostToggle"
+      >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
     </ng-container>

@@ -5,6 +5,7 @@
 | CSS Custom Property                    | Description                                               |
 | -------------------------------------- | --------------------------------------------------------- |
 | --clr-table-bgcolor                    | Background color of a table                               |
+| --clr-table-margin                     | Margin of a table                                         |
 | --clr-thead-bgcolor                    | Background color of table header                          |
 | --clr-table-header-border-bottom-color | Not used                                                  |
 | --clr-table-footer-border-top-color    | Not used in tables. Used for datagrid footer border color |
@@ -18,7 +19,7 @@
 
 ## CSS Classes
 
-#### All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
+All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
 
 | Class name     | Description              |
 | -------------- | ------------------------ |

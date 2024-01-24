@@ -9,14 +9,15 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use '../main-container/variables.header' as header-variables;
+@use '../../forms/styles/variables.forms' as forms-variables;
 
 @mixin header-section-divider() {
   display: inline-block;
   position: absolute;
   content: '';
   @include mixins.css-var(
-    background,
-    clr-header-font-color,
+    background-color,
+    clr-header-divider-color,
     header-variables.$clr-header-font-color,
     variables.$clr-use-custom-properties
   );
@@ -26,15 +27,24 @@
     header-variables.$clr-header-divider-opacity,
     variables.$clr-use-custom-properties
   );
-  opacity: header-variables.$clr-header-divider-opacity;
-  height: header-variables.$clr-header-section-divider-height;
+  @include mixins.css-var(
+    height,
+    clr-header-divider-height,
+    header-variables.$clr-header-section-divider-height,
+    variables.$clr-use-custom-properties
+  );
   @include mixins.css-var(
     width,
-    clr-global-borderwidth,
+    clr-header-divider-width,
     variables.$clr-global-borderwidth,
     variables.$clr-use-custom-properties
   );
-  top: (header-variables.$clr-header-height - header-variables.$clr-header-section-divider-height) * 0.5;
+  @include mixins.css-var(
+    top,
+    clr-header-divider-top-override,
+    (header-variables.$clr-header-height - header-variables.$clr-header-section-divider-height) * 0.5,
+    variables.$clr-use-custom-properties
+  );
   left: 0;
 }
 
@@ -45,6 +55,14 @@
     header-variables.$clr-header-font-color,
     variables.$clr-use-custom-properties
   );
+  &:hover {
+    @include mixins.css-var(
+      color,
+      clr-header-font-color-hover,
+      header-variables.$clr-header-font-color,
+      variables.$clr-use-custom-properties
+    );
+  }
   @include mixins.css-var(
     opacity,
     clr-header-nav-opacity,
@@ -145,15 +163,35 @@
   .branding {
     display: flex;
     flex: 0 0 auto;
-    min-width: variables.$clr_baselineRem_8_5;
-    padding: 0 variables.$clr_baselineRem_1;
-    height: header-variables.$clr-header-height;
+    @include mixins.css-var(
+      min-width,
+      clr-header-branding-min-width,
+      variables.$clr_baselineRem_8_5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-header-branding-padding,
+      0 variables.$clr_baselineRem_1,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      height,
+      clr-header-height,
+      header-variables.$clr-header-height,
+      variables.$clr-use-custom-properties
+    );
 
     & > a,
     & > .nav-link {
       display: inline-flex;
       align-items: center;
-      height: header-variables.$clr-header-height;
+      @include mixins.css-var(
+        height,
+        clr-header-height,
+        header-variables.$clr-header-height,
+        variables.$clr-use-custom-properties
+      );
       text-decoration: none;
 
       &:focus {
@@ -166,8 +204,17 @@
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
-      @include mixins.equilateral(header-variables.$clr-logo-width);
-      margin-right: variables.$clr_baselineRem_0_375;
+      @include mixins.equilateral-var(
+        clr-header-branding-logo-size,
+        header-variables.$clr-logo-width,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-right,
+        clr-header-branding-icon-gap,
+        variables.$clr_baselineRem_0_375,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .title {
@@ -189,9 +236,24 @@
         header-variables.$clr-header-title-font-family,
         variables.$clr-use-custom-properties
       );
-      font-size: header-variables.$clr-header-title-font-size;
-      letter-spacing: header-variables.$clr-header-title-letter-spacing;
-      line-height: header-variables.$clr-header-height;
+      @include mixins.css-var(
+        font-size,
+        clr-header-title-font-size,
+        header-variables.$clr-header-title-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-header-title-letter-spacing,
+        header-variables.$clr-header-title-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-header-title-line-height,
+        header-variables.$clr-header-height,
+        variables.$clr-use-custom-properties
+      );
       text-decoration: none;
     }
   }
@@ -201,10 +263,15 @@
   .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
-    height: header-variables.$clr-header-height;
+    @include mixins.css-var(
+      height,
+      clr-header-height,
+      header-variables.$clr-header-height,
+      variables.$clr-use-custom-properties
+    );
 
     .nav-text {
-      font-weight: 500;
+      @include mixins.css-var(font-weight, clr-header-nav-text-font-weight, 500, variables.$clr-use-custom-properties);
     }
 
     clr-icon {
@@ -224,8 +291,18 @@
       position: relative;
       display: inline-block;
       text-align: center;
-      padding: header-variables.$clr-header-nav-text-vertical-padding
-        header-variables.$clr-header-nav-text-horizontal-padding;
+      @include mixins.css-var(
+        padding,
+        clr-header-nav-link-padding,
+        header-variables.$clr-header-nav-text-vertical-padding header-variables.$clr-header-nav-text-horizontal-padding,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-header-nav-link-line-height,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
       text-decoration: none;
       @include header-nav-appearance();
 
@@ -265,9 +342,24 @@
         display: none;
       }
 
+      @include mixins.css-var(
+        font-size,
+        clr-header-nav-link-font-size,
+        var(--clr-p1-font-size),
+        variables.$clr-use-custom-properties
+      );
+
       &.active {
         background: rgba(255, 255, 255, 0.15);
         opacity: 1;
+        .nav-text {
+          @include mixins.css-var(
+            font-weight,
+            clr-header-nav-text-font-weight-active,
+            500,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
 
       &:focus {
@@ -282,6 +374,14 @@
     display: flex;
     flex: 0 0 auto;
 
+    @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, lg)) {
+      a:first-of-type::before,
+      a:last-of-type::after {
+        @include header-section-divider();
+        left: auto;
+      }
+    }
+
     &:last-child {
       & > .nav-link:last-child::after {
         content: none;
@@ -292,12 +392,6 @@
       &:first-of-type,
       &:last-of-type {
         position: relative;
-      }
-
-      &:first-of-type::before,
-      &:last-of-type::after {
-        @include header-section-divider();
-        left: auto;
       }
 
       &:first-of-type::before {
@@ -329,8 +423,18 @@
 
       & > .dropdown-toggle {
         position: relative;
-        line-height: header-variables.$clr-header-height;
-        height: header-variables.$clr-header-height;
+        @include mixins.css-var(
+          line-height,
+          clr-header-height,
+          header-variables.$clr-header-height,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          height,
+          clr-header-height,
+          header-variables.$clr-header-height,
+          variables.$clr-use-custom-properties
+        );
         outline-offset: header-variables.$clr-header-outline-offset;
         @include header-nav-appearance();
       }
@@ -342,16 +446,35 @@
           top: 50%;
           transform: translateY(-50%);
           // Dropdown icons are 2px smaller
-          @include mixins.equilateral(variables.$clr_baselineRem_0_916);
-          right: variables.$clr_baselineRem_1;
+          @include mixins.equilateral-var(
+            clr-header-action-icon-size,
+            variables.$clr_baselineRem_0_916,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(
+            right,
+            clr-header-action-cog-right,
+            variables.$clr_baselineRem_1,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
       .dropdown-toggle.nav-icon {
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: $clr-header-action-caret-icon-right-position;
-          top: 44%;
+          @include mixins.css-var(
+            right,
+            clr-header-action-caret-right,
+            $clr-header-action-caret-icon-right-position,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.css-var(top, clr-header-action-caret-top, 44%, variables.$clr-use-custom-properties);
+          @include mixins.equilateral-var(
+            clr-header-action-caret-size,
+            variables.$clr_baselineRem_10px,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
@@ -361,12 +484,27 @@
 
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-nav-text-horizontal-padding;
+          @include mixins.css-var(
+            right,
+            clr-header-action-caret-right,
+            header-variables.$clr-header-nav-text-horizontal-padding,
+            variables.$clr-use-custom-properties
+          );
+          @include mixins.equilateral-var(
+            clr-header-action-caret-size,
+            variables.$clr_baselineRem_10px,
+            variables.$clr-use-custom-properties
+          );
         }
       }
 
       .dropdown-toggle.nav-icon {
-        width: header-variables.$clr-header-height;
+        @include mixins.css-var(
+          width,
+          clr-header-dropdown-btn-width,
+          header-variables.$clr-header-height,
+          variables.$clr-use-custom-properties
+        );
         padding-right: 0;
       }
 
@@ -407,7 +545,12 @@
     flex: 0 0 auto;
     max-width: variables.$clr_baselineRem_12;
     padding: 0;
-    height: header-variables.$clr-header-height;
+    @include mixins.css-var(
+      height,
+      clr-header-height,
+      header-variables.$clr-header-height,
+      variables.$clr-use-custom-properties
+    );
     @include header-nav-appearance();
 
     & > .nav-icon {
@@ -416,9 +559,26 @@
 
     label {
       display: inline-block;
-      height: header-variables.$clr-header-height;
-      line-height: header-variables.$clr-header-height;
-      padding-left: variables.$clr_baselineRem_1;
+      @include mixins.css-var(
+        height,
+        clr-header-height,
+        header-variables.$clr-header-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-header-height,
+        header-variables.$clr-header-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        padding-left,
+        clr-header-search-padding-left,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(margin-left, clr-header-search-margin-left, 0, variables.$clr-use-custom-properties);
+      @include mixins.css-var(margin-right, clr-header-search-margin-right, 0, variables.$clr-use-custom-properties);
       text-align: center;
 
       &::before {
@@ -428,14 +588,29 @@
         background-repeat: no-repeat;
         background-size: contain;
         cursor: pointer;
-        @include mixins.equilateral(header-variables.$clr-search-icon-width);
+        @include mixins.min-equilateral-var(
+          clr-header-search-icon-size,
+          header-variables.$clr-search-icon-width,
+          variables.$clr-use-custom-properties
+        );
         margin: variables.$clr_baselineRem_0_83 0 0;
         vertical-align: top;
+        @include mixins.css-var(
+          margin-right,
+          clr-header-search-icon-margin-right,
+          0,
+          variables.$clr-use-custom-properties
+        );
       }
 
       input {
         line-height: variables.$clr_baselineRem_1;
-        margin: header-variables.$clr-header-nav-text-vertical-padding 0;
+        @include mixins.css-var(
+          margin,
+          clr-header-search-margin,
+          header-variables.$clr-header-nav-text-vertical-padding 0,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -444,12 +619,65 @@
       background: none;
       @include mixins.css-var(
         color,
-        clr-header-font-color,
+        clr-header-search-input-font-color,
         header-variables.$clr-header-font-color,
         variables.$clr-use-custom-properties
       );
+
+      @include mixins.css-var(
+        height,
+        clr-header-search-height,
+        variables.$clr_baselineRem_1,
+        variables.$clr-use-custom-properties
+      );
+
       padding: 0;
+      @include mixins.css-var(padding-left, clr-header-search-input-padding, 0, variables.$clr-use-custom-properties);
+
       vertical-align: middle;
+
+      // Typography
+      @include mixins.css-var(
+        font-size,
+        clr-header-search-input-font-size,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-header-search-input-font-weight,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      &::placeholder {
+        @include mixins.css-var(
+          font-weight,
+          clr-header-search-placeholder-font-weight,
+          inherit,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          color,
+          clr-header-search-placeholder-text-color,
+          forms-variables.$clr-forms-placeholder-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+
+      &:hover {
+        @include mixins.css-var(border, clr-header-search-border-hover, none, variables.$clr-use-custom-properties);
+      }
+
+      &:focus-visible {
+        @include mixins.css-var(
+          outline,
+          clr-header-search-outline,
+          auto variables.$clr_baselineRem_1px Highlight,
+          variables.$clr-use-custom-properties
+        );
+
+        @include mixins.css-var(border, clr-header-search-border-active, none, variables.$clr-use-custom-properties);
+      }
 
       &:focus,
       &:active {
@@ -533,7 +761,12 @@
       header-variables.$clr-header-bgColor,
       variables.$clr-use-custom-properties
     );
-    height: header-variables.$clr-header-height;
+    @include mixins.css-var(
+      height,
+      clr-header-height,
+      header-variables.$clr-header-height,
+      variables.$clr-use-custom-properties
+    );
     white-space: nowrap;
 
     @include header-backgrounds();

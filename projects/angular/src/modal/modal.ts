@@ -54,6 +54,9 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
+  // presently this is only used by inline wizards
+  @Input('clrModalOverrideScrollService') bypassScrollService = false;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
@@ -62,7 +65,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
+    if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
         this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);

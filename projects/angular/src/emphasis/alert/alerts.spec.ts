@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrEmphasisModule } from '../emphasis.module';
@@ -134,7 +134,7 @@ export default function () {
         fixture = TestBed.createComponent(TestComponent);
         fixture.detectChanges();
         compiled = fixture.nativeElement;
-        alertElements = compiled.querySelectorAll('.alert');
+        alertElements = compiled.querySelectorAll('clr-alert');
         expect(alertElements.length).toEqual(2);
       });
 
@@ -237,6 +237,35 @@ export default function () {
       });
     });
   });
+
+  describe('with an initially-closed alert', () => {
+    @Component({
+      template: `
+        <clr-alerts>
+          <clr-alert [clrAlertClosed]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is the alert!</span>
+            </clr-alert-item>
+          </clr-alert>
+        </clr-alerts>
+      `,
+    })
+    class InitiallyClosedAlertTestComponent {}
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrEmphasisModule],
+        declarations: [InitiallyClosedAlertTestComponent],
+      });
+    });
+
+    it('does not throw an error', () => {
+      const fixture = TestBed.createComponent(InitiallyClosedAlertTestComponent);
+      fixture.detectChanges();
+
+      // test will pass if no error is thrown
+    });
+  });
 }
 
 @Component({
@@ -308,7 +337,7 @@ class TestAlertInstance {
 @Component({
   template: `
     <clr-alerts>
-      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertAppLevel]="true">
+      <clr-alert *ngFor="let alert of dynamicAlerts" [clrAlertType]="alert.type" [clrAlertAppLevel]="alert.isAppLevel">
         <div class="alert-item">
           <span class="alert-text">
             {{ alert.text }}
@@ -317,6 +346,7 @@ class TestAlertInstance {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.Default, // Using default to test for error NG0100 in console, CDE-1249
 })
 class DynamicAlerts {
   @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
@@ -326,8 +356,8 @@ class DynamicAlerts {
 
   ngOnInit() {
     this.dynamicAlerts = [
-      { type: 'alert-info', text: "I'm an informational" },
-      { type: 'alert-danger', text: 'Watch out!' },
+      { type: 'info', text: "I'm an informational", isAppLevel: true },
+      { type: 'danger', text: 'Watch out!', isAppLevel: false },
     ];
   }
 }

@@ -12,12 +12,18 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./stepper.demo.scss'],
 })
 export class StepperDemo {
-  stepOpen = true;
   showSecondStep = true;
-  initialStep = 'contact';
+  initialStep = 'name';
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+
+  stepsExpandedState = {
+    name: false,
+    contact: false,
+    password: false,
+  };
+  loading = false;
 
   submit() {
     console.log('reactive form submit', this.form.value);
@@ -33,6 +39,14 @@ export class StepperDemo {
 
   log(value: any) {
     console.log('value', value);
+  }
+
+  changeStep() {
+    this.loading = true;
+    setTimeout(() => {
+      this.initialStep = 'contact';
+      this.loading = false;
+    }, 400);
   }
 
   private getReactiveForm() {

@@ -8,6 +8,7 @@
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.vertical-nav' as vertical-nav-variables;
+@use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-link-colors() {
   @include mixins.css-var(
@@ -26,22 +27,14 @@
     );
     @include mixins.css-var(
       background-color,
-      clr-vertical-nav-active-bg-color,
+      clr-vertical-nav-selected-bg-color,
       vertical-nav-variables.$clr-vertical-nav-active-bg-color,
       variables.$clr-use-custom-properties
     );
 
     position: relative;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: variables.$clr_baselineRem_3px;
-      background: var(--clr-nav-active-box-shadow-color);
-    }
+    @include tabs.nav-link-border-appearence('left');
 
     .nav-icon {
       @include mixins.css-var(
@@ -67,6 +60,20 @@
       variables.$clr-use-custom-properties
     );
     text-decoration: none;
+  }
+  &:active {
+    @include mixins.css-var(
+      color,
+      clr-vertical-nav-active-color,
+      vertical-nav-variables.$clr-vertical-nav-item-active-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      background-color,
+      clr-vertical-nav-active-bg-color,
+      vertical-nav-variables.$clr-vertical-nav-hover-bg-color,
+      variables.$clr-use-custom-properties
+    );
   }
 }
 
@@ -108,7 +115,12 @@
         variables.$clr-global-borderwidth,
         variables.$clr-use-custom-properties
       );
-      margin: vertical-nav-variables.$clr-vertical-nav-divider-margin 0;
+      @include mixins.css-var(
+        margin,
+        clr-vertical-nav-divider-margin,
+        vertical-nav-variables.$clr-vertical-nav-divider-margin 0,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .nav-content {
@@ -116,6 +128,7 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
+      @include mixins.css-var(gap, clr-vertical-nav-content-gap, 0, variables.$clr-use-custom-properties);
 
       //Others
       overflow-y: auto;
@@ -150,12 +163,23 @@
 
       .nav-icon {
         //Dims
-        margin-left: vertical-nav-variables.$clr-vertical-nav-link-padding-left;
+        @include mixins.css-var(
+          margin-left,
+          clr-vertical-nav-toggle-margin-left,
+          vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+          variables.$clr-use-custom-properties
+        );
       }
 
       .nav-text {
         //Dims
-        padding-left: vertical-nav-variables.$clr-vertical-nav-link-padding-left;
+        @include mixins.css-var(
+          padding,
+          clr-vertical-nav-item-padding,
+          0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+            vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+          variables.$clr-use-custom-properties
+        );
       }
 
       .nav-icon + .nav-text {
@@ -166,6 +190,18 @@
       .nav-link + .nav-group-text {
         //Display
         display: none;
+      }
+
+      > .nav-link {
+        &.active,
+        &:active {
+          @include mixins.css-var(
+            font-weight,
+            clr-vertical-nav-item-active-font-weight,
+            inherit,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
     }
 
@@ -180,7 +216,12 @@
 
       //Dims
       border: none;
-      height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      @include mixins.css-var(
+        height,
+        clr-vertical-nav-item-height,
+        vertical-nav-variables.$clr-vertical-nav-item-height,
+        variables.$clr-use-custom-properties
+      );
 
       padding: 0;
 
@@ -193,6 +234,35 @@
           vertical-nav-variables.$clr-vertical-nav-toggle-icon-color,
           variables.$clr-use-custom-properties
         );
+        &:hover {
+          @include mixins.css-var(
+            color,
+            clr-vertical-nav-toggle-icon-hover-color,
+            vertical-nav-variables.$clr-vertical-nav-toggle-icon-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+        &:active {
+          @include mixins.css-var(
+            color,
+            clr-vertical-nav-toggle-icon-active-color,
+            vertical-nav-variables.$clr-vertical-nav-toggle-icon-color,
+            variables.$clr-use-custom-properties
+          );
+        }
+      }
+
+      &:disabled,
+      &.disabled {
+        cds-icon[shape='angle-double'],
+        clr-icon[shape='angle-double'] {
+          @include mixins.css-var(
+            color,
+            clr-vertical-nav-toggle-icon-disabled-color,
+            vertical-nav-variables.$clr-vertical-nav-toggle-icon-color,
+            variables.$clr-use-custom-properties
+          );
+        }
       }
       background-color: transparent;
       cursor: pointer;
@@ -230,7 +300,12 @@
         //Dims
         width: vertical-nav-variables.$clr-vertical-nav-icon-size;
         align-self: center;
-        margin-right: vertical-nav-variables.$clr-vertical-nav-trigger-icon-align-margin;
+        @include mixins.css-var(
+          margin-right,
+          clr-vertical-nav-group-trigger-icon-margin-right,
+          vertical-nav-variables.$clr-vertical-nav-trigger-icon-align-margin,
+          variables.$clr-use-custom-properties
+        );
 
         //Others
         transition: all 0.2s ease-in-out;
@@ -264,18 +339,52 @@
         variables.$clr-global-borderwidth,
         variables.$clr-use-custom-properties
       );
-      padding-top: variables.$clr_baselineRem_0_5;
+      @include mixins.css-var(
+        padding-top,
+        clr-vertical-nav-content-padding-top,
+        variables.$clr_baselineRem_0_5,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .nav-group-text,
     .nav-link {
       //Dims
-      height: vertical-nav-variables.$clr-vertical-nav-item-height;
-      padding: 0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-left;
+      @include mixins.css-var(
+        height,
+        clr-vertical-nav-item-height,
+        vertical-nav-variables.$clr-vertical-nav-item-height,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        padding,
+        clr-vertical-nav-item-padding,
+        0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+          vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+        variables.$clr-use-custom-properties
+      );
 
       //Others
-      line-height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      @include mixins.css-var(
+        font-size,
+        clr-vertical-nav-item-font-size,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-vertical-nav-item-font-weight,
+        inherit,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-vertical-nav-item-line-height,
+        vertical-nav-variables.$clr-vertical-nav-item-height,
+        variables.$clr-use-custom-properties
+      );
+      display: flex;
+      align-items: center;
       outline-offset: variables.$clr-outline-offset;
     }
 
@@ -299,11 +408,15 @@
 
     .nav-header {
       //Dims
-      padding: 0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
-        vertical-nav-variables.$clr-vertical-nav-link-padding-left;
+      @include mixins.css-var(
+        padding,
+        clr-vertical-nav-header-padding,
+        0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+          vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+        variables.$clr-use-custom-properties
+      );
 
       //Others
-      font-size: vertical-nav-variables.$clr-vertical-nav-header-font-size;
       @include mixins.css-var(
         font-weight,
         clr-vertical-nav-header-font-weight,
@@ -311,7 +424,18 @@
         variables.$clr-use-custom-properties
       );
       letter-spacing: vertical-nav-variables.$clr-vertical-nav-header-letter-spacing;
-      line-height: vertical-nav-variables.$clr-vertical-nav-item-height;
+      @include mixins.css-var(
+        font-size,
+        clr-vertical-nav-header-font-size,
+        vertical-nav-variables.$clr-vertical-nav-header-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        line-height,
+        clr-vertical-nav-header-line-height,
+        vertical-nav-variables.$clr-vertical-nav-item-height,
+        variables.$clr-use-custom-properties
+      );
     }
 
     //Parent .nav-text
@@ -323,7 +447,12 @@
       //Dims
       @include mixins.equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
       @include mixins.min-equilateral(vertical-nav-variables.$clr-vertical-nav-icon-size);
-      margin-right: vertical-nav-variables.$clr-vertical-nav-icon-right-margin;
+      @include mixins.css-var(
+        margin-right,
+        clr-vertical-nav-toggle-margin-right,
+        vertical-nav-variables.$clr-vertical-nav-icon-right-margin,
+        variables.$clr-use-custom-properties
+      );
 
       //Others
       vertical-align: middle;
@@ -352,11 +481,17 @@
     .nav-content > .nav-link {
       //Display
       flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
+      @if variables.$clr-use-custom-properties == true {
+        flex: 0 0 var(--clr-vertical-nav-toggle-button-size, vertical-nav-variables.$clr-vertical-nav-item-height);
+      }
     }
 
     .nav-link + .nav-group-trigger {
       //Display
       flex: 0 0 vertical-nav-variables.$clr-vertical-nav-item-height;
+      @if variables.$clr-use-custom-properties == true {
+        flex: 0 0 var(--clr-vertical-nav-toggle-button-size, vertical-nav-variables.$clr-vertical-nav-item-height);
+      }
 
       .nav-group-text {
         display: none;
@@ -375,14 +510,31 @@
     //////
     ///////
     &.has-nav-groups {
-      .nav-link,
+      .nav-group-content > .nav-link,
       .nav-group .nav-group-text,
       .nav-group .nav-group-trigger {
-        font-weight: 600;
+        @include mixins.css-var(
+          font-weight,
+          clr-vertical-nav-item-top-level-font-weight,
+          600,
+          variables.$clr-use-custom-properties
+        );
       }
 
       .nav-group-children .nav-link {
-        font-weight: normal;
+        @include mixins.css-var(
+          font-weight,
+          clr-vertical-nav-item-font-weight,
+          normal,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          padding,
+          clr-vertical-nav-item-child-padding,
+          0 vertical-nav-variables.$clr-vertical-nav-link-padding-right 0
+            vertical-nav-variables.$clr-vertical-nav-link-padding-left,
+          variables.$clr-use-custom-properties
+        );
       }
     }
 
@@ -398,12 +550,10 @@
       .nav-group-content {
         @include mixins.css-var(
           background-color,
-          clr-vertical-nav-active-bg-color,
+          clr-vertical-nav-selected-bg-color,
           vertical-nav-variables.$clr-vertical-nav-active-bg-color,
           variables.$clr-use-custom-properties
         );
-
-        border-left: variables.$clr_baselineRem_3px solid var(--clr-nav-active-box-shadow-color);
 
         //Horrible Nesting but nothing I can do.
         .nav-icon {
@@ -421,7 +571,7 @@
       .nav-link.active ~ .nav-group-trigger {
         @include mixins.css-var(
           background-color,
-          clr-vertical-nav-active-bg-color,
+          clr-vertical-nav-selected-bg-color,
           vertical-nav-variables.$clr-vertical-nav-active-bg-color,
           variables.$clr-use-custom-properties
         );
@@ -430,6 +580,14 @@
         @include mixins.css-var(
           background-color,
           clr-vertical-nav-hover-bg-color,
+          vertical-nav-variables.$clr-vertical-nav-hover-bg-color,
+          variables.$clr-use-custom-properties
+        );
+      }
+      .nav-link:active ~ .nav-group-trigger {
+        @include mixins.css-var(
+          background-color,
+          clr-vertical-nav-active-bg-color,
           vertical-nav-variables.$clr-vertical-nav-hover-bg-color,
           variables.$clr-use-custom-properties
         );
@@ -445,6 +603,8 @@
       //Dims
       width: vertical-nav-variables.$clr-vertical-nav-min-width;
       min-width: vertical-nav-variables.$clr-vertical-nav-min-width;
+      // ATM - adress scroll when more items are available, otherwise the content gets hidden
+      max-width: calc(vertical-nav-variables.$clr-vertical-nav-min-width + variables.$clr_baselineRem_0_583);
 
       //Others
       cursor: pointer;
@@ -456,8 +616,12 @@
 
       .nav-icon {
         //Dims
-        margin: 0;
-        margin-left: variables.$clr_baselineRem_0_667;
+        @include mixins.css-var(
+          margin,
+          clr-vertical-nav-collapsed-item-margin,
+          0 0 0 variables.$clr_baselineRem_0_667,
+          variables.$clr-use-custom-properties
+        );
       }
 
       .nav-group-content {

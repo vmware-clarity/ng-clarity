@@ -12,6 +12,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <span class="badge" [ngClass]="badgeClass">{{context}}</span>
+    <a href="#" class="badge" [ngClass]="badgeClass">{{context}}</a>
   `,
   props: { ...args },
 });

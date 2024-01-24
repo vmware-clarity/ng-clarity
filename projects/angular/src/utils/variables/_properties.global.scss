@@ -9,6 +9,7 @@
 @include mixins.exports('global.properties') {
   @if variables.$clr-use-custom-properties == true {
     :root {
+      --clr-basefont-size: #{variables.$clr-basefont-size};
       // app borders
       --clr-global-borderradius: #{variables.$clr-global-borderradius};
       --clr-global-borderwidth: #{variables.$clr-global-borderwidth};

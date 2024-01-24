@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use '../utils/variables/variables.global';
+@use 'variables.toggles' as toggle-variables;
+@use '../forms/styles/variables.forms' as form-variables;
 
 @if variables.$clr-use-custom-properties == true {
   :root {
@@ -11,16 +13,44 @@
     --clr-toggle-bg-color-off: var(--clr-color-neutral-600);
     --clr-toggle-bg-color-on: var(--clr-color-success-500);
     --clr-toggle-handle-bg-color: var(--clr-color-neutral-50);
+    --clr-toggle-handle-border-color: var(--clr-toggle-handle-bg-color);
+    --clr-toggle-handle-border-color-on: var(--clr-toggle-handle-bg-color); // var(--clr-color-neutral-50);
 
     // disabled colors
     --clr-toggle-disabled-default-border-color: var(--clr-color-neutral-400);
     --clr-toggle-disabled-default-handle-color: var(--clr-color-neutral-0);
     --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color);
     --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color);
+
     // Also sets disabled/on inner part of handle circle.
     --clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-default-border-color);
     --clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-default-border-color);
     --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color);
     --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-handle-color);
+
+    --clr-toggle-height: #{toggle-variables.$clr-toggle-height};
+    --clr-toggle-switch-base-height: #{toggle-variables.$clr-toggle-switch-base-height};
+    --clr-toggle-switch-base-width: #{toggle-variables.$clr-toggle-switch-base-width};
+    --clr-toggle-base-line: #{form-variables.$clr-forms-baseline};
+    --clr-toggle-icon-margin: calc(
+      #{toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing}
+    );
+    --clr-toggle-icon-margin-negative: calc(
+      -1 * (#{toggle-variables.$clr-toggle-switch-base-width + toggle-variables.$clr-toggle-switch-base-left-spacing})
+    );
+    --clr-toggle-switch-left-spacing: #{toggle-variables.$clr-toggle-switch-left-spacing};
+    --clr-toggle-switch-left-spacing-negative: calc(-1 * #{toggle-variables.$clr-toggle-switch-left-spacing});
+    --clr-toggle-dot-diameter: #{toggle-variables.$clr-toggle-switch-height};
+    --clr-toggle-icon-dot-place: calc(
+      -1 *
+        (
+          #{toggle-variables.$clr-toggle-switch-base-width} +
+            #{toggle-variables.$clr-toggle-switch-base-left-spacing} -
+            #{variables.$clr_baselineRem_2px}
+        )
+    );
+    --clr-toggle-icon-top: calc(0.5 * #{form-variables.$clr-forms-baseline});
+    --clr-toggle-icon-dot-top-disabled: #{variables.$clr_baselineRem_3px};
+    --clr-toggle-icon-dot-top: calc(#{variables.$clr_baselineRem_2px} + (0.5 * #{form-variables.$clr-forms-baseline}));
   }
 }

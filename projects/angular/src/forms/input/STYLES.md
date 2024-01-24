@@ -1,5 +1,12 @@
 # Input
 
+## CSS Custom properties
+
+| Class name                       | Description    |
+| -------------------------------- | -------------- |
+| --clr-forms-input-padding        | Input padding  |
+| --clr-forms-input-wrapper-height | Wrapper height |
+
 ## CSS Classes
 
 | Class name                  | Description                                                   |

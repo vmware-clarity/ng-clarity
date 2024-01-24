@@ -56,6 +56,12 @@ export default function (): void {
         expect(signpostContent).toBeNull();
         expect(this.toggleService.open).toBe(false);
       });
+
+      it('has a default aria-label on the default trigger', function (this: Context) {
+        const signpostToggle: HTMLElement = this.hostElement.querySelector('.signpost-action');
+
+        expect(signpostToggle.getAttribute('aria-label')).toEqual('Signpost Toggle');
+      });
     });
 
     describe('focus management', function () {
@@ -239,7 +245,7 @@ export default function (): void {
   template: `
     <button #outsideClick type="button">Button to test clicks outside of the dropdown component</button>
     <clr-signpost>
-      <button type="button" class="signpost-action btn btn-small btn-link" clrSignpostTrigger>Custom trigger</button>
+      <button type="button" class="signpost-action btn btn-sm btn-link" clrSignpostTrigger>Custom trigger</button>
       <clr-signpost-content *clrIfOpen="openState">Signpost content</clr-signpost-content>
     </clr-signpost>
   `,

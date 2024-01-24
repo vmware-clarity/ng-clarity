@@ -29,7 +29,18 @@
 
       // Dimensions & Layout
       // Usage: ./_alert.clarity.scss
+      --clr-alert-padding: #{variables.$clr_baselineRem_10px
+        variables.$clr_baselineRem_0_5 -
+        alert-variables.$clr-alert-borderwidth};
       --clr-alert-borderradius: var(--clr-global-borderradius);
+      --clr-alert-actions-spacing: #{variables.$clr_baselineRem_0_5};
+      --clr-alert-item-margin-bottom: #{variables.$clr_baselineRem_0_25};
+      --clr-alert-line-height: #{variables.$clr_baselineRem_0_75};
+      --clr-alert-sm-line-height: #{variables.$clr_baselineRem_0_667};
+      --clr-alert-app-padding: #{variables.$clr_baselineRem_0_25 variables.$clr_baselineRem_0_458};
+      --clr-alert-text-flex-grow: 1; // ATM: delete after token migration
+      --clr-alert-icon-wrapper-margin-top: #{variables.$clr_baselineRem_0_125}; // ATM: delete after token migration
+      --clr-alert-items-gap: 0;
 
       // Info type
       // Usage: ./_alert.clarity.scss
@@ -137,10 +148,28 @@
       --clr-app-alert-success-close-icon-hover-opacity: var(--clr-app-alert-close-icon-hover-opacity);
 
       // App Alerts Pager
-      --clr-app-alert-pager-text-color: var(--clr-color-neutral-0, #{variables.$clr-color-neutral-0});
-      --clr-app-alert-info-pager-bg-color: var(--clr-color-action-800, #{variables.$clr-color-action-800});
-      --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900, #{variables.$clr-color-warning-900});
-      --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900, #{variables.$clr-color-danger-900});
+      --clr-app-alert-pager-text-color: var(--clr-color-neutral-0);
+      --clr-app-alert-info-pager-bg-color: var(--clr-color-action-800);
+      --clr-app-alert-warning-pager-bg-color: var(--clr-color-warning-900);
+      --clr-app-alert-danger-pager-bg-color: var(--clr-color-danger-900);
+      --clr-app-alert-success-pager-bg-color: var(--clr-color-success-900);
+      --clr-app-alert-pager-width: #{variables.$clr_baselineRem_6};
+
+      // Lightweight Info type
+      --clr-lightweight-alert-info-icon-color: var(--clr-alert-info-icon-color);
+      --clr-lightweight-alert-info-font-color: var(--clr-alert-info-font-color);
+
+      // Lightweight Warning type
+      --clr-lightweight-alert-warning-icon-color: var(--clr-alert-warning-icon-color);
+      --clr-lightweight-alert-warning-font-color: var(--clr-alert-warning-font-color);
+
+      // Lightweight Danger type
+      --clr-lightweight-alert-danger-icon-color: var(--clr-alert-danger-icon-color);
+      --clr-lightweight-alert-danger-font-color: var(--clr-alert-danger-font-color);
+
+      // Lightweight Success type
+      --clr-lightweight-alert-success-icon-color: var(--clr-alert-success-icon-color);
+      --clr-lightweight-alert-success-font-color: var(--clr-alert-success-font-color);
     }
   }
 }

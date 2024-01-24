@@ -59,7 +59,7 @@
             />
             <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
             <label [for]="checkboxId" class="clr-control-label clr-col-null" (click)="clearRanges($event)">
-              <span class="clr-sr-only">{{clrDgRowAriaLabel || commonStrings.keys.select}}</span>
+              <span class="clr-sr-only">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>
             </label>
           </clr-checkbox-wrapper>
         </div>
@@ -82,7 +82,7 @@
               [attr.aria-disabled]="clrDgSelectable ? null : true"
             />
             <label class="clr-control-label clr-col-null" [for]="radioId">
-              <span class="clr-sr-only">{{ clrDgRowAriaLabel || commonStrings.keys.select }}</span>
+              <span class="clr-sr-only">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>
             </label>
           </clr-radio-wrapper>
         </div>
@@ -118,7 +118,11 @@
             <clr-spinner *ngIf="expand.loading" clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
           </ng-container>
         </div>
-        <div *ngIf="detailService.enabled" class="datagrid-detail-caret datagrid-fixed-column datagrid-cell">
+        <div
+          *ngIf="detailService.enabled"
+          class="datagrid-detail-caret datagrid-fixed-column datagrid-cell"
+          role="gridcell"
+        >
           <button
             (click)="detailService.toggle(item, detailButton)"
             type="button"

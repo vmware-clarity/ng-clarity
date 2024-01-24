@@ -69,7 +69,13 @@
     </clr-toggle-wrapper>
     <clr-toggle-wrapper>
       <label>Two</label>
-      <input clrToggle type="checkbox" [(ngModel)]="vertical.disabled.two" name="vertical.disabled.two" />
+      <input
+        clrToggle
+        type="checkbox"
+        [(ngModel)]="vertical.disabled.two"
+        name="vertical.disabled.two"
+        [disabled]="disabled"
+      />
     </clr-toggle-wrapper>
     <clr-toggle-wrapper>
       <label>Three</label>

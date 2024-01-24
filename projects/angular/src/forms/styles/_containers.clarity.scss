@@ -119,15 +119,30 @@
 
   .clr-subtext {
     display: block;
-    font-size: forms-variables.$clr-forms-subtext-font-size;
-    line-height: forms-variables.$clr-forms-subtext-line-height;
+    @include mixins.css-var(
+      font-size,
+      clr-forms-subtext-font-size,
+      forms-variables.$clr-forms-subtext-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-forms-subtext-line-height,
+      forms-variables.$clr-forms-subtext-line-height,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       color,
       clr-forms-subtext-color,
       forms-variables.$clr-forms-subtext-color,
       variables.$clr-use-custom-properties
     );
-    margin-top: forms-variables.$clr-forms-baseline;
+    @include mixins.css-var(
+      margin-top,
+      clr-forms-subtext-margin-top,
+      forms-variables.$clr-forms-baseline,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-subtext-wrapper {
@@ -136,7 +151,11 @@
   }
 
   .clr-validate-icon {
-    @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
+    @include mixins.min-equilateral-var(
+      clr-forms-icon-size,
+      forms-variables.$clr-forms-icon-size,
+      variables.$clr-use-custom-properties
+    );
     @include mixins.css-var(
       color,
       clr-forms-invalid-color,
@@ -150,18 +169,9 @@
       variables.$clr-use-custom-properties
     );
     display: none;
-    margin-left: -1 * variables.$clr_baselineRem_1;
   }
 
   .clr-success {
-    .clr-input {
-      @include mixins.css-var(
-        border-bottom-color,
-        clr-forms-valid-color,
-        forms-variables.$clr-forms-valid-color,
-        variables.$clr-use-custom-properties
-      );
-    }
     .clr-validate-icon {
       display: inline-block;
       @include mixins.css-var(
@@ -176,7 +186,6 @@
         forms-variables.$clr-forms-valid-color,
         variables.$clr-use-custom-properties
       );
-      margin-left: -0.2rem;
     }
     .clr-subtext {
       @include mixins.css-var(
@@ -190,14 +199,13 @@
 
   .clr-error {
     .clr-validate-icon {
-      margin-left: -1 * variables.$clr_baselineRem_4px; // @TODO Figure out why there is this 4px gap between elements
       display: inline-block;
     }
 
     .clr-subtext {
       @include mixins.css-var(
         color,
-        clr-forms-invalid-color,
+        clr-forms-invalid-text-color,
         forms-variables.$clr-forms-invalid-color,
         variables.$clr-use-custom-properties
       );

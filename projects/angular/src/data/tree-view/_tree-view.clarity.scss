@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'properties.tree-view';
+@use 'sass:meta';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'variables.tree-view' as tree-view-variables;
+@include meta.load-css('properties.tree-view');
 
 @include mixins.exports('tree-view.clarity') {
   .clr-tree-node {
@@ -19,6 +20,31 @@
     //Display
     display: flex;
     align-items: center;
+
+    @include mixins.css-var(
+      font-size,
+      clr-tree-node-font-size,
+      tree-view-variables.$clr-tree-node-font-size,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      font-weight,
+      clr-tree-node-font-weight,
+      tree-view-variables.$clr-tree-node-font-weight,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      line-height,
+      clr-tree-node-line-height,
+      tree-view-variables.$clr-tree-node-line-height,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      letter-spacing,
+      clr-tree-node-letter-spacing,
+      tree-view-variables.$clr-tree-node-letter-spacing,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-treenode-content {
@@ -31,11 +57,18 @@
 
     //Dimensions
     &:first-child {
-      padding-left: tree-view-variables.$clr-tree-node-touch-target;
+      @include mixins.css-var(
+        margin-left,
+        clr-tree-node-content-margin-left,
+        tree-view-variables.$clr-tree-node-touch-target,
+        variables.$clr-use-custom-properties
+      );
     }
 
     //Others
-    border-radius: 0;
+    // ATM: Combine border radius
+    @include mixins.css-var(border-radius, clr-tree-border-radius, 0, variables.$clr-use-custom-properties);
+
     @include mixins.css-var(
       border-top-left-radius,
       clr-tree-border-radius,
@@ -48,31 +81,62 @@
       tree-view-variables.$clr-tree-border-radius,
       variables.$clr-use-custom-properties
     );
-    line-height: tree-view-variables.$clr-tree-node-touch-target;
+
+    @include mixins.css-var(
+      line-height,
+      clr-tree-node-content-line-height,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
 
     cds-icon,
     clr-icon {
-      @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
-      margin-right: tree-view-variables.$clr-tree-node-content-icon-margin-right;
+      @include mixins.min-equilateral-var(
+        clr-tree-caret-size,
+        tree-view-variables.$clr-tree-caret-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        margin-right,
+        clr-tree-node-content-icon-margin-right,
+        tree-view-variables.$clr-tree-node-content-icon-margin-right,
+        variables.$clr-use-custom-properties
+      );
       vertical-align: middle;
     }
   }
 
   .clr-treenode-caret {
     //Display
-    flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
+    flex-grow: 0;
+    flex-shrink: 0;
+    @include mixins.css-var(
+      flex-basis,
+      clr-tree-node-touch-target,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
 
     //Dimensions
-    padding: 0;
     margin: 0;
-    @include mixins.equilateral(tree-view-variables.$clr-tree-node-touch-target);
+    @include mixins.min-equilateral-var(
+      clr-tree-node-touch-target,
+      tree-view-variables.$clr-tree-node-touch-target,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-tree-caret-padding,
+      tree-view-variables.$clr-tree-caret-padding,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     background: none;
     border: none;
     @include mixins.css-var(
       color,
-      clr-tree-node-caret-color,
+      clr-tree-node-caret-link-color,
       tree-view-variables.$clr-tree-node-caret-color,
       variables.$clr-use-custom-properties
     );
@@ -88,11 +152,23 @@
         variables.$clr-use-custom-properties
       );
     }
+    &:active {
+      @include mixins.css-var(
+        color,
+        clr-tree-node-caret-link-active-color,
+        tree-view-variables.$clr-tree-node-caret-link-active-color,
+        variables.$clr-use-custom-properties
+      );
+    }
   }
 
   .clr-tree-node-caret-icon {
     //Dimensions
-    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
+    @include mixins.equilateral-var(
+      clr-tree-caret-size,
+      tree-view-variables.$clr-tree-caret-size,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     vertical-align: middle;
@@ -111,7 +187,12 @@
 
   .clr-treenode-children {
     //Dimensions
-    margin-left: tree-view-variables.$clr-tree-node-children-margin;
+    @include mixins.css-var(
+      margin-left,
+      clr-tree-node-children-margin,
+      tree-view-variables.$clr-tree-node-children-margin,
+      variables.$clr-use-custom-properties
+    );
     will-change: height;
     overflow-y: hidden;
   }
@@ -123,7 +204,12 @@
     //Dimensions
     @include mixins.equilateral(100%);
     margin: 0;
-    padding: 0 0 0 tree-view-variables.$clr-tree-node-link-padding-left;
+    @include mixins.css-var(
+      padding,
+      clr-tree-node-content-padding,
+      0 0 0 tree-view-variables.$clr-tree-node-link-padding-left,
+      variables.$clr-use-custom-properties
+    );
 
     //Others
     background: transparent;
@@ -157,6 +243,7 @@
       text-decoration: none;
     }
 
+    // selected
     &.active {
       @include mixins.css-var(
         background,
@@ -173,17 +260,37 @@
     }
   }
 
-  .clr-tree-node-content-container > .clr-checkbox-wrapper {
-    //Dimensions
-    padding-top: tree-view-variables.$clr-tree-checkbox-padding-top;
-    padding-left: tree-view-variables.$clr-tree-checkbox-padding-left;
+  .clr-tree-node-content-container > .clr-treenode-checkbox {
+    padding: tree-view-variables.$clr-tree-checkbox-padding-top 0 0 tree-view-variables.$clr-tree-checkbox-padding-left;
 
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target;
+      @include mixins.css-var(
+        margin-left,
+        clr-tree-node-touch-target,
+        tree-view-variables.$clr-tree-node-touch-target,
+        variables.$clr-use-custom-properties
+      );
     }
 
     .clr-control-label {
-      font-size: tree-view-variables.$clr-tree-node-checkbox-label-font-size;
+      @include mixins.css-var(
+        font-size,
+        clr-tree-node-font-size,
+        tree-view-variables.$clr-tree-node-font-size,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        font-weight,
+        clr-tree-node-font-weight,
+        tree-view-variables.$clr-tree-node-font-weight,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        letter-spacing,
+        clr-tree-node-letter-spacing,
+        tree-view-variables.$clr-tree-node-letter-spacing,
+        variables.$clr-use-custom-properties
+      );
     }
   }
 }

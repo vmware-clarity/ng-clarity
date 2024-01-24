@@ -62,10 +62,6 @@ export default function (): void {
       expect(trigger.classList.contains('active')).toBeFalsy();
     });
 
-    it('has a default label from common strings', () => {
-      expect(trigger.getAttribute('aria-label')).toEqual('Signpost Toggle');
-    });
-
     it('preserves explicitly set label', () => {
       const testLabel = 'Test label';
       fixture.debugElement.componentInstance.label = testLabel;
@@ -90,7 +86,7 @@ export default function (): void {
     <button
       #anchor
       type="button"
-      class="signpost-action btn btn-small btn-link"
+      class="signpost-action btn btn-sm btn-link"
       [ngClass]="{ active: open }"
       [attr.aria-label]="label"
       clrSignpostTrigger

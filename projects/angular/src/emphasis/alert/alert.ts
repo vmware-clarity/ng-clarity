@@ -4,7 +4,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  Renderer2,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -15,9 +26,9 @@ import { MultiAlertService } from './providers/multi-alert.service';
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
-  styles: [':host { display: block; }'],
 })
 export class ClrAlert implements OnInit, OnDestroy {
+  @Input('clrAlertLightweight') isLight = false;
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -34,7 +45,9 @@ export class ClrAlert implements OnInit, OnDestroy {
     private iconService: AlertIconAndTypesService,
     private cdr: ChangeDetectorRef,
     @Optional() private multiAlertService: MultiAlertService,
-    private commonStrings: ClrCommonStringsService
+    private commonStrings: ClrCommonStringsService,
+    private renderer: Renderer2,
+    private hostElement: ElementRef
   ) {}
 
   @Input('clrAlertType')
@@ -69,6 +82,13 @@ export class ClrAlert implements OnInit, OnDestroy {
   set hidden(value: boolean) {
     if (value !== this._hidden) {
       this._hidden = value;
+
+      // CDE-1249 @HostBinding('class.alert-hidden') decoration will raise error in console https://angular.io/errors/NG0100
+      if (this._hidden) {
+        this.renderer.addClass(this.hostElement.nativeElement, 'alert-hidden');
+      } else {
+        this.renderer.removeClass(this.hostElement.nativeElement, 'alert-hidden');
+      }
       this.cdr.detectChanges();
     }
   }
@@ -101,7 +121,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
     const isCurrentAlert = this.multiAlertService?.currentAlert === this;
     this._closed = true;
-    if (this.multiAlertService) {
+    if (this.multiAlertService?.activeAlerts) {
       this.multiAlertService.close(isCurrentAlert);
     }
     this._closedChanged.emit(true);

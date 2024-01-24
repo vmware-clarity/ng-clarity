@@ -76,6 +76,10 @@
       &:not(:last-child) {
         @include square-off-btngroup-btns(right);
       }
+
+      &:disabled:not(:last-child) {
+        border-right: none;
+      }
     }
 
     .tooltip {
@@ -88,6 +92,9 @@
       }
     }
 
+    // ATM (after token migration)
+    // once shim is fully integrated all rules to be replaced with
+    // &:not([class*='-outline'])
     &.btn-primary,
     &.btn-success,
     &.btn-danger,
@@ -138,7 +145,7 @@
     }
 
     //To avoid double borders
-    .btn + .btn {
+    .btn:not([disabled]) + .btn {
       border-left: none;
     }
 
@@ -146,7 +153,7 @@
       border-left: none;
     }
 
-    .btn + .btn-group-overflow {
+    .btn:not([disabled]) + .btn-group-overflow {
       .btn {
         border-left: none;
       }

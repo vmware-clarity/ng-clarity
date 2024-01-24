@@ -4,5 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Import from clr-angular to preserve file structure until sass theming is removed
-@import '../../angular/src/main';
+@use '@cds/core/global.min.css'; // provides the Clarity Core design tokens
+@use '../../angular/src/main';
+@use './shim.cds-core.scss'; // the shim file
+@use '@cds/core/styles/theme.dark.min.css'; // dark theme

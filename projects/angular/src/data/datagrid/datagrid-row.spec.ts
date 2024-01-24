@@ -592,7 +592,7 @@ class SelectableRow {
 
 @Component({
   template: `
-    <clr-dg-row [clrDgSelectable]="clrDgSelectable" [clrDgItem]="item" [clrDgRowAriaLabel]="ariaLabel">
+    <clr-dg-row [clrDgSelectable]="clrDgSelectable" [clrDgItem]="item" [clrDgRowSelectionLabel]="ariaLabel">
       None
     </clr-dg-row>
   `,

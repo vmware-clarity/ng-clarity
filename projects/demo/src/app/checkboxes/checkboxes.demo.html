@@ -65,7 +65,13 @@
     <label>Disabled</label>
     <clr-checkbox-wrapper>
       <label>One</label>
-      <input clrCheckbox type="checkbox" [(ngModel)]="vertical.disabled.one" name="vertical.disabled.one" />
+      <input
+        clrCheckbox
+        class="clr-indeterminate"
+        type="checkbox"
+        [(ngModel)]="vertical.disabled.one"
+        name="vertical.disabled.one"
+      />
     </clr-checkbox-wrapper>
     <clr-checkbox-wrapper>
       <label>Two</label>

@@ -13,28 +13,30 @@
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
-    margin-top: forms-variables.$clr-forms-baseline;
-
+    @include mixins.css-var(
+      margin-top,
+      clr-forms-textarea-wrapper-margin-top,
+      forms-variables.$clr-forms-baseline,
+      variables.$clr-use-custom-properties
+    );
     .clr-validate-icon {
       margin-left: 0;
     }
   }
 
   .clr-textarea {
-    $textarea-vertical-padding: forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px;
-    $textarea-horizontal-padding: forms-variables.$clr-forms-baseline * 2;
-
     max-width: calc(100% - #{forms-variables.$clr-forms-baseline});
     height: auto;
-
     resize: vertical;
+    border: variables.$clr-global-borderwidth solid;
+    font-size: forms-variables.$clr-forms-field-font-size;
+
     @include mixins.css-var(
       background,
       clr-forms-textarea-background-color,
       forms-variables.$clr-forms-textarea-background-color,
       variables.$clr-use-custom-properties
     );
-    border: variables.$clr-global-borderwidth solid;
     @include mixins.css-var(
       border-color,
       clr-forms-border-color,
@@ -47,22 +49,78 @@
       forms-variables.$clr-forms-text-color,
       variables.$clr-use-custom-properties
     );
-    border-radius: forms-variables.$clr-forms-baseline * 0.5;
-    padding: $textarea-vertical-padding $textarea-horizontal-padding;
-    font-size: forms-variables.$clr-forms-field-font-size;
+    @include mixins.css-var(
+      border-radius,
+      clr-forms-textarea-border-radius,
+      forms-variables.$clr-forms-baseline * 0.5,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      padding,
+      clr-forms-textarea-padding,
+      forms-variables.$clr-forms-baseline + variables.$clr_baselineRem_2px forms-variables.$clr-forms-baseline * 2,
+      variables.$clr-use-custom-properties
+    );
 
     &:focus {
+      // TODO(CDE-863) - Remove outline mixin and convert this component to just use border-color to avoid the white
+      // outline in addition to the intended color on focus
       @include mixins.include-slim-outline-style-form-fields();
+      @include mixins.css-var(
+        outline-color,
+        clr-forms-focused-color,
+        forms-variables.$clr-forms-focused-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-forms-focused-color,
+        forms-variables.$clr-forms-focused-color,
+        variables.$clr-use-custom-properties
+      );
     }
 
     &:disabled {
       @include forms-mixins.disabled-form-fields();
+      @include mixins.css-var(
+        background-color,
+        clr-forms-textarea-disabled-background,
+        forms-variables.$clr-forms-textarea-background-color,
+        variables.$clr-use-custom-properties
+      );
+      @include mixins.css-var(
+        border-color,
+        clr-forms-border-disabled-color,
+        forms-variables.$clr-forms-border-disabled-color,
+        variables.$clr-use-custom-properties
+      );
     }
+  }
+
+  .clr-success .clr-textarea {
+    @include mixins.css-var(
+      border-color,
+      clr-forms-valid-color,
+      forms-variables.$clr-forms-valid-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      outline-color,
+      clr-forms-valid-color,
+      forms-variables.$clr-forms-valid-color,
+      variables.$clr-use-custom-properties
+    );
   }
 
   .clr-error .clr-textarea {
     @include mixins.css-var(
       border-color,
+      clr-forms-invalid-color,
+      forms-variables.$clr-forms-invalid-color,
+      variables.$clr-use-custom-properties
+    );
+    @include mixins.css-var(
+      outline-color,
       clr-forms-invalid-color,
       forms-variables.$clr-forms-invalid-color,
       variables.$clr-use-custom-properties

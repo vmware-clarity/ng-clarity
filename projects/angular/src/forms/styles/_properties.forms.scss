@@ -12,12 +12,14 @@
   @if variables.$clr-use-custom-properties == true {
     :root {
       // Structure
+      --clr-forms-baseline: #{variables.$clr_baselineRem_0_25};
       --clr-form-disabled-background-color: var(--clr-color-neutral-400);
 
       // Generic
       --clr-forms-label-color: var(--clr-color-neutral-800);
       --clr-forms-text-color: var(--clr-color-neutral-1000);
       --clr-forms-invalid-color: var(--clr-color-danger-800);
+      --clr-forms-invalid-text-color: var(--clr-color-danger-800);
       --clr-forms-valid-color: var(--clr-color-success-700);
       --clr-forms-valid-text-color: var(--clr-color-success-900);
       --clr-forms-subtext-color: var(--clr-color-neutral-600);
@@ -26,14 +28,24 @@
       --clr-forms-focused-color: var(--clr-color-action-600);
 
       --clr-forms-subtext-disabled-color: #{forms-variables.$clr-forms-subtext-disabled-color};
-      --clr-forms-border-disabled-color: #{forms-variables.$clr-forms-border-disabled-color};
+      --clr-forms-border-disabled-color: #{forms-variables.$clr-forms-border-color};
       --clr-forms-text-disabled-color: #{forms-variables.$clr-forms-text-disabled-color};
       --clr-forms-label-disabled-color: #{forms-variables.$clr-forms-label-disabled-color};
+      --clr-forms-icon-size: #{variables.$clr_baselineRem_1};
+      --clr-forms-placeholder-disabled-color: #{forms-variables.$clr-forms-placeholder-color};
+      --clr-forms-subtext-margin-top: #{forms-variables.$clr-forms-baseline};
 
       // Typographic
       --clr-forms-label-font-weight: var(--clr-font-weight-bold);
       --clr-forms-block-label-font-weight: #{variables.$clr-h5-font-weight};
       --clr-forms-text-font-weight: #{variables.$clr-p3-font-weight};
+
+      // Input
+      --clr-forms-input-padding: 0 #{forms-variables.$clr-forms-baseline};
+      --clr-forms-input-wrapper-height: #{forms-variables.$clr-forms-baseline * 4};
+
+      // Input group
+      --clr-forms-input-group-icon-action-size: #{variables.$clr_baselineRem_0_75};
 
       // Textarea
       --clr-forms-textarea-background-color: var(--clr-color-neutral-0);
@@ -47,6 +59,13 @@
         #{variables.$clr_baselineRem_2px}
         #{variables.$clr_baselineRem_2px}
         #{color.adjust(forms-variables.$clr-forms-invalid-color, $lightness: 30%)};
+      --clr-forms-textarea-padding: #{forms-variables.$clr-forms-baseline +
+        variables.$clr_baselineRem_2px
+        forms-variables.$clr-forms-baseline *
+        2};
+      --clr-forms-textarea-wrapper-margin-left: 0;
+      --clr-forms-textarea-wrapper-margin-top: #{forms-variables.$clr-forms-baseline};
+      --clr-forms-textarea-disabled-background: #{forms-variables.$clr-forms-textarea-background-color};
 
       // Select
       --clr-forms-select-hover-background: rgba(
@@ -55,6 +74,8 @@
         #{color.blue(variables.$clr-color-neutral-300)},
         0.5
       );
+      --clr-forms-select-hover-border-color: var(--clr-forms-select-hover-background);
+      --clr-forms-select-disabled-border-color: #{forms-variables.$clr-forms-border-color};
       --clr-forms-select-caret-hover-color: var(--clr-color-neutral-600);
       --clr-forms-select-caret-color: var(--clr-color-neutral-500);
       --clr-forms-select-option-color: var(--clr-forms-text-color);
@@ -74,6 +95,9 @@
       --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
       --clr-forms-checkbox-disabled-mark-color: var(--clr-color-neutral-1000);
       --clr-forms-checkbox-border-radius: var(--clr-global-borderradius);
+      --clr-forms-checkbox-line-height: #{forms-variables.$clr-forms-icon-size};
+      --clr-forms-checkbox-padding-left: #{forms-variables.$clr-forms-checkbox-padding-left};
+      --clr-forms-checkbox-label-height: #{forms-variables.$clr-forms-checkbox-label-height};
       --clr-forms-checkbox-checked-shadow: inset
         0
         0
@@ -83,10 +107,14 @@
 
       // Radio
       --clr-forms-radio-label-color: var(--clr-forms-checkbox-label-color);
+      --clr-forms-radio-label-disabled-color: #{forms-variables.$clr-forms-radio-label-color};
       --clr-forms-radio-disabled-background-color: var(--clr-color-neutral-700);
       --clr-forms-radio-disabled-mark-color: var(--clr-forms-checkbox-disabled-mark-color);
       --clr-forms-radio-selected-shadow: var(--clr-forms-checkbox-checked-shadow);
       --clr-forms-radio-disabled-shadow: #{forms-variables.$clr-forms-radio-disabled-shadow};
+      --clr-forms-radio-line-height: #{forms-variables.$clr-forms-icon-size};
+      --clr-forms-radio-padding-left: #{forms-variables.$clr-forms-radio-padding-left};
+      --clr-forms-radio-label-height: #{forms-variables.$clr-forms-radio-label-height};
       --clr-forms-radio-focused-shadow: 0
         0
         #{mixins.$clr-outline-blur}
@@ -96,6 +124,24 @@
       // Range
       --clr-forms-range-progress-fill-color: var(--clr-color-action-600);
       --clr-forms-range-track-color: var(--clr-color-neutral-200);
+      --clr-forms-range-track-border-color: #{forms-variables.$clr-forms-range-border-color};
+      --clr-forms-range-thumb-height: #{forms-variables.$clr-forms-range-thumb-height};
+      --clr-forms-range-track-height: #{forms-variables.$clr-forms-range-track-height};
+      --clr-forms-range-track-border-radius: #{forms-variables.$clr-forms-range-border-radius};
+      --clr-forms-range-track-border-width: #{forms-variables.$clr-forms-range-border-width};
+      --clr-forms-range-progress-fill-color-disabled: #{forms-variables.$clr-forms-range-progress-fill-color};
+      --clr-forms-range-track-color-disabled: #{forms-variables.$clr-forms-range-track-color};
+      --clr-forms-range-track-border-color-disabled: #{forms-variables.$clr-forms-range-border-color-disabled};
+
+      // Datalist
+
+      --clr-forms-datalist-caret-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-disabled-color: #{variables.$clr-color-neutral-600};
+      --clr-forms-datalist-caret-icon-size: #{variables.$clr_baselineRem_0_667};
+
+      // Password
+      --clr-forms-password-eye-icon-color: var(--clr-forms-focused-color);
+      --clr-forms-password-disabled-eye-icon-color: var(--clr-forms-text-disabled-color);
     }
   }
 }
