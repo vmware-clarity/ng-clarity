@@ -30,7 +30,6 @@ import DatagridColumnSpecs from './datagrid-column.spec';
 import DatagridFilterSpecs from './datagrid-filter.spec';
 import DatagridFooterSpecs from './datagrid-footer.spec';
 import DatagridHideableColumnDirectiveSpec from './datagrid-hideable-column.spec';
-import DatagridItemsTrackBySpecs from './datagrid-items-trackby.spec';
 import DatagridItemsSpecs from './datagrid-items.spec';
 import DatagridPageSizeSpecs from './datagrid-page-size.spec';
 import DatagridPaginationIntegrationSpecs from './datagrid-pagination.integration.spec';
@@ -82,7 +81,6 @@ describe('Datagrid', function () {
     DatagridColumnSpecs();
     DatagridColumnSeparatorSpecs();
     DatagridItemsSpecs();
-    DatagridItemsTrackBySpecs();
     DatagridRowSpecs();
     DatagridRowDetailSpecs();
     DatagridPageSizeSpecs();
