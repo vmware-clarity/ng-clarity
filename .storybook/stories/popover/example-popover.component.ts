@@ -27,7 +27,10 @@ import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover
       role="dialog"
       cdkTrapFocus
       *clrPopoverContent="_openState; at: _contentPosition; outsideClickToClose: true; scrollToClose: false"
-      style="background-color: white; border: 1px solid black; border-radius: 4px; padding: 5px"
+      style="background-color: var(--cds-alias-object-app-background);
+            border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+            border-radius: var(--cds-alias-object-border-width-100);
+            padding: var(--cds-global-space-4)"
     >
       Popover content {{ _positionKey }}
     </div>
