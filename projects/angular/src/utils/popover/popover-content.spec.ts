@@ -102,17 +102,6 @@ export default function (): void {
         content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(0);
       });
-
-      it('responds to shouldRealign events from the positionService', fakeAsync(function (this: Context) {
-        const alignContentSpy = spyOn(this.clarityDirective as any, 'alignContent');
-        this.testComponent.openState = true; // Add content to the DOM
-        this.fixture.detectChanges();
-        expect(alignContentSpy).not.toHaveBeenCalled();
-        this.fixture.detectChanges();
-        tick();
-        // Make sure it has been called exactly one time
-        expect(alignContentSpy).toHaveBeenCalledTimes(1);
-      }));
     });
 
     describe('Template API', () => {
@@ -143,7 +132,9 @@ export default function (): void {
       it('adds top and left style to the content container when content is open', function (this: Context) {
         this.testComponent.openState = true; // Add content to the DOM
         this.fixture.detectChanges();
-        const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName('clr-popover-content');
+        const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName(
+          'cdk-overlay-connected-position-bounding-box'
+        );
         const testElement = content[0] as HTMLElement;
         expect(testElement.style.top).toMatch(/\d+px/);
         expect(testElement.style.left).toMatch(/\d+px/);

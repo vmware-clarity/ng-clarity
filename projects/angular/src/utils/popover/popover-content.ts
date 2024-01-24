@@ -4,10 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import {
   ConnectedPosition,
   Overlay,
   OverlayConfig,
+  OverlayContainer,
   OverlayRef,
   STANDARD_DROPDOWN_BELOW_POSITIONS,
 } from '@angular/cdk/overlay';
@@ -15,6 +17,7 @@ import { DomPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   Directive,
+  ElementRef,
   EmbeddedViewRef,
   Inject,
   Input,
@@ -38,13 +41,15 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 })
 export class ClrPopoverContent implements OnDestroy {
   private view: EmbeddedViewRef<void>;
+  private domPortal: DomPortal;
   private subscriptions: Subscription[] = [];
+  private overlaySubscriptions: Subscription[] = [];
   private overlayRef: OverlayRef = null;
   private preferredPosition: ConnectedPosition = {
     originX: 'start',
-    originY: 'bottom',
-    overlayX: 'start',
-    overlayY: 'bottom',
+    originY: 'top',
+    overlayX: 'end',
+    overlayY: 'top',
   };
 
   private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
@@ -55,9 +60,12 @@ export class ClrPopoverContent implements OnDestroy {
     private template: TemplateRef<any>,
     private renderer: Renderer2,
     private overlay: Overlay,
+    private overlayContainer: OverlayContainer,
     private smartEventsService: ClrPopoverEventsService,
     private smartOpenService: ClrPopoverToggleService
-  ) {}
+  ) {
+    overlayContainer.getContainerElement().classList.add('clr-container-element');
+  }
 
   @Input('clrPopoverContent')
   set open(value: boolean) {
@@ -86,77 +94,121 @@ export class ClrPopoverContent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.smartOpenService.open) {
-      this.addContent();
+      this.showOverlay();
     }
     this.subscriptions.push(
       this.smartOpenService.openChange.subscribe(change => {
         if (change) {
-          this.addContent();
+          this.showOverlay();
         } else {
-          this.removeContent();
+          this.removeOverlay();
         }
       })
     );
   }
 
   ngOnDestroy() {
-    this.removeContent();
+    this.removeOverlay();
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.overlaySubscriptions.forEach(sub => sub.unsubscribe());
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
   }
 
-  private addContent() {
-    this.overlayRef = this.overlay.create(
+  private _createOverlayRef(): OverlayRef {
+    const overlay = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo(this.smartEventsService.anchorButtonRef)
-          .withPositions(this.positions)
-          .withGrowAfterOpen(),
-        scrollStrategy: this.scrollToClose
-          ? this.overlay.scrollStrategies.close()
+          .withPositions([this.preferredPosition, ...this.positions]),
+        scrollStrategy: this.smartEventsService.scrollToClose
+          ? this.overlay.scrollStrategies.noop()
           : this.overlay.scrollStrategies.reposition(),
         panelClass: 'clr-popover-content',
-        // In order to get access to the backdrop clicks to close the popover, we need to have a backdrop.
-        // The CDK provides a transparent and non-transparent class we can use as a scrim. Again, this is
-        // something we can parameterize as part of our API (modals get a non-transparent scrim, most other
-        // components don't).
-        hasBackdrop: true,
-        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: false,
       })
     );
 
-    this.overlayRef.backdropClick().subscribe(() => this.backdropClick());
-    // TemplatePortals don't use the provided viewContainerRef to create the embedded template, they use
-    // the portal ref. The DomPortal allows the content to be rendered inline and then moves it to the
-    // overlay, which works seamlessly with the previous version of this utility.
-    this.view = this.container.createEmbeddedView(this.template);
-    const [rootNode] = this.view.rootNodes;
+    this.overlaySubscriptions.push(
+      overlay.keydownEvents().subscribe(event => {
+        if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
+          event.preventDefault();
+          this.smartOpenService.open = false;
+          this.smartEventsService.setAnchorFocus();
+        }
+      })
+    );
+    this.overlaySubscriptions.push(
+      overlay.outsidePointerEvents().subscribe(event => {
+        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+        if (
+          this.smartEventsService.contentRef &&
+          this.smartEventsService.contentRef.nativeElement.contains(event.target)
+        ) {
+          return;
+        }
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        if (this.smartOpenService.openEvent) {
+          if (
+            (this.smartOpenService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.smartOpenService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.smartOpenService.openEvent.target === event.target
+          ) {
+            return;
+          }
+        }
 
-    const domPortal = new DomPortal(rootNode);
+        if (this.smartEventsService.outsideClickClose) {
+          this.smartOpenService.open = false;
+          this.smartEventsService.setAnchorFocus();
+        }
+      })
+    );
+    this.overlaySubscriptions.push(
+      overlay.detachments().subscribe(() => {
+        this.smartOpenService.open = false;
+        this.smartEventsService.setAnchorFocus();
+      })
+    );
 
-    this.overlayRef.attach(domPortal);
-
-    this.smartEventsService.contentRef = rootNode; // So we know where/what to set close focus on
+    return overlay;
   }
 
-  private backdropClick() {
-    if (this.smartEventsService.outsideClickClose) {
-      this.smartOpenService.open = false;
+  private showOverlay() {
+    if (!this.overlayRef) {
+      this.overlayRef = this._createOverlayRef();
     }
+
+    if (!this.view) {
+      this.view = this.container.createEmbeddedView(this.template);
+      const [rootNode] = this.view.rootNodes;
+      this.smartEventsService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+      this.domPortal = new DomPortal<HTMLElement>(this.smartEventsService.contentRef);
+    }
+    this.overlayRef.attach(this.domPortal);
+
+    setTimeout(() => this.smartOpenService.popoverVisibleEmit(true));
   }
 
-  private removeContent(): void {
+  private removeOverlay(): void {
     if (!this.view) {
       return;
     }
     if (this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
     }
-    this.view.destroy();
-    delete this.view;
+    if (this.domPortal.isAttached) {
+      this.domPortal.detach();
+    }
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
+    }
+
     this.smartOpenService.popoverVisibleEmit(false);
   }
 

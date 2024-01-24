@@ -80,17 +80,6 @@ export default function (): void {
         expect(this.eventService.closeButtonRef).toEqual(testElementRef);
       });
 
-      it('sets outside click to close property', function (this: TestContext) {
-        expect(this.eventService.ignoredEvent).not.toBeDefined();
-        const testClick = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-        });
-        this.toggleService.toggleWithEvent(testClick);
-        expect(this.eventService.ignoredEvent).toEqual(testClick);
-      });
-
       it('set focus on the anchor button', function (this: TestContext) {
         const testAnchor = setupAnchor(this);
         setupContent(this);

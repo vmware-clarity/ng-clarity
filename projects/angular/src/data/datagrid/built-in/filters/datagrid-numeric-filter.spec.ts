@@ -36,8 +36,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -82,8 +80,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 

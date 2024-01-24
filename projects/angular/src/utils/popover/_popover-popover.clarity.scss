@@ -9,8 +9,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @include mixins.exports('smart-popover.clarity') {
-  .clr-popover-content {
-    position: fixed;
+  .clr-container-element {
+    position: absolute;
     z-index: map.get(variables.$clr-layers, smart-popover);
   }
 }
