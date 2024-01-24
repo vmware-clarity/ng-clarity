@@ -38,7 +38,7 @@
       clr-icon[shape^='angle'] {
         //position: absolute;
         color: inherit;
-        @include mixins.min-equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
       }
 
       // NOTE: cds-icon handles direction internally.
@@ -49,7 +49,7 @@
         margin-top: unset;
         //position: absolute;
         color: inherit;
-        @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-dimension);
+        @include mixins.equilateral(tokens.$cds-global-space-7);
         // need custom property override here to force minimum size of
         // cds-icon to be 12px across the shadow dom...
         //--cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
@@ -118,12 +118,12 @@
         )
       );
 
-      padding: dropdown-variables.$clr-dropdown-header-padding;
+      padding: 0 tokens.$cds-global-space-7;
       margin: 0;
 
       & ~ .dropdown-item,
       & ~ .dropdown > .dropdown-item {
-        padding-left: dropdown-variables.$clr-dropdown-subsection-offset;
+        padding-left: tokens.$cds-global-space-10;
       }
 
       @extend %dropdown-content;
@@ -160,7 +160,7 @@
           -webkit-mask-size: cover;
           mask-size: cover;
           background-color: dropdown-variables.$clr-dropdown-item-color;
-          @include mixins.equilateral(dropdown-variables.$clr-dropdown-caret-icon-size);
+          @include mixins.equilateral(tokens.$cds-global-space-6);
           transform: rotate(-90deg);
           margin-left: auto;
         }
@@ -198,7 +198,7 @@
       border-bottom-width: dropdown-variables.$clr-dropdown-divider-border-width;
       border-bottom-style: solid;
       border-bottom-color: dropdown-variables.$clr-dropdown-divider-color;
-      margin: dropdown-variables.$clr-dropdown-divider-margin;
+      margin: tokens.$cds-global-space-6;
     }
   }
 

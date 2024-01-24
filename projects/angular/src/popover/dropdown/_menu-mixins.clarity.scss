@@ -26,12 +26,12 @@
   border-width: tokens.$cds-alias-object-border-width-100;
   border-style: solid;
   border-color: dropdown-variables.$clr-dropdown-border-color;
-  border-radius: dropdown-variables.$clr-dropdown-border-radius;
+  border-radius: tokens.$cds-alias-object-border-radius-100;
 
   box-shadow: tokens.$cds-alias-object-shadow-200;
 
   margin-top: tokens.$cds-global-space-2;
-  padding: dropdown-variables.$clr-dropdown-items-padding;
+  padding: tokens.$cds-global-space-6 0;
   visibility: hidden;
   z-index: map.get(variables.$clr-layers, dropdown-menu);
 }
@@ -97,7 +97,7 @@
 }
 
 @mixin generate-dropdown-item-height() {
-  padding: dropdown-variables.$clr-dropdown-item-padding;
+  padding: 0 tokens.$cds-global-space-7;
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
     padding: tokens.$cds-global-space-4 tokens.$cds-global-space-9;
