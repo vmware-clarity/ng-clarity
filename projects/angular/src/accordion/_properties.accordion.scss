@@ -39,6 +39,6 @@
     --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
     --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
-    --clr-accordion-step-title-min-width: 0;
+    --clr-accordion-step-title-min-width: calc(11 * #{tokens.$cds-global-space-8});
   }
 }
