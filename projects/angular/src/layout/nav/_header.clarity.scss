@@ -129,10 +129,6 @@
       color: header-variables.$clr-header-font-color;
     }
 
-    .nav-icon {
-      @include mixins.equilateral(header-variables.$clr-header-height);
-    }
-
     .nav-link {
       display: inline-flex;
       align-items: center;
