@@ -21,8 +21,8 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   selector: 'clr-checkbox-wrapper,clr-toggle-wrapper',
   template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
+    <span class="clr-checkbox-input-visualization"></span>
     <ng-content select="label"></ng-content>
-    <label *ngIf="!label"><span class="clr-checkbox-input-visualization"> </span></label>
   `,
   host: {
     '[class.clr-checkbox-wrapper]': '!toggle',
@@ -49,6 +49,11 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.label) {
+      //      <span class="clr-checkbox-input-visualization"> </span>
+      //       <span class="clr-checkbox-label-text"></span>
+
+      //  console.log(this.label.el.nativeElement);
+
       this.label.disableGrid();
     }
   }

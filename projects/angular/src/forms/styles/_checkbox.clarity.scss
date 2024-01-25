@@ -19,30 +19,17 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
+    gap: tokens.$cds-global-space-5;
+    align-items: center;
+    min-height: forms-variables.$clr-forms-checkbox-label-height;
 
-    .clr-control-label:not(:has(> .clr-checkbox-input-visualization)),
-    .clr-control-label > .clr-checkbox-label-text {
+    .clr-control-label {
       @include forms-mixins.checkbox-radio-label-styles(
-        forms-variables.$clr-forms-checkbox-label-height,
-        forms-variables.$clr-forms-checkbox-padding-left,
+        0,
+        0,
         forms-variables.$clr-forms-checkbox-label-color,
         'SECONDARY-13-RG-CPT'
       );
-    }
-
-    .clr-control-label:has(> .clr-checkbox-label-text) {
-      min-height: forms-variables.$clr-forms-checkbox-label-height;
-      display: inline-flex;
-      gap: tokens.$cds-global-space-5;
-      align-items: center;
-
-      & > .clr-checkbox-label-text {
-        display: inline-flex;
-        min-height: tokens.$cds-global-space-5;
-        padding: 0;
-
-        //@include mixins.generate-typography-token('CAPTION-SM-10');
-      }
     }
 
     //Hide the default checkbox behind the pseudo elements
@@ -53,8 +40,8 @@
     }
 
     //Checkbox base
-    input[type='checkbox'] + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::before,
+    input[type='checkbox'] + .clr-checkbox-input-visualization::before {
       @include forms-mixins.checkbox-radio-shared-inactive(
         forms-variables.$clr-forms-checkbox-height,
         forms-variables.$clr-forms-checkbox-top,
@@ -65,14 +52,14 @@
       border-radius: forms-variables.$clr-forms-checkbox-border-radius;
     }
 
-    input[type='checkbox']:focus + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']:focus + .clr-control-label > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:focus:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::before,
+    input[type='checkbox']:focus + .clr-checkbox-input-visualization::before {
       @include mixins.include-outline-style-form-fields();
     }
 
     //Checkmark
-    input[type='checkbox'] + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::after {
+    input[type='checkbox']:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::after,
+    input[type='checkbox'] + .clr-checkbox-input-visualization::after {
       position: absolute;
       content: '';
       display: none;
@@ -87,7 +74,7 @@
       transform: translate(0, $mark-half-size) rotate(-45deg);
     }
 
-    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization {
+    input[type='checkbox'] + .clr-checkbox-input-visualization {
       display: inline-flex;
       &::before {
         position: static;
@@ -99,29 +86,26 @@
       }
     }
 
-    input[type='checkbox']:checked + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::before,
-    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:checked:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::before,
+    input[type='checkbox']:checked + .clr-checkbox-input-visualization::before {
       background: forms-variables.$clr-forms-checkbox-background-color;
       border: none;
     }
 
-    input[type='checkbox']:checked + .clr-control-label:not(:has(> .clr-checkbox-input-visualization))::after,
-    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::after {
+    input[type='checkbox']:checked:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::after,
+    input[type='checkbox']:checked + .clr-checkbox-input-visualization::after {
       display: inline-flex;
     }
 
-    input[type='checkbox'].clr-indeterminate + .clr-control-label,
-    input[type='checkbox']:indeterminate + .clr-control-label {
-      &:not(:has(> .clr-checkbox-input-visualization))::before,
-      & > .clr-checkbox-input-visualization::before {
+    input[type='checkbox'].clr-indeterminate,
+    input[type='checkbox']:indeterminate {
+      &:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::before,
+      & + .clr-checkbox-input-visualization::before {
         border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
       }
-    }
 
-    input[type='checkbox'].clr-indeterminate + .clr-control-label,
-    input[type='checkbox']:indeterminate + .clr-control-label {
-      &:not(:has(> .clr-checkbox-input-visualization))::after,
-      & > .clr-checkbox-input-visualization::after {
+      &:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::after,
+      & + .clr-checkbox-input-visualization::after {
         border-left: none;
         border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
         display: inline-block;
@@ -134,35 +118,34 @@
     }
   }
 
-  .clr-error .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label {
-    &:not(:has(> .clr-checkbox-input-visualization))::before,
-    & > .clr-checkbox-input-visualization::before {
+  .clr-error .clr-checkbox-wrapper input[type='checkbox'] {
+    &:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::before,
+    & + .clr-checkbox-input-visualization::before {
       border-color: forms-variables.$clr-forms-invalid-color;
     }
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
-    .clr-control-label,
-    .clr-control-label > .clr-checkbox-label-text {
+    .clr-control-label {
       cursor: not-allowed;
 
       color: forms-variables.$clr-forms-label-disabled-color;
     }
 
     input[type='checkbox'] + .clr-control-label::before,
-    input[type='checkbox'] + .clr-control-label > .clr-checkbox-input-visualization::before {
+    input[type='checkbox'] + .clr-checkbox-input-visualization::before {
       background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
       border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
     }
 
     input[type='checkbox']:checked + .clr-control-label::before,
-    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::before {
+    input[type='checkbox']:checked + .clr-checkbox-input-visualization::before {
       background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
       border: none;
     }
 
     input[type='checkbox']:checked + .clr-control-label::after,
-    input[type='checkbox']:checked + .clr-control-label > .clr-checkbox-input-visualization::after {
+    input[type='checkbox']:checked + .clr-checkbox-input-visualization::after {
       border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
     }
 
