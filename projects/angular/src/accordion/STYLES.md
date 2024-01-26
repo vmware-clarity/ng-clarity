@@ -17,7 +17,6 @@
 | --clr-accordion-header-disabled-background-color | Background color of the accordion header when disabled.             |
 | --clr-accordion-header-hover-background-color    | Background color of the accordion header on hover.                  |
 | --clr-accordion-header-active-background-color   | Background color of the accordion header when active.               |
-| --clr-accordion-header-button-padding            | Padding surrounded button used for the header.                      |
 | --clr-accordion-error-color                      | Color representing an error state in the accordion.                 |
 | --clr-accordion-complete-color                   | Color representing a completed state in the accordion.              |
 | --clr-accordion-border-color                     | Color of the accordion border.                                      |

@@ -41,7 +41,10 @@
         (@toggle.done)="collapsePanelOnAnimationDone(panel)"
         class="clr-accordion-content"
       >
-        <div class="clr-accordion-inner-content">
+        <div
+          class="clr-accordion-inner-content"
+          [class.clr-accordion-inner-content-disabled]="isAccordion && panel.disabled"
+        >
           <ng-content></ng-content>
         </div>
       </div>
