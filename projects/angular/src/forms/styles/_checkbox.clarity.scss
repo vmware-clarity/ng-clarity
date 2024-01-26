@@ -31,6 +31,10 @@
       );
     }
 
+    input[type='checkbox']:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label {
+      padding-left: forms-variables.$clr-forms-checkbox-label-height;
+    }
+
     //Hide the default checkbox behind the pseudo elements
     //Opacity is set to 0 so that the input remains accessible
     input[type='checkbox'] {
