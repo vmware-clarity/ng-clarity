@@ -239,7 +239,6 @@
 
       & > .dropdown-toggle {
         gap: tokens.$cds-global-space-5;
-        justify-content: unset;
         position: relative;
         padding: header-variables.$clr-header-nav-link-padding;
         line-height: header-variables.$clr-header-height;

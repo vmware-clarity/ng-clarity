@@ -28,7 +28,6 @@
     .dropdown-toggle {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       position: relative;
       margin: 0;
       white-space: nowrap;
@@ -36,7 +35,6 @@
 
       clr-icon[shape^='caret'],
       clr-icon[shape^='angle'] {
-        //position: absolute;
         color: inherit;
         @include mixins.min-equilateral(tokens.$cds-global-space-7);
       }
@@ -47,19 +45,12 @@
       cds-icon[shape^='caret'],
       cds-icon[shape^='angle'] {
         margin-top: unset;
-        //position: absolute;
         color: inherit;
         @include mixins.equilateral(tokens.$cds-global-space-7);
-        // need custom property override here to force minimum size of
-        // cds-icon to be 12px across the shadow dom...
-        //--cds-global-space-7: #{dropdown-variables.$clr-dropdown-caret-icon-dimension};
       }
 
       $clr-dropdown-caret-left-margin: tokens.$cds-global-space-2;
       &.btn {
-        //padding-right: calc(
-        //  #{button-variables.$clr-btn-horizontal-padding} + #{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}
-        //);
         text-overflow: unset;
 
         clr-icon {
@@ -78,7 +69,7 @@
       }
 
       &:not(.btn) {
-        padding: 0; // calc(#{dropdown-variables.$clr-dropdown-caret-icon-dimension} + #{$clr-dropdown-caret-left-margin}) 0 0;
+        padding: 0;
         color: dropdown-variables.$clr-dropdown-active-text-color;
 
         cds-icon[shape^='caret'],
@@ -165,9 +156,12 @@
           margin-left: auto;
         }
 
+        &.active:hover:after,
         &:hover:after {
           background-color: dropdown-variables.$clr-dropdown-item-hover-color;
         }
+
+        &.active:active:after,
         &:active:after {
           background-color: dropdown-variables.$clr-dropdown-item-active-color;
         }
