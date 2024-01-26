@@ -43,27 +43,28 @@
 
     & > .clr-treenode-checkbox.clr-checkbox-wrapper {
       width: 100%;
-      padding: tree-view-variables.$clr-tree-checkbox-padding-top 0 0
-        tree-view-variables.$clr-tree-checkbox-padding-left;
+      padding-top: tree-view-variables.$clr-tree-checkbox-padding-top;
 
       &:first-child {
         margin-left: tree-view-variables.$clr-tree-node-touch-target;
       }
 
-      .clr-control-label {
-        width: 100%;
-        padding: tokens.$cds-global-space-5 tokens.$cds-global-space-5 tokens.$cds-global-space-5
-          tokens.$cds-global-space-10;
+      .clr-checkbox-input-visualization {
+        width: tokens.$cds-global-space-10;
 
         &:before {
-          left: tokens.$cds-global-space-5;
-          top: tokens.$cds-global-space-5;
+          margin: 0 tokens.$cds-global-space-5;
         }
 
         &:after {
           left: tokens.$cds-global-space-6;
           top: tokens.$cds-global-space-5;
         }
+      }
+
+      .clr-control-label {
+        width: 100%;
+        padding: tokens.$cds-global-space-5 tokens.$cds-global-space-5 tokens.$cds-global-space-5 0;
       }
     }
 
@@ -72,7 +73,7 @@
     }
 
     &:focus > .clr-treenode-content,
-    &:focus > .clr-treenode-checkbox .clr-control-label {
+    &:focus > .clr-treenode-checkbox.clr-checkbox-wrapper {
       outline-offset: calc(-1 * tokens.$cds-alias-object-border-width-200);
 
       @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
@@ -111,13 +112,13 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+  .clr-treenode-checkbox:has(input[type='checkbox']:checked) {
     color: tree-view-variables.$clr-tree-node-content-selected-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
   }
 
   .clr-treenode-content .clr-treenode-link,
-  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+  .clr-treenode-checkbox:has(input[type='checkbox']) {
     border-radius: tree-view-variables.$clr-tree-border-radius;
     color: tree-view-variables.$clr-tree-node-content-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
