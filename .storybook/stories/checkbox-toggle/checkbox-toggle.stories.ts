@@ -25,10 +25,7 @@ const defaultStory: Story = args => {
       <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
         <${wrapperSelector}>
           <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>
-            <span class="clr-checkbox-input-visualization"> </span>
-            <span class="clr-checkbox-label-text">{{label}}</span>
-          </label>
+          <label>{{label}}</label>
         </${wrapperSelector}>
       </${containerSelector}>
     `,

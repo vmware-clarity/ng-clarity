@@ -49,11 +49,6 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.label) {
-      //      <span class="clr-checkbox-input-visualization"> </span>
-      //       <span class="clr-checkbox-label-text"></span>
-
-      //  console.log(this.label.el.nativeElement);
-
       this.label.disableGrid();
     }
   }

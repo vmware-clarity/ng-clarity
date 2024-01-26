@@ -19,7 +19,6 @@
     @include forms-mixins.form-flatten-validate-text();
     position: relative;
     display: flex;
-    gap: tokens.$cds-global-space-5;
     align-items: center;
     min-height: forms-variables.$clr-forms-checkbox-label-height;
 
@@ -37,6 +36,8 @@
     input[type='checkbox'] {
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       top: initial;
+      cursor: pointer;
+      z-index: 100;
     }
 
     //Checkbox base
@@ -76,13 +77,15 @@
 
     input[type='checkbox'] + .clr-checkbox-input-visualization {
       display: inline-flex;
+      @include mixins.equilateral(forms-variables.$clr-forms-checkbox-size);
+      align-items: center;
       &::before {
         position: static;
         display: inline-flex;
       }
 
       &::after {
-        top: auto;
+        //top: auto;
       }
     }
 
