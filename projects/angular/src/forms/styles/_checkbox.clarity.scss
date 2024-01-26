@@ -133,7 +133,8 @@
   }
 
   .clr-form-control-disabled .clr-checkbox-wrapper {
-    .clr-control-label {
+    .clr-control-label,
+    input[type='checkbox'] {
       cursor: not-allowed;
 
       color: forms-variables.$clr-forms-label-disabled-color;
@@ -156,10 +157,13 @@
       border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
     }
 
-    input[type='checkbox'].clr-indeterminate + .clr-control-label::after,
-    input[type='checkbox']:indeterminate + .clr-control-label::after {
-      border-color: forms-variables.$clr-forms-checkbox-disabled-indeterminate-color;
-      border-left: none;
+    input[type='checkbox'].clr-indeterminate,
+    input[type='checkbox']:indeterminate {
+      &:not(:has(+ .clr-checkbox-input-visualization)) + .clr-control-label::after,
+      & + .clr-checkbox-input-visualization::after {
+        border-color: forms-variables.$clr-forms-checkbox-disabled-indeterminate-color;
+        border-left: none;
+      }
     }
   }
 
