@@ -13,6 +13,12 @@
 
 @include mixins.exports('stepper.clarity') {
   .clr-stepper-forms {
+    .clr-accordion-header-button {
+      padding: 0 0 0 tokens.$cds-global-space-7;
+      align-items: center;
+      min-height: mixins.baselinePx(56);
+    }
+
     .clr-accordion-panel-inactive .clr-accordion-angle {
       visibility: hidden;
     }
