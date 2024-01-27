@@ -934,10 +934,10 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-card-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-300);
   --clr-card-box-shadow: #{tokens.$cds-alias-object-shadow-300}; // indirectly mapped to CDS token
   --clr-card-clickable-border-color: #{tokens.$cds-alias-object-interaction-background-highlight}; // var(--clr-color-action-500);
-  --clr-card-clickable-box-shadow: #{tokens.$cds-alias-object-shadow-300}; // indirectly mapped to CDS token
+  --clr-card-clickable-box-shadow: 0 0 0 #{tokens.$cds-global-space-1} var(--clr-card-clickable-border-color);
   --clr-card-border-radius: #{tokens.$cds-alias-object-border-radius-100};
   --clr-card-border-width: #{tokens.$cds-alias-object-border-width-100};
-  --clr-card-clickable-border-width: #{tokens.$cds-alias-object-border-width-200};
+  --clr-card-clickable-border-width: #{tokens.$cds-alias-object-border-width-100};
   --clr-card-text-color: #{tokens.$cds-alias-typography-color-400};
   --clr-card-header-padding: #{tokens.$cds-global-space-7};
   --clr-card-footer-vertical-padding: #{tokens.$cds-global-space-5}; // ATM: internal property to be deleted
