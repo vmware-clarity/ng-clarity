@@ -102,7 +102,6 @@
 
   .clr-accordion-status {
     width: tokens.$cds-global-space-11;
-    //padding: tokens.$cds-global-space-4 0;
     display: inline-block;
     vertical-align: top;
   }
@@ -113,7 +112,6 @@
 
   .clr-accordion-header-has-description {
     .clr-accordion-title {
-      //padding: tokens.$cds-global-space-4 0;
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
       @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
@@ -124,7 +122,6 @@
 
   .clr-accordion-description {
     display: inline-block;
-    //padding: tokens.$cds-global-space-4 0;
     max-width: mixins.baselinePx(650);
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
