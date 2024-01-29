@@ -280,7 +280,7 @@
       font-size: accordion-variables.$clr-accordion-content-font-size;
     }
 
-    .clr-accordion-inner-content-disabled {
+    .clr-accordion-panel-disabled .clr-accordion-inner-content {
       color: accordion-variables.$clr-accordion-panel-disabled-color;
       cursor: not-allowed;
     }
