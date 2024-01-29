@@ -20,7 +20,7 @@
     --clr-card-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-card-box-shadow: #{tokens.$cds-alias-object-shadow-300};
     --clr-card-clickable-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
-    --clr-card-clickable-box-shadow: #{tokens.$cds-alias-object-shadow-300};
+    --clr-card-clickable-box-shadow: 0 0 0 #{tokens.$cds-global-space-1} var(--clr-card-clickable-border-color);
     --clr-card-header-title-color: var(--clr-card-title-color);
     --clr-card-content-title-color: var(--clr-card-title-color);
     --clr-card-text-color: #{tokens.$cds-alias-typography-color-400};
