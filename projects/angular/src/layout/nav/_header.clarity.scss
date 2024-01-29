@@ -16,8 +16,8 @@
   position: absolute;
   content: '';
   background-color: header-variables.$clr-header-divider-color;
-  height: header-variables.$clr-header-divider-height;
-  width: header-variables.$clr-header-divider-width;
+  height: tokens.$cds-global-space-11;
+  width: tokens.$cds-alias-object-border-width-100;
   top: tokens.$cds-global-space-6;
   left: 0;
 }
@@ -73,16 +73,17 @@
   .branding {
     display: flex;
     flex: 0 0 auto;
-    min-width: header-variables.$clr-header-branding-min-width;
-    padding: header-variables.$clr-header-branding-padding;
-    height: header-variables.$clr-header-height;
+    min-width: mixins.baselinePx(204);
+    padding: 0 tokens.$cds-global-space-9;
+    //height: header-variables.$clr-header-height;
 
     & > a,
     & > .nav-link {
       display: inline-flex;
       align-items: center;
-      height: header-variables.$clr-header-height;
+      //height: header-variables.$clr-header-height;
       text-decoration: none;
+      gap: tokens.$cds-global-space-5;
 
       &:focus {
         outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
@@ -94,8 +95,7 @@
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
-      @include mixins.equilateral(header-variables.$clr-header-branding-logo-size);
-      margin-right: header-variables.$clr-header-branding-icon-gap;
+      @include mixins.equilateral(tokens.$cds-global-space-11);
     }
 
     .title {
@@ -105,9 +105,6 @@
         'SUBSECTION-16-EXP',
         (
           font-weight: header-variables.$clr-header-title-font-weight,
-          font-size: header-variables.$clr-header-title-font-size,
-          letter-spacing: header-variables.$clr-header-title-letter-spacing,
-          line-height: header-variables.$clr-header-title-line-height,
         )
       );
       text-decoration: none;
@@ -119,7 +116,7 @@
   .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
-    height: header-variables.$clr-header-height;
+    //height: header-variables.$clr-header-height;
 
     .nav-text {
       @include mixins.generate-typography-token('BODY-14-RG-EXP');
@@ -132,35 +129,23 @@
     .nav-link {
       display: inline-flex;
       align-items: center;
-      height: header-variables.$clr-header-height;
+      //height: header-variables.$clr-header-height;
       position: relative;
       text-align: center;
-      padding: header-variables.$clr-header-nav-link-padding;
-      line-height: header-variables.$clr-header-nav-link-line-height;
+      padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
       text-decoration: none;
       @include header-nav-appearance();
 
       cds-icon,
       clr-icon {
-        position: static;
-        top: 50%;
-        left: 50%;
         @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
       }
 
       &.nav-icon-text {
+        gap: tokens.$cds-global-space-4;
         cds-icon,
         clr-icon {
-          position: relative;
-          top: auto;
-          left: auto;
           transform: none;
-          margin-left: tokens.$cds-global-space-9;
-        }
-
-        .nav-text {
-          margin-left: 0;
-          padding-left: tokens.$cds-global-space-4;
         }
       }
 
@@ -169,8 +154,6 @@
       .nav-icon + .nav-text {
         display: none;
       }
-
-      font-size: header-variables.$clr-header-nav-link-font-size;
 
       &.active {
         .nav-text {
@@ -240,10 +223,11 @@
       & > .dropdown-toggle {
         gap: tokens.$cds-global-space-5;
         position: relative;
-        padding: header-variables.$clr-header-nav-link-padding;
-        line-height: header-variables.$clr-header-height;
-        height: header-variables.$clr-header-height;
+        padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
+        //line-height: header-variables.$clr-header-height;
+        //height: header-variables.$clr-header-height;
         outline-offset: header-variables.$clr-header-outline-offset;
+        align-items: center;
         @include header-nav-appearance();
       }
 
@@ -298,7 +282,7 @@
     flex: 0 0 auto;
     max-width: mixins.baselinePx(288);
     padding: 0;
-    height: header-variables.$clr-header-height;
+    //height: header-variables.$clr-header-height;
     @include header-nav-appearance();
 
     & > .nav-icon {
@@ -307,8 +291,8 @@
 
     label {
       display: inline-block;
-      height: header-variables.$clr-header-height;
-      line-height: header-variables.$clr-header-height;
+      //height: header-variables.$clr-header-height;
+      //line-height: header-variables.$clr-header-height;
       padding-left: header-variables.$clr-header-search-gap;
       margin-left: header-variables.$clr-header-search-margin-left;
       margin-right: header-variables.$clr-header-search-margin-right;
@@ -340,10 +324,9 @@
       background: none;
       color: header-variables.$clr-header-search-input-font-color;
       border-radius: tokens.$cds-alias-object-border-radius-100;
-      height: header-variables.$clr-header-search-height;
+      height: tokens.$cds-global-space-11;
 
-      padding: 0;
-      padding-left: calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
+      padding: 0 0 0 calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
 
       vertical-align: middle;
 
