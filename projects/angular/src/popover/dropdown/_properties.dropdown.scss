@@ -17,9 +17,9 @@
       --clr-dropdown-divider-color: #{tokens.$cds-alias-object-border-color-tint};
       --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
       --clr-dropdown-child-border-color: #{tokens.$cds-alias-object-border-color};
-      // @depricated in favor of '--clr-dropdown-item-hover-bg-color'
+      // @deprecated in favor of '--clr-dropdown-item-hover-bg-color'
       --clr-dropdown-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
-      // @depricated in favor of '--clr-dropdown-item-selected-bg-color'
+      // @deprecated in favor of '--clr-dropdown-item-selected-bg-color'
       --clr-dropdown-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
       // Usage:  ../data/datagrid/_datagrid.clarity.scss

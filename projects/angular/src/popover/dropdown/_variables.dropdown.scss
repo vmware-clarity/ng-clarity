@@ -11,10 +11,10 @@ $clr-dropdown-divider-color: var(--clr-dropdown-divider-color) !default;
 $clr-dropdown-divider-border-width: var(--clr-dropdown-divider-border-width) !default;
 $clr-dropdown-child-border-color: var(--clr-dropdown-child-border-color) !default;
 
-// @depricated in favor of '--clr-dropdown-item-hover-bg-color'
+// @deprecated in favor of '--clr-dropdown-item-hover-bg-color'
 $clr-dropdown-bg-hover-color: var(--clr-dropdown-item-hover-bg-color) !default;
 
-// @depricated in favor of '--clr-dropdown-item-selected-bg-color'
+// @deprecated in favor of '--clr-dropdown-item-selected-bg-color'
 $clr-dropdown-selection-color: var(--clr-dropdown-item-selected-bg-color) !default;
 
 // Usage:  ../data/datagrid/_datagrid.clarity.scss
