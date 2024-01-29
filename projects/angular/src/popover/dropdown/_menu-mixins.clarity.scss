@@ -56,19 +56,17 @@
   width: 100%;
   text-transform: none;
 
-  &.active:hover,
+  &.active {
+    color: dropdown-variables.$clr-dropdown-item-selected-color;
+    background-color: dropdown-variables.$clr-dropdown-item-selected-bg-color;
+  }
+
   &:hover {
     color: dropdown-variables.$clr-dropdown-item-hover-color;
     background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
     text-decoration: none;
   }
 
-  &.active {
-    color: dropdown-variables.$clr-dropdown-item-selected-color;
-    background-color: dropdown-variables.$clr-dropdown-item-selected-bg-color;
-  }
-
-  &.active:active,
   &:active {
     color: dropdown-variables.$clr-dropdown-item-active-color;
     background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
