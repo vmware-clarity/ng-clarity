@@ -129,10 +129,6 @@
       color: header-variables.$clr-header-font-color;
     }
 
-    .nav-icon {
-      @include mixins.equilateral(header-variables.$clr-header-height);
-    }
-
     .nav-link {
       display: inline-flex;
       align-items: center;
@@ -242,7 +238,9 @@
       $clr-header-action-caret-icon-right-position: tokens.$cds-global-space-6;
 
       & > .dropdown-toggle {
+        gap: tokens.$cds-global-space-5;
         position: relative;
+        padding: header-variables.$clr-header-nav-link-padding;
         line-height: header-variables.$clr-header-height;
         height: header-variables.$clr-header-height;
         outline-offset: header-variables.$clr-header-outline-offset;
@@ -252,39 +250,15 @@
       .dropdown-toggle.nav-icon {
         cds-icon:not([shape^='angle']),
         clr-icon:not([shape^='angle']) {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
           @include mixins.equilateral(header-variables.$clr-header-action-icon-size);
-          right: header-variables.$clr-header-action-cog-right;
-        }
-      }
-
-      .dropdown-toggle.nav-icon {
-        cds-icon[shape^='angle'],
-        clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-action-caret-right;
-          top: 38%;
-          @include mixins.equilateral(header-variables.$clr-header-action-caret-size);
         }
       }
 
       .dropdown-toggle.nav-text {
-        padding: 0 tokens.$cds-global-space-11 0 header-variables.$clr-header-nav-text-horizontal-padding;
-
         cds-icon[shape^='angle'],
         clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-action-caret-right;
           @include mixins.equilateral(header-variables.$clr-header-action-caret-size);
         }
-      }
-
-      .dropdown-toggle.nav-icon {
-        width: calc(
-          header-variables.$clr-header-action-cog-right + header-variables.$clr-header-action-icon-size +
-            tokens.$cds-global-space-7
-        );
-        padding-right: 0;
       }
 
       // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
