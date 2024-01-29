@@ -648,7 +648,7 @@
     @include mixins.css-var(
       padding,
       clr-signpost-content-padding,
-      variables.$clr_baselineRem_1,
+      0 variables.$clr_baselineRem_1 variables.$clr_baselineRem_1,
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(
@@ -661,5 +661,6 @@
     text-align: left;
     max-height: variables.$clr_baselineRem_20;
     overflow-y: auto;
+    margin-top: variables.$clr_baselineRem_1;
   }
 }

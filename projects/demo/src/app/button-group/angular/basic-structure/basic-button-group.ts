@@ -5,6 +5,8 @@
  */
 
 import { Component } from '@angular/core';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'clr-basic-button-group-demo',
@@ -13,6 +15,8 @@ import { Component } from '@angular/core';
 })
 export class BasicButtonGroupDemo {
   position = 'bottom-left';
+
+  readonly asyncMenuButtons = of([5, 6, 7]).pipe(delay(100));
 
   handleClick(id: number): void {
     console.log(`Button ${id} clicked!`);
