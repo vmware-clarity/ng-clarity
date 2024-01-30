@@ -108,7 +108,6 @@ export class ClrPopoverPositionService {
      * popover rendering above the top of the body (y coordinate outside the body). In that event, it should be rendered within the body
      * as much as possible, so this logic sets the top of popover to render touching the top of the body.
      */
-
     if (this.contentOffsets.yOffset + this.currentAnchorCoords.y < 0) {
       this.contentOffsets.yOffset = 0 - this.currentContentCoords.top;
     }
