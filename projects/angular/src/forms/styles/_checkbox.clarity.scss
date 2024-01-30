@@ -3,6 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use 'sass:map';
 @use '../../emphasis/alert/variables.alert' as alert-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
@@ -41,7 +42,7 @@
       @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
       top: initial;
       cursor: pointer;
-      z-index: 100;
+      z-index: map.get(variables.$clr-layers, toggle-radio-checkbox);
     }
 
     //Checkbox base

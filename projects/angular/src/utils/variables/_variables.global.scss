@@ -266,6 +266,7 @@ $clr-popover-box-shadow-color: rgba(140, 140, 140, 0.25) !default;
 // All z-indexes should come from here, to have a centralized file to reorganize them if needed
 $clr-layers: (
   content: 0,
+  toggle-radio-checkbox: 1,
   select-box: 2,
   datalist-box: 2,
   datagrid-row: 500,
