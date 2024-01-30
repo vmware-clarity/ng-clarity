@@ -28,11 +28,7 @@
     --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};
     --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
     --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
-    --clr-header-search-border-active: #{tokens.$cds-global-space-1} solid Highlight;
-    --clr-header-search-border-hover: #{tokens.$cds-global-space-1} solid #{tokens.$cds-global-color-construction-400};
-    --clr-header-action-caret-right: #{tokens.$cds-global-space-7};
-    --clr-header-action-caret-size: #{tokens.$cds-global-space-7};
-    --clr-header-action-icon-size: #{tokens.$cds-global-space-9};
-    --clr-header-action-caret-gap: #{tokens.$cds-global-space-5}; // new keep for now
+    --clr-header-search-border-active: #{tokens.$cds-alias-object-border-width-100} solid Highlight;
+    --clr-header-search-border-hover: #{tokens.$cds-alias-object-border-width-100} solid #{tokens.$cds-global-color-construction-400};
   }
 }

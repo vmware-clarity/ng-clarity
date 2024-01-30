@@ -74,7 +74,7 @@
     display: flex;
     flex: 0 0 auto;
     min-width: mixins.baselinePx(204);
-    padding: 0 tokens.$cds-global-space-9;
+    padding: 0 tokens.$cds-global-space-7;
     //height: header-variables.$clr-header-height;
 
     & > a,
@@ -84,6 +84,7 @@
       //height: header-variables.$clr-header-height;
       text-decoration: none;
       gap: tokens.$cds-global-space-5;
+      padding: tokens.$cds-global-space-5;
 
       &:focus {
         outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
@@ -203,7 +204,7 @@
 
       &.active:first-of-type::before,
       &.active:last-of-type::after {
-        content: none;
+        //content: none;
       }
     }
   }
@@ -234,14 +235,7 @@
       .dropdown-toggle.nav-icon {
         cds-icon:not([shape^='angle']),
         clr-icon:not([shape^='angle']) {
-          @include mixins.equilateral(header-variables.$clr-header-action-icon-size);
-        }
-      }
-
-      .dropdown-toggle.nav-text {
-        cds-icon[shape^='angle'],
-        clr-icon[shape^='angle'] {
-          @include mixins.equilateral(header-variables.$clr-header-action-caret-size);
+          @include mixins.equilateral(tokens.$cds-global-space-9);
         }
       }
 
@@ -258,7 +252,7 @@
 
       // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
       .dropdown-menu {
-        margin-top: calc(-1 * tokens.$cds-global-space-3);
+        margin-top: calc(-1 * tokens.$cds-global-space-5);
         // TODO: As of 0.10.0 the dropdown-menu inside header without clrIfOpen directive (legacy)
         // will create empty space beyond the .main-container if the right isn't set to zero.
         // Re-evaluate later if we can come up with a better solution.
@@ -332,6 +326,13 @@
 
       // Typography
       @include mixins.generate-typography-token('BODY-14-SB-EXP');
+
+      // hacky fix for chrome autofill wrong colors. Better solution not found.
+      // set transition between `active/correct` to `inner-wrong` immutable colors to very long time.
+      &:-webkit-autofill,
+      &:-webkit-autofill:focus {
+        transition: background-color 0s 600000s, color 0s 600000s;
+      }
 
       &::placeholder {
         color: header-variables.$clr-header-search-placeholder-text-color;

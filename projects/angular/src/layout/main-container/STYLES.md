@@ -44,7 +44,6 @@
 | --clr-header-title-font-family             | Header branding title font family                      |
 | --clr-header-nav-link-line-height          | Header navigation buttons line-height                  |
 | --clr-header-nav-link-font-size            | Header navigation buttons font size                    |
-| --clr-header-action-caret-right            | Right margin of the header nav action caret            |
 | --clr-header-search-icon-size              | Header search icon size                                |
 | --clr-header-search-margin-left            | Header search field left margin                        |
 | --clr-header-search-margin-right           | Header search field right margin                       |
@@ -53,9 +52,6 @@
 | --clr-header-search-border-active          | Border of active/focused search field                  |
 | --clr-header-search-border-hover           | Border of hovered search field                         |
 | --clr-header-search-placeholder-text-color | Text color of the header search placeholder            |
-| --clr-header-action-caret-size             | Header action dropdown caret size                      |
-| --clr-header-action-icon-size              | Header action icon size                                |
-| --clr-header-action-caret-gap              | Header action dropdown caret gap                       |
 
 ## CSS Classes
 
