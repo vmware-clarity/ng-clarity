@@ -108,6 +108,7 @@ export const commonStringsDefault: ClrCommonStrings = {
    */
   passwordHide: 'Hide password',
   passwordShow: 'Show password',
+  passwordFor: 'for',
 
   /**
    * Datagrid footer; sr-only text after the number of selected rows.
