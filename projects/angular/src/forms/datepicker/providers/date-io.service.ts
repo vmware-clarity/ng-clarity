@@ -93,7 +93,7 @@ export class DateIOService {
   }
 
   getDateValueFromDateString(date: string): Date {
-    if (!date) {
+    if (!date || typeof date !== 'string') {
       return null;
     }
     const dateParts: string[] = date.match(USER_INPUT_REGEX);

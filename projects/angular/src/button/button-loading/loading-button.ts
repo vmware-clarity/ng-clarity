@@ -16,7 +16,7 @@ const MIN_BUTTON_WIDTH = 42;
 @Component({
   selector: 'button[clrLoading]',
   template: `
-    <ng-container [ngSwitch]="state">
+    <div @parent [ngSwitch]="state">
       <span *ngSwitchCase="buttonState.LOADING">
         <span @spinner class="spinner spinner-inline"></span>
       </span>
@@ -30,10 +30,15 @@ const MIN_BUTTON_WIDTH = 42;
       <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
         <ng-content></ng-content>
       </span>
-    </ng-container>
+    </div>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   animations: [
+    trigger('parent', [
+      // Skip :enter animation on first render.
+      // The button text/content should only be faded when transitioning to or from a non-default state.
+      transition(':enter', []),
+    ]),
     trigger('defaultButton', [
       transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
       // TODO: see if we can get leave animation to work before spinner's enter animation

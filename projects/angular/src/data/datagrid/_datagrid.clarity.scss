@@ -271,10 +271,6 @@
         line-height: tokens.$cds-global-space-9;
       }
     }
-
-    .datagrid-row-sticky {
-      z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
-    }
   }
 
   .datagrid-row-sticky {
@@ -283,7 +279,7 @@
     flex-wrap: nowrap;
     position: sticky;
     left: 0;
-    z-index: map.get(variables.$clr-layers, datagrid-header-sticky);
+    z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
     .datagrid-cell:last-child {
       &:after {
@@ -373,7 +369,7 @@
 
       .datagrid-row-sticky {
         @include clr-datagrid-header-bg;
-        z-index: map.get(variables.$clr-layers, datagrid-sticky-header);
+        z-index: map.get(variables.$clr-layers, datagrid-header-sticky);
       }
 
       &:hover {

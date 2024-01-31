@@ -18,7 +18,6 @@ export * from './datagrid-hideable-column';
 export * from './datagrid-filter';
 export * from './datagrid-if-detail';
 export * from './datagrid-items';
-export * from './datagrid-items-trackby';
 export * from './datagrid-row';
 export * from './datagrid-row-detail';
 export * from './datagrid-cell';
