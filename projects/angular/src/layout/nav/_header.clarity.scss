@@ -117,8 +117,6 @@
   .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
-    //height: header-variables.$clr-header-height;
-
     .nav-text {
       @include mixins.generate-typography-token('BODY-14-RG-EXP');
     }
@@ -173,38 +171,17 @@
   .header-nav {
     display: flex;
     flex: 0 0 auto;
+    align-items: center;
+    position: relative;
 
-    @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, lg)) {
-      a:first-of-type::before,
-      a:last-of-type::after {
-        @include header-section-divider();
-        left: auto;
-      }
-    }
-
-    &:last-child {
-      & > .nav-link:last-child::after {
-        content: none;
-      }
+    &::before {
+      @include header-section-divider();
     }
 
     .nav-link {
       &:first-of-type,
       &:last-of-type {
         position: relative;
-      }
-
-      &:first-of-type::before {
-        left: 0;
-      }
-
-      &:last-of-type::after {
-        right: 0;
-      }
-
-      &.active:first-of-type::before,
-      &.active:last-of-type::after {
-        //content: none;
       }
     }
   }
@@ -216,6 +193,10 @@
     flex: 1 0 auto;
     display: flex;
     justify-content: flex-end;
+
+    & > *:before {
+      @include header-section-divider();
+    }
 
     // Reduce nesting from 5 to 3 at the most
     & > .dropdown {
@@ -276,8 +257,14 @@
     flex: 0 0 auto;
     max-width: mixins.baselinePx(288);
     padding: 0;
-    //height: header-variables.$clr-header-height;
+    position: relative;
+
     @include header-nav-appearance();
+
+    &::before {
+      @include header-section-divider();
+      left: auto;
+    }
 
     & > .nav-icon {
       margin: 0 tokens.$cds-global-space-4 mixins.baselinePx(3) tokens.$cds-global-space-9;
@@ -359,9 +346,9 @@
   .branding + .search-box {
     position: relative;
 
-    &::after {
-      @include header-section-divider();
-    }
+    //&::after {
+    //  @include header-section-divider();
+    //}
   }
 }
 
@@ -369,44 +356,12 @@
   .search-box,
   .search {
     flex: 1 0 auto;
-    justify-content: flex-end;
+    //justify-content: flex-end;
     max-width: none;
+    display: none; // TODO: Waiting for UX to finish the search designs. CDE-1626
 
     label {
       padding: 0;
-      width: header-variables.$clr-header-height;
-
-      &::before {
-        left: calc((header-variables.$clr-header-height - header-variables.$clr-search-icon-width) * 0.5);
-      }
-
-      input {
-        display: none; // TODO: Waiting for UX to finish the search designs.
-      }
-    }
-  }
-}
-
-@mixin header-branding-md {
-  .branding + .search,
-  .branding + .search-box {
-    &::after {
-      content: none;
-    }
-  }
-}
-
-@mixin header-actions-md {
-  // If actions directly follow search
-  .search-box + .settings,
-  .search-box + .header-actions,
-  .search + .settings,
-  .search + .header-actions {
-    position: relative;
-    flex: 0 0 auto;
-
-    &::after {
-      @include header-section-divider();
     }
   }
 }
@@ -435,8 +390,6 @@
     header,
     .header {
       @include header-search-md();
-      @include header-branding-md();
-      @include header-actions-md();
     }
   }
 }
