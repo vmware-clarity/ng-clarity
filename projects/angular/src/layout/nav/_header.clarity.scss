@@ -75,13 +75,11 @@
     flex: 0 0 auto;
     min-width: mixins.baselinePx(204);
     padding: 0 tokens.$cds-global-space-7;
-    //height: header-variables.$clr-header-height;
 
     & > a,
     & > .nav-link {
       display: inline-flex;
       align-items: center;
-      //height: header-variables.$clr-header-height;
       text-decoration: none;
       gap: tokens.$cds-global-space-5;
       padding: tokens.$cds-global-space-5;
@@ -128,7 +126,6 @@
     .nav-link {
       display: inline-flex;
       align-items: center;
-      //height: header-variables.$clr-header-height;
       position: relative;
       text-align: center;
       padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
@@ -161,7 +158,8 @@
       }
 
       &:focus {
-        outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
+        // So that the outline styles aren't hidden because of the browser
+        outline-offset: header-variables.$clr-header-outline-offset;
       }
     }
   }
@@ -200,14 +198,10 @@
 
     // Reduce nesting from 5 to 3 at the most
     & > .dropdown {
-      $clr-header-action-caret-icon-right-position: tokens.$cds-global-space-6;
-
       & > .dropdown-toggle {
         gap: tokens.$cds-global-space-5;
         position: relative;
         padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
-        //line-height: header-variables.$clr-header-height;
-        //height: header-variables.$clr-header-height;
         outline-offset: header-variables.$clr-header-outline-offset;
         align-items: center;
         @include header-nav-appearance();
@@ -221,29 +215,14 @@
       }
 
       // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
-      &.bottom-right > .dropdown-menu,
-      &.bottom-left > .dropdown-menu {
-        top: 85%;
-      }
-
-      // Last Dropdown Menu adjustments so that the menu has some space between itself and the right end of the browser window
-      &:last-child.bottom-right > .dropdown-menu {
-        right: mixins.baselinePx(3);
-      }
-
-      // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
       .dropdown-menu {
         margin-top: calc(-1 * tokens.$cds-global-space-5);
+        margin-right: tokens.$cds-global-space-5;
         // TODO: As of 0.10.0 the dropdown-menu inside header without clrIfOpen directive (legacy)
         // will create empty space beyond the .main-container if the right isn't set to zero.
         // Re-evaluate later if we can come up with a better solution.
         left: auto;
         right: 0;
-      }
-
-      // Last Dropdown Menu adjustments so that the menu has some space between itself and the right end of the browser window
-      :last-child.dropdown-menu {
-        margin-right: tokens.$cds-global-space-5;
       }
     }
   }
@@ -272,8 +251,6 @@
 
     label {
       display: inline-block;
-      //height: header-variables.$clr-header-height;
-      //line-height: header-variables.$clr-header-height;
       padding-left: header-variables.$clr-header-search-gap;
       margin-left: header-variables.$clr-header-search-margin-left;
       margin-right: header-variables.$clr-header-search-margin-right;
@@ -315,7 +292,7 @@
       @include mixins.generate-typography-token('BODY-14-SB-EXP');
 
       // hacky fix for chrome autofill wrong colors. Better solution not found.
-      // set transition between `active/correct` to `inner-wrong` immutable colors to very long time.
+      // set transition between current correct to inner wrong immutable colors to very long time.
       &:-webkit-autofill,
       &:-webkit-autofill:focus {
         transition: background-color 0s 600000s, color 0s 600000s;
@@ -345,10 +322,6 @@
   .branding + .search,
   .branding + .search-box {
     position: relative;
-
-    //&::after {
-    //  @include header-section-divider();
-    //}
   }
 }
 

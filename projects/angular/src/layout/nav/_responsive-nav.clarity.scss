@@ -310,6 +310,7 @@
 
         .header-hamburger-trigger + .branding {
           padding-left: 0;
+          margin-left: calc(-1 * tokens.$cds-global-space-5);
 
           //TODO: deprecate .clr-icon, .logo
           .clr-icon,
