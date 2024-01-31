@@ -112,13 +112,13 @@
 
   // selected
   .clr-treenode-content .clr-treenode-link.active,
-  .clr-treenode-checkbox:has(input[type='checkbox']:checked) {
+  .clr-treenode-checkbox.checked {
     color: tree-view-variables.$clr-tree-node-content-selected-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
   }
 
   .clr-treenode-content .clr-treenode-link,
-  .clr-treenode-checkbox:has(input[type='checkbox']) {
+  .clr-treenode-checkbox {
     border-radius: tree-view-variables.$clr-tree-border-radius;
     color: tree-view-variables.$clr-tree-node-content-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;

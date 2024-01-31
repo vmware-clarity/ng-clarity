@@ -32,7 +32,11 @@
   <div class="clr-treenode-spinner-container" *ngIf="expandService.loading || isModelLoading">
     <span class="clr-treenode-spinner spinner"></span>
   </div>
-  <div class="clr-checkbox-wrapper clr-treenode-checkbox" *ngIf="featuresService.selectable">
+  <div
+    class="clr-checkbox-wrapper clr-treenode-checkbox"
+    [class.checked]="_model.selected.value === STATES.SELECTED"
+    *ngIf="featuresService.selectable"
+  >
     <input
       aria-hidden="true"
       type="checkbox"
