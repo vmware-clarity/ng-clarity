@@ -963,6 +963,8 @@ export interface ClrCommonStrings {
     next: string;
     nextPage: string;
     open: string;
+    // (undocumented)
+    passwordFor: string;
     passwordHide: string;
     // (undocumented)
     passwordShow: string;
