@@ -106,9 +106,8 @@ export const commonStringsDefault: ClrCommonStrings = {
    * Password Input
    * Screen-reader text for the hide/show password field button
    */
-  passwordHide: 'Hide password',
-  passwordShow: 'Show password',
-  passwordFor: 'for',
+  passwordHide: 'Hide password for {LABEL}',
+  passwordShow: 'Show password for {LABEL}',
 
   /**
    * Datagrid footer; sr-only text after the number of selected rows.

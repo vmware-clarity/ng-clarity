@@ -963,8 +963,6 @@ export interface ClrCommonStrings {
     next: string;
     nextPage: string;
     open: string;
-    // (undocumented)
-    passwordFor: string;
     passwordHide: string;
     // (undocumented)
     passwordShow: string;
@@ -2925,7 +2923,11 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     focusService: FocusService_2;
     // (undocumented)
+    hidePasswordText(label: string): string;
+    // (undocumented)
     show: boolean;
+    // (undocumented)
+    showPasswordText(label: string): string;
     // (undocumented)
     toggle(): void;
     // (undocumented)

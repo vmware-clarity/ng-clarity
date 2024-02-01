@@ -277,7 +277,6 @@ export interface ClrCommonStrings {
    */
   passwordHide: string;
   passwordShow: string;
-  passwordFor: string;
 
   /**
    * Datagrid footer; sr-only text after the number of selected rows.
