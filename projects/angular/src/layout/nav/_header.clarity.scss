@@ -192,7 +192,8 @@
     display: flex;
     justify-content: flex-end;
 
-    & > *:before {
+    & > *:not(.dropdown):before,
+    & > .dropdown > .dropdown-toggle:before {
       @include header-section-divider();
     }
 

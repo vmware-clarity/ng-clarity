@@ -62,11 +62,33 @@
             <div aria-label="Dropdown header Lorem" class="dropdown-item" role="menuitem">Lorem.</div>
             <div aria-label="Dropdown header Lorem ipsum" class="dropdown-item" role="menuitem">ipsum.</div>
             <div aria-label="Dropdown header Lorem ipsum dolor" class="dropdown-item" role="menuitem">dolor.</div>
+            <div class="dropdown open left-bottom">
+              <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+                Lorem ipsum.
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <div class="dropdown-item" role="menuitem">Foo.</div>
+                <div class="dropdown open right-top">
+                  <button
+                    class="dropdown-item active expandable"
+                    role="menuitem"
+                    aria-expanded="true"
+                    aria-haspopup="menu"
+                  >
+                    Bar.
+                  </button>
+                  <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-item" role="menuitem">Baz.</div>
+                  </div>
+                </div>
+                <div class="dropdown-item" role="menuitem">Foo 2.</div>
+              </div>
+            </div>
             <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
             <div class="dropdown-item" role="menuitem">Link</div>
           </div>
         </div>
-        <div class="dropdown bottom-left open">
+        <div class="dropdown bottom-left">
           <button class="dropdown-toggle nav-text">
             Dropdown Toggle 2
             <cds-icon shape="angle" direction="down"></cds-icon>
