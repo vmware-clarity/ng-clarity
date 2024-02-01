@@ -49,7 +49,7 @@ class ContainerTest {
 
 export default function (): void {
   describe('ClrRadioWrapper', () => {
-    WrapperNoLabelSpec(ClrRadioWrapper, ClrRadio, NoLabelTest);
+    WrapperNoLabelSpec(ClrRadioWrapper, ClrRadio, NoLabelTest, 1);
     WrapperFullSpec(ClrRadioWrapper, ClrRadio, FullTest, 'clr-radio-wrapper');
     WrapperContainerSpec(ClrRadioContainer, ClrRadioWrapper, ClrRadio, ContainerTest, 'clr-radio-wrapper');
   });

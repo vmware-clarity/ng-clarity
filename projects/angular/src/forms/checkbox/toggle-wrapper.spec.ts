@@ -57,7 +57,7 @@ class ContainerTest {
 
 export default function (): void {
   describe('ClrCheckboxWrapper', () => {
-    WrapperNoLabelSpec(ClrCheckboxWrapper, ClrCheckbox, NoLabelTest);
+    WrapperNoLabelSpec(ClrCheckboxWrapper, ClrCheckbox, NoLabelTest, 0);
     WrapperFullSpec(ClrCheckboxWrapper, ClrCheckbox, FullTest, 'clr-toggle-wrapper');
     WrapperContainerSpec(ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, ContainerTest, 'clr-toggle-wrapper');
 

@@ -487,7 +487,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', 16));
+      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', base * 6));
 
       it('checkbox label height', () => verifyHeight('#checkbox .clr-checkbox-wrapper .clr-control-label', base * 6));
 
@@ -503,7 +503,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox-inline .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 4));
+      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 6));
 
       it('checkbox label height', () =>
         verifyHeight('#checkbox-inline .clr-checkbox-wrapper .clr-control-label', base * 6));
@@ -520,7 +520,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio .clr-radio-wrapper .clr-control-label', base * 6));
 
@@ -536,7 +536,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio-inline .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio-inline .clr-radio-wrapper .clr-control-label', base * 6));
 
@@ -647,7 +647,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', base * 4));
+      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', base * 6));
 
       it('checkbox label height', () => verifyHeight('#checkbox .clr-checkbox-wrapper .clr-control-label', base * 6));
 
@@ -663,7 +663,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox-inline .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 4));
+      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 6));
 
       it('checkbox label height', () =>
         verifyHeight('#checkbox-inline .clr-checkbox-wrapper .clr-control-label', base * 6));
@@ -680,7 +680,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio .clr-radio-wrapper .clr-control-label', base * 6));
 
@@ -696,7 +696,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio-inline .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio-inline .clr-radio-wrapper .clr-control-label', base * 6));
 
@@ -804,7 +804,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', base * 4));
+      it('checkbox height', () => verifyHeight('#checkbox .clr-checkbox', base * 6));
 
       it('checkbox label height', () => verifyHeight('#checkbox .clr-checkbox-wrapper .clr-control-label', base * 6));
 
@@ -818,7 +818,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#checkbox-inline .clr-checkbox-wrapper', base * 6));
 
-      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 4));
+      it('checkbox height', () => verifyHeight('#checkbox-inline .clr-checkbox', base * 6));
 
       it('checkbox label height', () =>
         verifyHeight('#checkbox-inline .clr-checkbox-wrapper .clr-control-label', base * 6));
@@ -862,7 +862,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio .clr-radio-wrapper .clr-control-label', base * 6));
 
@@ -876,7 +876,7 @@ describe('Form layouts', () => {
 
       it('wrapper height', () => verifyHeight('#radio-inline .clr-radio-wrapper', base * 6));
 
-      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 4));
+      it('radio height', () => verifyHeight('#radio-inline .clr-radio', base * 6));
 
       it('radio label height', () => verifyHeight('#radio-inline .clr-radio-wrapper .clr-control-label', base * 6));
 
