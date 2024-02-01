@@ -265,7 +265,8 @@
     }
 
     .clr-accordion-header-button {
-      padding: accordion-variables.$clr-accordion-header-button-padding;
+      align-items: center;
+      padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
     }
 
     .clr-accordion-content {
@@ -277,6 +278,11 @@
         tokens.$cds-global-space-11;
       color: accordion-variables.$clr-accordion-content-color;
       font-size: accordion-variables.$clr-accordion-content-font-size;
+    }
+
+    .clr-accordion-panel-disabled .clr-accordion-inner-content {
+      color: accordion-variables.$clr-accordion-panel-disabled-color;
+      cursor: not-allowed;
     }
 
     .clr-accordion-status {
