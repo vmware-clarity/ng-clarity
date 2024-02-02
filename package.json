@@ -112,7 +112,7 @@
     "postcss-cli": "8.3.1",
     "prettier": "2.6.2",
     "rimraf": "3.0.2",
-    "rxjs": "6.6.7",
+    "rxjs": "7.8.1",
     "semantic-release": "19.0.3",
     "semantic-release-slack-bot": "3.5.2",
     "stylelint": "14.6.1",
