@@ -20,9 +20,9 @@ import { Subject } from 'rxjs';
 export class WillyWonka implements AfterViewChecked {
   disableChocolateCheck = false;
 
-  private _chocolate = new Subject<string>();
+  private _chocolate = new Subject<void>();
 
-  get chocolate(): Observable<string> {
+  get chocolate(): Observable<void> {
     return this._chocolate.asObservable();
   }
 

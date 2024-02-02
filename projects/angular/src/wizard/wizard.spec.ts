@@ -218,14 +218,14 @@ export default function (): void {
           it('should call the pageCollection and update the nav', () => {
             const firstPage = pageCollectionService.firstPage;
             spyOn(pageCollectionService, 'reset').and.callThrough();
-            spyOn(wizard.onReset, 'next');
+            spyOn(wizard.onReset, 'emit');
             expect(wizard.currentPage).toBe(firstPage, 'inits as expected');
             wizard.next();
             context.detectChanges();
             expect(wizard.currentPage).not.toBe(firstPage, 'navigates as expected');
             wizard.reset();
             expect(pageCollectionService.reset).toHaveBeenCalledTimes(1);
-            expect(wizard.onReset.next).toHaveBeenCalledTimes(1);
+            expect(wizard.onReset.emit).toHaveBeenCalledTimes(1);
             context.detectChanges();
             expect(wizard.currentPage).toBe(firstPage, 'resets to first page');
           });
