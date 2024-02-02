@@ -17,7 +17,7 @@ export class DatagridIfExpandService extends IfExpandService {
   expandableId = '';
 
   private _replace = new BehaviorSubject(false);
-  private _animate = new Subject<boolean>();
+  private _animate = new Subject<void>();
 
   constructor() {
     super();
@@ -41,7 +41,7 @@ export class DatagridIfExpandService extends IfExpandService {
     return this._replace.asObservable();
   }
 
-  get animate(): Observable<boolean> {
+  get animate(): Observable<void> {
     return this._animate.asObservable();
   }
 
