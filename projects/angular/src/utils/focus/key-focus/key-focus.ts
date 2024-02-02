@@ -161,7 +161,7 @@ export class ClrKeyFocus {
 
       if (this.focusOnLoad) {
         this.currentItem.focus();
-        this.focusChange.next();
+        this.focusChange.emit();
       }
     }
   }
