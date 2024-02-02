@@ -394,6 +394,28 @@ export default function (): void {
           expect(handleVerticalAxisTwoViolationsSpy).not.toHaveBeenCalled();
           expect(handleHorizontalAxisTwoViolationsSpy.calls.count()).toEqual(1);
         });
+
+        it('content is rendered within the the body (y >= 0) when AXIS is HORIZONTAL and there is a BOTTOM ViewportViolation', function (this: TestContext) {
+          const bottomLeftViolation: ClrPopoverPosition = {
+            axis: ClrAxis.VERTICAL,
+            side: ClrSide.AFTER,
+            anchor: ClrAlignment.END,
+            content: ClrAlignment.START,
+          };
+
+          // Set the popover content to be as big as the window
+          popoverContent.style.width = '25px';
+          popoverContent.style.height = window.innerHeight + 'px';
+          // Set the anchor element to render at the bottom of the body/window
+          this.eventService.anchorButtonRef.nativeElement.style.bottom = '100%';
+          this.eventService.anchorButtonRef.nativeElement.style.position = 'absolute';
+          this.positionService.position = bottomLeftViolation;
+          document.body.appendChild(popoverContent);
+          const result = this.positionService.alignContent(popoverContent);
+
+          // Verify the yOffset is not a negative value (on the view this would translate to a negative top value).
+          expect(result.yOffset).toBeGreaterThanOrEqual(0);
+        });
       });
 
       describe('handles content realignment', function (this: TestContext) {
