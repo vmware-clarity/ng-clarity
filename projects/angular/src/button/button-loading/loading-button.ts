@@ -16,7 +16,7 @@ const MIN_BUTTON_WIDTH = 42;
 @Component({
   selector: 'button[clrLoading]',
   template: `
-    <div @parent [ngSwitch]="state">
+    <span @parent [ngSwitch]="state">
       <span *ngSwitchCase="buttonState.LOADING">
         <span @spinner class="spinner spinner-inline"></span>
       </span>
@@ -30,7 +30,7 @@ const MIN_BUTTON_WIDTH = 42;
       <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
         <ng-content></ng-content>
       </span>
-    </div>
+    </span>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   animations: [
