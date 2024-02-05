@@ -9,7 +9,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
-  title: 'Button/Buttons Loading States',
+  title: 'Button/Button Loading States',
   component: ClrLoading,
   decorators: [
     moduleMetadata({

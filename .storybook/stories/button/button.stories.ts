@@ -60,7 +60,6 @@ export default {
     BUTTON_STYLES,
     BUTTON_TYPES,
   },
-  tags: ['autodocs'],
 };
 
 const ButtonTemplate: Story = args => ({
