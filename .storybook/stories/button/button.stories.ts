@@ -5,7 +5,7 @@
  */
 
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 import { ClrButton } from '../../../projects/angular/src/button';
@@ -60,6 +60,7 @@ export default {
     BUTTON_STYLES,
     BUTTON_TYPES,
   },
+  tags: ['autodocs'],
 };
 
 const ButtonTemplate: Story = args => ({
@@ -156,11 +157,14 @@ const ButtonAllTemplate: Story = args => ({
   props: args,
 });
 
-export const Default: Story = ButtonTemplate.bind({});
+export const Button: StoryObj = {
+  render: ButtonTemplate,
+};
 
-export const Showcase: Story = ButtonAllTemplate.bind({});
-Showcase.argTypes = {
-  buttonStyle: { control: { disable: true }, table: { disable: true } },
-  buttonType: { control: { disable: true }, table: { disable: true } },
-  disabled: { control: { disable: true }, table: { disable: true } },
+export const Showcase: StoryObj = {
+  render: ButtonAllTemplate,
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
 };

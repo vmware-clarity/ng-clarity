@@ -5,7 +5,7 @@
  */
 
 import { ClrLoading, ClrLoadingButtonModule, ClrLoadingState } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
@@ -33,7 +33,7 @@ export default {
   },
 };
 
-const ButtonLoadingStatesTemplate: Story = args => ({
+const ButtonLoadingStatesTemplate: StoryFn = args => ({
   template: `
       <h6>{{stateName}}</h6>
         <button [clrLoading]="validateState" class="btn btn-sm btn-primary">Validate</button>
@@ -43,12 +43,17 @@ const ButtonLoadingStatesTemplate: Story = args => ({
   props: args,
 });
 
-export const Default: Story = ButtonLoadingStatesTemplate.bind({});
+export const ButtonLoadingStates: StoryObj = {
+  render: ButtonLoadingStatesTemplate,
+};
 
-export const Loading: Story = ButtonLoadingStatesTemplate.bind({});
-Loading.args = {
-  ...ButtonLoadingStatesTemplate.args,
-  stateName: 'Loading buttons',
-  validateState: ClrLoadingState.LOADING,
-  submitState: ClrLoadingState.LOADING,
+export const Loading: StoryObj = {
+  render: ButtonLoadingStatesTemplate,
+
+  args: {
+    ...ButtonLoadingStatesTemplate.args,
+    stateName: 'Loading buttons',
+    validateState: ClrLoadingState.LOADING,
+    submitState: ClrLoadingState.LOADING,
+  },
 };

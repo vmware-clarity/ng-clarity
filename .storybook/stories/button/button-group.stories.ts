@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 import { ClrButtonGroup, ClrButtonGroupModule } from '../../../projects/angular/src/button';
@@ -45,7 +45,7 @@ export default {
   },
 };
 
-const ButtonGroupTemplate: Story = args => ({
+const ButtonGroupTemplate: StoryFn = args => ({
   template: `
         <div style="margin-top: 200px; text-align: center;">
           <clr-button-group [clrMenuPosition]="clrMenuPosition" [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel">
@@ -68,9 +68,14 @@ const ButtonGroupTemplate: Story = args => ({
   props: args,
 });
 
-export const Default: Story = ButtonGroupTemplate.bind({});
+export const ButtonGroup: StoryObj = {
+  render: ButtonGroupTemplate,
+};
 
-export const Disabled: Story = ButtonGroupTemplate.bind({});
-Disabled.args = {
-  disabledButtonsPosition: [1, 2],
+export const Disabled: StoryObj = {
+  render: ButtonGroupTemplate,
+
+  args: {
+    disabledButtonsPosition: [1, 2],
+  },
 };
