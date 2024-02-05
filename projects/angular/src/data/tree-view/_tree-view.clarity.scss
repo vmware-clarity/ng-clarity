@@ -16,22 +16,28 @@
     //Display
     display: block;
 
-    // TODO: add disabled logic with different JIRA task
-    //&.disabled .clr-treenode-caret,
-    //&.disabled .clr-treenode-link,
-    //&.disabled .clr-treenode-content,
-    //&.disabled .clr-treenode-checkbox .clr-control-label,
-    //&.disabled .clr-treenode-checkbox .clr-control-label::before,
-    //&.disabled .clr-treenode-checkbox .clr-control-label::after
-    //{
-    //  color: var(--clr-tree-node-content-disabled-color);
-    //  background-color: var(--clr-tree-node-content-bg-disabled-color);
-    //
-    //    cds-icon,
-    //    clr-icon {
-    //      color: var(--clr-tree-node-caret-disabled-color);
-    //    }
-    //}
+    &.disabled .clr-tree-node-content-container {
+      &:focus > .clr-treenode-content,
+      &:focus > .clr-treenode-checkbox .clr-control-label {
+        outline: none;
+      }
+
+      .clr-treenode-caret,
+      .clr-treenode-link,
+      .clr-treenode-content,
+      .clr-treenode-checkbox .clr-control-label,
+      //&.disabled .clr-tree-node-content-container .clr-treenode-checkbox .clr-control-label::before,
+      //&.disabled .clr-tree-node-content-container .clr-treenode-checkbox .clr-control-label::after
+      {
+        color: var(--clr-tree-node-content-disabled-color);
+        background-color: var(--clr-tree-node-content-bg-disabled-color);
+
+        cds-icon,
+        clr-icon {
+          fill: var(--clr-tree-node-caret-disabled-color);
+        }
+      }
+    }
   }
 
   .clr-tree-node-content-container {

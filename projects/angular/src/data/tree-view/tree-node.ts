@@ -61,12 +61,14 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   ],
   host: {
     '[class.clr-tree-node]': 'true',
+    '[class.disabled]': 'this.disabled',
   },
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.
   // Useful for recursive trees that don't want to pre-load one level ahead just to know which nodes are expandable.
   @Input('clrExpandable') expandable: boolean | undefined;
+  @Input('clrDisabled') disabled: boolean | undefined;
 
   @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
