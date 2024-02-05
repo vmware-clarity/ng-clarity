@@ -11,6 +11,7 @@ import { ClrSelectedState } from './selected-state.enum';
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
+  disabled: boolean;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);

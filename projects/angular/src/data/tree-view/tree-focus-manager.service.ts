@@ -97,10 +97,23 @@ export class TreeFocusManagerService<T> {
     const selfIndex = siblings.indexOf(model);
 
     if (selfIndex < siblings.length - 1) {
-      return siblings[selfIndex + 1];
+      const nextSibling = this.findNextNotDisabled(selfIndex, siblings);
+
+      return nextSibling ? nextSibling : this.findNextFocusable(model.parent);
     } else if (selfIndex === siblings.length - 1) {
       return this.findNextFocusable(model.parent);
     }
+    return null;
+  }
+
+  private findNextNotDisabled(selfIndex: number, siblings: TreeNodeModel<T>[]): TreeNodeModel<T> {
+    for (let i = selfIndex + 1; i < siblings.length; i++) {
+      if (siblings[i].disabled) {
+        continue;
+      }
+      return siblings[i];
+    }
+
     return null;
   }
 
