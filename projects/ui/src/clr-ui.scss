@@ -8,3 +8,4 @@
 @use '../../angular/src/main';
 @use './shim.cds-core.scss'; // the shim file
 @use '@cds/core/styles/theme.dark.min.css'; // dark theme
+@use './tokens.scss'; // updated tokens from later core versions

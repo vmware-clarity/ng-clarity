@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// This file is only necessary for v16 since these changes are already implemented in @cds/core but we cannot bump
+// peer dependencies in a minor/patch release.
+:root {
+  // Aligns the tokens to @cds/core@6.8.0 https://github.com/vmware-clarity/core/commit/68cfbff6245e16a9ee215c65b49042f6c17396ae
+  --cds-alias-typography-display-font-weight: 500;
+  --cds-alias-typography-heading-font-weight: 500;
+  --cds-alias-typography-headline-font-weight: 500;
+  --cds-alias-typography-title-font-weight: 500;
+  --cds-alias-typography-section-font-weight: 500;
+  --cds-alias-typography-subsection-font-weight: 500;
+  --cds-global-typography-display-font-weight: 500;
+  --cds-global-typography-heading-font-weight: 500;
+  --cds-global-typography-headline-font-weight: 500;
+  --cds-global-typography-title-font-weight: 500;
+  --cds-global-typography-section-font-weight: 500;
+  --cds-global-typography-subsection-font-weight: 500;
+
+  // Aligns the tokens to @cds/core@6.9.1 https://github.com/vmware-clarity/core/commit/6917f3d6fde6615652fc787afb98517c9a3ef347
+  --cds-alias-typography-body-line-height: 1.4285714em;
+  --cds-alias-typography-body-letter-spacing: -0.00714286em;
+  --cds-alias-typography-title-line-height: 1.333333em;
+  --cds-alias-typography-title-letter-spacing: -0.00833333em;
+  --cds-alias-typography-subsection-line-height: 1.5em;
+  --cds-alias-typography-message-line-height: 1.5em;
+  --cds-global-typography-body-line-height: 1.4285714em;
+  --cds-global-typography-body-letter-spacing: -0.00714286em;
+  --cds-global-typography-title-line-height: 1.333333em;
+  --cds-global-typography-title-letter-spacing: -0.00833333em;
+  --cds-global-typography-subsection-line-height: 1.5em;
+  --cds-global-typography-message-line-height: 1.5em;
+}
