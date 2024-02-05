@@ -4,25 +4,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrButtonModule, ClrLoading, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { ClrLoading, ClrLoadingButtonModule, ClrLoadingState } from '@clr/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <h6>{{stateName}}</h6>
-      <button [clrLoading]="validateState" class="btn btn-sm btn-primary">Validate</button>
-      <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
-      <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">Submit</button>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Button/Buttons Loading States',
   component: ClrLoading,
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLoadingButtonModule],
+    }),
+  ],
   argTypes: {
     // inputs
     class: { control: { disable: true } },
@@ -40,28 +33,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    stateName: 'Default Buttons',
-    validateState: ClrLoadingState.DEFAULT,
-    submitState: ClrLoadingState.DEFAULT,
-  },
-  {
-    stateName: 'Loading Buttons',
-    validateState: ClrLoadingState.LOADING,
-    submitState: ClrLoadingState.LOADING,
-  },
-  // These are flaky due to animations. The final state is the same as the default buttons.
-  // {
-  //   stateName: 'Success Buttons',
-  //   validateState: ClrLoadingState.SUCCESS,
-  //   submitState: ClrLoadingState.SUCCESS,
-  // },
-  // {
-  //   stateName: 'Error Buttons',
-  //   validateState: ClrLoadingState.ERROR,
-  //   submitState: ClrLoadingState.ERROR,
-  // },
-];
+const ButtonLoadingStatesTemplate: Story = args => ({
+  template: `
+      <h6>{{stateName}}</h6>
+        <button [clrLoading]="validateState" class="btn btn-sm btn-primary">Validate</button>
+        <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
+        <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">Submit</button>
+    `,
+  props: args,
+});
 
-setupStorybook([ClrLoadingModule, ClrButtonModule], defaultStory, defaultParameters, variants);
+export const Default: Story = ButtonLoadingStatesTemplate.bind({});
+
+export const Loading: Story = ButtonLoadingStatesTemplate.bind({});
+Loading.args = {
+  ...ButtonLoadingStatesTemplate.args,
+  stateName: 'Loading buttons',
+  validateState: ClrLoadingState.LOADING,
+  submitState: ClrLoadingState.LOADING,
+};
