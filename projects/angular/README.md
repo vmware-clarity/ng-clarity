@@ -32,6 +32,8 @@
 ```
   //...
   "styles": [
+    "node_modules/@cds/core/global.min.css",
+    "node_modules/@cds/core/styles/theme.dark.min.css",
     "node_modules/@clr/ui/clr-ui.min.css",
     //... any other styles
   ]
@@ -39,6 +41,8 @@
 ```
 
 ```scss
+@use '@cds/core/global.min.css';
+@use '@cds/core/styles/theme.dark.min.css';
 @use '@clr/ui/clr-ui.min.css';
 ```
 
