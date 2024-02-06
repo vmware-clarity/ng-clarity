@@ -43,9 +43,14 @@ const defaultStory: Story = args => ({
         </label>
       </form>
       <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-icon-text">
+          <cds-icon shape="user" inverse></cds-icon>
+          <span class="nav-text">username</span>
+        </a>
         <a href="#" class="nav-link nav-icon" aria-label="settings">
           <cds-icon shape="cog"></cds-icon>
         </a>
+        <a href="javascript://" class="nav-link nav-text">Log Out</a>
       </div>
     </header>
     <br/>
