@@ -6,15 +6,21 @@
 
 export interface File {
   name: string;
+  disabled?: boolean;
+  expanded?: boolean;
+  selected?: boolean;
   files?: File[];
 }
 
 export const filesRoot: File[] = [
   {
     name: 'src',
+    expanded: true,
     files: [
       {
         name: 'app',
+        disabled: true,
+        selected: false,
         files: [
           {
             name: 'app.component.html',
@@ -32,12 +38,25 @@ export const filesRoot: File[] = [
       },
       {
         name: 'environments',
+        disabled: true,
+        expanded: true,
+        selected: true,
         files: [
           {
+            selected: true,
             name: 'environments.prod.ts',
           },
           {
+            selected: true,
             name: 'environment.ts',
+          },
+        ],
+      },
+      {
+        name: 'styles',
+        files: [
+          {
+            name: 'main.scss',
           },
         ],
       },
@@ -50,6 +69,8 @@ export const filesRoot: File[] = [
     ],
   },
   {
+    disabled: true,
+    selected: false,
     name: 'package.json',
   },
   {
@@ -57,8 +78,21 @@ export const filesRoot: File[] = [
   },
 ];
 
-export function getFileTreeNodeMarkup(files: File[] = filesRoot) {
+export function getFileTreeNodeMarkup(files: File[] = filesRoot, useSelected?: boolean) {
   return files
-    .map(file => `<clr-tree-node>${file.name}${file.files ? getFileTreeNodeMarkup(file.files) : ''}</clr-tree-node>`)
+    .map(file => {
+      let selected = '';
+      if (useSelected !== undefined && file.selected !== undefined) {
+        selected = `[clrSelected]="${file.selected}"`;
+      }
+
+      return (
+        `<clr-tree-node ` +
+        selected +
+        `[clrDisabled]="${file.disabled}" [clrExpanded]="${file.expanded}">${file.name}${
+          file.files ? getFileTreeNodeMarkup(file.files, useSelected) : ''
+        }</clr-tree-node>`
+      );
+    })
     .join('');
 }

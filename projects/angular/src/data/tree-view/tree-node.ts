@@ -61,7 +61,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   ],
   host: {
     '[class.clr-tree-node]': 'true',
-    '[class.disabled]': 'this.disabled',
+    '[class.disabled]': 'this._model.disabled',
   },
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
@@ -78,6 +78,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
+  _parentModel: TreeNodeModel<T>;
 
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
@@ -118,6 +119,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
+    this._parentModel = parent ? parent._model : null;
   }
 
   @Input('clrSelected')
@@ -182,7 +184,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   ngOnInit() {
     this._model.expanded = this.expanded;
-    this._model.disabled = this.disabled;
+    this._model.disabled = this.disabled || this._parentModel?.disabled;
     this.subscriptions.push(
       this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
         this.selectedChange.emit(value);

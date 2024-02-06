@@ -16,7 +16,7 @@
     //Display
     display: block;
 
-    &.disabled > .clr-tree-node-content-container {
+    &.disabled .clr-tree-node-content-container {
       &:focus > .clr-treenode-content,
       &:focus > .clr-treenode-checkbox .clr-control-label {
         outline: none;

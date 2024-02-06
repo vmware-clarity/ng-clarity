@@ -62,11 +62,11 @@
   <clr-tree>
     <clr-tree-node [(clrExpanded)]="expanded2" [clrSelected]="false">
       A is {{expanded2 ? "expanded" : "collapsed"}}.
-      <clr-tree-node [clrDisabled]="true">
+      <clr-tree-node [clrDisabled]="true" [clrSelected]="true" [clrExpanded]="true">
         B
-        <clr-tree-node [clrDisabled]="true">B.1</clr-tree-node>
+        <clr-tree-node>B.1</clr-tree-node>
 
-        <clr-tree-node [clrDisabled]="true">B.2</clr-tree-node>
+        <clr-tree-node>B.2</clr-tree-node>
       </clr-tree-node>
       <clr-tree-node [clrDisabled]="true">C</clr-tree-node>
       <clr-tree-node [clrSelected]="true">D</clr-tree-node>
