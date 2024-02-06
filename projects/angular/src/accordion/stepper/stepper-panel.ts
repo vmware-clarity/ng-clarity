@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { filter, pairwise, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
@@ -73,12 +73,17 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
+    // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
     if (this.formGroup) {
-      // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
+      // set panel status on form status change only after the form becomes invalid
+      const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
+
       this.subscriptions.push(
-        this.formGroup.statusChanges.pipe(pairwise()).subscribe(([prevStatus, newStatus]) => {
-          if ('VALID' === prevStatus && 'INVALID' === newStatus) {
-            this.stepperService.navigateToNextPanel(this.id, this.formGroup.valid);
+        this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
+          if (status === 'VALID') {
+            this.stepperService.setPanelValid(this.id);
+          } else if (status === 'INVALID') {
+            this.stepperService.setPanelInvalid(this.id);
           }
         })
       );
