@@ -4,11 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
-
-import { ClrButton } from '../../../projects/angular/src/button';
 
 const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
 const BUTTON_STYLES = ['outline', 'solid', 'flat'];

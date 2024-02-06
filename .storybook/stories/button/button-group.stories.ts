@@ -4,12 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, commonStringsDefault } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
-
-import { ClrButtonGroup, ClrButtonGroupModule } from '../../../projects/angular/src/button';
-import { CLR_MENU_POSITIONS } from '../../../projects/angular/src/popover';
-import { commonStringsDefault } from '../../../projects/angular/src/utils';
 
 export default {
   title: 'Button/Button Group',
