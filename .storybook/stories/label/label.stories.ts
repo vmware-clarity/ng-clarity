@@ -58,9 +58,7 @@ const LabelAllTemplate: Story = args => ({
 
     <h6>Clickable Labels</h6>
     <div style="margin-top: 5px;">
-      <span class="label clickable" *ngFor="let type of LABEL_COLOR_TYPES" [class]="type">
-        <span class="text">{{content}}</span>
-      </span>
+      <a class="label clickable" *ngFor="let type of LABEL_COLOR_TYPES" href="javascript://" [class]="type">{{content}}</a>
     </div>
 
     <h6>Status Labels</h6>
@@ -70,18 +68,18 @@ const LabelAllTemplate: Story = args => ({
 
     <h6>Labels with Badges</h6>
     <div style="margin-top: 5px;">
-      <span class="label" *ngFor="let type of LABEL_TYPES" [class]="type">
+      <a href="javascript://" class="label clickable" *ngFor="let type of LABEL_TYPES" [class]="type">
         <span class="text">{{content}}</span>
         <span class="badge">1</span>
-      </span>
+      </a>
     </div>
 
     <h6>Labels with Close Icon</h6>
     <div style="margin-top: 5px;">
-      <span class="label clickable" *ngFor="let type of LABEL_TYPES" [class]="type">
+      <a href="javascript://" class="label clickable" *ngFor="let type of LABEL_TYPES" [class]="type">
         <span class="text">{{content}}</span>
         <cds-icon shape="close"></cds-icon>
-      </span>
+      </a>
     </div>
   `,
   props: args,
