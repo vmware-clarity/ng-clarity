@@ -6,12 +6,10 @@
 
 import { ClrDateInput, ClrDatepickerModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
+const DatePickerTemplate: StoryFn = args => ({
   template: `
     <clr-date-container>
       <label>Date</label>
@@ -31,9 +29,14 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Datepicker/Datepicker',
   component: ClrDateInput,
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDatepickerModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrDate: { control: { type: 'date' } },
@@ -62,21 +65,34 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    disabled: false,
-  },
-  {
-    disabled: true,
-  },
-  {
-    disabled: false,
-    clrDate: 1641038400000,
-  },
-  {
-    disabled: true,
-    clrDate: 1641038400000,
-  },
-];
+export const DatePicker: StoryObj = {
+  render: DatePickerTemplate,
+};
 
-setupStorybook(ClrDatepickerModule, defaultStory, defaultParameters, variants);
+export const DefaultDate: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    clrDate: 1641038400000,
+  },
+};
+
+export const Disabled: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    disabled: true,
+  },
+};
+
+export const MinDate: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    min: Date.now() - 2592000000,
+  },
+};
+
+export const MaxDate: StoryObj = {
+  render: DatePickerTemplate,
+  args: {
+    max: Date.now() + 2592000000, // (30*24*60*60*1000)
+  },
+};

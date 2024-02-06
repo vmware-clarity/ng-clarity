@@ -5,12 +5,10 @@
  */
 
 import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
+const DatePickerTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 300px; text-align: center;">
       <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
@@ -22,8 +20,13 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Datepicker/DateContainer',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDatepickerModule],
+    }),
+  ],
   component: ClrDateContainer,
   argTypes: {
     // inputs
@@ -34,6 +37,6 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
-
-setupStorybook(ClrDatepickerModule, defaultStory, defaultParameters, variants);
+export const DatePickerContainer: StoryObj = {
+  render: DatePickerTemplate,
+};
