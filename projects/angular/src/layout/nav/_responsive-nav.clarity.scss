@@ -266,7 +266,6 @@
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            border-radius: tokens.$cds-alias-object-border-radius-100 0 0 tokens.$cds-alias-object-border-radius-100;
 
             @include vertical-nav.vertical-nav-link-colors();
 
@@ -311,6 +310,7 @@
 
         .header-hamburger-trigger + .branding {
           padding-left: 0;
+          margin-left: calc(-1 * tokens.$cds-global-space-5);
 
           //TODO: deprecate .clr-icon, .logo
           .clr-icon,
@@ -467,6 +467,14 @@
           overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width;
           max-width: responsive-nav-variables.$clr-sliding-panel-width;
+
+          &::before {
+            content: none;
+          }
+
+          & .nav-link {
+            width: 100%;
+          }
         }
       }
 

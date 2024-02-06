@@ -14,10 +14,10 @@
         </a>
       </div>
       <div class="header-nav">
-        <a href="javascript://" class="active nav-link">
+        <a href="javascript://" class="nav-link">
           <span class="nav-text">Dashboard</span>
         </a>
-        <a href="javascript://" class="nav-link">
+        <a href="javascript://" class="active nav-link">
           <span class="nav-text">Interactive Analytics</span>
         </a>
       </div>
@@ -47,6 +47,61 @@
         <a href="javascript://" class="nav-link nav-icon">
           <cds-icon shape="cog" inverse></cds-icon>
         </a>
+        <a href="javascript://" class="nav-link nav-icon-text">
+          <cds-icon shape="user" inverse></cds-icon>
+          <span class="nav-text">username</span>
+        </a>
+        <a href="javascript://" class="nav-link nav-text">Log Out</a>
+        <div class="dropdown bottom-right open">
+          <button class="dropdown-toggle nav-text">
+            Dropdown Toggle 1
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <label class="dropdown-header" aria-hidden="true">Header</label>
+            <div aria-label="Dropdown header Lorem" class="dropdown-item" role="menuitem">Lorem.</div>
+            <div aria-label="Dropdown header Lorem ipsum" class="dropdown-item" role="menuitem">ipsum.</div>
+            <div aria-label="Dropdown header Lorem ipsum dolor" class="dropdown-item" role="menuitem">dolor.</div>
+            <div class="dropdown open left-bottom">
+              <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+                Lorem ipsum.
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <div class="dropdown-item" role="menuitem">Foo.</div>
+                <div class="dropdown open right-top">
+                  <button
+                    class="dropdown-item active expandable"
+                    role="menuitem"
+                    aria-expanded="true"
+                    aria-haspopup="menu"
+                  >
+                    Bar.
+                  </button>
+                  <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-item" role="menuitem">Baz.</div>
+                  </div>
+                </div>
+                <div class="dropdown-item" role="menuitem">Foo 2.</div>
+              </div>
+            </div>
+            <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+            <div class="dropdown-item" role="menuitem">Link</div>
+          </div>
+        </div>
+        <div class="dropdown bottom-left">
+          <button class="dropdown-toggle nav-text">
+            Dropdown Toggle 2
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <label class="dropdown-header" aria-hidden="true">Header</label>
+            <div aria-label="Dropdown header Lorem" class="dropdown-item" role="menuitem">Lorem.</div>
+            <div aria-label="Dropdown header Lorem ipsum" class="dropdown-item" role="menuitem">Ipsum.</div>
+            <div aria-label="Dropdown header Lorem ipsum dolor" class="dropdown-item" role="menuitem">Dolor.</div>
+            <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+            <div class="dropdown-item" role="menuitem">Link</div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -58,8 +113,8 @@
         </a>
       </div>
       <form class="search">
-        <label for="search_input">
-          <input id="search_input" type="text" placeholder="Search for keywords..." />
+        <label for="search_input_1">
+          <input id="search_input_1" type="text" placeholder="Search for keywords..." />
         </label>
       </form>
       <div class="header-actions">
@@ -107,8 +162,8 @@
         </a>
       </div>
       <form class="search">
-        <label for="search_input">
-          <input id="search_input" type="text" placeholder="Search for keywords..." />
+        <label for="search_input_2">
+          <input id="search_input_2" type="text" placeholder="Search for keywords..." />
         </label>
       </form>
       <div class="header-actions">

@@ -14,7 +14,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
   templateUrl: './dynamic-controls.demo.html',
 })
 export class DynamicControlsDemo {
-  destroyed = new Subject();
+  destroyed = new Subject<void>();
   form = new FormGroup<any>({
     platform: new FormControl(),
     scenario: new FormControl('one'),

@@ -5,15 +5,10 @@
  */
 @use '@cds/core/tokens/tokens.scss';
 
-$clr-header-action-caret-gap: tokens.$cds-global-space-5;
-$clr-header-action-cog-right: calc(
-  var(--clr-header-action-caret-right) + $clr-header-action-caret-gap + var(--clr-header-action-caret-size)
-);
-
-// deprecated in v17 in favor or $clr-header-bg-color
+// @deprecated in v17 in favor or $clr-header-bg-color
 $clr-header-bgColor: var(--clr-header-bg-color) !default;
 $clr-logo-width: tokens.$cds-global-space-11 !default;
-// deprecated in v17 in favor or $clr-header-search-icon-size
+// @deprecated in v17 in favor or $clr-header-search-icon-size
 $clr-search-icon-width: var(--clr-header-search-icon-size) !default;
 $clr-header-outline-offset: calc(-1 * #{tokens.$cds-global-space-4}) !default;
 $clr-header-clarity-icons-size: tokens.$cds-global-space-9 !default;
@@ -22,8 +17,6 @@ $clr-header-nav-text-vertical-padding: tokens.$cds-global-space-8 !default;
 
 $clr-header-height: var(--clr-header-height) !default;
 $clr-header-divider-color: var(--clr-header-divider-color) !default;
-$clr-header-divider-width: var(--clr-header-divider-width) !default;
-$clr-header-divider-height: var(--clr-header-divider-height) !default;
 $clr-header-bg-color: $clr-header-bgColor !default;
 $clr-header-2-bg-color: var(--clr-header-2-bg-color) !default;
 $clr-header-3-bg-color: var(--clr-header-3-bg-color) !default;
@@ -37,17 +30,6 @@ $clr-header-font-color-hover: var(--clr-header-font-color-hover) !default;
 $clr-header-title-color: $clr-header-font-color !default;
 $clr-header-title-font-weight: var(--clr-header-title-font-weight) !default;
 $clr-header-title-font-family: var(--clr-header-title-font-family) !default;
-$clr-header-title-font-size: var(--clr-header-title-font-size) !default;
-$clr-header-title-line-height: var(--clr-header-title-line-height) !default;
-$clr-header-title-letter-spacing: var(--clr-header-title-letter-spacing) !default;
-$clr-header-branding-min-width: var(--clr-header-branding-min-width) !default;
-$clr-header-branding-padding: var(--clr-header-branding-padding) !default;
-$clr-header-branding-icon-gap: var(--clr-header-branding-icon-gap) !default;
-$clr-header-branding-logo-size: var(--clr-header-branding-logo-size) !default;
-$clr-header-nav-link-padding: var(--clr-header-nav-link-padding) !default;
-$clr-header-nav-link-line-height: var(--clr-header-nav-link-line-height) !default;
-$clr-header-nav-link-font-size: var(--clr-header-nav-link-font-size) !default;
-$clr-header-search-height: var(--clr-header-search-height) !default;
 $clr-header-search-icon-size: $clr-search-icon-width !default;
 $clr-header-search-margin-left: var(--clr-header-search-margin-left) !default;
 $clr-header-search-margin-right: var(--clr-header-search-margin-right) !default;
@@ -56,7 +38,3 @@ $clr-header-search-input-font-color: var(--clr-header-search-input-font-color) !
 $clr-header-search-placeholder-text-color: var(--clr-header-search-placeholder-text-color) !default;
 $clr-header-search-border-active: var(--clr-header-search-border-active) !default;
 $clr-header-search-border-hover: var(--clr-header-search-border-hover) !default;
-$clr-header-action-caret-right: var(--clr-header-action-caret-right) !default;
-$clr-header-action-caret-size: var(--clr-header-action-caret-size) !default;
-$clr-header-action-icon-size: var(--clr-header-action-icon-size) !default;
-$clr-header-action-caret-gap: var(--clr-header-action-caret-gap) !default;
