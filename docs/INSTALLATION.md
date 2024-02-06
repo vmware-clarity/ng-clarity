@@ -8,20 +8,15 @@
     npm install @clr/ui
     ```
 
-2.  Include @cds/core/global.min.css and @cds/core/styles/theme.dark.min.css in your HTML file:
+2.  Include @cds/core/global.min.css, @cds/core/styles/theme.dark.min.css and clr-ui.min.css in your HTML file:
 
     ```
     <link rel="stylesheet" href="path/to/node_modules/@cds/core/global.min.css">
     <link rel="stylesheet" href="path/to/node_modules/@cds/core/styles/theme.dark.min.css">
-    ```
-
-3.  Include clr-ui.min.css in your HTML file:
-
-    ```
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
-4.  Write your HTML with the Clarity CSS class names and markup.
+3.  Write your HTML with the Clarity CSS class names and markup.
 
 ## Installing Clarity Angular [![npm version](https://badge.fury.io/js/%40clr%2Fangular.svg)](https://badge.fury.io/js/%40clr%2Fangular)
 
