@@ -7,12 +7,12 @@
 <h4>No selection</h4>
 <div class="clr-example">
   <clr-tree>
-    <clr-tree-node>
+    <clr-tree-node [clrIfExpanded]="true">
       A
-      <clr-tree-node>A-1</clr-tree-node>
-      <clr-tree-node>
+      <clr-tree-node [clrDisabled]="true">A-1</clr-tree-node>
+      <clr-tree-node [clrIfExpanded]="true" [clrDisabled]="true">
         A-2
-        <clr-tree-node>A-2.1</clr-tree-node>
+        <clr-tree-node [clrDisabled]="true">A-2.1</clr-tree-node>
         <clr-tree-node>A-2.2</clr-tree-node>
         <clr-tree-node>A-2.3</clr-tree-node>
       </clr-tree-node>

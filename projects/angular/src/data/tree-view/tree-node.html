@@ -23,6 +23,7 @@
     class="clr-treenode-caret"
     (click)="expandService.toggle();"
     (focus)="focusTreeNode()"
+    [disabled]="disabled"
   >
     <cds-icon
       class="clr-treenode-caret-icon"

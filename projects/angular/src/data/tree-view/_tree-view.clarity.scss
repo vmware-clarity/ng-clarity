@@ -16,7 +16,7 @@
     //Display
     display: block;
 
-    &.disabled .clr-tree-node-content-container {
+    &.disabled > .clr-tree-node-content-container {
       &:focus > .clr-treenode-content,
       &:focus > .clr-treenode-checkbox .clr-control-label {
         outline: none;
@@ -25,15 +25,14 @@
       .clr-treenode-caret,
       .clr-treenode-link,
       .clr-treenode-content,
-      .clr-treenode-checkbox .clr-control-label,
-      //&.disabled .clr-tree-node-content-container .clr-treenode-checkbox .clr-control-label::before,
-      //&.disabled .clr-tree-node-content-container .clr-treenode-checkbox .clr-control-label::after
-      {
+      .clr-treenode-checkbox .clr-control-label {
+        cursor: not-allowed;
         color: var(--clr-tree-node-content-disabled-color);
         background-color: var(--clr-tree-node-content-bg-disabled-color);
 
         cds-icon,
         clr-icon {
+          cursor: not-allowed;
           fill: var(--clr-tree-node-caret-disabled-color);
         }
       }
