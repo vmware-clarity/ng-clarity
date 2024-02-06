@@ -37,6 +37,6 @@ export default {
   },
 };
 
-export const DatePickerContainer: StoryObj = {
+export const DateContainer: StoryObj = {
   render: DatePickerTemplate,
 };

@@ -65,7 +65,7 @@ export default {
   },
 };
 
-export const DatePicker: StoryObj = {
+export const Datepicker: StoryObj = {
   render: DatePickerTemplate,
 };
 
@@ -93,6 +93,6 @@ export const MinDate: StoryObj = {
 export const MaxDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
-    max: Date.now() + 2592000000, // (30*24*60*60*1000)
+    max: Date.now() + 2592000000,
   },
 };
