@@ -6,7 +6,7 @@
 
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
@@ -155,8 +155,47 @@ const ButtonAllTemplate: Story = args => ({
   props: args,
 });
 
+const ButtonLinkTemplate: StoryFn = args => ({
+  template: `
+    <a
+      href="javascript://"
+      class="btn"
+      [ngClass]="buttonClassLoader(buttonType, buttonStyle)"
+      [disabled]="disabled"
+      (click)="click($event)"
+    >
+      {{content}}
+    </a>
+  `,
+  props: args,
+});
 export const Button: StoryObj = {
   render: ButtonTemplate,
+};
+
+export const Solid: StoryObj = {
+  render: ButtonTemplate,
+  args: {
+    buttonStyle: 'solid',
+  },
+};
+export const Outline: StoryObj = {
+  render: ButtonTemplate,
+  args: {
+    buttonStyle: 'outline',
+  },
+};
+export const Flat: StoryObj = {
+  render: ButtonTemplate,
+  args: {
+    buttonStyle: 'flat',
+  },
+};
+export const Link: StoryObj = {
+  render: ButtonLinkTemplate,
+  args: {
+    buttonStyle: 'flat',
+  },
 };
 
 export const Showcase: StoryObj = {
