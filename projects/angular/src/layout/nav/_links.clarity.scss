@@ -9,10 +9,11 @@
 @include mixins.exports('links.clarity') {
   a:link {
     /*
-    * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item` and `badge` it overrides the styles of both
-    * which is not required. Also `.btn, .nav-link, .dropdown-item, .badge` doesn't need these styles, so we don't add them in these cases.
+    * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.alert-action` and `badge`
+    * it overrides the styles of both which is not required.
+    * Also `.btn, .nav-link, .dropdown-item, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
     */
-    &:not(.btn, .nav-link, .dropdown-item, .badge) {
+    &:not(.btn, .nav-link, .dropdown-item, .alert-action, .badge) {
       @include mixins.generate-typography-token('LINK-13');
     }
   }

@@ -16,8 +16,8 @@
   position: absolute;
   content: '';
   background-color: header-variables.$clr-header-divider-color;
-  height: header-variables.$clr-header-divider-height;
-  width: header-variables.$clr-header-divider-width;
+  height: tokens.$cds-global-space-11;
+  width: tokens.$cds-alias-object-border-width-100;
   top: tokens.$cds-global-space-6;
   left: 0;
 }
@@ -73,16 +73,16 @@
   .branding {
     display: flex;
     flex: 0 0 auto;
-    min-width: header-variables.$clr-header-branding-min-width;
-    padding: header-variables.$clr-header-branding-padding;
-    height: header-variables.$clr-header-height;
+    min-width: mixins.baselinePx(204);
+    padding: 0 tokens.$cds-global-space-7;
 
     & > a,
     & > .nav-link {
       display: inline-flex;
       align-items: center;
-      height: header-variables.$clr-header-height;
       text-decoration: none;
+      gap: tokens.$cds-global-space-5;
+      padding: tokens.$cds-global-space-5;
 
       &:focus {
         outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
@@ -94,8 +94,7 @@
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
-      @include mixins.equilateral(header-variables.$clr-header-branding-logo-size);
-      margin-right: header-variables.$clr-header-branding-icon-gap;
+      @include mixins.equilateral(tokens.$cds-global-space-11);
     }
 
     .title {
@@ -105,9 +104,6 @@
         'SUBSECTION-16-EXP',
         (
           font-weight: header-variables.$clr-header-title-font-weight,
-          font-size: header-variables.$clr-header-title-font-size,
-          letter-spacing: header-variables.$clr-header-title-letter-spacing,
-          line-height: header-variables.$clr-header-title-line-height,
         )
       );
       text-decoration: none;
@@ -119,8 +115,6 @@
   .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
-    height: header-variables.$clr-header-height;
-
     .nav-text {
       @include mixins.generate-typography-token('BODY-14-RG-EXP');
     }
@@ -129,42 +123,25 @@
       color: header-variables.$clr-header-font-color;
     }
 
-    .nav-icon {
-      @include mixins.equilateral(header-variables.$clr-header-height);
-    }
-
     .nav-link {
       display: inline-flex;
       align-items: center;
-      height: header-variables.$clr-header-height;
       position: relative;
       text-align: center;
-      padding: header-variables.$clr-header-nav-link-padding;
-      line-height: header-variables.$clr-header-nav-link-line-height;
+      padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
       text-decoration: none;
       @include header-nav-appearance();
 
       cds-icon,
       clr-icon {
-        position: static;
-        top: 50%;
-        left: 50%;
         @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
       }
 
       &.nav-icon-text {
+        gap: tokens.$cds-global-space-4;
         cds-icon,
         clr-icon {
-          position: relative;
-          top: auto;
-          left: auto;
           transform: none;
-          margin-left: tokens.$cds-global-space-9;
-        }
-
-        .nav-text {
-          margin-left: 0;
-          padding-left: tokens.$cds-global-space-4;
         }
       }
 
@@ -174,8 +151,6 @@
         display: none;
       }
 
-      font-size: header-variables.$clr-header-nav-link-font-size;
-
       &.active {
         .nav-text {
           @include mixins.generate-typography-token('BODY-14-SB-EXP');
@@ -183,7 +158,8 @@
       }
 
       &:focus {
-        outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
+        // So that the outline styles aren't hidden because of the browser
+        outline-offset: header-variables.$clr-header-outline-offset;
       }
     }
   }
@@ -193,38 +169,17 @@
   .header-nav {
     display: flex;
     flex: 0 0 auto;
+    align-items: center;
+    position: relative;
 
-    @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, lg)) {
-      a:first-of-type::before,
-      a:last-of-type::after {
-        @include header-section-divider();
-        left: auto;
-      }
-    }
-
-    &:last-child {
-      & > .nav-link:last-child::after {
-        content: none;
-      }
+    &::before {
+      @include header-section-divider();
     }
 
     .nav-link {
       &:first-of-type,
       &:last-of-type {
         position: relative;
-      }
-
-      &:first-of-type::before {
-        left: 0;
-      }
-
-      &:last-of-type::after {
-        right: 0;
-      }
-
-      &.active:first-of-type::before,
-      &.active:last-of-type::after {
-        content: none;
       }
     }
   }
@@ -237,80 +192,38 @@
     display: flex;
     justify-content: flex-end;
 
+    & > *:not(.dropdown):before,
+    & > .dropdown > .dropdown-toggle:before {
+      @include header-section-divider();
+    }
+
     // Reduce nesting from 5 to 3 at the most
     & > .dropdown {
-      $clr-header-action-caret-icon-right-position: tokens.$cds-global-space-6;
-
       & > .dropdown-toggle {
+        gap: tokens.$cds-global-space-5;
         position: relative;
-        line-height: header-variables.$clr-header-height;
-        height: header-variables.$clr-header-height;
+        padding: tokens.$cds-global-space-8 tokens.$cds-global-space-7;
         outline-offset: header-variables.$clr-header-outline-offset;
+        align-items: center;
         @include header-nav-appearance();
       }
 
       .dropdown-toggle.nav-icon {
         cds-icon:not([shape^='angle']),
         clr-icon:not([shape^='angle']) {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          @include mixins.equilateral(header-variables.$clr-header-action-icon-size);
-          right: header-variables.$clr-header-action-cog-right;
+          @include mixins.equilateral(tokens.$cds-global-space-9);
         }
-      }
-
-      .dropdown-toggle.nav-icon {
-        cds-icon[shape^='angle'],
-        clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-action-caret-right;
-          top: 38%;
-          @include mixins.equilateral(header-variables.$clr-header-action-caret-size);
-        }
-      }
-
-      .dropdown-toggle.nav-text {
-        padding: 0 tokens.$cds-global-space-11 0 header-variables.$clr-header-nav-text-horizontal-padding;
-
-        cds-icon[shape^='angle'],
-        clr-icon[shape^='angle'] {
-          right: header-variables.$clr-header-action-caret-right;
-          @include mixins.equilateral(header-variables.$clr-header-action-caret-size);
-        }
-      }
-
-      .dropdown-toggle.nav-icon {
-        width: calc(
-          header-variables.$clr-header-action-cog-right + header-variables.$clr-header-action-icon-size +
-            tokens.$cds-global-space-7
-        );
-        padding-right: 0;
-      }
-
-      // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
-      &.bottom-right > .dropdown-menu,
-      &.bottom-left > .dropdown-menu {
-        top: 85%;
-      }
-
-      // Last Dropdown Menu adjustments so that the menu has some space between itself and the right end of the browser window
-      &:last-child.bottom-right > .dropdown-menu {
-        right: mixins.baselinePx(3);
       }
 
       // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
       .dropdown-menu {
-        margin-top: calc(-1 * tokens.$cds-global-space-3);
+        margin-top: calc(-1 * tokens.$cds-global-space-5);
+        margin-right: tokens.$cds-global-space-5;
         // TODO: As of 0.10.0 the dropdown-menu inside header without clrIfOpen directive (legacy)
         // will create empty space beyond the .main-container if the right isn't set to zero.
         // Re-evaluate later if we can come up with a better solution.
         left: auto;
         right: 0;
-      }
-
-      // Last Dropdown Menu adjustments so that the menu has some space between itself and the right end of the browser window
-      :last-child.dropdown-menu {
-        margin-right: tokens.$cds-global-space-5;
       }
     }
   }
@@ -324,8 +237,14 @@
     flex: 0 0 auto;
     max-width: mixins.baselinePx(288);
     padding: 0;
-    height: header-variables.$clr-header-height;
+    position: relative;
+
     @include header-nav-appearance();
+
+    &::before {
+      @include header-section-divider();
+      left: auto;
+    }
 
     & > .nav-icon {
       margin: 0 tokens.$cds-global-space-4 mixins.baselinePx(3) tokens.$cds-global-space-9;
@@ -333,8 +252,6 @@
 
     label {
       display: inline-block;
-      height: header-variables.$clr-header-height;
-      line-height: header-variables.$clr-header-height;
       padding-left: header-variables.$clr-header-search-gap;
       margin-left: header-variables.$clr-header-search-margin-left;
       margin-right: header-variables.$clr-header-search-margin-right;
@@ -366,15 +283,21 @@
       background: none;
       color: header-variables.$clr-header-search-input-font-color;
       border-radius: tokens.$cds-alias-object-border-radius-100;
-      height: header-variables.$clr-header-search-height;
+      height: tokens.$cds-global-space-11;
 
-      padding: 0;
-      padding-left: calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
+      padding: 0 0 0 calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
 
       vertical-align: middle;
 
       // Typography
       @include mixins.generate-typography-token('BODY-14-SB-EXP');
+
+      // hacky fix for chrome autofill wrong colors. Better solution not found.
+      // set transition between current correct to inner wrong immutable colors to very long time.
+      &:-webkit-autofill,
+      &:-webkit-autofill:focus {
+        transition: background-color 0s 600000s, color 0s 600000s;
+      }
 
       &::placeholder {
         color: header-variables.$clr-header-search-placeholder-text-color;
@@ -400,10 +323,6 @@
   .branding + .search,
   .branding + .search-box {
     position: relative;
-
-    &::after {
-      @include header-section-divider();
-    }
   }
 }
 
@@ -411,44 +330,11 @@
   .search-box,
   .search {
     flex: 1 0 auto;
-    justify-content: flex-end;
     max-width: none;
+    display: none; // TODO: Waiting for UX to finish the search designs. CDE-1626
 
     label {
       padding: 0;
-      width: header-variables.$clr-header-height;
-
-      &::before {
-        left: calc((header-variables.$clr-header-height - header-variables.$clr-search-icon-width) * 0.5);
-      }
-
-      input {
-        display: none; // TODO: Waiting for UX to finish the search designs.
-      }
-    }
-  }
-}
-
-@mixin header-branding-md {
-  .branding + .search,
-  .branding + .search-box {
-    &::after {
-      content: none;
-    }
-  }
-}
-
-@mixin header-actions-md {
-  // If actions directly follow search
-  .search-box + .settings,
-  .search-box + .header-actions,
-  .search + .settings,
-  .search + .header-actions {
-    position: relative;
-    flex: 0 0 auto;
-
-    &::after {
-      @include header-section-divider();
     }
   }
 }
@@ -477,8 +363,6 @@
     header,
     .header {
       @include header-search-md();
-      @include header-branding-md();
-      @include header-actions-md();
     }
   }
 }

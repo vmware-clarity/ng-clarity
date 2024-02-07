@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../../utils/a11y';
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../variables.accordion' as accordion-variables;
+@include meta.load-css('../properties.accordion');
+
+@include mixins.exports('stepper.clarity') {
+  .clr-stepper-forms {
+    .clr-accordion-header-button {
+      align-items: center;
+      gap: tokens.$cds-global-space-12;
+      min-height: mixins.baselinePx(56);
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-9 tokens.$cds-global-space-5
+        tokens.$cds-global-space-10;
+      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        gap: tokens.$cds-global-space-9;
+      }
+    }
+
+    .clr-accordion-panel-inactive .clr-accordion-angle {
+      visibility: hidden;
+    }
+
+    .clr-accordion-panel-open > .clr-accordion-header .clr-accordion-angle {
+      visibility: visible;
+    }
+
+    .clr-accordion-status {
+      min-width: tokens.$cds-global-space-14;
+    }
+
+    .clr-accordion-number {
+      @include mixins.generate-typography-token('BODY-14-SB-STD');
+      padding: 0 tokens.$cds-global-space-7;
+      display: inline-block;
+    }
+
+    .clr-accordion-description {
+      display: inline-block;
+    }
+
+    .clr-accordion-title {
+      @include mixins.generate-typography-token('BODY-14-SB-STD');
+    }
+
+    .clr-accordion-description {
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
+    }
+
+    .clr-step-button {
+      display: block;
+      margin-top: tokens.$cds-global-space-9;
+    }
+  }
+
+  clr-stepper-panel .clr-accordion-inner-content {
+    padding: #{tokens.$cds-global-space-9} #{tokens.$cds-global-space-11};
+  }
+}

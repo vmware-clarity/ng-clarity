@@ -22,10 +22,10 @@
 
   %clickable-card-transition {
     box-shadow: card-variables.$clr-card-clickable-box-shadow;
-    border: tokens.$cds-alias-object-border-width-200 solid card-variables.$clr-card-clickable-border-color;
+    border: tokens.$cds-alias-object-border-width-100 solid card-variables.$clr-card-clickable-border-color;
     cursor: pointer;
     text-decoration: none;
-    transition: border 0.2s ease, transform 0.2s ease;
+    transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   %card-space-between {

@@ -168,7 +168,7 @@ export class WizardNavigationService implements OnDestroy {
   /**
    * @memberof WizardNavigationService
    */
-  private _wizardFinished = new Subject<boolean>();
+  private _wizardFinished = new Subject<void>();
 
   /**
    * @memberof WizardNavigationService
@@ -178,7 +178,7 @@ export class WizardNavigationService implements OnDestroy {
   /**
    * @memberof WizardNavigationService
    */
-  private _cancelWizard = new Subject<any>();
+  private _cancelWizard = new Subject<void>();
 
   /**
    * Creates an instance of WizardNavigationService. Also sets up subscriptions
@@ -333,7 +333,7 @@ export class WizardNavigationService implements OnDestroy {
    *
    * @memberof WizardNavigationService
    */
-  get wizardFinished(): Observable<boolean> {
+  get wizardFinished(): Observable<void> {
     return this._wizardFinished.asObservable();
   }
 

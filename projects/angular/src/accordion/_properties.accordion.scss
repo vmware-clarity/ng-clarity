@@ -25,8 +25,6 @@
     --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
 
-    --clr-accordion-header-button-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6};
-
     --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
     --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
 
@@ -39,6 +37,6 @@
     --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-status-neutral-tint};
     --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0 #{tokens.$cds-alias-object-interaction-background-highlight};
 
-    --clr-accordion-step-title-min-width: 0;
+    --clr-accordion-step-title-min-width: #{tokens.$cds-global-space-13};
   }
 }
