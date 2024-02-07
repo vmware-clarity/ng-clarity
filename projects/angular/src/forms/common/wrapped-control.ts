@@ -27,11 +27,13 @@ import { Subscription } from 'rxjs';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { CONTROL_SUFFIX } from './abstract-control';
+import { IfControlGroupStateService } from './if-control-state/if-control-group-state.service';
 import { IfControlStateService } from './if-control-state/if-control-state.service';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
+import { NgControlGroupService } from './providers/ng-control-group.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
 
 export enum CHANGE_KEYS {
@@ -45,12 +47,12 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
 
   protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
-  protected ngControlService: NgControlService;
+  protected ngControlService: NgControlService | NgControlGroupService;
   protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
-  private ifControlStateService: IfControlStateService;
+  private ifControlStateService: IfControlStateService | IfControlGroupStateService;
   private controlClassService: ControlClassService;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
@@ -72,8 +74,20 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     this.el = el;
 
     if (injector) {
-      this.ngControlService = injector.get(NgControlService, null);
-      this.ifControlStateService = injector.get(IfControlStateService, null);
+      // TODO: Make up a better way for injecting the proper service
+      // (group container has different services because they have controls[] and not a single control)
+      try {
+        this.ngControlService = injector.get(NgControlService);
+      } catch (e) {
+        this.ngControlService = injector.get(NgControlGroupService);
+      }
+
+      try {
+        this.ifControlStateService = injector.get(IfControlStateService);
+      } catch (e) {
+        this.ifControlStateService = injector.get(IfControlGroupStateService);
+      }
+
       this.controlClassService = injector.get(ControlClassService, null);
       this.markControlService = injector.get(MarkControlService, null);
       this.differs = injector.get(KeyValueDiffers, null);
@@ -131,6 +145,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
 
     if (this.ngControlService && this.ngControl) {
+      // console.log('about to set control', this.ngControl)
       this.ngControlService.setControl(this.ngControl);
     }
   }

@@ -6,7 +6,7 @@
 
 import { Injectable } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface Helpers {
   show?: boolean;
@@ -15,14 +15,16 @@ export interface Helpers {
   showHelper?: boolean;
 }
 
+// TODO: Better naming would be GroupContainerNgControlsAndMessagesService
 @Injectable()
-export class NgControlService {
+export class NgControlGroupService {
   // Observable to subscribe to the control, since its not available immediately for projected content
-  private _controlChanges = new Subject<NgControl>(); // TODO: Should be Subject<NgModel>() ?
+  private _controlChanges = new BehaviorSubject<NgControl[]>([]);
+  // private _controlChangesBehavior = new BehaviorSubject<NgControl>();
 
   private _helpers = new Subject<Helpers>();
 
-  get controlChanges(): Observable<NgControl> {
+  get controlChanges(): Observable<NgControl[]> {
     return this._controlChanges.asObservable();
   }
 
@@ -31,7 +33,8 @@ export class NgControlService {
   }
 
   setControl(control: NgControl) {
-    this._controlChanges.next(control);
+    console.log('in set control', this._controlChanges.value, [...this._controlChanges.value, control]);
+    this._controlChanges.next([...this._controlChanges.value, control]);
   }
 
   setHelpers(state: Helpers) {
