@@ -49,7 +49,7 @@ const defaultStory: Story = args => ({
 });
 
 const defaultParameters: Parameters = {
-  title: 'Wizard/Wizard',
+  title: 'Wizard/Wizard Long Titles',
   component: ClrWizard,
   argTypes: {
     // inputs
@@ -102,7 +102,7 @@ const defaultParameters: Parameters = {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
-    useLongPageTitles: false,
+    useLongPageTitles: true,
   },
 };
 
