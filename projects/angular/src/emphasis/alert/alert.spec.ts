@@ -142,7 +142,7 @@ export default function (): void {
       fixture.detectChanges();
 
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
-      expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
+      expect(compiled.querySelector('.alert-lightweight')).toBeNull();
       expect(compiled.querySelector('.alert-info')).toBeNull();
     });
 
