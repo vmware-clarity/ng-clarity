@@ -79,13 +79,19 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       try {
         this.ngControlService = injector.get(NgControlService);
       } catch (e) {
-        this.ngControlService = injector.get(NgControlGroupService);
+        try {
+          this.ngControlService = injector.get(NgControlGroupService, null);
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
       }
 
       try {
         this.ifControlStateService = injector.get(IfControlStateService);
       } catch (e) {
-        this.ifControlStateService = injector.get(IfControlGroupStateService);
+        try {
+          this.ifControlStateService = injector.get(IfControlGroupStateService, null);
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
       }
 
       this.controlClassService = injector.get(ControlClassService, null);
