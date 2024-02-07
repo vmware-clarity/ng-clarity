@@ -89,6 +89,9 @@ export abstract class TreeNodeModel<T> {
     let oneUnselected = false;
     // Using a good old for loop to exit as soon as we can tell, for better performance on large trees.
     for (const child of this.children) {
+      if (child.disabled) {
+        continue;
+      }
       switch (child.selected.value) {
         case ClrSelectedState.INDETERMINATE:
           return ClrSelectedState.INDETERMINATE;

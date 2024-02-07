@@ -4,11 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrSelectedState } from '@clr/angular';
+
 export interface File {
   name: string;
   disabled?: boolean;
   expanded?: boolean;
-  selected?: boolean;
+  selected?: ClrSelectedState;
   files?: File[];
 }
 
@@ -16,11 +18,12 @@ export const filesRoot: File[] = [
   {
     name: 'src',
     expanded: true,
+    selected: ClrSelectedState.SELECTED,
     files: [
       {
         name: 'app',
         disabled: true,
-        selected: false,
+        selected: ClrSelectedState.UNSELECTED,
         files: [
           {
             name: 'app.component.html',
@@ -40,14 +43,14 @@ export const filesRoot: File[] = [
         name: 'environments',
         disabled: true,
         expanded: true,
-        selected: true,
+        selected: ClrSelectedState.SELECTED,
         files: [
           {
-            selected: true,
+            selected: ClrSelectedState.SELECTED,
             name: 'environments.prod.ts',
           },
           {
-            selected: true,
+            selected: ClrSelectedState.SELECTED,
             name: 'environment.ts',
           },
         ],
@@ -70,7 +73,7 @@ export const filesRoot: File[] = [
   },
   {
     disabled: true,
-    selected: false,
+    selected: ClrSelectedState.UNSELECTED,
     name: 'package.json',
   },
   {
