@@ -53,19 +53,19 @@ export default function (): void {
     describe('alertIconShape()', function () {
       it('returns shape based on alertType if not set', function () {
         expect(testMe.alertType).toBe('info');
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
       });
 
       it('can change alertIconShape', function () {
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
         testMe.alertIconShape = 'house';
         expect(testMe.alertIconShape).toBe('house');
       });
 
       it('will set to empty string and return based on alertType if set to junk', function () {
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
         testMe.alertIconShape = null;
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
       });
     });
 
@@ -79,8 +79,8 @@ export default function (): void {
 
     describe('iconInfoFromType()', function () {
       it('returns default shape as fallthrough', function () {
-        expect(testShape(null)).toBe('info-circle');
-        expect(testShape('ohai')).toBe('info-circle');
+        expect(testShape(null)).toBe('info-standard');
+        expect(testShape('ohai')).toBe('info-standard');
       });
 
       it('returns .alert-info class as fallthrough', function () {
