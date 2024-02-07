@@ -77,8 +77,8 @@
       content: ' ';
       position: absolute;
       @include mixins.equilateral(0);
-      border-right: tokens.$cds-global-space-6 solid transparent;
       border-top: tokens.$cds-global-space-6 solid stack-view-variables.$clr-stack-block-changed-border-top-color;
+      border-right: tokens.$cds-global-space-6 solid transparent;
     }
 
     .stack-block-caret {
