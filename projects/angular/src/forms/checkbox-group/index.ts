@@ -5,4 +5,5 @@
  */
 
 export * from './checkbox-group-container';
+export * from './test-container';
 export * from './checkbox-group.module';
