@@ -10,6 +10,7 @@ import { ClrStepperModule } from './accordion/stepper/stepper.module';
 import { ClrButtonModule } from './button/button.module';
 import { ClrDataModule } from './data/data.module';
 import { ClrEmphasisModule } from './emphasis/emphasis.module';
+import { ClrTestContainer } from './forms/checkbox-group/test-container';
 import { ClrFormsModule } from './forms/forms.module';
 import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
@@ -38,6 +39,7 @@ import '@cds/core/icon/register';
     ClrFocusOnViewInitModule,
     ClrButtonModule,
     ClrFormsModule,
+    ClrTestContainer,
     ClrLayoutModule,
     ClrPopoverModule,
     ClrWizardModule,
