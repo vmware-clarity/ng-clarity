@@ -94,7 +94,7 @@ export default function (): void {
       });
 
       it('returns warning icon', function () {
-        expect(testShape('warning')).toBe('exclamation-triangle');
+        expect(testShape('warning')).toBe('warning-standard');
       });
 
       it('returns .alert-warning', function () {
@@ -106,7 +106,7 @@ export default function (): void {
       });
 
       it('returns danger icon', function () {
-        expect(testShape('danger')).toBe('exclamation-circle');
+        expect(testShape('danger')).toBe('error-standard');
       });
 
       it('returns .alert-danger', function () {
@@ -118,7 +118,7 @@ export default function (): void {
       });
 
       it('returns success icon', function () {
-        expect(testShape('success')).toBe('check-circle');
+        expect(testShape('success')).toBe('success-standard');
       });
 
       it('returns .alert-success', function () {
@@ -130,7 +130,7 @@ export default function (): void {
       });
 
       it('returns info icon', function () {
-        expect(testShape('info')).toBe('info-circle');
+        expect(testShape('info')).toBe('info-standard');
       });
 
       it('returns .alert-info', function () {
