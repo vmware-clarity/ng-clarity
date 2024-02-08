@@ -87,27 +87,36 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     if (!this._rawItems || this.filter === undefined || this.filter === null) {
       return;
     }
+
+    const normalizedFilterValue = normalizeValue(this.filter);
+
     if (this.optionService.showAllOptions) {
       this.filteredItems = this._rawItems;
     } else if (this._filterField) {
       this.filteredItems = this._rawItems.filter(item => {
         const objValue = (item as any)[this._filterField];
-        return objValue ? objValue.toString().toLowerCase().indexOf(this.filter.toLowerCase().toString()) > -1 : false;
+        return objValue ? normalizeValue(objValue).includes(normalizedFilterValue) : false;
       });
     } else {
       // Filter by all item object values
       this.filteredItems = this._rawItems.filter(item => {
         if (typeof item !== 'object') {
-          return item.toString().toLowerCase().indexOf(this.filter.toString().toLowerCase()) > -1;
+          return normalizeValue(item).includes(normalizedFilterValue);
         }
         const objValues = Object.values(item).filter(value => {
-          return value !== null && value !== undefined
-            ? value.toString().toLowerCase().indexOf(this.filter.toString().toLowerCase()) > -1
-            : false;
+          return value !== null && value !== undefined ? normalizeValue(value).includes(normalizedFilterValue) : false;
         });
         return objValues.length > 0;
       });
     }
     this.iterableProxy.ngForOf = this.filteredItems;
   }
+}
+
+function normalizeValue(value: any) {
+  return value
+    .toString()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase();
 }
