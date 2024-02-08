@@ -137,13 +137,13 @@ export default function (): void {
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
 
-      // remove lightweight and leave only unknown -> should behave like regular info
+      // remove lightweight and leave only unknown -> should not behave like regular info
       fixture.componentInstance.isLightweight = false;
       fixture.detectChanges();
 
-      expect(compiled.querySelector('.alert-neutral')).toBeNull();
+      expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
       expect(compiled.querySelector('.alert-lightweight')).toBeNull();
-      expect(compiled.querySelector('.alert-info')).not.toBeNull();
+      expect(compiled.querySelector('.alert-info')).toBeNull();
     });
 
     it('Removes the alert from the DOM when closed', () => {

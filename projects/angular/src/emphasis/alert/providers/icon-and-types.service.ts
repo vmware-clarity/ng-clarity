@@ -12,7 +12,7 @@ import { ALERT_TYPES } from '../utils/alert-types';
 
 @Injectable()
 export class AlertIconAndTypesService {
-  private defaultIconShape = 'info-circle';
+  private defaultIconShape = 'info-standard';
   private _alertIconShape = '';
   private _alertType = 'info';
 
@@ -50,22 +50,22 @@ export class AlertIconAndTypesService {
 
     switch (type) {
       case 'warning':
-        returnObj.shape = 'exclamation-triangle';
+        returnObj.shape = 'warning-standard';
         returnObj.cssClass = 'alert-warning';
         returnObj.title = this.commonStrings.keys.warning;
         break;
       case 'danger':
-        returnObj.shape = 'exclamation-circle';
+        returnObj.shape = 'error-standard';
         returnObj.cssClass = 'alert-danger';
         returnObj.title = this.commonStrings.keys.danger;
         break;
       case 'success':
-        returnObj.shape = 'check-circle';
+        returnObj.shape = 'success-standard';
         returnObj.cssClass = 'alert-success';
         returnObj.title = this.commonStrings.keys.success;
         break;
       case 'neutral':
-        returnObj.shape = 'note-edit';
+        returnObj.shape = 'note';
         returnObj.cssClass = 'alert-neutral';
         returnObj.title = this.commonStrings.keys.neutral;
         break;
