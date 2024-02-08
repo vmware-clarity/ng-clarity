@@ -4135,8 +4135,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
-    _parentModel: TreeNodeModel<T>;
-    // (undocumented)
     get selected(): ClrSelectedState | boolean;
     set selected(value: ClrSelectedState | boolean);
     // (undocumented)
