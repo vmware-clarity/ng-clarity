@@ -4,12 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
 
-const defaultStory: Story = args => ({
+const cardTemplate: Story = args => ({
   template: `
     <div [style.maxWidth.px]="maxWidth" class="card" [ngClass]="{ clickable }">
       <div *ngIf="hasImage" class="card-img">
@@ -43,15 +42,17 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Card/Card',
   argTypes: {
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
     clickable: { defaultValue: true, control: { type: 'boolean' } },
     hasImage: { defaultValue: true, control: { type: 'boolean' } },
+    buttonType: {
+      defaultValue: 'btn-outline',
+      control: { type: 'radio', options: buttonTypes },
+    },
   },
   args: {
     // story helpers
@@ -65,8 +66,6 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = buttonTypes.map(buttonType => ({
-  buttonType,
-}));
-
-setupStorybook([], defaultStory, defaultParameters, variants);
+export const Default: StoryObj = {
+  render: cardTemplate,
+};
