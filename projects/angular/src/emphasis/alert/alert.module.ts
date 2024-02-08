@@ -7,11 +7,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import {
-  checkCircleIcon,
   ClarityIcons,
-  exclamationCircleIcon,
-  exclamationTriangleIcon,
-  infoCircleIcon,
+  errorStandardIcon,
+  helpIcon,
+  infoStandardIcon,
+  noteIcon,
+  successStandardIcon,
+  warningStandardIcon,
   windowCloseIcon,
 } from '@cds/core/icon';
 
@@ -34,10 +36,12 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[] = [ClrAlert, ClrAlertItem, ClrAle
 export class ClrAlertModule {
   constructor() {
     ClarityIcons.addIcons(
-      checkCircleIcon,
-      infoCircleIcon,
-      exclamationCircleIcon,
-      exclamationTriangleIcon,
+      errorStandardIcon,
+      helpIcon,
+      infoStandardIcon,
+      noteIcon,
+      successStandardIcon,
+      warningStandardIcon,
       windowCloseIcon
     );
   }
