@@ -116,7 +116,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "styles": ["projects/ui/src/clr-ui.scss"],
+            "styles": [
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
+            ],
             "main": "projects/angular/src/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js"
