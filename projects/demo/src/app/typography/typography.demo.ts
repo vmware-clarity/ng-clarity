@@ -22,6 +22,7 @@ import { Component } from '@angular/core';
         <li><a [routerLink]="['./typography-font-char-test']">Character Test</a></li>
         <li><a [routerLink]="['./typography-line-height']">Line Height Eraser</a></li>
         <li><a [routerLink]="['./typography-font-autopsy']">Font Autopsy</a></li>
+        <li><a [routerLink]="['./typography-headings-cds']">Headings CDS</a></li>
       </ul>
     </div>
     <router-outlet></router-outlet>
