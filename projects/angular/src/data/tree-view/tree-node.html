@@ -9,7 +9,8 @@
   role="treeitem"
   class="clr-tree-node-content-container"
   tabindex="-1"
-  [class.clr-form-control-disabled]="_model.disabled"
+  [class.clr-form-control-disabled]="disabled"
+  [attr.aria-disabled]="disabled"
   [attr.aria-expanded]="isExpandable() ? expanded : null"
   [attr.aria-selected]="ariaSelected"
   (keydown)="onKeyDown($event)"
@@ -23,7 +24,7 @@
     class="clr-treenode-caret"
     (click)="expandService.toggle();"
     (focus)="focusTreeNode()"
-    [disabled]="_model.disabled"
+    [disabled]="disabled"
   >
     <cds-icon
       class="clr-treenode-caret-icon"
@@ -40,7 +41,7 @@
       type="checkbox"
       id="{{nodeId}}-check"
       class="clr-checkbox"
-      [disabled]="_model.disabled"
+      [disabled]="disabled"
       [checked]="_model.selected.value === STATES.SELECTED"
       [indeterminate]="_model.selected.value === STATES.INDETERMINATE"
       (change)="_model.toggleSelection(featuresService.eager)"

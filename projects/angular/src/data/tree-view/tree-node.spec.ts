@@ -487,6 +487,17 @@ export default function (): void {
         expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
+      it('calls focusManager.focusNodeBelow if node is already disabled on ArrowDown key', function (this: Context) {
+        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective.disabled = true;
+        this.detectChanges();
+        expect(contentContainer.getAttribute('aria-disabled')).toBe('true');
+        expect(contentContainer.classList).toContain('clr-form-control-disabled');
+        spyOn(focusManager, 'focusNodeBelow');
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
+      });
+
       it('collapses expanded node on ArrowLeft key', function (this: Context) {
         this.clarityDirective._model.children = [null]; // children array needs to have something
         this.clarityDirective.expanded = true;

@@ -4100,7 +4100,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     contentContainerTabindex: number;
     // (undocumented)
-    disabled: boolean | undefined;
+    get disabled(): boolean;
+    set disabled(value: boolean);
     // (undocumented)
     expandable: boolean | undefined;
     // (undocumented)
