@@ -233,6 +233,16 @@
       }
     }
 
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      margin: 0;
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(tokens.$cds-global-space-9);
+      }
+    }
+
     .close ~ .alert-item > .alert-actions {
       padding-right: tokens.$cds-global-space-6;
 
@@ -270,25 +280,6 @@
       @include generateLightweightAlertType(danger);
       @include generateLightweightAlertType(success);
       @include generateLightweightAlertType(neutral);
-
-      .alert-spinner {
-        @include mixins.min-equilateral(tokens.$cds-global-space-9);
-        margin: 0;
-
-        &::before,
-        &::after {
-          @include mixins.min-equilateral(tokens.$cds-global-space-9);
-        }
-      }
-
-      &.alert-sm .alert-spinner {
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
-
-        &::before,
-        &::after {
-          @include mixins.min-equilateral(tokens.$cds-global-space-7);
-        }
-      }
     }
   }
 
@@ -393,6 +384,15 @@
 
     .close {
       margin: tokens.$cds-global-space-3 0;
+    }
+
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      }
     }
 
     &.alert-lightweight {
