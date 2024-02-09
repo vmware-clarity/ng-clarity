@@ -6,13 +6,12 @@
 
 import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+const ComboboxTemplate: StoryFn = args => ({
   template: `
     <clr-combobox-container>
       <label>{{label}}</label>
@@ -39,8 +38,13 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Combobox/Combobox',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrComboboxModule],
+    }),
+  ],
   component: ClrCombobox,
   argTypes: {
     // inputs
@@ -88,32 +92,43 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrMulti: false,
-    singleModel: '',
-    label: 'Single/Placeholder',
-  },
-  {
-    clrMulti: false,
-    singleModel: 'Ba',
-    label: 'Single/Preselected',
-  },
-  {
-    clrMulti: false,
-    singleModel: 'Ba',
-    controlDisabled: true,
-    label: 'Single/Disabled',
-  },
-  {
-    clrMulti: true,
-    label: 'Multi/Placeholder/Preselected',
-  },
-  {
-    clrMulti: true,
-    controlDisabled: true,
-    label: 'Multi/Disabled',
-  },
-];
+export const SingleSelection: StoryObj = {
+  render: ComboboxTemplate,
+};
 
-setupStorybook(ClrComboboxModule, defaultStory, defaultParameters, variants);
+export const SingleSelection_Preselected: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: 'Ba',
+  },
+};
+
+export const SingleSelectionDisabled: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: 'Ba',
+    controlDisabled: true,
+  },
+};
+
+export const MultiSelection: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+  },
+};
+
+export const MultiSelection_Preselected: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+  },
+};
+
+export const MultiSelectionDisabled: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+    controlDisabled: true,
+  },
+};
