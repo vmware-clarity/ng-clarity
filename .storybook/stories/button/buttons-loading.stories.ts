@@ -36,9 +36,9 @@ export default {
 const ButtonLoadingStatesTemplate: StoryFn = args => ({
   template: `
       <h6>{{stateName}}</h6>
-        <button [clrLoading]="validateState" class="btn btn-sm btn-primary">Validate</button>
-        <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
-        <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">Submit</button>
+        <button [clrLoading]="validateState" class="btn btn-sm btn-primary"><cds-icon shape="home"></cds-icon> Validate</button>
+        <button [clrLoading]="validateState" class="btn btn-primary"><cds-icon shape="home"></cds-icon>Validate</button>
+        <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline"><cds-icon shape="home"></cds-icon>Submit</button>
     `,
   props: args,
 });
