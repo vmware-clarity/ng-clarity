@@ -135,7 +135,7 @@ export default function (): void {
 
     it('unselected disabled node can not be selected', function () {
       child.disabled = true;
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
+      child.parentSetSelected(ClrSelectedState.SELECTED, false, false);
       expect(child.selected.value).toBe(ClrSelectedState.UNSELECTED);
     });
 
@@ -145,9 +145,9 @@ export default function (): void {
       expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
     });
 
-    it('disabled parent node can not be select children', function () {
+    it('disabled parent node can not select children', function () {
       child.disabled = true;
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
+      child.parentSetSelected(ClrSelectedState.SELECTED, false, false);
       [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
     });
   });
