@@ -4,13 +4,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSelectedState } from '@clr/angular';
-
 export interface File {
   name: string;
   disabled?: boolean;
   expanded?: boolean;
-  selected?: ClrSelectedState;
   files?: File[];
 }
 
@@ -18,12 +15,10 @@ export const filesRoot: File[] = [
   {
     name: 'src',
     expanded: true,
-    selected: ClrSelectedState.SELECTED,
     files: [
       {
         name: 'app',
         disabled: true,
-        selected: ClrSelectedState.UNSELECTED,
         files: [
           {
             name: 'app.component.html',
@@ -43,14 +38,11 @@ export const filesRoot: File[] = [
         name: 'environments',
         disabled: true,
         expanded: true,
-        selected: ClrSelectedState.SELECTED,
         files: [
           {
-            selected: ClrSelectedState.SELECTED,
             name: 'environments.prod.ts',
           },
           {
-            selected: ClrSelectedState.SELECTED,
             name: 'environment.ts',
           },
         ],
@@ -73,7 +65,6 @@ export const filesRoot: File[] = [
   },
   {
     disabled: true,
-    selected: ClrSelectedState.UNSELECTED,
     name: 'package.json',
   },
   {
@@ -81,21 +72,14 @@ export const filesRoot: File[] = [
   },
 ];
 
-export function getFileTreeNodeMarkup(files: File[] = filesRoot, clrSelected?: boolean) {
+export function getFileTreeNodeMarkup(files: File[] = filesRoot) {
   return files
     .map(file => {
-      let selected = '';
-      if (clrSelected !== undefined && file.selected !== undefined) {
-        selected = `[clrSelected]="${file.selected}"`;
-      }
-
-      return (
-        `<clr-tree-node ` +
-        selected +
-        `[clrDisabled]="${file.disabled}" [clrExpanded]="${file.expanded}">${file.name}${
-          file.files ? getFileTreeNodeMarkup(file.files, clrSelected) : ''
-        }</clr-tree-node>`
-      );
+      return `
+        <clr-tree-node [clrDisabled]="${file.disabled}" [clrExpanded]="${file.expanded}">
+          ${file.name}
+          ${file.files ? getFileTreeNodeMarkup(file.files) : ''}
+        </clr-tree-node>`;
     })
     .join('');
 }
