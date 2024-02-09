@@ -5,12 +5,27 @@
  */
 
 import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+export default {
+  title: 'Datepicker/DateContainer',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDatepickerModule],
+    }),
+  ],
+  component: ClrDateContainer,
+  argTypes: {
+    // inputs
+    clrPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    // methods
+    addGrid: { control: { disable: true }, table: { disable: true } },
+    controlClass: { control: { disable: true }, table: { disable: true } },
+  },
+};
 
-const defaultStory: Story = args => ({
+const DatePickerTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 300px; text-align: center;">
       <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
@@ -22,18 +37,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datepicker/DateContainer',
-  component: ClrDateContainer,
-  argTypes: {
-    // inputs
-    clrPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
-    // methods
-    addGrid: { control: { disable: true }, table: { disable: true } },
-    controlClass: { control: { disable: true }, table: { disable: true } },
-  },
+export const DateContainer: StoryObj = {
+  render: DatePickerTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(ClrDatepickerModule, defaultStory, defaultParameters, variants);
