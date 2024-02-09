@@ -8,6 +8,30 @@ import { Story, StoryObj } from '@storybook/angular';
 
 const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
 
+export default {
+  title: 'Card/Card',
+  argTypes: {
+    // story helpers
+    createArray: { control: { disable: true }, table: { disable: true } },
+    clickable: { defaultValue: true, control: { type: 'boolean' } },
+    hasImage: { defaultValue: true, control: { type: 'boolean' } },
+    buttonType: {
+      defaultValue: 'btn-outline',
+      control: { type: 'radio', options: buttonTypes },
+    },
+  },
+  args: {
+    // story helpers
+    createArray: n => new Array(n),
+    maxWidth: 400,
+    itemCount: 4,
+    actionCount: 4,
+    header: 'Header',
+    title: 'Title',
+    content: 'Hello World!',
+  },
+};
+
 const cardTemplate: Story = args => ({
   template: `
     <div [style.maxWidth.px]="maxWidth" class="card" [ngClass]="{ clickable }">
@@ -41,30 +65,6 @@ const cardTemplate: Story = args => ({
   `,
   props: { ...args },
 });
-
-export default {
-  title: 'Card/Card',
-  argTypes: {
-    // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-    clickable: { defaultValue: true, control: { type: 'boolean' } },
-    hasImage: { defaultValue: true, control: { type: 'boolean' } },
-    buttonType: {
-      defaultValue: 'btn-outline',
-      control: { type: 'radio', options: buttonTypes },
-    },
-  },
-  args: {
-    // story helpers
-    createArray: n => new Array(n),
-    maxWidth: 400,
-    itemCount: 4,
-    actionCount: 4,
-    header: 'Header',
-    title: 'Title',
-    content: 'Hello World!',
-  },
-};
 
 export const Card: StoryObj = {
   render: cardTemplate,
