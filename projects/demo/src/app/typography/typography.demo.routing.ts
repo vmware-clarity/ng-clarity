@@ -11,6 +11,7 @@ import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
 import { TypographyFontCharTestDemo } from './typography-font-char-test';
 import { TypographyFontWeightDemo } from './typography-font-weight';
 import { TypographyHeadersDemo } from './typography-headers';
+import { TypographyHeadingsCDS } from './typography-headings-cds';
 import { TypographyLineHeightDemo } from './typography-line-height';
 import { TypographyLinksDemo } from './typography-links';
 import { TypographyTextDemo } from './typography-text';
@@ -29,6 +30,7 @@ const ROUTES: Routes = [
       { path: 'typography-font-char-test', component: TypographyFontCharTestDemo },
       { path: 'typography-line-height', component: TypographyLineHeightDemo },
       { path: 'typography-font-autopsy', component: TypographyFontAutopsyDemo },
+      { path: 'typography-headings-cds', component: TypographyHeadingsCDS },
     ],
   },
 ];

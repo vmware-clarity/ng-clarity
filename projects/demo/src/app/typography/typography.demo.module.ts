@@ -6,14 +6,14 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { TypographyFontAutopsyDemo } from './typography-font-autopsy';
 import { TypographyFontCharTestDemo } from './typography-font-char-test';
 import { TypographyFontWeightDemo } from './typography-font-weight';
 import { TypographyHeadersDemo } from './typography-headers';
+import { TypographyHeadingsCDS } from './typography-headings-cds';
 import { TypographyLineHeightDemo } from './typography-line-height';
 import { TypographyLinksDemo } from './typography-links';
 import { TypographyTextDemo } from './typography-text';
@@ -32,6 +32,7 @@ import { FontSwitcher } from './utils/font-switcher';
     TypographyFontCharTestDemo,
     TypographyLineHeightDemo,
     TypographyFontAutopsyDemo,
+    TypographyHeadingsCDS,
     FontSwitcher,
   ],
   exports: [
@@ -43,6 +44,7 @@ import { FontSwitcher } from './utils/font-switcher';
     TypographyFontCharTestDemo,
     TypographyLineHeightDemo,
     TypographyFontAutopsyDemo,
+    TypographyHeadingsCDS,
   ],
 })
 export class TypographyDemoModule {}
