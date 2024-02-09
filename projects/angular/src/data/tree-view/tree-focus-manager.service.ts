@@ -97,15 +97,7 @@ export class TreeFocusManagerService<T> {
     const selfIndex = siblings.indexOf(model);
 
     if (selfIndex < siblings.length - 1) {
-      for (let i = selfIndex + 1; i < siblings.length; i++) {
-        if (siblings[i].disabled) {
-          continue;
-        }
-
-        return siblings[i];
-      }
-
-      return this.findNextFocusable(model.parent);
+      return siblings[selfIndex + 1];
     } else if (selfIndex === siblings.length - 1) {
       return this.findNextFocusable(model.parent);
     }
@@ -130,14 +122,7 @@ export class TreeFocusManagerService<T> {
     if (selfIndex === 0) {
       return model.parent;
     } else if (selfIndex > 0) {
-      for (let i = selfIndex - 1; i >= 0; i--) {
-        if (siblings[i].disabled) {
-          continue;
-        }
-        return this.findLastVisibleInNode(siblings[i]);
-      }
-
-      return model.parent;
+      return this.findLastVisibleInNode(siblings[selfIndex - 1]);
     }
     return null;
   }
@@ -148,10 +133,6 @@ export class TreeFocusManagerService<T> {
     }
 
     if (model.expanded && model.children.length > 0) {
-      if (model.children[0].disabled) {
-        return this.findNextFocusable(model.children[0]);
-      }
-
       return model.children[0];
     } else {
       return this.findNextFocusable(model);

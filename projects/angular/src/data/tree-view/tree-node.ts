@@ -124,9 +124,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this._model.disabled;
   }
   set disabled(value: boolean) {
-    console.log(value);
-    console.log(this._model.parent);
-    console.log(this._model.parent?.disabled);
     this._model.disabled = value || this._model.parent?.disabled;
   }
 

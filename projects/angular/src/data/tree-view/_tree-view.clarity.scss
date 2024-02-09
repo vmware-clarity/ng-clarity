@@ -17,12 +17,6 @@
     display: block;
 
     &.disabled .clr-tree-node-content-container {
-      &:focus > .clr-treenode-content,
-      &:focus > .clr-treenode-checkbox .clr-control-label {
-        outline: none;
-      }
-
-      .clr-treenode-caret,
       .clr-treenode-link,
       .clr-treenode-content,
       .clr-treenode-checkbox .clr-control-label {
@@ -32,7 +26,13 @@
 
         cds-icon,
         clr-icon {
-          cursor: not-allowed;
+          fill: var(--clr-tree-node-caret-disabled-color);
+        }
+      }
+
+      .clr-treenode-caret {
+        cds-icon,
+        clr-icon {
           fill: var(--clr-tree-node-caret-disabled-color);
         }
       }
