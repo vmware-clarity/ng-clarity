@@ -47,14 +47,21 @@ export abstract class TreeNodeModel<T> {
     this.selected.complete();
   }
 
+  parentSetSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean) {
+    if (this.disabled) {
+      return;
+    }
+    this.setSelected(state, propagateUp, propagateDown);
+  }
+
   // Propagate by default when eager, don't propagate in the lazy-loaded tree.
   setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean) {
-    if (this.disabled || state === this.selected.value) {
+    if (state === this.selected.value) {
       return;
     }
     this.selected.next(state);
     if (propagateDown && state !== ClrSelectedState.INDETERMINATE && this.children) {
-      this.children.forEach(child => child.setSelected(state, false, true));
+      this.children.forEach(child => child.parentSetSelected(state, false, true));
     }
     if (propagateUp && this.parent) {
       this.parent._updateSelectionFromChildren();
@@ -62,6 +69,9 @@ export abstract class TreeNodeModel<T> {
   }
 
   toggleSelection(propagate: boolean) {
+    if (this.disabled) {
+      return;
+    }
     // Both unselected and indeterminate toggle to selected
     const newState =
       this.selected.value === ClrSelectedState.SELECTED ? ClrSelectedState.UNSELECTED : ClrSelectedState.SELECTED;
