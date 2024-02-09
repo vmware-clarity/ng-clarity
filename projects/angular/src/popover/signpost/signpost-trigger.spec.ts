@@ -74,7 +74,7 @@ export default function (): void {
     });
 
     it('reflects the correct aria-expanded state', () => {
-      expect(trigger.getAttribute('aria-expanded')).toBeFalsy();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
       trigger.click();
       fixture.detectChanges();
       expect(trigger.getAttribute('aria-expanded')).toBe('true');
