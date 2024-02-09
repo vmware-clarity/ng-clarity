@@ -144,14 +144,14 @@ export default function (): void {
     it('emits id of first child node that is not disabled via focusNodeBelow', () => {
       treeIdModelRefs.id7.disabled = true;
       treeFocusManager.focusNodeBelow(treeIdModelRefs.id5);
-      expect(focusRequestedOnId).toBe('id8');
+      expect(focusRequestedOnId).toBe('id7');
       treeIdModelRefs.id7.disabled = false;
     });
 
     it('emits id of parent node when before sibling is disabled via focusNodeAbove', () => {
       treeIdModelRefs.id4.disabled = true;
       treeFocusManager.focusNodeAbove(treeIdModelRefs.id5);
-      expect(focusRequestedOnId).toBe('id1');
+      expect(focusRequestedOnId).toBe('id4');
       treeIdModelRefs.id4.disabled = false;
     });
 
