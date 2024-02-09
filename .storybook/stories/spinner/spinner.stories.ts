@@ -5,31 +5,16 @@
  */
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <div style="text-align: center">
-      <clr-spinner
-        [clrInverse]="clrInverse"
-        [clrSmall]="clrSmall"
-        [clrMedium]="clrMedium"
-        [clrInline]="clrInline"
-      >
-        {{text}}
-      </clr-spinner>
-      <br *ngIf="!clrInline" />
-      {{text}}
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Spinner/Spinner',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrSpinnerModule],
+    }),
+  ],
   component: ClrSpinner,
   argTypes: {
     // inputs
@@ -46,19 +31,114 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  // large spinners
-  { clrInline: false, clrInverse: false, clrMedium: false, clrSmall: false },
-  { clrInline: false, clrInverse: true, clrMedium: false, clrSmall: false },
-  // medium spinners
-  { clrInline: false, clrInverse: false, clrMedium: true, clrSmall: false },
-  { clrInline: false, clrInverse: true, clrMedium: true, clrSmall: false },
-  // small spinners
-  { clrInline: false, clrInverse: false, clrMedium: false, clrSmall: true },
-  { clrInline: false, clrInverse: true, clrMedium: false, clrSmall: true },
-  // inline spinners
-  { clrInline: true, clrInverse: false },
-  { clrInline: true, clrInverse: true },
-];
+const SpinnerTemplate: Story = args => ({
+  template: `
+  <div style="text-align: center">
+    <clr-spinner
+      [clrInverse]="clrInverse"
+      [clrSmall]="clrSmall"
+      [clrMedium]="clrMedium"
+      [clrInline]="clrInline"
+    >
+      {{text}}
+    </clr-spinner>
+    <br *ngIf="!clrInline" />
+    {{text}}
+  </div>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrSpinnerModule, defaultStory, defaultParameters, variants);
+const SpinnerAllTemplate: Story = args => ({
+  template: `
+  <div style="text-align: center">
+    <h5>Large Spinners</h5>
+    
+    <h6>Default</h6>
+    <clr-spinner> {{text}} </clr-spinner>
+    <h6>Inverse</h6>
+    <clr-spinner [clrInverse]="true"> {{text}} </clr-spinner>
+  
+    <h5>Medium Spinners</h5>
+
+    <h6>Default</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrMedium]="true"> {{text}} </clr-spinner>
+    </div>
+    <h6>Inverse</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrMedium]="true" [clrInverse]="true"> {{text}} </clr-spinner>
+    </div> 
+
+    <h5>Small Spinners</h5>
+
+    <h6>Default</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrSmall]="true"> {{text}} </clr-spinner>
+    </div>
+    <h6>Inverse</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrSmall]="true" [clrInverse]="true"> {{text}} </clr-spinner>
+    </div>
+
+    <h5>Inline Spinners</h5>
+
+    <h6>Default</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrInline]="true"></clr-spinner> {{text}}
+    </div>
+    <h6>Inverse</h6>
+    <div style="margin-top:5px">
+      <clr-spinner [clrInline]="true" [clrInverse]="true"></clr-spinner> {{text}}
+    </div>
+  </div>
+  `,
+  props: args,
+});
+
+export const Spinner: StoryObj = {
+  render: SpinnerTemplate,
+};
+
+export const SpinnerInverse: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrInverse: true },
+};
+
+export const SpinnerMedium: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrMedium: true },
+};
+
+export const SpinnerMediumInverse: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrMedium: true, clrInverse: true },
+};
+
+export const SpinnerSmall: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrSmall: true },
+};
+
+export const SpinnerSmallInverse: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrSmall: true, clrInverse: true },
+};
+
+export const SpinnerInline: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrInline: true },
+};
+
+export const SpinnerInlineInverse: StoryObj = {
+  render: SpinnerTemplate,
+  args: { clrInline: true, clrInverse: true },
+};
+
+export const SpinnerShowcase: StoryObj = {
+  render: SpinnerAllTemplate,
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};
