@@ -4,7 +4,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, commonStringsDefault } from '@clr/angular';
+import {
+  CLR_MENU_POSITIONS,
+  ClrButtonGroup,
+  ClrButtonGroupModule,
+  ClrLoadingModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
@@ -12,13 +18,14 @@ export default {
   title: 'Button/Button Group',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrButtonGroupModule],
+      imports: [...CommonModules, ClrButtonGroupModule, ClrLoadingModule],
     }),
   ],
   component: ClrButtonGroup,
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    loading: { defaultValue: false, control: { type: 'boolean' } },
     clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
@@ -38,6 +45,7 @@ export default {
     content: 'Hello World!',
     buttonCount: 3,
     inMenuButtonCount: 3,
+    loading: false,
     disabledButtonsPosition: [],
   },
 };
@@ -49,8 +57,10 @@ const ButtonGroupTemplate: StoryFn = args => ({
             <clr-button
               *ngFor="let _ of createArray(buttonCount); let i = index"
               [clrInMenu]="false"
+              [clrLoading]="loading"
               [disabled]="disabledButtonsPosition.includes(i+1)"
             >
+              <cds-icon shape="home"></cds-icon>
               {{content}} {{i + 1}}
             </clr-button>
             <clr-button
@@ -67,6 +77,14 @@ const ButtonGroupTemplate: StoryFn = args => ({
 
 export const ButtonGroup: StoryObj = {
   render: ButtonGroupTemplate,
+};
+export const ButtonGroupLoading: StoryObj = {
+  render: ButtonGroupTemplate,
+
+  args: {
+    inMenuButtonCount: 0,
+    loading: true,
+  },
 };
 
 export const Disabled: StoryObj = {
