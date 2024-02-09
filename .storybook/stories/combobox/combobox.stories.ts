@@ -11,33 +11,6 @@ import { CommonModules } from 'helpers/common';
 
 import { elements } from '../../helpers/elements.data';
 
-const ComboboxTemplate: StoryFn = args => ({
-  template: `
-    <clr-combobox-container>
-      <label>{{label}}</label>
-      <clr-combobox
-        [id]="id"
-        [clrMulti]="clrMulti"
-        [ngModel]="clrMulti ? multiModel : singleModel"
-        [placeholder]="placeholder"
-        (clrInputChange)="clrInputChange($event)"
-        (clrOpenChange)="clrOpenChange($event)"
-        (clrSelectionChange)="clrSelectionChange($event)"
-        [disabled]="controlDisabled"
-        name="combo"
-      >
-        <ng-container *clrOptionSelected="let selected">
-          {{selected}}
-        </ng-container>
-        <clr-options>
-          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
-        </clr-options>
-      </clr-combobox>
-    </clr-combobox-container>
-  `,
-  props: { ...args },
-});
-
 export default {
   title: 'Combobox/Combobox',
   decorators: [
@@ -91,6 +64,33 @@ export default {
     label: 'Combobox',
   },
 };
+
+const ComboboxTemplate: StoryFn = args => ({
+  template: `
+    <clr-combobox-container>
+      <label>{{label}}</label>
+      <clr-combobox
+        [id]="id"
+        [clrMulti]="clrMulti"
+        [ngModel]="clrMulti ? multiModel : singleModel"
+        [placeholder]="placeholder"
+        (clrInputChange)="clrInputChange($event)"
+        (clrOpenChange)="clrOpenChange($event)"
+        (clrSelectionChange)="clrSelectionChange($event)"
+        [disabled]="controlDisabled"
+        name="combo"
+      >
+        <ng-container *clrOptionSelected="let selected">
+          {{selected}}
+        </ng-container>
+        <clr-options>
+          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
+        </clr-options>
+      </clr-combobox>
+    </clr-combobox-container>
+  `,
+  props: { ...args },
+});
 
 export const SingleSelection: StoryObj = {
   render: ComboboxTemplate,

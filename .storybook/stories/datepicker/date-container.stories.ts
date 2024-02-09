@@ -8,18 +8,6 @@ import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule } from '@clr/
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
-const DatePickerTemplate: StoryFn = args => ({
-  template: `
-    <div style="margin-top: 300px; text-align: center;">
-      <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
-        <label>Date</label>
-        <input type="date" autocomplete="off" clrDate>
-      </clr-date-container>
-    </div>
-  `,
-  props: { ...args },
-});
-
 export default {
   title: 'Datepicker/DateContainer',
   decorators: [
@@ -36,6 +24,18 @@ export default {
     controlClass: { control: { disable: true }, table: { disable: true } },
   },
 };
+
+const DatePickerTemplate: StoryFn = args => ({
+  template: `
+    <div style="margin-top: 300px; text-align: center;">
+      <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
+        <label>Date</label>
+        <input type="date" autocomplete="off" clrDate>
+      </clr-date-container>
+    </div>
+  `,
+  props: { ...args },
+});
 
 export const DateContainer: StoryObj = {
   render: DatePickerTemplate,

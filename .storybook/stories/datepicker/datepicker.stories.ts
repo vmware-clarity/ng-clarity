@@ -9,26 +9,6 @@ import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
-const DatePickerTemplate: StoryFn = args => ({
-  template: `
-    <clr-date-container>
-      <label>Date</label>
-      <input #date
-        type="date"
-        [id]="id"
-        [clrDate]="getDateObject(clrDate || date.value)"
-        [min]="getDateString(min)"
-        [max]="getDateString(max)"
-        [disabled]="disabled"
-        [placeholder]="placeholder"
-        (clrDateChange)="clrDateChange($event)"
-        autocomplete="off"
-      />
-    </clr-date-container>
-  `,
-  props: { ...args },
-});
-
 export default {
   title: 'Datepicker/Datepicker',
   component: ClrDateInput,
@@ -64,6 +44,26 @@ export default {
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
+
+const DatePickerTemplate: StoryFn = args => ({
+  template: `
+    <clr-date-container>
+      <label>Date</label>
+      <input #date
+        type="date"
+        [id]="id"
+        [clrDate]="getDateObject(clrDate || date.value)"
+        [min]="getDateString(min)"
+        [max]="getDateString(max)"
+        [disabled]="disabled"
+        [placeholder]="placeholder"
+        (clrDateChange)="clrDateChange($event)"
+        autocomplete="off"
+      />
+    </clr-date-container>
+  `,
+  props: { ...args },
+});
 
 export const Datepicker: StoryObj = {
   render: DatePickerTemplate,
