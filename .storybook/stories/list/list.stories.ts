@@ -4,12 +4,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { Story, StoryObj} from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+export default {
+  title: 'List/List',
+  argTypes: {
+    // story helpers
+    createArray: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    createArray: n => new Array(n),
+    itemCount: 4,
+    unstyled: false,
+    compact: false,
+  },
+}
 
-const defaultStory: Story = args => ({
+const ListTemplate: Story = args => ({
   template: `
     <div>
       Unordered List
@@ -29,41 +41,9 @@ const defaultStory: Story = args => ({
       </ol>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'List/List',
-  argTypes: {
-    // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    createArray: n => new Array(n),
-    itemCount: 4,
-    unstyled: false,
-    compact: false,
-  },
+export const List: StoryObj = {
+  render: ListTemplate,
 };
-
-const variants: Parameters[] = [
-  {
-    unstyled: false,
-    compact: false,
-  },
-  {
-    unstyled: false,
-    compact: true,
-  },
-  {
-    unstyled: true,
-    compact: false,
-  },
-  {
-    unstyled: true,
-    compact: true,
-  },
-];
-
-setupStorybook([], defaultStory, defaultParameters, variants);
