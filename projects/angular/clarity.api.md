@@ -4176,7 +4176,7 @@ export class ClrTreeViewModule {
     // Warning: (ae-forgotten-export) The symbol "i5_9" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink, typeof i5_9.RecursiveChildren], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i5_7.ClrLoadingModule], [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink, typeof i5_9.RecursiveChildren], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i5_7.ClrLoadingModule], [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink, typeof i5_9.RecursiveChildren]>;
 }
 
 // @public (undocumented)
@@ -4809,6 +4809,29 @@ export class NavDetectionOompaLoompa extends OompaLoompa {
     static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
+}
+
+// @public (undocumented)
+export class RecursiveChildren<T> {
+    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
+    // (undocumented)
+    children: TreeNodeModel<T>[];
+    // (undocumented)
+    featuresService: TreeFeaturesService<T>;
+    // (undocumented)
+    getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T>;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    parent: TreeNodeModel<T>;
+    // (undocumented)
+    shouldRender(): boolean;
+    // (undocumented)
+    subscription: Subscription;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<RecursiveChildren<any>, "clr-recursive-children", never, { "parent": "parent"; "children": "children"; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<RecursiveChildren<any>, [null, { optional: true; }]>;
 }
 
 // @public (undocumented)
