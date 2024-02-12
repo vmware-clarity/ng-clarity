@@ -8,7 +8,7 @@
   <ng-template [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
 </ng-container>
 <ng-container *ngIf="menuButtons.length > 0">
-  <div class="btn-group-overflow open" [ngClass]="menuPosition" #anchor>
+  <div class="btn-group-overflow open" [ngClass]="menuPosition">
     <button
       #menuToggle
       class="btn dropdown-toggle"
