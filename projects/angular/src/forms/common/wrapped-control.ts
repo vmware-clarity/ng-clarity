@@ -194,26 +194,29 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   }
 
   private getAriaDescribedById(helpers: Helpers): string | null {
-    let suffix = CONTROL_SUFFIX.HELPER;
-
-    if (helpers.showInvalid) {
-      suffix = CONTROL_SUFFIX.ERROR;
-    } else if (helpers.showValid) {
-      suffix = CONTROL_SUFFIX.SUCCESS;
-    }
-
+    let elementId;
     if (this.containerIdService) {
-      return this.containerIdService.id.concat('-', suffix);
+      elementId = this.containerIdService.id;
+    } else if (this.controlIdService) {
+      elementId = this.controlIdService.id;
     }
-
-    if (this.controlIdService) {
-      return this.controlIdService.id.concat('-', suffix);
-    }
-
     /**
      * If ContainerIdService or ControlIdService are missing don't try to guess
      * Don't set anything.
      */
-    return null;
+    if (!elementId) {
+      return null;
+    }
+
+    /**
+     * As the helper text is now always visible. If we have error/success then we should use both ids.
+     */
+    if (helpers.showInvalid) {
+      return `${elementId.concat('-', CONTROL_SUFFIX.HELPER)} ${elementId.concat('-', CONTROL_SUFFIX.ERROR)}`;
+    } else if (helpers.showValid) {
+      return `${elementId.concat('-', CONTROL_SUFFIX.HELPER)} ${elementId.concat('-', CONTROL_SUFFIX.SUCCESS)}`;
+    } else {
+      return elementId.concat('-', CONTROL_SUFFIX.HELPER);
+    }
   }
 }
