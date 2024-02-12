@@ -5,31 +5,16 @@
  */
 
 import { ClrSelect, ClrSelectModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: ` 
-    <clr-select-container>
-      <label>Options</label>
-      <select clrSelect>
-        <option
-          *ngFor="let _ of createArray(optionCount); let i = index"
-          [value]="i + 1"
-        >
-          Option {{i + 1}}
-        </option>
-      </select>
-    </clr-select-container>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Select/Select',
   component: ClrSelect,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrSelectModule],
+    }),
+  ],
   argTypes: {
     // inputs
     id: { defaultValue: '' },
@@ -46,6 +31,23 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const selectTemplate: Story = args => ({
+  template: ` 
+    <clr-select-container>
+      <label>Options</label>
+      <select clrSelect>
+        <option
+          *ngFor="let _ of createArray(optionCount); let i = index"
+          [value]="i + 1"
+        >
+          Option {{i + 1}}
+        </option>
+      </select>
+    </clr-select-container>
+  `,
+  props: { ...args },
+});
 
-setupStorybook(ClrSelectModule, defaultStory, defaultParameters, variants);
+export const Select: StoryObj = {
+  render: selectTemplate,
+};
