@@ -74,12 +74,12 @@ export const filesRoot: File[] = [
 
 export function getFileTreeNodeMarkup(files: File[] = filesRoot) {
   return files
-    .map(file => {
-      return `
+    .map(
+      file => `
         <clr-tree-node [clrDisabled]="${file.disabled}" [clrExpanded]="${file.expanded}">
           ${file.name}
           ${file.files ? getFileTreeNodeMarkup(file.files) : ''}
-        </clr-tree-node>`;
-    })
+        </clr-tree-node>`
+    )
     .join('');
 }
