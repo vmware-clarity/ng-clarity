@@ -9,11 +9,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
+import { ClrCheckboxGroupContainerModule } from '../../../../angular/src/forms/checkbox-group-container';
 import { CheckboxesDemo } from './checkboxes.demo';
 import { ROUTING } from './checkboxes.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING, ClrCheckboxGroupContainerModule],
   declarations: [CheckboxesDemo],
   exports: [CheckboxesDemo],
 })

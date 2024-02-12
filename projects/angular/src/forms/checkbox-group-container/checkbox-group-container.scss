@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host > clr-tree-node ::ng-deep {
+  left: -70px;
+  position: relative;
+
+  & .clr-control-label:hover {
+    background-color: white;
+  }
+
+  .clr-treenode-link.active,
+  .clr-treenode-link.link-visited,
+  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label,
+  .clr-tree-node-content-container:focus > .clr-treenode-checkbox .clr-control-label {
+    background-color: white !important;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    display: none;
+  }
+
+  > .clr-tree-node-content-container > .clr-checkbox-wrapper > label.clr-control-label::before {
+    display: none;
+  }
+}
