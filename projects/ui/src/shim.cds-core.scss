@@ -1334,6 +1334,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-modal-close-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-600);
   --clr-modal-bg-color: #{tokens.$cds-alias-object-container-background}; // var(--clr-color-neutral-0);
   --clr-modal-backdrop-color: #{tokens.$cds-alias-object-overlay-backdrop-background}; // var(--clr-color-neutral-900);
+  --clr-modal-backdrop-opacity: 1;
   --clr-modal-content-box-shadow: #{tokens.$cds-alias-object-shadow-300};
   --clr-modal-content-border-style: solid;
   --clr-modal-content-border-color: #{tokens.$cds-alias-object-container-border-color};
