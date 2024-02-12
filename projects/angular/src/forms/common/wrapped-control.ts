@@ -194,12 +194,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   }
 
   private getAriaDescribedById(helpers: Helpers): string | null {
-    let elementId: string;
-    if (this.containerIdService) {
-      elementId = this.containerIdService.id;
-    } else if (this.controlIdService) {
-      elementId = this.controlIdService.id;
-    }
+    const elementId = this.containerIdService?.id || this.controlIdService?.id;
     /**
      * If ContainerIdService or ControlIdService are missing don't try to guess
      * Don't set anything.
