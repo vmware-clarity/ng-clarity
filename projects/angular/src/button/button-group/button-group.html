@@ -4,36 +4,31 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<ng-container *ngFor="let inlineButton of inlineButtons">
-  <ng-template [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
-</ng-container>
-<ng-container *ngIf="menuButtons.length > 0">
-  <div class="btn-group-overflow open" [ngClass]="menuPosition">
-    <button
-      #menuToggle
-      class="btn dropdown-toggle"
-      clrPopoverAnchor
-      clrPopoverOpenCloseButton
-      (keydown.arrowup)="openMenu($event, InitialFocus.LAST_ITEM)"
-      (keydown.arrowdown)="openMenu($event, InitialFocus.FIRST_ITEM)"
-      [attr.aria-controls]="popoverId"
-      [attr.aria-expanded]="open"
-      [attr.aria-label]="clrToggleButtonAriaLabel"
-    >
-      <cds-icon shape="ellipsis-horizontal" [attr.title]="commonStrings.keys.more"></cds-icon>
-    </button>
-    <div
-      #menu
-      role="menu"
-      class="dropdown-menu clr-button-group-menu"
-      [id]="popoverId"
-      [attr.id]="popoverId"
-      [attr.aria-hidden]="!open"
-      *clrPopoverContent="open at popoverPosition; outsideClickToClose: true; scrollToClose: true"
-    >
-      <ng-container *ngFor="let menuButton of menuButtons">
-        <ng-template [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
-      </ng-container>
-    </div>
+<ng-template *ngFor="let inlineButton of inlineButtons" [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
+
+<div *ngIf="menuButtons.length > 0" class="btn-group-overflow open" [ngClass]="menuPosition">
+  <button
+    #menuToggle
+    class="btn dropdown-toggle"
+    clrPopoverAnchor
+    clrPopoverOpenCloseButton
+    (keydown.arrowup)="openMenu($event, InitialFocus.LAST_ITEM)"
+    (keydown.arrowdown)="openMenu($event, InitialFocus.FIRST_ITEM)"
+    [attr.aria-controls]="popoverId"
+    [attr.aria-expanded]="open"
+    [attr.aria-label]="clrToggleButtonAriaLabel"
+  >
+    <cds-icon shape="ellipsis-horizontal" [attr.title]="commonStrings.keys.more"></cds-icon>
+  </button>
+  <div
+    #menu
+    role="menu"
+    class="dropdown-menu clr-button-group-menu"
+    [id]="popoverId"
+    [attr.id]="popoverId"
+    [attr.aria-hidden]="!open"
+    *clrPopoverContent="open at popoverPosition; outsideClickToClose: true; scrollToClose: true"
+  >
+    <ng-template *ngFor="let menuButton of menuButtons" [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
   </div>
-</ng-container>
+</div>
