@@ -55,8 +55,7 @@ export default {
     click: action('click'),
     // story helpers
     content: 'Hello World!',
-    iconShapeBeforeText: '',
-    iconShapeAfterText: '',
+    iconShape: '',
     buttonClassLoader,
     BUTTON_STYLES,
     BUTTON_TYPES,
@@ -71,9 +70,8 @@ const ButtonTemplate: Story = args => ({
         [disabled]="disabled"
         (click)="click($event)"
       >
-        <cds-icon *ngIf="iconShapeBeforeText" shape="{{iconShapeBeforeText}}"></cds-icon>
+        <cds-icon *ngIf="iconShape" shape="{{iconShape}}"></cds-icon>
         {{content}}
-        <cds-icon *ngIf="iconShapeAfterText" shape="{{iconShapeAfterText}}"></cds-icon>
       </button>
   `,
   props: args,
@@ -182,9 +180,8 @@ const ButtonLinkTemplate: StoryFn = args => ({
       [disabled]="disabled"
       (click)="click($event)"
     >
-      <cds-icon *ngIf="iconShapeBeforeText" shape="{{iconShapeBeforeText}}"></cds-icon>
+      <cds-icon *ngIf="iconShape" shape="{{iconShape}}"></cds-icon>
       {{content}}
-      <cds-icon *ngIf="iconShapeAfterText" shape="{{iconShapeAfterText}}"></cds-icon>
     </a>
   `,
   props: args,
