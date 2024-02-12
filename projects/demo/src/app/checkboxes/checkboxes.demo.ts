@@ -35,6 +35,11 @@ export class CheckboxesDemo {
       two: false,
       three: false,
     },
+    treeview: {
+      one: false,
+      two: false,
+      three: false,
+    },
   };
 
   horizontal = Object.assign({}, this.vertical);

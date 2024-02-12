@@ -118,13 +118,13 @@
   <div id="expanded-node" class="clr-example">
     <clr-checkbox-group-container>
       <label #lbl>One</label>
-      <input clrCheckbox type="checkbox" />
+      <input clrCheckbox type="checkbox" [(ngModel)]="vertical.treeview.one" name="vertical.treeview.one" />
 
       <label #lbl>Two</label>
-      <input clrCheckbox type="checkbox" />
+      <input clrCheckbox type="checkbox" [(ngModel)]="vertical.treeview.one" name="vertical.treeview.two" />
 
       <label #lbl>Three</label>
-      <input clrCheckbox type="checkbox" />
+      <input clrCheckbox type="checkbox" [(ngModel)]="vertical.treeview.one" name="vertical.treeview.three" />
 
       <label #lbl>Four</label>
       <input clrCheckbox type="checkbox" />
@@ -133,6 +133,9 @@
       <clr-control-error>There was an error</clr-control-error>
     </clr-checkbox-group-container>
   </div>
+  One:{{vertical.treeview.one}}<br />
+  Two:{{vertical.treeview.two}}<br />
+  Three:{{vertical.treeview.three}}<br />
 </form>
 
 <!--<h4>Horizontal</h4>-->
