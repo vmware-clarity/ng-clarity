@@ -144,7 +144,9 @@ export class KeyNavigationGridController implements OnDestroy {
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
-    item.focus();
+    item.focus({
+      preventScroll: true,
+    });
   }
 
   private getNextItemCoordinate(e: any) {
