@@ -221,6 +221,7 @@
       height: auto;
       min-height: tokens.$cds-global-space-11;
       max-width: inherit;
+
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
       .clr-wizard-stepnav-link-suffix {
