@@ -18,7 +18,7 @@ export default {
   args: {
     // story helpers
     elements,
-    rowCount: elements.length,
+    rowCount: 10,
     leftAligned: false,
     bordered: false,
     compact: false,
