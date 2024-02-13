@@ -384,6 +384,11 @@
         }
       }
 
+      .clr-wizard-stepnav-link-title {
+        word-break: break-word;
+        white-space: normal;
+      }
+
       &.complete {
         @include mixins.css-var(
           border-color,
@@ -439,6 +444,9 @@
       text-align: left;
       text-transform: none;
       margin: 0;
+      height: auto;
+      min-height: variables.$clr_baselineRem_1_5;
+      max-width: inherit;
 
       .clr-wizard-stepnav-link-suffix {
         display: flex;
