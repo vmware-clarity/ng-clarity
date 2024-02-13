@@ -25,7 +25,7 @@ export default {
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
-    loading: { defaultValue: false, control: { type: 'boolean' } },
+    loading: { control: { type: 'boolean' } },
     clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
@@ -45,7 +45,6 @@ export default {
     content: 'Hello World!',
     buttonCount: 3,
     inMenuButtonCount: 3,
-    loading: false,
     disabledButtonsPosition: [],
   },
 };
@@ -57,7 +56,7 @@ const ButtonGroupTemplate: StoryFn = args => ({
             <clr-button
               *ngFor="let _ of createArray(buttonCount); let i = index"
               [clrInMenu]="false"
-              [clrLoading]="loading"
+              ${args.loading === undefined ? '' : '[clrLoading]="loading"'}
               [disabled]="disabledButtonsPosition.includes(i+1)"
             >
               <cds-icon shape="home"></cds-icon>
@@ -78,6 +77,7 @@ const ButtonGroupTemplate: StoryFn = args => ({
 export const ButtonGroup: StoryObj = {
   render: ButtonGroupTemplate,
 };
+
 export const ButtonGroupLoading: StoryObj = {
   render: ButtonGroupTemplate,
 
