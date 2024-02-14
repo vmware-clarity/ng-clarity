@@ -26,7 +26,7 @@ export default {
 
 const DropdownModalTemplate: Story = args => ({
   template: `
-    <div style="margin-bottom:500px; text-align: center">
+    <div style="margin-bottom:100px;">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
         <button class="btn btn-outline-primary" clrDropdownTrigger>
           Dropdown
@@ -54,7 +54,7 @@ const DropdownModalTemplate: Story = args => ({
           <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
         </div>
       </clr-modal>
-    </div>  
+    <div>  
   `,
   props: args,
 });
