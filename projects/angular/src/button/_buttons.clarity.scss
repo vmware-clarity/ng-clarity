@@ -255,6 +255,12 @@
 
     height: buttons-variables.$clr-btn-appearance-form-height;
     padding: buttons-variables.$clr-btn-appearance-form-padding;
+
+    .clr-loading-btn-content {
+      display: flex;
+      gap: tokens.$cds-global-space-5;
+      align-items: center;
+    }
   }
 
   //Clarity Buttons
