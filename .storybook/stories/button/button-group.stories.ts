@@ -74,6 +74,7 @@ const defaultParameters: Parameters = {
     buttonCount: 3,
     inMenuButtonCount: 3,
     disabledButtonsPosition: [],
+    loading: false,
   },
 };
 
