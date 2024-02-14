@@ -300,10 +300,9 @@
     );
 
     .clr-loading-btn-content {
-      @include mixins.css-var(display, clr-btn-display, inline-block, variables.$clr-use-custom-properties);
-      @include mixins.css-var(gap, clr-btn-appearance-gap, 8px, variables.$clr-use-custom-properties);
+      display: flex;
       align-items: center;
-      place-content: center;
+      @include mixins.css-var(gap, clr-btn-appearance-gap, 8px, variables.$clr-use-custom-properties);
     }
   }
 

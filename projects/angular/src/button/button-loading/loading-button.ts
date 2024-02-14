@@ -27,7 +27,7 @@ const MIN_BUTTON_WIDTH = 42;
           class="spinner spinner-inline spinner-check"
         ></span>
       </ng-container>
-      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
+      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton class="clr-loading-btn-content">
         <ng-content></ng-content>
       </span>
     </span>
