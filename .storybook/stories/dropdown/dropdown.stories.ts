@@ -5,16 +5,42 @@
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+const DROPDOWN_BUTTON_TYPE: string[] = ['btn-primary', 'btn-outline-primary', 'btn-link'];
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Dropdown/Dropdown',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDropdownModule],
+    }),
+  ],
+  component: ClrDropdown,
+  argTypes: {
+    open: { defaultValue: false, control: { type: 'boolean' } },
+    clrCloseMenuOnItemClick: { defaultValue: true, control: { type: 'boolean' } },
+    iconButton: { defaultValue: false, control: { type: 'boolean' } },
+    buttonType: { defaultValue: 'btn-primary', control: { type: 'radio', options: DROPDOWN_BUTTON_TYPE } },
+    DROPDOWN_BUTTON_TYPE: { control: { disable: true }, table: { disable: true }, type: 'array' },
+  },
+  args: {
+    open: null,
+    clrCloseMenuOnItemClick: true,
+    iconButton: false,
+    buttonType: 'btn-primary',
+    DROPDOWN_BUTTON_TYPE,
+  },
+};
+
+const DropdownTemplate: Story = args => ({
   template: `
+  <div style="margin-bottom:200px">
     <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
-      <button class="btn btn-outline-primary" clrDropdownTrigger>
-        Dropdown
+      <button [ngClass]="iconButton ? '' : 'btn ' + buttonType" clrDropdownTrigger>
+        <span *ngIf="!iconButton">Dropdown</span>
+        <cds-icon *ngIf="iconButton" shape="exclamation-circle" class="is-error" size="24"></cds-icon>
         <cds-icon shape="angle" direction="down"></cds-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen="open">
@@ -23,22 +49,26 @@ const defaultStory: Story = args => ({
         <div aria-label="Action 3" clrDropdownItem>Action 3</div>
       </clr-dropdown-menu>
     </clr-dropdown>
-  `,
-  props: { ...args },
+  </div>
+`,
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Dropdown/Dropdown',
-  component: ClrDropdown,
-  args: {
-    open: null,
-  },
+export const Dropdown: StoryObj = {
+  render: DropdownTemplate,
 };
 
-const variants: Parameters[] = [
-  {
-    open: true,
-  },
-];
+export const OutlineButton: StoryObj = {
+  render: DropdownTemplate,
+  args: { buttonType: 'btn-outline-primary' },
+};
 
-setupStorybook(ClrDropdownModule, defaultStory, defaultParameters, variants);
+export const LinkButton: StoryObj = {
+  render: DropdownTemplate,
+  args: { buttonType: 'btn-link' },
+};
+
+export const IconButton: StoryObj = {
+  render: DropdownTemplate,
+  args: { iconButton: true },
+};
