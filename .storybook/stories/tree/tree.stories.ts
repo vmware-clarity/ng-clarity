@@ -14,7 +14,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <clr-tree>
-      ${getFileTreeNodeMarkup(filesRoot)}
+      ${getFileTreeNodeMarkup(filesRoot, args.asLink)}
     </clr-tree>
   `,
   props: { ...args },
@@ -26,9 +26,10 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrLazy: { control: { disable: true } },
+    asLink: { defaultValue: false, control: { type: 'boolean' } },
   },
 };
 
-const variants: Parameters[] = [];
+const variants: Parameters[] = [{ asLink: false }, { asLink: true }];
 
 setupStorybook(ClrTreeViewModule, defaultStory, defaultParameters, variants);

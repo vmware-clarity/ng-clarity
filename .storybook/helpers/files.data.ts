@@ -72,13 +72,13 @@ export const filesRoot: File[] = [
   },
 ];
 
-export function getFileTreeNodeMarkup(files: File[] = filesRoot) {
+export function getFileTreeNodeMarkup(files: File[] = filesRoot, asLink = false) {
   return files
     .map(
       file => `
         <clr-tree-node [clrDisabled]="${file.disabled}" [clrExpanded]="${file.expanded}">
-          ${file.name}
-          ${file.files ? getFileTreeNodeMarkup(file.files) : ''}
+            ${asLink ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
+          ${file.files ? getFileTreeNodeMarkup(file.files, asLink) : ''}
         </clr-tree-node>`
     )
     .join('');
