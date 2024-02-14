@@ -415,6 +415,15 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
       });
 
+      it('adds the aria-describedby with helper and error ids', fakeAsync(function (this: TestContext) {
+        setupTest(this, WithControlAndError, TestControl3);
+        this.input.focus();
+        this.input.blur();
+        this.fixture.detectChanges();
+        tick();
+        expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-error`);
+      }));
+
       it('adds the aria-describedby for error messages', fakeAsync(function (this: TestContext) {
         setupTest(this, WithControlAndError, TestControl3);
         this.input.focus();
@@ -442,6 +451,17 @@ export default function (): void {
         tick();
 
         expect(this.input.getAttribute('aria-describedby')).toContain('-success');
+      }));
+
+      it('adds the aria-describedby with helper and success ids', fakeAsync(function (this: TestContext) {
+        setupTest(this, WithControlAndSuccess, TestControl3);
+        this.input.focus();
+        this.fixture.componentInstance.model = 'test';
+        this.input.blur();
+        this.fixture.detectChanges();
+        tick();
+
+        expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
       }));
 
       it('does not set aria-describedby unless success helper is present', fakeAsync(function () {
