@@ -55,6 +55,7 @@ export default {
     click: action('click'),
     // story helpers
     content: 'Hello World!',
+    iconShape: '',
     buttonClassLoader,
     BUTTON_STYLES,
     BUTTON_TYPES,
@@ -69,6 +70,7 @@ const ButtonTemplate: Story = args => ({
         [disabled]="disabled"
         (click)="click($event)"
       >
+        <cds-icon *ngIf="iconShape" shape="{{iconShape}}"></cds-icon>
         {{content}}
       </button>
   `,
@@ -81,10 +83,16 @@ const ButtonAllTemplate: Story = args => ({
     <button class="btn">Default</button>
 
     <h6>Primary Buttons</h6>
-    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type">{{type}}</button>
+    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type">
+      <cds-icon shape="user"></cds-icon>
+      {{type}}
+    </button>
 
     <h6>Old Outline Buttons</h6>
-    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type + '-outline'">{{type}}</button>
+    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type + '-outline'">
+      {{type}}
+      <cds-icon shape="home"></cds-icon>
+    </button>
 
     <h6>New Outline Buttons</h6>
     <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-outline-' + type">{{type}}</button>
@@ -109,7 +117,11 @@ const ButtonAllTemplate: Story = args => ({
     <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-sm btn-' + type">{{type}}</button>
 
     <h6>Small Outline Buttons</h6>
-    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-sm btn-' + type + '-outline'">{{type}}</button>
+    <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-sm btn-' + type + '-outline'">
+      <cds-icon shape="user"></cds-icon>
+      {{type}}
+      <cds-icon shape="home"></cds-icon>
+    </button>
 
     <!--Links-->
 
@@ -124,7 +136,11 @@ const ButtonAllTemplate: Story = args => ({
 
 
     <h6>New Outline Links</h6>
-    <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-outline-' + type">{{type}}</a>
+    <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-outline-' + type">
+      <cds-icon shape="user"></cds-icon>
+      {{type}}
+      <cds-icon shape="home"></cds-icon>
+    </a>
 
     <h6>Flat Links</h6>
     <a href="javascript://" class="btn btn-link">Default</a>
@@ -164,6 +180,7 @@ const ButtonLinkTemplate: StoryFn = args => ({
       [disabled]="disabled"
       (click)="click($event)"
     >
+      <cds-icon *ngIf="iconShape" shape="{{iconShape}}"></cds-icon>
       {{content}}
     </a>
   `,
