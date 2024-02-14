@@ -93,7 +93,7 @@ const defaultStory: Story = args => ({
     <a href="javascript://" class="btn btn-success-outline">Success</a>
 
     <h6>New Outline Links</h6>
-    <a href="javascript://" class="btn btn-outline-primary"><cds-icon shape="home"></cds-icon>Primary</cds-icon></a>
+    <a href="javascript://" class="btn btn-outline-primary"><cds-icon shape="home"></cds-icon>Primary</a>
     <a href="javascript://" class="btn btn-outline-secondary"><cds-icon shape="home"></cds-icon>Secondary<cds-icon shape="user"></cds-icon></a>
     <a href="javascript://" class="btn btn-outline-warning"><cds-icon shape="user"></cds-icon>Warning</a>
     <a href="javascript://" class="btn btn-outline-danger">Danger</a>
