@@ -81,9 +81,8 @@ export class KeyNavigationGridController implements OnDestroy {
                   c => c === e.target || c === (e.target as HTMLElement).closest(this.config.keyGridCells)
                 )
               : null;
-            const scrollCell = false;
             if (activeCell) {
-              this.setActiveCell(activeCell, scrollCell);
+              this.setActiveCell(activeCell);
             }
           }
         });
@@ -112,9 +111,8 @@ export class KeyNavigationGridController implements OnDestroy {
             const activeItem = this.rows
               ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
               : null;
-            const scrollItem = true;
             if (activeItem) {
-              this.setActiveCell(activeItem, scrollItem);
+              this.setActiveCell(activeItem);
             }
             e.preventDefault();
           }
@@ -135,7 +133,7 @@ export class KeyNavigationGridController implements OnDestroy {
     firstCell?.setAttribute('tabindex', '0');
   }
 
-  private setActiveCell(activeCell: HTMLElement, scrollCell: boolean) {
+  private setActiveCell(activeCell: HTMLElement) {
     const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
 
     if (prior) {
@@ -146,13 +144,9 @@ export class KeyNavigationGridController implements OnDestroy {
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
-    if (scrollCell) {
+    setTimeout(() => {
       item.focus();
-    } else {
-      item.focus({
-        preventScroll: true,
-      });
-    }
+    });
   }
 
   private getNextItemCoordinate(e: any) {
