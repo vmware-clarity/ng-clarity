@@ -83,9 +83,6 @@ const variants: Parameters[] = [
     disabledButtonsPosition: [],
   },
   {
-    loading: true,
-  },
-  {
     disabledButtonsPosition: [2],
   },
   {
