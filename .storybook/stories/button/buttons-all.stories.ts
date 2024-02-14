@@ -16,19 +16,19 @@ const defaultStory: Story = args => ({
     <button class="btn">Default</button>
 
     <h6>Primary Buttons</h6>
-    <button class="btn btn-primary">Primary</button>
-    <button class="btn btn-secondary">Secondary</button>
-    <button class="btn btn-warning">Warning</button>
+    <button class="btn btn-primary"><cds-icon shape="home"></cds-icon>Primary</button>
+    <button class="btn btn-secondary"><cds-icon shape="home"></cds-icon>Secondary</button>
+    <button class="btn btn-warning">Warning<cds-icon shape="home"></cds-icon></button>
     <button class="btn btn-danger">Danger</button>
-    <button class="btn btn-success">Success</button>
+    <button class="btn btn-success"><cds-icon shape="home"></cds-icon>Success<cds-icon shape="user"></cds-icon></button>
     <button class="btn btn-neutral">Neutral</button>
 
     <h6>Old Outline Buttons</h6>
-    <button class="btn btn-primary-outline">Primary</button>
-    <button class="btn btn-secondary-outline">Secondary</button>
-    <button class="btn btn-warning-outline">Warning</button>
+    <button class="btn btn-primary-outline">Primary<cds-icon shape="user"></cds-icon></button>
+    <button class="btn btn-secondary-outline">Secondary<cds-icon shape="user"></cds-icon></button>
+    <button class="btn btn-warning-outline"><cds-icon shape="home"></cds-icon>Warning</button>
     <button class="btn btn-danger-outline">Danger</button>
-    <button class="btn btn-success-outline">Success</button>
+    <button class="btn btn-success-outline"><cds-icon shape="home"></cds-icon>Success<cds-icon shape="user"></cds-icon></button>
     <button class="btn btn-neutral-outline">Neutral</button>
 
     <h6>New Outline Buttons</h6>
@@ -93,9 +93,9 @@ const defaultStory: Story = args => ({
     <a href="javascript://" class="btn btn-success-outline">Success</a>
 
     <h6>New Outline Links</h6>
-    <a href="javascript://" class="btn btn-outline-primary">Primary</a>
-    <a href="javascript://" class="btn btn-outline-secondary">Secondary</a>
-    <a href="javascript://" class="btn btn-outline-warning">Warning</a>
+    <a href="javascript://" class="btn btn-outline-primary"><cds-icon shape="home"></cds-icon>Primary</cds-icon></a>
+    <a href="javascript://" class="btn btn-outline-secondary"><cds-icon shape="home"></cds-icon>Secondary<cds-icon shape="user"></cds-icon></a>
+    <a href="javascript://" class="btn btn-outline-warning"><cds-icon shape="user"></cds-icon>Warning</a>
     <a href="javascript://" class="btn btn-outline-danger">Danger</a>
     <a href="javascript://" class="btn btn-outline-success">Success</a>
 
