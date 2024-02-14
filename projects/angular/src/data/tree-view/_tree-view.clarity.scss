@@ -20,6 +20,7 @@
       .clr-treenode-link,
       .clr-treenode-content,
       .clr-treenode-checkbox .clr-control-label {
+        pointer-events: none;
         cursor: not-allowed;
         color: var(--clr-tree-node-content-disabled-color);
         background-color: var(--clr-tree-node-content-bg-disabled-color);

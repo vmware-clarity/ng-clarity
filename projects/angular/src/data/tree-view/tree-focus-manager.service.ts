@@ -101,7 +101,6 @@ export class TreeFocusManagerService<T> {
     } else if (selfIndex === siblings.length - 1) {
       return this.findNextFocusable(model.parent);
     }
-
     return null;
   }
 
