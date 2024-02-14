@@ -139,6 +139,10 @@
     @include mixins.css-var(opacity, clr-btn-disabled-opacity, 0.4, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, background-color, disabled-bg-color, variables.$clr-use-custom-properties);
     @include button-css-var($button-type, border-color, disabled-border-color, variables.$clr-use-custom-properties);
+    cds-icon,
+    clr-icon {
+      @include button-css-var($button-type, fill, disabled-color, variables.$clr-use-custom-properties);
+    }
   }
 }
 
