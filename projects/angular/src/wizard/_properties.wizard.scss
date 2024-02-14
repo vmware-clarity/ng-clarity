@@ -30,7 +30,7 @@
 
       --clr-wizard-stepnav-border-color: #{tokens.$cds-alias-object-container-border-color};
       --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
-      --clr-wizard-stepnav-link-padding: #{tokens.$cds-global-space-5};
+      --clr-wizard-stepnav-link-padding: calc(#{tokens.$cds-global-space-5} - #{tokens.$cds-global-space-1});
       --clr-wizard-stepnav-item-error-border-color: #{tokens.$cds-alias-status-danger};
 
       --clr-wizard-title-text: #{tokens.$cds-alias-typography-color-400};
