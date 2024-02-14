@@ -4,9 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrButtonGroup, ClrButtonGroupModule, commonStringsDefault } from '@clr/angular';
+import {
+  CLR_MENU_POSITIONS,
+  ClrButtonGroup,
+  ClrButtonGroupModule,
+  ClrLoadingModule,
+  commonStringsDefault,
+} from '@clr/angular';
 import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
@@ -17,8 +24,10 @@ const defaultStory: Story = args => ({
         <clr-button
           *ngFor="let _ of createArray(buttonCount); let i = index"
           [clrInMenu]="false"
+          [clrLoading]="loading"
           [disabled]="disabledButtonsPosition.includes(i+1)"
         >
+          <cds-icon shape="home"></cds-icon>
           {{content}} {{i + 1}}
         </clr-button>
         <clr-button
@@ -35,11 +44,17 @@ const defaultStory: Story = args => ({
 
 const defaultParameters: Parameters = {
   title: 'Button/Button Group',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrButtonGroupModule, ClrLoadingModule],
+    }),
+  ],
   component: ClrButtonGroup,
   argTypes: {
     // inputs
     clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
     clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
+    loading: { defaultValue: false, control: { type: 'boolean' } },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -65,6 +80,9 @@ const defaultParameters: Parameters = {
 const variants: Parameters[] = [
   {
     disabledButtonsPosition: [],
+  },
+  {
+    loading: true,
   },
   {
     disabledButtonsPosition: [2],

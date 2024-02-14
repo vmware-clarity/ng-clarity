@@ -29,6 +29,7 @@ const defaultStory: Story = args => ({
         [disabled]="disabled"
         (click)="click($event)"
       >
+        <cds-icon *ngIf="iconShape" shape="{{iconShape}}"></cds-icon>
         {{content}}
       </clr-button>
     </clr-button-group>
@@ -62,6 +63,7 @@ const defaultParameters: Parameters = {
     // outputs
     click: action('click'),
     // story helpers
+    iconShape: '',
     content: 'Hello World!',
   },
 };
@@ -74,11 +76,14 @@ function generateVariants() {
   for (const buttonType of buttonTypes) {
     for (const buttonStyle of buttonStyles) {
       for (const disabled of [false, true]) {
-        variants.push({
-          buttonType,
-          buttonStyle,
-          disabled,
-        });
+        for (const iconShape of [null, 'home']) {
+          variants.push({
+            buttonType,
+            buttonStyle,
+            disabled,
+            iconShape,
+          });
+        }
       }
     }
   }
