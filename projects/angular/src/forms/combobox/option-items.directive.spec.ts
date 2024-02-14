@@ -118,13 +118,22 @@ export default function (): void {
         expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([1, 12]);
       });
 
-      it('has case insensive filter', function () {
+      it('has case-insensitive filter', function () {
         const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push('Room', 'Broom');
         optionService.currentInput = 'ro';
         this.fixture.detectChanges();
         expect(this.clarityDirective.iterableProxy._ngForOf).toEqual(['Room', 'Broom']);
+      });
+
+      it('has diacritic-insensitive filter', function () {
+        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        optionService.showAllOptions = false;
+        this.testComponent.numbers.push('Ardèche', 'Ardennes', 'Ariège');
+        optionService.currentInput = 'arde';
+        this.fixture.detectChanges();
+        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual(['Ardèche', 'Ardennes']);
       });
     });
 
@@ -204,6 +213,24 @@ export default function (): void {
           this.testComponent.numbers = [{ a: null }, ...this.testComponent.numbers];
           this.fixture.detectChanges();
         }).not.toThrow();
+      });
+
+      it('has case-insensitive filter', function () {
+        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        optionService.showAllOptions = false;
+        this.testComponent.numbers.push({ a: 'Room' }, { a: 'Broom' });
+        optionService.currentInput = 'ro';
+        this.fixture.detectChanges();
+        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([{ a: 'Room' }, { a: 'Broom' }]);
+      });
+
+      it('has diacritic-insensitive filter', function () {
+        const optionService: OptionSelectionService<any> = TestBed.get(OptionSelectionService);
+        optionService.showAllOptions = false;
+        this.testComponent.numbers.push({ a: 'Ardèche' }, { a: 'Ardennes' }, { a: 'Ariège' });
+        optionService.currentInput = 'arde';
+        this.fixture.detectChanges();
+        expect(this.clarityDirective.filteredItems).toEqual([{ a: 'Ardèche' }, { a: 'Ardennes' }]);
       });
     });
   });

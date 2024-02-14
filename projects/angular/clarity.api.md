@@ -2919,7 +2919,11 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     focusService: FocusService_2;
     // (undocumented)
+    hidePasswordText(label: string): string;
+    // (undocumented)
     show: boolean;
+    // (undocumented)
+    showPasswordText(label: string): string;
     // (undocumented)
     toggle(): void;
     // (undocumented)

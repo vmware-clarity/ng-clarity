@@ -5,49 +5,54 @@
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-  <div class="dropdown open">
-    <button class="dropdown-toggle btn btn-primary" type="button">
-      Dropdown
-      <cds-icon shape="angle" direction="down"></cds-icon>
-    </button>
-    <div class="dropdown-menu">
-      <h4 class="dropdown-header" aria-hidden="true">Dropdown header</h4>
-      <div aria-label="Dropdown header Action" class="dropdown-item active">Action</div>
-      <div aria-label="Dropdown header Disabled Link" class="dropdown-item disabled">Disabled Link</div>
-      <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-      <button class="dropdown-item">Lorem</button>
-      <div class="dropdown open right-bottom">
-        <button class="dropdown-item active expandable">Lorem ipsum</button>
-        <div class="dropdown-menu">
-          <button class="dropdown-item">Foo.</button>
-          <div class="dropdown open right-top">
-            <button class="dropdown-item active expandable">Bar</button>
-            <div class="dropdown-menu">
-              <div class="dropdown-item">Baz</div>
-            </div>
-          </div>
-          <div class="dropdown-item">Foo 2</div>
-        </div>
-      </div>
-      <div class="dropdown-item">Ipsum</div>
-    </div>
-  </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Dropdown/Dropdown Static',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDropdownModule],
+    }),
+  ],
   component: ClrDropdown,
 };
 
-const variants: Parameters[] = [];
+const DropdownStaticTemplate: Story = args => ({
+  template: `
+  <div style="margin-bottom:200px; text-align: center">
+    <div class="dropdown open">
+      <button class="dropdown-toggle btn btn-primary" type="button">
+        Dropdown
+        <cds-icon shape="angle" direction="down"></cds-icon>
+      </button>
+      <div class="dropdown-menu">
+        <h4 class="dropdown-header" aria-hidden="true">Dropdown header</h4>
+        <div aria-label="Dropdown header Action" class="dropdown-item active">Action</div>
+        <div aria-label="Dropdown header Disabled Link" class="dropdown-item disabled">Disabled Link</div>
+        <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+        <button class="dropdown-item">Lorem</button>
+        <div class="dropdown open right-bottom">
+          <button class="dropdown-item active expandable">Lorem ipsum</button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item">Foo.</button>
+            <div class="dropdown open right-top">
+              <button class="dropdown-item active expandable">Bar</button>
+              <div class="dropdown-menu">
+                <div class="dropdown-item">Baz</div>
+              </div>
+            </div>
+            <div class="dropdown-item">Foo 2</div>
+          </div>
+        </div>
+        <div class="dropdown-item">Ipsum</div>
+      </div>
+    </div>
+  </div>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrDropdownModule, defaultStory, defaultParameters, variants);
+export const DropdownStatic: StoryObj = {
+  render: DropdownStaticTemplate,
+};

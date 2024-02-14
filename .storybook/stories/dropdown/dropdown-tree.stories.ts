@@ -5,36 +5,17 @@
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrTreeViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 import { filesRoot } from 'helpers/files.data';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
-      <button class="btn btn-outline-primary" clrDropdownTrigger>
-        Dropdown
-        <cds-icon shape="angle" direction="down"></cds-icon>
-      </button>
-      <clr-dropdown-menu clrFocusOnViewInit="false">
-        <clr-tree>
-          <clr-tree-node 
-            *clrRecursiveFor="let file of files; getChildren: getChildren"
-            [clrExpanded]="true"
-            [clrSelected]="true">
-            {{file.name}}
-          </clr-tree-node>
-        </clr-tree>
-      </clr-dropdown-menu>
-    </clr-dropdown>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
-  title: 'Dropdown/Dropdown with Tree',
+export default {
+  title: 'Dropdown/Dropdown With Tree',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDropdownModule, ClrTreeViewModule],
+    }),
+  ],
   component: ClrDropdown,
   argTypes: {
     // story helpers
@@ -48,4 +29,30 @@ const defaultParameters: Parameters = {
   },
 };
 
-setupStorybook([ClrDropdownModule, ClrTreeViewModule], defaultStory, defaultParameters);
+const DropdownTreeTemplate: Story = args => ({
+  template: `
+    <div style="margin-bottom:500px; text-align: center">
+      <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
+        <button class="btn btn-outline-primary" clrDropdownTrigger>
+          Dropdown
+          <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <clr-dropdown-menu clrFocusOnViewInit="false">
+          <clr-tree>
+            <clr-tree-node 
+              *clrRecursiveFor="let file of files; getChildren: getChildren"
+              [clrExpanded]="true"
+              [clrSelected]="true">
+              {{file.name}}
+            </clr-tree-node>
+          </clr-tree>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  `,
+  props: args,
+});
+
+export const DropdownWithTree: StoryObj = {
+  render: DropdownTreeTemplate,
+};
