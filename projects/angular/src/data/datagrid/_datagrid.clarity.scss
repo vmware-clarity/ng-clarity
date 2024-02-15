@@ -416,9 +416,7 @@
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
-      clr-dg-filter,
-      clr-dg-string-filter,
-      clr-dg-numeric-filter {
+      .clr-dg-filters-wrapper {
         display: flex;
         order: 99;
         margin-left: auto;
