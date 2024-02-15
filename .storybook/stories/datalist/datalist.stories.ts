@@ -52,11 +52,6 @@ export const Datalist: StoryObj = {
   render: DatalistTemplate,
 };
 
-export const Enabled: StoryObj = {
-  render: DatalistTemplate,
-  args: { disabled: false },
-};
-
 export const Disabled: StoryObj = {
   render: DatalistTemplate,
   args: { disabled: true },
