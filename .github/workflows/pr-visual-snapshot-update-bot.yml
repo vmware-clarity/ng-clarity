@@ -5,9 +5,9 @@ on:
 jobs:
   pr-visual-snapshot-update-bot:
     if: ${{github.event.workflow_run.conclusion == 'failure'}}
-    name: PR Visual Snapshot Update Bot
     runs-on: ubuntu-latest
     steps:
+      - uses: haya14busa/action-workflow_run-status@v1
       - name: Checkout
         uses: actions/checkout@v3
         with:
