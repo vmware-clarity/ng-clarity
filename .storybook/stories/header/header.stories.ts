@@ -24,6 +24,18 @@ const defaultStory: Story = args => ({
           <a href="javascript://" class="nav-link nav-text">Home</a>
           <a href="javascript://" class="nav-link nav-text">About</a>
           <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
         </div>
         <div class="header-actions">
           <a href="javascript://" class="nav-link">
@@ -45,6 +57,48 @@ const defaultStory: Story = args => ({
           <li class="nav-item">
               <a class="nav-link" href="javascript://">Tenants</a>
           </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="javascript://">Tenants</a>
+          </li>                                        
         </ul>
       </nav>
     </clr-main-container>
