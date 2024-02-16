@@ -5,18 +5,30 @@
  */
 
 import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { Parameters } from '@storybook/addons';
+import { Story } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
+import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-export default {
+const defaultStory: Story = args => ({
+  template: `
+    <clr-datalist-container>
+      <input clrDatalistInput [disabled]="disabled" placeholder="Options" />
+      <datalist>
+        <ng-container *ngFor="let element of elements; let i = index">
+          <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
+        </ng-container>
+      </datalist>
+      <clr-control-helper>Helper text</clr-control-helper>
+      <clr-control-error>There was an error</clr-control-error>
+    </clr-datalist-container>
+  `,
+  props: { ...args },
+});
+
+const defaultParameters: Parameters = {
   title: 'Datalist/Datalist',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrDatalistModule, ClrFormsModule],
-    }),
-  ],
   component: ClrDatalist,
   argTypes: {
     // story helpers
@@ -27,32 +39,18 @@ export default {
     // story helpers
     elements,
     optionCount: elements.length,
-    placeholder: 'Options',
+    content: 'Option',
     disabled: false,
   },
 };
 
-const DatalistTemplate: Story = args => ({
-  template: `
-    <clr-datalist-container>
-      <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
-      <datalist>
-        <ng-container *ngFor="let element of elements; let i = index">
-          <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
-        </ng-container>
-      </datalist>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>There was an error</clr-control-error>
-    </clr-datalist-container>
-  `,
-  props: args,
-});
+const variants: Parameters[] = [
+  {
+    disabled: false,
+  },
+  {
+    disabled: true,
+  },
+];
 
-export const Datalist: StoryObj = {
-  render: DatalistTemplate,
-};
-
-export const Disabled: StoryObj = {
-  render: DatalistTemplate,
-  args: { disabled: true },
-};
+setupStorybook([ClrDatalistModule, ClrFormsModule], defaultStory, defaultParameters, variants);
