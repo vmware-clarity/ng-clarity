@@ -17,7 +17,7 @@ export default {
     createArray: n => new Array(n),
     itemCount: 4,
     unstyled: false,
-  }
+  },
 };
 
 const ListTemplate: Story = args => ({
@@ -53,4 +53,3 @@ export const UnstyledList: StoryObj = {
     unstyled: true,
   },
 };
-
