@@ -2304,7 +2304,8 @@ export class ClrFormsModule {
 // @public (undocumented)
 export class ClrHeader implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ResponsiveNavigationService" needs to be exported by the entry point index.d.ts
-    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
+    constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService, _scrollingService: ScrollingService);
     // (undocumented)
     closeOpenNav(): void;
     // (undocumented)
@@ -2645,7 +2646,6 @@ export class ClrMainContainerModule {
 
 // @public (undocumented)
 export class ClrModal implements OnChanges, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
     // (undocumented)
