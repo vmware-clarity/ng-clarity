@@ -15,32 +15,6 @@ const patterns = {
   numbers: /\d/i,
 };
 
-export default {
-  title: 'Forms/Template Driven',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
-    }),
-  ],
-  argTypes: {
-    // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
-    // story helpers
-    patterns: { control: { disable: true }, table: { disable: true } },
-    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
-  },
-  args: {
-    // story helpers
-    patterns,
-    clrLayout: ClrFormLayout.HORIZONTAL,
-    screenReaderContent: 'Please fill out the form',
-    data: formMappingKey,
-  },
-};
-
 const TemplateDrivenStory: Story = args => ({
   template: ` 
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
@@ -92,6 +66,32 @@ const TemplateDrivenStory: Story = args => ({
   props: args,
 });
 
+export default {
+  title: 'Forms/Template Driven',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    // story helpers
+    patterns: { control: { disable: true }, table: { disable: true } },
+    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    clrLayout: {
+      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    },
+  },
+  args: {
+    // story helpers
+    patterns,
+    clrLayout: ClrFormLayout.HORIZONTAL,
+    screenReaderContent: 'Please fill out the form',
+    data: formMappingKey,
+  },
+};
+
 function getForm() {
   return {
     name: '',
@@ -105,12 +105,12 @@ export const HorizontalLayout: StoryObj = {
   render: TemplateDrivenStory,
 };
 
-export const VerticalLayout: StoryObj = {
+export const verticalLayout: StoryObj = {
   render: TemplateDrivenStory,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const CompactLayout: StoryObj = {
+export const compactLayout: StoryObj = {
   render: TemplateDrivenStory,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };
