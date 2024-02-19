@@ -218,6 +218,12 @@
       .subnav.clr-nav-level-1,
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-top: 0px !important;
+        margin-top: 52px !important;
+        max-height: calc(100% - 52px) !important;
+
         @include sliding-nav-positioning();
         transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width}));
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
@@ -227,6 +233,9 @@
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
+        overflow-y: scroll;
+        box-shadow: none;
+
         @include sliding-nav-positioning(0, 0, 0, auto);
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width);
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
@@ -392,7 +401,9 @@
             left: 0;
             overflow: hidden;
             width: responsive-nav-variables.$clr-sliding-panel-width;
+            background: var(--clr-vertical-nav-bg-color);
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
+            margin-left: calc(-1 * var(--scrollbar-width));
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
             padding-left: tokens.$cds-global-space-9;
 
