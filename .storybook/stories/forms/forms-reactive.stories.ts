@@ -6,10 +6,8 @@
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -18,7 +16,7 @@ const patterns = {
   numbers: /\d/i,
 };
 
-const defaultStory: Story = args => ({
+const ReactiveFormTemplate: Story = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
@@ -66,11 +64,16 @@ const defaultStory: Story = args => ({
       </clr-textarea-container>
     </form>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Forms/Reactive',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
@@ -91,21 +94,6 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {},
-  {
-    namePlaceholder: 'Test placeholder',
-  },
-  {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-  {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-];
-
-setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
-
 function getForm() {
   return new FormGroup({
     name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
@@ -119,3 +107,17 @@ function getForm() {
     description: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
   });
 }
+
+export const HorizontalLayout: StoryObj = {
+  render: ReactiveFormTemplate,
+};
+
+export const verticalLayout: StoryObj = {
+  render: ReactiveFormTemplate,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
+};
+
+export const compactLayout: StoryObj = {
+  render: ReactiveFormTemplate,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
+};

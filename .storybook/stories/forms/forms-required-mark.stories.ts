@@ -6,10 +6,8 @@
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -18,7 +16,7 @@ const patterns = {
   numbers: /\d/i,
 };
 
-const defaultStory: Story = args => ({
+const RequiredMarkTemplate: Story = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
@@ -102,11 +100,16 @@ const defaultStory: Story = args => ({
       </clr-range-container>
     </form>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Forms/Required Mark',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
@@ -127,21 +130,6 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {},
-  {
-    namePlaceholder: 'Test placeholder',
-  },
-  {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-  {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-];
-
-setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
-
 function getForm() {
   return new FormGroup({
     name: new FormControl(null),
@@ -158,3 +146,17 @@ function getForm() {
     range: new FormControl(null),
   });
 }
+
+export const HorizontalLayout: StoryObj = {
+  render: RequiredMarkTemplate,
+};
+
+export const verticalLayout: StoryObj = {
+  render: RequiredMarkTemplate,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
+};
+
+export const compactLayout: StoryObj = {
+  render: RequiredMarkTemplate,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
+};

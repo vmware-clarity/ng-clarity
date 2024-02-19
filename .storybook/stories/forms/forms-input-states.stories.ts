@@ -5,12 +5,10 @@
  */
 
 import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
+const FormInputTemplate: Story = args => ({
   template: `
     <form clrForm>
       <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
@@ -21,7 +19,7 @@ const defaultStory: Story = args => ({
             <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
           </div>
           <span class="clr-subtext">Helper Subtext</span>
-          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{'success': isSuccess, 'error': isError}" >State Subtext</span>
+          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{'success': isSuccess, 'error': isError}">State Subtext</span>
         </div>
       </div>
       
@@ -140,11 +138,16 @@ const defaultStory: Story = args => ({
       </clr-range-container>
     </form>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Forms/Input States',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
@@ -159,6 +162,21 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [{ isDisabled: true }, { isError: true }, { isSuccess: true }];
+export const InputStates: StoryObj = {
+  render: FormInputTemplate,
+};
 
-setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
+export const disabledStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isDisabled: true },
+};
+
+export const errorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true },
+};
+
+export const successStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true },
+};
