@@ -159,6 +159,15 @@
         forms-variables.$clr-forms-select-multiple-option-color,
         variables.$clr-use-custom-properties
       );
+
+      &:checked {
+        @include mixins.css-var(
+          background-color,
+          clr-forms-select-multiple-selected-option-background-color,
+          forms-variables.$clr-forms-select-multiple-selected-option-background-color,
+          variables.$clr-use-custom-properties
+        );
+      }
     }
   }
 
