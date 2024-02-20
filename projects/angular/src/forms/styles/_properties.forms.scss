@@ -82,6 +82,7 @@
       --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
       --clr-forms-select-multiple-border-color: var(--clr-color-neutral-400);
       --clr-forms-select-multiple-option-color: var(--clr-forms-text-color);
+      --clr-forms-select-multiple-selected-option-background-color: var(--clr-global-selection-color);
       --clr-forms-select-multiple-error-focus-color: #{color.adjust(
           forms-variables.$clr-forms-invalid-color,
           $lightness: 30%

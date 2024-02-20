@@ -63,6 +63,7 @@ $clr-forms-select-option-background-color: $clr-forms-textarea-background-color 
 $clr-forms-select-multiple-background-color: $clr-forms-textarea-background-color !default;
 $clr-forms-select-multiple-border-color: variables.$clr-color-neutral-400 !default;
 $clr-forms-select-multiple-option-color: $clr-forms-text-color !default;
+$clr-forms-select-multiple-selected-option-background-color: variables.$clr-global-selection-color !default;
 
 // Checkbox
 $clr-forms-checkbox-label-color: $clr-forms-label-color !default;
