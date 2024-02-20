@@ -5,8 +5,7 @@
  */
 
 import { ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
-
-import { Story, StoryObj, moduleMetadata } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
 const tooltipSizes = ['xs', 'sm', 'md', 'lg'];
