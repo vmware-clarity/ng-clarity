@@ -45,6 +45,10 @@ export class ModalStackService {
 
   private onKeyUp(event: KeyboardEvent) {
     if (this.modalStack.length && normalizeKey(event.key) === Keys.Escape) {
+      // We blur the active element because escaping with an input element in focus could cause
+      // an ExpressionChangedAfterItHasBeenCheckedError for the touched state. (CDE-1662)
+      (document.activeElement as HTMLElement).blur();
+
       this.modalStack[0].close();
     }
   }
