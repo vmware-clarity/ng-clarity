@@ -48,4 +48,3 @@ const TooltipTemplate: Story = args => ({
 export const Tooltip: StoryObj = {
   render: TooltipTemplate,
 };
-
