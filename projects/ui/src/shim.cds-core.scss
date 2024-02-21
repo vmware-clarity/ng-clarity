@@ -1697,7 +1697,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
 
   // ATM: move to tree-view.clarity.scss
   .clr-treenode-content {
-    height: #{tokens.$cds-global-space-10};
+    min-height: #{tokens.$cds-global-space-10};
     color: #{tokens.$cds-alias-typography-color-400}; // static text content color
     background-color: var(--clr-tree-node-content-bg-color);
 
