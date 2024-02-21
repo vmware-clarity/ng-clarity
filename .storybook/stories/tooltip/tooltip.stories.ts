@@ -5,28 +5,18 @@
  */
 
 import { ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <div style="margin-top: 200px; text-align: center;">
-      <clr-tooltip>
-        <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
-        <clr-tooltip-content [clrPosition]="clrPosition" [clrSize]="clrSize">{{content}}</clr-tooltip-content>
-      </clr-tooltip>
-    </div>
-  `,
-  props: { ...args },
-});
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
 const tooltipSizes = ['xs', 'sm', 'md', 'lg'];
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Tooltip/Tooltip',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrTooltipModule],
+    }),
+  ],
   component: ClrTooltipContent,
   argTypes: {
     // inputs
@@ -42,6 +32,18 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const TooltipTemplate: Story = args => ({
+  template: `
+    <div style="margin-top: 200px; text-align: center;">
+      <clr-tooltip>
+        <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
+        <clr-tooltip-content [clrPosition]="clrPosition" [clrSize]="clrSize">{{content}}</clr-tooltip-content>
+      </clr-tooltip>
+    </div>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrTooltipModule, defaultStory, defaultParameters, variants);
+export const Tooltip: StoryObj = {
+  render: TooltipTemplate,
+};
