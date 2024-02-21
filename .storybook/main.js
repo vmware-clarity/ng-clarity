@@ -5,6 +5,9 @@
  */
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const execSync = require('child_process').execSync;
+const lastTaggedReleaseVersion = execSync('git describe --tags --abbrev=0').toString().trim();
+const commitsSinceLastVersion = execSync(`git rev-list ${lastTaggedReleaseVersion}..HEAD --count`).toString().trim();
 
 module.exports = {
   stories: ['./**/*.stories.{ts,mdx}'],
@@ -12,6 +15,10 @@ module.exports = {
   framework: '@storybook/angular',
   core: {
     builder: '@storybook/builder-webpack5',
+  },
+  env: {
+    LAST_TAGGED_RELEASE_VERSION: lastTaggedReleaseVersion,
+    COMMITS_SINCE_LAST_VERSION: commitsSinceLastVersion,
   },
   webpackFinal(config) {
     config.resolve = config.resolve || {};

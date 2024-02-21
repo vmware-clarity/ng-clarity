@@ -29,6 +29,8 @@ jobs:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
         run: npx semantic-release
+      - name: Rebuild Storybook/Demo after Release # So the tag is on the head, and the proper version can be updated in storybook.
+        run: npm run build
       - name: Deploy Docs
         continue-on-error: true
         timeout-minutes: 5
