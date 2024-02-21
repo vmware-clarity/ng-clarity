@@ -48,6 +48,12 @@ jobs:
         with:
           name: docs
           path: dist/docs/
+      - name: Upload Coverage Artifact
+        if: ${{matrix.angular == 'Angular v15'}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
 
   pr-visual-regression-test:
     name: PR Visual Regression Test
