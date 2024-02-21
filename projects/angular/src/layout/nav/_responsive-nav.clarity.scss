@@ -219,7 +219,8 @@
       .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         overflow-y: auto !important;
-        overflow-x: hidden !important;
+        overflow-x: visible !important;
+
         padding-top: 0px !important;
         margin-top: 52px !important;
         max-height: calc(100% - 52px) !important;
@@ -233,7 +234,9 @@
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
-        overflow-y: scroll;
+        .nav {
+          overflow-y: scroll;
+        }
         box-shadow: none;
 
         @include sliding-nav-positioning(0, 0, 0, auto);

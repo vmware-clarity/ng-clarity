@@ -41,6 +41,12 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   return cdsCloseButton;
 };
 
+const createNavElementWrapperForLinks = (document: Document) => {
+  const navHtmlElementWrapper = document.createElement('nav');
+  navHtmlElementWrapper.className = 'header-nav clr-nav-level-1';
+  return navHtmlElementWrapper;
+};
+
 @Directive({
   selector: '[clr-nav-level]',
   hostDirectives: [ClrStandaloneCdkTrapFocus],
@@ -186,6 +192,23 @@ export class ClrNavLevel implements OnInit {
   }
 
   open(): void {
+    if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
+      this.elementRef.nativeElement.className = 'clr-nav-level-1';
+      // TODO: wrapLinksInNav method
+      const navLinksWrapper = createNavElementWrapperForLinks(document);
+      const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
+
+      navLinks.forEach(navLink => {
+        this.renderer.appendChild(navLinksWrapper, navLink);
+      });
+
+      this.renderer.appendChild(this.elementRef.nativeElement, navLinksWrapper);
+
+      // TODO: extract to new method insertCloseButtonBeforeNav
+      const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
+      this.renderer.listen(closeButton, 'click', this.close.bind(this));
+    }
+
     this._isOpen = true;
     this.showNavigation();
     this.cdkTrapFocus.enabled = true;
