@@ -84,7 +84,7 @@
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    height: tokens.$cds-global-space-10;
+    min-height: tokens.$cds-global-space-10;
     color: tree-view-variables.$clr-tree-node-content-text-only-color;
     background-color: tree-view-variables.$clr-tree-node-content-bg-color;
 
