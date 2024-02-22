@@ -7,6 +7,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { CalendarModel } from '../model/calendar.model';
 import { DayModel } from '../model/day.model';
@@ -20,12 +21,16 @@ import { DayModel } from '../model/day.model';
 @Injectable()
 export class DateNavigationService {
   selectedDay: DayModel;
+  selectedEndDay: DayModel;
   focusedDay: DayModel;
+  hoveredDay: DayModel;
+  isRangePicker = false;
 
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
+  private _selectedEndDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
@@ -40,6 +45,10 @@ export class DateNavigationService {
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
+  }
+
+  get selectedEndDayChange(): Observable<DayModel> {
+    return this._selectedEndDayChange.asObservable();
   }
 
   /**
@@ -60,7 +69,7 @@ export class DateNavigationService {
    * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
    */
   get focusedDayChange(): Observable<DayModel> {
-    return this._focusedDayChange.asObservable();
+    return this._focusedDayChange.asObservable().pipe(tap((day: DayModel) => (this.focusedDay = day)));
   }
 
   /**
@@ -68,8 +77,23 @@ export class DateNavigationService {
    * Note: Only to be called from day.ts
    */
   notifySelectedDayChanged(dayModel: DayModel) {
-    this.selectedDay = dayModel;
-    this._selectedDayChange.next(dayModel);
+    if (this.isRangePicker) {
+      // console.log('>1 DateNavigation service', this.selectedDay, this.selectedEndDay, this.selectedEndDay?.isBefore(this.selectedDay));
+      if (
+        !this.selectedDay ||
+        (!!this.selectedDay && !!this.selectedEndDay) ||
+        (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
+      ) {
+        this.setSelectedDay(dayModel);
+        this.setSelectedEndDay(undefined);
+        // console.log('>2 DateNavigation service');
+      } else {
+        this.setSelectedEndDay(dayModel);
+        // console.log('>3 DateNavigation service');
+      }
+    } else {
+      this.setSelectedDay(dayModel);
+    }
   }
 
   /**
@@ -142,5 +166,14 @@ export class DateNavigationService {
       this._todaysFullDate.getMonth(),
       this._todaysFullDate.getDate()
     );
+  }
+  private setSelectedDay(dayModel: DayModel | undefined) {
+    this.selectedDay = dayModel;
+    this._selectedDayChange.next(dayModel);
+  }
+
+  private setSelectedEndDay(dayModel: DayModel | undefined) {
+    this.selectedEndDay = dayModel;
+    this._selectedEndDayChange.next(dayModel);
   }
 }

@@ -28,7 +28,7 @@ import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
-  selector: 'clr-date-container',
+  selector: 'clr-date-container, clr-date-range-container',
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
@@ -36,6 +36,8 @@ import { ViewManagerService } from './providers/view-manager.service';
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrDate]"></ng-content>
+          <ng-content select="[clrRangeStartDate]"></ng-content>
+          <ng-content select="[clrRangeEndDate]"></ng-content>
           <button
             #actionButton
             type="button"

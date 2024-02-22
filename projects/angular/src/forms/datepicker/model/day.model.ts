@@ -52,6 +52,14 @@ export class DayModel {
     });
   }
 
+  isBefore(day: DayModel) {
+    return this.toDate().getTime() < day?.toDate().getTime();
+  }
+
+  isAfter(day: DayModel) {
+    return this.toDate().getTime() > day?.toDate().getTime();
+  }
+
   private pad(num: number): string {
     return num < 10 ? `0${num}` : `${num}`;
   }

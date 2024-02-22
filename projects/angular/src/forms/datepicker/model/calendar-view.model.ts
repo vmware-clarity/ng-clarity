@@ -18,6 +18,7 @@ export class CalendarViewModel {
   constructor(
     public calendar: CalendarModel,
     private selectedDay: DayModel,
+    private selectedEndDay: DayModel,
     private focusableDay: DayModel,
     private today: DayModel,
     public firstDayOfWeek: number,
@@ -40,6 +41,18 @@ export class CalendarViewModel {
     this.setFocusableFlag(this.focusableDay, false);
     this.setFocusableFlag(day, true);
     this.focusableDay = day;
+  }
+
+  updateSelectedDay(day: DayModel | undefined): void {
+    this.setSelectedDay(this.selectedDay, false);
+    this.selectedDay = day;
+    this.setSelectedDay(day, true);
+  }
+
+  updateSelectedEndDay(day: DayModel | undefined): void {
+    this.setSelectedDay(this.selectedEndDay, false);
+    this.selectedEndDay = day;
+    this.setSelectedDay(day, true);
   }
 
   /**
@@ -157,9 +170,14 @@ export class CalendarViewModel {
    * Initialize the selected day if the day is in the calendar.
    */
   private initializeSelectedDay(): void {
-    if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
-      this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
-    }
+    this.setSelectedDay(this.selectedDay, true);
+    this.setSelectedDay(this.selectedEndDay, true);
+    // if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
+    //   this.currMonthDayViews[this.selectedDay.date - 1].isSelected = true;
+    // }
+    // if (this.selectedEndDay && this.isDayInCalendarView(this.selectedEndDay)) {
+    //   this.currMonthDayViews[this.selectedEndDay.date - 1].isSelected = true;
+    // }
   }
 
   /**
@@ -173,6 +191,9 @@ export class CalendarViewModel {
     } else if (this.selectedDay && this.isDayInCalendarView(this.selectedDay)) {
       this.setFocusableFlag(this.selectedDay, true);
       this.focusableDay = this.selectedDay.clone();
+    } else if (this.selectedEndDay && this.isDayInCalendarView(this.selectedEndDay)) {
+      this.setFocusableFlag(this.selectedEndDay, true);
+      this.focusableDay = this.selectedEndDay.clone();
     } else if (this.isDayInCalendarView(this.today)) {
       this.setFocusableFlag(this.today, true);
       this.focusableDay = this.today.clone();
@@ -185,6 +206,12 @@ export class CalendarViewModel {
   private setFocusableFlag(day: DayModel, flag: boolean): void {
     if (day) {
       this.currMonthDayViews[day.date - 1].isFocusable = flag;
+    }
+  }
+
+  private setSelectedDay(day: DayModel, flag: boolean) {
+    if (day && this.isDayInCalendarView(day)) {
+      this.currMonthDayViews[day?.date - 1].isSelected = flag;
     }
   }
 }

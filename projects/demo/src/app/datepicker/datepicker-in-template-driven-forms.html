@@ -31,6 +31,30 @@
       (clrDateChange)="date2Changed($event)"
     />
   </clr-date-container>
+
+  <clr-date-container>
+    <label for="date2">Enter Date2</label>
+    <input
+      type="date"
+      id="date3"
+      name="date3"
+      autocomplete="off"
+      [(ngModel)]="date3"
+      required
+      clrRangeStartDate
+      (clrRangeStartDateChange)="date2Changed($event)"
+    />
+    <input
+      type="date"
+      id="date4"
+      name="date4"
+      autocomplete="off"
+      [(ngModel)]="date4"
+      required
+      clrRangeEndDate
+      (clrRangeEndDateChange)="date2Changed($event)"
+    />
+  </clr-date-container>
 </form>
 
 <p>{{simpleForm.value | json}}</p>

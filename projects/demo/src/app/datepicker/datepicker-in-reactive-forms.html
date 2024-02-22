@@ -11,10 +11,34 @@
     <label for="dateControl">Date</label>
     <input id="dateControl" type="date" clrDate (clrDateChange)="dateChanged($event)" formControlName="date" />
   </clr-date-container>
+
+  <clr-date-range-container>
+    <label for="dateControl">Range Picker</label>
+    <input
+      id="dateControl"
+      name="startDate"
+      [min]="minDate"
+      [max]="maxDate"
+      type="date"
+      clrRangeStartDate
+      (clrRangeStartDateChange)="stDateChanged($event)"
+      formControlName="startDate"
+    />
+    <input
+      id="dateControl"
+      name="endDate"
+      [min]="minDate"
+      [max]="maxDate"
+      type="date"
+      clrRangeEndDate
+      (clrRangeEndDateChange)="endDateChanged($event)"
+      formControlName="endDate"
+    />
+  </clr-date-range-container>
 </form>
 
 <p>Form Value: {{dateForm.value | json}}</p>
 
-<div>Touched: {{dateForm.touched}}</div>
+<!-- <div>Touched: {{dateForm.touched}}</div>
 
-<div>Dirty: {{dateForm.dirty}}</div>
+<div>Dirty: {{dateForm.dirty}}</div> -->

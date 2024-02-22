@@ -25,16 +25,23 @@
   color: inherit;
   border: none;
   border-radius: tokens.$cds-alias-object-border-radius-100;
-
   background: none;
   cursor: pointer;
+  &.in-range {
+    border-radius: 0;
+  }
 }
 
 @mixin generate-calendar-focus-style() {
   &:hover,
-  &:focus {
+  &:focus,
+  &.in-range {
     background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
   }
+
+  // &.in-range {
+  //   background: #D9E4E9;
+  // }
 
   &:focus {
     //Only because we have defined a background color for focus above

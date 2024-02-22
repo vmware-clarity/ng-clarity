@@ -32,7 +32,7 @@ export class DateIOService {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
-
+  isDateRangePicker = false;
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
 
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
@@ -70,6 +70,10 @@ export class DateIOService {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.maxDate = new DayModel(year, month - 1, day);
     }
+  }
+
+  setIsDateRangePicker(flag: boolean) {
+    this.isDateRangePicker = flag;
   }
 
   toLocaleDisplayFormatString(date: Date): string {
