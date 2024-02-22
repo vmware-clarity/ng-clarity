@@ -5,36 +5,21 @@
  */
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 enum CheckboxType {
   Checkbox = 'checkbox',
   Toggle = 'toggle',
 }
 
-const defaultStory: Story = args => {
-  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
-  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
-  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
-
-  return {
-    template: `
-      <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
-        <${wrapperSelector}>
-          <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>{{label}}</label>
-        </${wrapperSelector}>
-      </${containerSelector}>
-    `,
-    props: { ...args },
-  };
-};
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Checkbox or Toggle/Checkbox or Toggle',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrCheckboxModule],
+    }),
+  ],
   component: ClrCheckbox,
   argTypes: {
     // inputs
@@ -56,22 +41,83 @@ const defaultParameters: Parameters = {
   },
 };
 
-setupStorybook(ClrCheckboxModule, defaultStory, defaultParameters, generateVariants());
+const CheckBoxToggleTemplate: Story = args => {
+  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
+  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
+  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
 
-function generateVariants() {
-  const variants: Parameters[] = [];
+  return {
+    template: `
+      <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
+        <${wrapperSelector}>
+          <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
+          <label>{{label}}</label>
+        </${wrapperSelector}>
+      </${containerSelector}>
+    `,
+    props: args,
+  };
+};
 
-  for (const type of [CheckboxType.Checkbox, CheckboxType.Toggle]) {
-    for (const disabled of [false, true]) {
-      for (const checked of [false, true]) {
-        variants.push({
-          type,
-          disabled,
-          checked,
-        });
-      }
-    }
-  }
+const CheckBoxTemplate: Story = args => {
+  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
+  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
+  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
 
-  return variants;
-}
+  return {
+    template: `
+    <h6>Enabled</h6>
+    <${containerSelector}>
+      <${wrapperSelector}>
+        <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked"/>
+        <label>Option 1</label>
+      </${wrapperSelector}>
+    </${containerSelector}>
+
+    <${containerSelector}>
+      <${wrapperSelector}>
+        <input type="checkbox" ${directive} value="option1" name="options"/>
+        <label>Option 1</label>
+      </${wrapperSelector}>
+    </${containerSelector}>
+
+    <h6>Disabled</h6>
+    <${containerSelector}>
+      <${wrapperSelector}>
+        <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" [disabled]=disabled/>
+        <label>Option 1</label>
+      </${wrapperSelector}>
+    </${containerSelector}>
+
+    <${containerSelector}>
+      <${wrapperSelector}>
+        <input type="checkbox" ${directive} value="option1" name="options" [disabled]=disabled/>
+        <label>Option 1</label>
+      </${wrapperSelector}>
+    </${containerSelector}>
+    `,
+    props: args,
+  };
+};
+
+export const CheckboxOrToggle: StoryObj = {
+  render: CheckBoxToggleTemplate,
+};
+
+export const ShowcaseCheckbox: StoryObj = {
+  render: CheckBoxTemplate,
+  args: { checked: true, disabled: true, type: CheckboxType.Checkbox },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};
+
+export const ShowcaseToggleSwitch: StoryObj = {
+  render: CheckBoxTemplate,
+  args: { checked: true, disabled: true, type: CheckboxType.Toggle },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};
