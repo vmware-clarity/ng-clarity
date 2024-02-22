@@ -22,6 +22,7 @@ import { filter } from 'rxjs/operators';
 import { commonStringsDefault } from '../../utils';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
+import { ScrollingService } from '../../utils/scrolling/scrolling-service';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
@@ -50,6 +51,7 @@ const createNavElementWrapperForLinks = (document: Document) => {
 @Directive({
   selector: '[clr-nav-level]',
   hostDirectives: [ClrStandaloneCdkTrapFocus],
+  providers: [ScrollingService],
 })
 export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;
@@ -65,6 +67,7 @@ export class ClrNavLevel implements OnInit {
     private responsiveNavService: ResponsiveNavigationService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
+    private scrollingService: ScrollingService,
     injector: Injector
   ) {
     if (isPlatformBrowser(platformId)) {
@@ -192,6 +195,8 @@ export class ClrNavLevel implements OnInit {
   }
 
   open(): void {
+    this.scrollingService.stopScrolling();
+
     if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
       this.elementRef.nativeElement.className = 'clr-nav-level-1';
       // TODO: wrapLinksInNav method
@@ -221,6 +226,7 @@ export class ClrNavLevel implements OnInit {
     this.hideNavigation();
     this.cdkTrapFocus.enabled = false;
     this.hideCloseButton();
+    this.scrollingService.resumeScrolling();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, this.level);
   }
 

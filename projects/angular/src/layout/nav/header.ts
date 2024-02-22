@@ -116,7 +116,7 @@ export class ClrHeader implements OnDestroy {
 
   // closes the nav that is open
   closeOpenNav() {
-    this._scrollingService.resumeScrolling();
+    // this._scrollingService.resumeScrolling();
     this.responsiveNavService.closeAllNavs();
   }
 
@@ -136,7 +136,7 @@ export class ClrHeader implements OnDestroy {
 
   openNav(navLevel: number) {
     this.openNavLevel = navLevel;
-    this._scrollingService.stopScrolling();
+    // this._scrollingService.stopScrolling();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
   }
 
