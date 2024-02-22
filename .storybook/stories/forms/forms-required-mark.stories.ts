@@ -16,6 +16,33 @@ const patterns = {
   numbers: /\d/i,
 };
 
+export default {
+  title: 'Forms/Required Mark',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    // story helpers
+    patterns: { control: { disable: true }, table: { disable: true } },
+    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    clrLayout: {
+      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    },
+  },
+  args: {
+    // story helpers
+    patterns,
+    clrLayout: ClrFormLayout.HORIZONTAL,
+    screenReaderContent: 'Please fill out the form',
+    form: formMappingKey,
+    namePlaceholder: '',
+  },
+};
+
 const RequiredMarkTemplate: Story = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
@@ -102,33 +129,6 @@ const RequiredMarkTemplate: Story = args => ({
   `,
   props: args,
 });
-
-export default {
-  title: 'Forms/Required Mark',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
-    }),
-  ],
-  argTypes: {
-    // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
-    // story helpers
-    patterns: { control: { disable: true }, table: { disable: true } },
-    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
-  },
-  args: {
-    // story helpers
-    patterns,
-    clrLayout: ClrFormLayout.HORIZONTAL,
-    screenReaderContent: 'Please fill out the form',
-    form: formMappingKey,
-    namePlaceholder: '',
-  },
-};
 
 function getForm() {
   return new FormGroup({

@@ -8,6 +8,27 @@ import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
+export default {
+  title: 'Forms/Input States',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
+    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
+    isError: { defaultValue: false, control: { type: 'boolean' } },
+    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
+  },
+  args: {
+    isDisabled: false,
+    isError: false,
+    isSuccess: false,
+  },
+};
+
 const FormInputTemplate: Story = args => ({
   template: `
     <form clrForm>
@@ -140,27 +161,6 @@ const FormInputTemplate: Story = args => ({
   `,
   props: args,
 });
-
-export default {
-  title: 'Forms/Input States',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
-    }),
-  ],
-  argTypes: {
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
-    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
-    isError: { defaultValue: false, control: { type: 'boolean' } },
-    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
-  },
-  args: {
-    isDisabled: false,
-    isError: false,
-    isSuccess: false,
-  },
-};
 
 export const InputStates: StoryObj = {
   render: FormInputTemplate,
