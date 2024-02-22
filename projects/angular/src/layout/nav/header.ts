@@ -9,13 +9,11 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ScrollingService } from '../../utils/scrolling/scrolling-service';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
 @Component({
   selector: 'clr-header',
-  viewProviders: [ScrollingService],
   template: `
     <button
       type="button"
@@ -51,8 +49,7 @@ export class ClrHeader implements OnDestroy {
 
   constructor(
     private responsiveNavService: ResponsiveNavigationService,
-    public commonStrings: ClrCommonStringsService,
-    private _scrollingService: ScrollingService
+    public commonStrings: ClrCommonStringsService
   ) {
     this._subscription = this.responsiveNavService.registeredNavs.subscribe({
       next: (navLevelList: number[]) => {
@@ -116,7 +113,6 @@ export class ClrHeader implements OnDestroy {
 
   // closes the nav that is open
   closeOpenNav() {
-    // this._scrollingService.resumeScrolling();
     this.responsiveNavService.closeAllNavs();
   }
 
@@ -136,7 +132,6 @@ export class ClrHeader implements OnDestroy {
 
   openNav(navLevel: number) {
     this.openNavLevel = navLevel;
-    // this._scrollingService.stopScrolling();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
   }
 
