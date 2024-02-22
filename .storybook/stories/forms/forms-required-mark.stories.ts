@@ -151,12 +151,12 @@ export const HorizontalLayout: StoryObj = {
   render: RequiredMarkTemplate,
 };
 
-export const verticalLayout: StoryObj = {
+export const VerticalLayout: StoryObj = {
   render: RequiredMarkTemplate,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const compactLayout: StoryObj = {
+export const CompactLayout: StoryObj = {
   render: RequiredMarkTemplate,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };
