@@ -123,7 +123,8 @@
             ],
             "main": "projects/angular/src/test.ts",
             "tsConfig": "projects/angular/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js"
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": true
           }
         }
       }

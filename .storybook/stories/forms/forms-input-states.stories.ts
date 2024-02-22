@@ -5,12 +5,31 @@
  */
 
 import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+export default {
+  title: 'Forms/Input States',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
+    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
+    isError: { defaultValue: false, control: { type: 'boolean' } },
+    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
+  },
+  args: {
+    isDisabled: false,
+    isError: false,
+    isSuccess: false,
+  },
+};
 
-const defaultStory: Story = args => ({
+const FormInputTemplate: Story = args => ({
   template: `
     <form clrForm>
       <div class="clr-form-control" [ngClass]="{'clr-form-control-disabled': isDisabled}">
@@ -21,7 +40,7 @@ const defaultStory: Story = args => ({
             <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
           </div>
           <span class="clr-subtext">Helper Subtext</span>
-          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{'success': isSuccess, 'error': isError}" >State Subtext</span>
+          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{'success': isSuccess, 'error': isError}">State Subtext</span>
         </div>
       </div>
       
@@ -140,25 +159,24 @@ const defaultStory: Story = args => ({
       </clr-range-container>
     </form>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Forms/Input States',
-  argTypes: {
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
-    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
-    isError: { defaultValue: false, control: { type: 'boolean' } },
-    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
-  },
-  args: {
-    isDisabled: false,
-    isError: false,
-    isSuccess: false,
-  },
+export const InputStates: StoryObj = {
+  render: FormInputTemplate,
 };
 
-const variants: Parameters[] = [{ isDisabled: true }, { isError: true }, { isSuccess: true }];
+export const DisabledStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isDisabled: true },
+};
 
-setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
+export const ErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true },
+};
+
+export const SuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true },
+};

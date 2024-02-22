@@ -36,9 +36,17 @@ module.exports = function (config) {
       suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/ng-test'),
+      dir: require('path').join(__dirname, './coverage'),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }],
+      check: {
+        global: {
+          statements: 90,
+          branches: 83,
+          functions: 90,
+          lines: 90,
+        },
+      },
     },
     reporters: ['mocha'],
     port: 9876,
