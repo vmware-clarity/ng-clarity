@@ -19,6 +19,7 @@ import { Selection } from './providers/selection';
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />
+          <span class="clr-checkbox-input-visualization"></span>
           <label>{{ selection.current.length }}</label>
           <span class="clr-sr-only">{{ commonStrings.keys.selectedRows }}</span>
         </clr-checkbox-wrapper>

@@ -14,7 +14,7 @@ import { IfControlStateService } from '../common/if-control-state/if-control-sta
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 
-export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
+export function WrapperNoLabelSpec(testContainer, testControl, testComponent, expected): void {
   describe('no label', () => {
     let fixture, containerDE, containerEl;
 
@@ -30,10 +30,11 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
       containerEl = containerDE.nativeElement;
     });
 
-    it('adds an empty label when no label is provided', () => {
+    it('only check box is available when no label is provided', () => {
       fixture.detectChanges();
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
+      console.log(labels);
+      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(expected);
     });
   });
 }
