@@ -105,12 +105,12 @@ export const HorizontalLayout: StoryObj = {
   render: TemplateDrivenStory,
 };
 
-export const verticalLayout: StoryObj = {
+export const VerticalLayout: StoryObj = {
   render: TemplateDrivenStory,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const compactLayout: StoryObj = {
+export const CompactLayout: StoryObj = {
   render: TemplateDrivenStory,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };

@@ -112,12 +112,12 @@ export const HorizontalLayout: StoryObj = {
   render: ReactiveFormTemplate,
 };
 
-export const verticalLayout: StoryObj = {
+export const VerticalLayout: StoryObj = {
   render: ReactiveFormTemplate,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const compactLayout: StoryObj = {
+export const CompactLayout: StoryObj = {
   render: ReactiveFormTemplate,
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };

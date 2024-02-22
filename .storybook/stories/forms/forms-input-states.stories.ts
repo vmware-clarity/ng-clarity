@@ -166,17 +166,17 @@ export const InputStates: StoryObj = {
   render: FormInputTemplate,
 };
 
-export const disabledStates: StoryObj = {
+export const DisabledStates: StoryObj = {
   render: FormInputTemplate,
   args: { isDisabled: true },
 };
 
-export const errorStates: StoryObj = {
+export const ErrorStates: StoryObj = {
   render: FormInputTemplate,
   args: { isError: true },
 };
 
-export const successStates: StoryObj = {
+export const SuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true },
 };
