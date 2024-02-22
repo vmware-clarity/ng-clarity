@@ -9,9 +9,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { THEMES } from '../.storybook/helpers/constants';
-import { handleUnusedScreenshots } from './helpers/handle-unused-screenshots';
 import { Story } from './helpers/story.interface';
 import { ScreenshotOptions } from './screenshot-options';
+
+const browser = process.env['CLARITY_VRT_BROWSER'];
+const matrixKey = browser;
 
 const usedScreenshotPaths: string[] = [];
 
@@ -27,7 +29,7 @@ for (const { storyId, component } of stories) {
   for (const [themeKey, theme] of Object.entries(THEMES)) {
     const normalizedThemeKey = themeKey.toLowerCase().replace(/_/g, '-');
 
-    const screenshotPath = path.join(component, `${storyName}-${normalizedThemeKey}.png`);
+    const screenshotPath = path.join(matrixKey, component, `${storyName}-${normalizedThemeKey}.png`);
     usedScreenshotPaths.push(screenshotPath);
 
     test(screenshotPath, async ({ page }) => {
@@ -60,4 +62,4 @@ const takeFullPageScreenshot = (component, storyName) => {
   return ScreenshotOptions[component]?.fullPageScreenshot || ScreenshotOptions[storyName]?.fullPageScreenshot;
 };
 
-handleUnusedScreenshots(usedScreenshotPaths);
+fs.writeFileSync(`./tests/snapshots/used-screenshot-paths-${matrixKey}.txt`, usedScreenshotPaths.join('\n'));
