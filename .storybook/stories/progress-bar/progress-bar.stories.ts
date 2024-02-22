@@ -91,8 +91,7 @@ const ProgressBarTemplateAll: Story = args => ({
 ></clr-progress-bar>
 `,
   props: { ...args },
-})
-
+});
 
 export default {
   title: 'Progress Bar/Progress Bar',
@@ -123,12 +122,10 @@ export const ProgressBar: StoryObj = {
 export const Showcase: StoryObj = {
   render: ProgressBarTemplateAll,
   args: {
-    TYPES: [...STATUS_TYPES]
+    TYPES: [...STATUS_TYPES],
   },
   parameters: {
     actions: { disable: true },
     controls: { disable: true },
   },
 };
-
-
