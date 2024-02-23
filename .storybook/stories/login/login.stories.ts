@@ -5,7 +5,7 @@
  */
 
 import { ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule } from '@clr/angular';
-import { Story, StoryObj, moduleMetadata } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 const loginTemplate: Story = args => ({
   template: `
