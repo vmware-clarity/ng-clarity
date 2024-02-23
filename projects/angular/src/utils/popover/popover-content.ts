@@ -42,8 +42,7 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
 export class ClrPopoverContent implements OnDestroy {
   private view: EmbeddedViewRef<void>;
   private domPortal: DomPortal;
-  private subscriptions: Subscription[] = [];
-  private overlaySubscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
   private overlayRef: OverlayRef = null;
   private preferredPosition: ConnectedPosition = {
     originX: 'start',
@@ -96,7 +95,7 @@ export class ClrPopoverContent implements OnDestroy {
     if (this.smartOpenService.open) {
       this.showOverlay();
     }
-    this.subscriptions.push(
+    this.subscriptions.add(
       this.smartOpenService.openChange.subscribe(change => {
         if (change) {
           this.showOverlay();
@@ -109,8 +108,7 @@ export class ClrPopoverContent implements OnDestroy {
 
   ngOnDestroy() {
     this.removeOverlay();
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.overlaySubscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.unsubscribe();
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
@@ -133,7 +131,7 @@ export class ClrPopoverContent implements OnDestroy {
       })
     );
 
-    this.overlaySubscriptions.push(
+    this.subscriptions.add(
       overlay.keydownEvents().subscribe(event => {
         if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
           event.preventDefault();
@@ -142,7 +140,7 @@ export class ClrPopoverContent implements OnDestroy {
         }
       })
     );
-    this.overlaySubscriptions.push(
+    this.subscriptions.add(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (
@@ -168,7 +166,7 @@ export class ClrPopoverContent implements OnDestroy {
         }
       })
     );
-    this.overlaySubscriptions.push(
+    this.subscriptions.add(
       overlay.detachments().subscribe(() => {
         this.smartOpenService.open = false;
         this.smartEventsService.setAnchorFocus();
