@@ -6,7 +6,9 @@
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
+import { CommonModules } from '../../helpers/common';
 
 enum CheckboxType {
   Checkbox = 'checkbox',
@@ -42,10 +44,7 @@ export default {
 };
 
 const CheckBoxToggleTemplate: Story = args => {
-  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
-  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
-  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
-
+  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
       <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
@@ -60,41 +59,42 @@ const CheckBoxToggleTemplate: Story = args => {
 };
 
 const CheckBoxTemplate: Story = args => {
-  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
-  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
-  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
-
+  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
-    <h6>Enabled</h6>
-    <${containerSelector}>
-      <${wrapperSelector}>
-        <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked"/>
-        <label>Option 1</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
+      <div style="padding:20px">
+        <span cds-text="subsection">Enabled</span>
+        <${containerSelector}>
+          <${wrapperSelector}>
+            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked"/>
+            <label>Option 1</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
 
-    <${containerSelector}>
-      <${wrapperSelector}>
-        <input type="checkbox" ${directive} value="option1" name="options"/>
-        <label>Option 1</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
+        <${containerSelector}>
+          <${wrapperSelector}>
+            <input type="checkbox" ${directive} value="option1" name="options"/>
+            <label>Option 1</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
+      </div>
 
-    <h6>Disabled</h6>
-    <${containerSelector}>
-      <${wrapperSelector}>
-        <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" [disabled]=disabled/>
-        <label>Option 1</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
+      <div style="padding:20px">
+        <span cds-text="subsection">Disabled</span>
+        <${containerSelector}>
+          <${wrapperSelector}>
+            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" [disabled]=disabled/>
+            <label>Option 1</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
 
-    <${containerSelector}>
-      <${wrapperSelector}>
-        <input type="checkbox" ${directive} value="option1" name="options" [disabled]=disabled/>
-        <label>Option 1</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
+        <${containerSelector}>
+          <${wrapperSelector}>
+            <input type="checkbox" ${directive} value="option1" name="options" [disabled]=disabled/>
+            <label>Option 1</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
+      </div>
     `,
     props: args,
   };

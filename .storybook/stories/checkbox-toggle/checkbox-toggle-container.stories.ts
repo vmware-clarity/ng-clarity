@@ -6,7 +6,9 @@
 
 import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
+import { CommonModules } from '../../helpers/common';
 
 enum CheckboxType {
   Checkbox = 'checkbox',
@@ -44,10 +46,7 @@ export default {
 };
 
 const CheckboxToggleContainerTemplate: Story = args => {
-  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
-  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
-  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
-
+  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
       <${containerSelector} [clrInline]="clrInline">
@@ -63,51 +62,54 @@ const CheckboxToggleContainerTemplate: Story = args => {
 };
 
 const CheckBoxAllTemplate: Story = args => {
-  const containerSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-container' : 'clr-toggle-container';
-  const wrapperSelector = args.type === CheckboxType.Checkbox ? 'clr-checkbox-wrapper' : 'clr-toggle-wrapper';
-  const directive = args.type === CheckboxType.Checkbox ? 'clrCheckbox' : 'clrToggle';
-
+  const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
-    <h6>Default</h6>
-    <${containerSelector} [clrInline]="false">
-      <label>{{label}}</label>
-      <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-        <input type="checkbox" ${directive} />
-        <label>Option {{i + 1}}</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
-
-    <h6>Inline</h6>
-    <${containerSelector} [clrInline]="true">
-      <label>{{label}}</label>
-      <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-        <input type="checkbox" ${directive} />
-        <label>Option {{i + 1}}</label>
-      </${wrapperSelector}>
-    </${containerSelector}>
-
-    <h6>Helper Text</h6>
-    <${containerSelector} [clrInline]="false">
-      <label>{{label}}</label>
-      <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-        <input type="checkbox" ${directive}/>
-        <label>Option {{i + 1}}</label>
-      </${wrapperSelector}>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>This field is required!</clr-control-error>
-    </${containerSelector}>
-
-    <div *ngIf="type==='toggle'">
-      <h6>Right Aligned</h6>
-      <${containerSelector} [clrInline]="false" class="clr-toggle-right">
-        <label>{{label}}</label>
-        <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
-          <input type="checkbox" ${directive} />
-          <label>Option {{i + 1}}</label>
-        </${wrapperSelector}>
-      </${containerSelector}>
-    </div>
+      <div style="padding:20px">
+        <span cds-text="subsection">Default</span>
+        <${containerSelector} [clrInline]="false">
+          <label>{{label}}</label>
+          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
+            <input type="checkbox" ${directive} />
+            <label>Option {{i + 1}}</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
+      </div>
+      
+      <div style="padding:20px">
+        <span cds-text="subsection">Inline</span>
+        <${containerSelector} [clrInline]="true">
+          <label>{{label}}</label>
+          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
+            <input type="checkbox" ${directive} />
+            <label>Option {{i + 1}}</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
+      </div>
+      
+      <div style="padding:20px">
+        <span cds-text="subsection">Helper Text</span>
+        <${containerSelector} [clrInline]="false">
+          <label>{{label}}</label>
+          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
+            <input type="checkbox" ${directive} />
+            <label>Option {{i + 1}}</label>
+          </${wrapperSelector}>
+          <clr-control-helper>Helper text</clr-control-helper>
+          <clr-control-error>This field is required!</clr-control-error>
+        </${containerSelector}>
+      </div>
+      
+      <div *ngIf="type==='toggle'" style="padding:20px">
+        <span cds-text="subsection">Right Aligned</span>
+        <${containerSelector} [clrInline]="false" class="clr-toggle-right">
+          <label>{{label}}</label>
+          <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
+            <input type="checkbox" ${directive} />
+            <label>Option {{i + 1}}</label>
+          </${wrapperSelector}>
+        </${containerSelector}>
+      </div>
     `,
     props: args,
   };
