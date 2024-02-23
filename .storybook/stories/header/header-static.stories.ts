@@ -5,12 +5,30 @@
  */
 
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Header/Headers Static',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
+    }),
+  ],
+  component: ClrHeader,
+  argTypes: {
+    // methods
+    closeOpenNav: { control: { disable: true }, table: { disable: true } },
+    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
+    openNav: { control: { disable: true }, table: { disable: true } },
+    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
+    toggleNav: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {},
+};
+
+const HeaderStaticTemplate: Story = args => ({
   template: `
     <header class="header-6">
       <div class="branding">
@@ -126,28 +144,9 @@ const defaultStory: Story = args => ({
       </div>
     </header>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Header/Headers Static',
-  component: ClrHeader,
-  argTypes: {
-    // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {},
+export const HeaderStatic: StoryObj = {
+  render: HeaderStaticTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(
-  [ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
-  defaultStory,
-  defaultParameters,
-  variants
-);

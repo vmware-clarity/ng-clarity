@@ -5,12 +5,51 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+const HEADER_VARIANTS = [
+  'header-1',
+  'header-2',
+  'header-3',
+  'header-4',
+  'header-5',
+  'header-6',
+  'header-7',
+  'header-8',
+];
+
+export default {
+  title: 'Header/Header Colors',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
+    }),
+  ],
+  component: ClrHeader,
+  argTypes: {
+    color: {
+      defaultValue: 'header-1',
+      control: {
+        type: 'select',
+        options: HEADER_VARIANTS,
+      },
+    },
+    // methods
+    closeOpenNav: { control: { disable: true }, table: { disable: true } },
+    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
+    openNav: { control: { disable: true }, table: { disable: true } },
+    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
+    toggleNav: { control: { disable: true }, table: { disable: true } },
+    HEADER_VARIANTS: { control: { disable: true }, table: { disable: true }, type: 'array' },
+  },
+  args: {
+    HEADER_VARIANTS,
+  },
+};
+
+const HeaderColorTemplate: Story = args => ({
   template: `
   <header class="{{color}}">
     <div class="branding">
@@ -21,39 +60,29 @@ const defaultStory: Story = args => ({
     </div>
   </header>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Header/Header Colors',
-  component: ClrHeader,
-  argTypes: {
-    color: {
-      defaultValue: 'header-1',
-      control: {
-        type: 'select',
-        options: ['header-1', 'header-2', 'header-3', 'header-4', 'header-5', 'header-6', 'header-7', 'header-8'],
-      },
-    },
-    // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {},
+const HeaderColorAllTemplate: Story = args => ({
+  template: `
+  <div style="margin-top:10px" *ngFor="let color of HEADER_VARIANTS">
+    <header [class]="color">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+    </header>
+  </div>
+  `,
+  props: args,
+});
+
+export const HeaderColors: StoryObj = {
+  render: HeaderColorTemplate,
 };
 
-const variants: Parameters[] = [
-  { color: 'header-1' },
-  { color: 'header-2' },
-  { color: 'header-3' },
-  { color: 'header-4' },
-  { color: 'header-5' },
-  { color: 'header-6' },
-  { color: 'header-7' },
-  { color: 'header-8' },
-];
-
-setupStorybook([ClrMainContainerModule, ClrNavigationModule], defaultStory, defaultParameters, variants);
+export const Showcase: StoryObj = {
+  render: HeaderColorAllTemplate,
+};
