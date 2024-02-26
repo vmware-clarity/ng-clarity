@@ -4,31 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrStackView, ClrStackViewModule } from '@clr/angular';
+import { ClrModalModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
-const STACK_VIEW_STATES = [
-  {
-    openIndices: [true],
-  },
-  {
-    openIndices: [false, false, false, true],
-  },
-  {
-    openIndices: [false, true, true, false],
-  },
-  {
-    openIndices: [true, true, true, true],
-  },
-];
-
 export default {
-  title: 'Stack View/Stack View',
+  title: 'Stack View/Stack View Editable',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrStackViewModule],
+      imports: [...CommonModules, ClrStackViewModule, ClrModalModule],
     }),
   ],
   component: ClrStackView,
@@ -37,7 +22,6 @@ export default {
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },
     blockCount: { control: { type: 'number', min: 1, max: 100 } },
-    STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers
@@ -48,13 +32,17 @@ export default {
     content: 'Block content',
     subLabel: 'Sub-block',
     subContent: 'Sub-block content',
-    STACK_VIEW_STATES,
   },
 };
 
 const StackViewTemplate: Story = args => ({
   template: `
     <clr-stack-view>
+      <clr-stack-header>
+        Stack View With Editing in a Modal
+        <button class="stack-action btn btn-sm btn-link" (click)="editModal = true" type="button">Edit</button>
+      </clr-stack-header>
+
       <clr-stack-block
         *ngFor="let _ of createArray(blockCount); let i = index"
         [clrSbExpanded]="!!openIndices[i]"
@@ -67,42 +55,36 @@ const StackViewTemplate: Story = args => ({
         </clr-stack-block>
       </clr-stack-block>
     </clr-stack-view>
-  `,
-  props: args,
-});
 
-const StackViewAllTemplate: Story = args => ({
-  template: `
-    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
-      <clr-stack-view>
-        <clr-stack-block
-          *ngFor="let _ of createArray(blockCount); let i = index"
-          [clrSbExpanded]="!!state.openIndices[i]"
-        >
-          <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
-          <clr-stack-content>{{ content }}</clr-stack-content>
-          <clr-stack-block>
-            <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
-            <clr-stack-content>{{ subContent }}</clr-stack-content>
+    <clr-modal [(clrModalOpen)]="editModal">
+      <h3 class="modal-title">Edit mode</h3>
+      <div class="modal-body">
+        <clr-stack-view>
+          <clr-stack-block
+            *ngFor="let _ of createArray(blockCount); let i = index"
+              [clrSbExpanded]="!!openIndices[i]"
+            >
+            <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+            <clr-stack-content>
+              <input type="text" [(ngModel)]="content" class="clr-input" />
+            </clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+              <clr-stack-content>
+                <input type="text" [(ngModel)]="subContent" class="clr-input" />
+              </clr-stack-content>
+            </clr-stack-block>
           </clr-stack-block>
-        </clr-stack-block>
-      </clr-stack-view>
-    </div>
+        </clr-stack-view>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="editModal = false">Done</button>
+      </div>
+    </clr-modal>
   `,
   props: args,
 });
 
-export const StackView: StoryObj = {
+export const StackViewEditable: StoryObj = {
   render: StackViewTemplate,
-};
-
-export const StackViewShowcase: StoryObj = {
-  render: StackViewAllTemplate,
-  args: {
-    blockCount: 4,
-  },
-  parameters: {
-    actions: { disable: true },
-    controls: { disable: true },
-  },
 };
