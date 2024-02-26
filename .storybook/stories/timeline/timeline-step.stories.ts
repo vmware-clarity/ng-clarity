@@ -5,26 +5,25 @@
  */
 
 import { ClrTimelineModule, ClrTimelineStep, ClrTimelineStepState } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-timeline>
-      <clr-timeline-step [clrState]="clrState">
-        <clr-timeline-step-header *ngIf="header">{{header}}</clr-timeline-step-header>
-        <clr-timeline-step-title *ngIf="title">{{title}}</clr-timeline-step-title>
-        <clr-timeline-step-description *ngIf="description">{{description}}</clr-timeline-step-description>
-      </clr-timeline-step>
-    </clr-timeline>
-  `,
-  props: { ...args },
-});
+const TIMELINE_STEP_STATE = [
+  { clrState: ClrTimelineStepState.NOT_STARTED },
+  { clrState: ClrTimelineStepState.CURRENT },
+  { clrState: ClrTimelineStepState.PROCESSING },
+  { clrState: ClrTimelineStepState.SUCCESS },
+  { clrState: ClrTimelineStepState.ERROR },
+];
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Timeline/Timeline Step',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTimelineModule],
+    }),
+  ],
   component: ClrTimelineStep,
   argTypes: {
     // inputs
@@ -34,6 +33,7 @@ const defaultParameters: Parameters = {
     },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
+    TIMELINE_STEP_STATE: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers
@@ -41,25 +41,46 @@ const defaultParameters: Parameters = {
     header: 'header',
     title: 'title',
     description: 'description',
+    TIMELINE_STEP_STATE,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrState: ClrTimelineStepState.NOT_STARTED,
-  },
-  {
-    clrState: ClrTimelineStepState.CURRENT,
-  },
-  {
-    clrState: ClrTimelineStepState.PROCESSING,
-  },
-  {
-    clrState: ClrTimelineStepState.SUCCESS,
-  },
-  {
-    clrState: ClrTimelineStepState.ERROR,
-  },
-];
+const TimelineStepTemplate: Story = args => ({
+  template: `
+    <clr-timeline>
+      <clr-timeline-step [clrState]="clrState">
+        <clr-timeline-step-header *ngIf="header">{{header}}</clr-timeline-step-header>
+        <clr-timeline-step-title *ngIf="title">{{title}}</clr-timeline-step-title>
+        <clr-timeline-step-description *ngIf="description">{{description}}</clr-timeline-step-description>
+      </clr-timeline-step>
+    </clr-timeline>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrTimelineModule, defaultStory, defaultParameters, variants);
+const TimelineStepAllTemplate: Story = args => ({
+  template: `
+    <div *ngFor="let state of TIMELINE_STEP_STATE" style="margin-top:20px">
+      <clr-timeline>
+        <clr-timeline-step [clrState]="state.clrState">
+          <clr-timeline-step-header *ngIf="header">{{header}}</clr-timeline-step-header>
+          <clr-timeline-step-title *ngIf="title">{{title}}</clr-timeline-step-title>
+          <clr-timeline-step-description *ngIf="description">{{description}}</clr-timeline-step-description>
+        </clr-timeline-step>
+      </clr-timeline>
+    </div>
+  `,
+  props: args,
+});
+
+export const TimelineStep: StoryObj = {
+  render: TimelineStepTemplate,
+};
+
+export const TimelineStepStates: StoryObj = {
+  render: TimelineStepAllTemplate,
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};
