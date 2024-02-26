@@ -1032,6 +1032,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-forms-select-multiple-background-color: var(--clr-forms-textarea-background-color);
   --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color}; // var(--clr-color-neutral-400);
   --clr-forms-select-multiple-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
+  --clr-forms-select-multiple-selected-option-background-color: var(--clr-global-selection-color); // indirectly mapped to CDS token
 
   // Checkbox
   --clr-forms-checkbox-label-color: var(--clr-forms-label-color); // indirectly mapped to CDS token #{tokens.$cds-global-typography-color-400}
@@ -1696,7 +1697,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
 
   // ATM: move to tree-view.clarity.scss
   .clr-treenode-content {
-    height: #{tokens.$cds-global-space-10};
+    min-height: #{tokens.$cds-global-space-10};
     color: #{tokens.$cds-alias-typography-color-400}; // static text content color
     background-color: var(--clr-tree-node-content-bg-color);
 
@@ -1909,7 +1910,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-datagrid-row-hover-color: #{tokens.$cds-alias-object-interaction-background-hover}; // var(--clr-color-neutral-200);
   --clr-datagrid-row-active-color: #{tokens.$cds-alias-object-interaction-background-active};
   --clr-datagrid-row-hover-font-color: #{tokens.$cds-alias-typography-color-500}; // var(--clr-color-neutral-1000);
-  --clr-datagrid-action-toggle-color: #{tokens.$cds-alias-object-interaction-background-active}; // #{tokens.$cds-global-color-gray-700}; // var(--clr-color-neutral-700);
+  --clr-datagrid-action-toggle-color: #{tokens.$cds-alias-object-interaction-color-active}; // #{tokens.$cds-global-color-gray-700}; // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
   --clr-datagrid-pagination-btn-disabled-color: #{tokens.$cds-alias-status-disabled}; // var(--clr-color-neutral-600);
   --clr-datagrid-pagination-input-border-color: #{tokens.$cds-alias-object-border-color}; // indirectly mapped;
