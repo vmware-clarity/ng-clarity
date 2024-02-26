@@ -439,7 +439,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
+          padding-top: tokens.$cds-global-space-10;
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -473,9 +473,9 @@
         .clr-vertical-nav.clr-nav-level-1 {
           overflow-y: auto;
           overflow-x: visible;
-          padding-top: 32px;
-          margin-top: 52px;
-          max-height: calc(100% - 52px);
+          // This value equals the height of the branding (branding is not part of the scrollable area)
+          margin-top: mixins.baselinePx(52);
+          max-height: calc(100% - #{mixins.baselinePx(52)});
 
           width: responsive-nav-variables.$clr-sliding-panel-width;
           max-width: responsive-nav-variables.$clr-sliding-panel-width;
