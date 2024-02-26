@@ -43,12 +43,12 @@ const rangeTemplate: Story = args => ({
 
 export const Range: StoryObj = {
   render: rangeTemplate,
-}
+};
 
 export const disabled: StoryObj = {
   render: rangeTemplate,
   args: {
     clrRangeHasProgress: true,
     disabled: true,
-  }
-}
+  },
+};
