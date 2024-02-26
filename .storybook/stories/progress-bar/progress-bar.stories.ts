@@ -4,13 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrProgressBar, ClrProgressBarModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { ClrProgressBar } from '@clr/angular';
+import { Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-const defaultStory: Story = args => ({
+const ProgressBarTemplate: Story = args => ({
   template: `
     <clr-progress-bar
       [id]="id"
@@ -29,7 +28,72 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
+const ProgressBarTemplateAll: Story = args => ({
+  template: `
+  <h6>Progress Bar with Status</h6>
+  <div style="margin-top: 5px;" *ngFor="let type of TYPES">
+    <clr-progress-bar
+    [id]="id"
+    [clrMax]="clrMax"
+    [clrDisplayval]="clrDisplayval"
+    [clrValue]="clrValue"
+    [clrLabeled]="clrLabeled"
+    [clrFade]="clrFade"
+    [clrLoop]="clrLoop"
+    [clrColor]="type"
+    [clrFlash]="clrFlash"
+    [clrFlashDanger]="clrFlashDanger"
+    [clrCompact]="clrCompact"
+  ></clr-progress-bar>
+  </div>
+
+  <h6>Compact Progress Bar</h6>
+  <clr-progress-bar
+  [id]="id"
+  [clrMax]="clrMax"
+  [clrDisplayval]="clrDisplayval"
+  [clrValue]="clrValue"
+  [clrLabeled]="clrLabeled"
+  [clrFade]="clrFade"
+  [clrLoop]="clrLoop"
+  [clrColor]="type"
+  [clrFlash]="clrFlash"
+  [clrFlashDanger]="clrFlashDanger"
+  [clrCompact]="'true'"
+></clr-progress-bar>
+
+<h6>Labelled Progress Bar</h6>
+<clr-progress-bar
+[id]="id"
+[clrMax]="clrMax"
+[clrDisplayval]="clrDisplayval"
+[clrValue]="clrValue"
+[clrLabeled]="'true'"
+[clrLoop]="clrLoop"
+[clrColor]="type"
+[clrFlash]="clrFlash"
+[clrFlashDanger]="clrFlashDanger"
+[clrCompact]="clrCompact"
+></clr-progress-bar>
+
+<h6>Looped Progress Bar</h6>
+<clr-progress-bar
+[id]="id"
+[clrMax]="clrMax"
+[clrDisplayval]="clrDisplayval"
+[clrValue]="clrValue"
+[clrLabeled]="clrLabeled"
+[clrLoop]="'true'"
+[clrColor]="type"
+[clrFlash]="clrFlash"
+[clrFlashDanger]="clrFlashDanger"
+[clrCompact]="clrCompact"
+></clr-progress-bar>
+`,
+  props: { ...args },
+});
+
+export default {
   title: 'Progress Bar/Progress Bar',
   component: ClrProgressBar,
   argTypes: {
@@ -51,32 +115,17 @@ const defaultParameters: Parameters = {
   args: {},
 };
 
-const variants: Parameters[] = [
-  {
-    clrValue: 33,
-    clrLabeled: true,
-    clrDisplayVal: '33%',
-  },
-  {
-    clrValue: 66,
-    clrColor: 'danger',
-    clrLabeled: true,
-    clrDisplayVal: '66%',
-  },
-  {
-    clrValue: 100,
-    clrColor: 'success',
-  },
-  {
-    clrValue: 50,
-    clrColor: 'warning',
-    clrLabeled: true,
-    clrDisplayVal: '50%',
-  },
-  {
-    clrValue: 75,
-    clrCompact: true,
-  },
-];
+export const ProgressBar: StoryObj = {
+  render: ProgressBarTemplate,
+};
 
-setupStorybook(ClrProgressBarModule, defaultStory, defaultParameters, variants);
+export const Showcase: StoryObj = {
+  render: ProgressBarTemplateAll,
+  args: {
+    TYPES: [...STATUS_TYPES],
+  },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};
