@@ -199,7 +199,7 @@ export class ClrNavLevel implements OnInit {
 
     if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
       this.elementRef.nativeElement.className = 'clr-nav-level-1';
-      // TODO: wrapLinksInNav method
+      // TODO: wrapLinksInNav method - only invoke if there is no wrapper yet
       const navLinksWrapper = createNavElementWrapperForLinks(document);
       const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
 
