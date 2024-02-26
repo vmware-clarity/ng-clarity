@@ -5,30 +5,17 @@
  */
 
 import { ClrTabs, ClrTabsModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const collapsedStory: Story = args => ({
-  template: `
-    <clr-tabs [clrLayout]="clrLayout">
-      <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
-        <button clrTabLink>{{title}} {{i + 1}}</button>
-        <clr-tab-content *clrIfActive="activeTab === (i + 1)">
-          <p>
-            {{content}} {{i + 1}}
-          </p>
-        </clr-tab-content>
-      </clr-tab>
-    </clr-tabs>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tabs/Tabs - Reactive',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrTabsModule],
+    }),
+  ],
   component: ClrTabs,
   argTypes: {
     // inputs
@@ -59,20 +46,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-setupStorybook(ClrTabsModule, collapsedStory, defaultParameters, generateVariants());
+const collapsedTemplate: Story = args => ({
+  template: `
+    <clr-tabs [clrLayout]="clrLayout">
+      <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
+        <button clrTabLink>{{title}} {{i + 1}}</button>
+        <clr-tab-content *clrIfActive="activeTab === (i + 1)">
+          <p>
+            {{content}} {{i + 1}}
+          </p>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  `,
+  props: { ...args },
+});
 
-function generateVariants() {
-  const variants: Parameters[] = [];
-
-  for (const clrLayout of [TabsLayout.HORIZONTAL, TabsLayout.VERTICAL]) {
-    for (const activeTab of [1, 2, 3, 4]) {
-      variants.push({
-        clrLayout,
-        activeTab,
-        tabCount: 4,
-      });
-    }
-  }
-
-  return variants;
-}
+export const Tabs: StoryObj = {
+  render: collapsedTemplate,
+};
