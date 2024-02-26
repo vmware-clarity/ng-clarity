@@ -5,13 +5,12 @@
  */
 
 import { ClrSpinnerModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 interface Block {
   label: string;
@@ -34,7 +33,25 @@ class ElementsBlockService {
   }
 }
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Stack View/Stack View with lazy-loaded blocks',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStackViewModule, ClrSpinnerModule],
+    }),
+  ],
+  component: ClrStackView,
+  argTypes: {
+    // story helpers
+    elementsBlockService: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elementsBlockService: new ElementsBlockService(),
+  },
+};
+
+const StackViewTemplate: Story = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">
@@ -51,22 +68,9 @@ const defaultStory: Story = args => ({
       </clr-stack-block>
     </clr-stack-view>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Stack View/Stack View with lazy-loaded blocks',
-  component: ClrStackView,
-  argTypes: {
-    // story helpers
-    elementsBlockService: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elementsBlockService: new ElementsBlockService(),
-  },
+export const LazyLoading: StoryObj = {
+  render: StackViewTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrStackViewModule, ClrSpinnerModule], defaultStory, defaultParameters, variants);
