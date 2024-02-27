@@ -63,6 +63,13 @@ export const Tabs: StoryObj = {
   render: tabsTemplate,
 };
 
+export const VerticalTabs: StoryObj = {
+  render: tabsTemplate,
+  args: {
+    clrLayout: TabsLayout.VERTICAL,
+  },
+};
+
 export const TabsReactive: StoryObj = {
   render: tabsTemplate,
   parameters: {
