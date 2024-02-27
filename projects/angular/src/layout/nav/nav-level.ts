@@ -42,9 +42,14 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   return cdsCloseButton;
 };
 
-const createNavElementWrapperForLinks = (document: Document) => {
-  const navHtmlElementWrapper = document.createElement('nav');
-  navHtmlElementWrapper.className = 'header-nav clr-nav-level-1';
+const createOrGetNavElementWrapperForLinks = (document: Document) => {
+  let navHtmlElementWrapper = document.querySelector('nav.header-nav.clr-nav-level-1');
+
+  if (!navHtmlElementWrapper) {
+    navHtmlElementWrapper = document.createElement('nav');
+    navHtmlElementWrapper.className = 'header-nav clr-nav-level-1';
+  }
+
   return navHtmlElementWrapper;
 };
 
@@ -200,7 +205,7 @@ export class ClrNavLevel implements OnInit {
     if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
       this.elementRef.nativeElement.className = 'clr-nav-level-1';
       // TODO: wrapLinksInNav method - only invoke if there is no wrapper yet
-      const navLinksWrapper = createNavElementWrapperForLinks(document);
+      const navLinksWrapper = createOrGetNavElementWrapperForLinks(document);
       const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
 
       navLinks.forEach(navLink => {
