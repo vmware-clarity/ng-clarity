@@ -18,20 +18,29 @@ export class Inventory {
   private _currentQuery: User[];
 
   get all(): User[] {
-    return this._all.slice();
+    return this._all;
   }
 
   reset() {
     this._all = [];
-    for (let i = 0; i < this.size; i++) {
-      this._all.push({
-        id: i + 10000,
+    this._all = this._all.concat(this.addBySize());
+    console.log(this._all.length);
+  }
+
+  addBySize(size = this.size) {
+    const newData: User[] = [];
+
+    for (let i = 0; i < size; i++) {
+      newData.push({
+        id: Math.floor(Math.random() * 10001),
         name: this.getItem(i, NAMES),
         creation: new Date('June 23, 1912'),
         color: this.getItem(i, COLORS),
         pokemon: this.getItem(i, POKEMONS),
       });
     }
+
+    return newData;
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {
