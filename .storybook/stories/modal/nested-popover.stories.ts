@@ -5,13 +5,29 @@
  */
 
 import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const story: Story = args => ({
+export default {
+  title: 'Modal/Nested Popover',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const NestedPopoverTemplate: Story = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
 
@@ -55,19 +71,9 @@ const story: Story = args => ({
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const parameters: Parameters = {
-  title: 'Modal/Nested Popover',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const NestedPopover: StoryObj = {
+  render: NestedPopoverTemplate,
 };
-
-setupStorybook([ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule], story, parameters);
