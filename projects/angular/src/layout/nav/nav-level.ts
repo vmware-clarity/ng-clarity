@@ -247,7 +247,7 @@ export class ClrNavLevel implements OnInit {
 
   private wrapLinksInsideNavElement() {
     const navLinksWrapper = createOrGetNavElementWrapperForLinks(document);
-    const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
+    const navLinks = this.elementRef.nativeElement.querySelectorAll('.clr-nav-level-1 .nav-link');
 
     navLinks.forEach(navLink => {
       this.renderer.appendChild(navLinksWrapper, navLink);
