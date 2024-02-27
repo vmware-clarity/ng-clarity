@@ -62,3 +62,12 @@ const tabsTemplate: Story = args => ({
 export const Tabs: StoryObj = {
   render: tabsTemplate,
 };
+
+export const TabsReactive: StoryObj = {
+  render: tabsTemplate,
+  parameters: {
+    viewport: {
+      defaultViewport: 'large',
+    },
+  },
+};
