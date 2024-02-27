@@ -12,13 +12,63 @@ import {
   commonStringsDefault,
 } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Column Filter',
+  component: ClrDatagridColumn,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDgColType: { defaultValue: 'string' },
+    clrDgField: { control: { disable: true } },
+    clrDgSortBy: { type: 'string' },
+    clrDgSortOrder: {
+      defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
+      control: {
+        type: 'radio',
+        options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
+      },
+    },
+    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
+    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
+    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
+    clrFilterValue: { defaultValue: '', type: 'string' },
+    // outputs
+    clrDgColumnResize: { control: { disable: true } },
+    clrDgSortOrderChange: { control: { disable: true } },
+    clrFilterValueChange: { control: { disable: true } },
+    // methods
+    sort: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+    ClrDatagridSortOrder: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrDgColumnResize: action('clrDgColumnResize'),
+    clrDgSortOrderChange: action('clrDgSortOrderChange'),
+    clrFilterValueChange: action('clrFilterValueChange'),
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+    ClrDatagridSortOrder: ClrDatagridSortOrder,
+  },
+};
+
+const ColumnFilterTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -82,53 +132,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Column',
-  component: ClrDatagridColumn,
-  argTypes: {
-    // inputs
-    clrDgColType: { defaultValue: 'string' },
-    clrDgField: { control: { disable: true } },
-    clrDgSortBy: { type: 'string' },
-    clrDgSortOrder: {
-      defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
-      control: {
-        type: 'radio',
-        options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
-      },
-    },
-    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
-    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
-    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
-    clrFilterValue: { defaultValue: '', type: 'string' },
-    // outputs
-    clrDgColumnResize: { control: { disable: true } },
-    clrDgSortOrderChange: { control: { disable: true } },
-    clrFilterValueChange: { control: { disable: true } },
-    // methods
-    sort: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-    ClrDatagridSortOrder: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrDgColumnResize: action('clrDgColumnResize'),
-    clrDgSortOrderChange: action('clrDgSortOrderChange'),
-    clrFilterValueChange: action('clrFilterValueChange'),
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-    ClrDatagridSortOrder: ClrDatagridSortOrder,
-  },
+export const ColumnFilter: StoryObj = {
+  render: ColumnFilterTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
