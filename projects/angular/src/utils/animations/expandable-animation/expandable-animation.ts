@@ -5,7 +5,7 @@
  */
 
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostBinding, HostListener, Input } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
@@ -16,7 +16,6 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
     `
       :host {
         display: block;
-        overflow: hidden;
       }
     `,
   ],
@@ -35,15 +34,21 @@ export class ClrExpandableAnimation {
 
   startHeight = 0;
 
-  constructor(private element: ElementRef, private domAdapter: DomAdapter) {}
+  constructor(private element: ElementRef, private domAdapter: DomAdapter, private renderer: Renderer2) {}
 
   @HostBinding('@expandAnimation')
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
+  @HostListener('@expandAnimation.start')
+  animationStart() {
+    this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+  }
   @HostListener('@expandAnimation.done')
   animationDone() {
+    this.renderer.removeStyle(this.element.nativeElement, 'overflow');
+
     // A "safe" auto-update of the height ensuring basic OOTB user experience .
     // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
     // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
