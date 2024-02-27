@@ -26,7 +26,7 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   dropdown: {
     fullPageScreenshot: true,
   },
-  'headers-static--variants': {
+  'headers-static--header-static': {
     fullPageScreenshot: true,
   },
   'signpost--opened': {
