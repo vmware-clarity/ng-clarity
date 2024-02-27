@@ -204,19 +204,9 @@ export class ClrNavLevel implements OnInit {
 
     if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
       this.elementRef.nativeElement.className = 'clr-nav-level-1';
-      // TODO: wrapLinksInNav method - only invoke if there is no wrapper yet
-      const navLinksWrapper = createOrGetNavElementWrapperForLinks(document);
-      const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
 
-      navLinks.forEach(navLink => {
-        this.renderer.appendChild(navLinksWrapper, navLink);
-      });
-
-      this.renderer.appendChild(this.elementRef.nativeElement, navLinksWrapper);
-
-      // TODO: extract to new method insertCloseButtonBeforeNav
-      const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
-      this.renderer.listen(closeButton, 'click', this.close.bind(this));
+      this.wrapLinksInsideNavElement();
+      this.insertCloseButtonBeforeNav();
     }
 
     this._isOpen = true;
@@ -253,5 +243,21 @@ export class ClrNavLevel implements OnInit {
   protected showCloseButton() {
     this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
+  }
+
+  private wrapLinksInsideNavElement() {
+    const navLinksWrapper = createOrGetNavElementWrapperForLinks(document);
+    const navLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link');
+
+    navLinks.forEach(navLink => {
+      this.renderer.appendChild(navLinksWrapper, navLink);
+    });
+
+    this.renderer.appendChild(this.elementRef.nativeElement, navLinksWrapper);
+  }
+
+  private insertCloseButtonBeforeNav() {
+    const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
+    this.renderer.listen(closeButton, 'click', this.close.bind(this));
   }
 }
