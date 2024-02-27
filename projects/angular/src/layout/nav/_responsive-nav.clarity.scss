@@ -397,7 +397,7 @@
             left: 0;
             overflow: hidden;
             width: responsive-nav-variables.$clr-sliding-panel-width;
-            background: var(--clr-vertical-nav-bg-color);
+            background: vertical-nav-variables.$clr-vertical-nav-bg-color;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
             margin-left: calc(-1 * var(--scrollbar-width));
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
