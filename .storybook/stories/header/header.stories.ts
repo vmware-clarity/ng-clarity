@@ -5,12 +5,31 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Header/Header',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
+    }),
+  ],
+  component: ClrHeader,
+  argTypes: {
+    // methods
+    closeOpenNav: { control: { disable: true }, table: { disable: true } },
+    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
+    openNav: { control: { disable: true }, table: { disable: true } },
+    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
+    toggleNav: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+  },
+  args: {},
+};
+
+const HeaderTemplate: Story = args => ({
   template: `
     <clr-main-container>
       <clr-header [role]="role">
@@ -49,24 +68,9 @@ const defaultStory: Story = args => ({
       </nav>
     </clr-main-container>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Header/Header',
-  component: ClrHeader,
-  argTypes: {
-    // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-  },
-  args: {},
+export const Header: StoryObj = {
+  render: HeaderTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrMainContainerModule, ClrNavigationModule], defaultStory, defaultParameters, variants);
