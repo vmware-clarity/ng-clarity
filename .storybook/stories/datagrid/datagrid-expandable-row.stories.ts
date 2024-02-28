@@ -14,12 +14,12 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
-<style>
-.open-tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-</style>
+  <style>
+  .open-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  </style>
   <clr-datagrid
     ${args.height ? '[style.height.px]="height"' : ''}
     ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -63,7 +63,7 @@ const defaultStory: Story = args => ({
             solid
           ></cds-icon>
           <span class="tooltip-content"
-            [class.open-tooltip]="openTooltip&&index===0"
+            [class.open-tooltip]="openTooltip && index === 0"
             >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
             neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
             tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
