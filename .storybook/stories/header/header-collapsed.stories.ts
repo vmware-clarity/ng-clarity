@@ -5,22 +5,17 @@
  */
 
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
-
-  <iframe width="500" src="/iframe.html?args=&id=header-header--default&viewMode=story" style="border: none;"></iframe>
-    
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Header/Headers Collapsed',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
+    }),
+  ],
   component: ClrHeader,
   argTypes: {
     // methods
@@ -33,11 +28,15 @@ const defaultParameters: Parameters = {
   args: {},
 };
 
-const variants: Parameters[] = [];
+const HeaderCollapsedTemplate: Story = args => ({
+  template: `
 
-setupStorybook(
-  [ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
-  defaultStory,
-  defaultParameters,
-  variants
-);
+    <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none;"></iframe>
+    
+  `,
+  props: args,
+});
+
+export const HeaderCollapsed: StoryObj = {
+  render: HeaderCollapsedTemplate,
+};
