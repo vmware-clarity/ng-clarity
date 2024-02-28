@@ -4,14 +4,63 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+export default {
+  title: 'Wizard/Wizard Page',
+  component: ClrWizardPage,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrWizardModule, BrowserAnimationsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
+    clrWizardPageHasError: { defaultValue: false },
+    clrWizardPageNextDisabled: { defaultValue: false },
+    clrWizardPagePreventDefault: { defaultValue: false, control: { type: 'boolean' } },
+    clrWizardPagePreventDefaultCancel: { defaultValue: false },
+    clrWizardPagePreventDefaultNext: { defaultValue: false },
+    clrWizardPagePreviousDisabled: { defaultValue: false },
+    id: { defaultValue: '', control: { type: 'text' } },
+    // outputs
+    clrWizardPageCustomButton: { control: { disable: true } },
+    clrWizardPageDanger: { control: { disable: true } },
+    clrWizardPageFinish: { control: { disable: true } },
+    clrWizardPageNext: { control: { disable: true } },
+    clrWizardPageNextDisabledChange: { control: { disable: true } },
+    clrWizardPageOnCancel: { control: { disable: true } },
+    clrWizardPageOnCommit: { control: { disable: true } },
+    clrWizardPageOnLoad: { control: { disable: true } },
+    clrWizardPagePreventDefaultCancelChange: { control: { disable: true } },
+    clrWizardPagePrevious: { control: { disable: true } },
+    clrWizardPagePreviousDisabledChange: { control: { disable: true } },
+    clrWizardPagePrimary: { control: { disable: true } },
+    // methods
+    makeCurrent: { control: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrWizardPageCustomButton: action('clrWizardPageCustomButton'),
+    clrWizardPageDanger: action('clrWizardPageDanger'),
+    clrWizardPageFinish: action('clrWizardPageFinish'),
+    clrWizardPageNext: action('clrWizardPageNext'),
+    clrWizardPageNextDisabledChange: action('clrWizardPageNextDisabledChange'),
+    clrWizardPageOnCancel: action('clrWizardPageOnCancel'),
+    clrWizardPageOnCommit: action('clrWizardPageOnCommit'),
+    clrWizardPageOnLoad: action('clrWizardPageOnLoad'),
+    clrWizardPagePreventDefaultCancelChange: action('clrWizardPagePreventDefaultCancelChange'),
+    clrWizardPagePrevious: action('clrWizardPagePrevious'),
+    clrWizardPagePreviousDisabledChange: action('clrWizardPagePreviousDisabledChange'),
+    clrWizardPagePrimary: action('clrWizardPagePrimary'),
+  },
+};
 
-const defaultStory: Story = args => ({
+const WizardPageTemplate: Story = args => ({
   template: `
     <clr-wizard [clrWizardOpen]="true">
       <clr-wizard-title>Wizard</clr-wizard-title>
@@ -59,52 +108,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Wizard/Wizard Page',
-  component: ClrWizardPage,
-  argTypes: {
-    // inputs
-    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
-    clrWizardPageHasError: { defaultValue: false },
-    clrWizardPageNextDisabled: { defaultValue: false },
-    clrWizardPagePreventDefault: { defaultValue: false, control: { type: 'boolean' } },
-    clrWizardPagePreventDefaultCancel: { defaultValue: false },
-    clrWizardPagePreventDefaultNext: { defaultValue: false },
-    clrWizardPagePreviousDisabled: { defaultValue: false },
-    id: { defaultValue: '', control: { type: 'text' } },
-    // outputs
-    clrWizardPageCustomButton: { control: { disable: true } },
-    clrWizardPageDanger: { control: { disable: true } },
-    clrWizardPageFinish: { control: { disable: true } },
-    clrWizardPageNext: { control: { disable: true } },
-    clrWizardPageNextDisabledChange: { control: { disable: true } },
-    clrWizardPageOnCancel: { control: { disable: true } },
-    clrWizardPageOnCommit: { control: { disable: true } },
-    clrWizardPageOnLoad: { control: { disable: true } },
-    clrWizardPagePreventDefaultCancelChange: { control: { disable: true } },
-    clrWizardPagePrevious: { control: { disable: true } },
-    clrWizardPagePreviousDisabledChange: { control: { disable: true } },
-    clrWizardPagePrimary: { control: { disable: true } },
-    // methods
-    makeCurrent: { control: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrWizardPageCustomButton: action('clrWizardPageCustomButton'),
-    clrWizardPageDanger: action('clrWizardPageDanger'),
-    clrWizardPageFinish: action('clrWizardPageFinish'),
-    clrWizardPageNext: action('clrWizardPageNext'),
-    clrWizardPageNextDisabledChange: action('clrWizardPageNextDisabledChange'),
-    clrWizardPageOnCancel: action('clrWizardPageOnCancel'),
-    clrWizardPageOnCommit: action('clrWizardPageOnCommit'),
-    clrWizardPageOnLoad: action('clrWizardPageOnLoad'),
-    clrWizardPagePreventDefaultCancelChange: action('clrWizardPagePreventDefaultCancelChange'),
-    clrWizardPagePrevious: action('clrWizardPagePrevious'),
-    clrWizardPagePreviousDisabledChange: action('clrWizardPagePreviousDisabledChange'),
-    clrWizardPagePrimary: action('clrWizardPagePrimary'),
-  },
+export const WizardPage: StoryObj = {
+  render: WizardPageTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(ClrWizardModule, defaultStory, defaultParameters, variants);
