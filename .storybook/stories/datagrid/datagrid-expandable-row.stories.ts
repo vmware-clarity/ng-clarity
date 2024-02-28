@@ -15,10 +15,10 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
   <style>
-  .open-tooltip {
-    visibility: visible;
-    opacity: 1;
-  }
+    .open-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
   <clr-datagrid
     ${args.height ? '[style.height.px]="height"' : ''}
