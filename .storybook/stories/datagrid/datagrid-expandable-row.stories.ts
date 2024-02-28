@@ -86,7 +86,26 @@ const ExpandableRowsTemplate: Story = args => ({
       (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
       (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
     >
-      <clr-dg-cell>{{element.name}}</clr-dg-cell>
+      <clr-dg-cell>
+        <a
+          href="javascript:void(0)"
+          role="tooltip"
+          aria-haspopup="true"
+          class="tooltip tooltip-lg tooltip-bottom-right"
+        >
+          <cds-icon
+            shape="exclamation-circle"
+            solid
+          ></cds-icon>
+          <span class="tooltip-content"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
+            neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
+            tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
+            eget, pellentesque sed arcu. Vivamus in dui lectus.</span
+          >
+        </a>
+        {{ element.name }}
+      </clr-dg-cell>
       <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
       <clr-dg-cell>{{element.number}}</clr-dg-cell>
       <clr-dg-cell>
