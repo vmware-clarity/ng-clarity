@@ -8,10 +8,9 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNavGroup, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -22,7 +21,38 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Vertical Nav/Vertical Nav Group',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
+  component: ClrVerticalNavGroup,
+  argTypes: {
+    // inputs
+    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    // outputs
+    clrVerticalNavGroupExpandedChange: { control: { disable: true } },
+    // methods
+    collapseGroup: { control: { disable: true }, table: { disable: true } },
+    expandAnimationDone: { control: { disable: true }, table: { disable: true } },
+    expandGroup: { control: { disable: true }, table: { disable: true } },
+    toggleExpand: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    navLinks: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
+    // story helpers
+    navLinks,
+    activeIndex: 0,
+    includeIcons: true,
+  },
+};
+
+const NavGroupTemplate: Story = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
@@ -49,52 +79,37 @@ const defaultStory: Story = args => ({
       </div>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Vertical Nav/Vertical Nav Group',
-  component: ClrVerticalNavGroup,
-  argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
-    // outputs
-    clrVerticalNavGroupExpandedChange: { control: { disable: true } },
-    // methods
-    collapseGroup: { control: { disable: true }, table: { disable: true } },
-    expandAnimationDone: { control: { disable: true }, table: { disable: true } },
-    expandGroup: { control: { disable: true }, table: { disable: true } },
-    toggleExpand: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
-  },
+export const NavGroupCollapsedWithIcons: StoryObj = {
+  render: NavGroupTemplate,
   args: {
-    // outputs
-    clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
-    // story helpers
-    navLinks,
-    activeIndex: 0,
+    clrVerticalNavGroupExpanded: false,
     includeIcons: true,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrVerticalNavGroupExpanded: false,
-    includeIcons: true,
-  },
-  {
+export const NavGroupExpandedWithIcons: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
     clrVerticalNavGroupExpanded: true,
     includeIcons: true,
   },
-  {
-    clrVerticalNavGroupExpanded: false,
-    includeIcons: false,
-  },
-  {
-    clrVerticalNavGroupExpanded: true,
-    includeIcons: false,
-  },
-];
+};
 
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);
+export const BasicNavGroupCollapsed: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: false,
+    includeIcons: false,
+  },
+};
+
+export const BasicNavGroupExpanded: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: true,
+    includeIcons: false,
+  },
+};

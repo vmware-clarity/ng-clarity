@@ -8,10 +8,9 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const childLinks: { text: string }[] = [{ text: 'Route 1' }, { text: 'Route 1' }, { text: 'Route 1' }];
 
@@ -24,7 +23,94 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string; children }[] = [
   { iconShapeTuple: userIcon, text: 'Profile', children: childLinks },
 ];
 
-const defaultStory: Story = args => ({
+const VERTICAL_NAV_STATES = [
+  {
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
+    includeIcons: true,
+  },
+  {
+    clrVerticalNavGroupExpanded: true,
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
+    includeIcons: true,
+  },
+  {
+    clrVerticalNavGroupExpanded: true,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: true,
+    includeIcons: true,
+  },
+  {
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
+    includeIcons: false,
+  },
+  {
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: false,
+    includeIcons: true,
+  },
+  {
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: false,
+    includeIcons: false,
+  },
+  {
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: true,
+    includeIcons: true,
+  },
+];
+
+export default {
+  title: 'Vertical Nav/Vertical Nav Routing',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
+  component: ClrVerticalNav,
+  argTypes: {
+    // inputs
+    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrVerticalNavCollapsible: { defaultValue: true, control: { type: 'boolean' } },
+    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
+    // outputs
+    clrVerticalNavGroupExpandedChange: { control: { disable: true } },
+    clrVerticalNavCollapsedChange: { control: { disable: true } },
+    // methods
+    toggleByButton: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    navLinks: { control: { disable: true }, table: { disable: true } },
+    createRoute: { control: { disable: true }, table: { disable: true } },
+    handleClick: { control: { disable: true }, table: { disable: true } },
+    VERTICAL_NAV_STATES: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
+    // story helpers
+    navLinks,
+    activeRoute: 'notifications',
+    includeIcons: true,
+    createRoute: function (text, i) {
+      return `${text.toLowerCase()}/${i}`;
+    },
+    handleClick: function (event, route) {
+      event.stopPropagation();
+      this.activeRoute = route;
+    },
+    VERTICAL_NAV_STATES,
+  },
+};
+
+const NavRoutingTemplate: Story = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
@@ -62,80 +148,60 @@ const defaultStory: Story = args => ({
       </div>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Vertical Nav/Vertical Nav Routing',
-  component: ClrVerticalNav,
-  argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
-    clrVerticalNavCollapsible: { defaultValue: true, control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
-    // outputs
-    clrVerticalNavGroupExpandedChange: { control: { disable: true } },
-    clrVerticalNavCollapsedChange: { control: { disable: true } },
-    // methods
-    toggleByButton: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
-    createRoute: { control: { disable: true }, table: { disable: true } },
-    handleClick: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
-    // story helpers
-    navLinks,
-    activeRoute: 'notifications',
-    includeIcons: true,
-    createRoute: function (text, i) {
-      return `${text.toLowerCase()}/${i}`;
-    },
-    handleClick: function (event, route) {
-      event.stopPropagation();
-      this.activeRoute = route;
-    },
-  },
+const NavRoutingAllTemplate: Story = args => ({
+  template: `
+    <div *ngFor="let state of VERTICAL_NAV_STATES" style="margin-bottom:30px">
+      <div class="main-container">
+        <div class="content-container">
+          <clr-vertical-nav
+            [clrVerticalNavCollapsible]="state?.clrVerticalNavCollapsible"
+            [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
+            (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
+          >
+            <clr-vertical-nav-group 
+              *ngFor="let navLink of navLinks" 
+              [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+              [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
+              (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+            >
+              <a
+                  (click)="handleClick($event, navLink.text.toLowerCase())"
+                [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+                clrVerticalNavLink
+                href="javascript:void(0)"
+              >
+                <cds-icon *ngIf="state?.includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                {{navLink.text}}
+              </a>
+              <clr-vertical-nav-group-children>
+                <a clrVerticalNavLink
+                  *ngFor="let childNavLink of navLink.children; let index = index"
+                  [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+                  (click)="handleClick($event, createRoute(navLink.text, index))"
+                >
+                  {{createRoute(navLink.text, index)}}
+                </a>
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+          </clr-vertical-nav>
+        </div>
+      </div>
+    </div>
+  `,
+  props: args,
+});
+
+export const NavWithRouting: StoryObj = {
+  render: NavRoutingTemplate,
 };
 
-const variants: Parameters[] = [
-  {
-    clrVerticalNavCollapsible: false,
-    clrVerticalNavCollapsed: false,
-    includeIcons: true,
+export const Showcase: StoryObj = {
+  render: NavRoutingAllTemplate,
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
   },
-  {
-    clrVerticalNavGroupExpanded: true,
-    clrVerticalNavCollapsed: false,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavGroupExpanded: true,
-    clrVerticalNavCollapsed: true,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavCollapsible: false,
-    clrVerticalNavCollapsed: false,
-    includeIcons: false,
-  },
-  {
-    clrVerticalNavCollapsible: true,
-    clrVerticalNavCollapsed: false,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavCollapsible: true,
-    clrVerticalNavCollapsed: false,
-    includeIcons: false,
-  },
-  {
-    clrVerticalNavCollapsible: true,
-    clrVerticalNavCollapsed: true,
-    includeIcons: true,
-  },
-];
-
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);
+};
