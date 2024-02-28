@@ -14,6 +14,12 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 const defaultStory: Story = args => ({
   template: `
+<style>
+.open-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
   <clr-datagrid
     ${args.height ? '[style.height.px]="height"' : ''}
     ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -57,6 +63,7 @@ const defaultStory: Story = args => ({
             solid
           ></cds-icon>
           <span class="tooltip-content"
+            [class.open-tooltip]="openTooltip&&index===2"
             >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
             neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
             tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
@@ -131,6 +138,7 @@ const defaultParameters: Parameters = {
     toggleExpand: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    openTooltip: { defaultValue: false, control: { type: 'boolean' } },
   },
   args: {
     // outputs
@@ -148,4 +156,21 @@ const defaultParameters: Parameters = {
   },
 };
 
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters);
+const variants: Parameters[] = [
+  {
+    clrDgExpanded: false,
+  },
+  {
+    clrDgExpanded: true,
+  },
+  {
+    clrDgExpanded: false,
+    openTooltip: true,
+  },
+  {
+    clrDgExpanded: true,
+    openTooltip: true,
+  },
+];
+
+setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
