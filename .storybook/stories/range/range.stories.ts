@@ -38,17 +38,46 @@ const rangeTemplate: Story = args => ({
       <input type="range" clrRange [value]="value" [disabled]="disabled" />
     </clr-range-container>
   `,
-  props: { ...args },
+  props: args,
+});
+
+const rangeAllTemplate: Story = args => ({
+  template: ` 
+    <h6>Default Range</h6>
+    <clr-range-container [clrRangeHasProgress]="false">
+      <label>{{label}}</label>
+      <input type="range" clrRange [value]="value" [disabled]="false" />
+    </clr-range-container>
+
+    <h6>Disabled Range</h6>
+    <clr-range-container [clrRangeHasProgress]="false">
+      <label>{{label}}</label>
+      <input type="range" clrRange [value]="value" [disabled]="true" />
+    </clr-range-container>
+
+    <h6>Range with Progress</h6>
+    <clr-range-container [clrRangeHasProgress]="true">
+      <label>{{label}}</label>
+      <input type="range" clrRange [value]="value" [disabled]="false" />
+    </clr-range-container>
+
+    <h6>Disabled Range with Progress</h6>
+    <clr-range-container class="compact" [clrRangeHasProgress]="true">
+      <label>{{label}}</label>
+      <input type="range" clrRange [value]="value" [disabled]="true" />
+    </clr-range-container>
+  `,
+  props: args,
 });
 
 export const Range: StoryObj = {
   render: rangeTemplate,
 };
 
-export const disabled: StoryObj = {
-  render: rangeTemplate,
-  args: {
-    clrRangeHasProgress: true,
-    disabled: true,
+export const ShowcaseRange: StoryObj = {
+  render: rangeAllTemplate,
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
   },
 };
