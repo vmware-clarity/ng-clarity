@@ -70,7 +70,7 @@ export const VerticalTabs: StoryObj = {
   },
 };
 
-export const TabsReactive: StoryObj = {
+export const TabsResponsive: StoryObj = {
   render: tabsTemplate,
   parameters: {
     viewport: {
