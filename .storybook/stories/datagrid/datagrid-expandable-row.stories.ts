@@ -19,7 +19,7 @@ export default {
       imports: [ClrDatagridModule, ClrConditionalModule, BrowserAnimationsModule],
     }),
   ],
-    argTypes: {
+  argTypes: {
     // inputs
     clrDgDetailCloseLabel: { defaultValue: '' },
     clrDgDetailOpenLabel: { defaultValue: '' },
@@ -167,4 +167,3 @@ const ExpandableRowsTemplate: Story = args => ({
 export const ExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
 };
-
