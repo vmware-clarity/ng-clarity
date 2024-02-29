@@ -79,7 +79,7 @@ const TreeViewNodeTemplate: Story = args => ({
         (clrSelectedChange)="clrSelectedChange($event)"
       >
         Files
-        ${getFileTreeNodeMarkup(filesRoot)}
+        ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot) : ''}
       </clr-tree-node>
     </clr-tree>
   `,
@@ -98,7 +98,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
           (clrSelectedChange)="clrSelectedChange($event)"
         >
           Files
-          ${getFileTreeNodeMarkup(filesRoot)}
+          ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot) : ''}
         </clr-tree-node>
       </clr-tree>
     </div>
@@ -115,7 +115,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
           (clrSelectedChange)="clrSelectedChange($event)"
         >
           Files
-          ${getFileTreeNodeMarkup(filesRoot)}
+          ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot) : ''}
         </clr-tree-node>
       </clr-tree>
     </div>
@@ -131,7 +131,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
         >
           <cds-icon [attr.shape]="'folder'"></cds-icon>
           Files
-          ${getIconTreeNodeMarkup(filesRoot)}
+          ${args.clrExpandable ? getIconTreeNodeMarkup(filesRoot) : ''}
         </clr-tree-node>
       </clr-tree>
     </div>
