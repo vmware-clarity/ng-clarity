@@ -14,7 +14,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <clr-tree>
-      ${getFileTreeNodeMarkup(filesRoot, args.asLink)}
+      ${getFileTreeNodeMarkup(filesRoot, { asLink: args.asLink })}
     </clr-tree>
   `,
   props: { ...args },

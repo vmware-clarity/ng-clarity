@@ -78,17 +78,17 @@ export const filesRoot: File[] = [
   },
 ];
 
-export function getFileTreeNodeMarkup(files: File[] = filesRoot, clrSelected?: boolean, asLink = false) {
+export function getFileTreeNodeMarkup(files: File[] = filesRoot, args = {}) {
   return files
     .map(
       file => `
         <clr-tree-node
         [clrDisabled]="${file.disabled}"
         [clrExpanded]="${file.expanded}"
-        ${clrSelected !== undefined && file.selected !== undefined ? `[clrSelected]="${file.selected}"` : ''}
+        ${args['clrSelected'] !== undefined && file.selected !== undefined ? `[clrSelected]="${file.selected}"` : ''}
         >
-            ${asLink ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
-          ${file.files ? getFileTreeNodeMarkup(file.files, clrSelected, asLink) : ''}
+            ${args['asLink'] ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
+          ${file.files ? getFileTreeNodeMarkup(file.files, args) : ''}
         </clr-tree-node>`
     )
     .join('');
