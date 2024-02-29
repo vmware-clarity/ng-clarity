@@ -5,10 +5,8 @@
  */
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -17,7 +15,33 @@ const patterns = {
   numbers: /\d/i,
 };
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Forms/Template Driven',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    // story helpers
+    patterns: { control: { disable: true }, table: { disable: true } },
+    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    clrLayout: {
+      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    },
+  },
+  args: {
+    // story helpers
+    patterns,
+    clrLayout: ClrFormLayout.HORIZONTAL,
+    screenReaderContent: 'Please fill out the form',
+    data: formMappingKey,
+  },
+};
+
+const TemplateDrivenStory: Story = args => ({
   template: ` 
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{screenReaderContent}}</span>
@@ -65,33 +89,8 @@ const defaultStory: Story = args => ({
       </clr-textarea-container>
     </form>
   `,
-  props: { ...args },
+  props: args,
 });
-
-const defaultParameters: Parameters = {
-  title: 'Forms/Template Driven',
-  argTypes: {
-    // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
-    // story helpers
-    patterns: { control: { disable: true }, table: { disable: true } },
-    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
-  },
-  args: {
-    // story helpers
-    patterns,
-    clrLayout: ClrFormLayout.HORIZONTAL,
-    screenReaderContent: 'Please fill out the form',
-    data: formMappingKey,
-  },
-};
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrFormsModule, ClrLayoutModule], defaultStory, defaultParameters, variants);
 
 function getForm() {
   return {
@@ -101,3 +100,17 @@ function getForm() {
     description: '',
   };
 }
+
+export const HorizontalLayout: StoryObj = {
+  render: TemplateDrivenStory,
+};
+
+export const VerticalLayout: StoryObj = {
+  render: TemplateDrivenStory,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
+};
+
+export const CompactLayout: StoryObj = {
+  render: TemplateDrivenStory,
+  args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
+};

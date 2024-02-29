@@ -5,12 +5,54 @@
  */
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+const STACK_VIEW_STATES = [
+  {
+    openIndices: [true],
+  },
+  {
+    openIndices: [false, false, false, true],
+  },
+  {
+    openIndices: [false, true, true, false],
+  },
+  {
+    openIndices: [true, true, true, true],
+  },
+];
+
+export default {
+  title: 'Stack View/Stack View',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStackViewModule],
+    }),
+  ],
+  component: ClrStackView,
+  argTypes: {
+    // story helpers
+    openIndices: { control: { disable: true }, table: { disable: true } },
+    createArray: { control: { disable: true }, table: { disable: true } },
+    blockCount: { control: { type: 'number', min: 1, max: 100 } },
+    STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    openIndices: [],
+    createArray: n => new Array(n),
+    blockCount: 4,
+    label: 'Block',
+    content: 'Block content',
+    subLabel: 'Sub-block',
+    subContent: 'Sub-block content',
+    STACK_VIEW_STATES,
+  },
+};
+
+const StackViewTemplate: Story = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block
@@ -26,51 +68,41 @@ const defaultStory: Story = args => ({
       </clr-stack-block>
     </clr-stack-view>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Stack View/Stack View',
-  component: ClrStackView,
-  argTypes: {
-    // story helpers
-    openIndices: { control: { disable: true }, table: { disable: true } },
-    createArray: { control: { disable: true }, table: { disable: true } },
-    blockCount: { control: { type: 'number', min: 1, max: 100 } },
-  },
-  args: {
-    // story helpers
-    openIndices: [],
-    createArray: n => new Array(n),
-    blockCount: 4,
-    label: 'Block',
-    content: 'Block content',
-    subLabel: 'Sub-block',
-    subContent: 'Sub-block content',
-  },
+const StackViewAllTemplate: Story = args => ({
+  template: `
+    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
+      <clr-stack-view>
+        <clr-stack-block
+          *ngFor="let _ of createArray(blockCount); let i = index"
+          [clrSbExpanded]="!!state.openIndices[i]"
+        >
+          <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+          <clr-stack-content>{{ content }}</clr-stack-content>
+          <clr-stack-block>
+            <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+            <clr-stack-content>{{ subContent }}</clr-stack-content>
+          </clr-stack-block>
+        </clr-stack-block>
+      </clr-stack-view>
+    </div>
+  `,
+  props: args,
+});
+
+export const StackView: StoryObj = {
+  render: StackViewTemplate,
 };
 
-const variants: Parameters[] = [
-  {
+export const StackViewShowcase: StoryObj = {
+  render: StackViewAllTemplate,
+  args: {
     blockCount: 4,
-    openIndices: [],
   },
-  {
-    blockCount: 4,
-    openIndices: [true],
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
   },
-  {
-    blockCount: 4,
-    openIndices: [false, false, false, true],
-  },
-  {
-    blockCount: 4,
-    openIndices: [false, true, true, false],
-  },
-  {
-    blockCount: 4,
-    openIndices: [true, true, true, true],
-  },
-];
-
-setupStorybook(ClrStackViewModule, defaultStory, defaultParameters, variants);
+};

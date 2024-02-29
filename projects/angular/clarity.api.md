@@ -2202,9 +2202,11 @@ export class ClrEmphasisModule {
 // @public (undocumented)
 export class ClrExpandableAnimation {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
-    constructor(element: ElementRef, domAdapter: DomAdapter);
+    constructor(element: ElementRef, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
     animationDone(): void;
+    // (undocumented)
+    animationStart(): void;
     // (undocumented)
     clrExpandTrigger: any;
     // (undocumented)

@@ -126,6 +126,10 @@
     option {
       padding: calc(#{forms-variables.$clr-forms-baseline} * 0.5) forms-variables.$clr-forms-baseline;
       color: forms-variables.$clr-forms-select-multiple-option-color;
+
+      &:checked {
+        background-color: forms-variables.$clr-forms-select-multiple-selected-option-background-color;
+      }
     }
   }
 
