@@ -19,7 +19,7 @@ export default {
       imports: [ClrDatagridModule, ClrConditionalModule, BrowserAnimationsModule],
     }),
   ],
-  argTypes: {
+    argTypes: {
     // inputs
     clrDgDetailCloseLabel: { defaultValue: '' },
     clrDgDetailOpenLabel: { defaultValue: '' },
@@ -36,6 +36,7 @@ export default {
     toggleExpand: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
+    openTooltip: { defaultValue: false, control: { type: 'boolean' } },
   },
   args: {
     // outputs
@@ -55,6 +56,12 @@ export default {
 
 const ExpandableRowsTemplate: Story = args => ({
   template: `
+  <style>
+    .open-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
   <clr-datagrid
     ${args.height ? '[style.height.px]="height"' : ''}
     ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -98,7 +105,12 @@ const ExpandableRowsTemplate: Story = args => ({
             solid
           ></cds-icon>
           <span class="tooltip-content"
+            [class.open-tooltip]="openTooltip && index === 0"
             >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
+            neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
+            tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
+            eget, pellentesque sed arcu. Vivamus in dui lectus.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
             neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
             tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
             eget, pellentesque sed arcu. Vivamus in dui lectus.</span
@@ -155,3 +167,4 @@ const ExpandableRowsTemplate: Story = args => ({
 export const ExpandableRows: StoryObj = {
   render: ExpandableRowsTemplate,
 };
+
