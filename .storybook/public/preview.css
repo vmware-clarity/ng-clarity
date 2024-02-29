@@ -9,9 +9,11 @@ body.sb-main-padded.sb-main-padded {
 }
 
 :root [cds-theme] {
+  --cds-alias-object-interaction-color-active: white;
+
   --cds-alias-object-interaction-background: white;
   --cds-alias-object-interaction-background-hover: var(--cds-global-color-blue-50);
-  --cds-alias-object-interaction-background-active: var(--cds-global-color-blue-75);
+  --cds-alias-object-interaction-background-active: var(--cds-global-color-blue-700);
   --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-100);
   --cds-alias-object-interaction-background-selected-hover: var(--cds-global-color-blue-200);
   --cds-alias-object-interaction-background-highlight: var(--cds-global-color-blue-700);
