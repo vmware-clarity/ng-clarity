@@ -333,6 +333,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private expandOrFocusFirstChild() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.expanded) {
       // if the node is already expanded and has children, focus its very first child
       if (this.isParent) {
@@ -348,6 +352,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private collapseOrFocusParent() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.expanded) {
       this.expandService.expanded = false;
     } else {
