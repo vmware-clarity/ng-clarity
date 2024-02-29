@@ -72,6 +72,7 @@ export abstract class TreeNodeModel<T> {
     if (this.disabled) {
       return;
     }
+
     // Both unselected and indeterminate toggle to selected
     const newState =
       this.selected.value === ClrSelectedState.SELECTED ? ClrSelectedState.UNSELECTED : ClrSelectedState.SELECTED;
@@ -99,11 +100,11 @@ export abstract class TreeNodeModel<T> {
     let oneUnselected = false;
     // Using a good old for loop to exit as soon as we can tell, for better performance on large trees.
     for (const child of this.children) {
-      if (child.disabled) {
-        continue;
-      }
       switch (child.selected.value) {
         case ClrSelectedState.INDETERMINATE:
+          if (child.disabled) {
+            continue;
+          }
           return ClrSelectedState.INDETERMINATE;
         case ClrSelectedState.SELECTED:
           oneSelected = true;
