@@ -49,8 +49,10 @@ export abstract class TreeNodeModel<T> {
 
   toggleChildrenDisable() {
     this.children.forEach(child => {
-      child.disabled = this.disabled;
-      child.toggleChildrenDisable();
+      if (child) {
+        child.disabled = this.disabled;
+        child.toggleChildrenDisable();
+      }
     });
   }
 
