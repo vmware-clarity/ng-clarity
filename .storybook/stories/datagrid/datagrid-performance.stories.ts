@@ -9,14 +9,34 @@ import { action } from '@storybook/addon-actions';
 import { Parameters } from '@storybook/addons';
 import { Story } from '@storybook/angular';
 
-import { elements } from '../../helpers/elements.data';
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+
+const createColumns = (count = 10) => {
+  const columns: string[] = [];
+  for (let i = 0; i < count; i++) {
+    columns.push(`col${i + 1}`);
+  }
+
+  return columns;
+};
+const columns: string[] = createColumns(50);
+
+const createRows = (columns: string[], rowCount = 10) => {
+  const rows = [];
+  for (let i = 0; i < rowCount; i++) {
+    const newRow = {};
+    for (let j = 0; j < columns.length; j++) {
+      newRow[columns[j]] = `${columns[j]} row-${i + 1}`;
+    }
+    rows.push(newRow);
+  }
+
+  return rows;
+};
+const dynamicRows = createRows(columns, 1000);
 
 const defaultStory: Story = args => ({
   template: `
-    <style>
-      .electronegativity-container { border-bottom: 4px solid #119cd4; }
-    </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
       ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -33,37 +53,21 @@ const defaultStory: Story = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgRefresh)="clrDgRefresh($event)"
     >
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
-      </clr-dg-column>
-      <clr-dg-column>
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
+      <clr-dg-column *ngFor="let col of columns">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>{{col}}</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
-        <clr-dg-cell>{{element.name}}</clr-dg-cell>
-        <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
-        <clr-dg-cell>{{element.number}}</clr-dg-cell>
-        <clr-dg-cell>
-          <div [style.width.%]="element.electronegativity * 100 / 4" class="electronegativity-container">
-            {{element.electronegativity}}
-          </div>
-        </clr-dg-cell>
+      <clr-dg-row *clrDgItems="let row of dynamicRows" [clrDgItem]="row">
+        <clr-dg-cell *ngFor="let col of columns" >{{row[col]}}</clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
 
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
           <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>
-          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} elements
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
         </clr-dg-pagination>
       </clr-dg-footer>
     </clr-datagrid>
@@ -92,7 +96,8 @@ const defaultParameters: Parameters = {
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
     // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
+    columns: { control: { disable: true }, table: { disable: true } },
+    dynamicRows: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // outputs
@@ -100,7 +105,8 @@ const defaultParameters: Parameters = {
     clrDgSelectedChange: action('clrDgSelectedChange'),
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
-    elements,
+    columns,
+    dynamicRows,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
