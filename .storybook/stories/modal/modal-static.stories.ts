@@ -5,12 +5,28 @@
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Modal/Static',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule],
+    }),
+  ],
+  argTypes: {
+    size: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+  },
+  args: {
+    title: 'Small Modal',
+    body: 'This is a small modal.',
+    size: 'sm',
+  },
+};
+
+const ModalStaticTemplate: Story = args => ({
   template: `
     <style>
       .backdrop-example-container {
@@ -50,40 +66,36 @@ const defaultStory: Story = args => ({
       <div class="modal-backdrop static" aria-hidden="true"></div>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Modal/Static',
-  argTypes: {},
-  args: {
-    title: 'Small Modal',
-    body: 'This is a small modal.',
-    size: 'sm',
-  },
+export const SmallModal: StoryObj = {
+  render: ModalStaticTemplate,
 };
 
-const variants: Parameters[] = [
-  {
-    title: 'Small Modal',
-    body: 'This is a small modal.',
-    size: 'sm',
-  },
-  {
+export const MediumModal: StoryObj = {
+  render: ModalStaticTemplate,
+  args: {
     title: 'Medium Modal',
     body: 'This is a medium modal.',
     size: 'md',
   },
-  {
+};
+
+export const LargeModal: StoryObj = {
+  render: ModalStaticTemplate,
+  args: {
     title: 'Large Modal',
     body: 'This is a large modal.',
     size: 'lg',
   },
-  {
+};
+
+export const ExtraLargeModal: StoryObj = {
+  render: ModalStaticTemplate,
+  args: {
     title: 'Extra Large Modal',
     body: 'This is a extra Large modal.',
     size: 'xl',
   },
-];
-
-setupStorybook(ClrModalModule, defaultStory, defaultParameters, variants);
+};

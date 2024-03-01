@@ -5,13 +5,29 @@
  */
 
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const story: Story = args => ({
+export default {
+  title: 'Modal/Nested Datagrid Detail',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule, ClrDatagridModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const NestedDatagridTemplate: Story = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
@@ -58,19 +74,9 @@ const story: Story = args => ({
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const parameters: Parameters = {
-  title: 'Modal/Nested Datagrid Detail',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const NestedDatagridDetail: StoryObj = {
+  render: NestedDatagridTemplate,
 };
-
-setupStorybook([ClrModalModule, ClrDatagridModule], story, parameters);
