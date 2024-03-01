@@ -5,32 +5,20 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
+import { CommonModules } from '../../helpers/common';
 import { filesRoot } from '../../helpers/files.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tree [clrLazy]="true">
-      <clr-tree-node
-        *clrRecursiveFor="let file of files | async; getChildren: getChildren"
-        [clrExpandable]="!!file?.files"
-      >
-        {{ file?.name }}
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: {
-    ...args,
-  },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tree/Tree with lazy-loaded recursive nodes',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTreeViewModule],
+    }),
+  ],
   component: ClrTree,
   argTypes: {
     // inputs
@@ -46,6 +34,20 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const TreeViewTemplate: Story = args => ({
+  template: `
+    <clr-tree [clrLazy]="true">
+      <clr-tree-node
+        *clrRecursiveFor="let file of files | async; getChildren: getChildren"
+        [clrExpandable]="!!file?.files"
+      >
+        {{ file?.name }}
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrTreeViewModule, defaultStory, defaultParameters, variants);
+export const LazyLoadedRecursiveNodes: StoryObj = {
+  render: TreeViewTemplate,
+};
