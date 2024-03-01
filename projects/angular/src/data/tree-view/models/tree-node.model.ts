@@ -47,13 +47,6 @@ export abstract class TreeNodeModel<T> {
     this.selected.complete();
   }
 
-  parentSetSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean) {
-    if (this.disabled) {
-      return;
-    }
-    this.setSelected(state, propagateUp, propagateDown);
-  }
-
   // Propagate by default when eager, don't propagate in the lazy-loaded tree.
   setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean) {
     if (state === this.selected.value) {
@@ -61,7 +54,11 @@ export abstract class TreeNodeModel<T> {
     }
     this.selected.next(state);
     if (propagateDown && state !== ClrSelectedState.INDETERMINATE && this.children) {
-      this.children.forEach(child => child.parentSetSelected(state, false, true));
+      this.children.forEach(child => {
+        if (!child.disabled) {
+          child.setSelected(state, false, true);
+        }
+      });
     }
     if (propagateUp && this.parent) {
       this.parent._updateSelectionFromChildren();
