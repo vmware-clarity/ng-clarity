@@ -103,7 +103,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
       </clr-tree>
     </div>
 
-    <span cds-text="subsection">Checbox</span>
+    <span cds-text="subsection">Checkbox</span>
     <div *ngFor="let nodeType of TREE_NODE_STATE" style="margin:20px">
       <span *ngIf="!nodeType.clrExpanded" cds-text="message" style="line-height:45px">{{nodeType?.type}}</span>
       <clr-tree>
