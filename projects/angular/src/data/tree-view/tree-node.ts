@@ -125,6 +125,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
   set disabled(value: boolean) {
     this._model.disabled = value || this._model.parent?.disabled;
+
+    this._model.toggleChildrenDisable();
   }
 
   @Input('clrSelected')

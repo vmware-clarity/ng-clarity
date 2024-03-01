@@ -47,6 +47,13 @@ export abstract class TreeNodeModel<T> {
     this.selected.complete();
   }
 
+  toggleChildrenDisable() {
+    this.children.forEach(child => {
+      child.disabled = this.disabled;
+      child.toggleChildrenDisable();
+    });
+  }
+
   // Propagate by default when eager, don't propagate in the lazy-loaded tree.
   setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean) {
     if (state === this.selected.value) {

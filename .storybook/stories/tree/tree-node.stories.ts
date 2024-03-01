@@ -18,6 +18,7 @@ const defaultStory: Story = args => ({
       <clr-tree-node
         [clrExpandable]="clrExpandable"
         [clrExpanded]="clrExpanded"
+        [clrDisabled]="clrDisabled"
         ${args.clrSelected === undefined ? '' : '[clrSelected]="clrSelected"'}
         (clrExpandedChange)="clrExpandedChange($event)"
         (clrSelectedChange)="clrSelectedChange($event)"
@@ -36,6 +37,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrExpandable: { defaultValue: undefined, control: { type: 'boolean' } },
+    clrDisabled: { defaultValue: false, control: { type: 'boolean' } },
     clrExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrSelected: {
       defaultValue: 'not selectable',
