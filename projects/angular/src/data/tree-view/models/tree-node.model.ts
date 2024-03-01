@@ -47,11 +47,11 @@ export abstract class TreeNodeModel<T> {
     this.selected.complete();
   }
 
-  toggleChildrenDisable() {
+  propagateDisabledToChildren() {
     this.children.forEach(child => {
       if (child) {
         child.disabled = this.disabled;
-        child.toggleChildrenDisable();
+        child.propagateDisabledToChildren();
       }
     });
   }
