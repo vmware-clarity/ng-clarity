@@ -23,7 +23,7 @@ const defaultStory: Story = args => ({
         (clrSelectedChange)="clrSelectedChange($event)"
       >
         Files
-        ${getFileTreeNodeMarkup(filesRoot, { clrSelected: args.clrSelected })}
+        ${getFileTreeNodeMarkup(filesRoot, args)}
       </clr-tree-node>
     </clr-tree>
   `,

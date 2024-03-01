@@ -14,7 +14,7 @@ import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 const defaultStory: Story = args => ({
   template: `
     <clr-tree>
-      ${getFileTreeNodeMarkup(filesRoot, { asLink: args.asLink })}
+      ${getFileTreeNodeMarkup(filesRoot, args)}
     </clr-tree>
   `,
   props: { ...args },
@@ -26,6 +26,7 @@ const defaultParameters: Parameters = {
   argTypes: {
     // inputs
     clrLazy: { control: { disable: true } },
+    // story helpers
     asLink: { defaultValue: false, control: { type: 'boolean' } },
   },
 };
