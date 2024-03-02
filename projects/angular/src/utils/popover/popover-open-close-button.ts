@@ -20,9 +20,9 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private elementRef: ElementRef, private popoverStateService: ClrPopoverService) {
+  constructor(private elementRef: ElementRef, private popoverService: ClrPopoverService) {
     this.subscriptions.push(
-      this.popoverStateService.openChange.subscribe(change => {
+      this.popoverService.openChange.subscribe(change => {
         this.openCloseChange.next(change);
       })
     );
@@ -30,8 +30,8 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
 
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent) {
-    this.popoverStateService.openButtonRef = this.elementRef;
-    this.popoverStateService.toggleWithEvent(event);
+    this.popoverService.openButtonRef = this.elementRef;
+    this.popoverService.toggleWithEvent(event);
   }
 
   ngOnDestroy() {

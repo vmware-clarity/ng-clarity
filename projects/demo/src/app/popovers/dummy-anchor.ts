@@ -33,10 +33,10 @@ export class DummyAnchor {
 
   @ViewChild('ignore') ignore: ElementRef;
 
-  constructor(private stateService: ClrPopoverService) {}
+  constructor(private popoverService: ClrPopoverService) {}
 
   onFocus(event: FocusEvent) {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   // This needs to be added to handle the case where:
@@ -46,16 +46,16 @@ export class DummyAnchor {
   // Without this, the last step of clicking on the Input while it is focused
   // to open the menu wouldn't work.
   onInputClick(event: MouseEvent) {
-    if (this.stateService.open === false) {
-      this.stateService.toggleWithEvent(event);
+    if (this.popoverService.open === false) {
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
   onFocusOut() {
-    this.stateService.open = false;
+    this.popoverService.open = false;
   }
 
   onClick(event: MouseEvent) {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }

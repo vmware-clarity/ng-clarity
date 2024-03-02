@@ -27,17 +27,17 @@ export default function (): void {
       let filterService: FiltersProvider<number>;
       let filter: TestFilter;
       let component: ClrDatagridFilter<number>;
-      let stateService: ClrPopoverService;
+      let popoverService: ClrPopoverService;
 
       beforeEach(function () {
         const stateDebouncer = new StateDebouncer();
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
-        stateService = new ClrPopoverService();
+        popoverService = new ClrPopoverService();
         filter = new TestFilter();
         component = new ClrDatagridFilter(
           filterService,
           new ClrCommonStringsService(),
-          stateService,
+          popoverService,
           'browser' as any,
           undefined
         );
@@ -73,12 +73,12 @@ export default function (): void {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridFilter<number>, FullTest>;
       let filter: TestFilter;
-      let stateService: ClrPopoverService;
+      let popoverService: ClrPopoverService;
 
       beforeEach(function (this: any) {
         filter = new TestFilter();
         context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
-        stateService = context.getClarityProvider(ClrPopoverService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
       it('receives an input for the filter logic', function () {
@@ -91,10 +91,10 @@ export default function (): void {
         context.testComponent.filter = filter;
         context.testComponent.open = true;
         context.detectChanges();
-        expect(stateService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
         context.clarityDirective.open = false;
         context.detectChanges();
-        expect(stateService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
       });
 
       it('registers itself as a CustomFilter provider', function () {

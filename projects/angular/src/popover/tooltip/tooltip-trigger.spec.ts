@@ -22,7 +22,7 @@ class SimpleTest {
 
 interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
   tooltipIdService: TooltipIdService;
-  stateService: ClrPopoverService;
+  popoverService: ClrPopoverService;
 }
 
 export default function (): void {
@@ -32,18 +32,18 @@ export default function (): void {
     });
 
     beforeEach(function () {
-      this.stateService = this.getClarityProvider(ClrPopoverService);
+      this.popoverService = this.getClarityProvider(ClrPopoverService);
       this.tooltipIdService = this.getClarityProvider(TooltipIdService);
       this.detectChanges();
     });
 
     describe('TypeScript API', function () {
       it('notifies the IfOpen service', function () {
-        const stateService = this.getClarityProvider(ClrPopoverService);
+        const popoverService = this.getClarityProvider(ClrPopoverService);
         this.clarityDirective.showTooltip();
-        expect(stateService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
         this.clarityDirective.hideTooltip();
-        expect(stateService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
       });
 
       it('responds to the TooltipIdService', function () {

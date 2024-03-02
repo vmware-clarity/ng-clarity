@@ -34,19 +34,19 @@ class TestComponent {
 export default function (): void {
   describe('Combobox Option Component', function () {
     let context: TestContext<ClrOption<string>, TestComponent>;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
     let optionSelectionService: OptionSelectionService<string>;
 
     describe('View Basics', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOption, TestComponent, []);
-        stateService = context.getClarityProvider(ClrPopoverService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>() as ComboboxModel<string>;
       });
 
       afterEach(function () {
-        stateService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 
@@ -77,13 +77,13 @@ export default function (): void {
     describe('Typescript API', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOption, TestComponent, []);
-        stateService = context.getClarityProvider(ClrPopoverService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>();
       });
 
       afterEach(function () {
-        stateService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 

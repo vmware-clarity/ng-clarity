@@ -196,7 +196,7 @@ export default function (): void {
     }));
 
     it("doesn't close before custom click events have triggered", fakeAsync(function () {
-      const stateService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
+      const popoverService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
 
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
@@ -206,7 +206,7 @@ export default function (): void {
       nestedToggle.click();
       fixture.detectChanges();
 
-      subscription = stateService.openChange.subscribe(() => {
+      subscription = popoverService.openChange.subscribe(() => {
         expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
       });
 
@@ -216,7 +216,7 @@ export default function (): void {
       fixture.detectChanges();
 
       // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     }));
 
     it('puts focus back on the trigger when a dropdown item is clicked', fakeAsync(() => {

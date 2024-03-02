@@ -49,7 +49,7 @@ export default function () {
     let enabledService: MockDatepickerEnabledService;
     let dateFormControlService: DateFormControlService;
     let dateNavigationService: DateNavigationService;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
     let container: any;
 
     beforeEach(function () {
@@ -66,7 +66,7 @@ export default function () {
 
       enabledService = context.getClarityProvider(DatepickerEnabledService) as MockDatepickerEnabledService;
       dateFormControlService = context.getClarityProvider(DateFormControlService);
-      stateService = context.getClarityProvider(ClrPopoverService);
+      popoverService = context.getClarityProvider(ClrPopoverService);
       dateNavigationService = context.getClarityProvider(DateNavigationService);
       container = context.clarityDirective;
     });
@@ -205,7 +205,7 @@ export default function () {
     describe('Typescript API', () => {
       it('marks the date control as touched when the datepicker popover is toggled', () => {
         spyOn(dateFormControlService, 'markAsTouched');
-        stateService.open = true;
+        popoverService.open = true;
         expect(dateFormControlService.markAsTouched).toHaveBeenCalled();
       });
 

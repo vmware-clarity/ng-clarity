@@ -24,17 +24,17 @@ class TestOptionSelection {}
 export default function (): void {
   describe('Rendering Selected Option', function () {
     let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
 
     beforeEach(function () {
       context = this.create(ClrCombobox, TestOptionSelection, [], []);
-      stateService = context.getClarityProvider(ClrPopoverService);
-      stateService.open = true;
+      popoverService = context.getClarityProvider(ClrPopoverService);
+      popoverService.open = true;
       context.detectChanges();
     });
 
     afterEach(function () {
-      stateService.open = false;
+      popoverService.open = false;
       context.detectChanges();
     });
 
@@ -56,7 +56,7 @@ export default function (): void {
       context.detectChanges();
       tick();
       expect(selection.value).toMatch(/Option 1/);
-      stateService.open = true;
+      popoverService.open = true;
       (options[1] as HTMLElement).click();
       context.detectChanges();
       tick();

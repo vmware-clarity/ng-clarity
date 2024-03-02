@@ -16,10 +16,10 @@ export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
   private subscription: Subscription;
   private lastOpenChange: boolean | null = null;
 
-  constructor(private stateService: ClrPopoverService) {}
+  constructor(private popoverService: ClrPopoverService) {}
 
   ngOnInit() {
-    this.subscription = this.stateService.openChange.subscribe(open => {
+    this.subscription = this.popoverService.openChange.subscribe(open => {
       this.lastOpenChange = open;
     });
   }

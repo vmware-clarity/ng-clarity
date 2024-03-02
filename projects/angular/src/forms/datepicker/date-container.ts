@@ -99,7 +99,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   constructor(
     protected renderer: Renderer2,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
     private dateFormControlService: DateFormControlService,
@@ -121,7 +121,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
 
     this.subscriptions.push(
-      this.stateService.openChange.subscribe(() => {
+      this.popoverService.openChange.subscribe(() => {
         this.dateFormControlService.markAsTouched();
       })
     );
@@ -144,7 +144,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   get open() {
-    return this.stateService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -166,7 +166,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   ngAfterViewInit(): void {
     this.subscriptions.push(
-      this.stateService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (open) {
           this.initializeCalendar();
         } else {

@@ -38,11 +38,11 @@ export class ClrIfOpen implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    this.subscription = this.stateService.openChange.subscribe(change => {
+    this.subscription = this.popoverService.openChange.subscribe(change => {
       this.updateView(change);
       this.openChange.emit(change);
     });
@@ -54,10 +54,10 @@ export class ClrIfOpen implements OnDestroy {
    */
   @Input('clrIfOpen')
   get open() {
-    return this.stateService.open;
+    return this.popoverService.open;
   }
   set open(value: boolean | string) {
-    this.stateService.open = value as boolean;
+    this.popoverService.open = value as boolean;
   }
 
   ngOnDestroy() {

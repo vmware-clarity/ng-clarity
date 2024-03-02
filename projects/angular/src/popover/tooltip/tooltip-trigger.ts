@@ -25,7 +25,7 @@ export class ClrTooltipTrigger {
   private subs: Subscription[] = [];
 
   constructor(
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService
   ) {
@@ -39,12 +39,12 @@ export class ClrTooltipTrigger {
 
   @HostListener('focus')
   showTooltip(): void {
-    this.stateService.open = true;
+    this.popoverService.open = true;
   }
 
   @HostListener('blur')
   hideTooltip(): void {
-    this.stateService.open = false;
+    this.popoverService.open = false;
   }
 
   @HostListener('mouseenter')

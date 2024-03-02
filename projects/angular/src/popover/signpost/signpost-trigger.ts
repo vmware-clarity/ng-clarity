@@ -38,7 +38,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private el: ElementRef,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
@@ -51,7 +51,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   ngOnInit() {
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
     this.subscriptions.push(
-      this.stateService.openChange.subscribe((isOpen: boolean) => {
+      this.popoverService.openChange.subscribe((isOpen: boolean) => {
         this.ariaExpanded = isOpen;
 
         const prevIsOpen = this.isOpen;
@@ -79,7 +79,7 @@ export class ClrSignpostTrigger implements OnDestroy {
    */
   @HostListener('click', ['$event'])
   onSignpostTriggerClick(event: Event): void {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   private focusOnClose() {

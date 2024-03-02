@@ -565,7 +565,7 @@ export class ClrButton implements LoadingListener {
 // @public (undocumented)
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(buttonGroupNewService: ButtonInGroupService, stateService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -746,7 +746,7 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
 export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, stateService: ClrPopoverService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -1346,7 +1346,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverstateService: ClrPopoverService);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService,);
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
@@ -1931,7 +1931,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateFormControlService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point index.d.ts
-    constructor(renderer: Renderer2, stateService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    constructor(renderer: Renderer2, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
     set actionButton(button: ElementRef);
     // (undocumented)
@@ -2058,7 +2058,7 @@ export class ClrDatepickerViewManager {
 
 // @public (undocumented)
 export class ClrDay {
-    constructor(_dateNavigationService: DateNavigationService, _stateService: ClrPopoverService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService);
+    constructor(_dateNavigationService: DateNavigationService, _popoverService: ClrPopoverService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get dayString(): string;
     // Warning: (ae-forgotten-export) The symbol "DayViewModel" needs to be exported by the entry point index.d.ts
@@ -2107,7 +2107,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point index.d.ts
-    constructor(parent: ClrDropdown, stateService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
     // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -2119,7 +2119,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     parent: ClrDropdown;
     // (undocumented)
-    stateService: ClrPopoverService;
+    popoverService: ClrPopoverService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": "clrCloseMenuOnItemClick"; }, {}, never, ["*"], false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -2177,7 +2177,7 @@ export class ClrDropdownModule {
 
 // @public (undocumented)
 export class ClrDropdownTrigger {
-    constructor(dropdown: ClrDropdown, stateService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -2436,7 +2436,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrIfOpen implements OnDestroy {
-    constructor(stateService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
+    constructor(popoverService: ClrPopoverService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
     static ngAcceptInputType_open: boolean | '';
     // (undocumented)
@@ -2848,7 +2848,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
 
 // @public (undocumented)
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
-    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, stateService: ClrPopoverService, parentHost: ElementRef, document: any);
+    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     get emptyOptions(): boolean;
@@ -2962,7 +2962,7 @@ export class ClrPopoverAnchor {
 
 // @public (undocumented)
 export class ClrPopoverContent implements OnDestroy {
-    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, smartEventsService: ClrPopoverEventsService, popoverStateService: ClrPopoverService);
+    constructor(document: Document, container: ViewContainerRef, template: TemplateRef<any>, renderer: Renderer2, overlay: Overlay, overlayContainer: OverlayContainer, smartEventsService: ClrPopoverEventsService, popoverService: ClrPopoverService,);
     // (undocumented)
     set contentAt(position: ClrPopoverPosition | ConnectedPosition[]);
     // (undocumented)
@@ -3381,7 +3381,7 @@ export class ClrSignpostModule {
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(stateService: ClrPopoverService, el: ElementRef, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    constructor(popoverService: ClrPopoverService, el: ElementRef, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
@@ -3656,7 +3656,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
 // @public (undocumented)
 export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
-    constructor(stateService: ClrPopoverService);
+    constructor(popoverService: ClrPopoverService,);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3756,7 +3756,7 @@ export class ClrTabOverflowContent {
 
 // @public (undocumented)
 export class ClrTabs implements AfterContentInit, OnDestroy {
-    constructor(ifActiveService: IfActiveService, stateService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get activeTabInOverflow(): boolean;
     // (undocumented)
@@ -3809,7 +3809,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     toggleOverflowOnPosition(position: number): void;
     // (undocumented)
-    stateService: ClrPopoverService;
+    popoverService: ClrPopoverService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": "clrLayout"; }, {}, ["tabs"], never, false, [{ directive: typeof i1_6.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -4016,7 +4016,7 @@ export class ClrTooltipModule {
 
 // @public (undocumented)
 export class ClrTooltipTrigger {
-    constructor(stateService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
+    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
     // (undocumented)
     ariaDescribedBy: string;
     // (undocumented)
@@ -4620,7 +4620,7 @@ export const CUSTOM_BUTTON_TYPES: any;
 //
 // @public (undocumented)
 export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
-    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverstateService: ClrPopoverService, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
@@ -4874,7 +4874,7 @@ export class ÇlrActiveOompaLoompa extends OompaLoompa {
 
 // @public (undocumented)
 export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    constructor(elementRef: ElementRef, smartEventsService: ClrPopoverEventsService, popoverStateService: ClrPopoverService);
+    constructor(elementRef: ElementRef, smartEventsService: ClrPopoverEventsService, popoverService: ClrPopoverService,);
     // (undocumented)
     closeChange: EventEmitter<void>;
     // (undocumented)
@@ -4906,7 +4906,7 @@ export class ÇlrClrPopoverModuleNext {
 
 // @public (undocumented)
 export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
-    constructor(popoverStateService: ClrPopoverService);
+    constructor(popoverService: ClrPopoverService,);
     // (undocumented)
     handleClick(event: MouseEvent): void;
     // (undocumented)

@@ -32,7 +32,7 @@ class TestHost {
 export default function (): void {
   describe('ClrPopoverOpenCloseButton', function () {
     type Context = TestContext<ClrPopoverOpenCloseButton, TestHost> & {
-      stateService: ClrPopoverService;
+      popoverService: ClrPopoverService;
     };
 
     describe('TypeScript API', function (this: Context) {
@@ -41,17 +41,17 @@ export default function (): void {
       });
 
       beforeEach(function (this: Context) {
-        this.stateService = this.getClarityProvider(ClrPopoverService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('declares a ClrPopoverService', function (this: Context) {
-        expect(this.stateService).toBeDefined();
+        expect(this.popoverService).toBeDefined();
       });
 
       it('responds to openChange events from the stateService', function (this: Context) {
         let changeCount = 0;
-        const sub: Subscription = this.stateService.openChange.subscribe(() => {
+        const sub: Subscription = this.popoverService.openChange.subscribe(() => {
           changeCount++;
         });
         expect(changeCount).toBe(0); // initial state
@@ -69,22 +69,22 @@ export default function (): void {
       });
 
       beforeEach(function (this: Context) {
-        this.stateService = this.getClarityProvider(ClrPopoverService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('emits events when the open state changes', function (this: Context) {
         expect(this.fixture.componentInstance.openState).toBeUndefined(); // inital state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.stateService.open);
+        expect(this.hostComponent.openState).toEqual(this.popoverService.open);
         expect(this.hostComponent.openState).toBe(true); // opened state
         this.clarityElement.click();
-        expect(this.hostComponent.openState).toEqual(this.stateService.open);
+        expect(this.hostComponent.openState).toEqual(this.popoverService.open);
         expect(this.hostComponent.openState).toBe(false); // closed state
       });
 
       it('handles click events', function (this: Context) {
-        const clickSpy = spyOn(this.stateService, 'toggleWithEvent');
+        const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
         this.clarityElement.click();
         expect(clickSpy.calls.count()).toEqual(1);
       });

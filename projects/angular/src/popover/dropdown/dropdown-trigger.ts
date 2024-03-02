@@ -27,7 +27,7 @@ export class ClrDropdownTrigger {
 
   constructor(
     dropdown: ClrDropdown,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     el: ElementRef<HTMLElement>,
     focusHandler: DropdownFocusHandler
   ) {
@@ -39,11 +39,11 @@ export class ClrDropdownTrigger {
   }
 
   get active(): boolean {
-    return this.stateService.open;
+    return this.popoverService.open;
   }
 
   @HostListener('click', ['$event'])
   onDropdownTriggerClick(event: any): void {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }

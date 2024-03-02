@@ -39,17 +39,17 @@ export default function (): void {
 
     it('should allow a nested popover to be closed via the escape key', async () => {
       fixture.componentInstance.modalOpen = true;
-      fixture.componentInstance.popoverHostComponent.stateService.open = true;
+      fixture.componentInstance.popoverHostComponent.popoverService.open = true;
       fixture.detectChanges();
 
       await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
 
-      expect(fixture.componentInstance.popoverHostComponent.stateService.open).toBe(false);
+      expect(fixture.componentInstance.popoverHostComponent.popoverService.open).toBe(false);
     });
 
     it('should prevent a modal from being closed when escape is pressed on a nested popover', async () => {
       fixture.componentInstance.modalOpen = true;
-      fixture.componentInstance.popoverHostComponent.stateService.open = true;
+      fixture.componentInstance.popoverHostComponent.popoverService.open = true;
       fixture.detectChanges();
 
       await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
@@ -74,11 +74,11 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   hostDirectives: [ClrStopEscapePropagationDirective],
 })
 class TestPopoverHostComponent {
-  constructor(readonly elementRef: ElementRef<HTMLElement>, readonly stateService: ClrPopoverService) {}
+  constructor(readonly elementRef: ElementRef<HTMLElement>, readonly popoverService: ClrPopoverService) {}
 
   @HostListener('keydown.escape', ['$event'])
   onEscapeKey(event) {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }
 

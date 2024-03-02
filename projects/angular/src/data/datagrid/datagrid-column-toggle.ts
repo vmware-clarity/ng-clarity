@@ -104,9 +104,9 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverstateService: ClrPopoverService
+    popoverService: ClrPopoverService
   ) {
-    this.subscription = popoverstateService.openChange.subscribe(change => (this.openState = change));
+    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
   }
 
   get allColumnsVisible(): boolean {

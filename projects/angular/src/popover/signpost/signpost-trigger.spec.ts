@@ -17,7 +17,7 @@ export default function (): void {
   describe('SignpostToggle component', function () {
     let fixture: ComponentFixture<any>;
     let clarityElement: any;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
     let trigger: HTMLElement;
 
     beforeEach(() => {
@@ -30,7 +30,7 @@ export default function (): void {
       fixture = TestBed.createComponent(TestTrigger);
       fixture.detectChanges();
       clarityElement = fixture.nativeElement;
-      stateService = TestBed.get(ClrPopoverService);
+      popoverService = TestBed.get(ClrPopoverService);
       trigger = clarityElement.querySelector('.signpost-action');
     });
 
@@ -39,11 +39,11 @@ export default function (): void {
     });
 
     it('should toggle the IfOpenService.open property on click', function () {
-      expect(stateService.open).toBeFalsy();
+      expect(popoverService.open).toBeFalsy();
       trigger.click();
-      expect(stateService.open).toEqual(true);
+      expect(popoverService.open).toEqual(true);
       trigger.click();
-      expect(stateService.open).toEqual(false);
+      expect(popoverService.open).toEqual(false);
     });
 
     it('should have active class when open', function () {
@@ -54,10 +54,10 @@ export default function (): void {
       trigger.click();
       fixture.detectChanges();
       expect(trigger.classList.contains('active')).toBeFalsy();
-      stateService.open = true;
+      popoverService.open = true;
       fixture.detectChanges();
       expect(trigger.classList.contains('active')).toBeTruthy();
-      stateService.open = false;
+      popoverService.open = false;
       fixture.detectChanges();
       expect(trigger.classList.contains('active')).toBeFalsy();
     });

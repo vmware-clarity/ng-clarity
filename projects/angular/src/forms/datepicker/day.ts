@@ -40,7 +40,7 @@ export class ClrDay {
 
   constructor(
     private _dateNavigationService: DateNavigationService,
-    private _stateService: ClrPopoverService,
+    private _popoverService: ClrPopoverService,
     private dateFormControlService: DateFormControlService,
     private commonStrings: ClrCommonStringsService
   ) {}
@@ -79,6 +79,6 @@ export class ClrDay {
     const day: DayModel = this.dayView.dayModel;
     this._dateNavigationService.notifySelectedDayChanged(day);
     this.dateFormControlService.markAsDirty();
-    this._stateService.open = false;
+    this._popoverService.open = false;
   }
 }

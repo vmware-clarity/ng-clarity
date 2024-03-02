@@ -19,7 +19,7 @@ import { ClrPopoverService } from './popover.service';
 class TestHost {}
 
 interface TestContext {
-  stateService: ClrPopoverService;
+  popoverService: ClrPopoverService;
 }
 
 export default function (): void {
@@ -31,43 +31,43 @@ export default function (): void {
           providers: [ClrPopoverService],
         });
         const fixture = TestBed.createComponent(TestHost);
-        this.stateService = fixture.debugElement.injector.get(ClrPopoverService, null);
+        this.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null);
       });
 
       it('exposes an observable for the open change events', function (this: TestContext) {
-        const changeObservable: Observable<boolean> = this.stateService.openChange;
+        const changeObservable: Observable<boolean> = this.popoverService.openChange;
         expect(changeObservable).toBeDefined();
         expect(changeObservable instanceof Observable).toBe(true);
       });
 
       it('exposes an observable for the change events', function (this: TestContext) {
-        const eventObservable: Observable<Event> = this.stateService.getEventChange();
+        const eventObservable: Observable<Event> = this.popoverService.getEventChange();
         expect(eventObservable).toBeDefined();
         expect(eventObservable instanceof Observable).toBe(true);
       });
 
       it('exposes an observable for the alignment events', function (this: TestContext) {
-        const alignedObservable: Observable<HTMLElement> = this.stateService.popoverAligned;
+        const alignedObservable: Observable<HTMLElement> = this.popoverService.popoverAligned;
         expect(alignedObservable).toBeDefined();
         expect(alignedObservable instanceof Observable).toBe(true);
         let aligned = false;
         const subscription = alignedObservable.subscribe(() => {
           aligned = true;
         });
-        this.stateService.popoverAlignedEmit(null);
+        this.popoverService.popoverAlignedEmit(null);
         expect(aligned).toBeTrue();
         subscription.unsubscribe();
       });
 
       it('exposes an observable for the popover visible change events', function (this: TestContext) {
-        const visibleObservable: Observable<boolean> = this.stateService.popoverVisible;
+        const visibleObservable: Observable<boolean> = this.popoverService.popoverVisible;
         expect(visibleObservable).toBeDefined();
         expect(visibleObservable instanceof Observable).toBe(true);
         let visible = false;
         const subscription = visibleObservable.subscribe(() => {
           visible = true;
         });
-        this.stateService.popoverVisibleEmit(null);
+        this.popoverService.popoverVisibleEmit(null);
         expect(visible).toBeTrue();
         subscription.unsubscribe();
       });
@@ -75,40 +75,40 @@ export default function (): void {
       it('updates and notifies when the openEvent changes', function (this: TestContext) {
         const clickEvent: Event = new MouseEvent('click');
         let testEvent: Event;
-        const eventSubscription = this.stateService.getEventChange().subscribe(event => {
+        const eventSubscription = this.popoverService.getEventChange().subscribe(event => {
           testEvent = event;
         });
-        expect(this.stateService.openEvent).toBeUndefined();
-        this.stateService.openEvent = clickEvent;
+        expect(this.popoverService.openEvent).toBeUndefined();
+        this.popoverService.openEvent = clickEvent;
         expect(clickEvent).toEqual(testEvent);
-        expect(this.stateService.openEvent).toBe(testEvent);
+        expect(this.popoverService.openEvent).toBe(testEvent);
         eventSubscription.unsubscribe();
       });
 
       it('updates and notifies when the open value changes', function (this: TestContext) {
         let openValue: boolean;
-        const openSubscription = this.stateService.openChange.subscribe(change => {
+        const openSubscription = this.popoverService.openChange.subscribe(change => {
           openValue = change;
         });
-        expect(this.stateService.open).toBe(false);
-        expect(this.stateService.open).toBeFalse();
-        this.stateService.open = true;
-        expect(this.stateService.open).toBeTrue();
-        expect(this.stateService.open).toEqual(openValue);
+        expect(this.popoverService.open).toBe(false);
+        expect(this.popoverService.open).toBeFalse();
+        this.popoverService.open = true;
+        expect(this.popoverService.open).toBeTrue();
+        expect(this.popoverService.open).toEqual(openValue);
         openSubscription.unsubscribe();
       });
 
       it('toggles open state with events', function (this: TestContext) {
         const openClickEvent: Event = new MouseEvent('click');
         const closeClickEvent: Event = new MouseEvent('click');
-        expect(this.stateService.open).toBeFalse();
-        expect(this.stateService.openEvent).toBeUndefined();
-        this.stateService.toggleWithEvent(openClickEvent);
-        expect(this.stateService.open).toBeTrue();
-        expect(this.stateService.openEvent).toBe(openClickEvent);
-        this.stateService.toggleWithEvent(closeClickEvent);
-        expect(this.stateService.open).toBeFalse();
-        expect(this.stateService.openEvent).toBe(closeClickEvent);
+        expect(this.popoverService.open).toBeFalse();
+        expect(this.popoverService.openEvent).toBeUndefined();
+        this.popoverService.toggleWithEvent(openClickEvent);
+        expect(this.popoverService.open).toBeTrue();
+        expect(this.popoverService.openEvent).toBe(openClickEvent);
+        this.popoverService.toggleWithEvent(closeClickEvent);
+        expect(this.popoverService.open).toBeFalse();
+        expect(this.popoverService.openEvent).toBe(closeClickEvent);
       });
 
       /**
@@ -122,13 +122,13 @@ export default function (): void {
           // Arrow keys are ignored to prevent content from closing the popover content
           it(`prevents the default toggle action for the ${key} key`, function (this: TestContext) {
             spyOn(arrowKeyEvent, 'preventDefault');
-            this.stateService.toggleWithEvent(arrowKeyEvent);
+            this.popoverService.toggleWithEvent(arrowKeyEvent);
             expect(arrowKeyEvent.preventDefault).toHaveBeenCalled();
           });
         } else {
           it(`does not prevent the default toggle action for the ${key} key`, function (this: TestContext) {
             spyOn(arrowKeyEvent, 'preventDefault');
-            this.stateService.toggleWithEvent(arrowKeyEvent);
+            this.popoverService.toggleWithEvent(arrowKeyEvent);
             expect(arrowKeyEvent.preventDefault).not.toHaveBeenCalled();
           });
         }

@@ -18,7 +18,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   template: '<ng-content></ng-content>',
   host: {
     '[class.dropdown]': 'true',
-    '[class.open]': 'stateService.open',
+    '[class.open]': 'popoverService.open',
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
@@ -32,13 +32,13 @@ export class ClrDropdown implements OnDestroy {
     @SkipSelf()
     @Optional()
     public parent: ClrDropdown,
-    public stateService: ClrPopoverService,
+    public popoverService: ClrPopoverService,
     public focusHandler: DropdownFocusHandler,
     private cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.stateService.open = value)));
-    this.subscriptions.push(stateService.openChange.subscribe(() => this.cdr.markForCheck()));
+    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.popoverService.open = value)));
+    this.subscriptions.push(popoverService.openChange.subscribe(() => this.cdr.markForCheck()));
   }
 
   ngOnDestroy() {

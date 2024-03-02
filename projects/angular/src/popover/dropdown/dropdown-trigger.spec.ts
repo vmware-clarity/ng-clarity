@@ -37,11 +37,11 @@ export default function (): void {
     });
 
     it('adds the aria-expanded attribute to the host', function (this: Context) {
-      const stateService = this.getProvider(ClrPopoverService);
-      stateService.open = false;
+      const popoverService = this.getProvider(ClrPopoverService);
+      popoverService.open = false;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');
-      stateService.open = true;
+      popoverService.open = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('true');
     });

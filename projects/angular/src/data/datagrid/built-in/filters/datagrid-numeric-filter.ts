@@ -77,7 +77,7 @@ export class DatagridNumericFilter<T = any>
     filters: FiltersProvider<T>,
     private domAdapter: DomAdapter,
     public commonStrings: ClrCommonStringsService,
-    private popoverstateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private ngZone: NgZone
   ) {
     super(filters);
@@ -177,7 +177,7 @@ export class DatagridNumericFilter<T = any>
 
   ngAfterViewInit() {
     this.subscriptions.push(
-      this.popoverstateService.openChange.subscribe(openChange => {
+      this.popoverService.openChange.subscribe(openChange => {
         this.open = openChange;
         // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
         // running change detection.

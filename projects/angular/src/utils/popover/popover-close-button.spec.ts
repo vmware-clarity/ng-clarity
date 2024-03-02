@@ -32,7 +32,7 @@ class TestHost {
 export default function (): void {
   describe('ClrPopoverCloseButton', function () {
     type Context = TestContext<ClrPopoverCloseButton, TestHost> & {
-      stateService: ClrPopoverService;
+      popoverService: ClrPopoverService;
     };
 
     describe('TypeScript API', function (this: Context) {
@@ -41,16 +41,16 @@ export default function (): void {
       });
 
       beforeEach(function (this: Context) {
-        this.stateService = this.getClarityProvider(ClrPopoverService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('declares a Popover stateService', function (this: Context) {
-        expect(this.stateService).toBeDefined();
+        expect(this.popoverService).toBeDefined();
       });
 
       it('sets the close button ref in the events service', function (this: Context) {
-        expect(this.hostComponent.closeButton).toEqual(this.stateService.closeButtonRef);
+        expect(this.hostComponent.closeButton).toEqual(this.popoverService.closeButtonRef);
       });
     });
 
@@ -60,22 +60,22 @@ export default function (): void {
       });
 
       beforeEach(function (this: Context) {
-        this.stateService = this.getClarityProvider(ClrPopoverService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('emits a close change event when popover is closed', function (this: Context) {
-        this.stateService.open = true;
+        this.popoverService.open = true;
         this.detectChanges();
         expect(this.fixture.componentInstance.openState).toBeUndefined();
         const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
         closeBtn.click();
         this.detectChanges();
-        expect(this.hostComponent.openState).toBe(this.stateService.open);
+        expect(this.hostComponent.openState).toBe(this.popoverService.open);
       });
 
       it('focuses on the toggle/anchor element when clicked', function (this: Context) {
-        const clickSpy = spyOn(this.stateService, 'toggleWithEvent');
+        const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
         const closeBtn: HTMLButtonElement = this.hostElement.querySelector('.clr-smart-close-button');
         const focusSpy = spyOn(this.hostComponent.toggleButton.nativeElement, 'focus');
         closeBtn.click();

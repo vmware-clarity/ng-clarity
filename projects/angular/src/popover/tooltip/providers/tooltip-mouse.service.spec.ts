@@ -11,46 +11,46 @@ import { TooltipMouseService } from './tooltip-mouse.service';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
     let mouseService: TooltipMouseService;
 
     beforeEach(() => {
-      stateService = new ClrPopoverService();
-      mouseService = new TooltipMouseService(stateService);
+      popoverService = new ClrPopoverService();
+      mouseService = new TooltipMouseService(popoverService);
     });
 
     it('should show the tooltip when the mouse enters the trigger', () => {
       mouseService.onMouseEnterTrigger();
 
-      expect(stateService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
     });
 
     it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', fakeAsync(() => {
-      stateService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       tick();
 
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     }));
 
     it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', fakeAsync(() => {
-      stateService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveContent();
       tick();
 
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     }));
 
     it('should not hide the tooltip as the mouse moves from the trigger to the content', fakeAsync(() => {
-      stateService.open = true;
+      popoverService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       mouseService.onMouseEnterContent();
       tick();
 
-      expect(stateService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
     }));
   });
 }

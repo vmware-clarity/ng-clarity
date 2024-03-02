@@ -23,7 +23,7 @@ export class ButtonGroupFocusHandler {
 
   constructor(
     private focusService: FocusService,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     private renderer: Renderer2
   ) {}
 
@@ -64,7 +64,7 @@ export class ButtonGroupFocusHandler {
   }
 
   private closeMenu(event: KeyboardEvent, focusBackOnToggle: boolean) {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
     if (focusBackOnToggle) {
       this.menuToggle.focus();
     }

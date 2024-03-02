@@ -22,17 +22,17 @@ class TestSelectWithMenu {}
 export default function (): void {
   describe('Select with Menu', function () {
     let context: TestContext<ClrCombobox<string>, TestSelectWithMenu>;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
 
     beforeEach(function () {
       context = this.create(ClrCombobox, TestSelectWithMenu, [], []);
-      stateService = context.getClarityProvider(ClrPopoverService);
-      stateService.open = true;
+      popoverService = context.getClarityProvider(ClrPopoverService);
+      popoverService.open = true;
       context.detectChanges();
     });
 
     afterEach(function () {
-      stateService.open = false;
+      popoverService.open = false;
       context.detectChanges();
     });
 

@@ -90,6 +90,9 @@ export class ClrPopoverContent implements OnDestroy {
   }
 
   ngAfterViewInit() {
+    if (this.popoverService.open) {
+      this.showOverlay();
+    }
     this.subscriptions.add(
       this.popoverService.openChange.subscribe(change => {
         if (change) {

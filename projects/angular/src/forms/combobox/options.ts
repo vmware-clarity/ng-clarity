@@ -73,7 +73,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     private el: ElementRef,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
@@ -110,11 +110,11 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     this.subscriptions.push(
       fromEvent(this.document, 'scroll', { capture: true }).subscribe(event => {
         if (
-          this.stateService.open &&
+          this.popoverService.open &&
           (event as Event).target !== this.el.nativeElement &&
           (event as Event).target !== this.focusHandler.textInput
         ) {
-          this.stateService.open = false;
+          this.popoverService.open = false;
         }
       }),
       this.items.changes.subscribe(items => {

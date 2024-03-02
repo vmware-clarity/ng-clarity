@@ -55,7 +55,7 @@ class TestComponent {
 export default function (): void {
   describe('Combobox Component', function () {
     let clarityElement: HTMLElement;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
     let selectionService: OptionSelectionService<string>;
     let fixture: ComponentFixture<TestComponent>;
     let clarityDirective: ClrCombobox<string>;
@@ -72,13 +72,13 @@ export default function (): void {
       clarityDirective = comboboxDebugElement.componentInstance;
       clarityElement = comboboxDebugElement.nativeElement;
       selectionService = comboboxDebugElement.injector.get(OptionSelectionService) as OptionSelectionService<string>;
-      stateService = comboboxDebugElement.injector.get(ClrPopoverService);
+      popoverService = comboboxDebugElement.injector.get(ClrPopoverService);
 
       fixture.detectChanges();
     });
 
     afterEach(function () {
-      stateService.open = false;
+      popoverService.open = false;
       fixture.detectChanges();
     });
 
@@ -97,7 +97,7 @@ export default function (): void {
 
       it('has open state read-only property', () => {
         expect(clarityDirective.openState).toBeFalsy();
-        stateService.open = true;
+        popoverService.open = true;
         expect(clarityDirective.openState).toBeTrue();
       });
 
@@ -106,20 +106,20 @@ export default function (): void {
       });
 
       it('does not close panel on clear', () => {
-        stateService.open = true;
+        popoverService.open = true;
         clarityDirective.writeValue(null);
         expect(clarityDirective.openState).toBeTrue();
       });
 
       it('closes panel on selection', () => {
-        stateService.open = true;
+        popoverService.open = true;
         selectionService.select('test');
         expect(clarityDirective.openState).toBeFalse();
       });
 
       it('does not close panel on selection if multiselect', () => {
         clarityDirective.multiSelect = true;
-        stateService.open = true;
+        popoverService.open = true;
         selectionService.select('test');
         expect(clarityDirective.openState).toBeTrue();
       });
@@ -163,7 +163,7 @@ export default function (): void {
 
       it('notifies on open changes', () => {
         expect(fixture.componentInstance.openState).toBeFalsy();
-        stateService.open = true;
+        popoverService.open = true;
         expect(fixture.componentInstance.openState).toBeTrue();
       });
     });
@@ -188,9 +188,9 @@ export default function (): void {
 
       it('opens the menu on the trigger click', () => {
         const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
-        expect(stateService.open).toBe(false);
+        expect(popoverService.open).toBe(false);
         trigger.click();
-        expect(stateService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
       });
 
       it('has aria-owns attribute', () => {
@@ -203,7 +203,7 @@ export default function (): void {
         const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
         expect(trigger.hasAttribute('aria-expanded')).toBeTrue();
         expect(trigger.getAttribute('aria-expanded')).toEqual('false');
-        stateService.open = true;
+        popoverService.open = true;
         fixture.detectChanges();
         expect(trigger.getAttribute('aria-expanded')).toEqual('true');
       });

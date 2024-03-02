@@ -36,7 +36,7 @@ interface TestContext {
   el: HTMLElement;
   focusHandler: ComboboxFocusHandler<any>;
   selectionService: OptionSelectionService<any>;
-  stateService: ClrPopoverService;
+  popoverService: ClrPopoverService;
 }
 
 export default function (): void {
@@ -50,7 +50,7 @@ export default function (): void {
       this.testComponent = this.fixture.componentInstance;
       this.el = this.fixture.debugElement.nativeElement;
       this.focusHandler = this.fixture.debugElement.injector.get(ComboboxFocusHandler);
-      this.stateService = this.fixture.debugElement.injector.get(ClrPopoverService);
+      this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
       this.selectionService = this.fixture.debugElement.injector.get(OptionSelectionService);
 
       this.fixture.detectChanges();
@@ -73,13 +73,13 @@ export default function (): void {
     it('has empty pseudoFocus on initialization', function (this: TestContext) {
       expect(this.focusHandler.pseudoFocus).toBeTruthy();
       expect(this.focusHandler.pseudoFocus.isEmpty()).toBeTrue();
-      expect(this.stateService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('can open a listbox and set focus', function (this: TestContext) {
       const event = new KeyboardEvent('keydown', { key: Keys.ArrowDown });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
-      expect(this.stateService.open).toBeTrue();
+      expect(this.popoverService.open).toBeTrue();
       expect(this.focusHandler.pseudoFocus.model).toEqual(new OptionData('1', 'one'));
     });
 
@@ -95,24 +95,24 @@ export default function (): void {
     });
 
     it('closes popover on textInput blur', function (this: TestContext) {
-      this.stateService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
-      expect(this.stateService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('closes popover on trigger blur', function (this: TestContext) {
-      this.stateService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.trigger.nativeElement.dispatchEvent(event);
-      expect(this.stateService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('closes popover on listbox blur', function (this: TestContext) {
-      this.stateService.open = true;
+      this.popoverService.open = true;
       const event = new FocusEvent('blur');
       this.testComponent.listbox.nativeElement.dispatchEvent(event);
-      expect(this.stateService.open).toBeFalse();
+      expect(this.popoverService.open).toBeFalse();
     });
 
     it('can set focus on textInput', function (this: TestContext) {
@@ -153,7 +153,7 @@ export default function (): void {
 
     it('does not submit on Enter when dialog is open', function (this: TestContext) {
       spyOn(this.testComponent, 'onSubmit');
-      this.stateService.open = true;
+      this.popoverService.open = true;
       const event = new KeyboardEvent('keydown', { key: Keys.Enter });
       this.testComponent.textInput.nativeElement.dispatchEvent(event);
       expect(this.testComponent.onSubmit).not.toHaveBeenCalled();

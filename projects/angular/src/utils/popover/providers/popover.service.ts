@@ -5,7 +5,7 @@
  */
 
 import { ElementRef, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
@@ -21,7 +21,7 @@ export class ClrPopoverService {
   contentRef: ElementRef;
   openButtonRef: ElementRef;
   private _open = false;
-  private _openChange = new BehaviorSubject<boolean>(false);
+  private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
   private _popoverAligned = new Subject<HTMLElement>();

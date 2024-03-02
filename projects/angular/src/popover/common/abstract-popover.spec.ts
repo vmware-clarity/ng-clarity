@@ -43,10 +43,10 @@ class InputFocusPopover {
   @ViewChild('ignoreInput') ignore: ElementRef;
   @ViewChild('ignoreElement') popover: any; // cant use TestPopoverIgnoreElement as type since it will refer to class before declaration in es2015+
 
-  constructor(private stateService: ClrPopoverService) {}
+  constructor(private popoverService: ClrPopoverService) {}
 
   onFocus(event: FocusEvent) {
-    this.stateService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }
 
@@ -65,13 +65,13 @@ class TestPopoverIgnoreElement extends AbstractPopover {
 
 describe('Abstract Popover', function () {
   let fixture: ComponentFixture<any>;
-  let stateService: ClrPopoverService;
+  let popoverService: ClrPopoverService;
 
   describe('Keyboard Events', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [TestPopover], providers: [ClrPopoverService] });
-      stateService = TestBed.inject(ClrPopoverService);
-      stateService.open = true;
+      popoverService = TestBed.inject(ClrPopoverService);
+      popoverService.open = true;
       fixture = TestBed.createComponent(TestPopover);
       fixture.detectChanges();
     });
@@ -81,7 +81,7 @@ describe('Abstract Popover', function () {
 
       document.dispatchEvent(event);
 
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     });
 
     it('should not run change detection when any button is pressed except ESC', () => {
@@ -106,16 +106,16 @@ describe('Abstract Popover', function () {
         imports: [ClrConditionalModule],
         providers: [ClrPopoverService],
       });
-      stateService = TestBed.inject(ClrPopoverService);
+      popoverService = TestBed.inject(ClrPopoverService);
       fixture = TestBed.createComponent(TestPopoverWithIfOpenDirective);
       fixture.detectChanges();
     });
 
     it('opens the abstract popover only after ClrPopoverService is in open state', () => {
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
       expect(fixture.componentInstance.testPopover).toBeUndefined();
 
-      stateService.open = true;
+      popoverService.open = true;
       fixture.detectChanges();
 
       expect(fixture.componentInstance.testPopover).not.toBeUndefined();
@@ -157,16 +157,16 @@ describe('Abstract Popover', function () {
   describe('Open behavior', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [TestPopover], providers: [ClrPopoverService] });
-      stateService = TestBed.inject(ClrPopoverService);
-      stateService.open = true;
+      popoverService = TestBed.inject(ClrPopoverService);
+      popoverService.open = true;
       fixture = TestBed.createComponent(TestPopover);
       fixture.detectChanges();
     });
 
     it('should close on outside click', () => {
-      stateService.open = true;
+      popoverService.open = true;
       document.dispatchEvent(new Event('click'));
-      expect(stateService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     });
 
     it('should not close if outside click opens popover', () => {
@@ -175,15 +175,15 @@ describe('Abstract Popover', function () {
       document.body.appendChild(btn);
 
       btn.addEventListener('click', () => {
-        stateService.open = true;
+        popoverService.open = true;
       });
 
       btn.dispatchEvent(new Event('click'));
-      expect(stateService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
 
       // popover should stay open if button is clicked again
       btn.dispatchEvent(new Event('click'));
-      expect(stateService.open).toBe(true);
+      expect(popoverService.open).toBe(true);
 
       // must cleanup elements that are manually added to document body
       document.body.removeChild(btn);

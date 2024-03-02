@@ -55,16 +55,16 @@ export default function (): void {
     let context:
       | TestContext<ClrOptions<string>, TestComponent>
       | TestContext<ClrOptions<string>, TestComponentWithChild>;
-    let stateService: ClrPopoverService;
+    let popoverService: ClrPopoverService;
 
     describe('View Basics', function () {
       beforeEach(function () {
         context = this.createOnly(ClrOptions, TestComponent, []);
-        stateService = context.getClarityProvider(ClrPopoverService);
+        popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
       afterEach(function () {
-        stateService.open = false;
+        popoverService.open = false;
         context.detectChanges();
       });
 
@@ -79,11 +79,11 @@ export default function (): void {
       });
 
       it('does not close the menu when you click on the menu', () => {
-        stateService.open = true;
+        popoverService.open = true;
         const menu = context.testElement.querySelector('clr-options');
         menu.click();
 
-        expect(stateService.open).toBe(true);
+        expect(popoverService.open).toBe(true);
       });
 
       it('handles loading and no-result states', function () {

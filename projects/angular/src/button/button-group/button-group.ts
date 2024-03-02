@@ -59,7 +59,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
@@ -80,7 +80,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   get open() {
-    return this.stateService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -128,8 +128,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   openMenu(event: Event, initialFocus: InitialFocus) {
     this.focusHandler.initialFocus = initialFocus;
-    if (!this.stateService.open) {
-      this.stateService.toggleWithEvent(event);
+    if (!this.popoverService.open) {
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
@@ -161,7 +161,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   private handleFocusOnMenuOpen() {
-    this.stateService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
+    this.popoverService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
       if (visible) {
         this.focusHandler.initialize({
           menu: this.menu.nativeElement,

@@ -22,19 +22,19 @@ class TestHost {
 export default function (): void {
   describe('ClrPopoverAnchor', function () {
     type Context = TestContext<ClrPopoverAnchor, TestHost> & {
-      stateService: ClrPopoverService;
+      popoverService: ClrPopoverService;
     };
 
     describe('Template API', () => {
       spec(ClrPopoverAnchor, TestHost, undefined);
 
       beforeEach(function (this: Context) {
-        this.stateService = this.getClarityProvider(ClrPopoverService);
+        this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
       it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.stateService.anchorElementRef).toEqual(this.hostComponent.anchor);
+        expect(this.popoverService.anchorElementRef).toEqual(this.hostComponent.anchor);
       });
     });
 

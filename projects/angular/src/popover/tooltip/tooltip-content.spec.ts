@@ -46,7 +46,7 @@ class SimpleTest {
 }
 
 interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
-  stateService: ClrPopoverService;
+  popoverService: ClrPopoverService;
   tooltipIdService: TooltipIdService;
 }
 

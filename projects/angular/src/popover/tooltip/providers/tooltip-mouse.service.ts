@@ -13,11 +13,11 @@ export class TooltipMouseService {
   private mouseOverTrigger: boolean;
   private mouseOverContent: boolean;
 
-  constructor(private readonly stateService: ClrPopoverService) {}
+  constructor(private readonly popoverService: ClrPopoverService) {}
 
   onMouseEnterTrigger() {
     this.mouseOverTrigger = true;
-    this.stateService.open = true;
+    this.popoverService.open = true;
   }
 
   onMouseLeaveTrigger() {
@@ -39,7 +39,7 @@ export class TooltipMouseService {
     // the `mouseOverContent` property after the user moves the mouse from the trigger to the content.
     setTimeout(() => {
       if (!this.mouseOverTrigger && !this.mouseOverContent) {
-        this.stateService.open = false;
+        this.popoverService.open = false;
       }
     }, 0);
   }

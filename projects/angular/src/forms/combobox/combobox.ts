@@ -74,7 +74,7 @@ export class ClrCombobox<T>
   @Input('placeholder') placeholder = '';
 
   @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
-  @Output('clrOpenChange') clrOpenChange = this.stateService.openChange;
+  @Output('clrOpenChange') clrOpenChange = this.popoverService.openChange;
 
   /**
    * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
@@ -114,7 +114,7 @@ export class ClrCombobox<T>
     protected override el: ElementRef,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
-    private stateService: ClrPopoverService,
+    private popoverService: ClrPopoverService,
     @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -160,7 +160,7 @@ export class ClrCombobox<T>
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
-      if (this.stateService.open) {
+      if (this.popoverService.open) {
         this.optionSelectionService.showAllOptions = false;
       }
       this._searchText = text;
@@ -173,7 +173,7 @@ export class ClrCombobox<T>
   }
 
   get openState(): boolean {
-    return this.stateService.open;
+    return this.popoverService.open;
   }
 
   get multiSelectModel(): T[] {
@@ -312,14 +312,14 @@ export class ClrCombobox<T>
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.stateService.open = false;
+          this.popoverService.open = false;
         }
         this.updateControlValue();
       })
     );
 
     this.subscriptions.push(
-      this.stateService.openChange.subscribe(open => {
+      this.popoverService.openChange.subscribe(open => {
         if (open) {
           this.focusFirstActive();
         } else {
@@ -334,7 +334,7 @@ export class ClrCombobox<T>
     );
 
     this.subscriptions.push(
-      this.stateService.popoverAligned.subscribe(popoverNode => {
+      this.popoverService.popoverAligned.subscribe(popoverNode => {
         // When used outside a combobox container
         if (!this.containerService) {
           return;
