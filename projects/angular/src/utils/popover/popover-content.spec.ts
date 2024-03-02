@@ -14,8 +14,7 @@ import { ClrSide } from './enums/side.enum';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
 import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 @Component({
   selector: 'test-host',
@@ -28,11 +27,11 @@ import { ClrPopoverToggleService } from './providers/popover-toggle.service';
       Popover content
     </div>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverService],
 })
 @Component({
   template: ``,
-  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverService],
 })
 class SimpleContent {
   @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
@@ -56,8 +55,7 @@ export default function (): void {
     type Context = TestContext<ClrPopoverContent, SimpleContent> & {
       testComponent: SimpleContent;
       clarityDirective: ClrPopoverModuleNext;
-      eventService: ClrPopoverEventsService;
-      toggleService: ClrPopoverToggleService;
+      stateService: ClrPopoverService;
     };
 
     beforeEach(function (this: Context) {
@@ -74,22 +72,17 @@ export default function (): void {
       this.fixture.detectChanges();
       this.testComponent = this.fixture.componentInstance;
       this.clarityDirective = this.fixture.componentInstance.content;
-      this.eventService = this.fixture.debugElement.injector.get(ClrPopoverEventsService);
-      this.toggleService = this.fixture.debugElement.injector.get(ClrPopoverToggleService);
+      this.stateService = this.fixture.debugElement.injector.get(ClrPopoverService);
     });
 
     describe('Providers', function (this: Context) {
-      it('declares a Popover EventService', function (this: Context) {
-        expect(this.eventService).toBeDefined();
-      });
-
-      it('declares a Popover ToggleService', function (this: Context) {
-        expect(this.toggleService).toBeDefined();
+      it('declares a Popover stateService', function (this: Context) {
+        expect(this.stateService).toBeDefined();
       });
     });
 
     describe('TypeScript API', function (this: Context) {
-      it('responds to openChange events from the toggleService', function (this: Context) {
+      it('responds to openChange events from the stateService', function (this: Context) {
         this.testComponent.openState = true; // Add content to the DOM
         this.fixture.detectChanges();
         let content = document.body.querySelectorAll('div.clr-popover-content');
@@ -106,25 +99,25 @@ export default function (): void {
 
     describe('Template API', () => {
       it('binds to [clrPopoverContent] open state', function (this: Context) {
-        expect(this.testComponent.openState).toBe(this.toggleService.open);
+        expect(this.testComponent.openState).toBe(this.stateService.open);
         this.testComponent.openState = undefined;
-        expect(this.toggleService.open).toBe(false);
+        expect(this.stateService.open).toBe(false);
         this.testComponent.openState = false;
-        expect(this.toggleService.open).toBe(false);
+        expect(this.stateService.open).toBe(false);
       });
 
       it('binds to [clrPopoverContentOutsideClickToClose]', function (this: Context) {
-        expect(this.eventService.outsideClickClose).toBe(true);
+        expect(this.stateService.outsideClickClose).toBe(true);
         this.testComponent.closeClick = false;
         this.fixture.detectChanges();
-        expect(this.eventService.outsideClickClose).toBe(false);
+        expect(this.stateService.outsideClickClose).toBe(false);
       });
 
       it('binds to [clrPopoverContentScrollToClose]', function (this: Context) {
-        expect(this.testComponent.closeScroll).toBe(this.eventService.scrollToClose);
+        expect(this.testComponent.closeScroll).toBe(this.stateService.scrollToClose);
         this.testComponent.closeScroll = false;
         this.fixture.detectChanges();
-        expect(this.eventService.scrollToClose).toBe(false);
+        expect(this.stateService.scrollToClose).toBe(false);
       });
     });
 

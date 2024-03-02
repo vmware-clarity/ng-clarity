@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { ElementRef, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 
@@ -13,9 +13,15 @@ import { preventArrowKeyScroll } from '../../focus/key-focus/util';
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 
 @Injectable()
-export class ClrPopoverToggleService {
+export class ClrPopoverService {
+  outsideClickClose = true;
+  scrollToClose = true;
+  anchorElementRef: ElementRef;
+  closeButtonRef: ElementRef;
+  contentRef: ElementRef;
+  openButtonRef: ElementRef;
   private _open = false;
-  private _openChange = new Subject<boolean>();
+  private _openChange = new BehaviorSubject<boolean>(false);
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
   private _popoverAligned = new Subject<HTMLElement>();
@@ -78,5 +84,17 @@ export class ClrPopoverToggleService {
 
   popoverAlignedEmit(popoverNode: HTMLElement) {
     this._popoverAligned.next(popoverNode);
+  }
+
+  setCloseFocus(): void {
+    this.closeButtonRef.nativeElement.focus();
+  }
+
+  setOpenedButtonFocus(): void {
+    if (this.openButtonRef) {
+      this.openButtonRef.nativeElement.focus();
+    } else {
+      this.anchorElementRef.nativeElement.focus();
+    }
   }
 }

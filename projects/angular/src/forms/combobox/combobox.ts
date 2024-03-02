@@ -37,7 +37,7 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { CONTROL_STATE, IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrComboboxContainer } from './combobox-container';
@@ -74,7 +74,7 @@ export class ClrCombobox<T>
   @Input('placeholder') placeholder = '';
 
   @Output('clrInputChange') clrInputChange = new EventEmitter<string>(false);
-  @Output('clrOpenChange') clrOpenChange = this.toggleService.openChange;
+  @Output('clrOpenChange') clrOpenChange = this.stateService.openChange;
 
   /**
    * This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change.
@@ -114,7 +114,7 @@ export class ClrCombobox<T>
     protected override el: ElementRef,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
-    private toggleService: ClrPopoverToggleService,
+    private stateService: ClrPopoverService,
     @Optional() private controlStateService: IfControlStateService,
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -160,7 +160,7 @@ export class ClrCombobox<T>
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
     if (text !== this._searchText) {
-      if (this.toggleService.open) {
+      if (this.stateService.open) {
         this.optionSelectionService.showAllOptions = false;
       }
       this._searchText = text;
@@ -173,7 +173,7 @@ export class ClrCombobox<T>
   }
 
   get openState(): boolean {
-    return this.toggleService.open;
+    return this.stateService.open;
   }
 
   get multiSelectModel(): T[] {
@@ -312,14 +312,14 @@ export class ClrCombobox<T>
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
         if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.toggleService.open = false;
+          this.stateService.open = false;
         }
         this.updateControlValue();
       })
     );
 
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
+      this.stateService.openChange.subscribe(open => {
         if (open) {
           this.focusFirstActive();
         } else {
@@ -334,7 +334,7 @@ export class ClrCombobox<T>
     );
 
     this.subscriptions.push(
-      this.toggleService.popoverAligned.subscribe(popoverNode => {
+      this.stateService.popoverAligned.subscribe(popoverNode => {
         // When used outside a combobox container
         if (!this.containerService) {
           return;

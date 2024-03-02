@@ -7,7 +7,7 @@
 import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrCombobox } from './combobox';
 
 @Component({
@@ -22,17 +22,17 @@ class TestSelectWithMenu {}
 export default function (): void {
   describe('Select with Menu', function () {
     let context: TestContext<ClrCombobox<string>, TestSelectWithMenu>;
-    let toggleService: ClrPopoverToggleService;
+    let stateService: ClrPopoverService;
 
     beforeEach(function () {
       context = this.create(ClrCombobox, TestSelectWithMenu, [], []);
-      toggleService = context.getClarityProvider(ClrPopoverToggleService);
-      toggleService.open = true;
+      stateService = context.getClarityProvider(ClrPopoverService);
+      stateService.open = true;
       context.detectChanges();
     });
 
     afterEach(function () {
-      toggleService.open = false;
+      stateService.open = false;
       context.detectChanges();
     });
 

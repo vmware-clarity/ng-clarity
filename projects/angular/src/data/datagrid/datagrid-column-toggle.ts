@@ -14,7 +14,7 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ColumnState } from './interfaces/column-state.interface';
@@ -104,9 +104,9 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverToggleService: ClrPopoverToggleService
+    popoverstateService: ClrPopoverService
   ) {
-    this.subscription = popoverToggleService.openChange.subscribe(change => (this.openState = change));
+    this.subscription = popoverstateService.openChange.subscribe(change => (this.openState = change));
   }
 
   get allColumnsVisible(): boolean {

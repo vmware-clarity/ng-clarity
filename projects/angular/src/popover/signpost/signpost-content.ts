@@ -141,7 +141,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    *
    */
   close() {
-    this.toggleService.open = false;
+    this.stateService.open = false;
   }
 
   override ngOnDestroy() {

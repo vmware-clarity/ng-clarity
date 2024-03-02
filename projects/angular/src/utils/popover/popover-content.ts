@@ -32,8 +32,7 @@ import { ClrAlignment } from './enums/alignment.enum';
 import { ClrAxis } from './enums/axis.enum';
 import { ClrSide } from './enums/side.enum';
 import { ClrPopoverPosition } from './interfaces/popover-position.interface';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 
 /** @dynamic */
 @Directive({
@@ -60,15 +59,14 @@ export class ClrPopoverContent implements OnDestroy {
     private renderer: Renderer2,
     private overlay: Overlay,
     private overlayContainer: OverlayContainer,
-    private smartEventsService: ClrPopoverEventsService,
-    private smartOpenService: ClrPopoverToggleService
+    private popoverService: ClrPopoverService
   ) {
     overlayContainer.getContainerElement().classList.add('clr-container-element');
   }
 
   @Input('clrPopoverContent')
   set open(value: boolean) {
-    this.smartOpenService.open = !!value;
+    this.popoverService.open = !!value;
   }
 
   @Input('clrPopoverContentAt')
@@ -83,20 +81,17 @@ export class ClrPopoverContent implements OnDestroy {
 
   @Input('clrPopoverContentOutsideClickToClose')
   set outsideClickClose(clickToClose: boolean) {
-    this.smartEventsService.outsideClickClose = !!clickToClose;
+    this.popoverService.outsideClickClose = !!clickToClose;
   }
 
   @Input('clrPopoverContentScrollToClose')
   set scrollToClose(scrollToClose: boolean) {
-    this.smartEventsService.scrollToClose = !!scrollToClose;
+    this.popoverService.scrollToClose = !!scrollToClose;
   }
 
   ngAfterViewInit() {
-    if (this.smartOpenService.open) {
-      this.showOverlay();
-    }
     this.subscriptions.add(
-      this.smartOpenService.openChange.subscribe(change => {
+      this.popoverService.openChange.subscribe(change => {
         if (change) {
           this.showOverlay();
         } else {
@@ -121,9 +116,9 @@ export class ClrPopoverContent implements OnDestroy {
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.overlay
           .position()
-          .flexibleConnectedTo(this.smartEventsService.anchorButtonRef)
+          .flexibleConnectedTo(this.popoverService.anchorElementRef)
           .withPositions([this.preferredPosition, ...this.positions]),
-        scrollStrategy: this.smartEventsService.scrollToClose
+        scrollStrategy: this.popoverService.scrollToClose
           ? this.overlay.scrollStrategies.noop()
           : this.overlay.scrollStrategies.reposition(),
         panelClass: 'clr-popover-content',
@@ -135,41 +130,38 @@ export class ClrPopoverContent implements OnDestroy {
       overlay.keydownEvents().subscribe(event => {
         if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
           event.preventDefault();
-          this.smartOpenService.open = false;
-          this.smartEventsService.setAnchorFocus();
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
         }
       })
     );
     this.subscriptions.add(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-        if (
-          this.smartEventsService.contentRef &&
-          this.smartEventsService.contentRef.nativeElement.contains(event.target)
-        ) {
+        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
           return;
         }
         // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        if (this.smartOpenService.openEvent) {
+        if (this.popoverService.openEvent) {
           if (
-            (this.smartOpenService.openEvent.target as Element).contains(event.target as Element) ||
-            (this.smartOpenService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-            this.smartOpenService.openEvent.target === event.target
+            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target
           ) {
             return;
           }
         }
 
-        if (this.smartEventsService.outsideClickClose) {
-          this.smartOpenService.open = false;
-          this.smartEventsService.setAnchorFocus();
+        if (this.popoverService.outsideClickClose) {
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
         }
       })
     );
     this.subscriptions.add(
       overlay.detachments().subscribe(() => {
-        this.smartOpenService.open = false;
-        this.smartEventsService.setAnchorFocus();
+        this.popoverService.open = false;
+        this.popoverService.setOpenedButtonFocus();
       })
     );
 
@@ -184,12 +176,12 @@ export class ClrPopoverContent implements OnDestroy {
     if (!this.view) {
       this.view = this.container.createEmbeddedView(this.template);
       const [rootNode] = this.view.rootNodes;
-      this.smartEventsService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
-      this.domPortal = new DomPortal<HTMLElement>(this.smartEventsService.contentRef);
+      this.popoverService.contentRef = new ElementRef(rootNode); // So we know where/what to set close focus on
+      this.domPortal = new DomPortal<HTMLElement>(this.popoverService.contentRef);
     }
     this.overlayRef.attach(this.domPortal);
 
-    setTimeout(() => this.smartOpenService.popoverVisibleEmit(true));
+    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
 
   private removeOverlay(): void {
@@ -207,7 +199,7 @@ export class ClrPopoverContent implements OnDestroy {
       this.view = null;
     }
 
-    this.smartOpenService.popoverVisibleEmit(false);
+    this.popoverService.popoverVisibleEmit(false);
   }
 
   private parsePositionObject(position: ClrPopoverPosition) {

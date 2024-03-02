@@ -6,51 +6,51 @@
 
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 import { TooltipMouseService } from './tooltip-mouse.service';
 
 export default function (): void {
   describe('Tooltip Mouse Service', () => {
-    let toggleService: ClrPopoverToggleService;
+    let stateService: ClrPopoverService;
     let mouseService: TooltipMouseService;
 
     beforeEach(() => {
-      toggleService = new ClrPopoverToggleService();
-      mouseService = new TooltipMouseService(toggleService);
+      stateService = new ClrPopoverService();
+      mouseService = new TooltipMouseService(stateService);
     });
 
     it('should show the tooltip when the mouse enters the trigger', () => {
       mouseService.onMouseEnterTrigger();
 
-      expect(toggleService.open).toBe(true);
+      expect(stateService.open).toBe(true);
     });
 
     it('should hide the tooltip if the mouse leaves the trigger and does not enter the content', fakeAsync(() => {
-      toggleService.open = true;
+      stateService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       tick();
 
-      expect(toggleService.open).toBe(false);
+      expect(stateService.open).toBe(false);
     }));
 
     it('should hide the tooltip if the mouse leaves the content and does not enter the trigger', fakeAsync(() => {
-      toggleService.open = true;
+      stateService.open = true;
 
       mouseService.onMouseLeaveContent();
       tick();
 
-      expect(toggleService.open).toBe(false);
+      expect(stateService.open).toBe(false);
     }));
 
     it('should not hide the tooltip as the mouse moves from the trigger to the content', fakeAsync(() => {
-      toggleService.open = true;
+      stateService.open = true;
 
       mouseService.onMouseLeaveTrigger();
       mouseService.onMouseEnterContent();
       tick();
 
-      expect(toggleService.open).toBe(true);
+      expect(stateService.open).toBe(true);
     }));
   });
 }

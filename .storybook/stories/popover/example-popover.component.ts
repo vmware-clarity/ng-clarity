@@ -5,7 +5,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { ClrAlignment, ClrAxis, ClrPopoverEventsService, ClrPopoverToggleService, ClrSide } from '@clr/angular';
+import { ClrAlignment, ClrAxis, ClrPopoverService, ClrSide } from '@clr/angular';
 
 import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover/enums/positions.enum';
 
@@ -20,22 +20,24 @@ import { ClrPopoverPositions } from '../../../projects/angular/src/utils/popover
       [attr.aria-owns]="popoverId"
       clrPopoverAnchor
     >
-      Anchor
+      Anchor ({{ _positionKey }})
     </button>
     <div
       [id]="popoverId"
       role="dialog"
       cdkTrapFocus
       *clrPopoverContent="_openState; at: _contentPosition; outsideClickToClose: true; scrollToClose: false"
-      style="background-color: var(--cds-alias-object-app-background);
+      style="background-color: var(--cds-alias-object-container-background);
             border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
-            border-radius: var(--cds-alias-object-border-width-100);
-            padding: var(--cds-global-space-4)"
+            border-radius: var(--cds-alias-object-border-radius-100);
+            padding: var(--cds-global-space-4);
+            margin: var(--cds-global-space-3);
+            box-shadow: var(--cds-alias-object-shadow-300);"
     >
       Popover content {{ _positionKey }}
     </div>
   </ng-container>`,
-  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverService],
 })
 export class ExamplePopoverComponent {
   popoverId = 'hello_world';

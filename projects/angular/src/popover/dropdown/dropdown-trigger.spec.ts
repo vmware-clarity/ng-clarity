@@ -7,7 +7,7 @@
 import { Component } from '@angular/core';
 
 import { FocusService } from '../../utils/focus/focus.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { spec, TestContext } from '../../utils/testing/helpers.spec';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownTrigger } from './dropdown-trigger';
@@ -29,7 +29,7 @@ export default function (): void {
 
     type Context = TestContext<ClrDropdownTrigger, SimpleTest>;
     spec(ClrDropdownTrigger, SimpleTest, null, {
-      providers: [{ provide: ClrDropdown, useValue: {} }, ClrPopoverToggleService],
+      providers: [{ provide: ClrDropdown, useValue: {} }, ClrPopoverService],
     });
 
     it('adds the aria-haspopup attribute to the host', function (this: Context) {
@@ -37,11 +37,11 @@ export default function (): void {
     });
 
     it('adds the aria-expanded attribute to the host', function (this: Context) {
-      const toggleService = this.getProvider(ClrPopoverToggleService);
-      toggleService.open = false;
+      const stateService = this.getProvider(ClrPopoverService);
+      stateService.open = false;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');
-      toggleService.open = true;
+      stateService.open = true;
       this.detectChanges();
       expect(this.clarityElement.getAttribute('aria-expanded')).toBe('true');
     });

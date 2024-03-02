@@ -8,8 +8,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDatagridFilter } from './datagrid-filter';
 import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
@@ -28,17 +27,17 @@ export default function (): void {
       let filterService: FiltersProvider<number>;
       let filter: TestFilter;
       let component: ClrDatagridFilter<number>;
-      let toggleService: ClrPopoverToggleService;
+      let stateService: ClrPopoverService;
 
       beforeEach(function () {
         const stateDebouncer = new StateDebouncer();
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
-        toggleService = new ClrPopoverToggleService();
+        stateService = new ClrPopoverService();
         filter = new TestFilter();
         component = new ClrDatagridFilter(
           filterService,
           new ClrCommonStringsService(),
-          toggleService,
+          stateService,
           'browser' as any,
           undefined
         );
@@ -74,12 +73,12 @@ export default function (): void {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridFilter<number>, FullTest>;
       let filter: TestFilter;
-      let toggleService: ClrPopoverToggleService;
+      let stateService: ClrPopoverService;
 
       beforeEach(function (this: any) {
         filter = new TestFilter();
         context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
-        toggleService = context.getClarityProvider(ClrPopoverToggleService);
+        stateService = context.getClarityProvider(ClrPopoverService);
       });
 
       it('receives an input for the filter logic', function () {
@@ -92,10 +91,10 @@ export default function (): void {
         context.testComponent.filter = filter;
         context.testComponent.open = true;
         context.detectChanges();
-        expect(toggleService.open).toBe(true);
+        expect(stateService.open).toBe(true);
         context.clarityDirective.open = false;
         context.detectChanges();
-        expect(toggleService.open).toBe(false);
+        expect(stateService.open).toBe(false);
       });
 
       it('registers itself as a CustomFilter provider', function () {
@@ -207,7 +206,6 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       </clr-dg-filter>
     </clr-dg-column>
   `,
-  providers: [ClrPopoverEventsService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

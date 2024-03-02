@@ -4,21 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrPopoverEventsService, ClrPopoverToggleService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
 import { moduleMetadata, Story } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { ExamplePopoverComponent } from './example-popover.component';
 
 const Positions: any = [
-  'top-right',
-  'top-left',
   'bottom-right',
   'bottom-left',
-  'right-top',
+  'top-right',
+  'top-left',
   'right-bottom',
-  'left-top',
   'left-bottom',
+  'right-top',
+  'left-top',
 ];
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -31,7 +31,7 @@ export default {
       imports: [...CommonModules, ÇlrClrPopoverModuleNext],
     }),
   ],
-  providers: [ClrPopoverEventsService, ClrPopoverToggleService],
+  providers: [ClrPopoverService],
   argTypes: {
     positions: { control: { disable: true }, table: { disable: true } },
   },
@@ -42,10 +42,31 @@ export default {
 };
 
 const template = `
-    <div style="height: 100vh; width: 100%; display: flex; justify-content: center; flex-direction: column; align-items: center; gap: 50px;">
-      <ng-container *ngFor="let pos of positions">
-        <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
-      </ng-container>
+    <div style="height: 100vh; width: 100%; display: flex; gap: 50px; justify-content: space-between;">
+      <div style="flex-direction: column;
+    align-items: center;
+    display: flex;
+    gap: 50px;">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
+      <div style="flex-direction: column;
+    align-items: center;
+    display: flex;
+    gap: 50px;">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
+      <div style="flex-direction: column;
+    align-items: center;
+    display: flex;
+    gap: 50px;">
+        <ng-container *ngFor="let pos of positions">
+          <example-popover [popoverPosition]="pos" [open]="open"></example-popover>
+        </ng-container>
+      </div>
     </div>
   `;
 
