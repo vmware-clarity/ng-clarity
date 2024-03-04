@@ -6,12 +6,46 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Modal/Modal',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule],
+    }),
+  ],
+  component: ClrModal,
+  argTypes: {
+    // inputs
+    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
+    clrModalLabelledById: { defaultValue: '' },
+    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    // outputs
+    clrModalAlternateClose: { control: { disable: true } },
+    clrModalOpenChange: { control: { disable: true } },
+    // methods
+    fadeDone: { control: { disable: true }, table: { disable: true } },
+    open: { control: { disable: true }, table: { disable: true } },
+    close: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    createArray: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrModalAlternateClose: action('clrModalAlternateClose'),
+    clrModalOpenChange: action('clrModalOpenChange'),
+    // story helpers
+    createArray: n => new Array(n),
+    title: 'Modal Title',
+    body: 'Hello World!',
+  },
+};
+
+const ModalTemplate: Story = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
     <div>
@@ -42,39 +76,9 @@ const defaultStory: Story = args => ({
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Modal/Modal',
-  component: ClrModal,
-  argTypes: {
-    // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrModalLabelledById: { defaultValue: '' },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
-    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
-    // outputs
-    clrModalAlternateClose: { control: { disable: true } },
-    clrModalOpenChange: { control: { disable: true } },
-    // methods
-    fadeDone: { control: { disable: true }, table: { disable: true } },
-    open: { control: { disable: true }, table: { disable: true } },
-    close: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrModalAlternateClose: action('clrModalAlternateClose'),
-    clrModalOpenChange: action('clrModalOpenChange'),
-    // story helpers
-    createArray: n => new Array(n),
-    title: 'Modal Title',
-    body: 'Hello World!',
-  },
+export const Modal: StoryObj = {
+  render: ModalTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(ClrModalModule, defaultStory, defaultParameters, variants);
