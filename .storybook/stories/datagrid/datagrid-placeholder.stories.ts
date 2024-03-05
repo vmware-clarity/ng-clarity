@@ -5,13 +5,34 @@
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPlaceholder } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Placeholder',
+  component: ClrDatagridPlaceholder,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+    highlight: true,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+    content: "We couldn't find any elements!",
+  },
+};
+
+const PlaceholderTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -47,24 +68,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Placeholder',
-  component: ClrDatagridPlaceholder,
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-    highlight: true,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-    content: "We couldn't find any elements!",
-  },
+export const Placeholder: StoryObj = {
+  render: PlaceholderTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);

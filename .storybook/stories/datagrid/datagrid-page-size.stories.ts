@@ -5,13 +5,38 @@
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPageSize } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Page Size',
+  component: ClrDatagridPageSize,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrPageSizeOptions: { defaultValue: [5, 10, 20] },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
+
+const PageSizeTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -61,28 +86,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Page Size',
-  component: ClrDatagridPageSize,
-  argTypes: {
-    // inputs
-    clrPageSizeOptions: { defaultValue: [10] },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const PageSize: StoryObj = {
+  render: PageSizeTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
