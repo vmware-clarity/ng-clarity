@@ -62,3 +62,17 @@ export function getFileTreeNodeMarkup(files: File[] = filesRoot) {
     .map(file => `<clr-tree-node>${file.name}${file.files ? getFileTreeNodeMarkup(file.files) : ''}</clr-tree-node>`)
     .join('');
 }
+
+export function getIconTreeNodeMarkup(files: File[] = filesRoot) {
+  return files
+    .map(
+      file => `
+        <clr-tree-node>
+          <cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon>
+          ${file.name}
+          ${file.files ? getIconTreeNodeMarkup(file.files) : ''}
+        </clr-tree-node>
+      `
+    )
+    .join('');
+}
