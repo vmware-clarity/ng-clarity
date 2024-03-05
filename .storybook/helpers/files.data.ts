@@ -93,7 +93,6 @@ export function getFileTreeNodeMarkup(
           ${args.hasIcon ? `<cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon>` : ''}
           ${args.asLink ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
           ${file.files ? getFileTreeNodeMarkup(file.files, args) : ''}
-          ${args.clrSelected}   ${file.selected}
         </clr-tree-node>`
     )
     .join('');

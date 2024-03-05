@@ -23,6 +23,7 @@ export default {
     clrLazy: { control: { disable: true } },
     // story helpers
     asLink: { defaultValue: false, control: { type: 'boolean' } },
+    hasIcon: { defaultValue: false, control: { type: 'boolean' } },
   },
 };
 
@@ -37,4 +38,18 @@ const TreeViewTemplate: Story = args => ({
 
 export const TreeView: StoryObj = {
   render: TreeViewTemplate,
+};
+
+export const TreeViewAsLink: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    asLink: true,
+  },
+};
+
+export const TreeViewHasIcon: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    hasIcon: true,
+  },
 };
