@@ -6,13 +6,11 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+const RowTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -73,10 +71,14 @@ const defaultStory: Story = args => ({
   `,
   props: { ...args },
 });
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Datagrid/Row',
   component: ClrDatagridRow,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrDgDetailCloseLabel: { defaultValue: '' },
@@ -111,14 +113,19 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {},
-  {
+export const Row: StoryObj = {
+  render: RowTemplate,
+};
+
+export const singleSelection: StoryObj = {
+  render: RowTemplate,
+  args: {
     singleSelectable: true,
   },
-  {
+};
+export const multiSelection: StoryObj = {
+  render: RowTemplate,
+  args: {
     multiSelectable: true,
   },
-];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
+};

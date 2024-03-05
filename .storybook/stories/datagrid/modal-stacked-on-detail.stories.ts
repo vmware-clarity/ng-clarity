@@ -4,14 +4,29 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+export default {
+  title: 'Datagrid/Modal Stacked On Detail',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrModalModule, BrowserAnimationsModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
 
-const story: Story = args => ({
+const ModalStackedOnDetailTemplate: Story = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
@@ -60,16 +75,6 @@ const story: Story = args => ({
   props: { ...args },
 });
 
-const parameters: Parameters = {
-  title: 'Datagrid/Modal Stacked on Detail',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const ModalStackedOnDetail: StoryObj = {
+  render: ModalStackedOnDetailTemplate,
 };
-
-setupStorybook([ClrDatagridModule, ClrModalModule], story, parameters);
