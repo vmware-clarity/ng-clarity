@@ -47,7 +47,7 @@ export abstract class TreeNodeModel<T> {
   }
   set disabled(value: boolean) {
     this._disabled = value;
-    this.children.forEach(child => {
+    this.children?.forEach(child => {
       if (child) {
         child.disabled = this.disabled;
       }
