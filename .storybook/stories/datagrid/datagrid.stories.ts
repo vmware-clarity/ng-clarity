@@ -6,13 +6,55 @@
 
 import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Datagrid',
+  component: ClrDatagrid,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDetailExpandableAriaLabel: { defaultValue: commonStringsDefault.detailExpandableAriaLabel },
+    clrDgLoading: { defaultValue: false },
+    clrDgPreserveSelection: { defaultValue: false },
+    clrDgRowSelection: { defaultValue: false },
+    clrDgSelected: { control: { disable: true } },
+    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsDefault.singleActionableAriaLabel },
+    clrDgSingleSelected: { control: { disable: true } },
+    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsDefault.singleSelectionAriaLabel },
+    // outputs
+    clrDgRefresh: { control: { disable: true } },
+    clrDgSelectedChange: { control: { disable: true } },
+    clrDgSingleSelectedChange: { control: { disable: true } },
+    // methods
+    dataChanged: { control: { disable: true } },
+    resize: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrDgRefresh: action('clrDgRefresh'),
+    clrDgSelectedChange: action('clrDgSelectedChange'),
+    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
+    // story helpers
+    elements,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
+
+const DatagridTemplate: Story = args => ({
   template: `
     <style>
       .electronegativity-container { border-bottom: 4px solid #119cd4; }
@@ -71,52 +113,13 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Datagrid',
-  component: ClrDatagrid,
-  argTypes: {
-    // inputs
-    clrDetailExpandableAriaLabel: { defaultValue: commonStringsDefault.detailExpandableAriaLabel },
-    clrDgLoading: { defaultValue: false },
-    clrDgPreserveSelection: { defaultValue: false },
-    clrDgRowSelection: { defaultValue: false },
-    clrDgSelected: { control: { disable: true } },
-    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsDefault.singleActionableAriaLabel },
-    clrDgSingleSelected: { control: { disable: true } },
-    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsDefault.singleSelectionAriaLabel },
-    // outputs
-    clrDgRefresh: { control: { disable: true } },
-    clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
-    // methods
-    dataChanged: { control: { disable: true } },
-    resize: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrDgRefresh: action('clrDgRefresh'),
-    clrDgSelectedChange: action('clrDgSelectedChange'),
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
-    // story helpers
-    elements,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const Datagrid: StoryObj = {
+  render: DatagridTemplate,
 };
 
-const variants: Parameters[] = [
-  {
-    hidableColumns: false,
-  },
-  {
+export const ManageColumns: StoryObj = {
+  render: DatagridTemplate,
+  args: {
     hidableColumns: true,
   },
-];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
+};

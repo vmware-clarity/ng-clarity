@@ -11,13 +11,28 @@ import {
   ClrDropdownModule,
   ClrSignpostModule,
 } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const story: Story = args => ({
+export default {
+  title: 'Datagrid/Nested Popover In Detail',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const NestedPopoverInDetailTemplate: Story = args => ({
   template: `
     <clr-datagrid>
       <clr-dg-column [style.width.px]="250">Name</clr-dg-column>
@@ -84,20 +99,6 @@ const story: Story = args => ({
   props: { ...args },
 });
 
-const parameters: Parameters = {
-  title: 'Datagrid/Nested Popover in Detail',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const NestedPopoverInDetail: StoryObj = {
+  render: NestedPopoverInDetailTemplate,
 };
-
-setupStorybook(
-  [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
-  story,
-  parameters
-);
