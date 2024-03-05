@@ -9,7 +9,7 @@ import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
-import { filesRoot, getFileTreeNodeMarkup, getIconTreeNodeMarkup } from '../../helpers/files.data';
+import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
 
 const TREE_NODE_STATE = [
   // unselected
@@ -101,7 +101,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
           (clrSelectedChange)="clrSelectedChange($event)"
         >
           Files
-        ${getFileTreeNodeMarkup(filesRoot, args)}
+          ${getFileTreeNodeMarkup(filesRoot, args)}
         </clr-tree-node>
       </clr-tree>
     </div>
@@ -119,7 +119,7 @@ const TreeViewNodeAllTemplate: Story = args => ({
           (clrSelectedChange)="clrSelectedChange($event)"
         >
           Files
-        ${getFileTreeNodeMarkup(filesRoot, args)}
+          ${getFileTreeNodeMarkup(filesRoot, args)}
         </clr-tree-node>
       </clr-tree>
     </div>
@@ -130,12 +130,13 @@ const TreeViewNodeAllTemplate: Story = args => ({
         <clr-tree-node
           [clrExpandable]="clrExpandable"
           [clrExpanded]="state"
+          [clrDisabled]="clrDisabled"
           (clrExpandedChange)="clrExpandedChange($event)"
           (clrSelectedChange)="clrSelectedChange($event)"
         >
           <cds-icon [attr.shape]="'folder'"></cds-icon>
           Files
-          ${getIconTreeNodeMarkup(filesRoot)}
+          ${getFileTreeNodeMarkup(filesRoot, { hasIcon: true, ...args })}
         </clr-tree-node>
       </clr-tree>
     </div>

@@ -11,7 +11,6 @@ import { ClrSelectedState } from './selected-state.enum';
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
-  disabled: boolean;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);
@@ -23,6 +22,7 @@ export abstract class TreeNodeModel<T> {
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
    */
   private _loading = false;
+  private _disabled: boolean;
 
   /*
    * Ideally, I would like to use a polymorphic this type here to ensure homogeneity of the tree, something like:
@@ -42,18 +42,21 @@ export abstract class TreeNodeModel<T> {
     this.loading$.next(isLoading);
   }
 
-  destroy() {
-    // Just to be safe
-    this.selected.complete();
+  get disabled() {
+    return this._disabled;
   }
-
-  propagateDisabledToChildren() {
+  set disabled(value: boolean) {
+    this._disabled = value;
     this.children.forEach(child => {
       if (child) {
         child.disabled = this.disabled;
-        child.propagateDisabledToChildren();
       }
     });
+  }
+
+  destroy() {
+    // Just to be safe
+    this.selected.complete();
   }
 
   // Propagate by default when eager, don't propagate in the lazy-loaded tree.

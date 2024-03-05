@@ -80,7 +80,7 @@ export const filesRoot: File[] = [
 
 export function getFileTreeNodeMarkup(
   files: File[] = filesRoot,
-  args: { asLink?: boolean; clrSelected?: boolean } = {}
+  args: { asLink?: boolean; clrSelected?: boolean; hasIcon?: boolean } = {}
 ) {
   return files
     .map(
@@ -90,23 +90,11 @@ export function getFileTreeNodeMarkup(
           [clrExpanded]="${file.expanded}"
           ${args.clrSelected !== undefined && file.selected !== undefined ? `[clrSelected]="${file.selected}"` : ''}
         >
+          ${args.hasIcon ? `<cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon>` : ''}
           ${args.asLink ? `<a href="javascript:;" class="clr-treenode-link">${file.name}</a>` : file.name}
           ${file.files ? getFileTreeNodeMarkup(file.files, args) : ''}
+          ${args.clrSelected}   ${file.selected}
         </clr-tree-node>`
-    )
-    .join('');
-}
-
-export function getIconTreeNodeMarkup(files: File[] = filesRoot) {
-  return files
-    .map(
-      file => `
-        <clr-tree-node>
-          <cds-icon [attr.shape]="'${file.files ? 'folder' : 'file'}'"></cds-icon>
-          ${file.name}
-          ${file.files ? getIconTreeNodeMarkup(file.files) : ''}
-        </clr-tree-node>
-      `
     )
     .join('');
 }
