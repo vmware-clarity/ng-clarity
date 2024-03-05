@@ -37,8 +37,6 @@ export default {
     // outputs
     clrExpandedChange: { control: { disable: true } },
     clrSelectedChange: { control: { disable: true } },
-    // story helpers
-    hasIcon: { defaultValue: false, control: { type: 'boolean' } },
     // methods
     broadcastFocusOnContainer: { control: { disable: true }, table: { disable: true } },
     focusTreeNode: { control: { disable: true }, table: { disable: true } },
@@ -64,7 +62,6 @@ const TreeViewNodeTemplate: Story = args => ({
         (clrExpandedChange)="clrExpandedChange($event)"
         (clrSelectedChange)="clrSelectedChange($event)"
       >
-        ${args.hasIcon ? `<cds-icon [attr.shape]="'folder'"></cds-icon>` : ''}
         Files
         ${getFileTreeNodeMarkup(filesRoot, args)}
       </clr-tree-node>
@@ -96,11 +93,10 @@ export const CheckboxIndeterminate: StoryObj = {
   },
 };
 
-export const CheckboxWithIcon: StoryObj = {
+export const CheckboxUnselected: StoryObj = {
   render: TreeViewNodeTemplate,
   args: {
     clrExpanded: true,
-    hasIcon: true,
     clrSelected: ClrSelectedState.UNSELECTED,
   },
 };
