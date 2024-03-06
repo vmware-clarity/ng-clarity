@@ -8,7 +8,13 @@
 
 <form clrForm [clrLayout]="layout" [clrLabelSize]="labelSize">
   <clr-checkbox-container>
-    <label>Checkbox</label>
+    <label
+      >Checkbox
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <clr-checkbox-wrapper>
       <label>Option 1 2 3</label>
       <input type="checkbox" clrCheckbox />
@@ -23,19 +29,43 @@
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
   <clr-date-container>
-    <label>Date picker</label>
+    <label
+      >Date picker
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <input clrDate />
   </clr-date-container>
   <clr-input-container>
-    <label>Input</label>
+    <label
+      >Input
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <input clrInput />
   </clr-input-container>
   <clr-password-container>
-    <label>Password</label>
+    <label
+      >Password
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <input type="password" autocomplete="current-password" clrPassword />
   </clr-password-container>
   <clr-radio-container>
-    <label>Radio</label>
+    <label
+      >Radio
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <clr-radio-wrapper>
       <label>Option 1</label>
       <input type="radio" clrRadio />
@@ -50,7 +80,13 @@
     </clr-radio-wrapper>
   </clr-radio-container>
   <clr-select-container>
-    <label>Select</label>
+    <label
+      >Select
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <select clrSelect>
       <option value="1">Option 1</option>
       <option value="2">Option 2</option>
@@ -58,7 +94,13 @@
     </select>
   </clr-select-container>
   <clr-textarea-container>
-    <label>Textarea</label>
+    <label
+      >Textarea
+      <clr-signpost>
+        <cds-icon shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-signpost-content *clrIfOpen> Signpost content </clr-signpost-content>
+      </clr-signpost></label
+    >
     <textarea clrTextarea></textarea>
   </clr-textarea-container>
 </form>
