@@ -96,6 +96,7 @@
     --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};
     --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color};
     --clr-forms-select-multiple-option-color: #{tokens.$cds-alias-typography-color-400};
+    --clr-forms-select-multiple-selected-option-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
 
     // Textarea
     --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
