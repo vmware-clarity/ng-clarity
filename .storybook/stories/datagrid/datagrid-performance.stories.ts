@@ -11,22 +11,37 @@ import { Story } from '@storybook/angular';
 
 import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
+interface Column {
+  index: number;
+  name: string;
+}
+
 const createColumns = (count = 10) => {
-  const columns: string[] = [];
+  const columns: Column[] = [];
   for (let i = 0; i < count; i++) {
-    columns.push(`col${i + 1}`);
+    columns.push({
+      index: i,
+      name: `col${i + 1}`,
+    });
   }
 
   return columns;
 };
-const columns: string[] = createColumns(50);
+const columns: Column[] = createColumns(50);
 
-const createRows = (columns: string[], rowCount = 10) => {
-  const rows = [];
+interface Row {
+  index: number;
+  cells: any[];
+}
+const createRows = (columns: Column[], rowCount = 10) => {
+  const rows: Row[] = [];
   for (let i = 0; i < rowCount; i++) {
-    const newRow = {};
+    const newRow: Row = {
+      index: i,
+      cells: [],
+    };
     for (let j = 0; j < columns.length; j++) {
-      newRow[columns[j]] = `${columns[j]} row-${i + 1}`;
+      newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;
     }
     rows.push(newRow);
   }
@@ -53,12 +68,12 @@ const defaultStory: Story = args => ({
       (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgRefresh)="clrDgRefresh($event)"
     >
-      <clr-dg-column *ngFor="let col of columns">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>{{col}}</ng-container>
+      <clr-dg-column *ngFor="let col of columns trackBy: colByIndex">
+        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>{{col.name}}</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let row of dynamicRows" [clrDgItem]="row">
-        <clr-dg-cell *ngFor="let col of columns" >{{row[col]}}</clr-dg-cell>
+      <clr-dg-row *clrDgItems="let row of dynamicRows trackBy: rowByIndex" [clrDgItem]="row">
+        <clr-dg-cell *ngFor="let col of columns trackBy: colByIndex" >{{row.cells[col.name]}}</clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
           <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
         </ng-container>
