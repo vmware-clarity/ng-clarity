@@ -152,5 +152,20 @@ export default function (): void {
       child.toggleSelection(true);
       [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
     });
+
+    it('Re enabled disabled root node do not change children disable status', function () {
+      child.disabled = true;
+
+      expect(root.disabled).toBe(false);
+      expect(child.disabled).toBe(true);
+
+      root.disabled = true;
+      expect(root.disabled).toBe(true);
+      expect(child.disabled).toBe(true);
+
+      root.disabled = false;
+      expect(root.disabled).toBe(false);
+      expect(child.disabled).toBe(true);
+    });
   });
 }

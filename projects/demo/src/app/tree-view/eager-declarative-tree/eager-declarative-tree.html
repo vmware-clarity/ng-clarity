@@ -21,6 +21,16 @@
   </clr-tree>
 </div>
 
+<h4>Toggle disable</h4>
+<div>root node disabled: {{rootNode.disabled ? 'true' : 'false'}}</div>
+<button class="btn" (click)="rootNode.disabled = !rootNode.disabled">Toggle Root Disable</button>
+<clr-tree>
+  <clr-tree-node #rootNode [clrExpanded]="true">
+    Root
+    <clr-tree-node [clrDisabled]="true">Child</clr-tree-node>
+  </clr-tree-node>
+</clr-tree>
+
 <h4>Selection</h4>
 <div class="clr-example">
   <clr-tree>

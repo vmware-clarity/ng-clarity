@@ -193,6 +193,23 @@ export default function (): void {
         this.node.expanded = true;
         expect(this.expandService.expanded).toBeTrue();
       });
+
+      it('re enabled disabled root node can not change child disable status', function (this: TsApiContext) {
+        this.parent.expanded = true;
+        expect(this.expandService.expanded).toBeTrue();
+
+        this.node.disabled = true;
+        expect(this.parent.disabled).toBeFalse();
+        expect(this.node.disabled).toBeTrue();
+
+        this.parent.disabled = true;
+        expect(this.parent.disabled).toBeTrue();
+        expect(this.node.disabled).toBeTrue();
+
+        this.parent.disabled = false;
+        expect(this.parent.disabled).toBeFalse();
+        expect(this.node.disabled).toBeTrue();
+      });
     });
 
     describe('Template API', function () {

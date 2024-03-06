@@ -43,15 +43,11 @@ export abstract class TreeNodeModel<T> {
   }
 
   get disabled() {
-    return this._disabled;
+    // when both parameters are undefined, double negative is needed to cast to false, otherwise will return undefined.
+    return !!(this._disabled || this.parent?.disabled);
   }
   set disabled(value: boolean) {
     this._disabled = value;
-    this.children?.forEach(child => {
-      if (child) {
-        child.disabled = this.disabled;
-      }
-    });
   }
 
   destroy() {

@@ -189,7 +189,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   ngOnInit() {
     this._model.expanded = this.expanded;
-    this._model.disabled = this.disabled || this._model.parent?.disabled;
+    this._model.disabled = this.disabled;
     this.subscriptions.push(
       this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
         this.selectedChange.emit(value);
