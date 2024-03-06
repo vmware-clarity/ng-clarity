@@ -22,6 +22,7 @@ import { filter } from 'rxjs/operators';
 import { commonStringsDefault } from '../../utils';
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
+import { ScrollingService } from '../../utils/scrolling/scrolling-service';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
@@ -41,9 +42,21 @@ const createCdsCloseButton = (document: Document, ariaLabel: string) => {
   return cdsCloseButton;
 };
 
+const createOrGetNavElementWrapperForLinks = (document: Document) => {
+  let navHtmlElementWrapper = document.querySelector('nav.header-nav.clr-nav-level-1');
+
+  if (!navHtmlElementWrapper) {
+    navHtmlElementWrapper = document.createElement('nav');
+    navHtmlElementWrapper.className = 'header-nav clr-nav-level-1';
+  }
+
+  return navHtmlElementWrapper;
+};
+
 @Directive({
   selector: '[clr-nav-level]',
   hostDirectives: [ClrStandaloneCdkTrapFocus],
+  providers: [ScrollingService],
 })
 export class ClrNavLevel implements OnInit {
   @Input('clr-nav-level') _level: number;
@@ -59,6 +72,7 @@ export class ClrNavLevel implements OnInit {
     private responsiveNavService: ResponsiveNavigationService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
+    private scrollingService: ScrollingService,
     injector: Injector
   ) {
     if (isPlatformBrowser(platformId)) {
@@ -186,6 +200,15 @@ export class ClrNavLevel implements OnInit {
   }
 
   open(): void {
+    this.scrollingService.stopScrolling();
+
+    if (this.level === ResponsiveNavCodes.NAV_LEVEL_1) {
+      this.elementRef.nativeElement.className = 'clr-nav-level-1';
+
+      this.wrapLinksInsideNavElement();
+      this.insertCloseButtonBeforeNav();
+    }
+
     this._isOpen = true;
     this.showNavigation();
     this.cdkTrapFocus.enabled = true;
@@ -198,6 +221,7 @@ export class ClrNavLevel implements OnInit {
     this.hideNavigation();
     this.cdkTrapFocus.enabled = false;
     this.hideCloseButton();
+    this.scrollingService.resumeScrolling();
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE, this.level);
   }
 
@@ -219,5 +243,21 @@ export class ClrNavLevel implements OnInit {
   protected showCloseButton() {
     this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
+  }
+
+  private wrapLinksInsideNavElement() {
+    const navLinksWrapper = createOrGetNavElementWrapperForLinks(document);
+    const navLinks = this.elementRef.nativeElement.querySelectorAll('.clr-nav-level-1 .nav-link');
+
+    navLinks.forEach(navLink => {
+      this.renderer.appendChild(navLinksWrapper, navLink);
+    });
+
+    this.renderer.appendChild(this.elementRef.nativeElement, navLinksWrapper);
+  }
+
+  private insertCloseButtonBeforeNav() {
+    const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
+    this.renderer.listen(closeButton, 'click', this.close.bind(this));
   }
 }
