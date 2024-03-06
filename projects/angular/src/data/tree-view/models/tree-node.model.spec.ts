@@ -153,19 +153,19 @@ export default function (): void {
       [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
     });
 
-    it('Re enabled disabled root node do not change children disable status', function () {
+    it('re enabled disabled root node do not change children disable status', function () {
       child.disabled = true;
 
-      expect(root.disabled).toBe(false);
-      expect(child.disabled).toBe(true);
+      expect(root.disabled).toBeFalse();
+      expect(child.disabled).toBeTrue();
 
       root.disabled = true;
-      expect(root.disabled).toBe(true);
-      expect(child.disabled).toBe(true);
+      expect(root.disabled).toBeTrue();
+      expect(child.disabled).toBeTrue();
 
       root.disabled = false;
-      expect(root.disabled).toBe(false);
-      expect(child.disabled).toBe(true);
+      expect(root.disabled).toBeFalse();
+      expect(child.disabled).toBeTrue();
     });
   });
 }
