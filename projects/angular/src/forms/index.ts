@@ -6,6 +6,7 @@
 
 export * from './common/index';
 export * from './checkbox/index';
+export * from './checkbox-group/index';
 export * from './combobox/index';
 export * from './datalist/index';
 export * from './datepicker/index';
