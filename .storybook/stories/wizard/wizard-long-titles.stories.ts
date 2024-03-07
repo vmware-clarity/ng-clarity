@@ -4,53 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: `
-    <clr-wizard
-      [clrWizardOpen]="clrWizardOpen"
-      [clrWizardClosable]="clrWizardClosable"
-      [clrWizardDisableStepnav]="clrWizardDisableStepnav"
-      [clrWizardPreventNavigation]="clrWizardPreventNavigation"
-      [clrWizardForceForwardNavigation]="clrWizardForceForwardNavigation"
-      [clrWizardPreventDefaultNext]="clrWizardPreventDefaultNext"
-      [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
-      [clrWizardPreventModalAnimation]="clrWizardPreventModalAnimation"
-      [clrWizardSize]="clrWizardSize"
-      [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
-      (clrWizardOpenChange)="clrWizardOpenChange($event)"
-      (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
-      (clrWizardOnNext)="clrWizardOnNext($event)"
-      (clrWizardOnPrevious)="clrWizardOnPrevious($event)"
-      (clrWizardOnCancel)="clrWizardOnCancel($event)"
-      (clrWizardOnFinish)="clrWizardOnFinish($event)"
-      (clrWizardOnReset)="clrWizardOnReset($event)"
-    >
-      <clr-wizard-title [clrHeadingLevel]="clrHeadingLevel">Wizard</clr-wizard-title>
-
-      <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
-      <clr-wizard-button type="previous">Previous</clr-wizard-button>
-      <clr-wizard-button type="next">Next</clr-wizard-button>
-      <clr-wizard-button type="finish">Finish</clr-wizard-button>
-
-      <clr-wizard-page *ngFor="let _ of createArray(pageCount); let i = index">
-        <ng-template clrPageTitle>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Page {{ i + 1 }}</ng-template>
-        <p>Content for page {{ i + 1 }}.</p>
-      </clr-wizard-page>
-    </clr-wizard>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Wizard/Wizard Long Titles',
   component: ClrWizard,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrWizardModule, BrowserAnimationsModule],
+    }),
+  ],
   argTypes: {
     // inputs
     clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
@@ -61,7 +27,6 @@ const defaultParameters: Parameters = {
     clrWizardForceForwardNavigation: { defaultValue: false },
     clrWizardPreventDefaultNext: { defaultValue: false },
     clrWizardPreventDefaultCancel: { defaultValue: false },
-    clrWizardPreventModalAnimation: { defaultValue: false },
     clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
     clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
     // outputs
@@ -105,6 +70,42 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const WizardLongTitlesTemplate: Story = args => ({
+  template: `
+    <clr-wizard
+      [clrWizardOpen]="clrWizardOpen"
+      [clrWizardClosable]="clrWizardClosable"
+      [clrWizardDisableStepnav]="clrWizardDisableStepnav"
+      [clrWizardPreventNavigation]="clrWizardPreventNavigation"
+      [clrWizardForceForwardNavigation]="clrWizardForceForwardNavigation"
+      [clrWizardPreventDefaultNext]="clrWizardPreventDefaultNext"
+      [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
+      [clrWizardSize]="clrWizardSize"
+      [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
+      (clrWizardOpenChange)="clrWizardOpenChange($event)"
+      (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
+      (clrWizardOnNext)="clrWizardOnNext($event)"
+      (clrWizardOnPrevious)="clrWizardOnPrevious($event)"
+      (clrWizardOnCancel)="clrWizardOnCancel($event)"
+      (clrWizardOnFinish)="clrWizardOnFinish($event)"
+      (clrWizardOnReset)="clrWizardOnReset($event)"
+    >
+      <clr-wizard-title [clrHeadingLevel]="clrHeadingLevel">Wizard</clr-wizard-title>
 
-setupStorybook(ClrWizardModule, defaultStory, defaultParameters, variants);
+      <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+      <clr-wizard-button type="previous">Previous</clr-wizard-button>
+      <clr-wizard-button type="next">Next</clr-wizard-button>
+      <clr-wizard-button type="finish">Finish</clr-wizard-button>
+
+      <clr-wizard-page *ngFor="let _ of createArray(pageCount); let i = index">
+        <ng-template clrPageTitle>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Page {{ i + 1 }}</ng-template>
+        <p>Content for page {{ i + 1 }}.</p>
+      </clr-wizard-page>
+    </clr-wizard>
+  `,
+  props: { ...args },
+});
+
+export const WizardLongTitles: StoryObj = {
+  render: WizardLongTitlesTemplate,
+};

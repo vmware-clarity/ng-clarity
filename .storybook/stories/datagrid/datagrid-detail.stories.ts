@@ -5,11 +5,39 @@
  */
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { Element, elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+
+export default {
+  title: 'Datagrid/Detail',
+  component: ClrDatagridDetail,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // methods
+    close: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+    detailContentType: { control: { type: 'inline-radio', options: ['json', 'datagrid'] } },
+  },
+  args: {
+    // story helpers
+    elements,
+    detailContentType: 'json',
+    showLongContent: false,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
 
 const longContentElement: Element = {
   name: 'A really really really really really really really really really long content in the cell',
@@ -18,7 +46,7 @@ const longContentElement: Element = {
   electronegativity: 1.1,
 };
 
-const defaultStory: Story = args => {
+const DetailTemplate: Story = args => {
   args.elements = args.showLongContent ? [longContentElement, ...args.elements] : args.elements;
 
   return {
@@ -106,31 +134,6 @@ const defaultStory: Story = args => {
   };
 };
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Detail',
-  component: ClrDatagridDetail,
-  argTypes: {
-    // methods
-    close: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-    detailContentType: { control: { type: 'inline-radio', options: ['json', 'datagrid'] } },
-  },
-  args: {
-    // story helpers
-    elements,
-    detailContentType: 'json',
-    showLongContent: false,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const Detail: StoryObj = {
+  render: DetailTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);

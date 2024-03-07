@@ -6,13 +6,50 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPagination } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Pagination',
+  component: ClrDatagridPagination,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDgPageInputDisabled: { defaultValue: false },
+    clrDgPageSize: { defaultValue: 10, control: { type: 'number', min: 1, max: 100 } },
+    clrDgPage: { defaultValue: null, control: { type: 'number', min: 1 } },
+    clrDgLastPage: { defaultValue: null, control: { type: 'number', min: 1 } },
+    clrDgTotalItems: { defaultValue: null, control: { type: 'number', min: 1 } },
+    // outputs
+    clrDgPageChange: { control: { disable: true } },
+    // methods
+    updateCurrentPage: { control: { disable: true }, table: { disable: true } },
+    next: { control: { disable: true } },
+    previous: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrDgPageChange: action('clrDgPageChange'),
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
+
+const PaginationTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -70,40 +107,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Pagination',
-  component: ClrDatagridPagination,
-  argTypes: {
-    // inputs
-    clrDgPageInputDisabled: { defaultValue: false },
-    clrDgPageSize: { defaultValue: 10, control: { type: 'number', min: 1, max: 100 } },
-    clrDgPage: { defaultValue: null, control: { type: 'number', min: 1 } },
-    clrDgLastPage: { defaultValue: null, control: { type: 'number', min: 1 } },
-    clrDgTotalItems: { defaultValue: null, control: { type: 'number', min: 1 } },
-    // outputs
-    clrDgPageChange: { control: { disable: true } },
-    // methods
-    updateCurrentPage: { control: { disable: true }, table: { disable: true } },
-    next: { control: { disable: true } },
-    previous: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrDgPageChange: action('clrDgPageChange'),
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const Pagination: StoryObj = {
+  render: PaginationTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);
