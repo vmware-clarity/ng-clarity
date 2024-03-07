@@ -29,6 +29,7 @@ import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPaginationDemo } from './pagination/pagination';
+import { DatagridPerformanceDemo } from './performance/performance';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
@@ -70,6 +71,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
     DatagridExpandableRowsDemo,
+    DatagridPerformanceDemo,
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
     DatagridKitchenSinkDemo,
@@ -98,6 +100,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridSortingDemo,
     DatagridBuiltInFiltersDemo,
     DatagridPlaceholderDemo,
+    DatagridPerformanceDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
     DatagridExpandableRowsDemo,

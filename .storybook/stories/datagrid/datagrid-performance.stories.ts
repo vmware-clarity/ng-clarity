@@ -48,7 +48,7 @@ const createRows = (columns: Column[], rowCount = 10) => {
 
   return rows;
 };
-const dynamicRows = createRows(columns, 1000);
+const dynamicRows = createRows(columns, 500);
 
 const defaultStory: Story = args => ({
   template: `
