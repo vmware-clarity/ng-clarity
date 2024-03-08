@@ -34,7 +34,6 @@ export class DatagridPerformanceDemo {
 
   changeDatagridDimensions() {
     this.calculateDatagrid();
-
     this.showChangeDetection();
   }
 
@@ -46,7 +45,9 @@ export class DatagridPerformanceDemo {
   showChangeDetection() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.timeCD = ng.profiler.timeChangeDetection();
+    const profiler = ng.profiler;
+
+    this.timeCD = profiler.timeChangeDetection({ record: true });
   }
 
   colByIndex(index: number, col: Column) {
