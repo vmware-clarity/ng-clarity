@@ -59,7 +59,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     this.subscriptions.push(this.listenForUserSelectedDayChanges(), this.listenForControlValueChanges());
   }
 
-  ngAfterViewInit() {
+  override ngAfterViewInit() {
     // I don't know why I have to do this but after using the new HostWrapping Module I have to delay the processing
     // of the initial Input set by the user to here. If I do not 2 issues occur:
     // 1. The Input setter is called before ngOnInit. ngOnInit initializes the services without which the setter fails.

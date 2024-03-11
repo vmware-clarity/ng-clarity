@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDateInput, ClrDatepickerModule } from '@clr/angular';
+import { ClrDatepickerModule, ClrDateSingleInput } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
   title: 'Datepicker/Datepicker',
-  component: ClrDateInput,
+  component: ClrDateSingleInput,
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDatepickerModule],
