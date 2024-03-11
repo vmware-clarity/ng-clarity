@@ -40,7 +40,7 @@ export class ClrTabLink {
 
   constructor(
     public ifActiveService: IfActiveService,
-    @Inject(IF_ACTIVE_ID) private id: number,
+    @Inject(IF_ACTIVE_ID) private _id: number,
     public el: ElementRef,
     private cfr: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef,
@@ -58,6 +58,10 @@ export class ClrTabLink {
     this.templateRefContainer = this.viewContainerRef.createComponent(factory, undefined, undefined, [
       [this.el.nativeElement],
     ]).instance;
+  }
+
+  get id(): number {
+    return this._id;
   }
 
   @Input('clrTabLinkInOverflow')
@@ -82,7 +86,7 @@ export class ClrTabLink {
   @HostBinding('class.active')
   @HostBinding('attr.aria-selected')
   get active() {
-    return this.ifActiveService.current === this.id;
+    return this.ifActiveService.current === this._id;
   }
 
   @HostBinding('attr.tabindex')
@@ -92,6 +96,6 @@ export class ClrTabLink {
 
   @HostListener('click')
   activate() {
-    this.ifActiveService.current = this.id;
+    this.ifActiveService.current = this._id;
   }
 }
