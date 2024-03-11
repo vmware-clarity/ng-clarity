@@ -3751,7 +3751,7 @@ export class ClrTabContent implements OnDestroy {
 
 // @public (undocumented)
 export class ClrTabLink {
-    constructor(ifActiveService: IfActiveService, _id: number, el: ElementRef, cfr: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
+    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef, cfr: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
     // (undocumented)
     activate(): void;
     // (undocumented)
@@ -3763,7 +3763,7 @@ export class ClrTabLink {
     // (undocumented)
     el: ElementRef;
     // (undocumented)
-    get id(): number;
+    readonly id: number;
     // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)
