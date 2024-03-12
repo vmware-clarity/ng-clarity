@@ -49,7 +49,7 @@ export class ClrTabContent implements OnDestroy {
   }
 
   get ariaLabelledBy(): string {
-    return this.tabsService.children.find(tab => tab.tabContent === this)?.tabLink?.tabLinkId;
+    return this.tabsService.children.find(tab => tab.tabLink.id === this.id)?.tabLink?.tabLinkId;
   }
 
   // The template must be applied on the top-down phase of view-child initialization to prevent
