@@ -95,7 +95,7 @@ const ButtonGroupTemplate: StoryFn = args => ({
 
 const ButtonGroupShowcaseTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let style of BUTTON_STYLES" style="margin-top: 20px;">
+    <div *ngFor="let style of BUTTON_STYLES" style="margin-top: 20px; text-align: center;">
       <div *ngFor="let type of BUTTON_TYPES" style="margin-top: 10px;">
         <clr-button-group
           [ngClass]="buttonClassLoader(type, style)"
@@ -126,13 +126,6 @@ const ButtonGroupShowcaseTemplate: StoryFn = args => ({
 
 export const ButtonGroup: StoryObj = {
   render: ButtonGroupTemplate,
-};
-export const ButtonGroupSolid: StoryObj = {
-  render: ButtonGroupTemplate,
-
-  args: {
-    buttonStyle: 'solid',
-  },
 };
 
 export const ButtonGroupShowcase: StoryObj = {
