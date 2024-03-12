@@ -7,19 +7,8 @@
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryFn, StoryObj } from '@storybook/angular';
+import { BUTTON_STYLES, BUTTON_TYPES, buttonClassLoader } from 'helpers/button-class.helper';
 import { CommonModules } from 'helpers/common';
-
-const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
-const BUTTON_STYLES = ['outline', 'solid', 'flat'];
-
-const buttonClassLoader = (buttonType, buttonStyle) => {
-  const buttonClasses = {
-    solid: `btn-${buttonType}`,
-    outline: `btn-${buttonType}-outline`,
-    flat: `btn-link-${buttonType}`,
-  };
-  return buttonClasses[buttonStyle];
-};
 
 export default {
   title: 'Button/Button',
