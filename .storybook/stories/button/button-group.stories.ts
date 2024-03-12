@@ -12,7 +12,7 @@ import {
   commonStringsDefault,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { BUTTON_STYLES, BUTTON_TYPES, buttonClassLoader } from 'helpers/button-class.helper';
+import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { CommonModules } from 'helpers/common';
 
 export default {
@@ -46,7 +46,7 @@ export default {
       defaultValue: 'primary',
       control: { type: 'radio', options: BUTTON_TYPES },
     },
-    buttonClassLoader: { control: { disable: true }, table: { disable: true } },
+    getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
@@ -58,7 +58,7 @@ export default {
     buttonCount: 3,
     inMenuButtonCount: 3,
     disabledButtonsPosition: [],
-    buttonClassLoader,
+    getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
   },
@@ -68,7 +68,7 @@ const ButtonGroupTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 200px; text-align: center;">
       <clr-button-group
-        [ngClass]="buttonClassLoader(buttonType, buttonStyle)"
+        [ngClass]="getButtonClass({buttonType, buttonStyle})"
         [clrMenuPosition]="clrMenuPosition"
         [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel"
       >
@@ -95,10 +95,10 @@ const ButtonGroupTemplate: StoryFn = args => ({
 
 const ButtonGroupShowcaseTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let style of BUTTON_STYLES" style="margin-top: 20px; text-align: center;">
-      <div *ngFor="let type of BUTTON_TYPES" style="margin-top: 10px;">
+    <div *ngFor="let buttonStyle of BUTTON_STYLES" style="margin-top: 20px; text-align: center;">
+      <div *ngFor="let buttonType of BUTTON_TYPES" style="margin-top: 10px;">
         <clr-button-group
-          [ngClass]="buttonClassLoader(type, style)"
+          [ngClass]="getButtonClass({ buttonType, buttonStyle })"
           [clrMenuPosition]="clrMenuPosition"
           [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel"
         >

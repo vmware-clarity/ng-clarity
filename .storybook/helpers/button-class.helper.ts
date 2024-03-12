@@ -7,11 +7,11 @@
 export const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
 export const BUTTON_STYLES = ['outline', 'solid', 'flat'];
 
-export const buttonClassLoader = (buttonType, buttonStyle) => {
+export function getButtonClass({ buttonType, buttonStyle }: { buttonType: string; buttonStyle: string }) {
   const buttonClasses = {
     solid: `btn-${buttonType}`,
     outline: `btn-${buttonType}-outline`,
     flat: `btn-link-${buttonType}`,
   };
   return buttonClasses[buttonStyle];
-};
+}
