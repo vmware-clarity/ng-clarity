@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+-->
+
+<h2>Hide-show columns demo with custom buttons</h2>
+
+<clr-datagrid [clrDgLoading]="loading" style="height: 30rem">
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn>User ID</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <!--Name-->
+    <ng-container *clrDgHideableColumn>Name</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn>Creation date</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn>Pokemon</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn>Favorite color</ng-container>
+  </clr-dg-column>
+
+  <clr-dg-placeholder>No users found</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      {{user.pokemon.name}}
+      <clr-signpost>
+        <button type="button" class="signpost-action btn btn-sm btn-link" clrSignpostTrigger>
+          <cds-icon shape="help-info"></cds-icon>
+        </button>
+        <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'">The pokemon is strong.</clr-signpost-content>
+      </clr-signpost>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <button class="btn btn-sm btn-link" (click)="loadMore()">Load next 100/1000</button>
+  </clr-dg-footer>
+</clr-datagrid>

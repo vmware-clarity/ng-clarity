@@ -25,6 +25,7 @@ import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
 import { DatagridFilteringDemo } from './filtering/filtering';
 import { DatagridFullDemo } from './full/full';
 import { DatagridHideShowDemo } from './hide-show-columns/hide-show';
+import { DatagridInfinteScrollDemo } from './infinite-scroll/infinte-scroll';
 import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
@@ -53,6 +54,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
+    DatagridInfinteScrollDemo,
     DatagridHideShowDemo,
     DatagridPaginationDemo,
     DatagridPaginationScrollingDemo,
@@ -86,6 +88,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
+    DatagridInfinteScrollDemo,
     DatagridPaginationDemo,
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
