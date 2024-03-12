@@ -30,7 +30,7 @@ export default {
     openIndices: [],
     createArray: n => new Array(n),
     panelCount: 4,
-    title: 'Title',
+    title: 'Title1',
     content: 'Hello World!',
   },
 };
