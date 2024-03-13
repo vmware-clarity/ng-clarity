@@ -7,6 +7,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 
+import { uniqueIdFactory } from '../../../utils/id-generator/id-generator.service';
 import { ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
@@ -20,6 +21,8 @@ export class OptionSelectionService<T> {
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
   showAllOptions = true;
+
+  noResultsElementId = uniqueIdFactory();
 
   private _currentInput = '';
   private _inputChanged = new BehaviorSubject('');

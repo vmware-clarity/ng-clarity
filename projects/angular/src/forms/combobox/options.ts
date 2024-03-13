@@ -46,7 +46,7 @@ let nbOptionsComponents = 0;
     <div *ngIf="emptyOptions">
       <span
         class="clr-combobox-options-empty-text"
-        id="no-results-in-combobox"
+        id="{{ optionSelectionService.noResultsElementId }}"
         [attr.aria-label]="commonStrings.keys.comboboxNoResults"
       >
         {{ commonStrings.keys.comboboxNoResults }}
