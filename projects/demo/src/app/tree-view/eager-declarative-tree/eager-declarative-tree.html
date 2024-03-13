@@ -7,12 +7,12 @@
 <h4>No selection</h4>
 <div class="clr-example">
   <clr-tree>
-    <clr-tree-node>
+    <clr-tree-node [clrExpanded]="true">
       A
-      <clr-tree-node>A-1</clr-tree-node>
-      <clr-tree-node>
+      <clr-tree-node [clrDisabled]="true">A-1</clr-tree-node>
+      <clr-tree-node [clrExpanded]="true" [clrDisabled]="true">
         A-2
-        <clr-tree-node>A-2.1</clr-tree-node>
+        <clr-tree-node [clrDisabled]="true">A-2.1</clr-tree-node>
         <clr-tree-node>A-2.2</clr-tree-node>
         <clr-tree-node>A-2.3</clr-tree-node>
       </clr-tree-node>
@@ -20,6 +20,16 @@
     </clr-tree-node>
   </clr-tree>
 </div>
+
+<h4>Toggle disable</h4>
+<div>root node disabled: {{rootNode.disabled ? 'true' : 'false'}}</div>
+<button class="btn" (click)="rootNode.disabled = !rootNode.disabled">Toggle Root Disable</button>
+<clr-tree>
+  <clr-tree-node #rootNode [clrExpanded]="true">
+    Root
+    <clr-tree-node [clrDisabled]="true">Child</clr-tree-node>
+  </clr-tree-node>
+</clr-tree>
 
 <h4>Selection</h4>
 <div class="clr-example">
@@ -62,14 +72,14 @@
   <clr-tree>
     <clr-tree-node [(clrExpanded)]="expanded2" [clrSelected]="false">
       A is {{expanded2 ? "expanded" : "collapsed"}}.
-      <clr-tree-node>
+      <clr-tree-node [clrDisabled]="true" [clrSelected]="true" [clrExpanded]="true">
         B
         <clr-tree-node>B.1</clr-tree-node>
 
         <clr-tree-node>B.2</clr-tree-node>
       </clr-tree-node>
-      <clr-tree-node>C</clr-tree-node>
-      <clr-tree-node>D</clr-tree-node>
+      <clr-tree-node [clrDisabled]="true">C</clr-tree-node>
+      <clr-tree-node [clrSelected]="true">D</clr-tree-node>
     </clr-tree-node>
   </clr-tree>
 </div>
