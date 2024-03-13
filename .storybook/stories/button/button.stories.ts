@@ -7,19 +7,8 @@
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryFn, StoryObj } from '@storybook/angular';
+import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
 import { CommonModules } from 'helpers/common';
-
-const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
-const BUTTON_STYLES = ['outline', 'solid', 'flat'];
-
-const buttonClassLoader = (buttonType, buttonStyle) => {
-  const buttonClasses = {
-    solid: `btn-${buttonType}`,
-    outline: `btn-${buttonType}-outline`,
-    flat: `btn-link-${buttonType}`,
-  };
-  return buttonClasses[buttonStyle];
-};
 
 export default {
   title: 'Button/Button',
@@ -46,7 +35,7 @@ export default {
       defaultValue: 'primary',
       control: { type: 'radio', options: BUTTON_TYPES },
     },
-    buttonClassLoader: { control: { disable: true }, table: { disable: true } },
+    getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
@@ -56,7 +45,7 @@ export default {
     // story helpers
     content: 'Hello World!',
     iconShape: '',
-    buttonClassLoader,
+    getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
   },
@@ -66,7 +55,7 @@ const ButtonTemplate: Story = args => ({
   template: `
       <button
         class="btn"
-        [ngClass]="buttonClassLoader(buttonType, buttonStyle)"
+        [ngClass]="getButtonClass({ buttonType, buttonStyle })"
         [disabled]="disabled"
         (click)="click($event)"
       >
@@ -176,7 +165,7 @@ const ButtonLinkTemplate: StoryFn = args => ({
     <a
       href="javascript://"
       class="btn"
-      [ngClass]="buttonClassLoader(buttonType, buttonStyle)"
+      [ngClass]="getButtonClass({ buttonType, buttonStyle })"
       [disabled]="disabled"
       (click)="click($event)"
     >
