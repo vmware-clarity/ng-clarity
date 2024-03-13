@@ -146,11 +146,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    private el: ElementRef,
+    public el: ElementRef,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    private keyNavigation: KeyNavigationGridController,
+    public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
