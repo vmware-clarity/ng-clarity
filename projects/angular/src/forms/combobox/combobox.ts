@@ -299,7 +299,7 @@ export class ClrCombobox<T>
 
   getActiveDescendant() {
     const model = this.focusHandler.pseudoFocus.model;
-    return model ? model.id : null;
+    return model ? model.id : 'no-results-in-combobox';
   }
 
   setDisabledState(): void {

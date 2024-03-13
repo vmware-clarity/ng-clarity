@@ -44,7 +44,11 @@ let nbOptionsComponents = 0;
 
     <!-- Rendered if data set is empty -->
     <div *ngIf="emptyOptions">
-      <span class="clr-combobox-options-empty-text">
+      <span
+        class="clr-combobox-options-empty-text"
+        id="no-results-in-combobox"
+        [attr.aria-label]="commonStrings.keys.comboboxNoResults"
+      >
         {{ commonStrings.keys.comboboxNoResults }}
       </span>
     </div>
