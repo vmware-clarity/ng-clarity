@@ -157,14 +157,25 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
       } else {
         this.renderer.setProperty(this.el.nativeElement, 'value', dateString);
       }
-      if (!this.validateDate()) {
-        this.control?.control.setErrors({ invalid: true });
-      }
+      // this.validateDateRange();
     } else {
       this.renderer.setProperty(this.el.nativeElement, 'value', '');
       this.control?.control?.setValue(null, { emitEvent: false });
     }
   }
+
+  // protected validateDateRange() {
+  //   if (this.dateNavigationService.isRangePicker) {
+  //     const isValid = this.dateNavigationService.selectedDay.isBefore(this.dateNavigationService.selectedEndDay);
+  //     if (!isValid) {
+  //       this.control?.control.setErrors({ invalid: true });
+  //     } else {
+  //       this.control?.control.setErrors(null);
+  //     }
+  //     console.log('Control', isValid, this.control?.control);
+
+  //   }
+  // }
 
   protected getValidDateValueFromDate(date: Date) {
     if (this.dateIOService) {
@@ -199,14 +210,6 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
       this.dateNavigationService = this.getProviderFromContainer(DateNavigationService);
       this.datepickerEnabledService = this.getProviderFromContainer(DatepickerEnabledService);
       this.dateFormControlService = this.getProviderFromContainer(DateFormControlService);
-    }
-  }
-
-  private validateDate() {
-    if (this.dateNavigationService.isRangePicker) {
-      return this.dateNavigationService.selectedDay.isBefore(this.dateNavigationService.selectedEndDay);
-    } else {
-      return true;
     }
   }
 

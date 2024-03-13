@@ -52,12 +52,16 @@ export class DayModel {
     });
   }
 
-  isBefore(day: DayModel) {
-    return this.toDate().getTime() < day?.toDate().getTime();
+  isBefore(day: DayModel, dayInclusive = false) {
+    return dayInclusive
+      ? this.toDate().getTime() <= day?.toDate().getTime()
+      : this.toDate().getTime() < day?.toDate().getTime();
   }
 
-  isAfter(day: DayModel) {
-    return this.toDate().getTime() > day?.toDate().getTime();
+  isAfter(day: DayModel, dayInclusive = false) {
+    return dayInclusive
+      ? this.toDate().getTime() >= day?.toDate().getTime()
+      : this.toDate().getTime() > day?.toDate().getTime();
   }
 
   private pad(num: number): string {

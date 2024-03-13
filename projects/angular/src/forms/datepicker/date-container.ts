@@ -4,7 +4,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  Input,
+  Optional,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -19,6 +28,8 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
+import { ClrDateRangeEndInput } from './date-range-end-input';
+import { ClrDateRangeStartInput } from './date-range-start-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -97,10 +108,14 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
+  @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
+  @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
+
   private toggleButton: ElementRef;
 
   constructor(
     protected renderer: Renderer2,
+    elem: ElementRef,
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
@@ -127,12 +142,35 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
         this.dateFormControlService.markAsTouched();
       })
     );
+
+    if (this.dateNavigationService) {
+      const tagName = elem.nativeElement.tagName.toLowerCase();
+      this.dateNavigationService.isRangePicker = tagName === 'clr-date-range-container';
+    }
   }
 
   @Input('clrPosition')
   set clrPosition(position: string) {
     if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
       this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
+    }
+  }
+
+  @Input()
+  set min(dateString: string) {
+    this.dateIOService.setMinDate(dateString);
+    if (this.clrRangeStartEl && this.clrRangeEndEl) {
+      this.clrRangeStartEl.triggerControlInputValidation();
+      this.clrRangeEndEl.triggerControlInputValidation();
+    }
+  }
+
+  @Input()
+  set max(dateString: string) {
+    this.dateIOService.setMaxDate(dateString);
+    if (this.clrRangeStartEl && this.clrRangeEndEl) {
+      this.clrRangeStartEl.triggerControlInputValidation();
+      this.clrRangeEndEl.triggerControlInputValidation();
     }
   }
 
@@ -167,6 +205,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   ngAfterViewInit(): void {
+    this.dateRangeStucturalChecks();
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
@@ -216,5 +255,16 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   private initializeCalendar(): void {
     this.dateNavigationService.initializeCalendar();
+  }
+
+  private dateRangeStucturalChecks() {
+    if (this.dateNavigationService.isRangePicker) {
+      if (!this.clrRangeStartEl) {
+        console.error('Error! clr-date-range-container must contain clrRangeStartDate input');
+      }
+      if (!this.clrRangeEndEl) {
+        console.error('Error! clr-date-range-container must contain clrRangeEndDate input');
+      }
+    }
   }
 }

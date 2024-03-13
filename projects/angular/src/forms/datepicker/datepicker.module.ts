@@ -23,7 +23,11 @@ import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
-import { ClrDateInputValidator } from './date-input.validator';
+import {
+  ClrDateInputValidator,
+  ClrDateRangeEndInputValidator,
+  ClrDateRangeStartInputValidator,
+} from './date-input.validator';
 import { ClrDateRangeEndInput } from './date-range-end-input';
 import { ClrDateRangeStartInput } from './date-range-start-input';
 import { ClrDateSingleInput } from './date-single-input';
@@ -40,6 +44,8 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ClrDateRangeStartInput,
   ClrDateRangeEndInput,
   ClrDateInputValidator,
+  ClrDateRangeStartInputValidator,
+  ClrDateRangeEndInputValidator,
   ClrDatepickerViewManager,
   ClrMonthpicker,
   ClrYearpicker,

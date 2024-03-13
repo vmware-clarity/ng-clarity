@@ -15,8 +15,6 @@ export class DatepickerInTemplateDrivenFormsDemo {
   name = 'Jane';
   date1 = '01/02/2015';
   date2 = '';
-  date3 = '';
-  date4 = '';
 
   date1Changed(date: Date): void {
     console.log('Valid Date1 Entered', date);

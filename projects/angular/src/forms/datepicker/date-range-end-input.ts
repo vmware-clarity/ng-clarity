@@ -70,6 +70,13 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
     this.processInitialInputs();
   }
 
+  triggerControlInputValidation() {
+    if (this.datepickerHasFormControl()) {
+      this.control.control?.updateValueAndValidity({ emitEvent: false });
+      this.control.control?.setErrors(this.control.control.errors);
+    }
+  }
+
   protected updateDate(value: Date, setByUserInteraction = false) {
     const date = this.getValidDateValueFromDate(value);
 

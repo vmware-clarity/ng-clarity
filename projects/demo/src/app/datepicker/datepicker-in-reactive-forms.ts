@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-in-reactive-forms.html',
 })
-export class DatepickerInReactiveForms implements OnInit {
+export class DatepickerInReactiveForms {
   dateForm = new FormGroup({ date: new FormControl(), startDate: new FormControl(), endDate: new FormControl() });
   // minDate = '02/02/2021';
   // maxDate = '02/24/2029';

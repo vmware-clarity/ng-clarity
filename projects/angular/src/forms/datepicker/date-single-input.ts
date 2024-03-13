@@ -35,10 +35,6 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
     if (!this.initialClrDateInputValue) {
       this.initialClrDateInputValue = date as Date;
     }
-
-    if (this.dateNavigationService) {
-      this.dateNavigationService.isRangePicker = false;
-    }
   }
 
   @HostListener('change', ['$event.target'])

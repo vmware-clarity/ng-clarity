@@ -38,10 +38,6 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
     if (!this.initialClrDateInputValue) {
       this.initialClrDateInputValue = date as Date;
     }
-
-    if (this.dateNavigationService) {
-      this.dateNavigationService.isRangePicker = true;
-    }
   }
 
   @HostListener('change', ['$event.target'])
@@ -73,6 +69,13 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
     // these are major issues or not but just noting them down here.
     this.processInitialInputs();
     this.addSeparatorSymbol();
+  }
+
+  triggerControlInputValidation() {
+    if (this.datepickerHasFormControl()) {
+      this.control.control?.updateValueAndValidity({ emitEvent: false });
+      this.control.control?.setErrors(this.control.control.errors);
+    }
   }
 
   protected updateDate(value: Date, setByUserInteraction = false) {
