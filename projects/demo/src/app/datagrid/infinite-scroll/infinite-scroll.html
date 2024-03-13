@@ -6,7 +6,7 @@
 
 <h2>Hide-show columns demo with custom buttons</h2>
 
-<clr-datagrid [clrDgLoading]="loading" style="height: 30rem">
+<clr-datagrid [clrDgLoading]="loading" [clrUseLoadMore]="true" style="height: 30rem">
   <clr-dg-column>
     <ng-container *clrDgHideableColumn>User ID</ng-container>
   </clr-dg-column>

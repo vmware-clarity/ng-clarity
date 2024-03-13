@@ -77,6 +77,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+  loadingMoreItems: boolean;
+
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
   @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
@@ -113,6 +115,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * displayed, typically for selection.
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
+
+  @Input('clrUseLoadMore') useLoadMore: boolean;
 
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
@@ -376,5 +380,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  loadMore() {
+    this.loadingMoreItems = true;
+    this.useLoadMore = false;
+
+    setTimeout(() => {
+      this.loadingMoreItems = false;
+      this.useLoadMore = true;
+    }, 2000);
   }
 }
