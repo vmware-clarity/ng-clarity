@@ -46,7 +46,7 @@ let nbOptionsComponents = 0;
     <div *ngIf="emptyOptions">
       <span
         class="clr-combobox-options-empty-text"
-        [id]="optionSelectionService.noResultsElementId"
+        [id]="noResultsElementId"
         [attr.aria-label]="commonStrings.keys.comboboxNoResults"
       >
         {{ commonStrings.keys.comboboxNoResults }}
@@ -106,6 +106,10 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
    */
   get emptyOptions() {
     return !this.optionSelectionService.loading && this.items.length === 0;
+  }
+
+  get noResultsElementId() {
+    return `${this.optionsId}-no-results`;
   }
 
   ngAfterViewInit() {
