@@ -22,7 +22,7 @@ export class OptionSelectionService<T> {
   // https://github.com/vmware-clarity/ng-clarity/issues/386
   showAllOptions = true;
 
-  noResultsElementId = uniqueIdFactory();
+  noResultsElementId = uniqueIdFactory() + '-no-results';
 
   private _currentInput = '';
   private _inputChanged = new BehaviorSubject('');
