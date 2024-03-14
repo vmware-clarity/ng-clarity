@@ -31,6 +31,9 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
 
   @Input('clrRangeStartDate')
   set date(date: Date | string) {
+    if (typeof date === 'string') {
+      date = new Date(date);
+    }
     if (this.previousDateChange !== date) {
       this.updateDate(this.getValidDateValueFromDate(date as Date));
     }

@@ -40,7 +40,7 @@ export default {
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => new Date(date),
+    getDateObject: date => date && new Date(date).toISOString(),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };

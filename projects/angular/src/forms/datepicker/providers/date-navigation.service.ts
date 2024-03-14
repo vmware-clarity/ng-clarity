@@ -78,7 +78,6 @@ export class DateNavigationService {
    */
   notifySelectedDayChanged(dayModel: DayModel) {
     if (this.isRangePicker) {
-      // console.log('>1 DateNavigation service', this.selectedDay, this.selectedEndDay, this.selectedEndDay?.isBefore(this.selectedDay));
       if (
         !this.selectedDay ||
         (!!this.selectedDay && !!this.selectedEndDay) ||
@@ -86,10 +85,8 @@ export class DateNavigationService {
       ) {
         this.setSelectedDay(dayModel);
         this.setSelectedEndDay(undefined);
-        // console.log('>2 DateNavigation service');
       } else {
         this.setSelectedEndDay(dayModel);
-        // console.log('>3 DateNavigation service');
       }
     } else {
       this.setSelectedDay(dayModel);

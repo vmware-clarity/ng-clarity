@@ -31,6 +31,9 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
 
   @Input('clrRangeEndDate')
   set date(date: Date | string) {
+    if (typeof date === 'string') {
+      date = new Date(date);
+    }
     if (this.previousDateChange !== date) {
       this.updateDate(this.getValidDateValueFromDate(date as Date));
     }
