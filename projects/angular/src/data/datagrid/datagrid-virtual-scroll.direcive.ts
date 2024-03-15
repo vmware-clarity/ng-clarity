@@ -54,16 +54,16 @@ type CdkVirtualForInputs<T> = Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInpu
 type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize' | 'minBufferPx' | 'maxBufferPx'>;
 
 const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
-  itemSize: 36,
-  minBufferPx: 100,
-  maxBufferPx: 200,
+  itemSize: 32,
+  minBufferPx: 200,
+  maxBufferPx: 400,
 };
 
 @Directive({
   selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
 })
 export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDestroy {
-  @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 10;
+  @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };

@@ -5,8 +5,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 import { User } from './user';
 import { COLORS, NAMES, POKEMONS } from './values';
@@ -16,11 +15,16 @@ export class Inventory {
   size = 100;
   latency = 0;
 
-  private _all: User[];
+  private _all: User[] = [];
   private _currentQuery: User[];
+  private allUsers = new BehaviorSubject<User[]>(this.all);
 
   get all(): User[] {
     return this._all;
+  }
+
+  getAllUsersSubject() {
+    return this.allUsers;
   }
 
   reset() {
@@ -45,16 +49,10 @@ export class Inventory {
     return newData;
   }
 
-  lazyLoadUsers() {
-    const result = {
-      users: this.addBySize(),
-      totalUsers: 0,
-      loadedCount: 0,
-    };
-    result.totalUsers = result.users.length;
-    result.loadedCount = result.users.length;
+  lazyLoadUsers(size = this.size) {
+    this._all = [...this._all, ...this.addBySize(size)];
 
-    return of(result).pipe(delay(1000));
+    this.allUsers.next(this._all);
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {

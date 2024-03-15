@@ -73,23 +73,27 @@
               </div>
             </div>
           </div>
-          <ng-container #displayedRows></ng-container>
-          <clr-dg-row *ngIf="useLoadMore || loadingMoreItems">
+
+          <clr-dg-row *ngIf="loadingMoreItemsBefore">
             <clr-dg-cell style="display: flex">
-              <button
-                *ngIf="useLoadMore"
-                class="btn btn-sm btn-neutral-outline"
-                (click)="loadMore()"
-                style="margin: 10px auto"
-              >
-                Load More
-              </button>
-              <div style="margin: 5px auto; display: flex; align-items: center; gap: 12px" *ngIf="loadingMoreItems">
+              <div style="margin: 5px auto; display: flex; align-items: center; gap: 12px">
                 <clr-spinner [clrMedium]="true"></clr-spinner>
                 <span>{{ commonStrings.keys.loading }}</span>
               </div>
             </clr-dg-cell>
           </clr-dg-row>
+
+          <ng-container #displayedRows></ng-container>
+
+          <clr-dg-row *ngIf="loadingMoreItemsAfter">
+            <clr-dg-cell style="display: flex">
+              <div style="margin: 5px auto; display: flex; align-items: center; gap: 12px">
+                <clr-spinner [clrMedium]="true"></clr-spinner>
+                <span>{{ commonStrings.keys.loading }}</span>
+              </div>
+            </clr-dg-cell>
+          </clr-dg-row>
+
           <!-- Custom placeholder overrides the default empty one -->
           <ng-content select="clr-dg-placeholder"></ng-content>
           <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>

@@ -7,9 +7,10 @@
 <h2>Hide-show columns demo with custom buttons</h2>
 
 <clr-datagrid
-  *ngIf="{ data: data | async }; let data"
+  *ngIf="{ users: users | async }; let data"
   [clrDgLoading]="loading"
-  [clrUseLoadMore]="true"
+  [clrLoadingMoreItemsAfter]="loadingMoreItemsAfter"
+  [clrLoadingMoreItemsBefore]="loadingMoreItemsBefore"
   style="height: 30rem"
 >
   <clr-dg-column>
@@ -29,17 +30,15 @@
     <ng-container *clrDgHideableColumn>Favorite color</ng-container>
   </clr-dg-column>
 
-  <!--  <clr-dg-placeholder>No users found</clr-dg-placeholder>-->
-
   <ng-template
-    *ngIf="data.data.users"
+    *ngIf="data.users"
     customClrVirtualRows
     let-user
-    [customClrVirtualRowsOf]="data.data.users"
-    [customClrVirtualRowsItemSize]="currentPageSize"
+    [customClrVirtualRowsOf]="data.users"
+    [customClrVirtualRowsItemSize]="32"
     [customClrVirtualRowsMinBufferPx]="200"
     [customClrVirtualRowsMaxBufferPx]="400"
-    [customClrVirtualRowsKeyboardScrollPageSize]="currentPageSize"
+    [customClrVirtualRowsKeyboardScrollPageSize]="32"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
@@ -53,8 +52,5 @@
     </clr-dg-row>
   </ng-template>
 
-  <clr-dg-footer>
-    {{data.data.users.length}}
-    <button class="btn btn-sm btn-link" (click)="loadMore()">Load next 100/1000</button>
-  </clr-dg-footer>
+  <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
 </clr-datagrid>
