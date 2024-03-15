@@ -5,6 +5,8 @@
  */
 
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { User } from './user';
 import { COLORS, NAMES, POKEMONS } from './values';
@@ -41,6 +43,18 @@ export class Inventory {
     }
 
     return newData;
+  }
+
+  lazyLoadUsers() {
+    const result = {
+      users: this.addBySize(),
+      totalUsers: 0,
+      loadedCount: 0,
+    };
+    result.totalUsers = result.users.length;
+    result.loadedCount = result.users.length;
+
+    return of(result).pipe(delay(1000));
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {

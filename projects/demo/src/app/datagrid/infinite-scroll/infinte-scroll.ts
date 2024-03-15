@@ -4,7 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -23,7 +25,12 @@ export class DatagridInfinteScrollDemo {
   conditionalSignpost = true;
   currentPageSize = 35;
   _inventory = null;
-  loading = true;
+  loading: boolean;
+  readonly data: Observable<{
+    users: User[];
+    totalResults: number;
+    loadedCount: number;
+  }>;
 
   constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
     this._inventory = inventory;
@@ -43,12 +50,14 @@ export class DatagridInfinteScrollDemo {
 
   loadMore() {
     this.loading = true;
-    this._inventory.size = this._inventory.size + this.currentPageSize;
-    this.users = this.users.concat(this._inventory.addBySize(this.currentPageSize));
-    console.log('this.users', this.users.length);
+    console.log('this.loading', this.loading);
 
     setTimeout(() => {
       this.loading = false;
+      this._inventory.size = this._inventory.size + this.currentPageSize;
+      this.users = this.users.concat(this._inventory.addBySize(this.currentPageSize));
+      console.log('this.users', this.users.length);
+      this.cdr.detectChanges();
     }, 1000);
 
     // this.cdr.detectChanges();
@@ -60,5 +69,10 @@ export class DatagridInfinteScrollDemo {
 
   toggleName() {
     this.hideNameColumn = !this.hideNameColumn;
+  }
+
+  renderRangeChange($event: ListRange) {
+    console.log($event);
+    this.loadMore();
   }
 }

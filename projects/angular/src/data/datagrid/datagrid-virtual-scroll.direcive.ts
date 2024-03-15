@@ -72,9 +72,9 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   private datagridKeyNavigationController: KeyNavigationGridController;
 
   private gridRoleElement: HTMLElement | null | undefined;
-  private virtualScrollStrategy: FixedSizeVirtualScrollStrategy | undefined;
-  private virtualScrollViewport: CdkVirtualScrollViewport | undefined;
-  private cdkVirtualFor: CdkVirtualForOf<T> | undefined;
+  private virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
+  private virtualScrollViewport: CdkVirtualScrollViewport;
+  private cdkVirtualFor: CdkVirtualForOf<T>;
   private setActiveCellSubscription: Subscription | undefined;
   private dataStreamSubscription: Subscription | undefined;
   private renderedRangeChangeSubscription: Subscription | undefined;
@@ -99,8 +99,6 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   ) {
     this.datagridElementRef = this.datagrid.el;
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
-
-    this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
@@ -128,29 +126,6 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
       this.virtualScrollViewport,
       this.ngZone
     );
-
-    this.updateCdkVirtualForInputs();
-
-    this.virtualScrollViewport.ngOnInit();
-
-    // this.setActiveCellSubscription = fromActiveCell(this.datagrid).subscribe(activeCellElement => {
-    //   this.activeCellCoordinates = this.getCellCoordinates(activeCellElement);
-    // });
-    this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
-
-    this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {
-      this.totalSize = data.length;
-      this.updateAriaRowCount(data.length);
-    });
-
-    this.renderedRangeChangeSubscription = this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
-      this.renderedRangeChange.emit(renderedRange);
-      this.restoreOrUpdateActiveCellInNextFrame();
-    });
-
-    this.keydownEventSubscription = fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
-      this.handlePageUpAndPageDownKeys(event);
-    });
   }
 
   @Input('customClrVirtualRowsOf')
@@ -217,7 +192,30 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   }
 
   ngOnInit() {
-    console.log('oninit');
+    this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
+
+    this.updateCdkVirtualForInputs();
+
+    this.virtualScrollViewport.ngOnInit();
+
+    // this.setActiveCellSubscription = fromActiveCell(this.datagrid).subscribe(activeCellElement => {
+    //   this.activeCellCoordinates = this.getCellCoordinates(activeCellElement);
+    // });
+    this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
+
+    this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {
+      this.totalSize = data.length;
+      this.updateAriaRowCount(data.length);
+    });
+
+    this.renderedRangeChangeSubscription = this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
+      this.renderedRangeChange.emit(renderedRange);
+      this.restoreOrUpdateActiveCellInNextFrame();
+    });
+
+    this.keydownEventSubscription = fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
+      this.handlePageUpAndPageDownKeys(event);
+    });
   }
 
   ngDoCheck() {
@@ -317,7 +315,7 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   }
 
   private getCellCoordinates(cellElement: HTMLElement) {
-    const rowElement = cellElement.closest('[role="row"][aria-rowindex]');
+    const rowElement = cellElement?.closest('[role="row"][aria-rowindex]');
     const rowIndex = parseInt(rowElement?.getAttribute('aria-rowindex'));
 
     // aria-rowindex starts with one, not zero, so we have to subtract one to get the zero-based index

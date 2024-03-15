@@ -6,7 +6,12 @@
 
 <h2>Hide-show columns demo with custom buttons</h2>
 
-<clr-datagrid [clrDgLoading]="loading" [clrUseLoadMore]="true" style="height: 30rem">
+<clr-datagrid
+  *ngIf="{ data: data | async }; let data"
+  [clrDgLoading]="loading"
+  [clrUseLoadMore]="true"
+  style="height: 30rem"
+>
   <clr-dg-column>
     <ng-container *clrDgHideableColumn>User ID</ng-container>
   </clr-dg-column>
@@ -24,27 +29,32 @@
     <ng-container *clrDgHideableColumn>Favorite color</ng-container>
   </clr-dg-column>
 
-  <clr-dg-placeholder>No users found</clr-dg-placeholder>
+  <!--  <clr-dg-placeholder>No users found</clr-dg-placeholder>-->
 
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{user.id}}</clr-dg-cell>
-    <clr-dg-cell>{{user.name}}</clr-dg-cell>
-    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-    <clr-dg-cell>
-      {{user.pokemon.name}}
-      <clr-signpost>
-        <button type="button" class="signpost-action btn btn-sm btn-link" clrSignpostTrigger>
-          <cds-icon shape="help-info"></cds-icon>
-        </button>
-        <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'">The pokemon is strong.</clr-signpost-content>
-      </clr-signpost>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
+  <ng-template
+    *ngIf="data.data.users"
+    customClrVirtualRows
+    let-user
+    [customClrVirtualRowsOf]="data.data.users"
+    [customClrVirtualRowsItemSize]="currentPageSize"
+    [customClrVirtualRowsMinBufferPx]="200"
+    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsKeyboardScrollPageSize]="currentPageSize"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user">
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell> {{user.pokemon.name}} </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  </ng-template>
 
   <clr-dg-footer>
+    {{data.data.users.length}}
     <button class="btn btn-sm btn-link" (click)="loadMore()">Load next 100/1000</button>
   </clr-dg-footer>
 </clr-datagrid>
