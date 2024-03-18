@@ -20,12 +20,14 @@ const defaultStory: Story = args => ({
         [id]="id"
         [clrMulti]="clrMulti"
         [ngModel]="clrMulti ? multiModel : singleModel"
+        [ngModelOptions]="{ updateOn: updateOn }"
         [placeholder]="placeholder"
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
         [disabled]="controlDisabled"
         name="combo"
+        [required]="controlRequired"
       >
         <ng-container *clrOptionSelected="let selected">
           {{selected}}
@@ -34,6 +36,8 @@ const defaultStory: Story = args => ({
           <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
         </clr-options>
       </clr-combobox>
+      <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
+      <clr-control-error *ngIf="controlRequired">There was an error</clr-control-error>
     </clr-combobox-container>
   `,
   props: { ...args },
@@ -71,6 +75,7 @@ const defaultParameters: Parameters = {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
+    updateOn: { defaultValue: 'change', control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
   },
   args: {
     // outputs
@@ -85,6 +90,9 @@ const defaultParameters: Parameters = {
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
     label: 'Combobox',
+    controlRequired: false,
+    controlHelper: false,
+    updateOn: 'change',
   },
 };
 
@@ -106,6 +114,12 @@ const variants: Parameters[] = [
     label: 'Single/Disabled',
   },
   {
+    singleModel: '',
+    controlHelper: true,
+    controlRequired: true,
+    label: 'Single/Required',
+  },
+  {
     clrMulti: true,
     label: 'Multi/Placeholder/Preselected',
   },
@@ -114,6 +128,7 @@ const variants: Parameters[] = [
     controlDisabled: true,
     label: 'Multi/Disabled',
   },
+  { multiModel: [], clrMulti: true, controlHelper: true, controlRequired: true, label: 'Multi/Required' },
 ];
 
 setupStorybook(ClrComboboxModule, defaultStory, defaultParameters, variants);
