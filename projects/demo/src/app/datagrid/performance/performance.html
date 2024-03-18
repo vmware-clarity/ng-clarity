@@ -1,0 +1,57 @@
+<!--
+  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Performance</h2>
+<p>
+  So far, our examples' data only contained a few entries. The point of a datagrid is to display large amounts of data,
+  and we can't reasonably display it all at the same time on the page. To solve this, our datagrid supports pagination.
+</p>
+<p>
+  Here is an example of how to use pagination, and attach a template reference variable to it to display information on
+  the current page.
+</p>
+
+<div>
+  <button class="btn" (click)="showChangeDetection()">Calc change detect</button>
+
+  <div>ms per tick: {{timeCD.msPerTick}}</div>
+  <div>Total ticks: {{timeCD.numTicks}}</div>
+  <div>Total time in MS: {{timeCD.numTicks * timeCD.msPerTick}}</div>
+  <div>time change detection JSON: {{timeCD|json}}</div>
+</div>
+
+<div>
+  <clr-input-container>
+    <label>Total Cols</label>
+    <input clrInput type="number" name="cols" [(ngModel)]="totalCols" />
+  </clr-input-container>
+  <clr-input-container>
+    <label>Rows</label>
+    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="totalRows" />
+  </clr-input-container>
+  <button class="btn" (click)="changeDatagridDimensions()">Recalculate Datagrid</button>
+  <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
+</div>
+
+<clr-datagrid>
+  <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
+    <ng-container>{{col.name}}</ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
+    <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+    <ng-container ngProjectAs="clr-dg-row-detail">
+      <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
+    </ng-container>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="1000">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,1000]">Elements per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

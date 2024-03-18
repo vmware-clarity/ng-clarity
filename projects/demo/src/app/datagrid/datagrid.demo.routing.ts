@@ -24,6 +24,7 @@ import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPaginationDemo } from './pagination/pagination';
+import { DatagridPerformanceDemo } from './performance/performance';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
@@ -54,6 +55,7 @@ const ROUTES: Routes = [
       { path: 'pagination', component: DatagridPaginationDemo },
       { path: 'pagination-scrolling', component: DatagridPaginationScrollingDemo },
       { path: 'pagination-conditional', component: DatagridConditionalPaginationDemo },
+      { path: 'performance', component: DatagridPerformanceDemo },
       { path: 'selection', component: DatagridSelectionDemo },
       { path: 'selection-single', component: DatagridSelectionSingleDemo },
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
