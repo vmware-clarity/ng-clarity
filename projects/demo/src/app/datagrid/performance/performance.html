@@ -36,17 +36,30 @@
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>
 
-<clr-datagrid>
+<clr-datagrid *ngIf="{ rows: rows | async }; let data" style="height: 32rem">
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
-    <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
-    <ng-container ngProjectAs="clr-dg-row-detail">
-      <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
-    </ng-container>
-  </clr-dg-row>
+  <ng-template
+    *ngIf="data.rows"
+    customClrVirtualRows
+    let-row
+    [customClrVirtualRowsOf]="data.rows"
+    [customClrVirtualRowsItemSize]="32"
+    [customClrVirtualRowsMinBufferPx]="200"
+    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsKeyboardScrollPageSize]="32"
+    [customClrVirtualRowsTrackBy]="rowByIndex"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="row">
+      <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail">
+        <clr-dg-row-detail *clrIfExpanded>{{row | json}}</clr-dg-row-detail>
+      </ng-container>
+    </clr-dg-row>
+  </ng-template>
 
   <clr-dg-footer>
     <clr-dg-pagination #pagination [clrDgPageSize]="1000">
