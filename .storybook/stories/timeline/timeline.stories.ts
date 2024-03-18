@@ -5,12 +5,34 @@
  */
 
 import { ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStepState } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Timeline/Timeline',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTimelineModule],
+    }),
+  ],
+  component: ClrTimeline,
+  argTypes: {
+    // inputs
+    clrLayout: {
+      defaultValue: ClrTimelineLayout.HORIZONTAL,
+      control: { type: 'inline-radio', options: ClrTimelineLayout },
+    },
+    // story helpers
+    ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    ClrTimelineStepState,
+  },
+};
+
+const TimelineTempate: Story = args => ({
   template: `
     <clr-timeline [clrLayout]="clrLayout">
       <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">
@@ -40,34 +62,19 @@ const defaultStory: Story = args => ({
       </clr-timeline-step>
     </clr-timeline>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Timeline/Timeline',
-  component: ClrTimeline,
-  argTypes: {
-    // inputs
-    clrLayout: {
-      defaultValue: ClrTimelineLayout.HORIZONTAL,
-      control: { type: 'inline-radio', options: ClrTimelineLayout },
-    },
-    // story helpers
-    ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
-  },
+export const HorizontalLayout: StoryObj = {
+  render: TimelineTempate,
   args: {
-    // story helpers
-    ClrTimelineStepState,
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrLayout: ClrTimelineLayout.HORIZONTAL,
-  },
-  {
+export const VerticalLayout: StoryObj = {
+  render: TimelineTempate,
+  args: {
     clrLayout: ClrTimelineLayout.VERTICAL,
   },
-];
-
-setupStorybook(ClrTimelineModule, defaultStory, defaultParameters, variants);
+};

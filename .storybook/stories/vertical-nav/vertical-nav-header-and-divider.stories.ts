@@ -7,10 +7,9 @@
 import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -21,7 +20,31 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Vertical Nav/Vertical Header and Divider',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
+  component: ClrVerticalNav,
+  argTypes: {
+    clrVerticalNavCollapsible: { control: { disable: true }, table: { disable: true } },
+    clrVerticalNavCollapsed: { control: { disable: true }, table: { disable: true } },
+    // outputs
+    clrVerticalNavCollapsedChange: { control: { disable: true }, table: { disable: true } },
+    // methods
+    toggleByButton: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    navLinks: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    navLinks,
+  },
+};
+
+const NavHeaderDividerTemplate: Story = args => ({
   template: `
     <div class="content-container">
         <clr-vertical-nav>
@@ -35,22 +58,9 @@ const defaultStory: Story = args => ({
         </clr-vertical-nav>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Vertical Nav/Vertical Header and Divider',
-  component: ClrVerticalNav,
-  argTypes: {
-    // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    navLinks,
-  },
+export const NavHeaderAndDivider: StoryObj = {
+  render: NavHeaderDividerTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);

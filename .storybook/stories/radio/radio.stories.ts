@@ -5,23 +5,16 @@
  */
 
 import { ClrRadio, ClrRadioModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
-  template: ` 
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio value="i + 1" [checked]="checked" [disabled]="disabled" />
-      <label>{{label}}</label>
-    </clr-radio-wrapper>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Radio/Radio',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrRadioModule],
+    }),
+  ],
   component: ClrRadio,
   argTypes: {
     // inputs
@@ -38,23 +31,38 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    disabled: false,
-    checked: false,
-  },
-  {
-    disabled: false,
-    checked: true,
-  },
-  {
-    disabled: true,
-    checked: false,
-  },
-  {
-    disabled: true,
-    checked: true,
-  },
-];
+const RadioTemplate: StoryFn = args => ({
+  template: ` 
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio value="i + 1" [checked]="checked" [disabled]="disabled" />
+      <label>{{label}}</label>
+    </clr-radio-wrapper>
+  `,
+  props: { ...args },
+});
 
-setupStorybook(ClrRadioModule, defaultStory, defaultParameters, variants);
+export const Radio: StoryObj = {
+  render: RadioTemplate,
+};
+
+export const Disabled: StoryObj = {
+  render: RadioTemplate,
+  args: {
+    disabled: true,
+  },
+};
+
+export const Checked: StoryObj = {
+  render: RadioTemplate,
+  args: {
+    checked: true,
+  },
+};
+
+export const DisableddAndChecked: StoryObj = {
+  render: RadioTemplate,
+  args: {
+    checked: true,
+    disabled: true,
+  },
+};

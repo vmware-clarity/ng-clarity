@@ -5,12 +5,9 @@
  */
 
 import { ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
-
-const defaultStory: Story = args => ({
+const loginTemplate: Story = args => ({
   template: `
     <div class="login-wrapper">
         <div class="login">
@@ -88,8 +85,13 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Login/Login',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule],
+    }),
+  ],
   argTypes: {},
   args: {
     type: 'local',
@@ -99,11 +101,6 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
-
-setupStorybook(
-  [ClrInputModule, ClrSelectModule, ClrCheckboxModule, ClrPasswordModule, ClrDropdownModule],
-  defaultStory,
-  defaultParameters,
-  variants
-);
+export const Login: StoryObj = {
+  render: loginTemplate,
+};

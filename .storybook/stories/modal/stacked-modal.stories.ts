@@ -4,14 +4,30 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComboboxModule, ClrDropdownModule, ClrModalModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { ClrModalModule } from '@clr/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const story: Story = args => ({
+export default {
+  title: 'Modal/Stacked Modal',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const StackedModalTemplate: Story = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
@@ -39,19 +55,9 @@ const story: Story = args => ({
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const parameters: Parameters = {
-  title: 'Modal/Stacked Modal',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const StackedModal: StoryObj = {
+  render: StackedModalTemplate,
 };
-
-setupStorybook([ClrModalModule, ClrComboboxModule, ClrDropdownModule], story, parameters);

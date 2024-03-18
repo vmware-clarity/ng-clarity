@@ -48,6 +48,7 @@ export default {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
+    updateOn: { defaultValue: 'change', control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
   },
   args: {
     // outputs
@@ -58,6 +59,9 @@ export default {
     optionCount: elements.length,
     content: 'Option',
     controlDisabled: false,
+    controlRequired: false,
+    controlHelper: false,
+    updateOn: 'change',
     elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
@@ -73,12 +77,14 @@ const ComboboxTemplate: StoryFn = args => ({
         [id]="id"
         [clrMulti]="clrMulti"
         [ngModel]="clrMulti ? multiModel : singleModel"
+        [ngModelOptions]="{ updateOn: updateOn }"
         [placeholder]="placeholder"
         (clrInputChange)="clrInputChange($event)"
         (clrOpenChange)="clrOpenChange($event)"
         (clrSelectionChange)="clrSelectionChange($event)"
         [disabled]="controlDisabled"
         name="combo"
+        [required]="controlRequired"
       >
         <ng-container *clrOptionSelected="let selected">
           {{selected}}
@@ -87,6 +93,8 @@ const ComboboxTemplate: StoryFn = args => ({
           <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
         </clr-options>
       </clr-combobox>
+      <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
+      <clr-control-error *ngIf="controlRequired">There was an error</clr-control-error>
     </clr-combobox-container>
   `,
   props: { ...args },
@@ -130,5 +138,24 @@ export const MultiSelectionDisabled: StoryObj = {
   args: {
     clrMulti: true,
     controlDisabled: true,
+  },
+};
+
+export const SingleSelectionRequired: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: '',
+    controlHelper: true,
+    controlRequired: true,
+  },
+};
+
+export const MultiSelectionRequired: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    multiModel: [],
+    clrMulti: true,
+    controlHelper: true,
+    controlRequired: true,
   },
 };
