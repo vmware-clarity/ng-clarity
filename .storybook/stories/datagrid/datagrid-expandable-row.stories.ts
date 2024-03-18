@@ -4,16 +4,64 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Expandable Rows',
+  component: ClrDatagridRow,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule, BrowserAnimationsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDgDetailCloseLabel: { defaultValue: '' },
+    clrDgDetailOpenLabel: { defaultValue: '' },
+    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrDgItem: { control: { disable: true } },
+    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
+    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
+    clrDgRowSelectionLabel: { defaultValue: '' },
+    // outputs
+    clrDgExpandedChange: { control: { disable: true } },
+    clrDgSelectedChange: { control: { disable: true } },
+    // methods
+    toggle: { control: { disable: true } },
+    toggleExpand: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+    openTooltip: { defaultValue: false, control: { type: 'boolean' } },
+  },
+  args: {
+    // outputs
+    clrDgExpandedChange: action('clrDgExpandedChange'),
+    clrDgSelectedChange: action('clrDgSelectedChange'),
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
+
+const ExpandableRowsTemplate: Story = args => ({
   template: `
+  <style>
+    .open-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
   <clr-datagrid
     ${args.height ? '[style.height.px]="height"' : ''}
     ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
@@ -57,7 +105,12 @@ const defaultStory: Story = args => ({
             solid
           ></cds-icon>
           <span class="tooltip-content"
+            [class.open-tooltip]="openTooltip && index === 0"
             >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
+            neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
+            tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
+            eget, pellentesque sed arcu. Vivamus in dui lectus.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in
             neque in ante placerat mattis id sed quam. Proin rhoncus lacus et
             tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit
             eget, pellentesque sed arcu. Vivamus in dui lectus.</span
@@ -111,41 +164,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Expandable Rows',
-  component: ClrDatagridRow,
-  argTypes: {
-    // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
-    clrDgItem: { control: { disable: true } },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
-    clrDgRowSelectionLabel: { defaultValue: '' },
-    // outputs
-    clrDgExpandedChange: { control: { disable: true } },
-    clrDgSelectedChange: { control: { disable: true } },
-    // methods
-    toggle: { control: { disable: true } },
-    toggleExpand: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrDgExpandedChange: action('clrDgExpandedChange'),
-    clrDgSelectedChange: action('clrDgSelectedChange'),
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const ExpandableRows: StoryObj = {
+  render: ExpandableRowsTemplate,
 };
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters);

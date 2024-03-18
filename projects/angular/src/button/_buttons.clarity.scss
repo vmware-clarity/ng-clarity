@@ -450,16 +450,6 @@
 
   //Overflow
   .btn-group {
-    &.btn-primary .dropdown-toggle,
-    &.btn-success .dropdown-toggle,
-    &.btn-warning .dropdown-toggle,
-    &.btn-danger .dropdown-toggle {
-      @include populateButtonProperties(primary);
-    }
-    &.btn-danger :disabled {
-      border-color: tokens.$cds-alias-status-disabled;
-    }
-
     &.btn-link .dropdown-toggle {
       @include populateButtonProperties(link);
     }

@@ -80,7 +80,11 @@
       }
     }
 
-    &:not([class*='-outline'])g {
+    &.btn-primary,
+    &.btn-neutral,
+    &.btn-success,
+    &.btn-danger,
+    &.btn-warning {
       .tooltip:not(:last-child) > .btn,
       > .btn:not(:last-child) {
         // apply only to direct .btn children

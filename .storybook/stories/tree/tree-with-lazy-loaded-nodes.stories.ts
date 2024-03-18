@@ -5,13 +5,12 @@
  */
 
 import { ClrConditionalModule, ClrLoadingModule, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
+import { CommonModules } from '../../helpers/common';
 import { filesRoot } from '../../helpers/files.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 class FileService {
   loading = false;
@@ -29,26 +28,13 @@ class FileService {
   }
 }
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tree [clrLazy]="true">
-      <clr-tree-node [clrLoading]="fileService.loading">
-        Files
-        <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
-          <clr-tree-node *ngFor="let filename of fileService.filenames | async">
-            {{ filename }}
-          </clr-tree-node>
-        </ng-template>
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: {
-    ...args,
-  },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tree/Tree with lazy-loaded nodes',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTreeViewModule, ClrConditionalModule, ClrLoadingModule],
+    }),
+  ],
   component: ClrTree,
   argTypes: {
     // inputs
@@ -62,6 +48,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const LazyLoadedTreeTemplate: Story = args => ({
+  template: `
+    <clr-tree [clrLazy]="true">
+      <clr-tree-node [clrLoading]="fileService.loading">
+        Files
+        <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
+          <clr-tree-node *ngFor="let filename of fileService.filenames | async">
+            {{ filename }}
+          </clr-tree-node>
+        </ng-template>
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
 
-setupStorybook([ClrTreeViewModule, ClrConditionalModule, ClrLoadingModule], defaultStory, defaultParameters, variants);
+export const LazyLoadedNodes: StoryObj = {
+  render: LazyLoadedTreeTemplate,
+};

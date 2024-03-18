@@ -3763,6 +3763,8 @@ export class ClrTabLink {
     // (undocumented)
     el: ElementRef;
     // (undocumented)
+    readonly id: number;
+    // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)
     get inOverflow(): boolean;
