@@ -74,23 +74,19 @@
             </div>
           </div>
 
-          <clr-dg-row *ngIf="loadingMoreItemsBefore">
-            <clr-dg-cell style="display: flex">
-              <div style="margin: 5px auto; display: flex; align-items: center; gap: 12px">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </div>
+          <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
+            <clr-dg-cell class="datagrid-loading-more-items-cell">
+              <clr-spinner [clrMedium]="true"></clr-spinner>
+              <span>{{ commonStrings.keys.loading }}</span>
             </clr-dg-cell>
           </clr-dg-row>
 
           <ng-container #displayedRows></ng-container>
 
-          <clr-dg-row *ngIf="loadingMoreItemsAfter">
-            <clr-dg-cell style="display: flex">
-              <div style="margin: 5px auto; display: flex; align-items: center; gap: 12px">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </div>
+          <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
+            <clr-dg-cell class="datagrid-loading-more-items-cell">
+              <clr-spinner [clrMedium]="true"></clr-spinner>
+              <span>{{ commonStrings.keys.loading }}</span>
             </clr-dg-cell>
           </clr-dg-row>
 

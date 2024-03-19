@@ -77,8 +77,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
-  @Input('clrLoadingMoreItemsAfter') loadingMoreItemsAfter: boolean;
-  @Input('clrLoadingMoreItemsBefore') loadingMoreItemsBefore: boolean;
+  @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;

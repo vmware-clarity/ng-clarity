@@ -22,8 +22,7 @@ export class DatagridInfinteScrollDemo implements OnInit {
   currentPageSize = 100;
   _inventory = null;
   loading: boolean;
-  loadingMoreItemsAfter = false;
-  loadingMoreItemsBefore = false;
+  loadingMoreItems = false;
 
   constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
     this._inventory = inventory;
@@ -40,21 +39,18 @@ export class DatagridInfinteScrollDemo implements OnInit {
   }
 
   loadMore($event: ListRange) {
-    if (
-      this.loadingMoreItemsAfter ||
-      $event.end + this.currentPageSize < this._inventory.size - this.currentPageSize / 2
-    ) {
+    if (this.loadingMoreItems || $event.end + this.currentPageSize < this._inventory.size - this.currentPageSize / 2) {
       return;
     }
 
-    this.loadingMoreItemsAfter = true;
+    this.loadingMoreItems = true;
 
     setTimeout(() => {
       this._inventory.size += this.currentPageSize;
       this._inventory.lazyLoadUsers(this.currentPageSize);
-      this.loadingMoreItemsAfter = false;
+      this.loadingMoreItems = false;
       this.cdr.detectChanges();
-    }, 1000);
+    }, 2000);
   }
 
   renderRangeChange($event: ListRange) {

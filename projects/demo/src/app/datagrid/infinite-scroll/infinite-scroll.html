@@ -9,8 +9,7 @@
 <clr-datagrid
   *ngIf="{ users: users | async }; let data"
   [clrDgLoading]="loading"
-  [clrLoadingMoreItemsAfter]="loadingMoreItemsAfter"
-  [clrLoadingMoreItemsBefore]="loadingMoreItemsBefore"
+  [clrLoadingMoreItems]="loadingMoreItems"
   style="height: 30rem"
 >
   <clr-dg-column>

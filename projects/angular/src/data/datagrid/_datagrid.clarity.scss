@@ -398,6 +398,14 @@
     flex: 1 1 auto;
     align-content: flex-start;
 
+    .datagrid-loading-more-items-row .datagrid-loading-more-items-cell {
+      display: flex;
+      padding: tokens.$cds-global-space-9;
+      align-items: center;
+      gap: tokens.$cds-global-space-6;
+      justify-content: center;
+    }
+
     .datagrid-body {
       width: auto;
     }
