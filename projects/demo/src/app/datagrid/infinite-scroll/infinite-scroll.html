@@ -5,6 +5,14 @@
 -->
 
 <h2>Hide-show columns demo with custom buttons</h2>
+<div>
+  <clr-input-container>
+    <label>Rows</label>
+    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="currentPageSize" />
+  </clr-input-container>
+  <button class="btn" (click)="refreshPage()">Recalculate Datagrid</button>
+  <div>Current Page Size: {{currentPageSize}}</div>
+</div>
 
 <clr-datagrid
   *ngIf="{ users: users | async }; let data"
@@ -35,8 +43,8 @@
     let-user
     [customClrVirtualRowsOf]="data.users"
     [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="200"
-    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsMinBufferPx]="100"
+    [customClrVirtualRowsMaxBufferPx]="200"
     [customClrVirtualRowsKeyboardScrollPageSize]="32"
     (renderedRangeChange)="renderRangeChange($event)"
   >

@@ -55,8 +55,8 @@ type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize
 
 const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
   itemSize: 32,
-  minBufferPx: 200,
-  maxBufferPx: 400,
+  minBufferPx: 100,
+  maxBufferPx: 200,
 };
 
 @Directive({

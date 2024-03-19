@@ -22,6 +22,9 @@ export class Inventory {
   get all(): User[] {
     return this._all;
   }
+  set all(value) {
+    this._all = value;
+  }
 
   getAllUsersSubject() {
     return this.allUsers;
@@ -30,7 +33,6 @@ export class Inventory {
   reset() {
     this._all = [];
     this._all = this._all.concat(this.addBySize());
-    console.log(this._all.length);
   }
 
   addBySize(size = this.size) {
@@ -50,9 +52,9 @@ export class Inventory {
   }
 
   lazyLoadUsers(size = this.size) {
-    this._all = [...this._all, ...this.addBySize(size)];
+    this.all = [...this._all, ...this.addBySize(size)];
 
-    this.allUsers.next(this._all);
+    this.allUsers.next(this.all);
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {

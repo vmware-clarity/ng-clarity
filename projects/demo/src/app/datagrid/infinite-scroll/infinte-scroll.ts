@@ -56,4 +56,17 @@ export class DatagridInfinteScrollDemo implements OnInit {
   renderRangeChange($event: ListRange) {
     this.loadMore($event);
   }
+
+  refreshPage() {
+    this.loadingMoreItems = true;
+    this._inventory.all = [];
+
+    setTimeout(() => {
+      this._inventory.size = this.currentPageSize * 3;
+      this._inventory.lazyLoadUsers(this._inventory.size);
+      this.loadingMoreItems = false;
+
+      this.cdr.detectChanges();
+    }, 2000);
+  }
 }
