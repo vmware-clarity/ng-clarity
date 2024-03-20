@@ -14,7 +14,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-daypicker',
   templateUrl: './daypicker.html',
-  host: { '[class.daypicker]': 'true' },
+  host: { '[class.daypicker]': 'true', role: 'application' },
 })
 export class ClrDaypicker {
   constructor(
