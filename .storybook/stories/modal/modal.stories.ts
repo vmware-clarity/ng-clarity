@@ -90,9 +90,9 @@ export const OpenSmallModal: StoryObj = {
   play: removeFocusOutline,
   args: {
     clrModalOpen: true,
+    clrModalSize: 'sm',
     title: 'Small Modal',
     body: 'This is a small modal.',
-    size: 'sm',
     showLongPageContent: false,
   },
 };
@@ -102,9 +102,9 @@ export const OpenMediumModal: StoryObj = {
   play: removeFocusOutline,
   args: {
     clrModalOpen: true,
+    clrModalSize: 'md',
     title: 'Medium Modal',
     body: 'This is a medium modal.',
-    size: 'md',
     showLongPageContent: false,
   },
 };
@@ -114,9 +114,9 @@ export const OpenLargeModal: StoryObj = {
   play: removeFocusOutline,
   args: {
     clrModalOpen: true,
+    clrModalSize: 'lg',
     title: 'Large Modal',
     body: 'This is a large modal.',
-    size: 'lg',
     showLongPageContent: false,
   },
 };
@@ -126,9 +126,9 @@ export const OpenExtraLargeModal: StoryObj = {
   play: removeFocusOutline,
   args: {
     clrModalOpen: true,
+    clrModalSize: 'xl',
     title: 'Extra-Large Modal',
     body: 'This is a extra-large modal.',
-    size: 'xl',
     showLongPageContent: false,
   },
 };
