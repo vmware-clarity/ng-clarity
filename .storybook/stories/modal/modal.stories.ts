@@ -6,7 +6,7 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -33,6 +33,7 @@ export default {
     close: { control: { disable: true }, table: { disable: true } },
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
+    showLongPageContent: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // outputs
@@ -42,13 +43,14 @@ export default {
     createArray: n => new Array(n),
     title: 'Modal Title',
     body: 'Hello World!',
+    showLongPageContent: true,
   },
 };
 
 const ModalTemplate: Story = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
-    <div>
+    <div *ngIf="showLongPageContent">
       This list is provided to demonstrate scrolling capability when modal is open.
       <ul>
         <li *ngFor="let _ of createArray(100); let i = index">{{i + 1}}</li>
@@ -82,3 +84,56 @@ const ModalTemplate: Story = args => ({
 export const Modal: StoryObj = {
   render: ModalTemplate,
 };
+
+export const OpenSmallModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    title: 'Small Modal',
+    body: 'This is a small modal.',
+    size: 'sm',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenMediumModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    title: 'Medium Modal',
+    body: 'This is a medium modal.',
+    size: 'md',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenLargeModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    title: 'Large Modal',
+    body: 'This is a large modal.',
+    size: 'lg',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenExtraLargeModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    title: 'Extra-Large Modal',
+    body: 'This is a extra-large modal.',
+    size: 'xl',
+    showLongPageContent: false,
+  },
+};
+
+function removeFocusOutline({ canvasElement }: StoryContext) {
+  // remove keyboard focus outline from modal title
+  canvasElement.querySelector<HTMLElement>(':focus').blur();
+}
