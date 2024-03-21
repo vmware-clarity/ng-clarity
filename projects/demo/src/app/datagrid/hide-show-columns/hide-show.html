@@ -62,7 +62,7 @@
 
 <h2>Hide-show columns demo with custom buttons</h2>
 
-<clr-datagrid style="height: 30rem">
+<clr-datagrid>
   <clr-dg-column>
     <ng-container *clrDgHideableColumn>User ID</ng-container>
   </clr-dg-column>
@@ -101,6 +101,7 @@
   </clr-dg-row>
 
   <clr-dg-footer>
-    <button class="btn btn-sm btn-link" (click)="loadMore()">Load next 100/1000</button>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
+    <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -24,11 +24,10 @@ export class DatagridHideShowDemo {
   currentPageSize = 35;
   _inventory = null;
 
-  constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
-    this._inventory = inventory;
-    this._inventory.size = this.currentPageSize;
-    this._inventory.reset();
-    this.users = this._inventory.all;
+  constructor(inventory: Inventory) {
+    inventory.size = 10;
+    inventory.reset();
+    this.users = inventory.all;
   }
 
   get idControlMessage() {
@@ -37,14 +36,6 @@ export class DatagridHideShowDemo {
 
   get nameControlMessage() {
     return this.hideNameColumn ? 'Show Name Column' : 'Hide Name Column';
-  }
-
-  loadMore() {
-    this._inventory.size = this._inventory.size + this.currentPageSize;
-    this.users = this.users.concat(this._inventory.addBySize(this.currentPageSize));
-    console.log('this.users', this.users.length);
-
-    // this.cdr.detectChanges();
   }
 
   toggleId() {
