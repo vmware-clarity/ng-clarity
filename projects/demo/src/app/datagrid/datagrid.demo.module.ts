@@ -44,6 +44,7 @@ import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { ColorFilter } from './utils/color-filter';
+import { DatagridVirtualScrollDemo } from './virtual-scroll/virtual-scroll';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
@@ -76,6 +77,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridPerformanceDemo,
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
+    DatagridVirtualScrollDemo,
     DatagridKitchenSinkDemo,
     DatagridConditionalSelectionsDemo,
     ColorFilter,
@@ -98,6 +100,7 @@ import { ColorFilter } from './utils/color-filter';
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
+    DatagridVirtualScrollDemo,
     DatagridServerDrivenDemo,
     DatagridSmartIteratorDemo,
     DatagridSortingDemo,
