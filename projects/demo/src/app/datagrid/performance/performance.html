@@ -5,13 +5,11 @@
   -->
 
 <h2>Performance</h2>
+<p>This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example.</p>
+
 <p>
-  So far, our examples' data only contained a few entries. The point of a datagrid is to display large amounts of data,
-  and we can't reasonably display it all at the same time on the page. To solve this, our datagrid supports pagination.
-</p>
-<p>
-  Here is an example of how to use pagination, and attach a template reference variable to it to display information on
-  the current page.
+  With change detection calculation button can see how many CPU cycles a render is taking. Perfect timing is under 3ms
+  per cycle.
 </p>
 
 <div>
@@ -36,30 +34,17 @@
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>
 
-<clr-datagrid *ngIf="{ rows: rows | async }; let data" style="height: 32rem">
+<clr-datagrid>
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
 
-  <ng-template
-    *ngIf="data.rows"
-    customClrVirtualRows
-    let-row
-    [customClrVirtualRowsOf]="data.rows"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
-    [customClrVirtualRowsTrackBy]="rowByIndex"
-    (renderedRangeChange)="renderRangeChange($event)"
-  >
-    <clr-dg-row [clrDgItem]="row">
-      <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
-      <ng-container ngProjectAs="clr-dg-row-detail">
-        <clr-dg-row-detail *clrIfExpanded>{{row | json}}</clr-dg-row-detail>
-      </ng-container>
-    </clr-dg-row>
-  </ng-template>
+  <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
+    <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+    <ng-container ngProjectAs="clr-dg-row-detail">
+      <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
+    </ng-container>
+  </clr-dg-row>
 
   <clr-dg-footer>
     <clr-dg-pagination #pagination [clrDgPageSize]="1000">

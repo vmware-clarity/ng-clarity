@@ -4,9 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Component } from '@angular/core';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
 
@@ -21,27 +19,17 @@ class ChangeDetectionPerfRecord {
   templateUrl: 'performance.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridPerformanceDemo implements OnInit {
-  totalRows = 10000;
-  totalCols = 52;
+export class DatagridPerformanceDemo {
+  totalRows = 100;
+  totalCols = 20;
   cols: Column[];
-  rows: Observable<Row[]>;
+  rows: Row[];
   timeCD: ChangeDetectionPerfRecord;
 
-  private allRows = new BehaviorSubject<Row[]>([]);
-
-  constructor(private dynamicData: DynamicData, private cdr: ChangeDetectorRef) {
+  constructor(private dynamicData: DynamicData) {
     this.timeCD = new ChangeDetectionPerfRecord();
 
-    this.rows = this.allRows;
-  }
-
-  ngOnInit(): void {
     this.calculateDatagrid();
-
-    this.rows.subscribe(() => {
-      this.cdr.detectChanges();
-    });
   }
 
   changeDatagridDimensions() {
@@ -51,9 +39,7 @@ export class DatagridPerformanceDemo implements OnInit {
 
   calculateDatagrid() {
     this.cols = this.dynamicData.createColumns(this.totalCols);
-
-    this.allRows.next(this.dynamicData.createRows(this.cols, this.totalRows));
-    // this.rows = this.dynamicData.createRows(this.cols, this.totalRows);
+    this.rows = this.dynamicData.createRows(this.cols, this.totalRows);
   }
 
   showChangeDetection() {
@@ -70,10 +56,5 @@ export class DatagridPerformanceDemo implements OnInit {
 
   rowByIndex(index: number, row: Row) {
     return row.index;
-  }
-
-  renderRangeChange($event: ListRange) {
-    console.log($event);
-    // this.loadMore($event);
   }
 }
