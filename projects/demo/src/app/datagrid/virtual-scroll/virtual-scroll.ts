@@ -67,7 +67,6 @@ export class DatagridVirtualScrollDemo implements OnInit {
     this.cols = this.dynamicData.createColumns(this.totalCols);
 
     this.allRows.next(this.dynamicData.createRows(this.cols, this.totalRows));
-    // this.rows = this.dynamicData.createRows(this.cols, this.totalRows);
   }
 
   showChangeDetection() {

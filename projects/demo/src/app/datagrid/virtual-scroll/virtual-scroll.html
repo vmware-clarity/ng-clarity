@@ -58,10 +58,5 @@
     </clr-dg-row>
   </ng-template>
 
-  <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="1000">
-      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,1000]">Elements per page</clr-dg-page-size>
-      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
-    </clr-dg-pagination>
-  </clr-dg-footer>
+  <clr-dg-footer> {{data.rows.length}} </clr-dg-footer>
 </clr-datagrid>
