@@ -21,8 +21,7 @@ export class DatagridHideShowDemo {
   hideNameColumn = false;
   shortFormat = true;
   conditionalSignpost = true;
-  currentPageSize = 35;
-  _inventory = null;
+  currentPageSize = 1;
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
