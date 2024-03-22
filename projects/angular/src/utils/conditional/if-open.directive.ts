@@ -7,7 +7,7 @@
 import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../popover/providers/popover.service';
 
 @Directive({
   selector: '[clrIfOpen]',
@@ -19,7 +19,7 @@ import { ClrPopoverToggleService } from '../popover/providers/popover-toggle.ser
  *
  * @description
  * A structural directive that controls whether or not the associated TemplateRef is instantiated or not.
- * It makes use of a Component instance level service: ClrPopoverToggleService to maintain state between itself and the component
+ * It makes use of a Component instance level service: ClrPopoverService to maintain state between itself and the component
  * using it in the component template.
  *
  */
@@ -38,11 +38,11 @@ export class ClrIfOpen implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    this.subscription = this.toggleService.openChange.subscribe(change => {
+    this.subscription = this.popoverService.openChange.subscribe(change => {
       this.updateView(change);
       this.openChange.emit(change);
     });
@@ -50,14 +50,14 @@ export class ClrIfOpen implements OnDestroy {
 
   /**
    * @description
-   * A property that gets/sets ClrPopoverToggleService.open with value.
+   * A property that gets/sets ClrPopoverService.open with value.
    */
   @Input('clrIfOpen')
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
   set open(value: boolean | string) {
-    this.toggleService.open = value as boolean;
+    this.popoverService.open = value as boolean;
   }
 
   ngOnDestroy() {

@@ -126,5 +126,8 @@
     "wait-on": "6.0.1",
     "wait-port": "1.0.4",
     "zone.js": "0.11.8"
+  },
+  "dependencies": {
+    "source-map-explorer": "^2.5.3"
   }
 }

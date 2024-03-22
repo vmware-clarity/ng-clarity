@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 
 import { FOCUS_SERVICE_PROVIDER } from '../../utils/focus/focus.service';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdown.service';
 
@@ -18,7 +18,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   template: '<ng-content></ng-content>',
   host: {
     '[class.dropdown]': 'true',
-    '[class.open]': 'toggleService.open',
+    '[class.open]': 'popoverService.open',
   },
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
@@ -32,13 +32,13 @@ export class ClrDropdown implements OnDestroy {
     @SkipSelf()
     @Optional()
     public parent: ClrDropdown,
-    public toggleService: ClrPopoverToggleService,
+    public popoverService: ClrPopoverService,
     public focusHandler: DropdownFocusHandler,
     private cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.toggleService.open = value)));
-    this.subscriptions.push(toggleService.openChange.subscribe(() => this.cdr.markForCheck()));
+    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.popoverService.open = value)));
+    this.subscriptions.push(popoverService.openChange.subscribe(() => this.cdr.markForCheck()));
   }
 
   ngOnDestroy() {

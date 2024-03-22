@@ -9,7 +9,7 @@ import { async } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -38,7 +38,7 @@ export default function () {
         context = this.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
         ]);
@@ -124,7 +124,7 @@ export default function () {
         context = this.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
         ]);
@@ -193,7 +193,7 @@ export default function () {
         context = scope.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
-          ClrPopoverToggleService,
+          ClrPopoverService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
         ]);

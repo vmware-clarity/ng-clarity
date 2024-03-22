@@ -23,7 +23,7 @@ import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import {
   BUTTON_GROUP_FOCUS_HANDLER_PROVIDER,
   ButtonGroupFocusHandler,
@@ -59,7 +59,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   constructor(
     public buttonGroupNewService: ButtonInGroupService,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
     private focusHandler: ButtonGroupFocusHandler
@@ -80,7 +80,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   get open() {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   /**
@@ -128,8 +128,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 
   openMenu(event: Event, initialFocus: InitialFocus) {
     this.focusHandler.initialFocus = initialFocus;
-    if (!this.toggleService.open) {
-      this.toggleService.toggleWithEvent(event);
+    if (!this.popoverService.open) {
+      this.popoverService.toggleWithEvent(event);
     }
   }
 
@@ -161,7 +161,7 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   }
 
   private handleFocusOnMenuOpen() {
-    this.toggleService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
+    this.popoverService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
       if (visible) {
         this.focusHandler.initialize({
           menu: this.menu.nativeElement,

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrCalendar } from './calendar';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -32,7 +32,7 @@ export default function () {
       context = this.create(ClrCalendar, TestComponent, [
         { provide: DateNavigationService, useValue: dateNavigationService },
         DateIOService,
-        ClrPopoverToggleService,
+        ClrPopoverService,
         ViewManagerService,
         LocaleHelperService,
         DatepickerFocusService,
