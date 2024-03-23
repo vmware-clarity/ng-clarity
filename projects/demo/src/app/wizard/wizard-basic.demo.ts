@@ -14,4 +14,5 @@ import { ClrWizard } from '@clr/angular';
 export class WizardBasicDemo {
   @ViewChild('wizard') wizard: ClrWizard;
   open = false;
+  fullScreen = false;
 }

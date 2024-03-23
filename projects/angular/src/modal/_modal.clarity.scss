@@ -185,4 +185,36 @@
   .modal .modal-nav {
     display: none;
   }
+
+  // full-screen modals
+  .modal.modal-full-screen {
+    padding: modal-variables.$clr-modal-default-space;
+    height: 100%;
+
+    .modal-dialog {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      .modal-content-wrapper {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      // This cannot be nested inside `.modal-content-wrapper` because that class is not documented for static css-only modals.
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .modal-body-wrapper,
+      // This is needed because the `.modal-body-wrapper` class is not documented for static css-only modals.
+      .modal-body {
+        // Fill space to push footer to bottom.
+        flex-grow: 1;
+        max-height: 100%;
+      }
+    }
+  }
 }
