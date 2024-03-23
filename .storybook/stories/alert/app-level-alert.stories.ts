@@ -133,6 +133,9 @@ Paginated.argTypes = {
 };
 
 export const PaginatedClosable = Paginated.bind({});
+PaginatedClosable.argTypes = {
+  ...Paginated.argTypes,
+};
 PaginatedClosable.args = {
   ...PaginatedClosable.args,
   clrAlertClosable: true,
