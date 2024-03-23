@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Wizard/Wizard',
@@ -108,4 +108,10 @@ const WizardTemplate: Story = args => ({
 
 export const Wizard: StoryObj = {
   render: WizardTemplate,
+  play: removeFocusOutline,
 };
+
+function removeFocusOutline({ canvasElement }: StoryContext) {
+  // remove keyboard focus outline from modal title
+  canvasElement.querySelector<HTMLElement>(':focus')?.blur();
+}
