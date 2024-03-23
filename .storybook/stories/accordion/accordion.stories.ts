@@ -41,7 +41,7 @@ const template = `
       *ngFor="let _ of createArray(panelCount); let i = index"
       [clrAccordionPanelOpen]="!!openIndices[i]"
     >
-      <clr-accordion-title>{{title }} {{ i + 1 }}</clr-accordion-title>
+      <clr-accordion-title>{{ title }} {{ i + 1 }}</clr-accordion-title>
       <clr-accordion-content>{{ content }} {{ i + 1 }}</clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
