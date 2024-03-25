@@ -6,8 +6,9 @@
 
 import { ClrDropdown, ClrDropdownModule, ClrTreeViewModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
-import { filesRoot } from 'helpers/files.data';
+
+import { CommonModules } from '../../helpers/common';
+import { filesRoot } from '../../helpers/files.data';
 
 export default {
   title: 'Dropdown/Dropdown With Tree',

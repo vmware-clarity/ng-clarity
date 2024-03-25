@@ -6,8 +6,8 @@
 
 import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
 
 export default {
