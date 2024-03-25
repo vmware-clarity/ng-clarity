@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Type } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Parameters } from '@storybook/addons';
+import { Parameters } from '@storybook/addon-essentials';
 import { moduleMetadata, storiesOf, Story } from '@storybook/angular';
 
 export function setupStorybook(

@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
+import { Parameters } from '@storybook/addon-essentials';
 import { Story } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';

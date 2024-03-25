@@ -5,6 +5,7 @@
  */
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
+import { ClrTooltipModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -24,11 +25,14 @@ const STACK_VIEW_STATES = [
   },
 ];
 
+const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
+const tooltipSizes = ['xs', 'sm', 'md', 'lg'];
+
 export default {
   title: 'Stack View/Stack View',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrStackViewModule],
+      imports: [...CommonModules, ClrStackViewModule, ClrTooltipModule],
     }),
   ],
   component: ClrStackView,
@@ -38,6 +42,8 @@ export default {
     createArray: { control: { disable: true }, table: { disable: true } },
     blockCount: { control: { type: 'number', min: 1, max: 100 } },
     STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
+    TooltipPosition: { defaultValue: 'right', control: { type: 'inline-radio', options: tooltipPositions } },
+    TooltipSize: { defaultValue: 'sm', control: { type: 'inline-radio', options: tooltipSizes } },
   },
   args: {
     // story helpers
@@ -46,6 +52,8 @@ export default {
     blockCount: 4,
     label: 'Block',
     content: 'Block content',
+    tooltipContent:
+      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
     subLabel: 'Sub-block',
     subContent: 'Sub-block content',
     STACK_VIEW_STATES,
@@ -92,6 +100,32 @@ const StackViewAllTemplate: Story = args => ({
   props: args,
 });
 
+const StackViewAllTemplateWithPopOver: Story = args => ({
+  template: `
+    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
+      <clr-stack-view>
+        <clr-stack-block
+          *ngFor="let _ of createArray(blockCount); let i = index"
+          [clrSbExpanded]="!!state.openIndices[i]"
+        >
+          <clr-stack-label>{{ label }} {{ i + 1 }}
+          <clr-tooltip>
+            <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
+            <clr-tooltip-content [clrPosition]="TooltipPosition" [clrSize]="TooltipSize">{{tooltipContent}}</clr-tooltip-content>
+          </clr-tooltip>
+          </clr-stack-label>
+          <clr-stack-content>{{ content }}</clr-stack-content>
+          <clr-stack-block>
+            <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+            <clr-stack-content>{{ subContent }}</clr-stack-content>
+          </clr-stack-block>
+        </clr-stack-block>
+      </clr-stack-view>
+    </div>
+  `,
+  props: args,
+});
+
 export const StackView: StoryObj = {
   render: StackViewTemplate,
 };
@@ -105,4 +139,8 @@ export const StackViewShowcase: StoryObj = {
     actions: { disable: true },
     controls: { disable: true },
   },
+};
+
+export const StackViewWithPopOver: StoryObj = {
+  render: StackViewAllTemplateWithPopOver,
 };
