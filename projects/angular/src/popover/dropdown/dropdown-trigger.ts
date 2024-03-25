@@ -6,7 +6,7 @@
 
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDropdown } from './dropdown';
 import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
 
@@ -27,7 +27,7 @@ export class ClrDropdownTrigger {
 
   constructor(
     dropdown: ClrDropdown,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     el: ElementRef<HTMLElement>,
     focusHandler: DropdownFocusHandler
   ) {
@@ -39,11 +39,11 @@ export class ClrDropdownTrigger {
   }
 
   get active(): boolean {
-    return this.toggleService.open;
+    return this.popoverService.open;
   }
 
   @HostListener('click', ['$event'])
   onDropdownTriggerClick(event: any): void {
-    this.toggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 }

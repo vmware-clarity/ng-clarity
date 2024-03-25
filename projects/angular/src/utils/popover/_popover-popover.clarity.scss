@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use '../mixins';
 @use '../variables/variables.global';
+@use '@angular/cdk/overlay-prebuilt.css';
 
 /*
  * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
@@ -8,8 +9,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @include mixins.exports('smart-popover.clarity') {
-  .clr-popover-content {
-    position: fixed;
+  .clr-container-element {
+    position: absolute;
     z-index: map.get(variables.$clr-layers, smart-popover);
   }
 }

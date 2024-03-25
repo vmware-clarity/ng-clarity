@@ -18,7 +18,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { OptionSelectionService } from './providers/option-selection.service';
 
 @Directive({
@@ -37,7 +36,6 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,
     private optionService: OptionSelectionService<T>,
-    private positionService: ClrPopoverPositionService,
     private vcr: ViewContainerRef
   ) {
     this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
@@ -74,7 +72,6 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
       const changes = this.differ.diff(this.filteredItems);
       if (changes) {
         this.iterableProxy.ngDoCheck();
-        this.positionService.realign();
       }
     }
   }

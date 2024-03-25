@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { ClrIconCustomTag } from '../../icon/icon';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -25,7 +25,7 @@ export default function (): void {
       context = this.createOnly(
         ClrSignpostContent,
         SimpleTest,
-        [SignpostIdService, ClrPopoverToggleService, SignpostFocusManager],
+        [SignpostIdService, ClrPopoverService, SignpostFocusManager],
         [ClrIconCustomTag]
       );
     });
@@ -42,10 +42,10 @@ export default function (): void {
       expect(context.clarityElement.textContent).toContain('Signpost content');
     });
 
-    it('has a close button that updates the ClrPopoverToggleService.open value', function () {
+    it('has a close button that updates the ClrPopoverService.open value', function () {
       const closer: HTMLElement = context.clarityElement.querySelector('.signpost-action');
       expect(closer).toBeDefined();
-      const service: ClrPopoverToggleService = TestBed.get(ClrPopoverToggleService);
+      const service: ClrPopoverService = TestBed.get(ClrPopoverService);
       service.open = true;
       closer.click();
       context.detectChanges();
