@@ -6,13 +6,45 @@
 
 import { ClrConditionalModule, ClrDatagridActionOverflow, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datagrid/Action Overflow',
+  component: ClrDatagridActionOverflow,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDgActionOverflowOpen: { defaultValue: false },
+    clrDgActionOverflowButtonLabel: { defaultValue: commonStringsDefault.rowActions },
+    // outputs
+    clrDgActionOverflowOpenChange: { control: { disable: true } },
+    // methods
+    closeOverflowContent: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // outputs
+    clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
+
+const ActionOverflowTemplate: Story = args => ({
   template: `
     <style>
       .highlight { border: 1px solid red !important; }
@@ -71,35 +103,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datagrid/Action Overflow',
-  component: ClrDatagridActionOverflow,
-  argTypes: {
-    // inputs
-    clrDgActionOverflowOpen: { defaultValue: false },
-    clrDgActionOverflowButtonLabel: { defaultValue: commonStringsDefault.rowActions },
-    // outputs
-    clrDgActionOverflowOpenChange: { control: { disable: true } },
-    // methods
-    closeOverflowContent: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // outputs
-    clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
+export const ActionOverflow: StoryObj = {
+  render: ActionOverflowTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrDatagridModule, ClrConditionalModule], defaultStory, defaultParameters, variants);

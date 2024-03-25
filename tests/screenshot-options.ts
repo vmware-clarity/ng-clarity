@@ -29,6 +29,18 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   'headers-static--header-static': {
     fullPageScreenshot: true,
   },
+  'modal--open-small-modal': {
+    fullPageScreenshot: true,
+  },
+  'modal--open-medium-modal': {
+    fullPageScreenshot: true,
+  },
+  'modal--open-large-modal': {
+    fullPageScreenshot: true,
+  },
+  'modal--open-extra-large-modal': {
+    fullPageScreenshot: true,
+  },
   'signpost--opened': {
     fullPageScreenshot: true,
   },
