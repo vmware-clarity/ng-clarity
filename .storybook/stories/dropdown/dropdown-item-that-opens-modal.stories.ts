@@ -55,7 +55,7 @@ const DropdownModalTemplate: Story = args => ({
           <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
         </div>
       </clr-modal>
-    <div>  
+    </div>  
   `,
   props: args,
 });
