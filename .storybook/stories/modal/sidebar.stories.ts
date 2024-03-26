@@ -6,7 +6,7 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -46,30 +46,32 @@ export default {
 
 const SidebarTemplate: Story = args => ({
   template: `
-    <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
-    <clr-modal
-      clrSidebar
-      [clrNoBackdrop]="clrNoBackdrop"
-      [clrModalClosable]="clrModalClosable"
-      [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
-      [clrModalLabelledById]="clrModalLabelledById"
-      [clrModalOpen]="clrModalOpen"
-      [clrModalPreventClose]="clrModalPreventClose"
-      [clrModalSize]="clrModalSize"
-      [clrModalSkipAnimation]="clrModalSkipAnimation"
-      [clrModalStaticBackdrop]="clrModalStaticBackdrop"
-      (clrModalAlternateClose)="clrModalAlternateClose($event)"
-      (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
-    >
-      <h3 class="modal-title">{{title}}</h3>
-      <div class="modal-body">
-        {{body}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
-      </div>
-    </clr-modal>
+    <div style="height: 300px;">
+      <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
+      <clr-modal
+        clrSidebar
+        [clrNoBackdrop]="clrNoBackdrop"
+        [clrModalClosable]="clrModalClosable"
+        [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
+        [clrModalLabelledById]="clrModalLabelledById"
+        [clrModalOpen]="clrModalOpen"
+        [clrModalPreventClose]="clrModalPreventClose"
+        [clrModalSize]="clrModalSize"
+        [clrModalSkipAnimation]="clrModalSkipAnimation"
+        [clrModalStaticBackdrop]="clrModalStaticBackdrop"
+        (clrModalAlternateClose)="clrModalAlternateClose($event)"
+        (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
+      >
+        <h3 class="modal-title">{{title}}</h3>
+        <div class="modal-body">
+          {{body}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
+        </div>
+      </clr-modal>
+    </div>
   `,
   props: args,
 });
@@ -80,6 +82,7 @@ export const Sidebar: StoryObj = {
 
 export const SidebarSmall: StoryObj = {
   render: SidebarTemplate,
+  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'sm',
@@ -90,6 +93,7 @@ export const SidebarSmall: StoryObj = {
 
 export const SidebarMedium: StoryObj = {
   render: SidebarTemplate,
+  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'md',
@@ -100,6 +104,7 @@ export const SidebarMedium: StoryObj = {
 
 export const SidebarLarge: StoryObj = {
   render: SidebarTemplate,
+  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'lg',
@@ -110,6 +115,7 @@ export const SidebarLarge: StoryObj = {
 
 export const SidebarExtraLarge: StoryObj = {
   render: SidebarTemplate,
+  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'xl',
@@ -120,6 +126,7 @@ export const SidebarExtraLarge: StoryObj = {
 
 export const SidebarNoBackdrop: StoryObj = {
   render: SidebarTemplate,
+  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'md',
@@ -128,3 +135,8 @@ export const SidebarNoBackdrop: StoryObj = {
     body: 'This is a medium sidebar without backdrop.',
   },
 };
+
+function removeFocusOutline({ canvasElement }: StoryContext) {
+  // remove keyboard focus outline from modal title
+  canvasElement.querySelector<HTMLElement>(':focus').blur();
+}
