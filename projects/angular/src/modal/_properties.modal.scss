@@ -13,6 +13,7 @@
 @include mixins.exports('modal.properties') {
   :root {
     [cds-theme] {
+      --clr-modal-default-space: #{tokens.$cds-global-space-9};
       --clr-modal-border-radius: #{tokens.$cds-alias-object-border-radius-100};
 
       // color

@@ -19,6 +19,7 @@
 | --clr-modal-lg-width             | Width of the modal on large layout       |
 | --clr-modal-xl-width             | Width of the modal on extra large layout |
 | --clr-modal-content-box-shadow   | Shadow of modal content                  |
+| --clr-modal-default-space        | Default modal padding                    |
 
 ## CSS Classes
 
