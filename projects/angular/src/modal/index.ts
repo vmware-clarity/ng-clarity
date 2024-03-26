@@ -7,3 +7,4 @@
 export * from './modal';
 export * from './modal.module';
 export * from './modal-body';
+export * from './sidebar';
