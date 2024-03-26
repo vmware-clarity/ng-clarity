@@ -6,7 +6,8 @@
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {

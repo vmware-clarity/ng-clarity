@@ -7,7 +7,8 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Datagrid/Modal Stacked On Detail',
