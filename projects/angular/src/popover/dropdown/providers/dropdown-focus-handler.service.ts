@@ -16,7 +16,7 @@ import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-ite
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { wrapObservable } from '../../../utils/focus/wrap-observable';
 import { uniqueIdFactory } from '../../../utils/id-generator/id-generator.service';
-import { ClrPopoverToggleService } from '../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
 
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
@@ -37,7 +37,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     @SkipSelf()
     @Optional()
     private parent: DropdownFocusHandler,
-    private toggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     private focusService: FocusService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
@@ -56,14 +56,14 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
     if (this.parent) {
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.arrowright', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.arrowright', event => this.popoverService.toggleWithEvent(event))
       );
     } else {
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.arrowup', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.arrowup', event => this.popoverService.toggleWithEvent(event))
       );
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.arrowdown', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.arrowdown', event => this.popoverService.toggleWithEvent(event))
       );
       this.focusService.listenToArrowKeys(el);
     }
@@ -77,7 +77,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
     // whether root container or not, tab key should always toggle (i.e. close) the container
     this._unlistenFuncs.push(
-      this.renderer.listen(el, 'keydown.tab', event => this.toggleService.toggleWithEvent(event))
+      this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event))
     );
 
     if (this.parent) {
@@ -96,7 +96,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
       // The root container will simply close the container when escape key is pressed
       this._unlistenFuncs.push(
-        this.renderer.listen(el, 'keydown.escape', event => this.toggleService.toggleWithEvent(event))
+        this.renderer.listen(el, 'keydown.escape', event => this.popoverService.toggleWithEvent(event))
       );
 
       // When the user moves focus outside of the menu, we close the dropdown
@@ -120,7 +120,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
           }
           // We let the user move focus to where the want, we don't force the focus back on the trigger
           this.focusBackOnTriggerWhenClosed = false;
-          this.toggleService.open = false;
+          this.popoverService.open = false;
         })
       );
     }
@@ -135,8 +135,8 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
    * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
    */
   moveToFirstItemWhenOpen() {
-    const subscription = this.toggleService.openChange.subscribe(open => {
-      if (open && this.toggleService.originalEvent) {
+    const subscription = this.popoverService.openChange.subscribe(open => {
+      if (open && this.popoverService.originalEvent) {
         // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
         // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
         setTimeout(() => {
@@ -157,7 +157,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
    * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
    */
   handleRootFocus() {
-    const subscription = this.toggleService.openChange.subscribe(open => {
+    const subscription = this.popoverService.openChange.subscribe(open => {
       if (!open) {
         // We reset the state of the focus service both on initialization and when closing.
         this.focusService.reset(this);
@@ -209,11 +209,11 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   private openAndGetChildren() {
-    return wrapObservable(this.children, () => (this.toggleService.open = true));
+    return wrapObservable(this.children, () => (this.popoverService.open = true));
   }
 
   private closeAndGetThis() {
-    return wrapObservable(of(this), () => (this.toggleService.open = false));
+    return wrapObservable(of(this), () => (this.popoverService.open = false));
   }
 }
 

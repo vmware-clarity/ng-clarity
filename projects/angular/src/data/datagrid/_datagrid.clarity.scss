@@ -27,7 +27,7 @@
 }
 
 @mixin datagrid-action-overflow-appearance {
-  position: absolute;
+  position: relative;
   background: datagrid-variables.$clr-datagrid-popover-bg-color;
   padding: tokens.$cds-global-space-5;
   margin-left: tokens.$cds-global-space-4;

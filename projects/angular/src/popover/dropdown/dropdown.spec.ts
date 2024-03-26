@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
@@ -196,7 +196,7 @@ export default function (): void {
     }));
 
     it("doesn't close before custom click events have triggered", fakeAsync(function () {
-      const toggleService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverToggleService);
+      const popoverService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(ClrPopoverService);
 
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       dropdownToggle.click();
@@ -206,7 +206,7 @@ export default function (): void {
       nestedToggle.click();
       fixture.detectChanges();
 
-      subscription = toggleService.openChange.subscribe(() => {
+      subscription = popoverService.openChange.subscribe(() => {
         expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
       });
 
@@ -216,7 +216,7 @@ export default function (): void {
       fixture.detectChanges();
 
       // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
-      expect(toggleService.open).toBe(false);
+      expect(popoverService.open).toBe(false);
     }));
 
     it('puts focus back on the trigger when a dropdown item is clicked', fakeAsync(() => {
