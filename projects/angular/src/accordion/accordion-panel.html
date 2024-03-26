@@ -13,9 +13,11 @@
         [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
         #headerButton
       >
-        <span class="clr-sr-only">
-          <ng-container *ngIf="panel.status === AccordionStatus.Error">{{commonStrings.keys.danger}}</ng-container>
-          <ng-container *ngIf="panel.status === AccordionStatus.Complete">{{commonStrings.keys.success}}</ng-container>
+        <span class="clr-sr-only" role="status">
+          <ng-container *ngIf="panel.status === AccordionStatus.Error"> {{ stepFailedText(panelNumber)}} </ng-container>
+          <ng-container *ngIf="panel.status === AccordionStatus.Complete">
+            {{ stepCompleteText(panelNumber)}}
+          </ng-container>
         </span>
         <span class="clr-accordion-status">
           <cds-icon shape="angle" direction="right" class="clr-accordion-angle"></cds-icon>
