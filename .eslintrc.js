@@ -17,6 +17,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
     allowImportExportEverywhere: true,
+    ecmaVersion: 9,
   },
   plugins: ['import', 'license-header'],
   rules: {

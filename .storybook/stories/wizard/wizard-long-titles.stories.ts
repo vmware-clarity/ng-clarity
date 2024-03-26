@@ -98,7 +98,10 @@ const WizardLongTitlesTemplate: Story = args => ({
       <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
       <clr-wizard-page *ngFor="let _ of createArray(pageCount); let i = index">
-        <ng-template clrPageTitle>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Page {{ i + 1 }}</ng-template>
+        <ng-template clrPageTitle>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua Page {{ i + 1 }}
+        </ng-template>
         <p>Content for page {{ i + 1 }}.</p>
       </clr-wizard-page>
     </clr-wizard>

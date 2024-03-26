@@ -43,12 +43,12 @@ export default {
 };
 
 const TemplateDrivenStory: Story = args => ({
-  template: ` 
+  template: `
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{screenReaderContent}}</span>
+      <span class="clr-sr-only">{{ screenReaderContent }}</span>
       <clr-input-container>
         <label>Name</label>
-        <input clrInput [(ngModel)]="data.name" required name="name"/>
+        <input clrInput [(ngModel)]="data.name" required name="name" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -57,7 +57,7 @@ const TemplateDrivenStory: Story = args => ({
       </clr-input-container>
       <clr-input-container>
         <label>Age</label>
-        <input clrInput [(ngModel)]="data.age" type="number" min="0" required name="age"/>
+        <input clrInput [(ngModel)]="data.age" type="number" min="0" required name="age" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Age is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
@@ -66,14 +66,16 @@ const TemplateDrivenStory: Story = args => ({
       </clr-input-container>
       <clr-password-container>
         <label>Password</label>
-        <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password"/>
+        <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Password is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
           <ng-container [ngSwitch]="error.requiredPattern">
-            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">Must contain only letters and numbers</ng-container>
+            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">
+              Must contain only letters and numbers
+            </ng-container>
             <ng-container *ngSwitchCase="patterns.letters.toString()">Must contain at least one letter</ng-container>
             <ng-container *ngSwitchCase="patterns.numbers.toString()">Must contain at least one number</ng-container>
           </ng-container>

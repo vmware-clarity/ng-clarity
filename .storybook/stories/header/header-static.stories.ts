@@ -47,7 +47,7 @@ const HeaderStaticTemplate: Story = args => ({
         </a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -57,7 +57,7 @@ const HeaderStaticTemplate: Story = args => ({
       </div>
       <form class="search">
         <label for="search_input">
-          <input id="search_input" type="text" placeholder="Search for keywords...">
+          <input id="search_input" type="text" placeholder="Search for keywords..." />
         </label>
       </form>
       <div class="header-actions">
@@ -71,7 +71,7 @@ const HeaderStaticTemplate: Story = args => ({
         <a href="javascript://" class="nav-link nav-text">Log Out</a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -93,7 +93,7 @@ const HeaderStaticTemplate: Story = args => ({
         </clr-dropdown>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -102,12 +102,10 @@ const HeaderStaticTemplate: Story = args => ({
         </a>
       </div>
       <div class="header-actions">
-        <a href="#" class="nav-link nav-text">
-          Log Out
-        </a>
+        <a href="#" class="nav-link nav-text">Log Out</a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="javascript://" class="nav-link">
@@ -122,7 +120,7 @@ const HeaderStaticTemplate: Story = args => ({
         </a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">

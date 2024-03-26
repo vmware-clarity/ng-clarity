@@ -34,18 +34,13 @@ export default {
 
 const SpinnerTemplate: Story = args => ({
   template: `
-  <div style="text-align: center">
-    <clr-spinner
-      [clrInverse]="clrInverse"
-      [clrSmall]="clrSmall"
-      [clrMedium]="clrMedium"
-      [clrInline]="clrInline"
-    >
-      {{text}}
-    </clr-spinner>
-    <br *ngIf="!clrInline" />
-    {{text}}
-  </div>
+    <div style="text-align: center">
+      <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+        {{ text }}
+      </clr-spinner>
+      <br *ngIf="!clrInline" />
+      {{ text }}
+    </div>
   `,
   props: args,
 });

@@ -34,10 +34,10 @@ export default {
 
 const TooltipTemplate: Story = args => ({
   template: `
-    <div style="margin-top: 200px; text-align: center;">
+    <div style="margin-top: 200px; text-align: center">
       <clr-tooltip>
         <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
-        <clr-tooltip-content [clrPosition]="clrPosition" [clrSize]="clrSize">{{content}}</clr-tooltip-content>
+        <clr-tooltip-content [clrPosition]="clrPosition" [clrSize]="clrSize">{{ content }}</clr-tooltip-content>
       </clr-tooltip>
     </div>
   `,
