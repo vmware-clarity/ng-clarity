@@ -5,7 +5,7 @@
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
@@ -18,7 +18,7 @@ export default {
   component: ClrDropdown,
 };
 
-const DropdownStaticTemplate: Story = args => ({
+const DropdownStaticTemplate: StoryFn = args => ({
   template: `
   <div style="margin-bottom:200px; text-align: center">
     <div class="dropdown open">

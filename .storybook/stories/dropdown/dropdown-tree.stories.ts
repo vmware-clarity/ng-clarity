@@ -5,7 +5,7 @@
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 import { filesRoot } from 'helpers/files.data';
 
@@ -29,7 +29,7 @@ export default {
   },
 };
 
-const DropdownTreeTemplate: Story = args => ({
+const DropdownTreeTemplate: StoryFn = args => ({
   template: `
     <div style="margin-bottom:500px; text-align: center">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">

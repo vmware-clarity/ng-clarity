@@ -5,7 +5,7 @@
  */
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { Element, elements } from '../../helpers/elements.data';
 
@@ -46,7 +46,7 @@ const longContentElement: Element = {
   electronegativity: 1.1,
 };
 
-const DetailTemplate: Story = args => {
+const DetailTemplate: StoryFn = args => {
   args.elements = args.showLongContent ? [longContentElement, ...args.elements] : args.elements;
 
   return {

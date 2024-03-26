@@ -5,7 +5,7 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
@@ -34,7 +34,7 @@ export default {
   },
 };
 
-const TreeViewTemplate: Story = args => ({
+const TreeViewTemplate: StoryFn = args => ({
   template: `
     <clr-tree [clrLazy]="true">
       <clr-tree-node

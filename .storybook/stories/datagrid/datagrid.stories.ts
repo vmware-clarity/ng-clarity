@@ -6,7 +6,7 @@
 
 import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -54,7 +54,7 @@ export default {
   },
 };
 
-const DatagridTemplate: Story = args => ({
+const DatagridTemplate: StoryFn = args => ({
   template: `
     <style>
       .electronegativity-container { border-bottom: 4px solid #119cd4; }

@@ -9,14 +9,11 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = {
   stories: ['./**/*.stories.{ts,mdx}'],
 
-  addons: ['@storybook/addon-essentials', '@storybook/addon-a11y', '@storybook/addon-docs', '@storybook/addon-mdx-gfm'],
+  addons: ['@storybook/addon-essentials', '@storybook/addon-a11y', '@storybook/blocks'],
 
   framework: {
     name: '@storybook/angular',
     options: {},
-  },
-  features: {
-    storyStoreV7: false, // 👈 Opt out of on-demand story loading
   },
 
   webpackFinal(config) {

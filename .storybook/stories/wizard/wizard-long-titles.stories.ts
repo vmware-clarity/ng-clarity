@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Wizard/Wizard Long Titles',
@@ -70,7 +70,7 @@ export default {
   },
 };
 
-const WizardLongTitlesTemplate: Story = args => ({
+const WizardLongTitlesTemplate: StoryFn = args => ({
   template: `
     <clr-wizard
       [clrWizardOpen]="clrWizardOpen"

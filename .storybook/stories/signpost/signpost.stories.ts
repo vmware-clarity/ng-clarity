@@ -5,7 +5,7 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -56,12 +56,12 @@ const template = `
     </div>
   `;
 
-export const Initial: Story = args => ({
+export const Initial: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Opened: Story = Initial.bind({});
+export const Opened: StoryFn = Initial.bind({});
 Opened.play = async ({ canvasElement }) => {
   canvasElement.querySelector('button').click();
 };

@@ -5,11 +5,33 @@
  */
 
 import { ClrProgressBar } from '@clr/angular';
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-const ProgressBarTemplate: Story = args => ({
+export default {
+  title: 'Progress Bar/Progress Bar',
+  component: ClrProgressBar,
+  argTypes: {
+    // inputs
+    clrDisplayval: { defaultValue: '' },
+    clrFade: { defaultValue: false, control: { type: 'boolean' } },
+    clrFlash: { defaultValue: false, control: { type: 'boolean' } },
+    clrFlashDanger: { defaultValue: false, control: { type: 'boolean' } },
+    clrLabeled: { defaultValue: false, control: { type: 'boolean' } },
+    clrLoop: { defaultValue: false, control: { type: 'boolean' } },
+    clrMax: { defaultValue: 100, control: { type: 'number' } },
+    clrColor: { defaultValue: '', control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
+    clrValue: { defaultValue: 33, control: { type: 'number' } },
+    clrCompact: { defaultValue: false, control: { type: 'boolean' } },
+    id: { defaultValue: '' },
+    // methods
+    displayStringValue: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {},
+};
+
+const ProgressBarTemplate: StoryFn = args => ({
   template: `
     <clr-progress-bar
       [id]="id"
@@ -28,7 +50,7 @@ const ProgressBarTemplate: Story = args => ({
   props: { ...args },
 });
 
-const ProgressBarTemplateAll: Story = args => ({
+const ProgressBarTemplateAll: StoryFn = args => ({
   template: `
   <h6>Progress Bar with Status</h6>
   <div style="margin-top: 5px;" *ngFor="let type of TYPES">
@@ -92,28 +114,6 @@ const ProgressBarTemplateAll: Story = args => ({
 `,
   props: { ...args },
 });
-
-export default {
-  title: 'Progress Bar/Progress Bar',
-  component: ClrProgressBar,
-  argTypes: {
-    // inputs
-    clrDisplayval: { defaultValue: '' },
-    clrFade: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlash: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlashDanger: { defaultValue: false, control: { type: 'boolean' } },
-    clrLabeled: { defaultValue: false, control: { type: 'boolean' } },
-    clrLoop: { defaultValue: false, control: { type: 'boolean' } },
-    clrMax: { defaultValue: 100, control: { type: 'number' } },
-    clrColor: { defaultValue: '', control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
-    clrValue: { defaultValue: 33, control: { type: 'number' } },
-    clrCompact: { defaultValue: false, control: { type: 'boolean' } },
-    id: { defaultValue: '' },
-    // methods
-    displayStringValue: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {},
-};
 
 export const ProgressBar: StoryObj = {
   render: ProgressBarTemplate,

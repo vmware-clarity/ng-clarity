@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const LABEL_COLOR_TYPES = ['', 'label-purple', 'label-blue', 'label-orange', 'label-light-blue'];
 
@@ -33,7 +33,7 @@ export default {
   },
 };
 
-const LabelTemplate: Story = args => ({
+const LabelTemplate: StoryFn = args => ({
   template: `
       <span class="label" [class.clickable]="clickable" [ngClass]="labelType">
         <span class="text">{{content}}</span>
@@ -44,7 +44,7 @@ const LabelTemplate: Story = args => ({
   props: args,
 });
 
-const LabelAllTemplate: Story = args => ({
+const LabelAllTemplate: StoryFn = args => ({
   template: `
     <h6>Default Label</h6>
     <div style="margin-top: 5px;">

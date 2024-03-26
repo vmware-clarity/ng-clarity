@@ -5,7 +5,7 @@
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -51,12 +51,12 @@ const template = `
     </clr-accordion>
   `;
 
-export const Closed: Story = args => ({
+export const Closed: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Opened: Story = Closed.bind({});
+export const Opened: StoryFn = Closed.bind({});
 Opened.args = {
   ...Closed.args,
   openIndex: 0,

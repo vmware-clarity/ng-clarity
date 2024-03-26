@@ -5,9 +5,25 @@
  */
 
 import { ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-const loginTemplate: Story = args => ({
+export default {
+  title: 'Login/Login',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule],
+    }),
+  ],
+  argTypes: {},
+  args: {
+    type: 'local',
+    username: '',
+    password: '',
+    rememberMe: false,
+  },
+};
+
+const loginTemplate: StoryFn = args => ({
   template: `
     <div class="login-wrapper">
         <div class="login">
@@ -84,22 +100,6 @@ const loginTemplate: Story = args => ({
   `,
   props: { ...args },
 });
-
-export default {
-  title: 'Login/Login',
-  decorators: [
-    moduleMetadata({
-      imports: [ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule],
-    }),
-  ],
-  argTypes: {},
-  args: {
-    type: 'local',
-    username: '',
-    password: '',
-    rememberMe: false,
-  },
-};
 
 export const Login: StoryObj = {
   render: loginTemplate,

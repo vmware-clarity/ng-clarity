@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { CommonModules } from '../../helpers/common';
@@ -92,31 +92,31 @@ const template = `
   </div>
   `;
 
-export const Alert: Story = args => ({
+export const Alert: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Small: Story = Alert.bind({});
+export const Small: StoryFn = Alert.bind({});
 Small.args = {
   ...Alert.args,
   clrAlertSizeSmall: true,
 };
 
-export const SmallLightweight: Story = Alert.bind({});
+export const SmallLightweight: StoryFn = Alert.bind({});
 SmallLightweight.args = {
   ...Alert.args,
   clrAlertSizeSmall: true,
   clrAlertLightweight: true,
 };
 
-export const Closable: Story = Alert.bind({});
+export const Closable: StoryFn = Alert.bind({});
 Closable.args = {
   ...Alert.args,
   clrAlertClosable: { value: true, table: { disable: true } },
 };
 
-export const Lightweight: Story = Alert.bind({});
+export const Lightweight: StoryFn = Alert.bind({});
 Lightweight.args = {
   ...Alert.args,
   clrAlertLightweight: true,
@@ -124,7 +124,7 @@ Lightweight.args = {
   clrAlertClosable: { value: false, table: { disable: true } },
 };
 
-export const DifferentIcon: Story = Alert.bind({});
+export const DifferentIcon: StoryFn = Alert.bind({});
 DifferentIcon.args = {
   ...Alert.args,
   clrAlertIcon: 'settings',

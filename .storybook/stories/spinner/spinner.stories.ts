@@ -5,7 +5,7 @@
  */
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
@@ -31,7 +31,7 @@ export default {
   },
 };
 
-const SpinnerTemplate: Story = args => ({
+const SpinnerTemplate: StoryFn = args => ({
   template: `
   <div style="text-align: center">
     <clr-spinner

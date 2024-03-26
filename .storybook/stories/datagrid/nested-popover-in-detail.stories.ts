@@ -11,7 +11,7 @@ import {
   ClrDropdownModule,
   ClrSignpostModule,
 } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -32,7 +32,7 @@ export default {
   },
 };
 
-const NestedPopoverInDetailTemplate: Story = args => ({
+const NestedPopoverInDetailTemplate: StoryFn = args => ({
   template: `
     <clr-datagrid>
       <clr-dg-column [style.width.px]="250">Name</clr-dg-column>

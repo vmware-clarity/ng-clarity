@@ -5,7 +5,7 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
@@ -24,7 +24,7 @@ export default {
   },
 };
 
-const TreeViewTemplate: Story = args => ({
+const TreeViewTemplate: StoryFn = args => ({
   template: `
     <clr-tree>
       ${getFileTreeNodeMarkup(filesRoot)}

@@ -6,7 +6,7 @@
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
 import { ClrTooltipModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -60,7 +60,7 @@ export default {
   },
 };
 
-const StackViewTemplate: Story = args => ({
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block
@@ -79,7 +79,7 @@ const StackViewTemplate: Story = args => ({
   props: args,
 });
 
-const StackViewAllTemplate: Story = args => ({
+const StackViewAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
       <clr-stack-view>
@@ -100,7 +100,7 @@ const StackViewAllTemplate: Story = args => ({
   props: args,
 });
 
-const StackViewAllTemplateWithPopOver: Story = args => ({
+const StackViewAllTemplateWithPopOver: StoryFn = args => ({
   template: `
     <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
       <clr-stack-view>

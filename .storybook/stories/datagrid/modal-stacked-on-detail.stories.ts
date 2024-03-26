@@ -6,7 +6,7 @@
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
 export default {
@@ -26,7 +26,7 @@ export default {
   },
 };
 
-const ModalStackedOnDetailTemplate: Story = args => ({
+const ModalStackedOnDetailTemplate: StoryFn = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 

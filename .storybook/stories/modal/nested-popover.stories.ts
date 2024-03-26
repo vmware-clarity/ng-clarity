@@ -5,7 +5,7 @@
  */
 
 import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
 import { CommonModules } from '../../helpers/common';
@@ -27,7 +27,7 @@ export default {
   },
 };
 
-const NestedPopoverTemplate: Story = args => ({
+const NestedPopoverTemplate: StoryFn = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
 

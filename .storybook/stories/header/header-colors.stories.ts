@@ -5,7 +5,7 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -49,7 +49,7 @@ export default {
   },
 };
 
-const HeaderColorTemplate: Story = args => ({
+const HeaderColorTemplate: StoryFn = args => ({
   template: `
   <header class="{{color}}">
     <div class="branding">
@@ -63,7 +63,7 @@ const HeaderColorTemplate: Story = args => ({
   props: args,
 });
 
-const HeaderColorAllTemplate: Story = args => ({
+const HeaderColorAllTemplate: StoryFn = args => ({
   template: `
   <div style="margin-top:10px" *ngFor="let color of HEADER_VARIANTS">
     <header [class]="color">

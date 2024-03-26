@@ -6,7 +6,7 @@
 
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup, getIconTreeNodeMarkup } from '../../helpers/files.data';
@@ -68,7 +68,7 @@ export default {
   },
 };
 
-const TreeViewNodeTemplate: Story = args => ({
+const TreeViewNodeTemplate: StoryFn = args => ({
   template: `
     <clr-tree>
       <clr-tree-node
@@ -86,7 +86,7 @@ const TreeViewNodeTemplate: Story = args => ({
   props: args,
 });
 
-const TreeViewNodeAllTemplate: Story = args => ({
+const TreeViewNodeAllTemplate: StoryFn = args => ({
   template: `
     <span cds-text="subsection">Default</span>
     <div *ngFor="let state of EXPANDED_STATE" style="margin-top:20px;margin-bottom:20px">

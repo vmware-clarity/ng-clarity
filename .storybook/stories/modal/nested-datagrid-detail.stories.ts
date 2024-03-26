@@ -5,7 +5,7 @@
  */
 
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
 import { CommonModules } from '../../helpers/common';
@@ -27,7 +27,7 @@ export default {
   },
 };
 
-const NestedDatagridTemplate: Story = args => ({
+const NestedDatagridTemplate: StoryFn = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 

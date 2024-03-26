@@ -5,7 +5,7 @@
  */
 
 import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -47,18 +47,18 @@ const template = `
     </clr-accordion>
   `;
 
-export const Initial: Story = args => ({
+export const Initial: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const SinglePanelOpened: Story = Initial.bind({});
+export const SinglePanelOpened: StoryFn = Initial.bind({});
 SinglePanelOpened.args = {
   ...Initial.args,
   openIndices: [true, false, false, false],
 };
 
-export const MultiplePanelsOpened: Story = Initial.bind({});
+export const MultiplePanelsOpened: StoryFn = Initial.bind({});
 MultiplePanelsOpened.argTypes = {
   ...Initial.argTypes,
   clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
