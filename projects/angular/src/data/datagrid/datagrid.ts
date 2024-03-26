@@ -77,6 +77,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
+
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
   @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
@@ -142,11 +144,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    private el: ElementRef,
+    public el: ElementRef,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    private keyNavigation: KeyNavigationGridController,
+    public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();

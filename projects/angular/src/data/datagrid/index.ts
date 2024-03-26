@@ -45,6 +45,7 @@ export * from './datagrid.module';
 export { ClrDatagridItemsTrackByFunction } from './providers/items';
 
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+export { CustomClrVirtualRowsDirective as ÇustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
 export { DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer } from './datagrid-detail-registerer';
 export { WrappedCell as ÇlrWrappedCell } from './wrapped-cell';
 export { WrappedColumn as ÇlrWrappedColumn } from './wrapped-column';
