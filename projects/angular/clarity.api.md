@@ -2649,7 +2649,7 @@ export class ClrMainContainerModule {
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, sidebarObject: ClrSidebar);
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
@@ -2662,6 +2662,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     fadeDone(e: AnimationEvent_2): void;
+    // (undocumented)
+    get fadeMove(): string;
     // (undocumented)
     labelledBy: string;
     // (undocumented)
@@ -2681,7 +2683,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     size: string;
     // (undocumented)
-    skipAnimation: string;
+    skipAnimation: boolean;
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
@@ -2689,7 +2691,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, [null, null, null, { optional: true; host: true; }]>;
 }
 
 // @public

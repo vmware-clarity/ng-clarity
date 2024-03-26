@@ -5,12 +5,24 @@
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Host,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  Output,
+  SimpleChange,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
 import { ModalStackService } from './modal-stack.service';
+import { ClrSidebar } from './sidebar';
 
 @Component({
   selector: 'clr-modal',
@@ -27,9 +39,16 @@ import { ModalStackService } from './modal-stack.service';
     `,
   ],
   animations: [
-    trigger('fadeDown', [
-      transition('* => false', [style({ opacity: 0, transform: 'translate(0, -25%)' }), animate('0.2s ease-in-out')]),
-      transition('false => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' }))]),
+    trigger('fadeMove', [
+      transition('* => fadeDown', [
+        style({ opacity: 0, transform: 'translate(0, -25%)' }),
+        animate('0.2s ease-in-out'),
+      ]),
+      transition('fadeDown => *', [
+        animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
+      ]),
+      transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
+      transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
     ]),
     trigger('fade', [
       transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
@@ -47,7 +66,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
   @Input('clrModalSize') size: string;
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
-  @Input('clrModalSkipAnimation') skipAnimation = 'false';
+  @Input('clrModalSkipAnimation') skipAnimation = false;
 
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
@@ -57,8 +76,15 @@ export class ClrModal implements OnChanges, OnDestroy {
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
-    private modalStackService: ModalStackService
+    private modalStackService: ModalStackService,
+    @Host()
+    @Optional()
+    private sidebarObject: ClrSidebar
   ) {}
+
+  get fadeMove(): string {
+    return this.skipAnimation ? '' : !this.sidebarObject ? 'fadeDown' : 'fadeLeft';
+  }
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
