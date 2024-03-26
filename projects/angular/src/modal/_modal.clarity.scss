@@ -25,14 +25,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: tokens.$cds-global-space-12;
+    padding: calc(modal-variables.$clr-modal-default-space * 2);
 
     .alert + .modal-header {
       margin-top: tokens.$cds-global-space-6;
     }
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: tokens.$cds-global-space-6;
+      padding: calc(modal-variables.$clr-modal-default-space / 2);
     }
   }
 
