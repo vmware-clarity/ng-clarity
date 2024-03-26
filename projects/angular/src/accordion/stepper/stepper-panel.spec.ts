@@ -88,13 +88,13 @@ describe('ClrStep Reactive Forms', () => {
       fixture.detectChanges();
 
       const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
-      expect(statusMessage.innerText.trim()).toBe('Error');
+      expect(statusMessage.innerText.trim()).toBe(`Step ${mockStep?.index + 1} failed`);
 
       mockStep.status = AccordionStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      expect(statusMessage.innerText.trim()).toBe('Success');
+      expect(statusMessage.innerText.trim()).toBe(`Step ${mockStep?.index + 1} complete`);
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {
