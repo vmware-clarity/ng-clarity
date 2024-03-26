@@ -28,43 +28,23 @@ export default {
 
 const ModalStaticTemplate: Story = args => ({
   template: `
-    <style>
-      .backdrop-example-container {
-        position: relative;
-        padding: 24px;
-      }
-      .modal.static {
-        position: relative;
-        padding: 72px;
-      }
-        
-      .modal-backdrop.static {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-    </style>
-    <div class="backdrop-example-container">
-      <div class="modal static">
-        <div class="modal-dialog modal-{{size}}" role="dialog" aria-hidden="true">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button aria-label="Close" class="close" type="button">
-                <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
-              </button>
-              <h3 class="modal-title">{{title}}</h3>
-            </div>
-            <div class="modal-body">{{body}}</div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" type="button">Ok</button>
-            </div>
+    <div class="modal">
+      <div class="modal-dialog modal-{{size}}" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button aria-label="Close" class="close" type="button">
+              <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
+            </button>
+            <h3 class="modal-title">{{title}}</h3>
+          </div>
+          <div class="modal-body">{{body}}</div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="button">Ok</button>
           </div>
         </div>
       </div>
-      <div class="modal-backdrop static" aria-hidden="true"></div>
     </div>
+    <div class="modal-backdrop" aria-hidden="true"></div>
   `,
   props: args,
 });
