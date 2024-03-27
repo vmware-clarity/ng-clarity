@@ -88,7 +88,7 @@ describe('ClrStep Reactive Forms', () => {
       fixture.detectChanges();
 
       const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
-      expect(statusMessage.innerText.trim()).toBe(`Step ${mockStep?.index + 1} failed`);
+      expect(statusMessage.innerText.trim()).toBe(`Error in step ${mockStep?.index + 1}`);
 
       mockStep.status = AccordionStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
