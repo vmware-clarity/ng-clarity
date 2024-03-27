@@ -5,7 +5,8 @@
  */
 
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';;
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
 import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
 

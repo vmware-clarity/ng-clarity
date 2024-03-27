@@ -9,7 +9,6 @@ import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { elements } from 'helpers/elements.data';
 
-
 export default {
   title: 'Datagrid/Modal Stacked On Detail',
   decorators: [
