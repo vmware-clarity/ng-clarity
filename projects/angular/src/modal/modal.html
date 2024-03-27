@@ -9,8 +9,8 @@
   <div
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-    [@fadeDown]="skipAnimation"
-    (@fadeDown.done)="fadeDone($event)"
+    [@fadeMove]="fadeMove"
+    (@fadeMove.done)="fadeDone($event)"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
