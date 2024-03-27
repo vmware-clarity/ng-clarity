@@ -58,6 +58,7 @@ import { ViewManagerService } from './providers/view-manager.service';
   `,
   host: {
     '[class.yearpicker]': 'true',
+    role: 'application',
   },
 })
 export class ClrYearpicker implements AfterViewInit {

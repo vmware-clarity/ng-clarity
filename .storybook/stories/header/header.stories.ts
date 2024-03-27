@@ -53,16 +53,16 @@ const HeaderTemplate: Story = args => ({
       <nav class="subnav" [clr-nav-level]="2">
         <ul class="nav">
           <li class="nav-item">
-              <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
+            <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Management</a>
+            <a class="nav-link" href="javascript://">Management</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Cloud</a>
+            <a class="nav-link" href="javascript://">Cloud</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Tenants</a>
+            <a class="nav-link" href="javascript://">Tenants</a>
           </li>
         </ul>
       </nav>

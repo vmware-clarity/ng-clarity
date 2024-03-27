@@ -65,21 +65,21 @@ export default {
 };
 
 const template = `
-    <clr-alert
-     *ngFor="let alert of ALERT_TYPES"
-      style="margin-top: 5px;"
-      [clrAlertAppLevel]="true"
-      [clrAlertClosable]="clrAlertClosable"
-      [clrAlertIcon]="clrAlertIcon"
-      [clrAlertType]="alert"
-      [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
-      (clrAlertClosedChange)="clrAlertClosedChange($event)"
-    >
-      <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{content}} {{i + 1}}</span>
-      </clr-alert-item>
-    </clr-alert>
-  `;
+  <clr-alert
+    *ngFor="let alert of ALERT_TYPES"
+    style="margin-top: 5px"
+    [clrAlertAppLevel]="true"
+    [clrAlertClosable]="clrAlertClosable"
+    [clrAlertIcon]="clrAlertIcon"
+    [clrAlertType]="alert"
+    [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+    (clrAlertClosedChange)="clrAlertClosedChange($event)"
+  >
+    <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
+      <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+    </clr-alert-item>
+  </clr-alert>
+`;
 
 const AlertTemplate: Story = args => ({
   template,
@@ -106,10 +106,9 @@ export const Closable: StoryObj = {
 
 const PaginatedTemplate: Story = args => ({
   template: `
-  <clr-alerts
-        [clrCurrentAlertIndex]="clrCurrentAlertIndex">
-        <clr-alert
-       *ngFor="let alert of ALERT_TYPES"
+    <clr-alerts [clrCurrentAlertIndex]="clrCurrentAlertIndex">
+      <clr-alert
+        *ngFor="let alert of ALERT_TYPES"
         [clrAlertAppLevel]="true"
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"
@@ -118,10 +117,11 @@ const PaginatedTemplate: Story = args => ({
         (clrAlertClosedChange)="clrAlertClosedChange($event)"
       >
         <clr-alert-item>
-          <span class="alert-text">{{content}} {{alert}}</span>
+          <span class="alert-text">{{ content }} {{ alert }}</span>
         </clr-alert-item>
       </clr-alert>
-  </clr-alerts>`,
+    </clr-alerts>
+  `,
   props: args,
 });
 

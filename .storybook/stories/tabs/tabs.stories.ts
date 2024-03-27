@@ -47,11 +47,9 @@ const tabsTemplate: Story = args => ({
   template: `
     <clr-tabs [clrLayout]="clrLayout">
       <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
-        <button clrTabLink>{{title}} {{i + 1}}</button>
-        <clr-tab-content *clrIfActive="activeTab === (i + 1)">
-          <p>
-            {{content}} {{i + 1}}
-          </p>
+        <button clrTabLink>{{ title }} {{ i + 1 }}</button>
+        <clr-tab-content *clrIfActive="activeTab === i + 1">
+          <p>{{ content }} {{ i + 1 }}</p>
         </clr-tab-content>
       </clr-tab>
     </clr-tabs>

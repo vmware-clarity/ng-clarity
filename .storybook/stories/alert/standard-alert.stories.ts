@@ -75,7 +75,7 @@ export default {
 };
 
 const template = `
-  <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px;">
+  <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px">
     <clr-alert
       [clrAlertClosable]="clrAlertClosable"
       [clrAlertIcon]="clrAlertIcon"
@@ -86,11 +86,11 @@ const template = `
       (clrAlertClosedChange)="clrAlertClosedChange($event)"
     >
       <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{content}} {{i + 1}}</span>
+        <span class="alert-text">{{ content }} {{ i + 1 }}</span>
       </clr-alert-item>
     </clr-alert>
   </div>
-  `;
+`;
 
 const AlertTemplate: Story = args => ({
   template,

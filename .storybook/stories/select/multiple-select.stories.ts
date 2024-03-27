@@ -33,7 +33,7 @@ export default {
 };
 
 const multipleSelectTemplate: Story = args => ({
-  template: ` 
+  template: `
     <clr-select-container>
       <label>Options</label>
       <select multiple clrSelect>
@@ -42,7 +42,7 @@ const multipleSelectTemplate: Story = args => ({
           [value]="i + 1"
           [selected]="selectedOptions.includes(i + 1)"
         >
-          Option {{i + 1}}
+          Option {{ i + 1 }}
         </option>
       </select>
     </clr-select-container>

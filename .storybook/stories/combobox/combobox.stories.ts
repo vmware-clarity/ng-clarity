@@ -7,8 +7,8 @@
 import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
 
 export default {
@@ -72,7 +72,7 @@ export default {
 const ComboboxTemplate: StoryFn = args => ({
   template: `
     <clr-combobox-container>
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <clr-combobox
         [id]="id"
         [clrMulti]="clrMulti"
@@ -87,10 +87,12 @@ const ComboboxTemplate: StoryFn = args => ({
         [required]="controlRequired"
       >
         <ng-container *clrOptionSelected="let selected">
-          {{selected}}
+          {{ selected }}
         </ng-container>
         <clr-options>
-          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
+          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">
+            {{ element.name }}
+          </clr-option>
         </clr-options>
       </clr-combobox>
       <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
