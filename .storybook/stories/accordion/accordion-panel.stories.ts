@@ -6,7 +6,7 @@
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -54,25 +54,37 @@ export default {
   },
 };
 
-export const PanelClosed: Story = args => ({
+const PanelTemplate: Story = args => ({
   template,
   props: args,
 });
 
-export const PanelOpened: Story = PanelClosed.bind({});
-PanelOpened.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelOpen: true,
+export const PanelClosed: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+  },
 };
 
-export const PanelClosedDisabled: Story = PanelClosed.bind({});
-PanelClosedDisabled.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelDisabled: true,
+export const PanelOpened: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+  },
 };
 
-export const PanelOpenedDisabled: Story = PanelOpened.bind({});
-PanelOpenedDisabled.args = {
-  ...PanelOpened.args,
-  clrAccordionPanelDisabled: true,
+export const PanelClosedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+    clrAccordionPanelDisabled: true,
+  },
+};
+
+export const PanelOpenedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+    clrAccordionPanelDisabled: true,
+  },
 };
