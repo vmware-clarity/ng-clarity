@@ -57,7 +57,9 @@ export default {
 const DatagridTemplate: Story = args => ({
   template: `
     <style>
-      .electronegativity-container { border-bottom: 4px solid #119cd4; }
+      .electronegativity-container {
+        border-bottom: 4px solid #119cd4;
+      }
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
@@ -89,23 +91,23 @@ const DatagridTemplate: Story = args => ({
       </clr-dg-column>
 
       <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
-        <clr-dg-cell>{{element.name}}</clr-dg-cell>
-        <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
-        <clr-dg-cell>{{element.number}}</clr-dg-cell>
+        <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.number }}</clr-dg-cell>
         <clr-dg-cell>
-          <div [style.width.%]="element.electronegativity * 100 / 4" class="electronegativity-container">
-            {{element.electronegativity}}
+          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
+            {{ element.electronegativity }}
           </div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
 
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
-          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>
-          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} elements
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
         </clr-dg-pagination>
       </clr-dg-footer>
     </clr-datagrid>

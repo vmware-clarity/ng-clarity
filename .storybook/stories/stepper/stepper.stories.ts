@@ -8,7 +8,8 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 

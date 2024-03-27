@@ -6,7 +6,8 @@
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Spinner/Spinner',
@@ -33,18 +34,13 @@ export default {
 
 const SpinnerTemplate: Story = args => ({
   template: `
-  <div style="text-align: center">
-    <clr-spinner
-      [clrInverse]="clrInverse"
-      [clrSmall]="clrSmall"
-      [clrMedium]="clrMedium"
-      [clrInline]="clrInline"
-    >
-      {{text}}
-    </clr-spinner>
-    <br *ngIf="!clrInline" />
-    {{text}}
-  </div>
+    <div style="text-align: center">
+      <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+        {{ text }}
+      </clr-spinner>
+      <br *ngIf="!clrInline" />
+      {{ text }}
+    </div>
   `,
   props: args,
 });

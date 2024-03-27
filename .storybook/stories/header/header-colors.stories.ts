@@ -51,22 +51,7 @@ export default {
 
 const HeaderColorTemplate: Story = args => ({
   template: `
-  <header class="{{color}}">
-    <div class="branding">
-      <a href="javascript://" class="nav-link">
-        <cds-icon shape="vm-bug"></cds-icon>
-        <span class="title">Clarity Design</span>
-      </a>
-    </div>
-  </header>
-  `,
-  props: args,
-});
-
-const HeaderColorAllTemplate: Story = args => ({
-  template: `
-  <div style="margin-top:10px" *ngFor="let color of HEADER_VARIANTS">
-    <header [class]="color">
+    <header class="{{ color }}">
       <div class="branding">
         <a href="javascript://" class="nav-link">
           <cds-icon shape="vm-bug"></cds-icon>
@@ -74,7 +59,22 @@ const HeaderColorAllTemplate: Story = args => ({
         </a>
       </div>
     </header>
-  </div>
+  `,
+  props: args,
+});
+
+const HeaderColorAllTemplate: Story = args => ({
+  template: `
+    <div style="margin-top: 10px" *ngFor="let color of HEADER_VARIANTS">
+      <header [class]="color">
+        <div class="branding">
+          <a href="javascript://" class="nav-link">
+            <cds-icon shape="vm-bug"></cds-icon>
+            <span class="title">Clarity Design</span>
+          </a>
+        </div>
+      </header>
+    </div>
   `,
   props: args,
 });

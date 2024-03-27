@@ -26,9 +26,7 @@ export default {
 
 const TreeViewTemplate: Story = args => ({
   template: `
-    <clr-tree>
-      ${getFileTreeNodeMarkup(filesRoot)}
-    </clr-tree>
+    <clr-tree>${getFileTreeNodeMarkup(filesRoot)}</clr-tree>
   `,
   props: args,
 });
