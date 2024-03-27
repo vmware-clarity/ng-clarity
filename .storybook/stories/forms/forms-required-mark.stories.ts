@@ -46,19 +46,19 @@ export default {
 const RequiredMarkTemplate: StoryFn = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{screenReaderContent}}</span>
+      <span class="clr-sr-only">{{ screenReaderContent }}</span>
       <span class="clr-required-mark">Required information</span>
       <clr-input-container>
         <label class="clr-required-mark">Name</label>
-        <input clrInput formControlName="name" [placeholder]="namePlaceholder" required/>
+        <input clrInput formControlName="name" [placeholder]="namePlaceholder" required />
       </clr-input-container>
       <clr-input-container>
         <label class="clr-required-mark">Age</label>
-        <input clrInput formControlName="age" type="number" min="0" required/>
+        <input clrInput formControlName="age" type="number" min="0" required />
       </clr-input-container>
       <clr-password-container>
         <label class="clr-required-mark">Password</label>
-        <input clrPassword autocomplete="current-password" formControlName="password" required/>
+        <input clrPassword autocomplete="current-password" formControlName="password" required />
       </clr-password-container>
       <clr-textarea-container>
         <label class="clr-required-mark">Description</label>
@@ -66,7 +66,7 @@ const RequiredMarkTemplate: StoryFn = args => ({
       </clr-textarea-container>
       <clr-control-container>
         <label class="clr-required-mark">Custom Control</label>
-        <input clrControl formControlName="customControl" placeholder="Basic text" name="basic" required/>
+        <input clrControl formControlName="customControl" placeholder="Basic text" name="basic" required />
       </clr-control-container>
       <clr-select-container>
         <label class="clr-required-mark">Select</label>
@@ -79,7 +79,7 @@ const RequiredMarkTemplate: StoryFn = args => ({
       <clr-checkbox-container>
         <label class="clr-required-mark">Checkbox</label>
         <clr-checkbox-wrapper>
-          <input type="checkbox" formControlName="checkbox" clrCheckbox value="option1" name="options1" required/>
+          <input type="checkbox" formControlName="checkbox" clrCheckbox value="option1" name="options1" required />
           <label>Option 1</label>
         </clr-checkbox-wrapper>
         <clr-checkbox-wrapper>
@@ -99,21 +99,21 @@ const RequiredMarkTemplate: StoryFn = args => ({
       </clr-combobox-container>
       <clr-datalist-container>
         <label class="clr-required-mark">Datalist</label>
-        <input clrDatalistInput formControlName="datalist" placeholder="No label" name="Option" required/>
+        <input clrDatalistInput formControlName="datalist" placeholder="No label" name="Option" required />
         <datalist>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
+          <option value="1"></option>
+          <option value="2"></option>
+          <option value="3"></option>
         </datalist>
       </clr-datalist-container>
       <clr-date-container>
         <label class="clr-required-mark">Datepicker</label>
-        <input type="date" formControlName="datepicker" autocomplete="off" clrDate name="demo" required/>
+        <input type="date" formControlName="datepicker" autocomplete="off" clrDate name="demo" required />
       </clr-date-container>
       <clr-radio-container>
         <label class="clr-required-mark">Radio</label>
         <clr-radio-wrapper>
-          <input type="radio" clrRadio value="option1" formControlName="radio" required/>
+          <input type="radio" clrRadio value="option1" formControlName="radio" required />
           <label>Option 1</label>
         </clr-radio-wrapper>
         <clr-radio-wrapper>
@@ -122,8 +122,8 @@ const RequiredMarkTemplate: StoryFn = args => ({
         </clr-radio-wrapper>
       </clr-radio-container>
       <clr-range-container>
-          <label class="clr-required-mark">Range</label>
-          <input type="range" clrRange formControlName="range" name="three" required/>
+        <label class="clr-required-mark">Range</label>
+        <input type="range" clrRange formControlName="range" name="three" required />
       </clr-range-container>
     </form>
   `,

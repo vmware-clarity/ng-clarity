@@ -8,6 +8,8 @@ import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
+
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
 
 export default {
@@ -38,7 +40,7 @@ const DatalistTemplate: StoryFn = args => ({
       <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
       <datalist>
         <ng-container *ngFor="let element of elements; let i = index">
-          <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
+          <option *ngIf="i < optionCount" [value]="element.symbol">{{ element.name }}</option>
         </ng-container>
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>

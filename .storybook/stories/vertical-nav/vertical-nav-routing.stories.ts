@@ -119,28 +119,29 @@ const NavRoutingTemplate: StoryFn = args => ({
           [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
           (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >
-          <clr-vertical-nav-group 
-            *ngFor="let navLink of navLinks" 
-            [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+          <clr-vertical-nav-group
+            *ngFor="let navLink of navLinks"
+            [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
             <a
-                (click)="handleClick($event, navLink.text.toLowerCase())"
-              [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+              (click)="handleClick($event, navLink.text.toLowerCase())"
+              [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
               clrVerticalNavLink
               href="javascript:void(0)"
             >
               <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              {{navLink.text}}
+              {{ navLink.text }}
             </a>
             <clr-vertical-nav-group-children>
-              <a clrVerticalNavLink
+              <a
+                clrVerticalNavLink
                 *ngFor="let childNavLink of navLink.children; let index = index"
-                [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+                [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
                 (click)="handleClick($event, createRoute(navLink.text, index))"
               >
-                {{createRoute(navLink.text, index)}}
+                {{ createRoute(navLink.text, index) }}
               </a>
             </clr-vertical-nav-group-children>
           </clr-vertical-nav-group>
@@ -153,7 +154,7 @@ const NavRoutingTemplate: StoryFn = args => ({
 
 const NavRoutingAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of VERTICAL_NAV_STATES" style="margin-bottom:30px">
+    <div *ngFor="let state of VERTICAL_NAV_STATES" style="margin-bottom: 30px">
       <div class="main-container">
         <div class="content-container">
           <clr-vertical-nav
@@ -161,28 +162,33 @@ const NavRoutingAllTemplate: StoryFn = args => ({
             [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
             (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
           >
-            <clr-vertical-nav-group 
-              *ngFor="let navLink of navLinks" 
-              [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+            <clr-vertical-nav-group
+              *ngFor="let navLink of navLinks"
+              [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
               [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
               <a
-                  (click)="handleClick($event, navLink.text.toLowerCase())"
-                [ngClass]="{ 'active': navLink.text.toLowerCase() == activeRoute }"
+                (click)="handleClick($event, navLink.text.toLowerCase())"
+                [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
                 clrVerticalNavLink
                 href="javascript:void(0)"
               >
-                <cds-icon *ngIf="state?.includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-                {{navLink.text}}
+                <cds-icon
+                  *ngIf="state?.includeIcons"
+                  [attr.shape]="navLink.iconShapeTuple[0]"
+                  clrVerticalNavIcon
+                ></cds-icon>
+                {{ navLink.text }}
               </a>
               <clr-vertical-nav-group-children>
-                <a clrVerticalNavLink
+                <a
+                  clrVerticalNavLink
                   *ngFor="let childNavLink of navLink.children; let index = index"
-                  [ngClass]="{ 'active': createRoute(navLink.text, index) == activeRoute }"
+                  [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
                   (click)="handleClick($event, createRoute(navLink.text, index))"
                 >
-                  {{createRoute(navLink.text, index)}}
+                  {{ createRoute(navLink.text, index) }}
                 </a>
               </clr-vertical-nav-group-children>
             </clr-vertical-nav-group>

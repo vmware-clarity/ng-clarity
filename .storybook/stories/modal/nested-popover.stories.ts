@@ -5,10 +5,10 @@
  */
 
 import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
 
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Modal/Nested Popover',
@@ -52,18 +52,16 @@ const NestedPopoverTemplate: StoryFn = args => ({
 
         <clr-combobox>
           <ng-container *clrOptionSelected="let selected">
-            {{selected}}
+            {{ selected }}
           </ng-container>
           <clr-options>
-            <clr-option *ngFor="let element of elements" [clrValue]="element.symbol">{{element.name}}</clr-option>
+            <clr-option *ngFor="let element of elements" [clrValue]="element.symbol">{{ element.name }}</clr-option>
           </clr-options>
         </clr-combobox>
         <br />
 
         <clr-signpost>
-          <clr-signpost-content>
-            This is a signpost.
-          </clr-signpost-content>
+          <clr-signpost-content>This is a signpost.</clr-signpost-content>
         </clr-signpost>
       </div>
       <div class="modal-footer">

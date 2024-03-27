@@ -62,12 +62,12 @@ const VerticalNavTemplate: StoryFn = args => ({
           <a
             *ngFor="let navLink of navLinks; let index = index"
             clrVerticalNavLink
-            [ngClass]="{ 'active': index == activeIndex }"
+            [ngClass]="{ active: index == activeIndex }"
             href="javascript:void(0)"
             (click)="activeIndex = index"
           >
             <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-            {{navLink.text}}
+            {{ navLink.text }}
           </a>
         </clr-vertical-nav>
       </div>

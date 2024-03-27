@@ -32,9 +32,9 @@ export default {
 };
 
 const rangeTemplate: StoryFn = args => ({
-  template: ` 
+  template: `
     <clr-range-container [clrRangeHasProgress]="clrRangeHasProgress">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <input type="range" clrRange [value]="value" [disabled]="disabled" />
     </clr-range-container>
   `,
@@ -45,25 +45,25 @@ const rangeAllTemplate: StoryFn = args => ({
   template: ` 
     <h6>Default Range</h6>
     <clr-range-container [clrRangeHasProgress]="false">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <input type="range" clrRange [value]="value" [disabled]="false" />
     </clr-range-container>
 
     <h6>Disabled Range</h6>
     <clr-range-container [clrRangeHasProgress]="false">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <input type="range" clrRange [value]="value" [disabled]="true" />
     </clr-range-container>
 
     <h6>Range with Progress</h6>
     <clr-range-container [clrRangeHasProgress]="true">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <input type="range" clrRange [value]="value" [disabled]="false" />
     </clr-range-container>
 
     <h6>Disabled Range with Progress</h6>
     <clr-range-container class="compact" [clrRangeHasProgress]="true">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <input type="range" clrRange [value]="value" [disabled]="true" />
     </clr-range-container>
   `,

@@ -49,9 +49,9 @@ const TimelineStepTemplate: StoryFn = args => ({
   template: `
     <clr-timeline>
       <clr-timeline-step [clrState]="clrState">
-        <clr-timeline-step-header *ngIf="header">{{header}}</clr-timeline-step-header>
-        <clr-timeline-step-title *ngIf="title">{{title}}</clr-timeline-step-title>
-        <clr-timeline-step-description *ngIf="description">{{description}}</clr-timeline-step-description>
+        <clr-timeline-step-header *ngIf="header">{{ header }}</clr-timeline-step-header>
+        <clr-timeline-step-title *ngIf="title">{{ title }}</clr-timeline-step-title>
+        <clr-timeline-step-description *ngIf="description">{{ description }}</clr-timeline-step-description>
       </clr-timeline-step>
     </clr-timeline>
   `,
@@ -60,12 +60,12 @@ const TimelineStepTemplate: StoryFn = args => ({
 
 const TimelineStepAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of TIMELINE_STEP_STATE" style="margin-top:20px">
+    <div *ngFor="let state of TIMELINE_STEP_STATE" style="margin-top: 20px">
       <clr-timeline>
         <clr-timeline-step [clrState]="state.clrState">
-          <clr-timeline-step-header *ngIf="header">{{header}}</clr-timeline-step-header>
-          <clr-timeline-step-title *ngIf="title">{{title}}</clr-timeline-step-title>
-          <clr-timeline-step-description *ngIf="description">{{description}}</clr-timeline-step-description>
+          <clr-timeline-step-header *ngIf="header">{{ header }}</clr-timeline-step-header>
+          <clr-timeline-step-title *ngIf="title">{{ title }}</clr-timeline-step-title>
+          <clr-timeline-step-description *ngIf="description">{{ description }}</clr-timeline-step-description>
         </clr-timeline-step>
       </clr-timeline>
     </div>

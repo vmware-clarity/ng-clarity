@@ -9,6 +9,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 import { filesRoot } from 'helpers/files.data';
 
+
 export default {
   title: 'Dropdown/Dropdown With Tree',
   decorators: [
@@ -31,7 +32,7 @@ export default {
 
 const DropdownTreeTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-bottom:500px; text-align: center">
+    <div style="margin-bottom: 500px; text-align: center">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
         <button class="btn btn-outline-primary" clrDropdownTrigger>
           Dropdown
@@ -39,11 +40,12 @@ const DropdownTreeTemplate: StoryFn = args => ({
         </button>
         <clr-dropdown-menu clrFocusOnViewInit="false">
           <clr-tree>
-            <clr-tree-node 
+            <clr-tree-node
               *clrRecursiveFor="let file of files; getChildren: getChildren"
               [clrExpanded]="true"
-              [clrSelected]="true">
-              {{file.name}}
+              [clrSelected]="true"
+            >
+              {{ file.name }}
             </clr-tree-node>
           </clr-tree>
         </clr-dropdown-menu>

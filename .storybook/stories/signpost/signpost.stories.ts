@@ -47,14 +47,14 @@ export default {
 };
 
 const template = `
-    <div style="margin-top: 100px; text-align: center;">
-      <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
-          {{content}}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `;
+  <div style="margin-top: 100px; text-align: center">
+    <clr-signpost>
+      <clr-signpost-content [clrPosition]="clrPosition">
+        {{ content }}
+      </clr-signpost-content>
+    </clr-signpost>
+  </div>
+`;
 
 export const Initial: StoryFn = args => ({
   template,
