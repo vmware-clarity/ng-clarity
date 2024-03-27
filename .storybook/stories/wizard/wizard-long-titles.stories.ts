@@ -67,6 +67,8 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
+    clrWizardOpen: true,
+    clrWizardSize: 'xl',
   },
 };
 
