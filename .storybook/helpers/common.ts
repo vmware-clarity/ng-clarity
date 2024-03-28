@@ -13,5 +13,5 @@ export const CommonModules = [CommonModule, BrowserAnimationsModule, FormsModule
 
 export function removeFocusOutline({ canvasElement }: StoryContext) {
   // remove keyboard focus outline from focused element (modal title, etc.)
-  canvasElement.querySelector<HTMLElement>(':focus').blur();
+  canvasElement.querySelector<HTMLElement>(':focus')?.blur();
 }

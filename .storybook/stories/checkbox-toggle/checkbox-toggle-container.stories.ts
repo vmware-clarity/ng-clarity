@@ -50,10 +50,10 @@ const CheckboxToggleContainerTemplate: Story = args => {
   return {
     template: `
       <${containerSelector} [clrInline]="clrInline">
-        <label>{{label}}</label>
+        <label>{{ label }}</label>
         <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
           <input type="checkbox" ${directive} />
-          <label>Option {{i + 1}}</label>
+          <label>Option {{ i + 1 }}</label>
         </${wrapperSelector}>
       </${containerSelector}>
     `,
@@ -65,48 +65,48 @@ const CheckBoxAllTemplate: Story = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
-      <div style="padding:20px">
+      <div style="padding: 20px">
         <span cds-text="subsection">Default</span>
         <${containerSelector} [clrInline]="false">
-          <label>{{label}}</label>
+          <label>{{ label }}</label>
           <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
             <input type="checkbox" ${directive} />
-            <label>Option {{i + 1}}</label>
+            <label>Option {{ i + 1 }}</label>
           </${wrapperSelector}>
         </${containerSelector}>
       </div>
-      
-      <div style="padding:20px">
+
+      <div style="padding: 20px">
         <span cds-text="subsection">Inline</span>
         <${containerSelector} [clrInline]="true">
-          <label>{{label}}</label>
+          <label>{{ label }}</label>
           <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
             <input type="checkbox" ${directive} />
-            <label>Option {{i + 1}}</label>
+            <label>Option {{ i + 1 }}</label>
           </${wrapperSelector}>
         </${containerSelector}>
       </div>
-      
-      <div style="padding:20px">
+
+      <div style="padding: 20px">
         <span cds-text="subsection">Helper Text</span>
         <${containerSelector} [clrInline]="false">
-          <label>{{label}}</label>
+          <label>{{ label }}</label>
           <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
             <input type="checkbox" ${directive} />
-            <label>Option {{i + 1}}</label>
+            <label>Option {{ i + 1 }}</label>
           </${wrapperSelector}>
           <clr-control-helper>Helper text</clr-control-helper>
           <clr-control-error>This field is required!</clr-control-error>
         </${containerSelector}>
       </div>
-      
-      <div *ngIf="type==='toggle'" style="padding:20px">
+
+      <div *ngIf="type === 'toggle'" style="padding: 20px">
         <span cds-text="subsection">Right Aligned</span>
         <${containerSelector} [clrInline]="false" class="clr-toggle-right">
-          <label>{{label}}</label>
+          <label>{{ label }}</label>
           <${wrapperSelector} *ngFor="let _ of createArray(optionCount); let i = index">
             <input type="checkbox" ${directive} />
-            <label>Option {{i + 1}}</label>
+            <label>Option {{ i + 1 }}</label>
           </${wrapperSelector}>
         </${containerSelector}>
       </div>

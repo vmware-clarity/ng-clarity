@@ -12,8 +12,9 @@ import {
   commonStringsDefault,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
-import { CommonModules } from 'helpers/common';
+
+import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from '../../helpers/button-class.helper';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Button/Button Group',
@@ -66,7 +67,7 @@ export default {
 
 const ButtonGroupTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-top: 200px; text-align: center;">
+    <div style="margin-top: 200px; text-align: center">
       <clr-button-group
         [ngClass]="getButtonClass({buttonType, buttonStyle})"
         [clrMenuPosition]="clrMenuPosition"
@@ -76,16 +77,13 @@ const ButtonGroupTemplate: StoryFn = args => ({
           *ngFor="let _ of createArray(buttonCount); let i = index"
           [clrInMenu]="false"
           [clrLoading]="loading"
-          [disabled]="disabledButtonsPosition.includes(i+1)"
+          [disabled]="disabledButtonsPosition.includes(i + 1)"
         >
           <cds-icon shape="home"></cds-icon>
-          {{content}} {{i + 1}}
+          {{ content }} {{ i + 1 }}
         </clr-button>
-        <clr-button
-          *ngFor="let _ of createArray(inMenuButtonCount); let i = index"
-          [clrInMenu]="true"
-        >
-          {{content}} {{buttonCount + i + 1}}
+        <clr-button *ngFor="let _ of createArray(inMenuButtonCount); let i = index" [clrInMenu]="true">
+          {{ content }} {{ buttonCount + i + 1 }}
         </clr-button>
       </clr-button-group>
     </div>
@@ -95,8 +93,8 @@ const ButtonGroupTemplate: StoryFn = args => ({
 
 const ButtonGroupShowcaseTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let buttonStyle of BUTTON_STYLES" style="margin-top: 20px; text-align: center;">
-      <div *ngFor="let buttonType of BUTTON_TYPES" style="margin-top: 10px;">
+    <div *ngFor="let buttonStyle of BUTTON_STYLES" style="margin-top: 20px; text-align: center">
+      <div *ngFor="let buttonType of BUTTON_TYPES" style="margin-top: 10px">
         <clr-button-group
           [ngClass]="getButtonClass({ buttonType, buttonStyle })"
           [clrMenuPosition]="clrMenuPosition"
@@ -106,16 +104,13 @@ const ButtonGroupShowcaseTemplate: StoryFn = args => ({
             *ngFor="let _ of createArray(buttonCount); let i = index"
             [clrInMenu]="false"
             [clrLoading]="loading"
-            [disabled]="disabledButtonsPosition.includes(i+1)"
+            [disabled]="disabledButtonsPosition.includes(i + 1)"
           >
             <cds-icon shape="home"></cds-icon>
-            {{content}} {{i + 1}}
+            {{ content }} {{ i + 1 }}
           </clr-button>
-          <clr-button
-            *ngFor="let _ of createArray(inMenuButtonCount); let i = index"
-            [clrInMenu]="true"
-          >
-            {{content}} {{buttonCount + i + 1}}
+          <clr-button *ngFor="let _ of createArray(inMenuButtonCount); let i = index" [clrInMenu]="true">
+            {{ content }} {{ buttonCount + i + 1 }}
           </clr-button>
         </clr-button-group>
       </div>

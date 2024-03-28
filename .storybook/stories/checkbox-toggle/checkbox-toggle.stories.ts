@@ -47,10 +47,11 @@ const CheckBoxToggleTemplate: Story = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
-      <${containerSelector}> <!-- The container is required in this story so that the disabled state works correctly. -->
+      <${containerSelector}>
+        <!-- The container is required in this story so that the disabled state works correctly. -->
         <${wrapperSelector}>
           <input type="checkbox" ${directive} [ngModel]="checked" [disabled]="disabled" />
-          <label>{{label}}</label>
+          <label>{{ label }}</label>
         </${wrapperSelector}>
       </${containerSelector}>
     `,
@@ -62,35 +63,42 @@ const CheckBoxTemplate: Story = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
-      <div style="padding:20px">
+      <div style="padding: 20px">
         <span cds-text="subsection">Enabled</span>
         <${containerSelector}>
           <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked"/>
+            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" />
             <label>Option 1</label>
           </${wrapperSelector}>
         </${containerSelector}>
 
         <${containerSelector}>
           <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options"/>
+            <input type="checkbox" ${directive} value="option1" name="options" />
             <label>Option 1</label>
           </${wrapperSelector}>
         </${containerSelector}>
       </div>
 
-      <div style="padding:20px">
+      <div style="padding: 20px">
         <span cds-text="subsection">Disabled</span>
         <${containerSelector}>
           <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" [ngModel]="checked" [disabled]=disabled/>
+            <input
+              type="checkbox"
+              ${directive}
+              value="option1"
+              name="options"
+              [ngModel]="checked"
+              [disabled]="disabled"
+            />
             <label>Option 1</label>
           </${wrapperSelector}>
         </${containerSelector}>
 
         <${containerSelector}>
           <${wrapperSelector}>
-            <input type="checkbox" ${directive} value="option1" name="options" [disabled]=disabled/>
+            <input type="checkbox" ${directive} value="option1" name="options" [disabled]="disabled" />
             <label>Option 1</label>
           </${wrapperSelector}>
         </${containerSelector}>

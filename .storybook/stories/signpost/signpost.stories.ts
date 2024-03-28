@@ -5,7 +5,7 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -47,21 +47,27 @@ export default {
 };
 
 const template = `
-    <div style="margin-top: 100px; text-align: center;">
-      <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
-          {{content}}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `;
+  <div style="margin-top: 100px; text-align: center">
+    <clr-signpost>
+      <clr-signpost-content [clrPosition]="clrPosition">
+        {{ content }}
+      </clr-signpost-content>
+    </clr-signpost>
+  </div>
+`;
 
-export const Initial: Story = args => ({
+const SignpostTemplate: Story = args => ({
   template,
   props: args,
 });
 
-export const Opened: Story = Initial.bind({});
-Opened.play = async ({ canvasElement }) => {
-  canvasElement.querySelector('button').click();
+export const Initial: StoryObj = {
+  render: SignpostTemplate,
+};
+
+export const Opened = {
+  render: SignpostTemplate,
+  async play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
 };

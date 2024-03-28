@@ -35,11 +35,11 @@ export default {
 
 const LabelTemplate: Story = args => ({
   template: `
-      <span class="label" [class.clickable]="clickable" [ngClass]="labelType">
-        <span class="text">{{content}}</span>
-        <span *ngIf="badgeContent" class="badge">{{badgeContent}}</span>
-        <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
-      </span>
+    <span class="label" [class.clickable]="clickable" [ngClass]="labelType">
+      <span class="text">{{ content }}</span>
+      <span *ngIf="badgeContent" class="badge">{{ badgeContent }}</span>
+      <cds-icon *ngIf="closeIcon" shape="close"></cds-icon>
+    </span>
   `,
   props: args,
 });
@@ -47,39 +47,39 @@ const LabelTemplate: Story = args => ({
 const LabelAllTemplate: Story = args => ({
   template: `
     <h6>Default Label</h6>
-    <div style="margin-top: 5px;">
-      <span class="label">{{content}}</span>
+    <div style="margin-top: 5px">
+      <span class="label">{{ content }}</span>
     </div>
 
     <h6>Color Options</h6>
-    <div style="margin-top: 5px;">
-      <span class="label" *ngFor="let type of LABEL_TYPES" [class]="type">{{content}}</span>
+    <div style="margin-top: 5px">
+      <span class="label" *ngFor="let type of LABEL_TYPES" [class]="type">{{ content }}</span>
     </div>
 
     <h6>Clickable Labels</h6>
-    <div style="margin-top: 5px;">
+    <div style="margin-top: 5px">
       <span class="label clickable" *ngFor="let type of LABEL_COLOR_TYPES" [class]="type">
-        <span class="text">{{content}}</span>
+        <span class="text">{{ content }}</span>
       </span>
     </div>
 
     <h6>Status Labels</h6>
-    <div style="margin-top: 5px;">
-      <span class="label" *ngFor="let type of LABEL_STATUS_TYPES" [class]="type">{{content}}</span>
+    <div style="margin-top: 5px">
+      <span class="label" *ngFor="let type of LABEL_STATUS_TYPES" [class]="type">{{ content }}</span>
     </div>
 
     <h6>Labels with Badges</h6>
-    <div style="margin-top: 5px;">
+    <div style="margin-top: 5px">
       <span class="label" *ngFor="let type of LABEL_TYPES" [class]="type">
-        <span class="text">{{content}}</span>
+        <span class="text">{{ content }}</span>
         <span class="badge">1</span>
       </span>
     </div>
 
     <h6>Labels with Close Icon</h6>
-    <div style="margin-top: 5px;">
+    <div style="margin-top: 5px">
       <span class="label clickable" *ngFor="let type of LABEL_TYPES" [class]="type">
-        <span class="text">{{content}}</span>
+        <span class="text">{{ content }}</span>
         <cds-icon shape="close"></cds-icon>
       </span>
     </div>
