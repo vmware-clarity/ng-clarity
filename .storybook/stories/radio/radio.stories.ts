@@ -6,7 +6,8 @@
 
 import { ClrRadio, ClrRadioModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Radio/Radio',

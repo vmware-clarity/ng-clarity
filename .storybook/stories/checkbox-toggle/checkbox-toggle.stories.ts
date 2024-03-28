@@ -6,8 +6,9 @@
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { getSelectors } from 'helpers/checkbox-toggle.helpers';
-import { CommonModules } from 'helpers/common';
+
+import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
+import { CommonModules } from '../../helpers/common';
 
 enum CheckboxType {
   Checkbox = 'checkbox',

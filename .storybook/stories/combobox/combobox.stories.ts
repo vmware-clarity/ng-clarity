@@ -7,8 +7,9 @@
 import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
-import { elements } from 'helpers/elements.data';
+
+import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Combobox/Combobox',

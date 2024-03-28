@@ -5,8 +5,9 @@
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, StoryFn } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Accordion/Nested Accordion',
@@ -50,15 +51,19 @@ const template = `
   </clr-accordion>
 `;
 
-
-export const Closed: StoryFn = args => ({
+const NestedAccordionTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Opened: StoryFn = Closed.bind({});
-Opened.args = {
-  ...Closed.args,
-  openIndex: 0,
-  nestedOpenIndex: 0,
+export const Closed: StoryObj = {
+  render: NestedAccordionTemplate,
+};
+
+export const Opened: StoryObj = {
+  render: NestedAccordionTemplate,
+  args: {
+    openIndex: 0,
+    nestedOpenIndex: 0,
+  },
 };

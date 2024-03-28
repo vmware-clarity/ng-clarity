@@ -6,10 +6,10 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Alert/Standard Alerts',
@@ -92,40 +92,49 @@ const template = `
   </div>
 `;
 
-export const Alert: StoryFn = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Small: StoryFn = Alert.bind({});
-Small.args = {
-  ...Alert.args,
-  clrAlertSizeSmall: true,
+export const Alert: StoryObj = {
+  render: AlertTemplate,
 };
 
-export const SmallLightweight: StoryFn = Alert.bind({});
-SmallLightweight.args = {
-  ...Alert.args,
-  clrAlertSizeSmall: true,
-  clrAlertLightweight: true,
+export const Small: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertSizeSmall: true,
+  },
 };
 
-export const Closable: StoryFn = Alert.bind({});
-Closable.args = {
-  ...Alert.args,
-  clrAlertClosable: { value: true, table: { disable: true } },
+export const SmallLightweight: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertSizeSmall: true,
+    clrAlertLightweight: true,
+  },
 };
 
-export const Lightweight: StoryFn = Alert.bind({});
-Lightweight.args = {
-  ...Alert.args,
-  clrAlertLightweight: true,
-  clrCloseButtonAriaLabel: { table: { disable: true } },
-  clrAlertClosable: { value: false, table: { disable: true } },
+export const Closable: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertClosable: { value: true, table: { disable: true } },
+  },
 };
 
-export const DifferentIcon: StoryFn = Alert.bind({});
-DifferentIcon.args = {
-  ...Alert.args,
-  clrAlertIcon: 'settings',
+export const Lightweight: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertLightweight: true,
+    clrCloseButtonAriaLabel: { table: { disable: true } },
+    clrAlertClosable: { value: false, table: { disable: true } },
+  },
+};
+
+export const DifferentIcon: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertIcon: 'settings',
+  },
 };

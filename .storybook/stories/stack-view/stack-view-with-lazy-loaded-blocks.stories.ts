@@ -6,10 +6,11 @@
 
 import { ClrSpinnerModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
-import { elements } from 'helpers/elements.data';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
+
+import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 interface Block {
   label: string;

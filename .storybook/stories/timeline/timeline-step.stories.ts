@@ -6,7 +6,8 @@
 
 import { ClrTimelineModule, ClrTimelineStep, ClrTimelineStepState } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const TIMELINE_STEP_STATE = [
   { clrState: ClrTimelineStepState.NOT_STARTED },

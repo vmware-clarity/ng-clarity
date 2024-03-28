@@ -6,8 +6,9 @@
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 const template = `
   <clr-accordion>
@@ -53,28 +54,11 @@ export default {
   },
 };
 
-
-export const PanelClosed: StoryFn = args => ({
+const PanelTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const PanelOpened: StoryFn = PanelClosed.bind({});
-PanelOpened.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelOpen: true,
-};
-
-export const PanelClosedDisabled: StoryFn = PanelClosed.bind({});
-PanelClosedDisabled.args = {
-  ...PanelClosed.args,
-  clrAccordionPanelDisabled: true,
-};
-
-export const PanelOpenedDisabled: StoryFn = PanelOpened.bind({});
-PanelOpenedDisabled.args = {
-  ...PanelOpened.args,
-  clrAccordionPanelDisabled: true,
 export const PanelClosed: StoryObj = {
   render: PanelTemplate,
   args: {

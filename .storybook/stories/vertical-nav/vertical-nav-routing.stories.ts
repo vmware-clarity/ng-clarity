@@ -9,7 +9,8 @@ import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const childLinks: { text: string }[] = [{ text: 'Route 1' }, { text: 'Route 1' }, { text: 'Route 1' }];
 

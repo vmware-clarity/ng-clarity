@@ -7,8 +7,9 @@
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from 'helpers/button-class.helper';
-import { CommonModules } from 'helpers/common';
+
+import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from '../../helpers/button-class.helper';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Button/Button',

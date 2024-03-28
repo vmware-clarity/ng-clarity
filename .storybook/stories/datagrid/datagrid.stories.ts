@@ -7,7 +7,8 @@
 import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Datagrid/Datagrid',

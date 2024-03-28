@@ -7,7 +7,8 @@
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
 import { ClrTooltipModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const STACK_VIEW_STATES = [
   {

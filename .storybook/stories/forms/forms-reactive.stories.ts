@@ -7,7 +7,8 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {

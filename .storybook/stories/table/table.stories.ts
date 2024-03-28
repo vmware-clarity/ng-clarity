@@ -5,7 +5,8 @@
  */
 
 import { StoryFn, StoryObj } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Table/Table',

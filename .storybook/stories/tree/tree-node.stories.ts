@@ -7,8 +7,9 @@
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
-import { filesRoot, getFileTreeNodeMarkup, getIconTreeNodeMarkup } from 'helpers/files.data';
+
+import { CommonModules } from '../../helpers/common';
+import { filesRoot, getFileTreeNodeMarkup, getIconTreeNodeMarkup } from '../../helpers/files.data';
 
 const TREE_NODE_STATE = [
   // unselected
