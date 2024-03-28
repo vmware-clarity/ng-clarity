@@ -6,9 +6,9 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Modal/Modal',
@@ -132,8 +132,3 @@ export const OpenExtraLargeModal: StoryObj = {
     showLongPageContent: false,
   },
 };
-
-function removeFocusOutline({ canvasElement }: StoryContext) {
-  // remove keyboard focus outline from modal title
-  canvasElement.querySelector<HTMLElement>(':focus').blur();
-}
