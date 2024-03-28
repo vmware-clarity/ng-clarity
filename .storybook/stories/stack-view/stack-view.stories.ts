@@ -99,17 +99,20 @@ const StackViewAllTemplate: StoryFn = args => ({
 
 const StackViewAllTemplateWithPopOver: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
+    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top: 20px">
       <clr-stack-view>
         <clr-stack-block
           *ngFor="let _ of createArray(blockCount); let i = index"
           [clrSbExpanded]="!!state.openIndices[i]"
         >
-          <clr-stack-label>{{ label }} {{ i + 1 }}
-          <clr-tooltip>
-            <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
-            <clr-tooltip-content [clrPosition]="TooltipPosition" [clrSize]="TooltipSize">{{tooltipContent}}</clr-tooltip-content>
-          </clr-tooltip>
+          <clr-stack-label>
+            {{ label }} {{ i + 1 }}
+            <clr-tooltip>
+              <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
+              <clr-tooltip-content [clrPosition]="TooltipPosition" [clrSize]="TooltipSize">
+                {{ tooltipContent }}
+              </clr-tooltip-content>
+            </clr-tooltip>
           </clr-stack-label>
           <clr-stack-content>{{ content }}</clr-stack-content>
           <clr-stack-block>

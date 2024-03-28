@@ -43,7 +43,7 @@ export default {
 };
 
 const TemplateDrivenStory: StoryFn = args => ({
-  template: ` 
+  template: `
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{ screenReaderContent }}</span>
       <clr-input-container>

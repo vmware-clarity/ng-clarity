@@ -42,7 +42,7 @@ const rangeTemplate: StoryFn = args => ({
 });
 
 const rangeAllTemplate: StoryFn = args => ({
-  template: ` 
+  template: `
     <h6>Default Range</h6>
     <clr-range-container [clrRangeHasProgress]="false">
       <label>{{ label }}</label>
