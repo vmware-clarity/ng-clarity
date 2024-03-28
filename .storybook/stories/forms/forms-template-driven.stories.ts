@@ -5,7 +5,7 @@
  */
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -42,7 +42,7 @@ export default {
   },
 };
 
-const TemplateDrivenStory: Story = args => ({
+const TemplateDrivenStory: StoryFn = args => ({
   template: `
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{ screenReaderContent }}</span>

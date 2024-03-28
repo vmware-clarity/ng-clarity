@@ -6,7 +6,7 @@
 
 import { ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -39,7 +39,7 @@ export default {
   },
 };
 
-const StackViewTemplate: Story = args => ({
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block

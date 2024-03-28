@@ -5,7 +5,7 @@
  */
 
 import { ClrConditionalModule, ClrLoadingModule, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export default {
   },
 };
 
-const LazyLoadedTreeTemplate: Story = args => ({
+const LazyLoadedTreeTemplate: StoryFn = args => ({
   template: `
     <clr-tree [clrLazy]="true">
       <clr-tree-node [clrLoading]="fileService.loading">

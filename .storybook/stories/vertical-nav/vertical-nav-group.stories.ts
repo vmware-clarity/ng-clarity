@@ -8,7 +8,7 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNavGroup, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -52,7 +52,7 @@ export default {
   },
 };
 
-const NavGroupTemplate: Story = args => ({
+const NavGroupTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">

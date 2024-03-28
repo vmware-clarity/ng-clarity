@@ -5,7 +5,7 @@
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
@@ -27,7 +27,7 @@ export default {
   },
 };
 
-const StackedModalTemplate: Story = args => ({
+const StackedModalTemplate: StoryFn = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 

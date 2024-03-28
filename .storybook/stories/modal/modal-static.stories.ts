@@ -5,7 +5,7 @@
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -26,7 +26,7 @@ export default {
   },
 };
 
-const ModalStaticTemplate: Story = args => ({
+const ModalStaticTemplate: StoryFn = args => ({
   template: `
     <style>
       .backdrop-example-container {

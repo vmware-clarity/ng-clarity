@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Wizard/Wizard',
@@ -67,10 +67,12 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
+    clrWizardOpen: true,
+    clrWizardSize: 'xl',
   },
 };
 
-const WizardTemplate: Story = args => ({
+const WizardTemplate: StoryFn = args => ({
   template: `
     <clr-wizard
       [clrWizardOpen]="clrWizardOpen"

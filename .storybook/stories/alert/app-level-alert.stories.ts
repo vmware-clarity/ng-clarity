@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -81,7 +81,7 @@ const template = `
   </clr-alert>
 `;
 
-const AlertTemplate: Story = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });
@@ -104,7 +104,7 @@ export const Closable: StoryObj = {
   },
 };
 
-const PaginatedTemplate: Story = args => ({
+const PaginatedTemplate: StoryFn = args => ({
   template: `
     <clr-alerts [clrCurrentAlertIndex]="clrCurrentAlertIndex">
       <clr-alert

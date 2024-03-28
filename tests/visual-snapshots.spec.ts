@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { THEMES } from '../.storybook/helpers/constants';
-import { Story } from './helpers/story.interface';
+import { StoryFn } from './helpers/story.interface';
 import { ScreenshotOptions } from './screenshot-options';
 
 const browser = process.env['CLARITY_VRT_BROWSER'];
@@ -17,7 +17,7 @@ const matrixKey = browser;
 
 const usedScreenshotPaths: string[] = [];
 
-const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
+const stories: StoryFn[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
   if (storyId.endsWith('--default') || !component) {

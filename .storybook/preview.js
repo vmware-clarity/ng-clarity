@@ -9,14 +9,14 @@ import '@cds/core/icon/register.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 
-import previewStyles from 'raw-loader!./public/preview.css';
+// import previewStyles from 'raw-loader!./public/preview.css';
 import docs from '../documentation.json';
-import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
-import coreTokens from 'raw-loader!../node_modules/@cds/core/global.min.css';
-import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
+// import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
+// import coreTokens from 'raw-loader!../node_modules/@cds/core/global.min.css';
+// import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
 
 // Styles that should be watched/reloaded
-import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
+// import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
 
 import { THEMES } from './helpers/constants';
 
@@ -24,7 +24,7 @@ const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
 const styleElement = addStyleElement();
 
-const cdsCoreStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles];
+// const cdsCoreStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles];
 
 loadIcons();
 addDocs(docs);
@@ -108,7 +108,7 @@ export const globalTypes = {
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
 
-  styleElement.textContent = `${cdsCoreStyles.join('')}`;
+  // styleElement.textContent = `${cdsCoreStyles.join('')}`;
   document.body.setAttribute(cdsThemeAttribute, theme);
 
   return story();

@@ -6,7 +6,7 @@
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -54,7 +54,7 @@ export default {
   },
 };
 
-const PanelTemplate: Story = args => ({
+const PanelTemplate: StoryFn = args => ({
   template,
   props: args,
 });

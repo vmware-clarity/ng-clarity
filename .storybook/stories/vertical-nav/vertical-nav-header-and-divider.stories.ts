@@ -7,7 +7,7 @@
 import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -44,7 +44,7 @@ export default {
   },
 };
 
-const NavHeaderDividerTemplate: Story = args => ({
+const NavHeaderDividerTemplate: StoryFn = args => ({
   template: `
     <div class="content-container">
       <clr-vertical-nav>

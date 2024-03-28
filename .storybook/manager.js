@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addons } from '@storybook/addons';
+import { addons } from '@storybook/manager-api';
 import { create } from '@storybook/theming';
 
 import styles from './public/manager.css';
