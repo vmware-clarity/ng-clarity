@@ -38,6 +38,7 @@ export class KeyNavigationGridController implements OnDestroy {
   private config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
+  private _activeCell: HTMLElement;
 
   constructor(private zone: NgZone) {
     this.config = {
@@ -132,8 +133,11 @@ export class KeyNavigationGridController implements OnDestroy {
     const firstCell = this.cells ? this.cells[0] : null;
     firstCell?.setAttribute('tabindex', '0');
   }
+  getActiveCell() {
+    return this._activeCell;
+  }
 
-  private setActiveCell(activeCell: HTMLElement) {
+  setActiveCell(activeCell: HTMLElement) {
     const prior = this.cells ? Array.from(this.cells).find(c => c.getAttribute('tabindex') === '0') : null;
 
     if (prior) {
@@ -145,6 +149,7 @@ export class KeyNavigationGridController implements OnDestroy {
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
     item.focus();
+    this._activeCell = item;
   }
 
   private getNextItemCoordinate(e: any) {
