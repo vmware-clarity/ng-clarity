@@ -53,6 +53,7 @@ export default {
   },
 };
 
+
 export const PanelClosed: StoryFn = args => ({
   template,
   props: args,
@@ -74,4 +75,32 @@ export const PanelOpenedDisabled: StoryFn = PanelOpened.bind({});
 PanelOpenedDisabled.args = {
   ...PanelOpened.args,
   clrAccordionPanelDisabled: true,
+export const PanelClosed: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+  },
+};
+
+export const PanelOpened: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+  },
+};
+
+export const PanelClosedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: false,
+    clrAccordionPanelDisabled: true,
+  },
+};
+
+export const PanelOpenedDisabled: StoryObj = {
+  render: PanelTemplate,
+  args: {
+    clrAccordionPanelOpen: true,
+    clrAccordionPanelDisabled: true,
+  },
 };

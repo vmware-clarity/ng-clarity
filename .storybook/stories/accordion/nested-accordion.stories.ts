@@ -50,6 +50,7 @@ const template = `
   </clr-accordion>
 `;
 
+
 export const Closed: StoryFn = args => ({
   template,
   props: args,

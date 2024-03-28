@@ -134,5 +134,5 @@ export const OpenExtraLargeModal: StoryObj = {
 
 function removeFocusOutline({ canvasElement }: StoryContext) {
   // remove keyboard focus outline from modal title
-  canvasElement.querySelector<HTMLElement>(':focus').blur();
+  canvasElement.querySelector<HTMLElement>(':focus')?.blur();
 }

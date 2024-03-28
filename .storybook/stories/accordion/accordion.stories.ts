@@ -46,6 +46,7 @@ const template = `
   </clr-accordion>
 `;
 
+
 export const Initial: StoryFn = args => ({
   template,
   props: args,
@@ -61,8 +62,15 @@ export const MultiplePanelsOpened: StoryFn = Initial.bind({});
 MultiplePanelsOpened.argTypes = {
   ...Initial.argTypes,
   clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+
 };
-MultiplePanelsOpened.args = {
-  ...Initial.args,
-  openIndices: [true, true, false, false],
+
+export const MultiplePanelsOpened: StoryObj = {
+  render: AccordionTemplate,
+  argTypes: {
+    clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+  },
+  args: {
+    openIndices: [true, true, false, false],
+  },
 };
