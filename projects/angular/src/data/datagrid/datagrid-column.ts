@@ -186,16 +186,12 @@ export class ClrDatagridColumn<T = any>
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
+    } else if (comparator) {
+      this._sortBy = comparator;
+    } else if (this.field) {
+      this._sortBy = new DatagridPropertyComparator(this.field);
     } else {
-      if (comparator) {
-        this._sortBy = comparator;
-      } else {
-        if (this.field) {
-          this._sortBy = new DatagridPropertyComparator(this.field);
-        } else {
-          delete this._sortBy;
-        }
-      }
+      delete this._sortBy;
     }
   }
 
@@ -213,19 +209,7 @@ export class ClrDatagridColumn<T = any>
       return;
     }
 
-    switch (value) {
-      // the Unsorted case happens when the current state is either Asc or Desc
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        this._sort.clear();
-        break;
-      case ClrDatagridSortOrder.ASC:
-        this.sort(false);
-        break;
-      case ClrDatagridSortOrder.DESC:
-        this.sort(true);
-        break;
-    }
+    this.doSort(value);
   }
 
   @Input('clrFilterValue')
@@ -341,6 +325,19 @@ export class ClrDatagridColumn<T = any>
       return;
     }
 
+    if (reverse === undefined) {
+      let nextSort = ClrDatagridSortOrder.UNSORTED;
+
+      if (this._sortOrder === ClrDatagridSortOrder.UNSORTED) {
+        nextSort = ClrDatagridSortOrder.ASC;
+      } else if (this._sortOrder === ClrDatagridSortOrder.ASC) {
+        nextSort = ClrDatagridSortOrder.DESC;
+      }
+
+      this.doSort(nextSort);
+      return;
+    }
+
     this._sort.toggle(this._sortBy, reverse);
 
     // setting the private variable to not retrigger the setter logic
@@ -348,6 +345,22 @@ export class ClrDatagridColumn<T = any>
     // Sets the correct icon for current sort order
     this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
     this.sortOrderChange.emit(this._sortOrder);
+  }
+
+  private doSort(value: ClrDatagridSortOrder) {
+    switch (value) {
+      // the Unsorted case happens when the current state is either Asc or Desc
+      default:
+      case ClrDatagridSortOrder.UNSORTED:
+        this._sort.clear();
+        break;
+      case ClrDatagridSortOrder.ASC:
+        this.sort(false);
+        break;
+      case ClrDatagridSortOrder.DESC:
+        this.sort(true);
+        break;
+    }
   }
 
   private listenForDetailPaneChanges() {
