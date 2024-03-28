@@ -33,9 +33,10 @@ async function main() {
   // Now, we can query for the story links.
   const storyIds = await page.$$eval<StoryFn[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
     return sidebarButtonElement.map(sidebarButtonElement => {
-      const splitHref = sidebarButtonElement.href.split('/');
+      const anchorElement = sidebarButtonElement.firstElementChild as HTMLLinkElement;
+      const splitHref = anchorElement.href.split('/');
       const storyId = splitHref[splitHref.length - 1];
-      const component = getComponentName(sidebarButtonElement);
+      const component = getComponentName(anchorElement);
 
       return { storyId, component };
     });
