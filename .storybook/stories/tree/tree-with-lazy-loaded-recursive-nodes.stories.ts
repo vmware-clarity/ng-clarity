@@ -6,11 +6,10 @@
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
+import { filesRoot } from 'helpers/files.data';
 import { of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
-
-import { CommonModules } from '../../helpers/common';
-import { filesRoot } from '../../helpers/files.data';
 
 export default {
   title: 'Tree/Tree with lazy-loaded recursive nodes',

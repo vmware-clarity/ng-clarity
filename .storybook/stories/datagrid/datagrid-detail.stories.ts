@@ -6,8 +6,7 @@
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-
-import { Element, elements } from '../../helpers/elements.data';
+import { Element, elements } from 'helpers/elements.data';
 
 export default {
   title: 'Datagrid/Detail',

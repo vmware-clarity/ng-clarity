@@ -7,9 +7,9 @@
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn } from '@storybook/angular';
+import { CommonModules } from 'helpers/common';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
-import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Alert/Standard Alerts',

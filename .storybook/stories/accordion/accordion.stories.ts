@@ -6,8 +6,7 @@
 
 import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
 import { moduleMetadata, StoryFn } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from 'helpers/common';
 
 export default {
   title: 'Accordion/Accordion',

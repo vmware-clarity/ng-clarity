@@ -7,8 +7,7 @@
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from 'helpers/common';
 
 const ALERT_TYPES = ['info', 'warning', 'danger', 'success', 'neutral'];
 

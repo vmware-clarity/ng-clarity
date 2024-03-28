@@ -6,8 +6,7 @@
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
 import { moduleMetadata, StoryFn } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from 'helpers/common';
 
 const positions: string[] = [
   'top-left',

@@ -6,9 +6,8 @@
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
-import { filesRoot } from '../../helpers/files.data';
+import { CommonModules } from 'helpers/common';
+import { filesRoot } from 'helpers/files.data';
 
 export default {
   title: 'Tree/Tree with recursive nodes',
