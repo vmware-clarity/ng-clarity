@@ -31,17 +31,17 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('a.sidebar-item', sidebarLinkElements => {
-    return sidebarLinkElements.map(sidebarLinkElement => {
-      const splitHref = sidebarLinkElement.href.split('/');
+  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
+    return sidebarButtonElement.map(sidebarButtonElement => {
+      const splitHref = sidebarButtonElement.href.split('/');
       const storyId = splitHref[splitHref.length - 1];
-      const component = getComponentName(sidebarLinkElement);
+      const component = getComponentName(sidebarButtonElement);
 
       return { storyId, component };
     });
 
-    function getComponentName(sidebarLinkElement: HTMLLinkElement) {
-      let sidebarHeadingElement = sidebarLinkElement.parentElement.previousElementSibling;
+    function getComponentName(sidebarButtonElement: HTMLLinkElement) {
+      let sidebarHeadingElement = sidebarButtonElement.parentElement.previousElementSibling;
       while (sidebarHeadingElement && !sidebarHeadingElement.classList.contains('sidebar-subheading')) {
         sidebarHeadingElement = sidebarHeadingElement.previousElementSibling;
       }
