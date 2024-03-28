@@ -4,7 +4,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<div class="modal" *ngIf="_open">
+<div *ngIf="_open" class="modal" [class.modal-full-screen]="size == 'full-screen'">
   <!--fixme: revisit when ngClass works with exit animation-->
   <div
     cdkTrapFocus
