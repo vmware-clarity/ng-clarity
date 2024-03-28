@@ -9,7 +9,7 @@ import * as http from 'http';
 import * as nodeStatic from 'node-static';
 import { chromium } from 'playwright';
 
-import { Story } from '../tests/helpers/story.interface';
+import { StoryFn } from '../tests/helpers/story.interface';
 
 const port = 8080;
 
@@ -31,7 +31,7 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
+  const storyIds = await page.$$eval<StoryFn[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
     return sidebarButtonElement.map(sidebarButtonElement => {
       const splitHref = sidebarButtonElement.href.split('/');
       const storyId = splitHref[splitHref.length - 1];
