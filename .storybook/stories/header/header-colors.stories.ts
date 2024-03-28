@@ -62,7 +62,7 @@ const HeaderColorTemplate: StoryFn = args => ({
   props: args,
 });
 
-const HeaderColorAllTemplate: StoryFn = args => ({
+const HeaderColorAllTemplate: Story = args => ({
   template: `
     <div style="margin-top: 10px" *ngFor="let color of HEADER_VARIANTS">
       <header [class]="color">
