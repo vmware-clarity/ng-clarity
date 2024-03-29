@@ -19,7 +19,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrAccordionMultiPanel: { defaultValue: false, control: { type: 'boolean' } },
+    clrAccordionMultiPanel: { control: { type: 'boolean' } },
     // story helpers
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },
@@ -32,6 +32,7 @@ export default {
     panelCount: 4,
     title: 'Title',
     content: 'Hello World!',
+    clrAccordionMultiPanel: false,
   },
 };
 

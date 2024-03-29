@@ -42,8 +42,8 @@ export default {
     createArray: { control: { disable: true }, table: { disable: true } },
     blockCount: { control: { type: 'number', min: 1, max: 100 } },
     STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
-    TooltipPosition: { defaultValue: 'right', control: { type: 'inline-radio', options: tooltipPositions } },
-    TooltipSize: { defaultValue: 'sm', control: { type: 'inline-radio', options: tooltipSizes } },
+    TooltipPosition: { control: 'inline-radio', options: tooltipPositions },
+    TooltipSize: { control: 'inline-radio', options: tooltipSizes },
   },
   args: {
     // story helpers
@@ -57,6 +57,8 @@ export default {
     subLabel: 'Sub-block',
     subContent: 'Sub-block content',
     STACK_VIEW_STATES,
+    TooltipPosition: 'right',
+    TooltipSize: 'sm',
   },
 };
 
@@ -99,17 +101,20 @@ const StackViewAllTemplate: StoryFn = args => ({
 
 const StackViewAllTemplateWithPopOver: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top:20px">
+    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top: 20px">
       <clr-stack-view>
         <clr-stack-block
           *ngFor="let _ of createArray(blockCount); let i = index"
           [clrSbExpanded]="!!state.openIndices[i]"
         >
-          <clr-stack-label>{{ label }} {{ i + 1 }}
-          <clr-tooltip>
-            <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
-            <clr-tooltip-content [clrPosition]="TooltipPosition" [clrSize]="TooltipSize">{{tooltipContent}}</clr-tooltip-content>
-          </clr-tooltip>
+          <clr-stack-label>
+            {{ label }} {{ i + 1 }}
+            <clr-tooltip>
+              <cds-icon clrTooltipTrigger shape="info-circle" size="24"></cds-icon>
+              <clr-tooltip-content [clrPosition]="TooltipPosition" [clrSize]="TooltipSize">
+                {{ tooltipContent }}
+              </clr-tooltip-content>
+            </clr-tooltip>
           </clr-stack-label>
           <clr-stack-content>{{ content }}</clr-stack-content>
           <clr-stack-block>

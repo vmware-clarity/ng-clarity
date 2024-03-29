@@ -25,14 +25,14 @@ export default {
   component: ClrCheckbox,
   argTypes: {
     // inputs
-    id: { defaultValue: '' },
+    id: {},
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
     type: {
-      defaultValue: CheckboxType.Checkbox,
-      control: { type: 'inline-radio', options: CheckboxType },
+      control: 'inline-radio',
+      options: CheckboxType,
     },
   },
   args: {
@@ -40,6 +40,8 @@ export default {
     label: 'Option',
     checked: false,
     disabled: false,
+    id: '',
+    type: CheckboxType.Checkbox,
   },
 };
 

@@ -17,7 +17,7 @@ export default {
     }),
   ],
   argTypes: {
-    size: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    size: { control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
   },
   args: {
     title: 'Small Modal',

@@ -25,14 +25,15 @@ export default {
   component: ClrCheckboxContainer,
   argTypes: {
     // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
+    clrInline: { control: { type: 'boolean' } },
     // methods
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
     type: {
       defaultValue: CheckboxType.Checkbox,
-      control: { type: 'inline-radio', options: CheckboxType },
+      control: 'inline-radio',
+      options: CheckboxType,
     },
     createArray: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
@@ -42,6 +43,7 @@ export default {
     label: 'Options',
     createArray: n => new Array(n),
     optionCount: 4,
+    clrInline: false,
   },
 };
 

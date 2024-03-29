@@ -20,10 +20,10 @@ export default {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrModalLabelledById: { defaultValue: '' },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
-    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    clrModalCloseButtonAriaLabel: { type: 'string' },
+    clrModalLabelledById: {},
+    clrModalSize: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] },
+    clrModalSkipAnimation: { control: { type: 'boolean' } },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -44,6 +44,10 @@ export default {
     title: 'Modal Title',
     body: 'Hello World!',
     showLongPageContent: true,
+    clrModalCloseButtonAriaLabel: commonStringsDefault.close,
+    clrModalLabelledById: '',
+    clrModalSize: 'md',
+    clrModalSkipAnimation: false,
   },
 };
 

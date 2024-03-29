@@ -19,7 +19,7 @@ export default {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { defaultValue: TabsLayout.HORIZONTAL, control: { type: 'inline-radio', options: TabsLayout } },
+    clrLayout: { control: 'inline-radio', options: TabsLayout },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -40,6 +40,7 @@ export default {
     activeTab: 1,
     title: 'Tab',
     content: 'Tab Content',
+    clrLayout: TabsLayout.HORIZONTAL,
   },
 };
 

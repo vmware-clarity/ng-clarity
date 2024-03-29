@@ -32,7 +32,7 @@ export default {
 };
 
 const selectTemplate: StoryFn = args => ({
-  template: ` 
+  template: `
     <clr-select-container>
       <label>Options</label>
       <select clrSelect>

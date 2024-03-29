@@ -20,8 +20,8 @@ export default {
   component: ClrTooltipContent,
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'right', control: { type: 'inline-radio', options: tooltipPositions } },
-    clrSize: { defaultValue: 'sm', control: { type: 'inline-radio', options: tooltipSizes } },
+    clrPosition: { control: 'inline-radio', options: tooltipPositions },
+    clrSize: { control: 'inline-radio', options: tooltipSizes },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
@@ -29,6 +29,8 @@ export default {
   args: {
     // story helpers
     content: 'This is the tooltip content.',
+    clrPosition: 'right',
+    clrSize: 'sm',
   },
 };
 
