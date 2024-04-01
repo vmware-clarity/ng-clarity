@@ -39,4 +39,8 @@ export class DatagridSortingDemo {
   setSortOrder(newOrder: ClrDatagridSortOrder) {
     this.sortOrder = newOrder;
   }
+
+  clrDgSortOrderChange($event: ClrDatagridSortOrder) {
+    console.log($event);
+  }
 }

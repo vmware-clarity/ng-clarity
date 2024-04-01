@@ -193,6 +193,12 @@ export class ClrDatagridColumn<T = any>
     } else {
       delete this._sortBy;
     }
+
+    // if (this._sortBy) {
+    //   this._sorters.addComparator(this._sortBy);
+    // } else {
+    //   this._sorters.removeComparator(this._sortBy);
+    // }
   }
 
   @Input('clrDgSortOrder')
@@ -353,6 +359,7 @@ export class ClrDatagridColumn<T = any>
       default:
       case ClrDatagridSortOrder.UNSORTED:
         this._sort.clear();
+        this._sortDirection = null;
         break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
@@ -382,7 +389,7 @@ export class ClrDatagridColumn<T = any>
       if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
         this._sortOrder = ClrDatagridSortOrder.UNSORTED;
         this.sortOrderChange.emit(this._sortOrder);
-        this._sortDirection = null;
+        //     this._sortDirection = null;
       }
     });
   }
