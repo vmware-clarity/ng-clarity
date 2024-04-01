@@ -19,9 +19,6 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    clrDgActionOverflowOpen: { defaultValue: false },
-    clrDgActionOverflowButtonLabel: { defaultValue: commonStringsDefault.rowActions },
     // outputs
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -41,6 +38,8 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    clrDgActionOverflowOpen: false,
+    clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
   },
 };
 

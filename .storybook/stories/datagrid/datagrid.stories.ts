@@ -20,14 +20,9 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDetailExpandableAriaLabel: { defaultValue: commonStringsDefault.detailExpandableAriaLabel },
-    clrDgLoading: { defaultValue: false },
-    clrDgPreserveSelection: { defaultValue: false },
-    clrDgRowSelection: { defaultValue: false },
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsDefault.singleActionableAriaLabel },
     clrDgSingleSelected: { control: { disable: true } },
-    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsDefault.singleSelectionAriaLabel },
+
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -51,6 +46,12 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    clrDetailExpandableAriaLabel: commonStringsDefault.detailExpandableAriaLabel,
+    clrDgLoading: false,
+    clrDgPreserveSelection: false,
+    clrDgRowSelection: false,
+    clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
+    clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
   },
 };
 

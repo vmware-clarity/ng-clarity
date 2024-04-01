@@ -21,13 +21,10 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrDgExpanded: { control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
-    clrDgRowSelectionLabel: { defaultValue: '' },
+    clrDgSelectable: { control: { type: 'boolean' } },
+    clrDgSelected: { control: { type: 'boolean' } },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -36,7 +33,7 @@ export default {
     toggleExpand: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    openTooltip: { defaultValue: false, control: { type: 'boolean' } },
+    openTooltip: { control: { type: 'boolean' } },
   },
   args: {
     // outputs
@@ -51,6 +48,13 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgSelectable: true,
+    clrDgSelected: false,
+    clrDgRowSelectionLabel: '',
+    openTooltip: false,
   },
 };
 

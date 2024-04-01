@@ -20,13 +20,10 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrDgExpanded: { control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgRowSelectionLabel: { defaultValue: 'Select row for' },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
+    clrDgSelectable: { control: { type: 'boolean' } },
+    clrDgSelected: { control: { type: 'boolean' } },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -49,6 +46,12 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgRowSelectionLabel: 'Select row for',
+    clrDgSelectable: true,
+    clrDgSelected: false,
   },
 };
 
