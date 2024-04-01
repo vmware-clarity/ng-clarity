@@ -6,10 +6,11 @@
 
 import { Component, ElementRef, HostListener, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
 
-import { assertNever } from '../../utils/assert/assert.helpers';
+// import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { PopoverCdkService } from '../../utils/popover/providers/popover-cdk.service';
 import { AbstractPopover } from '../common/abstract-popover';
-import { Point } from '../common/popover';
+// import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
@@ -43,7 +44,9 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
     private tooltipIdService: TooltipIdService,
-    private tooltipMouseService: TooltipMouseService
+    private tooltipMouseService: TooltipMouseService,
+    private cdkService: PopoverCdkService,
+    private elt: ElementRef
   ) {
     super(injector, parentHost);
 
@@ -76,36 +79,37 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
 
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+    this.cdkService.setPosition();
 
     // set the popover values based on direction
-    switch (newPosition) {
-      case 'top-right':
-        this.anchorPoint = Point.TOP_CENTER;
-        this.popoverPoint = Point.LEFT_BOTTOM;
-        break;
-      case 'top-left':
-        this.anchorPoint = Point.TOP_CENTER;
-        this.popoverPoint = Point.RIGHT_BOTTOM;
-        break;
-      case 'bottom-right':
-        this.anchorPoint = Point.BOTTOM_CENTER;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'bottom-left':
-        this.anchorPoint = Point.BOTTOM_CENTER;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      case 'right':
-        this.anchorPoint = Point.RIGHT_CENTER;
-        this.popoverPoint = Point.LEFT_TOP;
-        break;
-      case 'left':
-        this.anchorPoint = Point.LEFT_CENTER;
-        this.popoverPoint = Point.RIGHT_TOP;
-        break;
-      default:
-        assertNever(newPosition);
-    }
+    // switch (newPosition) {
+    //   case 'top-right':
+    //     this.anchorPoint = Point.TOP_CENTER;
+    //     this.popoverPoint = Point.LEFT_BOTTOM;
+    //     break;
+    //   case 'top-left':
+    //     this.anchorPoint = Point.TOP_CENTER;
+    //     this.popoverPoint = Point.RIGHT_BOTTOM;
+    //     break;
+    //   case 'bottom-right':
+    //     this.anchorPoint = Point.BOTTOM_CENTER;
+    //     this.popoverPoint = Point.LEFT_TOP;
+    //     break;
+    //   case 'bottom-left':
+    //     this.anchorPoint = Point.BOTTOM_CENTER;
+    //     this.popoverPoint = Point.RIGHT_TOP;
+    //     break;
+    //   case 'right':
+    //     this.anchorPoint = Point.RIGHT_CENTER;
+    //     this.popoverPoint = Point.LEFT_TOP;
+    //     break;
+    //   case 'left':
+    //     this.anchorPoint = Point.LEFT_CENTER;
+    //     this.popoverPoint = Point.RIGHT_TOP;
+    //     break;
+    //   default:
+    //     assertNever(newPosition);
+    // }
   }
 
   @Input('clrSize')
@@ -123,6 +127,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
   ngOnInit() {
     this.size = this.size || defaultSize;
     this.position = this.position || defaultPosition;
+    this.cdkService.referenceElement(this.elt);
   }
 
   @HostListener('mouseenter')
@@ -136,7 +141,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
   }
 
   private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {
-    this.renderer.removeClass(this.el.nativeElement, oldClass);
-    this.renderer.addClass(this.el.nativeElement, newClass);
+    this.renderer.removeClass(this.elt.nativeElement, oldClass);
+    this.renderer.addClass(this.elt.nativeElement, newClass);
   }
 }

@@ -7,6 +7,7 @@
 import { Directive, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { PopoverCdkService } from '../../utils/popover/providers/popover-cdk.service';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
@@ -27,7 +28,8 @@ export class ClrTooltipTrigger {
   constructor(
     private popoverService: ClrPopoverService,
     private tooltipIdService: TooltipIdService,
-    private tooltipMouseService: TooltipMouseService
+    private tooltipMouseService: TooltipMouseService,
+    private cdkService: PopoverCdkService
   ) {
     // The aria-described by comes from the id of content. It
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
@@ -50,10 +52,12 @@ export class ClrTooltipTrigger {
   @HostListener('mouseenter')
   private onMouseEnter() {
     this.tooltipMouseService.onMouseEnterTrigger();
+    this.cdkService.showOverlay();
   }
 
   @HostListener('mouseleave')
   private onMouseLeave() {
     this.tooltipMouseService.onMouseLeaveTrigger();
+    this.cdkService.removeOverlay();
   }
 }
