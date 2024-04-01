@@ -10,7 +10,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from '../../helpers/common';
 
 export default {
-  title: 'Header/Header',
+  title: 'Header',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
