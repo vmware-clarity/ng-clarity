@@ -20,9 +20,9 @@ const usedScreenshotPaths: string[] = [];
 const stories: StoryFn[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
-  // if (storyId.endsWith('--default') || !component) {
-  //   continue;
-  // }
+  if (!component) {
+    continue;
+  }
 
   const storyName = storyId.replace(`${component}-`, '');
 
