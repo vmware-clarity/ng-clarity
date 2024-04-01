@@ -31,7 +31,6 @@ export default {
     controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
     type: {
-      defaultValue: CheckboxType.Checkbox,
       control: 'inline-radio',
       options: CheckboxType,
     },
@@ -44,6 +43,7 @@ export default {
     createArray: n => new Array(n),
     optionCount: 4,
     clrInline: false,
+    type: CheckboxType.Checkbox,
   },
 };
 

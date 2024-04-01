@@ -26,9 +26,9 @@ export default {
   component: ClrButtonGroup,
   argTypes: {
     // inputs
-    clrMenuPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
-    loading: { defaultValue: false, control: { type: 'boolean' } },
-    clrToggleButtonAriaLabel: { defaultValue: commonStringsDefault.rowActions },
+    clrMenuPosition: { type: 'radio', options: CLR_MENU_POSITIONS },
+    loading: { control: { type: 'boolean' } },
+    clrToggleButtonAriaLabel: {},
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -39,14 +39,8 @@ export default {
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
     disabledButtonsPosition: { description: 'Enter JSON array (e.g. `[2,3]`)', control: { type: 'array' } },
-    buttonStyle: {
-      defaultValue: 'outline',
-      control: { type: 'radio', options: BUTTON_STYLES },
-    },
-    buttonType: {
-      defaultValue: 'primary',
-      control: { type: 'radio', options: BUTTON_TYPES },
-    },
+    buttonStyle: { type: 'radio', options: BUTTON_STYLES },
+    buttonType: { type: 'radio', options: BUTTON_TYPES },
     getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
@@ -62,6 +56,11 @@ export default {
     getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
+    clrMenuPosition: 'bottom-left',
+    loading: false,
+    clrToggleButtonAriaLabel: commonStringsDefault.rowActions,
+    buttonType: 'primary',
+    buttonStyle: 'outline',
   },
 };
 

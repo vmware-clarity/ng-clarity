@@ -71,6 +71,11 @@ export default {
     itemCount: 3,
     content: 'Hello World!',
     ALERT_TYPES,
+    clrAlertIcon: 'Default',
+    clrAlertLightweight: false,
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
+    clrAlertSizeSmall: false,
   },
 };
 

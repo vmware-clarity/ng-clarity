@@ -26,13 +26,11 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    clrLabelSize: { type: 'number', min: 1, max: 12 },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
+    clrLayout: { options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
     // story helpers
@@ -41,6 +39,7 @@ export default {
     screenReaderContent: 'Please fill out the form',
     form: formMappingKey,
     namePlaceholder: '',
+    clrLabelSize: 2,
   },
 };
 

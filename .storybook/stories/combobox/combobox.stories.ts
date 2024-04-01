@@ -46,7 +46,7 @@ export default {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
-    updateOn: { control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
+    updateOn: { type: 'radio', options: ['change', 'blur', 'submit'] },
   },
   args: {
     // outputs
