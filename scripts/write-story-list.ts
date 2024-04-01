@@ -9,7 +9,7 @@ import * as http from 'http';
 import * as nodeStatic from 'node-static';
 import { chromium } from 'playwright';
 
-import { Story } from '../tests/helpers/story.interface';
+import { StoryFn } from '../tests/helpers/story.interface';
 
 const port = 8080;
 
@@ -31,17 +31,17 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('a.sidebar-item', sidebarLinkElements => {
-    return sidebarLinkElements.map(sidebarLinkElement => {
-      const splitHref = sidebarLinkElement.href.split('/');
-      const storyId = splitHref[splitHref.length - 1];
-      const component = getComponentName(sidebarLinkElement);
+  const storyIds = await page.$$eval<StoryFn[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
+    return sidebarButtonElement.map(sidebarButtonElement => {
+      const anchorElement = sidebarButtonElement.firstElementChild as HTMLLinkElement;
+      const storyId = anchorElement.getAttribute('id');
+      const component = getComponentName(anchorElement);
 
       return { storyId, component };
     });
 
-    function getComponentName(sidebarLinkElement: HTMLLinkElement) {
-      let sidebarHeadingElement = sidebarLinkElement.parentElement.previousElementSibling;
+    function getComponentName(sidebarButtonElement: HTMLLinkElement) {
+      let sidebarHeadingElement = sidebarButtonElement.parentElement.previousElementSibling;
       while (sidebarHeadingElement && !sidebarHeadingElement.classList.contains('sidebar-subheading')) {
         sidebarHeadingElement = sidebarHeadingElement.previousElementSibling;
       }
@@ -52,7 +52,6 @@ async function main() {
 
   // And write a file for the storybook-visual-regression-test `playwright` test to read.
   fs.writeFileSync('./dist/docs/stories.json', JSON.stringify(storyIds, undefined, 2));
-
   await browser.close();
   await closeServer(server);
 }

@@ -9,6 +9,8 @@ import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { removeFocusOutline } from '../../helpers/common';
+
 export default {
   title: 'Wizard/Wizard',
   component: ClrWizard,
@@ -118,4 +120,5 @@ const WizardTemplate: StoryFn = args => ({
 
 export const Wizard: StoryObj = {
   render: WizardTemplate,
+  play: removeFocusOutline,
 };
