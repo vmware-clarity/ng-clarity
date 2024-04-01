@@ -28,7 +28,18 @@ export default {
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
   },
-  args: {},
+  args: {
+    clrDisplayval: '',
+    clrFade: false,
+    clrFlash: false,
+    clrFlashDanger: false,
+    clrLabeled: false,
+    clrLoop: false,
+    clrMax: 100,
+    clrColor: '',
+    clrValue: 33,
+    clrCompact: false,
+  },
 };
 
 const ProgressBarTemplate: StoryFn = args => ({

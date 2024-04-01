@@ -34,8 +34,7 @@ async function main() {
   const storyIds = await page.$$eval<StoryFn[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
     return sidebarButtonElement.map(sidebarButtonElement => {
       const anchorElement = sidebarButtonElement.firstElementChild as HTMLLinkElement;
-      const splitHref = anchorElement.href.split('/');
-      const storyId = splitHref[splitHref.length - 1];
+      const storyId = anchorElement.getAttribute('id');
       const component = getComponentName(anchorElement);
 
       return { storyId, component };
@@ -53,7 +52,6 @@ async function main() {
 
   // And write a file for the storybook-visual-regression-test `playwright` test to read.
   fs.writeFileSync('./dist/docs/stories.json', JSON.stringify(storyIds, undefined, 2));
-
   await browser.close();
   await closeServer(server);
 }
