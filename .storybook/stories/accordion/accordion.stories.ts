@@ -67,9 +67,10 @@ export const SinglePanelOpened: StoryObj = {
 export const MultiplePanelsOpened: StoryObj = {
   render: AccordionTemplate,
   argTypes: {
-    clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+    clrAccordionMultiPanel: { control: { disable: true } },
   },
   args: {
     openIndices: [true, true, false, false],
+    clrAccordionMultiPanel: true,
   },
 };

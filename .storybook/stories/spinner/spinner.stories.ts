@@ -19,16 +19,20 @@ export default {
   component: ClrSpinner,
   argTypes: {
     // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
-    clrInverse: { defaultValue: false, control: { type: 'boolean' } },
-    clrMedium: { defaultValue: false, control: { type: 'boolean' } },
-    clrSmall: { defaultValue: false, control: { type: 'boolean' } },
+    clrInline: { control: { type: 'boolean' } },
+    clrInverse: { control: { type: 'boolean' } },
+    clrMedium: { control: { type: 'boolean' } },
+    clrSmall: { control: { type: 'boolean' } },
     // story helpers
     text: { control: { type: 'text' }, description: 'Optional text' },
   },
   args: {
     // story helpers
     text: 'Loading',
+    clrInline: false,
+    clrInverse: false,
+    clrMedium: false,
+    clrSmall: false,
   },
 };
 

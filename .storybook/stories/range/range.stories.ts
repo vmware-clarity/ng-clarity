@@ -17,7 +17,7 @@ export default {
   component: ClrRangeContainer,
   argTypes: {
     // methods
-    clrRangeHasProgress: { defaultValue: false, control: { type: 'boolean' } },
+    clrRangeHasProgress: { control: { type: 'boolean' } },
     getRangeProgressFillWidth: { control: { disabled: true }, table: { disable: true } },
     addGrid: { control: { disabled: true }, table: { disable: true } },
     controlClass: { control: { disabled: true }, table: { disable: true } },
@@ -28,6 +28,7 @@ export default {
     label: 'Options',
     value: 50,
     disabled: false,
+    clrRangeHasProgress: false,
   },
 };
 

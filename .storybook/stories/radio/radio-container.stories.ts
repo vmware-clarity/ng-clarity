@@ -19,7 +19,7 @@ export default {
   component: ClrRadioContainer,
   argTypes: {
     // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
+    clrInline: { control: { type: 'boolean' } },
     // methods
     addGrid: { control: { disabled: true }, table: { disable: true } },
     controlClass: { control: { disabled: true }, table: { disable: true } },
@@ -31,6 +31,7 @@ export default {
     label: 'Options',
     createArray: n => new Array(n),
     optionCount: 3,
+    clrInline: false,
   },
 };
 

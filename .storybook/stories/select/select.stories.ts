@@ -17,7 +17,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    id: { defaultValue: '' },
+    id: {},
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
@@ -28,6 +28,7 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     optionCount: 3,
+    id: '',
   },
 };
 

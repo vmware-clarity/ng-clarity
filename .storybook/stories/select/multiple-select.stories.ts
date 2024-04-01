@@ -17,7 +17,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    id: { defaultValue: '' },
+    id: {},
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
@@ -29,6 +29,7 @@ export default {
     createArray: n => new Array(n),
     optionCount: 3,
     selectedOptions: [],
+    id: '',
   },
 };
 

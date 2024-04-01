@@ -34,7 +34,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'right-middle', control: { type: 'radio', options: positions } },
+    clrPosition: { type: 'radio', options: positions },
     // methods
     close: { control: { disable: true }, table: { disable: true } },
     anchor: { control: { disable: true }, table: { disable: true } },
@@ -43,6 +43,7 @@ export default {
   args: {
     // story helpers
     content: 'Hello World!',
+    clrPosition: 'right-middle',
   },
 };
 

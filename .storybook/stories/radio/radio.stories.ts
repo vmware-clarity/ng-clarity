@@ -19,7 +19,7 @@ export default {
   component: ClrRadio,
   argTypes: {
     // inputs
-    id: { defaultValue: '' },
+    id: {},
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
@@ -29,6 +29,7 @@ export default {
     label: 'Option',
     disabled: false,
     checked: false,
+    id: '',
   },
 };
 

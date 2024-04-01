@@ -24,7 +24,6 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified',
-      defaultValue: 'Default',
       control: 'radio',
       options: ['Default', 'settings'],
       mapping: { Default: '' },
@@ -32,12 +31,10 @@ export default {
     clrCloseButtonAriaLabel: {
       description: 'Aria label for the close button. Only used if the close button is rendered',
       control: 'text',
-      defaultValue: commonStringsDefault.alertCloseButtonAriaLabel,
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
       control: 'boolean',
-      defaultValue: false,
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
@@ -61,6 +58,9 @@ export default {
     itemCount: 3,
     content: 'Hello World!',
     ALERT_TYPES,
+    clrAlertIcon: 'Default',
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
   },
 };
 
