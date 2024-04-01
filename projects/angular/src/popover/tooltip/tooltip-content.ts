@@ -4,12 +4,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Inject, Injector, Input, OnInit, Optional } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  Injector,
+  Input,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 
 // import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
 import { PopoverCdkService } from '../../utils/popover/providers/popover-cdk.service';
-import { AbstractPopover } from '../common/abstract-popover';
 // import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -33,7 +42,7 @@ const defaultSize = 'sm';
     '[id]': 'id',
   },
 })
-export class ClrTooltipContent extends AbstractPopover implements OnInit {
+export class ClrTooltipContent implements OnInit {
   private _id: string;
   private _position: string;
   private _size: string;
@@ -46,9 +55,10 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
     private tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService,
     private cdkService: PopoverCdkService,
-    private elt: ElementRef
+    public elementRef: ElementRef,
+    private renderer: Renderer2
   ) {
-    super(injector, parentHost);
+    // super(injector, parentHost);
 
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
@@ -127,21 +137,22 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit {
   ngOnInit() {
     this.size = this.size || defaultSize;
     this.position = this.position || defaultPosition;
-    this.cdkService.referenceElement(this.elt);
+    this.cdkService.referenceElement(this.elementRef);
   }
 
   @HostListener('mouseenter')
   private onMouseEnter() {
-    this.tooltipMouseService.onMouseEnterContent();
+    // this.cdkService.referenceElement(this.elt);
+    // this.tooltipMouseService.onMouseEnterContent();
   }
 
   @HostListener('mouseleave')
   private onMouseLeave() {
-    this.tooltipMouseService.onMouseLeaveContent();
+    // this.tooltipMouseService.onMouseLeaveContent();
   }
 
   private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {
-    this.renderer.removeClass(this.elt.nativeElement, oldClass);
-    this.renderer.addClass(this.elt.nativeElement, newClass);
+    this.renderer.removeClass(this.elementRef.nativeElement, oldClass);
+    this.renderer.addClass(this.elementRef.nativeElement, newClass);
   }
 }

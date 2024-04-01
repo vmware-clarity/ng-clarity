@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { PopoverCdkService } from '../../utils/popover/providers/popover-cdk.service';
@@ -21,7 +21,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
     '[attr.role]': '"button"',
   },
 })
-export class ClrTooltipTrigger {
+export class ClrTooltipTrigger implements AfterViewInit {
   ariaDescribedBy: string;
   private subs: Subscription[] = [];
 
@@ -29,10 +29,15 @@ export class ClrTooltipTrigger {
     private popoverService: ClrPopoverService,
     private tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService,
-    private cdkService: PopoverCdkService
+    private cdkService: PopoverCdkService,
+    public elementRef: ElementRef
   ) {
     // The aria-described by comes from the id of content. It
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
+  }
+
+  ngAfterViewInit(): void {
+    console.log('element ref', this.elementRef);
   }
 
   ngOnDestroy() {
@@ -51,13 +56,15 @@ export class ClrTooltipTrigger {
 
   @HostListener('mouseenter')
   private onMouseEnter() {
-    this.tooltipMouseService.onMouseEnterTrigger();
+    // this.tooltipMouseService.onMouseEnterTrigger();
+    this.cdkService.setAnchor(this.elementRef);
+
     this.cdkService.showOverlay();
   }
 
   @HostListener('mouseleave')
   private onMouseLeave() {
-    this.tooltipMouseService.onMouseLeaveTrigger();
-    this.cdkService.removeOverlay();
+    // this.tooltipMouseService.onMouseLeaveTrigger();
+    // this.cdkService.removeOverlay();
   }
 }
