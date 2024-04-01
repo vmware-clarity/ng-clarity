@@ -28,8 +28,8 @@ export default {
   argTypes: {
     // inputs
     clrState: {
-      defaultValue: ClrTimelineStepState.NOT_STARTED,
-      control: { type: 'inline-radio', options: ClrTimelineStepState },
+      control: 'inline-radio',
+      options: ClrTimelineStepState,
     },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
@@ -42,6 +42,7 @@ export default {
     title: 'title',
     description: 'description',
     TIMELINE_STEP_STATE,
+    clrState: ClrTimelineStepState.NOT_STARTED,
   },
 };
 

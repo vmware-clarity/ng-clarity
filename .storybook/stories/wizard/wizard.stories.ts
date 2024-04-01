@@ -19,16 +19,8 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
-    clrWizardOpen: { defaultValue: true }, // the default value is really false, but that doesn't really work for the story
-    clrWizardClosable: { defaultValue: true },
-    clrWizardDisableStepnav: { defaultValue: false },
-    clrWizardPreventNavigation: { defaultValue: false },
-    clrWizardForceForwardNavigation: { defaultValue: false },
-    clrWizardPreventDefaultNext: { defaultValue: false },
-    clrWizardPreventDefaultCancel: { defaultValue: false },
-    clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
-    clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
+    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -67,8 +59,24 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
-    clrWizardOpen: true,
+    clrWizardOpen: true, // the default value is really false, but that doesn't really work for the story
     clrWizardSize: 'xl',
+    clrHeadingLevel: 1,
+    clrWizardClosable: true,
+    clrWizardDisableStepnav: false,
+    clrWizardPreventNavigation: false,
+    clrWizardForceForwardNavigation: false,
+    clrWizardPreventDefaultNext: false,
+    clrWizardPreventDefaultCancel: false,
+    clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
   },
 };
 

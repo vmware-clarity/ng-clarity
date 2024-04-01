@@ -19,14 +19,9 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
-    clrWizardPageHasError: { defaultValue: false },
-    clrWizardPageNextDisabled: { defaultValue: false },
-    clrWizardPagePreventDefault: { defaultValue: false, control: { type: 'boolean' } },
-    clrWizardPagePreventDefaultCancel: { defaultValue: false },
-    clrWizardPagePreventDefaultNext: { defaultValue: false },
-    clrWizardPagePreviousDisabled: { defaultValue: false },
-    id: { defaultValue: '', control: { type: 'text' } },
+    clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
+    clrWizardPagePreventDefault: { control: { type: 'boolean' } },
+    id: { control: { type: 'text' } },
     // outputs
     clrWizardPageCustomButton: { control: { disable: true } },
     clrWizardPageDanger: { control: { disable: true } },
@@ -57,6 +52,22 @@ export default {
     clrWizardPagePrevious: action('clrWizardPagePrevious'),
     clrWizardPagePreviousDisabledChange: action('clrWizardPagePreviousDisabledChange'),
     clrWizardPagePrimary: action('clrWizardPagePrimary'),
+    clrHeadingLevel: 1,
+    clrWizardPageHasError: false,
+    clrWizardPageNextDisabled: false,
+    clrWizardPagePreventDefault: false,
+    clrWizardPagePreventDefaultCancel: false,
+    clrWizardPagePreventDefaultNext: false,
+    clrWizardPagePreviousDisabled: false,
+    id: '',
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
   },
 };
 

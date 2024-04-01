@@ -35,11 +35,11 @@ export default {
   component: ClrTreeNode,
   argTypes: {
     // inputs
-    clrExpandable: { defaultValue: true, control: { type: 'boolean' } },
-    clrExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrExpandable: { control: { type: 'boolean' } },
+    clrExpanded: { control: { type: 'boolean' } },
     clrSelected: {
-      defaultValue: 'not selectable',
-      control: { type: 'inline-radio', options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'] },
+      control: 'inline-radio',
+      options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
         'not selectable': undefined,
         UNSELECTED: ClrSelectedState.UNSELECTED,
@@ -65,6 +65,9 @@ export default {
     clrSelectedChange: action('clrSelectedChange'),
     TREE_NODE_STATE,
     EXPANDED_STATE,
+    clrExpandable: true,
+    clrExpanded: false,
+    clrSelected: 'not selectable',
   },
 };
 

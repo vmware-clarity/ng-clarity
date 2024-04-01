@@ -31,7 +31,7 @@ export default {
   component: ClrVerticalNavGroup,
   argTypes: {
     // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrVerticalNavGroupExpanded: { control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     // methods
@@ -49,6 +49,7 @@ export default {
     navLinks,
     activeIndex: 0,
     includeIcons: true,
+    clrVerticalNavGroupExpanded: false,
   },
 };
 

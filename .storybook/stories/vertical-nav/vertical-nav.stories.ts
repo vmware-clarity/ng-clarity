@@ -31,8 +31,8 @@ export default {
   component: ClrVerticalNav,
   argTypes: {
     // inputs
-    clrVerticalNavCollapsible: { defaultValue: false, control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
+    clrVerticalNavCollapsible: { control: { type: 'boolean' } },
+    clrVerticalNavCollapsed: { control: { type: 'boolean' } },
     // outputs
     clrVerticalNavCollapsedChange: { control: { disable: true } },
     // methods
@@ -47,6 +47,8 @@ export default {
     navLinks,
     activeIndex: 0,
     includeIcons: true,
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
   },
 };
 

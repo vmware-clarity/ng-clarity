@@ -20,8 +20,8 @@ export default {
   argTypes: {
     // inputs
     clrLayout: {
-      defaultValue: ClrTimelineLayout.HORIZONTAL,
-      control: { type: 'inline-radio', options: ClrTimelineLayout },
+      control: 'inline-radio',
+      options: ClrTimelineLayout,
     },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
@@ -29,6 +29,7 @@ export default {
   args: {
     // story helpers
     ClrTimelineStepState,
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
   },
 };
 
