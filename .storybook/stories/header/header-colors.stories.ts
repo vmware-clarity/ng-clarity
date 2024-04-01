@@ -29,13 +29,7 @@ export default {
   ],
   component: ClrHeader,
   argTypes: {
-    color: {
-      defaultValue: 'header-1',
-      control: {
-        type: 'select',
-        options: HEADER_VARIANTS,
-      },
-    },
+    color: { control: 'select', options: HEADER_VARIANTS },
     // methods
     closeOpenNav: { control: { disable: true }, table: { disable: true } },
     initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
@@ -46,6 +40,7 @@ export default {
   },
   args: {
     HEADER_VARIANTS,
+    color: 'header-1',
   },
 };
 

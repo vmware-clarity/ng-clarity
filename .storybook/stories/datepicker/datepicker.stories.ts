@@ -23,9 +23,7 @@ export default {
     clrDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
-    disabled: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: '' },
-    id: { defaultValue: '' },
+    disabled: { control: { type: 'boolean' } },
     // outputs
     clrDateChange: { control: { disable: true } },
     // methods
@@ -43,6 +41,9 @@ export default {
     // story helpers
     getDateObject: date => new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
+    disabled: false,
+    placeholder: '',
+    id: '',
   },
 };
 

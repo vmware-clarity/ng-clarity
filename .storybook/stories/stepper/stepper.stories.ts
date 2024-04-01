@@ -23,7 +23,6 @@ export default {
   component: ClrStepper,
   argTypes: {
     // inputs
-    clrInitialStep: { defaultValue: '' },
     // story helpers
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     ngSubmit: { control: { disable: true }, table: { disable: true } },
@@ -36,6 +35,7 @@ export default {
     stepCount: 3,
     form: formMappingKey,
     ngSubmit: action('ngSubmit'),
+    clrInitialStep: '',
   },
 };
 

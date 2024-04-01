@@ -18,10 +18,18 @@ export default {
   ],
   component: ClrDropdown,
   argTypes: {
-    clrCloseMenuOnItemClick: { defaultValue: true, control: { type: 'boolean' } },
+    clrCloseMenuOnItemClick: { control: { type: 'boolean' } },
   },
   args: {
     clrCloseMenuOnItemClick: true,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
   },
 };
 
