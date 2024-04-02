@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
@@ -16,7 +15,7 @@ export default {
   component: ClrDatagridRow,
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule, BrowserAnimationsModule],
+      imports: [ClrDatagridModule, ClrConditionalModule],
     }),
   ],
   argTypes: {

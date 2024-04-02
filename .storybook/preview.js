@@ -8,6 +8,8 @@ import '@cds/core/icon/register.js';
 
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+import { applicationConfig } from '@storybook/angular';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 // import previewStyles from 'raw-loader!./public/preview.css';
 import docs from '../documentation.json';
@@ -114,7 +116,12 @@ const themeDecorator = (story, { globals }) => {
   return story();
 };
 
-export const decorators = [themeDecorator];
+export const decorators = [
+  themeDecorator,
+  applicationConfig({
+    providers: [provideAnimations()],
+  }),
+];
 
 function addStyleElement() {
   const styleElement = document.createElement('style');

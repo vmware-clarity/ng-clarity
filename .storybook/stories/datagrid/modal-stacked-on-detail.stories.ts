@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule, ClrModalModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -14,7 +13,7 @@ export default {
   title: 'Datagrid/Modal Stacked On Detail',
   decorators: [
     moduleMetadata({
-      imports: [ClrDatagridModule, ClrModalModule, BrowserAnimationsModule],
+      imports: [ClrDatagridModule, ClrModalModule],
     }),
   ],
   argTypes: {
