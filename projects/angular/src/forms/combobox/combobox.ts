@@ -257,6 +257,9 @@ export class ClrCombobox<T>
 
   onBlur() {
     this.onTouchedCallback();
+    if (this.control.control.updateOn === 'change' && this.control.control?.errors?.required) {
+      this.updateControlValue();
+    }
     if (this.control.control.updateOn === 'blur') {
       this.control.control.updateValueAndValidity();
     }

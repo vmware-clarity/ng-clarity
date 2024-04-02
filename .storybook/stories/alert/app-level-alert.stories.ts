@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -65,45 +65,50 @@ export default {
 };
 
 const template = `
-    <clr-alert
-     *ngFor="let alert of ALERT_TYPES"
-      style="margin-top: 5px;"
-      [clrAlertAppLevel]="true"
-      [clrAlertClosable]="clrAlertClosable"
-      [clrAlertIcon]="clrAlertIcon"
-      [clrAlertType]="alert"
-      [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
-      (clrAlertClosedChange)="clrAlertClosedChange($event)"
-    >
-      <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{content}} {{i + 1}}</span>
-      </clr-alert-item>
-    </clr-alert>
-  `;
+  <clr-alert
+    *ngFor="let alert of ALERT_TYPES"
+    style="margin-top: 5px"
+    [clrAlertAppLevel]="true"
+    [clrAlertClosable]="clrAlertClosable"
+    [clrAlertIcon]="clrAlertIcon"
+    [clrAlertType]="alert"
+    [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+    (clrAlertClosedChange)="clrAlertClosedChange($event)"
+  >
+    <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
+      <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+    </clr-alert-item>
+  </clr-alert>
+`;
 
-export const Alert: Story = args => ({
+const AlertTemplate: Story = args => ({
   template,
   props: args,
 });
 
-export const DifferentIcon: Story = Alert.bind({});
-DifferentIcon.args = {
-  ...Alert.args,
-  clrAlertIcon: 'settings',
+export const Alert: StoryObj = {
+  render: AlertTemplate,
 };
 
-export const Closable: Story = Alert.bind({});
-Closable.args = {
-  ...Alert.args,
-  clrAlertClosable: true,
+export const DifferentIcon: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertIcon: 'settings',
+  },
 };
 
-export const Paginated: Story = args => ({
+export const Closable: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertClosable: true,
+  },
+};
+
+const PaginatedTemplate: Story = args => ({
   template: `
-  <clr-alerts
-        [clrCurrentAlertIndex]="clrCurrentAlertIndex">
-        <clr-alert
-       *ngFor="let alert of ALERT_TYPES"
+    <clr-alerts [clrCurrentAlertIndex]="clrCurrentAlertIndex">
+      <clr-alert
+        *ngFor="let alert of ALERT_TYPES"
         [clrAlertAppLevel]="true"
         [clrAlertClosable]="clrAlertClosable"
         [clrAlertIcon]="clrAlertIcon"
@@ -112,29 +117,37 @@ export const Paginated: Story = args => ({
         (clrAlertClosedChange)="clrAlertClosedChange($event)"
       >
         <clr-alert-item>
-          <span class="alert-text">{{content}} {{alert}}</span>
+          <span class="alert-text">{{ content }} {{ alert }}</span>
         </clr-alert-item>
       </clr-alert>
-  </clr-alerts>`,
+    </clr-alerts>
+  `,
   props: args,
 });
-Paginated.args = {
-  ...Paginated.args,
-  clrAlertClosable: false,
-};
-Paginated.argTypes = {
-  ...Paginated.argTypes,
+
+const paginatedArgTypes = {
   clrCloseButtonAriaLabel: { control: false, table: { disable: true } },
   itemCount: { control: false, table: { disable: true } },
   clrAlertClosedChange: { control: false, table: { disable: true } },
-  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' },
+  // not sure why the string literal type assertion is needed to make TypeScript happy
+  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' as const },
   close: { control: false, table: { disable: true } },
   open: { control: false, table: { disable: true } },
 };
 
-export const PaginatedClosable = Paginated.bind({});
-PaginatedClosable.args = {
-  ...PaginatedClosable.args,
-  clrAlertClosable: true,
-  clrCloseButtonAriaLabel: 'Dismiss alert',
+export const Paginated: StoryObj = {
+  render: PaginatedTemplate,
+  argTypes: paginatedArgTypes,
+  args: {
+    clrAlertClosable: false,
+  },
+};
+
+export const PaginatedClosable: StoryObj = {
+  render: PaginatedTemplate,
+  argTypes: paginatedArgTypes,
+  args: {
+    clrAlertClosable: true,
+    clrCloseButtonAriaLabel: 'Dismiss alert',
+  },
 };

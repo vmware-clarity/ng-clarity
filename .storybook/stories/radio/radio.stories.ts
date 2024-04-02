@@ -6,7 +6,8 @@
 
 import { ClrRadio, ClrRadioModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Radio/Radio',
@@ -32,10 +33,10 @@ export default {
 };
 
 const RadioTemplate: StoryFn = args => ({
-  template: ` 
+  template: `
     <clr-radio-wrapper>
       <input type="radio" clrRadio value="i + 1" [checked]="checked" [disabled]="disabled" />
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
     </clr-radio-wrapper>
   `,
   props: { ...args },
