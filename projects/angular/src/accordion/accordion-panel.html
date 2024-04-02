@@ -14,7 +14,7 @@
         #headerButton
       >
         <span class="clr-sr-only" role="status">
-          <ng-container *ngIf="panel.status === AccordionStatus.Error"> {{ stepFailedText(panelNumber)}} </ng-container>
+          <ng-container *ngIf="panel.status === AccordionStatus.Error"> {{ stepErrorText(panelNumber)}} </ng-container>
           <ng-container *ngIf="panel.status === AccordionStatus.Complete">
             {{ stepCompleteText(panelNumber)}}
           </ng-container>

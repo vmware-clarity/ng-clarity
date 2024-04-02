@@ -115,8 +115,8 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
   }
 
-  stepFailedText(panelNumber: number) {
-    return this.commonStrings.parse(this.commonStrings.keys.stepFailed, { STEP: panelNumber.toString() });
+  stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
   private emitPanelChange(panel: AccordionPanelModel) {

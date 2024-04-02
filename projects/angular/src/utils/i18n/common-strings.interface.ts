@@ -293,5 +293,5 @@ export interface ClrCommonStrings {
 
   //Stepper: Screen-reader text for completed/failed step
   stepComplete: string;
-  stepFailed: string;
+  stepError: string;
 }

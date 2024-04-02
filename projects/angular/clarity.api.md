@@ -320,7 +320,7 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     stepCompleteText(panelNumber: number): string;
     // (undocumented)
-    stepFailedText(panelNumber: number): string;
+    stepErrorText(panelNumber: number): string;
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
@@ -1006,7 +1006,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     stepComplete: string;
     // (undocumented)
-    stepFailed: string;
+    stepError: string;
     success: string;
     // (undocumented)
     timelineStepCurrent: string;

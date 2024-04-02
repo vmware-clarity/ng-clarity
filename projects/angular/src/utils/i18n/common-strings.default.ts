@@ -118,5 +118,5 @@ export const commonStringsDefault: ClrCommonStrings = {
 
   // Accordion/Stepper
   stepComplete: 'Step {STEP} complete',
-  stepFailed: 'Error in step {STEP}',
+  stepError: 'Error in step {STEP}',
 };
