@@ -37,7 +37,7 @@
   position: absolute;
   #{$dirA}: auto;
   #{$oppA}: 100%;
-  #{$oppB}: 50%;
+  #{$oppB}: 10px;
   #{$dirB}: auto;
 
   border-#{$oppA}-#{$oppB}-radius: 0;
@@ -92,9 +92,13 @@
 @include meta.load-css('properties.tooltip');
 
 @include mixins.exports('tooltips.clarity') {
+  .clr-tooltip .tooltip-content {
+    visibility: visible !important;
+  }
+  .clr-tooltip,
   .tooltip {
     display: inline-block;
-    position: relative;
+    position: relative !important;
     text-align: left;
     overflow: visible;
 

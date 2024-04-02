@@ -92,6 +92,7 @@ export class PopoverDirective implements AfterViewInit {
       this.domPortal = new DomPortal(this.tooltipContent1.elementRef.nativeElement);
     }
     this.overlayRef.attach(this.domPortal);
+    this.overlayRef.updatePosition();
   }
 
   removeOverlay(): void {
@@ -113,7 +114,7 @@ export class PopoverDirective implements AfterViewInit {
           .setOrigin(this.tooltipCTrigger1.elementRef.nativeElement)
           .withPositions([this.preferredPosition, ...this.positions]),
         scrollStrategy: this.overlay.scrollStrategies.noop(),
-        panelClass: 'clr-tooltip-content',
+        panelClass: 'clr-tooltip',
         hasBackdrop: false,
       })
     );
