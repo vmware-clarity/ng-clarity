@@ -130,7 +130,7 @@ const paginatedArgTypes = {
   itemCount: { control: false, table: { disable: true } },
   clrAlertClosedChange: { control: false, table: { disable: true } },
   // not sure why the string literal type assertion is needed to make TypeScript happy
-  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' as const },
+  clrCurrentAlertIndex: { type: 'number' as const },
   close: { control: false, table: { disable: true } },
   open: { control: false, table: { disable: true } },
 };
@@ -140,6 +140,7 @@ export const Paginated: StoryObj = {
   argTypes: paginatedArgTypes,
   args: {
     clrAlertClosable: false,
+    clrCurrentAlertIndex: 0,
   },
 };
 
@@ -149,5 +150,6 @@ export const PaginatedClosable: StoryObj = {
   args: {
     clrAlertClosable: true,
     clrCloseButtonAriaLabel: 'Dismiss alert',
+    clrCurrentAlertIndex: 0,
   },
 };
