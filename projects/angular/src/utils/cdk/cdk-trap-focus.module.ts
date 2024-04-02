@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { Directive, NgModule } from '@angular/core';
+import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
+import { DOCUMENT } from '@angular/common';
+import { Directive, ElementRef, Inject, NgModule, Optional } from '@angular/core';
 
 /**
  * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
@@ -13,7 +14,11 @@ import { Directive, NgModule } from '@angular/core';
 @Directive({
   selector: '[cdkTrapFocus]',
 })
-export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {}
+export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+  constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, @Optional() @Inject(DOCUMENT) document: any) {
+    super(elementRef, focusTrapFactory, document);
+  }
+}
 
 /**
  * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
