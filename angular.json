@@ -123,7 +123,14 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "clr-angular:build",
-            "outputDir": "./dist/docs"
+            "outputDir": "./dist/docs",
+            "styles": [
+              ".storybook/public/preview.css",
+              "./node_modules/@cds/core/styles/module.reset.min.css",
+              "./node_modules/@cds/core/global.min.css",
+              "./node_modules/@cds/core/styles/theme.dark.min.css",
+              "./projects/ui/src/clr-ui.scss"
+            ]
           }
         },
         "build": {
