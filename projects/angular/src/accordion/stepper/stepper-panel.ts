@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, pairwise, skipUntil, tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
@@ -82,8 +82,16 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
         this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
           if (status === 'VALID') {
             this.stepperService.setPanelValid(this.id);
-          } else if (status === 'INVALID') {
-            this.stepperService.setPanelInvalid(this.id);
+            // } else if (status === 'INVALID') {
+            // console.log('set invalid in stepper service')
+            // this.stepperService.setPanelInvalid(this.id);
+          }
+        }),
+
+        this.formGroup.statusChanges.pipe(pairwise()).subscribe(([prevStatus, newStatus]) => {
+          if ('VALID' === prevStatus && 'INVALID' === newStatus) {
+            this.stepperService.setPanelValid(this.id);
+            this.stepperService.navigateToNextPanel(this.id, this.formGroup.valid);
           }
         })
       );
@@ -95,6 +103,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   }
 
   private listenToFocusChanges() {
+    console.log('focus change');
     this.subscriptions.push(
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
