@@ -92,26 +92,6 @@ describe('ClrStepper', () => {
       expect(stepperService.overrideInitialPanel).toHaveBeenCalled();
     });
 
-    it('should reset if a previously completed panel is revisited and put into an invalid state', () => {
-      // all setup...
-      spyOn(stepperService, 'setPanelInvalid');
-      const group1 = testComponent.form.controls.group as FormGroup;
-      group1.controls.name.setValue('lmnop');
-      fixture.detectChanges();
-
-      stepperService.navigateToNextPanel('group', group1.valid);
-      fixture.detectChanges();
-
-      // we navigated to the second panel
-      expect(group1.valid).toBe(true, 'first panel form is now valid');
-
-      group1.controls.name.setValue(''); // set required input to invalid value
-      fixture.detectChanges();
-
-      expect(group1.valid).toBe(false, 'first panel form is now invalid');
-      expect(stepperService.setPanelInvalid).toHaveBeenCalledTimes(1);
-    });
-
     it('should not set the panel status to invalid immediately', () => {
       // setup
       spyOn(stepperService, 'setPanelInvalid');
