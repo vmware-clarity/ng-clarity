@@ -13,18 +13,18 @@ import {
   STANDARD_DROPDOWN_BELOW_POSITIONS,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { AfterViewInit, ContentChild, Directive, ElementRef, EmbeddedViewRef, NgZone } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { AfterViewInit, ContentChild, Directive, ElementRef, NgZone } from '@angular/core';
+import { delay, fromEvent, Subscription } from 'rxjs';
 
-import { ClrPopoverPosition } from '../../utils';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrTooltipContent, ClrTooltipTrigger } from '../tooltip';
 
 @Directive({
   selector: 'clr-tooltip',
 })
 export class PopoverDirective implements AfterViewInit {
-  @ContentChild(ClrTooltipContent) tooltipContent1: ClrTooltipContent;
-  @ContentChild(ClrTooltipTrigger) tooltipCTrigger1: ClrTooltipTrigger;
+  @ContentChild(ClrTooltipContent) tooltipContent: ClrTooltipContent;
+  @ContentChild(ClrTooltipTrigger) tooltipCTrigger: ClrTooltipTrigger;
 
   anchor: ElementRef;
   private subscriptions: Subscription[] = [];
@@ -38,58 +38,55 @@ export class PopoverDirective implements AfterViewInit {
   };
   private _open = false;
   private parentHost: ElementRef;
-  private view: EmbeddedViewRef<void>;
   private position: string;
+  private anchorWidth: number;
+  private anchorHeight: number;
 
   private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
-  private popoverPosition: ClrPopoverPosition;
 
-  constructor(
-    private zone: NgZone,
-    private overlay: Overlay,
-    // private container: ViewContainerRef,
-    private overlayContainer: OverlayContainer // private template: TemplateRef<any>,
-  ) {
-    this.overlayContainer.getContainerElement().classList.add('clr-container-element');
-  }
+  constructor(private zone: NgZone, private overlay: Overlay, private overlayContainer: OverlayContainer) {}
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      console.log('tooltipContent', this.tooltipContent1, this.tooltipCTrigger1);
-    }, 3000);
-    this.setPosition();
     this.listenToMouseEvents();
+
+    //Below is only for poc purpose. Need to be cleanedup
+    this.anchorWidth = this.tooltipCTrigger.elementRef.nativeElement.offsetWidth / 2;
+    this.anchorHeight = this.tooltipCTrigger.elementRef.nativeElement.offsetHeight / 2;
   }
 
   listenToMouseEvents() {
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
-        fromEvent(this.tooltipCTrigger1.elementRef.nativeElement, 'mouseenter').subscribe(() => {
-          console.log('Mouse Enter');
-          this.showOverlay();
-        }),
-        fromEvent(this.tooltipCTrigger1.elementRef.nativeElement, 'mouseleave').subscribe(() => {
-          console.log('Mouse Leave ');
-          this.removeOverlay();
-        })
+        fromEvent(this.tooltipCTrigger?.elementRef?.nativeElement, 'mouseenter')
+          .pipe(delay(100))
+          .subscribe(() => {
+            this.showOverlay();
+          }),
+        fromEvent(this.tooltipCTrigger?.elementRef?.nativeElement, 'mouseleave')
+          .pipe(delay(100))
+          .subscribe(() => {
+            this.removeOverlay();
+          })
       );
     });
   }
 
   setPosition() {
-    this.preferredPosition.originX = 'start';
-    this.preferredPosition.originY = 'top';
-    this.preferredPosition.overlayX = 'start';
-    this.preferredPosition.overlayY = 'bottom';
+    //Set default position to "top-right" if position is not available in the map
+    this.preferredPosition =
+      this.tooltipContent.position in ClrCDKPopoverPositions
+        ? ClrCDKPopoverPositions[this.tooltipContent.position]
+        : ClrCDKPopoverPositions['top-right'];
   }
 
   showOverlay() {
+    this.setPosition();
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
     }
 
-    if (!this.view) {
-      this.domPortal = new DomPortal(this.tooltipContent1.elementRef.nativeElement);
+    if (!this.domPortal) {
+      this.domPortal = new DomPortal(this.tooltipContent.elementRef.nativeElement);
     }
     this.overlayRef.attach(this.domPortal);
     this.overlayRef.updatePosition();
@@ -110,11 +107,13 @@ export class PopoverDirective implements AfterViewInit {
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.overlay
           .position()
-          .flexibleConnectedTo(this.tooltipContent1.elementRef.nativeElement)
-          .setOrigin(this.tooltipCTrigger1.elementRef.nativeElement)
+          .flexibleConnectedTo(this.tooltipCTrigger.elementRef.nativeElement)
+          .setOrigin(this.tooltipCTrigger.elementRef.nativeElement)
+          // .withDefaultOffsetX(-this.anchorWidth)
+          // .withDefaultOffsetY(-this.anchorHeight)
           .withPositions([this.preferredPosition, ...this.positions]),
-        scrollStrategy: this.overlay.scrollStrategies.noop(),
-        panelClass: 'clr-tooltip',
+        scrollStrategy: this.overlay.scrollStrategies.reposition(),
+        panelClass: 'clr-tooltip-container',
         hasBackdrop: false,
       })
     );

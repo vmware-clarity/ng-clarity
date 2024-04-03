@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
+import { ClrPopoverModule, ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
@@ -14,7 +14,7 @@ export default {
   title: 'Tooltip/Tooltip',
   decorators: [
     moduleMetadata({
-      imports: [ClrTooltipModule],
+      imports: [ClrTooltipModule, ClrPopoverModule],
     }),
   ],
   component: ClrTooltipContent,

@@ -36,12 +36,12 @@
 
   position: absolute;
   #{$dirA}: auto;
-  #{$oppA}: 100%;
+  #{$oppA}: 25px;
   #{$oppB}: 10px;
   #{$dirB}: auto;
 
   border-#{$oppA}-#{$oppB}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  // margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -64,14 +64,14 @@
 
   position: absolute;
   #{$dirA}: auto;
-  #{$oppA}: 100%;
+  #{$oppA}: 40px;
   top: 50%;
   bottom: auto;
 
   @include common-tooltip-styles;
 
   border-top-#{$oppA}-radius: 0;
-  margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
+  // margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
 
   &::before {
     content: '';
@@ -95,7 +95,7 @@
   .clr-tooltip .tooltip-content {
     visibility: visible !important;
   }
-  .clr-tooltip,
+
   .tooltip {
     display: inline-block;
     position: relative !important;
@@ -106,7 +106,7 @@
       //Both visibility and opacity are needed. Opacity handles the transition.
       //And visibility makes sure that the user cant select the text in the tooltip-content
       //when hidden
-      visibility: hidden;
+      display: none;
       opacity: 0;
       transition: opacity 0.3s linear;
       white-space: normal;
@@ -125,17 +125,19 @@
       }
     }
 
-    &:hover > .tooltip-content,
-    &:focus > .tooltip-content {
-      visibility: visible;
-      opacity: 1;
+    // &:hover > .tooltip-content,
+    // &:focus > .tooltip-content {
+    //   // visibility: visible;
+    //   display: inline-block;
+    //   opacity: 1;
 
-      //Have to do this for IE11. Cant use a :not selector
-      &:empty {
-        visibility: hidden;
-        opacity: 0;
-      }
-    }
+    //   //Have to do this for IE11. Cant use a :not selector
+    //   &:empty {
+    //     // visibility: hidden;
+    //     display:none;
+    //     opacity: 0;
+    //   }
+    // }
 
     &:focus {
       outline: 0;
@@ -201,9 +203,9 @@
     }
   }
 
-  //Override tooltip margins values for different components.
+  //   // //Override tooltip margins values for different components.
 
-  //Buttons
+  // //Buttons
   .tooltip {
     //Default is top right
     & > .btn + .tooltip-content,
@@ -235,11 +237,68 @@
     }
   }
 
-  //Angular component with current structure focuses on the tooltip trigger
-  //whereas the static component host is focused on as its normally a link with an icon in it.
-  //Tooltip is due for a refactor but as of now this fix solves the immediate accessibility bug that
-  //the tooltip component faces.
+  //   //Angular component with current structure focuses on the tooltip trigger
+  //   //whereas the static component host is focused on as its normally a link with an icon in it.
+  //   //Tooltip is due for a refactor but as of now this fix solves the immediate accessibility bug that
+  //   //the tooltip component faces.
   .tooltip-trigger:focus + .tooltip-content {
     visibility: visible;
+  }
+
+  //New STyles for CDK Implementation
+
+  .clr-tooltip-container {
+    position: absolute !important;
+    & > .tooltip-content,
+    &.tooltip-top-right > .tooltip-content,
+    .tooltip-content.tooltip-top-right {
+      @include vertical-tooltip-generator(top, right);
+    }
+
+    &.tooltip-top-left > .tooltip-content,
+    .tooltip-content.tooltip-top-left {
+      @include vertical-tooltip-generator(top, left);
+    }
+
+    &.tooltip-bottom-right > .tooltip-content,
+    .tooltip-content.tooltip-bottom-right {
+      @include vertical-tooltip-generator(bottom, right);
+    }
+
+    &.tooltip-bottom-left > .tooltip-content,
+    .tooltip-content.tooltip-bottom-left {
+      @include vertical-tooltip-generator(bottom, left);
+    }
+
+    &.tooltip-right > .tooltip-content,
+    .tooltip-content.tooltip-right {
+      @include horizontal-tooltip-generator(right);
+    }
+
+    &.tooltip-left > .tooltip-content,
+    .tooltip-content.tooltip-left {
+      @include horizontal-tooltip-generator(left);
+    }
+
+    //Tooltips Size
+    &.tooltip-xs > .tooltip-content,
+    .tooltip-content.tooltip-xs {
+      width: tokens.$cds-global-space-14;
+    }
+
+    &.tooltip-sm > .tooltip-content,
+    .tooltip-content.tooltip-sm {
+      width: mixins.baselinePx(120);
+    }
+
+    &.tooltip-md > .tooltip-content,
+    .tooltip-content.tooltip-md {
+      width: mixins.baselinePx(240);
+    }
+
+    &.tooltip-lg > .tooltip-content,
+    .tooltip-content.tooltip-lg {
+      width: mixins.baselinePx(360);
+    }
   }
 }

@@ -4,25 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Injector,
-  Input,
-  OnInit,
-  Optional,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
-// import { assertNever } from '../../utils/assert/assert.helpers';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { PopoverCdkService } from '../../utils/popover/providers/popover-cdk.service';
-// import { Point } from '../common/popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
-import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
 type Position = typeof POSITIONS[number];
@@ -53,8 +39,6 @@ export class ClrTooltipContent implements OnInit {
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
     private tooltipIdService: TooltipIdService,
-    private tooltipMouseService: TooltipMouseService,
-    private cdkService: PopoverCdkService,
     public elementRef: ElementRef,
     private renderer: Renderer2
   ) {
@@ -89,37 +73,6 @@ export class ClrTooltipContent implements OnInit {
 
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
-    this.cdkService.setPosition();
-
-    // set the popover values based on direction
-    // switch (newPosition) {
-    //   case 'top-right':
-    //     this.anchorPoint = Point.TOP_CENTER;
-    //     this.popoverPoint = Point.LEFT_BOTTOM;
-    //     break;
-    //   case 'top-left':
-    //     this.anchorPoint = Point.TOP_CENTER;
-    //     this.popoverPoint = Point.RIGHT_BOTTOM;
-    //     break;
-    //   case 'bottom-right':
-    //     this.anchorPoint = Point.BOTTOM_CENTER;
-    //     this.popoverPoint = Point.LEFT_TOP;
-    //     break;
-    //   case 'bottom-left':
-    //     this.anchorPoint = Point.BOTTOM_CENTER;
-    //     this.popoverPoint = Point.RIGHT_TOP;
-    //     break;
-    //   case 'right':
-    //     this.anchorPoint = Point.RIGHT_CENTER;
-    //     this.popoverPoint = Point.LEFT_TOP;
-    //     break;
-    //   case 'left':
-    //     this.anchorPoint = Point.LEFT_CENTER;
-    //     this.popoverPoint = Point.RIGHT_TOP;
-    //     break;
-    //   default:
-    //     assertNever(newPosition);
-    // }
   }
 
   @Input('clrSize')
@@ -137,18 +90,6 @@ export class ClrTooltipContent implements OnInit {
   ngOnInit() {
     this.size = this.size || defaultSize;
     this.position = this.position || defaultPosition;
-    this.cdkService.referenceElement(this.elementRef);
-  }
-
-  @HostListener('mouseenter')
-  private onMouseEnter() {
-    // this.cdkService.referenceElement(this.elt);
-    // this.tooltipMouseService.onMouseEnterContent();
-  }
-
-  @HostListener('mouseleave')
-  private onMouseLeave() {
-    // this.tooltipMouseService.onMouseLeaveContent();
   }
 
   private updateCssClass({ oldClass, newClass }: { oldClass: string; newClass: string }) {
