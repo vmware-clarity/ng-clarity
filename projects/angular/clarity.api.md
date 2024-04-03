@@ -2869,6 +2869,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    get noResultsElementId(): string;
+    // (undocumented)
     optionSelectionService: OptionSelectionService<T>;
     // (undocumented)
     optionsId: string;
