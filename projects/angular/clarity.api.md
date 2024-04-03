@@ -318,9 +318,9 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    stepCompleteText(panelNumber: number): string;
+    protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
-    stepErrorText(panelNumber: number): string;
+    protected stepErrorText(panelNumber: number): string;
     // (undocumented)
     togglePanel(): void;
     // (undocumented)

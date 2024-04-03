@@ -111,11 +111,11 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     return `clr-accordion-header-${id}`;
   }
 
-  stepCompleteText(panelNumber: number) {
+  protected stepCompleteText(panelNumber: number) {
     return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
   }
 
-  stepErrorText(panelNumber: number) {
+  protected stepErrorText(panelNumber: number) {
     return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
