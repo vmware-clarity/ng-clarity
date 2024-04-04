@@ -7,16 +7,20 @@
 import * as fs from 'fs';
 import * as http from 'http';
 import * as nodeStatic from 'node-static';
-import { chromium } from 'playwright';
+import { chromium, firefox } from 'playwright';
 
 import { StoryFn } from '../tests/helpers/story.interface';
 
 const port = 8080;
+const browserType = process.env['CLARITY_VRT_BROWSER'];
 
 main();
 
 async function main() {
-  const [server, browser] = await Promise.all([startServer(), chromium.launch()]);
+  const [server, browser] = await Promise.all([
+    startServer(),
+    browserType === 'chromium' ? chromium.launch() : firefox.launch(),
+  ]);
   const page = await browser.newPage();
 
   await page.goto('http://localhost:8080');
