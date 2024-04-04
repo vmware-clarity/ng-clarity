@@ -16,7 +16,8 @@ const port = 8080;
 main();
 
 async function main() {
-  const browserType = process.env['CLARITY_VRT_BROWSER'];
+  // TODO: Improve on this solution
+  const browserType = process.argv[2];
   console.log('Browser: ', browserType);
   const [server, browser] = await Promise.all([
     startServer(),

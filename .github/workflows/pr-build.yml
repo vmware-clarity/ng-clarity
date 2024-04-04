@@ -78,7 +78,7 @@ jobs:
       - name: Build Storybook
         run: npm run _build:storybook
       - name: Discover Stories
-        run: npm run ts-node -- ./scripts/write-story-list.ts
+        run: npm run ts-node -- ./scripts/write-story-list.ts ${{matrix.browser}}
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
         env:
