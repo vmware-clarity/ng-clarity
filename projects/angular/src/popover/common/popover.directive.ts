@@ -48,10 +48,6 @@ export class PopoverDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.listenToMouseEvents();
-
-    //Below is only for poc purpose. Need to be cleanedup
-    this.anchorWidth = this.tooltipCTrigger.elementRef.nativeElement.offsetWidth / 2;
-    this.anchorHeight = this.tooltipCTrigger.elementRef.nativeElement.offsetHeight / 2;
   }
 
   listenToMouseEvents() {
@@ -71,12 +67,27 @@ export class PopoverDirective implements AfterViewInit {
     });
   }
 
+  setDynamicOffsetPosition() {
+    this.anchorWidth = this.tooltipCTrigger.elementRef.nativeElement.offsetWidth;
+    this.anchorHeight = this.tooltipCTrigger.elementRef.nativeElement.offsetHeight;
+    if (this.preferredPosition.originX === 'end' && this.preferredPosition.originY === 'center') {
+      this.preferredPosition.offsetX = -this.anchorWidth;
+    } else if (this.preferredPosition.originX === 'start' && this.preferredPosition.originY === 'center') {
+      this.preferredPosition.offsetX = this.anchorWidth;
+    } else if (this.preferredPosition.originX === 'start') {
+      this.preferredPosition.offsetX = this.anchorWidth / 2;
+    } else if (this.preferredPosition.originX === 'end') {
+      this.preferredPosition.offsetX = -this.anchorWidth / 2;
+    }
+  }
+
   setPosition() {
-    //Set default position to "top-right" if position is not available in the map
+    //Set default position to "top-right", if position is not available in the map
     this.preferredPosition =
       this.tooltipContent.position in ClrCDKPopoverPositions
         ? ClrCDKPopoverPositions[this.tooltipContent.position]
         : ClrCDKPopoverPositions['top-right'];
+    this.setDynamicOffsetPosition();
   }
 
   showOverlay() {
@@ -109,8 +120,6 @@ export class PopoverDirective implements AfterViewInit {
           .position()
           .flexibleConnectedTo(this.tooltipCTrigger.elementRef.nativeElement)
           .setOrigin(this.tooltipCTrigger.elementRef.nativeElement)
-          // .withDefaultOffsetX(-this.anchorWidth)
-          // .withDefaultOffsetY(-this.anchorHeight)
           .withPositions([this.preferredPosition, ...this.positions]),
         scrollStrategy: this.overlay.scrollStrategies.reposition(),
         panelClass: 'clr-tooltip-container',
