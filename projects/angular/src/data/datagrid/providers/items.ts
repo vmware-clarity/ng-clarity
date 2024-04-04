@@ -59,6 +59,14 @@ export class Items<T = any> {
 
   constructor(private _filters: FiltersProvider<T>, private _sort: Sort<T>, private _page: Page) {}
 
+  set filters(value: FiltersProvider<T>) {
+    this._filters = value;
+  }
+
+  set sort(value: Sort<T>) {
+    this._sort = value;
+  }
+
   get smart(): boolean {
     return this._smart;
   }

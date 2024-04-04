@@ -4,7 +4,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<h2>Hide-show columns demo with custom buttons</h2>
+<h2>Virtual scroll server side</h2>
 <div>
   <clr-input-container>
     <label>Rows</label>
@@ -21,20 +21,20 @@
   style="height: 30rem"
 >
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>User ID</ng-container>
+    <ng-container>User ID</ng-container>
   </clr-dg-column>
   <clr-dg-column>
     <!--Name-->
-    <ng-container *clrDgHideableColumn>Name</ng-container>
+    <ng-container>Name</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Creation date</ng-container>
+    <ng-container>Creation date</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Pokemon</ng-container>
+    <ng-container>Pokemon</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Favorite color</ng-container>
+    <ng-container>Favorite color</ng-container>
   </clr-dg-column>
 
   <ng-template

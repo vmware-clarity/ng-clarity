@@ -6,9 +6,13 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
+import { Inventory } from '../inventory/inventory';
+import { User } from '../inventory/user';
+import { PokemonComparator } from '../utils/pokemon-comparator';
 
 class ChangeDetectionPerfRecord {
   msPerTick: 0;
@@ -17,20 +21,24 @@ class ChangeDetectionPerfRecord {
 
 @Component({
   selector: 'clr-datagrid-virtual-scroll-demo',
-  providers: [DynamicData],
+  providers: [DynamicData, Inventory],
   templateUrl: './virtual-scroll.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollDemo implements OnInit {
-  totalRows = 10000;
-  totalCols = 52;
+  totalRows = 100;
+  totalCols = 5;
   cols: Column[];
   rows: Observable<Row[]>;
+  users: Observable<User[]>;
   timeCD: ChangeDetectionPerfRecord;
+  sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
+
+  pokemonComparator = new PokemonComparator();
 
   private allRows = new BehaviorSubject<Row[]>([]);
-
   constructor(
+    public inventory: Inventory,
     private dynamicData: DynamicData,
     private cdr: ChangeDetectorRef,
     private applicationRef: ApplicationRef
@@ -67,6 +75,15 @@ export class DatagridVirtualScrollDemo implements OnInit {
     this.cols = this.dynamicData.createColumns(this.totalCols);
 
     this.allRows.next(this.dynamicData.createRows(this.cols, this.totalRows));
+
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.inventory.size = this.totalRows;
+    this.inventory.lazyLoadUsers(this.inventory.size);
+
+    this.users = this.inventory.getAllUsersSubject();
   }
 
   showChangeDetection() {

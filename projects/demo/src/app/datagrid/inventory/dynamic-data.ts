@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetection } from '@angular/cli/lib/config/workspace-schema';
 import { Injectable } from '@angular/core';
 
 export interface Column {
@@ -13,7 +12,7 @@ export interface Column {
 }
 export interface Row {
   index: number;
-  cells: ChangeDetection[];
+  cells: any[];
 }
 @Injectable()
 export class DynamicData {

@@ -36,6 +36,7 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { Items } from './providers/items';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 interface CellCoordinates {
@@ -61,6 +62,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 
 @Directive({
   selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
+  providers: [Items],
 })
 export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDestroy {
   @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
@@ -88,7 +90,8 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   };
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly iterableDiffers: IterableDiffers,
+    private iterableDiffers: IterableDiffers,
+    private items: Items<T>,
     private readonly ngZone: NgZone,
     private readonly templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
     private readonly viewContainerRef: ViewContainerRef,
@@ -126,6 +129,18 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
       this.virtualScrollViewport,
       this.ngZone
     );
+
+    this.items.filters = this.datagrid.items.filters;
+    this.items.sort = this.datagrid.items.sort;
+    this.items.smartenUp();
+    this.items.change.subscribe(newItems => {
+      this.cdkVirtualFor.cdkVirtualForOf = newItems;
+      this.cdkVirtualFor.ngDoCheck();
+    });
+
+    this.datagrid.refresh.subscribe(() => {
+      this.items.refresh();
+    });
   }
 
   @Input('customClrVirtualRowsOf')
@@ -198,9 +213,8 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
 
     this.virtualScrollViewport.ngOnInit();
 
-    // this.setActiveCellSubscription = fromActiveCell(this.datagrid).subscribe(activeCellElement => {
-    //   this.activeCellCoordinates = this.getCellCoordinates(activeCellElement);
-    // });
+    this.items.all = this.cdkVirtualForOf as T[];
+
     this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
 
     this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {
