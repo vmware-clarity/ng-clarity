@@ -9,11 +9,10 @@ import * as http from 'http';
 import * as nodeStatic from 'node-static';
 import * as playwright from 'playwright';
 
-import { StoryFn } from '../tests/helpers/story.interface';
+import { Story } from '../tests/helpers/story.interface';
 
 const port = 8080;
-const browserType = process.env['CLARITY_VRT_BROWSER'];
-console.log('Browser: ', browserType);
+const browserType = process.env['CLARITY_VRT_BROWSER'] as 'chromium' | 'firefox';
 
 main();
 
@@ -33,17 +32,16 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<StoryFn[], HTMLLinkElement>('div.sidebar-item', sidebarButtonElement => {
-    return sidebarButtonElement.map(sidebarButtonElement => {
-      const anchorElement = sidebarButtonElement.firstElementChild as HTMLLinkElement;
-      const storyId = anchorElement.getAttribute('id');
-      const component = getComponentName(anchorElement);
+  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('div.sidebar-item a', sidebarLinkElements => {
+    return sidebarLinkElements.map(sidebarLinkElement => {
+      const storyId = sidebarLinkElement.getAttribute('id');
+      const component = getComponentName(sidebarLinkElement);
 
       return { storyId, component };
     });
 
-    function getComponentName(sidebarButtonElement: HTMLLinkElement) {
-      let sidebarHeadingElement = sidebarButtonElement.parentElement.previousElementSibling;
+    function getComponentName(sidebarLinkElement: HTMLLinkElement) {
+      let sidebarHeadingElement = sidebarLinkElement.parentElement.previousElementSibling;
       while (sidebarHeadingElement && !sidebarHeadingElement.classList.contains('sidebar-subheading')) {
         sidebarHeadingElement = sidebarHeadingElement.previousElementSibling;
       }
@@ -54,6 +52,7 @@ async function main() {
 
   // And write a file for the storybook-visual-regression-test `playwright` test to read.
   fs.writeFileSync('./dist/docs/stories.json', JSON.stringify(storyIds, undefined, 2));
+
   await browser.close();
   await closeServer(server);
 }
