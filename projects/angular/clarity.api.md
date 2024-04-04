@@ -313,6 +313,11 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     get panelNumber(): number;
     panelOpen: boolean;
     panelOpenChange: EventEmitter<boolean>;
+    // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
+    // (undocumented)
     togglePanel(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
@@ -990,6 +995,10 @@ export interface ClrCommonStrings {
     singleSelectionAriaLabel: string;
     sortColumn: string;
     stackViewChanged: string;
+    // (undocumented)
+    stepComplete: string;
+    // (undocumented)
+    stepError: string;
     success: string;
     // (undocumented)
     timelineStepCurrent: string;
