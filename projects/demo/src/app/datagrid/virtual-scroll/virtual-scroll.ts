@@ -26,7 +26,7 @@ class ChangeDetectionPerfRecord {
   styleUrls: ['../datagrid.demo.scss'],
 })
 export class DatagridVirtualScrollDemo implements OnInit {
-  totalRows = 100;
+  totalRows = 10000;
   totalCols = 5;
   cols: Column[];
   rows: Observable<Row[]>;
@@ -81,6 +81,7 @@ export class DatagridVirtualScrollDemo implements OnInit {
 
   loadUsers() {
     this.inventory.size = this.totalRows;
+    this.inventory.all = [];
     this.inventory.lazyLoadUsers(this.inventory.size);
 
     this.users = this.inventory.getAllUsersSubject();

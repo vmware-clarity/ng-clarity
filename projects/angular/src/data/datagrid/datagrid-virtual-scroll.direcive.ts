@@ -77,10 +77,7 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   private virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
-  private setActiveCellSubscription: Subscription | undefined;
-  private dataStreamSubscription: Subscription | undefined;
-  private renderedRangeChangeSubscription: Subscription | undefined;
-  private keydownEventSubscription: Subscription | undefined;
+  private subscriptions: Subscription[] = [];
   private totalSize = 0;
   private activeCellCoordinates: CellCoordinates | undefined;
   private nextActiveCellCoordinates: CellCoordinates | undefined;
@@ -100,6 +97,8 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
     private readonly viewportRuler: ViewportRuler,
     private readonly datagrid: ClrDatagrid
   ) {
+    this.items.smartenUp();
+
     this.datagridElementRef = this.datagrid.el;
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
 
@@ -119,28 +118,14 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
       this.virtualScrollStrategy
     );
 
-    const viewRepeaterStrategy = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
-
     this.cdkVirtualFor = new CdkVirtualForOf<T>(
       this.viewContainerRef,
       this.templateRef,
       this.iterableDiffers,
-      viewRepeaterStrategy,
+      new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
       this.virtualScrollViewport,
       this.ngZone
     );
-
-    this.items.filters = this.datagrid.items.filters;
-    this.items.sort = this.datagrid.items.sort;
-    this.items.smartenUp();
-    this.items.change.subscribe(newItems => {
-      this.cdkVirtualFor.cdkVirtualForOf = newItems;
-      this.cdkVirtualFor.ngDoCheck();
-    });
-
-    this.datagrid.refresh.subscribe(() => {
-      this.items.refresh();
-    });
   }
 
   @Input('customClrVirtualRowsOf')
@@ -149,6 +134,7 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   }
   set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']) {
     this.cdkVirtualForInputs.cdkVirtualForOf = value;
+    this.items.all = value as T[];
     this.updateCdkVirtualForInputs();
   }
 
@@ -213,23 +199,33 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
 
     this.virtualScrollViewport.ngOnInit();
 
-    this.items.all = this.cdkVirtualForOf as T[];
-
     this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
 
-    this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {
-      this.totalSize = data.length;
-      this.updateAriaRowCount(data.length);
-    });
+    this.subscriptions.push(
+      this.items.change.subscribe(newItems => {
+        this.cdkVirtualFor.cdkVirtualForOf = newItems;
+      })
+    );
 
-    this.renderedRangeChangeSubscription = this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
-      this.renderedRangeChange.emit(renderedRange);
-      this.restoreOrUpdateActiveCellInNextFrame();
-    });
+    this.subscriptions.push(
+      this.cdkVirtualFor.dataStream.subscribe(data => {
+        this.totalSize = data.length;
+        this.updateAriaRowCount(data.length);
+      })
+    );
 
-    this.keydownEventSubscription = fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
-      this.handlePageUpAndPageDownKeys(event);
-    });
+    this.subscriptions.push(
+      this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
+        this.renderedRangeChange.emit(renderedRange);
+        this.restoreOrUpdateActiveCellInNextFrame();
+      })
+    );
+
+    this.subscriptions.push(
+      fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
+        this.handlePageUpAndPageDownKeys(event);
+      })
+    );
   }
 
   ngDoCheck() {
@@ -240,10 +236,9 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   ngOnDestroy() {
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
-    this.setActiveCellSubscription?.unsubscribe();
-    this.dataStreamSubscription?.unsubscribe();
-    this.renderedRangeChangeSubscription?.unsubscribe();
-    this.keydownEventSubscription?.unsubscribe();
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   private restoreOrUpdateActiveCellInNextFrame() {

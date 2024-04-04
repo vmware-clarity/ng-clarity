@@ -40,9 +40,9 @@ export class Inventory {
 
     for (let i = 0; i < size; i++) {
       newData.push({
-        id: Math.floor(Math.random() * 10001),
+        id: i,
         name: this.getItem(i, NAMES),
-        creation: new Date('June 23, 1912'),
+        creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
         pokemon: this.getItem(i, POKEMONS),
       });
