@@ -13,6 +13,7 @@ import { StoryFn } from '../tests/helpers/story.interface';
 
 const port = 8080;
 const browserType = process.env['CLARITY_VRT_BROWSER'];
+console.log('Browser: ', browserType);
 
 main();
 
