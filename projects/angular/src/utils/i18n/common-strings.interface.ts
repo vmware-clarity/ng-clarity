@@ -282,4 +282,8 @@ export interface ClrCommonStrings {
    * Datagrid footer; sr-only text after the number of selected rows.
    */
   selectedRows: string;
+
+  //Stepper: Screen-reader text for completed/failed step
+  stepComplete: string;
+  stepError: string;
 }

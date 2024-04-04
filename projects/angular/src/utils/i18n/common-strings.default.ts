@@ -113,4 +113,8 @@ export const commonStringsDefault: ClrCommonStrings = {
    * Datagrid footer; sr-only text after the number of selected rows.
    */
   selectedRows: 'Selected rows',
+
+  // Accordion/Stepper
+  stepComplete: 'Step {STEP} complete',
+  stepError: 'Error in step {STEP}',
 };
