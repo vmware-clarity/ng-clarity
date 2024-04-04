@@ -12,14 +12,15 @@ import { chromium, firefox } from 'playwright';
 import { StoryFn } from '../tests/helpers/story.interface';
 
 const port = 8080;
-const browserType = process.env['CLARITY_VRT_BROWSER'];
 
 main();
 
 async function main() {
+  const browserType = process.env['CLARITY_VRT_BROWSER'];
+  console.log('Browser: ', browserType);
   const [server, browser] = await Promise.all([
     startServer(),
-    browserType === 'chromium' ? chromium.launch() : firefox.launch(),
+    browserType === chromium.name() ? chromium.launch() : firefox.launch(),
   ]);
   const page = await browser.newPage();
 
