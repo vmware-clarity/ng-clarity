@@ -317,7 +317,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
     protected stepErrorText(panelNumber: number): string;
-    // (undocumented)
     togglePanel(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
