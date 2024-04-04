@@ -15,17 +15,17 @@ import { DatagridCellRenderer } from './cell-renderer';
   selector: 'clr-dg-row, clr-dg-row-detail',
 })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-  @ContentChildren(DatagridCellRenderer) private cells: QueryList<DatagridCellRenderer>;
+  @ContentChildren(DatagridCellRenderer) cells: QueryList<DatagridCellRenderer>;
 
   private subscriptions: Subscription[] = [];
 
   constructor(private columnsService: ColumnsService) {}
 
   ngAfterContentInit() {
-    this.setColumnState(); // case #3 and #4
+    this.setCellsState(); // case #3 and #4
     this.subscriptions.push(
       this.cells.changes.subscribe(() => {
-        this.setColumnState(); // case #2
+        this.setCellsState(); // case #2
         // Note on case #2: In the case of dynamic columns, when one column (header/cell together) gets deleted,
         // this.cells.changes emits before this.columnsService.columns gets updated in MainRenderer
         // when this.headers.changes emits as well. So that means there will be n+1 column state providers
@@ -40,7 +40,7 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  setColumnState() {
+  setCellsState() {
     // This method runs in four cases:
     // 1. When the initial rows appear on the first page.
     //    In this case, the method will be called in DatagridMainRenderer.
@@ -53,7 +53,7 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     if (this.cells.length === this.columnsService.columns.length) {
       this.cells.forEach((cell, index) => {
         if (this.columnsService.columns[index]) {
-          cell.columnState = this.columnsService.columns[index];
+          cell.resetState(this.columnsService.columns[index].value);
         }
       });
     }
