@@ -48,6 +48,7 @@ export default {
     clrModalLabelledById: '',
     clrModalSize: 'md',
     clrModalSkipAnimation: false,
+    clrModalClosable: true,
   },
 };
 
