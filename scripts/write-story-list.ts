@@ -16,9 +16,7 @@ const port = 8080;
 main();
 
 async function main() {
-  // TODO: Improve on this solution
   const browserType = process.argv[2];
-  console.log('Browser: ', browserType);
   const [server, browser] = await Promise.all([
     startServer(),
     browserType === chromium.name() ? chromium.launch() : firefox.launch(),
