@@ -20,11 +20,11 @@ const usedScreenshotPaths: string[] = [];
 const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
-  if (storyId.endsWith('--docs') || !component) {
+  if (storyId?.endsWith('--docs') || !component) {
     continue;
   }
 
-  const storyName = storyId.replace(`${component}-`, '');
+  const storyName = storyId?.replace(`${component}-`, '');
 
   for (const [themeKey, theme] of Object.entries(THEMES)) {
     const normalizedThemeKey = themeKey.toLowerCase().replace(/_/g, '-');
