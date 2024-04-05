@@ -70,7 +70,10 @@ export class PopoverDirective implements AfterViewInit {
           .subscribe(() => {
             this.removeOverlay();
           }),
-        fromEvent(this.scrollableParent.scrollParent, 'scroll').subscribe(() => {
+        fromEvent(
+          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : 'body',
+          'scroll'
+        ).subscribe(() => {
           if (this.overlayRef) {
             this.overlayRef.updatePosition();
           }
