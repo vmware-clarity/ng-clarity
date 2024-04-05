@@ -23,7 +23,7 @@ type ScreenshotOptionsT = {
  * If a component name is used, all stories under that component name will use the options specified.
  */
 export const ScreenshotOptions: ScreenshotOptionsT = {
-  dropdown: {
+  'dropdown-menu--showcase': {
     fullPageScreenshot: true,
   },
   'headers-static--header-static': {
