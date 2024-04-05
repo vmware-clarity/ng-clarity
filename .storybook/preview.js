@@ -16,7 +16,7 @@ import { THEMES } from './helpers/constants';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
-const styleElement = addStyleElement();
+addStyleElement();
 
 loadIcons();
 addDocs(docs);
