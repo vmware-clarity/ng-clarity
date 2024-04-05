@@ -47,4 +47,7 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   wizard: {
     fullPageScreenshot: true,
   },
+  'dropdown-menu--showcase': {
+    fullPageScreenshot: true,
+  },
 };
