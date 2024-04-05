@@ -5,7 +5,7 @@
  */
 
 import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -36,34 +36,39 @@ export default {
 };
 
 const template = `
-    <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
-      <clr-accordion-panel
-        *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="!!openIndices[i]"
-      >
-        <clr-accordion-title>{{title}} {{i + 1}}</clr-accordion-title>
-        <clr-accordion-content>{{content}} {{i + 1}}</clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-  `;
+  <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
+    <clr-accordion-panel
+      *ngFor="let _ of createArray(panelCount); let i = index"
+      [clrAccordionPanelOpen]="!!openIndices[i]"
+    >
+      <clr-accordion-title>{{ title }} {{ i + 1 }}</clr-accordion-title>
+      <clr-accordion-content>{{ content }} {{ i + 1 }}</clr-accordion-content>
+    </clr-accordion-panel>
+  </clr-accordion>
+`;
 
-export const Initial: Story = args => ({
+const AccordionTemplate: Story = args => ({
   template,
   props: args,
 });
 
-export const SinglePanelOpened: Story = Initial.bind({});
-SinglePanelOpened.args = {
-  ...Initial.args,
-  openIndices: [true, false, false, false],
+export const Initial: StoryObj = {
+  render: AccordionTemplate,
 };
 
-export const MultiplePanelsOpened: Story = Initial.bind({});
-MultiplePanelsOpened.argTypes = {
-  ...Initial.argTypes,
-  clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+export const SinglePanelOpened: StoryObj = {
+  render: AccordionTemplate,
+  args: {
+    openIndices: [true, false, false, false],
+  },
 };
-MultiplePanelsOpened.args = {
-  ...Initial.args,
-  openIndices: [true, true, false, false],
+
+export const MultiplePanelsOpened: StoryObj = {
+  render: AccordionTemplate,
+  argTypes: {
+    clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
+  },
+  args: {
+    openIndices: [true, true, false, false],
+  },
 };

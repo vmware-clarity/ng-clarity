@@ -43,10 +43,7 @@ const StackViewTemplate: Story = args => ({
         <button class="stack-action btn btn-sm btn-link" (click)="editModal = true" type="button">Edit</button>
       </clr-stack-header>
 
-      <clr-stack-block
-        *ngFor="let _ of createArray(blockCount); let i = index"
-        [clrSbExpanded]="!!openIndices[i]"
-      >
+      <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
         <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
         <clr-stack-content>{{ content }}</clr-stack-content>
         <clr-stack-block>
@@ -60,10 +57,7 @@ const StackViewTemplate: Story = args => ({
       <h3 class="modal-title">Edit mode</h3>
       <div class="modal-body">
         <clr-stack-view>
-          <clr-stack-block
-            *ngFor="let _ of createArray(blockCount); let i = index"
-              [clrSbExpanded]="!!openIndices[i]"
-            >
+          <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
             <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
             <clr-stack-content>
               <input type="text" [(ngModel)]="content" class="clr-input" />

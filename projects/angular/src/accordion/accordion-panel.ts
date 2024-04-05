@@ -111,6 +111,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     return `clr-accordion-header-${id}`;
   }
 
+  protected stepCompleteText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+  }
+
+  protected stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
+  }
+
   private emitPanelChange(panel: AccordionPanelModel) {
     if (panel.index !== this._panelIndex) {
       this._panelIndex = panel.index;

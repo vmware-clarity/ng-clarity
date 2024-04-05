@@ -47,15 +47,19 @@ export default {
 const NavHeaderDividerTemplate: Story = args => ({
   template: `
     <div class="content-container">
-        <clr-vertical-nav>
-          <label class="nav-header">First</label>
-          <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">{{navLink.text}}</a>
+      <clr-vertical-nav>
+        <label class="nav-header">First</label>
+        <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">
+          {{ navLink.text }}
+        </a>
 
-          <div class="nav-divider"></div>
+        <div class="nav-divider"></div>
 
-          <label class="nav-header">Second</label>
-          <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">{{navLink.text}}</a>
-        </clr-vertical-nav>
+        <label class="nav-header">Second</label>
+        <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">
+          {{ navLink.text }}
+        </a>
+      </clr-vertical-nav>
     </div>
   `,
   props: args,

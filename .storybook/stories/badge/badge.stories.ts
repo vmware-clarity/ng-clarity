@@ -26,9 +26,9 @@ export default {
 };
 export const Initial: Story = args => ({
   template: `
-    <div style="margin-top: 5px;" *ngFor="let status of modifierClasses">
-        <span class="badge" [ngClass]="status">{{context}}</span>
-        <a href="#" class="badge" [ngClass]="status">{{context}}</a>
+    <div style="margin-top: 5px" *ngFor="let status of modifierClasses">
+      <span class="badge" [ngClass]="status">{{ context }}</span>
+      <a href="#" class="badge" [ngClass]="status">{{ context }}</a>
     </div>
   `,
   props: args,

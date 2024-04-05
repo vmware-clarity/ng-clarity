@@ -30,9 +30,7 @@ export default {
 
 const HeaderCollapsedTemplate: Story = args => ({
   template: `
-
-    <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none;"></iframe>
-    
+    <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none"></iframe>
   `,
   props: args,
 });

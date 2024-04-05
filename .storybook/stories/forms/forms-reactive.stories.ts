@@ -7,7 +7,8 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -46,10 +47,10 @@ export default {
 const ReactiveFormTemplate: Story = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{screenReaderContent}}</span>
+      <span class="clr-sr-only">{{ screenReaderContent }}</span>
       <clr-input-container>
         <label>Name</label>
-        <input clrInput formControlName="name" required [placeholder]="namePlaceholder"/>
+        <input clrInput formControlName="name" required [placeholder]="namePlaceholder" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -74,7 +75,9 @@ const ReactiveFormTemplate: Story = args => ({
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
           <ng-container [ngSwitch]="error.requiredPattern">
-            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">Must contain only letters and numbers</ng-container>
+            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">
+              Must contain only letters and numbers
+            </ng-container>
             <ng-container *ngSwitchCase="patterns.letters.toString()">Must contain at least one letter</ng-container>
             <ng-container *ngSwitchCase="patterns.numbers.toString()">Must contain at least one number</ng-container>
           </ng-container>
