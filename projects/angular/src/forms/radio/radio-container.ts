@@ -97,6 +97,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaLabel() {
-    this.ariaLabel = this.radios.length ? this.label.labelText : null;
+    this.ariaLabel = this.radios.length ? this.label?.labelText : null;
   }
 }
