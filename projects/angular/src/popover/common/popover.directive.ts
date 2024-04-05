@@ -8,12 +8,15 @@ import {
   ConnectedPosition,
   Overlay,
   OverlayConfig,
-  OverlayContainer,
   OverlayRef,
+  // RepositionScrollStrategy,
+  // ScrollDispatcher,
+  // ScrollStrategy,
   STANDARD_DROPDOWN_BELOW_POSITIONS,
+  // ViewportRuler,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { AfterViewInit, ContentChild, Directive, ElementRef, NgZone } from '@angular/core';
+import { AfterViewInit, ContentChild, Directive, NgZone, Renderer2 } from '@angular/core';
 import { delay, fromEvent, Subscription } from 'rxjs';
 
 import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
@@ -26,7 +29,6 @@ export class PopoverDirective implements AfterViewInit {
   @ContentChild(ClrTooltipContent) tooltipContent: ClrTooltipContent;
   @ContentChild(ClrTooltipTrigger) tooltipCTrigger: ClrTooltipTrigger;
 
-  anchor: ElementRef;
   private subscriptions: Subscription[] = [];
   private overlayRef: OverlayRef = null;
   private domPortal: DomPortal;
@@ -36,18 +38,23 @@ export class PopoverDirective implements AfterViewInit {
     overlayX: 'end',
     overlayY: 'top',
   };
-  private _open = false;
-  private parentHost: ElementRef;
-  private position: string;
   private anchorWidth: number;
   private anchorHeight: number;
 
   private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
+  private renderer: Renderer2;
+  private scrollableParent: any;
 
-  constructor(private zone: NgZone, private overlay: Overlay, private overlayContainer: OverlayContainer) {}
+  constructor(
+    // private scrollDispatcher: ScrollDispatcher,
+    private zone: NgZone,
+    private overlay: Overlay
+  ) {}
 
   ngAfterViewInit(): void {
+    this.scrollableParent = this.getScrollParent(this.tooltipCTrigger.elementRef.nativeElement);
     this.listenToMouseEvents();
+    // console.log(this.tooltipCTrigger.elementRef.nativeElement.closest('.content-area').setAttribute("cdk-scrollable",""));
   }
 
   listenToMouseEvents() {
@@ -62,10 +69,42 @@ export class PopoverDirective implements AfterViewInit {
           .pipe(delay(100))
           .subscribe(() => {
             this.removeOverlay();
-          })
+          }),
+        fromEvent(this.scrollableParent.scrollParent, 'scroll').subscribe(() => {
+          if (this.overlayRef) {
+            this.overlayRef.updatePosition();
+          }
+        })
       );
     });
   }
+
+  //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
+  getScrollParent = (node, axis = 'y') => {
+    let el = node;
+    if (!(el instanceof HTMLElement || el instanceof ShadowRoot)) {
+      return null;
+    }
+
+    if (el instanceof ShadowRoot) {
+      el = el.host;
+    }
+    const style = window.getComputedStyle(el);
+    const overflow = axis === 'y' ? style.overflowY : style.overflowX;
+    const scrollSize = axis === 'y' ? el.scrollHeight : el.scrollWidth;
+    const clientSize = axis === 'y' ? el.clientHeight : el.clientWidth;
+    const isScrolled = scrollSize > clientSize;
+
+    if (isScrolled && !overflow.includes('visible') && !overflow.includes('hidden')) {
+      return {
+        scrollParent: el,
+        scrollParentSize: scrollSize,
+        clientParentSize: clientSize,
+      };
+    }
+
+    return this.getScrollParent(el.parentNode, axis) || document.body;
+  };
 
   setDynamicOffsetPosition() {
     this.anchorWidth = this.tooltipCTrigger.elementRef.nativeElement.offsetWidth;
@@ -101,6 +140,8 @@ export class PopoverDirective implements AfterViewInit {
     }
     this.overlayRef.attach(this.domPortal);
     this.overlayRef.updatePosition();
+    // const scrollStrategy: ScrollStrategy = new RepositionScrollStrategy(this.scrollDispatcher, this.viewportruler, this.zone);
+    // this.overlayRef.updateScrollStrategy(scrollStrategy);
   }
 
   removeOverlay(): void {
@@ -120,6 +161,8 @@ export class PopoverDirective implements AfterViewInit {
           .position()
           .flexibleConnectedTo(this.tooltipCTrigger.elementRef.nativeElement)
           .setOrigin(this.tooltipCTrigger.elementRef.nativeElement)
+          // .withScrollableContainers([this.scrollableParent.scrollParent])
+          .withPush(false)
           .withPositions([this.preferredPosition, ...this.positions]),
         scrollStrategy: this.overlay.scrollStrategies.reposition(),
         panelClass: 'clr-tooltip-container',
