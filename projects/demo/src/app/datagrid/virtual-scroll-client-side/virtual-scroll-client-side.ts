@@ -20,12 +20,12 @@ class ChangeDetectionPerfRecord {
 }
 
 @Component({
-  selector: 'clr-datagrid-virtual-scroll-demo',
+  selector: 'clr-datagrid-virtual-scroll-client-side-demo',
   providers: [DynamicData, Inventory],
-  templateUrl: './virtual-scroll.html',
+  templateUrl: './virtual-scroll-client-side.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridVirtualScrollDemo implements OnInit {
+export class DatagridVirtualScrollClientSideDemo implements OnInit {
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];

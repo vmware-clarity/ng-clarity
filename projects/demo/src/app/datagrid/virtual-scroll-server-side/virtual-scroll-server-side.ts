@@ -12,12 +12,12 @@ import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 
 @Component({
-  selector: 'clr-datagridinfinite-scroll-demo',
+  selector: 'clr-datagrid-virtual-scroll-server-side-demo',
   providers: [Inventory],
-  templateUrl: './infinite-scroll.html',
+  templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridInfinteScrollDemo implements OnInit {
+export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
   currentPageSize = 100;
   _inventory = null;
