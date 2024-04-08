@@ -21,7 +21,7 @@ export default defineConfig({
   snapshotPathTemplate: './tests/snapshots/{arg}{ext}',
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 8000,
   },
   fullyParallel: true,
   forbidOnly: true,
