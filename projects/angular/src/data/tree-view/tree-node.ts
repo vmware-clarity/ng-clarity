@@ -325,6 +325,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private toggleExpandOrTriggerDefault() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.isExpandable() && !this.isSelectable()) {
       this.expandService.expanded = !this.expanded;
     } else {
