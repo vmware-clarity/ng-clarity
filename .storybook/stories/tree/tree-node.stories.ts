@@ -62,8 +62,7 @@ const TreeViewNodeTemplate: Story = args => ({
         (clrExpandedChange)="clrExpandedChange($event)"
         (clrSelectedChange)="clrSelectedChange($event)"
       >
-        Files
-        ${getFileTreeNodeMarkup(filesRoot, args)}
+        Files ${getFileTreeNodeMarkup(filesRoot, args)}
       </clr-tree-node>
     </clr-tree>
   `,
