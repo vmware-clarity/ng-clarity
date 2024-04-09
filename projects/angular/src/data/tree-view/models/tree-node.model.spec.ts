@@ -132,5 +132,40 @@ export default function (): void {
       root.destroy();
       expect(complete).toBeTrue();
     });
+
+    it('unselected disabled node can not be selected', function () {
+      child.disabled = true;
+      child.toggleSelection(true);
+      expect(child.selected.value).toBe(ClrSelectedState.UNSELECTED);
+    });
+
+    it('selected disabled node can not be unselected', function () {
+      child.setSelected(ClrSelectedState.SELECTED, false, false);
+      child.disabled = true;
+      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+      child.toggleSelection(true);
+      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+    });
+
+    it('disabled parent node can not select children', function () {
+      child.disabled = true;
+      child.toggleSelection(true);
+      [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
+    });
+
+    it('re enabled disabled root node do not change children disable status', function () {
+      child.disabled = true;
+
+      expect(root.disabled).toBeFalse();
+      expect(child.disabled).toBeTrue();
+
+      root.disabled = true;
+      expect(root.disabled).toBeTrue();
+      expect(child.disabled).toBeTrue();
+
+      root.disabled = false;
+      expect(root.disabled).toBeFalse();
+      expect(child.disabled).toBeTrue();
+    });
   });
 }
