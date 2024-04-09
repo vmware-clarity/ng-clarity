@@ -30,7 +30,10 @@ export default {
     clrWizardPreventDefaultNext: { defaultValue: false },
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
-    clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrWizardSize: {
+      defaultValue: 'xl',
+      control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -111,4 +114,11 @@ const WizardTemplate: Story = args => ({
 export const Wizard: StoryObj = {
   render: WizardTemplate,
   play: removeFocusOutline,
+};
+
+export const FullScreenWizard: StoryObj = {
+  render: WizardTemplate,
+  args: {
+    clrWizardSize: 'full-screen',
+  },
 };
