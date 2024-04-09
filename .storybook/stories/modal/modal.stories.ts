@@ -36,6 +36,12 @@ const defaultStory: Story = args => ({
       <h3 class="modal-title">{{title}}</h3>
       <div class="modal-body">
         {{body}}
+        <div *ngIf="showLongModalContent" cds-layout="m-t:md">
+          This list is provided to demonstrate scrolling capability within the modal.
+          <ul>
+            <li *ngFor="let _ of createArray(100); let i = index">{{ i + 1 }}</li>
+          </ul>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
@@ -53,7 +59,7 @@ const defaultParameters: Parameters = {
     // inputs
     clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
     clrModalLabelledById: { defaultValue: '' },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
     clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
@@ -73,6 +79,7 @@ const defaultParameters: Parameters = {
     createArray: n => new Array(n),
     title: 'Modal Title',
     body: 'Hello World!',
+    showLongModalContent: false,
   },
 };
 
