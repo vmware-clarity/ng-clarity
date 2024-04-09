@@ -47,11 +47,13 @@ import { ClrRadio } from './radio';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
+    '[attr.aria-label]': 'ariaLabel',
   },
   providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
+  ariaLabel: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
 
@@ -86,9 +88,14 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   override ngAfterContentInit() {
     this.setAriaRoles();
+    this.setAriaLabel();
   }
 
   private setAriaRoles() {
     this.role = this.radios.length ? 'group' : null;
+  }
+
+  private setAriaLabel() {
+    this.ariaLabel = this.radios.length ? this.label?.labelText : null;
   }
 }
