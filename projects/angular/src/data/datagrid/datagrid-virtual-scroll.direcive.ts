@@ -18,17 +18,18 @@ import {
   ViewportRuler,
 } from '@angular/cdk/scrolling';
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   DoCheck,
   ElementRef,
   EmbeddedViewRef,
+  EnvironmentInjector,
   EventEmitter,
   Input,
   IterableDiffers,
   NgZone,
   OnDestroy,
-  OnInit,
   Output,
   TemplateRef,
   ViewContainerRef,
@@ -62,7 +63,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 @Directive({
   selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
 })
-export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDestroy {
+export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
 
@@ -86,6 +87,7 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
+
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     private readonly iterableDiffers: IterableDiffers,
@@ -95,7 +97,8 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
     private readonly directionality: Directionality,
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
-    private readonly datagrid: ClrDatagrid
+    private readonly datagrid: ClrDatagrid,
+    private readonly injector: EnvironmentInjector
   ) {
     this.datagridElementRef = this.datagrid.el;
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
@@ -104,27 +107,6 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
       this._cdkFixedSizeVirtualScrollInputs.minBufferPx,
       this._cdkFixedSizeVirtualScrollInputs.maxBufferPx
-    );
-
-    this.virtualScrollViewport = createVirtualScrollViewportForDatagrid(
-      this.changeDetectorRef,
-      this.ngZone,
-      this.directionality,
-      this.scrollDispatcher,
-      this.viewportRuler,
-      this.datagridElementRef,
-      this.virtualScrollStrategy
-    );
-
-    const viewRepeaterStrategy = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
-
-    this.cdkVirtualFor = new CdkVirtualForOf<T>(
-      this.viewContainerRef,
-      this.templateRef,
-      this.iterableDiffers,
-      viewRepeaterStrategy,
-      this.virtualScrollViewport,
-      this.ngZone
     );
   }
 
@@ -191,16 +173,33 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
     this.updateFixedSizeVirtualScrollInputs();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.injector.runInContext(() => {
+      this.virtualScrollViewport = createVirtualScrollViewportForDatagrid(
+        this.changeDetectorRef,
+        this.ngZone,
+        this.directionality,
+        this.scrollDispatcher,
+        this.viewportRuler,
+        this.datagridElementRef,
+        this.virtualScrollStrategy
+      );
+
+      this.cdkVirtualFor = new CdkVirtualForOf<T>(
+        this.viewContainerRef,
+        this.templateRef,
+        this.iterableDiffers,
+        new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
+        this.virtualScrollViewport,
+        this.ngZone
+      );
+
+      this.virtualScrollViewport.ngOnInit();
+    });
+
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
     this.updateCdkVirtualForInputs();
-
-    this.virtualScrollViewport.ngOnInit();
-
-    // this.setActiveCellSubscription = fromActiveCell(this.datagrid).subscribe(activeCellElement => {
-    //   this.activeCellCoordinates = this.getCellCoordinates(activeCellElement);
-    // });
     this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
 
     this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {

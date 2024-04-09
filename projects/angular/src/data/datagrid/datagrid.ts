@@ -83,7 +83,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
   @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
 
-  // Allows disabling of the auto focus on page/state changes (excludes focus management inside of popups)
+  // Allows disabling of the autofocus on page/state changes (excludes focus management inside popups)
   @Input() clrDgDisablePageFocus = false;
 
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<T[]>(false);
@@ -116,6 +116,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
@@ -144,7 +145,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    public el: ElementRef,
+    public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
