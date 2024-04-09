@@ -18,17 +18,18 @@ import {
   ViewportRuler,
 } from '@angular/cdk/scrolling';
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   DoCheck,
   ElementRef,
   EmbeddedViewRef,
+  EnvironmentInjector,
   EventEmitter,
   Input,
   IterableDiffers,
   NgZone,
   OnDestroy,
-  OnInit,
   Output,
   TemplateRef,
   ViewContainerRef,
@@ -64,7 +65,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
   selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
   providers: [Items],
 })
-export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDestroy {
+export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
 
@@ -95,7 +96,8 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
     private readonly directionality: Directionality,
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
-    private readonly datagrid: ClrDatagrid
+    private readonly datagrid: ClrDatagrid,
+    private readonly injector: EnvironmentInjector
   ) {
     this.items.smartenUp();
 
@@ -106,25 +108,6 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
       this._cdkFixedSizeVirtualScrollInputs.minBufferPx,
       this._cdkFixedSizeVirtualScrollInputs.maxBufferPx
-    );
-
-    this.virtualScrollViewport = createVirtualScrollViewportForDatagrid(
-      this.changeDetectorRef,
-      this.ngZone,
-      this.directionality,
-      this.scrollDispatcher,
-      this.viewportRuler,
-      this.datagridElementRef,
-      this.virtualScrollStrategy
-    );
-
-    this.cdkVirtualFor = new CdkVirtualForOf<T>(
-      this.viewContainerRef,
-      this.templateRef,
-      this.iterableDiffers,
-      new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
-      this.virtualScrollViewport,
-      this.ngZone
     );
   }
 
@@ -192,12 +175,33 @@ export class CustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDest
     this.updateFixedSizeVirtualScrollInputs();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.injector.runInContext(() => {
+      this.virtualScrollViewport = createVirtualScrollViewportForDatagrid(
+        this.changeDetectorRef,
+        this.ngZone,
+        this.directionality,
+        this.scrollDispatcher,
+        this.viewportRuler,
+        this.datagridElementRef,
+        this.virtualScrollStrategy
+      );
+
+      this.cdkVirtualFor = new CdkVirtualForOf<T>(
+        this.viewContainerRef,
+        this.templateRef,
+        this.iterableDiffers,
+        new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
+        this.virtualScrollViewport,
+        this.ngZone
+      );
+
+      this.virtualScrollViewport.ngOnInit();
+    });
+
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
     this.updateCdkVirtualForInputs();
-
-    this.virtualScrollViewport.ngOnInit();
 
     this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
 
