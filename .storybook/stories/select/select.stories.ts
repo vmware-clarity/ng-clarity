@@ -32,16 +32,11 @@ export default {
 };
 
 const selectTemplate: Story = args => ({
-  template: ` 
+  template: `
     <clr-select-container>
       <label>Options</label>
       <select clrSelect>
-        <option
-          *ngFor="let _ of createArray(optionCount); let i = index"
-          [value]="i + 1"
-        >
-          Option {{i + 1}}
-        </option>
+        <option *ngFor="let _ of createArray(optionCount); let i = index" [value]="i + 1">Option {{ i + 1 }}</option>
       </select>
     </clr-select-container>
   `,

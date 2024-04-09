@@ -7,14 +7,39 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Stepper/Stepper',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStepperModule, ClrConditionalModule, ClrInputModule],
+    }),
+  ],
+  component: ClrStepper,
+  argTypes: {
+    // inputs
+    clrInitialStep: { defaultValue: '' },
+    // story helpers
+    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    ngSubmit: { control: { disable: true }, table: { disable: true } },
+    createArray: { control: { disable: true }, table: { disable: true } },
+    stepCount: { control: { type: 'number', min: 1, max: 100 } },
+  },
+  args: {
+    // story helpers
+    createArray: n => new Array(n),
+    stepCount: 3,
+    form: formMappingKey,
+    ngSubmit: action('ngSubmit'),
+  },
+};
+
+const StepperTemplate: Story = args => ({
   template: `
     <form clrStepper [clrInitialStep]="clrInitialStep" [formGroup]="form" (ngSubmit)="ngSubmit()">
       <clr-stepper-panel *ngFor="let _ of createArray(stepCount); let i = index" formGroupName="step{{ i + 1 }}">
@@ -39,31 +64,6 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Stepper/Stepper',
-  component: ClrStepper,
-  argTypes: {
-    // inputs
-    clrInitialStep: { defaultValue: '' },
-    // story helpers
-    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    ngSubmit: { control: { disable: true }, table: { disable: true } },
-    createArray: { control: { disable: true }, table: { disable: true } },
-    stepCount: { control: { type: 'number', min: 1, max: 100 } },
-  },
-  args: {
-    // story helpers
-    createArray: n => new Array(n),
-    stepCount: 3,
-    form: formMappingKey,
-    ngSubmit: action('ngSubmit'),
-  },
-};
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrStepperModule, ClrConditionalModule, ClrInputModule], defaultStory, defaultParameters, variants);
-
 function getForm() {
   const controls: { [key: string]: AbstractControl } = {};
 
@@ -75,3 +75,7 @@ function getForm() {
 
   return new FormGroup(controls);
 }
+
+export const Stepper: StoryObj = {
+  render: StepperTemplate,
+};

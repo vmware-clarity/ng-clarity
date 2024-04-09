@@ -24,19 +24,15 @@ const ListTemplate: Story = args => ({
   template: `
     <div>
       Unordered List
-      <ul [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">
-          Item {{i + 1}}
-        </li>
+      <ul [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">Item {{ i + 1 }}</li>
       </ul>
     </div>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       Ordered List
-      <ol [ngClass]="{ 'list': !unstyled, 'list-unstyled': unstyled }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">
-          Item {{i + 1}}
-        </li>
+      <ol [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
+        <li *ngFor="let _ of createArray(itemCount); let i = index">Item {{ i + 1 }}</li>
       </ol>
     </div>
   `,

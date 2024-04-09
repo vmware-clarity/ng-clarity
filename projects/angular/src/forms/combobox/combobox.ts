@@ -257,6 +257,9 @@ export class ClrCombobox<T>
 
   onBlur() {
     this.onTouchedCallback();
+    if (this.control.control.updateOn === 'change' && this.control.control?.errors?.required) {
+      this.updateControlValue();
+    }
     if (this.control.control.updateOn === 'blur') {
       this.control.control.updateValueAndValidity();
     }
@@ -299,7 +302,7 @@ export class ClrCombobox<T>
 
   getActiveDescendant() {
     const model = this.focusHandler.pseudoFocus.model;
-    return model ? model.id : null;
+    return model ? model.id : this.options?.noResultsElementId;
   }
 
   setDisabledState(): void {

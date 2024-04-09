@@ -318,6 +318,10 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
+    // (undocumented)
     togglePanel(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": "clrAccordionPanelDisabled"; "panelOpen": "clrAccordionPanelOpen"; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
@@ -999,6 +1003,10 @@ export interface ClrCommonStrings {
     singleSelectionAriaLabel: string;
     sortColumn: string;
     stackViewChanged: string;
+    // (undocumented)
+    stepComplete: string;
+    // (undocumented)
+    stepError: string;
     success: string;
     // (undocumented)
     timelineStepCurrent: string;
@@ -2865,6 +2873,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    get noResultsElementId(): string;
+    // (undocumented)
     optionSelectionService: OptionSelectionService<T>;
     // (undocumented)
     optionsId: string;
@@ -3181,6 +3191,8 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
+    // (undocumented)
+    ariaLabel: string;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -3762,6 +3774,8 @@ export class ClrTabLink {
     get ariaControls(): string;
     // (undocumented)
     el: ElementRef;
+    // (undocumented)
+    readonly id: number;
     // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)

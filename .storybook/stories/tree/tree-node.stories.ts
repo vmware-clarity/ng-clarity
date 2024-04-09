@@ -48,7 +48,6 @@ export default {
     // outputs
     clrExpandedChange: action('clrExpandedChange'),
     clrSelectedChange: action('clrSelectedChange'),
-  },
 };
 
 const TreeViewNodeTemplate: Story = args => ({
@@ -66,6 +65,56 @@ const TreeViewNodeTemplate: Story = args => ({
         ${getFileTreeNodeMarkup(filesRoot, args)}
       </clr-tree-node>
     </clr-tree>
+  `,
+  props: args,
+});
+
+const TreeViewNodeAllTemplate: Story = args => ({
+  template: `
+    <span cds-text="subsection">Default</span>
+    <div *ngFor="let state of EXPANDED_STATE" style="margin-top: 20px; margin-bottom: 20px">
+      <clr-tree>
+        <clr-tree-node
+          [clrExpandable]="clrExpandable"
+          [clrExpanded]="state"
+          (clrExpandedChange)="clrExpandedChange($event)"
+          (clrSelectedChange)="clrSelectedChange($event)"
+        >
+          Files ${getFileTreeNodeMarkup(filesRoot, args)}
+        </clr-tree-node>
+      </clr-tree>
+    </div>
+
+    <span cds-text="subsection">Checkbox</span>
+    <div *ngFor="let nodeType of TREE_NODE_STATE" style="margin: 20px">
+      <span *ngIf="!nodeType.clrExpanded" cds-text="message" style="line-height: 45px">{{ nodeType?.type }}</span>
+      <clr-tree>
+        <clr-tree-node
+          [clrExpandable]="clrExpandable"
+          [clrExpanded]="nodeType.clrExpanded"
+          [clrSelected]="nodeType.clrSelected"
+          (clrExpandedChange)="clrExpandedChange($event)"
+          (clrSelectedChange)="clrSelectedChange($event)"
+        >
+          Files ${getFileTreeNodeMarkup(filesRoot, args)}
+        </clr-tree-node>
+      </clr-tree>
+    </div>
+
+    <span cds-text="subsection">Icon</span>
+    <div *ngFor="let state of EXPANDED_STATE" style="margin-top: 20px; margin-bottom: 20px">
+      <clr-tree>
+        <clr-tree-node
+          [clrExpandable]="clrExpandable"
+          [clrExpanded]="state"
+          (clrExpandedChange)="clrExpandedChange($event)"
+          (clrSelectedChange)="clrSelectedChange($event)"
+        >
+          <cds-icon [attr.shape]="'folder'"></cds-icon>
+          Files ${getIconTreeNodeMarkup(filesRoot, args)}
+        </clr-tree-node>
+      </clr-tree>
+    </div>
   `,
   props: args,
 });

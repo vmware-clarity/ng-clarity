@@ -37,7 +37,7 @@ const ModalStaticTemplate: Story = args => ({
         position: relative;
         padding: 72px;
       }
-        
+
       .modal-backdrop.static {
         position: absolute;
         top: 0;
@@ -48,15 +48,15 @@ const ModalStaticTemplate: Story = args => ({
     </style>
     <div class="backdrop-example-container">
       <div class="modal static">
-        <div class="modal-dialog modal-{{size}}" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-{{ size }}" role="dialog" aria-hidden="true">
           <div class="modal-content">
             <div class="modal-header">
               <button aria-label="Close" class="close" type="button">
                 <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
               </button>
-              <h3 class="modal-title">{{title}}</h3>
+              <h3 class="modal-title">{{ title }}</h3>
             </div>
-            <div class="modal-body">{{body}}</div>
+            <div class="modal-body">{{ body }}</div>
             <div class="modal-footer">
               <button class="btn btn-primary" type="button">Ok</button>
             </div>

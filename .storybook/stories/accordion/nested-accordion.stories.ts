@@ -5,7 +5,7 @@
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -33,32 +33,37 @@ export default {
 };
 
 const template = `
-    <clr-accordion>
-      <clr-accordion-panel
-        *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="openIndex === i"
-      >
-        <clr-accordion-title>Parent Title {{i + 1}}</clr-accordion-title>
-        <clr-accordion-content>
-          <clr-accordion>
-            <clr-accordion-panel [clrAccordionPanelOpen]="nestedOpenIndex === i">
-              <clr-accordion-title>Nested Title</clr-accordion-title>
-              <clr-accordion-content>Nested content</clr-accordion-content>
-            </clr-accordion-panel>
-          </clr-accordion>
-        </clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-  `;
+  <clr-accordion>
+    <clr-accordion-panel
+      *ngFor="let _ of createArray(panelCount); let i = index"
+      [clrAccordionPanelOpen]="openIndex === i"
+    >
+      <clr-accordion-title>Parent Title {{ i + 1 }}</clr-accordion-title>
+      <clr-accordion-content>
+        <clr-accordion>
+          <clr-accordion-panel [clrAccordionPanelOpen]="nestedOpenIndex === i">
+            <clr-accordion-title>Nested Title</clr-accordion-title>
+            <clr-accordion-content>Nested content</clr-accordion-content>
+          </clr-accordion-panel>
+        </clr-accordion>
+      </clr-accordion-content>
+    </clr-accordion-panel>
+  </clr-accordion>
+`;
 
-export const Closed: Story = args => ({
+const NestedAccordionTemplate: Story = args => ({
   template,
   props: args,
 });
 
-export const Opened: Story = Closed.bind({});
-Opened.args = {
-  ...Closed.args,
-  openIndex: 0,
-  nestedOpenIndex: 0,
+export const Closed: StoryObj = {
+  render: NestedAccordionTemplate,
+};
+
+export const Opened: StoryObj = {
+  render: NestedAccordionTemplate,
+  args: {
+    openIndex: 0,
+    nestedOpenIndex: 0,
+  },
 };

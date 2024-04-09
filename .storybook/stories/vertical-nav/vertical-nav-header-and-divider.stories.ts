@@ -7,10 +7,9 @@
 import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } from '@cds/core/icon';
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -21,27 +20,21 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const defaultStory: Story = args => ({
-  template: `
-    <div class="content-container">
-        <clr-vertical-nav>
-          <label class="nav-header">First</label>
-          <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">{{navLink.text}}</a>
-
-          <div class="nav-divider"></div>
-
-          <label class="nav-header">Second</label>
-          <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">{{navLink.text}}</a>
-        </clr-vertical-nav>
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Vertical Nav/Vertical Header and Divider',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
   component: ClrVerticalNav,
   argTypes: {
+    clrVerticalNavCollapsible: { control: { disable: true }, table: { disable: true } },
+    clrVerticalNavCollapsed: { control: { disable: true }, table: { disable: true } },
+    // outputs
+    clrVerticalNavCollapsedChange: { control: { disable: true }, table: { disable: true } },
+    // methods
+    toggleByButton: { control: { disable: true }, table: { disable: true } },
     // story helpers
     navLinks: { control: { disable: true }, table: { disable: true } },
   },
@@ -51,6 +44,27 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const NavHeaderDividerTemplate: Story = args => ({
+  template: `
+    <div class="content-container">
+      <clr-vertical-nav>
+        <label class="nav-header">First</label>
+        <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">
+          {{ navLink.text }}
+        </a>
 
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);
+        <div class="nav-divider"></div>
+
+        <label class="nav-header">Second</label>
+        <a *ngFor="let navLink of navLinks; let index = index" clrVerticalNavLink href="javascript:void(0)">
+          {{ navLink.text }}
+        </a>
+      </clr-vertical-nav>
+    </div>
+  `,
+  props: args,
+});
+
+export const NavHeaderAndDivider: StoryObj = {
+  render: NavHeaderDividerTemplate,
+};
