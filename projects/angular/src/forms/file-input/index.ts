@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-
-@Component({
-  templateUrl: './file.html',
-})
-export class FormsFileDemo {
-  readonly form = new FormGroup({
-    file: new FormControl(),
-  });
-}
+export * from './file-input';
+export * from './file-input-validator';
+export * from './file-input-container';
+export * from './file-input.module';

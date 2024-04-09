@@ -5,7 +5,107 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h2>Text Input</h2>
+<h2>File Input Component</h2>
+
+<form clrForm clrLayout="vertical" [formGroup]="form">
+  <clr-file-input-container>
+    <label>Basic</label>
+    <input
+      type="file"
+      accept=".txt,text/plain"
+      multiple
+      required
+      formControlName="file"
+      clrFileInput
+      [clrMaxFileSize]="500"
+    />
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+    <clr-control-error *clrIfError="'accept'">File type not accepted</clr-control-error>
+    <clr-control-error *clrIfError="'minFileSize'">File size too small</clr-control-error>
+    <clr-control-error *clrIfError="'maxFileSize'">File size too large</clr-control-error>
+  </clr-file-input-container>
+
+  <pre>
+touched: {{ form.controls.file.touched }}
+
+status: {{ form.controls.file.status }}
+
+value: {{ form.controls.file.value}}
+
+errors: {{ form.controls.file.errors | json }}
+  </pre>
+
+  <clr-file-input-container>
+    <label>Disabled</label>
+    <input type="file" multiple clrFileInput disabled />
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+    <clr-control-error *clrIfError="'accept'">Text files only</clr-control-error>
+  </clr-file-input-container>
+</form>
+
+<h2>File Input CSS-Only</h2>
+
+<form class="clr-form">
+  <div class="clr-form-control">
+    <label class="clr-control-label">Basic</label>
+    <div class="clr-control-container">
+      <div class="clr-file-input-wrapper">
+        <label for="basic" class="clr-control-label">
+          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+        </label>
+        <input type="file" id="basic" placeholder="Enter value here" class="clr-file-input" />
+      </div>
+      <span class="clr-subtext">Helper text</span>
+    </div>
+  </div>
+
+  <div class="clr-form-control">
+    <label class="clr-control-label">Error</label>
+    <div class="clr-control-container clr-error">
+      <div class="clr-file-input-wrapper">
+        <label for="error" class="clr-control-label">
+          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+        </label>
+        <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
+      </div>
+      <span class="clr-subtext">Helper text</span>
+      <span class="clr-subtext error">Error message</span>
+    </div>
+  </div>
+
+  <div class="clr-form-control">
+    <label class="clr-control-label">Success</label>
+    <div class="clr-control-container clr-success">
+      <div class="clr-file-input-wrapper">
+        <label for="error" class="clr-control-label">
+          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+        </label>
+        <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
+      </div>
+      <span class="clr-subtext">Helper text</span>
+      <span class="clr-subtext success">Success message</span>
+    </div>
+  </div>
+
+  <div class="clr-form-control clr-form-control-disabled">
+    <label class="clr-control-label">Disabled</label>
+    <div class="clr-control-container clr-error">
+      <div class="clr-file-input-wrapper">
+        <button class="btn btn-sm clr-file-input-wrapper__browse-button" disabled>browse</button>
+        <input type="file" id="disaled" disabled placeholder="Enter value here" class="clr-file-input" />
+        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
+      </div>
+      <span class="clr-subtext">Helper text</span>
+    </div>
+  </div>
+</form>
+
+<h2>File Input CSS-Only (Deprecated)</h2>
 
 <form class="clr-form">
   <div class="clr-form-control">

@@ -295,4 +295,8 @@ export interface ClrCommonStrings {
   //Stepper: Screen-reader text for completed/failed step
   stepComplete: string;
   stepError: string;
+
+  // File input
+  browse: string;
+  fileCount: string;
 }

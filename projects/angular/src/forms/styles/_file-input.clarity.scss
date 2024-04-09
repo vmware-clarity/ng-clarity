@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.forms' as forms-variables;
+
+@include mixins.exports('forms.file-input') {
+  .clr-file-input-wrapper {
+    position: relative;
+
+    .clr-control-label {
+      display: inline;
+    }
+
+    .clr-file-input {
+      @include mixins.equilateral(0);
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    &__browse-button,
+    &__clear-button {
+      margin: 0;
+      margin-right: tokens.$cds-global-space-2;
+    }
+
+    &__clear-button {
+      padding: 0 tokens.$cds-global-space-2 !important;
+      min-width: unset;
+    }
+  }
+}

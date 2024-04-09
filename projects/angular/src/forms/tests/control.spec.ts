@@ -113,8 +113,17 @@ function fullTest(description, testContainer, testControl, testComponent, contro
 
     it('should handle blur events', () => {
       // control must be both invalid and blurred to register the validity
-      control.nativeElement.value = 'abc';
-      control.nativeElement.dispatchEvent(new Event('input'));
+      if (control.nativeElement.type === 'file') {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(new File([''], 'test.txt'));
+
+        control.nativeElement.files = dataTransfer.files;
+        control.nativeElement.dispatchEvent(new Event('change'));
+      } else {
+        control.nativeElement.value = 'abc';
+        control.nativeElement.dispatchEvent(new Event('input'));
+      }
+
       control.nativeElement.dispatchEvent(new Event('blur'));
       fixture.detectChanges();
       expect(ifControlStateService.triggerStatusChange).toHaveBeenCalled();

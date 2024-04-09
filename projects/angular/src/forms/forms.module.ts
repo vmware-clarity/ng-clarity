@@ -13,6 +13,7 @@ import { ClrComboboxModule } from './combobox/combobox.module';
 import { ClrCommonFormsModule } from './common/common.module';
 import { ClrDatalistModule } from './datalist/datalist.module';
 import { ClrDatepickerModule } from './datepicker/datepicker.module';
+import { ClrFileInputModule } from './file-input';
 import { ClrInputModule } from './input/input.module';
 import { ClrPasswordModule } from './password/password.module';
 import { ClrRadioModule } from './radio/radio.module';
@@ -27,6 +28,7 @@ import { ClrTextareaModule } from './textarea/textarea.module';
     ClrCheckboxModule,
     ClrComboboxModule,
     ClrDatepickerModule,
+    ClrFileInputModule,
     ClrInputModule,
     ClrPasswordModule,
     ClrRadioModule,
