@@ -63,7 +63,10 @@ const defaultParameters: Parameters = {
     clrWizardPreventDefaultCancel: { defaultValue: false },
     clrWizardPreventModalAnimation: { defaultValue: false },
     clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
-    clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrWizardSize: {
+      defaultValue: 'xl',
+      control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },

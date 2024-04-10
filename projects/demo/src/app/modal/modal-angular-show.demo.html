@@ -6,9 +6,16 @@
 
 <p>
   Try it live:
+  <clr-toggle-container>
+    <label>Size</label>
+    <clr-toggle-wrapper>
+      <label>Full Screen</label>
+      <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
   <button class="btn btn-primary" (click)="basic = true">Show modal</button>
 </p>
-<clr-modal [(clrModalOpen)]="basic">
+<clr-modal [clrModalSize]="fullScreen ? 'full-screen' : 'md'" [(clrModalOpen)]="basic">
   <h3 class="modal-title">I have a nice title</h3>
   <div class="modal-body">
     <p>But not much to say...</p>

@@ -17,8 +17,17 @@ const defaultStory: Story = args => ({
         position: relative;
         padding: 24px;
       }
+
+      .backdrop-example-container.full-screen {
+        padding: 0;
+        height: 400px;
+      }
+
       .modal.static {
         position: relative;
+      }
+
+      .modal:not(.modal-full-screen).static {
         padding: 72px;
       }
         
@@ -30,8 +39,8 @@ const defaultStory: Story = args => ({
         left: 0;
       }
     </style>
-    <div class="backdrop-example-container">
-      <div class="modal static">
+    <div class="backdrop-example-container" [ngClass]="{ 'full-screen': size === 'full-screen' }">
+      <div class="modal modal-{{ size }} static">
         <div class="modal-dialog modal-{{size}}" role="dialog" aria-hidden="true">
           <div class="modal-content">
             <div class="modal-header">
@@ -83,6 +92,11 @@ const variants: Parameters[] = [
     title: 'Extra Large Modal',
     body: 'This is a extra Large modal.',
     size: 'xl',
+  },
+  {
+    title: 'Full-Screen Modal',
+    body: 'This is a full-screen modal.',
+    size: 'full-screen',
   },
 ];
 
