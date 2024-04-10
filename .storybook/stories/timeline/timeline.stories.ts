@@ -19,14 +19,13 @@ export default {
   component: ClrTimeline,
   argTypes: {
     // inputs
-    clrLayout: {
-      defaultValue: ClrTimelineLayout.HORIZONTAL,
-      control: { type: 'inline-radio', options: ClrTimelineLayout },
-    },
+    clrLayout: { control: { type: 'inline-radio', options: ClrTimelineLayout } },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
     // story helpers
     ClrTimelineStepState,
   },

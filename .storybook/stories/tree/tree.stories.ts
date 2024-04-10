@@ -21,9 +21,11 @@ export default {
   argTypes: {
     // inputs
     clrLazy: { control: { disable: true } },
+  },
+  args: {
     // story helpers
-    asLink: { defaultValue: false, control: { type: 'boolean' } },
-    hasIcon: { defaultValue: false, control: { type: 'boolean' } },
+    asLink: false,
+    hasIcon: false,
   },
 };
 

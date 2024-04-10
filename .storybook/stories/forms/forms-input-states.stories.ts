@@ -19,9 +19,6 @@ export default {
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
-    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
-    isError: { defaultValue: false, control: { type: 'boolean' } },
-    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
   },
   args: {
     isDisabled: false,

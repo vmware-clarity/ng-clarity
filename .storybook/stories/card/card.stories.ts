@@ -13,12 +13,7 @@ export default {
   argTypes: {
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
-    clickable: { defaultValue: true, control: { type: 'boolean' } },
-    hasImage: { defaultValue: true, control: { type: 'boolean' } },
-    buttonType: {
-      defaultValue: 'btn-outline',
-      control: { type: 'radio', options: buttonTypes },
-    },
+    buttonType: { control: { type: 'radio', options: buttonTypes } },
   },
   args: {
     // story helpers
@@ -29,6 +24,9 @@ export default {
     header: 'Header',
     title: 'Title',
     content: 'Hello World!',
+    buttonType: 'btn-outline',
+    clickable: true,
+    hasImage: true,
   },
 };
 

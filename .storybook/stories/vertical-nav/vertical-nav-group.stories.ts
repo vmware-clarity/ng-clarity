@@ -30,8 +30,6 @@ export default {
   ],
   component: ClrVerticalNavGroup,
   argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     // methods
@@ -43,6 +41,8 @@ export default {
     navLinks: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavGroupExpanded: false,
     // outputs
     clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
     // story helpers

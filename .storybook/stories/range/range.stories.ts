@@ -17,13 +17,14 @@ export default {
   component: ClrRangeContainer,
   argTypes: {
     // methods
-    clrRangeHasProgress: { defaultValue: false, control: { type: 'boolean' } },
     getRangeProgressFillWidth: { control: { disabled: true }, table: { disable: true } },
     addGrid: { control: { disabled: true }, table: { disable: true } },
     controlClass: { control: { disabled: true }, table: { disable: true } },
     value: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrRangeHasProgress: false,
     // story helpers
     label: 'Options',
     value: 50,

@@ -18,12 +18,12 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    clrPageSizeOptions: { defaultValue: [5, 10, 20] },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrPageSizeOptions: [5, 10, 20],
     // story helpers
     elements,
     highlight: true,

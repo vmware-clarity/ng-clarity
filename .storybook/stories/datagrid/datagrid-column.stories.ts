@@ -26,20 +26,14 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgColType: { defaultValue: 'string' },
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
       control: {
         type: 'radio',
         options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
       },
     },
-    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
-    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
-    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
-    clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
     clrDgColumnResize: { control: { disable: true } },
     clrDgSortOrderChange: { control: { disable: true } },
@@ -51,6 +45,13 @@ export default {
     ClrDatagridSortOrder: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgColType: 'string',
+    clrFilterNumberMaxPlaceholder: commonStringsDefault.maxValue,
+    clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
+    clrFilterStringPlaceholder: commonStringsDefault.filterItems,
+    clrFilterValue: '',
+    clrDgSortOrder: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
     // outputs
     clrDgColumnResize: action('clrDgColumnResize'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),

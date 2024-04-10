@@ -34,13 +34,15 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'right-middle', control: { type: 'radio', options: positions } },
+    clrPosition: { control: { type: 'radio', options: positions } },
     // methods
     close: { control: { disable: true }, table: { disable: true } },
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrPosition: 'right-middle',
     // story helpers
     content: 'Hello World!',
   },
