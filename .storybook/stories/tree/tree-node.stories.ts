@@ -6,7 +6,7 @@
 
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
@@ -21,11 +21,7 @@ export default {
   component: ClrTreeNode,
   argTypes: {
     // inputs
-    clrExpandable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDisabled: { defaultValue: false, control: { type: 'boolean' } },
-    clrExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrSelected: {
-      defaultValue: 'not selectable',
       control: { type: 'inline-radio', options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'] },
       mapping: {
         'not selectable': undefined,
@@ -45,13 +41,18 @@ export default {
     onKeyDown: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDisabled: false,
+    clrExpandable: true,
+    clrExpanded: false,
+    clrSelected: 'not selectable',
     // outputs
     clrExpandedChange: action('clrExpandedChange'),
     clrSelectedChange: action('clrSelectedChange'),
   },
 };
 
-const TreeViewNodeTemplate: Story = args => ({
+const TreeViewNodeTemplate: StoryFn = args => ({
   template: `
     <clr-tree>
       <clr-tree-node

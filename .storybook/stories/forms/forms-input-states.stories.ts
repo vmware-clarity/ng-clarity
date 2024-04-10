@@ -5,7 +5,7 @@
  */
 
 import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -19,9 +19,6 @@ export default {
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
-    isDisabled: { defaultValue: false, control: { type: 'boolean' } },
-    isError: { defaultValue: false, control: { type: 'boolean' } },
-    isSuccess: { defaultValue: false, control: { type: 'boolean' } },
   },
   args: {
     isDisabled: false,
@@ -30,7 +27,7 @@ export default {
   },
 };
 
-const FormInputTemplate: Story = args => ({
+const FormInputTemplate: StoryFn = args => ({
   template: `
     <form clrForm>
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">

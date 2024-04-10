@@ -6,11 +6,11 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
-const RowTemplate: Story = args => ({
+const RowTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
@@ -85,13 +85,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgRowSelectionLabel: { defaultValue: 'Select row for' },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -102,6 +96,13 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgRowSelectionLabel: 'Select row for',
+    clrDgSelectable: true,
+    clrDgSelected: false,
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),

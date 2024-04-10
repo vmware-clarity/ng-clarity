@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -21,13 +21,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
-    clrDgRowSelectionLabel: { defaultValue: '' },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -36,9 +30,15 @@ export default {
     toggleExpand: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    openTooltip: { defaultValue: false, control: { type: 'boolean' } },
   },
   args: {
+    // inputs
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgSelectable: true,
+    clrDgSelected: false,
+    clrDgRowSelectionLabel: '',
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
@@ -51,10 +51,11 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    openTooltip: false,
   },
 };
 
-const ExpandableRowsTemplate: Story = args => ({
+const ExpandableRowsTemplate: StoryFn = args => ({
   template: `
     <style>
       .open-tooltip {

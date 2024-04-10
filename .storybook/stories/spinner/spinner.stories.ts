@@ -5,7 +5,7 @@
  */
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -18,21 +18,21 @@ export default {
   ],
   component: ClrSpinner,
   argTypes: {
-    // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
-    clrInverse: { defaultValue: false, control: { type: 'boolean' } },
-    clrMedium: { defaultValue: false, control: { type: 'boolean' } },
-    clrSmall: { defaultValue: false, control: { type: 'boolean' } },
     // story helpers
     text: { control: { type: 'text' }, description: 'Optional text' },
   },
   args: {
+    // inputs
+    clrInline: false,
+    clrInverse: false,
+    clrMedium: false,
+    clrSmall: false,
     // story helpers
     text: 'Loading',
   },
 };
 
-const SpinnerTemplate: Story = args => ({
+const SpinnerTemplate: StoryFn = args => ({
   template: `
     <div style="text-align: center">
       <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">

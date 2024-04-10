@@ -5,7 +5,7 @@
  */
 
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -28,7 +28,7 @@ export default {
   args: {},
 };
 
-const HeaderCollapsedTemplate: Story = args => ({
+const HeaderCollapsedTemplate: StoryFn = args => ({
   template: `
     <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none"></iframe>
   `,

@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -24,7 +24,6 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified',
-      defaultValue: 'Default',
       control: 'radio',
       options: ['Default', 'settings'],
       mapping: { Default: '' },
@@ -32,12 +31,10 @@ export default {
     clrCloseButtonAriaLabel: {
       description: 'Aria label for the close button. Only used if the close button is rendered',
       control: 'text',
-      defaultValue: commonStringsDefault.alertCloseButtonAriaLabel,
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
       control: 'boolean',
-      defaultValue: false,
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
@@ -54,6 +51,10 @@ export default {
     clrAlertLightweight: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrAlertIcon: 'Default',
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
     // outputs
     clrAlertClosedChange: action('clrAlertClosedChange'),
     // story helpers
@@ -81,7 +82,7 @@ const template = `
   </clr-alert>
 `;
 
-const AlertTemplate: Story = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });
@@ -104,7 +105,7 @@ export const Closable: StoryObj = {
   },
 };
 
-const PaginatedTemplate: Story = args => ({
+const PaginatedTemplate: StoryFn = args => ({
   template: `
     <clr-alerts [clrCurrentAlertIndex]="clrCurrentAlertIndex">
       <clr-alert
@@ -129,16 +130,19 @@ const paginatedArgTypes = {
   clrCloseButtonAriaLabel: { control: false, table: { disable: true } },
   itemCount: { control: false, table: { disable: true } },
   clrAlertClosedChange: { control: false, table: { disable: true } },
-  // not sure why the string literal type assertion is needed to make TypeScript happy
-  clrCurrentAlertIndex: { defaultValue: 0, type: 'number' as const },
   close: { control: false, table: { disable: true } },
   open: { control: false, table: { disable: true } },
+};
+
+const paginatedArgs = {
+  clrCurrentAlertIndex: 0,
 };
 
 export const Paginated: StoryObj = {
   render: PaginatedTemplate,
   argTypes: paginatedArgTypes,
   args: {
+    ...paginatedArgs,
     clrAlertClosable: false,
   },
 };
@@ -147,6 +151,7 @@ export const PaginatedClosable: StoryObj = {
   render: PaginatedTemplate,
   argTypes: paginatedArgTypes,
   args: {
+    ...paginatedArgs,
     clrAlertClosable: true,
     clrCloseButtonAriaLabel: 'Dismiss alert',
   },

@@ -5,7 +5,7 @@
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -20,14 +20,11 @@ export default {
   ],
   component: ClrDropdown,
   argTypes: {
-    open: { defaultValue: false, control: { type: 'boolean' } },
-    clrCloseMenuOnItemClick: { defaultValue: true, control: { type: 'boolean' } },
-    iconButton: { defaultValue: false, control: { type: 'boolean' } },
-    buttonType: { defaultValue: 'btn-primary', control: { type: 'radio', options: DROPDOWN_BUTTON_TYPE } },
+    buttonType: { control: { type: 'radio', options: DROPDOWN_BUTTON_TYPE } },
     DROPDOWN_BUTTON_TYPE: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
-    open: null,
+    open: false,
     clrCloseMenuOnItemClick: true,
     iconButton: false,
     buttonType: 'btn-primary',
@@ -35,7 +32,7 @@ export default {
   },
 };
 
-const DropdownTemplate: Story = args => ({
+const DropdownTemplate: StoryFn = args => ({
   template: `
     <div style="margin-bottom: 200px">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">

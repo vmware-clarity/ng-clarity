@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { CommonModules } from '../../helpers/common';
@@ -23,7 +23,6 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified.',
-      defaultValue: 'Default',
       control: 'radio',
       options: ['Default', 'settings'],
       mapping: { Default: '' },
@@ -31,25 +30,21 @@ export default {
     clrAlertLightweight: {
       description: 'Less prominent type of alert. Not compatible with `clrAlertClosable` or `clrAlertAppLevel`',
       control: 'boolean',
-      defaultValue: false,
     },
     clrCloseButtonAriaLabel: {
       description:
         'Application level alert. Intended to be used at the top of an application for application wide alerts',
       control: 'text',
-      defaultValue: commonStringsDefault.alertCloseButtonAriaLabel,
       if: { arg: 'clrAlertClosable', exists: false },
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
       control: 'boolean',
-      defaultValue: false,
       if: { arg: 'clrAlertLightweight', eq: false },
     },
     clrAlertSizeSmall: {
       description: 'Renders the alert in a compact, smaller view',
       control: 'boolean',
-      defaultValue: false,
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
@@ -64,6 +59,12 @@ export default {
     clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrAlertIcon: 'Default',
+    clrAlertLightweight: false,
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
+    clrAlertSizeSmall: false,
     // outputs
     clrAlertClosedChange: action('clrAlertClosedChange'),
     // story helpers
@@ -92,7 +93,7 @@ const template = `
   </div>
 `;
 
-const AlertTemplate: Story = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });
