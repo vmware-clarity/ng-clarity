@@ -118,6 +118,7 @@ export const Wizard: StoryObj = {
 
 export const FullScreenWizard: StoryObj = {
   render: WizardTemplate,
+  play: removeFocusOutline,
   args: {
     clrWizardSize: 'full-screen',
   },
