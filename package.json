@@ -11,8 +11,6 @@
     "build:ci": "npm-run-all clean lint build test public-api:check",
     "clean": "rimraf dist",
     "commit": "cz --signoff",
-    "docs:json": "compodoc -p ./projects/angular/tsconfig.lib.json -e json -d .",
-    "docs:json:watch": "npm run --silent docs:json -- --serve --watch",
     "lint": "npm-run-all _lint:code _lint:styles _lint:format _lint:format-stories",
     "lint:fix": "npm-run-all _lint:code:fix _lint:styles:fix _lint:format:fix _lint:format-stories:fix",
     "lint:changed": "npm-run-all _lint:code:changed _lint:styles:changed _lint:format:changed _lint:format-stories:changed",
@@ -21,14 +19,14 @@
     "preview": "semantic-release --plugins \"@semantic-release/commit-analyzer\" \"@semantic-release/release-notes-generator\" --dry-run --no-ci",
     "public-api:check": "api-extractor run",
     "public-api:update": "api-extractor run --local",
-    "start": "npm run clean && npm-run-all --parallel docs:json:watch _start:storybook",
+    "start": "npm run clean && ng run clr-angular:storybook",
     "start:demo": "npm run clean && ng serve clr-demo",
     "test": "ng test clr-angular --source-map=false --watch=false",
     "test:watch": "npm run --silent test -- --watch",
     "ts-node": "ts-node --project ./tsconfig-ts-node.json",
     "_build:angular": "ng build clr-angular --configuration production",
     "_build:demo": "ng build clr-demo --configuration production",
-    "_build:storybook": "npm run docs:json && ng run clr-angular:build-storybook",
+    "_build:storybook": "ng run clr-angular:build-storybook",
     "_build:ui": "npm-run-all _build:ui:css _build:ui:prefix _build:ui:optimize _build:ui:src _build:ui:style-docs _build:ui:package",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8 --load-path=node_modules",
     "_build:ui:prefix": "postcss ./dist/clr-ui/clr-ui.css --use autoprefixer --dir ./dist/clr-ui",
@@ -52,8 +50,7 @@
     "_lint:styles": "stylelint \"**/*.{css,scss,sass}\" \"**/.*/**/*.{css,scss,sass}\"",
     "_lint:styles:fix": "npm run --silent _lint:styles -- --fix",
     "_lint:styles:changed": "node ./scripts/get-changed-files.js --command \"stylelint\" --filter \"**/*.{css,scss,sass}\"",
-    "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\"",
-    "_start:storybook": "wait-on ./documentation.json && ng run clr-angular:storybook"
+    "_lint:styles:changed:fix": "node ./scripts/get-changed-files.js --command \"stylelint --fix\" --filter \"**/*.{css,scss,sass}\""
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.5.0",
@@ -131,7 +128,6 @@
     "tsconfig-paths-webpack-plugin": "3.5.2",
     "tslib": "2.3.1",
     "typescript": "4.8.4",
-    "wait-on": "6.0.1",
     "wait-port": "1.0.4",
     "zone.js": "0.11.8"
   }
