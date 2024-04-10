@@ -41,6 +41,9 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   'modal--open-extra-large-modal': {
     fullPageScreenshot: true,
   },
+  'modal--open-full-screen-modal': {
+    fullPageScreenshot: true,
+  },
   'signpost--opened': {
     fullPageScreenshot: true,
   },

@@ -21,7 +21,7 @@ export default {
   argTypes: {
     // inputs
     clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
-    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
+    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -120,4 +120,11 @@ const WizardTemplate: StoryFn = args => ({
 export const Wizard: StoryObj = {
   render: WizardTemplate,
   play: removeFocusOutline,
+};
+
+export const FullScreenWizard: StoryObj = {
+  render: WizardTemplate,
+  args: {
+    clrWizardSize: 'full-screen',
+  },
 };

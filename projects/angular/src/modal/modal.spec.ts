@@ -198,6 +198,12 @@ describe('Modal', () => {
 
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).not.toBeNull();
+
+    fixture.componentInstance.size = 'full-screen';
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-lg')).toBeNull();
+    expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
   }));
 
   it('supports a clrModalClosable option', fakeAsync(() => {

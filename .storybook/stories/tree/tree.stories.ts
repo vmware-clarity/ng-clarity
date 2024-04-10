@@ -21,16 +21,33 @@ export default {
   argTypes: {
     // inputs
     clrLazy: { control: { disable: true } },
+    // story helpers
+    asLink: { defaultValue: false, control: { type: 'boolean' } },
+    hasIcon: { defaultValue: false, control: { type: 'boolean' } },
   },
 };
 
 const TreeViewTemplate: StoryFn = args => ({
   template: `
-    <clr-tree>${getFileTreeNodeMarkup(filesRoot)}</clr-tree>
+    <clr-tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
   `,
   props: args,
 });
 
 export const TreeView: StoryObj = {
   render: TreeViewTemplate,
+};
+
+export const TreeViewAsLink: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    asLink: true,
+  },
+};
+
+export const TreeViewHasIcon: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    hasIcon: true,
+  },
 };
