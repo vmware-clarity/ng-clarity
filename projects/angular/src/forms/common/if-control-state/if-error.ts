@@ -48,13 +48,19 @@ export class ClrIfError extends AbstractIfState {
     }
     if (invalid) {
       if (this.displayedContent === false) {
+        const error = this.control.getError(this.error);
+
         this.embeddedViewRef = this.container.createEmbeddedView(this.template, {
-          error: this.control.getError(this.error),
+          $implicit: error,
+          error, // kept for backwards compatibility
         });
         this.displayedContent = true;
       } else if (this.embeddedViewRef && this.embeddedViewRef.context) {
+        const error = this.control.getError(this.error);
+
         // if view is already rendered, update the error object to keep it in sync
-        this.embeddedViewRef.context.error = this.control.getError(this.error);
+        this.embeddedViewRef.context.$implicit = error;
+        this.embeddedViewRef.context.error = error; // kept for backwards compatibility
       }
     } else {
       this.container.clear();
