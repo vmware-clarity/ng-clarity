@@ -34,13 +34,14 @@ export default {
     activeTab: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrLayout: TabsLayout.HORIZONTAL,
     // story helpers
     createArray: n => new Array(n),
     tabCount: 4,
     activeTab: 1,
     title: 'Tab',
     content: 'Tab Content',
-    clrLayout: TabsLayout.HORIZONTAL,
   },
 };
 

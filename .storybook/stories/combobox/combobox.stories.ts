@@ -20,8 +20,6 @@ export default {
   ],
   component: ClrCombobox,
   argTypes: {
-    // inputs
-    clrMulti: { control: { type: 'boolean' } },
     // outputs
     clrInputChange: { control: { disable: true } },
     clrOpenChange: { control: { disable: true } },
@@ -49,6 +47,10 @@ export default {
     updateOn: { type: 'radio', options: ['change', 'blur', 'submit'] },
   },
   args: {
+    // inputs
+    clrMulti: false,
+    placeholder: 'Placeholder text',
+    id: '',
     // outputs
     clrInputChange: action('clrInputChange'),
     clrOpenChange: action('clrOpenChange'),
@@ -64,9 +66,6 @@ export default {
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
     label: 'Combobox',
-    clrMulti: false,
-    placeholder: 'Placeholder text',
-    id: '',
   },
 };
 

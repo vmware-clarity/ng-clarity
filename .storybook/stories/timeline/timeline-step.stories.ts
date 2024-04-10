@@ -27,22 +27,20 @@ export default {
   component: ClrTimelineStep,
   argTypes: {
     // inputs
-    clrState: {
-      control: 'inline-radio',
-      options: ClrTimelineStepState,
-    },
+    clrState: { control: 'inline-radio', options: ClrTimelineStepState },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
     TIMELINE_STEP_STATE: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrState: ClrTimelineStepState.NOT_STARTED,
     // story helpers
     ClrTimelineStepState,
     header: 'header',
     title: 'title',
     description: 'description',
     TIMELINE_STEP_STATE,
-    clrState: ClrTimelineStepState.NOT_STARTED,
   },
 };
 

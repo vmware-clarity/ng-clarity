@@ -17,9 +17,6 @@ export default {
     }),
   ],
   component: ClrDropdown,
-  argTypes: {
-    clrCloseMenuOnItemClick: { control: { type: 'boolean' } },
-  },
   args: {
     clrCloseMenuOnItemClick: true,
   },

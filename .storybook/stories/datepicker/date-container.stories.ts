@@ -25,6 +25,7 @@ export default {
     controlClass: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
     clrPosition: 'bottom-left',
   },
 };

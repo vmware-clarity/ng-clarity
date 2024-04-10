@@ -30,9 +30,6 @@ export default {
   ],
   component: ClrVerticalNav,
   argTypes: {
-    // inputs
-    clrVerticalNavCollapsible: { control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { control: { type: 'boolean' } },
     // outputs
     clrVerticalNavCollapsedChange: { control: { disable: true } },
     // methods
@@ -41,14 +38,15 @@ export default {
     navLinks: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers
     navLinks,
     activeIndex: 0,
     includeIcons: true,
-    clrVerticalNavCollapsible: false,
-    clrVerticalNavCollapsed: false,
   },
 };
 

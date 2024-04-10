@@ -18,18 +18,17 @@ export default {
   ],
   component: ClrRadio,
   argTypes: {
-    // inputs
-    id: {},
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // id
+    id: '',
     // story helpers
     label: 'Option',
     disabled: false,
     checked: false,
-    id: '',
   },
 };
 

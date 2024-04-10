@@ -18,21 +18,17 @@ export default {
   ],
   component: ClrSpinner,
   argTypes: {
-    // inputs
-    clrInline: { control: { type: 'boolean' } },
-    clrInverse: { control: { type: 'boolean' } },
-    clrMedium: { control: { type: 'boolean' } },
-    clrSmall: { control: { type: 'boolean' } },
     // story helpers
     text: { control: { type: 'text' }, description: 'Optional text' },
   },
   args: {
-    // story helpers
-    text: 'Loading',
+    // inputs
     clrInline: false,
     clrInverse: false,
     clrMedium: false,
     clrSmall: false,
+    // story helpers
+    text: 'Loading',
   },
 };
 

@@ -34,6 +34,12 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgPageInputDisabled: false,
+    clrDgPageSize: 10,
+    clrDgPage: null,
+    clrDgLastPage: null,
+    clrDgTotalItems: null,
     // outputs
     clrDgPageChange: action('clrDgPageChange'),
     // story helpers
@@ -45,11 +51,6 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
-    clrDgPageInputDisabled: false,
-    clrDgPageSize: 10,
-    clrDgPage: null,
-    clrDgLastPage: null,
-    clrDgTotalItems: null,
   },
 };
 

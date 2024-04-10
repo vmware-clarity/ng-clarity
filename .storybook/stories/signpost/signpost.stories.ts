@@ -41,9 +41,10 @@ export default {
     release: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrPosition: 'right-middle',
     // story helpers
     content: 'Hello World!',
-    clrPosition: 'right-middle',
   },
 };
 
@@ -57,7 +58,7 @@ const template = `
   </div>
 `;
 
-export const Initial: StoryFn = args => ({
+const Initial: StoryFn = args => ({
   template,
   props: args,
 });

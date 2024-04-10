@@ -27,6 +27,9 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgActionOverflowOpen: false,
+    clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
     // outputs
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
@@ -38,8 +41,6 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
-    clrDgActionOverflowOpen: false,
-    clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
   },
 };
 

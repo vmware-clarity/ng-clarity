@@ -20,18 +20,15 @@ export default {
   ],
   component: ClrDropdown,
   argTypes: {
-    open: { control: { type: 'boolean' } },
-    clrCloseMenuOnItemClick: { control: { type: 'boolean' } },
-    iconButton: { control: { type: 'boolean' } },
     buttonType: { control: 'radio', options: DROPDOWN_BUTTON_TYPE },
     DROPDOWN_BUTTON_TYPE: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    open: false,
     clrCloseMenuOnItemClick: true,
     iconButton: false,
     buttonType: 'btn-primary',
     DROPDOWN_BUTTON_TYPE,
-    open: false,
   },
 };
 

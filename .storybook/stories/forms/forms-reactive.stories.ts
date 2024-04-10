@@ -33,13 +33,14 @@ export default {
     clrLayout: { options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
     form: formMappingKey,
     namePlaceholder: '',
-    clrLabelSize: 2,
   },
 };
 

@@ -30,12 +30,13 @@ export default {
     CLR_MENU_POSITIONS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    clrPosition: 'top-left',
     // story helpers
     createArray: n => new Array(n),
     menuCount: 3,
     actionCount: 3,
     CLR_MENU_POSITIONS,
-    clrPosition: 'top-left',
   },
 };
 

@@ -20,10 +20,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgExpanded: { control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgSelectable: { control: { type: 'boolean' } },
-    clrDgSelected: { control: { type: 'boolean' } },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -32,9 +29,15 @@ export default {
     toggleExpand: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    openTooltip: { control: { type: 'boolean' } },
   },
   args: {
+    // inputs
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgSelectable: true,
+    clrDgSelected: false,
+    clrDgRowSelectionLabel: '',
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
@@ -47,12 +50,6 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
-    clrDgDetailCloseLabel: '',
-    clrDgDetailOpenLabel: '',
-    clrDgExpanded: false,
-    clrDgSelectable: true,
-    clrDgSelected: false,
-    clrDgRowSelectionLabel: '',
     openTooltip: false,
   },
 };

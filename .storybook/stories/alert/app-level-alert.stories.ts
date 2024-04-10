@@ -51,6 +51,10 @@ export default {
     clrAlertLightweight: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrAlertIcon: 'Default',
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
     // outputs
     clrAlertClosedChange: action('clrAlertClosedChange'),
     // story helpers
@@ -58,9 +62,6 @@ export default {
     itemCount: 3,
     content: 'Hello World!',
     ALERT_TYPES,
-    clrAlertIcon: 'Default',
-    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
-    clrAlertClosable: false,
   },
 };
 
@@ -129,18 +130,20 @@ const paginatedArgTypes = {
   clrCloseButtonAriaLabel: { control: false, table: { disable: true } },
   itemCount: { control: false, table: { disable: true } },
   clrAlertClosedChange: { control: false, table: { disable: true } },
-  // not sure why the string literal type assertion is needed to make TypeScript happy
-  clrCurrentAlertIndex: { type: 'number' as const },
   close: { control: false, table: { disable: true } },
   open: { control: false, table: { disable: true } },
+};
+
+const paginatedArgs = {
+  clrCurrentAlertIndex: 0,
 };
 
 export const Paginated: StoryObj = {
   render: PaginatedTemplate,
   argTypes: paginatedArgTypes,
   args: {
+    ...paginatedArgs,
     clrAlertClosable: false,
-    clrCurrentAlertIndex: 0,
   },
 };
 
@@ -148,8 +151,8 @@ export const PaginatedClosable: StoryObj = {
   render: PaginatedTemplate,
   argTypes: paginatedArgTypes,
   args: {
+    ...paginatedArgs,
     clrAlertClosable: true,
     clrCloseButtonAriaLabel: 'Dismiss alert',
-    clrCurrentAlertIndex: 0,
   },
 };

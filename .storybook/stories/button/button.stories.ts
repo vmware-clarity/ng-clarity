@@ -22,7 +22,6 @@ export default {
   argTypes: {
     // inputs
     class: { control: { disable: true } },
-    disabled: { control: { type: 'boolean' } },
     // outputs
     click: { control: { disable: true } },
     // methods
@@ -35,17 +34,18 @@ export default {
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    disabled: false,
     // outputs
     click: action('click'),
     // story helpers
     content: 'Hello World!',
     iconShape: '',
+    buttonType: 'primary',
+    buttonStyle: 'outline',
     getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
-    disabled: false,
-    buttonType: 'primary',
-    buttonStyle: 'outline',
   },
 };
 

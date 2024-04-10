@@ -27,8 +27,6 @@ export default {
   argTypes: {
     // inputs
     clrMenuPosition: { type: 'radio', options: CLR_MENU_POSITIONS },
-    loading: { control: { type: 'boolean' } },
-    clrToggleButtonAriaLabel: {},
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -46,6 +44,10 @@ export default {
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    clrMenuPosition: 'bottom-left',
+    loading: false,
+    clrToggleButtonAriaLabel: commonStringsDefault.rowActions,
     // story helpers
     inMenuIndices: [true, false, false, true],
     createArray: n => new Array(n),
@@ -53,14 +55,11 @@ export default {
     buttonCount: 3,
     inMenuButtonCount: 3,
     disabledButtonsPosition: [],
+    buttonType: 'primary',
+    buttonStyle: 'outline',
     getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
-    clrMenuPosition: 'bottom-left',
-    loading: false,
-    clrToggleButtonAriaLabel: commonStringsDefault.rowActions,
-    buttonType: 'primary',
-    buttonStyle: 'outline',
   },
 };
 

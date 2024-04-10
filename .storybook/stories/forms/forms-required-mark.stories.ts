@@ -36,13 +36,14 @@ export default {
     },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
     form: formMappingKey,
     namePlaceholder: '',
-    clrLabelSize: 2,
   },
 };
 

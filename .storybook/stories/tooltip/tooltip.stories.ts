@@ -27,10 +27,11 @@ export default {
     release: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // story helpers
-    content: 'This is the tooltip content.',
+    // inputs
     clrPosition: 'right',
     clrSize: 'sm',
+    // story helpers
+    content: 'This is the tooltip content.',
   },
 };
 

@@ -49,6 +49,17 @@ export default {
     pageCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrWizardOpen: true, // the default value is really false, but that doesn't really work for the story
+    clrWizardSize: 'xl',
+    clrHeadingLevel: 1,
+    clrWizardClosable: true,
+    clrWizardDisableStepnav: false,
+    clrWizardPreventNavigation: false,
+    clrWizardForceForwardNavigation: false,
+    clrWizardPreventDefaultNext: false,
+    clrWizardPreventDefaultCancel: false,
+    clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     // outputs
     clrWizardOpenChange: action('clrWizardOpenChange'),
     clrWizardCurrentPageChanged: action('clrWizardCurrentPageChanged'),
@@ -60,16 +71,6 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
-    clrWizardOpen: true, // the default value is really false, but that doesn't really work for the story
-    clrWizardSize: 'xl',
-    clrHeadingLevel: 1,
-    clrWizardClosable: true,
-    clrWizardDisableStepnav: false,
-    clrWizardPreventNavigation: false,
-    clrWizardForceForwardNavigation: false,
-    clrWizardPreventDefaultNext: false,
-    clrWizardPreventDefaultCancel: false,
-    clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
   },
   parameters: {
     docs: {
@@ -124,6 +125,7 @@ export const Wizard: StoryObj = {
 
 export const FullScreenWizard: StoryObj = {
   render: WizardTemplate,
+  play: removeFocusOutline,
   args: {
     clrWizardSize: 'full-screen',
   },

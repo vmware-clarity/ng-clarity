@@ -77,10 +77,6 @@ export default {
   ],
   component: ClrVerticalNav,
   argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { control: { type: 'boolean' } },
-    clrVerticalNavCollapsible: { control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     clrVerticalNavCollapsedChange: { control: { disable: true } },
@@ -93,6 +89,10 @@ export default {
     VERTICAL_NAV_STATES: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: false,
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers
@@ -107,9 +107,6 @@ export default {
       this.activeRoute = route;
     },
     VERTICAL_NAV_STATES,
-    clrVerticalNavGroupExpanded: false,
-    clrVerticalNavCollapsible: true,
-    clrVerticalNavCollapsed: false,
   },
 };
 

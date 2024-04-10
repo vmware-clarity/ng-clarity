@@ -14,21 +14,12 @@ export default {
   component: ClrProgressBar,
   argTypes: {
     // inputs
-    clrDisplayval: {},
-    clrFade: { control: { type: 'boolean' } },
-    clrFlash: { control: { type: 'boolean' } },
-    clrFlashDanger: { control: { type: 'boolean' } },
-    clrLabeled: { control: { type: 'boolean' } },
-    clrLoop: { control: { type: 'boolean' } },
-    clrMax: { control: { type: 'number' } },
     clrColor: { type: 'radio', options: ['', 'success', 'warning', 'danger'] },
-    clrValue: { control: { type: 'number' } },
-    clrCompact: { control: { type: 'boolean' } },
-    id: {},
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
     clrDisplayval: '',
     clrFade: false,
     clrFlash: false,

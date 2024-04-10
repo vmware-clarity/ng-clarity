@@ -13,8 +13,6 @@ export default {
   argTypes: {
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
-    clickable: { control: { type: 'boolean' } },
-    hasImage: { control: { type: 'boolean' } },
     buttonType: { type: 'radio', options: buttonTypes },
   },
   args: {

@@ -39,8 +39,8 @@ export default {
     HEADER_VARIANTS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
-    HEADER_VARIANTS,
     color: 'header-1',
+    HEADER_VARIANTS,
   },
 };
 

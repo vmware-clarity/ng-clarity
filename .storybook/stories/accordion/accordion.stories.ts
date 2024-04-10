@@ -18,21 +18,20 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    clrAccordionMultiPanel: { control: { type: 'boolean' } },
     // story helpers
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },
     panelCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrAccordionMultiPanel: false,
     // story helpers
     openIndices: [],
     createArray: n => new Array(n),
     panelCount: 4,
     title: 'Title',
     content: 'Hello World!',
-    clrAccordionMultiPanel: false,
   },
 };
 
@@ -66,11 +65,8 @@ export const SinglePanelOpened: StoryObj = {
 
 export const MultiplePanelsOpened: StoryObj = {
   render: AccordionTemplate,
-  argTypes: {
-    clrAccordionMultiPanel: { control: { disable: true } },
-  },
   args: {
-    openIndices: [true, true, false, false],
     clrAccordionMultiPanel: true,
+    openIndices: [true, true, false, false],
   },
 };
