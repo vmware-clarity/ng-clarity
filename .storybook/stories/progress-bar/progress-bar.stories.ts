@@ -5,11 +5,11 @@
  */
 
 import { ClrProgressBar } from '@clr/angular';
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-const ProgressBarTemplate: Story = args => ({
+const ProgressBarTemplate: StoryFn = args => ({
   template: `
     <clr-progress-bar
       [id]="id"
@@ -28,7 +28,7 @@ const ProgressBarTemplate: Story = args => ({
   props: { ...args },
 });
 
-const ProgressBarTemplateAll: Story = args => ({
+const ProgressBarTemplateAll: StoryFn = args => ({
   template: `
     <h6>Progress Bar with Status</h6>
     <div style="margin-top: 5px" *ngFor="let type of TYPES">

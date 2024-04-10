@@ -5,7 +5,7 @@
  */
 
 import { ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStepState } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -31,7 +31,7 @@ export default {
   },
 };
 
-const TimelineTempate: Story = args => ({
+const TimelineTempate: StoryFn = args => ({
   template: `
     <clr-timeline [clrLayout]="clrLayout">
       <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">

@@ -5,9 +5,9 @@
  */
 
 import { ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-const loginTemplate: Story = args => ({
+const loginTemplate: StoryFn = args => ({
   template: `
     <div class="login-wrapper">
       <div class="login">

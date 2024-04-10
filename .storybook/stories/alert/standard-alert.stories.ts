@@ -6,7 +6,7 @@
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { CommonModules } from '../../helpers/common';
@@ -93,7 +93,7 @@ const template = `
   </div>
 `;
 
-const AlertTemplate: Story = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });

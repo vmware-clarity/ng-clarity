@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
 
@@ -30,7 +30,7 @@ export default {
   },
 };
 
-const cardTemplate: Story = args => ({
+const cardTemplate: StoryFn = args => ({
   template: `
     <div [style.maxWidth.px]="maxWidth" class="card" [ngClass]="{ clickable }">
       <div *ngIf="hasImage" class="card-img">

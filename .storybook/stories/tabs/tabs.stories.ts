@@ -5,7 +5,7 @@
  */
 
 import { ClrTabs, ClrTabsModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
 
@@ -45,7 +45,7 @@ export default {
   },
 };
 
-const tabsTemplate: Story = args => ({
+const tabsTemplate: StoryFn = args => ({
   template: `
     <clr-tabs [clrLayout]="clrLayout">
       <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">

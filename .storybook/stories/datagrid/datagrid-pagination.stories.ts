@@ -6,7 +6,7 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPagination } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -54,7 +54,7 @@ export default {
   },
 };
 
-const PaginationTemplate: Story = args => ({
+const PaginationTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {

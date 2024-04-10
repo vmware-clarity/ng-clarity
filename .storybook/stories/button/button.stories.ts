@@ -6,7 +6,7 @@
 
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from '../../helpers/button-class.helper';
 import { CommonModules } from '../../helpers/common';
@@ -49,7 +49,7 @@ export default {
   },
 };
 
-const ButtonTemplate: Story = args => ({
+const ButtonTemplate: StoryFn = args => ({
   template: `
     <button
       class="btn"
@@ -64,7 +64,7 @@ const ButtonTemplate: Story = args => ({
   props: args,
 });
 
-const ButtonAllTemplate: Story = args => ({
+const ButtonAllTemplate: StoryFn = args => ({
   template: `
     <h6>Default Button</h6>
     <button class="btn">Default</button>

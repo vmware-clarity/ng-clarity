@@ -5,7 +5,7 @@
  */
 
 import { ClrTimelineModule, ClrTimelineStep, ClrTimelineStepState } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -44,7 +44,7 @@ export default {
   },
 };
 
-const TimelineStepTemplate: Story = args => ({
+const TimelineStepTemplate: StoryFn = args => ({
   template: `
     <clr-timeline>
       <clr-timeline-step [clrState]="clrState">
@@ -57,7 +57,7 @@ const TimelineStepTemplate: Story = args => ({
   props: args,
 });
 
-const TimelineStepAllTemplate: Story = args => ({
+const TimelineStepAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let state of TIMELINE_STEP_STATE" style="margin-top: 20px">
       <clr-timeline>

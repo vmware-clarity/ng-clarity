@@ -5,7 +5,7 @@
  */
 
 import { ClrSelect, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Select/Select',
@@ -31,7 +31,7 @@ export default {
   },
 };
 
-const selectTemplate: Story = args => ({
+const selectTemplate: StoryFn = args => ({
   template: `
     <clr-select-container>
       <label>Options</label>
