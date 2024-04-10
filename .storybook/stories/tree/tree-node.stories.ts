@@ -42,6 +42,7 @@ export default {
   },
   args: {
     // inputs
+    clrDisabled: true,
     clrExpandable: true,
     clrExpanded: false,
     clrSelected: 'not selectable',
