@@ -6,11 +6,11 @@
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
-const RowTemplate: Story = args => ({
+const RowTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {

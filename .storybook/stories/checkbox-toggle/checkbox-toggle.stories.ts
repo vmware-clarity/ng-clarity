@@ -5,7 +5,7 @@
  */
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
 import { CommonModules } from '../../helpers/common';
@@ -43,7 +43,7 @@ export default {
   },
 };
 
-const CheckBoxToggleTemplate: Story = args => {
+const CheckBoxToggleTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
@@ -59,7 +59,7 @@ const CheckBoxToggleTemplate: Story = args => {
   };
 };
 
-const CheckBoxTemplate: Story = args => {
+const CheckBoxTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `

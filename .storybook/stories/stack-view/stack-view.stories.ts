@@ -5,7 +5,7 @@
  */
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -52,7 +52,7 @@ export default {
   },
 };
 
-const StackViewTemplate: Story = args => ({
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
@@ -68,7 +68,7 @@ const StackViewTemplate: Story = args => ({
   props: args,
 });
 
-const StackViewAllTemplate: Story = args => ({
+const StackViewAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top: 20px">
       <clr-stack-view>

@@ -5,7 +5,7 @@
  */
 
 import { ClrSpinnerModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
@@ -51,7 +51,7 @@ export default {
   },
 };
 
-const StackViewTemplate: Story = args => ({
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">

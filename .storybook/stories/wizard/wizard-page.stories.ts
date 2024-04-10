@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { removeFocusOutline } from '../../helpers/common';
 
@@ -62,7 +62,7 @@ export default {
   },
 };
 
-const WizardPageTemplate: Story = args => ({
+const WizardPageTemplate: StoryFn = args => ({
   template: `
     <clr-wizard [clrWizardOpen]="true">
       <clr-wizard-title>Wizard</clr-wizard-title>

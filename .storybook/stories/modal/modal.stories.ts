@@ -6,7 +6,7 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
@@ -48,7 +48,7 @@ export default {
   },
 };
 
-const ModalTemplate: Story = args => ({
+const ModalTemplate: StoryFn = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
     <div *ngIf="showLongPageContent">
