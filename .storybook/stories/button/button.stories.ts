@@ -22,30 +22,27 @@ export default {
   argTypes: {
     // inputs
     class: { control: { disable: true } },
-    disabled: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     click: { control: { disable: true } },
     // methods
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    buttonStyle: {
-      defaultValue: 'outline',
-      control: { type: 'radio', options: BUTTON_STYLES },
-    },
-    buttonType: {
-      defaultValue: 'primary',
-      control: { type: 'radio', options: BUTTON_TYPES },
-    },
+    buttonStyle: { control: { type: 'radio', options: BUTTON_STYLES } },
+    buttonType: { control: { type: 'radio', options: BUTTON_TYPES } },
     getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    disabled: false,
     // outputs
     click: action('click'),
     // story helpers
     content: 'Hello World!',
     iconShape: '',
+    buttonType: 'primary',
+    buttonStyle: 'outline',
     getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,

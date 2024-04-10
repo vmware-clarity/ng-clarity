@@ -19,7 +19,7 @@ export default {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { defaultValue: TabsLayout.HORIZONTAL, control: { type: 'inline-radio', options: TabsLayout } },
+    clrLayout: { control: { type: 'inline-radio', options: TabsLayout } },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -34,6 +34,8 @@ export default {
     activeTab: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrLayout: TabsLayout.HORIZONTAL,
     // story helpers
     createArray: n => new Array(n),
     tabCount: 4,

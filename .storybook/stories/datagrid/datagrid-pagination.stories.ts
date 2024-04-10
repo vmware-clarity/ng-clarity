@@ -20,11 +20,10 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgPageInputDisabled: { defaultValue: false },
-    clrDgPageSize: { defaultValue: 10, control: { type: 'number', min: 1, max: 100 } },
-    clrDgPage: { defaultValue: null, control: { type: 'number', min: 1 } },
-    clrDgLastPage: { defaultValue: null, control: { type: 'number', min: 1 } },
-    clrDgTotalItems: { defaultValue: null, control: { type: 'number', min: 1 } },
+    clrDgPageSize: { control: { type: 'number', min: 1, max: 100 } },
+    clrDgPage: { control: { type: 'number', min: 1 } },
+    clrDgLastPage: { control: { type: 'number', min: 1 } },
+    clrDgTotalItems: { control: { type: 'number', min: 1 } },
     // outputs
     clrDgPageChange: { control: { disable: true } },
     // methods
@@ -35,6 +34,12 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgPageInputDisabled: false,
+    clrDgPageSize: 10,
+    clrDgPage: null,
+    clrDgLastPage: null,
+    clrDgTotalItems: null,
     // outputs
     clrDgPageChange: action('clrDgPageChange'),
     // story helpers

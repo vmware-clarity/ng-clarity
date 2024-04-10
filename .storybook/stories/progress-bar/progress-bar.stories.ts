@@ -98,21 +98,24 @@ export default {
   component: ClrProgressBar,
   argTypes: {
     // inputs
-    clrDisplayval: { defaultValue: '' },
-    clrFade: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlash: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlashDanger: { defaultValue: false, control: { type: 'boolean' } },
-    clrLabeled: { defaultValue: false, control: { type: 'boolean' } },
-    clrLoop: { defaultValue: false, control: { type: 'boolean' } },
-    clrMax: { defaultValue: 100, control: { type: 'number' } },
-    clrColor: { defaultValue: '', control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
-    clrValue: { defaultValue: 33, control: { type: 'number' } },
-    clrCompact: { defaultValue: false, control: { type: 'boolean' } },
-    id: { defaultValue: '' },
+    clrColor: { control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
   },
-  args: {},
+  args: {
+    // inputs
+    clrDisplayval: '',
+    clrFade: false,
+    clrFlash: false,
+    clrFlashDanger: false,
+    clrLabeled: false,
+    clrLoop: false,
+    clrMax: 100,
+    clrColor: '',
+    clrValue: 33,
+    clrCompact: false,
+    id: '',
+  },
 };
 
 export const ProgressBar: StoryObj = {

@@ -20,10 +20,6 @@ export default {
   ],
   component: ClrCombobox,
   argTypes: {
-    // inputs
-    clrMulti: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: 'Placeholder text' },
-    id: { defaultValue: '' },
     // outputs
     clrInputChange: { control: { disable: true } },
     clrOpenChange: { control: { disable: true } },
@@ -48,9 +44,13 @@ export default {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
-    updateOn: { defaultValue: 'change', control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
+    updateOn: { control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
   },
   args: {
+    // inputs
+    clrMulti: false,
+    placeholder: 'Placeholder text',
+    id: '',
     // outputs
     clrInputChange: action('clrInputChange'),
     clrOpenChange: action('clrOpenChange'),

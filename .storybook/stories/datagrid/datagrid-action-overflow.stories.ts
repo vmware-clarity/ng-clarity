@@ -19,9 +19,6 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    clrDgActionOverflowOpen: { defaultValue: false },
-    clrDgActionOverflowButtonLabel: { defaultValue: commonStringsDefault.rowActions },
     // outputs
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -30,6 +27,9 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgActionOverflowOpen: false,
+    clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
     // outputs
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers

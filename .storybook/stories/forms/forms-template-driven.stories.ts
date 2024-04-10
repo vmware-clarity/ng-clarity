@@ -25,7 +25,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
@@ -34,6 +34,8 @@ export default {
     },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,

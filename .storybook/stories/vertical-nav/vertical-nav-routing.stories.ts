@@ -77,10 +77,6 @@ export default {
   ],
   component: ClrVerticalNav,
   argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
-    clrVerticalNavCollapsible: { defaultValue: true, control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     clrVerticalNavCollapsedChange: { control: { disable: true } },
@@ -93,6 +89,10 @@ export default {
     VERTICAL_NAV_STATES: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: false,
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers

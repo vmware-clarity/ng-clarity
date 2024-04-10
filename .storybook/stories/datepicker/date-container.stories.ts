@@ -19,10 +19,14 @@ export default {
   component: ClrDateContainer,
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrPosition: { control: { type: 'radio', options: CLR_MENU_POSITIONS } },
     // methods
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrPosition: 'bottom-left',
   },
 };
 

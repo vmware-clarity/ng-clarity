@@ -27,15 +27,14 @@ export default {
   component: ClrTimelineStep,
   argTypes: {
     // inputs
-    clrState: {
-      defaultValue: ClrTimelineStepState.NOT_STARTED,
-      control: { type: 'inline-radio', options: ClrTimelineStepState },
-    },
+    clrState: { control: { type: 'inline-radio', options: ClrTimelineStepState } },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
     TIMELINE_STEP_STATE: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrState: ClrTimelineStepState.NOT_STARTED,
     // story helpers
     ClrTimelineStepState,
     header: 'header',

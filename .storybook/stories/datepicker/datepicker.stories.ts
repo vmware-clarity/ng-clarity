@@ -23,9 +23,6 @@ export default {
     clrDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
-    disabled: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: '' },
-    id: { defaultValue: '' },
     // outputs
     clrDateChange: { control: { disable: true } },
     // methods
@@ -38,6 +35,10 @@ export default {
     getDateString: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    disabled: false,
+    placeholder: '',
+    id: '',
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers

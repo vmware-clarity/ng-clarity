@@ -19,7 +19,7 @@ export default {
   component: ClrDropdownMenu,
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'top-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrPosition: { control: { type: 'radio', options: CLR_MENU_POSITIONS } },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
@@ -30,6 +30,8 @@ export default {
     CLR_MENU_POSITIONS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    clrPosition: 'top-left',
     // story helpers
     createArray: n => new Array(n),
     menuCount: 3,
