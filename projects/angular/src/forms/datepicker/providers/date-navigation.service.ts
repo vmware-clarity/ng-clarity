@@ -24,6 +24,8 @@ export class DateNavigationService {
   selectedEndDay: DayModel;
   focusedDay: DayModel;
   hoveredDay: DayModel;
+  hoveredMonth: number;
+  hoveredYear: number;
   isRangePicker = false;
 
   private _displayedCalendar: CalendarModel;
@@ -84,7 +86,9 @@ export class DateNavigationService {
         (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
       ) {
         this.setSelectedDay(dayModel);
-        this.setSelectedEndDay(undefined);
+        if (this.selectedEndDay) {
+          this.setSelectedEndDay(undefined);
+        }
       } else {
         this.setSelectedEndDay(dayModel);
       }

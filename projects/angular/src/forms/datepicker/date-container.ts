@@ -35,6 +35,7 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -59,10 +60,10 @@ import { ViewManagerService } from './providers/view-manager.service';
           >
             <cds-icon status="info" shape="calendar"></cds-icon>
           </button>
-          <clr-datepicker-view-manager
+          <clr-date-range-options
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
-          ></clr-datepicker-view-manager>
+          ></clr-date-range-options>
         </div>
         <cds-icon
           *ngIf="showInvalid"
@@ -96,6 +97,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     DateFormControlService,
     ViewManagerService,
     IfControlStateService,
+    DatePickerHelperService,
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
@@ -111,6 +113,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
   @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
 
+  private _dateFormat: string;
   private toggleButton: ElementRef;
 
   constructor(
@@ -156,6 +159,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     }
   }
 
+  @Input('rangeOptions')
+  set rangeOptions(rangeOptions) {
+    this.dateIOService.setRangeOptions(rangeOptions);
+  }
+
   @Input()
   set min(dateString: string) {
     this.dateIOService.setMinDate(dateString);
@@ -172,6 +180,16 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
       this.clrRangeStartEl.triggerControlInputValidation();
       this.clrRangeEndEl.triggerControlInputValidation();
     }
+  }
+
+  get dateFormat() {
+    return this._dateFormat;
+  }
+
+  @Input()
+  set dateFormat(dateFormat: string) {
+    this._dateFormat = dateFormat;
+    this.dateIOService.setDateFormat(dateFormat);
   }
 
   @ViewChild('actionButton')

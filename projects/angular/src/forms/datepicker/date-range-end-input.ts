@@ -24,7 +24,7 @@ export class ClrDateRangeEndInput extends ClrDateInputBase implements AfterViewI
   @Output('clrRangeEndDateChange') dateChange = new EventEmitter<Date>(false);
 
   @HostBinding('attr.size') size = 12;
-  @HostBinding('style.textAlign') textAlign = 'center';
+  // @HostBinding('style.textAlign') textAlign = 'center';
 
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;

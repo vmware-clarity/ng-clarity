@@ -29,6 +29,7 @@ import {
   ClrDateRangeStartInputValidator,
 } from './date-input.validator';
 import { ClrDateRangeEndInput } from './date-range-end-input';
+import { ClrDateRangeOptions } from './date-range-options';
 import { ClrDateRangeStartInput } from './date-range-start-input';
 import { ClrDateSingleInput } from './date-single-input';
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
@@ -44,6 +45,7 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
   ClrDateRangeStartInput,
   ClrDateRangeEndInput,
   ClrDateInputValidator,
+  ClrDateRangeOptions,
   ClrDateRangeStartInputValidator,
   ClrDateRangeEndInputValidator,
   ClrDatepickerViewManager,

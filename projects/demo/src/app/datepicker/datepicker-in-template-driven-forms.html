@@ -6,8 +6,8 @@
 
 <h2>Template Driven Forms</h2>
 <form clrForm #simpleForm="ngForm">
-  <clr-date-container>
-    <label for="date1">Enter Date1</label>
+  <clr-date-container [dateFormat]="'yyyy'">
+    <label for="date1">Variant 1</label>
     <input
       type="date"
       id="date1"
@@ -18,14 +18,28 @@
       (clrDateChange)="date1Changed($event)"
     />
   </clr-date-container>
-  <clr-date-container>
-    <label for="date2">Enter Date2</label>
+
+  <clr-date-container [dateFormat]="'yyyy/MM'">
+    <label for="date2">Variant 2</label>
     <input
       type="date"
       id="date2"
       name="date2"
       autocomplete="off"
       [(ngModel)]="date2"
+      clrDate
+      (clrDateChange)="date1Changed($event)"
+    />
+  </clr-date-container>
+
+  <clr-date-container [dateFormat]="'yyyy/MM/dd'">
+    <label for="date3">Variant 3</label>
+    <input
+      type="date"
+      id="date3"
+      name="date3"
+      autocomplete="off"
+      [(ngModel)]="date3"
       required
       clrDate
       (clrDateChange)="date2Changed($event)"

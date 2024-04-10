@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { WeekDay } from '@angular/common';
+import { formatDate, WeekDay } from '@angular/common';
 
 /**
  * Returns the number of days in a month.
@@ -52,4 +52,18 @@ export function datesAreEqual(date1: Date, date2: Date) {
   } else {
     return false;
   }
+}
+
+export function getFormatDate(date: string | Date, format: string, delimiter: string) {
+  const formattedDate: string = formatDate(date, format, 'en-US');
+  return formattedDate.replace(/[-\\/.]/g, delimiter);
+}
+
+export function extractDateParts(date: string, format: string) {
+  const dateParts = date?.split(/[-\\/.]/);
+  const formatParts = format?.split(/[-\\/.]/);
+  const monthIndex = formatParts.findIndex(pt => /m./i.test(pt));
+  const dateIndex = formatParts.findIndex(pt => /d./i.test(pt));
+  const yearIndex = formatParts.findIndex(pt => /y./i.test(pt));
+  return [dateParts[yearIndex], dateParts[monthIndex], dateParts[dateIndex]];
 }

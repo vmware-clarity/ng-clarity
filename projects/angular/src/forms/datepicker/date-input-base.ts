@@ -73,14 +73,18 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
 
   @Input()
   set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-    this.triggerControlValidation();
+    if (!this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMinDate(dateString);
+      this.triggerControlValidation();
+    }
   }
 
   @Input()
   set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-    this.triggerControlValidation();
+    if (!this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMaxDate(dateString);
+      this.triggerControlValidation();
+    }
   }
 
   get disabled() {

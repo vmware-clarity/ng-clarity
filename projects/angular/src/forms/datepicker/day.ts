@@ -4,14 +4,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
 @Component({
   selector: 'clr-day',
@@ -25,6 +25,14 @@ import { DateNavigationService } from './providers/date-navigation.service';
       [class.is-disabled]="dayView.isDisabled"
       [class.is-selected]="dayView.isSelected"
       [class.in-range]="isInRange()"
+      [class.is-start-day]="
+        _dateNavigationService.isRangePicker &&
+        dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedDay?.toComparisonString()
+      "
+      [class.is-end-day]="
+        _dateNavigationService.isRangePicker &&
+        dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedEndDay?.toComparisonString()
+      "
       [attr.tabindex]="dayView.tabIndex"
       (click)="selectDay()"
       (focus)="onDayViewFocus()"
@@ -38,13 +46,11 @@ import { DateNavigationService } from './providers/date-navigation.service';
   host: { '[class.day]': 'true' },
 })
 export class ClrDay {
-  @ViewChild('dayBtn') dayBtn: HTMLElement;
-
   private _dayView: DayViewModel;
 
   constructor(
-    private _dateNavigationService: DateNavigationService,
-    private _toggleService: ClrPopoverToggleService,
+    public _dateNavigationService: DateNavigationService,
+    private _datePickerHelperService: DatePickerHelperService,
     private dateFormControlService: DateFormControlService,
     private commonStrings: ClrCommonStringsService
   ) {}
@@ -88,23 +94,7 @@ export class ClrDay {
    */
   selectDay(): void {
     const day: DayModel = this.dayView.dayModel;
-    this._dateNavigationService.notifySelectedDayChanged(day);
-    this.dateFormControlService.markAsDirty();
-    this.toggleDatepickerVisibility();
-    this._dateNavigationService.hoveredDay = undefined;
-    // this._toggleService.open = false;
-  }
-
-  toggleDatepickerVisibility() {
-    if (
-      this._dateNavigationService.isRangePicker &&
-      !!this._dateNavigationService.selectedDay &&
-      !!this._dateNavigationService.selectedEndDay
-    ) {
-      this._toggleService.open = false;
-    } else if (!this._dateNavigationService.isRangePicker && !!this._dateNavigationService.selectedDay) {
-      this._toggleService.open = false;
-    }
+    this._datePickerHelperService.selectDay(day);
   }
 
   isInRange() {

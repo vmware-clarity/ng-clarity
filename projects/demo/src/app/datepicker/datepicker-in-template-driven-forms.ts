@@ -13,8 +13,9 @@ import { Component } from '@angular/core';
 })
 export class DatepickerInTemplateDrivenFormsDemo {
   name = 'Jane';
-  date1 = '01/02/2015';
-  date2 = '';
+  date1 = '2015';
+  date2 = '2015/02';
+  date3 = '';
 
   date1Changed(date: Date): void {
     console.log('Valid Date1 Entered', date);

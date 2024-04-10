@@ -7,7 +7,7 @@
 <div clrForm>
   <h6>With [clrDate]</h6>
   <p></p>
-  <clr-date-container>
+  <clr-date-container [dateFormat]="'yyyy/MM'">
     <input type="date" autocomplete="off" [clrDate]="date" (clrDateChange)="dateChanged($event)" />
   </clr-date-container>
 </div>

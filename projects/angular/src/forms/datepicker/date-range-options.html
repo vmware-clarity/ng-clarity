@@ -1,0 +1,16 @@
+<div
+  class="date-range-options-wrapper"
+  [ngClass]="{'has-range-option': dateNavigationService.isRangePicker && dateRangeOptions?.length}"
+>
+  <div class="options-wrapper" *ngIf="dateNavigationService.isRangePicker && dateRangeOptions?.length">
+    <div
+      class="range-option"
+      [ngClass]="{'active': i === dateRangeOptions.length - 1}"
+      *ngFor="let option of dateRangeOptions; let i = index"
+      (click)="onRangeOptionSelect(option)"
+    >
+      {{option.label}}
+    </div>
+  </div>
+  <clr-datepicker-view-manager></clr-datepicker-view-manager>
+</div>

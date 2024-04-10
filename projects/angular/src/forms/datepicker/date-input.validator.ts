@@ -48,12 +48,14 @@ export class ClrDateRangeStartInputValidator implements Validator {
       if (
         (value && value < this.dateIOService.disabledDates.minDate.toDate()) ||
         (this.dateNavigationService.selectedEndDay &&
+          value &&
           this.dateNavigationService.selectedEndDay.toDate() < this.dateIOService.disabledDates.minDate.toDate())
       ) {
         return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
       } else if (
         (value && value > this.dateIOService.disabledDates.maxDate.toDate()) ||
         (this.dateNavigationService.selectedEndDay &&
+          value &&
           this.dateNavigationService.selectedEndDay.toDate() > this.dateIOService.disabledDates.maxDate.toDate())
       ) {
         return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
@@ -85,12 +87,14 @@ export class ClrDateRangeEndInputValidator implements Validator {
       if (
         (value && value < this.dateIOService.disabledDates.minDate.toDate()) ||
         (this.dateNavigationService.selectedDay &&
+          value &&
           this.dateNavigationService.selectedDay.toDate() < this.dateIOService.disabledDates.minDate.toDate())
       ) {
         return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
       } else if (
         (value && value > this.dateIOService.disabledDates.maxDate.toDate()) ||
         (this.dateNavigationService.selectedDay &&
+          value &&
           this.dateNavigationService.selectedDay.toDate() > this.dateIOService.disabledDates.maxDate.toDate())
       ) {
         return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };

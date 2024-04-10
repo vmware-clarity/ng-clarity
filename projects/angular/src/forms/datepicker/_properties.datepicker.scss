@@ -12,11 +12,17 @@
       --clr-calendar-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-calendar-border-color: #{tokens.$cds-alias-object-border-color-shade};
 
+      --clr-calendar-option-text-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-calendar-options-background-color: #f3f5f7; // #{tokens.$cds-alias-object-vertical-navigation-background-color};
+      --clr-calendar-active-option-border-color: #0079ad; // #{tokens.$cds-alias-object-interaction-background-highlight};
+
       --clr-calendar-btn-color: #{tokens.$cds-alias-object-interaction-color};
 
       --clr-calendar-today-date-cell-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-calendar-today-date-cell-border-color: #67777e; // #{tokens.$cds-alias-object-interaction-border-color};
 
       --clr-calendar-active-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-calendar-in-range-cell-background-color: #f1f6f8; //#{tokens.$cds-alias-object-container-background-tint};
       --clr-calendar-active-focus-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
       --clr-calendar-active-cell-color: #{tokens.$cds-alias-typography-color-100};
 
@@ -24,7 +30,8 @@
       --clr-calendar-btn-picker-trigger-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
       --clr-calendar-btn-picker-trigger-active-color: #{tokens.$cds-alias-typography-link-color};
 
-      --clr-calendar-btn-hover-focus-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-calendar-btn-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-calendar-btn-focus-border-color: #0079ad; // #{tokens.$cds-alias-object-focus-border-internal};
       --clr-calendar-btn-hover-focus-color-text: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-calendar-btn-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-calendar-btn-active-color-bg: #{tokens.$cds-alias-object-interaction-background-active};

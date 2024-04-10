@@ -72,7 +72,6 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
 
   protected updateDate(value: Date, setByUserInteraction = false, fieldName = 'selectedDay') {
     const date = this.getValidDateValueFromDate(value);
-
     if (setByUserInteraction) {
       this.emitDateOutput(date);
     } else {
@@ -105,7 +104,7 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
 
   private emitDateOutput(date: Date) {
     if (!datesAreEqual(date, this.previousDateChange)) {
-      this.dateChange.emit(date);
+      this.dateChange.emit(this.processBeforeEmittingDate(date));
       this.previousDateChange = date;
     } else if (!date && this.previousDateChange) {
       this.dateChange.emit(null);
@@ -119,5 +118,12 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
     } else {
       this.updateDate(this.initialClrDateInputValue);
     }
+  }
+
+  private processBeforeEmittingDate(date) {
+    if (!this.dateIOService.isMonthViewAllowed() || !this.dateIOService.isDayViewAllowed()) {
+      return this.dateIOService.toLocaleDisplayFormatString(date);
+    }
+    return date;
   }
 }

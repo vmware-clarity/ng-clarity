@@ -24,7 +24,7 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
   @Output('clrRangeStartDateChange') dateChange = new EventEmitter<Date>(false);
 
   @HostBinding('attr.size') size = 12;
-  @HostBinding('style.textAlign') textAlign = 'center';
+  // @HostBinding('style.textAlign') textAlign = 'center';
 
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
@@ -136,6 +136,7 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
 
   private addSeparatorSymbol() {
     const seperatorSpan = this.document.createElement('span');
+    seperatorSpan.className = 'date-range-separator';
     seperatorSpan.textContent = '-';
     this.el.nativeElement.parentNode?.insertBefore(seperatorSpan, this.el.nativeElement.nextSibling);
   }
