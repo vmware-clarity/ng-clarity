@@ -5,7 +5,7 @@
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPageSize } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -36,7 +36,7 @@ export default {
   },
 };
 
-const PageSizeTemplate: Story = args => ({
+const PageSizeTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {

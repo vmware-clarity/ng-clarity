@@ -5,7 +5,7 @@
  */
 
 import { CLR_MENU_POSITIONS, ClrDropdownMenu, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -38,7 +38,7 @@ export default {
   },
 };
 
-const DropdownMenuTemplate: Story = args => ({
+const DropdownMenuTemplate: StoryFn = args => ({
   template: `
     <div style="margin: 200px; text-align: center">
       <clr-dropdown>
@@ -68,7 +68,7 @@ const DropdownMenuTemplate: Story = args => ({
   props: args,
 });
 
-const DropdownMenuAllTemplate: Story = args => ({
+const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let position of CLR_MENU_POSITIONS">
       <div style="margin: 5px">

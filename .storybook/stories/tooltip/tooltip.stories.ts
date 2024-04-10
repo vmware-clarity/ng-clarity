@@ -5,7 +5,7 @@
  */
 
 import { ClrTooltipContent, ClrTooltipModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 const tooltipPositions = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
 const tooltipSizes = ['xs', 'sm', 'md', 'lg'];
@@ -32,7 +32,7 @@ export default {
   },
 };
 
-const TooltipTemplate: Story = args => ({
+const TooltipTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 200px; text-align: center">
       <clr-tooltip>

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'List/List',
@@ -20,7 +20,7 @@ export default {
   },
 };
 
-const ListTemplate: Story = args => ({
+const ListTemplate: StoryFn = args => ({
   template: `
     <div>
       Unordered List

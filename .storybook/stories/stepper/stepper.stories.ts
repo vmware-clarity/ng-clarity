@@ -7,7 +7,7 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -39,7 +39,7 @@ export default {
   },
 };
 
-const StepperTemplate: Story = args => ({
+const StepperTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [clrInitialStep]="clrInitialStep" [formGroup]="form" (ngSubmit)="ngSubmit()">
       <clr-stepper-panel *ngFor="let _ of createArray(stepCount); let i = index" formGroupName="step{{ i + 1 }}">

@@ -7,7 +7,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Wizard/Wizard Page',
@@ -60,7 +60,7 @@ export default {
   },
 };
 
-const WizardPageTemplate: Story = args => ({
+const WizardPageTemplate: StoryFn = args => ({
   template: `
     <clr-wizard [clrWizardOpen]="true">
       <clr-wizard-title>Wizard</clr-wizard-title>
@@ -95,7 +95,7 @@ const WizardPageTemplate: Story = args => ({
         (clrWizardPagePreviousDisabledChange)="clrWizardPagePreviousDisabledChange($event)"
         (clrWizardPagePrimary)="clrWizardPagePrimary($event)"
       >
-        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">Story Page</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">StoryFn Page</ng-template>
         <p>Content for story page.</p>
       </clr-wizard-page>
 

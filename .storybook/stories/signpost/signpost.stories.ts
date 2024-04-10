@@ -5,7 +5,7 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -56,7 +56,7 @@ const template = `
   </div>
 `;
 
-const SignpostTemplate: Story = args => ({
+const SignpostTemplate: StoryFn = args => ({
   template,
   props: args,
 });
