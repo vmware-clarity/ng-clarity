@@ -9,31 +9,6 @@ import { StoryFn, StoryObj } from '@storybook/angular';
 
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-export default {
-  title: 'Progress Bar/Progress Bar',
-  component: ClrProgressBar,
-  argTypes: {
-    // inputs
-    clrColor: { control: 'radio', options: ['', 'success', 'warning', 'danger'] },
-    // methods
-    displayStringValue: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // inputs
-    clrDisplayval: '',
-    clrFade: false,
-    clrFlash: false,
-    clrFlashDanger: false,
-    clrLabeled: false,
-    clrLoop: false,
-    clrMax: 100,
-    clrColor: '',
-    clrValue: 33,
-    clrCompact: false,
-    id: '',
-  },
-};
-
 const ProgressBarTemplate: StoryFn = args => ({
   template: `
     <clr-progress-bar
@@ -117,6 +92,31 @@ const ProgressBarTemplateAll: StoryFn = args => ({
   `,
   props: { ...args },
 });
+
+export default {
+  title: 'Progress Bar/Progress Bar',
+  component: ClrProgressBar,
+  argTypes: {
+    // inputs
+    clrColor: { control: 'radio', options: ['', 'success', 'warning', 'danger'] },
+    // methods
+    displayStringValue: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrDisplayval: '',
+    clrFade: false,
+    clrFlash: false,
+    clrFlashDanger: false,
+    clrLabeled: false,
+    clrLoop: false,
+    clrMax: 100,
+    clrColor: '',
+    clrValue: 33,
+    clrCompact: false,
+    id: '',
+  },
+};
 
 export const ProgressBar: StoryObj = {
   render: ProgressBarTemplate,
