@@ -106,7 +106,7 @@ const WizardPageTemplate: StoryFn = args => ({
         (clrWizardPagePreviousDisabledChange)="clrWizardPagePreviousDisabledChange($event)"
         (clrWizardPagePrimary)="clrWizardPagePrimary($event)"
       >
-        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">StoryFn Page</ng-template>
+        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">Story Page</ng-template>
         <p>Content for story page.</p>
       </clr-wizard-page>
 
