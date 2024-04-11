@@ -55,6 +55,13 @@
     background: datepicker-variables.$clr-calendar-btn-active-color-bg;
   }
 }
+@mixin generate-current-date-style() {
+  &.is-today {
+    color: datepicker-variables.$clr-calendar-today-date-cell-color;
+    border: 1px solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
+    font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
+  }
+}
 
 @mixin generate-calendar-hover-active-color-style() {
   &:hover {
@@ -216,18 +223,13 @@
     @include generate-calendar-focus-style();
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+    @include generate-current-date-style();
 
     //Dimensions
     width: 100%;
 
     //Other Props
     color: inherit;
-
-    &.is-today {
-      color: datepicker-variables.$clr-calendar-today-date-cell-color;
-      border: 1px solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
-      font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
-    }
 
     &.is-excluded {
       color: tokens.$cds-alias-object-interaction-color-disabled;
@@ -321,6 +323,7 @@
     @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-padding);
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    @include generate-current-date-style();
 
     height: datepicker-variables.$clr-calendar-year-cell-height;
     width: datepicker-variables.$clr-month-year-btn-width;

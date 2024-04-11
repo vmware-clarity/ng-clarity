@@ -51,6 +51,7 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
         [attr.tabindex]="getTabIndex(year)"
         [class.is-selected]="year === calendarYear || year === calendarEndYear"
         [class.in-range]="isInRange(year)"
+        [class.is-today]="year === currentCalendarYear"
         (click)="changeYear(year)"
         (mouseenter)="onHover(year)"
       >
@@ -98,6 +99,10 @@ export class ClrYearpicker implements AfterViewInit {
    */
   get calendarEndYear(): number {
     return this._dateNavigationService.selectedEndDay?.year;
+  }
+
+  get currentCalendarYear(): number {
+    return new Date().getFullYear();
   }
 
   /**
