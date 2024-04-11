@@ -86,7 +86,7 @@ export class DateIOService {
     let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
     console.log('🚀 ~ DateIOService ~ setRangeOptions ~ validatedRangeOption:', validatedRangeOption);
     if (validatedRangeOption.length) {
-      validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: '' }];
+      validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [] }];
       this.dateRangeOptions = validatedRangeOption;
     }
   }
