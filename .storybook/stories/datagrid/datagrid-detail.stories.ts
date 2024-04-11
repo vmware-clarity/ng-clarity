@@ -22,7 +22,7 @@ export default {
     close: { control: { disable: true } },
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
-    detailContentType: { control: { type: 'inline-radio', options: ['json', 'datagrid'] } },
+    detailContentType: { control: 'inline-radio', options: ['json', 'datagrid'] },
   },
   args: {
     // story helpers
