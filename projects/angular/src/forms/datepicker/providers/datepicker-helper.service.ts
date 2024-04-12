@@ -50,7 +50,6 @@ export class DatePickerHelperService {
   }
 
   updateSelectedDate(day: DayModel): void {
-    console.log('🚀 ~ DatePickerHelperService ~ updateSelectedDate ~ day:', day);
     this._dateNavigationService.notifySelectedDayChanged(day);
     this._dateFormControlService.markAsDirty();
     this.toggleDatepickerVisibility();

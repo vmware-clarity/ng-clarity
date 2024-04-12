@@ -60,8 +60,9 @@ export function getFormatDate(date: string | Date, format: string, delimiter: st
 }
 
 export function extractDateParts(date: string, format: string) {
-  const dateParts = date?.split(/[-\\/.]/);
-  const formatParts = format?.split(/[-\\/.]/);
+  const regex = /[-\\/.\s]/;
+  const dateParts = date?.split(regex);
+  const formatParts = format?.split(regex);
   const monthIndex = formatParts.findIndex(pt => /m./i.test(pt));
   const dateIndex = formatParts.findIndex(pt => /d./i.test(pt));
   const yearIndex = formatParts.findIndex(pt => /y./i.test(pt));

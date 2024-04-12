@@ -12,7 +12,7 @@ import {
   BIG_ENDIAN,
   CUSTOM,
   DEFAULT_LOCALE_FORMAT,
-  EXTRACT_DELIMITER_REGEX,
+  DELIMITERS_REGEX,
   InputDateDisplayFormat,
   LITTLE_ENDIAN,
   LITTLE_ENDIAN_REGEX,
@@ -62,7 +62,6 @@ export class DateIOService {
       const [year, month = 1, day = 1] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.minDate = new DayModel(year, month - 1, day);
     }
-    console.log('🚀 ~ DateIOService ~ setMinDate ~ this.disabledDates:', this.disabledDates);
   }
 
   setMaxDate(date: string): void {
@@ -75,7 +74,6 @@ export class DateIOService {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.maxDate = new DayModel(year, month - 1, day);
     }
-    console.log('🚀 ~ DateIOService ~ setMaxDate ~ this.disabledDates:', this.disabledDates);
   }
 
   setIsDateRangePicker(flag: boolean) {
@@ -84,7 +82,6 @@ export class DateIOService {
 
   setRangeOptions(rangeOptions) {
     let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
-    console.log('🚀 ~ DateIOService ~ setRangeOptions ~ validatedRangeOption:', validatedRangeOption);
     if (validatedRangeOption.length) {
       validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [] }];
       this.dateRangeOptions = validatedRangeOption;
@@ -190,13 +187,12 @@ export class DateIOService {
       // FIXME: When we support RTL, remove this and handle it correctly.
       const localeFormat: string = this.cldrLocaleDateFormat.replace(RTL_REGEX, '');
       // const delimiters: string[] = localeFormat.split(DELIMITER_REGEX);
-      const delimiters: string[] = localeFormat.match(EXTRACT_DELIMITER_REGEX) || [];
+      const delimiters: string[] = localeFormat.match(DELIMITERS_REGEX) || [];
       // NOTE: The split from the CLDR date format should always result
       // in an arary with 4 elements. The 1st and the 2nd values are the delimiters
       // we will use in order.
       // Eg: "dd/MM/y".split(/d+|m+|y+/i) results in ["", "/", "/", ""]
       this.delimiter = delimiters[0] || '';
-      console.log('🚀 ~ DateIOService ~ extractDelimiters ~ delimiters:', this.delimiter);
       // if (delimiters && delimiters.length === 4) {
       // } else {
       //   console.error('Unexpected date format received. Delimiters extracted: ', delimiters);
@@ -244,11 +240,12 @@ export class DateIOService {
     const m: any = typeof month === 'string' ? +this.monthNumberFromString(month) - 1 : +month - 1; // month is 0 based
     // const m: any = +month - 1; // month is 0 based
     const d: number = +date;
-    if ((m && !this.isValidMonth(m)) || (d && !this.isValidDate(y, m, d))) {
+    if ((m >= 0 && !this.isValidMonth(m)) || (d >= 0 && !this.isValidDate(y, m, d))) {
       return null;
     }
-    const result: number = parseToFourDigitYear(y);
-    return result !== -1 ? new Date(result, m || 1, d || 1) : null;
+    const result: number = parseToFourDigitYear(y) || new Date().getFullYear();
+    // return result !== -1 ? new Date(result , m || 0, d || 1) : null;
+    return new Date(result, m || 0, d || 1);
   }
 
   private validateDateRangeOptions(rangeOptions) {

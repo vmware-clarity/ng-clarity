@@ -36,6 +36,16 @@ import { ViewManagerService } from './providers/view-manager.service';
         *ngFor="let month of monthNames; let monthIndex = index"
         (click)="changeMonth(monthIndex)"
         [class.is-selected]="isSelected(monthIndex)"
+        [class.is-start-range]="
+          _dateNavigationService.isRangePicker &&
+          calendarYear === _dateNavigationService.selectedDay?.year &&
+          monthIndex === _dateNavigationService.selectedDay?.month
+        "
+        [class.is-end-range]="
+          _dateNavigationService.isRangePicker &&
+          calendarYear === _dateNavigationService.selectedEndDay?.year &&
+          monthIndex === _dateNavigationService.selectedEndDay?.month
+        "
         [class.in-range]="isInRange(monthIndex)"
         [attr.tabindex]="getTabIndex(monthIndex)"
         (mouseenter)="onHover(monthIndex)"

@@ -34,8 +34,7 @@
 }
 
 @mixin generate-calendar-focus-style() {
-  &:hover,
-  &.in-range {
+  &:hover {
     background: datepicker-variables.$clr-calendar-btn-hover-color;
   }
   &:focus {
@@ -55,11 +54,32 @@
     background: datepicker-variables.$clr-calendar-btn-active-color-bg;
   }
 }
+
 @mixin generate-current-date-style() {
   &.is-today {
     color: datepicker-variables.$clr-calendar-today-date-cell-color;
     border: 1px solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
     font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
+  }
+}
+
+@mixin generate-selected-date-style() {
+  &.is-selected {
+    background: datepicker-variables.$clr-calendar-active-cell-background-color;
+    color: datepicker-variables.$clr-calendar-active-cell-color;
+    border: none;
+    &.is-start-range {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &.is-end-range {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &.is-selected:focus {
+    background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
   }
 }
 
@@ -138,6 +158,9 @@
       }
       + .range-option {
         margin: var(--cds-global-space-5) 0;
+      }
+      &:hover {
+        background-color: datepicker-variables.$clr-calendar-option-hover-background-color;
       }
     }
     background-color: datepicker-variables.$clr-calendar-options-background-color;
@@ -224,6 +247,7 @@
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
     @include generate-current-date-style();
+    @include generate-selected-date-style();
 
     //Dimensions
     width: 100%;
@@ -237,24 +261,6 @@
       &:hover {
         background: none;
       }
-    }
-
-    &.is-selected {
-      background: datepicker-variables.$clr-calendar-active-cell-background-color;
-      color: datepicker-variables.$clr-calendar-active-cell-color;
-      border: none;
-      &.is-start-day {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      &.is-end-day {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-
-    &.is-selected:focus {
-      background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
     }
 
     &.is-disabled {
@@ -317,6 +323,7 @@
   .years,
   .months {
     flex-wrap: wrap;
+    flex-direction: row;
   }
 
   .month,
@@ -325,6 +332,7 @@
     @include generate-calendar-hover-active-color-style();
     @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
     @include generate-current-date-style();
+    @include generate-selected-date-style();
 
     height: datepicker-variables.$clr-calendar-year-cell-height;
     width: datepicker-variables.$clr-month-year-btn-width;

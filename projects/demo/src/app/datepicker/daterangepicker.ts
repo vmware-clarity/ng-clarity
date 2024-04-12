@@ -74,7 +74,6 @@ export class DateRangePickerDemo {
 
   stDateChanged(date: Date) {
     console.log(date);
-    console.log(this.dateRangeOptions);
   }
 
   endDateChanged(date: Date) {

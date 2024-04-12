@@ -15,13 +15,11 @@ export const MIDDLE_ENDIAN_REGEX = /m+.+d+.+y+/i;
 // No need for BIG_ENDIAN_REGEX because anything that doesn't satisfy the above 2
 // is automatically BIG_ENDIAN
 
-export const DELIMITER_REGEX = /d+|m+|y+/i;
-
 export const USER_INPUT_REGEX = /\w+/g;
 
 export const MOBILE_USERAGENT_REGEX = /Mobi/i;
 
-export const EXTRACT_DELIMITER_REGEX = /[^d+|m+|y+]/gi;
+export const DELIMITERS_REGEX = /[-\\/.\s]/;
 
 export const RTL_REGEX = /\u200f/g;
 

@@ -34,7 +34,6 @@ export class ClrDateRangeOptions {
 
   onRangeOptionSelect(selectedRange) {
     selectedRange?.value?.forEach(date => {
-      console.log('🚀 ~ ClrDateRangeOptions ~ onRangeOptionSelect ~ selectedRange:', date);
       this.datePickerHelperService.selectDay(this.datePickerHelperService.convertDateToDayModel(date));
     });
   }

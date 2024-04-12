@@ -50,6 +50,12 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
         [class.is-selected]="year === calendarYear || year === calendarEndYear"
+        [class.is-start-range]="
+          _dateNavigationService.isRangePicker && year === _dateNavigationService.selectedDay?.year
+        "
+        [class.is-end-range]="
+          _dateNavigationService.isRangePicker && year === _dateNavigationService.selectedEndDay?.year
+        "
         [class.in-range]="isInRange(year)"
         [class.is-today]="year === currentCalendarYear"
         (click)="changeYear(year)"
@@ -75,7 +81,7 @@ export class ClrYearpicker implements AfterViewInit {
   private _focusedYear: number;
 
   constructor(
-    private _dateNavigationService: DateNavigationService,
+    public _dateNavigationService: DateNavigationService,
     private datePickerHelperService: DatePickerHelperService,
     private _datepickerFocusService: DatepickerFocusService,
     private _elRef: ElementRef,
@@ -182,7 +188,6 @@ export class ClrYearpicker implements AfterViewInit {
    * Compares the year passed to the focused year and returns the tab index.
    */
   getTabIndex(year: number): number {
-    console.log('🚀 ~ ClrYearpicker ~ getTabIndex ~ this._focusedYear:', this._focusedYear, this.calendarYear);
     if (!this.yearRangeModel.inRange(this._focusedYear)) {
       if (this.yearRangeModel.inRange(this.calendarYear)) {
         this._focusedYear = this.calendarYear;

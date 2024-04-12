@@ -25,11 +25,11 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
       [class.is-disabled]="dayView.isDisabled"
       [class.is-selected]="dayView.isSelected"
       [class.in-range]="isInRange()"
-      [class.is-start-day]="
+      [class.is-start-range]="
         _dateNavigationService.isRangePicker &&
         dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedDay?.toComparisonString()
       "
-      [class.is-end-day]="
+      [class.is-end-range]="
         _dateNavigationService.isRangePicker &&
         dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedEndDay?.toComparisonString()
       "
