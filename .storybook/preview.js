@@ -16,7 +16,6 @@ import { THEMES } from './helpers/constants';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
-addStyleElement();
 
 loadIcons();
 addDocs(docs);
@@ -110,13 +109,6 @@ export const decorators = [
     providers: [provideAnimations()],
   }),
 ];
-
-function addStyleElement() {
-  const styleElement = document.createElement('style');
-  window.document.head.append(styleElement);
-
-  return styleElement;
-}
 
 function loadIcons() {
   loadCoreIconSet();

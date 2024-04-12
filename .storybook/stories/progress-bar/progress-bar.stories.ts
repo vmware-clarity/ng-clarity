@@ -14,7 +14,7 @@ export default {
   component: ClrProgressBar,
   argTypes: {
     // inputs
-    clrColor: { type: 'radio', options: ['', 'success', 'warning', 'danger'] },
+    clrColor: { control: 'radio', options: ['', 'success', 'warning', 'danger'] },
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
   },

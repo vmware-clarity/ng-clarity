@@ -27,8 +27,8 @@ export default {
     // methods
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    buttonStyle: { type: 'radio', options: BUTTON_STYLES },
-    buttonType: { type: 'radio', options: BUTTON_TYPES },
+    buttonStyle: { control: 'radio', options: BUTTON_STYLES },
+    buttonType: { control: 'radio', options: BUTTON_TYPES },
     getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },

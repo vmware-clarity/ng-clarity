@@ -31,7 +31,7 @@ export default {
     patterns: { control: { disable: true }, table: { disable: true } },
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     clrLayout: {
-      type: 'radio',
+      control: 'radio',
       options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
     },
   },

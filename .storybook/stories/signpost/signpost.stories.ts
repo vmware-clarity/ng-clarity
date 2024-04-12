@@ -5,7 +5,7 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, StoryFn } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -34,7 +34,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrPosition: { type: 'radio', options: positions },
+    clrPosition: { control: 'radio', options: positions },
     // methods
     close: { control: { disable: true }, table: { disable: true } },
     anchor: { control: { disable: true }, table: { disable: true } },
@@ -58,12 +58,18 @@ const template = `
   </div>
 `;
 
-const Initial: StoryFn = args => ({
+const SignpostTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Opened: StoryFn = Initial.bind({});
-Opened.play = async ({ canvasElement }) => {
-  canvasElement.querySelector('button').click();
+export const Initial: StoryObj = {
+  render: SignpostTemplate,
+};
+
+export const Opened = {
+  render: SignpostTemplate,
+  async play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
 };

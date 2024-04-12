@@ -26,7 +26,7 @@ export default {
   component: ClrButtonGroup,
   argTypes: {
     // inputs
-    clrMenuPosition: { type: 'radio', options: CLR_MENU_POSITIONS },
+    clrMenuPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
     // methods
     getMoveIndex: { control: { disable: true }, table: { disable: true } },
     initializeButtons: { control: { disable: true }, table: { disable: true } },
@@ -37,8 +37,8 @@ export default {
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
     disabledButtonsPosition: { description: 'Enter JSON array (e.g. `[2,3]`)', control: { type: 'array' } },
-    buttonStyle: { type: 'radio', options: BUTTON_STYLES },
-    buttonType: { type: 'radio', options: BUTTON_TYPES },
+    buttonStyle: { control: 'radio', options: BUTTON_STYLES },
+    buttonType: { control: 'radio', options: BUTTON_TYPES },
     getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
