@@ -86,6 +86,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
+
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     private iterableDiffers: IterableDiffers,

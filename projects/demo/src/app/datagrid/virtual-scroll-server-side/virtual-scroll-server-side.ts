@@ -54,6 +54,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   }
 
   renderRangeChange($event: ListRange) {
+    console.log($event);
     this.loadMore($event);
   }
 
