@@ -10,49 +10,6 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
-export default {
-  title: 'Datagrid/Row',
-  component: ClrDatagridRow,
-  decorators: [
-    moduleMetadata({
-      imports: [ClrDatagridModule, ClrConditionalModule],
-    }),
-  ],
-  argTypes: {
-    // inputs
-    clrDgItem: { control: { disable: true } },
-    // outputs
-    clrDgExpandedChange: { control: { disable: true } },
-    clrDgSelectedChange: { control: { disable: true } },
-    // methods
-    toggle: { control: { disable: true } },
-    toggleExpand: { control: { disable: true } },
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // inputs
-    clrDgDetailCloseLabel: '',
-    clrDgDetailOpenLabel: '',
-    clrDgExpanded: false,
-    clrDgRowSelectionLabel: 'Select row for',
-    clrDgSelectable: true,
-    clrDgSelected: false,
-    // outputs
-    clrDgExpandedChange: action('clrDgExpandedChange'),
-    clrDgSelectedChange: action('clrDgSelectedChange'),
-    // story helpers
-    elements,
-    highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
-    expandable: false,
-    compact: false,
-    hidableColumns: false,
-    height: 0,
-  },
-};
-
 const RowTemplate: StoryFn = args => ({
   template: `
     <style>
@@ -118,6 +75,48 @@ const RowTemplate: StoryFn = args => ({
   `,
   props: { ...args },
 });
+export default {
+  title: 'Datagrid/Row',
+  component: ClrDatagridRow,
+  decorators: [
+    moduleMetadata({
+      imports: [ClrDatagridModule, ClrConditionalModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrDgItem: { control: { disable: true } },
+    // outputs
+    clrDgExpandedChange: { control: { disable: true } },
+    clrDgSelectedChange: { control: { disable: true } },
+    // methods
+    toggle: { control: { disable: true } },
+    toggleExpand: { control: { disable: true } },
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgRowSelectionLabel: 'Select row for',
+    clrDgSelectable: true,
+    clrDgSelected: false,
+    // outputs
+    clrDgExpandedChange: action('clrDgExpandedChange'),
+    clrDgSelectedChange: action('clrDgSelectedChange'),
+    // story helpers
+    elements,
+    highlight: true,
+    singleSelectable: false,
+    multiSelectable: false,
+    expandable: false,
+    compact: false,
+    hidableColumns: false,
+    height: 0,
+  },
+};
 
 export const Row: StoryObj = {
   render: RowTemplate,

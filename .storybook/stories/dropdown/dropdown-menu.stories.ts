@@ -70,7 +70,6 @@ const DropdownMenuTemplate: StoryFn = args => ({
   props: args,
 });
 
-/*
 const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let position of CLR_MENU_POSITIONS">
@@ -105,17 +104,15 @@ const DropdownMenuAllTemplate: StoryFn = args => ({
   `,
   props: args,
 });
-*/
 
 export const DropdownMenu: StoryObj = {
   render: DropdownMenuTemplate,
 };
 
-/*export const Showcase: StoryObj = {
+export const Showcase: StoryObj = {
   render: DropdownMenuAllTemplate,
   parameters: {
     actions: { disable: true },
     controls: { disable: true },
   },
 };
-*/
