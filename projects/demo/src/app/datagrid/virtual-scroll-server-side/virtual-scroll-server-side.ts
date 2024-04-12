@@ -23,6 +23,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   _inventory = null;
   loading: boolean;
   loadingMoreItems = false;
+  selected: User[] = [];
 
   constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
     this._inventory = inventory;
@@ -33,7 +34,9 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   }
 
   ngOnInit(): void {
-    this.users.subscribe(() => {
+    this.users.subscribe(users => {
+      this.selected.push(users[0], users[7]);
+
       this.cdr.detectChanges();
     });
   }
@@ -56,6 +59,10 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   renderRangeChange($event: ListRange) {
     console.log($event);
     this.loadMore($event);
+  }
+
+  clrDgActionOverflowOpenChangeFn($event: boolean) {
+    console.log('clrDgActionOverflowOpenChange event', $event);
   }
 
   refreshPage() {

@@ -101,6 +101,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     private readonly injector: EnvironmentInjector
   ) {
     this.items.smartenUp();
+    this.datagrid.selectAllOn = false;
 
     this.datagridElementRef = this.datagrid.el;
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;

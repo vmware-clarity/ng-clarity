@@ -125,6 +125,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 
   selectAllId: string;
+  selectAllOn = true;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
