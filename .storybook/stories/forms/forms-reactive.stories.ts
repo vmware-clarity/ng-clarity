@@ -26,11 +26,11 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { type: 'number', min: 1, max: 12 },
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: { options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
+    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
     // inputs

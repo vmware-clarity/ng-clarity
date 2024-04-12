@@ -15,6 +15,11 @@ import { Directive, ElementRef, Inject, NgModule, Optional } from '@angular/core
   selector: '[cdkTrapFocus]',
 })
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+  /**
+   * Include the constructor to forward all the dependencies to the base class
+   * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
+   * https://github.com/storybookjs/storybook/issues/23534
+   */
   constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, @Optional() @Inject(DOCUMENT) document: any) {
     super(elementRef, focusTrapFactory, document);
   }

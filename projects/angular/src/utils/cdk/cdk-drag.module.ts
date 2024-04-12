@@ -30,7 +30,6 @@ export class CdkDragModule_CdkDrag extends CdkDrag {
    * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
    * https://github.com/storybookjs/storybook/issues/23534
    */
-
   constructor(
     elementRef: ElementRef,
     @Optional() @Inject(CDK_DROP_LIST) dropContainer: any,
