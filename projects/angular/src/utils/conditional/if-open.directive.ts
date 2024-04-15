@@ -58,6 +58,12 @@ export class ClrIfOpen implements OnDestroy {
       this.ref.detectChanges();
       this.openChange.emit(change);
     });
+
+    this.popoverService.popoverVisible.subscribe(change => {
+      if (!change) {
+        this.container.clear();
+      }
+    });
   }
 
   /**
@@ -87,7 +93,8 @@ export class ClrIfOpen implements OnDestroy {
     if (value) {
       this.container.createEmbeddedView(this.template);
     } else {
-      setTimeout(() => this.container.clear(), 0);
+      // console.log("Remove");
+      // this.container.clear()
     }
   }
 }

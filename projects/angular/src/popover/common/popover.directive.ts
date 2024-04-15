@@ -17,8 +17,8 @@ import {
   // ViewportRuler,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { AfterViewInit, Directive, Inject, Renderer2 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Directive, Inject, NgZone, Renderer2 } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
@@ -27,7 +27,7 @@ import { ClrPopoverService } from '../../utils/popover/providers/popover.service
   selector: 'clr-tooltip, clr-signpost',
 })
 export class PopoverDirective implements AfterViewInit {
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription[] = [];
   private overlayRef: OverlayRef = null;
   private domPortal: DomPortal;
   private preferredPosition: ConnectedPosition = {
@@ -43,13 +43,17 @@ export class PopoverDirective implements AfterViewInit {
   private renderer: Renderer2;
   private scrollableParent: any;
 
-  constructor(private overlay: Overlay, @Inject(ClrPopoverService) private popoverService: ClrPopoverService) {}
+  constructor(
+    private overlay: Overlay,
+    @Inject(ClrPopoverService) private popoverService: ClrPopoverService,
+    private zone: NgZone
+  ) {}
 
   ngAfterViewInit() {
     if (this.popoverService.open) {
       this.showOverlay();
     }
-    this.subscriptions.add(
+    this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
         if (change) {
           setTimeout(() => this.showOverlay());
@@ -58,6 +62,23 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
+    this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef.nativeElement);
+    this.listenToMouseEvents();
+  }
+
+  listenToMouseEvents() {
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        fromEvent(
+          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : 'body',
+          'scroll'
+        ).subscribe(() => {
+          if (this.overlayRef) {
+            this.overlayRef.updatePosition();
+          }
+        })
+      );
+    });
   }
 
   //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
@@ -133,6 +154,7 @@ export class PopoverDirective implements AfterViewInit {
       this.domPortal.detach();
     }
     this.domPortal = null;
+    this.popoverService.popoverVisibleEmit(false);
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -143,6 +165,7 @@ export class PopoverDirective implements AfterViewInit {
           .position()
           .flexibleConnectedTo(this.popoverService.anchorElementRef)
           .setOrigin(this.popoverService.anchorElementRef)
+          .withScrollableContainers([this.scrollableParent.scrollParent])
           .withPush(true)
           .withPositions([this.preferredPosition, ...this.positions]),
         scrollStrategy: this.popoverService.scrollToClose
@@ -153,7 +176,7 @@ export class PopoverDirective implements AfterViewInit {
       })
     );
 
-    this.subscriptions.add(
+    this.subscriptions.push(
       overlay.keydownEvents().subscribe(event => {
         if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
           event.preventDefault();
@@ -162,7 +185,7 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
-    this.subscriptions.add(
+    this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
@@ -185,7 +208,7 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
-    this.subscriptions.add(
+    this.subscriptions.push(
       overlay.detachments().subscribe(() => {
         this.popoverService.open = false;
         this.popoverService.setOpenedButtonFocus();
