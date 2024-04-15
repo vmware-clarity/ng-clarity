@@ -5,8 +5,8 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Directive, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Directive, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { delay, fromEvent, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -29,7 +29,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
  * ClrSignpostContent.
  *
  */
-export class ClrSignpostTrigger implements OnDestroy {
+export class ClrSignpostTrigger implements OnDestroy, AfterViewInit {
   ariaExpanded = false;
   ariaControl: string;
   isOpen: boolean;
@@ -43,12 +43,14 @@ export class ClrSignpostTrigger implements OnDestroy {
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(DOCUMENT) document: any,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private zone: NgZone
   ) {
     this.document = document;
   }
 
   ngOnInit() {
+    this.popoverService.anchorElementRef = this.el;
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
     this.subscriptions.push(
       this.popoverService.openChange.subscribe((isOpen: boolean) => {
@@ -68,8 +70,24 @@ export class ClrSignpostTrigger implements OnDestroy {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.listenToMouseEvents();
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  listenToMouseEvents() {
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        fromEvent(this.el.nativeElement, 'click')
+          .pipe(delay(0))
+          .subscribe(event => {
+            this.popoverService.toggleWithEvent(event);
+          })
+      );
+    });
   }
 
   /**********
@@ -77,10 +95,11 @@ export class ClrSignpostTrigger implements OnDestroy {
    * @description
    * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
    */
-  @HostListener('click', ['$event'])
-  onSignpostTriggerClick(event: Event): void {
-    this.popoverService.toggleWithEvent(event);
-  }
+  // @HostListener('click', ['$event'])
+  // onSignpostTriggerClick(event: Event): void {
+  //   console.log("clicked");
+  //   this.popoverService.toggleWithEvent(event);
+  // }
 
   private focusOnClose() {
     if (!isPlatformBrowser(this.platformId)) {

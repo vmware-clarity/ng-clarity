@@ -5,15 +5,28 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, Injector, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  PLATFORM_ID,
+  Renderer2,
+  SimpleChanges,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { AbstractPopover } from '../common/abstract-popover';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+// import { AbstractPopover } from '../common/abstract-popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
-import { SIGNPOST_POSITIONS } from './signpost-positions';
+// import { SIGNPOST_POSITIONS } from './signpost-positions';
 
 // aka where the arrow / pointer is at in relation to the anchor
 const POSITIONS: string[] = [
@@ -54,7 +67,7 @@ const POSITIONS: string[] = [
   `,
   host: { '[class.signpost-content]': 'true', '[id]': 'signpostContentId' },
 })
-export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
+export class ClrSignpostContent implements OnDestroy, OnChanges {
   signpostContentId = uniqueIdFactory();
 
   private document: Document;
@@ -65,22 +78,27 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
+    private element: ElementRef,
+    private renderer: Renderer2,
     public commonStrings: ClrCommonStringsService,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(DOCUMENT) document: any
+    @Inject(DOCUMENT) document: any,
+    private popoverService: ClrPopoverService
   ) {
-    super(injector, parentHost);
+    // super(injector, parentHost);
     if (!parentHost) {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
     }
     // Defaults
-    this.position = 'right-middle';
-    this.closeOnOutsideClick = true;
+    // this.position = 'right-middle';
+    // this.closeOnOutsideClick = true;
     this.signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
+    this.popoverService.contentRef = this.element;
+    this.popoverService.panelClass = 'clr-signpost-container';
   }
 
   /*********
@@ -114,24 +132,25 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
    */
   @Input('clrPosition')
   get position() {
-    return this._position;
+    return this._position || 'right-middle';
   }
   set position(position: string) {
+    this.popoverService.position = position;
     // Ugh
-    this.renderer.removeClass(this.el.nativeElement, this.position);
+    this.renderer.removeClass(this.element.nativeElement, this.position);
     if (position && POSITIONS.indexOf(position) > -1) {
       this._position = position;
     } else {
       this._position = 'right-middle';
     }
     // Ugh
-    this.renderer.addClass(this.el.nativeElement, this.position);
+    this.renderer.addClass(this.element.nativeElement, this.position);
 
-    const setPosition = SIGNPOST_POSITIONS[this.position];
-    this.anchorPoint = setPosition.anchorPoint;
-    this.popoverPoint = setPosition.popoverPoint;
-    this.popoverOptions.offsetY = setPosition.offsetY;
-    this.popoverOptions.offsetX = setPosition.offsetX;
+    // const setPosition = SIGNPOST_POSITIONS[this.position];
+    // this.anchorPoint = setPosition.anchorPoint;
+    // this.popoverPoint = setPosition.popoverPoint;
+    // this.popoverOptions.offsetY = setPosition.offsetY;
+    // this.popoverOptions.offsetX = setPosition.offsetX;
   }
 
   /**********
@@ -144,10 +163,18 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     this.popoverService.open = false;
   }
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
 
-    if (isPlatformBrowser(this.platformId) && this.el.nativeElement.contains(this.document.activeElement)) {
+  // ngAfterViewInit(){
+  //   console.log("after init");
+  // }
+
+  ngOnDestroy() {
+    // super.ngOnDestroy();
+
+    if (isPlatformBrowser(this.platformId) && this.element.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }
   }
