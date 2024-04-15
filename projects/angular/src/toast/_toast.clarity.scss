@@ -1,0 +1,79 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+%close-dimension {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+.clr-toast-container {
+  position: fixed;
+  width: 100%;
+  max-width: 20rem;
+  z-index: 99999;
+  &.bottom-left {
+    bottom: 1rem;
+    left: 1rem;
+  }
+  &.bottom-right {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  &.top-left {
+    top: 1rem;
+    left: 1rem;
+  }
+  &.top-right {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+.clr-toast {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  max-width: 20rem;
+  padding: 12px 6px 12px 12px;
+  margin-bottom: 12px;
+  background-color: #25333d;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  &-type {
+    display: flex;
+    width: 24px;
+  }
+  &-content {
+    flex: 1;
+    padding: 0 0.5rem;
+    .title {
+      font-size: 0.666667rem;
+      line-height: 1rem;
+      color: #e9ecef;
+      font-family: inherit;
+    }
+    .message {
+      font-size: 0.583333rem;
+      line-height: 1rem;
+      color: #adbbc4;
+      font-family: inherit;
+    }
+  }
+  &-close {
+    display: flex;
+    @extend %close-dimension;
+    button {
+      fill: #adbbc4;
+      border: none;
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      @extend %close-dimension;
+      &:hover {
+        fill: #fff;
+      }
+    }
+  }
+}

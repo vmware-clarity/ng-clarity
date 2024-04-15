@@ -127,6 +127,10 @@ export const APP_ROUTES: Routes = [
     path: 'timeline',
     loadChildren: () => import('./timeline/timeline.demo.module').then(m => m.TimelineDemoModule),
   },
+  {
+    path: 'toast',
+    loadChildren: () => import('./toast/toast.demo.module').then(m => m.ToastDemoModule),
+  },
   { path: 'toggles', loadChildren: () => import('./toggles/toggles.demo.module').then(m => m.TogglesDemoModule) },
   {
     path: 'tooltips',

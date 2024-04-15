@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-toast" (mouseover)="mouseOver(true)" (mouseleave)="mouseOver(false)">
+  <div class="clr-toast-type">
+    <div *ngIf="type===ToastType.SUCCESS">
+      <cds-icon shape="success-standard" status="success" size="md"></cds-icon>
+    </div>
+    <div *ngIf="type===ToastType.ERROR">
+      <cds-icon shape="error-standard" status="danger" size="md"></cds-icon>
+    </div>
+    <div *ngIf="type===ToastType.WARNING">
+      <cds-icon shape="warning-standard" status="warning" size="md"></cds-icon>
+    </div>
+    <div *ngIf="type===ToastType.INFO">
+      <cds-icon shape="info-standard" status="info" size="md"></cds-icon>
+    </div>
+  </div>
+  <div class="clr-toast-content">
+    <div class="title">{{ title }}</div>
+    <div class="message">{{ message }}</div>
+  </div>
+  <div class="clr-toast-close">
+    <button (click)="dismiss()">
+      <cds-icon shape="window-close" status="neutral" size="md"></cds-icon>
+    </button>
+  </div>
+</div>

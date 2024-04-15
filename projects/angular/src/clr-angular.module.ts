@@ -18,6 +18,7 @@ import { ClrPopoverModule } from './popover/popover.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
 import { ClrTimelineModule } from './timeline/timeline.module';
+import { ClrToastModule } from './toast/toast.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
 import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
@@ -46,6 +47,7 @@ import '@cds/core/icon/register';
     ClrProgressBarModule,
     ClrPopoverModuleNext,
     ClrTimelineModule,
+    ClrToastModule,
   ],
 })
 export class ClarityModule {}
