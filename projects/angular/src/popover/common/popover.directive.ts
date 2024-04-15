@@ -22,6 +22,7 @@ import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { AvailablePopoverPositions } from './popover-positions';
 
 @Directive({
   selector: 'clr-tooltip, clr-signpost',
@@ -158,16 +159,17 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.popoverService.anchorElementRef)
+      .setOrigin(this.popoverService.anchorElementRef)
+      .withPush(true)
+      .withPositions([this.preferredPosition, ...AvailablePopoverPositions]);
+
     const overlay = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
-        positionStrategy: this.overlay
-          .position()
-          .flexibleConnectedTo(this.popoverService.anchorElementRef)
-          .setOrigin(this.popoverService.anchorElementRef)
-          .withScrollableContainers([this.scrollableParent.scrollParent])
-          .withPush(true)
-          .withPositions([this.preferredPosition, ...this.positions]),
+        positionStrategy: positionStrategy,
         scrollStrategy: this.popoverService.scrollToClose
           ? this.overlay.scrollStrategies.noop()
           : this.overlay.scrollStrategies.reposition(),
@@ -175,6 +177,10 @@ export class PopoverDirective implements AfterViewInit {
         hasBackdrop: false,
       })
     );
+
+    // positionStrategy?.positionChanges?.subscribe(d => {
+    //   console.log('🚀 ~ PopoverDirective ~ positionStrategy.positionChanges.subscribe ~ positionChanges:', d);
+    // });
 
     this.subscriptions.push(
       overlay.keydownEvents().subscribe(event => {

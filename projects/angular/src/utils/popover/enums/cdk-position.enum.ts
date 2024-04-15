@@ -18,6 +18,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'top',
     offsetX: -10,
     offsetY: 10,
+    panelClass: 'bottom-left',
   };
 
   static 'bottom-right': ConnectedPosition = {
@@ -27,6 +28,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'top',
     offsetX: 10,
     offsetY: 10,
+    panelClass: 'bottom-right',
   };
 
   static 'top-left': ConnectedPosition = {
@@ -36,6 +38,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'bottom',
     offsetX: -10,
     offsetY: -10,
+    panelClass: 'top-left',
   };
 
   static 'top-right': ConnectedPosition = {
@@ -45,6 +48,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'bottom',
     offsetX: 10,
     offsetY: -10,
+    panelClass: 'top-right',
   };
 
   static 'right-top': ConnectedPosition = {
@@ -54,6 +58,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'bottom',
     offsetX: 10,
     offsetY: -10,
+    panelClass: 'right-top',
   };
 
   static 'right-bottom': ConnectedPosition = {
@@ -63,6 +68,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'top',
     offsetX: 10,
     offsetY: 10,
+    panelClass: 'right-bottom',
   };
 
   static 'left-top': ConnectedPosition = {
@@ -72,6 +78,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'bottom',
     offsetX: -10,
     offsetY: -10,
+    panelClass: 'left-top',
   };
 
   static 'left-bottom': ConnectedPosition = {
@@ -81,6 +88,7 @@ export class ClrCDKPopoverPositions {
     overlayY: 'top',
     offsetX: -10,
     offsetY: 10,
+    panelClass: 'left-bottom',
   };
 
   static 'left': ConnectedPosition = {
@@ -89,6 +97,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'center',
     offsetX: -25,
+    panelClass: 'left',
   };
 
   static 'right': ConnectedPosition = {
@@ -97,6 +106,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'center',
     offsetX: 25,
+    panelClass: 'right',
   };
 
   static 'top': ConnectedPosition = {
@@ -104,6 +114,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'top',
+    panelClass: 'top',
   };
 
   static 'bottom': ConnectedPosition = {
@@ -111,6 +122,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'top',
+    panelClass: 'bottom',
   };
 
   static 'middle-right': ConnectedPosition = {
@@ -119,6 +131,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'center',
     offsetX: 25,
+    panelClass: 'middle-right',
   };
 
   static 'right-middle': ConnectedPosition = {
@@ -127,6 +140,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'center',
     offsetX: 0,
+    panelClass: 'right-middle',
   };
 
   static 'top-middle': ConnectedPosition = {
@@ -135,6 +149,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'center',
     overlayY: 'bottom',
     offsetY: -35,
+    panelClass: 'top-middle',
   };
 
   static 'bottom-middle': ConnectedPosition = {
@@ -142,6 +157,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'top',
+    panelClass: 'bottom-middle',
   };
 
   static 'middle-bottom': ConnectedPosition = {
@@ -149,6 +165,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'center',
     overlayY: 'bottom',
+    panelClass: 'middle-bottom',
   };
 
   static 'left-middle': ConnectedPosition = {
@@ -157,6 +174,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'center',
     offsetX: -25,
+    panelClass: 'left-middle',
   };
 
   static 'middle-left': ConnectedPosition = {
@@ -165,5 +183,6 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'center',
     offsetX: -25,
+    panelClass: 'middle-left',
   };
 }
