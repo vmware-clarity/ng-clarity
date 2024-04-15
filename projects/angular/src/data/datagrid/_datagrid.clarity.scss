@@ -1086,6 +1086,10 @@
         overflow: hidden;
       }
 
+      & > .cdk-virtual-scrollable div.datagrid-table {
+        overflow: unset;
+      }
+
       clr-dg-cell {
         /**
          * Since we use inline width of each column in order to maintain manual resizing,

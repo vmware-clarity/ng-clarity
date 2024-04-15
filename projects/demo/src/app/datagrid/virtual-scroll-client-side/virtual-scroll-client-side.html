@@ -63,7 +63,7 @@
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
-<clr-datagrid *ngIf="{ users: users | async }; let data" style="height: 30rem" class="datagrid-compact">
+<clr-datagrid *ngIf="{ users: users | async }; let data" style="height: 30rem">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>

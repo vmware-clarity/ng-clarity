@@ -31,6 +31,7 @@ import {
   NgZone,
   OnDestroy,
   Output,
+  SkipSelf,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -57,8 +58,8 @@ type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize
 
 const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
   itemSize: 32,
-  minBufferPx: 100,
-  maxBufferPx: 200,
+  minBufferPx: 200,
+  maxBufferPx: 400,
 };
 
 @Directive({
@@ -90,7 +91,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     private iterableDiffers: IterableDiffers,
-    private items: Items<T>,
+    @SkipSelf() private items: Items<T>,
     private readonly ngZone: NgZone,
     private readonly templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
     private readonly viewContainerRef: ViewContainerRef,
@@ -101,9 +102,17 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     private readonly injector: EnvironmentInjector
   ) {
     this.items.smartenUp();
-    this.datagrid.selectAllOn = false;
+    this.datagrid.hasVirtualScroller = true;
 
     this.datagridElementRef = this.datagrid.el;
+
+    if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
+      this._cdkFixedSizeVirtualScrollInputs.itemSize = 24;
+      this._cdkFixedSizeVirtualScrollInputs.minBufferPx = 200;
+      this._cdkFixedSizeVirtualScrollInputs.maxBufferPx = 400;
+      this.keyboardScrollPageSize = 24;
+    }
+
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
