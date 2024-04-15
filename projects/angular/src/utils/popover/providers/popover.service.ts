@@ -20,6 +20,8 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
   openButtonRef: ElementRef;
+  position: string;
+  panelClass: string;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;

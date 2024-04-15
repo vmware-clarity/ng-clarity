@@ -7,6 +7,7 @@
 import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
@@ -40,10 +41,12 @@ export class ClrTooltipContent implements OnInit {
     parentHost: ElementRef,
     private tooltipIdService: TooltipIdService,
     public elementRef: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private popoverService: ClrPopoverService
   ) {
     // super(injector, parentHost);
-
+    this.popoverService.contentRef = elementRef;
+    this.popoverService.panelClass = 'clr-tooltip-container';
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
     }
@@ -73,6 +76,7 @@ export class ClrTooltipContent implements OnInit {
 
     this._position = newPosition;
     this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+    this.popoverService.position = this._position;
   }
 
   @Input('clrSize')

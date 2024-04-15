@@ -4,10 +4,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Directive, ElementRef, HostListener, NgZone } from '@angular/core';
+import { delay, fromEvent, Subscription } from 'rxjs';
 
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
+import { TooltipMouseService } from './providers/tooltip-mouse.service';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -18,16 +20,65 @@ import { TooltipIdService } from './providers/tooltip-id.service';
     '[attr.role]': '"button"',
   },
 })
-export class ClrTooltipTrigger {
+export class ClrTooltipTrigger implements AfterViewInit {
   ariaDescribedBy: string;
   private subs: Subscription[] = [];
+  private subscriptions = new Subscription();
 
-  constructor(private tooltipIdService: TooltipIdService, public elementRef: ElementRef) {
+  constructor(
+    private popoverService: ClrPopoverService,
+    private tooltipIdService: TooltipIdService,
+    private tooltipMouseService: TooltipMouseService,
+    private zone: NgZone,
+    private element: ElementRef
+  ) {
     // The aria-described by comes from the id of content. It
     this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
+    popoverService.anchorElementRef = element;
   }
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  ngAfterViewInit() {
+    this.listenToMouseEvents();
+  }
+
+  listenToMouseEvents() {
+    this.zone.runOutsideAngular(() => {
+      this.subs.push(
+        fromEvent(this.element.nativeElement, 'mouseenter')
+          .pipe(delay(100))
+          .subscribe(() => {
+            this.popoverService.open = true;
+          }),
+        fromEvent(this.element.nativeElement, 'mouseleave')
+          .pipe(delay(100))
+          .subscribe(() => {
+            this.popoverService.open = false;
+          })
+      );
+    });
+  }
+
+  // @HostListener('focus')
+  // showTooltip(): void {
+  //   this.popoverService.open = true;
+  // }
+
+  // @HostListener('blur')
+  // hideTooltip(): void {
+  //   this.popoverService.open = false;
+  // }
+
+  @HostListener('mouseenter')
+  private onMouseEnter() {
+    this.tooltipMouseService.onMouseEnterTrigger();
+  }
+
+  @HostListener('mouseleave')
+  private onMouseLeave() {
+    this.tooltipMouseService.onMouseLeaveTrigger();
   }
 }

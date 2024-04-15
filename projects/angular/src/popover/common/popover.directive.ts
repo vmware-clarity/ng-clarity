@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import {
   ConnectedPosition,
   Overlay,
@@ -16,20 +17,17 @@ import {
   // ViewportRuler,
 } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { AfterViewInit, ContentChild, Directive, NgZone, Renderer2 } from '@angular/core';
-import { delay, fromEvent, Subscription } from 'rxjs';
+import { AfterViewInit, Directive, Inject, Renderer2 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
-import { ClrTooltipContent, ClrTooltipTrigger } from '../tooltip';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 @Directive({
-  selector: 'clr-tooltip',
+  selector: 'clr-tooltip, clr-signpost',
 })
 export class PopoverDirective implements AfterViewInit {
-  @ContentChild(ClrTooltipContent) tooltipContent: ClrTooltipContent;
-  @ContentChild(ClrTooltipTrigger) tooltipCTrigger: ClrTooltipTrigger;
-
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
   private overlayRef: OverlayRef = null;
   private domPortal: DomPortal;
   private preferredPosition: ConnectedPosition = {
@@ -45,41 +43,21 @@ export class PopoverDirective implements AfterViewInit {
   private renderer: Renderer2;
   private scrollableParent: any;
 
-  constructor(
-    // private scrollDispatcher: ScrollDispatcher,
-    private zone: NgZone,
-    private overlay: Overlay
-  ) {}
+  constructor(private overlay: Overlay, @Inject(ClrPopoverService) private popoverService: ClrPopoverService) {}
 
-  ngAfterViewInit(): void {
-    this.scrollableParent = this.getScrollParent(this.tooltipCTrigger.elementRef.nativeElement);
-    this.listenToMouseEvents();
-    // console.log(this.tooltipCTrigger.elementRef.nativeElement.closest('.content-area').setAttribute("cdk-scrollable",""));
-  }
-
-  listenToMouseEvents() {
-    this.zone.runOutsideAngular(() => {
-      this.subscriptions.push(
-        fromEvent(this.tooltipCTrigger?.elementRef?.nativeElement, 'mouseenter')
-          .pipe(delay(100))
-          .subscribe(() => {
-            this.showOverlay();
-          }),
-        fromEvent(this.tooltipCTrigger?.elementRef?.nativeElement, 'mouseleave')
-          .pipe(delay(100))
-          .subscribe(() => {
-            this.removeOverlay();
-          }),
-        fromEvent(
-          this.scrollableParent?.scrollParent ? this.scrollableParent?.scrollParent : 'body',
-          'scroll'
-        ).subscribe(() => {
-          if (this.overlayRef) {
-            this.overlayRef.updatePosition();
-          }
-        })
-      );
-    });
+  ngAfterViewInit() {
+    if (this.popoverService.open) {
+      this.showOverlay();
+    }
+    this.subscriptions.add(
+      this.popoverService.openChange.subscribe(change => {
+        if (change) {
+          setTimeout(() => this.showOverlay());
+        } else {
+          this.removeOverlay();
+        }
+      })
+    );
   }
 
   //The below method is taken from https://gist.github.com/oscarmarina/3a546cff4d106a49a5be417e238d9558
@@ -110,12 +88,12 @@ export class PopoverDirective implements AfterViewInit {
   };
 
   setDynamicOffsetPosition() {
-    this.anchorWidth = this.tooltipCTrigger.elementRef.nativeElement.offsetWidth;
-    this.anchorHeight = this.tooltipCTrigger.elementRef.nativeElement.offsetHeight;
+    this.anchorWidth = this.popoverService.anchorElementRef.nativeElement.offsetWidth;
+    this.anchorHeight = this.popoverService.anchorElementRef.nativeElement.offsetHeight;
     if (this.preferredPosition.originX === 'end' && this.preferredPosition.originY === 'center') {
-      this.preferredPosition.offsetX = -this.anchorWidth;
+      this.preferredPosition.offsetX = -this.anchorWidth - 10;
     } else if (this.preferredPosition.originX === 'start' && this.preferredPosition.originY === 'center') {
-      this.preferredPosition.offsetX = this.anchorWidth;
+      this.preferredPosition.offsetX = this.anchorWidth + 10;
     } else if (this.preferredPosition.originX === 'start') {
       this.preferredPosition.offsetX = this.anchorWidth / 2;
     } else if (this.preferredPosition.originX === 'end') {
@@ -125,9 +103,10 @@ export class PopoverDirective implements AfterViewInit {
 
   setPosition() {
     //Set default position to "top-right", if position is not available in the map
+
     this.preferredPosition =
-      this.tooltipContent.position in ClrCDKPopoverPositions
-        ? ClrCDKPopoverPositions[this.tooltipContent.position]
+      this.popoverService.position in ClrCDKPopoverPositions
+        ? ClrCDKPopoverPositions[this.popoverService.position]
         : ClrCDKPopoverPositions['top-right'];
     this.setDynamicOffsetPosition();
   }
@@ -139,12 +118,11 @@ export class PopoverDirective implements AfterViewInit {
     }
 
     if (!this.domPortal) {
-      this.domPortal = new DomPortal(this.tooltipContent.elementRef.nativeElement);
+      this.domPortal = new DomPortal(this.popoverService.contentRef);
     }
     this.overlayRef.attach(this.domPortal);
     this.overlayRef.updatePosition();
-    // const scrollStrategy: ScrollStrategy = new RepositionScrollStrategy(this.scrollDispatcher, this.viewportruler, this.zone);
-    // this.overlayRef.updateScrollStrategy(scrollStrategy);
+    setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
 
   removeOverlay(): void {
@@ -154,6 +132,7 @@ export class PopoverDirective implements AfterViewInit {
     if (this.domPortal.isAttached) {
       this.domPortal.detach();
     }
+    this.domPortal = null;
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -162,16 +141,57 @@ export class PopoverDirective implements AfterViewInit {
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.overlay
           .position()
-          .flexibleConnectedTo(this.tooltipCTrigger.elementRef.nativeElement)
-          .setOrigin(this.tooltipCTrigger.elementRef.nativeElement)
-          // .withScrollableContainers([this.scrollableParent.scrollParent])
-          .withPush(false)
+          .flexibleConnectedTo(this.popoverService.anchorElementRef)
+          .setOrigin(this.popoverService.anchorElementRef)
+          .withPush(true)
           .withPositions([this.preferredPosition, ...this.positions]),
-        scrollStrategy: this.overlay.scrollStrategies.reposition(),
-        panelClass: 'clr-tooltip-container',
+        scrollStrategy: this.popoverService.scrollToClose
+          ? this.overlay.scrollStrategies.noop()
+          : this.overlay.scrollStrategies.reposition(),
+        panelClass: this.popoverService.panelClass,
         hasBackdrop: false,
       })
     );
+
+    this.subscriptions.add(
+      overlay.keydownEvents().subscribe(event => {
+        if (event.keyCode === ESCAPE && !hasModifierKey(event)) {
+          event.preventDefault();
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+    this.subscriptions.add(
+      overlay.outsidePointerEvents().subscribe(event => {
+        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+          return;
+        }
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        if (this.popoverService.openEvent) {
+          if (
+            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target
+          ) {
+            return;
+          }
+        }
+
+        if (this.popoverService.outsideClickClose) {
+          this.popoverService.open = false;
+          this.popoverService.setOpenedButtonFocus();
+        }
+      })
+    );
+    this.subscriptions.add(
+      overlay.detachments().subscribe(() => {
+        this.popoverService.open = false;
+        this.popoverService.setOpenedButtonFocus();
+      })
+    );
+
     return overlay;
   }
 }
