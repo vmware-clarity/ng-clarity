@@ -126,7 +126,7 @@
             class="datagrid-detail-caret-button"
             [class.is-open]="detailService.isRowOpen(item)"
             [attr.aria-label]="detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
-            [attr.aria-expanded]="detailService.isOpen"
+            [attr.aria-expanded]="detailService.isRowOpen(item)"
             [attr.aria-controls]="detailService.id"
             aria-haspopup="dialog"
           >

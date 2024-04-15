@@ -23,11 +23,11 @@
   style="height: 30rem"
 >
   <clr-dg-column>
-    <ng-container>User ID</ng-container>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
   </clr-dg-column>
   <clr-dg-column>
     <!--Name-->
-    <ng-container>Name</ng-container>
+    <ng-container *clrDgHideableColumn>Name</ng-container>
   </clr-dg-column>
   <clr-dg-column>
     <ng-container>Creation date</ng-container>
@@ -70,7 +70,7 @@
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
 
-      <clr-dg-row-detail *clrIfExpanded>
+      <clr-dg-row-detail [clrIfExpanded]="user.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
         Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
         arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.

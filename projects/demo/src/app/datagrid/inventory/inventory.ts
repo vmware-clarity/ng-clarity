@@ -45,6 +45,7 @@ export class Inventory {
         creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
         pokemon: this.getItem(i, POKEMONS),
+        expanded: false,
       });
     }
 

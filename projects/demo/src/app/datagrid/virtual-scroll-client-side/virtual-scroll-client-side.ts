@@ -95,6 +95,10 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit {
     this.timeCD = profiler.timeChangeDetection({ record: true });
   }
 
+  setExpanded($event, user: User) {
+    user.expanded = $event;
+  }
+
   colByIndex(index: number, col: Column) {
     return col.index;
   }

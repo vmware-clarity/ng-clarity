@@ -34,7 +34,7 @@
 </div>
 
 <h3>Dynamic cols and rows</h3>
-<clr-datagrid *ngIf="{ rows: rows | async }; let data" style="height: 32rem">
+<clr-datagrid *ngIf="{ rows: rows | async }; let data" style="height: 32rem" class="datagrid-compact">
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
@@ -44,10 +44,10 @@
     customClrVirtualRows
     let-row
     [customClrVirtualRowsOf]="data.rows"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
+    [customClrVirtualRowsItemSize]="24"
+    [customClrVirtualRowsMinBufferPx]="200"
+    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsKeyboardScrollPageSize]="24"
     [customClrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
@@ -63,7 +63,7 @@
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
-<clr-datagrid *ngIf="{ users: users | async }; let data" style="height: 30rem">
+<clr-datagrid *ngIf="{ users: users | async }; let data" style="height: 30rem" class="datagrid-compact">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -75,10 +75,10 @@
     customClrVirtualRows
     let-user
     [customClrVirtualRowsOf]="data.users"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
+    [customClrVirtualRowsItemSize]="24"
+    [customClrVirtualRowsMinBufferPx]="200"
+    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsKeyboardScrollPageSize]="24"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
@@ -95,5 +95,11 @@
     </clr-dg-row>
   </ng-template>
 
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <pre>{{detail | json}}</pre>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
   <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
 </clr-datagrid>

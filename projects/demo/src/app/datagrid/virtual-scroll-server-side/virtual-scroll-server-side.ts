@@ -35,10 +35,15 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
 
   ngOnInit(): void {
     this.users.subscribe(users => {
-      this.selected.push(users[0], users[7]);
+      // this.selected.push(users[0], users[7]);
+      console.log(users[users.length - 1]);
 
       this.cdr.detectChanges();
     });
+  }
+
+  setExpanded($event, user: User) {
+    user.expanded = $event;
   }
 
   loadMore($event: ListRange) {
