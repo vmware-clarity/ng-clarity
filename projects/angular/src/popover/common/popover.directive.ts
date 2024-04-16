@@ -22,7 +22,7 @@ import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
-import { AvailablePopoverPositions } from './popover-positions';
+// import { AvailablePopoverPositions } from './popover-positions';
 
 @Directive({
   selector: 'clr-tooltip, clr-signpost',
@@ -150,7 +150,7 @@ export class PopoverDirective implements AfterViewInit {
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
       .setOrigin(this.popoverService.anchorElementRef)
       .withPush(true)
-      .withPositions([this.preferredPosition, ...AvailablePopoverPositions]);
+      .withPositions([this.preferredPosition, ...this.popoverService.availablePositions]);
 
     const overlay = this.overlay.create(
       new OverlayConfig({

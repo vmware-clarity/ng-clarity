@@ -7,11 +7,20 @@
 import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
 
 const POSITIONS = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'] as const;
+const AvailablePopoverPositions = [
+  ClrCDKPopoverPositions['bottom-left'],
+  ClrCDKPopoverPositions['bottom-right'],
+  ClrCDKPopoverPositions.left,
+  ClrCDKPopoverPositions.right,
+  ClrCDKPopoverPositions['top-left'],
+  ClrCDKPopoverPositions['top-right'],
+];
 type Position = typeof POSITIONS[number];
 
 const SIZES = ['xs', 'sm', 'md', 'lg'];
@@ -46,6 +55,7 @@ export class ClrTooltipContent implements OnInit {
   ) {
     // super(injector, parentHost);
     this.popoverService.contentRef = elementRef;
+    this.popoverService.availablePositions = AvailablePopoverPositions;
     this.popoverService.panelClass = 'clr-tooltip-container';
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
@@ -71,11 +81,10 @@ export class ClrTooltipContent implements OnInit {
     return this._position;
   }
   set position(value: string) {
-    const oldPosition = this._position;
+    // const oldPosition = this._position;
     const newPosition = POSITIONS.includes(value as any) ? (value as Position) : defaultPosition;
-
     this._position = newPosition;
-    this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
+    // this.updateCssClass({ oldClass: `tooltip-${oldPosition}`, newClass: `tooltip-${newPosition}` });
     this.popoverService.position = this._position;
   }
 

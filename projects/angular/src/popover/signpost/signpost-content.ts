@@ -9,18 +9,17 @@ import {
   Component,
   ElementRef,
   Inject,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
   Optional,
   PLATFORM_ID,
-  Renderer2,
   SimpleChanges,
 } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 // import { AbstractPopover } from '../common/abstract-popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -42,6 +41,28 @@ const POSITIONS: string[] = [
   'left-bottom',
   'left-middle',
   'left-top',
+];
+
+export const AvailablePopoverPositions = [
+  ClrCDKPopoverPositions.bottom,
+  ClrCDKPopoverPositions['bottom-left'],
+  ClrCDKPopoverPositions['bottom-middle'],
+  ClrCDKPopoverPositions['bottom-right'],
+  ClrCDKPopoverPositions.left,
+  ClrCDKPopoverPositions['left-bottom'],
+  ClrCDKPopoverPositions['left-middle'],
+  ClrCDKPopoverPositions['left-top'],
+  ClrCDKPopoverPositions['middle-bottom'],
+  ClrCDKPopoverPositions['middle-left'],
+  ClrCDKPopoverPositions['middle-right'],
+  ClrCDKPopoverPositions.right,
+  ClrCDKPopoverPositions['right-bottom'],
+  ClrCDKPopoverPositions['right-middle'],
+  ClrCDKPopoverPositions['right-top'],
+  ClrCDKPopoverPositions.top,
+  ClrCDKPopoverPositions['top-left'],
+  ClrCDKPopoverPositions['top-middle'],
+  ClrCDKPopoverPositions['top-right'],
 ];
 
 @Component({
@@ -74,12 +95,10 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
   private _position: string;
 
   constructor(
-    injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef,
     private element: ElementRef,
-    private renderer: Renderer2,
     public commonStrings: ClrCommonStringsService,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
@@ -99,6 +118,7 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
     this.document = document;
     this.popoverService.contentRef = this.element;
     this.popoverService.panelClass = 'clr-signpost-container';
+    this.popoverService.availablePositions = AvailablePopoverPositions;
   }
 
   /*********
@@ -137,22 +157,6 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
   set position(position: string) {
     this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
     this.popoverService.position = this._position;
-    // Ugh
-    // this.renderer.removeClass(this.element.nativeElement, this.position);
-    // if (position && POSITIONS.indexOf(position) > -1) {
-    //   this._position = position;
-    // } else {
-    //   this._position = 'right-middle';
-    // }
-
-    // Ugh
-    // this.renderer.addClass(this.element.nativeElement, this.position);
-
-    // const setPosition = SIGNPOST_POSITIONS[this.position];
-    // this.anchorPoint = setPosition.anchorPoint;
-    // this.popoverPoint = setPosition.popoverPoint;
-    // this.popoverOptions.offsetY = setPosition.offsetY;
-    // this.popoverOptions.offsetX = setPosition.offsetX;
   }
 
   /**********
@@ -170,13 +174,7 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
     console.log(changes);
   }
 
-  // ngAfterViewInit(){
-  //   console.log("after init");
-  // }
-
   ngOnDestroy() {
-    // super.ngOnDestroy();
-
     if (isPlatformBrowser(this.platformId) && this.element.nativeElement.contains(this.document.activeElement)) {
       this.signpostFocusManager.focusTrigger();
     }
