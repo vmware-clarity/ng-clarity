@@ -12,6 +12,7 @@ export interface Column {
 }
 export interface Row {
   index: number;
+  expanded: boolean;
   cells: any[];
 }
 @Injectable()
@@ -34,6 +35,7 @@ export class DynamicData {
       const newRow: Row = {
         index: i,
         cells: [],
+        expanded: false,
       };
       for (let j = 0; j < columns.length; j++) {
         newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;

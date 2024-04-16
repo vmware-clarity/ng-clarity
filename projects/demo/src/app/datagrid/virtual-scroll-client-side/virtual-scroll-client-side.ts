@@ -31,6 +31,9 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit {
   cols: Column[];
   rows: Observable<Row[]>;
   users: Observable<User[]>;
+
+  selectedRows: Row[] = [];
+  selectedUsers: User[] = [];
   timeCD: ChangeDetectionPerfRecord;
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
@@ -95,7 +98,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit {
     this.timeCD = profiler.timeChangeDetection({ record: true });
   }
 
-  setExpanded($event, user: User) {
+  setExpanded($event: boolean, user: User | Row) {
     user.expanded = $event;
   }
 
