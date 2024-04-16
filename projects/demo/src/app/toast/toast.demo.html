@@ -4,7 +4,10 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<button class="btn btn-primary" (click)="createToast()">New Toast</button>
+<button class="btn btn-primary" (click)="createToast('info')">New Info Toast</button>
+<button class="btn btn-success" (click)="createToast('success')">New Success Toast</button>
+<button class="btn btn-warning" (click)="createToast('warning')">New Warning Toast</button>
+<button class="btn btn-danger" (click)="createToast('error')">New Error Toast</button>
 
 <clr-toast-container [clrPosition]="'top-right'">
   <clr-toast *ngFor="let t of toasts; let i = index;" [clrToastType]="t.type" (clrToastDismiss)="closeToast(i)">

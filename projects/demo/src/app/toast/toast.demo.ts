@@ -14,12 +14,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class ToastDemo {
   toasts: any = [];
 
-  createToast() {
+  createToast(type: string) {
     const message = {
-      type: 'info',
       title: 'Something..!',
       message: 'Something new got created.',
     };
+    message['type'] = type;
     this.toasts.push(message);
   }
 
