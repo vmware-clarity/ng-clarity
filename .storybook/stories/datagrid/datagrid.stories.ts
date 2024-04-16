@@ -126,3 +126,23 @@ export const ManageColumns: StoryObj = {
     hidableColumns: true,
   },
 };
+export const Compact: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+  },
+};
+export const CompactSingleSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    singleSelectable: true,
+  },
+};
+export const CompactMultiSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    multiSelectable: true,
+  },
+};
