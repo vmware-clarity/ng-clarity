@@ -41,9 +41,10 @@ export class Inventory {
       newData.push({
         id: Math.floor(Math.random() * 10001),
         name: this.getItem(i, NAMES),
-        creation: new Date('June 23, 1912'),
+        creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
         pokemon: this.getItem(i, POKEMONS),
+        expanded: false,
       });
     }
 

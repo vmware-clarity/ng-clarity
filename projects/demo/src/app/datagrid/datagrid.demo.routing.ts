@@ -20,7 +20,6 @@ import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
 import { DatagridFilteringDemo } from './filtering/filtering';
 import { DatagridFullDemo } from './full/full';
 import { DatagridHideShowDemo } from './hide-show-columns/hide-show';
-import { DatagridInfinteScrollDemo } from './infinite-scroll/infinite-scroll';
 import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
@@ -37,6 +36,8 @@ import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
+import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 const ROUTES: Routes = [
   {
@@ -61,7 +62,8 @@ const ROUTES: Routes = [
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
       { path: 'placeholder', component: DatagridPlaceholderDemo },
-      { path: 'infinite-scroll', component: DatagridInfinteScrollDemo },
+      { path: 'virtual-scroll-client-side', component: DatagridVirtualScrollClientSideDemo },
+      { path: 'virtual-scroll-server-side', component: DatagridVirtualScrollServerSideDemo },
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'compact', component: DatagridCompactDemo },

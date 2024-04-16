@@ -125,6 +125,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 
   selectAllId: string;
+  hasVirtualScroller: boolean;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -276,7 +277,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           /**
            * Reopen updated row or close it
            */
-          row ? this.detailService.open(row.item, row.detailButton.nativeElement) : this.detailService.close();
+          if (row) {
+            this.detailService.open(row.item, row.detailButton.nativeElement);
+          } else if (!this.hasVirtualScroller) {
+            this.detailService.close();
+          }
         }
       })
     );

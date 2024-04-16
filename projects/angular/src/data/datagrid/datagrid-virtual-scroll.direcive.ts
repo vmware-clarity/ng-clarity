@@ -31,12 +31,14 @@ import {
   NgZone,
   OnDestroy,
   Output,
+  SkipSelf,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { Items } from './providers/items';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 interface CellCoordinates {
@@ -56,12 +58,13 @@ type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize
 
 const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = {
   itemSize: 32,
-  minBufferPx: 100,
-  maxBufferPx: 200,
+  minBufferPx: 200,
+  maxBufferPx: 400,
 };
 
 @Directive({
   selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
+  providers: [Items],
 })
 export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
@@ -76,10 +79,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
-  private setActiveCellSubscription: Subscription | undefined;
-  private dataStreamSubscription: Subscription | undefined;
-  private renderedRangeChangeSubscription: Subscription | undefined;
-  private keydownEventSubscription: Subscription | undefined;
+  private subscriptions: Subscription[] = [];
   private totalSize = 0;
   private activeCellCoordinates: CellCoordinates | undefined;
   private nextActiveCellCoordinates: CellCoordinates | undefined;
@@ -90,7 +90,8 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly iterableDiffers: IterableDiffers,
+    private iterableDiffers: IterableDiffers,
+    @SkipSelf() private items: Items<T>,
     private readonly ngZone: NgZone,
     private readonly templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
     private readonly viewContainerRef: ViewContainerRef,
@@ -100,7 +101,18 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     private readonly datagrid: ClrDatagrid,
     private readonly injector: EnvironmentInjector
   ) {
+    this.items.smartenUp();
+    this.datagrid.hasVirtualScroller = true;
+
     this.datagridElementRef = this.datagrid.el;
+
+    if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
+      this._cdkFixedSizeVirtualScrollInputs.itemSize = 24;
+      this._cdkFixedSizeVirtualScrollInputs.minBufferPx = 200;
+      this._cdkFixedSizeVirtualScrollInputs.maxBufferPx = 400;
+      this.keyboardScrollPageSize = 24;
+    }
+
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
@@ -116,6 +128,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   }
   set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']) {
     this.cdkVirtualForInputs.cdkVirtualForOf = value;
+    this.items.all = value as T[];
     this.updateCdkVirtualForInputs();
   }
 
@@ -200,21 +213,34 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
     this.updateCdkVirtualForInputs();
+
     this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
 
-    this.dataStreamSubscription = this.cdkVirtualFor.dataStream.subscribe(data => {
-      this.totalSize = data.length;
-      this.updateAriaRowCount(data.length);
-    });
+    this.subscriptions.push(
+      this.items.change.subscribe(newItems => {
+        this.cdkVirtualFor.cdkVirtualForOf = newItems;
+      })
+    );
 
-    this.renderedRangeChangeSubscription = this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
-      this.renderedRangeChange.emit(renderedRange);
-      this.restoreOrUpdateActiveCellInNextFrame();
-    });
+    this.subscriptions.push(
+      this.cdkVirtualFor.dataStream.subscribe(data => {
+        this.totalSize = data.length;
+        this.updateAriaRowCount(data.length);
+      })
+    );
 
-    this.keydownEventSubscription = fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
-      this.handlePageUpAndPageDownKeys(event);
-    });
+    this.subscriptions.push(
+      this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
+        this.renderedRangeChange.emit(renderedRange);
+        this.restoreOrUpdateActiveCellInNextFrame();
+      })
+    );
+
+    this.subscriptions.push(
+      fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
+        this.handlePageUpAndPageDownKeys(event);
+      })
+    );
   }
 
   ngDoCheck() {
@@ -225,10 +251,9 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   ngOnDestroy() {
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
-    this.setActiveCellSubscription?.unsubscribe();
-    this.dataStreamSubscription?.unsubscribe();
-    this.renderedRangeChangeSubscription?.unsubscribe();
-    this.keydownEventSubscription?.unsubscribe();
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   private restoreOrUpdateActiveCellInNextFrame() {

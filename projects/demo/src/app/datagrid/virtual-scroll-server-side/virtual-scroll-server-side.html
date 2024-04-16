@@ -4,7 +4,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<h2>Hide-show columns demo with custom buttons</h2>
+<h2>Virtual scroll server side</h2>
 <div>
   <clr-input-container>
     <label>Rows</label>
@@ -18,23 +18,25 @@
   *ngIf="{ users: users | async }; let data"
   [clrDgLoading]="loading"
   [clrLoadingMoreItems]="loadingMoreItems"
+  [(clrDgSelected)]="selected"
+  class="datagrid-compact"
   style="height: 30rem"
 >
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>User ID</ng-container>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
   </clr-dg-column>
   <clr-dg-column>
     <!--Name-->
     <ng-container *clrDgHideableColumn>Name</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Creation date</ng-container>
+    <ng-container>Creation date</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Pokemon</ng-container>
+    <ng-container>Pokemon</ng-container>
   </clr-dg-column>
   <clr-dg-column>
-    <ng-container *clrDgHideableColumn>Favorite color</ng-container>
+    <ng-container>Favorite color</ng-container>
   </clr-dg-column>
 
   <ng-template
@@ -42,13 +44,24 @@
     customClrVirtualRows
     let-user
     [customClrVirtualRowsOf]="data.users"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
+    [customClrVirtualRowsItemSize]="24"
+    [customClrVirtualRowsMinBufferPx]="200"
+    [customClrVirtualRowsMaxBufferPx]="400"
+    [customClrVirtualRowsKeyboardScrollPageSize]="24"
+    [customClrVirtualRowsTemplateCacheSize]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
+      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
+        <button class="action-item">
+          <cds-icon shape="note"></cds-icon>
+          Edit
+        </button>
+        <button class="action-item">
+          <cds-icon shape="trash"></cds-icon>
+          Delete
+        </button>
+      </clr-dg-action-overflow>
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -56,8 +69,17 @@
       <clr-dg-cell>
         <span class="color-square" [style.backgroundColor]="user.color"></span>
       </clr-dg-cell>
+
+      <clr-dg-row-detail [clrIfExpanded]="user.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+        Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+        arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
+      </clr-dg-row-detail>
     </clr-dg-row>
   </ng-template>
 
   <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
 </clr-datagrid>
+
+<br />
+{{selected|json}}

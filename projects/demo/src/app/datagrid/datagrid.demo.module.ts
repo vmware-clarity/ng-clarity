@@ -25,7 +25,6 @@ import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
 import { DatagridFilteringDemo } from './filtering/filtering';
 import { DatagridFullDemo } from './full/full';
 import { DatagridHideShowDemo } from './hide-show-columns/hide-show';
-import { DatagridInfinteScrollDemo } from './infinite-scroll/infinite-scroll';
 import { DatagridKitchenSinkDemo } from './kitchen-sink/kitchen-sink';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
@@ -43,6 +42,8 @@ import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { ColorFilter } from './utils/color-filter';
+import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
@@ -54,7 +55,6 @@ import { ColorFilter } from './utils/color-filter';
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
-    DatagridInfinteScrollDemo,
     DatagridHideShowDemo,
     DatagridPaginationDemo,
     DatagridPaginationScrollingDemo,
@@ -74,6 +74,8 @@ import { ColorFilter } from './utils/color-filter';
     DatagridExpandableRowsDemo,
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
+    DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollServerSideDemo,
     DatagridKitchenSinkDemo,
     DatagridConditionalSelectionsDemo,
     ColorFilter,
@@ -88,7 +90,6 @@ import { ColorFilter } from './utils/color-filter';
     DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
-    DatagridInfinteScrollDemo,
     DatagridPaginationDemo,
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
@@ -106,6 +107,8 @@ import { ColorFilter } from './utils/color-filter';
     DatagridExpandableRowsDemo,
     DatagridTestCasesDemo,
     DatagridTestCasesAsyncDemo,
+    DatagridVirtualScrollClientSideDemo,
+    DatagridVirtualScrollServerSideDemo,
     DatagridDetailDemo,
     DatagridKitchenSinkDemo,
   ],

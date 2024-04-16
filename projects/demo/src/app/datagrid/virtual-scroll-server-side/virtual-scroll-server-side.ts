@@ -12,30 +12,37 @@ import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 
 @Component({
-  selector: 'clr-datagridinfinite-scroll-demo',
+  selector: 'clr-datagrid-virtual-scroll-server-side-demo',
   providers: [Inventory],
-  templateUrl: './infinite-scroll.html',
+  templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridInfinteScrollDemo implements OnInit {
+export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
   currentPageSize = 100;
   _inventory = null;
   loading: boolean;
   loadingMoreItems = false;
+  selected: User[] = [];
 
   constructor(inventory: Inventory, private cdr: ChangeDetectorRef) {
     this._inventory = inventory;
     this._inventory.size = this.currentPageSize * 3;
     this._inventory.lazyLoadUsers(this._inventory.size);
-
     this.users = this._inventory.getAllUsersSubject();
   }
 
   ngOnInit(): void {
-    this.users.subscribe(() => {
+    this.users.subscribe(users => {
+      // this.selected.push(users[0], users[7]);
+      console.log(users[users.length - 1]);
+
       this.cdr.detectChanges();
     });
+  }
+
+  setExpanded($event, user: User) {
+    user.expanded = $event;
   }
 
   loadMore($event: ListRange) {
@@ -54,7 +61,12 @@ export class DatagridInfinteScrollDemo implements OnInit {
   }
 
   renderRangeChange($event: ListRange) {
+    console.log($event);
     this.loadMore($event);
+  }
+
+  clrDgActionOverflowOpenChangeFn($event: boolean) {
+    console.log('clrDgActionOverflowOpenChange event', $event);
   }
 
   refreshPage() {
