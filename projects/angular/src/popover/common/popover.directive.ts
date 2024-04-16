@@ -67,6 +67,15 @@ export class PopoverDirective implements AfterViewInit {
     this.listenToMouseEvents();
   }
 
+  ngOnDestroy() {
+    this.removeOverlay();
+    this.subscriptions.forEach(s => s.unsubscribe());
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
+  }
+
   listenToMouseEvents() {
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
@@ -141,6 +150,7 @@ export class PopoverDirective implements AfterViewInit {
     }
     this.domPortal = null;
     this.popoverService.popoverVisibleEmit(false);
+    this.popoverService.container.clear();
   }
 
   private _createOverlayRef(): OverlayRef {
@@ -180,18 +190,23 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
-          return;
-        }
+
+        // if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+        //   return;
+        // }
         // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        if (this.popoverService.openEvent) {
-          if (
-            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-            this.popoverService.openEvent.target === event.target
-          ) {
-            return;
-          }
+        // if (this.popoverService.openEvent) {
+        //   if (
+        //     (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+        //     (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+        //     this.popoverService.openEvent.target === event.target
+        //   ) {
+        //     return;
+        //   }
+        // }
+
+        if (this.popoverService.anchorElementRef.nativeElement.contains(event.target)) {
+          event.stopImmediatePropagation();
         }
 
         if (this.popoverService.outsideClickClose) {
