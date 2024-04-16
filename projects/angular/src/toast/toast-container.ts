@@ -9,11 +9,11 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'clr-toast-container',
   template: `
-    <div class="clr-toast-container" [ngClass]="position">
+    <div class="clr-toast-container" [ngClass]="clrPosition">
       <ng-content></ng-content>
     </div>
   `,
 })
 export class ClrToastContainerComponent {
-  @Input() position = 'bottom-right';
+  @Input() clrPosition = 'bottom-right';
 }

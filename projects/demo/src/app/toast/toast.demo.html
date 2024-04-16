@@ -6,13 +6,9 @@
 
 <button class="btn btn-primary" (click)="createToast()">New Toast</button>
 
-<clr-toast-container [position]="'top-right'">
-  <clr-toast
-    *ngFor="let t of toasts; let i = index"
-    [type]="t.type"
-    [title]="t.title"
-    [message]="t.message"
-    (whenDismiss)="closeToast(i)"
-  >
+<clr-toast-container [clrPosition]="'top-right'">
+  <clr-toast *ngFor="let t of toasts; let i = index;" [clrToastType]="t.type" (clrToastDismiss)="closeToast(i)">
+    <div class="clr-toast-title">{{ t.title }}</div>
+    <div class="clr-toast-message">{{ t.message }}</div>
   </clr-toast>
 </clr-toast-container>

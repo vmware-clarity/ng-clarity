@@ -16,7 +16,7 @@ export class ToastDemo {
 
   createToast() {
     const message = {
-      type: 'error',
+      type: 'info',
       title: 'Something..!',
       message: 'Something new got created.',
     };

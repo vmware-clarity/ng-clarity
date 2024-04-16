@@ -47,18 +47,18 @@
   &-content {
     flex: 1;
     padding: 0 0.5rem;
-    .title {
-      font-size: 0.666667rem;
-      line-height: 1rem;
-      color: #e9ecef;
-      font-family: inherit;
-    }
-    .message {
-      font-size: 0.583333rem;
-      line-height: 1rem;
-      color: #adbbc4;
-      font-family: inherit;
-    }
+  }
+  &-title {
+    font-size: 0.666667rem;
+    line-height: 1rem;
+    color: #e9ecef;
+    font-family: inherit;
+  }
+  &-message {
+    font-size: 0.583333rem;
+    line-height: 1rem;
+    color: #adbbc4;
+    font-family: inherit;
   }
   &-close {
     display: flex;

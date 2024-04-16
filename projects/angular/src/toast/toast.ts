@@ -22,14 +22,12 @@ export enum ToastType {
 export class ClrToastComponent implements OnInit, OnDestroy {
   readonly ToastType = ToastType;
 
-  @Input() type: string = ToastType.INFO;
-  @Input() title: string;
-  @Input() message: string;
-  @Input() autoDismiss = true;
-  @Input() toastDuration = 10; // In Seconds
+  @Input() clrToastType: string = ToastType.INFO;
+  @Input() clrToastAutoDismiss = true;
+  @Input() clrToastDuration = 10; // In Seconds
 
   // Tells when node action menu opened
-  @Output() whenDismiss = new EventEmitter();
+  @Output() clrToastDismiss = new EventEmitter();
 
   constructor(private ngZone: NgZone) {}
 
@@ -46,27 +44,27 @@ export class ClrToastComponent implements OnInit, OnDestroy {
    * @param over mouse over rout
    */
   mouseOver(over: boolean) {
-    this.autoDismiss = over;
+    this.clrToastAutoDismiss = over;
   }
 
   /**
    * @method dismiss
    */
   dismiss() {
-    this.whenDismiss.emit(false);
+    this.clrToastDismiss.emit(false);
   }
 
   /**
    * @method runTimer
    */
   private runTimer() {
-    if (this.toastDuration > 0) {
+    if (this.clrToastDuration > 0) {
       this.ngZone.runOutsideAngular(() => {
-        timer(this.toastDuration * 1000)
+        timer(this.clrToastDuration * 1000)
           .pipe(take(1))
           .subscribe(() => {
             this.ngZone.run(() => {
-              if (!this.autoDismiss) {
+              if (!this.clrToastAutoDismiss) {
                 this.runTimer();
                 return;
               }
