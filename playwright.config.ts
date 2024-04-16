@@ -26,7 +26,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: true,
   retries: 2,
-  workers: 8,
+  workers: 3,
   reporter: 'html',
   projects: [
     {
