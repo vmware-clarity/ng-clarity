@@ -150,7 +150,6 @@ export class PopoverDirective implements AfterViewInit {
     }
     this.domPortal = null;
     this.popoverService.popoverVisibleEmit(false);
-    this.popoverService.container.clear();
   }
 
   private _createOverlayRef(): OverlayRef {
