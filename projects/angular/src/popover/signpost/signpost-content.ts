@@ -135,16 +135,18 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
     return this._position || 'right-middle';
   }
   set position(position: string) {
-    this.popoverService.position = position;
+    this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
+    this.popoverService.position = this._position;
     // Ugh
-    this.renderer.removeClass(this.element.nativeElement, this.position);
-    if (position && POSITIONS.indexOf(position) > -1) {
-      this._position = position;
-    } else {
-      this._position = 'right-middle';
-    }
+    // this.renderer.removeClass(this.element.nativeElement, this.position);
+    // if (position && POSITIONS.indexOf(position) > -1) {
+    //   this._position = position;
+    // } else {
+    //   this._position = 'right-middle';
+    // }
+
     // Ugh
-    this.renderer.addClass(this.element.nativeElement, this.position);
+    // this.renderer.addClass(this.element.nativeElement, this.position);
 
     // const setPosition = SIGNPOST_POSITIONS[this.position];
     // this.anchorPoint = setPosition.anchorPoint;
@@ -161,6 +163,7 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
    */
   close() {
     this.popoverService.open = false;
+    this.popoverService.setOpenedButtonFocus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

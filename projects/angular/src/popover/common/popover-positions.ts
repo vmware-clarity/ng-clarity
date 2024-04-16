@@ -25,7 +25,6 @@ export const AvailablePopoverPositions = [
   ClrCDKPopoverPositions['bottom-middle'],
   ClrCDKPopoverPositions['bottom-right'],
   ClrCDKPopoverPositions.left,
-  ClrCDKPopoverPositions.left,
   ClrCDKPopoverPositions['left-bottom'],
   ClrCDKPopoverPositions['left-middle'],
   ClrCDKPopoverPositions['left-top'],

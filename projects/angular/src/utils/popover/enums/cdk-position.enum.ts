@@ -11,101 +11,143 @@ export interface ClrCDKPopoverPositions {
 }
 
 export class ClrCDKPopoverPositions {
-  static 'bottom-left': ConnectedPosition = {
-    originX: 'end',
-    originY: 'bottom',
-    overlayX: 'end',
-    overlayY: 'top',
-    offsetX: -10,
-    offsetY: 10,
-    panelClass: 'bottom-left',
-  };
-
-  static 'bottom-right': ConnectedPosition = {
-    originX: 'start',
-    originY: 'bottom',
-    overlayX: 'start',
-    overlayY: 'top',
-    offsetX: 10,
-    offsetY: 10,
-    panelClass: 'bottom-right',
-  };
-
   static 'top-left': ConnectedPosition = {
-    originX: 'end',
+    originX: 'center',
     originY: 'top',
     overlayX: 'end',
     overlayY: 'bottom',
-    offsetX: -10,
-    offsetY: -10,
     panelClass: 'top-left',
+    offsetY: -16,
+    offsetX: 0,
+  };
+
+  static 'top-middle': ConnectedPosition = {
+    originX: 'center',
+    originY: 'top',
+    overlayX: 'center',
+    overlayY: 'bottom',
+    offsetY: -16,
+    offsetX: 0,
+    panelClass: 'top-middle',
   };
 
   static 'top-right': ConnectedPosition = {
-    originX: 'start',
+    originX: 'center',
     originY: 'top',
     overlayX: 'start',
     overlayY: 'bottom',
-    offsetX: 10,
-    offsetY: -10,
+    offsetY: -16,
+    offsetX: 0,
     panelClass: 'top-right',
   };
 
   static 'right-top': ConnectedPosition = {
-    originX: 'start',
-    originY: 'top',
+    originX: 'end',
+    originY: 'center',
     overlayX: 'start',
     overlayY: 'bottom',
-    offsetX: 10,
-    offsetY: -10,
+    offsetY: 0,
+    offsetX: 16,
     panelClass: 'right-top',
   };
 
+  static 'right-middle': ConnectedPosition = {
+    originX: 'end',
+    originY: 'center',
+    overlayX: 'start',
+    overlayY: 'center',
+    offsetY: 0,
+    offsetX: 16,
+    panelClass: 'right-middle',
+  };
+
   static 'right-bottom': ConnectedPosition = {
-    originX: 'start',
-    originY: 'top',
+    originX: 'end',
+    originY: 'center',
     overlayX: 'start',
     overlayY: 'top',
-    offsetX: 10,
-    offsetY: 10,
+    offsetY: 0,
+    offsetX: 16,
     panelClass: 'right-bottom',
   };
 
-  static 'left-top': ConnectedPosition = {
-    originX: 'end',
-    originY: 'top',
+  static 'bottom-right': ConnectedPosition = {
+    originX: 'center',
+    originY: 'bottom',
+    overlayX: 'start',
+    overlayY: 'top',
+    offsetY: 16,
+    offsetX: 0,
+    panelClass: 'bottom-right',
+  };
+
+  static 'bottom-middle': ConnectedPosition = {
+    originX: 'center',
+    originY: 'bottom',
+    overlayX: 'center',
+    overlayY: 'top',
+    offsetY: 16,
+    offsetX: 0,
+    panelClass: 'bottom-middle',
+  };
+
+  static 'bottom-left': ConnectedPosition = {
+    originX: 'center',
+    originY: 'bottom',
     overlayX: 'end',
-    overlayY: 'bottom',
-    offsetX: -10,
-    offsetY: -10,
-    panelClass: 'left-top',
+    overlayY: 'top',
+    offsetY: 16,
+    offsetX: 0,
+    panelClass: 'bottom-left',
   };
 
   static 'left-bottom': ConnectedPosition = {
-    originX: 'end',
-    originY: 'top',
+    originX: 'start',
+    originY: 'center',
     overlayX: 'end',
     overlayY: 'top',
-    offsetX: -10,
-    offsetY: 10,
+    offsetY: 0,
+    offsetX: -16,
     panelClass: 'left-bottom',
   };
 
-  static 'left': ConnectedPosition = {
-    originX: 'end',
+  static 'left-middle': ConnectedPosition = {
+    originX: 'start',
     originY: 'center',
     overlayX: 'end',
     overlayY: 'center',
-    offsetX: -25,
+    offsetY: 0,
+    offsetX: -16,
+    panelClass: 'left-middle',
+  };
+
+  static 'left-top': ConnectedPosition = {
+    originX: 'start',
+    originY: 'center',
+    overlayX: 'end',
+    overlayY: 'bottom',
+    offsetY: 0,
+    offsetX: -16,
+    panelClass: 'left-top',
+  };
+
+  static 'left': ConnectedPosition = {
+    originX: 'start',
+    originY: 'center',
+    overlayX: 'end',
+    overlayY: 'center',
+    offsetY: 0,
+    offsetX: -16,
     panelClass: 'left',
   };
 
   static 'right': ConnectedPosition = {
-    originX: 'start',
+    originX: 'end',
     originY: 'center',
     overlayX: 'start',
     overlayY: 'center',
-    offsetX: 25,
+    offsetY: 0,
+    offsetX: 16,
     panelClass: 'right',
   };
 
@@ -114,50 +156,29 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'top',
+    offsetY: -16,
+    offsetX: 0,
     panelClass: 'top',
   };
 
   static 'bottom': ConnectedPosition = {
     originX: 'center',
-    originY: 'top',
+    originY: 'bottom',
     overlayX: 'center',
     overlayY: 'top',
+    offsetY: 16,
+    offsetX: 0,
     panelClass: 'bottom',
   };
 
   static 'middle-right': ConnectedPosition = {
-    originX: 'start',
+    originX: 'end',
     originY: 'center',
     overlayX: 'start',
     overlayY: 'center',
-    offsetX: 25,
+    offsetY: 0,
+    offsetX: -16,
     panelClass: 'middle-right',
-  };
-
-  static 'right-middle': ConnectedPosition = {
-    originX: 'start',
-    originY: 'center',
-    overlayX: 'start',
-    overlayY: 'center',
-    offsetX: 0,
-    panelClass: 'right-middle',
-  };
-
-  static 'top-middle': ConnectedPosition = {
-    originX: 'center',
-    originY: 'bottom',
-    overlayX: 'center',
-    overlayY: 'bottom',
-    offsetY: -35,
-    panelClass: 'top-middle',
-  };
-
-  static 'bottom-middle': ConnectedPosition = {
-    originX: 'center',
-    originY: 'top',
-    overlayX: 'center',
-    overlayY: 'top',
-    panelClass: 'bottom-middle',
   };
 
   static 'middle-bottom': ConnectedPosition = {
@@ -165,24 +186,18 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'center',
     overlayY: 'bottom',
+    offsetY: 16,
+    offsetX: 0,
     panelClass: 'middle-bottom',
   };
 
-  static 'left-middle': ConnectedPosition = {
-    originX: 'end',
-    originY: 'center',
-    overlayX: 'end',
-    overlayY: 'center',
-    offsetX: -25,
-    panelClass: 'left-middle',
-  };
-
   static 'middle-left': ConnectedPosition = {
-    originX: 'end',
-    originY: 'center',
+    originX: 'center',
+    originY: 'bottom',
     overlayX: 'end',
     overlayY: 'center',
-    offsetX: -25,
+    offsetY: 16,
+    offsetX: 0,
     panelClass: 'middle-left',
   };
 }

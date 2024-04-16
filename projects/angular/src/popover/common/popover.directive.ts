@@ -109,32 +109,17 @@ export class PopoverDirective implements AfterViewInit {
     return this.getScrollParent(el.parentNode, axis) || document.body;
   };
 
-  setDynamicOffsetPosition() {
-    this.anchorWidth = this.popoverService.anchorElementRef.nativeElement.offsetWidth;
-    this.anchorHeight = this.popoverService.anchorElementRef.nativeElement.offsetHeight;
-    if (this.preferredPosition.originX === 'end' && this.preferredPosition.originY === 'center') {
-      this.preferredPosition.offsetX = -this.anchorWidth - 10;
-    } else if (this.preferredPosition.originX === 'start' && this.preferredPosition.originY === 'center') {
-      this.preferredPosition.offsetX = this.anchorWidth + 10;
-    } else if (this.preferredPosition.originX === 'start') {
-      this.preferredPosition.offsetX = this.anchorWidth / 2;
-    } else if (this.preferredPosition.originX === 'end') {
-      this.preferredPosition.offsetX = -this.anchorWidth / 2;
-    }
-  }
-
   setPosition() {
     //Set default position to "top-right", if position is not available in the map
-
     this.preferredPosition =
       this.popoverService.position in ClrCDKPopoverPositions
         ? ClrCDKPopoverPositions[this.popoverService.position]
         : ClrCDKPopoverPositions['top-right'];
-    this.setDynamicOffsetPosition();
   }
 
   showOverlay() {
     this.setPosition();
+
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
     }
@@ -159,6 +144,7 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
+    console.log(this.preferredPosition);
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
