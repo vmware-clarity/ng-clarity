@@ -24,6 +24,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
+import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
@@ -1125,7 +1126,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1145,6 +1146,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     commonStrings: ClrCommonStringsService;
     dataChanged(): void;
     // (undocumented)
+    datagrid: ElementRef;
+    // (undocumented)
     datagridTable: ElementRef;
     // Warning: (ae-forgotten-export) The symbol "DetailService" needs to be exported by the entry point index.d.ts
     //
@@ -1153,11 +1156,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     _displayedRows: ViewContainerRef;
     // (undocumented)
-    el: ElementRef;
+    el: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    // (undocumented)
+    hasVirtualScroller: boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -5168,8 +5173,8 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 }
 
 // @public (undocumented)
-export class ÇustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, ngZone: NgZone, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid);
+export class ÇustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -5198,17 +5203,17 @@ export class ÇustomClrVirtualRowsDirective<T> implements OnInit, DoCheck, OnDes
     get minBufferPx(): CdkFixedSizeVirtualScrollInputs['minBufferPx'];
     set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
     // (undocumented)
     renderedRangeChange: EventEmitter<ListRange>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇustomClrVirtualRowsDirective<any>, "[customClrVirtualRows][customClrVirtualRowsOf]", never, { "keyboardScrollPageSize": "customClrVirtualRowsKeyboardScrollPageSize"; "cdkVirtualForOf": "customClrVirtualRowsOf"; "cdkVirtualForTrackBy": "customClrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "customClrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "customClrVirtualRowsTemplateCacheSize"; "itemSize": "customClrVirtualRowsItemSize"; "minBufferPx": "customClrVirtualRowsMinBufferPx"; "maxBufferPx": "customClrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇustomClrVirtualRowsDirective<any>, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ÇustomClrVirtualRowsDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null]>;
 }
 
 // Warnings were encountered during analysis:
