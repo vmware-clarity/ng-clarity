@@ -5,7 +5,7 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
@@ -22,15 +22,34 @@ export default {
     // inputs
     clrLazy: { control: { disable: true } },
   },
+  args: {
+    // story helpers
+    asLink: false,
+    hasIcon: false,
+  },
 };
 
-const TreeViewTemplate: Story = args => ({
+const TreeViewTemplate: StoryFn = args => ({
   template: `
-    <clr-tree>${getFileTreeNodeMarkup(filesRoot)}</clr-tree>
+    <clr-tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
   `,
   props: args,
 });
 
 export const TreeView: StoryObj = {
   render: TreeViewTemplate,
+};
+
+export const TreeViewAsLink: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    asLink: true,
+  },
+};
+
+export const TreeViewHasIcon: StoryObj = {
+  render: TreeViewTemplate,
+  args: {
+    hasIcon: true,
+  },
 };

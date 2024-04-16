@@ -6,7 +6,7 @@
 
 import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -20,14 +20,8 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDetailExpandableAriaLabel: { defaultValue: commonStringsDefault.detailExpandableAriaLabel },
-    clrDgLoading: { defaultValue: false },
-    clrDgPreserveSelection: { defaultValue: false },
-    clrDgRowSelection: { defaultValue: false },
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleActionableAriaLabel: { defaultValue: commonStringsDefault.singleActionableAriaLabel },
     clrDgSingleSelected: { control: { disable: true } },
-    clrDgSingleSelectionAriaLabel: { defaultValue: commonStringsDefault.singleSelectionAriaLabel },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -39,6 +33,13 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDetailExpandableAriaLabel: commonStringsDefault.detailExpandableAriaLabel,
+    clrDgLoading: false,
+    clrDgPreserveSelection: false,
+    clrDgRowSelection: false,
+    clrDgSingleActionableAriaLabel: commonStringsDefault.singleActionableAriaLabel,
+    clrDgSingleSelectionAriaLabel: commonStringsDefault.singleSelectionAriaLabel,
     // outputs
     clrDgRefresh: action('clrDgRefresh'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
@@ -54,7 +55,7 @@ export default {
   },
 };
 
-const DatagridTemplate: Story = args => ({
+const DatagridTemplate: StoryFn = args => ({
   template: `
     <style>
       .electronegativity-container {

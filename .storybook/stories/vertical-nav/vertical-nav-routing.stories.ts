@@ -8,7 +8,7 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -77,10 +77,6 @@ export default {
   ],
   component: ClrVerticalNav,
   argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
-    clrVerticalNavCollapsible: { defaultValue: true, control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     clrVerticalNavCollapsedChange: { control: { disable: true } },
@@ -93,6 +89,10 @@ export default {
     VERTICAL_NAV_STATES: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavGroupExpanded: false,
+    clrVerticalNavCollapsible: true,
+    clrVerticalNavCollapsed: false,
     // outputs
     clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
     // story helpers
@@ -110,7 +110,7 @@ export default {
   },
 };
 
-const NavRoutingTemplate: Story = args => ({
+const NavRoutingTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
@@ -152,7 +152,7 @@ const NavRoutingTemplate: Story = args => ({
   props: args,
 });
 
-const NavRoutingAllTemplate: Story = args => ({
+const NavRoutingAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let state of VERTICAL_NAV_STATES" style="margin-bottom: 30px">
       <div class="main-container">

@@ -5,7 +5,7 @@
  */
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -25,7 +25,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
@@ -34,6 +34,8 @@ export default {
     },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
@@ -42,7 +44,7 @@ export default {
   },
 };
 
-const TemplateDrivenStory: Story = args => ({
+const TemplateDrivenStory: StoryFn = args => ({
   template: `
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{ screenReaderContent }}</span>

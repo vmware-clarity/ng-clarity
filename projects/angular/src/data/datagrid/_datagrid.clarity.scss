@@ -242,12 +242,7 @@
         tokens.$cds-global-space-5 - tables-variables.$clr-table-borderwidth
       ); // This fixed an issue that made the cell too wide.
       align-items: center;
-
-      .clr-checkbox-wrapper {
-        display: block;
-        // compensate for the default checkbox margin, defined in its ::before section
-        margin-top: calc(-1 * tokens.$cds-global-space-4);
-      }
+      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
 
       &,
       input {
@@ -862,21 +857,6 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
-  .datagrid-select {
-    .clr-control-label {
-      min-height: tokens.$cds-global-space-6;
-      margin-top: calc(-1 * tokens.$cds-global-space-3);
-      padding-left: tokens.$cds-global-space-7;
-    }
-  }
-
-  .datagrid-table > .datagrid-row .datagrid-select {
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before,
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::after {
-      top: 50%;
-    }
-  }
-
   .datagrid-compact {
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;
@@ -1227,11 +1207,10 @@
 
   .datagrid-detail-caret {
     display: flex;
-    align-items: center;
     justify-content: center;
 
     &.datagrid-cell {
-      padding: 0;
+      padding: tokens.$cds-global-space-3 0;
     }
 
     .datagrid-detail-caret-button {

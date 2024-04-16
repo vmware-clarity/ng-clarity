@@ -4,9 +4,17 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
+<clr-toggle-container>
+  <label>Size</label>
+  <clr-toggle-wrapper>
+    <label>Full Screen</label>
+    <input clrToggle type="checkbox" [(ngModel)]="fullScreen" name="full-screen" />
+  </clr-toggle-wrapper>
+</clr-toggle-container>
+
 <button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
 
-<clr-wizard #wizard [(clrWizardOpen)]="open">
+<clr-wizard #wizard [clrWizardSize]="fullScreen ? 'full-screen' : 'xl'" [(clrWizardOpen)]="open">
   <clr-wizard-title>Wizard Title</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>

@@ -7,7 +7,9 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Wizard/Wizard Page',
@@ -19,14 +21,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
-    clrWizardPageHasError: { defaultValue: false },
-    clrWizardPageNextDisabled: { defaultValue: false },
-    clrWizardPagePreventDefault: { defaultValue: false, control: { type: 'boolean' } },
-    clrWizardPagePreventDefaultCancel: { defaultValue: false },
-    clrWizardPagePreventDefaultNext: { defaultValue: false },
-    clrWizardPagePreviousDisabled: { defaultValue: false },
-    id: { defaultValue: '', control: { type: 'text' } },
+    clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
     // outputs
     clrWizardPageCustomButton: { control: { disable: true } },
     clrWizardPageDanger: { control: { disable: true } },
@@ -44,6 +39,15 @@ export default {
     makeCurrent: { control: { disable: true } },
   },
   args: {
+    // inputs
+    clrHeadingLevel: 1,
+    clrWizardPageHasError: false,
+    clrWizardPageNextDisabled: false,
+    clrWizardPagePreventDefault: false,
+    clrWizardPagePreventDefaultCancel: false,
+    clrWizardPagePreventDefaultNext: false,
+    clrWizardPagePreviousDisabled: false,
+    id: '',
     // outputs
     clrWizardPageCustomButton: action('clrWizardPageCustomButton'),
     clrWizardPageDanger: action('clrWizardPageDanger'),
@@ -60,7 +64,7 @@ export default {
   },
 };
 
-const WizardPageTemplate: Story = args => ({
+const WizardPageTemplate: StoryFn = args => ({
   template: `
     <clr-wizard [clrWizardOpen]="true">
       <clr-wizard-title>Wizard</clr-wizard-title>
@@ -110,4 +114,5 @@ const WizardPageTemplate: Story = args => ({
 
 export const WizardPage: StoryObj = {
   render: WizardPageTemplate,
+  play: removeFocusOutline,
 };

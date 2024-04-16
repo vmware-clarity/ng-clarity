@@ -5,7 +5,7 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 import { filesRoot } from '../../helpers/files.data';
@@ -32,7 +32,7 @@ export default {
   },
 };
 
-const RecursiveTreeViewTemplate: Story = args => ({
+const RecursiveTreeViewTemplate: StoryFn = args => ({
   template: `
     <clr-tree>
       <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">

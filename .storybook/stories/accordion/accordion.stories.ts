@@ -5,7 +5,7 @@
  */
 
 import { ClrAccordion, ClrAccordionModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -18,14 +18,14 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    clrAccordionMultiPanel: { defaultValue: false, control: { type: 'boolean' } },
     // story helpers
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },
     panelCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrAccordionMultiPanel: false,
     // story helpers
     openIndices: [],
     createArray: n => new Array(n),
@@ -47,7 +47,7 @@ const template = `
   </clr-accordion>
 `;
 
-const AccordionTemplate: Story = args => ({
+const AccordionTemplate: StoryFn = args => ({
   template,
   props: args,
 });
@@ -65,10 +65,8 @@ export const SinglePanelOpened: StoryObj = {
 
 export const MultiplePanelsOpened: StoryObj = {
   render: AccordionTemplate,
-  argTypes: {
-    clrAccordionMultiPanel: { defaultValue: true, control: { disable: true } },
-  },
   args: {
+    clrAccordionMultiPanel: true,
     openIndices: [true, true, false, false],
   },
 };

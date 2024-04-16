@@ -6,7 +6,7 @@
 
 import { ClrButton } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from '../../helpers/button-class.helper';
 import { CommonModules } from '../../helpers/common';
@@ -22,37 +22,34 @@ export default {
   argTypes: {
     // inputs
     class: { control: { disable: true } },
-    disabled: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     click: { control: { disable: true } },
     // methods
     emitClick: { control: { disable: true }, table: { disable: true } },
     loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    buttonStyle: {
-      defaultValue: 'outline',
-      control: { type: 'radio', options: BUTTON_STYLES },
-    },
-    buttonType: {
-      defaultValue: 'primary',
-      control: { type: 'radio', options: BUTTON_TYPES },
-    },
+    buttonStyle: { control: { type: 'radio', options: BUTTON_STYLES } },
+    buttonType: { control: { type: 'radio', options: BUTTON_TYPES } },
     getButtonClass: { control: { disable: true }, table: { disable: true } },
     BUTTON_STYLES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     BUTTON_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    disabled: false,
     // outputs
     click: action('click'),
     // story helpers
     content: 'Hello World!',
     iconShape: '',
+    buttonType: 'primary',
+    buttonStyle: 'outline',
     getButtonClass,
     BUTTON_STYLES,
     BUTTON_TYPES,
   },
 };
 
-const ButtonTemplate: Story = args => ({
+const ButtonTemplate: StoryFn = args => ({
   template: `
     <button
       class="btn"
@@ -67,7 +64,7 @@ const ButtonTemplate: Story = args => ({
   props: args,
 });
 
-const ButtonAllTemplate: Story = args => ({
+const ButtonAllTemplate: StoryFn = args => ({
   template: `
     <h6>Default Button</h6>
     <button class="btn">Default</button>

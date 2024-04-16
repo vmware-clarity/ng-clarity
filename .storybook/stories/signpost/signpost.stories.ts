@@ -5,7 +5,7 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -34,13 +34,15 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'right-middle', control: { type: 'radio', options: positions } },
+    clrPosition: { control: { type: 'radio', options: positions } },
     // methods
     close: { control: { disable: true }, table: { disable: true } },
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrPosition: 'right-middle',
     // story helpers
     content: 'Hello World!',
   },
@@ -56,7 +58,7 @@ const template = `
   </div>
 `;
 
-const SignpostTemplate: Story = args => ({
+const SignpostTemplate: StoryFn = args => ({
   template,
   props: args,
 });

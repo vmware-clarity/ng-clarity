@@ -5,7 +5,7 @@
  */
 
 import { ClrSelect, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'Select/Select',
@@ -16,8 +16,6 @@ export default {
     }),
   ],
   argTypes: {
-    // inputs
-    id: { defaultValue: '' },
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
@@ -25,13 +23,15 @@ export default {
     createArray: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    id: '',
     // story helpers
     createArray: n => new Array(n),
     optionCount: 3,
   },
 };
 
-const selectTemplate: Story = args => ({
+const selectTemplate: StoryFn = args => ({
   template: `
     <clr-select-container>
       <label>Options</label>

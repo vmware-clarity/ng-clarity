@@ -5,7 +5,7 @@
  */
 
 import { ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStepState } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -19,20 +19,19 @@ export default {
   component: ClrTimeline,
   argTypes: {
     // inputs
-    clrLayout: {
-      defaultValue: ClrTimelineLayout.HORIZONTAL,
-      control: { type: 'inline-radio', options: ClrTimelineLayout },
-    },
+    clrLayout: { control: { type: 'inline-radio', options: ClrTimelineLayout } },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
     // story helpers
     ClrTimelineStepState,
   },
 };
 
-const TimelineTempate: Story = args => ({
+const TimelineTempate: StoryFn = args => ({
   template: `
     <clr-timeline [clrLayout]="clrLayout">
       <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">
