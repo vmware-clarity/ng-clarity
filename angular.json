@@ -136,11 +136,11 @@
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "port": 6006,
             "styles": [
-              "./.storybook/public/preview.css",
-              "./node_modules/@cds/core/styles/module.reset.min.css",
-              "./node_modules/@cds/core/global.min.css",
-              "./node_modules/@cds/core/styles/theme.dark.min.css",
-              "./projects/ui/src/clr-ui.scss"
+              ".storybook/public/preview.css",
+              "node_modules/@cds/core/styles/module.reset.min.css",
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
             ]
           }
         },
@@ -153,11 +153,11 @@
             "compodoc": true,
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "styles": [
-              "./.storybook/public/preview.css",
-              "./node_modules/@cds/core/styles/module.reset.min.css",
-              "./node_modules/@cds/core/global.min.css",
-              "./node_modules/@cds/core/styles/theme.dark.min.css",
-              "./projects/ui/src/clr-ui.scss"
+              ".storybook/public/preview.css",
+              "node_modules/@cds/core/styles/module.reset.min.css",
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
             ]
           }
         }
