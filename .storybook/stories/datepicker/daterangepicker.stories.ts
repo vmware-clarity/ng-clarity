@@ -24,6 +24,7 @@ export default {
     clrRangeEndDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
+    dateFormat: { defaultValue: 'dd-MM-yyyy' },
     disabled: { defaultValue: false, control: { type: 'boolean' } },
     placeholder: { defaultValue: '' },
     id: { defaultValue: '' },
@@ -44,14 +45,30 @@ export default {
     clrRangeStartDateChange: action('clrRangeStartDateChange'),
     clrRangeEndDateChange: action('clrRangeEndDateChange'),
     // story helpers
-    getDateObject: date => date && new Date(date).toISOString(),
+    getDateObject: (date, dateFormat) => {
+      if (date && dateFormat) {
+        const DELIMITERS_REGEX = /[-\\/.\s]/;
+        const dateArr = date.split(DELIMITERS_REGEX);
+        const formatArr = dateFormat.split(DELIMITERS_REGEX);
+        if (dateArr?.length && dateArr?.length < 3) {
+          const monthIdx = formatArr.findIndex(a => /m+/i.test(a)),
+            yearIdx = formatArr.findIndex(a => /y+/i.test(a)),
+            dateIdx = formatArr.findIndex(a => /d+/i.test(a));
+          const day = dateIdx > -1 ? dateArr[dateIdx] : 1,
+            month = monthIdx > -1 ? dateArr[monthIdx] - 1 : 0,
+            year = yearIdx > -1 ? dateArr[yearIdx] : 2024;
+          return new Date(year, month, day);
+        }
+      }
+      return date && new Date(date).toISOString();
+    },
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
 
 const DateRangePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)">
+    <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)" [dateFormat]="dateFormat">
       <label for="dateRangeCtrl">Date Range</label>
       <input #startDate
         id="startDate"
@@ -59,7 +76,7 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="startDate"
         type="date"
         [disabled]="disabled"
-        [clrRangeStartDate]="getDateObject(clrRangeStartDate || startDate.value)"
+        [clrRangeStartDate]="getDateObject(clrRangeStartDate || startDate.value, dateFormat)"
         (clrRangeStartDateChange)="clrRangeStartDateChange($event)"
       />
       <input #endDate
@@ -68,7 +85,7 @@ const DateRangePickerTemplate: StoryFn = args => ({
         name="endDate"
         type="date"
         [disabled]="disabled"
-        [clrRangeEndDate]="getDateObject(clrRangeEndDate || endDate.value)"
+        [clrRangeEndDate]="getDateObject(clrRangeEndDate || endDate.value, dateFormat)"
         (clrRangeEndDateChange)="clrRangeEndDateChange($event)"
       />
     </clr-date-range-container>
@@ -106,5 +123,12 @@ export const MaxDate: StoryObj = {
   render: DateRangePickerTemplate,
   args: {
     max: Date.now() + 2592000000,
+  },
+};
+
+export const MonthPicker: StoryObj = {
+  render: DateRangePickerTemplate,
+  args: {
+    dateFormat: 'yyyy/MM',
   },
 };

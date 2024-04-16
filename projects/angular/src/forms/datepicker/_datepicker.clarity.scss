@@ -324,6 +324,12 @@
   .months {
     flex-wrap: wrap;
     flex-direction: row;
+
+    &.enlarged {
+      .month {
+        height: datepicker-variables.$clr-calendar-month-enlarged-cell-height;
+      }
+    }
   }
 
   .month,

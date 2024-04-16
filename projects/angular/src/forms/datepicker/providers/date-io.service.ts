@@ -59,7 +59,7 @@ export class DateIOService {
       // attribute binding was removed, reset back to the beginning of time
       this.disabledDates.minDate = new DayModel(0, 0, 1);
     } else {
-      const [year, month = 1, day = 1] = date.split('-').map(n => parseInt(n, 10));
+      const [year = new Date().getFullYear(), month = 1, day = 1] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.minDate = new DayModel(year, month - 1, day);
     }
   }
@@ -93,10 +93,12 @@ export class DateIOService {
   }
 
   setDateFormat(dateFormat: string) {
-    this.inputDateFormat = dateFormat;
-    this.cldrLocaleDateFormat = dateFormat;
-    this.initializeLocaleDisplayFormat();
-    this.setDefaultCalendarView();
+    if (dateFormat) {
+      this.inputDateFormat = dateFormat;
+      this.cldrLocaleDateFormat = dateFormat;
+      this.initializeLocaleDisplayFormat();
+      this.setDefaultCalendarView();
+    }
   }
 
   setDefaultCalendarView() {
@@ -232,12 +234,13 @@ export class DateIOService {
     // Operator '!==' cannot be applied to types '2' and '4'
     // More info here: https://github.com/Microsoft/TypeScript/issues/12794#issuecomment-270342936
     /*
-        if (year.length !== 2 || year.length !== 4) {
-            return null;
-        }
-        */
+    if (year.length !== 2 || year.length !== 4) {
+      return null;
+    }
+    */
     const y: number = +year;
-    const m: any = typeof month === 'string' ? +this.monthNumberFromString(month) - 1 : +month - 1; // month is 0 based
+    // const m: any = typeof month === 'string' ? +this.monthNumberFromString(+month) - 1 : +month - 1; // month is 0 based
+    const m: any = /^-?[0-9]+$/.test(month + '') ? +month - 1 : +this.monthNumberFromString(month) - 1;
     // const m: any = +month - 1; // month is 0 based
     const d: number = +date;
     if ((m >= 0 && !this.isValidMonth(m)) || (d >= 0 && !this.isValidDate(y, m, d))) {

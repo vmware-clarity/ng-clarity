@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './daterangepicker.html',
 })
-export class DateRangePickerDemo {
+export class DateRangePickerDemo implements OnInit {
   dateForm = new FormGroup({
     startDate: new FormControl(),
     endDate: new FormControl(),
@@ -22,6 +22,56 @@ export class DateRangePickerDemo {
     endDate2: new FormControl('Jun/2024'),
     startDate3: new FormControl('2022'),
     endDate3: new FormControl('2024'),
+
+    startDateV1: new FormControl(),
+    endDateV1: new FormControl(),
+    minDateV1: new FormControl('2024-02-15'),
+    maxDateV1: new FormControl('2024-12-15'),
+
+    startDateWithOptionV1: new FormControl(),
+    endDateWithOptionV1: new FormControl(),
+    minDateWithOptionV1: new FormControl('2024-02-15'),
+    maxDateWithOptionV1: new FormControl('2024-12-15'),
+
+    startDateV2: new FormControl(),
+    endDateV2: new FormControl(),
+    minDateV2: new FormControl('2024-02-15'),
+    maxDateV2: new FormControl('2024-12-15'),
+
+    startDateV3: new FormControl(),
+    endDateV3: new FormControl(),
+    minDateV3: new FormControl('2024-02-15'),
+    maxDateV3: new FormControl('2024-12-15'),
+
+    startDateYearMonthV1: new FormControl(),
+    endDateYearMonthV1: new FormControl(),
+    minDateYearMonthV1: new FormControl('2024-02'),
+    maxDateYearMonthV1: new FormControl('2024-12'),
+
+    startDateYearMonthWithOptionV1: new FormControl(),
+    endDateYearMonthWithOptionV1: new FormControl(),
+    minDateYearMonthWithOptionV1: new FormControl('2024-02'),
+    maxDateYearMonthWithOptionV1: new FormControl('2024-12'),
+
+    startDateYearMonthV2: new FormControl(),
+    endDateYearMonthV2: new FormControl(),
+    minDateYearMonthV2: new FormControl('2024-02'),
+    maxDateYearMonthV2: new FormControl('2024-12'),
+
+    startDateMonthV1: new FormControl(),
+    endDateMonthV1: new FormControl(),
+    minDateMonthV1: new FormControl('2024-02'),
+    maxDateMonthV1: new FormControl('2024-10'),
+
+    startDateYearV1: new FormControl(),
+    endDateYearV1: new FormControl(),
+    minDateYearV1: new FormControl('2024'),
+    maxDateYearV1: new FormControl('2024'),
+
+    startDateYearWithOptionV1: new FormControl(),
+    endDateYearWithOptionV1: new FormControl(),
+    minDateYearWithOptionV1: new FormControl('2024'),
+    maxDateYearWithOptionV1: new FormControl('2024'),
   });
   minDate = '2020-02-15';
   maxDate = '2034-11-15';
@@ -72,6 +122,30 @@ export class DateRangePickerDemo {
     },
   ];
 
+  yearRangeOptions = [
+    {
+      label: 'This year',
+      value: [new Date(new Date().getFullYear(), 1, 1), new Date(new Date().getFullYear() + 1, 0, 0)],
+    },
+    {
+      label: 'Last year',
+      value: [new Date(new Date().getFullYear() - 1, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
+    },
+    {
+      label: 'Last 2 Years',
+      value: [new Date(new Date().getFullYear() - 2, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
+    },
+    {
+      label: 'Last 5 Years',
+      value: [new Date(new Date().getFullYear() - 5, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
+    },
+  ];
+
+  ngOnInit(): void {
+    setInterval(() => {
+      console.log(this.dateForm);
+    }, 4000);
+  }
   stDateChanged(date: Date) {
     console.log(date);
   }

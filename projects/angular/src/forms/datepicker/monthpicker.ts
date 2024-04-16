@@ -9,6 +9,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostList
 import { ClrCommonStringsService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
+import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { DatePickerHelperService } from './providers/datepicker-helper.service';
@@ -18,7 +19,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-monthpicker',
   template: `
-    <div class="year-view-switcher in-monthpicker">
+    <div class="year-view-switcher in-monthpicker" *ngIf="_dateIoService.isYearViewAllowed()">
       <button
         class="calendar-btn yearpicker-trigger"
         type="button"
@@ -29,7 +30,7 @@ import { ViewManagerService } from './providers/view-manager.service';
         {{ calendarYear }}
       </button>
     </div>
-    <div class="months">
+    <div class="months" [ngClass]="{ enlarged: !_dateIoService.isYearViewAllowed() }">
       <button
         type="button"
         class="calendar-btn month"
@@ -68,6 +69,7 @@ export class ClrMonthpicker implements AfterViewInit {
   constructor(
     private _localeHelperService: LocaleHelperService,
     public _dateNavigationService: DateNavigationService,
+    public _dateIoService: DateIOService,
     private _datePickerHelperService: DatePickerHelperService,
     private _datepickerFocusService: DatepickerFocusService,
     private _elRef: ElementRef,
