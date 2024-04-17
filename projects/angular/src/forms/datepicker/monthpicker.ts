@@ -143,21 +143,21 @@ export class ClrMonthpicker implements AfterViewInit {
     // to create extra observables just to move this logic to the service.
     if (event) {
       const key = normalizeKey(event.key);
-      if (key === Keys.ArrowUp && this._focusedMonthIndex > 0) {
+      if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
         event.preventDefault();
-        this._focusedMonthIndex--;
+        this._focusedMonthIndex -= 2;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 11) {
+      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 10) {
+        event.preventDefault();
+        this._focusedMonthIndex += 2;
+        this._datepickerFocusService.focusCell(this._elRef);
+      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 11) {
         event.preventDefault();
         this._focusedMonthIndex++;
         this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 6) {
+      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 0) {
         event.preventDefault();
-        this._focusedMonthIndex = this._focusedMonthIndex + 6;
-        this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 5) {
-        event.preventDefault();
-        this._focusedMonthIndex = this._focusedMonthIndex - 6;
+        this._focusedMonthIndex--;
         this._datepickerFocusService.focusCell(this._elRef);
       }
     }

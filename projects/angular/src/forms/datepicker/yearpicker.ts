@@ -130,16 +130,16 @@ export class ClrYearpicker implements AfterViewInit {
       const key = normalizeKey(event.key);
       if (key === Keys.ArrowUp) {
         event.preventDefault();
-        this.incrementFocusYearBy(-1);
+        this.incrementFocusYearBy(-2);
       } else if (key === Keys.ArrowDown) {
         event.preventDefault();
-        this.incrementFocusYearBy(1);
+        this.incrementFocusYearBy(2);
       } else if (key === Keys.ArrowRight) {
         event.preventDefault();
-        this.incrementFocusYearBy(5);
+        this.incrementFocusYearBy(1);
       } else if (key === Keys.ArrowLeft) {
         event.preventDefault();
-        this.incrementFocusYearBy(-5);
+        this.incrementFocusYearBy(-1);
       }
     }
   }

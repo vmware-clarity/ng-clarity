@@ -1,0 +1,178 @@
+<!--
+  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Date Range Picker</h2>
+
+<form clrForm [formGroup]="dateForm" novalidate>
+  <section class="date-range-section">
+    <h4>Standard Format</h4>
+    <div class="flex-section">
+      <!-- Variant 1 -->
+      <div class="card" data-heading="Variant: mm/dd/yyyy">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'MM/dd/yyyy', dateFc: 'dateV1', minDateFc: 'minDateV1', maxDateFc: 'maxDateV1' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateV1', maxDateFc: 'maxDateV1' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant 2 -->
+      <div class="card" data-heading="Variant: dd/mm/yyyy ">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'dd/MM/yyyy', dateFc: 'dateV2', minDateFc: 'minDateV2', maxDateFc: 'maxDateV2' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateV2', maxDateFc: 'maxDateV2' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant 3 -->
+      <div class="card" data-heading="Variant: dd/mmm/yyyy ">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'dd/MMM/yyyy', dateFc: 'dateV3', minDateFc: 'minDateV3', maxDateFc: 'maxDateV3' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateV3', maxDateFc: 'maxDateV3' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Year & Month Picker</h4>
+    <div class="flex-section">
+      <!-- Variant 4 -->
+      <div class="card" data-heading="Variant: yyyy/mm">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'yyyy/MM', dateFc: 'dateYearMonthV1', minDateFc: 'minDateYearMonthV1', maxDateFc: 'maxDateYearMonthV1' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateYearMonthV1', maxDateFc: 'maxDateYearMonthV1' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant 5 -->
+      <div class="card" data-heading="Variant: mmm yyyy">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'MMM yyyy', dateFc: 'dateYearMonthV2', minDateFc: 'minDateYearMonthV2', maxDateFc: 'maxDateYearMonthV2' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateYearMonthV2', maxDateFc: 'maxDateYearMonthV2' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Month Picker</h4>
+    <div class="flex-section">
+      <!-- Variant 6 -->
+      <div class="card" data-heading="Variant: mmm">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'MMM', dateFc: 'dateMonthV1', minDateFc: 'minDateMonthV1', maxDateFc: 'maxDateMonthV1' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateMonthV1', maxDateFc: 'maxDateMonthV1' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Year Picker</h4>
+    <div class="flex-section">
+      <!-- Variant 9 -->
+      <div class="card" data-heading="Variant: yyyy">
+        <div class="card-content">
+          <ng-container
+            *ngTemplateOutlet="daterange; context: { dateFormat: 'yyyy', dateFc: 'dateYearV1', minDateFc: 'minDateYearV1', maxDateFc: 'maxDateYearV1' }"
+          ></ng-container>
+        </div>
+        <div class="card-validations">
+          <div class="form-input-wrapper clr-form-horizontal">
+            <ng-container
+              *ngTemplateOutlet="validators; context: { minDateFc: 'minDateYearV1', maxDateFc: 'maxDateYearV1' }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+
+<ng-template #validators let-minDateFc="minDateFc" let-maxDateFc="maxDateFc">
+  <ng-container [formGroup]="dateForm">
+    <clr-input-container>
+      <label>Min Date</label>
+      <input type="text" placeholder="yyyy-mm-dd" [formControlName]="minDateFc" clrInput />
+    </clr-input-container>
+
+    <clr-input-container>
+      <label>Max Date</label>
+      <input type="text" placeholder="yyyy-mm-dd" clrInput [formControlName]="maxDateFc" />
+    </clr-input-container>
+  </ng-container>
+</ng-template>
+
+<ng-template
+  #daterange
+  let-dateFormat="dateFormat"
+  let-minDateFc="minDateFc"
+  let-maxDateFc="maxDateFc"
+  let-dateFc="dateFc"
+>
+  <ng-container [formGroup]="dateForm">
+    <clr-date-container [dateFormat]="dateFormat">
+      <input
+        [id]="dateFc"
+        type="date"
+        [name]="dateFc"
+        [min]="dateForm.get(minDateFc).value"
+        [max]="dateForm.get(maxDateFc).value"
+        [formControlName]="dateFc"
+        autocomplete="off"
+        clrDate
+      />
+      <clr-control-error *clrIfError="'min'"
+        >Minimum date should be {{dateForm.get(dateFc).errors?.min?.min}}
+      </clr-control-error>
+      <clr-control-error *clrIfError="'max'"
+        >Maximum date should be {{dateForm.get(dateFc).errors?.max?.max}}</clr-control-error
+      >
+    </clr-date-container>
+  </ng-container>
+</ng-template>

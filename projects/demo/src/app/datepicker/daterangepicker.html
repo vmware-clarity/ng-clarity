@@ -181,143 +181,6 @@
     </div>
   </section>
 </form>
-
-<!-- <form clrForm [formGroup]="dateForm" novalidate>
-  <clr-date-range-container
-    [min]="minDate"
-    [max]="maxDate"
-    [rangeOptions]="dateRangeOptions"
-    [dateFormat]="'dd/MM/yyyy'"
-  >
-    <label for="dateRangeCtrl">Range Picker</label>
-    <input
-      id="startDate"
-      aria-labelledby="dateRangeCtrl"
-      name="startDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeStartDate
-      (clrRangeStartDateChange)="stDateChanged($event)"
-      formControlName="startDate"
-    />
-    <input
-      id="endDate"
-      aria-labelledby="dateRangeCtrl"
-      name="endDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeEndDate
-      (clrRangeEndDateChange)="endDateChanged($event)"
-      formControlName="endDate"
-    />
-  </clr-date-range-container>
-
-  <clr-date-range-container
-    [min]="minDate"
-    [max]="maxDate"
-    [rangeOptions]="monthRangeOptions"
-    [dateFormat]="'dd MMMM yyyy'"
-  >
-    <label for="dateRangeCtrl">Range Picker Variant 2</label>
-    <input
-      id="startDate"
-      aria-labelledby="dateRangeCtrl"
-      name="startDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeStartDate
-      (clrRangeStartDateChange)="stDateChanged($event)"
-      formControlName="startDate1"
-    />
-    <input
-      id="endDate"
-      aria-labelledby="dateRangeCtrl"
-      name="endDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeEndDate
-      (clrRangeEndDateChange)="endDateChanged($event)"
-      formControlName="endDate1"
-    />
-  </clr-date-range-container>
-
-  <clr-date-range-container [min]="minDate" [max]="maxDate" [rangeOptions]="monthRangeOptions" [dateFormat]="'MMM'">
-    <label for="dateRangeCtrl">Range Picker Variant 3</label>
-    <input
-      id="startDate"
-      aria-labelledby="dateRangeCtrl"
-      name="startDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeStartDate
-      (clrRangeStartDateChange)="stDateChanged($event)"
-      formControlName="startDate2"
-    />
-    <input
-      id="endDate"
-      aria-labelledby="dateRangeCtrl"
-      name="endDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeEndDate
-      (clrRangeEndDateChange)="endDateChanged($event)"
-      formControlName="endDate2"
-    />
-  </clr-date-range-container>
-
-  <clr-date-range-container [min]="minDate" [max]="maxDate" [dateFormat]="'yyyy'">
-    <label for="dateRangeCtrl">Range Picker Variant 4</label>
-    <input
-      id="startDate"
-      aria-labelledby="dateRangeCtrl"
-      name="startDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeStartDate
-      (clrRangeStartDateChange)="stDateChanged($event)"
-      formControlName="startDate3"
-    />
-    <input
-      id="endDate"
-      aria-labelledby="dateRangeCtrl"
-      name="endDate"
-      [min]="minDate"
-      [max]="maxDate"
-      type="date"
-      clrRangeEndDate
-      (clrRangeEndDateChange)="endDateChanged($event)"
-      formControlName="endDate3"
-    />
-  </clr-date-range-container>
-</form> -->
-
-<!-- <h3>Validations</h3>
-
-<section class="panel" style="margin-left: 20px">
-  <clr-input-container>
-    <label>Min Date</label>
-    <input type="text" placeholder="Min Date" clrInput [(ngModel)]="minDate" name="minDate" />
-  </clr-input-container>
-
-  <clr-input-container>
-    <label>Max Date</label>
-    <input type="text" placeholder="Max Date" clrInput [(ngModel)]="maxDate" name="maxDate" />
-  </clr-input-container>
-</section>
-
-<p>Form Value: {{dateForm.value | json}}</p> -->
-
-<!-- <div>Touched: {{dateForm.touched}}</div>
-
-<div>Dirty: {{dateForm.dirty}}</div> -->
-
 <ng-template #validators let-minDateFc="minDateFc" let-maxDateFc="maxDateFc">
   <ng-container [formGroup]="dateForm">
     <clr-input-container>
@@ -353,8 +216,6 @@
         [id]="startDtFc"
         aria-labelledby="dateRangeCtrl"
         name="startDate"
-        [min]="minDate"
-        [max]="maxDate"
         type="date"
         clrRangeStartDate
         [formControlName]="startDtFc"
@@ -363,12 +224,20 @@
         [id]="endDtFc"
         aria-labelledby="dateRangeCtrl"
         name="endDate"
-        [min]="minDate"
-        [max]="maxDate"
         type="date"
         clrRangeEndDate
         [formControlName]="endDtFc"
       />
+      <clr-control-error *clrIfError="'min'">
+        <ng-container *ngIf="dateForm.get(startDtFc).errors?.min?.min || dateForm.get(endDtFc).errors?.min?.min">
+          Minimum date should be {{dateForm.get(startDtFc).errors?.min?.min || dateForm.get(endDtFc).errors?.min?.min}}
+        </ng-container>
+      </clr-control-error>
+      <clr-control-error *clrIfError="'max'">
+        <ng-container *ngIf="dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max">
+          Maximum date should be {{dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max}}
+        </ng-container>
+      </clr-control-error>
     </clr-date-range-container>
   </ng-container>
 </ng-template>
