@@ -13,7 +13,7 @@ export default {
   argTypes: {
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
-    buttonType: { control: { type: 'radio', options: buttonTypes } },
+    buttonType: { control: 'radio', options: buttonTypes },
   },
   args: {
     // story helpers

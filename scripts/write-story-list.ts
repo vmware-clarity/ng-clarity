@@ -32,7 +32,7 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('a.sidebar-item', sidebarLinkElements => {
+  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('div.sidebar-item a[id]', sidebarLinkElements => {
     return sidebarLinkElements.map(sidebarLinkElement => {
       const storyId = sidebarLinkElement.id;
       const component = getComponentName(sidebarLinkElement);

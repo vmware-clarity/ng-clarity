@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
@@ -16,7 +15,7 @@ export default {
   component: ClrWizardPage,
   decorators: [
     moduleMetadata({
-      imports: [ClrWizardModule, BrowserAnimationsModule],
+      imports: [ClrWizardModule],
     }),
   ],
   argTypes: {
@@ -61,6 +60,14 @@ export default {
     clrWizardPagePrevious: action('clrWizardPagePrevious'),
     clrWizardPagePreviousDisabledChange: action('clrWizardPagePreviousDisabledChange'),
     clrWizardPagePrimary: action('clrWizardPagePrimary'),
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
   },
 };
 

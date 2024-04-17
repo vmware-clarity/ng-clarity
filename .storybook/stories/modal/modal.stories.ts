@@ -20,7 +20,7 @@ export default {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalSize: { control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
+    clrModalSize: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -48,6 +48,14 @@ export default {
     body: 'Hello World!',
     showLongPageContent: true,
     showLongModalContent: false,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 400,
+      },
+    },
   },
 };
 

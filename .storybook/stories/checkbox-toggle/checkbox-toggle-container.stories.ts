@@ -28,7 +28,7 @@ export default {
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    type: { control: { type: 'inline-radio', options: CheckboxType } },
+    type: { control: 'inline-radio', options: CheckboxType },
     createArray: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },
