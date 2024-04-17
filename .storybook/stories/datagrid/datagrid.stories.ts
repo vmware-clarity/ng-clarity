@@ -52,6 +52,7 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    selectedRows: [],
   },
 };
 
@@ -91,7 +92,11 @@ const DatagridTemplate: StoryFn = args => ({
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
+      <clr-dg-row
+        *clrDgItems="let element of elements; let index = index"
+        [clrDgItem]="element"
+        [clrDgSelected]="selectedRows.includes(index)"
+      >
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -144,5 +149,13 @@ export const CompactMultiSelect: StoryObj = {
   args: {
     compact: true,
     multiSelectable: true,
+  },
+};
+export const CompactMultiSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    multiSelectable: true,
+    selectedRows: [1],
   },
 };
