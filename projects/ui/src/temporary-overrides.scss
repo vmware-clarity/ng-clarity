@@ -1,0 +1,21 @@
+/*
+ * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+
+[cds-theme] {
+  --cds-alias-object-interaction-background: #{tokens.$cds-global-color-white};
+  --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
+  --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-75};
+}
+
+[cds-theme~='dark'] {
+  --cds-alias-object-interaction-background: #{tokens.$cds-global-color-construction-1000};
+  --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
+}

@@ -10,6 +10,7 @@
 @import '../../../node_modules/@cds/core/styles/module.typography.min.css';
 @import '../../../node_modules/@cds/core/styles/theme.dark.min.css';
 @import './app/_utils/clarity-variables';
+@import '../../ui/src/temporary-overrides.scss';
 @import '../../angular/src/utils/variables/variables';
 
 :root {

@@ -207,15 +207,15 @@
       border-top: none;
     }
 
-    &:hover,
-    &:hover .datagrid-row-sticky {
-      background-color: datagrid-variables.$clr-datagrid-row-hover-color;
-    }
-
     &.datagrid-selected,
     &.datagrid-selected .datagrid-row-sticky {
       color: datagrid-variables.$clr-datagrid-row-selected;
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
+    }
+
+    &:hover,
+    &:hover .datagrid-row-sticky {
+      background-color: datagrid-variables.$clr-datagrid-row-hover-color;
     }
 
     &:active,
