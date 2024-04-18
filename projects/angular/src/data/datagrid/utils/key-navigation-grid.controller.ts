@@ -161,6 +161,8 @@ export class KeyNavigationGridController implements OnDestroy {
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
+    console.log(this.cells.length);
+    console.log(this.rows.length);
     const numOfColumns = this.cells ? this.cells.length / this.rows.length - 1 : 0;
 
     let x =
@@ -173,7 +175,8 @@ export class KeyNavigationGridController implements OnDestroy {
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
 
-    const itemsPerPage = this.rows.length || 0;
+    const itemsPerPage =
+      Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
     if (e.code === 'ArrowUp' && y !== 0) {
       y = y - 1;
@@ -184,6 +187,8 @@ export class KeyNavigationGridController implements OnDestroy {
     } else if (e.code === inlineEnd && x < numOfColumns) {
       x = x + 1;
     } else if (e.code === 'End') {
+      console.log(x);
+      console.log(numOfColumns);
       x = numOfColumns;
 
       if (e.ctrlKey) {

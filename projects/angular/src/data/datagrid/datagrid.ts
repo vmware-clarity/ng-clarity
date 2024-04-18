@@ -257,8 +257,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }
       }),
       this.rows.changes.subscribe(() => {
-        const active = document.activeElement as HTMLElement;
-
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
         for (let i = this._displayedRows.length - 1; i >= 0; i--) {
@@ -285,9 +283,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             this.detailService.close();
           }
         }
-        this.zone.runOutsideAngular(() => {
-          setTimeout(() => this.keyNavigation.setActiveCell(active));
-        });
+
+        // retain active cell
+        // const active = document.activeElement as HTMLElement;
+        const active = this.keyNavigation.getActiveCell();
+        if (active) {
+          this.zone.runOutsideAngular(() => {
+            setTimeout(() => this.keyNavigation.setActiveCell(active));
+          });
+        }
       })
     );
   }
