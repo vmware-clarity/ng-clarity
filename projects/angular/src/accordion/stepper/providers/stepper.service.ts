@@ -31,6 +31,11 @@ export class StepperService extends AccordionService {
     this.emitUpdatedPanels();
   }
 
+  resetPanel(panelId: string) {
+    this.accordion.resetPanelStatus(panelId);
+    this.emitUpdatedPanels();
+  }
+
   setPanelValid(panelId: string) {
     this.accordion.setPanelValid(panelId);
     this.emitUpdatedPanels();

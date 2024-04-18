@@ -16,9 +16,9 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
-import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, pairwise, skipUntil, tap } from 'rxjs/operators';
+import { FormGroup, FormGroupName, NgModelGroup } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { triggerAllFormControlValidation } from '../../utils/forms/validation';
@@ -37,12 +37,16 @@ import { StepperService } from './providers/stepper.service';
   animations: stepAnimation,
   providers: [IfExpandService],
 })
-export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
+export class ClrStepperPanel extends ClrAccordionPanel implements OnInit, AfterContentChecked {
   override isAccordion = false;
+  formGroupWithUpdatesOnBlur: FormGroup = null;
 
   @ViewChild('headerButton') headerButton: ElementRef;
 
   private subscriptions: Subscription[] = [];
+
+  // Didn't find an Angular API for that, we want to trigger invalidation of panels on focus change
+  private formGroupControlsFocusChange: Observable<any>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -64,6 +68,16 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   }
 
   get formGroup() {
+    // eslint-disable-next-line no-constant-condition
+    // if (this.formGroupName?.control?.controls && false) {
+    //   if (!this.formGroupWithUpdatesOnBlur) {
+    //     this.formGroupWithUpdatesOnBlur = new FormGroup(
+    //         this.formGroupName?.control?.controls,
+    //         {updateOn: 'blur'}
+    //     );
+    //   }
+    //   return this.formGroupWithUpdatesOnBlur;
+    // }
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
@@ -79,21 +93,27 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
 
       this.subscriptions.push(
-        this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
-          if (status === 'VALID') {
-            this.stepperService.setPanelValid(this.id);
-            // } else if (status === 'INVALID') {
-            // console.log('set invalid in stepper service')
-            // this.stepperService.setPanelInvalid(this.id);
-          }
-        }),
-
-        this.formGroup.statusChanges.pipe(pairwise()).subscribe(([prevStatus, newStatus]) => {
-          if ('VALID' === prevStatus && 'INVALID' === newStatus) {
-            this.stepperService.setPanelValid(this.id);
-            this.stepperService.navigateToNextPanel(this.id, this.formGroup.valid);
-          }
-        })
+        this.formGroup.statusChanges
+          .pipe(
+            tap(_ => {
+              console.log('in tap');
+              console.log(_);
+              console.log(this.formGroup);
+            }),
+            skipUntil(invalidStatusTrigger),
+            distinctUntilChanged()
+          )
+          .subscribe(status => {
+            if (status === 'VALID') {
+              console.log('call service.resetPanel');
+              this.stepperService.resetPanel(this.id);
+              console.log('call service.setPanelValid');
+              // this.stepperService.setPanelValid(this.id);
+            } else if (status === 'INVALID') {
+              console.log('call service.setPanelInvalid');
+              this.stepperService.setPanelInvalid(this.id);
+            }
+          })
       );
     }
   }

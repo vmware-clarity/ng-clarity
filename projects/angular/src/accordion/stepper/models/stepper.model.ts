@@ -61,6 +61,10 @@ export class StepperModel extends AccordionModel {
       });
   }
 
+  resetPanelStatus(panelId: string) {
+    this._panels[panelId].status = AccordionStatus.Inactive;
+  }
+
   setPanelValid(panelId: string) {
     this._panels[panelId].status = AccordionStatus.Complete;
   }
