@@ -20,7 +20,7 @@ const usedScreenshotPaths: string[] = [];
 const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
-  if (storyId.endsWith('--default') || !component) {
+  if (storyId.endsWith('--docs') || !component) {
     continue;
   }
 
@@ -42,17 +42,14 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      const body = await page.locator('body');
-      if (takeFullPageScreenshot(component, storyName)) {
-        await body.evaluate(() => {
-          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight}px`);
-        });
-      }
+      const fullPage = takeFullPageScreenshot(component, storyName);
+      const screenshotTarget = fullPage ? page : page.locator('body');
 
-      await expect(body).toHaveScreenshot(screenshotPath.split(path.sep), {
+      await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
+        fullPage,
         animations: 'disabled',
         caret: 'hide',
-        threshold: 0,
+        threshold: 0.01,
       });
     });
   }

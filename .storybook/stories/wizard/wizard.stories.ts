@@ -4,7 +4,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
@@ -16,13 +15,13 @@ export default {
   component: ClrWizard,
   decorators: [
     moduleMetadata({
-      imports: [ClrWizardModule, BrowserAnimationsModule],
+      imports: [ClrWizardModule],
     }),
   ],
   argTypes: {
     // inputs
     clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
-    clrWizardSize: { control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
+    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -72,6 +71,14 @@ export default {
     // story helpers
     createArray: n => new Array(n),
     pageCount: 4,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
   },
 };
 

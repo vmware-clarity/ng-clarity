@@ -20,6 +20,14 @@ export default {
   args: {
     clrCloseMenuOnItemClick: true,
   },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
+  },
 };
 
 const DropdownModalTemplate: StoryFn = args => ({

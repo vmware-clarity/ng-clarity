@@ -20,7 +20,7 @@ export default {
   ],
   component: ClrDropdown,
   argTypes: {
-    buttonType: { control: { type: 'radio', options: DROPDOWN_BUTTON_TYPE } },
+    buttonType: { control: 'radio', options: DROPDOWN_BUTTON_TYPE },
     DROPDOWN_BUTTON_TYPE: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {

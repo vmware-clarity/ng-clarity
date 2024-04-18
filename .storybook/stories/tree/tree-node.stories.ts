@@ -22,7 +22,8 @@ export default {
   argTypes: {
     // inputs
     clrSelected: {
-      control: { type: 'inline-radio', options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'] },
+      control: 'inline-radio',
+      options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
         'not selectable': undefined,
         UNSELECTED: ClrSelectedState.UNSELECTED,

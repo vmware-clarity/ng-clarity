@@ -19,7 +19,7 @@ export default {
   component: ClrDateContainer,
   argTypes: {
     // inputs
-    clrPosition: { control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
     // methods
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },

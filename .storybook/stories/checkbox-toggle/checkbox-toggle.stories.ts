@@ -28,7 +28,7 @@ export default {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    type: { control: { type: 'inline-radio', options: CheckboxType } },
+    type: { control: 'inline-radio', options: CheckboxType },
   },
   args: {
     // inputs

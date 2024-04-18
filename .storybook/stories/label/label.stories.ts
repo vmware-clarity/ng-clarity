@@ -14,7 +14,7 @@ export default {
   title: 'Label/Label',
   argTypes: {
     // story helpers
-    labelType: { control: { type: 'radio', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] } },
+    labelType: { control: 'radio', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
     LABEL_COLOR_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     LABEL_STATUS_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },

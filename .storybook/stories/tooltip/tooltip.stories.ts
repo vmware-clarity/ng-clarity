@@ -20,8 +20,8 @@ export default {
   component: ClrTooltipContent,
   argTypes: {
     // inputs
-    clrPosition: { control: { type: 'inline-radio', options: tooltipPositions } },
-    clrSize: { control: { type: 'inline-radio', options: tooltipSizes } },
+    clrPosition: { control: 'inline-radio', options: tooltipPositions },
+    clrSize: { control: 'inline-radio', options: tooltipSizes },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },

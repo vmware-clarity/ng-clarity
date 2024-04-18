@@ -29,10 +29,8 @@ export default {
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      control: {
-        type: 'radio',
-        options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
-      },
+      control: 'radio',
+      options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
     },
     // outputs
     clrDgColumnResize: { control: { disable: true } },
