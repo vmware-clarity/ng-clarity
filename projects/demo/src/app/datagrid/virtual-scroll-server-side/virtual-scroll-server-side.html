@@ -19,24 +19,24 @@
   [clrDgLoading]="loading"
   [clrLoadingMoreItems]="loadingMoreItems"
   [(clrDgSelected)]="selected"
+  (clrDgRefresh)="refresh($event)"
   class="datagrid-compact"
   style="height: 30rem"
 >
-  <clr-dg-column>
+  <clr-dg-column [clrDgField]="'id'">
     <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
   </clr-dg-column>
-  <clr-dg-column>
-    <!--Name-->
-    <ng-container *clrDgHideableColumn>Name</ng-container>
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Name</ng-container>
   </clr-dg-column>
-  <clr-dg-column>
-    <ng-container>Creation date</ng-container>
+  <clr-dg-column [clrDgField]="'creation'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Creation date</ng-container>
   </clr-dg-column>
-  <clr-dg-column>
-    <ng-container>Pokemon</ng-container>
+  <clr-dg-column [clrDgField]="'pokemon.name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Pokemon</ng-container>
   </clr-dg-column>
-  <clr-dg-column>
-    <ng-container>Favorite color</ng-container>
+  <clr-dg-column [clrDgField]="'color'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Favorite color</ng-container>
   </clr-dg-column>
 
   <ng-template

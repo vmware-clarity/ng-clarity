@@ -148,6 +148,8 @@ export class KeyNavigationGridController implements OnDestroy {
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
+    console.log(item);
+
     item.focus();
     this._activeCell = item;
   }
@@ -194,7 +196,7 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.code === 'PageUp') {
-      y = y - itemsPerPage > 0 ? y - itemsPerPage : 0;
+      y = y - itemsPerPage > 0 ? y - itemsPerPage : 1;
     } else if (e.code === 'PageDown') {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }

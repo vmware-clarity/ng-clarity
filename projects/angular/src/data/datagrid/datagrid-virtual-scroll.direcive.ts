@@ -35,16 +35,11 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { Items } from './providers/items';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
-
-interface CellCoordinates {
-  itemIndex: number;
-  columnIndex: number;
-}
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -80,9 +75,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
-  private totalSize = 0;
-  private activeCellCoordinates: CellCoordinates | undefined;
-  private nextActiveCellCoordinates: CellCoordinates | undefined;
 
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
@@ -214,8 +206,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
     this.updateCdkVirtualForInputs();
 
-    this.activeCellCoordinates = this.getCellCoordinates(this.datagridKeyNavigationController.getActiveCell());
-
     this.subscriptions.push(
       this.items.change.subscribe(newItems => {
         this.cdkVirtualFor.cdkVirtualForOf = newItems;
@@ -224,7 +214,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
     this.subscriptions.push(
       this.cdkVirtualFor.dataStream.subscribe(data => {
-        this.totalSize = data.length;
         this.updateAriaRowCount(data.length);
       })
     );
@@ -232,13 +221,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.subscriptions.push(
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
-        this.restoreOrUpdateActiveCellInNextFrame();
-      })
-    );
-
-    this.subscriptions.push(
-      fromEvent<KeyboardEvent>(this.gridRoleElement, 'keydown').subscribe(event => {
-        this.handlePageUpAndPageDownKeys(event);
       })
     );
   }
@@ -253,20 +235,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.virtualScrollViewport?.ngOnDestroy();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
-    });
-  }
-
-  private restoreOrUpdateActiveCellInNextFrame() {
-    setTimeout(() => {
-      this.promoteNextActiveCell();
-
-      const activeCellElement = this.activeCellCoordinates
-        ? this.getCellElement(this.activeCellCoordinates)
-        : undefined;
-
-      if (activeCellElement) {
-        this.datagridKeyNavigationController.setActiveCell(activeCellElement);
-      }
     });
   }
 
@@ -305,65 +273,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
       // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
       rowRoleElement?.setAttribute('aria-rowindex', (viewRef.context.index + 1).toString());
     }
-  }
-
-  private handlePageUpAndPageDownKeys(event: KeyboardEvent) {
-    if (this.activeCellCoordinates && (event.code === 'PageUp' || event.code === 'PageDown')) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      const { itemIndex: activeItemIndex, columnIndex: activeColumnIndex } = this.activeCellCoordinates;
-
-      if (!isNaN(activeItemIndex)) {
-        const nextItemIndex =
-          event.code === 'PageUp'
-            ? Math.max(0, activeItemIndex - this.keyboardScrollPageSize)
-            : Math.min(this.totalSize - 1, activeItemIndex + this.keyboardScrollPageSize);
-
-        this.nextActiveCellCoordinates = {
-          itemIndex: nextItemIndex,
-          columnIndex: activeColumnIndex,
-        };
-
-        this.virtualScrollViewport?.scrollToIndex(nextItemIndex);
-        this.restoreOrUpdateActiveCellInNextFrame();
-      }
-    }
-  }
-
-  private promoteNextActiveCell() {
-    if (this.nextActiveCellCoordinates) {
-      this.activeCellCoordinates = this.nextActiveCellCoordinates;
-      this.nextActiveCellCoordinates = undefined;
-    }
-  }
-
-  private getCellCoordinates(cellElement: HTMLElement) {
-    const rowElement = cellElement?.closest('[role="row"][aria-rowindex]');
-    const rowIndex = parseInt(rowElement?.getAttribute('aria-rowindex'));
-
-    // aria-rowindex starts with one, not zero, so we have to subtract one to get the zero-based index
-    const itemIndex = rowIndex - 1;
-
-    const cellElements = Array.from(rowElement?.querySelectorAll('clr-dg-cell') || []);
-
-    const cellCoordinates: CellCoordinates = {
-      itemIndex,
-      columnIndex: cellElements.indexOf(cellElement),
-    };
-
-    return cellCoordinates;
-  }
-
-  private getCellElement({ itemIndex, columnIndex }: CellCoordinates) {
-    // aria-rowindex should start with one, not zero, so we have to add one to the zero-based index
-    const rowIndex = itemIndex + 1;
-
-    const rowElementSelector = `[role="row"][aria-rowindex="${rowIndex}"]`;
-    const rowElement = this.datagridElementRef.nativeElement.querySelector(rowElementSelector);
-    const cellElements = Array.from(rowElement?.querySelectorAll<HTMLElement>('clr-dg-cell') || []);
-
-    return cellElements[columnIndex];
   }
 }
 
