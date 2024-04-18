@@ -7,6 +7,8 @@
 import { ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
+
 const loginTemplate: StoryFn = args => ({
   template: `
     <div class="login-wrapper">
@@ -89,7 +91,14 @@ export default {
   title: 'Login/Login',
   decorators: [
     moduleMetadata({
-      imports: [ClrCheckboxModule, ClrDropdownModule, ClrInputModule, ClrPasswordModule, ClrSelectModule],
+      imports: [
+        ...CommonModules,
+        ClrCheckboxModule,
+        ClrDropdownModule,
+        ClrInputModule,
+        ClrPasswordModule,
+        ClrSelectModule,
+      ],
     }),
   ],
   argTypes: {},
