@@ -125,12 +125,33 @@ export const Datagrid: StoryObj = {
   render: DatagridTemplate,
 };
 
+export const SingleSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    singleSelectable: true,
+  },
+};
+export const MultiSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    multiSelectable: true,
+  },
+};
+export const MultiSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    multiSelectable: true,
+    selectedRows: [1],
+  },
+};
+
 export const ManageColumns: StoryObj = {
   render: DatagridTemplate,
   args: {
     hidableColumns: true,
   },
 };
+
 export const Compact: StoryObj = {
   render: DatagridTemplate,
   args: {
