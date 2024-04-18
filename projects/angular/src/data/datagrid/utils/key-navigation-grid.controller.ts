@@ -148,7 +148,6 @@ export class KeyNavigationGridController implements OnDestroy {
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
-    // console.log(item);
 
     item.focus();
     this._activeCell = item;
@@ -161,8 +160,6 @@ export class KeyNavigationGridController implements OnDestroy {
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
-    console.log(this.cells.length);
-    console.log(this.rows.length);
     const numOfColumns = this.cells ? this.cells.length / this.rows.length - 1 : 0;
 
     let x =
@@ -187,8 +184,6 @@ export class KeyNavigationGridController implements OnDestroy {
     } else if (e.code === inlineEnd && x < numOfColumns) {
       x = x + 1;
     } else if (e.code === 'End') {
-      console.log(x);
-      console.log(numOfColumns);
       x = numOfColumns;
 
       if (e.ctrlKey) {
