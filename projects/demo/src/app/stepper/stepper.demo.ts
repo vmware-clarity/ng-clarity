@@ -5,24 +5,81 @@
  */
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
 })
 export class StepperDemo {
-  form: FormGroup;
+  showSecondStep = true;
+  initialStep = 'name';
+  form: FormGroup = this.getReactiveForm();
+  templateForm: any = this.getTemplateForm();
+  partiallyCompletedForm: FormGroup = this.getReactiveForm();
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      dbMainConfig: this.formBuilder.group({
-        dbName: ['', Validators.required, Validators.minLength(3)], // Database Name
+  stepsExpandedState = {
+    name: false,
+    contact: false,
+    password: false,
+  };
+  loading = false;
+
+  submit() {
+    console.log('reactive form submit', this.form.value);
+  }
+
+  templateFormSubmit(templateFormValues: unknown) {
+    console.log('template form submit', templateFormValues);
+  }
+
+  toggleInitialStep() {
+    this.initialStep = this.initialStep === 'contact' ? 'password' : 'contact';
+  }
+
+  log(value: any) {
+    console.log('value', value);
+  }
+
+  changeStep() {
+    this.loading = true;
+    setTimeout(() => {
+      this.initialStep = 'contact';
+      this.loading = false;
+    }, 400);
+  }
+
+  private getReactiveForm() {
+    return new FormGroup({
+      name: new FormGroup({
+        first: new FormControl('', Validators.minLength(4)),
+        last: new FormControl('Skywalker', Validators.required),
+      }),
+      contact: new FormGroup({
+        email: new FormControl(),
+        phone: new FormControl(),
+      }),
+      password: new FormGroup({
+        password: new FormControl(),
+        confirm: new FormControl(),
       }),
     });
   }
 
-  submit() {
-    console.log('reactive form submit', this.form.value);
+  private getTemplateForm() {
+    return {
+      name: {
+        firstName: '',
+        lastName: '',
+      },
+      contact: {
+        email: '',
+        phone: '',
+      },
+      password: {
+        password: '',
+        confirm: '',
+      },
+    };
   }
 }

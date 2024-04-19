@@ -37,7 +37,7 @@ import { StepperService } from './providers/stepper.service';
   animations: stepAnimation,
   providers: [IfExpandService],
 })
-export class ClrStepperPanel extends ClrAccordionPanel implements OnInit, AfterContentChecked {
+export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
   formGroupWithUpdatesOnBlur: FormGroup = null;
 
@@ -95,15 +95,16 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit, AfterC
       this.subscriptions.push(
         this.formGroup.statusChanges
           .pipe(
-            tap(_ => {
-              console.log('in tap');
-              console.log(_);
-              console.log(this.formGroup);
-            }),
+            // FILTER - only enter when form is touched
             skipUntil(invalidStatusTrigger),
             distinctUntilChanged()
           )
           .subscribe(status => {
+            // Consider using filter pipe instead
+            if (!this.formGroup.touched) {
+              return;
+            }
+
             if (status === 'VALID') {
               console.log('call service.resetPanel');
               this.stepperService.resetPanel(this.id);
