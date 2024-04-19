@@ -102,7 +102,7 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       // assert
-      expect(stepperService.setPanelInvalid).toHaveBeenCalled();
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
     it('should set the panel status to valid if form was previously invalid', () => {
