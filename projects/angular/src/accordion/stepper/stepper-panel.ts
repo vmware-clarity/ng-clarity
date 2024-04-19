@@ -16,7 +16,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
-import { FormGroup, FormGroupName, NgModelGroup } from '@angular/forms';
+import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
@@ -39,7 +39,6 @@ import { StepperService } from './providers/stepper.service';
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
-  formGroupWithUpdatesOnBlur: FormGroup = null;
 
   @ViewChild('headerButton') headerButton: ElementRef;
 
