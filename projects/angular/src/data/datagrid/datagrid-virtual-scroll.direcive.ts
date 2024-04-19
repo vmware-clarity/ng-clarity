@@ -62,7 +62,6 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
   providers: [Items],
 })
 export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-  @Input('customClrVirtualRowsKeyboardScrollPageSize') keyboardScrollPageSize = 32;
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
@@ -100,9 +99,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
     if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
       this._cdkFixedSizeVirtualScrollInputs.itemSize = 24;
-      this._cdkFixedSizeVirtualScrollInputs.minBufferPx = 200;
-      this._cdkFixedSizeVirtualScrollInputs.maxBufferPx = 400;
-      this.keyboardScrollPageSize = 24;
     }
 
     this.datagridKeyNavigationController = this.datagrid.keyNavigation;
@@ -287,16 +283,15 @@ function createVirtualScrollViewportForDatagrid(
 ) {
   const datagridDivElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid');
   const datagridTableElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-table');
-  const datagridHeaderElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-header');
+  const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
   const datagridDivElementRef: ElementRef<HTMLElement> = { nativeElement: datagridDivElement };
 
   let topOffset = 0;
   let totalContentSize = 0;
 
   function updateDatagridElementStyles() {
-    datagridTableElement.style.transform = `translateY(${topOffset}px)`;
-    datagridTableElement.style.height = `${totalContentSize - topOffset}px`;
-    datagridHeaderElement.style.top = `-${topOffset}px`;
+    datagridRowsElement.style.transform = `translateY(${topOffset}px)`;
+    datagridRowsElement.style.height = `${totalContentSize - topOffset}px`;
   }
 
   const virtualScrollViewport = new CdkVirtualScrollViewport(
@@ -323,6 +318,7 @@ function createVirtualScrollViewportForDatagrid(
 
   virtualScrollViewport.setTotalContentSize = (value: number) => {
     totalContentSize = value;
+    datagridTableElement.style.height = `${totalContentSize}px`;
     updateDatagridElementStyles();
   };
 
