@@ -17,7 +17,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormGroupName, NgModelGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -45,9 +45,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  // Didn't find an Angular API for that, we want to trigger invalidation of panels on focus change
-  private formGroupControlsFocusChange: Observable<any>;
-
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     public override commonStrings: ClrCommonStringsService,
@@ -68,16 +65,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   }
 
   get formGroup() {
-    // eslint-disable-next-line no-constant-condition
-    // if (this.formGroupName?.control?.controls && false) {
-    //   if (!this.formGroupWithUpdatesOnBlur) {
-    //     this.formGroupWithUpdatesOnBlur = new FormGroup(
-    //         this.formGroupName?.control?.controls,
-    //         {updateOn: 'blur'}
-    //     );
-    //   }
-    //   return this.formGroupWithUpdatesOnBlur;
-    // }
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
@@ -95,23 +82,21 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       this.subscriptions.push(
         this.formGroup.statusChanges
           .pipe(
-            // FILTER - only enter when form is touched
+            // TODO: Filter - only enter when form is touched
             skipUntil(invalidStatusTrigger),
             distinctUntilChanged()
           )
           .subscribe(status => {
-            // Consider using filter pipe instead
+            // TODO: Consider using filter pipe instead
             if (!this.formGroup.touched) {
               return;
             }
 
             if (status === 'VALID') {
-              console.log('call service.resetPanel');
               this.stepperService.resetPanel(this.id);
               console.log('call service.setPanelValid');
               // this.stepperService.setPanelValid(this.id);
             } else if (status === 'INVALID') {
-              console.log('call service.setPanelInvalid');
               this.stepperService.setPanelInvalid(this.id);
             }
           })
@@ -124,7 +109,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   }
 
   private listenToFocusChanges() {
-    console.log('focus change');
     this.subscriptions.push(
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))

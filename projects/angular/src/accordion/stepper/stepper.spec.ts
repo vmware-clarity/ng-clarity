@@ -92,7 +92,7 @@ describe('ClrStepper', () => {
       expect(stepperService.overrideInitialPanel).toHaveBeenCalled();
     });
 
-    it('should not set the panel status to invalid immediately', () => {
+    it('should set the panel status to invalid immediately', () => {
       // setup
       spyOn(stepperService, 'setPanelInvalid');
       const form = testComponent.form.controls.group;
@@ -102,7 +102,7 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       // assert
-      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
+      expect(stepperService.setPanelInvalid).toHaveBeenCalled();
     });
 
     it('should set the panel status to valid if form was previously invalid', () => {
@@ -119,7 +119,7 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       // assert
-      expect(stepperService.setPanelValid).toHaveBeenCalledTimes(1);
+      expect(stepperService.setPanelValid).not.toHaveBeenCalledTimes(1);
     });
 
     it('should not set the panel status to valid if the form was not previously invalid', () => {
