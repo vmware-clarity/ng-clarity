@@ -53,6 +53,7 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    selectedRows: [],
   },
 };
 
@@ -92,7 +93,11 @@ const DatagridTemplate: StoryFn = args => ({
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
+      <clr-dg-row
+        *clrDgItems="let element of elements; let index = index"
+        [clrDgItem]="element"
+        [clrDgSelected]="selectedRows.includes(index)"
+      >
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -121,9 +126,58 @@ export const Datagrid: StoryObj = {
   render: DatagridTemplate,
 };
 
+export const SingleSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    singleSelectable: true,
+  },
+};
+export const MultiSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    multiSelectable: true,
+  },
+};
+export const MultiSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    multiSelectable: true,
+    selectedRows: [1],
+  },
+};
+
 export const ManageColumns: StoryObj = {
   render: DatagridTemplate,
   args: {
     hidableColumns: true,
+  },
+};
+
+export const Compact: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+  },
+};
+export const CompactSingleSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    singleSelectable: true,
+  },
+};
+export const CompactMultiSelect: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    multiSelectable: true,
+  },
+};
+export const CompactMultiSelectWithSelection: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    compact: true,
+    multiSelectable: true,
+    selectedRows: [1],
   },
 };

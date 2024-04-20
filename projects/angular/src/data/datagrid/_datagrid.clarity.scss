@@ -860,6 +860,12 @@
       }
     }
 
+    .datagrid-row {
+      .datagrid-select {
+        padding: 0 tokens.$cds-global-space-7;
+      }
+    }
+
     .datagrid-cell {
       clr-icon {
         margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
@@ -913,7 +919,7 @@
     }
 
     .datagrid-footer {
-      padding: 0 tables-variables.$clr-table-cellpadding;
+      padding: 0 tokens.$cds-global-space-7;
       line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
 
       .pagination {
