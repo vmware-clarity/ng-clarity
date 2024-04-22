@@ -13,7 +13,9 @@ import { COLORS, NAMES, POKEMONS } from './values';
 @Injectable()
 export class Inventory {
   size = 100;
+  generatedCount = 0;
   latency = 0;
+
   private _all: User[] = [];
   private _currentQuery: User[];
   private allUsers = new BehaviorSubject<User[]>(this.all);
@@ -39,7 +41,7 @@ export class Inventory {
 
     for (let i = 0; i < size; i++) {
       newData.push({
-        id: Math.floor(Math.random() * 10001),
+        id: this.generatedCount + i,
         name: this.getItem(i, NAMES),
         creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
@@ -47,6 +49,8 @@ export class Inventory {
         expanded: false,
       });
     }
+
+    this.generatedCount += size;
 
     return newData;
   }

@@ -916,7 +916,7 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toEqual(cells[3].querySelector('[type=radio]'));
       });
 
       it('Moves focus on Home and End', function () {

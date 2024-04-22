@@ -283,6 +283,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             this.detailService.close();
           }
         }
+
+        // retain active cell
+        // const active = document.activeElement as HTMLElement;
+        const active = this.keyNavigation.getActiveCell();
+        if (active) {
+          this.zone.runOutsideAngular(() => {
+            setTimeout(() => this.keyNavigation.setActiveCell(active));
+          });
+        }
       })
     );
   }

@@ -6,10 +6,12 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
-import { Inventory } from '../inventory/inventory';
+import { FetchResult, Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
+import { ColorFilter } from '../utils/color-filter';
 
 @Component({
   selector: 'clr-datagrid-virtual-scroll-server-side-demo',
@@ -29,6 +31,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
     this._inventory = inventory;
     this._inventory.size = this.currentPageSize * 3;
     this._inventory.lazyLoadUsers(this._inventory.size);
+
     this.users = this._inventory.getAllUsersSubject();
   }
 
@@ -80,5 +83,30 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
 
       this.cdr.detectChanges();
     }, 2000);
+  }
+
+  refresh(state: ClrDatagridStateInterface) {
+    const filters: { [key: string]: any[] } = {};
+    this.loading = true;
+
+    if (state.filters) {
+      for (const filter of state.filters) {
+        if (filter instanceof ColorFilter) {
+          filters.color = filter.listSelected();
+        } else {
+          const { property, value } = filter;
+          filters[property] = [value];
+        }
+      }
+    }
+
+    this._inventory
+      .filter(filters)
+      .sort(state.sort as { by: string; reverse: boolean })
+      .fetch()
+      .then((result: FetchResult) => {
+        this._inventory.getAllUsersSubject().next(result.users);
+        this.loading = false;
+      });
   }
 }

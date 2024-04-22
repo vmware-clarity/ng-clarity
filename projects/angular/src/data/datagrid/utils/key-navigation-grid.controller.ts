@@ -196,7 +196,7 @@ export class KeyNavigationGridController implements OnDestroy {
         y = 0;
       }
     } else if (e.code === 'PageUp') {
-      y = y - itemsPerPage > 0 ? y - itemsPerPage : 0;
+      y = y - itemsPerPage > 0 ? y - itemsPerPage + 1 : 1;
     } else if (e.code === 'PageDown') {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
