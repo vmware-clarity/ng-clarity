@@ -52,7 +52,7 @@
       }
     }
 
-    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open {
       background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
 
       &:hover,
@@ -177,10 +177,8 @@
     .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
-    .clr-accordion-panel-complete {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
-      }
+    .clr-accordion-panel-complete > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
     .clr-accordion-panel-error > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
@@ -209,16 +207,16 @@
   }
 
   .clr-accordion-panel-complete {
-    .clr-accordion-complete-icon {
+    & > .clr-accordion-complete-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-complete-color;
     }
 
-    .clr-accordion-angle {
+    & > .clr-accordion-angle {
       visibility: visible;
     }
 
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
 
@@ -235,7 +233,7 @@
       background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
-    .clr-accordion-error-icon {
+    & > .clr-accordion-error-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-error-color;
     }
