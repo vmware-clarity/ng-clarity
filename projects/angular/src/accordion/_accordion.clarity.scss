@@ -182,10 +182,8 @@
         box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
       }
     }
-    .clr-accordion-panel-error {
-      > .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      }
+    .clr-accordion-panel-error > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
     }
 
     & > .clr-accordion-content-region .clr-accordion-content {
@@ -230,7 +228,7 @@
   }
 
   .clr-accordion-panel-error {
-    > .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
       border-color: accordion-variables.$clr-accordion-error-color;
       border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
