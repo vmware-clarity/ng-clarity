@@ -16,6 +16,7 @@ export class MarkControlService {
   }
 
   markAsTouched() {
+    console.log('🚀 ~ MarkControlService ~ markAsTouched ~ markAsTouched:');
     this._touched.next();
   }
 }

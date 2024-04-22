@@ -5,6 +5,7 @@
  */
 
 import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 import { NgControlService } from '../providers/ng-control.service';
 import { AbstractIfState } from './abstract-if-state';
@@ -34,14 +35,20 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && this.control) {
+    console.log('🚀 ~ ClrIfError ~ 1:', this.control?.name, this.control?.invalid, this.control?.errors, this.controls);
+    if (this.error && this.control && !!this.control.invalid) {
       this.displayError(this.control.hasError(this.error));
+    } else if (this.error && this.controls) {
+      const control = this.filterControlsHavingError();
+      console.log('🚀 ~ ClrIfError ~ overridehandleState ~ control:', control);
+      this.displayError(!!control.length, control[0]);
     } else {
       this.displayError(CONTROL_STATE.INVALID === state);
     }
   }
 
-  private displayError(invalid: boolean) {
+  private displayError(invalid: boolean, control = this.control) {
+    console.log('🚀 ~ ClrIfError ~ displayError ~ invalid:', invalid);
     /* if no container do nothing */
     if (!this.container) {
       return;
@@ -49,16 +56,20 @@ export class ClrIfError extends AbstractIfState {
     if (invalid) {
       if (this.displayedContent === false) {
         this.embeddedViewRef = this.container.createEmbeddedView(this.template, {
-          error: this.control.getError(this.error),
+          error: control.getError(this.error),
         });
         this.displayedContent = true;
       } else if (this.embeddedViewRef && this.embeddedViewRef.context) {
         // if view is already rendered, update the error object to keep it in sync
-        this.embeddedViewRef.context.error = this.control.getError(this.error);
+        this.embeddedViewRef.context.error = control.getError(this.error);
       }
     } else {
       this.container.clear();
       this.displayedContent = false;
     }
+  }
+
+  private filterControlsHavingError() {
+    return this.controls.filter((control: NgControl) => control.hasError(this.error));
   }
 }

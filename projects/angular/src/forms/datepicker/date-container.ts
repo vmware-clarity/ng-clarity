@@ -80,6 +80,7 @@ import { ViewManagerService } from './providers/view-manager.service';
           aria-hidden="true"
         ></cds-icon>
       </div>
+      {{ showInvalid }}
       <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
       <ng-content select="clr-control-error" *ngIf="showInvalid"></ng-content>
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>

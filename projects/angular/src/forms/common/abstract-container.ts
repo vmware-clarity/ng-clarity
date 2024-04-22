@@ -26,6 +26,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
 
   control: NgControl;
+  controls: NgControl[] = [];
   _dynamic = false;
 
   protected subscriptions: Subscription[] = [];
@@ -41,6 +42,10 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     this.subscriptions.push(
       this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
         this.state = state;
+        console.log(
+          '🚀 ~ ClrAbstractContainer ~ this.ifControlStateService.statusChanges.subscribe ~ this.state:',
+          this.state
+        );
         this.updateHelpers();
       })
     );
@@ -48,6 +53,9 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     this.subscriptions.push(
       this.ngControlService.controlChanges.subscribe(control => {
         this.control = control;
+      }),
+      this.ngControlService.controlsChanges.subscribe(control => {
+        this.controls = control;
       })
     );
   }
@@ -78,15 +86,33 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
   }
 
   get showValid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent;
+    return (
+      this.touched && this.state === CONTROL_STATE.VALID && !!this.controlSuccessComponent
+      //  && this.addtionalControlsValid
+    );
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent;
+    return (
+      this.touched && this.state === CONTROL_STATE.INVALID && !!this.controlErrorComponent
+      //  ||      this.addtionalControlsValid
+    );
+  }
+
+  get addtionalControlsValid() {
+    return this.controls.some((control: NgControl) => !!control.touched && !!control.valid);
+  }
+
+  get addtionalControlsInValid() {
+    return this.controls.some((control: NgControl) => !!control.touched && !!control.invalid);
+  }
+
+  get addtionalControlsTouched() {
+    return this.controls.some((control: NgControl) => !!control.touched);
   }
 
   private get touched() {
-    return this.control?.touched;
+    return this.control?.touched || this.addtionalControlsTouched;
   }
 
   ngAfterContentInit() {
