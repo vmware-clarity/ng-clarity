@@ -92,7 +92,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
             }
 
             if (status === 'VALID') {
-              this.stepperService.resetPanel(this.id);
+              this.stepperService.setPanelValid(this.id);
             } else if (status === 'INVALID') {
               this.stepperService.setPanelInvalid(this.id);
             }
