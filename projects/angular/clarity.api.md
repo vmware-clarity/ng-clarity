@@ -3200,12 +3200,14 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
-    ariaLabel: string;
+    ariaLabelledBy: string;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
+    // (undocumented)
+    groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
@@ -3219,7 +3221,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null, null]>;
 }

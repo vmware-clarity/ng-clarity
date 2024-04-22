@@ -4,8 +4,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  Input,
+  Optional,
+  QueryList,
+} from '@angular/core';
 
+import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
+import { ClrLabel } from '../common';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 import { ContainerIdService } from '../common/providers/container-id.service';
@@ -47,17 +58,19 @@ import { ClrRadio } from './radio';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
-    '[attr.aria-label]': 'ariaLabel',
+    '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
-  ariaLabel: string;
+  ariaLabelledBy: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+  @ContentChild(ClrLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
 
   private inline = false;
+  private _generatedId = uniqueIdFactory();
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -88,14 +101,20 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   override ngAfterContentInit() {
     this.setAriaRoles();
-    this.setAriaLabel();
+    this.setAriaLabelledBy();
   }
 
   private setAriaRoles() {
     this.role = this.radios.length ? 'group' : null;
   }
 
-  private setAriaLabel() {
-    this.ariaLabel = this.radios.length ? this.label?.labelText : null;
+  private setAriaLabelledBy() {
+    const _id = this.groupLabel?.nativeElement.getAttribute('id');
+    if (!_id) {
+      this.groupLabel?.nativeElement.setAttribute('id', this._generatedId);
+      this.ariaLabelledBy = this.radios.length ? this._generatedId : null;
+    } else {
+      this.ariaLabelledBy = this.radios.length ? _id : null;
+    }
   }
 }
