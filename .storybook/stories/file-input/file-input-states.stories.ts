@@ -89,6 +89,11 @@ const fileInputStatesTemplate: StoryFn = args => ({
         <clr-control-success>Success message</clr-control-success>
         <clr-control-error *clrIfError="'required'">Required</clr-control-error>
       </clr-file-input-container>
+
+      <clr-file-input-container>
+        <label>Disabled</label>
+        <input type="file" clrFileInput disabled />
+      </clr-file-input-container>
     </form>
   `,
   props: { ...args },
