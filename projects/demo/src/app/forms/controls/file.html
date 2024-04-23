@@ -32,7 +32,7 @@ touched: {{ form.controls.file.touched }}
 
 status: {{ form.controls.file.status }}
 
-value: {{ form.controls.file.value}}
+value: {{ form.controls.file.value }}
 
 errors: {{ form.controls.file.errors | json }}
   </pre>
@@ -54,7 +54,7 @@ errors: {{ form.controls.file.errors | json }}
     <div class="clr-control-container">
       <div class="clr-file-input-wrapper">
         <label for="basic" class="clr-control-label">
-          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+          <span class="btn btn-sm clr-file-input-browse-button">browse</span>
         </label>
         <input type="file" id="basic" placeholder="Enter value here" class="clr-file-input" />
       </div>
@@ -67,7 +67,7 @@ errors: {{ form.controls.file.errors | json }}
     <div class="clr-control-container clr-error">
       <div class="clr-file-input-wrapper">
         <label for="error" class="clr-control-label">
-          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+          <span class="btn btn-sm clr-file-input-browse-button">browse</span>
         </label>
         <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -82,7 +82,7 @@ errors: {{ form.controls.file.errors | json }}
     <div class="clr-control-container clr-success">
       <div class="clr-file-input-wrapper">
         <label for="error" class="clr-control-label">
-          <span class="btn btn-sm clr-file-input-wrapper__browse-button">browse</span>
+          <span class="btn btn-sm clr-file-input-browse-button">browse</span>
         </label>
         <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
@@ -96,7 +96,7 @@ errors: {{ form.controls.file.errors | json }}
     <label class="clr-control-label">Disabled</label>
     <div class="clr-control-container clr-error">
       <div class="clr-file-input-wrapper">
-        <button class="btn btn-sm clr-file-input-wrapper__browse-button" disabled>browse</button>
+        <button class="btn btn-sm clr-file-input-browse-button" disabled>browse</button>
         <input type="file" id="disaled" disabled placeholder="Enter value here" class="clr-file-input" />
         <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>

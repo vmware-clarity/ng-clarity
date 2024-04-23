@@ -23,19 +23,14 @@ import { ClrFileInput } from './file-input';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-file-input-wrapper">
         <ng-content select="[clrFileInput]"></ng-content>
-        <button
-          type="button"
-          class="btn btn-sm clr-file-input-wrapper__browse-button"
-          [disabled]="disabled"
-          (click)="browse()"
-        >
+        <button type="button" class="btn btn-sm clr-file-input-browse-button" [disabled]="disabled" (click)="browse()">
           <cds-icon shape="folder-open"></cds-icon>
           {{ fileInput?.selection?.buttonLabel || customButtonLabel || commonStrings.keys.browse }}
         </button>
         <button
           *ngIf="fileInput?.selection?.fileCount"
           type="button"
-          class="btn btn-sm btn-link clr-file-input-wrapper__clear-button"
+          class="btn btn-sm clr-file-input-clear-button"
           (click)="clearSelectedFiles()"
         >
           <cds-icon shape="times" status="neutral" size="md"></cds-icon>

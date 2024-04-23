@@ -7,9 +7,7 @@
 
 import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout, commonStringsDefault } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
-
-import { clearFiles, selectFiles } from '../../../projects/angular/src/forms/file-input/file-input.spec.helpers';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 export default {
   title: 'File Input/File Input',
@@ -35,7 +33,7 @@ const fileInputTemplate: StoryFn = args => ({
     <form clrForm [clrLayout]="clrLayout">
       <clr-file-input-container [clrButtonLabel]="clrButtonLabel">
         <label>File</label>
-        <input type="file" name="file" [(ngModel)]="file" clrFileInput required />
+        <input type="file" name="file" [(ngModel)]="file" clrFileInput required multiple />
         <clr-control-helper>Helper message</clr-control-helper>
         <clr-control-success>Success message</clr-control-success>
         <clr-control-error *clrIfError="'required'">Required</clr-control-error>
@@ -52,40 +50,8 @@ export const VerticalFileInput: StoryObj = {
   },
 };
 
-export const VerticalFileInputSuccess: StoryObj = {
-  render: fileInputTemplate,
-  play: successAction,
-  args: {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-};
-
-export const VerticalFileInputError: StoryObj = {
-  render: fileInputTemplate,
-  play: errorAction,
-  args: {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-};
-
 export const HorizontalFileInput: StoryObj = {
   render: fileInputTemplate,
-  args: {
-    clrLayout: ClrFormLayout.HORIZONTAL,
-  },
-};
-
-export const HorizontalFileInputSuccess: StoryObj = {
-  render: fileInputTemplate,
-  play: successAction,
-  args: {
-    clrLayout: ClrFormLayout.HORIZONTAL,
-  },
-};
-
-export const HorizontalFileInputError: StoryObj = {
-  render: fileInputTemplate,
-  play: errorAction,
   args: {
     clrLayout: ClrFormLayout.HORIZONTAL,
   },
@@ -97,32 +63,3 @@ export const CompactFileInput: StoryObj = {
     clrLayout: ClrFormLayout.COMPACT,
   },
 };
-
-export const CompactFileInputSuccess: StoryObj = {
-  render: fileInputTemplate,
-  play: successAction,
-  args: {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-};
-
-export const CompactFileInputError: StoryObj = {
-  render: fileInputTemplate,
-  play: errorAction,
-  args: {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-};
-
-function successAction({ canvasElement }: StoryContext) {
-  const fileInputElement = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
-
-  selectFiles(fileInputElement, [new File([''], 'file.txt')]);
-}
-
-function errorAction({ canvasElement }: StoryContext) {
-  const fileInputElement = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
-
-  selectFiles(fileInputElement, [new File([''], 'file.txt')]);
-  clearFiles(fileInputElement);
-}

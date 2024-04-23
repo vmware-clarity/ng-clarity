@@ -103,7 +103,7 @@ function fileInputSpec<TTestComponent extends ITestComponent>(TestComponent: Typ
 
     nativeElement = fixture.nativeElement;
     fileInputElement = nativeElement.querySelector('input[type="file"]');
-    browseButtonElement = nativeElement.querySelector('.clr-file-input-wrapper__browse-button');
+    browseButtonElement = nativeElement.querySelector('.clr-file-input-browse-button');
 
     fixture.detectChanges();
   });
@@ -148,19 +148,19 @@ function fileInputSpec<TTestComponent extends ITestComponent>(TestComponent: Typ
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
     fixture.detectChanges();
 
-    expect(nativeElement.querySelector('.clr-file-input-wrapper__clear-button')).toBeTruthy();
+    expect(nativeElement.querySelector('.clr-file-input-clear-button')).toBeTruthy();
   });
 
   it('should clear the selected file when the clear button is clicked', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
     fixture.detectChanges();
 
-    nativeElement.querySelector<HTMLButtonElement>('.clr-file-input-wrapper__clear-button').click();
+    nativeElement.querySelector<HTMLButtonElement>('.clr-file-input-clear-button').click();
     fixture.detectChanges();
 
     expect(fileInputElement.files.length).toBe(0);
     expect(browseButtonElement.innerText.trim()).toBe('BROWSE');
-    expect(nativeElement.querySelector('.clr-file-input-wrapper__clear-button')).toBeNull();
+    expect(nativeElement.querySelector('.clr-file-input-clear-button')).toBeNull();
   });
 
   it('should disable the button when the control is disabled', () => {
