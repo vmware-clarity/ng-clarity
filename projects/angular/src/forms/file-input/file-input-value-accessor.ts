@@ -24,7 +24,7 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
 
     if (value) {
       selectFiles(this.elementRef.nativeElement, value);
-    } else {
+    } else if (this.elementRef.nativeElement.files.length) {
       clearFiles(this.elementRef.nativeElement);
     }
   }

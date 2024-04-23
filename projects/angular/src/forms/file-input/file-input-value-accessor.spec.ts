@@ -129,13 +129,33 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
     expect(fixture.componentInstance.control.value).toBe(files);
   });
 
-  it('should handle writing value: undefined', () => {
+  it('should handle writing value: undefined (do nothing when no file was selected to prevent touching the control)', () => {
+    const files = fileInputElement.files;
+
+    fixture.componentInstance.control.setValue(undefined);
+
+    expect(fileInputElement.files).toBe(files);
+  });
+
+  it('should handle writing value: null (do nothing when no file was selected to prevent touching the control)', () => {
+    const files = fileInputElement.files;
+
+    fixture.componentInstance.control.setValue(null);
+
+    expect(fileInputElement.files).toBe(files);
+  });
+
+  it('should handle writing value: undefined (clear selected files)', () => {
+    selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
+
     fixture.componentInstance.control.setValue(undefined);
 
     expect(fileInputElement.files.length).toBe(0);
   });
 
-  it('should handle writing value: null', () => {
+  it('should handle writing value: null (clear selected files)', () => {
+    selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
+
     fixture.componentInstance.control.setValue(null);
 
     expect(fileInputElement.files.length).toBe(0);
