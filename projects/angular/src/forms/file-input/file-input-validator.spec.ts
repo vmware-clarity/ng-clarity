@@ -88,16 +88,16 @@ class TemplateDrivenTest implements TestComponent {
 
 describe('ClrFileInputValidator', () => {
   describe('reactive', () => {
-    fileInputValidatorSpec<ReactiveTest>(ReactiveTest);
+    fileInputValidatorSpec(ReactiveTest);
   });
 
   describe('template-driven', () => {
-    fileInputValidatorSpec<TemplateDrivenTest>(TemplateDrivenTest);
+    fileInputValidatorSpec(TemplateDrivenTest);
   });
 });
 
-function fileInputValidatorSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
-  let fixture: ComponentFixture<TTestComponent>;
+function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
+  let fixture: ComponentFixture<TestComponent>;
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
 

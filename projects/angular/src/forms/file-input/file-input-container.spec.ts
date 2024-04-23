@@ -81,16 +81,16 @@ describe('ClrFileInputContainer', () => {
   TemplateDrivenSpec(ClrFileInputContainer, ClrFileInput, TemplateDrivenTest, clrFileInputSelector);
 
   describe('reactive', () => {
-    fileInputSpec<ReactiveTest>(ReactiveTest);
+    fileInputSpec(ReactiveTest);
   });
 
   describe('template-driven', () => {
-    fileInputSpec<TemplateDrivenTest>(TemplateDrivenTest);
+    fileInputSpec(TemplateDrivenTest);
   });
 });
 
-function fileInputSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
-  let fixture: ComponentFixture<TTestComponent>;
+function fileInputSpec(testComponent: Type<TestComponent>) {
+  let fixture: ComponentFixture<TestComponent>;
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
   let browseButtonElement: HTMLButtonElement;

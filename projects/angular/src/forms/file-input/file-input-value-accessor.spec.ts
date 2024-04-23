@@ -86,16 +86,16 @@ class TemplateDrivenTest implements TestComponent {
 
 describe('ClrFileInputValueAccessor', () => {
   describe('reactive', () => {
-    fileInputValueAccessorSpec<ReactiveTest>(ReactiveTest);
+    fileInputValueAccessorSpec(ReactiveTest);
   });
 
   describe('template-driven', () => {
-    fileInputValueAccessorSpec<TemplateDrivenTest>(TemplateDrivenTest);
+    fileInputValueAccessorSpec(TemplateDrivenTest);
   });
 });
 
-function fileInputValueAccessorSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
-  let fixture: ComponentFixture<TTestComponent>;
+function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
+  let fixture: ComponentFixture<TestComponent>;
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
 
