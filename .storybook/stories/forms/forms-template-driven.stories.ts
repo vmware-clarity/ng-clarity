@@ -9,6 +9,7 @@ import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -36,6 +37,7 @@ export default {
     // inputs
     clrLabelSize: 2,
     // story helpers
+    elements,
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
@@ -65,6 +67,14 @@ const TemplateDrivenStory: StoryFn = args => ({
         <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
         <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
       </clr-input-container>
+      <clr-datalist-container>
+        <label>Element</label>
+        <input clrDatalistInput name="element" [(ngModel)]="data.element" />
+        <datalist>
+          <option *ngFor="let element of elements" [value]="element.symbol">{{ element.name }}</option>
+        </datalist>
+        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+      </clr-datalist-container>
       <clr-password-container>
         <label>Password</label>
         <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password" />
@@ -107,6 +117,11 @@ function getForm() {
 
 export const HorizontalLayout: StoryObj = {
   render: TemplateDrivenStory,
+};
+
+export const HorizontalLayoutLabelSize6: StoryObj = {
+  render: TemplateDrivenStory,
+  args: { clrLabelSize: 6 },
 };
 
 export const VerticalLayout: StoryObj = {

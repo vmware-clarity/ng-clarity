@@ -36,6 +36,7 @@ export default {
 const DatalistTemplate: StoryFn = args => ({
   template: `
     <clr-datalist-container>
+      <label>Element</label>
       <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
       <datalist>
         <ng-container *ngFor="let element of elements; let i = index">
