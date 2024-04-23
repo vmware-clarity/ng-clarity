@@ -127,6 +127,13 @@ const RequiredMarkTemplate: StoryFn = args => ({
         <label class="clr-required-mark">Range</label>
         <input type="range" clrRange formControlName="range" name="three" required />
       </clr-range-container>
+      <clr-toggle-container>
+        <label class="clr-required-mark">Toggle switch</label>
+        <clr-toggle-wrapper>
+          <input type="checkbox" clrToggle name="toggle" formControlName="toggle" required value="option1" />
+          <label>Option 1</label>
+        </clr-toggle-wrapper>
+      </clr-toggle-container>
     </form>
   `,
   props: args,
@@ -146,6 +153,7 @@ function getForm() {
     datepicker: new FormControl(null),
     radio: new FormControl(null),
     range: new FormControl(null),
+    toggle: new FormControl(null),
   });
 }
 
