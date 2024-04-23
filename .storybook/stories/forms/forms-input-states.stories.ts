@@ -31,8 +31,8 @@ export default {
 const FormInputTemplate: StoryFn = args => ({
   template: `
     <form clrForm>
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label class="clr-control-label">Text</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Text</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-input-wrapper">
             <input type="text" class="clr-input" name="name" [ngModel]="name" [disabled]="isDisabled" />
@@ -45,8 +45,8 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label class="clr-control-label">Number</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Number</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-input-wrapper">
             <input type="number" class="clr-input" [ngModel]="age" name="age" [disabled]="isDisabled" />
@@ -59,8 +59,8 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label for="example" class="clr-control-label">Password</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label for="example" class="clr-control-label clr-col-12 clr-col-md-2">Password</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-input-wrapper">
             <input
@@ -82,8 +82,8 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label for="textarea-basic-error" class="clr-control-label">Textarea</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label for="textarea-basic-error" class="clr-control-label clr-col-12 clr-col-md-2">Textarea</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-textarea-wrapper">
             <textarea class="clr-textarea" [ngModel]="description" name="description" [disabled]="isDisabled"></textarea>
@@ -96,8 +96,8 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label class="clr-control-label">Basic select</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Basic select</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess && !isError, 'clr-error': isError }">
           <div class="clr-select-wrapper">
             <select class="clr-select" [ngModel]="options" name="options" [disabled]="isDisabled" required>
@@ -114,8 +114,8 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label class="clr-control-label">Checkbox</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Checkbox</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-checkbox-wrapper">
             <input
@@ -127,7 +127,7 @@ const FormInputTemplate: StoryFn = args => ({
               [disabled]="isDisabled"
               class="clr-checkbox"
             />
-            <label for="option1" class="clr-control-label">Option</label>
+            <label for="option1" class="clr-control-label clr-col-12 clr-col-md-2">Option</label>
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           <div class="clr-subtext-wrapper">
@@ -144,8 +144,8 @@ const FormInputTemplate: StoryFn = args => ({
         <input type="date" autocomplete="off" clrDate [ngModel]="demo" name="demo" [disabled]="isDisabled" />
       </clr-date-container>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
-        <label class="clr-control-label">Basic radio</label>
+      <div class="clr-form-control clr-row" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Basic radio</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-radio-wrapper">
             <input
@@ -157,7 +157,7 @@ const FormInputTemplate: StoryFn = args => ({
               class="clr-radio"
               [disabled]="isDisabled"
             />
-            <label for="radio1" class="clr-control-label">option1</label>
+            <label for="radio1" class="clr-control-label clr-col-12 clr-col-md-2">option1</label>
           </div>
           <div class="clr-radio-wrapper">
             <input
@@ -169,7 +169,7 @@ const FormInputTemplate: StoryFn = args => ({
               class="clr-radio"
               [disabled]="isDisabled"
             />
-            <label for="radio2" class="clr-control-label">option2</label>
+            <label for="radio2" class="clr-control-label clr-col-12 clr-col-md-2">option2</label>
           </div>
           <div class="clr-radio-wrapper">
             <input
@@ -181,7 +181,7 @@ const FormInputTemplate: StoryFn = args => ({
               class="clr-radio"
               [disabled]="isDisabled"
             />
-            <label for="radio3" class="clr-control-label">option3</label>
+            <label for="radio3" class="clr-control-label clr-col-12 clr-col-md-2">option3</label>
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           <div class="clr-subtext-wrapper">
