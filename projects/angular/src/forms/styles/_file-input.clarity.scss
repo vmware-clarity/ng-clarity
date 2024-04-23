@@ -39,17 +39,9 @@
       border: 0;
     }
 
-    // hack to get text ellipsis to work (the 3px spacing is for vertically centering the text)
-    .clr-file-input-browse-button {
-      display: inline-block;
+    .clr-file-input-browse-button-text {
+      overflow: hidden;
       text-overflow: ellipsis;
-      padding-top: 3px;
-      padding-bottom: 3px;
-
-      cds-icon {
-        margin-top: -3px; // spacing hack for vertical center
-        margin-right: tokens.$cds-global-space-5;
-      }
     }
   }
 }
