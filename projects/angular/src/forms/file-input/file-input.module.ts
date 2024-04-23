@@ -7,16 +7,28 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ClarityIcons, folderOpenIcon } from '@cds/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileInputValidator } from './file-input-validator';
+import { ClrFileInputValueAccessor } from './file-input-value-accessor';
 
 @NgModule({
   imports: [CommonModule, ClrIconModule, ClrCommonFormsModule],
-  declarations: [ClrFileInput, ClrFileInputContainer, ClrFileInputValidator],
-  exports: [ClrCommonFormsModule, ClrFileInput, ClrFileInputContainer, ClrFileInputValidator],
+  declarations: [ClrFileInput, ClrFileInputContainer, ClrFileInputValidator, ClrFileInputValueAccessor],
+  exports: [
+    ClrCommonFormsModule,
+    ClrFileInput,
+    ClrFileInputContainer,
+    ClrFileInputValidator,
+    ClrFileInputValueAccessor,
+  ],
 })
-export class ClrFileInputModule {}
+export class ClrFileInputModule {
+  constructor() {
+    ClarityIcons.addIcons(folderOpenIcon);
+  }
+}

@@ -13,7 +13,11 @@ import { ClrCommonFormsModule } from '../common';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
-import { selectFiles } from './file-input.spec.helpers';
+import { selectFiles } from './file-input.helpers';
+
+interface TestComponent {
+  buttonLabel: string;
+}
 
 @Component({
   template: `
@@ -42,10 +46,10 @@ class NoLabelTest {
     </form>
   `,
 })
-class ReactiveTest {
+class ReactiveTest implements TestComponent {
   disabled = false;
   form = new FormGroup({
-    model: new FormControl({ value: undefined, disabled: this.disabled }, Validators.required),
+    model: new FormControl<FileList>({ value: undefined, disabled: this.disabled }, Validators.required),
   });
 
   buttonLabel: string;
@@ -62,32 +66,30 @@ class ReactiveTest {
     </clr-file-input-container>
   `,
 })
-class TemplateTest {
+class TemplateDrivenTest implements TestComponent {
   disabled = false;
-  model: string;
+  model: FileList;
 
   buttonLabel: string;
 }
 
 describe('ClrFileInputContainer', () => {
+  const clrFileInputSelector = '.clr-file-input-wrapper [clrFileInput]';
+
   ContainerNoLabelSpec(ClrFileInputContainer, ClrFileInput, NoLabelTest);
-  ReactiveSpec(ClrFileInputContainer, ClrFileInput, ReactiveTest, '.clr-file-input-wrapper [clrFileInput]');
-  TemplateDrivenSpec(ClrFileInputContainer, ClrFileInput, TemplateTest, '.clr-file-input-wrapper [clrFileInput]');
+  ReactiveSpec(ClrFileInputContainer, ClrFileInput, ReactiveTest, clrFileInputSelector);
+  TemplateDrivenSpec(ClrFileInputContainer, ClrFileInput, TemplateDrivenTest, clrFileInputSelector);
 
   describe('reactive', () => {
     fileInputSpec<ReactiveTest>(ReactiveTest);
   });
 
   describe('template-driven', () => {
-    fileInputSpec<TemplateTest>(TemplateTest);
+    fileInputSpec<TemplateDrivenTest>(TemplateDrivenTest);
   });
 });
 
-interface ITestComponent {
-  buttonLabel: string;
-}
-
-function fileInputSpec<TTestComponent extends ITestComponent>(TestComponent: Type<TTestComponent>) {
+function fileInputSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
   let fixture: ComponentFixture<TTestComponent>;
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
@@ -96,10 +98,10 @@ function fileInputSpec<TTestComponent extends ITestComponent>(TestComponent: Typ
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule],
-      declarations: [ClrFileInputContainer, ClrFileInput, TestComponent],
+      declarations: [ClrFileInputContainer, ClrFileInput, testComponent],
     });
 
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(testComponent);
 
     nativeElement = fixture.nativeElement;
     fileInputElement = nativeElement.querySelector('input[type="file"]');

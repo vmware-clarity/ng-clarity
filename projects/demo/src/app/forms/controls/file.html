@@ -32,7 +32,7 @@ touched: {{ form.controls.file.touched }}
 
 status: {{ form.controls.file.status }}
 
-value: {{ form.controls.file.value }}
+value (length): {{ form.controls.file.value?.length }}
 
 errors: {{ form.controls.file.errors | json }}
   </pre>

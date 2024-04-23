@@ -6,7 +6,7 @@
  */
 
 import { Directive, ElementRef, Input } from '@angular/core';
-import { NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
   selector: 'input[type="file"][clrFileInput]',
@@ -18,19 +18,19 @@ export class ClrFileInputValidator implements Validator {
 
   constructor(private readonly elementRef: ElementRef<HTMLInputElement>) {}
 
-  validate(): ValidationErrors {
+  validate(control: AbstractControl<FileList>): ValidationErrors {
+    const files = control.value;
     const fileInputElement = this.elementRef.nativeElement;
-    const files = fileInputElement.files;
 
     const errors: ValidationErrors = {};
 
     // required validation (native attribute)
-    if (fileInputElement.required && files.length === 0) {
+    if (fileInputElement.required && files?.length === 0) {
       errors.required = true;
     }
 
     // accept validation (native attribute)
-    if (fileInputElement.accept && files.length > 0) {
+    if (fileInputElement.accept && files?.length > 0) {
       const accept = fileInputElement.accept.split(',').map(type => type.trim());
 
       for (let i = 0; i < files.length; i++) {
@@ -45,7 +45,7 @@ export class ClrFileInputValidator implements Validator {
     }
 
     // min file validation (custom input)
-    if (this.minFileSize && files.length > 0) {
+    if (this.minFileSize && files?.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
 
@@ -57,7 +57,7 @@ export class ClrFileInputValidator implements Validator {
     }
 
     // max file validation (custom input)
-    if (this.maxFileSize && files.length > 0) {
+    if (this.maxFileSize && files?.length > 0) {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
 

@@ -7,10 +7,10 @@
 
 import { Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ClrFormsModule } from '../forms.module';
-import { clearFiles, selectFiles } from './file-input.helpers';
+import { buildFileList, selectFiles } from './file-input.helpers';
 
 interface TestComponent {
   get control(): FormControl<FileList>;
@@ -28,8 +28,6 @@ interface TestComponent {
           clrFileInput
           [clrMinFileSize]="100"
           [clrMaxFileSize]="500"
-          multiple
-          required
         />
         <clr-control-helper>Helper text</clr-control-helper>
         <clr-control-success>Success message</clr-control-success>
@@ -43,7 +41,7 @@ interface TestComponent {
 })
 class ReactiveTest implements TestComponent {
   readonly form = new FormGroup({
-    files: new FormControl<FileList>(undefined),
+    files: new FormControl<FileList>(undefined, Validators.required),
   });
 
   get control() {
@@ -86,17 +84,17 @@ class TemplateDrivenTest implements TestComponent {
   }
 }
 
-describe('ClrFileInputValidator', () => {
+describe('ClrFileInputValueAccessor', () => {
   describe('reactive', () => {
-    fileInputValidatorSpec<ReactiveTest>(ReactiveTest);
+    fileInputValueAccessorSpec<ReactiveTest>(ReactiveTest);
   });
 
   describe('template-driven', () => {
-    fileInputValidatorSpec<TemplateDrivenTest>(TemplateDrivenTest);
+    fileInputValueAccessorSpec<TemplateDrivenTest>(TemplateDrivenTest);
   });
 });
 
-function fileInputValidatorSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
+function fileInputValueAccessorSpec<TTestComponent extends TestComponent>(testComponent: Type<TTestComponent>) {
   let fixture: ComponentFixture<TTestComponent>;
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
@@ -115,48 +113,47 @@ function fileInputValidatorSpec<TTestComponent extends TestComponent>(testCompon
     fixture.detectChanges();
   });
 
-  it('should not show an error when not touched', () => {
-    expect(nativeElement.querySelector('clr-control-error')).toBeNull();
-  });
-
-  it('should not show an error when valid', () => {
+  it('should mark the control touched when a file is selected', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
     fixture.detectChanges();
 
-    expect(nativeElement.querySelector('clr-control-error')?.innerHTML).toBeUndefined();
+    expect(fixture.componentInstance.control.touched).toBeTrue();
   });
 
-  it('should show the required error when touched and no file is selected', async () => {
-    clearFiles(fileInputElement);
+  it('should set the control value when a file is selected', () => {
+    const files = buildFileList([new File(['+'.repeat(100)], 'file.txt')]);
+
+    selectFiles(fileInputElement, files);
     fixture.detectChanges();
 
-    expect(getErrorMessages(nativeElement)).toBe('Required');
+    expect(fixture.componentInstance.control.value).toBe(files);
   });
 
-  it('should show the file type error when the file is not accepted', () => {
-    selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'image.png')]);
-    fixture.detectChanges();
+  it('should handle writing value: undefined', () => {
+    fixture.componentInstance.control.setValue(undefined);
 
-    expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
+    expect(fileInputElement.files.length).toBe(0);
   });
 
-  it('should show the file size error when the file is too small', () => {
-    selectFiles(fileInputElement, [new File(['+'.repeat(99)], 'file.txt')]);
-    fixture.detectChanges();
+  it('should handle writing value: null', () => {
+    fixture.componentInstance.control.setValue(null);
 
-    expect(getErrorMessages(nativeElement)).toBe('File size too small');
+    expect(fileInputElement.files.length).toBe(0);
   });
 
-  it('should show the file size error when the file is too large', () => {
-    selectFiles(fileInputElement, [new File(['+'.repeat(501)], 'file.txt')]);
-    fixture.detectChanges();
+  it('should handle writing value: FileList', () => {
+    const files = buildFileList([new File(['+'.repeat(100)], 'file.txt')]);
 
-    expect(getErrorMessages(nativeElement)).toBe('File size too large');
+    fixture.componentInstance.control.setValue(files);
+
+    expect(fileInputElement.files).toBe(files);
   });
-}
 
-function getErrorMessages(nativeElement: HTMLElement) {
-  return Array.from(nativeElement.querySelectorAll<HTMLElement>('clr-control-error'))
-    .map(controlErrorElement => controlErrorElement.innerText.trim())
-    .join('\n');
+  it('should throw when writing invalid value', () => {
+    expect(writeInvalidValue).toThrowError('The value of a file input control must be a FileList.');
+
+    function writeInvalidValue() {
+      fixture.componentInstance.control.setValue('files' as any);
+    }
+  });
 }

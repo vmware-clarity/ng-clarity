@@ -49,8 +49,6 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
   @HostListener('change')
   private handleChange() {
     this.updateSelection();
-    this.control?.control.markAsTouched();
-    this.control?.control.updateValueAndValidity();
   }
 
   private updateSelection() {

@@ -28,7 +28,7 @@ class StandaloneUseTest {}
 })
 class ReactiveTest {
   form = new FormGroup({
-    model: new FormControl('', Validators.required),
+    model: new FormControl<FileList>(undefined, Validators.required),
   });
 }
 
@@ -40,7 +40,7 @@ class ReactiveTest {
   `,
 })
 class TemplateDrivenTest {
-  model: string;
+  model: FileList;
 }
 
 describe('ClrFileInput', () => {

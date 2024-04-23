@@ -7,5 +7,6 @@
 
 export * from './file-input';
 export * from './file-input-validator';
+export * from './file-input-value-accessor';
 export * from './file-input-container';
 export * from './file-input.module';

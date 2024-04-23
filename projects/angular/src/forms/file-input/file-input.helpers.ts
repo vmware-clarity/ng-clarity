@@ -5,20 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export function selectFiles(fileInputElement: HTMLInputElement, files: File[]) {
+export function buildFileList(files: File[]) {
   const dataTransfer = new DataTransfer();
 
   for (const file of files) {
     dataTransfer.items.add(file);
   }
 
-  fileInputElement.files = dataTransfer.files;
-  fileInputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+  return dataTransfer.files;
+}
+
+export function selectFiles(fileInputElement: HTMLInputElement, files: File[] | FileList) {
+  fileInputElement.files = files instanceof FileList ? files : buildFileList(files);
   fileInputElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 }
 
 export function clearFiles(fileInputElement: HTMLInputElement) {
   fileInputElement.value = '';
-  fileInputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
   fileInputElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 }
