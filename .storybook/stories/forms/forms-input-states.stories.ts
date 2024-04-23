@@ -30,7 +30,7 @@ export default {
 
 const FormInputTemplate: StoryFn = args => ({
   template: `
-    <form clrForm>
+    <form class="clr-form clr-form-horizontal">
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label class="clr-control-label">Text</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
@@ -193,10 +193,30 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <clr-range-container>
-        <label>Range</label>
-        <input type="range" clrRange [ngModel]="three" name="three" [disabled]="isDisabled" />
-      </clr-range-container>
+      <div class="clr-form-control">
+        <label class="clr-control-label">Full toggle switch</label>
+        <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
+          <div class="clr-toggle-wrapper">
+            <input type="checkbox" id="toggle1" name="toggle-full" value="option1" class="clr-toggle" />
+            <label for="toggle1" class="clr-control-label">option 1</label>
+          </div>
+          <div class="clr-toggle-wrapper">
+            <input type="checkbox" id="toggle2" name="toggle-full" value="option2" class="clr-toggle" />
+            <label for="toggle2" class="clr-control-label">option 2</label>
+          </div>
+          <div class="clr-toggle-wrapper">
+            <input type="checkbox" id="toggle3" name="toggle-full" value="option3" class="clr-toggle" />
+            <label for="toggle3" class="clr-control-label">option 3</label>
+          </div>
+          <span class="clr-subtext">Helper Subtext</span>
+          <div class="clr-subtext-wrapper">
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+            <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">
+              State Subtext
+            </span>
+          </div>
+        </div>
+      </div>
     </form>
   `,
   props: args,
