@@ -17,6 +17,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   selector: 'clr-dropdown',
   template: '<ng-content></ng-content>',
   host: {
+    '[class.clr-dropdown]': 'true',
     '[class.dropdown]': 'true',
     '[class.open]': 'popoverService.open',
   },

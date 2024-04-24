@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, TemplateRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { preventArrowKeyScroll } from '../../focus/key-focus/util';
+import { ClrCDKPopoverPositions } from '../enums/cdk-signpost-position.enum';
 
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
@@ -19,9 +20,12 @@ export class ClrPopoverService {
   anchorElementRef: ElementRef;
   closeButtonRef: ElementRef;
   contentRef: ElementRef;
+  templateRef: TemplateRef<any>;
   openButtonRef: ElementRef;
   position: string;
+  defaultPosition: string;
   panelClass: string;
+  popoverPositions: ClrCDKPopoverPositions;
   availablePositions: any;
   private _open = false;
   private _openChange = new Subject<boolean>();

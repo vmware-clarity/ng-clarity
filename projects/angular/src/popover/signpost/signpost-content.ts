@@ -19,7 +19,7 @@ import {
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-signpost-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 // import { AbstractPopover } from '../common/abstract-popover';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
@@ -118,6 +118,7 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
     this.document = document;
     this.popoverService.contentRef = this.element;
     this.popoverService.panelClass = 'clr-signpost-container';
+    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     this.popoverService.availablePositions = AvailablePopoverPositions;
   }
 

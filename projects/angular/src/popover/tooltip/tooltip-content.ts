@@ -7,7 +7,7 @@
 import { Component, ElementRef, Inject, Injector, Input, OnInit, Optional, Renderer2 } from '@angular/core';
 
 import { uniqueIdFactory } from '../../utils/id-generator/id-generator.service';
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
+import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-tooltip-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -56,6 +56,7 @@ export class ClrTooltipContent implements OnInit {
     // super(injector, parentHost);
     this.popoverService.contentRef = elementRef;
     this.popoverService.availablePositions = AvailablePopoverPositions;
+    this.popoverService.popoverPositions = ClrCDKPopoverPositions;
     this.popoverService.panelClass = 'clr-tooltip-container';
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');

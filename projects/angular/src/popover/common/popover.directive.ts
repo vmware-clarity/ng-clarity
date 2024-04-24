@@ -20,12 +20,12 @@ import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone, Renderer2 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
+// import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 // import { AvailablePopoverPositions } from './popover-positions';
 
 @Directive({
-  selector: 'clr-tooltip, clr-signpost',
+  selector: 'clr-tooltip, clr-signpost, clr-dropdown',
 })
 export class PopoverDirective implements AfterViewInit {
   private subscriptions: Subscription[] = [];
@@ -57,7 +57,8 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
         if (change) {
-          setTimeout(() => this.showOverlay());
+          // setTimeout(() => this.showOverlay());
+          this.showOverlay();
         } else {
           this.removeOverlay();
         }
@@ -121,9 +122,9 @@ export class PopoverDirective implements AfterViewInit {
   setPosition() {
     //Set default position to "top-right", if position is not available in the map
     this.preferredPosition =
-      this.popoverService.position in ClrCDKPopoverPositions
-        ? ClrCDKPopoverPositions[this.popoverService.position]
-        : ClrCDKPopoverPositions['top-right'];
+      this.popoverService.position in this.popoverService.popoverPositions
+        ? this.popoverService.popoverPositions[this.popoverService.position]
+        : this.popoverService.popoverPositions[this.popoverService.defaultPosition || 'top-right'];
   }
 
   showOverlay() {
@@ -142,10 +143,10 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   removeOverlay(): void {
-    if (this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
-    if (this.domPortal.isAttached) {
+    if (this.domPortal?.isAttached) {
       this.domPortal.detach();
     }
     this.domPortal = null;
@@ -153,7 +154,6 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   private _createOverlayRef(): OverlayRef {
-    console.log(this.preferredPosition);
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.popoverService.anchorElementRef)
@@ -190,22 +190,20 @@ export class PopoverDirective implements AfterViewInit {
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
 
-        // if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
-        //   return;
-        // }
+        //  setTimeout(function(){
+        // console.log((event.target as Element).parentElement);
+        if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
+          return;
+        }
         // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        // if (this.popoverService.openEvent) {
-        //   if (
-        //     (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-        //     (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-        //     this.popoverService.openEvent.target === event.target
-        //   ) {
-        //     return;
-        //   }
-        // }
-
-        if (this.popoverService.anchorElementRef.nativeElement.contains(event.target)) {
-          event.stopImmediatePropagation();
+        if (this.popoverService.openEvent) {
+          if (
+            (this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+            this.popoverService.openEvent.target === event.target
+          ) {
+            return;
+          }
         }
 
         if (this.popoverService.outsideClickClose) {
