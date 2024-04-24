@@ -81,7 +81,7 @@ export const Sidebar: StoryObj = {
 export const SidebarSmall: StoryObj = {
   render: SidebarTemplate,
   args: {
-    clrModalOpen: false,
+    clrModalOpen: true,
     clrModalSize: 'sm',
     title: 'Small Sidebar',
     body: 'This is a small sidebar.',
@@ -91,27 +91,17 @@ export const SidebarSmall: StoryObj = {
 export const SidebarMedium: StoryObj = {
   render: SidebarTemplate,
   args: {
-    clrModalOpen: false,
+    clrModalOpen: true,
     clrModalSize: 'md',
     title: 'Medium Sidebar',
     body: 'This is a medium sidebar.',
-  },
-};
-export const SidebarNoBackdrop: StoryObj = {
-  render: SidebarTemplate,
-  args: {
-    clrModalOpen: false,
-    clrModalSize: 'md',
-    clrNoBackdrop: true,
-    title: 'No Backdrop Sidebar',
-    body: 'This is a medium sidebar without backdrop.',
   },
 };
 
 export const SidebarLarge: StoryObj = {
   render: SidebarTemplate,
   args: {
-    clrModalOpen: false,
+    clrModalOpen: true,
     clrModalSize: 'lg',
     title: 'Large Sidebar',
     body: 'This is a large sidebar.',
@@ -121,9 +111,20 @@ export const SidebarLarge: StoryObj = {
 export const SidebarExtraLarge: StoryObj = {
   render: SidebarTemplate,
   args: {
-    clrModalOpen: false,
+    clrModalOpen: true,
     clrModalSize: 'xl',
     title: 'Extra-Large Sidebar',
     body: 'This is a extra-large sidebar.',
+  },
+};
+
+export const SidebarNoBackdrop: StoryObj = {
+  render: SidebarTemplate,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'md',
+    clrNoBackdrop: true,
+    title: 'No Backdrop Sidebar',
+    body: 'This is a medium sidebar without backdrop.',
   },
 };
