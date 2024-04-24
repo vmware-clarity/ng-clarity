@@ -2661,11 +2661,12 @@ export class ClrMainContainerModule {
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
+    // Warning: (ae-forgotten-export) The symbol "ClrModalConfigurationService" needs to be exported by the entry point index.d.ts
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
-    backdrop: boolean;
+    get backdrop(): boolean;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -3393,17 +3394,39 @@ export enum ClrSide {
 }
 
 // @public (undocumented)
-export class ClrSidebar {
-    constructor(element: ElementRef, modal: ClrModal);
+export class ClrSidebar implements OnInit {
+    constructor(element: ElementRef, configuration: ClrModalConfigurationService);
+    // (undocumented)
+    close(): void;
+    // (undocumented)
+    closeButtonAriaLabel: string | undefined;
     // (undocumented)
     get clrSidebarBackdrop(): boolean;
     set clrSidebarBackdrop(backdrop: boolean);
     // (undocumented)
     documentClick(event: Event): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSidebar, "[clrSidebar]", never, { "clrSidebarBackdrop": "clrSidebarBackdrop"; }, {}, never, never, false, never>;
+    labelledById: string;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, [null, { host: true; }]>;
+    ngOnInit(): void;
+    // (undocumented)
+    open(): void;
+    // (undocumented)
+    _open: boolean;
+    // (undocumented)
+    openChange(open: boolean): void;
+    // (undocumented)
+    _openChanged: EventEmitter<boolean>;
+    // (undocumented)
+    sidebarId: string;
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    skipAnimation: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, never>;
 }
 
 // @public (undocumented)

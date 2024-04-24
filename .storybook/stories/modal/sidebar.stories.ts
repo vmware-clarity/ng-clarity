@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
+import { ClrModalModule, ClrSidebar, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
@@ -17,18 +17,19 @@ export default {
       imports: [...CommonModules, ClrModalModule],
     }),
   ],
-  component: ClrModal,
+  component: ClrSidebar,
   argTypes: {
     // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrModalLabelledById: { defaultValue: '' },
-    clrModalStaticBackdrop: { defaultValue: false, control: { type: 'boolean' } },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
-    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    clrSidebarCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
+    clrSidebarLabelledById: { defaultValue: '' },
+    clrSidebarSize: {
+      defaultValue: 'md',
+      control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    },
+    clrSidebarSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     clrSidebarBackdrop: { defaultValue: true, control: { type: 'boolean' } },
     // outputs
-    clrModalAlternateClose: { control: { disable: true } },
-    clrModalOpenChange: { control: { disable: true } },
+    clrSidebarOpenChange: { control: { disable: true } },
     // methods
     fadeDone: { control: { disable: true }, table: { disable: true } },
     open: { control: { disable: true }, table: { disable: true } },
@@ -36,8 +37,7 @@ export default {
   },
   args: {
     // outputs
-    clrModalAlternateClose: action('clrModalAlternateClose'),
-    clrModalOpenChange: action('clrModalOpenChange'),
+    clrSidebarOpenChange: action('clrSidebarOpenChange'),
     // story helpers
     title: 'Sidebar Title',
     body: 'Hello World!',
@@ -49,30 +49,25 @@ const SidebarTemplate: Story = args => ({
     <div class="main-container">
       <div class="content-container">
         <div class="content-area" style="height: 300px">
-          <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
-          <clr-modal
-            clrSidebar
+          <button type="button" class="btn btn-primary" (click)="clrSidebarOpen = true">Open Sidebar</button>
+          <clr-sidebar
             [clrSidebarBackdrop]="clrSidebarBackdrop"
-            [clrModalClosable]="clrModalClosable"
-            [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
-            [clrModalLabelledById]="clrModalLabelledById"
-            [clrModalOpen]="clrModalOpen"
-            [clrModalPreventClose]="clrModalPreventClose"
-            [clrModalSize]="clrModalSize"
-            [clrModalSkipAnimation]="clrModalSkipAnimation"
-            [clrModalStaticBackdrop]="clrModalStaticBackdrop"
-            (clrModalAlternateClose)="clrModalAlternateClose($event)"
-            (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
+            [clrSidebarCloseButtonAriaLabel]="clrSidebarCloseButtonAriaLabel"
+            [clrSidebarLabelledById]="clrSidebarLabelledById"
+            [clrSidebarOpen]="clrSidebarOpen"
+            [clrSidebarSize]="clrSidebarSize"
+            [clrSidebarSkipAnimation]="clrSidebarSkipAnimation"
+            (clrSidebarOpenChange)="clrSidebarOpen = $event; clrSidebarOpenChange($event)"
           >
-            <h3 class="modal-title">{{ title }}</h3>
-            <div class="modal-body">
+            <h3 class="sidebar-title">{{ title }}</h3>
+            <div class="sidebar-body">
               {{ body }}
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
-              <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
+            <div class="sidebar-footer">
+              <button type="button" class="btn btn-outline" (click)="clrSidebarOpen = false">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="clrSidebarOpen = false">Ok</button>
             </div>
-          </clr-modal>
+          </clr-sidebar>
           <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
             Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
@@ -97,8 +92,8 @@ export const SidebarSmall: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'sm',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'sm',
     title: 'Small Sidebar',
     body: 'This is a small sidebar.',
   },
@@ -108,8 +103,8 @@ export const SidebarMedium: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'md',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'md',
     title: 'Medium Sidebar',
     body: 'This is a medium sidebar.',
   },
@@ -119,8 +114,8 @@ export const SidebarLarge: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'lg',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'lg',
     title: 'Large Sidebar',
     body: 'This is a large sidebar.',
   },
@@ -130,8 +125,8 @@ export const SidebarExtraLarge: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'xl',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'xl',
     title: 'Extra-Large Sidebar',
     body: 'This is a extra-large sidebar.',
   },
@@ -141,8 +136,8 @@ export const SidebarNoBackdrop: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'md',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'md',
     clrSidebarBackdrop: false,
     title: 'No Backdrop Sidebar',
     body: 'This is a medium sidebar without backdrop.',
@@ -153,8 +148,8 @@ export const SidebarFullScreen: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
-    clrModalOpen: true,
-    clrModalSize: 'full-screen',
+    clrSidebarOpen: true,
+    clrSidebarSize: 'full-screen',
     title: 'Full-Screen Sidebar',
     body: 'This is a full-screen sidebar.',
     showLongPageContent: false,

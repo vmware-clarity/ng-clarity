@@ -11,6 +11,7 @@ import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Outp
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
+import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
 
 @Component({
@@ -47,7 +48,6 @@ import { ModalStackService } from './modal-stack.service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
-  backdrop = true;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
@@ -63,20 +63,23 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
-  private _fadeMove: string;
-
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
-    private modalStackService: ModalStackService
+    private modalStackService: ModalStackService,
+    private configuration: ClrModalConfigurationService
   ) {}
 
   get fadeMove(): string {
-    return this.skipAnimation ? '' : !this._fadeMove ? 'fadeDown' : this._fadeMove;
+    return this.skipAnimation ? '' : this.configuration.fadeMove;
   }
 
   set fadeMove(move: string) {
-    this._fadeMove = move;
+    this.configuration.fadeMove = move;
+  }
+
+  get backdrop(): boolean {
+    return this.configuration.backdrop;
   }
 
   // Detect when _open is set to true and set no-scrolling to true

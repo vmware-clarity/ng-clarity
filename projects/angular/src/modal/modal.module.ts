@@ -13,6 +13,7 @@ import { ClrIconModule } from '../icon/icon.module';
 import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 import { ClrModal } from './modal';
 import { ClrModalBody } from './modal-body';
+import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ClrSidebar } from './sidebar';
 
 export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrSidebar];
@@ -21,6 +22,7 @@ export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrSid
   imports: [CommonModule, CdkTrapFocusModule, ClrIconModule],
   declarations: [CLR_MODAL_DIRECTIVES],
   exports: [CLR_MODAL_DIRECTIVES, ClrIconModule],
+  providers: [ClrModalConfigurationService],
 })
 export class ClrModalModule {
   constructor() {

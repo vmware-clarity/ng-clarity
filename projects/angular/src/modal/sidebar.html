@@ -1,0 +1,13 @@
+<clr-modal
+  [clrModalOpen]="_open"
+  (clrModalOpenChange)="openChange($event)"
+  [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
+  [clrModalSize]="size"
+  [clrModalSkipAnimation]="skipAnimation"
+  [clrModalStaticBackdrop]="false"
+  [clrModalLabelledById]="labelledById"
+>
+  <div class="modal-title"><ng-content select=".sidebar-title"></ng-content></div>
+  <div class="modal-body"><ng-content select=".sidebar-body"></ng-content></div>
+  <div class="modal-footer"><ng-content select=".sidebar-footer"></ng-content></div>
+</clr-modal>
