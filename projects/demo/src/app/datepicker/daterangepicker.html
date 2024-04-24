@@ -25,7 +25,6 @@
           </div>
         </div>
       </div>
-
       <!-- Variant 2 -->
       <div class="card" data-heading="Variant: dd/mm/yyyy ">
         <div class="card-content">
@@ -218,6 +217,7 @@
         name="startDate"
         type="date"
         clrRangeStartDate
+        (clrRangeStartDateChange)="stDateChanged($event)"
         [formControlName]="startDtFc"
       />
       <input
@@ -226,6 +226,7 @@
         name="endDate"
         type="date"
         clrRangeEndDate
+        (clrRangeEndDateChange)="endDateChanged($event)"
         [formControlName]="endDtFc"
       />
       <clr-control-error *clrIfError="'min'">
@@ -236,6 +237,13 @@
       <clr-control-error *clrIfError="'max'">
         <ng-container *ngIf="dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max">
           Maximum date should be {{dateForm.get(startDtFc).errors?.max?.max || dateForm.get(endDtFc).errors?.max?.max}}
+        </ng-container>
+      </clr-control-error>
+      <clr-control-error *clrIfError="'range'">
+        <ng-container
+          *ngIf="dateForm.get(startDtFc).errors?.range?.range || dateForm.get(endDtFc).errors?.range?.range"
+        >
+          Start date must be less than End date
         </ng-container>
       </clr-control-error>
     </clr-date-range-container>

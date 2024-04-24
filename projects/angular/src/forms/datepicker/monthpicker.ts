@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
@@ -19,16 +19,44 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-monthpicker',
   template: `
-    <div class="year-view-switcher in-monthpicker" *ngIf="_dateIoService.isYearViewAllowed()">
-      <button
-        class="calendar-btn yearpicker-trigger"
-        type="button"
-        (click)="changeToYearView()"
-        [attr.aria-label]="yearAttrString"
-        [attr.title]="yearAttrString"
-      >
-        {{ calendarYear }}
-      </button>
+    <div class="calendar-header in-monthpicker">
+      <div class="year-view-switcher" *ngIf="_dateIoService.isYearViewAllowed()">
+        <button
+          class="calendar-btn yearpicker-trigger"
+          type="button"
+          (click)="changeToYearView()"
+          [attr.aria-label]="yearAttrString"
+          [attr.title]="yearAttrString"
+        >
+          {{ calendarYear }}
+        </button>
+      </div>
+      <div class="calendar-switchers">
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="previousYear()"
+          [attr.aria-label]="commonStrings.keys.datepickerPreviousMonth"
+        >
+          <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.datepickerPreviousMonth"></cds-icon>
+        </button>
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="currentYear()"
+          [attr.aria-label]="commonStrings.keys.datepickerCurrentMonth"
+        >
+          <cds-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentMonth"></cds-icon>
+        </button>
+        <button
+          class="calendar-btn switcher"
+          type="button"
+          (click)="nextYear()"
+          [attr.aria-label]="commonStrings.keys.datepickerNextMonth"
+        >
+          <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextMonth"></cds-icon>
+        </button>
+      </div>
     </div>
     <div class="months" [ngClass]="{ enlarged: !_dateIoService.isYearViewAllowed() }">
       <button
@@ -49,6 +77,7 @@ import { ViewManagerService } from './providers/view-manager.service';
         "
         [class.in-range]="isInRange(monthIndex)"
         [attr.tabindex]="getTabIndex(monthIndex)"
+        [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
         (mouseenter)="onHover(monthIndex)"
       >
         {{ month }}
@@ -58,7 +87,6 @@ import { ViewManagerService } from './providers/view-manager.service';
   host: {
     '[class.monthpicker]': 'true',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrMonthpicker implements AfterViewInit {
   /**
@@ -112,6 +140,14 @@ export class ClrMonthpicker implements AfterViewInit {
    */
   get calendarYear(): number {
     return this._dateNavigationService.displayedCalendar.year;
+  }
+
+  get currentCalendarYear(): number {
+    return new Date().getFullYear();
+  }
+
+  get currentCalendarMonth(): number {
+    return new Date().getMonth();
   }
 
   /**
@@ -188,6 +224,27 @@ export class ClrMonthpicker implements AfterViewInit {
    */
   getTabIndex(monthIndex: number): number {
     return monthIndex === this._focusedMonthIndex || monthIndex === this.calendarEndMonthIndex ? 0 : -1;
+  }
+
+  /**
+   * Calls the DateNavigationService to move to the next month.
+   */
+  nextYear(): void {
+    this._dateNavigationService.moveToNextYear();
+  }
+
+  /**
+   * Calls the DateNavigationService to move to the previous month.
+   */
+  previousYear(): void {
+    this._dateNavigationService.moveToPreviousYear();
+  }
+
+  /**
+   * Calls the DateNavigationService to move to the current month.
+   */
+  currentYear(): void {
+    this._dateNavigationService.moveToCurrentMonth();
   }
 
   isInRange(monthIndex: number) {

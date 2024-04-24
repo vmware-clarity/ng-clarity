@@ -161,25 +161,12 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
       } else {
         this.renderer.setProperty(this.el.nativeElement, 'value', dateString);
       }
-      // this.validateDateRange();
+      this.validateDateRange();
     } else {
       this.renderer.setProperty(this.el.nativeElement, 'value', '');
       this.control?.control?.setValue(null, { emitEvent: false });
     }
   }
-
-  // protected validateDateRange() {
-  //   if (this.dateNavigationService.isRangePicker) {
-  //     const isValid = this.dateNavigationService.selectedDay.isBefore(this.dateNavigationService.selectedEndDay);
-  //     if (!isValid) {
-  //       this.control?.control.setErrors({ invalid: true });
-  //     } else {
-  //       this.control?.control.setErrors(null);
-  //     }
-  //     console.log('Control', isValid, this.control?.control);
-
-  //   }
-  // }
 
   protected getValidDateValueFromDate(date: Date) {
     if (this.dateIOService) {
@@ -192,6 +179,20 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
 
   protected datepickerHasFormControl() {
     return !!this.control;
+  }
+
+  /**
+   * Incase of date range error, both start & end date field valdiation has to be triggered
+   * if either of the field gets updated
+   */
+  protected validateDateRange() {
+    const primaryControl = this.ngControlService?.getControl();
+    const secondaryControl = this.ngControlService?.getSecondaryControl();
+    const isValid = this.dateNavigationService.selectedDay.isBefore(this.dateNavigationService.selectedEndDay);
+    if (isValid && (primaryControl.hasError('range') || secondaryControl.hasError('range'))) {
+      primaryControl.control?.updateValueAndValidity();
+      secondaryControl.control?.updateValueAndValidity();
+    }
   }
 
   private setFocus(focus: boolean) {

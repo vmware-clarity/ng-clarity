@@ -28,7 +28,7 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
 
   @Input('clrDate')
   set date(date: Date | string) {
-    if (typeof date === 'string') {
+    if (date && typeof date === 'string') {
       date = new Date(date);
     }
     if (this.previousDateChange !== date) {

@@ -20,6 +20,7 @@ export enum CONTROL_STATE {
 export class IfControlStateService implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private control: NgControl;
+  private secondaryControl: NgControl;
 
   // Implement our own status changes observable, since Angular controls don't
   private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
@@ -33,7 +34,20 @@ export class IfControlStateService implements OnDestroy {
           // Subscribe to the status change events, only after touched
           // and emit the control
           this.subscriptions.push(
-            this.control.statusChanges.subscribe(() => {
+            this.control.statusChanges?.subscribe(() => {
+              this.triggerStatusChange();
+            })
+          );
+        }
+      }),
+
+      this.ngControlService.secondaryControlChanges.subscribe((control: NgControl) => {
+        if (control) {
+          this.secondaryControl = control;
+          // Subscribe to the status change events, only after touched
+          // and emit the control
+          this.subscriptions.push(
+            this.secondaryControl.statusChanges?.subscribe(() => {
               this.triggerStatusChange();
             })
           );
@@ -55,8 +69,16 @@ export class IfControlStateService implements OnDestroy {
     if (this.control) {
       // These status values are mutually exclusive, so a control
       // cannot be both valid AND invalid or invalid AND disabled.
-      const status = CONTROL_STATE[this.control.status];
-      this._statusChanges.next(['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE);
+      let finalStatus = CONTROL_STATE.NONE;
+      const combinedStatus = [this.control.status, this.secondaryControl?.status];
+      if (combinedStatus.includes(CONTROL_STATE.INVALID)) {
+        finalStatus = CONTROL_STATE.INVALID;
+      } else if (combinedStatus.includes(CONTROL_STATE.VALID)) {
+        finalStatus = CONTROL_STATE.VALID;
+      }
+      this._statusChanges.next(finalStatus);
+      // combinedStatus.findIndex((status) => status === CONTROL_STATE.INVALID) > -1 ? CONTROL_STATE.INVALID
+      // this._statusChanges.next(['VALID', 'INVALID'].includes(status) ? status : CONTROL_STATE.NONE);
     }
   }
 }

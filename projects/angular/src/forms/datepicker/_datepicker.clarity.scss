@@ -188,9 +188,10 @@
   .year-view-switcher {
     flex: 0 0 auto;
     align-self: center;
-    &.in-monthpicker {
-      margin-bottom: 8px;
-    }
+  }
+
+  .calendar-header.in-monthpicker {
+    margin-bottom: 8px;
   }
 
   .calendar-table {

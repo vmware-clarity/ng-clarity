@@ -133,9 +133,12 @@ export class DateRangePickerDemo implements OnInit {
   ];
 
   ngOnInit(): void {
-    // setInterval(() => {
-    //   console.log(this.dateForm);
-    // }, 4000);
+    this.dateForm.get('startDateV1').statusChanges.subscribe(status => {
+      console.log('🚀 ~ DateRangePickerDemo ~ startDateV1 ~ status:', status);
+    });
+    this.dateForm.get('endDateV1').statusChanges.subscribe(status => {
+      console.log('🚀 ~ DateRangePickerDemo ~ endDateV1 ~ status:', status);
+    });
   }
   stDateChanged(date: Date) {
     console.log(date);

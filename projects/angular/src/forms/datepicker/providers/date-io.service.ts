@@ -49,7 +49,7 @@ export class DateIOService {
 
   get placeholderText(): string {
     const format: string = this.localeDisplayFormat.format;
-    return format.replace(/[-\\/.]/g, this.delimiter);
+    return format.replace(/[-\\/.]/g, this.delimiter)?.toUpperCase();
   }
 
   setMinDate(date: string): void {
@@ -190,15 +190,7 @@ export class DateIOService {
       const localeFormat: string = this.cldrLocaleDateFormat.replace(RTL_REGEX, '');
       // const delimiters: string[] = localeFormat.split(DELIMITER_REGEX);
       const delimiters: string[] = localeFormat.match(DELIMITERS_REGEX) || [];
-      // NOTE: The split from the CLDR date format should always result
-      // in an arary with 4 elements. The 1st and the 2nd values are the delimiters
-      // we will use in order.
-      // Eg: "dd/MM/y".split(/d+|m+|y+/i) results in ["", "/", "/", ""]
       this.delimiter = delimiters[0] || '';
-      // if (delimiters && delimiters.length === 4) {
-      // } else {
-      //   console.error('Unexpected date format received. Delimiters extracted: ', delimiters);
-      // }
     }
   }
 

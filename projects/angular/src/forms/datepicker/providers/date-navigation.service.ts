@@ -85,10 +85,10 @@ export class DateNavigationService {
         (!!this.selectedDay && !!this.selectedEndDay) ||
         (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
       ) {
-        this.setSelectedDay(dayModel);
         if (this.selectedEndDay) {
           this.setSelectedEndDay(undefined);
         }
+        this.setSelectedDay(dayModel);
       } else {
         this.setSelectedEndDay(dayModel);
       }
@@ -142,6 +142,17 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
+  moveToNextYear(): void {
+    this.setDisplayedCalendar(this._displayedCalendar.nextYear());
+  }
+
+  /**
+   * Moves the displayed calendar to the previous month.
+   */
+  moveToPreviousYear(): void {
+    this.setDisplayedCalendar(this._displayedCalendar.previousYear());
+  }
+
   incrementFocusDay(value: number): void {
     this.focusedDay = this.focusedDay.incrementBy(value);
     if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
@@ -150,6 +161,16 @@ export class DateNavigationService {
       this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
     }
     this._focusOnCalendarChange.next();
+  }
+
+  setSelectedDay(dayModel: DayModel | undefined) {
+    this.selectedDay = dayModel;
+    this._selectedDayChange.next(dayModel);
+  }
+
+  setSelectedEndDay(dayModel: DayModel | undefined) {
+    this.selectedEndDay = dayModel;
+    this._selectedEndDayChange.next(dayModel);
   }
 
   // not a setter because i want this to remain private
@@ -167,14 +188,5 @@ export class DateNavigationService {
       this._todaysFullDate.getMonth(),
       this._todaysFullDate.getDate()
     );
-  }
-  private setSelectedDay(dayModel: DayModel | undefined) {
-    this.selectedDay = dayModel;
-    this._selectedDayChange.next(dayModel);
-  }
-
-  private setSelectedEndDay(dayModel: DayModel | undefined) {
-    this.selectedEndDay = dayModel;
-    this._selectedEndDayChange.next(dayModel);
   }
 }
