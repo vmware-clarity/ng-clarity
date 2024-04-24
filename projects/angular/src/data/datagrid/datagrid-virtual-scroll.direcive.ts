@@ -39,7 +39,6 @@ import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { Items } from './providers/items';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -67,7 +66,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
   private datagridElementRef: ElementRef<HTMLElement>;
-  private datagridKeyNavigationController: KeyNavigationGridController;
 
   private gridRoleElement: HTMLElement | null | undefined;
   private virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
@@ -100,8 +98,6 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
       this._cdkFixedSizeVirtualScrollInputs.itemSize = 24;
     }
-
-    this.datagridKeyNavigationController = this.datagrid.keyNavigation;
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
