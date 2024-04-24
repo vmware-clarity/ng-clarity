@@ -129,8 +129,7 @@
       letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
-    .close,
-    .pinnable {
+    .close {
       font-size: initial;
       line-height: initial;
 
@@ -155,16 +154,6 @@
           }
         }
       }
-    }
-
-    .pinnable {
-      padding: 0;
-      cursor: pointer;
-      background: transparent;
-      border: 0;
-      margin-right: tokens.$cds-global-space-6;
-      appearance: none;
-      -webkit-appearance: none;
     }
   }
 
