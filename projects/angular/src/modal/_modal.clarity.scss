@@ -14,24 +14,6 @@
 @include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
-  body {
-    &.clr-sidebar-pinned-sm {
-      margin-right: modal-variables.$clr-modal-sm-width !important;
-    }
-
-    &.clr-sidebar-pinned-md {
-      margin-right: modal-variables.$clr-modal-md-width !important;
-    }
-
-    &.clr-sidebar-pinned-lg {
-      margin-right: modal-variables.$clr-modal-lg-width !important;
-    }
-
-    &.clr-sidebar-pinned-xl {
-      margin-right: modal-variables.$clr-modal-xl-width !important;
-    }
-  }
-
   .modal {
     position: fixed;
     top: 0;
@@ -82,18 +64,12 @@
         top: 0;
         right: 0;
         bottom: 0;
-        padding: 0 0 0 modal-variables.$clr-modal-default-space;
+        padding: 0;
       }
 
       .modal-body-wrapper {
         flex: 1 1;
         max-height: 100%;
-      }
-    }
-
-    &.no-backdrop {
-      .modal-backdrop {
-        left: initial;
       }
     }
   }

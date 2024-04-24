@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, Host, HostBinding, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, Host, HostListener, Input } from '@angular/core';
 
 import { ClrModal } from './modal';
 
@@ -15,29 +15,22 @@ import { ClrModal } from './modal';
   },
 })
 export class ClrSidebar {
-  @Input() clrSidebarBackdrop = true;
-
   constructor(private element: ElementRef, @Host() private modal: ClrModal) {
     this.modal.fadeMove = 'fadeLeft';
   }
 
+  get clrSidebarBackdrop(): boolean {
+    return this.modal.backdrop;
+  }
+
   @Input()
-  set clrSidebarPinnable(pinnable: boolean) {
-    this.modal.pinnable = pinnable;
-  }
-
-  get clrSideBarPinnable(): boolean {
-    return this.modal.pinnable;
-  }
-
-  @HostBinding('class.no-backdrop')
-  get hideBackdrop() {
-    return !this.clrSidebarBackdrop || this.modal.pinnable;
+  set clrSidebarBackdrop(backdrop: boolean) {
+    this.modal.backdrop = backdrop;
   }
 
   @HostListener('document:pointerup', ['$event'])
   documentClick(event: Event) {
-    if (!this.element.nativeElement.contains(event.target) && this.modal._open && !this.modal.pinned) {
+    if (!this.element.nativeElement.contains(event.target) && this.modal._open && !this.modal.backdrop) {
       this.modal.close();
     }
   }

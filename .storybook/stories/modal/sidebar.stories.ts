@@ -26,7 +26,6 @@ export default {
     clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
     clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     clrSidebarBackdrop: { defaultValue: true, control: { type: 'boolean' } },
-    clrSidebarPinnable: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -48,14 +47,12 @@ export default {
 const SidebarTemplate: Story = args => ({
   template: `
     <div class="main-container">
-      <header class="header header-6">TEST</header>
       <div class="content-container">
         <div class="content-area" style="height: 300px">
           <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
           <clr-modal
             clrSidebar
             [clrSidebarBackdrop]="clrSidebarBackdrop"
-            [clrSidebarPinnable]="clrSidebarPinnable"
             [clrModalClosable]="clrModalClosable"
             [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
             [clrModalLabelledById]="clrModalLabelledById"
@@ -149,19 +146,6 @@ export const SidebarNoBackdrop: StoryObj = {
     clrSidebarBackdrop: false,
     title: 'No Backdrop Sidebar',
     body: 'This is a medium sidebar without backdrop.',
-  },
-};
-
-export const SidebarPinnable: StoryObj = {
-  render: SidebarTemplate,
-  play: removeFocusOutline,
-  args: {
-    clrModalOpen: true,
-    clrModalSize: 'md',
-    clrSidebarBackdrop: false,
-    clrSidebarPinnable: true,
-    title: 'Pinnable Sidebar',
-    body: 'This is a medium pinnable sidebar without backdrop.',
   },
 };
 

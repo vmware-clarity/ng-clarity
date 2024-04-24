@@ -28,15 +28,6 @@
 
       <div class="modal-content">
         <div class="modal-header--accessible">
-          <button
-            type="button"
-            [attr.aria-label]="commonStrings.keys.sidebarPin"
-            class="pinnable"
-            *ngIf="pinnable"
-            (click)="togglePinned()"
-          >
-            <cds-icon [attr.shape]="pinned ? 'unpin' : 'pin'"></cds-icon>
-          </button>
           <div class="modal-title-wrapper" id="{{modalId}}" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
@@ -59,5 +50,5 @@
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
 
-  <div [@fade] class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
+  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
 </div>

@@ -1001,7 +1001,6 @@ export interface ClrCommonStrings {
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
-    sidebarPin: string;
     signpostClose: string;
     signpostToggle: string;
     singleActionableAriaLabel: string;
@@ -2666,6 +2665,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
+    backdrop: boolean;
+    // (undocumented)
     closable: boolean;
     // (undocumented)
     close(): void;
@@ -2695,11 +2696,6 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
-    pinnable: boolean;
-    // (undocumented)
-    get pinned(): boolean;
-    set pinned(pinned: boolean);
-    // (undocumented)
     size: string;
     // (undocumented)
     skipAnimation: boolean;
@@ -2707,8 +2703,6 @@ export class ClrModal implements OnChanges, OnDestroy {
     staticBackdrop: boolean;
     // (undocumented)
     stopClose: boolean;
-    // (undocumented)
-    togglePinned(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
@@ -3402,17 +3396,12 @@ export enum ClrSide {
 export class ClrSidebar {
     constructor(element: ElementRef, modal: ClrModal);
     // (undocumented)
-    clrSidebarBackdrop: boolean;
-    // (undocumented)
-    get clrSideBarPinnable(): boolean;
-    // (undocumented)
-    set clrSidebarPinnable(pinnable: boolean);
+    get clrSidebarBackdrop(): boolean;
+    set clrSidebarBackdrop(backdrop: boolean);
     // (undocumented)
     documentClick(event: Event): void;
     // (undocumented)
-    get hideBackdrop(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSidebar, "[clrSidebar]", never, { "clrSidebarBackdrop": "clrSidebarBackdrop"; "clrSidebarPinnable": "clrSidebarPinnable"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSidebar, "[clrSidebar]", never, { "clrSidebarBackdrop": "clrSidebarBackdrop"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, [null, { host: true; }]>;
 }
