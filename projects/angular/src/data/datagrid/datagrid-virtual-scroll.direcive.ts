@@ -205,18 +205,17 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.subscriptions.push(
       this.items.change.subscribe(newItems => {
         this.cdkVirtualFor.cdkVirtualForOf = newItems;
-      })
-    );
-
-    this.subscriptions.push(
+      }),
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
-      })
-    );
-
-    this.subscriptions.push(
+      }),
       this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
+      }),
+      this.datagrid.refresh.subscribe(datagridState => {
+        if (datagridState.filters) {
+          this.virtualScrollViewport.scrollToIndex(0);
+        }
       })
     );
   }
