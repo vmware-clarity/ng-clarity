@@ -24,11 +24,23 @@
       }
     }
 
-    .clr-accordion-panel-inactive > .clr-accordion-angle {
+    &
+      > .clr-accordion-panel
+      > .clr-accordion-panel-inactive
+      > .clr-accordion-header
+      > .clr-accordion-header-button
+      > .clr-accordion-status
+      > .clr-accordion-angle {
       visibility: hidden;
     }
 
-    .clr-accordion-panel-open > .clr-accordion-header .clr-accordion-angle {
+    &
+      > .clr-accordion-panel
+      > .clr-accordion-panel-open
+      > .clr-accordion-header
+      > .clr-accordion-header-button
+      > .clr-accordion-status
+      > .clr-accordion-angle {
       visibility: visible;
     }
 
