@@ -44,6 +44,7 @@
     justify-content: center;
     align-items: center;
     padding: calc(modal-variables.$clr-modal-default-space * 2);
+    max-width: 100%;
 
     .alert + .modal-header {
       margin-top: tokens.$cds-global-space-6;
