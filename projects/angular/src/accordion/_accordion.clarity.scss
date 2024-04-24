@@ -52,7 +52,7 @@
       }
     }
 
-    .clr-accordion-panel-disabled > .clr-accordion-panel-open {
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
       background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
 
       &:hover,
