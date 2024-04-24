@@ -46,7 +46,7 @@ export default {
 
 const SidebarTemplate: Story = args => ({
   template: `
-    <div style="height: 300px;">
+    <div style="height: 300px">
       <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
       <clr-modal
         clrSidebar
@@ -62,9 +62,9 @@ const SidebarTemplate: Story = args => ({
         (clrModalAlternateClose)="clrModalAlternateClose($event)"
         (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
       >
-        <h3 class="modal-title">{{title}}</h3>
+        <h3 class="modal-title">{{ title }}</h3>
         <div class="modal-body">
-          {{body}}
+          {{ body }}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
