@@ -156,6 +156,11 @@ export interface ClrCommonStrings {
   modalContentEnd: string;
 
   /**
+   * Sidebar pin dialog
+   */
+  sidebarPin: string;
+
+  /**
    * Datagrid Show columns menu description
    */
   showColumnsMenuDescription: string;

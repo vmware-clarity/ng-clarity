@@ -14,6 +14,24 @@
 @include meta.load-css('properties.modal');
 
 @include mixins.exports('modal.clarity') {
+  body {
+    &.clr-sidebar-pinned-sm {
+      margin-right: modal-variables.$clr-modal-sm-width !important;
+    }
+
+    &.clr-sidebar-pinned-md {
+      margin-right: modal-variables.$clr-modal-md-width !important;
+    }
+
+    &.clr-sidebar-pinned-lg {
+      margin-right: modal-variables.$clr-modal-lg-width !important;
+    }
+
+    &.clr-sidebar-pinned-xl {
+      margin-right: modal-variables.$clr-modal-xl-width !important;
+    }
+  }
+
   .modal {
     position: fixed;
     top: 0;
@@ -42,9 +60,14 @@
       padding: 0;
       height: 100%;
 
-      .modal-content {
-        display: flex;
-        flex-direction: column;
+      .modal-content-wrapper {
+        height: 100%;
+
+        .modal-content {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
       }
 
       .modal-dialog {
@@ -129,7 +152,8 @@
       letter-spacing: modal-variables.$clr-modal-title-letter-spacing;
     }
 
-    .close {
+    .close,
+    .pinnable {
       font-size: initial;
       line-height: initial;
 
@@ -154,6 +178,16 @@
           }
         }
       }
+    }
+
+    .pinnable {
+      padding: 0;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+      margin-right: tokens.$cds-global-space-6;
+      appearance: none;
+      -webkit-appearance: none;
     }
   }
 

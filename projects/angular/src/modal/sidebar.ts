@@ -21,13 +21,23 @@ export class ClrSidebar {
     this.modal.fadeMove = 'fadeLeft';
   }
 
+  @Input()
+  set clrSidebarPinnable(pinnable: boolean) {
+    this.modal.pinnable = pinnable;
+  }
+
+  get clrSideBarPinnable(): boolean {
+    return this.modal.pinnable;
+  }
+
   @HostBinding('class.no-backdrop')
   get hideBackdrop() {
-    return !this.clrSidebarBackdrop;
+    return !this.clrSidebarBackdrop || this.modal.pinnable;
   }
+
   @HostListener('document:pointerup', ['$event'])
   documentClick(event: Event) {
-    if (!this.element.nativeElement.contains(event.target) && this.modal._open) {
+    if (!this.element.nativeElement.contains(event.target) && this.modal._open && !this.modal.pinned) {
       this.modal.close();
     }
   }

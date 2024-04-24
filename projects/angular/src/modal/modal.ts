@@ -62,13 +62,32 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
+  // For now we only want to expose this as input on the sidebar
+  pinnable = false;
+
   private _fadeMove: string;
+  private _pinned = false;
 
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
     private modalStackService: ModalStackService
   ) {}
+
+  get pinned(): boolean {
+    return this._pinned;
+  }
+
+  set pinned(pinned: boolean) {
+    if (this.pinnable) {
+      this._pinned = pinned;
+      if (pinned) {
+        this.displaySideBySide();
+      } else {
+        this.displayOverlapping();
+      }
+    }
+  }
 
   get fadeMove(): string {
     return this.skipAnimation ? '' : !this._fadeMove ? 'fadeDown' : this._fadeMove;
@@ -82,16 +101,23 @@ export class ClrModal implements OnChanges, OnDestroy {
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this._scrollingService.stopScrolling();
+        !this.pinnable && this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
+        if (this.pinned) {
+          this.displaySideBySide();
+        }
       } else {
         this._scrollingService.resumeScrolling();
+        if (this.pinned) {
+          this.displayOverlapping();
+        }
       }
     }
   }
 
   ngOnDestroy(): void {
     this._scrollingService.resumeScrolling();
+    this.displayOverlapping();
   }
 
   open(): void {
@@ -114,11 +140,27 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = false;
   }
 
+  togglePinned() {
+    this.pinned = !this.pinned;
+  }
+
   fadeDone(e: AnimationEvent) {
     if (e.toState === 'void') {
       // TODO: Investigate if we can decouple from animation events
       this._openChanged.emit(false);
       this.modalStackService.trackModalClose(this);
     }
+  }
+
+  private displaySideBySide() {
+    document.body.classList.add('clr-sidebar-pinned-' + this.size);
+  }
+
+  private displayOverlapping() {
+    document.body.classList.forEach(clazz => {
+      if (clazz.startsWith('clr-sidebar-pinned-')) {
+        document.body.classList.remove(clazz);
+      }
+    });
   }
 }
