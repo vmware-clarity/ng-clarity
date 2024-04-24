@@ -132,15 +132,15 @@ export const SidebarExtraLarge: StoryObj = {
   },
 };
 
-export const SidebarNoBackdrop: StoryObj = {
+export const SidebarModal: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'md',
-    clrSidebarBackdrop: false,
-    title: 'No Backdrop Sidebar',
-    body: 'This is a medium sidebar without backdrop.',
+    clrSidebarBackdrop: true,
+    title: 'Modal Sidebar with backdrop',
+    body: 'This is a medium sidebar with backdrop.',
   },
 };
 
