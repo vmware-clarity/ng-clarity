@@ -1001,6 +1001,7 @@ export interface ClrCommonStrings {
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
+    sidebarPin: string;
     signpostClose: string;
     signpostToggle: string;
     singleActionableAriaLabel: string;
@@ -2661,7 +2662,7 @@ export class ClrMainContainerModule {
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, sidebarObject: ClrSidebar);
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
@@ -2676,6 +2677,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     fadeDone(e: AnimationEvent_2): void;
     // (undocumented)
     get fadeMove(): string;
+    set fadeMove(move: string);
     // (undocumented)
     labelledBy: string;
     // (undocumented)
@@ -2693,6 +2695,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
+    pinnable: boolean;
+    // (undocumented)
+    get pinned(): boolean;
+    set pinned(pinned: boolean);
+    // (undocumented)
     size: string;
     // (undocumented)
     skipAnimation: boolean;
@@ -2701,9 +2708,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
+    togglePinned(): void;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, [null, null, null, { optional: true; host: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
 
 // @public
@@ -3391,14 +3400,21 @@ export enum ClrSide {
 
 // @public (undocumented)
 export class ClrSidebar {
+    constructor(element: ElementRef, modal: ClrModal);
     // (undocumented)
-    clrNoBackdrop: boolean;
+    clrSidebarBackdrop: boolean;
+    // (undocumented)
+    get clrSideBarPinnable(): boolean;
+    // (undocumented)
+    set clrSidebarPinnable(pinnable: boolean);
+    // (undocumented)
+    documentClick(event: Event): void;
     // (undocumented)
     get hideBackdrop(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSidebar, "[clrSidebar]", never, { "clrNoBackdrop": "clrNoBackdrop"; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSidebar, "[clrSidebar]", never, { "clrSidebarBackdrop": "clrSidebarBackdrop"; "clrSidebarPinnable": "clrSidebarPinnable"; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, [null, { host: true; }]>;
 }
 
 // @public (undocumented)
