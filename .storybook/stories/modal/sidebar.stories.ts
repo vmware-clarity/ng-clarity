@@ -6,7 +6,7 @@
 
 import { ClrModalModule, ClrSidebar, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
@@ -44,7 +44,7 @@ export default {
   },
 };
 
-const SidebarTemplate: Story = args => ({
+const SidebarTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
