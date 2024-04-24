@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, forwardRef, inject, Input } from '@angular/core';
+import { Component, ContentChild, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
@@ -23,7 +23,14 @@ import { ClrFileInput } from './file-input';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-file-input-wrapper">
         <ng-content select="[clrFileInput]"></ng-content>
-        <button type="button" class="btn btn-sm clr-file-input-browse-button" [disabled]="disabled" (click)="browse()">
+        <button
+          #browseButton
+          type="button"
+          class="btn btn-sm clr-file-input-browse-button"
+          [attr.aria-describedby]="browseButtonDescribedBy"
+          [disabled]="disabled"
+          (click)="browse()"
+        >
           <cds-icon shape="folder-open"></cds-icon>
           <span class="clr-file-input-browse-button-text">
             {{ fileInput?.selection?.buttonLabel || customButtonLabel || commonStrings.keys.browse }}
@@ -33,6 +40,7 @@ import { ClrFileInput } from './file-input';
           *ngIf="fileInput?.selection?.fileCount"
           type="button"
           class="btn btn-sm clr-file-input-clear-button"
+          [attr.aria-label]="commonStrings.keys.clearFile"
           (click)="clearSelectedFiles()"
         >
           <cds-icon shape="times" status="neutral" size="md"></cds-icon>
@@ -69,10 +77,16 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
 
   @ContentChild(forwardRef(() => ClrFileInput)) protected readonly fileInput: ClrFileInput;
 
+  @ViewChild('browseButton') protected readonly browseButtonElementRef: ElementRef<HTMLButtonElement>;
+
   protected readonly commonStrings = inject(ClrCommonStringsService);
 
   protected get disabled() {
     return this.fileInput.elementRef.nativeElement.disabled;
+  }
+
+  protected get browseButtonDescribedBy() {
+    return this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby');
   }
 
   protected browse() {
@@ -82,5 +96,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   protected clearSelectedFiles() {
     this.fileInput.elementRef.nativeElement.value = '';
     this.fileInput.elementRef.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+
+    this.browseButtonElementRef.nativeElement.focus();
   }
 }

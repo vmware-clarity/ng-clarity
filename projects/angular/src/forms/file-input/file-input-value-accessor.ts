@@ -37,11 +37,6 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  @HostListener('blur')
-  private handleBlur() {
-    this.onTouched();
-  }
-
   @HostListener('change')
   private handleChange() {
     this.onTouched();

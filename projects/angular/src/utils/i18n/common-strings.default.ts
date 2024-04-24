@@ -124,4 +124,5 @@ export const commonStringsDefault: ClrCommonStrings = {
   // File input
   browse: 'Browse',
   fileCount: '{COUNT} files',
+  clearFile: 'Clear file',
 };
