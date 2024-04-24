@@ -26,6 +26,7 @@ export class ClrSidebar implements OnInit {
   @Input('clrSidebarSize') size: string;
   @Input('clrSidebarSkipAnimation') skipAnimation = false;
   @Input('clrSidebarLabelledById') labelledById = this.sidebarId;
+  @Input('clrSidebarStaticBackdrop') staticBackdrop = false;
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
@@ -37,7 +38,9 @@ export class ClrSidebar implements OnInit {
 
   @Input()
   set clrSidebarBackdrop(backdrop: boolean) {
-    this.configuration.backdrop = backdrop;
+    if (backdrop !== undefined) {
+      this.configuration.backdrop = backdrop;
+    }
   }
 
   ngOnInit(): void {

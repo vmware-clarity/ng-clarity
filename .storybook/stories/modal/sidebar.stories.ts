@@ -27,7 +27,6 @@ export default {
       control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     },
     clrSidebarSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
-    clrSidebarBackdrop: { defaultValue: true, control: { type: 'boolean' } },
     // outputs
     clrSidebarOpenChange: { control: { disable: true } },
     // methods
@@ -52,6 +51,7 @@ const SidebarTemplate: StoryFn = args => ({
           <button type="button" class="btn btn-primary" (click)="clrSidebarOpen = true">Open Sidebar</button>
           <clr-sidebar
             [clrSidebarBackdrop]="clrSidebarBackdrop"
+            [clrSidebarStaticBackdrop]="clrSidebarStaticBackdrop"
             [clrSidebarCloseButtonAriaLabel]="clrSidebarCloseButtonAriaLabel"
             [clrSidebarLabelledById]="clrSidebarLabelledById"
             [clrSidebarOpen]="clrSidebarOpen"
@@ -94,6 +94,7 @@ export const SidebarSmall: StoryObj = {
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'sm',
+    clrSidebarStaticBackdrop: true,
     title: 'Small Sidebar',
     body: 'This is a small sidebar.',
   },
@@ -105,6 +106,7 @@ export const SidebarMedium: StoryObj = {
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'md',
+    clrSidebarStaticBackdrop: true,
     title: 'Medium Sidebar',
     body: 'This is a medium sidebar.',
   },
@@ -116,6 +118,7 @@ export const SidebarLarge: StoryObj = {
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'lg',
+    clrSidebarStaticBackdrop: true,
     title: 'Large Sidebar',
     body: 'This is a large sidebar.',
   },
@@ -127,20 +130,21 @@ export const SidebarExtraLarge: StoryObj = {
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'xl',
+    clrSidebarStaticBackdrop: true,
     title: 'Extra-Large Sidebar',
     body: 'This is a extra-large sidebar.',
   },
 };
 
-export const SidebarModal: StoryObj = {
+export const SidebarWithoutBackdrop: StoryObj = {
   render: SidebarTemplate,
   play: removeFocusOutline,
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'md',
-    clrSidebarBackdrop: true,
-    title: 'Modal Sidebar with backdrop',
-    body: 'This is a medium sidebar with backdrop.',
+    clrSidebarBackdrop: false,
+    title: 'Sidebar without backdrop',
+    body: 'This is a medium sidebar without backdrop.',
   },
 };
 
@@ -150,6 +154,7 @@ export const SidebarFullScreen: StoryObj = {
   args: {
     clrSidebarOpen: true,
     clrSidebarSize: 'full-screen',
+    clrSidebarStaticBackdrop: true,
     title: 'Full-Screen Sidebar',
     body: 'This is a full-screen sidebar.',
     showLongPageContent: false,
