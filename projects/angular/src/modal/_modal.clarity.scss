@@ -53,7 +53,8 @@
       }
 
       .modal-body-wrapper {
-        flex: 1 1 100%;
+        flex: 1 1;
+        max-height: 100%;
       }
     }
 
