@@ -75,11 +75,11 @@ import { ClrFileInput } from './file-input';
 export class ClrFileInputContainer extends ClrAbstractContainer {
   @Input('clrButtonLabel') customButtonLabel: string;
 
+  protected readonly commonStrings = inject(ClrCommonStringsService);
+
   @ContentChild(forwardRef(() => ClrFileInput)) protected readonly fileInput: ClrFileInput;
 
-  @ViewChild('browseButton') protected readonly browseButtonElementRef: ElementRef<HTMLButtonElement>;
-
-  protected readonly commonStrings = inject(ClrCommonStringsService);
+  @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
 
   protected get disabled() {
     return this.fileInput.elementRef.nativeElement.disabled;

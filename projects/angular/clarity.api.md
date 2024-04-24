@@ -911,6 +911,8 @@ export interface ClrCommonStrings {
     allColumnsSelected: string;
     // (undocumented)
     browse: string;
+    // (undocumented)
+    clearFile: string;
     close: string;
     collapse: string;
     columnSeparatorAriaLabel: string;
@@ -2259,6 +2261,8 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
 export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected browse(): void;
+    // (undocumented)
+    protected get browseButtonDescribedBy(): string;
     // (undocumented)
     protected clearSelectedFiles(): void;
     // (undocumented)
