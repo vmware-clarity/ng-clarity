@@ -6,24 +6,12 @@
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import {
-  Component,
-  EventEmitter,
-  Host,
-  HostBinding,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  Output,
-  SimpleChange,
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
 import { ModalStackService } from './modal-stack.service';
-import { ClrSidebar } from './sidebar';
 
 @Component({
   selector: 'clr-modal',
@@ -74,17 +62,20 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy = this.modalId;
 
+  private _fadeMove: string;
+
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
-    private modalStackService: ModalStackService,
-    @Host()
-    @Optional()
-    private sidebarObject: ClrSidebar
+    private modalStackService: ModalStackService
   ) {}
 
   get fadeMove(): string {
-    return this.skipAnimation ? '' : !this.sidebarObject ? 'fadeDown' : 'fadeLeft';
+    return this.skipAnimation ? '' : !this._fadeMove ? 'fadeDown' : this._fadeMove;
+  }
+
+  set fadeMove(move: string) {
+    this._fadeMove = move;
   }
 
   // Detect when _open is set to true and set no-scrolling to true

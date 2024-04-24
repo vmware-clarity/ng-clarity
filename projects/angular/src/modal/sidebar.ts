@@ -4,7 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, ElementRef, Host, HostBinding, HostListener, Input } from '@angular/core';
+
+import { ClrModal } from './modal';
 
 @Directive({
   selector: '[clrSidebar]',
@@ -13,10 +15,20 @@ import { Directive, HostBinding, Input } from '@angular/core';
   },
 })
 export class ClrSidebar {
-  @Input() clrNoBackdrop = false;
+  @Input() clrSidebarBackdrop = true;
+
+  constructor(private element: ElementRef, @Host() private modal: ClrModal) {
+    this.modal.fadeMove = 'fadeLeft';
+  }
 
   @HostBinding('class.no-backdrop')
   get hideBackdrop() {
-    return this.clrNoBackdrop;
+    return !this.clrSidebarBackdrop;
+  }
+  @HostListener('document:pointerup', ['$event'])
+  documentClick(event: Event) {
+    if (!this.element.nativeElement.contains(event.target) && this.modal._open) {
+      this.modal.close();
+    }
   }
 }

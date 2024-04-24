@@ -40,9 +40,9 @@
     .modal {
       left: initial;
       padding: 0;
+      height: 100%;
 
       .modal-content {
-        height: 100vh;
         display: flex;
         flex-direction: column;
       }
@@ -50,6 +50,15 @@
       .modal-dialog {
         border: none;
         border-radius: 0;
+        height: 100%;
+      }
+
+      &.modal-full-screen {
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0 0 0 modal-variables.$clr-modal-default-space;
       }
 
       .modal-body-wrapper {

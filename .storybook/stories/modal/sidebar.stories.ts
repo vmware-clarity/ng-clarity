@@ -6,9 +6,9 @@
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Modal/Sidebar',
@@ -23,9 +23,9 @@ export default {
     clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
     clrModalLabelledById: { defaultValue: '' },
     clrModalStaticBackdrop: { defaultValue: false, control: { type: 'boolean' } },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] } },
     clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
-    clrNoBackdrop: { defaultValue: false, control: { type: 'boolean' } },
+    clrSidebarBackdrop: { defaultValue: true, control: { type: 'boolean' } },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -50,7 +50,7 @@ const SidebarTemplate: Story = args => ({
       <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Sidebar</button>
       <clr-modal
         clrSidebar
-        [clrNoBackdrop]="clrNoBackdrop"
+        [clrSidebarBackdrop]="clrSidebarBackdrop"
         [clrModalClosable]="clrModalClosable"
         [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
         [clrModalLabelledById]="clrModalLabelledById"
@@ -130,13 +130,20 @@ export const SidebarNoBackdrop: StoryObj = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'md',
-    clrNoBackdrop: true,
+    clrSidebarBackdrop: false,
     title: 'No Backdrop Sidebar',
     body: 'This is a medium sidebar without backdrop.',
   },
 };
 
-function removeFocusOutline({ canvasElement }: StoryContext) {
-  // remove keyboard focus outline from modal title
-  canvasElement.querySelector<HTMLElement>(':focus').blur();
-}
+export const SidebarFullScreen: StoryObj = {
+  render: SidebarTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'full-screen',
+    title: 'Full-Screen Sidebar',
+    body: 'This is a full-screen sidebar.',
+    showLongPageContent: false,
+  },
+};
