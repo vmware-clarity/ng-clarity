@@ -3424,7 +3424,9 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     skipAnimation: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
+    staticBackdrop: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "staticBackdrop": "clrSidebarStaticBackdrop"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, never>;
 }
