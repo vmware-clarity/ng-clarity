@@ -36,6 +36,34 @@
     }
   }
 
+  .sidebar {
+    .modal {
+      left: initial;
+      padding: 0;
+
+      .modal-content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-dialog {
+        border: none;
+        border-radius: 0;
+      }
+
+      .modal-body-wrapper {
+        flex: 1 1 100%;
+      }
+    }
+
+    &.no-backdrop {
+      .modal-backdrop {
+        left: initial;
+      }
+    }
+  }
+
   .modal-dialog {
     position: relative;
     z-index: map.get(variables.$clr-layers, modal);
