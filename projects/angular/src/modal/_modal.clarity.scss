@@ -204,6 +204,11 @@
     }
   }
 
+  // it gets nested inside a .modal-footer and teh top padding gets duplicated
+  .sidebar-footer {
+    padding-top: 0;
+  }
+
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {
     .modal-body-wrapper {
       max-height: 55vh;
