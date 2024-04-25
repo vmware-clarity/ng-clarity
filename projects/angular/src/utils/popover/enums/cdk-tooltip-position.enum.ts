@@ -17,7 +17,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'bottom',
     panelClass: 'top-left',
-    offsetY: -16,
+    offsetY: -21,
     offsetX: 0,
   };
 
@@ -26,7 +26,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'bottom',
-    offsetY: -16,
+    offsetY: -21,
     offsetX: 0,
     panelClass: 'top-middle',
   };
@@ -36,7 +36,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'start',
     overlayY: 'bottom',
-    offsetY: -16,
+    offsetY: -21,
     offsetX: 0,
     panelClass: 'top-right',
   };
@@ -47,7 +47,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'bottom',
     offsetY: 0,
-    offsetX: 16,
+    offsetX: 21,
     panelClass: 'right-top',
   };
 
@@ -57,7 +57,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'center',
     offsetY: 0,
-    offsetX: 16,
+    offsetX: 21,
     panelClass: 'right-middle',
   };
 
@@ -67,7 +67,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'top',
     offsetY: 0,
-    offsetX: 16,
+    offsetX: 21,
     panelClass: 'right-bottom',
   };
 
@@ -76,7 +76,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'start',
     overlayY: 'top',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'bottom-right',
   };
@@ -86,7 +86,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'center',
     overlayY: 'top',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'bottom-middle',
   };
@@ -96,7 +96,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'end',
     overlayY: 'top',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'bottom-left',
   };
@@ -107,7 +107,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'top',
     offsetY: 0,
-    offsetX: -16,
+    offsetX: -21,
     panelClass: 'left-bottom',
   };
 
@@ -117,7 +117,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'center',
     offsetY: 0,
-    offsetX: -16,
+    offsetX: -21,
     panelClass: 'left-middle',
   };
 
@@ -127,7 +127,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'bottom',
     offsetY: 0,
-    offsetX: -16,
+    offsetX: -21,
     panelClass: 'left-top',
   };
 
@@ -137,7 +137,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'end',
     overlayY: 'top',
     offsetY: 0,
-    offsetX: -16,
+    offsetX: -21,
     panelClass: 'left',
   };
 
@@ -147,7 +147,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'top',
     offsetY: 0,
-    offsetX: 16,
+    offsetX: 21,
     panelClass: 'right',
   };
 
@@ -156,7 +156,7 @@ export class ClrCDKPopoverPositions {
     originY: 'top',
     overlayX: 'center',
     overlayY: 'top',
-    offsetY: -16,
+    offsetY: -21,
     offsetX: 0,
     panelClass: 'top',
   };
@@ -166,7 +166,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'center',
     overlayY: 'top',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'bottom',
   };
@@ -177,7 +177,7 @@ export class ClrCDKPopoverPositions {
     overlayX: 'start',
     overlayY: 'center',
     offsetY: 0,
-    offsetX: -16,
+    offsetX: -21,
     panelClass: 'middle-right',
   };
 
@@ -186,7 +186,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'center',
     overlayY: 'top',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'middle-bottom',
   };
@@ -196,7 +196,7 @@ export class ClrCDKPopoverPositions {
     originY: 'bottom',
     overlayX: 'end',
     overlayY: 'center',
-    offsetY: 16,
+    offsetY: 21,
     offsetX: 0,
     panelClass: 'middle-left',
   };

@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Directive, ElementRef, HostListener, NgZone } from '@angular/core';
-import { delay, fromEvent, Subscription } from 'rxjs';
+import { Directive, ElementRef, HostListener, NgZone } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -20,7 +20,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
     '[attr.role]': '"button"',
   },
 })
-export class ClrTooltipTrigger implements AfterViewInit {
+export class ClrTooltipTrigger {
   ariaDescribedBy: string;
   private subs: Subscription[] = [];
   private subscriptions = new Subscription();
@@ -41,36 +41,15 @@ export class ClrTooltipTrigger implements AfterViewInit {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  ngAfterViewInit() {
-    this.listenToMouseEvents();
+  @HostListener('focus')
+  showTooltip(): void {
+    this.popoverService.open = true;
   }
 
-  listenToMouseEvents() {
-    this.zone.runOutsideAngular(() => {
-      this.subs.push(
-        fromEvent(this.element.nativeElement, 'mouseenter')
-          .pipe(delay(100))
-          .subscribe(() => {
-            this.popoverService.open = true;
-          }),
-        fromEvent(this.element.nativeElement, 'mouseleave')
-          .pipe(delay(100))
-          .subscribe(() => {
-            this.popoverService.open = false;
-          })
-      );
-    });
+  @HostListener('blur')
+  hideTooltip(): void {
+    this.popoverService.open = false;
   }
-
-  // @HostListener('focus')
-  // showTooltip(): void {
-  //   this.popoverService.open = true;
-  // }
-
-  // @HostListener('blur')
-  // hideTooltip(): void {
-  //   this.popoverService.open = false;
-  // }
 
   @HostListener('mouseenter')
   private onMouseEnter() {

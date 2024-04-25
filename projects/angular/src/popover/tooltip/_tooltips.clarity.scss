@@ -62,6 +62,7 @@
 
 @mixin horizontal-tooltip-generator($dirA: right, $plain: false) {
   $oppA: map.get(mixins.$opp-directions, $dirA);
+  @include common-tooltip-styles;
 
   @if $plain {
     position: absolute;
@@ -71,10 +72,8 @@
     bottom: auto;
     margin-#{$oppA}: tooltip-variables.$clr-tooltip-adjusted-margin;
   }
-  @include common-tooltip-styles;
 
   border-top-#{$oppA}-radius: 0;
-  //
 
   &::before {
     content: '';
