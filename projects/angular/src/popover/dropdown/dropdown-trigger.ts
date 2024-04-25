@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Directive, ElementRef, NgZone } from '@angular/core';
-import { delay, fromEvent, Subscription } from 'rxjs';
+import { Directive, ElementRef, HostListener, NgZone } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDropdown } from './dropdown';
@@ -23,7 +23,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
     '[attr.aria-expanded]': 'active',
   },
 })
-export class ClrDropdownTrigger implements AfterViewInit {
+export class ClrDropdownTrigger {
   isRootLevelToggle = true;
   private subscriptions: Subscription[] = [];
 
@@ -46,24 +46,8 @@ export class ClrDropdownTrigger implements AfterViewInit {
     return this.popoverService.open;
   }
 
-  ngAfterViewInit() {
-    this.listenToMouseEvents();
+  @HostListener('click', ['$event'])
+  onDropdownTriggerClick(event: any): void {
+    this.popoverService.toggleWithEvent(event);
   }
-
-  listenToMouseEvents() {
-    this.zone.runOutsideAngular(() => {
-      this.subscriptions.push(
-        fromEvent(this.el.nativeElement, 'click')
-          .pipe(delay(0))
-          .subscribe(event => {
-            this.popoverService.toggleWithEvent(event);
-          })
-      );
-    });
-  }
-
-  // @HostListener('click', ['$event'])
-  // onDropdownTriggerClick(event: any): void {
-  //   this.popoverService.toggleWithEvent(event);
-  // }
 }
