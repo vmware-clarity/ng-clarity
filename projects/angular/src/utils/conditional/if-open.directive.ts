@@ -55,14 +55,6 @@ export class ClrIfOpen implements OnDestroy {
   ) {
     this.subscription = this.popoverService.openChange.subscribe(change => {
       this.updateView(change);
-      this.ref.detectChanges();
-      this.openChange.emit(change);
-    });
-
-    this.popoverService.popoverVisible.subscribe(change => {
-      if (!change) {
-        this.container.clear();
-      }
     });
   }
 
@@ -93,8 +85,7 @@ export class ClrIfOpen implements OnDestroy {
     if (value) {
       this.container.createEmbeddedView(this.template);
     } else {
-      // console.log("Remove");
-      // this.container.clear()
+      this.container.clear();
     }
   }
 }

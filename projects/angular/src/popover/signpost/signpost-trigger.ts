@@ -5,8 +5,8 @@
  */
 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Directive, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { delay, fromEvent, Subscription } from 'rxjs';
+import { Directive, ElementRef, HostListener, Inject, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -29,7 +29,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
  * ClrSignpostContent.
  *
  */
-export class ClrSignpostTrigger implements OnDestroy, AfterViewInit {
+export class ClrSignpostTrigger implements OnDestroy {
   ariaExpanded = false;
   ariaControl: string;
   isOpen: boolean;
@@ -70,24 +70,8 @@ export class ClrSignpostTrigger implements OnDestroy, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {
-    this.listenToMouseEvents();
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-  }
-
-  listenToMouseEvents() {
-    this.zone.runOutsideAngular(() => {
-      this.subscriptions.push(
-        fromEvent(this.el.nativeElement, 'click')
-          .pipe(delay(0))
-          .subscribe(event => {
-            this.popoverService.toggleWithEvent(event);
-          })
-      );
-    });
   }
 
   /**********
@@ -95,11 +79,11 @@ export class ClrSignpostTrigger implements OnDestroy, AfterViewInit {
    * @description
    * click handler for the ClrSignpost trigger button used to hide/show ClrSignpostContent.
    */
-  // @HostListener('click', ['$event'])
-  // onSignpostTriggerClick(event: Event): void {
-  //   console.log("clicked");
-  //   this.popoverService.toggleWithEvent(event);
-  // }
+  @HostListener('click', ['$event'])
+  onSignpostTriggerClick(event: Event): void {
+    console.log('clicked');
+    this.popoverService.toggleWithEvent(event);
+  }
 
   private focusOnClose() {
     if (!isPlatformBrowser(this.platformId)) {

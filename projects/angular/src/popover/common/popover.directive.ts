@@ -20,7 +20,6 @@ import { DomPortal } from '@angular/cdk/portal';
 import { AfterViewInit, Directive, Inject, NgZone, Renderer2 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
-// import { ClrCDKPopoverPositions } from '../../utils/popover/enums/cdk-position.enum';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 // import { AvailablePopoverPositions } from './popover-positions';
 
@@ -57,8 +56,8 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
         if (change) {
-          // setTimeout(() => this.showOverlay());
-          this.showOverlay();
+          setTimeout(() => this.showOverlay(), 0);
+          // this.showOverlay();
         } else {
           this.removeOverlay();
         }
@@ -119,7 +118,7 @@ export class PopoverDirective implements AfterViewInit {
     return this.getScrollParent(el.parentNode, axis) || document.body;
   };
 
-  setPosition() {
+  setPreferredPosition() {
     //Set default position to "top-right", if position is not available in the map
     this.preferredPosition =
       this.popoverService.position in this.popoverService.popoverPositions
@@ -128,7 +127,7 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   showOverlay() {
-    this.setPosition();
+    this.setPreferredPosition();
 
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
@@ -136,8 +135,9 @@ export class PopoverDirective implements AfterViewInit {
 
     if (!this.domPortal) {
       this.domPortal = new DomPortal(this.popoverService.contentRef);
+      this.overlayRef.attach(this.domPortal);
     }
-    this.overlayRef.attach(this.domPortal);
+
     this.overlayRef.updatePosition();
     setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
@@ -149,6 +149,7 @@ export class PopoverDirective implements AfterViewInit {
     if (this.domPortal?.isAttached) {
       this.domPortal.detach();
     }
+
     this.domPortal = null;
     this.popoverService.popoverVisibleEmit(false);
   }
@@ -189,9 +190,6 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       overlay.outsidePointerEvents().subscribe(event => {
         // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-
-        //  setTimeout(function(){
-        // console.log((event.target as Element).parentElement);
         if (this.popoverService.contentRef && this.popoverService.contentRef.nativeElement.contains(event.target)) {
           return;
         }
