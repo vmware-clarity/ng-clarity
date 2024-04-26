@@ -72,6 +72,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
+  private mutationChanges: MutationObserver;
 
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
@@ -95,9 +96,22 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
     this.datagridElementRef = this.datagrid.el;
 
+    // console.log(this.datagridElementRef.nativeElement.classList);
+    //
+    // this.mutationChanges = new MutationObserver((mutations: MutationRecord[]) => {
+    //   mutations.forEach((mutation: MutationRecord) => {
+    //     // this is called twice because the old class is removed and the new added
     if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
-      this._cdkFixedSizeVirtualScrollInputs.itemSize = 24;
+      console.log(this.datagridElementRef.nativeElement.classList);
+      this.itemSize = 24;
     }
+    //   });
+    // });
+    //
+    // this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
+    //   attributeFilter: ['class'],
+    //   attributeOldValue: true,
+    // });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
@@ -224,6 +238,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   ngOnDestroy() {
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
+    this.mutationChanges?.disconnect();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

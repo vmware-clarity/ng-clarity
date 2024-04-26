@@ -38,7 +38,7 @@ export class KeyNavigationGridController implements OnDestroy {
   private config: KeyNavigationGridConfig;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
-  private _activeCell: HTMLElement;
+  private _activeCell: HTMLElement = null;
 
   constructor(private zone: NgZone) {
     this.config = {
@@ -88,6 +88,14 @@ export class KeyNavigationGridController implements OnDestroy {
           }
         });
 
+      fromEvent(this.grid, 'wheel')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: MouseEvent) => {
+          console.log(e);
+
+          this.removeActiveCell();
+        });
+
       fromEvent(this.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
@@ -133,6 +141,11 @@ export class KeyNavigationGridController implements OnDestroy {
     const firstCell = this.cells ? this.cells[0] : null;
     firstCell?.setAttribute('tabindex', '0');
   }
+
+  removeActiveCell() {
+    this._activeCell = null;
+  }
+
   getActiveCell() {
     return this._activeCell;
   }
