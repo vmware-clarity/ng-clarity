@@ -27,29 +27,21 @@
   border-radius: tokens.$cds-alias-object-border-radius-100;
   background: none;
   cursor: pointer;
-  &.in-range {
-    border-radius: 0;
-    border: none !important;
-  }
 }
 
 @mixin generate-calendar-focus-style() {
   &:hover {
     background: datepicker-variables.$clr-calendar-btn-hover-color;
   }
-  &:focus {
-    border: 1px solid datepicker-variables.$clr-calendar-btn-focus-border-color !important;
-  }
-
   &.in-range {
+    border-radius: 0;
+    border: none !important;
     background: datepicker-variables.$clr-calendar-in-range-cell-border-color;
   }
-
   &:focus {
-    //Only because we have defined a background color for focus above
+    border: 1px solid datepicker-variables.$clr-calendar-btn-focus-border-color !important;
     outline: 0;
   }
-
   &:active {
     background: datepicker-variables.$clr-calendar-btn-active-color-bg;
   }
@@ -159,8 +151,10 @@
       + .range-option {
         margin: var(--cds-global-space-5) 0;
       }
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: datepicker-variables.$clr-calendar-option-hover-background-color;
+        outline: none;
       }
     }
     background-color: datepicker-variables.$clr-calendar-options-background-color;

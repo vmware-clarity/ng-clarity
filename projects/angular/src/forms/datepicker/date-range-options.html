@@ -5,8 +5,11 @@
   <div class="options-wrapper" *ngIf="dateNavigationService.isRangePicker && dateRangeOptions?.length">
     <div
       class="range-option"
-      [ngClass]="{'active': i === dateRangeOptions.length - 1}"
       *ngFor="let option of dateRangeOptions; let i = index"
+      [ngClass]="{'active': !!option?.isCustomRange}"
+      [attr.aria-label]="option?.label"
+      tabindex="0"
+      (keyup.enter)="onRangeOptionSelect(option)"
       (click)="onRangeOptionSelect(option)"
     >
       {{option.label}}

@@ -13,7 +13,11 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './datepicker-in-reactive-forms.html',
 })
 export class DatepickerInReactiveForms {
-  dateForm = new FormGroup({ date: new FormControl(), startDate: new FormControl(), endDate: new FormControl() });
+  dateForm = new FormGroup({
+    date: new FormControl('03/05/2018'),
+    startDate: new FormControl(),
+    endDate: new FormControl(),
+  });
   // minDate = '02/02/2021';
   // maxDate = '02/24/2029';
 

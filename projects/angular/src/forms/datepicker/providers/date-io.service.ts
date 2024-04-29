@@ -6,7 +6,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { DateRange } from '../interfaces/date-range.interface';
+import { DateRange, DateRangeOption } from '../interfaces/date-range.interface';
 import { DayModel } from '../model/day.model';
 import {
   BIG_ENDIAN,
@@ -80,10 +80,13 @@ export class DateIOService {
     this.isDateRangePicker = flag;
   }
 
-  setRangeOptions(rangeOptions) {
+  setRangeOptions(rangeOptions: DateRangeOption[]) {
     let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
+    const hasCustomRangeOption = validatedRangeOption.findIndex(rangeOption => !!rangeOption.isCustomRange);
     if (validatedRangeOption.length) {
-      validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [] }];
+      if (hasCustomRangeOption === -1) {
+        validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [], isCustomRange: true }];
+      }
       this.dateRangeOptions = validatedRangeOption;
     }
   }
@@ -243,14 +246,15 @@ export class DateIOService {
     return new Date(result, m || 0, d || 1);
   }
 
-  private validateDateRangeOptions(rangeOptions) {
+  private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
     const validOptions = [];
-    rangeOptions?.forEach(rangeOption => {
+    rangeOptions?.forEach((rangeOption: DateRangeOption) => {
       if (
-        !rangeOption.value?.length ||
-        rangeOption.value?.length !== 2 ||
-        Object.prototype.toString.call(rangeOption.value[0]) !== '[object Date]' ||
-        Object.prototype.toString.call(rangeOption.value[1]) !== '[object Date]'
+        !rangeOption.isCustomRange &&
+        (!rangeOption.value?.length ||
+          rangeOption.value?.length !== 2 ||
+          Object.prototype.toString.call(rangeOption.value[0]) !== '[object Date]' ||
+          Object.prototype.toString.call(rangeOption.value[1]) !== '[object Date]')
       ) {
         return;
       }

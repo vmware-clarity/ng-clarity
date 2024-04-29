@@ -86,6 +86,7 @@ export class DateNavigationService {
         (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
       ) {
         if (this.selectedEndDay) {
+          this.hoveredDay = this.hoveredMonth = this.hoveredYear = undefined;
           this.setSelectedEndDay(undefined);
         }
         this.setSelectedDay(dayModel);
@@ -171,6 +172,17 @@ export class DateNavigationService {
   setSelectedEndDay(dayModel: DayModel | undefined) {
     this.selectedEndDay = dayModel;
     this._selectedEndDayChange.next(dayModel);
+  }
+
+  validateDateRange() {
+    if (!this.selectedDay || !this.selectedEndDay) {
+      if (this.selectedDay) {
+        this.setSelectedDay(undefined);
+      }
+      if (this.selectedEndDay) {
+        this.setSelectedEndDay(undefined);
+      }
+    }
   }
 
   // not a setter because i want this to remain private

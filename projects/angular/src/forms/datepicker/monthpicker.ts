@@ -223,7 +223,7 @@ export class ClrMonthpicker implements AfterViewInit {
    * Compares the month passed to the focused month and returns the tab index.
    */
   getTabIndex(monthIndex: number): number {
-    return monthIndex === this._focusedMonthIndex || monthIndex === this.calendarEndMonthIndex ? 0 : -1;
+    return monthIndex === this._focusedMonthIndex ? 0 : -1;
   }
 
   /**

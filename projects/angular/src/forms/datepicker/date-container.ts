@@ -229,6 +229,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
         if (open) {
           this.initializeCalendar();
         } else {
+          if (this.dateNavigationService.isRangePicker) {
+            this.dateNavigationService.validateDateRange();
+          }
           this.toggleButton.nativeElement.focus();
         }
       })

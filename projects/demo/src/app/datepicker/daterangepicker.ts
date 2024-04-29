@@ -111,6 +111,7 @@ export class DateRangePickerDemo implements OnInit {
         new Date(new Date().getFullYear(), new Date().getMonth(), 0),
       ],
     },
+    { label: 'Custom Range', value: [], isCustomRange: true },
   ];
 
   yearRangeOptions = [
@@ -130,6 +131,7 @@ export class DateRangePickerDemo implements OnInit {
       label: 'Last 5 Years',
       value: [new Date(new Date().getFullYear() - 5, 1, 1), new Date(new Date().getFullYear(), 0, 0)],
     },
+    { label: 'Custom Range', value: [], isCustomRange: true },
   ];
 
   ngOnInit(): void {
