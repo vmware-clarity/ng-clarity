@@ -19,8 +19,8 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-monthpicker',
   template: `
-    <div class="calendar-header in-monthpicker">
-      <div class="year-view-switcher" *ngIf="_dateIoService.isYearViewAllowed()">
+    <div class="calendar-header in-monthpicker" *ngIf="_dateIoService.isYearViewAllowed()">
+      <div class="year-view-switcher">
         <button
           class="calendar-btn yearpicker-trigger"
           type="button"
