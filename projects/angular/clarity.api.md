@@ -3397,6 +3397,10 @@ export enum ClrSide {
 export class ClrSidebar implements OnInit {
     constructor(element: ElementRef, configuration: ClrModalConfigurationService);
     // (undocumented)
+    altClose(open: boolean): void;
+    // (undocumented)
+    _altClose: EventEmitter<boolean>;
+    // (undocumented)
     close(): void;
     // (undocumented)
     closeButtonAriaLabel: string | undefined;
@@ -3418,6 +3422,8 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
+    preventClose: boolean;
+    // (undocumented)
     sidebarId: string;
     // (undocumented)
     size: string;
@@ -3426,7 +3432,7 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "staticBackdrop": "clrSidebarStaticBackdrop"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "staticBackdrop": "clrSidebarStaticBackdrop"; "preventClose": "clrSidebarPreventClose"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; "_altClose": "clrSidebarAlternateClose"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, never>;
 }

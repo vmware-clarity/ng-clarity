@@ -30,6 +30,7 @@ export default {
     clrSidebarSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrSidebarOpenChange: { control: { disable: true } },
+    clrSidebarAltClose: { control: { disable: true } },
     // methods
     fadeDone: { control: { disable: true }, table: { disable: true } },
     open: { control: { disable: true }, table: { disable: true } },
@@ -38,6 +39,7 @@ export default {
   args: {
     // outputs
     clrSidebarOpenChange: action('clrSidebarOpenChange'),
+    clrSidebarAltClose: action('clrSidebarAltClose'),
     // story helpers
     title: 'Sidebar Title',
     body: 'Hello World!',
@@ -59,14 +61,17 @@ const SidebarTemplate: StoryFn = args => ({
             [clrSidebarSize]="clrSidebarSize"
             [clrSidebarSkipAnimation]="clrSidebarSkipAnimation"
             (clrSidebarOpenChange)="clrSidebarOpen = $event; clrSidebarOpenChange($event)"
+            [clrSidebarPreventClose]="clrSidebarPreventClose"
+            (clrSidebarAlternateClose)="clrSidebarAltClose($event)"
+            #sidebar
           >
             <h3 class="sidebar-title">{{ title }}</h3>
             <div class="sidebar-body">
               {{ body }}
             </div>
             <div class="sidebar-footer">
-              <button type="button" class="btn btn-outline" (click)="clrSidebarOpen = false">Cancel</button>
-              <button type="button" class="btn btn-primary" (click)="clrSidebarOpen = false">Ok</button>
+              <button type="button" class="btn btn-outline" (click)="clrSidebarOpen = false">Force Close</button>
+              <button type="button" class="btn btn-primary" (click)="sidebar.close()">Close</button>
             </div>
           </clr-sidebar>
           <div>
@@ -145,6 +150,23 @@ export const SidebarWithoutBackdrop: StoryObj = {
     clrSidebarSize: 'md',
     clrSidebarBackdrop: false,
     title: 'Sidebar without backdrop',
+    body: 'This is a medium sidebar without backdrop.',
+  },
+};
+
+export const SidebarAlternateClose: StoryObj = {
+  render: SidebarTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrSidebarOpen: true,
+    clrSidebarSize: 'md',
+    clrSidebarPreventClose: true,
+    clrSidebarAltClose: function () {
+      if (confirm('Do you really want to close the sidebar?')) {
+        this.clrSidebarOpen = false;
+      }
+    },
+    title: 'Sidebar with alternate close',
     body: 'This is a medium sidebar without backdrop.',
   },
 };

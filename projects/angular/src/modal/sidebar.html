@@ -6,6 +6,8 @@
   [clrModalSkipAnimation]="skipAnimation"
   [clrModalStaticBackdrop]="staticBackdrop"
   [clrModalLabelledById]="labelledById"
+  [clrModalPreventClose]="preventClose"
+  (clrModalAlternateClose)="altClose($event)"
 >
   <div class="modal-title"><ng-content select=".sidebar-title"></ng-content></div>
   <div class="modal-body"><ng-content select=".sidebar-body"></ng-content></div>

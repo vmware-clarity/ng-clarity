@@ -28,6 +28,8 @@ export class ClrSidebar implements OnInit {
   @Input('clrSidebarSkipAnimation') skipAnimation = false;
   @Input('clrSidebarLabelledById') labelledById = this.sidebarId;
   @Input('clrSidebarStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidebarPreventClose') preventClose = false;
+  @Output('clrSidebarAlternateClose') _altClose = new EventEmitter<boolean>(false);
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
@@ -58,6 +60,10 @@ export class ClrSidebar implements OnInit {
 
   openChange(open: boolean) {
     this._openChanged.emit(open);
+  }
+
+  altClose(open: boolean) {
+    this._altClose.emit(open);
   }
 
   @HostListener('document:pointerup', ['$event'])
