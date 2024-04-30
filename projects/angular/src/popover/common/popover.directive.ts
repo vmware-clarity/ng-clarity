@@ -24,7 +24,7 @@ import { ClrPopoverService } from '../../utils/popover/providers/popover.service
 // import { AvailablePopoverPositions } from './popover-positions';
 
 @Directive({
-  selector: 'clr-tooltip, clr-signpost, clr-dropdown',
+  selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
 })
 export class PopoverDirective implements AfterViewInit {
   private subscriptions: Subscription[] = [];
@@ -56,8 +56,7 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(change => {
         if (change) {
-          setTimeout(() => this.showOverlay(), 0);
-          // this.showOverlay();
+          this.showOverlay();
         } else {
           this.removeOverlay();
         }
@@ -213,7 +212,7 @@ export class PopoverDirective implements AfterViewInit {
     this.subscriptions.push(
       overlay.detachments().subscribe(() => {
         this.popoverService.open = false;
-        this.popoverService.setOpenedButtonFocus();
+        // this.popoverService.setOpenedButtonFocus();
       })
     );
 

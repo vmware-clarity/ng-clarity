@@ -4,17 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectorRef,
-  Directive,
-  EventEmitter,
-  Inject,
-  Input,
-  OnDestroy,
-  Output,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../popover/providers/popover.service';
@@ -50,11 +40,11 @@ export class ClrIfOpen implements OnDestroy {
   constructor(
     private popoverService: ClrPopoverService,
     private template: TemplateRef<any>,
-    private ref: ChangeDetectorRef,
-    @Inject(ViewContainerRef) private container: ViewContainerRef
+    private container: ViewContainerRef
   ) {
     this.subscription = this.popoverService.openChange.subscribe(change => {
       this.updateView(change);
+      this.openChange.emit(change);
     });
   }
 
