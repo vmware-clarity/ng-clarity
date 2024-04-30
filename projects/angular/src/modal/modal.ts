@@ -56,7 +56,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
   @Input('clrModalSize') size: string;
   @Input('clrModalStaticBackdrop') staticBackdrop = true;
-  @Input('clrModalSkipAnimation') skipAnimation = false;
+  @Input('clrModalSkipAnimation') skipAnimation = 'false';
 
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);

@@ -2699,7 +2699,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     size: string;
     // (undocumented)
-    skipAnimation: boolean;
+    skipAnimation: string;
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
@@ -3428,7 +3428,7 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     size: string;
     // (undocumented)
-    skipAnimation: boolean;
+    skipAnimation: string;
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)

@@ -25,7 +25,7 @@ export class ClrSidebar implements OnInit {
   @Output('clrSidebarOpenChange') _openChanged = new EventEmitter<boolean>(false);
   @Input('clrSidebarCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidebarSize') size: string;
-  @Input('clrSidebarSkipAnimation') skipAnimation = false;
+  @Input('clrSidebarSkipAnimation') skipAnimation = 'false';
   @Input('clrSidebarLabelledById') labelledById = this.sidebarId;
   @Input('clrSidebarStaticBackdrop') staticBackdrop = false;
   @Input('clrSidebarPreventClose') preventClose = false;
