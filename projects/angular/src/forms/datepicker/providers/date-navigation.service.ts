@@ -143,12 +143,15 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
+  /**
+   * Moves the displayed calendar to the next year.
+   */
   moveToNextYear(): void {
     this.setDisplayedCalendar(this._displayedCalendar.nextYear());
   }
 
   /**
-   * Moves the displayed calendar to the previous month.
+   * Moves the displayed calendar to the previous year.
    */
   moveToPreviousYear(): void {
     this.setDisplayedCalendar(this._displayedCalendar.previousYear());

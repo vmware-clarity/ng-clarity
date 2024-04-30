@@ -43,12 +43,18 @@ export class CalendarViewModel {
     this.focusableDay = day;
   }
 
+  /**
+   * Updates the selected day in the calendar
+   */
   updateSelectedDay(day: DayModel | undefined): void {
     this.setSelectedDay(this.selectedDay, false);
     this.selectedDay = day;
     this.setSelectedDay(day, true);
   }
 
+  /**
+   * Updates the selected end day in the calendar
+   */
   updateSelectedEndDay(day: DayModel | undefined): void {
     this.setSelectedDay(this.selectedEndDay, false);
     this.selectedEndDay = day;

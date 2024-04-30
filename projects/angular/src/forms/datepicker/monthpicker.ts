@@ -65,16 +65,8 @@ import { ViewManagerService } from './providers/view-manager.service';
         *ngFor="let month of monthNames; let monthIndex = index"
         (click)="changeMonth(monthIndex)"
         [class.is-selected]="isSelected(monthIndex)"
-        [class.is-start-range]="
-          _dateNavigationService.isRangePicker &&
-          calendarYear === _dateNavigationService.selectedDay?.year &&
-          monthIndex === _dateNavigationService.selectedDay?.month
-        "
-        [class.is-end-range]="
-          _dateNavigationService.isRangePicker &&
-          calendarYear === _dateNavigationService.selectedEndDay?.year &&
-          monthIndex === _dateNavigationService.selectedEndDay?.month
-        "
+        [class.is-start-range]="getIsRangeStartMonth(monthIndex)"
+        [class.is-end-range]="getIsRangeEndMonth(monthIndex)"
         [class.in-range]="isInRange(monthIndex)"
         [attr.tabindex]="getTabIndex(monthIndex)"
         [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
@@ -96,7 +88,7 @@ export class ClrMonthpicker implements AfterViewInit {
 
   constructor(
     private _localeHelperService: LocaleHelperService,
-    public _dateNavigationService: DateNavigationService,
+    private _dateNavigationService: DateNavigationService,
     public _dateIoService: DateIOService,
     private _datePickerHelperService: DatePickerHelperService,
     private _datepickerFocusService: DatepickerFocusService,
@@ -150,17 +142,28 @@ export class ClrMonthpicker implements AfterViewInit {
     return new Date().getMonth();
   }
 
+  getIsRangeStartMonth(monthIndex: number): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.calendarYear === this._dateNavigationService.selectedDay?.year &&
+      monthIndex === this._dateNavigationService.selectedDay?.month
+    );
+  }
+
+  getIsRangeEndMonth(monthIndex: number): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.calendarYear === this._dateNavigationService.selectedEndDay?.year &&
+      monthIndex === this._dateNavigationService.selectedEndDay?.month
+    );
+  }
+
   /**
    * Calls the ViewManagerService to change to the yearpicker view.
    */
   changeToYearView(): void {
     this._viewManagerService.changeToYearView();
   }
-
-  // @HostListener('mouseenter')
-  // hoverListener() {
-  //   this._dateNavigationService.hoveredMonth = this.dayView.dayModel;
-  // }
 
   /**
    * Focuses on the current calendar month when the View is initialized.
@@ -208,7 +211,10 @@ export class ClrMonthpicker implements AfterViewInit {
     );
   }
 
-  onHover(monthIndex: number) {
+  /**
+   * Calls the DateNavigationService to update the hovered month value of the calendar
+   */
+  onHover(monthIndex: number): void {
     this._dateNavigationService.hoveredMonth = monthIndex;
   }
   /**
@@ -247,7 +253,11 @@ export class ClrMonthpicker implements AfterViewInit {
     this._dateNavigationService.moveToCurrentMonth();
   }
 
-  isInRange(monthIndex: number) {
+  /**
+   * Applicable only to date range picker
+   * Compares the month passed is in between the start and end date range
+   */
+  isInRange(monthIndex: number): boolean {
     if (!this._dateNavigationService.isRangePicker) {
       return false;
     }
@@ -265,11 +275,6 @@ export class ClrMonthpicker implements AfterViewInit {
           monthIndex < this._dateNavigationService.selectedEndDay.month) ||
         (this.calendarYear > this._dateNavigationService.selectedDay.year &&
           this.calendarYear < this._dateNavigationService.selectedEndDay.year)
-
-        // (this.calendarYear > this._dateNavigationService.selectedDay.year &&
-        //   this.calendarYear < this._dateNavigationService.selectedEndDay.year) ||
-        // (monthIndex > this._dateNavigationService.selectedDay.month &&
-        //   monthIndex < this._dateNavigationService.selectedEndDay.month)
       );
     } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
       return (
@@ -283,26 +288,4 @@ export class ClrMonthpicker implements AfterViewInit {
       return false;
     }
   }
-
-  // isInRange() {
-  //   if (!this._dateNavigationService.isRangePicker) {
-  //     return false;
-  //   }
-  //   if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) {
-  //     // return this._dayView.dayModel.toDate()?.getTime() > this._dateNavigationService.selectedDay?.toDate()?.getTime() && this._dayView.dayModel.toDate()?.getTime() < this._dateNavigationService.selectedEndDay?.toDate()?.getTime();
-  //     const dayModel = this._datePickerHelperService.convertStringDateToDayModel(this._dateNavigationService.displayedCalendar.year, );
-  //     return (
-  //       this._dayView.dayModel.isAfter(this._dateNavigationService.selectedDay) &&
-  //       this._dayView.dayModel.isBefore(this._dateNavigationService.selectedEndDay)
-  //     );
-  //   } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
-  //     // return this._dayView.dayModel.toDate()?.getTime() > this._dateNavigationService.selectedDay?.toDate()?.getTime() && this._dayView.dayModel.toDate()?.getTime() < this._dateNavigationService.hoveredDay?.toDate()?.getTime();
-  //     return (
-  //       this._dayView.dayModel.isAfter(this._dateNavigationService.selectedDay) &&
-  //       this._dayView.dayModel.isBefore(this._dateNavigationService.hoveredDay)
-  //     );
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }

@@ -4,6 +4,26 @@
 * The full license information can be found in LICENSE in the root directory of this project.
 -->
 
-<clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
-<clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
-<clr-daypicker *ngIf="isDayView"></clr-daypicker>
+<div
+  class="datepicker-view-manager-wrapper"
+  [ngClass]="{'has-range-option': dateNavigationService.isRangePicker && dateRangeOptions?.length}"
+>
+  <div class="options-wrapper" *ngIf="dateNavigationService.isRangePicker && dateRangeOptions?.length">
+    <div
+      class="range-option"
+      *ngFor="let option of dateRangeOptions; let i = index"
+      [ngClass]="{'active': !!option?.isCustomRange}"
+      [attr.aria-label]="option?.label"
+      tabindex="0"
+      (keyup.enter)="onRangeOptionSelect(option)"
+      (click)="onRangeOptionSelect(option)"
+    >
+      {{option.label}}
+    </div>
+  </div>
+  <div class="datepicker-view-manager">
+    <clr-monthpicker *ngIf="isMonthView"></clr-monthpicker>
+    <clr-yearpicker *ngIf="isYearView"></clr-yearpicker>
+    <clr-daypicker *ngIf="isDayView"></clr-daypicker>
+  </div>
+</div>

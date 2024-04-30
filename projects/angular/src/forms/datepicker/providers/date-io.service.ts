@@ -35,7 +35,6 @@ export class DateIOService {
   };
   isDateRangePicker = false;
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
-  defaultView = '';
 
   private inputDateFormat;
   private dateRangeOptions;
@@ -59,7 +58,9 @@ export class DateIOService {
       // attribute binding was removed, reset back to the beginning of time
       this.disabledDates.minDate = new DayModel(0, 0, 1);
     } else {
-      const [year = new Date().getFullYear(), month = 1, day = 1] = date.split('-').map(n => parseInt(n, 10));
+      const [year = new Date().getFullYear(), month = 1, day = 1] = date
+        .split(DELIMITERS_REGEX)
+        .map(n => parseInt(n, 10));
       this.disabledDates.minDate = new DayModel(year, month - 1, day);
     }
   }

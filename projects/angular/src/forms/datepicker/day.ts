@@ -9,7 +9,6 @@ import { Component, HostListener, Input } from '@angular/core';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
-import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatePickerHelperService } from './providers/datepicker-helper.service';
 
@@ -25,14 +24,8 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
       [class.is-disabled]="dayView.isDisabled"
       [class.is-selected]="dayView.isSelected"
       [class.in-range]="isInRange()"
-      [class.is-start-range]="
-        _dateNavigationService.isRangePicker &&
-        dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedDay?.toComparisonString()
-      "
-      [class.is-end-range]="
-        _dateNavigationService.isRangePicker &&
-        dayView?.dayModel?.toComparisonString() === _dateNavigationService.selectedEndDay?.toComparisonString()
-      "
+      [class.is-start-range]="isRangeStartDay"
+      [class.is-end-range]="isRangeEndDay"
       [attr.tabindex]="dayView.tabIndex"
       (click)="selectDay()"
       (focus)="onDayViewFocus()"
@@ -49,9 +42,8 @@ export class ClrDay {
   private _dayView: DayViewModel;
 
   constructor(
-    public _dateNavigationService: DateNavigationService,
+    private _dateNavigationService: DateNavigationService,
     private _datePickerHelperService: DatePickerHelperService,
-    private dateFormControlService: DateFormControlService,
     private commonStrings: ClrCommonStringsService
   ) {}
 
@@ -75,8 +67,25 @@ export class ClrDay {
       : this._dayView.dayModel.toDateString();
   }
 
+  get isRangeStartDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedDay?.toComparisonString()
+    );
+  }
+
+  get isRangeEndDay(): boolean {
+    return (
+      this._dateNavigationService.isRangePicker &&
+      this.dayView?.dayModel?.toComparisonString() === this._dateNavigationService.selectedEndDay?.toComparisonString()
+    );
+  }
+
+  /**
+   * Calls the DateNavigationService to update the hovered day value of the calendar
+   */
   @HostListener('mouseenter')
-  hoverListener() {
+  hoverListener(): void {
     if (!this.dayView.isExcluded && !this.dayView.isDisabled) {
       this._dateNavigationService.hoveredDay = this.dayView.dayModel;
     }
@@ -97,18 +106,20 @@ export class ClrDay {
     this._datePickerHelperService.selectDay(day);
   }
 
-  isInRange() {
+  /**
+   * Applicable only to date range picker
+   * Compares whether the day is in between the start and end date range
+   */
+  isInRange(): boolean {
     if (!this._dateNavigationService.isRangePicker) {
       return false;
     }
     if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) {
-      // return this._dayView.dayModel.toDate()?.getTime() > this._dateNavigationService.selectedDay?.toDate()?.getTime() && this._dayView.dayModel.toDate()?.getTime() < this._dateNavigationService.selectedEndDay?.toDate()?.getTime();
       return (
         this._dayView.dayModel.isAfter(this._dateNavigationService.selectedDay) &&
         this._dayView.dayModel.isBefore(this._dateNavigationService.selectedEndDay)
       );
     } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
-      // return this._dayView.dayModel.toDate()?.getTime() > this._dateNavigationService.selectedDay?.toDate()?.getTime() && this._dayView.dayModel.toDate()?.getTime() < this._dateNavigationService.hoveredDay?.toDate()?.getTime();
       return (
         this._dayView.dayModel.isAfter(this._dateNavigationService.selectedDay) &&
         this._dayView.dayModel.isBefore(this._dateNavigationService.hoveredDay)

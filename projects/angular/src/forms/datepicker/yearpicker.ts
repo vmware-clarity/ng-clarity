@@ -50,12 +50,8 @@ import { DatePickerHelperService } from './providers/datepicker-helper.service';
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
         [class.is-selected]="year === calendarYear || year === calendarEndYear"
-        [class.is-start-range]="
-          _dateNavigationService.isRangePicker && year === _dateNavigationService.selectedDay?.year
-        "
-        [class.is-end-range]="
-          _dateNavigationService.isRangePicker && year === _dateNavigationService.selectedEndDay?.year
-        "
+        [class.is-start-range]="getIsRangeStartYear(year)"
+        [class.is-end-range]="getIsRangeEndYear(year)"
         [class.in-range]="isInRange(year)"
         [class.is-today]="year === currentCalendarYear"
         (click)="changeYear(year)"
@@ -81,7 +77,7 @@ export class ClrYearpicker implements AfterViewInit {
   private _focusedYear: number;
 
   constructor(
-    public _dateNavigationService: DateNavigationService,
+    private _dateNavigationService: DateNavigationService,
     private datePickerHelperService: DatePickerHelperService,
     private _datepickerFocusService: DatepickerFocusService,
     private _elRef: ElementRef,
@@ -109,6 +105,14 @@ export class ClrYearpicker implements AfterViewInit {
 
   get currentCalendarYear(): number {
     return new Date().getFullYear();
+  }
+
+  getIsRangeStartYear(year: number): boolean {
+    return this._dateNavigationService.isRangePicker && year === this._dateNavigationService.selectedDay?.year;
+  }
+
+  getIsRangeEndYear(year: number): boolean {
+    return this._dateNavigationService.isRangePicker && year === this._dateNavigationService.selectedEndDay?.year;
   }
 
   /**
@@ -146,13 +150,16 @@ export class ClrYearpicker implements AfterViewInit {
 
   /**
    * Calls the DateNavigationService to update the year value of the calendar.
-   * Also changes the view to the daypicker.
+   * Also changes the view to the monthPicker if month view is allowed.
    */
   changeYear(year: number): void {
     this.datePickerHelperService.selectYear(year);
   }
 
-  onHover(year: number) {
+  /**
+   * Calls the DateNavigationService to update the hovered year value of the calendar
+   */
+  onHover(year: number): void {
     this._dateNavigationService.hoveredYear = year;
   }
 
@@ -200,7 +207,11 @@ export class ClrYearpicker implements AfterViewInit {
     return this._focusedYear === year ? 0 : -1;
   }
 
-  isInRange(year: number) {
+  /**
+   * Applicable only to date range picker
+   * Compares the year passed is in between the start and end date range
+   */
+  isInRange(year: number): boolean {
     if (!this._dateNavigationService.isRangePicker) {
       return false;
     }

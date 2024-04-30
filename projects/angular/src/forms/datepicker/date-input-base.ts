@@ -195,6 +195,13 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
     }
   }
 
+  protected processBeforeEmittingDate(date) {
+    if (!this.dateIOService.isMonthViewAllowed() || !this.dateIOService.isDayViewAllowed()) {
+      return this.dateIOService.toLocaleDisplayFormatString(date);
+    }
+    return date;
+  }
+
   private setFocus(focus: boolean) {
     if (this.focusService) {
       this.focusService.focused = focus;

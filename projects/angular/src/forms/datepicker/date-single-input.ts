@@ -119,11 +119,4 @@ export class ClrDateSingleInput extends ClrDateInputBase implements AfterViewIni
       this.updateDate(this.initialClrDateInputValue);
     }
   }
-
-  private processBeforeEmittingDate(date) {
-    if (!this.dateIOService.isMonthViewAllowed() || !this.dateIOService.isDayViewAllowed()) {
-      return this.dateIOService.toLocaleDisplayFormatString(date);
-    }
-    return date;
-  }
 }

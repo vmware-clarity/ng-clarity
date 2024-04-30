@@ -23,8 +23,7 @@ import { datesAreEqual } from './utils/date-utils';
 export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterViewInit {
   @Output('clrRangeStartDateChange') dateChange = new EventEmitter<Date>(false);
 
-  @HostBinding('attr.size') size = 12;
-  // @HostBinding('style.textAlign') textAlign = 'center';
+  @Input('inputWidth') inputWidth = 13;
 
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
@@ -41,6 +40,11 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
     if (!this.initialClrDateInputValue) {
       this.initialClrDateInputValue = date as Date;
     }
+  }
+
+  @HostBinding('attr.size')
+  get inputSize() {
+    return this.inputWidth;
   }
 
   @HostListener('change', ['$event.target'])
@@ -118,7 +122,7 @@ export class ClrDateRangeStartInput extends ClrDateInputBase implements AfterVie
 
   private emitDateOutput(date: Date) {
     if (!datesAreEqual(date, this.previousDateChange)) {
-      this.dateChange.emit(date);
+      this.dateChange.emit(this.processBeforeEmittingDate(date));
       this.previousDateChange = date;
     } else if (!date && this.previousDateChange) {
       this.dateChange.emit(null);

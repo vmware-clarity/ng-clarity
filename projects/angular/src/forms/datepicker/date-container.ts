@@ -60,10 +60,10 @@ import { ViewManagerService } from './providers/view-manager.service';
           >
             <cds-icon status="info" shape="calendar"></cds-icon>
           </button>
-          <clr-date-range-options
+          <clr-datepicker-view-manager
             *clrPopoverContent="open; at: popoverPosition; outsideClickToClose: true; scrollToClose: true"
             cdkTrapFocus
-          ></clr-date-range-options>
+          ></clr-datepicker-view-manager>
         </div>
         <cds-icon
           *ngIf="showInvalid"

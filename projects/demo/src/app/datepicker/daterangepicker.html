@@ -216,6 +216,7 @@
         aria-labelledby="dateRangeCtrl"
         name="startDate"
         type="date"
+        [inputWidth]="14"
         clrRangeStartDate
         (clrRangeStartDateChange)="stDateChanged($event)"
         [formControlName]="startDtFc"
@@ -224,6 +225,7 @@
         [id]="endDtFc"
         aria-labelledby="dateRangeCtrl"
         name="endDate"
+        [inputWidth]="14"
         type="date"
         clrRangeEndDate
         (clrRangeEndDateChange)="endDateChanged($event)"

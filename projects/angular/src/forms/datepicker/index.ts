@@ -6,7 +6,6 @@
 
 export * from './date-container';
 export * from './date-input-base';
-export * from './date-range-options';
 export * from './date-single-input';
 export * from './date-range-start-input';
 export * from './date-range-end-input';
