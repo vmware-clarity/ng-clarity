@@ -135,7 +135,7 @@ export class ClrCDKPopoverPositions {
     originX: 'start',
     originY: 'center',
     overlayX: 'end',
-    overlayY: 'top',
+    overlayY: 'center',
     offsetY: 0,
     offsetX: -16,
     panelClass: 'left',
@@ -154,7 +154,7 @@ export class ClrCDKPopoverPositions {
   static 'top': ConnectedPosition = {
     originX: 'center',
     originY: 'top',
-    overlayX: 'center',
+    overlayX: 'start',
     overlayY: 'top',
     offsetY: -16,
     offsetX: 0,

@@ -5,23 +5,12 @@
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import {
-  ConnectedPosition,
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-  // RepositionScrollStrategy,
-  // ScrollDispatcher,
-  // ScrollStrategy,
-  STANDARD_DROPDOWN_BELOW_POSITIONS,
-  // ViewportRuler,
-} from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
-import { AfterViewInit, Directive, Inject, NgZone, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, Inject, NgZone } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
-// import { AvailablePopoverPositions } from './popover-positions';
 
 @Directive({
   selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
@@ -36,11 +25,6 @@ export class PopoverDirective implements AfterViewInit {
     overlayX: 'end',
     overlayY: 'top',
   };
-  private anchorWidth: number;
-  private anchorHeight: number;
-
-  private positions: ConnectedPosition[] = STANDARD_DROPDOWN_BELOW_POSITIONS;
-  private renderer: Renderer2;
   private scrollableParent: any;
 
   constructor(
@@ -62,6 +46,7 @@ export class PopoverDirective implements AfterViewInit {
         }
       })
     );
+    // Get Scrollable Parent when there is no cdkScrollable directive set
     this.scrollableParent = this.getScrollParent(this.popoverService.anchorElementRef.nativeElement);
     this.listenToMouseEvents();
   }
@@ -75,6 +60,7 @@ export class PopoverDirective implements AfterViewInit {
     }
   }
 
+  //Align the popover on scrolling
   listenToMouseEvents() {
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
@@ -126,7 +112,7 @@ export class PopoverDirective implements AfterViewInit {
   }
 
   showOverlay() {
-    this.setPreferredPosition();
+    this.setPreferredPosition(); //Preferred position defined by consumer
 
     if (!this.overlayRef) {
       this.overlayRef = this._createOverlayRef();
@@ -137,7 +123,7 @@ export class PopoverDirective implements AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    this.overlayRef.updatePosition();
+    // this.overlayRef.updatePosition();
     setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
 
