@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDropdown, ClrDropdownModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrDropdown, ClrDropdownModule, ClrPopoverModule, ClrTreeViewModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 import { filesRoot } from 'helpers/files.data';
@@ -13,7 +13,7 @@ export default {
   title: 'Dropdown/Dropdown With Tree',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDropdownModule, ClrTreeViewModule],
+      imports: [...CommonModules, ClrDropdownModule, ClrTreeViewModule, ClrPopoverModule],
     }),
   ],
   component: ClrDropdown,

@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrDropdownMenu, ClrDropdownModule } from '@clr/angular';
+import { CLR_MENU_POSITIONS, ClrDropdownMenu, ClrDropdownModule, ClrPopoverModule } from '@clr/angular';
 import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
@@ -12,7 +12,7 @@ export default {
   title: 'Dropdown/Dropdown Menu',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDropdownModule],
+      imports: [...CommonModules, ClrDropdownModule, ClrPopoverModule],
     }),
   ],
   component: ClrDropdownMenu,
