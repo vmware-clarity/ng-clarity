@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
+import { ClrPopoverModule, ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
 import { moduleMetadata, Story } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -29,7 +29,7 @@ export default {
   component: ClrSignpostContent,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrSignpostModule],
+      imports: [...CommonModules, ClrSignpostModule, ClrPopoverModule],
     }),
   ],
   argTypes: {

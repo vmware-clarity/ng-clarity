@@ -8,6 +8,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
+  HostBinding,
   Inject,
   Input,
   OnChanges,
@@ -158,6 +159,14 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
   set position(position: string) {
     this._position = position && POSITIONS.indexOf(position) > -1 ? position : 'right-middle';
     this.popoverService.position = this._position;
+  }
+
+  /*
+   * Fallback to hide when *clrIfOpen is not being used
+   */
+  @HostBinding('class.is-off-screen')
+  get isOffScreen() {
+    return this.popoverService.open ? false : true;
   }
 
   /**********
