@@ -24,7 +24,7 @@ import { TreeFeaturesService } from './tree-features.service';
     </ng-container>
   `,
   host: {
-    '[attr.role]': '"group"', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
+    '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
 })
 /**
