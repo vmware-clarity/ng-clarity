@@ -84,10 +84,6 @@
     border-color: forms-variables.$clr-forms-invalid-color;
   }
 
-  .clr-form-compact .clr-error .clr-subtext {
-    margin-left: 0;
-  }
-
   .clr-form-compact .clr-radio-wrapper {
     @include forms-mixins.form-flatten-compact-adjustments();
     @include forms-mixins.form-inline-input();
