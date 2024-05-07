@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -126,6 +127,13 @@ const RequiredMarkTemplate: StoryFn = args => ({
         <label class="clr-required-mark">Range</label>
         <input type="range" clrRange formControlName="range" name="three" required />
       </clr-range-container>
+      <clr-toggle-container>
+        <label class="clr-required-mark">Toggle switch</label>
+        <clr-toggle-wrapper>
+          <input type="checkbox" clrToggle name="toggle" formControlName="toggle" required value="option1" />
+          <label>Option 1</label>
+        </clr-toggle-wrapper>
+      </clr-toggle-container>
     </form>
   `,
   props: args,
@@ -145,6 +153,7 @@ function getForm() {
     datepicker: new FormControl(null),
     radio: new FormControl(null),
     range: new FormControl(null),
+    toggle: new FormControl(null),
   });
 }
 
