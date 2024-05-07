@@ -173,7 +173,7 @@ export class KeyNavigationGridController implements OnDestroy {
     }
     const currentRow = this.rows && currentCell ? Array.from(this.rows).find(r => r.contains(currentCell)) : null;
     const numOfRows = this.rows ? this.rows.length - 1 : 0;
-    const numOfColumns = this.cells ? this.cells.length / this.rows.length - 1 : 0;
+    const numOfColumns = this.cells ? Math.floor(this.cells.length / this.rows.length - 1) : 0;
 
     let x =
       currentRow && currentCell
