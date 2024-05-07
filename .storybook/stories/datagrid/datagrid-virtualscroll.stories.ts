@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -23,10 +24,12 @@ export default {
     clrDgSelected: { control: { disable: true } },
     clrDgSingleSelected: { control: { disable: true } },
     // outputs
+    // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
     clrDgSingleSelectedChange: { control: { disable: true } },
     clrRenderRangeChange: { control: { disable: true } },
+    clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
@@ -36,6 +39,8 @@ export default {
   },
   args: {
     // inputs
+    clrDgActionOverflowOpen: false,
+    clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
     clrDetailExpandableAriaLabel: commonStringsDefault.detailExpandableAriaLabel,
     clrDgLoading: false,
     clrLoadingMoreItems: false,
@@ -48,11 +53,13 @@ export default {
     clrDgSelectedChange: action('clrDgSelectedChange'),
     clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
+    clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     // story helpers
     behaviorElements,
     singleSelectable: false,
     multiSelectable: false,
     expandable: false,
+    actionOverflow: false,
     compact: false,
     hidableColumns: false,
     height: 480,
@@ -117,6 +124,15 @@ const DatagridTemplate: StoryFn = args => ({
           [clrDgItem]="element"
           [clrDgSelected]="selectedRows.includes(index)"
         >
+          <clr-dg-action-overflow
+            *ngIf="actionOverflow"
+            [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
+            [clrDgActionOverflowButtonLabel]="clrDgActionOverflowButtonLabel"
+            (clrDgActionOverflowOpenChange)="index === 0 && clrDgActionOverflowOpenChange($event)"
+          >
+            <button class="action-item">Edit</button>
+            <button class="action-item">Delete</button>
+          </clr-dg-action-overflow>
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
