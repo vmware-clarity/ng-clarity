@@ -72,7 +72,14 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
-  private mutationChanges: MutationObserver;
+  private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
+    mutations.forEach((mutation: MutationRecord) => {
+      // it is possible this to be called twice because the old class is removed and the new added
+      if ((mutation.target as HTMLElement).classList.contains('datagrid-compact')) {
+        this.itemSize = 24;
+      }
+    });
+  });
 
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
@@ -96,22 +103,10 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
     this.datagridElementRef = this.datagrid.el;
 
-    // console.log(this.datagridElementRef.nativeElement.classList);
-    //
-    // this.mutationChanges = new MutationObserver((mutations: MutationRecord[]) => {
-    //   mutations.forEach((mutation: MutationRecord) => {
-    //     // this is called twice because the old class is removed and the new added
-    if (this.datagridElementRef.nativeElement.classList.contains('datagrid-compact')) {
-      console.log(this.datagridElementRef.nativeElement.classList);
-      this.itemSize = 24;
-    }
-    //   });
-    // });
-    //
-    // this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-    //   attributeFilter: ['class'],
-    //   attributeOldValue: true,
-    // });
+    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
+      attributeFilter: ['class'],
+      attributeOldValue: true,
+    });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(
       this._cdkFixedSizeVirtualScrollInputs.itemSize,
