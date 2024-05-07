@@ -24,6 +24,7 @@ import { ClrFileInputContainer } from './file-input-container';
 export interface ClrFileInputSelection {
   fileCount: number;
   buttonLabel: string;
+  clearFilesButtonLabel: string;
 }
 
 @Directive({
@@ -40,7 +41,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     renderer: Renderer2,
     viewContainerRef: ViewContainerRef,
     readonly elementRef: ElementRef<HTMLInputElement>,
-    @Self() @Optional() private readonly control: NgControl,
+    @Self() @Optional() control: NgControl,
     private readonly commonStrings: ClrCommonStringsService
   ) {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
@@ -54,18 +55,32 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
   private updateSelection() {
     const files = this.elementRef.nativeElement.files;
     let selectionButtonLabel: string;
+    let clearFilesButtonLabel: string;
 
     if (files?.length === 1) {
-      selectionButtonLabel = files[0].name;
+      const filename = files[0].name;
+
+      selectionButtonLabel = filename;
+
+      clearFilesButtonLabel = this.commonStrings.parse(this.commonStrings.keys.clearFile, {
+        FILE: filename,
+      });
     } else if (files?.length > 1) {
+      const fileCount = files.length.toString();
+
       selectionButtonLabel = this.commonStrings.parse(this.commonStrings.keys.fileCount, {
-        COUNT: files.length.toString(),
+        COUNT: fileCount,
+      });
+
+      clearFilesButtonLabel = this.commonStrings.parse(this.commonStrings.keys.clearFiles, {
+        COUNT: fileCount,
       });
     }
 
     this.selection = {
       fileCount: files.length,
       buttonLabel: selectionButtonLabel,
+      clearFilesButtonLabel,
     };
   }
 }

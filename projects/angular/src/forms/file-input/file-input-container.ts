@@ -40,7 +40,7 @@ import { ClrFileInput } from './file-input';
           *ngIf="fileInput?.selection?.fileCount"
           type="button"
           class="btn btn-sm clr-file-input-clear-button"
-          [attr.aria-label]="commonStrings.keys.clearFile"
+          [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
           (click)="clearSelectedFiles()"
         >
           <cds-icon shape="times" status="neutral" size="md"></cds-icon>

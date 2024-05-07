@@ -300,4 +300,5 @@ export interface ClrCommonStrings {
   browse: string;
   fileCount: string;
   clearFile: string;
+  clearFiles: string;
 }

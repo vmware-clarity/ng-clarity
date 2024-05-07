@@ -94,6 +94,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
   let browseButtonElement: HTMLButtonElement;
+  let queryClearButtonElement: () => HTMLButtonElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -106,6 +107,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
     nativeElement = fixture.nativeElement;
     fileInputElement = nativeElement.querySelector('input[type="file"]');
     browseButtonElement = nativeElement.querySelector('.clr-file-input-browse-button');
+    queryClearButtonElement = () => nativeElement.querySelector('.clr-file-input-clear-button');
 
     fixture.detectChanges();
   });
@@ -146,18 +148,36 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
     expect(browseButtonElement.innerText.trim()).toBe('3 FILES');
   });
 
-  it('should show a clear files button when a file is selected', () => {
+  it('should not have a clear button when no file is selected', () => {
+    const clearButtonElement = queryClearButtonElement();
+
+    expect(clearButtonElement).toBeNull();
+  });
+
+  it('show a clear button when a single file is selected', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
     fixture.detectChanges();
 
-    expect(nativeElement.querySelector('.clr-file-input-clear-button')).toBeTruthy();
+    const clearButtonElement = queryClearButtonElement();
+    expect(clearButtonElement).toBeDefined();
+    expect(clearButtonElement.getAttribute('aria-label')).toBe('Clear file.txt');
+  });
+
+  it('show a clear button when two files are selected', () => {
+    selectFiles(fileInputElement, [new File([''], 'file-1.txt'), new File([''], 'file-2.txt')]);
+    fixture.detectChanges();
+
+    const clearButtonElement = queryClearButtonElement();
+    expect(clearButtonElement).toBeDefined();
+    expect(clearButtonElement.getAttribute('aria-label')).toBe('Clear 2 files');
   });
 
   it('should clear the selected file when the clear button is clicked', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
     fixture.detectChanges();
 
-    nativeElement.querySelector<HTMLButtonElement>('.clr-file-input-clear-button').click();
+    const clearButtonElement = queryClearButtonElement();
+    clearButtonElement.click();
     fixture.detectChanges();
 
     expect(fileInputElement.files.length).toBe(0);
