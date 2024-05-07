@@ -217,3 +217,24 @@ export const CompactMultiSelectWithSelection: StoryObj = {
     selectedRows: [1],
   },
 };
+
+export const Full: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    actionOverflow: true,
+    expandable: true,
+    hidableColumns: true,
+    multiSelectable: true,
+  },
+};
+
+export const FullCompact: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    actionOverflow: true,
+    compact: true,
+    expandable: true,
+    hidableColumns: true,
+    multiSelectable: true,
+  },
+};
