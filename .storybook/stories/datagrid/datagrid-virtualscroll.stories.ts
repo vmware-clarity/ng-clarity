@@ -120,10 +120,7 @@ const DatagridTemplate: StoryFn = args => ({
         [customClrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
-        <clr-dg-row
-          [clrDgItem]="element"
-          [clrDgSelected]="selectedRows.includes(index)"
-        >
+        <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
           <clr-dg-action-overflow
             *ngIf="actionOverflow"
             [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
@@ -138,21 +135,19 @@ const DatagridTemplate: StoryFn = args => ({
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
           <clr-dg-cell>
             <span class="electronegativity-text">{{ element.electronegativity }}</span>
-            <span [style.width.%]="(element.electronegativity * 100) / 5"
-             class="electronegativity-container"
-             >&nbsp;</span>
+            <span [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-container">
+              &nbsp;
+            </span>
           </clr-dg-cell>
           <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail
-              [clrIfExpanded]="element.expanded"
-              (clrIfExpandedChange)="setExpanded($event, element)"
-            >{{ element | json }} {{element.expanded}}</clr-dg-row-detail>
+            <clr-dg-row-detail [clrIfExpanded]="element.expanded" (clrIfExpandedChange)="setExpanded($event, element)">
+              {{ element | json }} {{ element.expanded }}
+            </clr-dg-row-detail>
           </ng-container>
         </clr-dg-row>
       </ng-template>
 
-
-    <clr-dg-footer> {{data.elements?.length}} </clr-dg-footer>
+      <clr-dg-footer>{{ data.elements?.length }}</clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args },
