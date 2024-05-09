@@ -42,8 +42,8 @@ export default function (): void {
       columnsService.columns[0] = new BehaviorSubject<ColumnState>({ width: 41 });
       columnsService.columns[1] = new BehaviorSubject<ColumnState>({ width: 23 });
 
-      columnStateSpy = spyOnProperty(DatagridCellRenderer.prototype, 'columnState', 'set').and.callThrough();
-      context.clarityDirective.setColumnState();
+      columnStateSpy = spyOn(DatagridCellRenderer.prototype, 'resetState').and.callThrough();
+      context.clarityDirective.setCellsState();
       context.detectChanges();
     });
 
@@ -62,7 +62,7 @@ export default function (): void {
     it('sets the widths of the cells when created after the widths have been computed', function () {
       columnsService.columns[0].next({ width: 42, strictWidth: 0, changes: [DatagridColumnChanges.WIDTH] });
       columnsService.columns[1].next({ width: 24, strictWidth: 24, changes: [DatagridColumnChanges.WIDTH] });
-      context.detectChanges();
+      context.clarityDirective.setCellsState();
       cells = context.fixture.debugElement.queryAll(By.directive(DatagridCellRenderer));
       expect(cells.length).toBe(2);
       expect(cells[0].nativeElement.style.width).toEqual('42px');
