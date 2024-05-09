@@ -2235,14 +2235,14 @@ export class ClrExpandableAnimation {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
     constructor(element: ElementRef, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
-    animationDone(): void;
+    animationDone(event: AnimationEvent_2): void;
     // (undocumented)
-    animationStart(): void;
+    animationStart(event: AnimationEvent_2): void;
     // (undocumented)
-    clrExpandTrigger: any;
+    clrExpandTrigger: boolean;
     // (undocumented)
     get expandAnimation(): {
-        value: any;
+        value: boolean;
         params: {
             startHeight: number;
         };
@@ -5003,9 +5003,13 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 export class ÇlrDatagridCellRenderer implements OnDestroy {
     constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     // (undocumented)
-    set columnState(columnState: BehaviorSubject<ColumnState>);
-    // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    resetState(state: ColumnState): void;
+    // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5035,6 +5039,10 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridHeaderRenderer, never>;
@@ -5042,7 +5050,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -5063,11 +5071,13 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
 export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     constructor(columnsService: ColumnsService);
     // (undocumented)
+    cells: QueryList<ÇlrDatagridCellRenderer>;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    setColumnState(): void;
+    setCellsState(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false, never>;
     // (undocumented)
