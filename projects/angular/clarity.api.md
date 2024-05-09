@@ -913,6 +913,8 @@ export interface ClrCommonStrings {
     browse: string;
     // (undocumented)
     clearFile: string;
+    // (undocumented)
+    clearFiles: string;
     close: string;
     collapse: string;
     columnSeparatorAriaLabel: string;
@@ -2299,6 +2301,8 @@ export class ClrFileInputModule {
 export interface ClrFileInputSelection {
     // (undocumented)
     buttonLabel: string;
+    // (undocumented)
+    clearFilesButtonLabel: string;
     // (undocumented)
     fileCount: number;
 }
