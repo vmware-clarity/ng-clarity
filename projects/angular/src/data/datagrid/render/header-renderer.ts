@@ -8,7 +8,6 @@ import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Rendere
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnResizerService } from '../providers/column-resizer.service';
@@ -43,8 +42,6 @@ export class DatagridHeaderRenderer implements OnDestroy {
     this.subscriptions.push(
       this.organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
     );
-
-    this.subscriptions.push(columnState.subscribe(state => this.stateChanges(state)));
   }
 
   ngOnDestroy() {
@@ -63,20 +60,29 @@ export class DatagridHeaderRenderer implements OnDestroy {
     this.columnsService.columns[index] = this.columnState;
   }
 
-  private stateChanges(state: ColumnState) {
-    if (state.changes && state.changes.length) {
-      state.changes.forEach(change => {
-        switch (change) {
-          case DatagridColumnChanges.WIDTH:
-            this.setWidth(state);
-            break;
-          case DatagridColumnChanges.HIDDEN:
-            this.setHidden(state);
-            break;
-          default:
-            break;
-        }
-      });
+  setWidth(state: ColumnState) {
+    if (state.strictWidth) {
+      if (this.columnResizerService.resizedBy) {
+        this.resizeEmitter.emit(state.width);
+        this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
+        this.widthSet = false;
+      }
+      // Don't set width if there is a user-defined one. Just add the strict width class.
+      this.renderer.addClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
+      this.autoSet = false;
+    } else {
+      this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
+      this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
+      this.widthSet = true;
+      this.autoSet = true;
+    }
+  }
+
+  setHidden(state: ColumnState) {
+    if (state.hidden) {
+      this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+    } else {
+      this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
     }
   }
 
@@ -106,31 +112,5 @@ export class DatagridHeaderRenderer implements OnDestroy {
       width = this.domAdapter.scrollWidth(this.el.nativeElement);
     }
     return width;
-  }
-
-  private setWidth(state: ColumnState) {
-    if (state.strictWidth) {
-      if (this.columnResizerService.resizedBy) {
-        this.resizeEmitter.emit(state.width);
-        this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
-        this.widthSet = false;
-      }
-      // Don't set width if there is a user-defined one. Just add the strict width class.
-      this.renderer.addClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-      this.autoSet = false;
-    } else {
-      this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-      this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
-      this.widthSet = true;
-      this.autoSet = true;
-    }
-  }
-
-  private setHidden(state: ColumnState) {
-    if (state.hidden) {
-      this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
-    } else {
-      this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
-    }
   }
 }

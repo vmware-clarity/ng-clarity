@@ -30,7 +30,7 @@ export class DatagridRenderOrganizer {
       this._renderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
     }
     this._renderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
-    this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS);
+    this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS); // NOT USED
     this.alreadySized = true;
     this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
   }
