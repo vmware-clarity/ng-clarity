@@ -75,7 +75,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   // Make sure the host has the proper class for styling purposes
   host: {
     '[class.stack-block]': 'true',
-    '[attr.role]': '"heading"',
+    '[attr.role]': 'sbAriaRole',
     '[attr.aria-level]': 'headingLevel',
   },
 })
@@ -87,6 +87,7 @@ export class ClrStackBlock implements OnInit {
    * Depth of the stack view starting from 1 for first level
    */
   @Input('clrStackViewLevel') ariaLevel: number;
+  @Input('clrSbAriaRole') ariaRole: string;
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
@@ -143,11 +144,22 @@ export class ClrStackBlock implements OnInit {
   }
 
   get headingLevel() {
-    if (this.ariaLevel) {
-      return this.ariaLevel + '';
-    }
+    if (this.ariaRole && this.ariaRole === 'heading') {
+      if (this.ariaLevel) {
+        return this.ariaLevel + '';
+      }
 
-    return this.parent ? '4' : '3';
+      return this.parent ? '4' : '3';
+    }
+    return null;
+  }
+
+  get sbAriaRole() {
+    if (this.ariaRole === 'undefined') {
+      return null;
+    }
+    this.ariaRole = this.ariaRole ? this.ariaRole : 'heading';
+    return this.ariaRole;
   }
 
   get caretDirection(): string {
