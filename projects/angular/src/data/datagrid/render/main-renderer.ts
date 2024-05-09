@@ -250,7 +250,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   private listenForColumnChanges() {
     this.columnsService.columns.forEach((column, index) => {
-      this.columnsService.emitStateChange(column, { changes: [], columnIndex: index } as ColumnStateDiff);
+      this.columnsService.emitStateChange(column, { changes: [], columnIndex: index });
     });
     /* 
       Merges all column subject so we can track them at once
