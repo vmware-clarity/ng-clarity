@@ -101,12 +101,12 @@ export default function (): void {
     });
 
     it('can set the width of a column', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
       expect(context.clarityElement.style.width).toBe('123px');
     });
 
     it('resets the header to default width when notified', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
       expect(context.clarityElement.style.width).toBe('123px');
       organizer.updateRenderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
       expect(context.clarityElement.style.width).toBeFalsy();
@@ -128,19 +128,19 @@ export default function (): void {
 
     it('does not set the width when the user declared a strict one', function () {
       domAdapter._scrollWidth = 123;
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 24 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 24 });
       expect(context.clarityElement.classList).toContain(STRICT_WIDTH_CLASS);
       expect(context.clarityElement.style.width).toBeFalsy();
 
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 0 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 0 });
       expect(context.clarityElement.style.width).toBe('123px');
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
     });
 
     it('sets proper hidden class for hidden cell', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.HIDDEN], hidden: true });
+      context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: true });
       expect(context.clarityElement.classList).toContain(HIDDEN_COLUMN_CLASS);
-      stateSub.next({ changes: [DatagridColumnChanges.HIDDEN], hidden: false });
+      context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: false });
       expect(context.clarityElement.classList).not.toContain(HIDDEN_COLUMN_CLASS);
     });
   });
