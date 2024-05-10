@@ -102,7 +102,7 @@ export default function (): void {
 
       beforeEach(function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
-        rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setColumnState');
+        rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
         context = this.create(DatagridMainRenderer, DynamicTest);
       });
 
