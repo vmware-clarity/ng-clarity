@@ -55,7 +55,6 @@ import { DatalistIdService } from './providers/datalist-id.service';
   },
   providers: [
     ControlClassService,
-    LayoutService,
     ControlIdService,
     FocusService,
     NgControlService,
