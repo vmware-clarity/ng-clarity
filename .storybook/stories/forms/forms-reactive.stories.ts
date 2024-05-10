@@ -10,6 +10,7 @@ import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -37,6 +38,7 @@ export default {
     // inputs
     clrLabelSize: 2,
     // story helpers
+    elements,
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
@@ -67,6 +69,14 @@ const ReactiveFormTemplate: StoryFn = args => ({
         <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
         <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
       </clr-input-container>
+      <clr-datalist-container>
+        <label>Element</label>
+        <input clrDatalistInput formControlName="element" />
+        <datalist>
+          <option *ngFor="let element of elements" [value]="element.symbol">{{ element.name }}</option>
+        </datalist>
+        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+      </clr-datalist-container>
       <clr-password-container>
         <label>Password</label>
         <input clrPassword autocomplete="current-password" formControlName="password" required />
@@ -102,6 +112,7 @@ function getForm() {
   return new FormGroup({
     name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
     age: new FormControl(null, [Validators.min(5), Validators.max(99)]),
+    element: new FormControl(null),
     password: new FormControl(null, [
       Validators.minLength(8),
       Validators.pattern(patterns.alphaNumeric),
@@ -114,6 +125,11 @@ function getForm() {
 
 export const HorizontalLayout: StoryObj = {
   render: ReactiveFormTemplate,
+};
+
+export const HorizontalLayoutLabelSize6: StoryObj = {
+  render: ReactiveFormTemplate,
+  args: { clrLabelSize: 6 },
 };
 
 export const VerticalLayout: StoryObj = {
