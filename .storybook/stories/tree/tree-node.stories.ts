@@ -22,6 +22,7 @@ export default {
   component: ClrTreeNode,
   argTypes: {
     // inputs
+    clrExpandable: { control: { type: 'boolean' } },
     clrSelected: {
       control: 'inline-radio',
       options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
@@ -65,7 +66,7 @@ const TreeViewNodeTemplate: StoryFn = args => ({
         (clrExpandedChange)="clrExpandedChange($event)"
         (clrSelectedChange)="clrSelectedChange($event)"
       >
-        Files ${getFileTreeNodeMarkup(filesRoot, args)}
+        Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot, args) : ''}
       </clr-tree-node>
     </clr-tree>
   `,
