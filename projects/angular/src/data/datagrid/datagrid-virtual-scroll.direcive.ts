@@ -182,7 +182,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
   ngAfterViewInit() {
     this.injector.runInContext(() => {
-      this.virtualScrollViewport = createVirtualScrollViewportForDatagrid(
+      this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
         this.changeDetectorRef,
         this.ngZone,
         this.directionality,
@@ -276,57 +276,57 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
       rowRoleElement?.setAttribute('aria-rowindex', (viewRef.context.index + 1).toString());
     }
   }
-}
 
-function createVirtualScrollViewportForDatagrid(
-  changeDetectorRef: ChangeDetectorRef,
-  ngZone: NgZone,
-  directionality: Directionality,
-  scrollDispatcher: ScrollDispatcher,
-  viewportRuler: ViewportRuler,
-  datagridElementRef: ElementRef<HTMLElement>,
-  virtualScrollStrategy: FixedSizeVirtualScrollStrategy
-) {
-  const datagridDivElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid');
-  const datagridTableElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-table');
-  const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
-  const datagridDivElementRef: ElementRef<HTMLElement> = { nativeElement: datagridDivElement };
+  private createVirtualScrollViewportForDatagrid(
+    changeDetectorRef: ChangeDetectorRef,
+    ngZone: NgZone,
+    directionality: Directionality,
+    scrollDispatcher: ScrollDispatcher,
+    viewportRuler: ViewportRuler,
+    datagridElementRef: ElementRef<HTMLElement>,
+    virtualScrollStrategy: FixedSizeVirtualScrollStrategy
+  ) {
+    const datagridDivElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid');
+    const datagridTableElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-table');
+    const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
+    const datagridDivElementRef: ElementRef<HTMLElement> = { nativeElement: datagridDivElement };
 
-  let topOffset = 0;
-  let totalContentSize = 0;
+    let topOffset = 0;
+    let totalContentSize = 0;
 
-  function updateDatagridElementStyles() {
-    datagridRowsElement.style.transform = `translateY(${topOffset}px)`;
-    datagridRowsElement.style.height = `${totalContentSize - topOffset}px`;
-  }
+    function updateDatagridElementStyles() {
+      datagridRowsElement.style.transform = `translateY(${topOffset}px)`;
+      datagridRowsElement.style.height = `${totalContentSize - topOffset}px`;
+    }
 
-  const virtualScrollViewport = new CdkVirtualScrollViewport(
-    datagridDivElementRef,
-    changeDetectorRef,
-    ngZone,
-    virtualScrollStrategy,
-    directionality,
-    scrollDispatcher,
-    viewportRuler,
-    null as any as CdkVirtualScrollableElement
-  );
+    const virtualScrollViewport = new CdkVirtualScrollViewport(
+      datagridDivElementRef,
+      changeDetectorRef,
+      ngZone,
+      virtualScrollStrategy,
+      directionality,
+      scrollDispatcher,
+      viewportRuler,
+      null as any as CdkVirtualScrollableElement
+    );
 
-  virtualScrollViewport._contentWrapper = {
-    nativeElement: {
-      style: {
-        set transform(value: any) {
-          topOffset = value === undefined ? 0 : +/translateY\(([0-9]+)px\)/.exec(value)?.[1];
-          updateDatagridElementStyles();
+    virtualScrollViewport._contentWrapper = {
+      nativeElement: {
+        style: {
+          set transform(value: any) {
+            topOffset = value === undefined ? 0 : +/translateY\(([0-9]+)px\)/.exec(value)?.[1];
+            updateDatagridElementStyles();
+          },
         },
       },
-    },
-  } as ElementRef;
+    } as ElementRef;
 
-  virtualScrollViewport.setTotalContentSize = (value: number) => {
-    totalContentSize = value;
-    datagridTableElement.style.height = `${totalContentSize}px`;
-    updateDatagridElementStyles();
-  };
+    virtualScrollViewport.setTotalContentSize = (value: number) => {
+      totalContentSize = value;
+      datagridTableElement.style.height = `${totalContentSize}px`;
+      updateDatagridElementStyles();
+    };
 
-  return virtualScrollViewport;
+    return virtualScrollViewport;
+  }
 }
