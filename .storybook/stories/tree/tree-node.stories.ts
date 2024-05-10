@@ -66,7 +66,7 @@ const TreeViewNodeTemplate: StoryFn = args => ({
         (clrExpandedChange)="clrExpandedChange($event)"
         (clrSelectedChange)="clrSelectedChange($event)"
       >
-        Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot) : ''}
+        Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot, args) : ''}
       </clr-tree-node>
     </clr-tree>
   `,
