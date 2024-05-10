@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -7,8 +8,9 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 
@@ -21,8 +23,6 @@ export default {
   ],
   component: ClrStepper,
   argTypes: {
-    // inputs
-    clrInitialStep: { defaultValue: '' },
     // story helpers
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     ngSubmit: { control: { disable: true }, table: { disable: true } },
@@ -30,6 +30,8 @@ export default {
     stepCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrInitialStep: '',
     // story helpers
     createArray: n => new Array(n),
     stepCount: 3,
@@ -38,7 +40,7 @@ export default {
   },
 };
 
-const StepperTemplate: Story = args => ({
+const StepperTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [clrInitialStep]="clrInitialStep" [formGroup]="form" (ngSubmit)="ngSubmit()">
       <clr-stepper-panel *ngFor="let _ of createArray(stepCount); let i = index" formGroupName="step{{ i + 1 }}">

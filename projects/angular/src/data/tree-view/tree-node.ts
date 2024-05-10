@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -61,6 +62,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   ],
   host: {
     '[class.clr-tree-node]': 'true',
+    '[class.disabled]': 'this._model.disabled',
   },
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
@@ -116,6 +118,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
+  }
+
+  @Input('clrDisabled')
+  get disabled(): boolean {
+    return this._model.disabled;
+  }
+  set disabled(value: boolean) {
+    this._model.disabled = value;
   }
 
   @Input('clrSelected')
@@ -180,6 +190,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   ngOnInit() {
     this._model.expanded = this.expanded;
+    this._model.disabled = this.disabled;
     this.subscriptions.push(
       this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
         this.selectedChange.emit(value);
@@ -315,6 +326,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private toggleExpandOrTriggerDefault() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.isExpandable() && !this.isSelectable()) {
       this.expandService.expanded = !this.expanded;
     } else {
@@ -323,6 +338,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private expandOrFocusFirstChild() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.expanded) {
       // if the node is already expanded and has children, focus its very first child
       if (this.isParent) {
@@ -338,6 +357,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private collapseOrFocusParent() {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.expanded) {
       this.expandService.expanded = false;
     } else {

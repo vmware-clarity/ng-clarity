@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
 
 export default {
@@ -32,13 +33,13 @@ export default {
   },
 };
 
-const DatalistTemplate: Story = args => ({
+const DatalistTemplate: StoryFn = args => ({
   template: `
     <clr-datalist-container>
       <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
       <datalist>
         <ng-container *ngFor="let element of elements; let i = index">
-          <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
+          <option *ngIf="i < optionCount" [value]="element.symbol">{{ element.name }}</option>
         </ng-container>
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>

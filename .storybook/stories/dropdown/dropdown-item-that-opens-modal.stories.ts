@@ -1,12 +1,14 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Dropdown/Dropdown With Modal',
@@ -16,17 +18,22 @@ export default {
     }),
   ],
   component: ClrDropdown,
-  argTypes: {
-    clrCloseMenuOnItemClick: { defaultValue: true, control: { type: 'boolean' } },
-  },
   args: {
     clrCloseMenuOnItemClick: true,
   },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 500,
+      },
+    },
+  },
 };
 
-const DropdownModalTemplate: Story = args => ({
+const DropdownModalTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-bottom:100px;">
+    <div style="margin-bottom: 100px">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
         <button class="btn btn-outline-primary" clrDropdownTrigger>
           Dropdown
@@ -47,14 +54,12 @@ const DropdownModalTemplate: Story = args => ({
 
       <clr-modal [(clrModalOpen)]="modalOpen">
         <h3 class="modal-title">Modal</h3>
-        <div class="modal-body">
-          This is a modal.
-        </div>
+        <div class="modal-body">This is a modal.</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
         </div>
       </clr-modal>
-    <div>  
+    </div>
   `,
   props: args,
 });

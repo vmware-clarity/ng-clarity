@@ -64,6 +64,8 @@ jobs:
     strategy:
       matrix:
         browser: ['chromium', 'firefox']
+    env:
+      CLARITY_VRT_BROWSER: ${{matrix.browser}}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -81,8 +83,6 @@ jobs:
         run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
-        env:
-          CLARITY_VRT_BROWSER: ${{matrix.browser}}
       - name: Collect Changes
         id: diff
         run: |

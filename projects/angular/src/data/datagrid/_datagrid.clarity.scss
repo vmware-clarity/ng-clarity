@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:map';
 @use 'sass:meta';
 @use '../tables.clarity';
@@ -242,12 +242,7 @@
         tokens.$cds-global-space-5 - tables-variables.$clr-table-borderwidth
       ); // This fixed an issue that made the cell too wide.
       align-items: center;
-
-      .clr-checkbox-wrapper {
-        display: block;
-        // compensate for the default checkbox margin, defined in its ::before section
-        margin-top: calc(-1 * tokens.$cds-global-space-4);
-      }
+      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
 
       &,
       input {
@@ -854,21 +849,6 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
-  .datagrid-select {
-    .clr-control-label {
-      min-height: tokens.$cds-global-space-6;
-      margin-top: calc(-1 * tokens.$cds-global-space-3);
-      padding-left: tokens.$cds-global-space-7;
-    }
-  }
-
-  .datagrid-table > .datagrid-row .datagrid-select {
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before,
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::after {
-      top: 50%;
-    }
-  }
-
   .datagrid-compact {
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;
@@ -877,6 +857,12 @@
     .datagrid-column .datagrid-column-separator {
       &::after {
         height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
+      }
+    }
+
+    .datagrid-row {
+      .datagrid-select {
+        padding: 0 tokens.$cds-global-space-7;
       }
     }
 
@@ -933,7 +919,7 @@
     }
 
     .datagrid-footer {
-      padding: 0 tables-variables.$clr-table-cellpadding;
+      padding: 0 tokens.$cds-global-space-7;
       line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
 
       .pagination {
@@ -1044,6 +1030,10 @@
     flex: 0 0 auto !important;
     min-width: 0 !important;
     display: block !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
   }
 
   /**
@@ -1215,11 +1205,10 @@
 
   .datagrid-detail-caret {
     display: flex;
-    align-items: center;
     justify-content: center;
 
     &.datagrid-cell {
-      padding: 0;
+      padding: tokens.$cds-global-space-3 0;
     }
 
     .datagrid-detail-caret-button {

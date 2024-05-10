@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -7,16 +8,17 @@
 import * as fs from 'fs';
 import * as http from 'http';
 import * as nodeStatic from 'node-static';
-import { chromium } from 'playwright';
+import * as playwright from 'playwright';
 
 import { Story } from '../tests/helpers/story.interface';
 
 const port = 8080;
+const browserType = process.env['CLARITY_VRT_BROWSER'] as 'chromium' | 'firefox';
 
 main();
 
 async function main() {
-  const [server, browser] = await Promise.all([startServer(), chromium.launch()]);
+  const [server, browser] = await Promise.all([startServer(), playwright[browserType].launch()]);
   const page = await browser.newPage();
 
   await page.goto('http://localhost:8080');
@@ -31,10 +33,9 @@ async function main() {
   });
 
   // Now, we can query for the story links.
-  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('a.sidebar-item', sidebarLinkElements => {
+  const storyIds = await page.$$eval<Story[], HTMLLinkElement>('div.sidebar-item a[id]', sidebarLinkElements => {
     return sidebarLinkElements.map(sidebarLinkElement => {
-      const splitHref = sidebarLinkElement.href.split('/');
-      const storyId = splitHref[splitHref.length - 1];
+      const storyId = sidebarLinkElement.id;
       const component = getComponentName(sidebarLinkElement);
 
       return { storyId, component };

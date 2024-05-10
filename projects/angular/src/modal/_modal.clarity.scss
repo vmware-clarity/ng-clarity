@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:map';
 @use 'sass:meta';
 @use '../utils/mixins';
@@ -25,14 +25,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: tokens.$cds-global-space-12;
+    padding: calc(modal-variables.$clr-modal-default-space * 2);
 
     .alert + .modal-header {
       margin-top: tokens.$cds-global-space-6;
     }
 
     @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
-      padding: tokens.$cds-global-space-6;
+      padding: calc(modal-variables.$clr-modal-default-space / 2);
     }
   }
 
@@ -184,5 +184,37 @@
   // modal-nav is only used in wizards
   .modal .modal-nav {
     display: none;
+  }
+
+  // full-screen modals
+  .modal.modal-full-screen {
+    padding: modal-variables.$clr-modal-default-space;
+    height: 100%;
+
+    .modal-dialog {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      .modal-content-wrapper {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      // This cannot be nested inside `.modal-content-wrapper` because that class is not documented for static css-only modals.
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .modal-body-wrapper,
+      // This is needed because the `.modal-body-wrapper` class is not documented for static css-only modals.
+      .modal-body {
+        // Fill space to push footer to bottom.
+        flex-grow: 1;
+        max-height: 100%;
+      }
+    }
   }
 }

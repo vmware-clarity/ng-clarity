@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -198,6 +199,12 @@ describe('Modal', () => {
 
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).not.toBeNull();
+
+    fixture.componentInstance.size = 'full-screen';
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-lg')).toBeNull();
+    expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
   }));
 
   it('supports a clrModalClosable option', fakeAsync(() => {

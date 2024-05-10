@@ -1,12 +1,14 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrLoading, ClrLoadingButtonModule, ClrLoadingState } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Button/Button Loading States',
@@ -35,11 +37,17 @@ export default {
 
 const ButtonLoadingStatesTemplate: StoryFn = args => ({
   template: `
-      <h6>{{stateName}}</h6>
-        <button [clrLoading]="validateState" class="btn btn-sm btn-primary"><cds-icon shape="home"></cds-icon>Validate</button>
-        <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
-        <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline"><cds-icon shape="home"></cds-icon>Submit</button>
-    `,
+    <h6>{{ stateName }}</h6>
+    <button [clrLoading]="validateState" class="btn btn-sm btn-primary">
+      <cds-icon shape="home"></cds-icon>
+      Validate
+    </button>
+    <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
+    <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">
+      <cds-icon shape="home"></cds-icon>
+      Submit
+    </button>
+  `,
   props: args,
 });
 

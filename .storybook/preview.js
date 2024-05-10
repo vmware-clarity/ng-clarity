@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -8,23 +9,14 @@ import '@cds/core/icon/register.js';
 
 import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+import { applicationConfig } from '@storybook/angular';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
-import previewStyles from 'raw-loader!./public/preview.css';
 import docs from '../documentation.json';
-import resetStyles from 'raw-loader!../node_modules/@cds/core/styles/module.reset.min.css';
-import coreTokens from 'raw-loader!../node_modules/@cds/core/global.min.css';
-import darkThemeCoreStyles from 'raw-loader!../node_modules/@cds/core/styles/theme.dark.min.css';
-
-// Styles that should be watched/reloaded
-import clrUiStyles from 'raw-loader!sass-loader!../projects/ui/src/clr-ui.scss';
-
 import { THEMES } from './helpers/constants';
 
 const privateModifier = 121;
 const cdsThemeAttribute = 'cds-theme';
-const styleElement = addStyleElement();
-
-const cdsCoreStyles = [previewStyles, resetStyles, coreTokens, darkThemeCoreStyles, clrUiStyles];
 
 loadIcons();
 addDocs(docs);
@@ -107,21 +99,17 @@ export const globalTypes = {
 
 const themeDecorator = (story, { globals }) => {
   const { theme } = globals;
-
-  styleElement.textContent = `${cdsCoreStyles.join('')}`;
   document.body.setAttribute(cdsThemeAttribute, theme);
 
   return story();
 };
 
-export const decorators = [themeDecorator];
-
-function addStyleElement() {
-  const styleElement = document.createElement('style');
-  window.document.head.append(styleElement);
-
-  return styleElement;
-}
+export const decorators = [
+  themeDecorator,
+  applicationConfig({
+    providers: [provideAnimations()],
+  }),
+];
 
 function loadIcons() {
   loadCoreIconSet();

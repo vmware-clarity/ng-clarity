@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -28,11 +29,9 @@ export default {
   args: {},
 };
 
-const HeaderCollapsedTemplate: Story = args => ({
+const HeaderCollapsedTemplate: StoryFn = args => ({
   template: `
-
-    <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none;"></iframe>
-    
+    <iframe width="500" src="/iframe.html?args=&id=header-header--header&viewMode=story" style="border: none"></iframe>
   `,
   props: args,
 });

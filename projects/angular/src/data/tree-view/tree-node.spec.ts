@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -192,6 +193,23 @@ export default function (): void {
       it('tells the expand service to expand', function (this: TsApiContext) {
         this.node.expanded = true;
         expect(this.expandService.expanded).toBeTrue();
+      });
+
+      it('re enabled disabled root node can not change child disable status', function (this: TsApiContext) {
+        this.parent.expanded = true;
+        expect(this.expandService.expanded).toBeTrue();
+
+        this.node.disabled = true;
+        expect(this.parent.disabled).toBeFalse();
+        expect(this.node.disabled).toBeTrue();
+
+        this.parent.disabled = true;
+        expect(this.parent.disabled).toBeTrue();
+        expect(this.node.disabled).toBeTrue();
+
+        this.parent.disabled = false;
+        expect(this.parent.disabled).toBeFalse();
+        expect(this.node.disabled).toBeTrue();
       });
     });
 
@@ -484,6 +502,17 @@ export default function (): void {
         this.clarityDirective.expanded = true;
         spyOn(focusManager, 'focusNodeBelow');
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
+      });
+
+      it('calls focusManager.focusNodeBelow if node is already disabled on ArrowDown key', function (this: Context) {
+        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective.disabled = true;
+        this.detectChanges();
+        expect(contentContainer.getAttribute('aria-disabled')).toBe('true');
+        expect(contentContainer.classList).toContain('clr-form-control-disabled');
+        spyOn(focusManager, 'focusNodeBelow');
+        contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expect(focusManager.focusNodeBelow).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -88,13 +89,13 @@ describe('ClrStep Reactive Forms', () => {
       fixture.detectChanges();
 
       const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
-      expect(statusMessage.innerText.trim()).toBe('Error');
+      expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
       mockStep.status = AccordionStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      expect(statusMessage.innerText.trim()).toBe('Success');
+      expect(statusMessage.innerText.trim()).toBe(`Step 1 complete`);
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {

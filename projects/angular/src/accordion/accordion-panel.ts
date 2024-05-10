@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -109,6 +110,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   getAccordionHeaderId(id: string) {
     return `clr-accordion-header-${id}`;
+  }
+
+  protected stepCompleteText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+  }
+
+  protected stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
   private emitPanelChange(panel: AccordionPanelModel) {

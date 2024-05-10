@@ -1,20 +1,25 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
-const RowTemplate: Story = args => ({
+const RowTemplate: StoryFn = args => ({
   template: `
     <style>
-      .highlight { border: 1px solid red !important; }
-      .electronegativity-container { border-bottom: 4px solid #119cd4; }
+      .highlight {
+        border: 1px solid red !important;
+      }
+      .electronegativity-container {
+        border-bottom: 4px solid #119cd4;
+      }
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
@@ -48,23 +53,23 @@ const RowTemplate: Story = args => ({
         (clrDgExpandedChange)="index === 0 && clrDgExpandedChange($event)"
         (clrDgSelectedChange)="index === 0 && clrDgSelectedChange($event)"
       >
-        <clr-dg-cell>{{element.name}}</clr-dg-cell>
-        <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
-        <clr-dg-cell>{{element.number}}</clr-dg-cell>
+        <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.number }}</clr-dg-cell>
         <clr-dg-cell>
-          <div [style.width.%]="element.electronegativity * 100 / 4" class="electronegativity-container">
-            {{element.electronegativity}}
+          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
+            {{ element.electronegativity }}
           </div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
 
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
-          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>
-          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} elements
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
         </clr-dg-pagination>
       </clr-dg-footer>
     </clr-datagrid>
@@ -81,13 +86,7 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgDetailCloseLabel: { defaultValue: '' },
-    clrDgDetailOpenLabel: { defaultValue: '' },
-    clrDgExpanded: { defaultValue: false, control: { type: 'boolean' } },
     clrDgItem: { control: { disable: true } },
-    clrDgRowSelectionLabel: { defaultValue: 'Select row for' },
-    clrDgSelectable: { defaultValue: true, control: { type: 'boolean' } },
-    clrDgSelected: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -98,6 +97,13 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgDetailCloseLabel: '',
+    clrDgDetailOpenLabel: '',
+    clrDgExpanded: false,
+    clrDgRowSelectionLabel: 'Select row for',
+    clrDgSelectable: true,
+    clrDgSelected: false,
     // outputs
     clrDgExpandedChange: action('clrDgExpandedChange'),
     clrDgSelectedChange: action('clrDgSelectedChange'),

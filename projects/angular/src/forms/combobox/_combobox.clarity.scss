@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:meta';
 @use '../../popover/dropdown/menu-mixins.clarity';
 @use '../../utils/mixins';
@@ -193,7 +193,7 @@
     position: static;
 
     max-height: mixins.baselinePx(240);
-    overflow-y: scroll;
+    overflow-y: auto;
 
     visibility: visible;
 

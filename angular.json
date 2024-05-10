@@ -126,6 +126,40 @@
             "karmaConfig": "karma.conf.js",
             "codeCoverage": true
           }
+        },
+        "start-storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "clr-angular:build",
+            "compodoc": true,
+            "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
+            "port": 6006,
+            "styles": [
+              ".storybook/public/preview.css",
+              "node_modules/@cds/core/styles/module.reset.min.css",
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
+            ]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "clr-angular:build",
+            "outputDir": "./dist/docs",
+            "compodoc": true,
+            "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
+            "styles": [
+              ".storybook/public/preview.css",
+              "node_modules/@cds/core/styles/module.reset.min.css",
+              "node_modules/@cds/core/global.min.css",
+              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "projects/ui/src/clr-ui.scss"
+            ]
+          }
         }
       }
     }

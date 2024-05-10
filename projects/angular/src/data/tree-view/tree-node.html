@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -9,6 +10,8 @@
   role="treeitem"
   class="clr-tree-node-content-container"
   tabindex="-1"
+  [class.clr-form-control-disabled]="disabled"
+  [attr.aria-disabled]="disabled"
   [attr.aria-expanded]="isExpandable() ? expanded : null"
   [attr.aria-selected]="ariaSelected"
   (keydown)="onKeyDown($event)"
@@ -22,6 +25,7 @@
     class="clr-treenode-caret"
     (click)="expandService.toggle();"
     (focus)="focusTreeNode()"
+    [disabled]="disabled"
   >
     <cds-icon
       class="clr-treenode-caret-icon"
@@ -38,6 +42,7 @@
       type="checkbox"
       id="{{nodeId}}-check"
       class="clr-checkbox"
+      [disabled]="disabled"
       [checked]="_model.selected.value === STATES.SELECTED"
       [indeterminate]="_model.selected.value === STATES.INDETERMINATE"
       (change)="_model.toggleSelection(featuresService.eager)"

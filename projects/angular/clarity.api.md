@@ -17,10 +17,14 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DragDrop } from '@angular/cdk/drag-drop';
+import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -317,6 +321,10 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     panelOpen: boolean;
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
+    // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
@@ -999,6 +1007,10 @@ export interface ClrCommonStrings {
     singleSelectionAriaLabel: string;
     sortColumn: string;
     stackViewChanged: string;
+    // (undocumented)
+    stepComplete: string;
+    // (undocumented)
+    stepError: string;
     success: string;
     // (undocumented)
     timelineStepCurrent: string;
@@ -2204,14 +2216,14 @@ export class ClrExpandableAnimation {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
     constructor(element: ElementRef, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
-    animationDone(): void;
+    animationDone(event: AnimationEvent_2): void;
     // (undocumented)
-    animationStart(): void;
+    animationStart(event: AnimationEvent_2): void;
     // (undocumented)
-    clrExpandTrigger: any;
+    clrExpandTrigger: boolean;
     // (undocumented)
     get expandAnimation(): {
-        value: any;
+        value: boolean;
         params: {
             startHeight: number;
         };
@@ -2865,6 +2877,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    get noResultsElementId(): string;
+    // (undocumented)
     optionSelectionService: OptionSelectionService<T>;
     // (undocumented)
     optionsId: string;
@@ -3182,10 +3196,14 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
+    // (undocumented)
+    groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
@@ -3199,7 +3217,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null, null]>;
 }
@@ -3593,10 +3611,11 @@ export class ClrStackViewModule {
 
 // @public (undocumented)
 export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, document: any);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4104,6 +4123,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     contentContainerTabindex: number;
     // (undocumented)
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    // (undocumented)
     expandable: boolean | undefined;
     // (undocumented)
     get expanded(): boolean;
@@ -4148,7 +4170,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": "clrExpandable"; "selected": "clrSelected"; "expanded": "clrExpanded"; "clrForTypeAhead": "clrForTypeAhead"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": "clrExpandable"; "disabled": "clrDisabled"; "selected": "clrSelected"; "expanded": "clrExpanded"; "clrForTypeAhead": "clrForTypeAhead"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
 }
@@ -4962,9 +4984,13 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 export class ÇlrDatagridCellRenderer implements OnDestroy {
     constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     // (undocumented)
-    set columnState(columnState: BehaviorSubject<ColumnState>);
-    // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    resetState(state: ColumnState): void;
+    // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4994,6 +5020,10 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridHeaderRenderer, never>;
@@ -5001,7 +5031,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -5022,11 +5052,13 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
 export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     constructor(columnsService: ColumnsService);
     // (undocumented)
+    cells: QueryList<ÇlrDatagridCellRenderer>;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    setColumnState(): void;
+    setCellsState(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false, never>;
     // (undocumented)

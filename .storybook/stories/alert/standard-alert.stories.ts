@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
 import { CommonModules } from '../../helpers/common';
@@ -23,7 +24,6 @@ export default {
     // inputs
     clrAlertIcon: {
       description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified.',
-      defaultValue: 'Default',
       control: 'radio',
       options: ['Default', 'settings'],
       mapping: { Default: '' },
@@ -31,25 +31,21 @@ export default {
     clrAlertLightweight: {
       description: 'Less prominent type of alert. Not compatible with `clrAlertClosable` or `clrAlertAppLevel`',
       control: 'boolean',
-      defaultValue: false,
     },
     clrCloseButtonAriaLabel: {
       description:
         'Application level alert. Intended to be used at the top of an application for application wide alerts',
       control: 'text',
-      defaultValue: commonStringsDefault.alertCloseButtonAriaLabel,
       if: { arg: 'clrAlertClosable', exists: false },
     },
     clrAlertClosable: {
       description: 'Adds a close button and allows the user to dismiss this alert',
       control: 'boolean',
-      defaultValue: false,
       if: { arg: 'clrAlertLightweight', eq: false },
     },
     clrAlertSizeSmall: {
       description: 'Renders the alert in a compact, smaller view',
       control: 'boolean',
-      defaultValue: false,
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
@@ -64,6 +60,12 @@ export default {
     clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrAlertIcon: 'Default',
+    clrAlertLightweight: false,
+    clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
+    clrAlertClosable: false,
+    clrAlertSizeSmall: false,
     // outputs
     clrAlertClosedChange: action('clrAlertClosedChange'),
     // story helpers
@@ -75,7 +77,7 @@ export default {
 };
 
 const template = `
-  <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px;">
+  <div *ngFor="let alert of ALERT_TYPES" style="margin-top: 5px">
     <clr-alert
       [clrAlertClosable]="clrAlertClosable"
       [clrAlertIcon]="clrAlertIcon"
@@ -86,46 +88,55 @@ const template = `
       (clrAlertClosedChange)="clrAlertClosedChange($event)"
     >
       <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
-        <span class="alert-text">{{content}} {{i + 1}}</span>
+        <span class="alert-text">{{ content }} {{ i + 1 }}</span>
       </clr-alert-item>
     </clr-alert>
   </div>
-  `;
+`;
 
-export const Alert: Story = args => ({
+const AlertTemplate: StoryFn = args => ({
   template,
   props: args,
 });
 
-export const Small: Story = Alert.bind({});
-Small.args = {
-  ...Alert.args,
-  clrAlertSizeSmall: true,
+export const Alert: StoryObj = {
+  render: AlertTemplate,
 };
 
-export const SmallLightweight: Story = Alert.bind({});
-SmallLightweight.args = {
-  ...Alert.args,
-  clrAlertSizeSmall: true,
-  clrAlertLightweight: true,
+export const Small: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertSizeSmall: true,
+  },
 };
 
-export const Closable: Story = Alert.bind({});
-Closable.args = {
-  ...Alert.args,
-  clrAlertClosable: { value: true, table: { disable: true } },
+export const SmallLightweight: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertSizeSmall: true,
+    clrAlertLightweight: true,
+  },
 };
 
-export const Lightweight: Story = Alert.bind({});
-Lightweight.args = {
-  ...Alert.args,
-  clrAlertLightweight: true,
-  clrCloseButtonAriaLabel: { table: { disable: true } },
-  clrAlertClosable: { value: false, table: { disable: true } },
+export const Closable: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertClosable: { value: true, table: { disable: true } },
+  },
 };
 
-export const DifferentIcon: Story = Alert.bind({});
-DifferentIcon.args = {
-  ...Alert.args,
-  clrAlertIcon: 'settings',
+export const Lightweight: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertLightweight: true,
+    clrCloseButtonAriaLabel: { table: { disable: true } },
+    clrAlertClosable: { value: false, table: { disable: true } },
+  },
+};
+
+export const DifferentIcon: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    clrAlertIcon: 'settings',
+  },
 };

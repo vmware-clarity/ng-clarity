@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -28,7 +29,10 @@ export default {
 
 const TableTemplate: StoryFn = args => ({
   template: `
-    <table class="table" [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }">
+    <table
+      class="table"
+      [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }"
+    >
       <thead>
         <tr>
           <th [ngClass]="{ left: leftAligned }">Element Name</th>
@@ -40,10 +44,10 @@ const TableTemplate: StoryFn = args => ({
       <tbody>
         <ng-container *ngFor="let element of elements; let i = index">
           <tr *ngIf="i < rowCount">
-            <td [ngClass]="{ left: leftAligned }">{{element.name}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.symbol}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.number}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.electronegativity}}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
           </tr>
         </ng-container>
       </tbody>

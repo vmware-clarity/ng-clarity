@@ -1,12 +1,14 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Spinner/Spinner',
@@ -17,34 +19,29 @@ export default {
   ],
   component: ClrSpinner,
   argTypes: {
-    // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
-    clrInverse: { defaultValue: false, control: { type: 'boolean' } },
-    clrMedium: { defaultValue: false, control: { type: 'boolean' } },
-    clrSmall: { defaultValue: false, control: { type: 'boolean' } },
     // story helpers
     text: { control: { type: 'text' }, description: 'Optional text' },
   },
   args: {
+    // inputs
+    clrInline: false,
+    clrInverse: false,
+    clrMedium: false,
+    clrSmall: false,
     // story helpers
     text: 'Loading',
   },
 };
 
-const SpinnerTemplate: Story = args => ({
+const SpinnerTemplate: StoryFn = args => ({
   template: `
-  <div style="text-align: center">
-    <clr-spinner
-      [clrInverse]="clrInverse"
-      [clrSmall]="clrSmall"
-      [clrMedium]="clrMedium"
-      [clrInline]="clrInline"
-    >
-      {{text}}
-    </clr-spinner>
-    <br *ngIf="!clrInline" />
-    {{text}}
-  </div>
+    <div style="text-align: center">
+      <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+        {{ text }}
+      </clr-spinner>
+      <br *ngIf="!clrInline" />
+      {{ text }}
+    </div>
   `,
   props: args,
 });

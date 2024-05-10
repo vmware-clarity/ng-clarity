@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -25,15 +27,15 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
+    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
@@ -43,13 +45,13 @@ export default {
   },
 };
 
-const ReactiveFormTemplate: Story = args => ({
+const ReactiveFormTemplate: StoryFn = args => ({
   template: `
     <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{screenReaderContent}}</span>
+      <span class="clr-sr-only">{{ screenReaderContent }}</span>
       <clr-input-container>
         <label>Name</label>
-        <input clrInput formControlName="name" required [placeholder]="namePlaceholder"/>
+        <input clrInput formControlName="name" required [placeholder]="namePlaceholder" />
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-success>Name is valid</clr-control-success>
         <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -74,7 +76,9 @@ const ReactiveFormTemplate: Story = args => ({
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
           <ng-container [ngSwitch]="error.requiredPattern">
-            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">Must contain only letters and numbers</ng-container>
+            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">
+              Must contain only letters and numbers
+            </ng-container>
             <ng-container *ngSwitchCase="patterns.letters.toString()">Must contain at least one letter</ng-container>
             <ng-container *ngSwitchCase="patterns.numbers.toString()">Must contain at least one number</ng-container>
           </ng-container>

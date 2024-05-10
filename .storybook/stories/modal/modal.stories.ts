@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryContext, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Modal/Modal',
@@ -20,10 +21,7 @@ export default {
   component: ClrModal,
   argTypes: {
     // inputs
-    clrModalCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrModalLabelledById: { defaultValue: '' },
-    clrModalSize: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
-    clrModalSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    clrModalSize: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
@@ -36,6 +34,12 @@ export default {
     showLongPageContent: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrModalCloseButtonAriaLabel: commonStringsDefault.close,
+    clrModalLabelledById: '',
+    clrModalSize: 'md',
+    clrModalSkipAnimation: false,
+    clrModalClosable: true,
     // outputs
     clrModalAlternateClose: action('clrModalAlternateClose'),
     clrModalOpenChange: action('clrModalOpenChange'),
@@ -44,16 +48,25 @@ export default {
     title: 'Modal Title',
     body: 'Hello World!',
     showLongPageContent: true,
+    showLongModalContent: false,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 400,
+      },
+    },
   },
 };
 
-const ModalTemplate: Story = args => ({
+const ModalTemplate: StoryFn = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
     <div *ngIf="showLongPageContent">
       This list is provided to demonstrate scrolling capability when modal is open.
       <ul>
-        <li *ngFor="let _ of createArray(100); let i = index">{{i + 1}}</li>
+        <li *ngFor="let _ of createArray(100); let i = index">{{ i + 1 }}</li>
       </ul>
     </div>
     <clr-modal
@@ -68,9 +81,15 @@ const ModalTemplate: Story = args => ({
       (clrModalAlternateClose)="clrModalAlternateClose($event)"
       (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
     >
-      <h3 class="modal-title">{{title}}</h3>
+      <h3 class="modal-title">{{ title }}</h3>
       <div class="modal-body">
-        {{body}}
+        {{ body }}
+        <div *ngIf="showLongModalContent" cds-layout="m-t:md">
+          This list is provided to demonstrate scrolling capability within the modal.
+          <ul>
+            <li *ngFor="let _ of createArray(100); let i = index">{{ i + 1 }}</li>
+          </ul>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
@@ -133,7 +152,14 @@ export const OpenExtraLargeModal: StoryObj = {
   },
 };
 
-function removeFocusOutline({ canvasElement }: StoryContext) {
-  // remove keyboard focus outline from modal title
-  canvasElement.querySelector<HTMLElement>(':focus').blur();
-}
+export const OpenFullScreenModal: StoryObj = {
+  render: ModalTemplate,
+  play: removeFocusOutline,
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'full-screen',
+    title: 'Full-Screen Modal',
+    body: 'This is a full-screen modal.',
+    showLongPageContent: false,
+  },
+};

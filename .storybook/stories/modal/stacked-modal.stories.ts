@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 export default {
   title: 'Modal/Stacked Modal',
@@ -27,7 +28,7 @@ export default {
   },
 };
 
-const StackedModalTemplate: Story = args => ({
+const StackedModalTemplate: StoryFn = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
@@ -47,9 +48,7 @@ const StackedModalTemplate: Story = args => ({
 
     <clr-modal [(clrModalOpen)]="modal2Open">
       <h3 class="modal-title">Modal 2</h3>
-      <div class="modal-body">
-        This is modal 2. Pressing escape should only close this modal, not both.
-      </div>
+      <div class="modal-body">This is modal 2. Pressing escape should only close this modal, not both.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="modal2Open = false">Close</button>
       </div>

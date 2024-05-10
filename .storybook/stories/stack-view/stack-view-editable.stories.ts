@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrModalModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -35,7 +36,7 @@ export default {
   },
 };
 
-const StackViewTemplate: Story = args => ({
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-header>
@@ -43,10 +44,7 @@ const StackViewTemplate: Story = args => ({
         <button class="stack-action btn btn-sm btn-link" (click)="editModal = true" type="button">Edit</button>
       </clr-stack-header>
 
-      <clr-stack-block
-        *ngFor="let _ of createArray(blockCount); let i = index"
-        [clrSbExpanded]="!!openIndices[i]"
-      >
+      <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
         <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
         <clr-stack-content>{{ content }}</clr-stack-content>
         <clr-stack-block>
@@ -60,10 +58,7 @@ const StackViewTemplate: Story = args => ({
       <h3 class="modal-title">Edit mode</h3>
       <div class="modal-body">
         <clr-stack-view>
-          <clr-stack-block
-            *ngFor="let _ of createArray(blockCount); let i = index"
-              [clrSbExpanded]="!!openIndices[i]"
-            >
+          <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
             <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
             <clr-stack-content>
               <input type="text" [(ngModel)]="content" class="clr-input" />

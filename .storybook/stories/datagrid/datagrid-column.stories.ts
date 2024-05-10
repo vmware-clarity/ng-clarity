@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -12,7 +13,7 @@ import {
   commonStringsDefault,
 } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -26,20 +27,12 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgColType: { defaultValue: 'string' },
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
-      control: {
-        type: 'radio',
-        options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
-      },
+      control: 'radio',
+      options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
     },
-    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
-    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
-    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
-    clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
     clrDgColumnResize: { control: { disable: true } },
     clrDgSortOrderChange: { control: { disable: true } },
@@ -51,6 +44,13 @@ export default {
     ClrDatagridSortOrder: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgColType: 'string',
+    clrFilterNumberMaxPlaceholder: commonStringsDefault.maxValue,
+    clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
+    clrFilterStringPlaceholder: commonStringsDefault.filterItems,
+    clrFilterValue: '',
+    clrDgSortOrder: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
     // outputs
     clrDgColumnResize: action('clrDgColumnResize'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),
@@ -68,11 +68,15 @@ export default {
   },
 };
 
-const ColumnFilterTemplate: Story = args => ({
+const ColumnFilterTemplate: StoryFn = args => ({
   template: `
     <style>
-      .highlight { border: 1px solid red !important; }
-      .electronegativity-container { border-bottom: 4px solid #119cd4; }
+      .highlight {
+        border: 1px solid red !important;
+      }
+      .electronegativity-container {
+        border-bottom: 4px solid #119cd4;
+      }
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
@@ -108,23 +112,23 @@ const ColumnFilterTemplate: Story = args => ({
       </clr-dg-column>
 
       <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
-        <clr-dg-cell>{{element.name}}</clr-dg-cell>
-        <clr-dg-cell>{{element.symbol}}</clr-dg-cell>
-        <clr-dg-cell>{{element.number}}</clr-dg-cell>
+        <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+        <clr-dg-cell>{{ element.number }}</clr-dg-cell>
         <clr-dg-cell>
-          <div [style.width.%]="element.electronegativity * 100 / 4" class="electronegativity-container">
-            {{element.electronegativity}}
+          <div [style.width.%]="(element.electronegativity * 100) / 4" class="electronegativity-container">
+            {{ element.electronegativity }}
           </div>
         </clr-dg-cell>
         <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{element|json}}</clr-dg-row-detail>
+          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
         </ng-container>
       </clr-dg-row>
-      
+
       <clr-dg-footer>
         <clr-dg-pagination #pagination>
-          <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Elements per page</clr-dg-page-size>
-          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} elements
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
         </clr-dg-pagination>
       </clr-dg-footer>
     </clr-datagrid>

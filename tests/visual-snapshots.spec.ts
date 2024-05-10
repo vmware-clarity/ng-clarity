@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -20,7 +21,7 @@ const usedScreenshotPaths: string[] = [];
 const stories: Story[] = JSON.parse(fs.readFileSync('./dist/docs/stories.json').toString());
 
 for (const { storyId, component } of stories) {
-  if (storyId.endsWith('--default') || !component) {
+  if (storyId.endsWith('--docs') || !component) {
     continue;
   }
 
@@ -42,17 +43,14 @@ for (const { storyId, component } of stories) {
 
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-      const body = await page.locator('body');
-      if (takeFullPageScreenshot(component, storyName)) {
-        await body.evaluate(() => {
-          document.body.style.setProperty('height', `${document.querySelector('html').scrollHeight}px`);
-        });
-      }
+      const fullPage = takeFullPageScreenshot(component, storyName);
+      const screenshotTarget = fullPage ? page : page.locator('body');
 
-      await expect(body).toHaveScreenshot(screenshotPath.split(path.sep), {
+      await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
+        fullPage,
         animations: 'disabled',
         caret: 'hide',
-        threshold: 0,
+        threshold: 0.01,
       });
     });
   }

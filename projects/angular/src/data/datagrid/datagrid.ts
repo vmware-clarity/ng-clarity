@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -303,8 +304,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.datagridTable.nativeElement.focus();
         }
       }),
-      // Reinitialize arrow key navigation on hide/unhide columns
-      combineLatest(this.columnsService.columns).subscribe(() => this.keyNavigation?.resetKeyGrid()),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
         // Remove any projected columns from the projectedDisplayColumns container
