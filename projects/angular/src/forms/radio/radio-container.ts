@@ -106,7 +106,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaRoles() {
-    this.role = this.radios.length ? 'group' : null;
+    this.role = this.radios.length ? 'radiogroup' : null;
   }
 
   private setAriaLabelledBy() {
