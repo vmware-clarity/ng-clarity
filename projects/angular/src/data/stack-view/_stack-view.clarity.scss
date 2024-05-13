@@ -158,7 +158,7 @@
         border-bottom: none;
       }
 
-      .stack-block-label,
+      .stack-block .stack-block-heading > .stack-block-label,
       .stack-block-content {
         background-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color;
       }
