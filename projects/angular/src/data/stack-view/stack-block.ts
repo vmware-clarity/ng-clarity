@@ -159,14 +159,11 @@ export class ClrStackBlock implements OnInit {
   }
 
   get sbAriaRole() {
-    if (this.expandable) {
-      if (this.ariaRole === 'undefined') {
-        return null;
-      }
-      this.ariaRole = this.ariaRole ? this.ariaRole : 'heading';
-      return this.ariaRole;
+    if (this.ariaRole === 'undefined') {
+      return null;
     }
-    return null;
+    this.ariaRole = this.ariaRole ? this.ariaRole : 'heading';
+    return this.ariaRole;
   }
 
   get caretDirection(): string {
