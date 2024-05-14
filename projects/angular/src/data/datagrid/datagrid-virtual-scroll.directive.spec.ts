@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, flush } from '@angular/core/testing';
+import { fakeAsync, flush, tick } from '@angular/core/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
@@ -18,6 +18,7 @@ export interface Column {
   index: number;
   name: string;
 }
+
 export interface Row {
   index: number;
   expanded: boolean;
@@ -133,13 +134,19 @@ class FullTest implements AfterViewInit, OnInit {
 export default function (): void {
   describe('ClrDatagrid virtual scroller', function () {
     describe('Typescript API', function () {
-      let context: TestContext<ClrDatagrid<number>, FullTest>;
+      let context: TestContext<ClrDatagrid<Row>, FullTest>;
       // let fixture: ComponentFixture<any>;
       // let compiled: any;
       let instance: any;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, FullTest, DATAGRID_SPEC_PROVIDERS, [CustomClrVirtualRowsDirective]);
+      beforeEach(async function () {
+        context = await this.createVirtualScroller(ClrDatagrid, FullTest, DATAGRID_SPEC_PROVIDERS, [
+          CustomClrVirtualRowsDirective,
+          // FixedSizeVirtualScrollStrategy,
+          // ScrollDispatcher,
+          // ViewportRuler,
+        ]);
+
         // TestBed.configureTestingModule({
         //   imports: [ClarityModule, NoopAnimationsModule],
         //   declarations: [FullTest],
@@ -151,11 +158,12 @@ export default function (): void {
         context.fixture.autoDetectChanges(true);
         // compiled = context.fixture.nativeElement;
         instance = context.fixture.componentInstance;
+        // context.fixture.detectChanges();
       });
 
-      // afterEach(() => {
-      //   fixture.destroy();
-      // });
+      afterEach(() => {
+        context.fixture.destroy();
+      });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
         expect(instance.virtualScroll.items.all.length).toBe(1000);
@@ -193,36 +201,33 @@ export default function (): void {
         flush();
 
         // On the second cycle we render the items.
-        context.fixture.detectChanges();
-        flush();
+        // context.fixture.detectChanges();
+        // flush();
 
         // Flush the initial fake scroll event.
         // animationFrameScheduler.flush();
         flush();
         context.fixture.detectChanges();
+        // debugger;
+        console.log(context.fixture.debugElement.injector);
 
         // context.fixture.autoDetectChanges(); // <---
-        // tick(500); // <---
-        // flush()
+        tick(500); // <---
+
+        flush();
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        // // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
-        // // fixture.detectChanges();
-        // // done();
-        console.log(cells[0]);
-        // tick();
-        // fixture.detectChanges();
-        console.log(document.activeElement);
-        // debugger;
-        // expect(document.activeElement).toEqual(cells[0]);
-        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        //
-        // expect(document.activeElement).toEqual(cells[9].querySelector('[type=checkbox]'));
-        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        // expect(document.activeElement).toEqual(cells[3].querySelector('[type=checkbox]'));
+        const checkboxes = grid.querySelectorAll('[type=checkbox]');
 
-        // done();
+        // need to start with this cell exactly, because it has tabindex=0
+        cells[0].focus();
+        expect(document.activeElement).toEqual(cells[0]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        expect(document.activeElement).toEqual(checkboxes[22]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        expect(document.activeElement).toEqual(checkboxes[0]);
       }));
 
       // it('allows to manually resize the datagrid', function () {

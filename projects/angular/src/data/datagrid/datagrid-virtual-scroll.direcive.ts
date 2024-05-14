@@ -66,10 +66,10 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
 
-  private datagridElementRef: ElementRef<HTMLElement>;
+  private readonly datagridElementRef: ElementRef<HTMLElement>;
 
   private gridRoleElement: HTMLElement | null | undefined;
-  private virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
+  private readonly virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
