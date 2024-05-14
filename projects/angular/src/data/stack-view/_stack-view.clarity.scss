@@ -169,7 +169,7 @@
     }
 
     .stack-block-expandable {
-      .stack-block-heading > .stack-block-label {
+      > .stack-block-heading .stack-block-label {
         color: stack-view-variables.$clr-stack-view-expandable-row-color;
         background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
