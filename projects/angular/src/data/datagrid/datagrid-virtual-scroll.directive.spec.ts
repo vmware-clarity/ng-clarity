@@ -6,13 +6,14 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick } from '@angular/core/testing';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ClrDatagrid } from './datagrid';
+import { ClarityModule } from '../../clr-angular.module';
 import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
-import { DATAGRID_SPEC_PROVIDERS, TestContext } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export interface Column {
   index: number;
@@ -134,36 +135,28 @@ class FullTest implements AfterViewInit, OnInit {
 export default function (): void {
   describe('ClrDatagrid virtual scroller', function () {
     describe('Typescript API', function () {
-      let context: TestContext<ClrDatagrid<Row>, FullTest>;
-      // let fixture: ComponentFixture<any>;
-      // let compiled: any;
+      let fixture: ComponentFixture<any>;
+      let compiled: any;
       let instance: any;
 
       beforeEach(async function () {
-        context = await this.createVirtualScroller(ClrDatagrid, FullTest, DATAGRID_SPEC_PROVIDERS, [
-          CustomClrVirtualRowsDirective,
-          // FixedSizeVirtualScrollStrategy,
-          // ScrollDispatcher,
-          // ViewportRuler,
-        ]);
+        await TestBed.configureTestingModule({
+          imports: [ClarityModule, NoopAnimationsModule],
+          declarations: [FullTest, CustomClrVirtualRowsDirective],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          providers: DATAGRID_SPEC_PROVIDERS,
+        }).compileComponents();
 
-        // TestBed.configureTestingModule({
-        //   imports: [ClarityModule, NoopAnimationsModule],
-        //   declarations: [FullTest],
-        //   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        //   providers: [CustomClrVirtualRowsDirective, Selection, KeyNavigationGridController],
-        // });
-        //
-        // fixture = TestBed.createComponent(FullTest);
-        context.fixture.autoDetectChanges(true);
-        // compiled = context.fixture.nativeElement;
-        instance = context.fixture.componentInstance;
-        // context.fixture.detectChanges();
+        fixture = TestBed.createComponent(FullTest);
+
+        compiled = fixture.nativeElement;
+        instance = fixture.componentInstance;
+        fixture.autoDetectChanges(true);
       });
 
-      afterEach(() => {
-        context.fixture.destroy();
-      });
+      // afterEach(() => {
+      //   fixture.destroy();
+      // });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
         expect(instance.virtualScroll.items.all.length).toBe(1000);
@@ -185,37 +178,9 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
       });
 
-      it('Moves focus on PageDown and PageUp', fakeAsync(function () {
-        // const context = this.create(ClrDatagrid, FullTest);
-        // instance.ngOnInit();
-        // tick();
-        // fixture.detectChanges();
-        //
-        // instance.ngAfterViewInit();
-        // tick();
-        // fixture.detectChanges();
-
-        // tick(10000);
-
-        context.fixture.detectChanges();
-        flush();
-
-        // On the second cycle we render the items.
-        // context.fixture.detectChanges();
-        // flush();
-
-        // Flush the initial fake scroll event.
-        // animationFrameScheduler.flush();
-        flush();
-        context.fixture.detectChanges();
-        // debugger;
-        console.log(context.fixture.debugElement.injector);
-
-        // context.fixture.autoDetectChanges(); // <---
-        tick(500); // <---
-
-        flush();
-        const grid = context.clarityElement.querySelector('[role=grid]');
+      it('Moves focus on PageDown and PageUp', function () {
+        fixture.detectChanges();
+        const grid = compiled.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         const checkboxes = grid.querySelectorAll('[type=checkbox]');
 
@@ -224,11 +189,11 @@ export default function (): void {
         expect(document.activeElement).toEqual(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(checkboxes[22]);
+        expect(document.activeElement).toEqual(checkboxes[23]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         expect(document.activeElement).toEqual(checkboxes[0]);
-      }));
+      });
 
       // it('allows to manually resize the datagrid', function () {
       //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);

@@ -10,15 +10,7 @@
  * when we have the time. This will be very helpful in future refactors due to Angular upgrades, or simply
  * just to avoid leaks since destroying fixtures is automatic with this.
  */
-import {
-  CdkFixedSizeVirtualScroll,
-  CdkVirtualForOf,
-  CdkVirtualScrollableElement,
-  CdkVirtualScrollViewport,
-  ScrollDispatcher,
-  ViewportRuler,
-} from '@angular/cdk/scrolling';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, EnvironmentInjector, InjectionToken, Type } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, InjectionToken, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,8 +20,6 @@ import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { DomAdapter } from '../../utils/dom-adapter/dom-adapter';
 import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
-import { ClrDatagridRow } from './datagrid-row';
-import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { MockDisplayModeService } from './providers/display-mode.mock';
@@ -68,12 +58,6 @@ export const DATAGRID_SPEC_PROVIDERS = [
   TableSizeService,
   DetailService,
   KeyNavigationGridController,
-  ClrDatagridRow,
-  CustomClrVirtualRowsDirective,
-  EnvironmentInjector,
-  ScrollDispatcher,
-  ViewportRuler,
-  // FixedSizeVirtualScrollStrategy
 ];
 
 export class TestContext<D, C> {
@@ -133,35 +117,6 @@ export function addHelpers(): void {
         providers: providers,
       });
       return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
-    };
-
-    /*
-     * Ideally we would just make "this" a TestContext, but typing "this" in typescript
-     * is a bit too new for all IDEs to correctly process it.
-     */
-    this.createVirtualScroller = async <D, C>(
-      clarityDirective: Type<D>,
-      testComponent: Type<C>,
-      providers: any[] = [],
-      extraDirectives: Type<any>[] = []
-    ) => {
-      await TestBed.configureTestingModule({
-        imports: [
-          ClarityModule,
-          NoopAnimationsModule,
-          CdkVirtualScrollViewport,
-          CdkFixedSizeVirtualScroll,
-          CdkVirtualScrollableElement,
-          CdkVirtualForOf,
-        ],
-        declarations: [testComponent, ...extraDirectives],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: providers,
-      }).compileComponents();
-
-      this._context = new TestContext<D, C>(clarityDirective, testComponent);
-
-      return this._context;
     };
 
     this.createOnly = <D, C>(
