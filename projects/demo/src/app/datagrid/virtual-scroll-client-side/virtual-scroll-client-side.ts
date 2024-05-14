@@ -41,6 +41,7 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit {
   pokemonComparator = new PokemonComparator();
 
   private allRows = new BehaviorSubject<Row[]>([]);
+
   constructor(
     public inventory: Inventory,
     private dynamicData: DynamicData,
