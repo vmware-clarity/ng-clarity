@@ -140,9 +140,6 @@ export default function (): void {
 
         compiled = fixture.nativeElement;
         instance = fixture.componentInstance;
-
-        fixture.detectChanges();
-        await fixture.whenStable();
       });
 
       afterEach(() => {
@@ -150,6 +147,8 @@ export default function (): void {
       });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
+        fixture.detectChanges();
+
         expect(instance.virtualScroll.items.all.length).toBe(1000);
 
         expect(instance.virtualScroll.maxBufferPx).toBe(400);
@@ -171,6 +170,7 @@ export default function (): void {
 
       it('Moves focus on PageDown and PageUp', async function () {
         fixture.detectChanges();
+        await fixture.whenStable();
 
         const grid = compiled.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
