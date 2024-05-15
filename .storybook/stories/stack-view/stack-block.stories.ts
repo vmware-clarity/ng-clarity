@@ -30,6 +30,7 @@ export default {
   args: {
     // inputs
     clrSbExpandable: undefined,
+    clrSbAriaRole: 'heading',
     // outputs
     clrSbExpandedChange: action('clrSbExpandedChange'),
     // story helpers
