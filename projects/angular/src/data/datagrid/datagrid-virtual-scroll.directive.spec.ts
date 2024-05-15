@@ -152,11 +152,12 @@ export default function (): void {
         compiled = fixture.nativeElement;
         instance = fixture.componentInstance;
         fixture.autoDetectChanges(true);
+        fixture.detectChanges();
       });
 
-      // afterEach(() => {
-      //   fixture.destroy();
-      // });
+      afterEach(() => {
+        fixture.destroy();
+      });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
         expect(instance.virtualScroll.items.all.length).toBe(1000);
@@ -178,21 +179,38 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
       });
 
-      it('Moves focus on PageDown and PageUp', function () {
+      it('Moves focus on PageDown and PageUp', async function () {
         fixture.detectChanges();
+
         const grid = compiled.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        const checkboxes = grid.querySelectorAll('[type=checkbox]');
 
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(checkboxes[23]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
+        fixture.detectChanges();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[47]);
+        await fixture.whenStable();
+        fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        expect(document.activeElement).toEqual(checkboxes[0]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[24]);
+        fixture.detectChanges();
       });
 
       // it('allows to manually resize the datagrid', function () {
