@@ -190,7 +190,7 @@ export default function (): void {
         expect(document.activeElement).toEqual(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[21]);
         fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
