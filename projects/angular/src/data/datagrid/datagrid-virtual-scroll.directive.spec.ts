@@ -179,25 +179,30 @@ export default function (): void {
         expect(document.activeElement).toEqual(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        console.log('1', document.activeElement);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[21]);
         fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        console.log('2', document.activeElement);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
         await fixture.whenStable();
         fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        console.log('3', document.activeElement);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
         await fixture.whenStable();
         fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        console.log('4', document.activeElement);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[47]);
         await fixture.whenStable();
         fixture.detectChanges();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        console.log('5', document.activeElement);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[24]);
         fixture.detectChanges();
       });
