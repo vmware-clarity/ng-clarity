@@ -140,6 +140,9 @@ export default function (): void {
 
         compiled = fixture.nativeElement;
         instance = fixture.componentInstance;
+
+        fixture.detectChanges();
+        await fixture.whenStable();
       });
 
       afterEach(() => {
