@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ListRange } from '@angular/cdk/collections';
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -48,7 +47,6 @@ export interface Row {
         [customClrVirtualRowsMaxBufferPx]="400"
         [customClrVirtualRowsTemplateCacheSize]="4000"
         [customClrVirtualRowsTrackBy]="rowByIndex"
-        (renderedRangeChange)="renderRangeChange($event)"
       >
         <clr-dg-row [clrDgItem]="row">
           <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>
@@ -64,7 +62,7 @@ export interface Row {
     </clr-datagrid>
   `,
 })
-class FullTest implements AfterViewInit, OnInit {
+class FullTest implements OnInit {
   @ViewChild(CustomClrVirtualRowsDirective) virtualScroll: CustomClrVirtualRowsDirective<any>;
   rows: Observable<Row[]>;
   cols: Column[] = [];
@@ -78,12 +76,7 @@ class FullTest implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit FullTest');
     this.allRows.next(this.createRows(this.cols));
-  }
-
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit FullTest');
   }
 
   createColumns(count = 10) {
@@ -123,10 +116,6 @@ class FullTest implements AfterViewInit, OnInit {
     return row.index;
   }
 
-  renderRangeChange($event: ListRange) {
-    console.log($event);
-  }
-
   setExpanded($event: boolean, item: Row) {
     item.expanded = $event;
   }
@@ -151,7 +140,7 @@ export default function (): void {
 
         compiled = fixture.nativeElement;
         instance = fixture.componentInstance;
-        fixture.autoDetectChanges(true);
+        // fixture.autoDetectChanges(true);
         fixture.detectChanges();
       });
 
