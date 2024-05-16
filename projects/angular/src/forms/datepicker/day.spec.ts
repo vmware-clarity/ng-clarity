@@ -13,8 +13,11 @@ import { ClrDay } from './day';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
+import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
+import { ViewManagerService } from './providers/view-manager.service';
 
 export default function () {
   describe('Day Component', () => {
@@ -26,6 +29,9 @@ export default function () {
         DateNavigationService,
         ClrPopoverToggleService,
         DateFormControlService,
+        DateIOService,
+        DatePickerHelperService,
+        ViewManagerService,
       ]);
     });
 

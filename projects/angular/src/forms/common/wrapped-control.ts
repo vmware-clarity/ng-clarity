@@ -58,6 +58,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
+  private secondaryDiffer: KeyValueDiffer<any, any>;
+  private ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -65,7 +67,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl | null,
+    private _ngControl: NgControl | null,
     renderer: Renderer2,
     el: ElementRef
   ) {
@@ -99,8 +101,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       );
     }
 
-    if (ngControl) {
-      this.differ = this.differs.find(ngControl).create();
+    if (this._ngControl) {
+      this.differ = this.differs.find(this._ngControl).create();
     }
   }
 
@@ -131,14 +133,32 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService && this.ngControl) {
-      this.ngControlService.setControl(this.ngControl);
+    if (this.ngControlService && this._ngControl) {
+      if (!this.ngControlService.getControl()) {
+        this.ngControl = this._ngControl;
+        this.ngControlService.setControl(this.ngControl);
+      } else {
+        this.ngControl = this.ngControlService.getControl();
+        this.ngControlService.setSecondaryControl(this._ngControl);
+        this.createAdditionalDiffer(this._ngControl);
+      }
     }
   }
 
+  createAdditionalDiffer(control: NgControl) {
+    this.secondaryDiffer = this.differs.find(control).create();
+  }
+
   ngDoCheck() {
-    if (this.differ) {
-      const changes = this.differ.diff(this.ngControl);
+    this.triggerDoCheck(this.differ, this.ngControl);
+    if (this.ngControlService?.hasAdditionalControls) {
+      this.triggerDoCheck(this.secondaryDiffer, this.ngControlService.getSecondaryControl());
+    }
+  }
+
+  triggerDoCheck(differ, ngControl) {
+    if (differ) {
+      const changes = differ.diff(ngControl);
       if (changes) {
         changes.forEachChangedItem(change => {
           if (
@@ -179,6 +199,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     if (this.ngControl) {
       this.ngControl.control.markAsTouched();
       this.ngControl.control.updateValueAndValidity();
+    }
+    if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
+      this.ngControlService.getSecondaryControl().control?.markAsTouched();
+      this.ngControlService.getSecondaryControl().control?.updateValueAndValidity();
     }
   }
 

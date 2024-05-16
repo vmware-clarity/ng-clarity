@@ -14,9 +14,21 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './datepicker-in-reactive-forms.html',
 })
 export class DatepickerInReactiveForms {
-  dateForm = new FormGroup({ date: new FormControl('03/05/2018'), name: new FormControl('Jane') });
+  dateForm = new FormGroup({
+    date: new FormControl('03/05/2018'),
+    startDate: new FormControl(),
+    endDate: new FormControl(),
+  });
 
   dateChanged(date: Date) {
+    console.log(date);
+  }
+
+  stDateChanged(date: Date) {
+    console.log(date);
+  }
+
+  endDateChanged(date: Date) {
     console.log(date);
   }
 }

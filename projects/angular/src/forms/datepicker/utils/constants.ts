@@ -16,38 +16,43 @@ export const MIDDLE_ENDIAN_REGEX = /m+.+d+.+y+/i;
 // No need for BIG_ENDIAN_REGEX because anything that doesn't satisfy the above 2
 // is automatically BIG_ENDIAN
 
-export const DELIMITER_REGEX = /d+|m+|y+/i;
-
-export const USER_INPUT_REGEX = /\d+/g;
+export const USER_INPUT_REGEX = /\w+/g;
 
 export const MOBILE_USERAGENT_REGEX = /Mobi/i;
 
+export const DELIMITERS_REGEX = /[-\\/.\s]/;
+
 export const RTL_REGEX = /\u200f/g;
 
-export const YEAR = 'YYYY';
+export const YEAR = 'yyyy';
 export const MONTH = 'MM';
-export const DATE = 'DD';
+export const DATE = 'dd';
 
-export type FormatType = 'LITTLE_ENDIAN' | 'MIDDLE_ENDIAN' | 'BIG_ENDIAN';
+export type FormatType = 'LITTLE_ENDIAN' | 'MIDDLE_ENDIAN' | 'BIG_ENDIAN' | 'CUSTOM';
 
 export type InputDateDisplayFormat = {
   readonly name: FormatType;
-  readonly format: [string, string, string];
+  readonly format: string;
 };
 
 export const LITTLE_ENDIAN: InputDateDisplayFormat = {
   name: 'LITTLE_ENDIAN',
-  format: [DATE, MONTH, YEAR],
+  format: `${DATE}-${MONTH}-${YEAR}`,
 };
 
 export const MIDDLE_ENDIAN: InputDateDisplayFormat = {
   name: 'MIDDLE_ENDIAN',
-  format: [MONTH, DATE, YEAR],
+  format: `${MONTH}-${DATE}-${YEAR}`,
 };
 
 export const BIG_ENDIAN: InputDateDisplayFormat = {
   name: 'BIG_ENDIAN',
-  format: [YEAR, MONTH, DATE],
+  format: `${YEAR}-${MONTH}-${DATE}`,
+};
+
+export const CUSTOM: InputDateDisplayFormat = {
+  name: 'CUSTOM',
+  format: '',
 };
 
 export const NO_OF_DAYS_IN_A_WEEK = 7;

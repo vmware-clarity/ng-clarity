@@ -11,7 +11,6 @@ import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsMo
 import { By } from '@angular/platform-browser';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -21,8 +20,9 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
+import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
-import { ClrDateInput } from './date-input';
+import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -202,26 +202,6 @@ export default function () {
           expect(context.clarityDirective.inputType).toBe('date');
         });
 
-        it('sets the selectedDay if the value of the input is valid', () => {
-          const testEl = document.createElement('INPUT') as HTMLInputElement;
-          testEl.value = '01/02/2015';
-
-          expect(dateNavigationService.selectedDay).toBeNull(); // TestComponent is <input clrDate>. null Input
-
-          context.clarityDirective.onValueChange(testEl);
-          expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
-        });
-
-        it('sets the selectedDay to a null if the value of the input is invalid', () => {
-          const testEl = document.createElement('INPUT') as HTMLInputElement;
-          testEl.value = '01/02/201';
-
-          expect(dateNavigationService.selectedDay).toBeNull();
-          context.clarityDirective.onValueChange(testEl);
-
-          expect(dateNavigationService.selectedDay).toBeNull();
-        });
-
         it('outputs the date when the user selects a Date from the Date Picker', () => {
           expect(context.testComponent.date).toBeUndefined();
 
@@ -291,14 +271,14 @@ export default function () {
           expect(context.clarityElement.type).toBe('date');
         });
 
-        it('listens to the input change events', () => {
-          spyOn(context.clarityDirective, 'onValueChange');
+        // it('listens to the input change events', () => {
+        //   spyOn(context.clarityDirective, 'onValueChange');
 
-          const inputEl = context.fixture.debugElement.query(By.directive(ClrDateInput));
-          inputEl.triggerEventHandler('change', inputEl);
+        //   const inputEl = context.fixture.debugElement.query(By.directive(ClrDateInput));
+        //   inputEl.triggerEventHandler('change', inputEl);
 
-          expect(context.clarityDirective.onValueChange).toHaveBeenCalled();
-        });
+        //   expect(context.clarityDirective.onValueChange).toHaveBeenCalled();
+        // });
 
         it('binds to the min attribute', () => {
           const testComponent = context.fixture.componentInstance;

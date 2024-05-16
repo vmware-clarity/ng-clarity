@@ -14,6 +14,7 @@ import { DayModel } from '../model/day.model';
 import { assertEqualDates } from '../utils/test-utils';
 import { DateIOService } from './date-io.service';
 import { LocaleHelperService } from './locale-helper.service';
+import { ViewManagerService } from './view-manager.service';
 
 registerLocaleData(localeAk);
 registerLocaleData(localeHr);
@@ -23,51 +24,56 @@ export default function () {
   describe('Date IO Service', () => {
     let dateIOService: DateIOService;
     let localeHelperService: LocaleHelperService;
+    let viewManagerService: ViewManagerService;
 
     describe('Locale Formatting', function () {
       it('updates the cldrLocaleDateFormat based on the locale helper service', () => {
         const localeHelperServ: LocaleHelperService = new LocaleHelperService('en-US');
-        const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
+        const viewManagerService: ViewManagerService = new ViewManagerService();
+        const dateIOServ: DateIOService = new DateIOService(viewManagerService, localeHelperServ);
         expect(dateIOServ.cldrLocaleDateFormat).toBe('M/d/yy');
 
         const localeHelperServ1: LocaleHelperService = new LocaleHelperService('ak');
-        const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
+        const dateIOServ1: DateIOService = new DateIOService(viewManagerService, localeHelperServ1);
 
         expect(dateIOServ1.cldrLocaleDateFormat).toBe('yy/MM/dd');
       });
 
       it('supports a method to convert a Date object to date string based on the locale', () => {
         const localeHelperServ: LocaleHelperService = new LocaleHelperService('en-US');
-        const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
+        const viewManagerService: ViewManagerService = new ViewManagerService();
+        const dateIOServ: DateIOService = new DateIOService(viewManagerService, localeHelperServ);
 
         expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('02/01/2015');
 
         const localeHelperServAK: LocaleHelperService = new LocaleHelperService('ak');
-        const dateIOServAK: DateIOService = new DateIOService(localeHelperServAK);
+        const dateIOServAK: DateIOService = new DateIOService(viewManagerService, localeHelperServAK);
 
         expect(dateIOServAK.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('2015/02/01');
 
         const localeHelperServHR: LocaleHelperService = new LocaleHelperService('hr');
-        const dateIOServHR: DateIOService = new DateIOService(localeHelperServHR);
+        const dateIOServHR: DateIOService = new DateIOService(viewManagerService, localeHelperServHR);
 
-        expect(dateIOServHR.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('01. 02. 2015');
+        expect(dateIOServHR.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('01.02.2015');
 
         const localeHelperServKKJ: LocaleHelperService = new LocaleHelperService('kkj');
-        const dateIOServKKJ: DateIOService = new DateIOService(localeHelperServKKJ);
+        const dateIOServKKJ: DateIOService = new DateIOService(viewManagerService, localeHelperServKKJ);
 
-        expect(dateIOServKKJ.toLocaleDisplayFormatString(new Date(2016, 1, 15))).toBe('15/02 2016');
+        expect(dateIOServKKJ.toLocaleDisplayFormatString(new Date(2016, 1, 15))).toBe('15/02/2016');
       });
 
       it('processes an invalid date object as an empty string', () => {
         const localeHelperServ: LocaleHelperService = new LocaleHelperService('en-US');
-        const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
+        const viewManagerService: ViewManagerService = new ViewManagerService();
+        const dateIOServ: DateIOService = new DateIOService(viewManagerService, localeHelperServ);
 
         expect(dateIOServ.toLocaleDisplayFormatString(new Date('Test'))).toBe('');
       });
 
       it('processes a null object as an empty string', () => {
         const localeHelperServ: LocaleHelperService = new LocaleHelperService('en-US');
-        const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
+        const viewManagerService: ViewManagerService = new ViewManagerService();
+        const dateIOServ: DateIOService = new DateIOService(viewManagerService, localeHelperServ);
 
         expect(dateIOServ.toLocaleDisplayFormatString(null)).toBe('');
       });
@@ -76,7 +82,8 @@ export default function () {
     describe('Date Processing', () => {
       beforeEach(() => {
         localeHelperService = new LocaleHelperService('en-US');
-        dateIOService = new DateIOService(localeHelperService);
+        viewManagerService = new ViewManagerService();
+        dateIOService = new DateIOService(viewManagerService, localeHelperService);
       });
 
       it('ignores just text', () => {
@@ -166,18 +173,18 @@ export default function () {
         expect(dateIOService.getDateValueFromDateString(inputDate)).toBeNull();
       });
 
-      it('ignores the minus sign and considers it as a delimiter', () => {
+      it('ignores the minus sign and considers it as an invalid input', () => {
         let inputDate = '1/-2/2015';
         let date: Date = dateIOService.getDateValueFromDateString(inputDate);
-        expect(assertEqualDates(date, new Date(2015, 0, 2)));
+        expect(assertEqualDates(date, null));
 
         inputDate = '-2/5/2015';
         date = dateIOService.getDateValueFromDateString(inputDate);
-        expect(assertEqualDates(date, new Date(2015, 1, 5)));
+        expect(assertEqualDates(date, null));
 
         inputDate = '1/2/-2015';
         date = dateIOService.getDateValueFromDateString(inputDate);
-        expect(assertEqualDates(date, new Date(2015, 0, 2)));
+        expect(assertEqualDates(date, null));
       });
 
       it('processes dates with different delimiters', () => {
@@ -194,7 +201,8 @@ export default function () {
     describe('TypeScript API', () => {
       beforeEach(() => {
         localeHelperService = new LocaleHelperService('en-US');
-        dateIOService = new DateIOService(localeHelperService);
+        viewManagerService = new ViewManagerService();
+        dateIOService = new DateIOService(viewManagerService, localeHelperService);
       });
 
       it('handles adding minDate inputs', () => {

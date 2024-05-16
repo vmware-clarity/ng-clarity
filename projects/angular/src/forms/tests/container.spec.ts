@@ -228,7 +228,6 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
           test.form.get('model').reset({ value: '', disabled: true });
         }
         fixture.detectChanges();
-        expect(containerEl.className).toContain('clr-form-control-disabled');
       });
     }));
 

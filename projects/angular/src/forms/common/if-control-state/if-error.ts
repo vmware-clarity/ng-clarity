@@ -35,14 +35,16 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && this.control) {
+    if (this.error && this.control && !!this.control.invalid) {
       this.displayError(this.control.hasError(this.error));
+    } else if (this.error && this.secondaryControl) {
+      this.displayError(this.secondaryControl.hasError(this.error), this.secondaryControl);
     } else {
       this.displayError(CONTROL_STATE.INVALID === state);
     }
   }
 
-  private displayError(invalid: boolean) {
+  private displayError(invalid: boolean, control = this.control) {
     /* if no container do nothing */
     if (!this.container) {
       return;
@@ -50,12 +52,12 @@ export class ClrIfError extends AbstractIfState {
     if (invalid) {
       if (this.displayedContent === false) {
         this.embeddedViewRef = this.container.createEmbeddedView(this.template, {
-          error: this.control.getError(this.error),
+          error: control.getError(this.error),
         });
         this.displayedContent = true;
       } else if (this.embeddedViewRef && this.embeddedViewRef.context) {
         // if view is already rendered, update the error object to keep it in sync
-        this.embeddedViewRef.context.error = this.control.getError(this.error);
+        this.embeddedViewRef.context.error = control.getError(this.error);
       }
     } else {
       this.container.clear();
