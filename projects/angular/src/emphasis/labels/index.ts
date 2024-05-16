@@ -5,12 +5,5 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgModule } from '@angular/core';
-
-import { ClrAlertModule } from './alert/alert.module';
-import { ClrLabelsModule } from './labels/labels.module';
-
-@NgModule({
-  exports: [ClrAlertModule, ClrLabelsModule],
-})
-export class ClrEmphasisModule {}
+export * from './labels';
+export * from './labels.module';
