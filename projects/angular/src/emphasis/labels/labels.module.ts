@@ -5,12 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ClrAlertModule } from './alert/alert.module';
-import { ClrLabelsModule } from './labels/labels.module';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrLabels } from './labels';
 
 @NgModule({
-  exports: [ClrAlertModule, ClrLabelsModule],
+  declarations: [ClrLabels],
+  exports: [ClrLabels],
+  imports: [CommonModule, ClrIconModule],
 })
-export class ClrEmphasisModule {}
+export class ClrLabelsModule {}
