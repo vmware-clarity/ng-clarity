@@ -212,14 +212,14 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         fixture.detectChanges();
         console.log(2, document.activeElement);
-        console.log(2, grid.querySelectorAll('[type=checkbox]')[40]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[40]);
+        console.log(2, grid.querySelectorAll('[type=checkbox]')[41]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         fixture.detectChanges();
         console.log(3, document.activeElement);
-        console.log(3, grid.querySelectorAll('[type=checkbox]')[18]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[18]);
+        console.log(3, grid.querySelectorAll('[type=checkbox]')[19]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
 
         // tick();
         // instance.virtualScroll.virtualScrollViewport.setRenderedRange({ start: 22, end: 74 } as ListRange);
