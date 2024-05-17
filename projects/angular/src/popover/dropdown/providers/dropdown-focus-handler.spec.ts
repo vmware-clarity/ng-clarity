@@ -15,6 +15,7 @@ import { FocusableItem } from '../../../utils/focus/focusable-item/focusable-ite
 import { MockFocusableItem } from '../../../utils/focus/focusable-item/focusable-item.mock';
 import { Linkers } from '../../../utils/focus/focusable-item/linkers';
 import { ClrPopoverService } from '../../../utils/popover/providers/popover.service';
+import { ClrPopoverModule } from '../../popover.module';
 import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdown-focus-handler.service';
 
 @Component({
@@ -45,7 +46,7 @@ export default function (): void {
   describe('DropdownFocusHandler', function () {
     describe('basic dropdown', function () {
       beforeEach(function (this: TestContext) {
-        TestBed.configureTestingModule({ declarations: [SimpleHost] });
+        TestBed.configureTestingModule({ imports: [ClrPopoverModule], declarations: [SimpleHost] });
         this.fixture = TestBed.createComponent(SimpleHost);
         this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
         this.focusService = this.fixture.debugElement.injector.get(FocusService);
@@ -131,8 +132,11 @@ export default function (): void {
         this.focusHandler.container = this.container;
         this.popoverService.open = true;
         this.container.focus();
+        console.log(this.popoverService.open);
         expect(this.popoverService.open).toBeTruthy();
         this.container.blur();
+        console.log('Blur');
+        console.log(this.popoverService.open);
         expect(this.popoverService.open).toBeFalsy();
       });
 

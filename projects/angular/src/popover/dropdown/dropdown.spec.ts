@@ -5,7 +5,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { ClrModalModule } from '../../modal/modal.module';
 import { FocusService } from '../../utils/focus/focus.service';
 import { FocusableItem } from '../../utils/focus/focusable-item/focusable-item';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrPopoverModule } from '../popover.module';
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
 import { ClrDropdownTrigger } from './dropdown-trigger';
@@ -27,7 +28,7 @@ export default function (): void {
     let subscription: Subscription;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestComponent] });
+      TestBed.configureTestingModule({ imports: [ClrDropdownModule, ClrPopoverModule], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -61,24 +62,23 @@ export default function (): void {
       // detect the click
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = compiled.querySelector('[clrDropdownItem]');
+      const dropdownItem: HTMLElement = document.body.querySelector('[clrDropdownItem]');
       expect(dropdownItem.classList.contains('.dropdown-item'));
     });
 
     it('toggles the menu when clicked on the host', () => {
       const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
-
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
       dropdownToggle.click();
       // detect the click
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
 
       // click the dropdown toggle again to close the menu
       dropdownToggle.click();
       // detect the click
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
     });
 
     it('toggles the nested menu when clicked on the toggle', () => {
@@ -87,12 +87,13 @@ export default function (): void {
       // detect the click
       fixture.detectChanges();
 
-      const nestedToggle: HTMLElement = compiled.querySelector('.nested');
+      const nestedToggle: HTMLElement = document.body.querySelector('clr-dropdown .nested');
       expect(compiled.textContent.trim()).not.toMatch('Foo');
       nestedToggle.click();
       // detect the click
       fixture.detectChanges();
-      expect(compiled.textContent.trim()).toMatch('Foo');
+      const newlyAddedOverlayContainer = document.body.querySelector('.cdk-overlay-container').lastChild;
+      expect(newlyAddedOverlayContainer.textContent.trim()).toMatch('Foo');
 
       // click the nested toggle again to close the menu
       nestedToggle.click();
@@ -106,7 +107,7 @@ export default function (): void {
       const outsideButton: HTMLElement = compiled.querySelector('.outside-click-test');
 
       // check if the dropdown is closed
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
 
       // click outside the dropdown
       outsideButton.click();
@@ -115,13 +116,13 @@ export default function (): void {
       // check if the click handler is triggered
       expect(fixture.componentInstance.testCnt).toEqual(1);
       // check if the open class is added
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
 
       // click on the dropdown
       dropdownToggle.click();
       tick();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
 
       // click outside the dropdown
       outsideButton.click();
@@ -129,8 +130,10 @@ export default function (): void {
 
       // check if the click handler is triggered
       expect(fixture.componentInstance.testCnt).toEqual(2);
-      // check if the open class is added
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      // check if the menu closed
+      console.log('closed -- ', document.body.querySelector('.cdk-overlay-pane .dropdown-item'));
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
+      flush();
     }));
 
     it('supports clrMenuClosable option. Closes the dropdown menu when clrMenuClosable is set to true', fakeAsync(() => {
@@ -138,22 +141,22 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      const dropdownItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
 
       fixture.componentInstance.menuClosable = false;
       dropdownToggle.click();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
     }));
 
     it('closes all dropdown menus when clrMenuClosable is true', fakeAsync(() => {
@@ -161,18 +164,18 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const nestedToggle: HTMLElement = compiled.querySelector('.nested');
+      const nestedToggle: HTMLElement = document.body.querySelector('.cdk-overlay-pane .nested');
       nestedToggle.click();
 
       fixture.detectChanges();
 
-      const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
+      const nestedItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .nested-item');
       nestedItem.click();
       tick();
 
       fixture.detectChanges();
 
-      const items: HTMLElement = compiled.querySelector('.dropdown-item');
+      const items: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
       expect(items).toBeNull();
     }));
 
@@ -181,18 +184,20 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const disabledDropdownItem: HTMLElement = compiled.querySelector('.dropdown-item.disabled');
-      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      const disabledDropdownItem: HTMLElement = document.body.querySelector(
+        '.cdk-overlay-pane .dropdown-item.disabled'
+      );
+      const dropdownItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
 
       disabledDropdownItem.click();
       tick();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).not.toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).not.toBeNull();
 
       dropdownItem.click();
       tick();
       fixture.detectChanges();
-      expect(compiled.querySelector('.dropdown-item')).toBeNull();
+      expect(document.body.querySelector('.cdk-overlay-pane .dropdown-item')).toBeNull();
     }));
 
     it("doesn't close before custom click events have triggered", fakeAsync(function () {
@@ -202,7 +207,7 @@ export default function (): void {
       dropdownToggle.click();
       fixture.detectChanges();
 
-      const nestedToggle: HTMLElement = compiled.querySelector('.nested');
+      const nestedToggle: HTMLElement = document.body.querySelector('.cdk-overlay-pane .nested');
       nestedToggle.click();
       fixture.detectChanges();
 
@@ -210,7 +215,7 @@ export default function (): void {
         expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
       });
 
-      const nestedItem: HTMLElement = compiled.querySelector('.nested-item');
+      const nestedItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .nested-item');
       nestedItem.click();
       tick();
       fixture.detectChanges();
@@ -226,7 +231,7 @@ export default function (): void {
       tick();
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      const dropdownItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
       expect(document.activeElement).toBe(dropdownItem);
 
       dropdownItem.click();
@@ -247,7 +252,7 @@ export default function (): void {
       tick();
       fixture.detectChanges();
 
-      const dropdownItem: HTMLElement = compiled.querySelector('.dropdown-item');
+      const dropdownItem: HTMLElement = document.body.querySelector('.cdk-overlay-pane .dropdown-item');
       expect(document.activeElement).toBe(dropdownItem);
 
       dropdownItem.click();

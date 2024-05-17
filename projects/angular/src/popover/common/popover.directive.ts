@@ -123,6 +123,7 @@ export class PopoverDirective implements AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
+    this.popoverService.contentRef.nativeElement.focus();
     // this.overlayRef.updatePosition();
     setTimeout(() => this.popoverService.popoverVisibleEmit(true));
   }
