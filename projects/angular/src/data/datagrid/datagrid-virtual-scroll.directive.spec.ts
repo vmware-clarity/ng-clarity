@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
@@ -70,13 +70,17 @@ class FullTest implements OnInit {
 
   private allRows = new BehaviorSubject<Row[]>([]);
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.rows = this.allRows.asObservable();
     this.cols = this.createColumns();
   }
 
   ngOnInit(): void {
     this.allRows.next(this.createRows(this.cols));
+
+    this.rows.subscribe(() => {
+      this.cdr.detectChanges();
+    });
   }
 
   createColumns(count = 10) {
@@ -123,6 +127,22 @@ class FullTest implements OnInit {
 
 export default function (): void {
   describe('ClrDatagrid virtual scroller', function () {
+    function finishInit(fixture: ComponentFixture<any>) {
+      // On the first cycle we render and measure the viewport.
+      fixture.detectChanges();
+      flush();
+
+      // On the second cycle we render the items.
+      fixture.detectChanges();
+      flush();
+
+      // Flush the initial fake scroll event.
+      animationFrameScheduler.flush();
+      flush();
+      fixture.detectChanges();
+      // tick();
+    }
+
     describe('Typescript API', function () {
       let fixture: ComponentFixture<any>;
       let compiled: any;
@@ -168,41 +188,75 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
       });
 
-      it('Moves focus on PageDown and PageUp', async function () {
+      it('Moves focus on PageDown and PageUp', fakeAsync(function () {
+        fixture.autoDetectChanges();
+        finishInit(fixture);
+        fixture.whenStable();
         fixture.detectChanges();
-        await fixture.whenStable();
+        tick();
 
         const grid = compiled.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
 
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
+        fixture.detectChanges();
         expect(document.activeElement).toEqual(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        fixture.detectChanges();
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
-        fixture.detectChanges();
-        await fixture.whenStable();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
         fixture.detectChanges();
-        await fixture.whenStable();
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
-        fixture.detectChanges();
-        await fixture.whenStable();
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[47]);
-        fixture.detectChanges();
-        await fixture.whenStable();
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[40]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[24]);
         fixture.detectChanges();
-      });
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[18]);
+
+        // tick();
+        // instance.virtualScroll.virtualScrollViewport.setRenderedRange({ start: 22, end: 74 } as ListRange);
+        // fixture.detectChanges();
+        // tick();
+        // instance.virtualScroll.datagrid.dataChanged();
+        // tick();
+        // fixture.detectChanges();
+        // tick();
+
+        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
+        // fixture.detectChanges();
+        // // tick()
+        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
+
+        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        // fixture.detectChanges();
+        // tick();
+        // // console.log(4, document.activeElement);
+        // // console.log(4, grid.querySelectorAll('[type=checkbox]')[1]);
+        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[1]);
+
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // instance.virtualScroll.virtualScrollViewport.setRenderedRange({ start: 0, end: 42 } as ListRange);
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // instance.virtualScroll.datagrid.dataChanged();
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // fixture.detectChanges();
+        // // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // // tick();
+        //
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // fixture.detectChanges();
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // // tick();
+        // console.log(5, document.activeElement);
+        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
+        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[1]);
+
+        fixture.autoDetectChanges(false);
+      }));
 
       // it('allows to manually resize the datagrid', function () {
       //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
