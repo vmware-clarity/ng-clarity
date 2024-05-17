@@ -205,14 +205,20 @@ export default function (): void {
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         fixture.detectChanges();
+        console.log(1, document.activeElement);
+        console.log(1, grid.querySelectorAll('[type=checkbox]')[22]);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         fixture.detectChanges();
+        console.log(2, document.activeElement);
+        console.log(2, grid.querySelectorAll('[type=checkbox]')[40]);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[40]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         fixture.detectChanges();
+        console.log(3, document.activeElement);
+        console.log(3, grid.querySelectorAll('[type=checkbox]')[18]);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[18]);
 
         // tick();
