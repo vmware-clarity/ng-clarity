@@ -76,8 +76,7 @@
 
 //Labels
 // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, typography.clarity, badges.clarity
-@forward '../emphasis/labels.clarity';
-
+@forward '../emphasis/labels/labels.clarity';
 //Progress Bars
 //depends on variables.clarity, helpers.clarity, color.clarity, cards.clarity
 @forward '../progress/progress-bars/progress-bars.clarity';
