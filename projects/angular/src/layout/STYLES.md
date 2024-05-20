@@ -73,7 +73,7 @@
 ## CSS Classes
 
 | Class         | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- | --- |
+| ------------- | -------------------------------------------------------------------------------- |
 | login         | The login form is a predefined form for applications that require authentication |
 | login-body    | Wrapper for login content                                                        |
 | login-header  | Wrapper for login header elements                                                |
@@ -81,7 +81,7 @@
 | logo          | VMware logo                                                                      |
 | actions       | Wrapper for header actions                                                       |
 | copyright     | Copyright label                                                                  |
-| login-wrapper | Wrapper element                                                                  |     |
+| login-wrapper | Wrapper element                                                                  |
 | title         | The title `section` of the login form                                            |
 | welcome       | The heading of the login form                                                    |
 | hint          | Hint/helper text within the title of the login form                              |
