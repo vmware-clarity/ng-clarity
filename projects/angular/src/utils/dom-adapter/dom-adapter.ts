@@ -15,10 +15,19 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DomAdapter {
+  /* 
+    We clone the element and take its measurements from outside the grid
+    so we don't trigger reflow for the whole datagrid.
+  */
   userDefinedWidth(element: HTMLElement): number {
-    element.classList.add('datagrid-cell-width-zero');
-    const userDefinedWidth = this.clientRect(element).width;
-    element.classList.remove('datagrid-cell-width-zero');
+    const clonedElement = element.cloneNode(true) as HTMLElement;
+    if (clonedElement.id) {
+      clonedElement.id = clonedElement.id + '-clone';
+    }
+    clonedElement.classList.add('datagrid-cell-width-zero');
+    document.body.appendChild(clonedElement);
+    const userDefinedWidth = this.clientRect(clonedElement).width;
+    clonedElement.remove();
     return userDefinedWidth;
   }
 
