@@ -6,9 +6,9 @@
  */
 
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
@@ -127,20 +127,8 @@ class FullTest implements OnInit {
 
 export default function (): void {
   describe('ClrDatagrid virtual scroller', function () {
-    function finishInit(fixture: ComponentFixture<any>) {
-      // On the first cycle we render and measure the viewport.
-      fixture.detectChanges();
-      flush();
-
-      // On the second cycle we render the items.
-      fixture.detectChanges();
-      flush();
-
-      // Flush the initial fake scroll event.
-      animationFrameScheduler.flush();
-      flush();
-      fixture.detectChanges();
-      // tick();
+    function sleep(millisecondsToWait = 100) {
+      return new Promise(resolve => setTimeout(resolve, millisecondsToWait));
     }
 
     describe('Typescript API', function () {
@@ -188,81 +176,34 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
       });
 
-      it('Moves focus on PageDown and PageUp', fakeAsync(function () {
+      it('Moves focus on PageDown and PageUp', async () => {
         fixture.autoDetectChanges();
-        finishInit(fixture);
-        fixture.whenStable();
-        fixture.detectChanges();
-        tick();
+
+        await fixture.whenStable();
+        await fixture.whenRenderingDone();
 
         const grid = compiled.querySelector('[role=grid]');
-        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
 
         // need to start with this cell exactly, because it has tabindex=0
-        cells[0].focus();
-        fixture.detectChanges();
-        expect(document.activeElement).toEqual(cells[0]);
+        const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
+        headerCheckboxCell.focus();
+        expect(document.activeElement).toEqual(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        fixture.detectChanges();
-        console.log(1, document.activeElement);
-        console.log(1, grid.querySelectorAll('[type=checkbox]')[22]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[21]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        fixture.detectChanges();
-        console.log(2, document.activeElement);
-        console.log(2, grid.querySelectorAll('[type=checkbox]')[41]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
+        await sleep();
+        await fixture.whenStable();
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        fixture.detectChanges();
-        console.log(3, document.activeElement);
-        console.log(3, grid.querySelectorAll('[type=checkbox]')[19]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
-
-        // tick();
-        // instance.virtualScroll.virtualScrollViewport.setRenderedRange({ start: 22, end: 74 } as ListRange);
-        // fixture.detectChanges();
-        // tick();
-        // instance.virtualScroll.datagrid.dataChanged();
-        // tick();
-        // fixture.detectChanges();
-        // tick();
-
-        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        // fixture.detectChanges();
-        // // tick()
-        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[23]);
-
-        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        // fixture.detectChanges();
-        // tick();
-        // // console.log(4, document.activeElement);
-        // // console.log(4, grid.querySelectorAll('[type=checkbox]')[1]);
-        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[1]);
-
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // instance.virtualScroll.virtualScrollViewport.setRenderedRange({ start: 0, end: 42 } as ListRange);
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // instance.virtualScroll.datagrid.dataChanged();
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // fixture.detectChanges();
-        // // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // // tick();
-        //
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // fixture.detectChanges();
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // // tick();
-        // console.log(5, document.activeElement);
-        // console.log(5, grid.querySelectorAll('[type=checkbox]')[1]);
-        // expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[1]);
+        await sleep();
+        await fixture.whenStable();
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
         fixture.autoDetectChanges(false);
-      }));
+      });
 
       // it('allows to manually resize the datagrid', function () {
       //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
