@@ -118,4 +118,10 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Accordion/Stepper
   stepComplete: 'Step {STEP} complete',
   stepError: 'Error in step {STEP}',
+
+  // File input
+  browse: 'Browse',
+  fileCount: '{COUNT} files',
+  clearFile: 'Clear {FILE}',
+  clearFiles: 'Clear {COUNT} files',
 };
