@@ -11,8 +11,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { ClrModalModule } from './modal.module';
 import { ClrSidepanel } from './sidepanel';
+import { ClrSidepanelModule } from './sidepanel.module';
 
 @Component({
   template: `
@@ -65,7 +65,7 @@ describe('Side Panel', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidepanelModule, NoopAnimationsModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 

@@ -14,9 +14,8 @@ import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';
 import { ClrModal } from './modal';
 import { ClrModalBody } from './modal-body';
 import { ClrModalConfigurationService } from './modal-configuration.service';
-import { ClrSidepanel } from './sidepanel';
 
-export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody, ClrSidepanel];
+export const CLR_MODAL_DIRECTIVES: Type<any>[] = [ClrModal, ClrModalBody];
 
 @NgModule({
   imports: [CommonModule, CdkTrapFocusModule, ClrIconModule],

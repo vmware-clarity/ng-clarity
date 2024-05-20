@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrModalModule, ClrSidepanel, commonStringsDefault } from '@clr/angular';
+import { ClrSidepanel, ClrSidepanelModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -15,7 +15,7 @@ export default {
   title: 'Modal/Side Panel',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrModalModule],
+      imports: [...CommonModules, ClrSidepanelModule],
     }),
   ],
   component: ClrSidepanel,
@@ -25,7 +25,8 @@ export default {
     clrSidepanelLabelledById: { defaultValue: '' },
     clrSidepanelSize: {
       defaultValue: 'md',
-      control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+      options: ['sm', 'md', 'lg', 'xl', 'full-screen'],
+      control: { type: 'radio' },
     },
     clrSidepanelSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
