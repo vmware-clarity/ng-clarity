@@ -88,7 +88,7 @@ describe('ClrStep Reactive Forms', () => {
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      const statusMessage = fixture.nativeElement.querySelector('button .clr-sr-only');
+      const statusMessage = fixture.nativeElement.querySelector('.clr-accordion-header .clr-sr-only');
       expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
       mockStep.status = AccordionStatus.Complete;
@@ -121,7 +121,7 @@ describe('ClrStep Reactive Forms', () => {
       expect(input.focus).not.toHaveBeenCalled();
 
       (stepperService as MockStepperService).activeStep.next('groupName');
-      tick();
+      tick(1500);
 
       expect(input.focus).toHaveBeenCalled();
     }));
