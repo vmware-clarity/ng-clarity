@@ -95,13 +95,14 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i11_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12_3" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i17_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_2.ClrStepperModule, typeof i14.ClrSpinnerModule, typeof i15_2.ClrProgressBarModule, typeof i16_2.ClrPopoverModuleNext, typeof i17_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_2.ClrSidepanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -142,6 +143,9 @@ export const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_PROGRESS_BAR_DIRECTIVES: Type<any>[];
+
+// @public (undocumented)
+export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
@@ -268,16 +272,16 @@ export class ClrAccordionModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_47" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_48" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_35" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_28" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_27" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_18" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_10" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_9" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof i1_47.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_28.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_47.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_28.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof i1_48.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_27.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_48.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_27.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -415,7 +419,7 @@ export class ClrAlertModule {
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule, typeof i14.ClrSpinnerModule], [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule, typeof i15.ClrSpinnerModule], [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText]>;
 }
 
 // @public (undocumented)
@@ -625,7 +629,7 @@ export class ClrButtonGroupModule {
     // Warning: (ae-forgotten-export) The symbol "i2_25" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i16_2.ClrPopoverModuleNext], [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i17_2.ClrPopoverModuleNext], [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup]>;
 }
 
 // @public (undocumented)
@@ -878,7 +882,7 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "i48" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i48.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i16_2.ClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i41.FormsModule, typeof i3_2.ClrIconModule, typeof i48.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i15.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -1585,8 +1589,8 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point index.d.ts
@@ -1613,7 +1617,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i45" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14_2.ClrDatagridPageSize, typeof i15.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrIfDetail, typeof i21.DatagridDetailRegisterer, typeof i22.WrappedCell, typeof i23.WrappedColumn, typeof i24.WrappedRow, typeof i25.DatagridCellRenderer, typeof i26.DatagridHeaderRenderer, typeof i27.DatagridMainRenderer, typeof i28.DatagridRowRenderer, typeof i29.ActionableOompaLoompa, typeof i30.DatagridWillyWonka, typeof i31.ExpandableOompaLoompa, typeof i32.DatagridNumericFilter, typeof i33.DatagridStringFilter, typeof i34.ClrDatagridColumnToggle, typeof i35.ClrDatagridColumnToggleButton], [typeof i6.CommonModule, typeof i37.CdkDragModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i9_2.ClrFormsModule, typeof i41.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i44.ClrOutsideClickModule, typeof i45.ClrExpandableAnimationModule, typeof i14.ClrSpinnerModule, typeof i16_2.ClrPopoverModuleNext, typeof i48.ClrKeyFocusModule], [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14_2.ClrDatagridPageSize, typeof i15.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrIfDetail, typeof i21.DatagridDetailRegisterer, typeof i22.WrappedCell, typeof i23.WrappedColumn, typeof i24.WrappedRow, typeof i25.DatagridCellRenderer, typeof i26.DatagridHeaderRenderer, typeof i27.DatagridMainRenderer, typeof i28.DatagridRowRenderer, typeof i29.ActionableOompaLoompa, typeof i30.DatagridWillyWonka, typeof i31.ExpandableOompaLoompa, typeof i32.DatagridNumericFilter, typeof i33.DatagridStringFilter]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridPageSize, typeof i15_2.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrIfDetail, typeof i21.DatagridDetailRegisterer, typeof i22.WrappedCell, typeof i23.WrappedColumn, typeof i24.WrappedRow, typeof i25.DatagridCellRenderer, typeof i26.DatagridHeaderRenderer, typeof i27.DatagridMainRenderer, typeof i28.DatagridRowRenderer, typeof i29.ActionableOompaLoompa, typeof i30.DatagridWillyWonka, typeof i31.ExpandableOompaLoompa, typeof i32.DatagridNumericFilter, typeof i33.DatagridStringFilter, typeof i34.ClrDatagridColumnToggle, typeof i35.ClrDatagridColumnToggleButton], [typeof i6.CommonModule, typeof i37.CdkDragModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i9_2.ClrFormsModule, typeof i41.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i44.ClrOutsideClickModule, typeof i45.ClrExpandableAnimationModule, typeof i15.ClrSpinnerModule, typeof i17_2.ClrPopoverModuleNext, typeof i48.ClrKeyFocusModule], [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridPageSize, typeof i15_2.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrIfDetail, typeof i21.DatagridDetailRegisterer, typeof i22.WrappedCell, typeof i23.WrappedColumn, typeof i24.WrappedRow, typeof i25.DatagridCellRenderer, typeof i26.DatagridHeaderRenderer, typeof i27.DatagridMainRenderer, typeof i28.DatagridRowRenderer, typeof i29.ActionableOompaLoompa, typeof i30.DatagridWillyWonka, typeof i31.ExpandableOompaLoompa, typeof i32.DatagridNumericFilter, typeof i33.DatagridStringFilter]>;
 }
 
 // @public (undocumented)
@@ -2048,7 +2052,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i9_4" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i16_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar]>;
 }
 
 // @public (undocumented)
@@ -2546,11 +2550,11 @@ export class ClrLayoutModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_36" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_26" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_19" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_14" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_36.ClrMainContainerModule, typeof i2_26.ClrNavigationModule, typeof i3_20.ClrTabsModule, typeof i4_14.ClrVerticalNavModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_36.ClrMainContainerModule, typeof i2_26.ClrNavigationModule, typeof i3_19.ClrTabsModule, typeof i4_14.ClrVerticalNavModule]>;
 }
 
 // @public (undocumented)
@@ -2730,10 +2734,9 @@ export class ClrModalModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_31" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_23" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_18" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidepanel], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidepanel, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -2759,12 +2762,12 @@ export class ClrNavigationModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_38" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_27" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_19" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_18" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_12" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_10" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_19.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule], [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_19.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_18.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule], [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_18.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -3055,10 +3058,10 @@ export class ClrPopoverModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
     // Warning: (ae-forgotten-export) The symbol "i2_30" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_24" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_23" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i8.ClrDropdownModule, typeof i2_30.ClrSignpostModule, typeof i3_24.ClrTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i8.ClrDropdownModule, typeof i2_30.ClrSignpostModule, typeof i3_23.ClrTooltipModule]>;
 }
 
 // @public
@@ -3184,10 +3187,10 @@ export class ClrProgressBarModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBarModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_48" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_49" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof i1_48.ClrProgressBar], [typeof i6.CommonModule], [typeof i1_48.ClrProgressBar]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof i1_49.ClrProgressBar], [typeof i6.CommonModule], [typeof i1_49.ClrProgressBar]>;
 }
 
 // @public (undocumented)
@@ -3438,6 +3441,18 @@ export class ClrSidepanel implements OnInit {
 }
 
 // @public (undocumented)
+export class ClrSidepanelModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidepanelModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidepanelModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1_46" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidepanelModule, [typeof i1_46.ClrSidepanel], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule], [typeof i1_46.ClrSidepanel, typeof i3_2.ClrIconModule]>;
+}
+
+// @public (undocumented)
 export class ClrSignpost {
     constructor(commonStrings: ClrCommonStringsService);
     // (undocumented)
@@ -3479,10 +3494,10 @@ export class ClrSignpostModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_43" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_31" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_23" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_22" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_23.ClrSignpostTrigger], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_23.ClrSignpostTrigger, typeof i6_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_22.ClrSignpostTrigger], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_22.ClrSignpostTrigger, typeof i6_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -3726,15 +3741,15 @@ export class ClrStepperModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_46" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_47" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_34" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_27" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_26" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_17" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_14" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_8" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof i1_46.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_27.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8_8.ClrAccordionModule], [typeof i1_46.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_27.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka, typeof i8_8.ClrAccordionModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof i1_47.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_26.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8_8.ClrAccordionModule], [typeof i1_47.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_26.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka, typeof i8_8.ClrAccordionModule]>;
 }
 
 // @public (undocumented)
@@ -3934,7 +3949,7 @@ export class ClrTabsModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_40" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_28" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_21" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_8" needs to be exported by the entry point index.d.ts
@@ -3942,7 +3957,7 @@ export class ClrTabsModule {
     // Warning: (ae-forgotten-export) The symbol "i11_3" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_21.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_3.ClrTemplateRefModule, typeof i48.ClrKeyFocusModule], [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_21.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_20.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_3.ClrTemplateRefModule, typeof i48.ClrKeyFocusModule], [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_20.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -4005,14 +4020,14 @@ export class ClrTimelineModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_49" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_50" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_36" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_29" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_28" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_19" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_16" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof i1_49.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_29.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i14.ClrSpinnerModule], [typeof i1_49.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_29.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle, typeof i3_2.ClrIconModule, typeof i14.ClrSpinnerModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof i1_50.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_28.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i15.ClrSpinnerModule], [typeof i1_50.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_28.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle, typeof i3_2.ClrIconModule, typeof i15.ClrSpinnerModule]>;
 }
 
 // @public (undocumented)
@@ -4117,10 +4132,10 @@ export class ClrTooltipModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_44" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_32" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_25" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_24" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_25.ClrTooltipContent], [typeof i6.CommonModule], [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_25.ClrTooltipContent, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_24.ClrTooltipContent], [typeof i6.CommonModule], [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_24.ClrTooltipContent, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -4359,12 +4374,12 @@ export class ClrVerticalNavModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_42" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_29" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_22" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_21" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_12" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_22.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_22.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_21.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_21.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule]>;
 }
 
 // @public (undocumented)
@@ -4521,7 +4536,7 @@ export class ClrWizardModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_45" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_33" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_26" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_25" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_16" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_9" needs to be exported by the entry point index.d.ts
@@ -4532,7 +4547,7 @@ export class ClrWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i11_5" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_11.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_25.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_11.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_25.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
 }
 
 // @public
