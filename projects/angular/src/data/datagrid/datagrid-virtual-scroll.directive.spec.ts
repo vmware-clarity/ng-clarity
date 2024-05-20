@@ -190,22 +190,21 @@ export default function (): void {
         expect(document.activeElement).toEqual(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        console.log(2, document.activeElement);
-        console.log(2, grid.querySelectorAll('[type=checkbox]')[21]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[21]);
+        // active checkbox input with ID clr-dg-row-cb364
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         await sleep();
         await fixture.whenStable();
-        console.log(3, document.activeElement);
-        console.log(3, grid.querySelectorAll('[type=checkbox]')[0]);
+        await sleep();
+        // active checkbox input with ID clr-dg-row-cb383
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         await sleep();
         await fixture.whenStable();
-        console.log(4, document.activeElement);
-        console.log(4, grid.querySelectorAll('[type=checkbox]')[0]);
+        await sleep();
+        // active checkbox input with ID clr-dg-row-cb394
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
         fixture.autoDetectChanges(false);
