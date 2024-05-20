@@ -874,10 +874,16 @@ export default function (): void {
       it('Moves focus on PageDown and PageUp', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // focus at most left header cell
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
+
+        // focus at bottom datagrid radio input
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+
+        // focus at top datagrid radio input
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         expect(document.activeElement).toEqual(cells[3].querySelector('[type=radio]'));
       });

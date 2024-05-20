@@ -198,12 +198,16 @@ export default function (): void {
         await fixture.whenStable();
         await sleep();
         // active checkbox input with ID clr-dg-row-cb383
+        console.log(3, document.activeElement);
+        console.log(3, grid.querySelectorAll('[type=checkbox]')[0]);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         await sleep();
         await fixture.whenStable();
         await sleep();
+        console.log(4, document.activeElement);
+        console.log(4, grid.querySelectorAll('[type=checkbox]')[0]);
         // active checkbox input with ID clr-dg-row-cb394
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
 
