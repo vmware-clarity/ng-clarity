@@ -12,35 +12,35 @@ import { ClrModal } from './modal';
 import { ClrModalConfigurationService } from './modal-configuration.service';
 
 @Component({
-  selector: 'clr-sidebar',
-  templateUrl: 'sidebar.html',
+  selector: 'clr-sidepanel',
+  templateUrl: 'sidepanel.html',
   host: {
-    '[class.sidebar]': 'true',
+    '[class.sidepanel]': 'true',
   },
 })
-export class ClrSidebar implements OnInit {
-  sidebarId = uniqueIdFactory();
+export class ClrSidepanel implements OnInit {
+  sidepanelId = uniqueIdFactory();
 
-  @Input('clrSidebarOpen') _open = false;
-  @Output('clrSidebarOpenChange') _openChanged = new EventEmitter<boolean>(false);
-  @Input('clrSidebarCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
-  @Input('clrSidebarSize') size: string;
-  @Input('clrSidebarSkipAnimation') skipAnimation = 'false';
-  @Input('clrSidebarLabelledById') labelledById = this.sidebarId;
-  @Input('clrSidebarStaticBackdrop') staticBackdrop = false;
-  @Input('clrSidebarPreventClose') preventClose = false;
-  @Output('clrSidebarAlternateClose') _altClose = new EventEmitter<boolean>(false);
+  @Input('clrSidepanelOpen') _open = false;
+  @Output('clrSidepanelOpenChange') _openChanged = new EventEmitter<boolean>(false);
+  @Input('clrSidepanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
+  @Input('clrSidepanelSize') size: string;
+  @Input('clrSidepanelSkipAnimation') skipAnimation = 'false';
+  @Input('clrSidepanelLabelledById') labelledById = this.sidepanelId;
+  @Input('clrSidepanelStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidepanelPreventClose') preventClose = false;
+  @Output('clrSidepanelAlternateClose') _altClose = new EventEmitter<boolean>(false);
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
   constructor(private element: ElementRef, private configuration: ClrModalConfigurationService) {}
 
-  get clrSidebarBackdrop(): boolean {
+  get clrSidepanelBackdrop(): boolean {
     return this.configuration.backdrop;
   }
 
   @Input()
-  set clrSidebarBackdrop(backdrop: boolean) {
+  set clrSidepanelBackdrop(backdrop: boolean) {
     if (backdrop !== undefined) {
       this.configuration.backdrop = backdrop;
     }

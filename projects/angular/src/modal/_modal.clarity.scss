@@ -37,7 +37,7 @@
     }
   }
 
-  .sidebar {
+  .sidepanel {
     .modal {
       left: initial;
       padding: 0;
@@ -116,14 +116,14 @@
     }
 
     .modal-title,
-    .sidebar-title {
+    .sidepanel-title {
       color: modal-variables.$clr-modal-title-color;
       @include mixins.generate-typography-token('SECTION-20-STD');
       margin: 0;
     }
 
     .modal-title:not([cds-text]),
-    .sidebar-title:not([cds-text]) {
+    .sidepanel-title:not([cds-text]) {
       font-family: modal-variables.$clr-modal-title-font-family;
       font-size: modal-variables.$clr-modal-title-font-size;
       font-weight: modal-variables.$clr-modal-title-font-weight;
@@ -163,7 +163,7 @@
     flex: 1;
 
     .modal-title,
-    .sidebar-title {
+    .sidepanel-title {
       h3 {
         margin-top: 0;
       }
@@ -178,7 +178,7 @@
     overflow-x: hidden;
 
     .modal-body,
-    .sidebar-body {
+    .sidepanel-body {
       color: tokens.$cds-alias-typography-color-400;
       @include mixins.generate-typography-token('BODY-14-RG-STD');
     }
@@ -192,7 +192,7 @@
   }
 
   .modal-footer,
-  .sidebar-footer {
+  .sidepanel-footer {
     display: flex;
     justify-content: flex-end;
     padding: modal-variables.$clr-modal-default-space 0 0 0;
@@ -205,7 +205,7 @@
   }
 
   // it gets nested inside a .modal-footer and the top padding gets duplicated
-  .sidebar-footer {
+  .sidepanel-footer {
     padding-top: 0;
   }
 

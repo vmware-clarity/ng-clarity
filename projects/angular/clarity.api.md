@@ -2733,7 +2733,7 @@ export class ClrModalModule {
     // Warning: (ae-forgotten-export) The symbol "i3_18" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidebar], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidebar, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidepanel], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_18.ClrSidepanel, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -3394,7 +3394,7 @@ export enum ClrSide {
 }
 
 // @public (undocumented)
-export class ClrSidebar implements OnInit {
+export class ClrSidepanel implements OnInit {
     constructor(element: ElementRef, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose(open: boolean): void;
@@ -3405,8 +3405,8 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     closeButtonAriaLabel: string | undefined;
     // (undocumented)
-    get clrSidebarBackdrop(): boolean;
-    set clrSidebarBackdrop(backdrop: boolean);
+    get clrSidepanelBackdrop(): boolean;
+    set clrSidepanelBackdrop(backdrop: boolean);
     // (undocumented)
     documentClick(event: Event): void;
     // (undocumented)
@@ -3424,7 +3424,7 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     preventClose: boolean;
     // (undocumented)
-    sidebarId: string;
+    sidepanelId: string;
     // (undocumented)
     size: string;
     // (undocumented)
@@ -3432,9 +3432,9 @@ export class ClrSidebar implements OnInit {
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidebar, "clr-sidebar", never, { "_open": "clrSidebarOpen"; "closeButtonAriaLabel": "clrSidebarCloseButtonAriaLabel"; "size": "clrSidebarSize"; "skipAnimation": "clrSidebarSkipAnimation"; "labelledById": "clrSidebarLabelledById"; "staticBackdrop": "clrSidebarStaticBackdrop"; "preventClose": "clrSidebarPreventClose"; "clrSidebarBackdrop": "clrSidebarBackdrop"; }, { "_openChanged": "clrSidebarOpenChange"; "_altClose": "clrSidebarAlternateClose"; }, never, [".sidebar-title", ".sidebar-body", ".sidebar-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidepanel, "clr-sidepanel", never, { "_open": "clrSidepanelOpen"; "closeButtonAriaLabel": "clrSidepanelCloseButtonAriaLabel"; "size": "clrSidepanelSize"; "skipAnimation": "clrSidepanelSkipAnimation"; "labelledById": "clrSidepanelLabelledById"; "staticBackdrop": "clrSidepanelStaticBackdrop"; "preventClose": "clrSidepanelPreventClose"; "clrSidepanelBackdrop": "clrSidepanelBackdrop"; }, { "_openChanged": "clrSidepanelOpenChange"; "_altClose": "clrSidepanelAlternateClose"; }, never, [".sidepanel-title", ".sidepanel-body", ".sidepanel-footer"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidebar, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidepanel, never>;
 }
 
 // @public (undocumented)
