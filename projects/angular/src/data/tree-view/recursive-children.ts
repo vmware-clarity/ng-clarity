@@ -24,7 +24,7 @@ import { TreeFeaturesService } from './tree-features.service';
     </ng-container>
   `,
   host: {
-    '[attr.role]': '"group"', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
+    '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
 })
 /**
@@ -38,6 +38,7 @@ export class RecursiveChildren<T> {
   @Input('children') children: TreeNodeModel<T>[];
 
   subscription: Subscription;
+  role: string;
 
   constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
     if (expandService) {
@@ -50,6 +51,10 @@ export class RecursiveChildren<T> {
         }
       });
     }
+  }
+
+  ngAfterContentInit() {
+    this.setAriaRoles();
   }
 
   shouldRender() {
@@ -73,5 +78,9 @@ export class RecursiveChildren<T> {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  private setAriaRoles() {
+    this.role = this.parent ? 'group' : null;
   }
 }

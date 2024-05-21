@@ -16,6 +16,7 @@ import { WizardCustomButtonsDemo } from './wizard-custom-buttons.demo';
 import { WizardForceForwardDemo } from './wizard-force-forward.demo';
 import { WizardFormValidation } from './wizard-form-validation.demo';
 import { WizardHeaderActionsDemo } from './wizard-header-actions.demo';
+import { WizardInlineDemo } from './wizard-inline.demo';
 import { WizardJumpToDemo } from './wizard-jump-to.demo';
 import { WizardNotClosableDemo } from './wizard-not-closable.demo';
 import { WizardResetDemo } from './wizard-reset.demo';
@@ -38,6 +39,7 @@ const ROUTES: Routes = [
       { path: 'custom-buttons', component: WizardCustomButtonsDemo },
       { path: 'header-actions', component: WizardHeaderActionsDemo },
       { path: 'alt-cancel', component: WizardAltCancelDemo },
+      { path: 'inline', component: WizardInlineDemo },
       { path: 'jump-to', component: WizardJumpToDemo },
       { path: 'reset', component: WizardResetDemo },
       { path: 'alt-next', component: WizardAltNextDemo },

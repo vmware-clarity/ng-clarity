@@ -304,8 +304,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.datagridTable.nativeElement.focus();
         }
       }),
-      // Reinitialize arrow key navigation on hide/unhide columns
-      combineLatest(this.columnsService.columns).subscribe(() => this.keyNavigation?.resetKeyGrid()),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
         // Remove any projected columns from the projectedDisplayColumns container

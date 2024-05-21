@@ -4,6 +4,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+/*
+ * These styles are not documented and are deprecated in favor in of _file-input.clarity.scss.
+ * The file input component uses .clr-file-input-wrapper instead due to differences from these styles.
+ */
+
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';
 @use 'mixins.forms' as forms-mixins;

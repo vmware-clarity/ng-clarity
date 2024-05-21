@@ -6,8 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   templateUrl: './file.html',
 })
-export class FormsFileDemo {}
+export class FormsFileDemo {
+  readonly form = new FormGroup({
+    file: new FormControl(),
+  });
+}

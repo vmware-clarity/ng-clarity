@@ -188,7 +188,12 @@
     .clr-error,
     .clr-success {
       .clr-subtext {
-        margin-left: 0;
+        margin-left: tokens.$cds-global-space-3;
+
+        &.error,
+        &.success {
+          margin-left: tokens.$cds-global-space-4;
+        }
       }
 
       // Center the validation icon
