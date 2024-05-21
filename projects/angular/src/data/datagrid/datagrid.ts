@@ -280,7 +280,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
            */
           if (row) {
             this.detailService.open(row.item, row.detailButton.nativeElement);
-          } else if (!this.hasVirtualScroller) {
+          } else if (!this.hasVirtualScroller || !row) {
             this.detailService.close();
           }
         }
