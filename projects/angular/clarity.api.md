@@ -102,7 +102,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_2.ClrSidepanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_2.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -3397,7 +3397,7 @@ export enum ClrSide {
 }
 
 // @public (undocumented)
-export class ClrSidepanel implements OnInit {
+export class ClrSidePanel implements OnInit {
     constructor(element: ElementRef, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose(open: boolean): void;
@@ -3408,8 +3408,8 @@ export class ClrSidepanel implements OnInit {
     // (undocumented)
     closeButtonAriaLabel: string | undefined;
     // (undocumented)
-    get clrSidepanelBackdrop(): boolean;
-    set clrSidepanelBackdrop(backdrop: boolean);
+    get clrSidePanelBackdrop(): boolean;
+    set clrSidePanelBackdrop(backdrop: boolean);
     // (undocumented)
     documentClick(event: Event): void;
     // (undocumented)
@@ -3435,21 +3435,21 @@ export class ClrSidepanel implements OnInit {
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidepanel, "clr-sidepanel", never, { "_open": "clrSidepanelOpen"; "closeButtonAriaLabel": "clrSidepanelCloseButtonAriaLabel"; "size": "clrSidepanelSize"; "skipAnimation": "clrSidepanelSkipAnimation"; "labelledById": "clrSidepanelLabelledById"; "staticBackdrop": "clrSidepanelStaticBackdrop"; "preventClose": "clrSidepanelPreventClose"; "clrSidepanelBackdrop": "clrSidepanelBackdrop"; }, { "_openChanged": "clrSidepanelOpenChange"; "_altClose": "clrSidepanelAlternateClose"; }, never, [".sidepanel-title", ".sidepanel-body", ".sidepanel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-sidepanel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "size": "clrSidePanelSize"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; }, { "_openChanged": "clrSidePanelOpenChange"; "_altClose": "clrSidePanelAlternateClose"; }, never, [".sidepanel-title", ".sidepanel-body", ".sidepanel-footer"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidepanel, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }
 
 // @public (undocumented)
-export class ClrSidepanelModule {
+export class ClrSidePanelModule {
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidepanelModule, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
     // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidepanelModule>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
     // Warning: (ae-forgotten-export) The symbol "i1_46" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidepanelModule, [typeof i1_46.ClrSidepanel], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule], [typeof i1_46.ClrSidepanel, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof i1_46.ClrSidePanel], [typeof i6.CommonModule, typeof i38.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule], [typeof i1_46.ClrSidePanel, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)

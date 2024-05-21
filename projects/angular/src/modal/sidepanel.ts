@@ -18,29 +18,29 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.sidepanel]': 'true',
   },
 })
-export class ClrSidepanel implements OnInit {
+export class ClrSidePanel implements OnInit {
   sidepanelId = uniqueIdFactory();
 
-  @Input('clrSidepanelOpen') _open = false;
-  @Output('clrSidepanelOpenChange') _openChanged = new EventEmitter<boolean>(false);
-  @Input('clrSidepanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
-  @Input('clrSidepanelSize') size: string;
-  @Input('clrSidepanelSkipAnimation') skipAnimation = 'false';
-  @Input('clrSidepanelLabelledById') labelledById = this.sidepanelId;
-  @Input('clrSidepanelStaticBackdrop') staticBackdrop = false;
-  @Input('clrSidepanelPreventClose') preventClose = false;
-  @Output('clrSidepanelAlternateClose') _altClose = new EventEmitter<boolean>(false);
+  @Input('clrSidePanelOpen') _open = false;
+  @Output('clrSidePanelOpenChange') _openChanged = new EventEmitter<boolean>(false);
+  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
+  @Input('clrSidePanelSize') size: string;
+  @Input('clrSidePanelSkipAnimation') skipAnimation = 'false';
+  @Input('clrSidePanelLabelledById') labelledById = this.sidepanelId;
+  @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidePanelPreventClose') preventClose = false;
+  @Output('clrSidePanelAlternateClose') _altClose = new EventEmitter<boolean>(false);
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
   constructor(private element: ElementRef, private configuration: ClrModalConfigurationService) {}
 
-  get clrSidepanelBackdrop(): boolean {
+  get clrSidePanelBackdrop(): boolean {
     return this.configuration.backdrop;
   }
 
   @Input()
-  set clrSidepanelBackdrop(backdrop: boolean) {
+  set clrSidePanelBackdrop(backdrop: boolean) {
     if (backdrop !== undefined) {
       this.configuration.backdrop = backdrop;
     }

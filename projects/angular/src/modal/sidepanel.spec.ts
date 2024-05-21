@@ -11,16 +11,16 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { ClrSidepanel } from './sidepanel';
-import { ClrSidepanelModule } from './sidepanel.module';
+import { ClrSidePanel } from './sidepanel';
+import { ClrSidePanelModule } from './sidepanel.module';
 
 @Component({
   template: `
     <clr-sidepanel
-      [(clrSidepanelOpen)]="opened"
-      [clrSidepanelClosable]="closable"
-      [clrSidepanelCloseButtonAriaLabel]="closeButtonAriaLabel"
-      [clrSidepanelSize]="size"
+      [(clrSidePanelOpen)]="opened"
+      [clrSidePanelClosable]="closable"
+      [clrSidePanelCloseButtonAriaLabel]="closeButtonAriaLabel"
+      [clrSidePanelSize]="size"
     >
       <h4 class="sidepanel-title">Title</h4>
       <div class="sidepanel-body">
@@ -33,7 +33,7 @@ import { ClrSidepanelModule } from './sidepanel.module';
   `,
 })
 class TestComponent {
-  @ViewChild(ClrSidepanel) sidepanelInstance: ClrSidepanel;
+  @ViewChild(ClrSidePanel) sidepanelInstance: ClrSidePanel;
 
   opened = true;
   closable = true;
@@ -43,7 +43,7 @@ class TestComponent {
 
 @Component({
   template: `
-    <clr-sidepanel [(clrSidepanelOpen)]="opened">
+    <clr-sidepanel [(clrSidePanelOpen)]="opened">
       <h4 class="sidepanel-title">Title</h4>
       <div class="sidepanel-body">
         <p>Body</p>
@@ -61,11 +61,11 @@ class TestDefaultsComponent {
 describe('Side Panel', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
-  let sidepanel: ClrSidepanel;
+  let sidepanel: ClrSidePanel;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrSidepanelModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -105,7 +105,7 @@ describe('Side Panel', () => {
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   }));
 
-  it('shows and hides the sidepanel based on the clrSidepanelOpen input', fakeAsync(() => {
+  it('shows and hides the sidepanel based on the clrSidePanelOpen input', fakeAsync(() => {
     fixture.componentInstance.opened = false;
     flushAndExpectOpen(fixture, false);
 
@@ -144,7 +144,7 @@ describe('Side Panel', () => {
     }).not.toThrow();
   }));
 
-  it('offers two-way binding on clrSidepanelOpen', fakeAsync(() => {
+  it('offers two-way binding on clrSidePanelOpen', fakeAsync(() => {
     expect(fixture.componentInstance.opened).toBe(true);
     sidepanel.close();
     fixture.detectChanges();
@@ -161,7 +161,7 @@ describe('Side Panel', () => {
     expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
-  it('supports a clrSidepanelSize option', fakeAsync(() => {
+  it('supports a clrSidePanelSize option', fakeAsync(() => {
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 

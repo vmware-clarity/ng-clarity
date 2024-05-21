@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrSidepanel, ClrSidepanelModule, commonStringsDefault } from '@clr/angular';
+import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -15,23 +15,23 @@ export default {
   title: 'Modal/Side Panel',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrSidepanelModule],
+      imports: [...CommonModules, ClrSidePanelModule],
     }),
   ],
-  component: ClrSidepanel,
+  component: ClrSidePanel,
   argTypes: {
     // inputs
-    clrSidepanelCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrSidepanelLabelledById: { defaultValue: '' },
-    clrSidepanelSize: {
+    clrSidePanelCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
+    clrSidePanelLabelledById: { defaultValue: '' },
+    clrSidePanelSize: {
       defaultValue: 'md',
       options: ['sm', 'md', 'lg', 'xl', 'full-screen'],
       control: { type: 'radio' },
     },
-    clrSidepanelSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
+    clrSidePanelSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
-    clrSidepanelOpenChange: { control: { disable: true } },
-    clrSidepanelAltClose: { control: { disable: true } },
+    clrSidePanelOpenChange: { control: { disable: true } },
+    clrSidePanelAltClose: { control: { disable: true } },
     // methods
     fadeDone: { control: { disable: true }, table: { disable: true } },
     open: { control: { disable: true }, table: { disable: true } },
@@ -39,31 +39,31 @@ export default {
   },
   args: {
     // outputs
-    clrSidepanelOpenChange: action('clrSidepanelOpenChange'),
-    clrSidepanelAltClose: action('clrSidepanelAltClose'),
+    clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
+    clrSidePanelAltClose: action('clrSidePanelAltClose'),
     // story helpers
     title: 'Side Panel Title',
     body: 'Hello World!',
   },
 };
 
-const SidepanelTemplate: StoryFn = args => ({
+const SidePanelTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
         <div class="content-area" style="height: 300px">
-          <button type="button" class="btn btn-primary" (click)="clrSidepanelOpen = true">Open Side Panel</button>
+          <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
           <clr-sidepanel
-            [clrSidepanelBackdrop]="clrSidepanelBackdrop"
-            [clrSidepanelStaticBackdrop]="clrSidepanelStaticBackdrop"
-            [clrSidepanelCloseButtonAriaLabel]="clrSidepanelCloseButtonAriaLabel"
-            [clrSidepanelLabelledById]="clrSidepanelLabelledById"
-            [clrSidepanelOpen]="clrSidepanelOpen"
-            [clrSidepanelSize]="clrSidepanelSize"
-            [clrSidepanelSkipAnimation]="clrSidepanelSkipAnimation"
-            (clrSidepanelOpenChange)="clrSidepanelOpen = $event; clrSidepanelOpenChange($event)"
-            [clrSidepanelPreventClose]="clrSidepanelPreventClose"
-            (clrSidepanelAlternateClose)="clrSidepanelAltClose($event)"
+            [clrSidePanelBackdrop]="clrSidePanelBackdrop"
+            [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
+            [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
+            [clrSidePanelLabelledById]="clrSidePanelLabelledById"
+            [clrSidePanelOpen]="clrSidePanelOpen"
+            [clrSidePanelSize]="clrSidePanelSize"
+            [clrSidePanelSkipAnimation]="clrSidePanelSkipAnimation"
+            (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
+            [clrSidePanelPreventClose]="clrSidePanelPreventClose"
+            (clrSidePanelAlternateClose)="clrSidePanelAltClose($event)"
             #sidepanel
           >
             <h3 class="sidepanel-title">{{ title }}</h3>
@@ -71,7 +71,7 @@ const SidepanelTemplate: StoryFn = args => ({
               {{ body }}
             </div>
             <div class="sidepanel-footer">
-              <button type="button" class="btn btn-outline" (click)="clrSidepanelOpen = false">Force Close</button>
+              <button type="button" class="btn btn-outline" (click)="clrSidePanelOpen = false">Force Close</button>
               <button type="button" class="btn btn-primary" (click)="sidepanel.close()">Close</button>
             </div>
           </clr-sidepanel>
@@ -92,79 +92,79 @@ const SidepanelTemplate: StoryFn = args => ({
 });
 
 export const SidePanel: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
 };
 
 export const SidePanelSmall: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'sm',
-    clrSidepanelStaticBackdrop: true,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'sm',
+    clrSidePanelStaticBackdrop: true,
     title: 'Small Side Panel',
     body: 'This is a small side panel.',
   },
 };
 
 export const SidePanelMedium: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'md',
-    clrSidepanelStaticBackdrop: true,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'md',
+    clrSidePanelStaticBackdrop: true,
     title: 'Medium Side Panel',
     body: 'This is a medium side panel.',
   },
 };
 
 export const SidePanelLarge: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'lg',
-    clrSidepanelStaticBackdrop: true,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'lg',
+    clrSidePanelStaticBackdrop: true,
     title: 'Large Side Panel',
     body: 'This is a large side panel.',
   },
 };
 
 export const SidePanelExtraLarge: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'xl',
-    clrSidepanelStaticBackdrop: true,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'xl',
+    clrSidePanelStaticBackdrop: true,
     title: 'Extra-Large Side Panel',
     body: 'This is a extra-large side panel.',
   },
 };
 
 export const SidePanelWithoutBackdrop: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'md',
-    clrSidepanelBackdrop: false,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'md',
+    clrSidePanelBackdrop: false,
     title: 'Side Panel without backdrop',
     body: 'This is a medium side panel without backdrop.',
   },
 };
 
 export const SidePanelAlternateClose: StoryObj = {
-  render: SidepanelTemplate,
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'md',
-    clrSidepanelPreventClose: true,
-    clrSidepanelAltClose: function () {
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'md',
+    clrSidePanelPreventClose: true,
+    clrSidePanelAltClose: function () {
       if (confirm('Do you really want to close the side panel?')) {
-        this.clrSidepanelOpen = false;
+        this.clrSidePanelOpen = false;
       }
     },
     title: 'Side Panel with alternate close',
@@ -172,13 +172,13 @@ export const SidePanelAlternateClose: StoryObj = {
   },
 };
 
-export const SidepanelFullScreen: StoryObj = {
-  render: SidepanelTemplate,
+export const SidePanelFullScreen: StoryObj = {
+  render: SidePanelTemplate,
   play: removeFocusOutline,
   args: {
-    clrSidepanelOpen: true,
-    clrSidepanelSize: 'full-screen',
-    clrSidepanelStaticBackdrop: true,
+    clrSidePanelOpen: true,
+    clrSidePanelSize: 'full-screen',
+    clrSidePanelStaticBackdrop: true,
     title: 'Full-Screen Side Panel',
     body: 'This is a full-screen side panel.',
     showLongPageContent: false,
