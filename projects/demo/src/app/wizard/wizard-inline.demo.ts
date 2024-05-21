@@ -5,14 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { ClrWizard } from '@clr/angular';
 
 @Component({
-  templateUrl: './file.html',
+  selector: 'clr-wizard-inline',
+  templateUrl: './wizard-inline.demo.html',
 })
-export class FormsFileDemo {
-  readonly form = new FormGroup({
-    file: new FormControl(),
-  });
+export class WizardInlineDemo {
+  @ViewChild('wizard') wizard: ClrWizard;
+
+  open = true;
 }
