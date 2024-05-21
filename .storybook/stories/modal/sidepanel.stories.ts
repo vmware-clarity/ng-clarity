@@ -21,14 +21,10 @@ export default {
   component: ClrSidePanel,
   argTypes: {
     // inputs
-    clrSidePanelCloseButtonAriaLabel: { type: 'string', defaultValue: commonStringsDefault.close },
-    clrSidePanelLabelledById: { defaultValue: '' },
     clrSidePanelSize: {
-      defaultValue: 'md',
       options: ['sm', 'md', 'lg', 'xl', 'full-screen'],
-      control: { type: 'radio' },
+      control: 'radio',
     },
-    clrSidePanelSkipAnimation: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrSidePanelOpenChange: { control: { disable: true } },
     clrSidePanelAltClose: { control: { disable: true } },
@@ -38,6 +34,11 @@ export default {
     close: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrSidePanelCloseButtonAriaLabel: commonStringsDefault.close,
+    clrSidePanelLabelledById: '',
+    clrSidePanelSize: 'md',
+    clrSidePanelSkipAnimation: false,
     // outputs
     clrSidePanelOpenChange: action('clrSidePanelOpenChange'),
     clrSidePanelAltClose: action('clrSidePanelAltClose'),
