@@ -226,6 +226,8 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
+        console.log(3, document.activeElement);
+        console.log(3, grid.querySelectorAll('[type=checkbox]')[22]);
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
@@ -233,7 +235,10 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[18]);
+        console.log(3, document.activeElement);
+        console.log(3, grid.querySelectorAll('[type=checkbox]')[19]);
+        console.log(3, grid.querySelectorAll('[type=checkbox]'));
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();
         flushMicrotasks();
