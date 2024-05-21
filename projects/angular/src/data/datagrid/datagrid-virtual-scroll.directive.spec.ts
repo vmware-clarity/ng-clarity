@@ -6,9 +6,16 @@
  */
 
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  TestBed,
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
 import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
@@ -131,6 +138,22 @@ export default function (): void {
       return new Promise(resolve => setTimeout(resolve, millisecondsToWait));
     }
 
+    function finishInit(fixture: ComponentFixture<any>) {
+      // On the first cycle we render and measure the viewport.
+      fixture.detectChanges();
+      flush();
+
+      // On the second cycle we render the items.
+      fixture.detectChanges();
+      flush();
+
+      // Flush the initial fake scroll event.
+      animationFrameScheduler.flush();
+      flush();
+      fixture.detectChanges();
+      discardPeriodicTasks();
+    }
+
     describe('Typescript API', function () {
       let fixture: ComponentFixture<any>;
       let compiled: any;
@@ -150,9 +173,9 @@ export default function (): void {
         instance = fixture.componentInstance;
       });
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+      // afterEach(() => {
+      //   fixture.destroy();
+      // });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
         fixture.detectChanges();
@@ -174,19 +197,24 @@ export default function (): void {
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(4000);
         instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
         expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
+
+        fixture.destroy();
       });
 
-      it('Moves focus on PageDown and PageUp', async () => {
+      it('Moves focus on PageDown and PageUp', fakeAsync(() => {
+        finishInit(fixture);
         fixture.autoDetectChanges();
-
-        await fixture.whenStable();
-        await fixture.whenRenderingDone();
+        fixture.whenStable();
+        fixture.whenRenderingDone();
 
         const grid = compiled.querySelector('[role=grid]');
 
         // need to start with this cell exactly, because it has tabindex=0
         const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
         headerCheckboxCell.focus();
+        sleep(10);
+        fixture.detectChanges();
+
         expect(document.activeElement).toEqual(headerCheckboxCell);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
@@ -194,25 +222,26 @@ export default function (): void {
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[22]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        await sleep();
-        await fixture.whenStable();
-        await sleep();
-        // active checkbox input with ID clr-dg-row-cb383
-        console.log(3, document.activeElement);
-        console.log(3, grid.querySelectorAll('[type=checkbox]')[0]);
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
+        sleep();
+        fixture.whenStable();
+        fixture.whenRenderingDone();
+        // active checkbox input with ID clr-dg-row-cb382
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[40]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        await sleep();
-        await fixture.whenStable();
-        await sleep();
-        console.log(4, document.activeElement);
-        console.log(4, grid.querySelectorAll('[type=checkbox]')[0]);
-        // active checkbox input with ID clr-dg-row-cb394
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[0]);
+        sleep();
+        fixture.whenStable();
+        fixture.whenRenderingDone();
+        // active checkbox input with ID clr-dg-row-cb360
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[18]);
+
+        flush();
+        flushMicrotasks();
+        discardPeriodicTasks();
 
         fixture.autoDetectChanges(false);
-      });
+        fixture.destroy();
+      }));
 
       // it('allows to manually resize the datagrid', function () {
       //   const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
