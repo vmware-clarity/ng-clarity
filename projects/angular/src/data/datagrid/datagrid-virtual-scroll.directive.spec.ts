@@ -225,8 +225,8 @@ export default function (): void {
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb382
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[40]);
+        // active checkbox input with ID clr-dg-row-cb383
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[41]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         sleep();
