@@ -173,9 +173,9 @@ export default function (): void {
         instance = fixture.componentInstance;
       });
 
-      // afterEach(() => {
-      //   fixture.destroy();
-      // });
+      afterEach(() => {
+        fixture.destroy();
+      });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
         fixture.detectChanges();
@@ -233,9 +233,6 @@ export default function (): void {
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
-        console.log(3, document.activeElement);
-        console.log(3, grid.querySelectorAll('[type=checkbox]')[19]);
-        console.log(3, grid.querySelectorAll('[type=checkbox]'));
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
 
         flush();

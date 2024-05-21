@@ -140,7 +140,7 @@ const DatagridTemplate: StoryFn = args => ({
             </span>
           </clr-dg-cell>
           <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail [clrIfExpanded]="element.expanded" (clrIfExpandedChange)="setExpanded($event, element)">
+            <clr-dg-row-detail [clrIfExpanded]="!!element.expanded" (clrIfExpandedChange)="setExpanded($event, element)">
               {{ element | json }} {{ element.expanded }}
             </clr-dg-row-detail>
           </ng-container>
@@ -154,7 +154,6 @@ const DatagridTemplate: StoryFn = args => ({
 });
 
 function setExpanded($event, element) {
-  console.log($event, element);
   element.expanded = $event;
 }
 
