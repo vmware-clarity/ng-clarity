@@ -49,7 +49,7 @@
 | --clr-forms-datalist-caret-icon-size                         | Size of datalist caret                                |
 | --clr-forms-input-group-icon-action-size                     | Size of action icon                                   |
 
-## Class names
+## CSS Classes
 
 | Class name        | Description                          |
 | ----------------- | ------------------------------------ |
