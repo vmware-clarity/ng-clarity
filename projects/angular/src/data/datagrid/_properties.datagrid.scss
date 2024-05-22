@@ -73,6 +73,7 @@
     --clr-datagrid-popovers-box-shadow: #{tokens.$cds-alias-object-shadow-100};
     --clr-datagrid-column-separator-height: calc(100% - #{tokens.$cds-global-space-5});
     --clr-datagrid-column-separator-width: #{tokens.$cds-global-space-1};
+    --clr-datagrid-column-resize-handler-color: #{tokens.$cds-alias-object-interaction-border-color};
     --clr-datagrid-filter-toggle-size: #{tokens.$cds-global-space-7};
 
     --clr-datagrid-footer-pagination-gap: #{tokens.$cds-global-space-6};
