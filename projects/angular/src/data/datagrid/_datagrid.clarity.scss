@@ -531,7 +531,7 @@
           height: datagrid-variables.$clr-datagrid-column-separator-height;
           width: datagrid-variables.$clr-datagrid-column-separator-width;
           right: 0;
-          background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
+          background-color: tables-variables.$clr-table-border-color;
         }
 
         .datagrid-column-handle {
@@ -692,11 +692,11 @@
         display: none;
       }
     }
-    .datagrid-row-sticky {
+    .datagrid-row-scrollable {
       .datagrid-column {
         .datagrid-column-separator {
           &::after {
-            background-color: tables-variables.$clr-table-border-color;
+            background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
           }
         }
       }
