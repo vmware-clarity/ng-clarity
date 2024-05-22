@@ -5337,7 +5337,7 @@ export class ÇustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck
     // (undocumented)
     renderedRangeChange: EventEmitter<ListRange>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇustomClrVirtualRowsDirective<any>, "[customClrVirtualRows][customClrVirtualRowsOf]", never, { "cdkVirtualForOf": "customClrVirtualRowsOf"; "cdkVirtualForTrackBy": "customClrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "customClrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "customClrVirtualRowsTemplateCacheSize"; "itemSize": "customClrVirtualRowsItemSize"; "minBufferPx": "customClrVirtualRowsMinBufferPx"; "maxBufferPx": "customClrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇustomClrVirtualRowsDirective<any>, "[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇustomClrVirtualRowsDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null]>;
 }

@@ -58,7 +58,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 };
 
 @Directive({
-  selector: '[customClrVirtualRows][customClrVirtualRowsOf]',
+  selector: '[ClrVirtualScroll]',
   providers: [Items],
 })
 export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
@@ -116,7 +116,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     );
   }
 
-  @Input('customClrVirtualRowsOf')
+  @Input('clrVirtualRowsOf')
   get cdkVirtualForOf() {
     return this.cdkVirtualForInputs.cdkVirtualForOf;
   }
@@ -126,7 +126,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateCdkVirtualForInputs();
   }
 
-  @Input('customClrVirtualRowsTrackBy')
+  @Input('clrVirtualRowsTrackBy')
   get cdkVirtualForTrackBy() {
     return this.cdkVirtualForInputs.cdkVirtualForTrackBy;
   }
@@ -135,7 +135,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateCdkVirtualForInputs();
   }
 
-  @Input('customClrVirtualRowsTemplate')
+  @Input('clrVirtualRowsTemplate')
   get cdkVirtualForTemplate() {
     return this?.cdkVirtualForInputs?.cdkVirtualForTemplate;
   }
@@ -144,7 +144,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateCdkVirtualForInputs();
   }
 
-  @Input('customClrVirtualRowsTemplateCacheSize')
+  @Input('clrVirtualRowsTemplateCacheSize')
   get cdkVirtualForTemplateCacheSize() {
     return this.cdkVirtualForInputs.cdkVirtualForTemplateCacheSize;
   }
@@ -153,7 +153,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateCdkVirtualForInputs();
   }
 
-  @Input('customClrVirtualRowsItemSize')
+  @Input('clrVirtualRowsItemSize')
   get itemSize() {
     return this._cdkFixedSizeVirtualScrollInputs.itemSize;
   }
@@ -162,7 +162,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateFixedSizeVirtualScrollInputs();
   }
 
-  @Input('customClrVirtualRowsMinBufferPx')
+  @Input('clrVirtualRowsMinBufferPx')
   get minBufferPx() {
     return this._cdkFixedSizeVirtualScrollInputs.minBufferPx;
   }
@@ -171,7 +171,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
     this.updateFixedSizeVirtualScrollInputs();
   }
 
-  @Input('customClrVirtualRowsMaxBufferPx')
+  @Input('clrVirtualRowsMaxBufferPx')
   get maxBufferPx() {
     return this._cdkFixedSizeVirtualScrollInputs.maxBufferPx;
   }

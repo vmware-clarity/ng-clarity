@@ -18,7 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
-import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.direcive';
+import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export interface Column {
@@ -52,12 +52,12 @@ export interface Cells {
         *ngIf="data.rows"
         customClrVirtualRows
         let-row
-        [customClrVirtualRowsOf]="data.rows"
-        [customClrVirtualRowsItemSize]="24"
-        [customClrVirtualRowsMinBufferPx]="200"
-        [customClrVirtualRowsMaxBufferPx]="400"
-        [customClrVirtualRowsTemplateCacheSize]="4000"
-        [customClrVirtualRowsTrackBy]="rowByIndex"
+        [clrVirtualRowsOf]="data.rows"
+        [clrVirtualRowsItemSize]="24"
+        [clrVirtualRowsMinBufferPx]="200"
+        [clrVirtualRowsMaxBufferPx]="400"
+        [clrVirtualRowsTemplateCacheSize]="4000"
+        [clrVirtualRowsTrackBy]="rowByIndex"
       >
         <clr-dg-row [clrDgItem]="row">
           <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{ row.cells[col.name] }}</clr-dg-cell>

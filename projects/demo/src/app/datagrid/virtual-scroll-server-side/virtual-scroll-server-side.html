@@ -42,13 +42,13 @@
 
   <ng-template
     *ngIf="data.users"
-    customClrVirtualRows
+    ClrVirtualScroll
     let-user
-    [customClrVirtualRowsOf]="data.users"
-    [customClrVirtualRowsItemSize]="24"
-    [customClrVirtualRowsMinBufferPx]="200"
-    [customClrVirtualRowsMaxBufferPx]="400"
-    [customClrVirtualRowsTemplateCacheSize]="400"
+    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">

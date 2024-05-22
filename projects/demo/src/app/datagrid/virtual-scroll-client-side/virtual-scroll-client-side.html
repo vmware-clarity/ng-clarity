@@ -47,13 +47,13 @@
 
   <ng-template
     *ngIf="data.rows"
-    customClrVirtualRows
+    ClrVirtualScroll
     let-row
-    [customClrVirtualRowsOf]="data.rows"
-    [customClrVirtualRowsItemSize]="24"
-    [customClrVirtualRowsMinBufferPx]="200"
-    [customClrVirtualRowsMaxBufferPx]="400"
-    [customClrVirtualRowsTrackBy]="rowByIndex"
+    [clrVirtualRowsOf]="data.rows"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="row">
@@ -79,12 +79,12 @@
 
   <ng-template
     *ngIf="data.users"
-    customClrVirtualRows
+    ClrVirtualScroll
     let-user
-    [customClrVirtualRowsOf]="data.users"
-    [customClrVirtualRowsItemSize]="24"
-    [customClrVirtualRowsMinBufferPx]="200"
-    [customClrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">

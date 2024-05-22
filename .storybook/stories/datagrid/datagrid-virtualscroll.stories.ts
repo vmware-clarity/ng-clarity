@@ -113,11 +113,11 @@ const DatagridTemplate: StoryFn = args => ({
 
       <ng-template
         *ngIf="data.elements"
-        customClrVirtualRows
+        ClrVirtualScroll
         let-element
         let-index="index"
-        [customClrVirtualRowsOf]="data.elements"
-        [customClrVirtualRowsTemplateCacheSize]="400"
+        [clrVirtualRowsOf]="data.elements"
+        [clrVirtualRowsTemplateCacheSize]="400"
         (renderedRangeChange)="clrRenderRangeChange($event)"
       >
         <clr-dg-row [clrDgItem]="element" [clrDgSelected]="selectedRows.includes(index)">
