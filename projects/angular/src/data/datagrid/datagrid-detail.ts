@@ -27,7 +27,7 @@ import { DetailService } from './providers/detail.service';
       role="dialog"
       [id]="detailService.id"
       aria-modal="true"
-      [attr.aria-describedby]="header ? header.titleId : ''"
+      [attr.aria-labelledby]="header ? header.titleId : ''"
     >
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneStart }}</div>
       <ng-content></ng-content>
