@@ -76,7 +76,7 @@ export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck,
   private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
     mutations.forEach((mutation: MutationRecord) => {
       // it is possible this to be called twice because the old class is removed and the new added
-      if ((mutation.target as HTMLElement).classList.contains('datagrid-compact')) {
+      if ((mutation.target as HTMLElement).classList.contains('datagrid-compact') && this.itemSize > 24) {
         this.itemSize = 24;
       }
     });
