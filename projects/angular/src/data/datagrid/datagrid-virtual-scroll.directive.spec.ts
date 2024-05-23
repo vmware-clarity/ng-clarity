@@ -18,7 +18,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
-import { CustomClrVirtualRowsDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export interface Column {
@@ -50,7 +49,7 @@ export interface Cells {
 
       <ng-template
         *ngIf="data.rows"
-        customClrVirtualRows
+        ClrVirtualScroll
         let-row
         [clrVirtualRowsOf]="data.rows"
         [clrVirtualRowsItemSize]="24"
