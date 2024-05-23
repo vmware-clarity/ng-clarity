@@ -12,7 +12,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { behaviorElements } from '../../helpers/elements.data';
 
 export default {
-  title: 'Datagrid/Virtual Scroll',
+  title: 'Datagrid/Virtual Scroll Details',
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({
@@ -57,7 +57,6 @@ export default {
     behaviorElements,
     singleSelectable: false,
     multiSelectable: false,
-    expandable: false,
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
@@ -67,7 +66,7 @@ export default {
   },
 };
 
-const DatagridTemplate: StoryFn = args => ({
+const DatagridDetailsTemplate: StoryFn = args => ({
   template: `
     <style>
       .electronegativity-container {
@@ -137,16 +136,17 @@ const DatagridTemplate: StoryFn = args => ({
               &nbsp;
             </span>
           </clr-dg-cell>
-          <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail [clrIfExpanded]="!!element.expanded" (clrIfExpandedChange)="setExpanded($event, element)">
-              {{ element | json }} {{ element.expanded }}
-            </clr-dg-row-detail>
-          </ng-container>
         </clr-dg-row>
       </ng-template>
-
+      <clr-dg-detail [ngClass]="{ highlight }" *clrIfDetail="let detail">
+        <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+        <clr-dg-detail-body [ngSwitch]="detailContentType">
+          <pre>{{ detail | json }}</pre>
+        </clr-dg-detail-body>
+      </clr-dg-detail>
       <clr-dg-footer>{{ data.elements?.length }}</clr-dg-footer>
     </clr-datagrid>
+    {{ details }}
   `,
   props: { ...args },
 });
@@ -156,81 +156,23 @@ function setExpanded($event, element) {
 }
 
 export const Datagrid: StoryObj = {
-  render: DatagridTemplate,
-};
-
-export const SingleSelect: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    singleSelectable: true,
-  },
-};
-export const MultiSelect: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    multiSelectable: true,
-  },
-};
-export const MultiSelectWithSelection: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    multiSelectable: true,
-    selectedRows: [1],
-  },
-};
-
-export const ManageColumns: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    hidableColumns: true,
-  },
-};
-
-export const Compact: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    compact: true,
-  },
-};
-export const CompactSingleSelect: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    compact: true,
-    singleSelectable: true,
-  },
-};
-export const CompactMultiSelect: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    compact: true,
-    multiSelectable: true,
-  },
-};
-export const CompactMultiSelectWithSelection: StoryObj = {
-  render: DatagridTemplate,
-  args: {
-    compact: true,
-    multiSelectable: true,
-    selectedRows: [1],
-  },
+  render: DatagridDetailsTemplate,
 };
 
 export const Full: StoryObj = {
-  render: DatagridTemplate,
+  render: DatagridDetailsTemplate,
   args: {
     actionOverflow: true,
-    expandable: true,
     hidableColumns: true,
-    multiSelectable: true,
+    singleSelectable: true,
   },
 };
 
 export const FullCompact: StoryObj = {
-  render: DatagridTemplate,
+  render: DatagridDetailsTemplate,
   args: {
     actionOverflow: true,
     compact: true,
-    expandable: true,
     hidableColumns: true,
     multiSelectable: true,
   },
