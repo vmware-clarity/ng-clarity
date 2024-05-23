@@ -61,7 +61,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
   selector: '[ClrVirtualScroll]',
   providers: [Items],
 })
-export class CustomClrVirtualRowsDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
+export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
 
   private _cdkFixedSizeVirtualScrollInputs = { ...defaultCdkFixedSizeVirtualScrollInputs };
