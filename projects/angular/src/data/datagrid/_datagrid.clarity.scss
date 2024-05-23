@@ -700,6 +700,15 @@
         display: none;
       }
     }
+    .datagrid-row-scrollable {
+      .datagrid-column {
+        .datagrid-column-separator {
+          &::after {
+            background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
+          }
+        }
+      }
+    }
   }
 
   .datagrid-row-replaced {

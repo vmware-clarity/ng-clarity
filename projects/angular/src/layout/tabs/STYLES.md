@@ -13,7 +13,7 @@
 | --clr-vertical-nav-header-font-weight     | Vertical nav header font weight             |
 | --clr-nav-selected-hover-background-color | Tabs nav selected background color on hover |
 
-## Class names
+## CSS Classes
 
 | Class name    | Description                                   |
 | ------------- | --------------------------------------------- |
