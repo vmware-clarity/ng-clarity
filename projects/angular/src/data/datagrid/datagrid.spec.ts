@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -789,13 +790,12 @@ export default function (): void {
         expect(actionOverflowCell.length).toEqual(0);
       });
 
-      it('should have aria-label with value `Select one of actionable rows`', function () {
+      it('should have screen reader only text with value `Select one of actionable rows`', function () {
         context = this.create(ClrDatagrid, ActionableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
-          context.clarityElement
-            .querySelector('.datagrid-header .datagrid-column.datagrid-row-actions')
-            .getAttribute('aria-label')
+          context.clarityElement.querySelector('.datagrid-header .datagrid-column.datagrid-row-actions .clr-sr-only')
+            .textContent
         ).toBe('Select one of actionable rows');
       });
     });
@@ -841,9 +841,9 @@ export default function (): void {
         const context = this.create(ClrDatagrid, ExpandableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
-          context.clarityElement
-            .querySelector('.datagrid-header .datagrid-column.datagrid-expandable-caret')
-            .getAttribute('aria-label')
+          context.clarityElement.querySelector(
+            '.datagrid-header .datagrid-column.datagrid-expandable-caret .clr-sr-only'
+          ).textContent
         ).toBe('Expand one of the rows');
       });
     });

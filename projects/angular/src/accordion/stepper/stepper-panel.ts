@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -98,7 +99,11 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     this.subscriptions.push(
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
-        .subscribe(() => this.headerButton.nativeElement.focus())
+        .subscribe(() => {
+          //Adding timeout so that the status of the previous step is read by Voice Over on Safari,
+          //before focusing on the next stepper panel header
+          setTimeout(() => this.headerButton.nativeElement.focus(), 1500);
+        })
     );
   }
 
