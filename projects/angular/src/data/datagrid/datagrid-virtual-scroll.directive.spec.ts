@@ -18,6 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
 import { ClarityModule } from '../../clr-angular.module';
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export interface Column {
@@ -73,7 +74,7 @@ export interface Cells {
   `,
 })
 class FullTest implements OnInit {
-  @ViewChild(CustomClrVirtualRowsDirective) virtualScroll: CustomClrVirtualRowsDirective<any>;
+  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
   rows: Observable<Row[]>;
   cols: Column[] = [];
   selectedRows: Row[] = [];
@@ -165,7 +166,7 @@ export default function (): void {
       beforeEach(async function () {
         await TestBed.configureTestingModule({
           imports: [ClarityModule, NoopAnimationsModule],
-          declarations: [FullTest, CustomClrVirtualRowsDirective],
+          declarations: [FullTest, ClrDatagridVirtualScrollDirective],
           schemas: [CUSTOM_ELEMENTS_SCHEMA],
           providers: DATAGRID_SPEC_PROVIDERS,
         }).compileComponents();
