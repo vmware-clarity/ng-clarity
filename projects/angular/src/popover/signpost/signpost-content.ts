@@ -44,7 +44,7 @@ const POSITIONS: string[] = [
   'left-top',
 ];
 
-export const AvailablePopoverPositions = [
+const AvailablePopoverPositions = [
   ClrCDKPopoverPositions.bottom,
   ClrCDKPopoverPositions['bottom-left'],
   ClrCDKPopoverPositions['bottom-middle'],
@@ -112,8 +112,8 @@ export class ClrSignpostContent implements OnDestroy, OnChanges {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
     }
     // Defaults
-    // this.position = 'right-middle';
-    // this.closeOnOutsideClick = true;
+    this.position = 'right-middle';
+    this.popoverService.outsideClickClose = true;
     this.signpostIdService.setId(this.signpostContentId);
 
     this.document = document;

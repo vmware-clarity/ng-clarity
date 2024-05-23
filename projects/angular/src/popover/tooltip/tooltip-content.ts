@@ -57,6 +57,7 @@ export class ClrTooltipContent implements OnInit {
     this.popoverService.contentRef = elementRef;
     this.popoverService.availablePositions = AvailablePopoverPositions;
     this.popoverService.popoverPositions = ClrCDKPopoverPositions;
+    this.popoverService.defaultPosition = defaultPosition;
     this.popoverService.panelClass = 'clr-tooltip-container';
     if (!parentHost) {
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');

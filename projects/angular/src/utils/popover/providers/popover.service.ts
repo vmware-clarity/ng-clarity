@@ -4,6 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementRef, Injectable, TemplateRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -26,7 +27,7 @@ export class ClrPopoverService {
   defaultPosition: string;
   panelClass: string;
   popoverPositions: ClrCDKPopoverPositions;
-  availablePositions: any;
+  availablePositions: Array<ConnectedPosition>;
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -99,9 +100,9 @@ export class ClrPopoverService {
 
   setOpenedButtonFocus(): void {
     if (this.openButtonRef) {
-      this.openButtonRef.nativeElement.focus();
+      this.openButtonRef?.nativeElement?.focus();
     } else {
-      this.anchorElementRef.nativeElement.focus();
+      this.anchorElementRef?.nativeElement?.focus();
     }
   }
 }
