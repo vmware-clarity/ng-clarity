@@ -27,7 +27,7 @@ import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { RowActionService } from './providers/row-action-service';
 
 let clrDgActionId = 0;
@@ -89,14 +89,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     public commonStrings: ClrCommonStringsService,
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,
-    private smartToggleService: ClrPopoverToggleService
+    private popoverService: ClrPopoverService
   ) {
     this.rowActionService.register();
     this.subscriptions.push(
-      this.smartToggleService.openChange.subscribe(openState => {
+      this.popoverService.openChange.subscribe(openState => {
         this.open = openState;
       }),
-      this.smartToggleService.popoverVisible.subscribe(visible => {
+      this.popoverService.popoverVisible.subscribe(visible => {
         if (visible) {
           this.initializeFocus();
         }
@@ -113,7 +113,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     const openState = !!open;
     if (!!openState !== this.open) {
       // prevents chocolate mess
-      this.smartToggleService.open = openState;
+      this.popoverService.open = openState;
       this.openChange.emit(openState);
       this._open = openState;
     }
@@ -125,7 +125,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   closeOverflowContent(event: Event): void {
-    this.smartToggleService.toggleWithEvent(event);
+    this.popoverService.toggleWithEvent(event);
   }
 
   private initializeFocus(): void {

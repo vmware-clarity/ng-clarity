@@ -5,16 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDropdown, ClrDropdownModule, ClrModalModule } from '@clr/angular';
+import { ClrDropdown, ClrDropdownModule, ClrModalModule, ClrPopoverModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from 'helpers/common';
 
 export default {
   title: 'Dropdown/Dropdown With Modal',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDropdownModule, ClrModalModule],
+      imports: [...CommonModules, ClrDropdownModule, ClrModalModule, ClrPopoverModule],
     }),
   ],
   component: ClrDropdown,

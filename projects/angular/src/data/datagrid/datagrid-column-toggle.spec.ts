@@ -8,7 +8,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { TestContext } from './helpers.spec';
 import { ColumnsService } from './providers/columns.service';
@@ -44,7 +44,7 @@ export default function (): void {
       context = this.create(
         ClrDatagridColumnToggle,
         ColumnToggleTest,
-        [MOCK_COLUMN_SERVICE_PROVIDER, ClrPopoverToggleService],
+        [MOCK_COLUMN_SERVICE_PROVIDER, ClrPopoverService],
         [ClrDatagridColumnToggle]
       );
       columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;

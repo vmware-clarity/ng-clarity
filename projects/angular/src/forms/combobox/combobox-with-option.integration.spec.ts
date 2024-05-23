@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrCombobox } from './combobox';
 
 @Component({
@@ -25,17 +25,17 @@ class TestOptionSelection {}
 export default function (): void {
   describe('Rendering Selected Option', function () {
     let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
-    let toggleService: ClrPopoverToggleService;
+    let popoverService: ClrPopoverService;
 
     beforeEach(function () {
       context = this.create(ClrCombobox, TestOptionSelection, [], []);
-      toggleService = context.getClarityProvider(ClrPopoverToggleService);
-      toggleService.open = true;
+      popoverService = context.getClarityProvider(ClrPopoverService);
+      popoverService.open = true;
       context.detectChanges();
     });
 
     afterEach(function () {
-      toggleService.open = false;
+      popoverService.open = false;
       context.detectChanges();
     });
 
@@ -57,7 +57,7 @@ export default function (): void {
       context.detectChanges();
       tick();
       expect(selection.value).toMatch(/Option 1/);
-      toggleService.open = true;
+      popoverService.open = true;
       (options[1] as HTMLElement).click();
       context.detectChanges();
       tick();

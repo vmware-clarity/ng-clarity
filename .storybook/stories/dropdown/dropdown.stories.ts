@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
+import { ClrDropdown, ClrDropdownModule, ClrPopoverModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-
-import { CommonModules } from '../../helpers/common';
+import { CommonModules } from 'helpers/common';
 
 const DROPDOWN_BUTTON_TYPE: string[] = ['btn-primary', 'btn-outline-primary', 'btn-link'];
 
@@ -16,7 +15,7 @@ export default {
   title: 'Dropdown/Dropdown',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDropdownModule],
+      imports: [...CommonModules, ClrDropdownModule, ClrPopoverModule],
     }),
   ],
   component: ClrDropdown,

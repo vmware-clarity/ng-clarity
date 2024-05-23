@@ -8,19 +8,12 @@
 import { Directive, ElementRef } from '@angular/core';
 
 import { POPOVER_HOST_ANCHOR } from '../../popover/common/popover-host-anchor.token';
-import { ClrPopoverEventsService } from './providers/popover-events.service';
-import { ClrPopoverPositionService } from './providers/popover-position.service';
-import { ClrPopoverToggleService } from './providers/popover-toggle.service';
+import { ClrPopoverService } from './providers/popover.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
 
 @Directive({
   standalone: true,
-  providers: [
-    ClrPopoverToggleService,
-    ClrPopoverEventsService,
-    ClrPopoverPositionService,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
-  ],
+  providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
   hostDirectives: [ClrStopEscapePropagationDirective],
 })
 export class ClrPopoverHostDirective {}

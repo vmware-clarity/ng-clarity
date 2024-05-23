@@ -18,10 +18,10 @@ import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
-export function ToggleServiceFactory() {
+export function stateServiceFactory() {
   return new BehaviorSubject<boolean>(false);
 }
-export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: ToggleServiceFactory };
+export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: stateServiceFactory };
 
 @Component({
   selector: 'clr-password-container',
@@ -91,7 +91,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     public focusService: FocusService,
-    @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
+    @Inject(TOGGLE_SERVICE) private stateService: BehaviorSubject<boolean>,
     public commonStrings: ClrCommonStringsService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
@@ -117,7 +117,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
 
   toggle() {
     this.show = !this.show;
-    this.toggleService.next(this.show);
+    this.stateService.next(this.show);
   }
 
   showPasswordText(label: string) {

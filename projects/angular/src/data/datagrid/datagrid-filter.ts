@@ -26,7 +26,7 @@ import { ClrAlignment } from '../../utils/popover/enums/alignment.enum';
 import { ClrAxis } from '../../utils/popover/enums/axis.enum';
 import { ClrSide } from '../../utils/popover/enums/side.enum';
 import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-position.interface';
-import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
@@ -105,13 +105,13 @@ export class ClrDatagridFilter<T = any>
   constructor(
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
-    private smartToggleService: ClrPopoverToggleService,
+    private popoverService: ClrPopoverService,
     @Inject(PLATFORM_ID) private platformId: any,
     private elementRef: ElementRef<HTMLElement>
   ) {
     super(_filters);
     this.subs.push(
-      smartToggleService.openChange.subscribe(change => {
+      popoverService.openChange.subscribe(change => {
         this.open = change;
         this.ariaExpanded = change;
       })
@@ -125,7 +125,7 @@ export class ClrDatagridFilter<T = any>
   set open(open: boolean) {
     open = !!open;
     if (this.open !== open) {
-      this.smartToggleService.open = open;
+      this.popoverService.open = open;
       this.openChange.emit(open);
       if (!open && isPlatformBrowser(this.platformId)) {
         this.anchor.nativeElement.focus();

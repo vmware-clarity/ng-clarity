@@ -9,9 +9,7 @@ import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../../utils/popover/providers/popover.service';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridNumericFilterInterface } from '../../interfaces/numeric-filter.interface';
@@ -22,7 +20,7 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
 import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
 
-const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverService];
 
 export default function (): void {
   describe('DatagridNumericFilter accessibility', function () {
@@ -38,8 +36,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -84,8 +80,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -157,7 +151,6 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
   template: `
     <clr-dg-numeric-filter [clrDgNumericFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-numeric-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -175,7 +168,6 @@ class FullTest {
       [clrFilterMinPlaceholder]="clrFilterMinPlaceholder"
     ></clr-dg-numeric-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;

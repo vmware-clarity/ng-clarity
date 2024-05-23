@@ -8,7 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrPopoverToggleService } from '../../utils';
+import { ClrPopoverService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { FocusService } from '../../utils/focus/focus.service';
 import { ClrButtonGroupModule } from '../button-group';
@@ -26,7 +26,7 @@ import { InitialFocus } from './button-group-focus.enum';
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
-  providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverToggleService],
+  providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverService],
 })
 class BtnGroupViewContainer {
   @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;

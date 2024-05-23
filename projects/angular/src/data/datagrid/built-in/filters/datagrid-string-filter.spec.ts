@@ -9,9 +9,7 @@ import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DomAdapter } from '../../../../utils/dom-adapter/dom-adapter';
-import { ClrPopoverEventsService } from '../../../../utils/popover/providers/popover-events.service';
-import { ClrPopoverPositionService } from '../../../../utils/popover/providers/popover-position.service';
-import { ClrPopoverToggleService } from '../../../../utils/popover/providers/popover-toggle.service';
+import { ClrPopoverService } from '../../../../utils/popover/providers/popover.service';
 import { animationFrameTick } from '../../../../utils/testing/helpers.spec';
 import { TestContext } from '../../helpers.spec';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
@@ -22,7 +20,7 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 import { DatagridStringFilter } from './datagrid-string-filter';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
 
-const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverToggleService];
+const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverService];
 
 export default function (): void {
   describe('DatagridStringFilter accessibility', function () {
@@ -66,8 +64,6 @@ export default function (): void {
     });
 
     afterEach(function () {
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
       context.fixture.destroy();
     });
 
@@ -150,7 +146,6 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
   template: `
     <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class FullTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
@@ -167,7 +162,6 @@ class FullTest {
       [clrFilterPlaceholder]="clrFilterPlaceholder"
     ></clr-dg-string-filter>
   `,
-  providers: [ClrPopoverEventsService, ClrPopoverPositionService],
 })
 class AccessibilityTest {
   @ViewChild(CustomFilter) customFilter: CustomFilter;
