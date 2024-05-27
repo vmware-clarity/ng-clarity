@@ -140,7 +140,9 @@ export default function (): void {
 
       it('has a button with the correct aria-label', function () {
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
-        expect(toggle.getAttribute('aria-label')).toBe('user filter');
+        context.fixture.whenStable().then(() => {
+          expect(toggle.getAttribute('aria-label')).toBe('user filter');
+        });
       });
 
       it('has role and label on the filter dialog', function () {
