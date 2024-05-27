@@ -148,7 +148,9 @@ export class ClrDatagridFilter<T = any>
   }
 
   ngOnChanges() {
-    this.setToggleButtonAriaLabel();
+    setTimeout(() => {
+      this.setToggleButtonAriaLabel();
+    });
   }
 
   override ngOnDestroy(): void {
