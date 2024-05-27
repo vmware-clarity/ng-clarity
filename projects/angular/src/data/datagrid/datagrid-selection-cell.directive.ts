@@ -26,7 +26,7 @@ export class ClrDatagridSelectionCellDirective {
 
     // If click was outside the label/input, forward the click to the input.
     if (event.target.tagName !== 'LABEL' && event.target.tagName !== 'INPUT') {
-      event.target.querySelector('input').click();
+      event.target.querySelector('input')?.click();
     }
   }
 }
