@@ -16,4 +16,5 @@ export interface User {
   creation: Date;
   color: string;
   pokemon: Pokemon;
+  expanded: boolean;
 }

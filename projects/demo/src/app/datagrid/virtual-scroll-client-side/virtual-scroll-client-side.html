@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Virtual scroll client side</h2>
+<p>This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example.</p>
+
+<p>
+  With change detection calculation button can see how many CPU cycles a render is taking. Perfect timing is under 3ms
+  per cycle.
+</p>
+<div>
+  <button class="btn" (click)="showChangeDetection()">Calc change detect</button>
+
+  <div>ms per tick: {{timeCD.msPerTick}}</div>
+  <div>Total ticks: {{timeCD.numTicks}}</div>
+  <div>Total time in MS: {{timeCD.numTicks * timeCD.msPerTick}}</div>
+  <div>time change detection JSON: {{timeCD|json}}</div>
+</div>
+
+<div>
+  <clr-input-container>
+    <label>Total Cols</label>
+    <input clrInput type="number" name="cols" [(ngModel)]="totalCols" />
+  </clr-input-container>
+  <clr-input-container>
+    <label>Rows</label>
+    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="totalRows" />
+  </clr-input-container>
+  <button class="btn" (click)="changeDatagridDimensions()">Recalculate Datagrid</button>
+  <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
+</div>
+
+<h3>Dynamic cols and rows</h3>
+<clr-datagrid
+  [(clrDgSelected)]="selectedRows"
+  *ngIf="{ rows: rows | async }; let data"
+  style="height: 32rem"
+  class="datagrid-compact"
+>
+  <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
+    <ng-container>{{col.name}}</ng-container>
+  </clr-dg-column>
+
+  <ng-template
+    *ngIf="data.rows"
+    ClrVirtualScroll
+    let-row
+    [clrVirtualRowsOf]="data.rows"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTrackBy]="rowByIndex"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="row">
+      <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+      <ng-container ngProjectAs="clr-dg-row-detail">
+        <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
+          {{row | json}}
+        </clr-dg-row-detail>
+      </ng-container>
+    </clr-dg-row>
+  </ng-template>
+
+  <clr-dg-footer> {{data.rows.length}} </clr-dg-footer>
+</clr-datagrid>
+
+<h3>Dynamic rows with sorting</h3>
+<clr-datagrid *ngIf="{ users: users | async }; let data" [(clrDgSelected)]="selectedUsers" style="height: 30rem">
+  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator">Pokemon</clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+
+  <ng-template
+    *ngIf="data.users"
+    ClrVirtualScroll
+    let-user
+    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user">
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>
+        {{user.pokemon.name}}
+        <span class="badge badge-5">#{{user.pokemon.number}}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  </ng-template>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <pre>{{detail | json}}</pre>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+
+  <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
+</clr-datagrid>
