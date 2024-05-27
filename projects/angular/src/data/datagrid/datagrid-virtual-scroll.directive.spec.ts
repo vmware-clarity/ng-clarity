@@ -236,8 +236,8 @@ export default function (): void {
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
-        // active checkbox input with ID clr-dg-row-cb375
-        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
+        // active checkbox input with ID clr-dg-row-cb376
+        expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[20]);
 
         flush();
         flushMicrotasks();
