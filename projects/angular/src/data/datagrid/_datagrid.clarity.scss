@@ -1614,7 +1614,7 @@
     }
   }
 
-  .datagrid-table > .datagrid-row .datagrid-select {
+  .datagrid-table > .datagrid-rows > .datagrid-row .datagrid-select {
     .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before,
     .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::after {
       top: 50%;
