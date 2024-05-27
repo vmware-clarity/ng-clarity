@@ -35,46 +35,42 @@
 </div>
 
 <h3>Dynamic cols and rows</h3>
-<clr-datagrid *ngIf="{ rows: rows | async }; let data" style="height: 32rem">
+<clr-datagrid
+  [(clrDgSelected)]="selectedRows"
+  *ngIf="{ rows: rows | async }; let data"
+  style="height: 32rem"
+  class="datagrid-compact"
+>
   <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
 
   <ng-template
     *ngIf="data.rows"
-    customClrVirtualRows
+    ClrVirtualScroll
     let-row
-    [customClrVirtualRowsOf]="data.rows"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
-    [customClrVirtualRowsTrackBy]="rowByIndex"
+    [clrVirtualRowsOf]="data.rows"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTrackBy]="rowByIndex"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="row">
       <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
       <ng-container ngProjectAs="clr-dg-row-detail">
-        <clr-dg-row-detail *clrIfExpanded>{{row | json}}</clr-dg-row-detail>
+        <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
+          {{row | json}}
+        </clr-dg-row-detail>
       </ng-container>
     </clr-dg-row>
   </ng-template>
-
-  <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
-    <clr-dg-detail-body>
-      <pre>{{detail | json}}</pre>
-      <pre>{{detail | json}}</pre>
-      <pre>{{detail | json}}</pre>
-      <pre>{{detail | json}}</pre>
-    </clr-dg-detail-body>
-  </clr-dg-detail>
 
   <clr-dg-footer> {{data.rows.length}} </clr-dg-footer>
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
-<clr-datagrid *ngIf="{ users: users | async }; let data" style="height: 30rem">
+<clr-datagrid *ngIf="{ users: users | async }; let data" [(clrDgSelected)]="selectedUsers" style="height: 30rem">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -83,13 +79,12 @@
 
   <ng-template
     *ngIf="data.users"
-    customClrVirtualRows
+    ClrVirtualScroll
     let-user
-    [customClrVirtualRowsOf]="data.users"
-    [customClrVirtualRowsItemSize]="32"
-    [customClrVirtualRowsMinBufferPx]="100"
-    [customClrVirtualRowsMaxBufferPx]="200"
-    [customClrVirtualRowsKeyboardScrollPageSize]="32"
+    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
@@ -105,6 +100,13 @@
       </clr-dg-cell>
     </clr-dg-row>
   </ng-template>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <pre>{{detail | json}}</pre>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
 
   <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
 </clr-datagrid>

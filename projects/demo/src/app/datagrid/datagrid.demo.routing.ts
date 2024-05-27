@@ -38,6 +38,8 @@ import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
+import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 const ROUTES: Routes = [
   {
@@ -63,6 +65,8 @@ const ROUTES: Routes = [
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
       { path: 'placeholder', component: DatagridPlaceholderDemo },
+      { path: 'virtual-scroll-client-side', component: DatagridVirtualScrollClientSideDemo },
+      { path: 'virtual-scroll-server-side', component: DatagridVirtualScrollServerSideDemo },
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'compact', component: DatagridCompactDemo },
