@@ -276,10 +276,29 @@ describe('Modal', () => {
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
 
-  it('should add expected aria-labelledby', () => {
-    // open modal
+  it('should use modal id for aria-labelledby by default', () => {
     modal.open();
     fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
+  });
+
+  it('should allow a custom aria-labelledby attribute value', () => {
+    modal.labelledBy = 'custom-id';
+
+    modal.open();
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');
+  });
+
+  it('should fall back to the modal id for the aria-labelledby attribute value', () => {
+    // set to a falsy value
+    modal.labelledBy = '';
+
+    modal.open();
+    fixture.detectChanges();
+
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 
