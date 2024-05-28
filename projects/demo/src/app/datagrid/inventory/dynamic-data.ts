@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetection } from '@angular/cli/lib/config/workspace-schema';
 import { Injectable } from '@angular/core';
 
 export interface Column {
@@ -14,7 +13,11 @@ export interface Column {
 }
 export interface Row {
   index: number;
-  cells: ChangeDetection[];
+  expanded: boolean;
+  cells: Cells;
+}
+export interface Cells {
+  [key: string]: string;
 }
 @Injectable()
 export class DynamicData {
@@ -35,7 +38,8 @@ export class DynamicData {
     for (let i = 0; i < rowCount; i++) {
       const newRow: Row = {
         index: i,
-        cells: [],
+        cells: {} as Cells,
+        expanded: false,
       };
       for (let j = 0; j < columns.length; j++) {
         newRow.cells[columns[j].name] = `${columns[j].name} row-${i + 1}`;

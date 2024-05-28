@@ -5,11 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { BehaviorSubject } from 'rxjs';
+
 export interface Element {
   name: string;
   symbol: string;
   number: number;
   electronegativity: number;
+  expanded?: boolean;
 }
 
 export const elements: Element[] = [
@@ -132,3 +135,5 @@ export const elements: Element[] = [
   { name: 'Zinc', symbol: 'Zn', number: 30, electronegativity: 1.65 },
   { name: 'Zirconium', symbol: 'Zr', number: 40, electronegativity: 1.33 },
 ];
+
+export const behaviorElements = new BehaviorSubject(elements);
