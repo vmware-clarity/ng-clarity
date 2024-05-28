@@ -76,7 +76,6 @@ export class ClrModal implements OnChanges, OnDestroy {
   get fadeMove(): string {
     return this.skipAnimation ? '' : this.configuration.fadeMove;
   }
-
   set fadeMove(move: string) {
     this.configuration.fadeMove = move;
   }

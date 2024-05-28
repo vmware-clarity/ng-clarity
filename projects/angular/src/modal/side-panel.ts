@@ -36,7 +36,6 @@ export class ClrSidePanel implements OnInit {
   get clrSidePanelBackdrop(): boolean {
     return this.configuration.backdrop;
   }
-
   set clrSidePanelBackdrop(backdrop: boolean) {
     if (backdrop !== undefined) {
       this.configuration.backdrop = backdrop;
