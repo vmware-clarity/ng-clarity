@@ -3542,8 +3542,6 @@ export class ClrSidePanel implements OnInit {
     // (undocumented)
     preventClose: boolean;
     // (undocumented)
-    sidePanelId: string;
-    // (undocumented)
     size: string;
     // (undocumented)
     skipAnimation: string;

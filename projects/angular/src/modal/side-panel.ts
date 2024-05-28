@@ -7,7 +7,6 @@
 
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ClrModal } from './modal';
 import { ClrModalConfigurationService } from './modal-configuration.service';
 
@@ -19,14 +18,12 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
   },
 })
 export class ClrSidePanel implements OnInit {
-  sidePanelId = uniqueIdFactory();
-
   @Input('clrSidePanelOpen') _open = false;
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSize') size: string;
   @Input('clrSidePanelSkipAnimation') skipAnimation = 'false';
-  @Input('clrSidePanelLabelledById') labelledById = this.sidePanelId;
+  @Input('clrSidePanelLabelledById') labelledById: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
