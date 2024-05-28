@@ -11,29 +11,29 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { ClrSidePanel } from './sidepanel';
-import { ClrSidePanelModule } from './sidepanel.module';
+import { ClrSidePanel } from './side-panel';
+import { ClrSidePanelModule } from './side-panel.module';
 
 @Component({
   template: `
-    <clr-sidepanel
+    <clr-side-panel
       [(clrSidePanelOpen)]="opened"
       [clrSidePanelClosable]="closable"
       [clrSidePanelCloseButtonAriaLabel]="closeButtonAriaLabel"
       [clrSidePanelSize]="size"
     >
-      <h4 class="sidepanel-title">Title</h4>
-      <div class="sidepanel-body">
+      <h4 class="side-panel-title">Title</h4>
+      <div class="side-panel-body">
         <p>Body</p>
       </div>
-      <div class="sidepanel-footer">
+      <div class="side-panel-footer">
         <button (click)="opened = false">Footer</button>
       </div>
-    </clr-sidepanel>
+    </clr-side-panel>
   `,
 })
 class TestComponent {
-  @ViewChild(ClrSidePanel) sidepanelInstance: ClrSidePanel;
+  @ViewChild(ClrSidePanel) sidePanelInstance: ClrSidePanel;
 
   opened = true;
   closable = true;
@@ -43,15 +43,15 @@ class TestComponent {
 
 @Component({
   template: `
-    <clr-sidepanel [(clrSidePanelOpen)]="opened">
-      <h4 class="sidepanel-title">Title</h4>
-      <div class="sidepanel-body">
+    <clr-side-panel [(clrSidePanelOpen)]="opened">
+      <h4 class="side-panel-title">Title</h4>
+      <div class="side-panel-body">
         <p>Body</p>
       </div>
-      <div class="sidepanel-footer">
+      <div class="side-panel-footer">
         <button (click)="opened = false">Footer</button>
       </div>
-    </clr-sidepanel>
+    </clr-side-panel>
   `,
 })
 class TestDefaultsComponent {
@@ -61,7 +61,7 @@ class TestDefaultsComponent {
 describe('Side Panel', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
-  let sidepanel: ClrSidePanel;
+  let sidePanel: ClrSidePanel;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
@@ -72,7 +72,7 @@ describe('Side Panel', () => {
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     compiled = fixture.nativeElement;
-    sidepanel = fixture.componentInstance.sidepanelInstance;
+    sidePanel = fixture.componentInstance.sidePanelInstance;
 
     await fixture.whenStable();
   });
@@ -100,12 +100,12 @@ describe('Side Panel', () => {
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
-    sidepanel.open();
+    sidePanel.open();
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   }));
 
-  it('shows and hides the sidepanel based on the clrSidePanelOpen input', fakeAsync(() => {
+  it('shows and hides the side panel based on the clrSidePanelOpen input', fakeAsync(() => {
     fixture.componentInstance.opened = false;
     flushAndExpectOpen(fixture, false);
 
@@ -114,39 +114,39 @@ describe('Side Panel', () => {
   }));
 
   it('exposes open() and close() methods', fakeAsync(() => {
-    sidepanel.close();
+    sidePanel.close();
     flushAndExpectOpen(fixture, false);
 
-    sidepanel.open();
+    sidePanel.open();
     flushAndExpectOpen(fixture, true);
   }));
 
   it('should not open if already opened', fakeAsync(() => {
-    spyOn(sidepanel._openChanged, 'emit');
-    sidepanel.open();
-    expect(sidepanel._openChanged.emit).not.toHaveBeenCalled();
+    spyOn(sidePanel.openChange, 'emit');
+    sidePanel.open();
+    expect(sidePanel.openChange.emit).not.toHaveBeenCalled();
   }));
 
   it('should not close when already closed', fakeAsync(() => {
     fixture.componentInstance.opened = false;
-    spyOn(sidepanel, 'close');
-    expect(sidepanel.close).not.toHaveBeenCalled();
+    spyOn(sidePanel, 'close');
+    expect(sidePanel.close).not.toHaveBeenCalled();
   }));
 
-  it('should not throw an error when close is called on an already closed sidepanel', fakeAsync(() => {
-    // Close the test sidepanel
-    fixture.componentInstance.sidepanelInstance.close();
+  it('should not throw an error when close is called on an already closed side panel', fakeAsync(() => {
+    // Close the test side panel
+    fixture.componentInstance.sidePanelInstance.close();
     fixture.detectChanges();
     // App should not throw an error when already closed.
     expect(() => {
-      fixture.componentInstance.sidepanelInstance.close();
+      fixture.componentInstance.sidePanelInstance.close();
       fixture.detectChanges();
     }).not.toThrow();
   }));
 
   it('offers two-way binding on clrSidePanelOpen', fakeAsync(() => {
     expect(fixture.componentInstance.opened).toBe(true);
-    sidepanel.close();
+    sidePanel.close();
     fixture.detectChanges();
 
     // We make sure to wait for the animation to be over before emitting the output
@@ -215,17 +215,17 @@ describe('Side Panel', () => {
   });
 
   it('should add expected aria-labelledby', () => {
-    // open sidepanel
-    sidepanel.open();
+    // open side panel
+    sidePanel.open();
     fixture.detectChanges();
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(sidepanel.sidepanelId);
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(sidePanel.sidePanelId);
   });
 
   it('should have text based boundaries for screen readers', fakeAsync(() => {
-    // MacOS + Voice Over does not properly isolate sidepanel content so
+    // MacOS + Voice Over does not properly isolate side panel content so
     // we must give screen reader users text based warnings when they
-    // are entering and leaving sidepanel content.
-    sidepanel.open();
+    // are entering and leaving side panel content.
+    sidePanel.open();
     fixture.detectChanges();
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');

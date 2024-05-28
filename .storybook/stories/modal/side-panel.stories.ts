@@ -54,7 +54,7 @@ const SidePanelTemplate: StoryFn = args => ({
       <div class="content-container">
         <div class="content-area" style="height: 300px">
           <button type="button" class="btn btn-primary" (click)="clrSidePanelOpen = true">Open Side Panel</button>
-          <clr-sidepanel
+          <clr-side-panel
             [clrSidePanelBackdrop]="clrSidePanelBackdrop"
             [clrSidePanelStaticBackdrop]="clrSidePanelStaticBackdrop"
             [clrSidePanelCloseButtonAriaLabel]="clrSidePanelCloseButtonAriaLabel"
@@ -65,17 +65,17 @@ const SidePanelTemplate: StoryFn = args => ({
             (clrSidePanelOpenChange)="clrSidePanelOpen = $event; clrSidePanelOpenChange($event)"
             [clrSidePanelPreventClose]="clrSidePanelPreventClose"
             (clrSidePanelAlternateClose)="clrSidePanelAltClose($event)"
-            #sidepanel
+            #sidePanel
           >
-            <h3 class="sidepanel-title">{{ title }}</h3>
-            <div class="sidepanel-body">
+            <h3 class="side-panel-title">{{ title }}</h3>
+            <div class="side-panel-body">
               {{ body }}
             </div>
-            <div class="sidepanel-footer">
+            <div class="side-panel-footer">
               <button type="button" class="btn btn-outline" (click)="clrSidePanelOpen = false">Force Close</button>
-              <button type="button" class="btn btn-primary" (click)="sidepanel.close()">Close</button>
+              <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Close</button>
             </div>
-          </clr-sidepanel>
+          </clr-side-panel>
           <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
             Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque

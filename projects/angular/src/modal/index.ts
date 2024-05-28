@@ -7,6 +7,6 @@
 
 export * from './modal';
 export * from './modal.module';
-export * from './sidepanel.module';
+export * from './side-panel.module';
 export * from './modal-body';
-export * from './sidepanel';
+export * from './side-panel';

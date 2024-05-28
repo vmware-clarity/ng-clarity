@@ -3521,9 +3521,7 @@ export enum ClrSide {
 export class ClrSidePanel implements OnInit {
     constructor(element: ElementRef, configuration: ClrModalConfigurationService);
     // (undocumented)
-    altClose(open: boolean): void;
-    // (undocumented)
-    _altClose: EventEmitter<boolean>;
+    altClose: EventEmitter<boolean>;
     // (undocumented)
     close(): void;
     // (undocumented)
@@ -3531,8 +3529,6 @@ export class ClrSidePanel implements OnInit {
     // (undocumented)
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
-    // (undocumented)
-    documentClick(event: Event): void;
     // (undocumented)
     labelledById: string;
     // (undocumented)
@@ -3542,13 +3538,11 @@ export class ClrSidePanel implements OnInit {
     // (undocumented)
     _open: boolean;
     // (undocumented)
-    openChange(open: boolean): void;
-    // (undocumented)
-    _openChanged: EventEmitter<boolean>;
+    openChange: EventEmitter<boolean>;
     // (undocumented)
     preventClose: boolean;
     // (undocumented)
-    sidepanelId: string;
+    sidePanelId: string;
     // (undocumented)
     size: string;
     // (undocumented)
@@ -3556,7 +3550,7 @@ export class ClrSidePanel implements OnInit {
     // (undocumented)
     staticBackdrop: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-sidepanel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "size": "clrSidePanelSize"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; }, { "_openChanged": "clrSidePanelOpenChange"; "_altClose": "clrSidePanelAlternateClose"; }, never, [".sidepanel-title", ".sidepanel-body", ".sidepanel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "size": "clrSidePanelSize"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }

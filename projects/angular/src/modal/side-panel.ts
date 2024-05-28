@@ -12,34 +12,34 @@ import { ClrModal } from './modal';
 import { ClrModalConfigurationService } from './modal-configuration.service';
 
 @Component({
-  selector: 'clr-sidepanel',
-  templateUrl: 'sidepanel.html',
+  selector: 'clr-side-panel',
+  templateUrl: 'side-panel.html',
   host: {
-    '[class.sidepanel]': 'true',
+    '[class.side-panel]': 'true',
   },
 })
 export class ClrSidePanel implements OnInit {
-  sidepanelId = uniqueIdFactory();
+  sidePanelId = uniqueIdFactory();
 
   @Input('clrSidePanelOpen') _open = false;
-  @Output('clrSidePanelOpenChange') _openChanged = new EventEmitter<boolean>(false);
+  @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSize') size: string;
   @Input('clrSidePanelSkipAnimation') skipAnimation = 'false';
-  @Input('clrSidePanelLabelledById') labelledById = this.sidepanelId;
+  @Input('clrSidePanelLabelledById') labelledById = this.sidePanelId;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelPreventClose') preventClose = false;
-  @Output('clrSidePanelAlternateClose') _altClose = new EventEmitter<boolean>(false);
+  @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
   constructor(private element: ElementRef, private configuration: ClrModalConfigurationService) {}
 
+  @Input()
   get clrSidePanelBackdrop(): boolean {
     return this.configuration.backdrop;
   }
 
-  @Input()
   set clrSidePanelBackdrop(backdrop: boolean) {
     if (backdrop !== undefined) {
       this.configuration.backdrop = backdrop;
@@ -58,16 +58,8 @@ export class ClrSidePanel implements OnInit {
     this.modal.close();
   }
 
-  openChange(open: boolean) {
-    this._openChanged.emit(open);
-  }
-
-  altClose(open: boolean) {
-    this._altClose.emit(open);
-  }
-
   @HostListener('document:pointerup', ['$event'])
-  documentClick(event: Event) {
+  private documentClick(event: Event) {
     if (!this.element.nativeElement.contains(event.target) && this.modal._open && !this.configuration.backdrop) {
       this.modal.close();
     }
