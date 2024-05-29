@@ -20,7 +20,12 @@ import { DetailService } from './providers/detail.service';
       <ng-content></ng-content>
     </div>
     <div class="datagrid-detail-pane-close">
-      <button type="button" class="btn btn-link" (click)="close()" [attr.aria-label]="commonStrings.keys.close">
+      <button
+        type="button"
+        class="btn btn-link"
+        (click)="detailService.close()"
+        [attr.aria-label]="commonStrings.keys.close"
+      >
         <cds-icon shape="times"></cds-icon>
       </button>
     </div>
@@ -31,12 +36,5 @@ export class ClrDatagridDetailHeader {
 
   get titleId() {
     return `${this.detailService.id}-title`;
-  }
-
-  close(): void {
-    this.detailService.close();
-    // In the case of browser zoom greater than 250%, the detail pane toggle button is not visible on the page.
-    // Wait for the detail pane to close, and return focus to the detail toggle button.
-    setTimeout(() => this.detailService.returnFocus(), 0);
   }
 }
