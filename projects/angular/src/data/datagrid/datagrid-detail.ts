@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -27,7 +27,9 @@ import { DetailService } from './providers/detail.service';
       role="dialog"
       [id]="detailService.id"
       aria-modal="true"
-      [attr.aria-labelledby]="header ? header.titleId : ''"
+      [attr.aria-labelledby]="labelledBy"
+      [attr.aria-describedby]="ariaDescribedBy ? ariaDescribedBy : null"
+      [attr.aria-label]="ariaLabel ? ariaLabel : null"
     >
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneStart }}</div>
       <ng-content></ng-content>
@@ -38,7 +40,19 @@ import { DetailService } from './providers/detail.service';
 export class ClrDatagridDetail {
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
+  @Input('clrDetailAriaDescribedBy') ariaDescribedBy: string;
+  @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
+  @Input('clrDetailAriaLabel') ariaLabel: string;
+
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+
+  get labelledBy(): string {
+    if (!this.ariaLabel) {
+      return this.ariaLabelledBy ? this.ariaLabelledBy : this.header ? this.header.titleId : '';
+    } else {
+      return null;
+    }
+  }
 
   close(): void {
     this.detailService.close();
