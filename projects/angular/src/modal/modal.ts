@@ -53,7 +53,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
 
-  @Input('clrModalLabelledById') labelledBy = this.modalId;
+  @Input('clrModalLabelledById') labelledBy: string;
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
