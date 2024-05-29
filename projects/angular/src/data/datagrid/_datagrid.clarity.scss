@@ -1859,6 +1859,10 @@
     flex: 0 0 auto !important;
     min-width: 0 !important;
     display: block !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
   }
 
   /**

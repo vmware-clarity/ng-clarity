@@ -10,6 +10,7 @@ import { TemplateRef } from '@angular/core';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 export interface ColumnState {
+  columnIndex?: number;
   changes?: DatagridColumnChanges[]; // This is an array of change types to update
   width?: number; // This is the width calculated for the column
   strictWidth?: number; // This is the strict width if defined in styles/css

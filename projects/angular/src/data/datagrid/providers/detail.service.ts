@@ -53,6 +53,9 @@ export class DetailService {
     this.toggleState = false;
     this._state.next(this.toggleState);
     this.modalStackService.trackModalClose(this);
+  }
+
+  returnFocus() {
     if (this.button) {
       this.button.focus();
       this.button = null;
