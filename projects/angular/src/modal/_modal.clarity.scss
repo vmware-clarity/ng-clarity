@@ -30,6 +30,44 @@
     }
   }
 
+  .side-panel {
+    .modal {
+      left: initial;
+      padding: 0;
+      height: 100%;
+      max-width: 100%;
+
+      .modal-content-wrapper {
+        height: 100%;
+
+        .modal-content {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .modal-dialog {
+        border: none;
+        border-radius: 0;
+        height: 100%;
+      }
+
+      &.modal-full-screen {
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+      }
+
+      .modal-body-wrapper {
+        flex: 1 1;
+        max-height: 100%;
+      }
+    }
+  }
+
   .modal-dialog {
     position: relative;
     z-index: map.get(variables.$clr-layers, modal);
@@ -197,8 +235,11 @@
   .modal-title-wrapper {
     flex: 1;
 
-    .modal-title > h3 {
-      margin-top: 0;
+    .modal-title,
+    .side-panel-title {
+      h3 {
+        margin-top: 0;
+      }
     }
   }
 
@@ -210,7 +251,8 @@
     overflow-x: hidden;
     padding: 0 variables.$clr_baselineRem_0_125;
 
-    .modal-body {
+    .modal-body,
+    .side-panel-body {
       @include mixins.css-var(
         color,
         clr-modal-text-color,
@@ -227,7 +269,8 @@
     }
   }
 
-  .modal-footer {
+  .modal-footer,
+  .side-panel-footer {
     display: flex;
     justify-content: flex-end;
     @include mixins.css-var(
@@ -247,6 +290,11 @@
       //switched right margin to left because footer is right aligned
       margin: 0;
     }
+  }
+
+  // it gets nested inside a .modal-footer and the top padding gets duplicated
+  .side-panel-footer {
+    padding-top: 0;
   }
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {

@@ -5,8 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './modal';
-export * from './modal.module';
-export * from './side-panel.module';
-export * from './modal-body';
-export * from './side-panel';
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class ClrModalConfigurationService {
+  fadeMove = 'fadeDown';
+  backdrop = true;
+}
