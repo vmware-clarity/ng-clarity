@@ -11,6 +11,7 @@ import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Outp
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
+import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
 
 @Component({
@@ -28,9 +29,16 @@ import { ModalStackService } from './modal-stack.service';
     `,
   ],
   animations: [
-    trigger('fadeDown', [
-      transition('* => false', [style({ opacity: 0, transform: 'translate(0, -25%)' }), animate('0.2s ease-in-out')]),
-      transition('false => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' }))]),
+    trigger('fadeMove', [
+      transition('* => fadeDown', [
+        style({ opacity: 0, transform: 'translate(0, -25%)' }),
+        animate('0.2s ease-in-out'),
+      ]),
+      transition('fadeDown => *', [
+        animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
+      ]),
+      transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
+      transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
     ]),
     trigger('fade', [
       transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
@@ -61,14 +69,26 @@ export class ClrModal implements OnChanges, OnDestroy {
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
-    private modalStackService: ModalStackService
+    private modalStackService: ModalStackService,
+    private configuration: ClrModalConfigurationService
   ) {}
+
+  get fadeMove(): string {
+    return this.skipAnimation ? '' : this.configuration.fadeMove;
+  }
+  set fadeMove(move: string) {
+    this.configuration.fadeMove = move;
+  }
+
+  get backdrop(): boolean {
+    return this.configuration.backdrop;
+  }
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this._scrollingService.stopScrolling();
+        this.backdrop && this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
       } else {
         this._scrollingService.resumeScrolling();
