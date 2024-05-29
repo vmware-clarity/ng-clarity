@@ -190,8 +190,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
         return;
       }
     }
-
-    this.renderer.removeAttribute(this.el.nativeElement, 'aria-describedby');
   }
 
   private getAriaDescribedById(helpers: Helpers): string | null {
