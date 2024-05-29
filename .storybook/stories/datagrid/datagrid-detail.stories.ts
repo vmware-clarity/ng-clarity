@@ -106,7 +106,7 @@ const DetailTemplate: StoryFn = args => {
         >
           <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
           <clr-dg-detail-body [ngSwitch]="detailContentType">
-            <ng-container *ngSwitchCase="'json'"> {{ element | json }} </ng-container>
+            <ng-container *ngSwitchCase="'json'">{{ element | json }}</ng-container>
 
             <clr-datagrid *ngSwitchCase="'datagrid'">
               <clr-dg-column>Key</clr-dg-column>
