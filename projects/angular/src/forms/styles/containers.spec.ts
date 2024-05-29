@@ -472,7 +472,7 @@ describe('Form layouts', () => {
 
   function verticalTests() {
     describe('text', () => {
-      it('control height', () => verifyHeight('#text', base * 15));
+      it('control height', () => verifyHeight('#text', base * 16));
       it('label height', () => verifyHeight('#text .clr-control-label', base * 4));
       it('wrapper height', () => verifyHeight('#text .clr-input-wrapper', base * 6));
       it('input height', () => verifyHeight('#text .clr-input', base * 6));
@@ -480,7 +480,7 @@ describe('Form layouts', () => {
     });
 
     describe('checkbox', () => {
-      it('control height', () => verifyHeight('#checkbox', base * 27));
+      it('control height', () => verifyHeight('#checkbox', base * 28));
 
       it('label height', () => verifyHeight('#checkbox .clr-control-label', base * 4));
 
@@ -496,7 +496,7 @@ describe('Form layouts', () => {
     });
 
     describe('checkbox inline', () => {
-      it('control height', () => verifyHeight('#checkbox-inline', base * 15));
+      it('control height', () => verifyHeight('#checkbox-inline', base * 16));
 
       it('label height', () => verifyHeight('#checkbox-inline .clr-control-label', base * 4));
 
@@ -513,7 +513,7 @@ describe('Form layouts', () => {
     });
 
     describe('radio', () => {
-      it('control height', () => verifyHeight('#radio', base * 27));
+      it('control height', () => verifyHeight('#radio', base * 28));
 
       it('label height', () => verifyHeight('#radio .clr-control-label', base * 4));
 
@@ -529,7 +529,7 @@ describe('Form layouts', () => {
     });
 
     describe('radio inline', () => {
-      it('control height', () => verifyHeight('#radio-inline', base * 15));
+      it('control height', () => verifyHeight('#radio-inline', base * 16));
 
       it('label height', () => verifyHeight('#radio-inline .clr-control-label', base * 4));
 
@@ -545,7 +545,7 @@ describe('Form layouts', () => {
     });
 
     describe('file', () => {
-      it('control height', () => verifyHeight('#file', base * 16.5, false));
+      it('control height', () => verifyHeight('#file', base * 17.5, false));
 
       it('label height', () => verifyHeight('#file .clr-control-label', base * 4));
 
@@ -565,7 +565,7 @@ describe('Form layouts', () => {
         fileInput = height('#file-plain input');
       });
 
-      it('control height', () => verifyHeight('#file-plain', fileInput + base * 10.5));
+      it('control height', () => verifyHeight('#file-plain', fileInput + base * 11.5));
 
       it('label height', () => verifyHeight('#file-plain .clr-control-label', base * 4));
 
@@ -581,7 +581,7 @@ describe('Form layouts', () => {
         textarea = height('#textarea textarea');
       });
 
-      it('control height', () => verifyHeight('#textarea', textarea + base * 11, false));
+      it('control height', () => verifyHeight('#textarea', textarea + base * 10, false));
 
       it('label height', () => verifyHeight('#textarea .clr-control-label', base * 4));
 
@@ -593,7 +593,7 @@ describe('Form layouts', () => {
     });
 
     describe('select', () => {
-      it('control height', () => verifyHeight('#select', base * 15));
+      it('control height', () => verifyHeight('#select', base * 16));
 
       it('label height', () => verifyHeight('#select .clr-control-label', base * 4));
 
@@ -614,7 +614,7 @@ describe('Form layouts', () => {
         multiselect = height('#multiselect select');
       });
 
-      it('control height', () => verifyHeight('#multiselect', multiselect + base * 9, false));
+      it('control height', () => verifyHeight('#multiselect', multiselect + base * 10, false));
 
       it('label height', () => verifyHeight('#multiselect .clr-control-label', base * 4));
 
@@ -741,7 +741,7 @@ describe('Form layouts', () => {
         textarea = height('#textarea textarea');
       });
 
-      it('control height', () => verifyHeight('#textarea', textarea + base * 7, false));
+      it('control height', () => verifyHeight('#textarea', textarea + base * 5, false));
 
       it('label height', () => verifyHeight('#textarea .clr-control-label', base * 4));
 
