@@ -5,77 +5,74 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '../utils/cdk/cdk-trap-focus.module';
-import { ClrModal } from './modal';
-import { ClrModalModule } from './modal.module';
+import { ClrSidePanel } from './side-panel';
+import { ClrSidePanelModule } from './side-panel.module';
 
 @Component({
   template: `
-    <clr-modal
-      [(clrModalOpen)]="opened"
-      [clrModalClosable]="closable"
-      [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
-      [clrModalSize]="size"
-      [clrModalStaticBackdrop]="staticBackdrop"
+    <clr-side-panel
+      [(clrSidePanelOpen)]="opened"
+      [clrSidePanelClosable]="closable"
+      [clrSidePanelCloseButtonAriaLabel]="closeButtonAriaLabel"
+      [clrSidePanelSize]="size"
     >
-      <h4 class="modal-title">Title</h4>
-      <div class="modal-body">
+      <h4 class="side-panel-title">Title</h4>
+      <div class="side-panel-body">
         <p>Body</p>
       </div>
-      <div class="modal-footer">
+      <div class="side-panel-footer">
         <button (click)="opened = false">Footer</button>
       </div>
-    </clr-modal>
+    </clr-side-panel>
   `,
 })
 class TestComponent {
-  @ViewChild(ClrModal) modalInstance: ClrModal;
+  @ViewChild(ClrSidePanel) sidePanelInstance: ClrSidePanel;
 
   opened = true;
   closable = true;
   closeButtonAriaLabel: string = undefined;
   size = '';
-  staticBackdrop = false;
 }
 
 @Component({
   template: `
-    <clr-modal [(clrModalOpen)]="opened">
-      <h4 class="modal-title">Title</h4>
-      <div class="modal-body">
+    <clr-side-panel [(clrSidePanelOpen)]="opened">
+      <h4 class="side-panel-title">Title</h4>
+      <div class="side-panel-body">
         <p>Body</p>
       </div>
-      <div class="modal-footer">
+      <div class="side-panel-footer">
         <button (click)="opened = false">Footer</button>
       </div>
-    </clr-modal>
+    </clr-side-panel>
   `,
 })
 class TestDefaultsComponent {
   opened = true;
 }
 
-describe('Modal', () => {
+describe('Side Panel', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
-  let modal: ClrModal;
+  let sidePanel: ClrSidePanel;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     compiled = fixture.nativeElement;
-    modal = fixture.componentInstance.modalInstance;
+    sidePanel = fixture.componentInstance.sidePanelInstance;
 
     await fixture.whenStable();
   });
@@ -103,12 +100,12 @@ describe('Modal', () => {
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
-    modal.open();
+    sidePanel.open();
     fixture.detectChanges();
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   }));
 
-  it('shows and hides the modal based on the clrModalOpen input', fakeAsync(() => {
+  it('shows and hides the side panel based on the clrSidePanelOpen input', fakeAsync(() => {
     fixture.componentInstance.opened = false;
     flushAndExpectOpen(fixture, false);
 
@@ -117,59 +114,39 @@ describe('Modal', () => {
   }));
 
   it('exposes open() and close() methods', fakeAsync(() => {
-    modal.close();
+    sidePanel.close();
     flushAndExpectOpen(fixture, false);
 
-    modal.open();
+    sidePanel.open();
     flushAndExpectOpen(fixture, true);
   }));
 
   it('should not open if already opened', fakeAsync(() => {
-    spyOn(modal._openChanged, 'emit');
-    modal.open();
-    expect(modal._openChanged.emit).not.toHaveBeenCalled();
-  }));
-
-  it('should not emit clrModalOpenChange - animation will do that for us', fakeAsync(() => {
-    /**
-     * Needed just to mock the event so I could enter the `if` statement.
-     */
-    const fakeAnimationEvent: AnimationEvent = {
-      fromState: '',
-      toState: 'void',
-      totalTime: 0,
-      phaseName: '',
-      element: {},
-      triggerName: '',
-      disabled: false,
-    };
-
-    spyOn(modal._openChanged, 'emit');
-    modal.close();
-    modal.fadeDone(fakeAnimationEvent);
-    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
+    spyOn(sidePanel.openChange, 'emit');
+    sidePanel.open();
+    expect(sidePanel.openChange.emit).not.toHaveBeenCalled();
   }));
 
   it('should not close when already closed', fakeAsync(() => {
     fixture.componentInstance.opened = false;
-    spyOn(modal, 'close');
-    expect(modal.close).not.toHaveBeenCalled();
+    spyOn(sidePanel, 'close');
+    expect(sidePanel.close).not.toHaveBeenCalled();
   }));
 
-  it('should not throw an error when close is called on an already closed modal', fakeAsync(() => {
-    // Close the test modal
-    fixture.componentInstance.modalInstance.close();
+  it('should not throw an error when close is called on an already closed side panel', fakeAsync(() => {
+    // Close the test side panel
+    fixture.componentInstance.sidePanelInstance.close();
     fixture.detectChanges();
     // App should not throw an error when already closed.
     expect(() => {
-      fixture.componentInstance.modalInstance.close();
+      fixture.componentInstance.sidePanelInstance.close();
       fixture.detectChanges();
     }).not.toThrow();
   }));
 
-  it('offers two-way binding on clrModalOpen', fakeAsync(() => {
+  it('offers two-way binding on clrSidePanelOpen', fakeAsync(() => {
     expect(fixture.componentInstance.opened).toBe(true);
-    modal.close();
+    sidePanel.close();
     fixture.detectChanges();
 
     // We make sure to wait for the animation to be over before emitting the output
@@ -184,7 +161,7 @@ describe('Modal', () => {
     expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
-  it('supports a clrModalSize option', fakeAsync(() => {
+  it('supports a clrSidePanelSize option', fakeAsync(() => {
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
@@ -207,26 +184,7 @@ describe('Modal', () => {
     expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
   }));
 
-  it('supports a clrModalClosable option', fakeAsync(() => {
-    fixture.componentInstance.closable = false;
-    fixture.detectChanges();
-
-    expect(compiled.querySelector('.close')).toBeNull();
-
-    modal.close();
-    flushAndExpectOpen(fixture, true);
-
-    fixture.componentInstance.closable = true;
-    fixture.detectChanges();
-
-    expect(compiled.querySelector('.close')).not.toBeNull();
-    modal.close();
-    fixture.detectChanges();
-
-    flushAndExpectOpen(fixture, false);
-  }));
-
-  it('should not be closed on backdrop click by default', fakeAsync(() => {
+  it('should be closed on backdrop click by default', fakeAsync(() => {
     const defaultsFixture = TestBed.createComponent(TestDefaultsComponent);
     defaultsFixture.detectChanges();
     compiled = defaultsFixture.nativeElement;
@@ -234,28 +192,8 @@ describe('Modal', () => {
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
 
     backdrop.click();
-    flushAndExpectOpen(defaultsFixture, true);
+    flushAndExpectOpen(defaultsFixture, false);
     defaultsFixture.destroy();
-  }));
-
-  it('supports a clrModalStaticBackdrop option', fakeAsync(() => {
-    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
-
-    fixture.componentInstance.staticBackdrop = true;
-    fixture.detectChanges();
-
-    // Just make sure we have the "x" to close the modal,
-    // because this is different from the clrModalClosable option.
-    expect(compiled.querySelector('.close')).not.toBeNull();
-
-    backdrop.click();
-    flushAndExpectOpen(fixture, true);
-
-    fixture.componentInstance.staticBackdrop = false;
-    fixture.detectChanges();
-
-    backdrop.click();
-    flushAndExpectOpen(fixture, false);
   }));
 
   it('traps user focus', () => {
@@ -276,37 +214,18 @@ describe('Modal', () => {
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
 
-  it('should use modal id for aria-labelledby by default', () => {
-    modal.open();
+  it('should add expected aria-labelledby', () => {
+    // open side panel
+    sidePanel.open();
     fixture.detectChanges();
-
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
-  });
-
-  it('should allow a custom aria-labelledby attribute value', () => {
-    modal.labelledBy = 'custom-id';
-
-    modal.open();
-    fixture.detectChanges();
-
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');
-  });
-
-  it('should fall back to the modal id for the aria-labelledby attribute value', () => {
-    // set to a falsy value
-    modal.labelledBy = '';
-
-    modal.open();
-    fixture.detectChanges();
-
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBeTruthy();
   });
 
   it('should have text based boundaries for screen readers', fakeAsync(() => {
-    // MacOS + Voice Over does not properly isolate modal content so
+    // MacOS + Voice Over does not properly isolate side panel content so
     // we must give screen reader users text based warnings when they
-    // are entering and leaving modal content.
-    modal.open();
+    // are entering and leaving side panel content.
+    sidePanel.open();
     fixture.detectChanges();
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
