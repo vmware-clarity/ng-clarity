@@ -107,13 +107,6 @@ button.nav-link {
       &:hover {
         @include nav-link-border-appearence('left');
       }
-      &:not(:active).active {
-        background-color: tabs-variables.$clr-nav-selected-bg-color;
-      }
-
-      &:not(.active):hover {
-        background-color: tabs-variables.$clr-nav-hover-bg-color;
-      }
     }
   }
 }

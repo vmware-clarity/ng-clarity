@@ -222,7 +222,7 @@
 
         &:hover {
           color: stack-view-variables.$clr-stack-view-expandable-row-hover;
-          background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-hover;
+          background-color: stack-view-variables.$clr-stack-view-expanded-hover-row-bg-color;
 
           .stack-block-caret {
             fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
@@ -230,7 +230,7 @@
 
           &:active {
             color: stack-view-variables.$clr-stack-view-expandable-row-active;
-            background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-active;
+            background-color: stack-view-variables.$clr-stack-view-expanded-active-row-bg-color;
 
             .stack-block-caret {
               fill: stack-view-variables.$clr-stack-view-expandable-row-active;

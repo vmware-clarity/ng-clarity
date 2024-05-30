@@ -19,6 +19,9 @@
 | --clr-datagrid-popover-border-color                  | Border color for popovers within the datagrid.                           |
 | --clr-datagrid-action-popover-hover-color            | Background color of action items on hover and focus.                     |
 | --clr-datagrid-row-selected                          | Font color for selected rows.                                            |
+| --clr-datagrid-row-selected-background-color         | Background color for selected rows.                                      |
+| --clr-datagrid-row-selected-active-background-color  | Background color for active on selected rows.                            |
+| --clr-datagrid-row-selected-hover-background-color   | Background color for hover on selected rows.                             |
 | --clr-datagrid-column-switch-header-font-color       | Font color for column switch header button icons.                        |
 | --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                      |
 | --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                         |

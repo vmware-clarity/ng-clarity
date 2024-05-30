@@ -160,6 +160,18 @@
     }
   }
 
+  // selected
+  .clr-treenode-content .clr-treenode-link.active,
+  .clr-treenode-checkbox input[type='checkbox']:checked + .clr-control-label {
+    &:hover {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-selected-hover-color;
+    }
+
+    &:active {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-selected-active-color;
+    }
+  }
+
   .clr-treenode-caret {
     //Display
     flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;

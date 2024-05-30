@@ -44,6 +44,8 @@
 
     --clr-tree-node-content-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
     --clr-tree-node-content-bg-selected-color: var(--clr-tree-link-selection-color);
+    --clr-tree-node-content-bg-selected-hover-color: var(--cds-alias-object-interaction-background-selected-hover);
+    --clr-tree-node-content-bg-selected-active-color: var(--cds-alias-object-interaction-background-selected-active);
 
     --clr-tree-node-content-disabled-color: #{tokens.$cds-alias-typography-disabled};
     --clr-tree-node-content-bg-disabled-color: #{tokens.$cds-alias-object-opacity-0};
