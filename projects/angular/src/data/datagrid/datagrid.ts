@@ -78,6 +78,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   },
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
+
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
   @Input() clrDetailExpandableAriaLabel: string = this.commonStrings.keys.detailExpandableAriaLabel;
@@ -115,6 +117,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef;
   @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
@@ -123,6 +126,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
 
   selectAllId: string;
+  hasVirtualScroller: boolean;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -143,11 +147,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private renderer: Renderer2,
     public detailService: DetailService,
     @Inject(DOCUMENT) private document: any,
-    private el: ElementRef,
+    public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    private keyNavigation: KeyNavigationGridController,
+    public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
@@ -274,7 +278,19 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           /**
            * Reopen updated row or close it
            */
-          row ? this.detailService.open(row.item, row.detailButton.nativeElement) : this.detailService.close();
+          if (row) {
+            this.detailService.open(row.item, row.detailButton.nativeElement);
+          } else if (!this.hasVirtualScroller || !row) {
+            this.detailService.close();
+          }
+        }
+
+        // retain active cell when navigating with PageUp and PageDown buttons in virtual scroller
+        const active = this.keyNavigation.getActiveCell();
+        if (active) {
+          this.zone.runOutsideAngular(() => {
+            setTimeout(() => this.keyNavigation.setActiveCell(active));
+          });
         }
       })
     );

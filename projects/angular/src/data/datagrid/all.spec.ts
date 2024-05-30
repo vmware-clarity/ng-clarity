@@ -39,6 +39,7 @@ import DatagridPaginationSpecs from './datagrid-pagination.spec';
 import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
+import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import { addHelpers } from './helpers.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
@@ -92,6 +93,7 @@ describe('Datagrid', function () {
     DatagridFooterSpecs();
     DatagridPlaceholderSpecs();
     DatagridSpecs();
+    DatagridVirtualScrollSpec();
     DatagridColumnToggleSpecs();
     DatagridColumnToggleButtonSpecs();
     DatagridHideableColumnDirectiveSpec();
