@@ -1439,8 +1439,6 @@ export class ClrDatagridDetailBody {
 export class ClrDatagridDetailHeader {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    close(): void;
-    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
