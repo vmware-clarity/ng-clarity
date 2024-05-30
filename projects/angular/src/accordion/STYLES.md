@@ -2,30 +2,32 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                              | Description                                                         |
-| ------------------------------------------------ | ------------------------------------------------------------------- |
-| --clr-accordion-text-color                       | Text color of the accordion component.                              |
-| --clr-accordion-text-color-hover                 | Text color of the accordion header when hovered.                    |
-| --clr-accordion-text-color-active                | Text color of the accordion header when active.                     |
-| --clr-accordion-text-color-selected              | Text color of the accordion header when selected.                   |
-| --clr-accordion-panel-disabled-color             | Text color of the accordion header when disabled.                   |
-| --clr-accordion-active-background-color          | Background color of the active accordion panel.                     |
-| --clr-accordion-content-background-color         | Background color of the accordion content area.                     |
-| --clr-accordion-content-color                    | Color of the text in the accordion content area.                    |
-| --clr-accordion-content-font-size                | DEPRECATED Font size of the text in the accordion content area.     |
-| --clr-accordion-header-background-color          | Background color of the accordion header.                           |
-| --clr-accordion-header-disabled-background-color | Background color of the accordion header when disabled.             |
-| --clr-accordion-header-hover-background-color    | Background color of the accordion header on hover.                  |
-| --clr-accordion-header-active-background-color   | Background color of the accordion header when active.               |
-| --clr-accordion-error-color                      | Color representing an error state in the accordion.                 |
-| --clr-accordion-complete-color                   | Color representing a completed state in the accordion.              |
-| --clr-accordion-border-color                     | Color of the accordion border.                                      |
-| --clr-accordion-border-radius                    | Border radius of the accordion.                                     |
-| --clr-accordion-border-left-color-complete       | Color of the left border in the accordion for the complete state.   |
-| --clr-accordion-border-left-color-error          | Color of the left border in the accordion for the error state.      |
-| --clr-accordion-header-left-indicator            | Left indicator style for the accordion header.                      |
-| --clr-accordion-header-left-current-indicator    | Left indicator style for the accordion header when on current step. |
-| --clr-accordion-step-title-min-width             | Sets the min-width for the step title.                              |
+| CSS Custom Property                                 | Description                                                         |
+| --------------------------------------------------- | ------------------------------------------------------------------- |
+| --clr-accordion-text-color                          | Text color of the accordion component.                              |
+| --clr-accordion-text-color-hover                    | Text color of the accordion header when hovered.                    |
+| --clr-accordion-text-color-active                   | Text color of the accordion header when active.                     |
+| --clr-accordion-text-color-selected                 | Text color of the accordion header when selected.                   |
+| --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                   |
+| --clr-accordion-active-background-color             | Background color of the active accordion panel.                     |
+| --clr-accordion-content-background-color            | Background color of the accordion content area.                     |
+| --clr-accordion-content-color                       | Color of the text in the accordion content area.                    |
+| --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.     |
+| --clr-accordion-header-background-color             | Background color of the accordion header.                           |
+| --clr-accordion-header-disabled-background-color    | Background color of the accordion header when disabled.             |
+| --clr-accordion-header-hover-background-color       | Background color of the accordion header on hover.                  |
+| --clr-accordion-header-active-background-color      | Background color of the accordion header when active.               |
+| --clr-accordion-header-open-hover-background-color  | Background color of the accordion header when opened and hovered.   |
+| --clr-accordion-header-open-active-background-color | Background color of the accordion header when opened and :active.   |
+| --clr-accordion-error-color                         | Color representing an error state in the accordion.                 |
+| --clr-accordion-complete-color                      | Color representing a completed state in the accordion.              |
+| --clr-accordion-border-color                        | Color of the accordion border.                                      |
+| --clr-accordion-border-radius                       | Border radius of the accordion.                                     |
+| --clr-accordion-border-left-color-complete          | Color of the left border in the accordion for the complete state.   |
+| --clr-accordion-border-left-color-error             | Color of the left border in the accordion for the error state.      |
+| --clr-accordion-header-left-indicator               | Left indicator style for the accordion header.                      |
+| --clr-accordion-header-left-current-indicator       | Left indicator style for the accordion header when on current step. |
+| --clr-accordion-step-title-min-width                | Sets the min-width for the step title.                              |
 
 ## CSS Classes
 
