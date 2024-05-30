@@ -19,6 +19,6 @@
   --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
-  --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-blue-600};
-  --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-blue-700};
+  --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-700};
 }

@@ -25,6 +25,12 @@ $clr-vertical-nav-min-width: var(--clr-vertical-nav-min-width) !default;
 $clr-vertical-nav-item-active-font-weight: var(--clr-vertical-nav-item-active-font-weight) !default;
 
 $clr-vertical-nav-selected-bg-color: var(--clr-vertical-nav-selected-bg-color) !default;
+$clr-vertical-nav-selected-hover-bg-color: var(
+  --clr-vertical-nav-selected-hover-bg-color
+); // var(--clr-color-neutral-0);
+$clr-vertical-nav-selected-active-bg-color: var(
+  --clr-vertical-nav-selected-active-bg-color
+); // var(--clr-color-neutral-0);
 $clr-vertical-nav-active-bg-color: var(--clr-vertical-nav-active-bg-color) !default;
 $clr-vertical-nav-active-color: var(--clr-vertical-nav-active-color) !default;
 $clr-vertical-nav-item-top-level-font-weight: var(--clr-vertical-nav-item-top-level-font-weight) !default;
