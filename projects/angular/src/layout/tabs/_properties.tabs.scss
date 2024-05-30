@@ -14,7 +14,7 @@
       --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
       --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
-      --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-hover);
+      --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
       --clr-nav-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
 
       --clr-nav-link-color: #{tokens.$cds-alias-object-interaction-color};
