@@ -26,32 +26,38 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
          from scrolling when a stack block is toggled via the space key. -->
-    <div
-      class="stack-block-label"
-      (click)="toggleExpand($event)"
-      (keyup.enter)="toggleExpand($event)"
-      (keyup.space)="toggleExpand($event)"
-      (keydown.space)="preventDefaultIfNotInputEvent($event)"
-      (focus)="focused = true"
-      (blur)="focused = false"
-      [id]="uniqueId"
-      [attr.role]="role"
-      [attr.tabindex]="tabIndex"
-      [attr.aria-expanded]="ariaExpanded"
-      [attr.aria-controls]="getStackChildrenId()"
-    >
-      <cds-icon shape="angle" class="stack-block-caret" *ngIf="expandable" [attr.direction]="caretDirection"></cds-icon>
-      <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
-      <div class="stack-view-key">
-        <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
-        <!-- I added the key class to update css targets for the original component style -->
-        <ng-content select="clr-stack-label"></ng-content>
-      </div>
-      <div class="stack-block-content">
-        <ng-content></ng-content>
+    <div class="stack-block-heading" [attr.role]="sbAriaRole" [attr.aria-level]="headingLevel">
+      <div
+        class="stack-block-label"
+        (click)="toggleExpand($event)"
+        (keyup.enter)="toggleExpand($event)"
+        (keyup.space)="toggleExpand($event)"
+        (keydown.space)="preventDefaultIfNotInputEvent($event)"
+        (focus)="focused = true"
+        (blur)="focused = false"
+        [id]="uniqueId"
+        [attr.role]="role"
+        [attr.tabindex]="tabIndex"
+        [attr.aria-expanded]="ariaExpanded"
+        [attr.aria-controls]="getStackChildrenId()"
+      >
+        <cds-icon
+          shape="angle"
+          class="stack-block-caret"
+          *ngIf="expandable"
+          [attr.direction]="caretDirection"
+        ></cds-icon>
+        <span class="clr-sr-only" *ngIf="getChangedValue">{{ commonStrings.keys.stackViewChanged }}</span>
+        <div class="stack-view-key">
+          <!-- This structure changed to fix #3567 and the a11y request was to move away from dl's -->
+          <!-- I added the key class to update css targets for the original component style -->
+          <ng-content select="clr-stack-label"></ng-content>
+        </div>
+        <div class="stack-block-content">
+          <ng-content></ng-content>
+        </div>
       </div>
     </div>
-
     <clr-expandable-animation [clrExpandTrigger]="expanded" class="stack-children">
       <div
         [style.height]="expanded ? 'auto' : 0"
@@ -75,8 +81,6 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
   // Make sure the host has the proper class for styling purposes
   host: {
     '[class.stack-block]': 'true',
-    '[attr.role]': '"heading"',
-    '[attr.aria-level]': 'headingLevel',
   },
 })
 export class ClrStackBlock implements OnInit {
@@ -87,6 +91,7 @@ export class ClrStackBlock implements OnInit {
    * Depth of the stack view starting from 1 for first level
    */
   @Input('clrStackViewLevel') ariaLevel: number;
+  @Input('clrSbAriaRole') ariaRole: string;
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
@@ -143,11 +148,22 @@ export class ClrStackBlock implements OnInit {
   }
 
   get headingLevel() {
-    if (this.ariaLevel) {
-      return this.ariaLevel + '';
-    }
+    if (this.ariaRole && this.ariaRole === 'heading') {
+      if (this.ariaLevel) {
+        return this.ariaLevel + '';
+      }
 
-    return this.parent ? '4' : '3';
+      return this.parent ? '4' : '3';
+    }
+    return null;
+  }
+
+  get sbAriaRole() {
+    if (this.ariaRole === 'undefined') {
+      return null;
+    }
+    this.ariaRole = this.ariaRole ? this.ariaRole : 'heading';
+    return this.ariaRole;
   }
 
   get caretDirection(): string {

@@ -30,6 +30,7 @@ export default {
   args: {
     // inputs
     clrSbExpandable: undefined,
+    clrSbAriaRole: 'heading',
     // outputs
     clrSbExpandedChange: action('clrSbExpandedChange'),
     // story helpers
@@ -49,6 +50,7 @@ const StackViewTemplate: StoryFn = args => ({
         [clrStackViewLevel]="clrStackViewLevel"
         (clrSbExpandedChange)="clrSbExpandedChange($event)"
         [clrSbNotifyChange]="clrSbNotifyChange"
+        ${args.clrSbAriaRole === undefined ? '' : '[clrSbAriaRole]="clrSbAriaRole"'}
       >
         <clr-stack-label>{{ label }}</clr-stack-label>
         <clr-stack-content>{{ content }}</clr-stack-content>

@@ -357,11 +357,11 @@ export default function (): void {
       tick();
       fixture.detectChanges();
 
-      const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
+      const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable .stack-block-heading');
       expect(topLevelBlock.getAttribute('role')).toBe('heading');
       expect(topLevelBlock.getAttribute('aria-level')).toBe('3');
 
-      const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block');
+      const childBlocks = fixture.nativeElement.querySelectorAll('.stack-children .stack-block .stack-block-heading');
       childBlocks.forEach(blok => {
         expect(blok.getAttribute('role')).toBe('heading');
         expect(blok.getAttribute('aria-level')).toBe('4');
