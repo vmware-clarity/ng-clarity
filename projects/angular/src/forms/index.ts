@@ -10,6 +10,7 @@ export * from './checkbox/index';
 export * from './combobox/index';
 export * from './datalist/index';
 export * from './datepicker/index';
+export * from './file-input/index';
 export * from './input/index';
 export * from './password/index';
 export * from './radio/index';
