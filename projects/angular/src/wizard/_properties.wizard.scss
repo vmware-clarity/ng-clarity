@@ -26,11 +26,16 @@
       --clr-wizard-stepnav-item-border-color: #{tokens.$cds-alias-status-neutral-tint};
       --clr-wizard-stepnav-border-size: #{tokens.$cds-global-space-3};
       --clr-wizard-stepnav-item-border-color--active: #{tokens.$cds-alias-status-success};
+      // @TODO v18 remove in favor of --clr-wizard-stepnav-selected-bgcolor
       --clr-wizard-stepnav-active-bgcolor: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-active-bgcolor);
+      --clr-wizard-stepnav-selected-hover-bgcolor: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-wizard-stepnav-selected-active-bgcolor: var(--cds-alias-object-interaction-background-selected-active);
       --clr-wizard-stepnav-link-error-icon-color: #{tokens.$cds-alias-status-danger};
 
       --clr-wizard-stepnav-border-color: #{tokens.$cds-alias-object-container-border-color};
       --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-wizard-stepnav-link-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-wizard-stepnav-link-padding: calc(#{tokens.$cds-global-space-5} - #{tokens.$cds-global-space-1});
       --clr-wizard-stepnav-item-error-border-color: #{tokens.$cds-alias-status-danger};
 
