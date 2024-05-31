@@ -7,10 +7,10 @@
 
 import { ClrAlert, ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { ALERT_TYPES } from '../../../projects/angular/src/emphasis/alert/utils/alert-types';
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Alert/Standard Alerts',
@@ -165,9 +165,7 @@ export const WithActions: StoryObj = {
 
 export const WithOpenActionsDropdown: StoryObj = {
   render: AlertTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
-  },
+  play: openDropdown,
   args: {
     itemCount: 1,
     showActions: true,
@@ -177,9 +175,7 @@ export const WithOpenActionsDropdown: StoryObj = {
 
 export const WithLongContentAndOpenActionsDropdown: StoryObj = {
   render: AlertTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
-  },
+  play: openDropdown,
   args: {
     itemCount: 1,
     content: `
@@ -193,3 +189,11 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
     ALERT_TYPES: ['info'],
   },
 };
+
+function openDropdown({ canvasElement }: StoryContext) {
+  canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
+
+  setTimeout(() => {
+    removeFocusOutline({ canvasElement });
+  }, 0);
+}
