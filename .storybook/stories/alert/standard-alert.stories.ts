@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
+import { ClrAlert, ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -17,7 +17,7 @@ export default {
   component: ClrAlert,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrAlertModule],
+      imports: [...CommonModules, ClrAlertModule, ClrDropdownModule],
     }),
   ],
   argTypes: {
@@ -72,6 +72,7 @@ export default {
     createArray: n => new Array(n),
     itemCount: 3,
     content: 'Hello World!',
+    showActions: false,
     ALERT_TYPES,
   },
 };
@@ -89,6 +90,20 @@ const template = `
     >
       <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
         <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+        <div *ngIf="showActions" class="alert-actions">
+          <clr-dropdown>
+            <button clrDropdownTrigger>
+              Actions
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu clrPosition="bottom-right">
+              <a href="javascript://" clrDropdownItem>Shutdown</a>
+              <a href="javascript://" clrDropdownItem>Delete</a>
+              <a href="javascript://" clrDropdownItem>Reboot</a>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+          <a class="alert-action" href="javascript://">Ignore</a>
+        </div>
       </clr-alert-item>
     </clr-alert>
   </div>
@@ -138,5 +153,43 @@ export const DifferentIcon: StoryObj = {
   render: AlertTemplate,
   args: {
     clrAlertIcon: 'settings',
+  },
+};
+
+export const WithActions: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    showActions: true,
+  },
+};
+
+export const WithOpenActionsDropdown: StoryObj = {
+  render: AlertTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
+  },
+  args: {
+    itemCount: 1,
+    showActions: true,
+    ALERT_TYPES: ['info'],
+  },
+};
+
+export const WithLongContentAndOpenActionsDropdown: StoryObj = {
+  render: AlertTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
+  },
+  args: {
+    itemCount: 1,
+    content: `
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    `,
+    showActions: true,
+    ALERT_TYPES: ['info'],
   },
 };
