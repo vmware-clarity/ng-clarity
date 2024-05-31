@@ -33,8 +33,12 @@ $clr-dropdown-item-bg-color: var(--clr-dropdown-item-bg-color) !default;
 $clr-dropdown-item-hover-color: var(--clr-dropdown-item-hover-color) !default;
 $clr-dropdown-item-hover-bg-color: $clr-dropdown-bg-hover-color !default; // var(--clr-dropdown-item-hover-bg-color) !default;
 $clr-dropdown-item-active-color: var(--clr-dropdown-item-active-color) !default;
-$clr-dropdown-item-active-bg-color: $clr-dropdown-selection-color !default; // var(--clr-dropdown-item-active-bg-color) !default;
+$clr-dropdown-item-active-bg-color: var(
+  --clr-dropdown-item-active-bg-color
+) !default; // var(--clr-dropdown-item-active-bg-color) !default;
 $clr-dropdown-item-selected-color: var(--clr-dropdown-item-selected-color) !default;
 $clr-dropdown-item-selected-bg-color: var(--clr-dropdown-item-selected-bg-color) !default;
+$clr-dropdown-item-selected-hover-bg-color: var(--clr-dropdown-item-selected-hover-bg-color) !default;
+$clr-dropdown-item-selected-active-bg-color: var(--clr-dropdown-item-selected-active-bg-color) !default;
 $clr-dropdown-item-disabled-color: var(--clr-dropdown-item-disabled-color) !default;
 $clr-dropdown-item-disabled-bg-color: var(--clr-dropdown-item-disabled-bg-color) !default;

@@ -193,11 +193,14 @@
     }
 
     & > .clr-accordion-header {
-      background: accordion-variables.$clr-accordion-active-background-color;
+      background: accordion-variables.$clr-accordion-header-open-background-color;
 
+      &:hover {
+        background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+      }
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
-        background-color: accordion-variables.$clr-accordion-header-active-background-color;
+        background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
       }
 
       .clr-accordion-angle {

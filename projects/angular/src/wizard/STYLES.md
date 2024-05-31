@@ -2,33 +2,36 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                            | Description                                                         |
-| ---------------------------------------------- | ------------------------------------------------------------------- |
-| --clr-wizard-main-bgcolor                      | Wizard background color                                             |
-| --clr-wizard-stepnav-bgcolor                   | Wizard navigation background color                                  |
-| --clr-wizard-main-text-color                   | Wizard text color                                                   |
-| --clr-wizard-stepnav-text                      | Wizard navigation text color                                        |
-| --clr-wizard-stepnav-text--active              | Wizard navigation text color of the currently active element        |
-| --clr-wizard-title-text                        | Wizard title text color                                             |
-| --clr-wizard-stepnav-border-size               | Wizard navigation border size                                       |
-| --clr-wizard-stepnav-item-border-color         | Wizard navigation border color                                      |
-| --clr-wizard-stepnav-item-border-color--active | Wizard navigation border color for the currently active element     |
-| --clr-wizard-stepnav-active-bgcolor            | Wizard navigation background color for the currently active element |
-| --clr-wizard-header-action-color               | Wizard header actions color                                         |
-| --clr-wizard-header-action-color--hovered      | Wizard header actions color on hover                                |
-| --clr-wizard-border-radius                     | Wizard border radius                                                |
-| --clr-wizard-stepnav-border-color              | Wizard navigation border color                                      |
-| --clr-wizard-box-shadow                        | Wizard highlight indication                                         |
-| --clr-wizard-stepnav-link-font-size            | Wizard navigation item font size                                    |
-| --clr-wizard-stepnav-link-line-height          | Wizard navigation item line height                                  |
-| --clr-wizard-stepnav-link-padding              | Wizard navigation item button padding                               |
-| --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                      |
-| --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                           |
-| --clr-wizard-footer-height                     | Wizard page footer height                                           |
-| --clr-wizard-stepnav-link-hover-bg-color       | Wizard navigation item button background color on hover             |
-| --clr-wizard-title-font-size                   | Wizard title font size                                              |
-| --clr-wizard-title-line-height                 | Wizard title line height                                            |
-| --clr-wizard-content-background-color          | Wizard content background color                                     |
+| CSS Custom Property                            | Description                                                                               |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| --clr-wizard-main-bgcolor                      | Wizard background color                                                                   |
+| --clr-wizard-stepnav-bgcolor                   | Wizard navigation background color                                                        |
+| --clr-wizard-main-text-color                   | Wizard text color                                                                         |
+| --clr-wizard-stepnav-text                      | Wizard navigation text color                                                              |
+| --clr-wizard-stepnav-text--active              | Wizard navigation text color of the currently active element                              |
+| --clr-wizard-title-text                        | Wizard title text color                                                                   |
+| --clr-wizard-stepnav-border-size               | Wizard navigation border size                                                             |
+| --clr-wizard-stepnav-item-border-color         | Wizard navigation border color                                                            |
+| --clr-wizard-stepnav-item-border-color--active | Wizard navigation border color for the currently active element                           |
+| --clr-wizard-stepnav-active-bgcolor            | _Deprecated in v18_ Wizard navigation background color for the currently selected element |
+| --clr-wizard-stepnav-selected-bgcolor          | Wizard navigation background color for the currently selected element                     |
+| --clr-wizard-stepnav-selected-hover-bgcolor    | Wizard navigation background color for the currently hovered selected element             |
+| --clr-wizard-stepnav-selected-active-bgcolor   | Wizard navigation background color for the currently active selected element              |
+| --clr-wizard-header-action-color               | Wizard header actions color                                                               |
+| --clr-wizard-header-action-color--hovered      | Wizard header actions color on hover                                                      |
+| --clr-wizard-border-radius                     | Wizard border radius                                                                      |
+| --clr-wizard-stepnav-border-color              | Wizard navigation border color                                                            |
+| --clr-wizard-box-shadow                        | Wizard highlight indication                                                               |
+| --clr-wizard-stepnav-link-font-size            | Wizard navigation item font size                                                          |
+| --clr-wizard-stepnav-link-line-height          | Wizard navigation item line height                                                        |
+| --clr-wizard-stepnav-link-padding              | Wizard navigation item button padding                                                     |
+| --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                                            |
+| --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                                                 |
+| --clr-wizard-footer-height                     | Wizard page footer height                                                                 |
+| --clr-wizard-stepnav-link-hover-bg-color       | Wizard navigation item button background color on hover                                   |
+| --clr-wizard-title-font-size                   | Wizard title font size                                                                    |
+| --clr-wizard-title-line-height                 | Wizard title line height                                                                  |
+| --clr-wizard-content-background-color          | Wizard content background color                                                           |
 
 ## CSS Classes
 

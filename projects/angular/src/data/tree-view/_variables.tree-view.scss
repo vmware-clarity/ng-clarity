@@ -44,16 +44,18 @@ $clr-tree-node-caret-disabled-color: $clr-tree-node-caret-link-disabled-color !d
 $clr-tree-node-content-text-only-color: var(--clr-tree-node-content-text-only-color) !default;
 
 $clr-tree-node-content-color: $clr-tree-link-text-color !default;
-$clr-tree-node-content-bg-color: var(--clr-tree-node-content-bg-color);
+$clr-tree-node-content-bg-color: var(--clr-tree-node-content-bg-color) !default;
 
-$clr-tree-node-content-hover-color: var(--clr-tree-node-content-hover-color);
+$clr-tree-node-content-hover-color: var(--clr-tree-node-content-hover-color) !default;
 $clr-tree-node-content-bg-hover-color: $clr-tree-link-hover-color !default;
 
-$clr-tree-node-content-active-color: var(--clr-tree-node-content-active-color);
-$clr-tree-node-content-bg-active-color: var(--clr-tree-node-content-bg-active-color);
+$clr-tree-node-content-active-color: var(--clr-tree-node-content-active-color) !default;
+$clr-tree-node-content-bg-active-color: var(--clr-tree-node-content-bg-active-color) !default;
 
 $clr-tree-node-content-selected-color: var(--clr-tree-node-content-selected-color);
 $clr-tree-node-content-bg-selected-color: $clr-tree-link-selection-color !default;
+$clr-tree-node-content-bg-selected-hover-color: var(--clr-tree-node-content-bg-selected-hover-color) !default;
+$clr-tree-node-content-bg-selected-active-color: var(--clr-tree-node-content-bg-selected-active-color) !default;
 
-$clr-tree-node-content-disabled-color: var(--clr-tree-node-content-disabled-color);
-$clr-tree-node-content-bg-disabled-color: var(--clr-tree-node-content-bg-disabled-color);
+$clr-tree-node-content-disabled-color: var(--clr-tree-node-content-disabled-color) !default;
+$clr-tree-node-content-bg-disabled-color: var(--clr-tree-node-content-bg-disabled-color) !default;

@@ -66,11 +66,17 @@
     color: dropdown-variables.$clr-dropdown-item-hover-color;
     background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
     text-decoration: none;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-hover-bg-color;
+    }
   }
 
   &:active {
     color: dropdown-variables.$clr-dropdown-item-active-color;
     background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-active-bg-color;
+    }
   }
 
   &:focus {

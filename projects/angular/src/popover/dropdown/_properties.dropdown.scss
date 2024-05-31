@@ -47,6 +47,8 @@
       --clr-dropdown-item-selected-bg-color: var(
         --clr-dropdown-selection-color
       ); // #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-dropdown-item-selected-hover-bg-color: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-dropdown-item-selected-active-bg-color: var(--cds-alias-object-interaction-background-selected-active);
       --clr-dropdown-item-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
       --clr-dropdown-item-disabled-bg-color: transparent; // #{tokens.$cds-alias-object-interaction-background-disabled};
     }
