@@ -28,7 +28,6 @@ import { DetailService } from './providers/detail.service';
       [id]="detailService.id"
       aria-modal="true"
       [attr.aria-labelledby]="labelledBy"
-      [attr.aria-describedby]="ariaDescribedBy ? ariaDescribedBy : null"
       [attr.aria-label]="ariaLabel ? ariaLabel : null"
     >
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneStart }}</div>
@@ -40,7 +39,6 @@ import { DetailService } from './providers/detail.service';
 export class ClrDatagridDetail {
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
-  @Input('clrDetailAriaDescribedBy') ariaDescribedBy: string;
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
   @Input('clrDetailAriaLabel') ariaLabel: string;
 
