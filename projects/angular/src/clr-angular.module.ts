@@ -15,6 +15,7 @@ import { ClrFormsModule } from './forms/forms.module';
 import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
+import { ClrSidePanelModule } from './modal/side-panel.module';
 import { ClrPopoverModule } from './popover/popover.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
@@ -42,6 +43,7 @@ import '@cds/core/icon/register';
     ClrLayoutModule,
     ClrPopoverModule,
     ClrWizardModule,
+    ClrSidePanelModule,
     ClrStepperModule,
     ClrSpinnerModule,
     ClrProgressBarModule,

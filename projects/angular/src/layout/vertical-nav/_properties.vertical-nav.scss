@@ -33,7 +33,13 @@
       --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
       --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
-      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background}; // var(--clr-color-neutral-0);
+      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background-selected}; // var(--clr-color-neutral-0);
+      --clr-vertical-nav-selected-hover-bg-color: var(
+        --cds-alias-object-interaction-background-selected-hover
+      ); // var(--clr-color-neutral-0);
+      --clr-vertical-nav-selected-active-bg-color: var(
+        --cds-alias-object-interaction-background-selected-active
+      ); // var(--clr-color-neutral-0);
       --clr-vertical-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
@@ -52,6 +58,10 @@
       // Vertical Nav - Header
       --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
       --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
+    }
+    // @TODO use proper background for both dark and light theme.
+    [cds-theme~='dark'] {
+      --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background};
     }
   }
 }

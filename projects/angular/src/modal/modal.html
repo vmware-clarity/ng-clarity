@@ -10,8 +10,8 @@
   <div
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-    [@fadeDown]="skipAnimation"
-    (@fadeDown.done)="fadeDone($event)"
+    [@fadeMove]="fadeMove"
+    (@fadeMove.done)="fadeDone($event)"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -19,7 +19,7 @@
     role="dialog"
     aria-modal="true"
     [attr.aria-hidden]="!_open"
-    [attr.aria-labelledby]="labelledBy"
+    [attr.aria-labelledby]="labelledBy || modalId"
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <div class="modal-content-wrapper">
@@ -50,5 +50,5 @@
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
 
-  <div [@fade] class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
+  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
 </div>

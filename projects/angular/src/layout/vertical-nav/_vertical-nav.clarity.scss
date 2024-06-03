@@ -25,6 +25,12 @@
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
     }
+    &:hover {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
+    }
+    &:active {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
+    }
   }
 
   &:hover {
@@ -371,6 +377,12 @@
       }
       .nav-link:active ~ .nav-group-trigger {
         background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
+      }
+      .nav-link.active:hover ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
+      }
+      .nav-link.active:active ~ .nav-group-trigger {
+        background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
       }
     }
 

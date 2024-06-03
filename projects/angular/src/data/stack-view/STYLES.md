@@ -19,6 +19,8 @@
 | --clr-stack-view-expandable-row-bg-active                              | Background `:active` color of expandable stack view row         |
 | --clr-stack-view-expanded-row-color                                    | Text and caret color of expanded stack view row                 |
 | --clr-stack-view-expanded-row-bg-color                                 | Background color of expanded stack view row                     |
+| --clr-stack-view-expanded-hover-row-bg-color                           | Background color of hover on expanded stack view row            |
+| --clr-stack-view-expanded-active-row-bg-color                          | Background color of active on expanded stack view row           |
 | --clr-stack-view-row-font-size                                         | Font size for stack view row                                    |
 | --clr-stack-view-row-font-weight                                       | Font weight for stack view row                                  |
 | --clr-stack-view-row-line-height                                       | Line height for stack view row                                  |
