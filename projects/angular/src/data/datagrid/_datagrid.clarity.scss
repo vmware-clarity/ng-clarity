@@ -278,12 +278,18 @@
       }
     }
 
-    &.datagrid-row-loading .datagrid-cell {
-      display: flex;
-      padding: tokens.$cds-global-space-9;
-      align-items: center;
-      gap: tokens.$cds-global-space-6;
-      justify-content: center;
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        padding: tokens.$cds-global-space-9;
+        align-items: center;
+        gap: tokens.$cds-global-space-6;
+        justify-content: center;
+      }
     }
   }
 
