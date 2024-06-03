@@ -173,17 +173,32 @@
       padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
       color: wizard-variables.$clr-wizard-stepnav-text;
 
-      &:not(.disabled):hover .clr-wizard-stepnav-link {
-        color: wizard-variables.$clr-wizard-stepnav-text--active;
-        background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
-      }
-
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         .clr-wizard-stepnav-link {
           color: wizard-variables.$clr-wizard-stepnav-text--active;
-          background-color: wizard-variables.$clr-wizard-stepnav-active-bgcolor;
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
           border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
+        }
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          .clr-wizard-stepnav-link {
+            color: wizard-variables.$clr-wizard-stepnav-text--active;
+            background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
+          }
+          &.active .clr-wizard-stepnav-link {
+            background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
+          }
+        }
+        &:active {
+          .clr-wizard-stepnav-link {
+            background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
+          }
+          &.active .clr-wizard-stepnav-link {
+            background-color: wizard-variables.$clr-wizard-stepnav-selected-active-bgcolor;
+          }
         }
       }
 

@@ -218,6 +218,17 @@
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
     }
 
+    &.datagrid-selected {
+      &:hover,
+      &:hover .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
+      }
+      &:active,
+      &:active .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-row-selected-active-background-color;
+      }
+    }
+
     &:active,
     &:active .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
