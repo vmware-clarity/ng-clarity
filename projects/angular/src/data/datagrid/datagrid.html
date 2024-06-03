@@ -76,21 +76,25 @@
           </div>
 
           <div role="presentation" class="datagrid-rows">
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </clr-dg-cell>
-            </clr-dg-row>
+            <div role="row" class="datagrid-row datagrid-row-loading" *ngIf="loadingMoreItems">
+              <div class="datagrid-row-master datagrid-row-flex">
+                <div class="datagrid-cell">
+                  <clr-spinner [clrMedium]="true"></clr-spinner>
+                  <span>{{ commonStrings.keys.loading }}</span>
+                </div>
+              </div>
+            </div>
 
             <ng-container #displayedRows></ng-container>
 
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
-                <span>{{ commonStrings.keys.loading }}</span>
-              </clr-dg-cell>
-            </clr-dg-row>
+            <div role="row" class="datagrid-row datagrid-row-loading" *ngIf="loadingMoreItems">
+              <div class="datagrid-row-master datagrid-row-flex">
+                <div class="datagrid-cell">
+                  <clr-spinner [clrMedium]="true"></clr-spinner>
+                  <span>{{ commonStrings.keys.loading }}</span>
+                </div>
+              </div>
+            </div>
 
             <!-- Custom placeholder overrides the default empty one -->
             <ng-content select="clr-dg-placeholder"></ng-content>
