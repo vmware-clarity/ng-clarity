@@ -1460,6 +1460,8 @@ export class ClrDatagridDetail {
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
+    get label(): string;
+    // (undocumented)
     get labelledBy(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": "clrDetailAriaLabelledBy"; "ariaLabel": "clrDetailAriaLabel"; }, {}, ["header"], ["*"], false, never>;
