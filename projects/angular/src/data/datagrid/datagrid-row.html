@@ -49,6 +49,7 @@
         >
           <clr-checkbox-wrapper>
             <input
+              tabindex="-1"
               type="checkbox"
               clrCheckbox
               [ngModel]="selected"
@@ -71,6 +72,7 @@
         >
           <clr-radio-wrapper>
             <input
+              tabindex="-1"
               type="radio"
               clrRadio
               [id]="radioId"
@@ -100,6 +102,7 @@
         >
           <ng-container *ngIf="expand.expandable">
             <button
+              tabindex="-1"
               *ngIf="!expand.loading"
               (click)="toggleExpand()"
               type="button"
@@ -124,6 +127,7 @@
           role="gridcell"
         >
           <button
+            tabindex="-1"
             (click)="detailService.toggle(item, detailButton)"
             type="button"
             #detailButton
