@@ -25,18 +25,16 @@ export default {
     elements: { control: { disable: true }, table: { disable: true } },
     detailContentType: { control: 'inline-radio', options: ['json', 'datagrid'] },
     clrDetailAriaLabel: {
-      type: 'text',
       description: 'Title of the modal',
     },
     clrDetailAriaLabelledBy: {
-      type: 'array',
       description: "Id or Id's referencing existing text on the page",
     },
   },
   args: {
     //inputs
     clrDetailAriaLabel: '',
-    clrDetailAriaLabelledBy: [],
+    clrDetailAriaLabelledBy: '',
     // story helpers
     elements,
     detailContentType: 'json',
@@ -107,8 +105,8 @@ const DetailTemplate: StoryFn = args => {
         <clr-dg-detail
           [ngClass]="{ highlight }"
           *clrIfDetail="let element"
-          [clrDetailAriaLabel]="clrDetailAriaLabel"
-          [clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"
+          ${args.clrDetailAriaLabel ? '[clrDetailAriaLabel]="clrDetailAriaLabel"' : ''}
+          ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
         >
           <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
           <clr-dg-detail-body [ngSwitch]="detailContentType">

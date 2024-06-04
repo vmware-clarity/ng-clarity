@@ -28,7 +28,7 @@ import { DetailService } from './providers/detail.service';
       [id]="detailService.id"
       aria-modal="true"
       [attr.aria-labelledby]="labelledBy"
-      [attr.aria-label]="ariaLabel ? ariaLabel : null"
+      [attr.aria-label]="label"
     >
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneStart }}</div>
       <ng-content></ng-content>
@@ -45,8 +45,16 @@ export class ClrDatagridDetail {
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
   get labelledBy(): string {
-    if (!this.ariaLabel) {
-      return this.ariaLabelledBy ? this.ariaLabelledBy : this.header ? this.header.titleId : '';
+    if (this.ariaLabelledBy) {
+      return this.ariaLabelledBy;
+    } else {
+      return this.ariaLabel ? null : this.header ? this.header.titleId : '';
+    }
+  }
+
+  get label(): string {
+    if (!this.ariaLabelledBy) {
+      return this.ariaLabel ? this.ariaLabel : null;
     } else {
       return null;
     }
