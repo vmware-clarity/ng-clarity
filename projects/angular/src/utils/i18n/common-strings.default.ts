@@ -46,6 +46,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   signpostToggle: 'Signpost Toggle',
   signpostClose: 'Signpost Close',
   loading: 'Loading',
+  overlayPanelToggle: 'Overlay Panel Toggle',
+  overlayPanelClose: 'Overlay Panel Close',
   // Datagrid
   detailPaneStart: 'Start of row details',
   detailPaneEnd: 'End of row details',

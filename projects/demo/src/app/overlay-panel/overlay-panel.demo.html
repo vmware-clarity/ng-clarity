@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h4>Positions</h4>
+
+<div class="content-container">
+  <div class="content-area">
+    <div class="overlay-panel-demo">
+      <div class="overlay-panel-item" *ngFor="let position of positions">
+        <div class="overlay-panel-positions">
+          <div class="description">
+            <h4>{{ position.description }}</h4>
+          </div>
+          <div class="position">
+            <clr-overlay-panel>
+              <button
+                *ngIf="position.useCustomTrigger"
+                id="{{ position.id }}"
+                type="button"
+                class="btn btn-sm btn-link"
+                clrOverlayPanelTrigger
+              >
+                {{ position.text }}
+                <cds-icon shape="{{ position.icon }}"></cds-icon>
+              </button>
+              <clr-overlay-panel-content
+                #panelContent
+                *clrIfOpen="openState"
+                [clrPosition]="position.position"
+                [minHeight]="'150px'"
+                [maxHeight]="'250px'"
+              >
+                <div class="overlay-panel-content">
+                  Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
+                  Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
+                  Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum
+                  versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem
+                  Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum
+                  Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
+                  Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
+                  Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum
+                  versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem
+                  Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum
+                  Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
+                  Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
+                  Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum
+                  versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem
+                  Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum
+                  Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
+                  Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
+                  Lorem Ipsum
+                  <button (click)="triggerClose(panelContent)">Close</button>
+                </div>
+              </clr-overlay-panel-content>
+            </clr-overlay-panel>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,403 @@
+/*
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.overlay-panel' as overlay-panel-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.overlay-panel');
+
+@include mixins.exports('overlay-panel.clarity') {
+  $clr-overlay-panel-pointer-size-negative: calc(-1 * overlay-panel-variables.$clr-overlay-panel-pointer-size);
+
+  .overlay-panel {
+    display: inline-block;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .overlay-panel-action:not(.close) {
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      color: overlay-panel-variables.$clr-overlay-panel-action-color;
+
+      cds-icon,
+      clr-icon {
+        @include mixins.equilateral(tokens.$cds-global-space-9);
+        color: overlay-panel-variables.$clr-overlay-panel-action-color;
+      }
+
+      cds-icon:hover,
+      clr-icon:hover,
+      &:hover {
+        color: overlay-panel-variables.$clr-overlay-panel-action-hover-color;
+      }
+
+      &.active cds-icon,
+      &.active clr-icon,
+      &.active {
+        color: overlay-panel-variables.$clr-overlay-panel-action-active-color;
+      }
+    }
+
+    .overlay-panel-content-header button {
+      line-height: 0;
+
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+
+      cds-icon,
+      clr-icon {
+        @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      }
+    }
+  }
+
+  .cdk-overlay-pane.top-left,
+  .cdk-overlay-pane.top-middle,
+  .cdk-overlay-pane.top-right {
+    .popover-pointer {
+      border-top: overlay-panel-variables.$clr-overlay-panel-pointer-border;
+      bottom: $clr-overlay-panel-pointer-size-negative;
+
+      &:before {
+        border-top: overlay-panel-variables.$clr-overlay-panel-pointer-pseudo-border;
+        bottom: tokens.$cds-global-space-2;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.top-left {
+    .overlay-panel-wrap {
+      border-bottom-right-radius: 0; // Turn off rounded corner here
+    }
+
+    .popover-pointer {
+      border-left: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      right: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-left: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        right: tokens.$cds-global-space-1;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.top-middle {
+    .popover-pointer {
+      border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      left: 50%;
+
+      &:before {
+        border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        left: tokens.$cds-global-space-1;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.top-right {
+    .overlay-panel-wrap {
+      border-bottom-left-radius: 0; // Turn off rounded corner here
+    }
+
+    .popover-pointer {
+      border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      left: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        left: tokens.$cds-global-space-1;
+      }
+    }
+  }
+  // End top-*
+
+  /***
+              The overlay-panel is below the icon top-{HORIZONTAL_POSITION}
+          */
+
+  .cdk-overlay-pane.bottom-left,
+  .cdk-overlay-pane.bottom-middle,
+  .cdk-overlay-pane.bottom,
+  .cdk-overlay-pane.bottom-right {
+    .popover-pointer {
+      border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-border;
+
+      top: $clr-overlay-panel-pointer-size-negative;
+
+      &:before {
+        border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-pseudo-border;
+        top: tokens.$cds-global-space-2;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.bottom-left {
+    .overlay-panel-wrap {
+      border-top-right-radius: 0; // Turn off rounded corners here
+    }
+
+    .popover-pointer {
+      border-left: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      right: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-left: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        right: tokens.$cds-global-space-1;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.bottom,
+  .cdk-overlay-pane.bottom-middle {
+    .popover-pointer {
+      border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      left: 50%;
+
+      &:before {
+        border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        right: calc($clr-overlay-panel-pointer-size-negative - tokens.$cds-global-space-1);
+      }
+    }
+  }
+
+  .cdk-overlay-pane.bottom-right {
+    .overlay-panel-wrap {
+      border-top-left-radius: 0; // Turn off rounded corners here
+    }
+
+    .popover-pointer {
+      border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      left: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-right: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        left: tokens.$cds-global-space-1;
+      }
+    }
+  }
+  // End bottom-*
+
+  /***
+              The overlay-panel is on the left side of the icon left-{VERTICAL_POSITION}
+           */
+
+  .cdk-overlay-pane.left-top,
+  .cdk-overlay-pane.left-middle,
+  .cdk-overlay-pane.left,
+  .cdk-overlay-pane.left-bottom {
+    .popover-pointer {
+      border-left: overlay-panel-variables.$clr-overlay-panel-pointer-border;
+
+      right: $clr-overlay-panel-pointer-size-negative;
+
+      &:before {
+        border-left: overlay-panel-variables.$clr-overlay-panel-pointer-pseudo-border;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.left-top {
+    .overlay-panel-wrap {
+      border-bottom-right-radius: 0; // Turn off rounded corners here
+    }
+
+    .popover-pointer {
+      border-top: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      bottom: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-top: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: calc($clr-overlay-panel-pointer-size-negative - tokens.$cds-global-space-1);
+        right: tokens.$cds-global-space-2;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.left-middle,
+  .cdk-overlay-pane.left {
+    .popover-pointer {
+      border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      top: 50%;
+
+      &:before {
+        border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: tokens.$cds-global-space-1;
+        left: calc($clr-overlay-panel-pointer-size-negative - tokens.$cds-global-space-2);
+      }
+    }
+  }
+
+  .cdk-overlay-pane.left-bottom {
+    .overlay-panel-wrap {
+      border-top-right-radius: 0; // Turn off rounded corners here
+    }
+
+    .popover-pointer {
+      border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      top: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: tokens.$cds-global-space-1;
+        left: calc($clr-overlay-panel-pointer-size-negative - tokens.$cds-global-space-2);
+      }
+    }
+  }
+  // End left-*
+
+  /***
+              The overlay-panel is on the right side of the icon right-{VERTICAL_POSITION}
+          */
+
+  .cdk-overlay-pane.right-top,
+  .cdk-overlay-pane.right-middle,
+  .cdk-overlay-pane.right-bottom {
+    .popover-pointer {
+      border-right: overlay-panel-variables.$clr-overlay-panel-pointer-border;
+      left: $clr-overlay-panel-pointer-size-negative;
+
+      &:before {
+        border-right: overlay-panel-variables.$clr-overlay-panel-pointer-pseudo-border;
+        left: tokens.$cds-global-space-2;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.right-top {
+    .overlay-panel-wrap {
+      border-bottom-left-radius: 0; // turn off rounded corner here
+    }
+
+    .popover-pointer {
+      border-top: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      bottom: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-top: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: calc($clr-overlay-panel-pointer-size-negative - tokens.$cds-global-space-1);
+      }
+    }
+  }
+
+  .cdk-overlay-pane.right-middle {
+    .popover-pointer {
+      border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      top: 50%;
+
+      &:before {
+        border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: tokens.$cds-global-space-1;
+      }
+    }
+  }
+
+  .cdk-overlay-pane.right-bottom {
+    .overlay-panel-wrap {
+      border-top-left-radius: 0; // turn off rounded corner here
+    }
+
+    .popover-pointer {
+      border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+      top: calc(-1 * tokens.$cds-global-space-1);
+
+      &:before {
+        border-bottom: overlay-panel-variables.$clr-overlay-panel-pointer-invisible-border;
+        top: tokens.$cds-global-space-1;
+      }
+    }
+  }
+
+  .overlay-panel-trigger {
+    margin: 0;
+    display: inline-flex;
+  }
+
+  .overlay-panel-content {
+    background-color: transparent;
+    min-width: mixins.baselinePx(216);
+    max-width: mixins.baselinePx(360);
+    min-height: tokens.$cds-global-space-12;
+    max-height: mixins.baselinePx(504);
+    display: inline-block;
+    position: relative;
+    z-index: map.get(variables.$clr-layers, tooltips);
+
+    &:hover {
+      cursor: default;
+    }
+
+    .popover-pointer {
+      @include mixins.equilateral(0);
+      position: absolute;
+
+      &:before {
+        content: '';
+        @include mixins.equilateral(0);
+        position: absolute;
+      }
+    }
+
+    /***
+             The overlay-panel is above the icon top-{HORIZONTAL_POSITION}
+         */
+    /***
+             TODO: Create a general mix-in for the popover-pointer that can
+             1. Accomadate all 12 positions
+             2. Unification for the nomenclature between components
+                 (if possible, I know they all use slightly different terms)
+             3. Be used across Tooltips, OverlayPanels (Do we also want it for Dropdowns)
+             4. What's up with the namespacing here? Usually we use `clr-*` to denote
+                 Clarity components but we aren't doing that in overlay-panels. We should
+                 consider it.
+          */
+
+    /* NOTE: overlay-panels need precise pixels for some measurements due to the design
+             Hence the 1px and 2px values you'll see below.
+ 
+             I've tested the calcs below while resizing the base font-size for the rem
+             measurements and they appear to hold up well.
+           */
+
+    // End right-*
+  }
+
+  .overlay-panel-content-header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    background-color: inherit;
+    top: 0;
+    border-radius: overlay-panel-variables.$clr-overlay-panel-border-radius;
+  }
+
+  .overlay-panel-wrap {
+    gap: tokens.$cds-global-space-5;
+    padding: tokens.$cds-global-space-7;
+    border: tokens.$cds-alias-object-border-width-100 solid
+      overlay-panel-variables.$clr-overlay-panel-content-border-color;
+    border-radius: overlay-panel-variables.$clr-overlay-panel-border-radius;
+    background-color: overlay-panel-variables.$clr-overlay-panel-content-bg-color;
+    z-index: map.get(variables.$clr-layers, tooltips);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overlay-panel-content-body {
+    padding: 0;
+    color: overlay-panel-variables.$clr-overlay-panel-content-color;
+    text-align: left;
+    max-height: mixins.baselinePx(480);
+    overflow-y: auto;
+
+    @include mixins.generate-typography-token('BODY-14-RG-CPT');
+  }
+}

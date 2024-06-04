@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// Usage: ../overlay-panel/_overlay-panel.clarity.scss
+$clr-overlay-panel-content-color: var(--clr-overlay-panel-content-color) !default;
+$clr-overlay-panel-content-bg-color: var(--clr-overlay-panel-content-bg-color) !default;
+$clr-overlay-panel-content-border-color: var(--clr-overlay-panel-content-border-color) !default;
+
+$clr-overlay-panel-action-color: var(--clr-overlay-panel-action-color) !default;
+$clr-overlay-panel-action-hover-color: var(--clr-overlay-panel-action-hover-color) !default;
+$clr-overlay-panel-action-active-color: var(--clr-overlay-panel-action-active-color) !default;
+
+$clr-overlay-panel-border-radius: var(--clr-overlay-panel-border-radius) !default;
+
+// @deprecated in v17 to be removed in v18 in favor of $clr-overlay-panel-pointer-size
+$clr-overlay-panel-border-size: var(--clr-overlay-panel-border-size) !default;
+$clr-overlay-panel-pointer-size: $clr-overlay-panel-border-size !default;
+$clr-overlay-panel-pointer-border: var(--clr-overlay-panel-pointer-border) !default;
+$clr-overlay-panel-pointer-invisible-border: var(--clr-overlay-panel-pointer-invisible-border) !default;
+
+// @deprecated in v17 to be removed in v18 in favor of $clr-overlay-panel-pointer-pseudo-border
+$clr-overlay-panel-pointer-psuedo-border: var(--clr-overlay-panel-pointer-psuedo-border) !default;
+$clr-overlay-panel-pointer-pseudo-border: $clr-overlay-panel-pointer-psuedo-border !default;

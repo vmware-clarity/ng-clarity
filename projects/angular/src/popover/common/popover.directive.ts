@@ -14,7 +14,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
 
 @Directive({
-  selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu',
+  selector: 'clr-tooltip-content, clr-signpost-content, clr-dropdown-menu, clr-overlay-panel-content',
 })
 export class PopoverDirective implements AfterViewInit {
   private subscriptions: Subscription[] = [];

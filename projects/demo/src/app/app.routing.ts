@@ -77,6 +77,10 @@ export const APP_ROUTES: Routes = [
       import('./overlay-clipping/overlay-clipping.demo.module').then(m => m.OverlayClippingDemoModule),
   },
   {
+    path: 'overlay-panel',
+    loadChildren: () => import('./overlay-panel/overlay-panel.demo.module').then(m => m.OverlayPanelDemoModule),
+  },
+  {
     path: 'password',
     loadChildren: () => import('./password/password.demo.module').then(m => m.PasswordDemoModule),
   },

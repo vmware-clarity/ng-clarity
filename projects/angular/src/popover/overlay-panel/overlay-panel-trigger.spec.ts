@@ -1,0 +1,101 @@
+/*
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrPopoverService } from '../../utils/popover/providers/popover.service';
+import { ClrOverlayPanelModule } from './overlay-panel.module';
+import { OverlayPanelFocusManager } from './providers/overlay-panel-focus-manager.service';
+import { OverlayPanelIdService } from './providers/overlay-panel-id.service';
+
+export default function (): void {
+  describe('OverlayPanelToggle component', function () {
+    let fixture: ComponentFixture<any>;
+    let clarityElement: any;
+    let popoverService: ClrPopoverService;
+    let trigger: HTMLElement;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrOverlayPanelModule, ClrIconModule],
+        declarations: [TestTrigger],
+        providers: [ClrPopoverService, OverlayPanelIdService, OverlayPanelFocusManager],
+      });
+
+      fixture = TestBed.createComponent(TestTrigger);
+      fixture.detectChanges();
+      clarityElement = fixture.nativeElement;
+      popoverService = TestBed.get(ClrPopoverService);
+      trigger = clarityElement.querySelector('.overlay-panel-action');
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    it('should toggle the IfOpenService.open property on click', function () {
+      expect(popoverService.open).toBeFalsy();
+      trigger.click();
+      expect(popoverService.open).toEqual(true);
+      trigger.click();
+      expect(popoverService.open).toEqual(false);
+    });
+
+    it('should have active class when open', function () {
+      expect(trigger.classList.contains('active')).toBeFalsy();
+      trigger.click();
+      fixture.detectChanges();
+      expect(trigger.classList.contains('active')).toBeTruthy();
+      trigger.click();
+      fixture.detectChanges();
+      expect(trigger.classList.contains('active')).toBeFalsy();
+      popoverService.open = true;
+      fixture.detectChanges();
+      expect(trigger.classList.contains('active')).toBeTruthy();
+      popoverService.open = false;
+      fixture.detectChanges();
+      expect(trigger.classList.contains('active')).toBeFalsy();
+    });
+
+    it('preserves explicitly set label', () => {
+      const testLabel = 'Test label';
+      fixture.debugElement.componentInstance.label = testLabel;
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-label')).toEqual(testLabel);
+    });
+
+    it('reflects the correct aria-expanded state', () => {
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      trigger.click();
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      trigger.click();
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    });
+  });
+}
+
+@Component({
+  template: `
+    <button
+      #anchor
+      type="button"
+      class="overlay-panel-action btn btn-sm btn-link"
+      [ngClass]="{ active: open }"
+      [attr.aria-label]="label"
+      clrOverlayPanelTrigger
+    >
+      <cds-icon shape="info-circle"></cds-icon>
+    </button>
+  `,
+})
+class TestTrigger {
+  label = null;
+}

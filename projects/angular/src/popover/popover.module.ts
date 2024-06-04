@@ -9,11 +9,12 @@ import { NgModule } from '@angular/core';
 
 import { PopoverDirective } from './common/popover.directive';
 import { ClrDropdownModule } from './dropdown/dropdown.module';
+import { ClrOverlayPanelModule } from './overlay-panel/overlay-panel.module';
 import { ClrSignpostModule } from './signpost/signpost.module';
 import { ClrTooltipModule } from './tooltip/tooltip.module';
 
 @NgModule({
   declarations: [PopoverDirective],
-  exports: [PopoverDirective, ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],
+  exports: [PopoverDirective, ClrDropdownModule, ClrSignpostModule, ClrOverlayPanelModule, ClrTooltipModule],
 })
 export class ClrPopoverModule {}

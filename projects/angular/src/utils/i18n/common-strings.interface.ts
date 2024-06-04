@@ -172,6 +172,15 @@ export interface ClrCommonStrings {
    * (used inside signpost content components)
    */
   signpostClose: string;
+  /**
+   * OverlayPanel Toggle Button
+   */
+  overlayPanelToggle: string;
+  /**
+   * Signpost Close Button
+   * (used inside overlayPanel content components)
+   */
+  overlayPanelClose: string;
   /*
    * Loaders/Spinners
    */
