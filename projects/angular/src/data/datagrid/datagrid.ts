@@ -382,6 +382,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
+  toggleAllSelected($event: any) {
+    $event.preventDefault();
+
+    if (this.hasVirtualScroller) {
+      return;
+    }
+
+    this.allSelected = !this.allSelected;
+  }
+
   resize(): void {
     this.organizer.resize();
   }
