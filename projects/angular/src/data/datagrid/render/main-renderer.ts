@@ -241,6 +241,11 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             });
             this.keyNavigation.resetKeyGrid();
             break;
+          case DatagridColumnChanges.INITIALIZE:
+            if (state.hideable && state.hidden) {
+              this.headers.get(columnIndex).setHidden(state);
+            }
+            break;
           default:
             break;
         }
@@ -250,7 +255,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   private listenForColumnChanges() {
     this.columnsService.columns.forEach((column, index) => {
-      this.columnsService.emitStateChange(column, { changes: [], columnIndex: index });
+      this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });
     });
     /* 
       Merges all column subject so we can track them at once
