@@ -28,7 +28,7 @@ export default {
       description: 'Title of the modal',
     },
     clrDetailAriaLabelledBy: {
-      description: "Id or Id's referencing existing text on the page",
+      description: "Id or multiple space separated Id's referencing existing text on the page",
     },
   },
   args: {

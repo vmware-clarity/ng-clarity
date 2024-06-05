@@ -46,7 +46,7 @@ export class ClrDatagridDetail {
 
   get labelledBy(): string {
     if (this.ariaLabelledBy) {
-      return this.ariaLabelledBy;
+      return this.header ? this.header.titleId + ' ' + this.ariaLabelledBy : this.ariaLabelledBy;
     } else {
       return this.ariaLabel ? null : this.header ? this.header.titleId : '';
     }
