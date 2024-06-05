@@ -20,7 +20,7 @@
                     role="columnheader"
                     class="datagrid-column datagrid-select datagrid-fixed-column"
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
-                    (keydown.space)="allSelected = !allSelected; $event.preventDefault()"
+                    (keydown.space)="toggleAllSelected($event)"
                   >
                     <div *ngIf="!hasVirtualScroller" class="clr-checkbox-wrapper">
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,

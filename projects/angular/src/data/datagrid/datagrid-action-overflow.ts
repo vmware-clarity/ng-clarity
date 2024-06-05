@@ -37,6 +37,7 @@ let clrDgActionId = 0;
   hostDirectives: [ClrPopoverHostDirective],
   template: `
     <button
+      tabindex="-1"
       class="datagrid-action-toggle"
       type="button"
       role="button"
