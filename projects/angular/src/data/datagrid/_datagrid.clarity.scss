@@ -277,6 +277,20 @@
         line-height: tokens.$cds-global-space-9;
       }
     }
+
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        padding: tokens.$cds-global-space-9;
+        align-items: center;
+        gap: tokens.$cds-global-space-6;
+        justify-content: center;
+      }
+    }
   }
 
   .datagrid-row-sticky {
@@ -403,14 +417,6 @@
     flex-direction: column;
     flex: 1 1 auto;
     align-content: flex-start;
-
-    .datagrid-loading-more-items-row .datagrid-loading-more-items-cell {
-      display: flex;
-      padding: tokens.$cds-global-space-9;
-      align-items: center;
-      gap: tokens.$cds-global-space-6;
-      justify-content: center;
-    }
 
     .datagrid-body {
       width: auto;
