@@ -19,7 +19,7 @@ import {
   QueryList,
   Renderer2,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
@@ -30,6 +30,7 @@ import { DetailService } from '../providers/detail.service';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
+import { KeyNavigationGridController } from '../utils/key-navigation-grid.controller';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
@@ -76,7 +77,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     private detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private keyNavigation: KeyNavigationGridController
   ) {
     this.subscriptions.push(
       this.organizer
@@ -107,6 +109,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
         this.stabilizeColumns();
       })
     );
+    this.listenForColumnChanges();
   }
 
   // Initialize and set Table width for horizontal scrolling here.
@@ -152,7 +155,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private setupColumns() {
     this.headers.forEach((header, index) => header.setColumnState(index));
     this.columnsService.columns.splice(this.headers.length); // Trim any old columns
-    this.rows.forEach(row => row.setColumnState());
+    this.rows.forEach(row => row.setCellsState());
   }
 
   private shouldComputeHeight(): boolean {
@@ -175,9 +178,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
    * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
    */
   private computeDatagridHeight() {
-    // IE doesn't return correct value for getComputedStyle(element).getPropertyValue("height")
-    const value: number = this.domAdapter.clientRect(this.el.nativeElement).height;
-    this.renderer.setStyle(this.el.nativeElement, 'height', value + 'px');
+    const height = window.getComputedStyle(this.el.nativeElement).height;
+    this.renderer.setStyle(this.el.nativeElement, 'height', height);
     this._heightSet = true;
   }
 
@@ -191,6 +193,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
    */
   private computeHeadersWidth() {
     const nbColumns: number = this.headers.length;
+    const headerWidths = this.headers.map(header => {
+      return header.getColumnWidthState();
+    });
     let allStrict = true;
     this.headers.forEach((header, index) => {
       // On the last header column check whether all columns have strict widths.
@@ -199,7 +204,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       // gap in the Datagrid.
       const state: ColumnStateDiff = {
         changes: [DatagridColumnChanges.WIDTH],
-        ...header.getColumnWidthState(),
+        ...headerWidths[index],
       };
 
       if (!state.strictWidth) {
@@ -212,6 +217,52 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
       this.columnsService.emitStateChangeAt(index, state);
     });
+  }
+
+  private columnStateChanged(state) {
+    const columnIndex = state.columnIndex;
+    if (state.changes && state.changes.length) {
+      state.changes.forEach(change => {
+        switch (change) {
+          case DatagridColumnChanges.WIDTH:
+            this.headers.get(columnIndex).setWidth(state);
+            this.rows.forEach(row => {
+              if (row.cells && row.cells.length) {
+                row.cells.get(columnIndex).setWidth(state);
+              }
+            });
+            break;
+          case DatagridColumnChanges.HIDDEN:
+            this.headers.get(columnIndex).setHidden(state);
+            this.rows.forEach(row => {
+              if (row.cells && row.cells.length) {
+                row.cells.get(columnIndex).setHidden(state);
+              }
+            });
+            this.keyNavigation.resetKeyGrid();
+            break;
+          case DatagridColumnChanges.INITIALIZE:
+            if (state.hideable && state.hidden) {
+              this.headers.get(columnIndex).setHidden(state);
+            }
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  }
+
+  private listenForColumnChanges() {
+    this.columnsService.columns.forEach((column, index) => {
+      this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });
+    });
+    /* 
+      Merges all column subject so we can track them at once
+      and receive only the changed column as result
+    */
+    const columnChanges = merge(...this.columnsService.columns);
+    this.subscriptions.push(columnChanges.subscribe(change => this.columnStateChanged(change)));
   }
 
   /**

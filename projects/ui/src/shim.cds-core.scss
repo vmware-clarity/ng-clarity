@@ -1963,6 +1963,9 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-datagrid-detail-pane-bg-color: #{tokens.$cds-alias-object-container-background};
   --clr-datagrid-detail-pane-border-color: #{tokens.$cds-alias-object-border-color};
 
+  --clr-datagrid-load-more-items-padding: #{tokens.$cds-global-space-9}; // ATM - remove
+  --clr-datagrid-load-more-items-gap: #{tokens.$cds-global-space-6}; // ATM - remove
+
   --clr-datagrid-placeholder-padding: #{tokens.$cds-global-space-9};
   --clr-datagrid-placeholder-gap: #{tokens.$cds-global-space-9};
   --clr-datagrid-placeholder-font-size: var(--clr-h4-font-size);

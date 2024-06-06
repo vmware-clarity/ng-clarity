@@ -6,6 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import { User } from './user';
 import { COLORS, NAMES, POKEMONS } from './values';
@@ -13,26 +14,52 @@ import { COLORS, NAMES, POKEMONS } from './values';
 @Injectable()
 export class Inventory {
   size = 100;
+  generatedCount = 0;
   latency = 0;
 
-  private _all: User[];
+  private _all: User[] = [];
   private _currentQuery: User[];
+  private allUsers = new BehaviorSubject<User[]>(this.all);
 
   get all(): User[] {
-    return this._all.slice();
+    return this._all;
+  }
+  set all(value) {
+    this._all = value;
+  }
+
+  getAllUsersSubject() {
+    return this.allUsers;
   }
 
   reset() {
     this._all = [];
-    for (let i = 0; i < this.size; i++) {
-      this._all.push({
-        id: i + 10000,
+    this._all = this._all.concat(this.addBySize());
+  }
+
+  addBySize(size = this.size) {
+    const newData: User[] = [];
+
+    for (let i = 0; i < size; i++) {
+      newData.push({
+        id: this.generatedCount + i,
         name: this.getItem(i, NAMES),
-        creation: new Date('June 23, 1912'),
+        creation: new Date(Date.now() * Math.random()),
         color: this.getItem(i, COLORS),
         pokemon: this.getItem(i, POKEMONS),
+        expanded: false,
       });
     }
+
+    this.generatedCount += size;
+
+    return newData;
+  }
+
+  lazyLoadUsers(size = this.size) {
+    this.all = [...this._all, ...this.addBySize(size)];
+
+    this.allUsers.next(this.all);
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {

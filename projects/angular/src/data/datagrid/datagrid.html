@@ -20,9 +20,9 @@
                     role="columnheader"
                     class="datagrid-column datagrid-select datagrid-fixed-column"
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
-                    (keydown.space)="allSelected = !allSelected; $event.preventDefault()"
+                    (keydown.space)="toggleAllSelected($event)"
                   >
-                    <div class="clr-checkbox-wrapper">
+                    <div *ngIf="!hasVirtualScroller" class="clr-checkbox-wrapper">
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
                            which is not able to transfer focus directly on the input when focused with the tab key -->
                       <input
@@ -74,10 +74,28 @@
               </div>
             </div>
           </div>
-          <ng-container #displayedRows></ng-container>
-          <!-- Custom placeholder overrides the default empty one -->
-          <ng-content select="clr-dg-placeholder"></ng-content>
-          <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+
+          <div role="presentation" class="datagrid-rows">
+            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
+              <clr-dg-cell class="datagrid-loading-more-items-cell">
+                <clr-spinner [clrMedium]="true"></clr-spinner>
+                <span>{{ commonStrings.keys.loading }}</span>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <ng-container #displayedRows></ng-container>
+
+            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
+              <clr-dg-cell class="datagrid-loading-more-items-cell">
+                <clr-spinner [clrMedium]="true"></clr-spinner>
+                <span>{{ commonStrings.keys.loading }}</span>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <!-- Custom placeholder overrides the default empty one -->
+            <ng-content select="clr-dg-placeholder"></ng-content>
+            <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
+          </div>
         </div>
       </div>
     </div>

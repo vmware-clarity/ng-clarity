@@ -49,6 +49,7 @@
         >
           <clr-checkbox-wrapper>
             <input
+              tabindex="-1"
               type="checkbox"
               clrCheckbox
               [ngModel]="selected"
@@ -71,6 +72,7 @@
         >
           <clr-radio-wrapper>
             <input
+              tabindex="-1"
               type="radio"
               clrRadio
               [id]="radioId"
@@ -100,6 +102,7 @@
         >
           <ng-container *ngIf="expand.expandable">
             <button
+              tabindex="-1"
               *ngIf="!expand.loading"
               (click)="toggleExpand()"
               type="button"
@@ -124,13 +127,14 @@
           role="gridcell"
         >
           <button
+            tabindex="-1"
             (click)="detailService.toggle(item, detailButton)"
             type="button"
             #detailButton
             class="datagrid-detail-caret-button"
             [class.is-open]="detailService.isRowOpen(item)"
             [attr.aria-label]="detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
-            [attr.aria-expanded]="detailService.isOpen"
+            [attr.aria-expanded]="detailService.isRowOpen(item)"
             [attr.aria-controls]="detailService.id"
             aria-haspopup="dialog"
           >

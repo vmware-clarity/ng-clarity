@@ -53,6 +53,12 @@ export class DetailService {
     this.toggleState = false;
     this._state.next(this.toggleState);
     this.modalStackService.trackModalClose(this);
+    // In the case of browser zoom greater than 250%, the detail pane toggle button is not visible on the page.
+    // Wait for the detail pane to close, and return focus to the detail toggle button.
+    setTimeout(() => this.returnFocus(), 0);
+  }
+
+  returnFocus() {
     if (this.button) {
       this.button.focus();
       this.button = null;
