@@ -372,6 +372,20 @@
         line-height: variables.$clr_baselineRem_1;
       }
     }
+
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        padding: tokens.$cds-global-space-9;
+        align-items: center;
+        gap: tokens.$cds-global-space-6;
+        justify-content: center;
+      }
+    }
   }
 
   .datagrid-row-sticky {
