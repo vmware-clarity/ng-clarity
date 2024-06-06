@@ -80,24 +80,17 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
 
       this.subscriptions.push(
-        this.formGroup.statusChanges
-          .pipe(
-            // TODO: Filter - only enter when form is touched
-            skipUntil(invalidStatusTrigger),
-            distinctUntilChanged()
-          )
-          .subscribe(status => {
-            // TODO: Consider using filter pipe instead
-            if (!this.formGroup.touched) {
-              return;
-            }
+        this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
+          if (!this.formGroup.touched) {
+            return;
+          }
 
-            if (status === 'VALID') {
-              this.stepperService.setPanelValid(this.id);
-            } else if (status === 'INVALID') {
-              this.stepperService.setPanelInvalid(this.id);
-            }
-          })
+          if (status === 'VALID') {
+            this.stepperService.setPanelValid(this.id);
+          } else if (status === 'INVALID') {
+            this.stepperService.setPanelInvalid(this.id);
+          }
+        })
       );
     }
   }
