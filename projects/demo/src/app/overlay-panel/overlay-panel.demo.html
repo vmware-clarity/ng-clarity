@@ -31,10 +31,12 @@
                 #panelContent
                 *clrIfOpen="openState"
                 [clrPosition]="position.position"
-                [minHeight]="'150px'"
-                [maxHeight]="'250px'"
+                [minHeight]="position.minHeight"
+                [maxHeight]="position.maxHeight"
+                [minWidth]="position.minWidth"
+                [maxWidth]="position.maxWidth"
               >
-                <div class="overlay-panel-content">
+                <div class="overlay-panel-content1">
                   Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
                   Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
                   Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum
@@ -53,7 +55,7 @@
                   Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem
                   Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of Lorem Ipsum Lorem Ipsum versions of
                   Lorem Ipsum
-                  <button (click)="triggerClose(panelContent)">Close</button>
+                  <button class="btn btn-primary" (click)="triggerClose(panelContent)">Close</button>
                 </div>
               </clr-overlay-panel-content>
             </clr-overlay-panel>

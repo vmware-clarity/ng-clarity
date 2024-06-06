@@ -24,6 +24,8 @@ export class OverlayPanelDemo {
       description: 'Top left',
       position: 'top-left',
       id: 'topLeftTrigger',
+      minHeight: '100px',
+      maxHeight: '150px',
     },
     {
       useCustomTrigger: false,
@@ -32,6 +34,8 @@ export class OverlayPanelDemo {
       description: 'Top middle',
       position: 'top-middle',
       id: 'topMiddleTrigger',
+      minHeight: '50px',
+      maxHeight: '100px',
     },
     {
       useCustomTrigger: false,
@@ -40,6 +44,8 @@ export class OverlayPanelDemo {
       description: 'Top right',
       position: 'top-right',
       id: 'topRightTrigger',
+      minHeight: '250px',
+      maxHeight: '350px',
     },
     {
       useCustomTrigger: false,
@@ -48,6 +54,8 @@ export class OverlayPanelDemo {
       description: 'Left top',
       position: 'left-top',
       id: 'leftTopTrigger',
+      minHeight: '50px',
+      maxHeight: '150px',
     },
     {
       useCustomTrigger: true,
@@ -56,6 +64,8 @@ export class OverlayPanelDemo {
       description: 'Left middle',
       position: 'left-middle',
       id: 'leftMiddleTrigger',
+      minHeight: '50px',
+      maxHeight: '450px',
     },
     {
       useCustomTrigger: true,
@@ -64,6 +74,8 @@ export class OverlayPanelDemo {
       description: 'Left bottom',
       position: 'left-bottom',
       id: 'leftBottomTrigger',
+      minHeight: '150px',
+      maxHeight: '250px',
     },
     {
       useCustomTrigger: true,
@@ -72,6 +84,8 @@ export class OverlayPanelDemo {
       description: 'Right top',
       position: 'right-top',
       id: 'rightTopTrigger',
+      minHeight: '150px',
+      maxHeight: '250px',
     },
     {
       useCustomTrigger: true,
@@ -80,6 +94,8 @@ export class OverlayPanelDemo {
       description: 'Right middle',
       position: 'right-middle',
       id: 'rightMiddleTrigger',
+      minWidth: '350px',
+      maxWidth: '400px',
     },
     {
       useCustomTrigger: false,
@@ -88,6 +104,10 @@ export class OverlayPanelDemo {
       description: 'Right bottom',
       position: 'right-bottom',
       id: 'rightBottomTrigger',
+      minHeight: '50px',
+      maxHeight: '300px',
+      minWidth: '150px',
+      maxWidth: '250px',
     },
     {
       useCustomTrigger: false,
@@ -96,6 +116,8 @@ export class OverlayPanelDemo {
       description: 'Bottom left',
       position: 'bottom-left',
       id: 'bottomLeftTrigger',
+      minHeight: '150px',
+      maxHeight: '250px',
     },
     {
       useCustomTrigger: true,
@@ -104,6 +126,8 @@ export class OverlayPanelDemo {
       description: 'Bottom middle',
       position: 'bottom-middle',
       id: 'bottomMiddleTrigger',
+      minHeight: '150px',
+      maxHeight: '300px',
     },
     {
       useCustomTrigger: false,
@@ -112,6 +136,10 @@ export class OverlayPanelDemo {
       description: 'Bottom right',
       position: 'bottom-right',
       id: 'bottomRightTrigger',
+      minHeight: '150px',
+      maxHeight: '250px',
+      minWidth: '150px',
+      maxWidth: '250px',
     },
     {
       useCustomTrigger: true,
@@ -120,6 +148,8 @@ export class OverlayPanelDemo {
       description: 'Default',
       position: 'default',
       id: 'defaultTrigger',
+      minHeight: '150px',
+      maxHeight: '250px',
     },
   ];
 

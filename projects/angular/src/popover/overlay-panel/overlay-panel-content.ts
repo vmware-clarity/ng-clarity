@@ -59,13 +59,7 @@ const AvailablePopoverPositions = [
 @Component({
   selector: 'clr-overlay-panel-content',
   template: `
-    <div
-      class="overlay-panel-wrap"
-      [style.min-width]="minWidth"
-      [style.min-height]="minHeight"
-      [style.max-width]="maxWidth"
-      [style.max-height]="maxHeight"
-    >
+    <div class="overlay-panel-wrap">
       <div class="popover-pointer"></div>
       <div class="overlay-panel-content-header">
         <button
@@ -88,10 +82,10 @@ const AvailablePopoverPositions = [
 export class ClrOverlayPanelContent implements OnDestroy {
   overlayPanelContentId = uniqueIdFactory();
 
-  @Input('minWidth') minWidth: string;
-  @Input('minHeight') minHeight: string;
-  @Input('maxWidth') maxWidth: string;
-  @Input('maxHeight') maxHeight: string;
+  @HostBinding('style.min-width') @Input() minWidth = 'unset';
+  @HostBinding('style.min-height') @Input() minHeight = 'unset';
+  @HostBinding('style.max-width') @Input() maxWidth = 'unset';
+  @HostBinding('style.max-height') @Input() maxHeight = 'unset';
 
   private document: Document;
   private _position: string;
