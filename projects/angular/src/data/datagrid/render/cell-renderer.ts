@@ -8,7 +8,6 @@
 import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ALL_COLUMN_CHANGES } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
@@ -35,7 +34,6 @@ export class DatagridCellRenderer implements OnDestroy {
   }
 
   resetState(state: ColumnState) {
-    state.changes = ALL_COLUMN_CHANGES;
     this.setWidth(state);
     this.setHidden(state);
   }
