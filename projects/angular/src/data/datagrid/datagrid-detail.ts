@@ -46,9 +46,14 @@ export class ClrDatagridDetail {
 
   get labelledBy(): string {
     if (this.ariaLabelledBy) {
-      return this.header ? this.header.titleId + ' ' + this.ariaLabelledBy : this.ariaLabelledBy;
+      return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
     } else {
-      return this.ariaLabel ? null : this.header ? this.header.titleId : '';
+      // If aria-label is set by the end user, do not set aria-labelledby
+      if (this.ariaLabel) {
+        return null;
+      } else {
+        return this.header?.titleId || '';
+      }
     }
   }
 
