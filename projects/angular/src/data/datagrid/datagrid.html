@@ -76,18 +76,18 @@
           </div>
 
           <div role="presentation" class="datagrid-rows">
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
+            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              <clr-dg-cell>
+                <clr-spinner clrMedium></clr-spinner>
                 <span>{{ commonStrings.keys.loading }}</span>
               </clr-dg-cell>
             </clr-dg-row>
 
             <ng-container #displayedRows></ng-container>
 
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
+            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              <clr-dg-cell>
+                <clr-spinner clrMedium></clr-spinner>
                 <span>{{ commonStrings.keys.loading }}</span>
               </clr-dg-cell>
             </clr-dg-row>
