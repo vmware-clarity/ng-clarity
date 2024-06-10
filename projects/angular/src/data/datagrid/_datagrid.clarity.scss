@@ -120,7 +120,7 @@
       dropdown-variables.$clr-dropdown-text-color,
       variables.$clr-use-custom-properties
     );
-    font-size: dropdown-variables.$clr-dropdown-font-size;
+    font-size: dropdown-variables.$clr-dropdown-item-font-size;
     letter-spacing: dropdown-variables.$clr-dropdown-letter-spacing;
 
     background: transparent;
