@@ -37,29 +37,27 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetail {
-  @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
-
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
   @Input('clrDetailAriaLabel') ariaLabel: string;
+
+  @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
   get labelledBy(): string {
     if (this.ariaLabelledBy) {
       return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
-    } else {
+    } else if (this.ariaLabel) {
       // If aria-label is set by the end user, do not set aria-labelledby
-      if (this.ariaLabel) {
-        return null;
-      } else {
-        return this.header?.titleId || '';
-      }
+      return null;
+    } else {
+      return this.header?.titleId || '';
     }
   }
 
   get label(): string {
     if (!this.ariaLabelledBy) {
-      return this.ariaLabel ? this.ariaLabel : null;
+      return this.ariaLabel || null;
     } else {
       return null;
     }
