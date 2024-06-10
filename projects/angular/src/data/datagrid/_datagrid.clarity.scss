@@ -372,6 +372,30 @@
         line-height: variables.$clr_baselineRem_1;
       }
     }
+
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include mixins.css-var(
+          padding,
+          clr-datagrid-load-more-items-padding,
+          variables.$clr_baselineRem_1,
+          variables.$clr-use-custom-properties
+        );
+        @include mixins.css-var(
+          gap,
+          clr-datagrid-load-more-items-gap,
+          variables.$clr_baselineRem_0_5,
+          variables.$clr-use-custom-properties
+        );
+      }
+    }
   }
 
   .datagrid-row-sticky {
@@ -528,24 +552,6 @@
     flex-direction: column;
     flex: 1 1 auto;
     align-content: flex-start;
-
-    .datagrid-loading-more-items-row .datagrid-loading-more-items-cell {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      @include mixins.css-var(
-        padding,
-        clr-datagrid-load-more-items-padding,
-        variables.$clr_baselineRem_1,
-        variables.$clr-use-custom-properties
-      );
-      @include mixins.css-var(
-        gap,
-        clr-datagrid-load-more-items-gap,
-        variables.$clr_baselineRem_0_5,
-        variables.$clr-use-custom-properties
-      );
-    }
 
     .datagrid-body {
       width: auto;
