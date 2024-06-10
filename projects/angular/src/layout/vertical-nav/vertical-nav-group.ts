@@ -184,6 +184,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   setAriaLabel() {
-    this.ariaLabel = this.navLink?.nativeElement?.querySelector('.nav-text')?.textContent || '';
+    this.ariaLabel = this.navLink?.nativeElement?.querySelector('.nav-text')?.textContent?.trim() || '';
   }
 }
