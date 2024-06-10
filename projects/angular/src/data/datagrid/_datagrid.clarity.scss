@@ -1282,13 +1282,15 @@
   .datagrid-detail-overlay {
     // too specific query needed to avoid issues with nested datagrids
     &.datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
-      display: none;
+      width: 0;
+      min-width: unset;
     }
 
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
       border-radius: tokens.$cds-alias-object-border-radius-100;
+      width: 100%;
     }
   }
 
