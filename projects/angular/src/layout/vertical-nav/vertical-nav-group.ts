@@ -6,7 +6,17 @@
  */
 
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
-import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -14,6 +24,7 @@ import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
+import { ClrVerticalNavLink } from './vertical-nav-link';
 
 const EXPANDED_STATE = 'expanded';
 const COLLAPSED_STATE = 'collapsed';
@@ -33,6 +44,10 @@ const COLLAPSED_STATE = 'collapsed';
 })
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
+
+  @ContentChild(ClrVerticalNavLink, { read: ElementRef }) navLink: ElementRef;
+
+  ariaLabel: string;
 
   private wasExpanded = false;
   private _subscriptions: Subscription[] = [];
@@ -128,6 +143,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       this.wasExpanded = true;
       this.expandAnimationState = COLLAPSED_STATE;
     }
+    this.setAriaLabel();
   }
 
   ngOnDestroy() {
@@ -165,5 +181,9 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       // then expand the nav group
       this.expandGroup();
     }
+  }
+
+  setAriaLabel() {
+    this.ariaLabel = this.navLink?.nativeElement?.querySelector('.nav-text')?.textContent || '';
   }
 }
