@@ -60,7 +60,7 @@ export class DetailService {
 
   returnFocus() {
     if (this.button) {
-      this.button.focus();
+      this.button.focus({ preventScroll: true });
       this.button = null;
     }
   }
