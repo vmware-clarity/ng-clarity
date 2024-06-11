@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ContentChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ContentChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -39,13 +39,18 @@ export class ClrDatagridDetail implements AfterViewInit {
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
   autoCapture = false;
 
-  constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+  constructor(
+    public detailService: DetailService,
+    public commonStrings: ClrCommonStringsService,
+    public cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.header) {
       this.header.title.nativeElement.focus();
     } else {
       this.autoCapture = true;
+      this.cdr.detectChanges();
     }
   }
 
