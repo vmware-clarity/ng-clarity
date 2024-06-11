@@ -287,11 +287,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           }
         }
 
-        // retain active cell when navigating with PageUp and PageDown buttons in virtual scroller
-        const active =
-          this.keyNavigation.getFocusedItem() === this.keyNavigation.getActiveCell()
-            ? this.keyNavigation.getActiveCell()
-            : (this.keyNavigation.getFocusedItem().closest('[role=gridcell]') as HTMLElement);
+        // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
+        const active = this.keyNavigation.getActiveCell();
 
         if (active) {
           this.zone.runOutsideAngular(() => {
