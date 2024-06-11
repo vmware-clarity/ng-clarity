@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DetailService } from './providers/detail.service';
@@ -16,7 +16,7 @@ import { DetailService } from './providers/detail.service';
     '[class.datagrid-detail-header]': 'true',
   },
   template: `
-    <div class="datagrid-detail-header-title" cdkFocusInitial tabindex="-1" [id]="titleId">
+    <div class="datagrid-detail-header-title" cdkFocusInitial tabindex="-1" [id]="titleId" #title>
       <ng-content></ng-content>
     </div>
     <div class="datagrid-detail-pane-close">
@@ -32,6 +32,8 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetailHeader {
+  @ViewChild('title', { read: ElementRef }) title: ElementRef;
+
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
   get titleId() {

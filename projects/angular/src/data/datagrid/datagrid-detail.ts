@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild } from '@angular/core';
+import { AfterViewInit, Component, ContentChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -21,7 +21,7 @@ import { DetailService } from './providers/detail.service';
   template: `
     <div
       cdkTrapFocus
-      [cdkTrapFocusAutoCapture]="true"
+      [cdkTrapFocusAutoCapture]="autoCapture"
       class="datagrid-detail-pane-content"
       *ngIf="detailService.isOpen"
       role="dialog"
@@ -35,10 +35,19 @@ import { DetailService } from './providers/detail.service';
     </div>
   `,
 })
-export class ClrDatagridDetail {
+export class ClrDatagridDetail implements AfterViewInit {
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
+  autoCapture = false;
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+
+  ngAfterViewInit(): void {
+    if (this.header) {
+      this.header.title.nativeElement.focus();
+    } else {
+      this.autoCapture = true;
+    }
+  }
 
   close(): void {
     this.detailService.close();
