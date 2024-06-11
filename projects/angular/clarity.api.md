@@ -1445,10 +1445,8 @@ export interface ClrDatagridComparatorInterface<T> {
 }
 
 // @public (undocumented)
-export class ClrDatagridDetail implements AfterViewInit {
+export class ClrDatagridDetail {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService, cdr: ChangeDetectorRef);
-    // (undocumented)
-    autoCapture: boolean;
     // (undocumented)
     cdr: ChangeDetectorRef;
     // (undocumented)
@@ -1459,8 +1457,6 @@ export class ClrDatagridDetail implements AfterViewInit {
     detailService: DetailService;
     // (undocumented)
     header: ClrDatagridDetailHeader;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {}, {}, ["header"], ["*"], false, never>;
     // (undocumented)
@@ -1476,12 +1472,14 @@ export class ClrDatagridDetailBody {
 }
 
 // @public (undocumented)
-export class ClrDatagridDetailHeader {
+export class ClrDatagridDetailHeader implements AfterViewInit {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     title: ElementRef;
     // (undocumented)
