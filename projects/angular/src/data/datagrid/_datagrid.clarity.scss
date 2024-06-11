@@ -277,6 +277,20 @@
         line-height: tokens.$cds-global-space-9;
       }
     }
+
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        padding: tokens.$cds-global-space-9;
+        align-items: center;
+        gap: tokens.$cds-global-space-6;
+        justify-content: center;
+      }
+    }
   }
 
   .datagrid-row-sticky {
@@ -403,14 +417,6 @@
     flex-direction: column;
     flex: 1 1 auto;
     align-content: flex-start;
-
-    .datagrid-loading-more-items-row .datagrid-loading-more-items-cell {
-      display: flex;
-      padding: tokens.$cds-global-space-9;
-      align-items: center;
-      gap: tokens.$cds-global-space-6;
-      justify-content: center;
-    }
 
     .datagrid-body {
       width: auto;
@@ -1276,13 +1282,15 @@
   .datagrid-detail-overlay {
     // too specific query needed to avoid issues with nested datagrids
     &.datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
-      display: none;
+      width: 0;
+      min-width: unset;
     }
 
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
       border-radius: tokens.$cds-alias-object-border-radius-100;
+      width: 100%;
     }
   }
 
