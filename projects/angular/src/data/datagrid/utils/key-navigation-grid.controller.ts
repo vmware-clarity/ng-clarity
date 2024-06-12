@@ -157,12 +157,12 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     activeCell.setAttribute('tabindex', '0');
+    this._activeCell = activeCell;
 
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
 
     item.focus();
-    this._activeCell = item;
   }
 
   private getNextItemCoordinate(e: any) {
