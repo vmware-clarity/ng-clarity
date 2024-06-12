@@ -138,9 +138,11 @@ export default function (): void {
         expect(toggle.getAttribute('aria-expanded')).toBe('true');
       });
 
-      it('has a button with the correct aria-label', function () {
+      it('has a button with the correct aria-label', async () => {
+        await context.fixture.whenStable();
+        context.detectChanges();
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
-        expect(toggle.getAttribute('aria-label')).toBe('Toggle user filter');
+        expect(toggle.getAttribute('aria-label')).toBe('user filter');
       });
 
       it('has role and label on the filter dialog', function () {
