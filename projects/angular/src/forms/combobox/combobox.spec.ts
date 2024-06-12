@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -127,21 +127,19 @@ export default function (): void {
 
       // The forms framework has some inner asychronisity, which requires the async/whenStable
       // approach in the following tests
-      it('sets selection model based on selection binding', async(() => {
+      it('sets selection model based on selection binding', async () => {
         fixture.componentInstance.selection = 'test';
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
-        });
-      }));
+        await fixture.whenStable();
+        expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
+      });
 
-      it('clears selection model', async(() => {
+      it('clears selection model', async () => {
         fixture.componentInstance.selection = null;
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(selectionService.selectionModel.isEmpty()).toBeTrue();
-        });
-      }));
+        await fixture.whenStable();
+        expect(selectionService.selectionModel.isEmpty()).toBeTrue();
+      });
     });
 
     describe('Template API', function () {
