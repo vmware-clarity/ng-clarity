@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClrDatagridSortOrder } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -26,7 +26,7 @@ class ChangeDetectionPerfRecord {
   templateUrl: './virtual-scroll-client-side.html',
   styleUrls: ['../datagrid.demo.scss'],
 })
-export class DatagridVirtualScrollClientSideDemo implements OnInit {
+export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   totalRows = 10000;
   totalCols = 5;
   cols: Column[];
@@ -61,6 +61,10 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit {
       window.console.log('CHANGE DETECTION TIME', after - before);
       return retValue;
     };
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {

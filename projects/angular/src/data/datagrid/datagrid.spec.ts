@@ -456,7 +456,7 @@ class TabsIntegrationTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="trackBy">
+    <clr-datagrid [clrDgItemsTrackBy]="trackById">
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
