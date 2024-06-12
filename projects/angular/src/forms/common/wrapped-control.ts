@@ -58,7 +58,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
-  private secondaryDiffer: KeyValueDiffer<any, any>;
   private ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
@@ -100,10 +99,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
         })
       );
     }
-
-    if (this._ngControl) {
-      this.differ = this.differs.find(this._ngControl).create();
-    }
   }
 
   @Input()
@@ -137,23 +132,16 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       if (!this.ngControlService.getControl()) {
         this.ngControl = this._ngControl;
         this.ngControlService.setControl(this.ngControl);
+        this.differ = this.differs.find(this._ngControl).create();
       } else {
         this.ngControl = this.ngControlService.getControl();
-        this.ngControlService.setSecondaryControl(this._ngControl);
-        this.createAdditionalDiffer(this._ngControl);
+        this.ngControlService.addAdditionalControl(this._ngControl);
       }
     }
   }
 
-  createAdditionalDiffer(control: NgControl) {
-    this.secondaryDiffer = this.differs.find(control).create();
-  }
-
   ngDoCheck() {
     this.triggerDoCheck(this.differ, this.ngControl);
-    if (this.ngControlService?.hasAdditionalControls) {
-      this.triggerDoCheck(this.secondaryDiffer, this.ngControlService.getSecondaryControl());
-    }
   }
 
   triggerDoCheck(differ, ngControl) {
@@ -201,8 +189,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       this.ngControl.control.updateValueAndValidity();
     }
     if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-      this.ngControlService.getSecondaryControl().control?.markAsTouched();
-      this.ngControlService.getSecondaryControl().control?.updateValueAndValidity();
+      this.ngControlService.getAdditionalControls()?.forEach((ngControl: NgControl) => {
+        ngControl.control.markAsTouched();
+        ngControl.control.updateValueAndValidity();
+      });
     }
   }
 

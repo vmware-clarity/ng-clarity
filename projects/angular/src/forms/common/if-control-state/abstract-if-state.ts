@@ -17,7 +17,7 @@ export abstract class AbstractIfState {
   protected subscriptions: Subscription[] = [];
   protected displayedContent = false;
   protected control: NgControl;
-  protected secondaryControl: NgControl;
+  protected additionalControls: NgControl[];
 
   constructor(
     @Optional() protected ifControlStateService: IfControlStateService,
@@ -28,8 +28,8 @@ export abstract class AbstractIfState {
         this.ngControlService.controlChanges.subscribe(control => {
           this.control = control;
         }),
-        this.ngControlService.secondaryControlChanges.subscribe(control => {
-          this.secondaryControl = control;
+        this.ngControlService.additionalControlChanges.subscribe(controls => {
+          this.additionalControls = controls;
         })
       );
     }

@@ -37,8 +37,9 @@ export class ClrIfError extends AbstractIfState {
   protected override handleState(state: CONTROL_STATE) {
     if (this.error && this.control && !!this.control.invalid) {
       this.displayError(this.control.hasError(this.error));
-    } else if (this.error && this.secondaryControl) {
-      this.displayError(this.secondaryControl.hasError(this.error), this.secondaryControl);
+    } else if (this.error && !!this.additionalControls?.length) {
+      const invalidControl = this.additionalControls?.filter(control => control.hasError(this.error))[0];
+      this.displayError(!!invalidControl, invalidControl);
     } else {
       this.displayError(CONTROL_STATE.INVALID === state);
     }

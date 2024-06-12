@@ -21,7 +21,7 @@ export enum CONTROL_STATE {
 export class IfControlStateService implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private control: NgControl;
-  private secondaryControl: NgControl;
+  private additionalControls: NgControl[];
 
   // Implement our own status changes observable, since Angular controls don't
   private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
@@ -42,16 +42,18 @@ export class IfControlStateService implements OnDestroy {
         }
       }),
 
-      this.ngControlService.secondaryControlChanges.subscribe((control: NgControl) => {
-        if (control) {
-          this.secondaryControl = control;
+      this.ngControlService.additionalControlChanges.subscribe((controls: NgControl[]) => {
+        if (controls) {
+          this.additionalControls = controls;
           // Subscribe to the status change events, only after touched
           // and emit the control
-          this.subscriptions.push(
-            this.secondaryControl?.statusChanges?.subscribe(() => {
-              this.triggerStatusChange();
-            })
-          );
+          this.additionalControls?.forEach((control: NgControl) => {
+            this.subscriptions.push(
+              control?.statusChanges?.subscribe(() => {
+                this.triggerStatusChange();
+              })
+            );
+          });
         }
       })
     );
@@ -71,7 +73,8 @@ export class IfControlStateService implements OnDestroy {
       // These status values are mutually exclusive, so a control
       // cannot be both valid AND invalid or invalid AND disabled.
       let finalStatus = CONTROL_STATE.NONE;
-      const combinedStatus = [this.control.status, this.secondaryControl?.status];
+      const additionalControlsStatus = this.additionalControls?.map(control => control.status) || [];
+      const combinedStatus = [this.control.status, ...additionalControlsStatus];
       if (combinedStatus.includes(CONTROL_STATE.INVALID)) {
         finalStatus = CONTROL_STATE.INVALID;
       } else if (combinedStatus.includes(CONTROL_STATE.VALID)) {
