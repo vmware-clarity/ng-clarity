@@ -1446,9 +1446,7 @@ export interface ClrDatagridComparatorInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridDetail {
-    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService, cdr: ChangeDetectorRef);
-    // (undocumented)
-    cdr: ChangeDetectorRef;
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     close(): void;
     // (undocumented)
