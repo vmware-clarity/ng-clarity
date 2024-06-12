@@ -1457,12 +1457,16 @@ export class ClrDatagridDetailBody {
 }
 
 // @public (undocumented)
-export class ClrDatagridDetailHeader {
+export class ClrDatagridDetailHeader implements AfterViewInit {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    title: ElementRef;
     // (undocumented)
     get titleId(): string;
     // (undocumented)

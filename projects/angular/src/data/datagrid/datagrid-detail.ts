@@ -21,7 +21,7 @@ import { DetailService } from './providers/detail.service';
   template: `
     <div
       cdkTrapFocus
-      [cdkTrapFocusAutoCapture]="true"
+      [cdkTrapFocusAutoCapture]="!header"
       class="datagrid-detail-pane-content"
       *ngIf="detailService.isOpen"
       role="dialog"

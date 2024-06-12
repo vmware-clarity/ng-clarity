@@ -82,14 +82,19 @@
     ClrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
-    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsItemSize]="32"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
-      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>
+        <clr-checkbox-wrapper>
+          <label>{{user.name}}</label>
+          <input type="checkbox" clrCheckbox />
+        </clr-checkbox-wrapper>
+      </clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>
         {{user.pokemon.name}}
