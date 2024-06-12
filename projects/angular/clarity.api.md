@@ -1446,7 +1446,9 @@ export interface ClrDatagridComparatorInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridDetail {
-    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService, cdr: ChangeDetectorRef);
+    // (undocumented)
+    cdr: ChangeDetectorRef;
     // (undocumented)
     close(): void;
     // (undocumented)
@@ -1470,12 +1472,16 @@ export class ClrDatagridDetailBody {
 }
 
 // @public (undocumented)
-export class ClrDatagridDetailHeader {
+export class ClrDatagridDetailHeader implements AfterViewInit {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    title: ElementRef;
     // (undocumented)
     get titleId(): string;
     // (undocumented)
