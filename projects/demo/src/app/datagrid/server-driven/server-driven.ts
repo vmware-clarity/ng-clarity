@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 
-import { FetchResult, Inventory } from '../inventory/inventory';
+import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 
 @Component({
@@ -28,7 +28,7 @@ export class DatagridServerDrivenDemo {
     inventory.reset();
   }
 
-  refresh(state: ClrDatagridStateInterface<User>) {
+  async refresh(state: ClrDatagridStateInterface<User>) {
     this.loading = true;
     const filters: { [prop: string]: any[] } = {};
     if (state.filters) {
@@ -37,14 +37,13 @@ export class DatagridServerDrivenDemo {
         filters[property] = [value];
       }
     }
-    this.inventory
+    const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(state.page.size * (state.page.current - 1), state.page.size)
-      .then((result: FetchResult) => {
-        this.users = result.users;
-        this.total = result.length;
-        this.loading = false;
-      });
+      .fetch(state.page.size * (state.page.current - 1), state.page.size);
+
+    this.users = result.users;
+    this.total = result.length;
+    this.loading = false;
   }
 }
