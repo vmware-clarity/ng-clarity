@@ -18,6 +18,7 @@ const template = `
         (clrAccordionPanelOpenChange)="clrAccordionPanelOpenChange($event)"
       >
         <clr-accordion-title>{{ title }}</clr-accordion-title>
+        <clr-accordion-description>{{ description }}</clr-accordion-description>
         <clr-accordion-content>{{ content }}</clr-accordion-content>
       </clr-accordion-panel>
     </clr-accordion>
@@ -30,6 +31,7 @@ export default {
     // outputs
     clrAccordionPanelOpenChange: { control: { disable: true } },
     title: { description: 'Rendered within the `<clr-accordion-title>` element' },
+    description: { description: 'Rendered within the `<clr-accordion-descrription>` element' },
     content: { description: 'Rendered within the `<clr-accordion-content>` element' },
     // methods
     togglePanel: { control: { disable: true } },
@@ -48,6 +50,7 @@ export default {
     clrAccordionPanelOpenChange: action('clrAccordionPanelOpenChange'),
     // story helpers
     title: 'Title',
+    description: 'Description',
     content: 'Hello World!',
     clrAccordionPanelDisabled: false,
     clrAccordionPanelOpen: false,
