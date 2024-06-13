@@ -8,7 +8,7 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 
-import { FetchResult, Inventory } from '../inventory/inventory';
+import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 import { ColorFilter } from '../utils/color-filter';
 import { PokemonComparator } from '../utils/pokemon-comparator';
@@ -75,7 +75,7 @@ export class DatagridFullDemo {
     });
   }
 
-  refresh(state: ClrDatagridStateInterface) {
+  async refresh(state: ClrDatagridStateInterface) {
     if (!this.isServerDriven) {
       return;
     }
@@ -91,15 +91,15 @@ export class DatagridFullDemo {
         }
       }
     }
-    this.inventory
+
+    const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(state.page && state.page.from, state.page && state.page.size)
-      .then((result: FetchResult) => {
-        this.users = result.users;
-        this.total = result.length;
-        this.loading = false;
-      });
+      .fetch(state.page && state.page.from, state.page && state.page.size);
+
+    this.users = result.users;
+    this.total = result.length;
+    this.loading = false;
   }
 
   clrDgActionOverflowOpenChangeFn($event: boolean) {
