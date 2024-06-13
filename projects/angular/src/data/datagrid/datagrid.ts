@@ -280,13 +280,18 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
            */
           if (row) {
             this.detailService.open(row.item, row.detailButton.nativeElement);
-          } else if (!this.hasVirtualScroller || !row) {
-            this.detailService.close();
+            // always keep open when virtual scroll is available otherwise close it
+          } else if (!this.hasVirtualScroller) {
+            // Using setTimeout to make sure the inner cycles in rows are done
+            setTimeout(() => {
+              this.detailService.close();
+            });
           }
         }
 
-        // retain active cell when navigating with PageUp and PageDown buttons in virtual scroller
+        // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
         const active = this.keyNavigation.getActiveCell();
+
         if (active) {
           this.zone.runOutsideAngular(() => {
             setTimeout(() => this.keyNavigation.setActiveCell(active));

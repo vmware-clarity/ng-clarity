@@ -14,6 +14,7 @@ import { ModalStackService } from '../../../modal/modal-stack.service';
 export class DetailService {
   id: string;
 
+  private preventScroll = false;
   private toggleState = false;
   private cache: any;
   private button: HTMLButtonElement;
@@ -27,6 +28,13 @@ export class DetailService {
   }
   set enabled(state: boolean) {
     this._enabled = state;
+  }
+
+  get preventFocusScroll(): boolean {
+    return this.preventScroll;
+  }
+  set preventFocusScroll(preventScroll: boolean) {
+    this.preventScroll = preventScroll;
   }
 
   get state() {
@@ -51,16 +59,14 @@ export class DetailService {
 
   close() {
     this.toggleState = false;
+    this.returnFocus();
     this._state.next(this.toggleState);
     this.modalStackService.trackModalClose(this);
-    // In the case of browser zoom greater than 250%, the detail pane toggle button is not visible on the page.
-    // Wait for the detail pane to close, and return focus to the detail toggle button.
-    setTimeout(() => this.returnFocus(), 0);
   }
 
   returnFocus() {
     if (this.button) {
-      this.button.focus();
+      this.button.focus({ preventScroll: this.preventFocusScroll });
       this.button = null;
     }
   }
