@@ -22,5 +22,8 @@
     "@angular/common": "15 || 16 || 17",
     "@angular/core": "15 || 16 || 17",
     "@cds/core": ">= 6.9.2"
+  },
+  "ng-update": {
+    "migrations": "./schematics/migration.json"
   }
 }

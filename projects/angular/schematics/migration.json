@@ -1,0 +1,10 @@
+{
+  "$schema": "../../@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "migration-v16": {
+      "version": "16.0.0",
+      "description": "Updates Breadcrumb component to v16",
+      "factory": "./ng-update/index#migration16"
+    }
+  }
+}
