@@ -97,9 +97,9 @@ const template = `
               <cds-icon shape="angle" direction="down"></cds-icon>
             </button>
             <clr-dropdown-menu clrPosition="bottom-right">
-              <a href="javascript://" clrDropdownItem>Shutdown</a>
-              <a href="javascript://" clrDropdownItem>Delete</a>
-              <a href="javascript://" clrDropdownItem>Reboot</a>
+              <button clrDropdownItem>Shutdown</button>
+              <button clrDropdownItem>Delete</button>
+              <button clrDropdownItem>Reboot</button>
             </clr-dropdown-menu>
           </clr-dropdown>
           <a class="alert-action" href="javascript://">Ignore</a>
