@@ -227,6 +227,11 @@
       .subnav.clr-nav-level-2,
       .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
+        .nav {
+          overflow-y: scroll;
+        }
+        box-shadow: none;
+
         @include sliding-nav-positioning(0, 0, 0, auto);
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width);
         transition: responsive-nav-variables.$clr-sliding-panel-animation;
@@ -392,7 +397,9 @@
             left: 0;
             overflow: hidden;
             width: responsive-nav-variables.$clr-sliding-panel-width;
+            background: vertical-nav-variables.$clr-vertical-nav-bg-color;
             max-width: responsive-nav-variables.$clr-sliding-panel-width;
+            margin-left: calc(-1 * var(--scrollbar-width));
             z-index: responsive-nav-variables.$clr-sliding-panel-z-index + 1;
             padding-left: tokens.$cds-global-space-9;
 
@@ -432,7 +439,7 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          padding-top: calc(header-variables.$clr-header-height + tokens.$cds-global-space-9);
+          padding-top: tokens.$cds-global-space-10;
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
@@ -464,7 +471,12 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          overflow: inherit;
+          overflow-y: auto;
+          overflow-x: visible;
+          // This value equals the height of the branding (branding is not part of the scrollable area)
+          margin-top: mixins.baselinePx(52);
+          max-height: calc(100% - #{mixins.baselinePx(52)});
+
           width: responsive-nav-variables.$clr-sliding-panel-width;
           max-width: responsive-nav-variables.$clr-sliding-panel-width;
 
@@ -528,7 +540,6 @@
         .subnav.clr-nav-level-1,
         .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
-          overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width-sm;
           max-width: responsive-nav-variables.$clr-sliding-panel-width-sm;
         }
