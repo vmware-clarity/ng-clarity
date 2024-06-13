@@ -14,6 +14,7 @@ import { ModalStackService } from '../../../modal/modal-stack.service';
 export class DetailService {
   id: string;
 
+  private preventScroll = false;
   private toggleState = false;
   private cache: any;
   private button: HTMLButtonElement;
@@ -27,6 +28,13 @@ export class DetailService {
   }
   set enabled(state: boolean) {
     this._enabled = state;
+  }
+
+  get preventFocusScroll(): boolean {
+    return this.preventScroll;
+  }
+  set preventFocusScroll(preventScroll: boolean) {
+    this.preventScroll = preventScroll;
   }
 
   get state() {
@@ -60,7 +68,7 @@ export class DetailService {
 
   returnFocus() {
     if (this.button) {
-      this.button.focus();
+      this.button.focus({ preventScroll: this.preventFocusScroll });
       this.button = null;
     }
   }
