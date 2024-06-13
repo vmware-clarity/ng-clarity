@@ -5231,6 +5231,8 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
     toggleDetailPane(state: boolean): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
