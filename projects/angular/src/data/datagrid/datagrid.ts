@@ -280,10 +280,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
            */
           if (row) {
             this.detailService.open(row.item, row.detailButton.nativeElement);
-          }
-          // always keep open when virtual scroll is available otherwise close it
-          else if (!this.hasVirtualScroller) {
-            this.detailService.close();
+            // always keep open when virtual scroll is available otherwise close it
+          } else if (!this.hasVirtualScroller) {
+            // Using setTimeout to make sure the inner cycles in rows are done
+            setTimeout(() => {
+              this.detailService.close();
+            });
           }
         }
 
