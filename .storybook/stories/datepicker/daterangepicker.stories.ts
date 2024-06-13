@@ -48,24 +48,22 @@ export default {
     clrRangeEndDateChange: action('clrRangeEndDateChange'),
     // story helpers
     getDateObject: (date, dateFormat) => {
-      if (date && dateFormat) {
+      if (Object.prototype.toString.call(date) === '[object String]' && date && dateFormat) {
         const DELIMITERS_REGEX = /[-\\/.\s]/;
         const dateArr = date.split(DELIMITERS_REGEX);
         const formatArr = dateFormat.split(DELIMITERS_REGEX);
-        if (dateArr?.length && dateArr?.length < 3) {
-          const monthIdx = formatArr.findIndex(a => /m+/i.test(a)),
-            yearIdx = formatArr.findIndex(a => /y+/i.test(a)),
-            dateIdx = formatArr.findIndex(a => /d+/i.test(a));
-          const day = dateIdx > -1 ? dateArr[dateIdx] : 1,
-            year = yearIdx > -1 ? dateArr[yearIdx] : 2024;
-          let month = monthIdx > -1 ? dateArr[monthIdx] : 1;
+        const monthIdx = formatArr.findIndex(a => /m+/i.test(a)),
+          yearIdx = formatArr.findIndex(a => /y+/i.test(a)),
+          dateIdx = formatArr.findIndex(a => /d+/i.test(a));
+        const day = dateIdx > -1 ? dateArr[dateIdx] : 1,
+          year = yearIdx > -1 ? dateArr[yearIdx] : 2024;
+        let month = monthIdx > -1 ? dateArr[monthIdx] : 1;
 
-          if (monthIdx > -1 && isNaN(dateArr[monthIdx])) {
-            month = new Date(`${dateArr[monthIdx]} 01 2024`).toLocaleDateString(`en`, { month: `2-digit` });
-          }
-
-          return new Date(year, month - 1, day);
+        if (monthIdx > -1 && isNaN(dateArr[monthIdx])) {
+          month = new Date(`${dateArr[monthIdx]} 01 2024`).toLocaleDateString(`en`, { month: `2-digit` });
         }
+
+        return new Date(year, month - 1, day);
       }
       return date && new Date(date).toISOString();
     },
