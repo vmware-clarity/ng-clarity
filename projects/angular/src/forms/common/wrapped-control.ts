@@ -58,6 +58,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
+  private additionalDiffer = new Map<NgControl, KeyValueDiffer<any, any>>();
   private ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
@@ -113,6 +114,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
   }
 
+  private get hasAdditionalControls() {
+    return this.additionalDiffer.size > 0;
+  }
+
   ngOnInit() {
     this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
     this.controlIdService = this._containerInjector.get(ControlIdService);
@@ -136,12 +141,18 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       } else {
         this.ngControl = this.ngControlService.getControl();
         this.ngControlService.addAdditionalControl(this._ngControl);
+        this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
       }
     }
   }
 
   ngDoCheck() {
     this.triggerDoCheck(this.differ, this.ngControl);
+    if (this.hasAdditionalControls) {
+      for (const [ngControl, differ] of this.additionalDiffer) {
+        this.triggerDoCheck(differ, ngControl);
+      }
+    }
   }
 
   triggerDoCheck(differ, ngControl) {
