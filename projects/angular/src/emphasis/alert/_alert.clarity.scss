@@ -194,10 +194,17 @@
     }
 
     .alert-actions {
-      display: inline-flex;
-      gap: tokens.$cds-global-space-5;
       flex: 0 0 auto;
       white-space: nowrap;
+
+      > {
+        .alert-action,
+        .dropdown {
+          &:not(:last-child) {
+            margin-right: tokens.$cds-global-space-5;
+          }
+        }
+      }
 
       .dropdown-item {
         color: dropdown-variables.$clr-dropdown-text-color;
