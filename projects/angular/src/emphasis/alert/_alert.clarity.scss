@@ -306,40 +306,22 @@
 
     &.alert-info {
       @include generateAlertType(app-info);
-
-      .alert-item .btn {
-        @extend .btn-info-outline;
-      }
     }
 
     &.alert-danger {
       @include generateAlertType(app-danger);
-
-      .alert-item .btn {
-        @extend .btn-danger-outline;
-      }
     }
 
     &.alert-neutral {
       @include generateAlertType(app-neutral);
-
-      .alert-item .btn {
-        @extend .btn-neutral-outline;
-      }
     }
 
     &.alert-warning {
       @include generateAlertType(app-warning);
-      .alert-item .btn {
-        @extend .btn-warning-outline;
-      }
     }
 
     &.alert-success {
       @include generateAlertType(app-success);
-      .alert-item .btn {
-        @extend .btn-success-outline;
-      }
     }
 
     .alert-items {
