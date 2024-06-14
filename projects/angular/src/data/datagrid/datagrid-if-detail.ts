@@ -46,6 +46,10 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     this.skip = false;
   }
 
+  get viewContext() {
+    return { $implicit: this.detailService.state };
+  }
+
   ngOnInit() {
     this.subscriptions.push(
       this.detailService.stateChange.subscribe(state => {
@@ -66,12 +70,11 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     let stateChangeParams = null;
 
     if (showPanel === true) {
-      const embeddedViewContext = { $implicit: this.detailService.state };
-
-      if (this.embeddedViewRef) {
-        this.embeddedViewRef.context = embeddedViewContext;
-      } else {
-        this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, embeddedViewContext);
+      if (!this.embeddedViewRef) {
+        // Create a context forward `Proxy` that will always bind to the user-specified context,
+        // without having to re-assign it whenever changes.
+        const viewContext = this._createContextForwardProxy();
+        this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, viewContext);
       }
 
       this.skip = true;
@@ -82,5 +85,31 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     }
 
     this.stateChange.emit(stateChangeParams);
+  }
+
+  /**
+   * For a given outlet instance, we create a proxy object that delegates
+   * to the user-specified context. This allows changing, or swapping out
+   * the context object completely without having to destroy/re-create the view.
+   */
+  private _createContextForwardProxy() {
+    return new Proxy(
+      {},
+      {
+        set: (_target, prop, newValue) => {
+          if (!this.viewContext) {
+            return false;
+          }
+          return Reflect.set(this.viewContext, prop, newValue);
+        },
+        get: (_target, prop, receiver) => {
+          if (!this.viewContext) {
+            return undefined;
+          }
+          console.log(this.viewContext, prop, receiver);
+          return Reflect.get(this.viewContext, prop, receiver);
+        },
+      }
+    );
   }
 }
