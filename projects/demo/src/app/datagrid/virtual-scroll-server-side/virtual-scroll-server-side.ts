@@ -10,7 +10,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
-import { FetchResult, Inventory } from '../inventory/inventory';
+import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 import { ColorFilter } from '../utils/color-filter';
 
@@ -86,7 +86,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
     }, 2000);
   }
 
-  refresh(state: ClrDatagridStateInterface) {
+  async refresh(state: ClrDatagridStateInterface) {
     const filters: { [key: string]: any[] } = {};
     this.loading = true;
 
@@ -101,13 +101,12 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
       }
     }
 
-    this._inventory
+    const result = await this._inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch()
-      .then((result: FetchResult) => {
-        this._inventory.getAllUsersSubject().next(result.users);
-        this.loading = false;
-      });
+      .fetch();
+
+    this._inventory.getAllUsersSubject().next(result.users);
+    this.loading = false;
   }
 }

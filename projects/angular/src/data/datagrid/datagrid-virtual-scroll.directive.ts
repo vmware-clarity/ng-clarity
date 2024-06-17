@@ -101,6 +101,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   ) {
     this.items.smartenUp();
     this.datagrid.hasVirtualScroller = true;
+    this.datagrid.detailService.preventFocusScroll = true;
 
     this.datagridElementRef = this.datagrid.el;
 
