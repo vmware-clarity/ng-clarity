@@ -1025,7 +1025,7 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   // Select
   --clr-forms-select-hover-background: transparent;
   --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
-  --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-container-background};
+  --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
   --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover}; // #{tokens.$cds-global-color-gray-600}; // var(--clr-color-neutral-600);
   --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color}; // #{tokens.$cds-global-color-gray-500}; // var(--clr-color-neutral-500);
   --clr-forms-select-option-color: var(--clr-forms-text-color); // indirectly mapped to CDS token
