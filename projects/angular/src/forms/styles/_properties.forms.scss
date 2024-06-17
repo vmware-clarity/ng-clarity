@@ -88,7 +88,7 @@
     // Select
     --clr-forms-select-hover-background: transparent;
     --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
-    --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-container-background};
+    --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
     --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
     --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-forms-select-caret-size: #{mixins.baselinePx(10)};
