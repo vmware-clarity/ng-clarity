@@ -2532,6 +2532,10 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     // (undocumented)
     stateChange: EventEmitter<any>;
     // (undocumented)
+    get viewContext(): {
+        $implicit: any;
+    };
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": "clrIfDetail"; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
