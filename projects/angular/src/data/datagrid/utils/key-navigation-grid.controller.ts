@@ -35,6 +35,8 @@ export interface KeyNavigationGridConfig {
 
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
+  skipItemFocus = false;
+
   private host: HTMLElement;
   private config: KeyNavigationGridConfig;
   private listenersAdded = false;
@@ -162,7 +164,9 @@ export class KeyNavigationGridController implements OnDestroy {
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
 
-    item.focus();
+    if (!this.skipItemFocus) {
+      item.focus();
+    }
   }
 
   private getNextItemCoordinate(e: any) {

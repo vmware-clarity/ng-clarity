@@ -44,6 +44,7 @@ export default function (): void {
           new ClrCommonStringsService(),
           toggleService,
           'browser' as any,
+          undefined,
           undefined
         );
       });

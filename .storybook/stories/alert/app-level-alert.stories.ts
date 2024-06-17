@@ -62,6 +62,7 @@ export default {
     createArray: n => new Array(n),
     itemCount: 3,
     content: 'Hello World!',
+    showActions: false,
     ALERT_TYPES,
   },
 };
@@ -79,6 +80,10 @@ const template = `
   >
     <clr-alert-item *ngFor="let _ of createArray(itemCount); let i = index">
       <span class="alert-text">{{ content }} {{ i + 1 }}</span>
+      <div *ngIf="showActions" class="alert-actions">
+        <button class="btn alert-action">Fix</button>
+        <button class="btn alert-action">Ignore</button>
+      </div>
     </clr-alert-item>
   </clr-alert>
 `;
@@ -103,6 +108,13 @@ export const Closable: StoryObj = {
   render: AlertTemplate,
   args: {
     clrAlertClosable: true,
+  },
+};
+
+export const WithActions: StoryObj = {
+  render: AlertTemplate,
+  args: {
+    showActions: true,
   },
 };
 
