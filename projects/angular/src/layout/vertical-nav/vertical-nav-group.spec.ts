@@ -235,9 +235,8 @@ export default function (): void {
 
       it('should set the aria-label attribute on the expand/collapse button', () => {
         const button: HTMLButtonElement = compiled.querySelector('.nav-group-trigger');
-        const navText: HTMLSpanElement = compiled.querySelector('.nav-text');
         expect(button.hasAttribute('aria-label')).toBe(true);
-        expect(button.getAttribute('aria-label')).toContain(navText.textContent.trim());
+        expect(button.getAttribute('aria-label')).toContain('Link');
       });
     });
   });
