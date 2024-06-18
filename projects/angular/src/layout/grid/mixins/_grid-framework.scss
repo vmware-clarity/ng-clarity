@@ -12,15 +12,15 @@
 
 @mixin clr-make-grid-columns(
   $columns: variables.$clr-grid-columns,
-  $gutter: variables.$clr-grid-gutter-width,
+  $gutter: variables.$clr-grid-column-padding,
   $breakpoints: variables.$clr-grid-breakpoints
 ) {
   // Common properties for all breakpoints
   %clr-grid-column {
     width: 100%;
     min-height: variables.$clr_baselineRem_1px; // Prevent columns from collapsing when empty
-    padding-right: ($gutter * 0.5);
-    padding-left: ($gutter * 0.5);
+    padding-right: $gutter;
+    padding-left: $gutter;
   }
 
   @each $breakpoint in map.keys($breakpoints) {

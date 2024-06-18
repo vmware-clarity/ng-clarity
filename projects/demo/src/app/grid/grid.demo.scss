@@ -8,6 +8,8 @@
 @import '../_utils/clarity-variables';
 
 .clr-example {
+  $border-color: hsl(218, 14%, 30%);
+
   span {
     display: flex;
     justify-content: center;
@@ -18,13 +20,19 @@
     margin: $clr_baselineRem_0_25 0;
 
     &.clr-example-enable-borders {
-      border: $clr-global-borderwidth solid hsl(218, 14%, 30%);
+      border: $clr-global-borderwidth solid $border-color;
     }
   }
 
   .clr-example-row {
-    background: hsl(218, 14%, 30%);
+    background: $border-color;
     height: $clr_baselineRem_108px;
     margin: $clr_baselineRem_0_25 0;
+  }
+
+  &.container-example {
+    [class^='clr-col'] {
+      border: 2px solid $border-color;
+    }
   }
 }
