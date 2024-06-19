@@ -34,11 +34,11 @@ export default function (): void {
     });
 
     describe('View', function () {
-      let context: TestContext<ClrDatagridDetail, DataGridPaneTestComponent>;
+      let context: TestContext<ClrDatagridDetail, FullTest>;
       let detailService: DetailService;
 
       beforeEach(function () {
-        context = this.create(ClrDatagridDetail, DataGridPaneTestComponent, [DetailService]);
+        context = this.create(ClrDatagridDetail, FullTest, [DetailService]);
         detailService = context.getClarityProvider(DetailService);
         detailService.id = 'clr-id-1';
         context.detectChanges();
@@ -125,11 +125,6 @@ export default function (): void {
 }
 
 @Component({
-  template: `<clr-dg-detail>${content}</clr-dg-detail>`,
-})
-class FullTest {}
-
-@Component({
   template: `
     <clr-dg-detail [clrDetailAriaLabelledBy]="ariaLabelledBy" [clrDetailAriaLabel]="ariaLabel">
       <clr-dg-detail-header>Title</clr-dg-detail-header>
@@ -137,7 +132,7 @@ class FullTest {}
     </clr-dg-detail>
   `,
 })
-class DataGridPaneTestComponent {
+class FullTest {
   ariaLabelledBy: string;
   ariaLabel: string;
 }
