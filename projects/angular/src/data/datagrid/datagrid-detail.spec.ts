@@ -59,19 +59,19 @@ export default function (): void {
         context.detectChanges();
         expect(context.clarityElement.innerHTML).toContain(content);
         const event = new KeyboardEvent('keyup', { key: 'Escape' });
-        document.dispatchEvent(event);
+        document.body.dispatchEvent(event);
         context.detectChanges();
         expect(detailService.close).toHaveBeenCalled();
       }));
 
       it('conditionally enables focus trap when opened', () => {
-        expect(context.clarityElement.innerHTML).not.toContain('cdkfocustrap');
+        expect(context.clarityElement.innerHTML).not.toContain('cdktrapfocus');
         detailService.open({});
         context.detectChanges();
-        expect(context.clarityElement.innerHTML).toContain('cdkfocustrap');
+        expect(context.clarityElement.innerHTML).toContain('cdktrapfocus');
         detailService.close();
         context.detectChanges();
-        expect(context.clarityElement.innerHTML).not.toContain('cdkfocustrap');
+        expect(context.clarityElement.innerHTML).not.toContain('cdktrapfocus');
       });
 
       it('should have text based boundaries for screen readers', () => {
