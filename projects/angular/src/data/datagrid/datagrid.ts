@@ -150,7 +150,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
-    private columnsService: ColumnsService,
+    public columnsService: ColumnsService,
     public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {

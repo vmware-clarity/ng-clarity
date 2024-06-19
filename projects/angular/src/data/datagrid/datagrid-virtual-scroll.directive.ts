@@ -7,7 +7,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
+import { ListRange } from '@angular/cdk/collections';
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
@@ -40,6 +40,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { Items } from './providers/items';
+import { ClrVirtualScrollRepeater } from './utils/virtual-scroll-repeater';
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -82,6 +83,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   });
 
+  private viewRepeater: ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>;
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -104,6 +106,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.datagrid.detailService.preventFocusScroll = true;
 
     this.datagridElementRef = this.datagrid.el;
+
+    // default
+    this.cdkVirtualForTemplateCacheSize = 20;
+
+    this.viewRepeater = new ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>(this.datagrid.columnsService);
 
     this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
       attributeFilter: ['class'],
@@ -197,7 +204,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.viewContainerRef,
         this.templateRef,
         this.iterableDiffers,
-        new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
+        this.viewRepeater,
         this.virtualScrollViewport,
         this.ngZone
       );
