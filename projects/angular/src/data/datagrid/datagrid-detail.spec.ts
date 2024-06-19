@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
 import { TestContext } from './helpers.spec';
@@ -54,7 +54,7 @@ export default function (): void {
         expect(context.clarityElement.innerHTML).not.toContain(content);
       });
 
-      it('hides content with the esc key', waitForAsync(() => {
+      it('hides content with the esc key', async(() => {
         spyOn(detailService, 'close');
         detailService.open({});
         context.detectChanges();
