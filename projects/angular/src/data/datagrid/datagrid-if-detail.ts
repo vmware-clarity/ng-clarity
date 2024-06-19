@@ -106,7 +106,6 @@ export class ClrIfDetail implements OnInit, OnDestroy {
           if (!this.viewContext) {
             return undefined;
           }
-          console.log(this.viewContext, prop, receiver);
           return Reflect.get(this.viewContext, prop, receiver);
         },
       }
