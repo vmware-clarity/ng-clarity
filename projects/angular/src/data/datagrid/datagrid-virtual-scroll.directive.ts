@@ -60,7 +60,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 
 @Directive({
   selector: '[ClrVirtualScroll]',
-  providers: [Items],
+  providers: [Items, ClrVirtualScrollRepeater],
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
@@ -83,7 +83,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   });
 
-  private viewRepeater: ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>;
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -99,7 +98,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
     private readonly datagrid: ClrDatagrid,
-    private readonly injector: EnvironmentInjector
+    private readonly injector: EnvironmentInjector,
+    private viewRepeater: ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>
   ) {
     this.items.smartenUp();
     this.datagrid.hasVirtualScroller = true;
@@ -109,8 +109,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     // default
     this.cdkVirtualForTemplateCacheSize = 20;
-
-    this.viewRepeater = new ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>(this.datagrid.columnsService);
 
     this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
       attributeFilter: ['class'],

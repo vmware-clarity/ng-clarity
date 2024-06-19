@@ -6,51 +6,54 @@
  */
 
 import { _RecycleViewRepeaterStrategy } from '@angular/cdk/collections';
-import { EmbeddedViewRef } from '@angular/core';
+import { EmbeddedViewRef, Injectable, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { ColumnsService } from '../providers/columns.service';
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from '../render/constants';
+import { CellState } from './set-cell-state';
 
-export class ClrVirtualScrollRepeater<T, R, C> extends _RecycleViewRepeaterStrategy<T, R, C> {
+@Injectable()
+export class ClrVirtualScrollRepeater<T, R, C> extends _RecycleViewRepeaterStrategy<T, R, C> implements OnDestroy {
+  private subscriptions: Subscription[] = [];
+  private cellState = new CellState();
+
   constructor(private columnsService: ColumnsService) {
     super();
+    this.subscriptions.push(
+      this.columnsService.columnsStateChange.subscribe(state => {
+        if (!state || !state.columnIndex) {
+          return;
+        }
 
-    this.columnsService.columnsStateChange.subscribe(state => {
-      if (!state.columnIndex) {
-        return;
-      }
+        const cachedRowViews = (this as any)._viewCache as EmbeddedViewRef<C>[];
 
-      const cachedRowViews = (this as any)._viewCache as EmbeddedViewRef<C>[];
+        cachedRowViews.forEach(rowViewRef => {
+          rowViewRef.rootNodes.forEach((htmlNode: HTMLElement) => {
+            const cell = htmlNode.querySelectorAll(
+              `[role=gridcell]:not(.datagrid-fixed-column):not(.datagrid-placeholder-content)`
+            )[state.columnIndex] as HTMLElement;
 
-      cachedRowViews.forEach(rowViewRef => {
-        rowViewRef.rootNodes.forEach((htmlNode: HTMLElement) => {
-          const cell = htmlNode.querySelectorAll(
-            `[role=gridcell]:not(.datagrid-fixed-column):not(.datagrid-placeholder-content)`
-          )[state.columnIndex] as HTMLElement;
+            if (!cell) {
+              return;
+            }
 
-          if (cell) {
             state.changes?.forEach(change => {
               if (change === DatagridColumnChanges.WIDTH) {
-                if (state.strictWidth) {
-                  cell.classList.add(STRICT_WIDTH_CLASS);
-                } else {
-                  cell.classList.remove(STRICT_WIDTH_CLASS);
-                }
-                cell.style.width = state.width + 'px';
+                this.cellState.setWidth(state, cell);
               }
 
               if (change === DatagridColumnChanges.HIDDEN) {
-                if (state.hidden) {
-                  cell.classList.add(HIDDEN_COLUMN_CLASS);
-                } else {
-                  cell.classList.remove(HIDDEN_COLUMN_CLASS);
-                }
+                this.cellState.setHidden(state, cell);
               }
             });
-          }
+          });
         });
-      });
-    });
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

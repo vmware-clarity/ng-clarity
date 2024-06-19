@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { CellState } from '../utils/set-cell-state';
+import { STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 
 @Directive({
@@ -19,8 +20,9 @@ import { DatagridRenderOrganizer } from './render-organizer';
 export class DatagridCellRenderer implements OnDestroy {
   private stateSubscription: Subscription;
   private subscriptions: Subscription[] = [];
+  private cellState = new CellState();
 
-  constructor(private el: ElementRef, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
+  constructor(private el: ElementRef, organizer: DatagridRenderOrganizer) {
     this.subscriptions.push(
       organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
     );
@@ -39,24 +41,15 @@ export class DatagridCellRenderer implements OnDestroy {
   }
 
   setWidth(state: ColumnState) {
-    if (state.strictWidth) {
-      this.renderer.addClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-    } else {
-      this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-    }
-    this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
+    this.cellState.setWidth(state, this.el.nativeElement);
   }
 
   setHidden(state: ColumnState) {
-    if (state.hidden) {
-      this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
-    } else {
-      this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
-    }
+    this.cellState.setHidden(state, this.el.nativeElement);
   }
 
   private clearWidth() {
-    this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-    this.renderer.setStyle(this.el.nativeElement, 'width', null);
+    this.el.nativeElement.classList.remove(STRICT_WIDTH_CLASS);
+    this.el.nativeElement.style.width = null;
   }
 }
