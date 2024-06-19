@@ -1448,6 +1448,10 @@ export interface ClrDatagridComparatorInterface<T> {
 export class ClrDatagridDetail {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
+    ariaLabel: string;
+    // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     close(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -1456,7 +1460,11 @@ export class ClrDatagridDetail {
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {}, {}, ["header"], ["*"], false, never>;
+    get label(): string;
+    // (undocumented)
+    get labelledBy(): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": "clrDetailAriaLabelledBy"; "ariaLabel": "clrDetailAriaLabel"; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
