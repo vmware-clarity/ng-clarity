@@ -122,17 +122,11 @@ const NavRoutingTemplate: StoryFn = args => ({
         >
           <clr-vertical-nav-group
             *ngFor="let navLink of navLinks"
-            [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
-            <div
-              (click)="handleClick($event, navLink.text.toLowerCase())"
-              [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
-            >
-              <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              {{ navLink.text }}
-            </div>
+            <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+            {{ navLink.text }}
             <clr-vertical-nav-group-children>
               <a
                 clrVerticalNavLink
@@ -163,21 +157,15 @@ const NavRoutingAllTemplate: StoryFn = args => ({
           >
             <clr-vertical-nav-group
               *ngFor="let navLink of navLinks"
-              [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
               [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
-              <div
-                (click)="handleClick($event, navLink.text.toLowerCase())"
-                [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
-              >
                 <cds-icon
                   *ngIf="state?.includeIcons"
                   [attr.shape]="navLink.iconShapeTuple[0]"
                   clrVerticalNavIcon
                 ></cds-icon>
                 {{ navLink.text }}
-              </div>
               <clr-vertical-nav-group-children>
                 <a
                   clrVerticalNavLink
