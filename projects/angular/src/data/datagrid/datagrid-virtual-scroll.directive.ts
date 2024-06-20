@@ -7,7 +7,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { ListRange } from '@angular/cdk/collections';
+import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
@@ -39,8 +39,8 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
-import { ClrVirtualScrollRepeater } from './utils/virtual-scroll-repeater';
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -60,7 +60,7 @@ const defaultCdkFixedSizeVirtualScrollInputs: CdkFixedSizeVirtualScrollInputs = 
 
 @Directive({
   selector: '[ClrVirtualScroll]',
-  providers: [Items, ClrVirtualScrollRepeater],
+  providers: [Items],
 })
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
@@ -83,6 +83,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   });
 
+  private viewRepeater = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -98,8 +99,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
     private readonly datagrid: ClrDatagrid,
-    private readonly injector: EnvironmentInjector,
-    private viewRepeater: ClrVirtualScrollRepeater<T, T, CdkVirtualForOfContext<T>>
+    private columnsService: ColumnsService,
+    private readonly injector: EnvironmentInjector
   ) {
     this.items.smartenUp();
     this.datagrid.hasVirtualScroller = true;
@@ -228,6 +229,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (datagridState.filters) {
           this.virtualScrollViewport.scrollToIndex(0);
         }
+      }),
+      this.columnsService.columnsStateChange.subscribe(() => {
+        this.viewRepeater.detach();
       })
     );
   }
