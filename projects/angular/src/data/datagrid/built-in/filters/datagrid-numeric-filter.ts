@@ -24,7 +24,8 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <input
-        class="datagrid-numeric-filter-input"
+        clrInput
+        class="datagrid-numeric-filter-input clr-input"
         #input_low
         type="number"
         autocomplete="off"
@@ -35,7 +36,8 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       />
       <span class="datagrid-filter-input-spacer"></span>
       <input
-        class="datagrid-numeric-filter-input"
+        clrInput
+        class="datagrid-numeric-filter-input clr-input"
         #input_high
         type="number"
         autocomplete="off"

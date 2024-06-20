@@ -452,6 +452,20 @@
 
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
+
+        // Remove browser default arrow buttons for number inputs
+
+        /* Chrome, Safari, Edge, Opera */
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none !important;
+          margin: 0 !important;
+        }
+
+        /* Firefox */
+        & {
+          -moz-appearance: textfield !important;
+        }
       }
 
       .datagrid-filter-toggle {
