@@ -160,12 +160,12 @@ const NavRoutingAllTemplate: StoryFn = args => ({
               [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
-                <cds-icon
-                  *ngIf="state?.includeIcons"
-                  [attr.shape]="navLink.iconShapeTuple[0]"
-                  clrVerticalNavIcon
-                ></cds-icon>
-                {{ navLink.text }}
+              <cds-icon
+                *ngIf="state?.includeIcons"
+                [attr.shape]="navLink.iconShapeTuple[0]"
+                clrVerticalNavIcon
+              ></cds-icon>
+              {{ navLink.text }}
               <clr-vertical-nav-group-children>
                 <a
                   clrVerticalNavLink
