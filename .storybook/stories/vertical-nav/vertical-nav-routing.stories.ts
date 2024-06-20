@@ -126,15 +126,13 @@ const NavRoutingTemplate: StoryFn = args => ({
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
-            <a
+            <div
               (click)="handleClick($event, navLink.text.toLowerCase())"
               [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
-              clrVerticalNavLink
-              href="javascript:void(0)"
             >
               <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
               {{ navLink.text }}
-            </a>
+            </div>
             <clr-vertical-nav-group-children>
               <a
                 clrVerticalNavLink
@@ -169,11 +167,9 @@ const NavRoutingAllTemplate: StoryFn = args => ({
               [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
-              <a
+              <div
                 (click)="handleClick($event, navLink.text.toLowerCase())"
                 [ngClass]="{ active: navLink.text.toLowerCase() == activeRoute }"
-                clrVerticalNavLink
-                href="javascript:void(0)"
               >
                 <cds-icon
                   *ngIf="state?.includeIcons"
@@ -181,7 +177,7 @@ const NavRoutingAllTemplate: StoryFn = args => ({
                   clrVerticalNavIcon
                 ></cds-icon>
                 {{ navLink.text }}
-              </a>
+              </div>
               <clr-vertical-nav-group-children>
                 <a
                   clrVerticalNavLink
