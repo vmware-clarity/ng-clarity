@@ -17,22 +17,25 @@ import { CellState } from './set-cell-state';
 export class ClrVirtualScrollRepeater<T, R, C> extends _RecycleViewRepeaterStrategy<T, R, C> implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private cellState = new CellState();
+  private cachedRowViews: EmbeddedViewRef<C>[];
 
   constructor(private columnsService: ColumnsService) {
     super();
+
+    // casting this to any to overcome `private` parent accessor
+    this.cachedRowViews = (this as any)._viewCache as EmbeddedViewRef<C>[];
+
     this.subscriptions.push(
       this.columnsService.columnsStateChange.subscribe(state => {
         if (!state || !state.columnIndex) {
           return;
         }
 
-        const cachedRowViews = (this as any)._viewCache as EmbeddedViewRef<C>[];
+        const selector = `[role=gridcell]:not(.datagrid-fixed-column):not(.datagrid-placeholder-content)`;
 
-        cachedRowViews.forEach(rowViewRef => {
+        this.cachedRowViews.forEach(rowViewRef => {
           rowViewRef.rootNodes.forEach((htmlNode: HTMLElement) => {
-            const cell = htmlNode.querySelectorAll(
-              `[role=gridcell]:not(.datagrid-fixed-column):not(.datagrid-placeholder-content)`
-            )[state.columnIndex] as HTMLElement;
+            const cell = htmlNode.querySelectorAll(selector)[state.columnIndex] as HTMLElement;
 
             if (!cell) {
               return;
