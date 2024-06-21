@@ -22,9 +22,8 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   selector: 'clr-dg-numeric-filter',
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
-    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
+    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open" class="clr-form-horizontal">
       <input
-        clrInput
         class="datagrid-numeric-filter-input clr-input"
         #input_low
         type="number"
@@ -36,7 +35,6 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       />
       <span class="datagrid-filter-input-spacer"></span>
       <input
-        clrInput
         class="datagrid-numeric-filter-input clr-input"
         #input_high
         type="number"
