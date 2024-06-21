@@ -39,6 +39,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
 
 type CdkVirtualForInputKey =
@@ -82,6 +83,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     });
   });
 
+  private viewRepeater = new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>();
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -97,6 +99,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
     private readonly datagrid: ClrDatagrid,
+    private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
     this.items.smartenUp();
@@ -104,6 +107,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.datagrid.detailService.preventFocusScroll = true;
 
     this.datagridElementRef = this.datagrid.el;
+
+    // default
+    this.cdkVirtualForTemplateCacheSize = 20;
 
     this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
       attributeFilter: ['class'],
@@ -197,7 +203,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.viewContainerRef,
         this.templateRef,
         this.iterableDiffers,
-        new _RecycleViewRepeaterStrategy<T, T, CdkVirtualForOfContext<T>>(),
+        this.viewRepeater,
         this.virtualScrollViewport,
         this.ngZone
       );
@@ -223,6 +229,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (datagridState.filters) {
           this.virtualScrollViewport.scrollToIndex(0);
         }
+      }),
+      this.columnsService.columnsStateChange.subscribe(() => {
+        this.viewRepeater.detach();
       })
     );
   }
