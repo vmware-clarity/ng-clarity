@@ -70,7 +70,12 @@
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
-<clr-datagrid *ngIf="{ users: users | async }; let data" [(clrDgSelected)]="selectedUsers" style="height: 30rem">
+<clr-datagrid
+  *ngIf="{ users: users | async }; let data"
+  [(clrDgSelected)]="selectedUsers"
+  class="datagrid-compact"
+  style="height: 30rem"
+>
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -90,12 +95,7 @@
   >
     <clr-dg-row [clrDgItem]="user">
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
-      <clr-dg-cell>
-        <clr-checkbox-wrapper>
-          <label>{{user.name}}</label>
-          <input type="checkbox" clrCheckbox />
-        </clr-checkbox-wrapper>
-      </clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>
         {{user.pokemon.name}}
