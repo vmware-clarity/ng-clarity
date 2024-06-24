@@ -22,6 +22,7 @@ import { DatepickerKKJDemo } from './datepicker-KKJ';
 import { DatepickerLocaleData } from './datepicker-locale-data';
 import { DatepickerMinMaxDemo } from './datepicker-min-max';
 import { DatepickerDemo } from './datepicker.demo';
+import { DateRangePickerDemo } from './daterangepicker';
 import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
 import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
@@ -43,6 +44,7 @@ const ROUTES: Routes = [
       { path: 'disabled', component: DisabledDemo },
       { path: 'layout', component: DatepickerLayoutDemo },
       { path: 'datepicker-min-max', component: DatepickerMinMaxDemo },
+      { path: 'date-range-picker', component: DateRangePickerDemo },
       {
         path: 'locale-data',
         component: DatepickerLocaleData,

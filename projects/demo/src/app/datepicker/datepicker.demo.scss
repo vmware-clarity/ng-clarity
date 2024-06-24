@@ -22,3 +22,59 @@
 .clr-example-input {
   display: inline-block;
 }
+
+.date-range-section {
+  margin: 0 20px;
+  .flex-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .card {
+    flex-basis: 47%;
+    margin: 25px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    &::before {
+      content: attr(data-heading);
+      position: absolute;
+      top: -12px;
+      left: 12px;
+      background: #fff;
+      padding: 0 10px;
+      border: 0;
+      font-weight: 400;
+      font-size: 18px;
+    }
+  }
+  .clr-form-control {
+    margin: 0 !important;
+  }
+  .clr-form-horizontal .clr-form-control > .clr-control-label {
+    width: unset;
+  }
+  .card-content {
+    padding: 35px var(--cds-global-space-7);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    &::after {
+      margin-bottom: 6px;
+      display: block;
+      content: '';
+    }
+  }
+
+  .card-validations {
+    position: relative;
+    padding: var(--cds-global-space-7);
+    border-top: var(--clr-card-border-width) solid var(--clr-card-border-color);
+    width: 100%;
+
+    .form-input-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+}

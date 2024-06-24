@@ -58,6 +58,10 @@ export class ClrCalendar implements OnDestroy {
     return this._dateNavigationService.selectedDay;
   }
 
+  get selectedEndDay(): DayModel {
+    return this._dateNavigationService.selectedEndDay;
+  }
+
   get focusedDay(): DayModel {
     return this._dateNavigationService.focusedDay;
   }
@@ -129,6 +133,18 @@ export class ClrCalendar implements OnDestroy {
     );
 
     this._subs.push(
+      this._dateNavigationService.selectedDayChange.subscribe((selectedDay: DayModel) => {
+        this.calendarViewModel.updateSelectedDay(selectedDay);
+      })
+    );
+
+    this._subs.push(
+      this._dateNavigationService.selectedEndDayChange.subscribe((selectedDay: DayModel) => {
+        this.calendarViewModel.updateSelectedEndDay(selectedDay);
+      })
+    );
+
+    this._subs.push(
       this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
         this._datepickerFocusService.focusCell(this._elRef);
       })
@@ -142,6 +158,7 @@ export class ClrCalendar implements OnDestroy {
     this.calendarViewModel = new CalendarViewModel(
       this.calendar,
       this.selectedDay,
+      this.selectedEndDay,
       this.focusedDay,
       this.today,
       this._localeHelperService.firstDayOfWeek,

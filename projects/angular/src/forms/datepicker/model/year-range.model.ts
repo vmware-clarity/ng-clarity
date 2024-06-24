@@ -50,6 +50,13 @@ export class YearRangeModel {
   }
 
   /**
+   * Checks if the value is in the YearRangeModel.
+   */
+  inRangeBetweenYears(value: number, startYear: number, endYear: number): boolean {
+    return value > startYear && value < endYear;
+  }
+
+  /**
    * Generates the year range based on the year parameter.
    * eg: If 2018 is passed the output will be [2010, 2011, ..., 2019]
    */
