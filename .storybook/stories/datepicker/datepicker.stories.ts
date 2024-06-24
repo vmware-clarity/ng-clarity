@@ -37,49 +37,25 @@ export default {
   },
   args: {
     disabled: false,
-    dateFormat: 'MM-dd-yyyy',
     placeholder: '',
     id: '',
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: (date, dateFormat) => {
-      if (Object.prototype.toString.call(date) === '[object String]' && date && dateFormat) {
-        const DELIMITERS_REGEX = /[-\\/.\s]/;
-        const dateArr = date.split(DELIMITERS_REGEX);
-        const formatArr = dateFormat.split(DELIMITERS_REGEX);
-        if (dateArr?.length && dateArr?.length < 3) {
-          const monthIdx = formatArr.findIndex(a => /m+/i.test(a)),
-            yearIdx = formatArr.findIndex(a => /y+/i.test(a)),
-            dateIdx = formatArr.findIndex(a => /d+/i.test(a));
-          const day = dateIdx > -1 ? dateArr[dateIdx] : 1,
-            year = yearIdx > -1 ? dateArr[yearIdx] : 2024;
-          let month = monthIdx > -1 ? dateArr[monthIdx] : 1;
-
-          if (monthIdx > -1 && isNaN(dateArr[monthIdx])) {
-            month = new Date(`${dateArr[monthIdx]} 01 2024`).toLocaleDateString(`en`, { month: `2-digit` });
-          }
-
-          return new Date(year, month - 1, day);
-        }
-      }
-      return date && new Date(date).toISOString();
-    },
-    getDateString: date => {
-      return date && new Date(date).toISOString().split('T')[0];
-    },
+    getDateObject: date => new Date(date),
+    getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <clr-date-container [dateFormat]="dateFormat">
+    <clr-date-container>
       <label>Date</label>
       <input
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(clrDate || date.value, dateFormat)"
+        [clrDate]="getDateObject(clrDate || date.value)"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"
@@ -121,26 +97,5 @@ export const MaxDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
     max: Date.now() + 2592000000,
-  },
-};
-
-export const DateFormat: StoryObj = {
-  render: DatePickerTemplate,
-  args: {
-    dateFormat: 'yyyy-MM-dd',
-  },
-};
-
-export const MonthPicker: StoryObj = {
-  render: DatePickerTemplate,
-  args: {
-    dateFormat: 'MM/yyyy',
-  },
-};
-
-export const YearPicker: StoryObj = {
-  render: DatePickerTemplate,
-  args: {
-    dateFormat: 'yyyy',
   },
 };
