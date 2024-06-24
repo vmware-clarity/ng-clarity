@@ -445,11 +445,6 @@
         align-items: center;
       }
 
-      .datagrid-filter-input-spacer {
-        width: tokens.$cds-global-space-6;
-        display: inline-block;
-      }
-
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
       }
@@ -1496,4 +1491,11 @@
   }
 
   // END Calculation classes.
+}
+
+.datagrid-filter.clr-popover-content {
+  .datagrid-filter-input-spacer {
+    display: inline-block;
+    width: tokens.$cds-global-space-6;
+  }
 }
