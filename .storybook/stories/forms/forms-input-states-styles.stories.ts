@@ -11,7 +11,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from '../../helpers/common';
 
 export default {
-  title: 'Forms/Input States',
+  title: 'Forms/Input States (Styles only)',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
