@@ -45,7 +45,7 @@
 
   .clr-success .clr-input:not([readonly]) {
     border-bottom-color: forms-variables.$clr-forms-valid-color;
-    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
   }
 
   .clr-form-control.row .clr-input-wrapper {

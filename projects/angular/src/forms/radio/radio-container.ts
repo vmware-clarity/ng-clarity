@@ -33,8 +33,10 @@ import { ClrRadio } from './radio';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-radio-wrapper"></ng-content>
-      <div class="clr-subtext-wrapper">
-        <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
+      <div *ngIf="showHelper" class="clr-subtext-wrapper">
+        <ng-content select="clr-control-helper"></ng-content>
+      </div>
+      <div *ngIf="showValid || showInvalid" class="clr-subtext-wrapper">
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
