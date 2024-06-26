@@ -1493,9 +1493,7 @@
   // END Calculation classes.
 }
 
-.datagrid-filter.clr-popover-content {
-  .datagrid-filter-input-spacer {
-    display: inline-block;
-    width: tokens.$cds-global-space-6;
-  }
+.datagrid-numeric-filter-input-wrapper {
+  display: flex;
+  gap: tokens.$cds-global-space-6;
 }

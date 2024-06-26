@@ -23,29 +23,36 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open" class="clr-form-horizontal">
-      <input
-        clrInput
-        class="datagrid-numeric-filter-input"
-        #input_low
-        type="number"
-        autocomplete="off"
-        name="low"
-        [(ngModel)]="low"
-        [placeholder]="minPlaceholderValue"
-        [attr.aria-label]="minPlaceholderValue"
-      />
-      <span class="datagrid-filter-input-spacer"></span>
-      <input
-        clrInput
-        class="datagrid-numeric-filter-input"
-        #input_high
-        type="number"
-        autocomplete="off"
-        name="high"
-        [(ngModel)]="high"
-        [placeholder]="maxPlaceholderValue"
-        [attr.aria-label]="maxPlaceholderValue"
-      />
+      <div class="datagrid-numeric-filter-input-wrapper">
+        <div class="clr-form-control">
+          <label class="clr-control-label"> From: </label>
+          <input
+            clrInput
+            class="datagrid-numeric-filter-input"
+            #input_low
+            type="number"
+            autocomplete="off"
+            name="low"
+            [(ngModel)]="low"
+            [placeholder]="minPlaceholderValue"
+            [attr.aria-label]="minPlaceholderValue"
+          />
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label"> To: </label>
+          <input
+            clrInput
+            class="datagrid-numeric-filter-input"
+            #input_high
+            type="number"
+            autocomplete="off"
+            name="high"
+            [(ngModel)]="high"
+            [placeholder]="maxPlaceholderValue"
+            [attr.aria-label]="maxPlaceholderValue"
+          />
+        </div>
+      </div>
     </clr-dg-filter>
   `,
 })
