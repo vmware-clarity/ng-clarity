@@ -53,7 +53,7 @@ export class StepperDemo {
   private getReactiveForm() {
     return new FormGroup({
       name: new FormGroup({
-        first: new FormControl('Luke', Validators.required),
+        first: new FormControl('', Validators.minLength(4)),
         last: new FormControl('Skywalker', Validators.required),
       }),
       contact: new FormGroup({
