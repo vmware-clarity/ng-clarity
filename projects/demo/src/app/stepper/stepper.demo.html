@@ -21,8 +21,8 @@
     <clr-step-content *clrIfExpanded>
       <clr-input-container>
         <label>First Name</label>
-        <input clrInput formControlName="first" />
-        <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
+        <input clrInput formControlName="first" minlength="4" />
+        <clr-control-error *clrIfError="'minlength'">First Name Length</clr-control-error>
       </clr-input-container>
 
       <clr-input-container>
