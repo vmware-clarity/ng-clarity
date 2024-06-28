@@ -121,4 +121,10 @@ jobs:
       - name: Discover Stories
         run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Run Accessibility Tests on Storybook
-        run: npx playwright test --retries=0 ./tests/accessibility.spec.ts
+        run: npx playwright test --retries=0 --reporter=html ./tests/accessibility.spec.ts
+      - name: Upload Report
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-report
+          path: playwright-report
