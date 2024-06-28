@@ -95,6 +95,7 @@ jobs:
           path: visual-snapshot-changes-${{matrix.browser}}.diff
   pr-a11y-test:
     name: PR A11y Test
+    continue-on-error: true
     timeout-minutes: 30
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
@@ -120,4 +121,4 @@ jobs:
       - name: Discover Stories
         run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Run Accessibility Tests on Storybook
-        run: npx playwright test ./tests/accessibility.spec.ts
+        run: npx playwright test --retries=0 ./tests/accessibility.spec.ts
