@@ -25,7 +25,7 @@ for (const { storyId, component } of stories) {
   for (const [_themeKey, theme] of Object.entries(THEMES)) {
     test(`${storyName} ${theme} should not have any automatically detectable WCAG A or AA violations`, async ({
       page,
-    }) => {
+    }, testInfo) => {
       const storyParams = new URLSearchParams({
         id: storyId,
         args: 'highlight:false',
@@ -37,6 +37,11 @@ for (const { storyId, component } of stories) {
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(['wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();
+
+      await testInfo.attach('accessibility-scan-results', {
+        body: JSON.stringify(accessibilityScanResults, null, 2),
+        contentType: 'application/json',
+      });
 
       expect(accessibilityScanResults.violations).toEqual([]);
     });
