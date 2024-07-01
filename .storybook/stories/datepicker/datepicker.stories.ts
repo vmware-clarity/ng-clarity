@@ -36,7 +36,6 @@ export default {
     getDateString: { control: { disable: true }, table: { disable: true } },
   },
   args: {
-    // inputs
     disabled: false,
     placeholder: '',
     id: '',

@@ -5,12 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
   ElementRef,
-  EventEmitter,
   HostBinding,
   HostListener,
   Inject,
@@ -19,27 +18,23 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Output,
   PLATFORM_ID,
   Renderer2,
   Self,
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { of } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 import { FocusService } from '../common/providers/focus.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrDateContainer } from './date-container';
-import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { datesAreEqual } from './utils/date-utils';
 
 // There are four ways the datepicker value is set
 // 1. Value set by user typing into text input as a string ex: '01/28/2015'
@@ -47,70 +42,54 @@ import { datesAreEqual } from './utils/date-utils';
 // 3. Value set by user via datepicker UI as a Date Object
 // 4. Value set via `clrDate` input as a Date Object
 
-@Directive({
-  selector: '[clrDate]',
-  host: {
-    '[class.clr-input]': 'true',
-  },
-  providers: [DatepickerFocusService],
-})
-export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+@Directive()
+export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
   static ngAcceptInputType_date: Date | null | string;
 
   @Input() placeholder: string;
-  @Output('clrDateChange') dateChange = new EventEmitter<Date>(false);
 
   protected override index = 1;
-
-  private initialClrDateInputValue: Date;
-  private previousDateChange: Date;
 
   constructor(
     viewContainerRef: ViewContainerRef,
     injector: Injector,
     protected override el: ElementRef,
     protected override renderer: Renderer2,
+    @Inject(DOCUMENT) protected document: any,
     @Self()
     @Optional()
     protected control: NgControl,
     @Optional() private container: ClrDateContainer,
-    @Optional() private dateIOService: DateIOService,
-    @Optional() private dateNavigationService: DateNavigationService,
+    @Optional() protected dateIOService: DateIOService,
+    @Optional() protected dateNavigationService: DateNavigationService,
     @Optional() private datepickerEnabledService: DatepickerEnabledService,
     @Optional() private dateFormControlService: DateFormControlService,
     @Inject(PLATFORM_ID) private platformId: any,
     @Optional() private focusService: FocusService,
-    private datepickerFocusService: DatepickerFocusService
+    protected datepickerFocusService: DatepickerFocusService
   ) {
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
   }
 
-  @Input('clrDate')
-  set date(date: Date | string) {
-    if (this.previousDateChange !== date) {
-      this.updateDate(this.getValidDateValueFromDate(date as Date));
-    }
-
-    if (!this.initialClrDateInputValue) {
-      this.initialClrDateInputValue = date as Date;
-    }
-  }
-
   @Input()
   set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-    this.triggerControlValidation();
+    if (!this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMinDate(dateString);
+      this.triggerControlValidation();
+    }
   }
 
   @Input()
   set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-    this.triggerControlValidation();
+    if (!this.dateNavigationService.isRangePicker) {
+      this.dateIOService.setMaxDate(dateString);
+      this.triggerControlValidation();
+    }
   }
 
   get disabled() {
     if (this.dateFormControlService) {
-      return this.dateFormControlService.disabled;
+      return this.dateFormControlService.disabled || !!this.control?.control?.disabled;
     }
     return null;
   }
@@ -137,13 +116,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     super.ngOnInit();
     this.populateServicesFromContainerComponent();
 
-    this.subscriptions.push(
-      this.listenForUserSelectedDayChanges(),
-      this.listenForControlValueChanges(),
-      this.listenForTouchChanges(),
-      this.listenForDirtyChanges(),
-      this.listenForInputRefocus()
-    );
+    this.subscriptions.push(this.listenForTouchChanges(), this.listenForDirtyChanges(), this.listenForInputRefocus());
   }
 
   ngAfterViewInit() {
@@ -154,7 +127,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     // I need the renderer to set the value property on the input to make sure that if the user has supplied a Date
     // input object, we reflect it with the right date on the input field using the IO service. I am not sure if
     // these are major issues or not but just noting them down here.
-    this.processInitialInputs();
   }
 
   @HostListener('focus')
@@ -168,25 +140,64 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     this.setFocus(false);
   }
 
-  @HostListener('change', ['$event.target'])
-  onValueChange(target: HTMLInputElement) {
-    const validDateValue = this.dateIOService.getDateValueFromDateString(target.value);
-    if (this.usingClarityDatepicker() && validDateValue) {
-      this.updateDate(validDateValue, true);
-    } else if (this.usingNativeDatepicker()) {
-      const [year, month, day] = target.value.split('-');
-      this.updateDate(new Date(+year, +month - 1, +day), true);
-    } else {
-      this.emitDateOutput(null);
-    }
-  }
-
-  private usingClarityDatepicker() {
+  protected usingClarityDatepicker() {
     return this.datepickerEnabledService.isEnabled;
   }
 
-  private usingNativeDatepicker() {
+  protected usingNativeDatepicker() {
     return !this.datepickerEnabledService.isEnabled;
+  }
+
+  protected updateInput(date: Date) {
+    if (date) {
+      const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
+      if (this.usingNativeDatepicker()) {
+        // valueAsDate expects UTC, date from input is time-zoned
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        this.renderer.setProperty(this.el.nativeElement, 'valueAsDate', date);
+      } else if (this.datepickerHasFormControl() && dateString !== this.control.value) {
+        this.control.control.setValue(dateString);
+      } else {
+        this.renderer.setProperty(this.el.nativeElement, 'value', dateString);
+      }
+      this.validateDateRange();
+    } else {
+      this.renderer.setProperty(this.el.nativeElement, 'value', '');
+    }
+  }
+
+  protected getValidDateValueFromDate(date: Date) {
+    if (this.dateIOService) {
+      const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
+      return this.dateIOService.getDateValueFromDateString(dateString);
+    } else {
+      return null;
+    }
+  }
+
+  protected datepickerHasFormControl() {
+    return !!this.control;
+  }
+
+  /**
+   * Incase of date range error, both start & end date field valdiation has to be triggered
+   * if either of the field gets updated
+   */
+  protected validateDateRange() {
+    if (this.dateNavigationService.isRangePicker) {
+      const primaryControl = this.ngControlService?.getControl();
+      const additionalControls = this.ngControlService?.getAdditionalControls();
+      const isValid = this.dateNavigationService.selectedDay?.isBefore(this.dateNavigationService.selectedEndDay, true);
+      if (
+        isValid &&
+        (primaryControl?.hasError('range') || additionalControls?.some(control => control.hasError('range')))
+      ) {
+        primaryControl.control?.updateValueAndValidity({ emitEvent: false });
+        additionalControls.forEach((ngControl: NgControl) => {
+          ngControl?.control?.updateValueAndValidity({ emitEvent: false });
+        });
+      }
+    }
   }
 
   private setFocus(focus: boolean) {
@@ -212,87 +223,6 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     }
   }
 
-  private processInitialInputs() {
-    if (this.datepickerHasFormControl()) {
-      this.updateDate(this.dateIOService.getDateValueFromDateString(this.control.value));
-    } else {
-      this.updateDate(this.initialClrDateInputValue);
-    }
-  }
-
-  private updateDate(value: Date, setByUserInteraction = false) {
-    const date = this.getValidDateValueFromDate(value);
-
-    if (setByUserInteraction) {
-      this.emitDateOutput(date);
-    } else {
-      this.previousDateChange = date;
-    }
-
-    if (this.dateNavigationService) {
-      this.dateNavigationService.selectedDay = date
-        ? new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
-        : null;
-    }
-
-    this.updateInput(date);
-  }
-
-  private updateInput(date: Date) {
-    if (date) {
-      const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
-      if (this.usingNativeDatepicker()) {
-        // valueAsDate expects UTC, date from input is time-zoned
-        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-        this.renderer.setProperty(this.el.nativeElement, 'valueAsDate', date);
-      } else if (this.datepickerHasFormControl() && dateString !== this.control.value) {
-        this.control.control.setValue(dateString);
-      } else {
-        this.renderer.setProperty(this.el.nativeElement, 'value', dateString);
-      }
-    } else {
-      this.renderer.setProperty(this.el.nativeElement, 'value', '');
-    }
-  }
-
-  private getValidDateValueFromDate(date: Date) {
-    if (this.dateIOService) {
-      const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
-      return this.dateIOService.getDateValueFromDateString(dateString);
-    } else {
-      return null;
-    }
-  }
-
-  private emitDateOutput(date: Date) {
-    if (!datesAreEqual(date, this.previousDateChange)) {
-      this.dateChange.emit(date);
-      this.previousDateChange = date;
-    } else if (!date && this.previousDateChange) {
-      this.dateChange.emit(null);
-      this.previousDateChange = null;
-    }
-  }
-
-  private datepickerHasFormControl() {
-    return !!this.control;
-  }
-
-  private listenForControlValueChanges() {
-    return of(this.datepickerHasFormControl())
-      .pipe(
-        filter(hasControl => hasControl),
-        switchMap(() => this.control.valueChanges),
-        // only update date value if not being set by user
-        filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
-      )
-      .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
-  }
-
-  private listenForUserSelectedDayChanges() {
-    return this.dateNavigationService.selectedDayChange.subscribe(dayModel => this.updateDate(dayModel.toDate(), true));
-  }
-
   private listenForTouchChanges() {
     return this.dateFormControlService.touchedChange
       .pipe(filter(() => this.datepickerHasFormControl()))
@@ -307,7 +237,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
 
   private listenForInputRefocus() {
     return this.dateNavigationService.selectedDayChange
-      .pipe(filter(date => !!date))
+      .pipe(filter(date => !!date && !this.dateNavigationService.isRangePicker))
       .subscribe(() => this.datepickerFocusService.focusInput(this.el.nativeElement));
   }
 }
