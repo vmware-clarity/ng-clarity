@@ -12,7 +12,7 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Directive({
-  selector: '[clrDate]',
+  selector: '[clrDate], [clrRangeStartDate], [clrRangeEndDate]',
   providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }],
 })
 export class ClrDateInputValidator implements Validator {
@@ -29,7 +29,6 @@ export class ClrDateInputValidator implements Validator {
         return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
       }
     }
-
     return null;
   }
 }
@@ -47,13 +46,7 @@ export class ClrDateRangeStartInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      const minDate = this.dateIOService.disabledDates.minDate.toDate();
-      const maxDate = this.dateIOService.disabledDates.maxDate.toDate();
-      if (value && value < this.dateIOService.disabledDates.minDate.toDate()) {
-        return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (value && value > this.dateIOService.disabledDates.maxDate.toDate()) {
-        return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (
+      if (
         value &&
         this.dateNavigationService &&
         this.dateNavigationService.selectedEndDay &&
@@ -80,13 +73,7 @@ export class ClrDateRangeEndInputValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
-      const minDate = this.dateIOService.disabledDates.minDate.toDate();
-      const maxDate = this.dateIOService.disabledDates.maxDate.toDate();
-      if (value && value < this.dateIOService.disabledDates.minDate.toDate()) {
-        return { min: { min: minDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (value && value > this.dateIOService.disabledDates.maxDate.toDate()) {
-        return { max: { max: maxDate.toLocaleDateString(), actual: value.toLocaleDateString() } };
-      } else if (
+      if (
         value &&
         this.dateNavigationService &&
         this.dateNavigationService.selectedDay &&
