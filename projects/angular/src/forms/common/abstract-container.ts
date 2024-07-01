@@ -51,8 +51,8 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
       this.ngControlService.controlChanges.subscribe(control => {
         this.control = control;
       }),
-      this.ngControlService.additionalControlChanges.subscribe(control => {
-        this.additionalControls = control;
+      this.ngControlService.additionalControlChanges.subscribe(controls => {
+        this.additionalControls = controls;
       })
     );
   }

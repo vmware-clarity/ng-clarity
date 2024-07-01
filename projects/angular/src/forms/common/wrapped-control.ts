@@ -155,22 +155,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
   }
 
-  triggerDoCheck(differ, ngControl) {
-    if (differ) {
-      const changes = differ.diff(ngControl);
-      if (changes) {
-        changes.forEachChangedItem(change => {
-          if (
-            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
-            change.currentValue !== change.previousValue
-          ) {
-            this.triggerValidation();
-          }
-        });
-      }
-    }
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -191,6 +175,22 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       return this._containerInjector.get(token, notFoundValue);
     } catch (e) {
       return notFoundValue;
+    }
+  }
+
+  private triggerDoCheck(differ, ngControl) {
+    if (differ) {
+      const changes = differ.diff(ngControl);
+      if (changes) {
+        changes.forEachChangedItem(change => {
+          if (
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
+            change.currentValue !== change.previousValue
+          ) {
+            this.triggerValidation();
+          }
+        });
+      }
     }
   }
 
