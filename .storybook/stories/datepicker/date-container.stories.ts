@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule } from '@clr/angular';
+import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -14,7 +14,7 @@ export default {
   title: 'Datepicker/DateContainer',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDatepickerModule],
+      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
     }),
   ],
   component: ClrDateContainer,
@@ -33,8 +33,19 @@ export default {
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-top: 300px; text-align: center">
-      <clr-date-container style="display: inline-block" [clrPosition]="clrPosition">
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      "
+    >
+      <clr-date-container [clrPosition]="clrPosition">
         <label>Date</label>
         <input type="date" autocomplete="off" clrDate />
       </clr-date-container>
