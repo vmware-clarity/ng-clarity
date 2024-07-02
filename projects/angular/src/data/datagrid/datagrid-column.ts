@@ -21,9 +21,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { debounceTime, skipWhile, tap } from 'rxjs/operators';
 
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
+import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
+import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
@@ -35,6 +38,7 @@ import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
+import { Page } from './providers/page';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
@@ -150,7 +154,10 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private smartPositionService: ClrPopoverPositionService,
+    private smartEventsService: ClrPopoverEventsService,
+    private page: Page
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -255,6 +262,9 @@ export class ClrDatagridColumn<T = any>
   @ContentChild(CustomFilter)
   set projectedFilter(custom: any) {
     if (custom) {
+      if (custom.filter && !this.page.activated) {
+        this.subscriptions.push(this.listenForFilterChanges(custom.filter));
+      }
       this.deleteFilter();
       this.customFilter = true;
     }
@@ -375,6 +385,29 @@ export class ClrDatagridColumn<T = any>
     });
   }
 
+  /**
+   * Basically we have 2 states of the datagrid.
+   * If we have pagination and page size ( items per page ) then we automatically set a height for the whole datagrid
+   * and height changing is not appearing, so the scroll event is not triggered and the filter popover stays on. Although when there is no
+   * pagination and page size, then we don't set that and basically the height of the datagrid can change based on the items inside.
+   * So now with the update when we don't have a page size we listen for filter changes and stop listening for scroll events while
+   *  aligning the popover to its new position.
+   */
+  private listenForFilterChanges(filter = this.filter) {
+    return filter.changes
+      .pipe(
+        skipWhile(() => !filter || this.page.activated),
+        tap(() => {
+          this.smartEventsService.removeScrollListener();
+          this.smartPositionService.realign();
+        }),
+        debounceTime(500)
+      )
+      .subscribe(() => {
+        this.smartEventsService.addScrollListener();
+      });
+  }
+
   private setupDefaultFilter(field: string, colType: 'string' | 'number') {
     if (colType === 'number') {
       this.setFilter(new DatagridNumericFilterImpl(new DatagridPropertyNumericFilter(field)));
@@ -387,6 +420,9 @@ export class ClrDatagridColumn<T = any>
       // So deleting this property value to prevent it from being used again
       // if this field property is set again
       delete this.initFilterValue;
+    }
+    if (!this.page.activated && this.filter) {
+      this.subscriptions.push(this.listenForFilterChanges());
     }
   }
 }
