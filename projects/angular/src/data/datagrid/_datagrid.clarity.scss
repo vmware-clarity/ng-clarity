@@ -432,7 +432,8 @@
       border: none;
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -640,7 +641,8 @@
       }
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
