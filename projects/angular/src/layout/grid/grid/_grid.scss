@@ -9,6 +9,9 @@
 @use '../mixins/grid-framework';
 
 @include mixins.exports('grid.clarity') {
+  .clr-container {
+    @include grid.clr-make-container();
+  }
   .clr-row {
     @include grid.clr-make-row();
   }

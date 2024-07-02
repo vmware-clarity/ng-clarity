@@ -15,6 +15,7 @@ import { Component } from '@angular/core';
     <div class="clr-row">
       <div class="clr-col-12 clr-col-md-6">
         <ul>
+          <li><a [routerLink]="['./grid-container']">Container class</a></li>
           <li><a [routerLink]="['./grid-columns']">Columns</a></li>
           <li><a [routerLink]="['./grid-columns-stacking']">Column Stacking</a></li>
           <li><a [routerLink]="['./grid-columns-offsetting']">Column Offsetting</a></li>
