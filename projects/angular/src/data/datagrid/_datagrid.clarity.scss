@@ -567,7 +567,13 @@
       border: none;
 
       &:focus {
-        outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+        @include mixins.css-var(
+          outline,
+          cds-alias-object-interaction-outline,
+          Highlight solid variables.$clr_baselineRem_2px,
+          variables.$clr-use-custom-properties
+        );
+        outline-color: -webkit-focus-ring-color;
         outline-offset: -(variables.$clr_baselineRem_2px);
       }
 
@@ -999,7 +1005,13 @@
       }
 
       &:focus {
-        outline: -webkit-focus-ring-color solid variables.$clr_baselineRem_2px;
+        @include mixins.css-var(
+          outline,
+          cds-alias-object-interaction-outline,
+          Highlight solid variables.$clr_baselineRem_2px,
+          variables.$clr-use-custom-properties
+        );
+        outline-color: -webkit-focus-ring-color;
         outline-offset: -(variables.$clr_baselineRem_2px);
       }
 
