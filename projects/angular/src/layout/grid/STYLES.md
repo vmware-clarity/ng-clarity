@@ -2,12 +2,12 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property          | Description                                                              |
-| ---------------------------- | ------------------------------------------------------------------------ |
-| --clr-grid-gutter-width      | Grid gutter width                                                        |
-| --clr-grid-container-padding | Grid container padding size. ( Default value is --clr-grid-gutter-width) |
-| --clr-grid-column-padding    | Grid column padding size. ( Default value is --clr-grid-gutter-width)    |
-| --clr-grid-row-margin        | Grid row margin size. ( Default value is --clr-grid-gutter-width)        |
+| CSS Custom Property          | Description                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| --clr-grid-gutter-width      | Grid gutter width                                                                      |
+| --clr-grid-container-padding | Grid container padding size. ( Default value is half of --clr-grid-gutter-width)       |
+| --clr-grid-column-padding    | Grid column padding size. ( Default value is half of --clr-grid-gutter-width)          |
+| --clr-grid-row-margin        | Grid row margin size. ( Default value is half of --clr-grid-gutter-width and negative) |
 
 ## CSS Classes
 
