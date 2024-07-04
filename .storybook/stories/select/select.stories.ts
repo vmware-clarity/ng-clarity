@@ -37,7 +37,9 @@ const selectTemplate: StoryFn = args => ({
     <clr-select-container>
       <label>Options</label>
       <select clrSelect>
-        <option *ngFor="let _ of createArray(optionCount); let i = index" [value]="i + 1">Option {{ i + 1 }}</option>
+        <option *ngFor="let _ of createArray(optionCount); let i = index" [value]="i + 1" [disabled]="i === 1">
+          Option {{ i + 1 }}
+        </option>
       </select>
     </clr-select-container>
   `,
