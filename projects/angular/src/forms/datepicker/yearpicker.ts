@@ -51,6 +51,7 @@ import { ViewManagerService } from './providers/view-manager.service';
         class="calendar-btn year"
         [attr.tabindex]="getTabIndex(year)"
         [class.is-selected]="year === calendarYear"
+        [class.is-today]="year === currentCalendarYear"
         (click)="changeYear(year)"
       >
         {{ year }}
@@ -88,7 +89,13 @@ export class ClrYearpicker implements AfterViewInit {
    * Gets the year which the user is currently on.
    */
   get calendarYear(): number {
-    return this._dateNavigationService.displayedCalendar.year;
+    return this._dateNavigationService.selectedDay?.year
+      ? this._dateNavigationService.selectedDay?.year
+      : this._dateNavigationService.displayedCalendar.year;
+  }
+
+  get currentCalendarYear(): number {
+    return new Date().getFullYear();
   }
 
   /**
@@ -110,27 +117,27 @@ export class ClrYearpicker implements AfterViewInit {
       const key = normalizeKey(event.key);
       if (key === Keys.ArrowUp) {
         event.preventDefault();
-        this.incrementFocusYearBy(-1);
+        this.incrementFocusYearBy(-2);
       } else if (key === Keys.ArrowDown) {
         event.preventDefault();
-        this.incrementFocusYearBy(1);
+        this.incrementFocusYearBy(2);
       } else if (key === Keys.ArrowRight) {
         event.preventDefault();
-        this.incrementFocusYearBy(5);
+        this.incrementFocusYearBy(1);
       } else if (key === Keys.ArrowLeft) {
         event.preventDefault();
-        this.incrementFocusYearBy(-5);
+        this.incrementFocusYearBy(-1);
       }
     }
   }
 
   /**
    * Calls the DateNavigationService to update the year value of the calendar.
-   * Also changes the view to the daypicker.
+   * Also changes the view to the monthPicker if month view is allowed.
    */
   changeYear(year: number): void {
     this._dateNavigationService.changeYear(year);
-    this._viewManagerService.changeToDayView();
+    this._viewManagerService.changeToMonthView();
   }
 
   /**
