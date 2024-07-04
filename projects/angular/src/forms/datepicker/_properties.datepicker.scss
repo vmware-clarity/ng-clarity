@@ -16,6 +16,7 @@
       --clr-calendar-btn-color: #{tokens.$cds-alias-object-interaction-color};
 
       --clr-calendar-today-date-cell-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-calendar-today-date-cell-border-color: #{tokens.$cds-alias-object-interaction-border-color};
 
       --clr-calendar-active-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
       --clr-calendar-active-focus-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
@@ -25,7 +26,8 @@
       --clr-calendar-btn-picker-trigger-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
       --clr-calendar-btn-picker-trigger-active-color: #{tokens.$cds-alias-typography-link-color};
 
-      --clr-calendar-btn-hover-focus-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-calendar-btn-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-calendar-btn-focus-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
       --clr-calendar-btn-hover-focus-color-text: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-calendar-btn-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-calendar-btn-active-color-bg: #{tokens.$cds-alias-object-interaction-background-active};
