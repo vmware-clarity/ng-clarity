@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -54,7 +54,8 @@
       }
 
       &:disabled option {
-        @include forms-mixins.disabled-form-fields();
+        color: forms-variables.$clr-forms-select-disabled-color;
+        cursor: not-allowed;
       }
 
       option {
@@ -154,7 +155,8 @@
 
   .clr-form-control-disabled .clr-select {
     &.disabled {
-      @include forms-mixins.disabled-form-fields();
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
 
       &:hover::after {
         color: forms-variables.$clr-forms-select-caret-color;
@@ -163,7 +165,8 @@
 
     &.disabled > select,
     select:disabled {
-      @include forms-mixins.disabled-form-fields();
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
       &:hover {
         background: none;
         border-color: forms-variables.$clr-forms-border-color;
