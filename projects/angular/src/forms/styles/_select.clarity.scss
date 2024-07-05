@@ -55,7 +55,8 @@
 
       &:disabled option,
       option:disabled {
-        @include forms-mixins.disabled-form-fields();
+        color: forms-variables.$clr-forms-select-disabled-color;
+        cursor: not-allowed;
       }
 
       option {
@@ -155,7 +156,8 @@
 
   .clr-form-control-disabled .clr-select {
     &.disabled {
-      @include forms-mixins.disabled-form-fields();
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
 
       &:hover::after {
         color: forms-variables.$clr-forms-select-caret-color;
@@ -164,7 +166,8 @@
 
     &.disabled > select,
     select:disabled {
-      @include forms-mixins.disabled-form-fields();
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
       &:hover {
         background: none;
         border-color: forms-variables.$clr-forms-border-color;
