@@ -53,7 +53,8 @@
         }
       }
 
-      &:disabled option {
+      &:disabled option,
+      option:disabled {
         color: forms-variables.$clr-forms-select-disabled-color;
         cursor: not-allowed;
       }
