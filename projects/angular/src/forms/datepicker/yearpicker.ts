@@ -137,7 +137,7 @@ export class ClrYearpicker implements AfterViewInit {
    */
   changeYear(year: number): void {
     this._dateNavigationService.changeYear(year);
-    this._viewManagerService.changeToMonthView();
+    this._viewManagerService.changeToDayView();
   }
 
   /**
