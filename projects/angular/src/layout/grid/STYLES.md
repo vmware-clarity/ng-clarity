@@ -1,9 +1,19 @@
 # Grid layout
 
+## CSS Custom Properties
+
+| CSS Custom Property          | Description                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| --clr-grid-gutter-width      | Grid gutter width                                                                      |
+| --clr-grid-container-padding | Grid container padding size. ( Default value is half of --clr-grid-gutter-width)       |
+| --clr-grid-column-padding    | Grid column padding size. ( Default value is half of --clr-grid-gutter-width)          |
+| --clr-grid-row-margin        | Grid row margin size. ( Default value is half of --clr-grid-gutter-width and negative) |
+
 ## CSS Classes
 
 | Class name                              | Description                                                                                                                                          |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clr-container                           | Styles a wrapper for row and columns                                                                                                                 |
 | clr-row                                 | Styles a flex row of columns                                                                                                                         |
 | clr-justify-content-#{POSITION}         | Sets justify-content property to #{POSITION}, POSITION is one of 'start', 'center', 'end'                                                            |
 | clr-justify-content-between             | Sets justify-content property to 'space-between'                                                                                                     |
