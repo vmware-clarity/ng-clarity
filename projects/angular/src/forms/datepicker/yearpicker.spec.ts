@@ -251,7 +251,7 @@ export default function () {
         context.clarityDirective.changeYear(2015);
 
         expect(viewManagerService.isYearView).toBe(false);
-        expect(viewManagerService.isMonthView).toBe(true);
+        expect(viewManagerService.isDayView).toBe(true);
       });
 
       it('updates year value in the date navigation service', () => {
