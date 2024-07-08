@@ -71,7 +71,7 @@
 
   .clr-accordion-number {
     padding: 0 tokens.$cds-global-space-7;
-    display: none;
+    display: none !important;
   }
 
   .clr-accordion-header-button {
