@@ -21,6 +21,7 @@ import { GridNestingDemo } from './nesting/nesting';
 import { GridNoGuttersDemo } from './no-gutters/no-gutters';
 import { GridColumnOffsettingDemo } from './offsets/grid-column-offsetting';
 import { GridOrderingDemo } from './ordering/ordering';
+import { GridContainerDemo } from './overflow/grid-container';
 import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
 
 const ROUTES: Routes = [
@@ -42,6 +43,7 @@ const ROUTES: Routes = [
       { path: 'grid-column-wrapping', component: GridColumnWrappingDemo },
       { path: 'grid-ordering', component: GridOrderingDemo },
       { path: 'grid-nesting', component: GridNestingDemo },
+      { path: 'grid-container', component: GridContainerDemo },
     ],
   },
 ];
