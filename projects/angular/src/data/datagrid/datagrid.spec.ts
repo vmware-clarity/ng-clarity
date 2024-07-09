@@ -823,7 +823,7 @@ export default function (): void {
         const grid = context.clarityElement.querySelector('[role=grid]');
         expect(grid).toBeDefined();
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(13); // 3*2 data, 3 select radios, 3 headers and 1 placeholder
+        expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);
