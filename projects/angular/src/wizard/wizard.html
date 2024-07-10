@@ -23,7 +23,7 @@
     <clr-wizard-stepnav></clr-wizard-stepnav>
   </div>
 
-  <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage.pageTitle.headingLevel || 2">
+  <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage?.pageTitle.headingLevel || 2">
     <span tabindex="-1" #pageTitle class="modal-title-text">
       <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
     </span>
