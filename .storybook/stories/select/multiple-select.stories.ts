@@ -42,6 +42,7 @@ const multipleSelectTemplate: StoryFn = args => ({
           *ngFor="let _ of createArray(optionCount); let i = index"
           [value]="i + 1"
           [selected]="selectedOptions.includes(i + 1)"
+          [disabled]="i === 0"
         >
           Option {{ i + 1 }}
         </option>
