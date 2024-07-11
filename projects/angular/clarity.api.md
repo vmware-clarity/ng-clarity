@@ -2109,7 +2109,7 @@ export class ClrDateInputValidator implements Validator {
     // (undocumented)
     validate(control: AbstractControl): ValidationErrors;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate]", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrRangeStartDate], [clrRangeEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{ optional: true; }]>;
 }
@@ -5237,8 +5237,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected renderer: Renderer2;
     // (undocumented)
     protected subscriptions: Subscription[];
-    // (undocumented)
-    triggerDoCheck(differ: any, ngControl: any): void;
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
