@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ClrDropdownModule } from './dropdown/dropdown.module';
@@ -12,6 +13,7 @@ import { ClrSignpostModule } from './signpost/signpost.module';
 import { ClrTooltipModule } from './tooltip/tooltip.module';
 
 @NgModule({
+  imports: [CommonModule],
   exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],
 })
 export class ClrPopoverModule {}

@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example squeeze demo-menu-height dropdown-demo">
+  <clr-dropdown>
+    <button class="btn btn-link-primary" clrDropdownTrigger id="current">
+      Dropdown
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <clr-dropdown-menu>
+      <div class="dropdown-header" aria-hidden="true">
+        <form class="clr-form clr-form-horizontal">
+          <input
+            type="text"
+            placeholder="Fill me in, scotty!"
+            name="name"
+            id="name"
+            class="clr-input"
+            (keyup)="delay($event)"
+            [(ngModel)]="model.searchTerm"
+          />
+          <label for="name">
+            <cds-icon shape="search"></cds-icon>
+          </label>
+        </form>
+      </div>
+
+      <div
+        *ngFor="let line of model.lines"
+        aria-label="'line.ariaLabel'"
+        class="dropdown-item"
+        style="flex-direction: column"
+      >
+        <div>{{line.text}}</div>
+        <div>{{line.details}}</div>
+      </div>
+    </clr-dropdown-menu>
+  </clr-dropdown>
+</div>

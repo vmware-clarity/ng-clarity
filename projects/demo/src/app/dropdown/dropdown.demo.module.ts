@@ -7,10 +7,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
+import { DropdownAngularPatternDemo } from './dropdown-angular-pattern';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownHeaderDemo } from './dropdown-header';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
@@ -21,7 +23,7 @@ import { DropdownDemo } from './dropdown.demo';
 import { ROUTING } from './dropdown.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ROUTING],
+  imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
   declarations: [
     DropdownDemo,
     DropdownStaticDefaultDemo,
@@ -30,6 +32,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
     DropdownAngularNestedDemo,
+    DropdownAngularPatternDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
   ],
@@ -41,6 +44,7 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
     DropdownAngularNestedDemo,
+    DropdownAngularPatternDemo,
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
   ],

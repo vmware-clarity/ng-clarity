@@ -17,6 +17,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./buttonlink-toggle']">Button Link Toggle (Static)</a></li>
       <li><a [routerLink]="['./angular-positioning']">Positioning with Angular</a></li>
       <li><a [routerLink]="['./angular-nested']">Nested menu with Angular</a></li>
+      <li><a [routerLink]="['./dropdown-pattern']">Pattern menu with Angular</a></li>
       <li><a [routerLink]="['./multi-click']">Stay Open After Click Event (Angular)</a></li>
       <li><a [routerLink]="['./dropdown-header']">Dropdown Header</a></li>
     </ul>

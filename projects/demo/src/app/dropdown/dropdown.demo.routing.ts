@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
+import { DropdownAngularPatternDemo } from './dropdown-angular-pattern';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownHeaderDemo } from './dropdown-header';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
@@ -30,6 +31,7 @@ const ROUTES: Routes = [
       { path: 'buttonlink-toggle', component: DropdownStaticButtonLinkToggleDemo },
       { path: 'angular-positioning', component: DropdownAngularPositioningDemo },
       { path: 'angular-nested', component: DropdownAngularNestedDemo },
+      { path: 'dropdown-pattern', component: DropdownAngularPatternDemo },
       { path: 'multi-click', component: DropdownAngularCloseItemFalseDemo },
       { path: 'dropdown-header', component: DropdownHeaderDemo },
     ],
