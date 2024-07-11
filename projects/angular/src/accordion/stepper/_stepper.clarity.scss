@@ -26,6 +26,17 @@
 
     &
       > .clr-accordion-panel
+      > .clr-accordion-panel-inactive
+      > .clr-accordion-header
+      > .clr-accordion-header-button
+      > .clr-accordion-status
+      > .clr-accordion-number {
+      padding: 0 tokens.$cds-global-space-7;
+      display: inline-block !important;
+    }
+
+    &
+      > .clr-accordion-panel
       > .clr-accordion-panel-error
       > .clr-accordion-header
       > .clr-accordion-header-button
