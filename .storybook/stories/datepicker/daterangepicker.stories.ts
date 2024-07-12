@@ -46,7 +46,13 @@ export default {
     clrRangeStartDateChange: action('clrRangeStartDateChange'),
     clrRangeEndDateChange: action('clrRangeEndDateChange'),
     // story helpers
-    getDateObject: date => new Date(date),
+    getDateObject: date => {
+      try {
+        return date && new Date(date).toISOString();
+      } catch {
+        return undefined;
+      }
+    },
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
@@ -82,14 +88,6 @@ const DateRangePickerTemplate: StoryFn = args => ({
 
 export const DateRangePicker: StoryObj = {
   render: DateRangePickerTemplate,
-};
-
-export const DefaultDate: StoryObj = {
-  render: DateRangePickerTemplate,
-  args: {
-    clrRangeStartDate: Date.now() - 2592000000,
-    clrRangeEndDate: Date.now() + 2592000000,
-  },
 };
 
 export const Disabled: StoryObj = {
