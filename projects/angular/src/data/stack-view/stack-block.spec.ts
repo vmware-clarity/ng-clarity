@@ -10,9 +10,12 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ClarityModule } from '../../clr-angular.module';
+import { Keys } from '../../utils/enums/keys.enum';
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
-import { ClrStackViewModule } from './stack-view.module';
+
+import Spy = jasmine.Spy;
 
 @Component({
   template: `
@@ -82,6 +85,44 @@ class DynamicBlockWithInput {
   expanded = false;
 }
 
+@Component({
+  template: `
+    <clr-stack-view #stackView>
+      <clr-stack-block #main [(clrSbExpanded)]="expanded">
+        <clr-stack-label>Label</clr-stack-label>
+        <clr-stack-content>Content</clr-stack-content>
+        <clr-stack-block #test [(clrSbExpanded)]="testExpanded">
+          <clr-stack-label>Button content</clr-stack-label>
+          <clr-stack-content>
+            <button class="btn btn-primary" (click)="content = content + ' Button click'">Button</button>
+            <input type="text" clrStackInput [(ngModel)]="content" />
+            <a href="javascript://">Link</a>
+            <select>
+              <option>Option 1</option>
+              <option>Option 2</option>
+            </select>
+            <textarea clrTextarea [(ngModel)]="content"></textarea>
+            <div id="to-open" tabindex="0">Text</div>
+          </clr-stack-content>
+          <clr-stack-block #inner>
+            <clr-stack-label>Inner label</clr-stack-label>
+            <clr-stack-content>Inner content</clr-stack-content>
+          </clr-stack-block>
+        </clr-stack-block>
+      </clr-stack-block>
+    </clr-stack-view>
+  `,
+})
+class BlocksWithIinteractiveElements {
+  @ViewChild('main') blockInstance: ClrStackBlock;
+  @ViewChild('test') testBlockInstance: ClrStackBlock;
+  @ViewChild('inner') innerBlockInstance: ClrStackBlock;
+
+  content = '';
+  expanded = true;
+  testExpanded = false;
+}
+
 export default function (): void {
   'use strict';
   describe('StackBlock', () => {
@@ -90,8 +131,8 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrStackViewModule, NoopAnimationsModule, FormsModule],
-        declarations: [BasicBlock, DynamicBlock, DynamicBlockWithInput, NestedBlocks],
+        imports: [ClarityModule, NoopAnimationsModule, FormsModule],
+        declarations: [BasicBlock, DynamicBlock, DynamicBlockWithInput, NestedBlocks, BlocksWithIinteractiveElements],
         providers: [ClrStackView],
       });
     });
@@ -367,5 +408,118 @@ export default function (): void {
         expect(blok.getAttribute('aria-level')).toBe('4');
       });
     }));
+
+    describe('Space interaction with elements', () => {
+      let spy: Spy<any>;
+      const event = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
+
+      function executeElementTest(elementName: string) {
+        const element = fixture.nativeElement.querySelector(elementName) as HTMLElement;
+
+        element.focus();
+        fixture.detectChanges();
+
+        element.dispatchEvent(event);
+        fixture.detectChanges();
+
+        expect(spy).toHaveBeenCalledWith(event);
+      }
+
+      beforeEach(fakeAsync(() => {
+        fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
+        fixture.whenRenderingDone();
+        fixture.detectChanges();
+        spy = spyOn(fixture.componentInstance.testBlockInstance, 'eventIsInputEvent').and.callThrough();
+      }));
+
+      it('Events sent through input element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('input');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through textarea element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('textarea');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through button element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('button');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through link element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('a');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through select element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('select');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through select option element should NOT expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        const select = fixture.nativeElement.querySelector('select') as HTMLElement;
+
+        select.click();
+        fixture.detectChanges();
+
+        executeElementTest('option');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+      });
+
+      it('Events sent through div element should expand block', () => {
+        expect(getBlockInstance(fixture).expanded).toBeTruthy();
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
+        expect(fixture.componentInstance.testExpanded).toBeFalsy();
+
+        executeElementTest('div#to-open[tabindex="0"]');
+
+        // no changes
+        expect(fixture.componentInstance.testBlockInstance.expanded).toBeTruthy();
+        expect(fixture.componentInstance.testExpanded).toBeTruthy();
+      });
+    });
   });
 }
