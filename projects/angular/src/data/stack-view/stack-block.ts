@@ -207,5 +207,7 @@ export class ClrStackBlock implements OnInit {
 function eventIsInputEvent(event?: Event) {
   const targetElement = event?.target as HTMLElement;
 
-  return targetElement?.tagName === 'INPUT';
+  return targetElement?.tagName
+    ? ['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT', 'OPTION'].includes(targetElement.tagName)
+    : false;
 }
