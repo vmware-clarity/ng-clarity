@@ -87,30 +87,28 @@ class DynamicBlockWithInput {
 
 @Component({
   template: `
-    <clr-stack-view #stackView>
-      <clr-stack-block #main [(clrSbExpanded)]="expanded">
-        <clr-stack-label>Label</clr-stack-label>
-        <clr-stack-content>Content</clr-stack-content>
-        <clr-stack-block #test [(clrSbExpanded)]="testExpanded">
-          <clr-stack-label>Button content</clr-stack-label>
-          <clr-stack-content>
-            <button class="btn btn-primary" (click)="content = content + ' Button click'">Button</button>
-            <input type="text" clrStackInput [(ngModel)]="content" />
-            <a href="javascript://">Link</a>
-            <select>
-              <option>Option 1</option>
-              <option>Option 2</option>
-            </select>
-            <textarea clrTextarea [(ngModel)]="content"></textarea>
-            <div id="to-open" tabindex="0">Text</div>
-          </clr-stack-content>
-          <clr-stack-block #inner>
-            <clr-stack-label>Inner label</clr-stack-label>
-            <clr-stack-content>Inner content</clr-stack-content>
-          </clr-stack-block>
+    <clr-stack-block #main [(clrSbExpanded)]="expanded">
+      <clr-stack-label>Label</clr-stack-label>
+      <clr-stack-content>Content</clr-stack-content>
+      <clr-stack-block #test [(clrSbExpanded)]="testExpanded">
+        <clr-stack-label>Button content</clr-stack-label>
+        <clr-stack-content>
+          <button class="btn btn-primary" (click)="content = content + ' Button click'">Button</button>
+          <input type="text" clrStackInput [(ngModel)]="content" />
+          <a href="javascript://">Link</a>
+          <select>
+            <option>Option 1</option>
+            <option>Option 2</option>
+          </select>
+          <textarea clrTextarea [(ngModel)]="content"></textarea>
+          <div id="to-open" tabindex="0">Text</div>
+        </clr-stack-content>
+        <clr-stack-block #inner>
+          <clr-stack-label>Inner label</clr-stack-label>
+          <clr-stack-content>Inner content</clr-stack-content>
         </clr-stack-block>
       </clr-stack-block>
-    </clr-stack-view>
+    </clr-stack-block>
   `,
 })
 class BlocksWithIinteractiveElements {
@@ -441,7 +439,7 @@ export default function (): void {
 
         executeElementTest('input');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -453,7 +451,7 @@ export default function (): void {
 
         executeElementTest('textarea');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -465,7 +463,7 @@ export default function (): void {
 
         executeElementTest('button');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -477,7 +475,7 @@ export default function (): void {
 
         executeElementTest('a');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -489,7 +487,7 @@ export default function (): void {
 
         executeElementTest('select');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -506,7 +504,7 @@ export default function (): void {
 
         executeElementTest('option');
 
-        // no changes
+        // Expect no changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeFalsy();
         expect(fixture.componentInstance.testExpanded).toBeFalsy();
       });
@@ -518,7 +516,7 @@ export default function (): void {
 
         executeElementTest('div#to-open[tabindex="0"]');
 
-        // no changes
+        // Expect changes
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeTruthy();
         expect(fixture.componentInstance.testExpanded).toBeTruthy();
       });
