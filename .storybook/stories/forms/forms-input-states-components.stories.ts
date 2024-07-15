@@ -129,6 +129,7 @@ class FormsStoryComponent {
     this._isDisabled = value;
     this.setControlsState();
   }
+
   @Input()
   get isError() {
     return this._isError;
@@ -137,6 +138,7 @@ class FormsStoryComponent {
     this._isError = value;
     this.setControlsState();
   }
+
   @Input()
   get isSuccess() {
     return this._isSuccess;
