@@ -15,6 +15,7 @@
 
 @include mixins.exports('forms.file-input') {
   .clr-file-input-wrapper {
+    display: flex;
     position: relative;
     margin-top: tokens.$cds-global-space-3;
 
