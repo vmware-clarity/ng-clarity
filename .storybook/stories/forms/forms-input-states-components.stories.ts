@@ -7,7 +7,7 @@
 
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
+import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -15,7 +15,7 @@ import { CommonModules } from '../../helpers/common';
 @Component({
   selector: 'forms-input-states-components',
   template: `
-    <form clrForm [formGroup]="form">
+    <form clrForm [formGroup]="form" [clrLayout]="clrLayout">
       <clr-input-container>
         <label>Text</label>
         <input type="text" clrInput name="name" formControlName="name" />
@@ -117,6 +117,8 @@ class FormsStoryComponent {
     toggle: new FormControl(),
   });
 
+  @Input() clrLayout = ClrFormLayout.HORIZONTAL;
+
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   @Input()
@@ -177,8 +179,10 @@ export default {
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
+    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
+    clrLayout: ClrFormLayout.HORIZONTAL,
     isDisabled: false,
     isError: false,
     isSuccess: false,
@@ -197,6 +201,14 @@ type Story = StoryObj<FormsStoryComponent>;
 
 export const InputStates: Story = {};
 
+export const VerticalInputStates: Story = {
+  args: { clrLayout: ClrFormLayout.VERTICAL },
+};
+
+export const CompactInputStates: Story = {
+  args: { clrLayout: ClrFormLayout.COMPACT },
+};
+
 export const DisabledStates: Story = {
   args: { isDisabled: true },
 };
@@ -204,7 +216,19 @@ export const DisabledStates: Story = {
 export const ErrorStates: Story = {
   args: { isError: true },
 };
+export const VerticalErrorStates: Story = {
+  args: { isError: true, clrLayout: ClrFormLayout.VERTICAL },
+};
+export const CompactErrorStates: Story = {
+  args: { isError: true, clrLayout: ClrFormLayout.COMPACT },
+};
 
 export const SuccessStates: Story = {
   args: { isSuccess: true },
+};
+export const VerticalSuccessStates: Story = {
+  args: { isSuccess: true, clrLayout: ClrFormLayout.VERTICAL },
+};
+export const CompactSuccessStates: Story = {
+  args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT },
 };

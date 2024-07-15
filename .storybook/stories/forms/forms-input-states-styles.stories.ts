@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
+import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
@@ -20,8 +20,10 @@ export default {
   argTypes: {
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
+    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
+    clrLayout: ClrFormLayout.HORIZONTAL,
     isDisabled: false,
     isError: false,
     isSuccess: false,
@@ -30,7 +32,7 @@ export default {
 
 const FormInputTemplate: StoryFn = args => ({
   template: `
-    <form class="clr-form clr-form-horizontal">
+    <form [class]="'clr-form clr-form-' + clrLayout">
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label class="clr-control-label">Text</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
@@ -242,6 +244,14 @@ const FormInputTemplate: StoryFn = args => ({
 export const InputStates: StoryObj = {
   render: FormInputTemplate,
 };
+export const VerticalInputStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { clrLayout: ClrFormLayout.VERTICAL },
+};
+export const CompactInputStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { clrLayout: ClrFormLayout.COMPACT },
+};
 
 export const DisabledStates: StoryObj = {
   render: FormInputTemplate,
@@ -252,8 +262,24 @@ export const ErrorStates: StoryObj = {
   render: FormInputTemplate,
   args: { isError: true },
 };
+export const VerticalErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true, clrLayout: ClrFormLayout.VERTICAL },
+};
+export const CompactErrorStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isError: true, clrLayout: ClrFormLayout.COMPACT },
+};
 
 export const SuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true },
+};
+export const VerticalSuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true, clrLayout: ClrFormLayout.VERTICAL },
+};
+export const CompactSuccessStates: StoryObj = {
+  render: FormInputTemplate,
+  args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT },
 };
