@@ -421,7 +421,6 @@ export default function (): void {
         element.dispatchEvent(keyUp);
         fixture.detectChanges();
 
-        expect(spy).toHaveBeenCalledWith(keyDown);
         expect(spy).toHaveBeenCalledWith(keyUp);
       }
 
@@ -429,7 +428,7 @@ export default function (): void {
         fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
         fixture.whenRenderingDone();
         fixture.detectChanges();
-        spy = spyOn(fixture.componentInstance.testBlockInstance, 'eventIsInputEvent').and.callThrough();
+        spy = spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand').and.callThrough();
       }));
 
       it('Events sent through input element should NOT expand block', () => {

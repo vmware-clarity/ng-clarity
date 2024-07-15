@@ -181,7 +181,7 @@ export class ClrStackBlock implements OnInit {
   }
 
   toggleExpand(event?: Event): void {
-    if (this.eventIsInputEvent(event)) {
+    if (eventIsInputEvent(event)) {
       return;
     }
 
@@ -195,19 +195,19 @@ export class ClrStackBlock implements OnInit {
     return this.expanded ? `clr-stack-children-${this.uniqueId}` : null;
   }
 
-  eventIsInputEvent(event?: Event) {
-    const targetElement = event?.target as HTMLElement;
-
-    return targetElement?.tagName
-      ? ['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT', 'OPTION'].includes(targetElement.tagName)
-      : false;
-  }
-
   protected preventDefaultIfNotInputEvent(event: Event) {
-    if (this.eventIsInputEvent(event)) {
+    if (eventIsInputEvent(event)) {
       return;
     }
 
     event.preventDefault();
   }
+}
+
+function eventIsInputEvent(event?: Event) {
+  const targetElement = event?.target as HTMLElement;
+
+  return targetElement?.tagName
+    ? ['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT', 'OPTION'].includes(targetElement.tagName)
+    : false;
 }
