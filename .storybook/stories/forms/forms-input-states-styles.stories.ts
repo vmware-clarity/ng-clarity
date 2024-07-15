@@ -227,10 +227,12 @@ const FormInputTemplate: StoryFn = args => ({
 export const InputStates: StoryObj = {
   render: FormInputTemplate,
 };
+
 export const VerticalInputStates: StoryObj = {
   render: FormInputTemplate,
   args: { clrLayout: ClrFormLayout.VERTICAL },
 };
+
 export const CompactInputStates: StoryObj = {
   render: FormInputTemplate,
   args: { clrLayout: ClrFormLayout.COMPACT },
@@ -245,10 +247,12 @@ export const ErrorStates: StoryObj = {
   render: FormInputTemplate,
   args: { isError: true },
 };
+
 export const VerticalErrorStates: StoryObj = {
   render: FormInputTemplate,
   args: { isError: true, clrLayout: ClrFormLayout.VERTICAL },
 };
+
 export const CompactErrorStates: StoryObj = {
   render: FormInputTemplate,
   args: { isError: true, clrLayout: ClrFormLayout.COMPACT },
@@ -258,10 +262,12 @@ export const SuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true },
 };
+
 export const VerticalSuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true, clrLayout: ClrFormLayout.VERTICAL },
 };
+
 export const CompactSuccessStates: StoryObj = {
   render: FormInputTemplate,
   args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT },
