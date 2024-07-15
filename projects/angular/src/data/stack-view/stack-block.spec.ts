@@ -10,10 +10,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ClarityModule } from '../../clr-angular.module';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
+import { ClrStackViewModule } from './stack-view.module';
 
 import Spy = jasmine.Spy;
 
@@ -131,7 +131,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule, FormsModule],
+        imports: [ClrStackViewModule, NoopAnimationsModule, FormsModule],
         declarations: [BasicBlock, DynamicBlock, DynamicBlockWithInput, NestedBlocks, BlocksWithIinteractiveElements],
         providers: [ClrStackView],
       });
@@ -411,18 +411,20 @@ export default function (): void {
 
     describe('Space interaction with elements', () => {
       let spy: Spy<any>;
-      const event = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
+      const keyDown = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
+      const keyUp = new KeyboardEvent('keyup', { key: Keys.Space, bubbles: true });
 
       function executeElementTest(elementName: string) {
         const element = fixture.nativeElement.querySelector(elementName) as HTMLElement;
 
         element.focus();
+
+        element.dispatchEvent(keyDown);
+        element.dispatchEvent(keyUp);
         fixture.detectChanges();
 
-        element.dispatchEvent(event);
-        fixture.detectChanges();
-
-        expect(spy).toHaveBeenCalledWith(event);
+        expect(spy).toHaveBeenCalledWith(keyDown);
+        expect(spy).toHaveBeenCalledWith(keyUp);
       }
 
       beforeEach(fakeAsync(() => {
