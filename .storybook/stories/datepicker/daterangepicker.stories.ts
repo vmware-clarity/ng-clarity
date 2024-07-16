@@ -90,6 +90,14 @@ export const DateRangePicker: StoryObj = {
   render: DateRangePickerTemplate,
 };
 
+export const DefaultDate: StoryObj = {
+  render: DateRangePickerTemplate,
+  args: {
+    clrRangeStartDate: Date.now() - 2592000000,
+    clrRangeEndDate: Date.now() + 2592000000,
+  },
+};
+
 export const Disabled: StoryObj = {
   render: DateRangePickerTemplate,
   args: {
