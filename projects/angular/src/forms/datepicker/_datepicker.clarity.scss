@@ -38,9 +38,7 @@
     &:not(.is-today) {
       border-radius: 0;
     }
-    &:not(.is-excluded) {
-      background: datepicker-variables.$clr-calendar-in-range-cell-border-color;
-    }
+    background: datepicker-variables.$clr-calendar-in-range-cell-border-color;
   }
   &:focus {
     border: tokens.$cds-global-space-1 solid datepicker-variables.$clr-calendar-btn-focus-border-color !important;
@@ -60,18 +58,20 @@
 }
 
 @mixin generate-selected-date-style() {
-  &.is-selected {
+  &.is-selected,
+  &.is-start-range,
+  &.is-end-range {
     background: datepicker-variables.$clr-calendar-active-cell-background-color;
     color: datepicker-variables.$clr-calendar-active-cell-color;
     border: none;
-    &.is-start-range {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    &.is-end-range {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
+  }
+  &.is-start-range {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &.is-end-range {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   &.is-selected:focus {
@@ -228,10 +228,6 @@
 
     &.is-excluded {
       color: tokens.$cds-alias-object-interaction-color-disabled;
-
-      &:hover {
-        background: none;
-      }
     }
 
     &.is-disabled {

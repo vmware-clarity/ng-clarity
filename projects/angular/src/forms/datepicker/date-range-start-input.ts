@@ -18,6 +18,7 @@ import { datesAreEqual } from './utils/date-utils';
   selector: '[clrRangeStartDate]',
   host: {
     '[class.clr-input]': 'true',
+    '[style.text-align]': "'right'",
   },
   providers: [DatepickerFocusService],
 })
