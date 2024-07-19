@@ -36,7 +36,6 @@
   }
   &:focus {
     outline: tokens.$cds-alias-object-interaction-outline;
-    outline-color: -webkit-focus-ring-color;
     outline-offset: calc(-1 * tokens.$cds-global-space-2);
   }
   &:active {
