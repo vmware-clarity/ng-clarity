@@ -164,7 +164,7 @@ export class ClrMonthpicker implements AfterViewInit {
   }
 
   /**
-   * Focuses on the current calendar month when the View is initialized.
+   * Focuses on the current calendar month when the view is initialized.
    */
   ngAfterViewInit() {
     this._datepickerFocusService.focusCell(this._elRef);
