@@ -71,7 +71,7 @@
 
   .clr-accordion-number {
     padding: 0 tokens.$cds-global-space-7;
-    display: none;
+    display: none !important;
   }
 
   .clr-accordion-header-button {
@@ -177,15 +177,11 @@
     .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
-    .clr-accordion-panel-complete {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
-      }
+    .clr-accordion-panel-complete > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
-    .clr-accordion-panel-error {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      }
+    .clr-accordion-panel-error > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
     }
 
     & > .clr-accordion-content-region .clr-accordion-content {
@@ -211,16 +207,16 @@
   }
 
   .clr-accordion-panel-complete {
-    .clr-accordion-complete-icon {
+    & > .clr-accordion-complete-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-complete-color;
     }
 
-    .clr-accordion-angle {
+    & > .clr-accordion-angle {
       visibility: visible;
     }
 
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
 
@@ -230,14 +226,14 @@
   }
 
   .clr-accordion-panel-error {
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
       border-color: accordion-variables.$clr-accordion-error-color;
       border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
       background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
-    .clr-accordion-error-icon {
+    & > .clr-accordion-error-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-error-color;
     }
