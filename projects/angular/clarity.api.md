@@ -5275,13 +5275,15 @@ export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     // (undocumented)
     cells: QueryList<ÇlrDatagridCellRenderer>;
     // (undocumented)
+    expandableRow: ÇlrDatagridRowRenderer;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     setCellsState(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["expandableRow", "cells"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowRenderer, never>;
 }

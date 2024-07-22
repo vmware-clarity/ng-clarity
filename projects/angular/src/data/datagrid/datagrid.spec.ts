@@ -411,23 +411,37 @@ class ProjectionTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>
-        <ng-container *clrDgHideableColumn="{ hidden: true }">First</ng-container>
+        <ng-container *clrDgHideableColumn="{ hidden: firstColumnHidden }">First</ng-container>
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *ngFor="let item of items">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="true">
-          <clr-dg-cell class="hidden-cell">{{ item }} (col 1 detail)</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
+          <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
           <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
         </clr-dg-row-detail>
       </clr-dg-row>
+
+      <ng-template [(clrIfDetail)]="detailItem">
+        <clr-dg-detail>
+          <clr-datagrid>
+            <clr-dg-column>Detail Column</clr-dg-column>
+            <clr-dg-row>
+              <clr-dg-cell class="nested-datagrid-cell">Detail Cell</clr-dg-cell>
+            </clr-dg-row>
+          </clr-datagrid>
+        </clr-dg-detail>
+      </ng-template>
     </clr-datagrid>
   `,
 })
-class ExpandedReplacedCellsTest {
+class ExpandedCellsTest {
   items = [1, 2, 3];
+  detailItem = null;
+  replaceCells = false;
+  firstColumnHidden = false;
 }
 
 @Component({
@@ -784,12 +798,47 @@ export default function (): void {
         expect(rowDetail).not.toBeNull();
       }));
 
-      it('hides cells in dg-row-detail when columns are hidden and rows are replaced', function () {
-        const context = this.create(ClrDatagrid, ExpandedReplacedCellsTest);
+      it('hides cells in dg-row-detail when column is hidden and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = true;
         context.detectChanges();
-        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.hidden-cell');
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
         expect(hiddenCell.classList).toContain(HIDDEN_COLUMN_CLASS);
         expect(window.getComputedStyle(hiddenCell).display).toBe('none');
+      });
+
+      it('shows cells in dg-row-detail when column is shown and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = false;
+        context.detectChanges();
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(hiddenCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(hiddenCell).display).toBe('block');
+      });
+
+      it('does not hide cells in nested datagrid', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.firstColumnHidden = false;
+        context.testComponent.detailItem = context.testComponent.items[0];
+        context.detectChanges();
+
+        // It is important to hide column after first render for this test.
+        context.testComponent.firstColumnHidden = true;
+        context.detectChanges();
+
+        // The expandable row cell should be hidden.
+        const firstExpandableRowCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(firstExpandableRowCell.classList).toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(firstExpandableRowCell).display).toBe('none');
+
+        // The nested datagrid cell should not be hidden.
+        const nestedDatagridCell: HTMLElement = context.clarityElement.querySelector('.nested-datagrid-cell');
+        expect(nestedDatagridCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(nestedDatagridCell).display).toBe('block');
       });
 
       it('can render mixed expandable/non-expandable', function () {
