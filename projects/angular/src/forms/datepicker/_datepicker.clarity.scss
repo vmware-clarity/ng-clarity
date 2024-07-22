@@ -41,8 +41,9 @@
     background: datepicker-variables.$clr-calendar-in-range-cell-border-color;
   }
   &:focus {
-    border: tokens.$cds-global-space-1 solid datepicker-variables.$clr-calendar-btn-focus-border-color !important;
-    outline: 0;
+    outline: tokens.$cds-alias-object-interaction-outline;
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: calc(-1 * tokens.$cds-global-space-2);
   }
   &:active {
     background: datepicker-variables.$clr-calendar-btn-active-color-bg;
@@ -228,6 +229,10 @@
 
     &.is-excluded {
       color: tokens.$cds-alias-object-interaction-color-disabled;
+
+      &:hover {
+        background: none;
+      }
     }
 
     &.is-disabled {
@@ -316,15 +321,6 @@
       &:hover {
         background: none;
       }
-    }
-
-    &.is-selected {
-      background: datepicker-variables.$clr-calendar-active-cell-background-color;
-      color: datepicker-variables.$clr-calendar-active-cell-color;
-    }
-
-    &.is-selected:focus {
-      background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
     }
   }
 

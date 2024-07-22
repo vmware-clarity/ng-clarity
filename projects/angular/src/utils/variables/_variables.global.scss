@@ -274,6 +274,11 @@ $clr-layers: (
   datagrid-header-sticky: 502,
   datagrid-host: 590,
   alert: 1033,
+  // Used by responsive nav sidepanel
+  sidepanel-bg: 1038,
+  sidepanel: 1039,
+  // Not used in Clarity but released by mistake in 17.2.0 and already consumed by teams through NGX
+  // see https://jira.eng.vmware.com/browse/CDE-2109
   side-panel-bg: 1038,
   side-panel: 1039,
   modal-bg: 1040,

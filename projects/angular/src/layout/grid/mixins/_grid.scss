@@ -7,11 +7,19 @@
 @use 'sass:math';
 @use '../../../utils/variables/variables.layout';
 
+@mixin clr-make-container() {
+  width: 100%;
+  padding-right: variables.$clr-grid-container-padding;
+  padding-left: variables.$clr-grid-container-padding;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 @mixin clr-make-row() {
   display: flex;
   flex-wrap: wrap;
-  margin-right: math.div(variables.$clr-grid-gutter-width, -2);
-  margin-left: math.div(variables.$clr-grid-gutter-width, -2);
+  margin-right: variables.$clr-grid-row-margin;
+  margin-left: variables.$clr-grid-row-margin;
 }
 
 @mixin clr-make-col($size, $columns: variables.$clr-grid-columns) {

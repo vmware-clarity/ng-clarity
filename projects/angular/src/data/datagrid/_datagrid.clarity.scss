@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -432,7 +432,8 @@
       border: none;
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -640,7 +641,8 @@
       }
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -898,6 +900,10 @@
       .datagrid-select {
         padding: 0 tokens.$cds-global-space-7;
       }
+    }
+
+    .datagrid-detail-caret.datagrid-cell {
+      padding: 0;
     }
 
     .datagrid-cell {
@@ -1254,13 +1260,10 @@
       cursor: pointer;
       @include mixins.equilateral(tokens.$cds-global-space-9);
 
-      &.is-open {
-        background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
+      &.is-open .datagrid-detail-caret-icon {
         border-radius: tokens.$cds-alias-object-border-radius-100;
-
-        .datagrid-detail-caret-icon {
-          color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
-        }
+        background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
+        color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
     }
 

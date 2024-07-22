@@ -24,8 +24,17 @@ export default {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     detailContentType: { control: 'inline-radio', options: ['json', 'datagrid'] },
+    clrDetailAriaLabel: {
+      description: 'Title of the modal',
+    },
+    clrDetailAriaLabelledBy: {
+      description: "Id or multiple space separated Id's referencing existing text on the page",
+    },
   },
   args: {
+    //inputs
+    clrDetailAriaLabel: '',
+    clrDetailAriaLabelledBy: '',
     // story helpers
     elements,
     detailContentType: 'json',
@@ -93,12 +102,15 @@ const DetailTemplate: StoryFn = args => {
           </ng-container>
         </clr-dg-row>
 
-        <clr-dg-detail [ngClass]="{ highlight }" *clrIfDetail="let element">
+        <clr-dg-detail
+          [ngClass]="{ highlight }"
+          *clrIfDetail="let element"
+          ${args.clrDetailAriaLabel ? '[clrDetailAriaLabel]="clrDetailAriaLabel"' : ''}
+          ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
+        >
           <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
           <clr-dg-detail-body [ngSwitch]="detailContentType">
-            <ng-container *ngSwitchCase="'json'">
-              {{ element | json }}
-            </ng-container>
+            <ng-container *ngSwitchCase="'json'">{{ element | json }}</ng-container>
 
             <clr-datagrid *ngSwitchCase="'datagrid'">
               <clr-dg-column>Key</clr-dg-column>

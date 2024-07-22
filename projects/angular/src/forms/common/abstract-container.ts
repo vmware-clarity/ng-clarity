@@ -43,7 +43,10 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     this.subscriptions.push(
       this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
         this.state = state;
-        this.updateHelpers();
+        // Make sure everything is updated before dispatching the values for helpers
+        setTimeout(() => {
+          this.updateHelpers();
+        });
       })
     );
 

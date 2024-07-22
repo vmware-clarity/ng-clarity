@@ -19,7 +19,7 @@ import {
   QueryList,
   Renderer2,
 } from '@angular/core';
-import { merge, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
@@ -97,6 +97,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
   }
 
+  ngOnInit() {
+    this.columnsService.columnsStateChange.subscribe(change => this.columnStateChanged(change));
+  }
+
   ngAfterContentInit() {
     this.setupColumns();
 
@@ -109,7 +113,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
         this.stabilizeColumns();
       })
     );
-    this.listenForColumnChanges();
   }
 
   // Initialize and set Table width for horizontal scrolling here.
@@ -155,7 +158,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private setupColumns() {
     this.headers.forEach((header, index) => header.setColumnState(index));
     this.columnsService.columns.splice(this.headers.length); // Trim any old columns
-    this.rows.forEach(row => row.setCellsState());
+    // Sets columnIndex for each column
+    this.columnsService.columns.forEach((column, index) => {
+      this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });
+    });
   }
 
   private shouldComputeHeight(): boolean {
@@ -220,6 +226,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   }
 
   private columnStateChanged(state) {
+    // eslint-disable-next-line eqeqeq
+    if (!this.headers || state.columnIndex == null) {
+      return;
+    }
     const columnIndex = state.columnIndex;
     if (state.changes && state.changes.length) {
       state.changes.forEach(change => {
@@ -227,7 +237,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
           case DatagridColumnChanges.WIDTH:
             this.headers.get(columnIndex).setWidth(state);
             this.rows.forEach(row => {
-              if (row.cells && row.cells.length) {
+              if (row?.cells.length === this.columnsService.columns.length) {
                 row.cells.get(columnIndex).setWidth(state);
               }
             });
@@ -244,6 +254,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
           case DatagridColumnChanges.INITIALIZE:
             if (state.hideable && state.hidden) {
               this.headers.get(columnIndex).setHidden(state);
+              this.rows.forEach(row => {
+                row.setCellsState();
+              });
             }
             break;
           default:
@@ -251,18 +264,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
         }
       });
     }
-  }
-
-  private listenForColumnChanges() {
-    this.columnsService.columns.forEach((column, index) => {
-      this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });
-    });
-    /* 
-      Merges all column subject so we can track them at once
-      and receive only the changed column as result
-    */
-    const columnChanges = merge(...this.columnsService.columns);
-    this.subscriptions.push(columnChanges.subscribe(change => this.columnStateChanged(change)));
   }
 
   /**
