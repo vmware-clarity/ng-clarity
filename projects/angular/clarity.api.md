@@ -2885,13 +2885,28 @@ export class ClrModalModule {
 
 // @public (undocumented)
 export class ClrMonthpicker implements AfterViewInit {
-    constructor(_viewManagerService: ViewManagerService, _localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>);
+    constructor(_viewManagerService: ViewManagerService, _localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
     get calendarMonthIndex(): number;
+    get calendarYear(): number;
     changeMonth(monthIndex: number): void;
+    changeToYearView(): void;
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    get currentCalendarMonth(): number;
+    // (undocumented)
+    get currentCalendarYear(): number;
+    currentYear(): void;
     getTabIndex(monthIndex: number): number;
+    // (undocumented)
+    isSelected(monthIndex: number): boolean;
     get monthNames(): ReadonlyArray<string>;
+    nextYear(): void;
     ngAfterViewInit(): void;
     onKeyDown(event: KeyboardEvent): void;
+    previousYear(): void;
+    // (undocumented)
+    get yearAttrString(): string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrMonthpicker, "clr-monthpicker", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4858,6 +4873,8 @@ export class ClrYearpicker implements AfterViewInit {
     changeYear(year: number): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    get currentCalendarYear(): number;
     currentDecade(): void;
     getTabIndex(year: number): number;
     nextDecade(): void;
