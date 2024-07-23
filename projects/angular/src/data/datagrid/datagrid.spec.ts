@@ -820,6 +820,7 @@ export default function (): void {
         expect(window.getComputedStyle(hiddenCell).display).toBe('block');
       });
 
+      // regression test for CDE-2199
       it('does not hide cells in nested datagrid', function () {
         const context = this.create(ClrDatagrid, ExpandedCellsTest);
         context.testComponent.firstColumnHidden = false;
