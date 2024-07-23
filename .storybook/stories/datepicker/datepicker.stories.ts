@@ -81,7 +81,7 @@ export const Datepicker: StoryObj = {
 export const DefaultDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
-    clrDate: 1641038400000,
+    clrDate: '2022-01-01 00:00:00.000',
   },
 };
 
