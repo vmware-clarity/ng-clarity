@@ -64,6 +64,7 @@ const FormInputTemplate: StoryFn = args => ({
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
           <div class="clr-input-wrapper">
             <input
+              clrPassword
               type="password"
               autocomplete="current-password"
               id="example"
