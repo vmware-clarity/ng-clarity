@@ -93,8 +93,8 @@ export const DateRangePicker: StoryObj = {
 export const DefaultDate: StoryObj = {
   render: DateRangePickerTemplate,
   args: {
-    clrRangeStartDate: Date.now() - 2592000000,
-    clrRangeEndDate: Date.now() + 2592000000,
+    clrRangeStartDate: '2024-06-22 00:00:00.000',
+    clrRangeEndDate: '2024-08-21 00:00:00.000',
   },
 };
 
