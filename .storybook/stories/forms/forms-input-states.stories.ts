@@ -59,29 +59,24 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+      <clr-password-container [ngClass]="{ 'c lr-success': isSuccess, 'clr-error': isError }">
         <label for="example" class="clr-control-label">Password</label>
-        <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
-          <div class="clr-input-wrapper">
-            <input
-              clrPassword
-              type="password"
-              autocomplete="current-password"
-              id="example"
-              [ngModel]="password"
-              name="password"
-              placeholder="Password please!"
-              class="clr-input"
-              [disabled]="isDisabled"
-            />
-            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
-          </div>
-          <span class="clr-subtext">Helper Subtext</span>
-          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">
-            State Subtext
-          </span>
-        </div>
-      </div>
+        <input
+          clrPassword
+          type="password"
+          autocomplete="current-password"
+          id="example"
+          [ngModel]="password"
+          name="password"
+          placeholder="Password please!"
+          class="clr-input"
+          [disabled]="isDisabled"
+        />
+        <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+        <clr-control-helper>Helper Subtext</clr-control-helper>
+        <clr-control-error *ngIf="isError">Error subtext</clr-control-error>
+        <clr-control-success *ngIf="isSuccess">Success subtext</clr-control-success>
+      </clr-password-container>
 
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label for="textarea-basic-error" class="clr-control-label">Textarea</label>
