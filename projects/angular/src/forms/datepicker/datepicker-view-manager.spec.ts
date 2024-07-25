@@ -14,6 +14,7 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -21,6 +22,7 @@ export default function () {
   describe('Datepicker View Manager Component', () => {
     let context: TestContext<ClrDatepickerViewManager, TestComponent>;
     let viewManagerService: ViewManagerService;
+    let hostElement;
 
     beforeEach(function () {
       context = this.create(ClrDatepickerViewManager, TestComponent, [
@@ -30,9 +32,12 @@ export default function () {
         DateNavigationService,
         LocaleHelperService,
         DateIOService,
+        DatePickerHelperService,
         DateFormControlService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
+      hostElement = context.clarityElement;
+      context.clarityElement = context.clarityElement.querySelector('.datepicker-view-manager');
     });
 
     it('shows the daypicker when dayView is set to true', () => {
@@ -60,7 +65,7 @@ export default function () {
     });
 
     it('has the .datepicker class added to the host', () => {
-      expect(context.clarityElement.classList.contains('datepicker')).toBe(true);
+      expect(hostElement.classList.contains('datepicker')).toBe(true);
     });
   });
 }

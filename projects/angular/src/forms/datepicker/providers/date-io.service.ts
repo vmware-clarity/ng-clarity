@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { DateRange } from '../interfaces/date-range.interface';
+import { DateRange, DateRangeOption } from '../interfaces/date-range.interface';
 import { DayModel } from '../model/day.model';
 import {
   BIG_ENDIAN,
@@ -33,9 +33,10 @@ export class DateIOService {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
   };
-
+  isDateRangePicker = false;
   cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
 
+  private dateRangeOptions;
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
@@ -71,6 +72,25 @@ export class DateIOService {
       const [year, month, day] = date.split('-').map(n => parseInt(n, 10));
       this.disabledDates.maxDate = new DayModel(year, month - 1, day);
     }
+  }
+
+  setIsDateRangePicker(flag: boolean) {
+    this.isDateRangePicker = flag;
+  }
+
+  setRangeOptions(rangeOptions: DateRangeOption[]) {
+    let validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
+    const hasCustomRangeOption = validatedRangeOption.findIndex(rangeOption => !!rangeOption.isCustomRange);
+    if (validatedRangeOption.length) {
+      if (hasCustomRangeOption === -1) {
+        validatedRangeOption = [...validatedRangeOption, { label: 'Custom Range', value: [], isCustomRange: true }];
+      }
+      this.dateRangeOptions = validatedRangeOption;
+    }
+  }
+
+  getRangeOptions() {
+    return this.dateRangeOptions;
   }
 
   toLocaleDisplayFormatString(date: Date): string {
@@ -187,5 +207,22 @@ export class DateIOService {
     }
     const result: number = parseToFourDigitYear(y);
     return result !== -1 ? new Date(result, m, d) : null;
+  }
+
+  private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
+    const validOptions = [];
+    rangeOptions?.forEach((rangeOption: DateRangeOption) => {
+      if (
+        !rangeOption.isCustomRange &&
+        (!rangeOption.value?.length ||
+          rangeOption.value?.length !== 2 ||
+          Object.prototype.toString.call(rangeOption?.value[0]) !== '[object Date]' ||
+          Object.prototype.toString.call(rangeOption?.value[1]) !== '[object Date]')
+      ) {
+        return;
+      }
+      validOptions.push(rangeOption);
+    });
+    return validOptions;
   }
 }
