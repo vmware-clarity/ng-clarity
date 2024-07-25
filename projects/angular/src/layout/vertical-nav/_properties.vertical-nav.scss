@@ -61,6 +61,8 @@
     // @TODO use proper background for both dark and light theme.
     [cds-theme~='dark'] {
       --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-vertical-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
     }
   }
 }
