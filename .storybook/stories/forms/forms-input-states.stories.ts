@@ -59,24 +59,22 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <clr-password-container [ngClass]="{ 'c lr-success': isSuccess, 'clr-error': isError }">
-        <label for="example" class="clr-control-label">Password</label>
-        <input
-          clrPassword
-          type="password"
-          autocomplete="current-password"
-          id="example"
-          [ngModel]="password"
-          name="password"
-          placeholder="Password please!"
-          class="clr-input"
-          [disabled]="isDisabled"
-        />
-        <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
-        <clr-control-helper>Helper Subtext</clr-control-helper>
-        <clr-control-error *ngIf="isError">Error subtext</clr-control-error>
-        <clr-control-success *ngIf="isSuccess">Success subtext</clr-control-success>
-      </clr-password-container>
+      <form clrForm>
+        <clr-password-container>
+          <label>Password</label>
+          <input
+            clrPassword
+            autocomplete="current-password"
+            placeholder="Password please!"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="8"
+          />
+          <clr-control-helper>Field is required</clr-control-helper>
+          <clr-control-error *clrIfError="'required'">This field is required!</clr-control-error>
+        </clr-password-container>
+      </form>
 
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label for="textarea-basic-error" class="clr-control-label">Textarea</label>
