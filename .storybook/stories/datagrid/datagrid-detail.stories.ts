@@ -157,11 +157,10 @@ export const Detail: StoryObj = {
   render: DetailTemplate,
 };
 
-export const DetailOpened: StoryObj = {
+export const OpenDetail: StoryObj = {
   render: DetailTemplate,
   args: {
     opened: elements[4],
-    highlight: false,
     height: 500,
   },
 };
