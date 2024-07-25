@@ -5,7 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
+
+import { states } from '../combobox/states';
 
 interface VirtualMachineData {
   text: string;
@@ -47,12 +50,59 @@ const data: VirtualMachineData[] = [
   styleUrls: ['./dropdown.demo.scss'],
 })
 export class DropdownAngularPatternDemo {
+  @ViewChild('combo', { read: ElementRef }) comboBox: ElementRef;
+
+  users = [
+    {
+      id: 'id-1',
+      name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    },
+    {
+      id: 'id-2',
+      name: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    },
+    {
+      id: 'id-3',
+      name: 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+    },
+    {
+      id: 'id-4',
+      name: 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    },
+  ];
+
+  states = states;
+
   model: VirtualMachineModel = {
     lines: data,
     searchTerm: '',
   };
 
+  comboFormModel = {
+    states: [],
+  };
+
   globalTimeout = null;
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
+  @HostListener('click', ['$event'])
+  comboBoxMouseClick(event: Event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+
+    console.log(event);
+  }
+
+  @HostListener('keydown.enter', ['$event'])
+  comboBoxEnter(event: Event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+
+    console.log(event);
+  }
 
   delay($event) {
     $event.preventDefault();
