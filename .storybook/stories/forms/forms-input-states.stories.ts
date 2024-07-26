@@ -59,18 +59,43 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
+      <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
+        <label for="example" class="clr-control-label">Password</label>
+        <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
+          <div class="clr-input-wrapper">
+            <input
+              type="password"
+              autocomplete="current-password"
+              id="example"
+              [ngModel]="password"
+              name="password"
+              placeholder="Password please!"
+              class="clr-input"
+              [disabled]="isDisabled"
+            />
+            <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'check-circle' : 'exclamation-circle'"></cds-icon>
+          </div>
+          <span class="clr-subtext">Helper Subtext</span>
+          <span *ngIf="isSuccess || isError" class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">
+            State Subtext
+          </span>
+        </div>
+      </div>
+
       <clr-password-container>
-        <label>Password</label>
+        <label>Password container</label>
         <input
           clrPassword
+          [disabled]="isDisabled"
           autocomplete="current-password"
-          placeholder="Password please!"
+          placeholder="Password container"
           [(ngModel)]="password"
           name="password"
           required
           minlength="8"
         />
         <clr-control-helper>Helper Subtext</clr-control-helper>
+        <clr-control-success>Success message</clr-control-success>
         <clr-control-error *clrIfError="'required'">This field is required!</clr-control-error>
       </clr-password-container>
 
