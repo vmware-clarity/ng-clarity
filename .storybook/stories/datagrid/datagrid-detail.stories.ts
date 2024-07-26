@@ -103,43 +103,42 @@ const DetailTemplate: StoryFn = args => {
           </ng-container>
         </clr-dg-row>
 
-        <ng-template [(clrIfDetail)]="opened" let-element>
-          <clr-dg-detail
-            [ngClass]="{ highlight }"
-            ${args.clrDetailAriaLabel ? '[clrDetailAriaLabel]="clrDetailAriaLabel"' : ''}
-            ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
-          >
-            <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
-            <clr-dg-detail-body [ngSwitch]="detailContentType">
-              <ng-container *ngSwitchCase="'json'">{{ element | json }}</ng-container>
+        <clr-dg-detail
+          [ngClass]="{ highlight }"
+          *clrIfDetail="let element"
+          ${args.clrDetailAriaLabel ? '[clrDetailAriaLabel]="clrDetailAriaLabel"' : ''}
+          ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
+        >
+          <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
+          <clr-dg-detail-body [ngSwitch]="detailContentType">
+            <ng-container *ngSwitchCase="'json'">{{ element | json }}</ng-container>
 
-              <clr-datagrid *ngSwitchCase="'datagrid'">
-                <clr-dg-column>Key</clr-dg-column>
-                <clr-dg-column>Value</clr-dg-column>
+            <clr-datagrid *ngSwitchCase="'datagrid'">
+              <clr-dg-column>Key</clr-dg-column>
+              <clr-dg-column>Value</clr-dg-column>
 
-                <clr-dg-row>
-                  <clr-dg-cell>Name</clr-dg-cell>
-                  <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-                </clr-dg-row>
+              <clr-dg-row>
+                <clr-dg-cell>Name</clr-dg-cell>
+                <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+              </clr-dg-row>
 
-                <clr-dg-row>
-                  <clr-dg-cell>Symbol</clr-dg-cell>
-                  <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-                </clr-dg-row>
+              <clr-dg-row>
+                <clr-dg-cell>Symbol</clr-dg-cell>
+                <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+              </clr-dg-row>
 
-                <clr-dg-row>
-                  <clr-dg-cell>Number</clr-dg-cell>
-                  <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-                </clr-dg-row>
+              <clr-dg-row>
+                <clr-dg-cell>Number</clr-dg-cell>
+                <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+              </clr-dg-row>
 
-                <clr-dg-row>
-                  <clr-dg-cell>Electronegativity</clr-dg-cell>
-                  <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
-                </clr-dg-row>
-              </clr-datagrid>
-            </clr-dg-detail-body>
-          </clr-dg-detail>
-        </ng-template>
+              <clr-dg-row>
+                <clr-dg-cell>Electronegativity</clr-dg-cell>
+                <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
+              </clr-dg-row>
+            </clr-datagrid>
+          </clr-dg-detail-body>
+        </clr-dg-detail>
 
         <clr-dg-footer>
           <clr-dg-pagination #pagination>
