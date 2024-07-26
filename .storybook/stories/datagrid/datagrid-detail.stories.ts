@@ -8,7 +8,6 @@
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
 
 export default {
@@ -160,9 +159,10 @@ export const Detail: StoryObj = {
 
 export const OpenDetail: StoryObj = {
   render: DetailTemplate,
-  play: removeFocusOutline,
   args: {
     opened: elements[4],
+    detailContentType: 'datagrid',
+    highlight: false,
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
     height: 500,
   },
