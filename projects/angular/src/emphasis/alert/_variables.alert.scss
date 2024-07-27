@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -517,10 +517,10 @@ $clr-app-alert-neutral: (
   icon-color: var(--clr-app-alert-neutral-icon-color),
   color: var(--clr-app-alert-neutral-font-color),
   border-color: var(--clr-app-alert-neutral-border-color),
-  close-icon-color: var(--clr-app-alert-neutral-close-icon-color),
-  action-color: var(--clr-app-alert-neutral-action-color),
-  action-active-color: var(--clr-app-alert-neutral-action-active-color),
-  close-icon-hover-color: var(--clr-app-alert-neutral-close-icon-hover-color),
+  close-icon: var(--clr-app-alert-neutral-close-icon-color),
+  action: var(--clr-app-alert-neutral-action-color),
+  action-active: var(--clr-app-alert-neutral-action-active-color),
+  close-icon-hover: var(--clr-app-alert-neutral-close-icon-hover-color),
 ) !default;
 
 @function lookupAppNeutralAlertColor($property: color) {
