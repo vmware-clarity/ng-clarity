@@ -70,7 +70,12 @@
 </clr-datagrid>
 
 <h3>Dynamic rows with sorting</h3>
-<clr-datagrid *ngIf="{ users: users | async }; let data" [(clrDgSelected)]="selectedUsers" style="height: 30rem">
+<clr-datagrid
+  *ngIf="{ users: users | async }; let data"
+  [(clrDgSelected)]="selectedUsers"
+  class="datagrid-compact"
+  style="height: 30rem"
+>
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -82,9 +87,10 @@
     ClrVirtualScroll
     let-user
     [clrVirtualRowsOf]="data.users"
-    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsItemSize]="32"
     [clrVirtualRowsMinBufferPx]="200"
     [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="user">

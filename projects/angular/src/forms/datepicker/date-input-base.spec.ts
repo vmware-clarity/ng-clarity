@@ -11,7 +11,6 @@ import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsMo
 import { By } from '@angular/platform-browser';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
-import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -21,8 +20,9 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
+import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
-import { ClrDateInput } from './date-input';
+import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -582,30 +582,26 @@ export default function () {
         expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
       }));
 
-      it('marks the form as touched when the markAsTouched event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').touched).toBe(false);
+      it('marks the form as touched when the markAsTouched event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').touched).toBe(false);
 
-          dateFormControlService.markAsTouched();
+        dateFormControlService.markAsTouched();
 
-          fixture.detectChanges();
-          expect(form.get('date').touched).toBe(true);
-          done();
-        });
+        fixture.detectChanges();
+        expect(form.get('date').touched).toBe(true);
       });
 
-      it('marks the form as dirty when the markAsDirty event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').dirty).toBe(false);
+      it('marks the form as dirty when the markAsDirty event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').dirty).toBe(false);
 
-          dateFormControlService.markAsDirty();
+        dateFormControlService.markAsDirty();
 
-          fixture.detectChanges();
-          expect(form.get('date').dirty).toBe(true);
-          done();
-        });
+        fixture.detectChanges();
+        expect(form.get('date').dirty).toBe(true);
       });
 
       it('outputs the date when the user manually changes the date', () => {

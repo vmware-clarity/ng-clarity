@@ -28,26 +28,37 @@ const DropdownStaticTemplate: StoryFn = args => ({
           Dropdown
           <cds-icon shape="angle" direction="down"></cds-icon>
         </button>
-        <div class="dropdown-menu">
-          <h4 class="dropdown-header" aria-hidden="true">Dropdown header</h4>
-          <div aria-label="Dropdown header Action" class="dropdown-item active">Action</div>
-          <div aria-label="Dropdown header Disabled Link" class="dropdown-item disabled">Disabled Link</div>
+        <div class="dropdown-menu" role="menu">
+          <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
+          <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">Action</div>
+          <div
+            aria-label="Dropdown header Disabled Link"
+            class="dropdown-item disabled"
+            role="menuitem"
+            aria-disabled="true"
+          >
+            Disabled Link
+          </div>
           <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-          <button class="dropdown-item">Lorem</button>
+          <button class="dropdown-item" role="menuitem">Lorem</button>
           <div class="dropdown open right-bottom">
-            <button class="dropdown-item active expandable">Lorem ipsum</button>
-            <div class="dropdown-menu">
-              <button class="dropdown-item">Foo.</button>
+            <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+              Lorem ipsum
+            </button>
+            <div class="dropdown-menu" role="menu">
+              <button class="dropdown-item" role="menuitem">Foo.</button>
               <div class="dropdown open right-top">
-                <button class="dropdown-item active expandable">Bar</button>
-                <div class="dropdown-menu">
-                  <div class="dropdown-item">Baz</div>
+                <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+                  Bar
+                </button>
+                <div class="dropdown-menu" role="menu">
+                  <div class="dropdown-item" role="menuitem">Baz</div>
                 </div>
               </div>
-              <div class="dropdown-item">Foo 2</div>
+              <div class="dropdown-item" role="menuitem">Foo 2</div>
             </div>
           </div>
-          <div class="dropdown-item">Ipsum</div>
+          <div class="dropdown-item" role="menuitem">Ipsum</div>
         </div>
       </div>
     </div>

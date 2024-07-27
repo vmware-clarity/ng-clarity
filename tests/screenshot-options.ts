@@ -51,6 +51,12 @@ export const ScreenshotOptions: ScreenshotOptionsT = {
   'signpost--opened': {
     fullPageScreenshot: true,
   },
+  'standard-alerts--with-open-actions-dropdown': {
+    fullPageScreenshot: true,
+  },
+  'standard-alerts--with-long-content-and-open-actions-dropdown': {
+    fullPageScreenshot: true,
+  },
   wizard: {
     fullPageScreenshot: true,
   },

@@ -14,6 +14,7 @@ import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interfa
 @Injectable()
 export class ColumnsService {
   columns: BehaviorSubject<ColumnState>[] = [];
+  columnsStateChange: BehaviorSubject<ColumnState> = new BehaviorSubject(null);
 
   private _cache: ColumnState[] = [];
 
@@ -40,7 +41,9 @@ export class ColumnsService {
   resetToLastCache() {
     this._cache.forEach((state, index) => {
       // Just emit the exact value from the cache
-      this.columns[index].next({ ...state, changes: ALL_COLUMN_CHANGES });
+      const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
+      this.columns[index].next(cachedState);
+      this.columnsStateChange.next(cachedState);
     });
     this._cache = [];
   }
@@ -54,6 +57,8 @@ export class ColumnsService {
   }
 
   emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff) {
-    column.next({ ...column.value, ...diff });
+    const changedState = { ...column.value, ...diff };
+    column.next(changedState);
+    this.columnsStateChange.next(changedState);
   }
 }

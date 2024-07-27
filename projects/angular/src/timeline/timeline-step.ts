@@ -34,7 +34,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
       <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
     </ng-template>
   `,
-  host: { '[class.clr-timeline-step]': 'true' },
+  host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
 })
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;

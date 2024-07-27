@@ -124,3 +124,18 @@ export const WizardPage: StoryObj = {
   render: WizardPageTemplate,
   play: removeFocusOutline,
 };
+
+export const WizardPageStatusIndicators: StoryObj = {
+  render: WizardPageTemplate,
+  play({ canvasElement }) {
+    removeFocusOutline({ canvasElement });
+
+    // navigate to the last page
+    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
+    nextButtonElement.click();
+    nextButtonElement.click();
+  },
+  args: {
+    clrWizardPageHasError: true,
+  },
+};

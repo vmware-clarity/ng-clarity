@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
@@ -29,6 +29,7 @@ import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
+import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -44,6 +45,7 @@ const DATEPICKER_PROVIDERS: any[] = [
   DateIOService,
   ControlIdService,
   DateFormControlService,
+  DatePickerHelperService,
 ];
 
 export default function () {
@@ -150,16 +152,15 @@ export default function () {
         expect(document.querySelector('clr-datepicker-view-manager')).not.toBeNull();
       });
 
-      it('tracks the disabled state', async(() => {
+      it('tracks the disabled state', async () => {
         expect(context.clarityElement.className).not.toContain('clr-form-control-disabled');
         context.testComponent.disabled = true;
         context.detectChanges();
         // Have to wait for the whole control to settle or it doesn't track
-        context.fixture.whenStable().then(() => {
-          context.detectChanges();
-          expect(context.clarityElement.className).toContain('clr-form-control-disabled');
-        });
-      }));
+        await context.fixture.whenStable();
+        context.detectChanges();
+        expect(context.clarityElement.className).toContain('clr-form-control-disabled');
+      });
 
       it('should set disabled state when dateFormControlService.disabled is true', () => {
         dateFormControlService.disabled = true;

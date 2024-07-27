@@ -8,7 +8,7 @@
 import { addHelpers } from '../../data/datagrid/helpers.spec';
 import CalendarSpecs from './calendar.spec';
 import DateContainerSpecs from './date-container.spec';
-import DateInputSpecs from './date-input.spec';
+import DateInputSpecs from './date-input-base.spec';
 import DateInputValidatorSpecs from './date-input.validator.spec';
 import DatepickerViewManagerSpecs from './datepicker-view-manager.spec';
 import DayComponentSpecs from './day.spec';

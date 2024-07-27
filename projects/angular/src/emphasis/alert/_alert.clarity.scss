@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -194,10 +194,17 @@
     }
 
     .alert-actions {
-      display: inline-flex;
-      gap: tokens.$cds-global-space-5;
       flex: 0 0 auto;
       white-space: nowrap;
+
+      > {
+        .alert-action,
+        .dropdown {
+          &:not(:last-child) {
+            margin-right: tokens.$cds-global-space-5;
+          }
+        }
+      }
 
       .dropdown-item {
         color: dropdown-variables.$clr-dropdown-text-color;
@@ -323,6 +330,7 @@
 
     &.alert-warning {
       @include generateAlertType(app-warning);
+
       .alert-item .btn {
         @extend .btn-warning-outline;
       }
@@ -330,6 +338,7 @@
 
     &.alert-success {
       @include generateAlertType(app-success);
+
       .alert-item .btn {
         @extend .btn-success-outline;
       }

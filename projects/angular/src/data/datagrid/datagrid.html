@@ -20,7 +20,7 @@
                     role="columnheader"
                     class="datagrid-column datagrid-select datagrid-fixed-column"
                     *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
-                    (keydown.space)="allSelected = !allSelected; $event.preventDefault()"
+                    (keydown.space)="toggleAllSelected($event)"
                   >
                     <div *ngIf="!hasVirtualScroller" class="clr-checkbox-wrapper">
                       <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,
@@ -76,18 +76,18 @@
           </div>
 
           <div role="presentation" class="datagrid-rows">
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
+            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              <clr-dg-cell>
+                <clr-spinner clrMedium></clr-spinner>
                 <span>{{ commonStrings.keys.loading }}</span>
               </clr-dg-cell>
             </clr-dg-row>
 
             <ng-container #displayedRows></ng-container>
 
-            <clr-dg-row class="datagrid-loading-more-items-row" *ngIf="loadingMoreItems">
-              <clr-dg-cell class="datagrid-loading-more-items-cell">
-                <clr-spinner [clrMedium]="true"></clr-spinner>
+            <clr-dg-row class="datagrid-row-loading" *ngIf="loadingMoreItems">
+              <clr-dg-cell>
+                <clr-spinner clrMedium></clr-spinner>
                 <span>{{ commonStrings.keys.loading }}</span>
               </clr-dg-cell>
             </clr-dg-row>

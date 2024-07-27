@@ -7,6 +7,33 @@
 
 <h1>Stepper</h1>
 
+<h2>Stepper with a nested accordion inside it</h2>
+
+<form clrStepper clrForm [formGroup]="formGroup">
+  <clr-stepper-panel formGroupName="group">
+    <clr-step-title>Nested Accordion</clr-step-title>
+    <clr-step-description> Demonstrate Nested accordion issue </clr-step-description>
+
+    <clr-step-content>
+      <ng-template [(clrIfExpanded)]="expanded">
+        <clr-accordion>
+          <clr-accordion-panel>
+            <clr-accordion-title>Accordion 1</clr-accordion-title>
+            <clr-accordion-content>Accordion 1 content</clr-accordion-content>
+          </clr-accordion-panel>
+        </clr-accordion>
+        <clr-accordion>
+          <clr-accordion-panel>
+            <clr-accordion-title>Accordion 2</clr-accordion-title>
+            <clr-accordion-content>Accordion 2 content</clr-accordion-content>
+          </clr-accordion-panel>
+        </clr-accordion>
+        <button #nextBtn clrStepButton="next">NEXT</button>
+      </ng-template>
+    </clr-step-content>
+  </clr-stepper-panel>
+</form>
+
 <h2>Angular - Stepper Reactive Forms</h2>
 
 <button (click)="form.reset()" class="btn">Reset Stepper</button>
@@ -21,8 +48,8 @@
     <clr-step-content *clrIfExpanded>
       <clr-input-container>
         <label>First Name</label>
-        <input clrInput formControlName="first" />
-        <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
+        <input clrInput formControlName="first" minlength="4" />
+        <clr-control-error *clrIfError="'minlength'">First Name Length</clr-control-error>
       </clr-input-container>
 
       <clr-input-container>

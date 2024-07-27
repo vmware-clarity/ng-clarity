@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { async, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
@@ -411,23 +411,37 @@ class ProjectionTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>
-        <ng-container *clrDgHideableColumn="{ hidden: true }">First</ng-container>
+        <ng-container *clrDgHideableColumn="{ hidden: firstColumnHidden }">First</ng-container>
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *ngFor="let item of items">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="true">
-          <clr-dg-cell class="hidden-cell">{{ item }} (col 1 detail)</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
+          <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
           <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
         </clr-dg-row-detail>
       </clr-dg-row>
+
+      <ng-template [(clrIfDetail)]="detailItem">
+        <clr-dg-detail>
+          <clr-datagrid>
+            <clr-dg-column>Detail Column</clr-dg-column>
+            <clr-dg-row>
+              <clr-dg-cell class="nested-datagrid-cell">Detail Cell</clr-dg-cell>
+            </clr-dg-row>
+          </clr-datagrid>
+        </clr-dg-detail>
+      </ng-template>
     </clr-datagrid>
   `,
 })
-class ExpandedReplacedCellsTest {
+class ExpandedCellsTest {
   items = [1, 2, 3];
+  detailItem = null;
+  replaceCells = false;
+  firstColumnHidden = false;
 }
 
 @Component({
@@ -456,7 +470,7 @@ class TabsIntegrationTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="trackBy">
+    <clr-datagrid [clrDgItemsTrackBy]="trackById">
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
@@ -775,7 +789,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-column.datagrid-expandable-caret')).toBeNull();
       });
 
-      it('can expand rows on initialization', async(function () {
+      it('can expand rows on initialization', waitForAsync(function () {
         const context = this.create(ClrDatagrid, ExpandedOnInitTest);
         const caretIcon = context.clarityElement.querySelector('.datagrid-expandable-caret-icon');
         expect(caretIcon).not.toBeNull();
@@ -784,12 +798,48 @@ export default function (): void {
         expect(rowDetail).not.toBeNull();
       }));
 
-      it('hides cells in dg-row-detail when columns are hidden and rows are replaced', function () {
-        const context = this.create(ClrDatagrid, ExpandedReplacedCellsTest);
+      it('hides cells in dg-row-detail when column is hidden and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = true;
         context.detectChanges();
-        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.hidden-cell');
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
         expect(hiddenCell.classList).toContain(HIDDEN_COLUMN_CLASS);
         expect(window.getComputedStyle(hiddenCell).display).toBe('none');
+      });
+
+      it('shows cells in dg-row-detail when column is shown and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = false;
+        context.detectChanges();
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(hiddenCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(hiddenCell).display).toBe('block');
+      });
+
+      // regression test for CDE-2199
+      it('does not hide cells in nested datagrid', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.firstColumnHidden = false;
+        context.testComponent.detailItem = context.testComponent.items[0];
+        context.detectChanges();
+
+        // It is important to hide column after first render for this test.
+        context.testComponent.firstColumnHidden = true;
+        context.detectChanges();
+
+        // The expandable row cell should be hidden.
+        const firstExpandableRowCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(firstExpandableRowCell.classList).toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(firstExpandableRowCell).display).toBe('none');
+
+        // The nested datagrid cell should not be hidden.
+        const nestedDatagridCell: HTMLElement = context.clarityElement.querySelector('.nested-datagrid-cell');
+        expect(nestedDatagridCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(nestedDatagridCell).display).toBe('block');
       });
 
       it('can render mixed expandable/non-expandable', function () {
@@ -823,7 +873,7 @@ export default function (): void {
         const grid = context.clarityElement.querySelector('[role=grid]');
         expect(grid).toBeDefined();
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(13); // 3*2 data, 3 select radios, 3 headers and 1 placeholder
+        expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
         expect(document.activeElement).toEqual(cells[0]);

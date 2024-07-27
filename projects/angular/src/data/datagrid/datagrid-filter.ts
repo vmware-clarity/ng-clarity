@@ -14,6 +14,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   PLATFORM_ID,
   ViewChild,
@@ -31,6 +32,7 @@ import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
+import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 /**
  * Custom filter that can be added in any column to override the default object property string filter.
@@ -107,7 +109,8 @@ export class ClrDatagridFilter<T = any>
     public commonStrings: ClrCommonStringsService,
     private smartToggleService: ClrPopoverToggleService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private elementRef: ElementRef<HTMLElement>
+    private elementRef: ElementRef<HTMLElement>,
+    @Optional() private keyNavigation: KeyNavigationGridController
   ) {
     super(_filters);
     this.subs.push(
@@ -130,6 +133,9 @@ export class ClrDatagridFilter<T = any>
       if (!open && isPlatformBrowser(this.platformId)) {
         this.anchor.nativeElement.focus();
       }
+      if (this.keyNavigation) {
+        this.keyNavigation.skipItemFocus = open;
+      }
       // keep track of the state
       this._open = open;
     }
@@ -148,7 +154,9 @@ export class ClrDatagridFilter<T = any>
   }
 
   ngOnChanges() {
-    this.setToggleButtonAriaLabel();
+    setTimeout(() => {
+      this.setToggleButtonAriaLabel();
+    });
   }
 
   override ngOnDestroy(): void {
