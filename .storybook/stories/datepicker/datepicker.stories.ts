@@ -16,7 +16,7 @@ export default {
   component: ClrDateInput,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDatepickerModule, ClrFormsModule],
+      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
     }),
   ],
   argTypes: {
