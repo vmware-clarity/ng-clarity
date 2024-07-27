@@ -33,18 +33,7 @@ export default {
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-      "
-    >
+    <div style="margin-top: 300px; display: flex; justify-content: center">
       <clr-date-container [clrPosition]="clrPosition">
         <label>Date</label>
         <input type="date" autocomplete="off" clrDate />
