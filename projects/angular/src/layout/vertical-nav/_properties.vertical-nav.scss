@@ -41,7 +41,7 @@
       --clr-vertical-nav-selected-active-bg-color: var(
         --cds-alias-object-interaction-background-selected-active
       ); // var(--clr-color-neutral-0);
-      --clr-vertical-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-active);
       --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
       --clr-vertical-nav-hover-bg-color: var(
