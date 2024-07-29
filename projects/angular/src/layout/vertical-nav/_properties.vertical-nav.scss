@@ -24,7 +24,7 @@
       // Vertical Nav - Align
       --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
       --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
-      --clr-vertical-nav-bg-color: #{tokens.$cds-global-color-cool-gray-50};
+      --clr-vertical-nav-bg-color: var(--cds-alias-object-vertical-navigation-background-color);
       --clr-vertical-nav-item-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5}
         #{tokens.$cds-global-space-7};
       --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
@@ -32,7 +32,9 @@
       --clr-vertical-nav-item-height: #{tokens.$cds-global-space-10};
       --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
       --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-global-color-white}; // var(--clr-color-neutral-0);
+      --clr-vertical-nav-selected-bg-color: var(
+        --cds-alias-object-interaction-vertical-navigation-background-selected
+      ); // var(--clr-color-neutral-0);
       --clr-vertical-nav-selected-hover-bg-color: var(
         --cds-alias-object-interaction-background-selected-hover
       ); // var(--clr-color-neutral-0);
@@ -42,7 +44,9 @@
       --clr-vertical-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
       --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-      --clr-vertical-nav-hover-bg-color: #{tokens.$cds-global-color-construction-100}; // var(--clr-color-neutral-400);
+      --clr-vertical-nav-hover-bg-color: var(
+        --cds-alias-object-interaction-vertical-navigation-background-hover
+      ); // var(--clr-color-neutral-400);
 
       // Vertical Nav - Trigger
       --clr-vertical-nav-toggle-icon-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-1000);
@@ -61,8 +65,6 @@
     // @TODO use proper background for both dark and light theme.
     [cds-theme~='dark'] {
       --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background};
-      --clr-vertical-nav-selected-bg-color: #{tokens.$cds-alias-object-interaction-background-selected};
-      --clr-vertical-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
     }
   }
 }
