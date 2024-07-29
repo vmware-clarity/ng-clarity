@@ -504,7 +504,10 @@ export default function (): void {
         expect(refreshed).toBe(true);
       });
 
-      it('allows to manually resize the datagrid', function () {
+      it('allows to manually resize the datagrid', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
         let resizeSteps = 0;
         organizer.renderStep.subscribe(() => {
@@ -513,7 +516,7 @@ export default function (): void {
         expect(resizeSteps).toBe(0);
         context.clarityDirective.resize();
         expect(resizeSteps).toBe(5);
-      });
+      }));
     });
 
     describe('Template API', function () {
