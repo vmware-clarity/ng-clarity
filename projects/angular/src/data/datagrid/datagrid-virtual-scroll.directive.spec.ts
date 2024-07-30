@@ -6,14 +6,7 @@
  */
 
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  flushMicrotasks,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { animationFrameScheduler, BehaviorSubject, Observable } from 'rxjs';
 
@@ -239,8 +232,9 @@ export default function (): void {
         // active checkbox input with ID clr-dg-row-cb360
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
 
-        flush();
-        flushMicrotasks();
+        // flush();
+        // flushMicrotasks();
+        tick();
         discardPeriodicTasks();
 
         fixture.autoDetectChanges(false);
