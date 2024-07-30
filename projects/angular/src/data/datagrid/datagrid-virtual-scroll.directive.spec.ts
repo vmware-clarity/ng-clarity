@@ -232,7 +232,7 @@ export default function (): void {
         // active checkbox input with ID clr-dg-row-cb360
         expect(document.activeElement).toEqual(grid.querySelectorAll('[type=checkbox]')[19]);
 
-        // flush();
+        flush();
         // flushMicrotasks();
         tick();
         discardPeriodicTasks();
