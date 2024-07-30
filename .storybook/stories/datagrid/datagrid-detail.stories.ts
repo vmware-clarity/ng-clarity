@@ -6,8 +6,9 @@
  */
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
+import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
 
 export default {
@@ -153,4 +154,18 @@ const DetailTemplate: StoryFn = args => {
 
 export const Detail: StoryObj = {
   render: DetailTemplate,
+};
+
+export const OpenDetail: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
 };
