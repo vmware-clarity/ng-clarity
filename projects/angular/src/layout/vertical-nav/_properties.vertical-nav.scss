@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -24,7 +24,6 @@
       // Vertical Nav - Align
       --clr-vertical-nav-item-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-700);
       --clr-vertical-nav-item-active-color: #{tokens.$cds-alias-object-interaction-color-active}; // var(--clr-color-neutral-700);
-      --clr-vertical-nav-bg-color: var(--cds-alias-object-vertical-navigation-background-color);
       --clr-vertical-nav-item-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-5}
         #{tokens.$cds-global-space-7};
       --clr-vertical-nav-item-child-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-6} #{tokens.$cds-global-space-5}
@@ -32,21 +31,23 @@
       --clr-vertical-nav-item-height: #{tokens.$cds-global-space-10};
       --clr-vertical-nav-min-width: #{tokens.$cds-global-space-12};
       --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-      --clr-vertical-nav-selected-bg-color: var(
-        --cds-alias-object-interaction-vertical-navigation-background-selected
-      ); // var(--clr-color-neutral-0);
+
+      // Selected background colors
+      --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-selected);
       --clr-vertical-nav-selected-hover-bg-color: var(
-        --cds-alias-object-interaction-background-selected-hover
-      ); // var(--clr-color-neutral-0);
+        --cds-alias-object-interaction-vertical-navigation-background-selected-hover
+      );
       --clr-vertical-nav-selected-active-bg-color: var(
-        --cds-alias-object-interaction-background-selected-active
-      ); // var(--clr-color-neutral-0);
+        --cds-alias-object-interaction-vertical-navigation-background-selected-active
+      );
+
+      // NOT selected background colors
+      --clr-vertical-nav-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-color);
+      --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-hover);
       --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-active);
+
       --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
-      --clr-vertical-nav-hover-bg-color: var(
-        --cds-alias-object-interaction-vertical-navigation-background-hover
-      ); // var(--clr-color-neutral-400);
 
       // Vertical Nav - Trigger
       --clr-vertical-nav-toggle-icon-color: #{tokens.$cds-alias-object-interaction-color}; // var(--clr-color-neutral-1000);
@@ -61,10 +62,6 @@
       // Vertical Nav - Header
       --clr-vertical-nav-header-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
       --clr-vertical-nav-header-padding: #{tokens.$cds-global-space-5} #{tokens.$cds-global-space-7};
-    }
-    // @TODO use proper background for both dark and light theme.
-    [cds-theme~='dark'] {
-      --clr-vertical-nav-bg-color: #{tokens.$cds-alias-object-container-background};
     }
   }
 }
