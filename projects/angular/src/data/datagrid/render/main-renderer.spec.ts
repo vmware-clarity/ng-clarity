@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
 
@@ -30,7 +30,7 @@ export default function (): void {
       let computeStateSpy: jasmine.Spy;
       let columnsService: ColumnsService;
 
-      beforeEach(function () {
+      beforeEach(fakeAsync(function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         context = this.createWithOverrideDirective(
           DatagridMainRenderer,
@@ -42,7 +42,10 @@ export default function (): void {
         organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
         computeStateSpy = spyOn(DatagridHeaderRenderer.prototype, 'getColumnWidthState');
         columnsService = context.getClarityProvider(ColumnsService);
-      });
+
+        context.detectChanges();
+        tick();
+      }));
 
       it('triggers the render process on initialization', function () {
         expect(resizeSpy.calls.count()).toBe(1);
@@ -100,37 +103,45 @@ export default function (): void {
       let context: TestContext<DatagridMainRenderer, DynamicTest>;
       let resizeSpy, rowsSpy: jasmine.Spy;
 
-      beforeEach(function () {
+      beforeEach(fakeAsync(function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
         context = this.create(DatagridMainRenderer, DynamicTest);
-      });
 
-      it('does not trigger the render process until the rows are loaded', function () {
+        context.detectChanges();
+        tick();
+      }));
+
+      it('does not trigger the render process until the rows are loaded', fakeAsync(function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
-      });
+      }));
 
-      it('ignores columns changes until the rows are loaded', function () {
+      it('ignores columns changes until the rows are loaded', fakeAsync(function () {
         context.testComponent.secondColumn = false;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
         context.testComponent.secondColumn = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(2);
-      });
+      }));
 
-      it('triggers the render process if the rows are given through *clrDgItems', function () {
+      it('triggers the render process if the rows are given through *clrDgItems', fakeAsync(function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.clrDgItems = [1];
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
-      });
+      }));
 
       it('tracks changes of cells', function () {
         context.testComponent.clrDgItems = [0, 1, 2];
