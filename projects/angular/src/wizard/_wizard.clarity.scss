@@ -170,35 +170,32 @@
         wizard-variables.$clr-wizard-stepnav-item-border-color;
 
       margin: 0 0 calc(-1 * #{tokens.$cds-alias-object-border-width-100}) 0;
-      padding: #{tokens.$cds-global-space-4} 0 #{tokens.$cds-global-space-4} #{tokens.$cds-global-space-3};
       color: wizard-variables.$clr-wizard-stepnav-text;
+      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
+      // active class actually means "selected"
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
-        .clr-wizard-stepnav-link {
-          color: wizard-variables.$clr-wizard-stepnav-text--active;
-          background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-          border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
+        background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
+
+        &:hover {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
+        }
+
+        &:active {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-active-bgcolor;
         }
       }
 
-      &:not(.disabled) {
+      &:not(.disabled):not(.active) {
         &:hover {
-          .clr-wizard-stepnav-link {
-            color: wizard-variables.$clr-wizard-stepnav-text--active;
-            background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
-          }
-          &.active .clr-wizard-stepnav-link {
-            background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
-          }
+          color: wizard-variables.$clr-wizard-stepnav-text-hover;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
         }
+
         &:active {
-          .clr-wizard-stepnav-link {
-            background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
-          }
-          &.active .clr-wizard-stepnav-link {
-            background-color: wizard-variables.$clr-wizard-stepnav-selected-active-bgcolor;
-          }
+          color: wizard-variables.$clr-wizard-stepnav-text-active;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
         }
       }
 
@@ -242,7 +239,7 @@
       margin: 0;
       padding: tokens.$cds-global-space-5;
       height: auto;
-      min-height: tokens.$cds-global-space-11;
+      min-height: tokens.$cds-global-space-12;
       max-width: inherit;
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
