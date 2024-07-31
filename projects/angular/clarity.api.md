@@ -4823,7 +4823,6 @@ export class ClrWizardHeaderAction {
 
 // @public (undocumented)
 export class ClrWizardModule {
-    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardModule, never>;
     // (undocumented)

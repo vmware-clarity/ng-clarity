@@ -32,6 +32,7 @@
       --clr-wizard-stepnav-selected-hover-bgcolor: var(--cds-alias-object-interaction-background-selected-hover);
       --clr-wizard-stepnav-selected-active-bgcolor: var(--cds-alias-object-interaction-background-selected-active);
       --clr-wizard-stepnav-link-error-icon-color: #{tokens.$cds-alias-status-danger};
+      --clr-wizard-stepnav-link-complete-icon-color: #{tokens.$cds-alias-status-success};
 
       --clr-wizard-stepnav-border-color: #{tokens.$cds-alias-object-container-border-color};
       --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};

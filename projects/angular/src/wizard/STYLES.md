@@ -27,6 +27,7 @@
 | --clr-wizard-stepnav-link-padding              | Wizard navigation item button padding                                                     |
 | --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                                            |
 | --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                                                 |
+| --clr-wizard-stepnav-link-complete-icon-color  | Wizard navigation item button complete icon color                                         |
 | --clr-wizard-footer-height                     | Wizard page footer height                                                                 |
 | --clr-wizard-stepnav-link-hover-bg-color       | Wizard navigation item button background color on hover                                   |
 | --clr-wizard-title-font-size                   | Wizard title font size                                                                    |
@@ -35,25 +36,25 @@
 
 ## CSS Classes
 
-| Class name                         | Description                                    |
-| ---------------------------------- | ---------------------------------------------- |
-| clr-wizard                         | Main wizard element                            |
-| clr-wizard-content                 | Wizard content container                       |
-| clr-wizard-page                    | Wizard page container                          |
-| wizard-#{SIZE}                     | Wizard size; sizes: [md, lg, xl]               |
-| clr-wizard-btn                     | Wizard control button                          |
-| clr-wizard-title                   | Wizard title elelment                          |
-| clr-wizard-header-action           | Wizard header action                           |
-| clr-wizard-stepnav                 | Wizard navigation container                    |
-| clr-wizard-stepnav-list            | Wizard navigation list                         |
-| clr-wizard-stepnav-item            | Wizard navigation item                         |
-| clr-wizard-stepnav-link            | Wizard navigation item link indicator          |
-| clr-wizard-stepnav-link-suffix     | Wizard navigation item link state indicator    |
-| clr-wizard-stepnav-item-error-icon | Wizard navigation item error icon              |
-| clr-wizard-footer                  | Wizard footer                                  |
-| clr-wizard-footer-buttons          | Wizard footer buttons container                |
-| clr-wizard--no-title               | Remove wizard dialog title                     |
-| clr-wizard--no-shadow              | Remove wizard dialog shadow                    |
-| clr-wizard-stepnav-wrapper         | Internal wrapper for the wizard navigation     |
-| clr-wizard-footer-buttons-wrapper  | Internal wrapper for the wizard footer buttons |
-| clr-wizard-btn-wrapper             | Internal wrapper for wizard control buttons    |
+| Class name                          | Description                                    |
+| ----------------------------------- | ---------------------------------------------- |
+| clr-wizard                          | Main wizard element                            |
+| clr-wizard-content                  | Wizard content container                       |
+| clr-wizard-page                     | Wizard page container                          |
+| wizard-#{SIZE}                      | Wizard size; sizes: [md, lg, xl]               |
+| clr-wizard-btn                      | Wizard control button                          |
+| clr-wizard-title                    | Wizard title element                           |
+| clr-wizard-header-action            | Wizard header action                           |
+| clr-wizard-stepnav                  | Wizard navigation container                    |
+| clr-wizard-stepnav-list             | Wizard navigation list                         |
+| clr-wizard-stepnav-item             | Wizard navigation item                         |
+| clr-wizard-stepnav-link             | Wizard navigation item link                    |
+| clr-wizard-stepnav-link-icon        | Wizard navigation item icon                    |
+| clr-wizard-stepnav-item-page-number | Wizard navigation item page number             |
+| clr-wizard-footer                   | Wizard footer                                  |
+| clr-wizard-footer-buttons           | Wizard footer buttons container                |
+| clr-wizard--no-title                | Remove wizard dialog title                     |
+| clr-wizard--no-shadow               | Remove wizard dialog shadow                    |
+| clr-wizard-stepnav-wrapper          | Internal wrapper for the wizard navigation     |
+| clr-wizard-footer-buttons-wrapper   | Internal wrapper for the wizard footer buttons |
+| clr-wizard-btn-wrapper              | Internal wrapper for wizard control buttons    |

@@ -210,11 +210,19 @@
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
         transition: border-color 0.2s ease-in;
+
+        .clr-wizard-stepnav-link-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
+        }
       }
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
         transition: border-color 0.2s ease-in;
+
+        .clr-wizard-stepnav-link-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
+        }
       }
 
       &.no-click button {
@@ -239,16 +247,14 @@
 
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
-      .clr-wizard-stepnav-link-suffix {
-        display: flex;
-        justify-content: center;
-        min-width: tokens.$cds-global-space-9;
-        padding-right: tokens.$cds-global-space-5;
+      .clr-wizard-stepnav-link-icon {
+        display: flex; // this vertically centers the icon
+      }
 
-        .clr-wizard-stepnav-item-error-icon {
-          transform: none;
-          fill: wizard-variables.$clr-wizard-stepnav-link-error-icon-color;
-        }
+      .clr-wizard-stepnav-link-icon,
+      .clr-wizard-stepnav-link-page-number {
+        margin-right: tokens.$cds-global-space-5;
+        width: tokens.$cds-global-space-7;
       }
     }
 

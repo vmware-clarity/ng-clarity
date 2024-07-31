@@ -7,7 +7,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityIcons, errorStandardIcon } from '@cds/core/icon';
 
 import { ClrAlertModule } from '../emphasis/alert/alert.module';
 import { ClrModalModule } from '../modal/modal.module';
@@ -42,8 +41,4 @@ export const CLR_WIZARD_DIRECTIVES: any[] = [
   declarations: [CLR_WIZARD_DIRECTIVES],
   exports: [CLR_WIZARD_DIRECTIVES],
 })
-export class ClrWizardModule {
-  constructor() {
-    ClarityIcons.addIcons(errorStandardIcon);
-  }
-}
+export class ClrWizardModule {}
