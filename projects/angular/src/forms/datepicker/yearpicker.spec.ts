@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
@@ -141,7 +141,7 @@ export default function () {
         expect(nextDecadeBtn.attributes['aria-label'].value).toEqual('Next decade');
       });
 
-      it('updates the tab indices correctly', async(() => {
+      it('updates the tab indices correctly', waitForAsync(() => {
         const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('.year');
 
         expect(buttons[3].tabIndex).toBe(0);
