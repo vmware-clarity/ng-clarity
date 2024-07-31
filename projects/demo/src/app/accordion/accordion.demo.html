@@ -45,6 +45,29 @@
   </clr-accordion-panel>
 </clr-accordion>
 
+<h2>Angular - nested datagrid</h2>
+
+<clr-accordion>
+  <clr-accordion-panel>
+    <clr-accordion-title>Item 1</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>test</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of users">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell> {{ user.name }} </clr-dg-cell>
+          <clr-dg-cell>Test</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>
+
 <h2>Angular - complex multi panel example (first panel {{stepOpen ? 'open' : 'closed'}})</h2>
 
 <button (click)="disableThirdPanel = !disableThirdPanel" class="btn">

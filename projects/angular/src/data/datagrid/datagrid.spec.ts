@@ -525,7 +525,10 @@ export default function (): void {
         expect(refreshed).toBe(true);
       });
 
-      it('allows to manually resize the datagrid', function () {
+      it('allows to manually resize the datagrid', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
         let resizeSteps = 0;
         organizer.renderStep.subscribe(() => {
@@ -534,7 +537,7 @@ export default function (): void {
         expect(resizeSteps).toBe(0);
         context.clarityDirective.resize();
         expect(resizeSteps).toBe(5);
-      });
+      }));
     });
 
     describe('Template API', function () {
@@ -1369,10 +1372,17 @@ export default function (): void {
       });
 
       // Tests if manual style="width: 123px" was applied and not overridden during the calculation from the above test.
-      it('column width manual setting is applied', function () {
+      it('column width manual setting is applied', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').clientWidth).toBe(123);
+
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').getAttribute('style')).toBe('width: 123px;');
-      });
+      }));
     });
 
     describe('detail pane and track by', function () {

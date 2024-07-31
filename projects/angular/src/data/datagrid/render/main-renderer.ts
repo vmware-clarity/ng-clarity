@@ -122,8 +122,11 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   ngAfterViewChecked() {
     if (this.shouldStabilizeColumns) {
-      this.stabilizeColumns();
+      setTimeout(() => {
+        this.stabilizeColumns();
+      }, 0);
     }
+
     if (this.shouldComputeHeight()) {
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {

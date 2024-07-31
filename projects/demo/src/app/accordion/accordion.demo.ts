@@ -15,6 +15,25 @@ export class AccordionDemo {
   stepOpen = true;
   disableThirdPanel = true;
 
+  users = [
+    {
+      id: 'id-1',
+      name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    },
+    {
+      id: 'id-2',
+      name: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    },
+    {
+      id: 'id-3',
+      name: 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+    },
+    {
+      id: 'id-4',
+      name: 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    },
+  ];
+
   change(event) {
     console.log('Accordion Changed', event);
   }
