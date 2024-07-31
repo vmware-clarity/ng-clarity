@@ -485,6 +485,27 @@ class PanelTrackByTest {
   });
   trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
 }
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>Item</clr-dg-column>
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+      <ng-template [(clrIfDetail)]="preState" let-detail>
+        <clr-dg-detail></clr-dg-detail>
+      </ng-template>
+    </clr-datagrid>
+  `,
+})
+class PanelInitializeOpenedTest {
+  items = Array.from(Array(3), (v, i) => {
+    return { name: v, id: i };
+  });
+  preState = this.items[0];
+}
 
 export default function (): void {
   describe('ClrDatagrid component', function () {
@@ -1393,6 +1414,20 @@ export default function (): void {
 
         /* make sure that the same item is still selected */
         expect(detailService.state).toEqual(context.testComponent.items[1]);
+      });
+    });
+    describe('initialize datagrid with opened detail', function () {
+      let context: TestContext<ClrDatagrid, PanelInitializeOpenedTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PanelInitializeOpenedTest, DATAGRID_SPEC_PROVIDERS);
+      });
+
+      it('should be with opened panel and one column visible', () => {
+        const hiddenColumns = context.clarityElement.querySelectorAll('[role=columnheader].datagrid-hidden-column');
+
+        /* make sure that the state is set */
+        expect(hiddenColumns.length).toEqual(1);
       });
     });
   });
