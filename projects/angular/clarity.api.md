@@ -1250,6 +1250,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     toggleAllSelected($event: any): void;
     // (undocumented)
     set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
+    updateDetailState(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
@@ -5425,13 +5426,15 @@ export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     // (undocumented)
     cells: QueryList<ÇlrDatagridCellRenderer>;
     // (undocumented)
+    expandableRow: ÇlrDatagridRowRenderer;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     setCellsState(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["expandableRow", "cells"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowRenderer, never>;
 }
