@@ -22,7 +22,10 @@
   --cds-alias-object-interaction-vertical-navigation-background-selected: #{tokens.$cds-global-color-white};
   --cds-alias-object-interaction-vertical-navigation-background-selected-hover: #{tokens.$cds-global-color-construction-200};
   --cds-alias-object-interaction-vertical-navigation-background-selected-active: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-500};
+  --cds-alias-object-container-background-dark: #{tokens.$cds-global-color-construction-200};
 }
 
 [cds-theme~='dark'] {
@@ -42,5 +45,8 @@
   --cds-alias-object-interaction-vertical-navigation-background-selected: #{tokens.$cds-global-color-blue-900};
   --cds-alias-object-interaction-vertical-navigation-background-selected-hover: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-interaction-vertical-navigation-background-selected-active: #{tokens.$cds-global-color-construction-600};
+  --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-200};
   --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-300};
+  --cds-alias-object-container-background-dark: #{tokens.$cds-global-color-construction-700};
 }
