@@ -46,12 +46,25 @@ const SpinnerTemplate: StoryFn = args => ({
   props: args,
 });
 
+const SpinnerInverseTemplate: StoryFn = args => ({
+  template: `
+    <div style="text-align: center; background: var(--cds-alias-object-container-background-inverse)">
+      <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+        {{ text }}
+      </clr-spinner>
+      <br *ngIf="!clrInline" />
+      {{ text }}
+    </div>
+  `,
+  props: args,
+});
+
 export const Spinner: StoryObj = {
   render: SpinnerTemplate,
 };
 
 export const Inverse: StoryObj = {
-  render: SpinnerTemplate,
+  render: SpinnerInverseTemplate,
   args: { clrInverse: true },
 };
 
@@ -61,7 +74,7 @@ export const Medium: StoryObj = {
 };
 
 export const MediumInverse: StoryObj = {
-  render: SpinnerTemplate,
+  render: SpinnerInverseTemplate,
   args: { clrMedium: true, clrInverse: true },
 };
 
@@ -71,7 +84,7 @@ export const Small: StoryObj = {
 };
 
 export const SmallInverse: StoryObj = {
-  render: SpinnerTemplate,
+  render: SpinnerInverseTemplate,
   args: { clrSmall: true, clrInverse: true },
 };
 
@@ -81,6 +94,6 @@ export const Inline: StoryObj = {
 };
 
 export const InlineInverse: StoryObj = {
-  render: SpinnerTemplate,
+  render: SpinnerInverseTemplate,
   args: { clrInline: true, clrInverse: true },
 };
