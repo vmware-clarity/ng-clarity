@@ -12,6 +12,16 @@
   --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-75};
   --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-100};
   --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-200};
+
+  // Vertical-nav not selected
+  --cds-alias-object-interaction-vertical-navigation-background-color: #{tokens.$cds-global-color-construction-100};
+  --cds-alias-object-interaction-vertical-navigation-background-hover: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-interaction-vertical-navigation-background-active: #{tokens.$cds-global-color-construction-300};
+
+  // Vertical-nav selected
+  --cds-alias-object-interaction-vertical-navigation-background-selected: #{tokens.$cds-global-color-white};
+  --cds-alias-object-interaction-vertical-navigation-background-selected-hover: #{tokens.$cds-global-color-construction-200};
+  --cds-alias-object-interaction-vertical-navigation-background-selected-active: #{tokens.$cds-global-color-construction-300};
 }
 
 [cds-theme~='dark'] {
@@ -21,4 +31,14 @@
   --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
   --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-700};
+
+  // Vertical-nav not selected
+  --cds-alias-object-interaction-vertical-navigation-background-color: #{tokens.$cds-global-color-construction-900};
+  --cds-alias-object-interaction-vertical-navigation-background-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-vertical-navigation-background-active: #{tokens.$cds-global-color-construction-600};
+
+  // Vertical-nav selected
+  --cds-alias-object-interaction-vertical-navigation-background-selected: #{tokens.$cds-global-color-blue-900};
+  --cds-alias-object-interaction-vertical-navigation-background-selected-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-vertical-navigation-background-selected-active: #{tokens.$cds-global-color-construction-600};
 }
