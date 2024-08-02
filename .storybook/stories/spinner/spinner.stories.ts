@@ -42,7 +42,7 @@ const SpinnerTemplate: StoryFn = args => ({
         padding: 20px;
       }
     </style>
-    <div style="text-align: center" [ngClass]="{ 'spinner-inverse-container': clrInverse }">
+    <div style="text-align: center" [class.spinner-inverse-container]="clrInverse">
       <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
         {{ text }}
       </clr-spinner>
