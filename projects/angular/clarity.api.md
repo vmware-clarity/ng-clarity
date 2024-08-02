@@ -2795,8 +2795,13 @@ export class ClrLabel implements OnInit, OnDestroy {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
+    onClick(event: any): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "forAttr": "for"; }, {}, never, never, false, never>;
+    preventOnSignpostTarget(event: any): void;
+    // (undocumented)
+    signpost: ElementRef;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLabel, "label", never, { "forAttr": "for"; }, {}, ["signpost"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }

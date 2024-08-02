@@ -5,9 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Renderer2 } from '@angular/core';
+import {
+  ContentChild,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrSignpost } from '../../popover';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
@@ -16,6 +28,8 @@ import { NgControlService } from './providers/ng-control.service';
   selector: 'label',
 })
 export class ClrLabel implements OnInit, OnDestroy {
+  @ContentChild(ClrSignpost, { read: ElementRef }) signpost: ElementRef;
+
   @Input('for') @HostBinding('attr.for') forAttr: string;
 
   private enableGrid = true;
@@ -31,6 +45,16 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
+  }
+
+  /**
+   * Allowing signposts inside labels to work without disabling default behavior. <label> is spreading a click event to its children so signposts get
+   * automatically closed once clicked inside a <label>.
+   * @param event
+   */
+  @HostListener('click', ['$event'])
+  onClick(event) {
+    this.preventOnSignpostTarget(event);
   }
 
   ngOnInit() {
@@ -60,5 +84,11 @@ export class ClrLabel implements OnInit, OnDestroy {
 
   disableGrid() {
     this.enableGrid = false;
+  }
+
+  preventOnSignpostTarget(event) {
+    if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target)) {
+      event.preventDefault();
+    }
   }
 }
