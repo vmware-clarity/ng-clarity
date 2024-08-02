@@ -6,8 +6,20 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, ViewChild } from '@angular/core';
+import {
+  ClrAlignment,
+  ClrAxis,
+  ClrCommonStringsService,
+  ClrDropdownMenu,
+  ClrPopoverEventsService,
+  ClrPopoverPosition,
+  ClrPopoverPositionService,
+  ClrPopoverToggleService,
+  ClrSide,
+} from '@clr/angular';
 
+import { uniqueIdFactory } from '../../../../angular/src/utils/id-generator/id-generator.service';
 import { states } from '../combobox/states';
 
 interface VirtualMachineData {
@@ -48,9 +60,11 @@ const data: VirtualMachineData[] = [
   selector: 'clr-dropdown-angular-pattern-demo',
   templateUrl: './dropdown-angular-pattern.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
+  providers: [ClrPopoverToggleService, ClrPopoverEventsService, ClrPopoverPositionService],
 })
-export class DropdownAngularPatternDemo {
+export class DropdownAngularPatternDemo implements AfterViewInit {
   @ViewChild('combo', { read: ElementRef }) comboBox: ElementRef;
+  @ViewChild('dropDownMenu') dropDownMenu: ClrDropdownMenu | undefined;
 
   users = [
     {
@@ -84,7 +98,29 @@ export class DropdownAngularPatternDemo {
 
   globalTimeout = null;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  popoverId = uniqueIdFactory();
+  open = false;
+  // Smart Popover
+  smartPosition: ClrPopoverPosition = {
+    axis: ClrAxis.VERTICAL,
+    side: ClrSide.AFTER,
+    anchor: ClrAlignment.END,
+    content: ClrAlignment.END,
+  };
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    public commonStrings: ClrCommonStringsService,
+    private smartToggleService: ClrPopoverToggleService
+  ) {
+    smartToggleService.openChange.subscribe(change => {
+      this.open = change;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.dropDownMenu.closeOnOutsideClick = false;
+  }
 
   @HostListener('click', ['$event'])
   comboBoxMouseClick(event: Event) {

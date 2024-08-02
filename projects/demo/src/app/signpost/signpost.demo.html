@@ -27,7 +27,12 @@
                 {{ position.text }}
                 <cds-icon shape="{{ position.icon }}"></cds-icon>
               </button>
-              <clr-signpost-content *clrIfOpen [clrPosition]="position.position">
+              <clr-signpost-content
+                [cdkTrapFocus]
+                [cdkTrapFocusAutoCapture]="true"
+                *clrIfOpen
+                [clrPosition]="position.position"
+              >
                 <div>{{ position.position }}</div>
                 <div>Lorem Ipsum versions of Lorem Ipsum</div>
               </clr-signpost-content>

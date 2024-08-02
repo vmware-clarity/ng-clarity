@@ -7,10 +7,13 @@
 
 import { Component } from '@angular/core';
 
+import { CdkTrapFocusModule } from '../../../../angular/src/utils/cdk/cdk-trap-focus.module';
+
 @Component({
   selector: 'clr-signpost-demo',
   styleUrls: ['./signpost.demo.scss'],
   templateUrl: 'signpost.demo.html',
+  providers: [CdkTrapFocusModule],
 })
 export class SignpostDemo {
   openState = false;

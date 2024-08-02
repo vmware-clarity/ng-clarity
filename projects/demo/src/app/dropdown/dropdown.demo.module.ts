@@ -10,6 +10,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
+import { CdkTrapFocusModule } from '../../../../angular/src/utils/cdk/cdk-trap-focus.module';
+import { ClrPopoverModuleNext } from '../../../../angular/src/utils/popover/popover.module';
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPatternDemo } from './dropdown-angular-pattern';
@@ -23,7 +25,15 @@ import { DropdownDemo } from './dropdown.demo';
 import { ROUTING } from './dropdown.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ROUTING, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    ROUTING,
+    FormsModule,
+    ReactiveFormsModule,
+    ClrPopoverModuleNext,
+    CdkTrapFocusModule,
+  ],
   declarations: [
     DropdownDemo,
     DropdownStaticDefaultDemo,
