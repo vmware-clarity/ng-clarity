@@ -179,6 +179,10 @@
         background-color: inherit;
       }
 
+      &.disabled {
+        color: wizard-variables.$clr-wizard-stepnav-text-disabled;
+      }
+
       // active class actually means "selected"
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
