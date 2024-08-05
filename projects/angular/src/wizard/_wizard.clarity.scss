@@ -173,6 +173,12 @@
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
+      // prevent button colors from "leaking" into the stepnav items
+      button.clr-wizard-stepnav-link {
+        color: inherit;
+        background-color: inherit;
+      }
+
       // active class actually means "selected"
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
@@ -208,7 +214,7 @@
         border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
         transition: border-color 0.2s ease-in;
 
-        .clr-wizard-stepnav-link-icon {
+        .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
         }
       }
@@ -217,7 +223,7 @@
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
         transition: border-color 0.2s ease-in;
 
-        .clr-wizard-stepnav-link-icon {
+        .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
         }
       }
@@ -231,7 +237,6 @@
       width: 100%;
       display: flex;
       place-content: normal;
-      gap: 0;
       color: inherit;
       align-items: center;
       text-align: left;
@@ -250,7 +255,6 @@
 
       .clr-wizard-stepnav-link-icon,
       .clr-wizard-stepnav-link-page-number {
-        margin-right: tokens.$cds-global-space-5;
         width: tokens.$cds-global-space-7;
       }
     }

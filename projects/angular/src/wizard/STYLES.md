@@ -52,7 +52,7 @@
 | clr-wizard-stepnav-list             | Wizard navigation list                         |
 | clr-wizard-stepnav-item             | Wizard navigation item                         |
 | clr-wizard-stepnav-link             | Wizard navigation item link                    |
-| clr-wizard-stepnav-link-icon        | Wizard navigation item icon                    |
+| clr-wizard-stepnav-link-icon        | Wizard navigation item icon wrapper            |
 | clr-wizard-stepnav-item-page-number | Wizard navigation item page number             |
 | clr-wizard-footer                   | Wizard footer                                  |
 | clr-wizard-footer-buttons           | Wizard footer buttons container                |

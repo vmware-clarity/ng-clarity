@@ -46,19 +46,8 @@ const wizardStepnavIcons: IconShapeTuple[] = [
       [attr.disabled]="isDisabled ? '' : null"
     >
       <div class="clr-wizard-stepnav-link-icon">
-        <cds-icon
-          *ngIf="hasError"
-          class="clr-wizard-stepnav-link-icon"
-          shape="wizard-stepnav-error"
-          aria-label="error"
-        ></cds-icon>
-
-        <cds-icon
-          *ngIf="!hasError && isComplete"
-          class="clr-wizard-stepnav-link-icon"
-          shape="wizard-stepnav-success"
-          aria-label="complete"
-        ></cds-icon>
+        <cds-icon *ngIf="hasError" shape="wizard-stepnav-error" aria-label="error"></cds-icon>
+        <cds-icon *ngIf="!hasError && isComplete" shape="wizard-stepnav-success" aria-label="complete"></cds-icon>
       </div>
 
       <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
