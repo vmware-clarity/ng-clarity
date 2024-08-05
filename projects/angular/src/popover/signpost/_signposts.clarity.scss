@@ -375,7 +375,7 @@
 
   .signpost-wrap {
     gap: tokens.$cds-global-space-5;
-    padding: tokens.$cds-global-space-7 tokens.$cds-global-space-7 mixins.baselinePx(16);
+    padding: tokens.$cds-global-space-7 tokens.$cds-global-space-7 mixins.baselinePx(15);
     border: tokens.$cds-alias-object-border-width-100 solid signpost-variables.$clr-signpost-content-border-color;
     border-radius: signpost-variables.$clr-signpost-border-radius;
     background-color: signpost-variables.$clr-signpost-content-bg-color;
@@ -386,7 +386,7 @@
   }
 
   .signpost-content-body {
-    //padding-bottom: tokens.$cds-global-space-1;
+    padding-bottom: tokens.$cds-global-space-1;
     color: signpost-variables.$clr-signpost-content-color;
     text-align: left;
     max-height: mixins.baselinePx(450);
