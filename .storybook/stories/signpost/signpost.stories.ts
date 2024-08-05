@@ -70,7 +70,7 @@ export const Initial: StoryObj = {
 
 export const Opened = {
   render: SignpostTemplate,
-  async play({ canvasElement }) {
+  play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
 };
@@ -78,10 +78,10 @@ export const Opened = {
 // visual regression test for CDE-2226
 export const OpenedLongContent = {
   render: SignpostTemplate,
-  async play({ canvasElement }) {
+  play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
   args: {
-    content: 'Hello World! '.repeat(100),
+    content: 'Hello World! '.repeat(110),
   },
 };
