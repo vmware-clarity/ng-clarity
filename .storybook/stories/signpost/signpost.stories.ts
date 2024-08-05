@@ -74,3 +74,14 @@ export const Opened = {
     canvasElement.querySelector('button').click();
   },
 };
+
+export const OpenedLongContent = {
+  render: SignpostTemplate,
+  async play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
+  args: {
+    clrPosition: 'right-bottom',
+    content: 'Hello World! '.repeat(100),
+  },
+};
