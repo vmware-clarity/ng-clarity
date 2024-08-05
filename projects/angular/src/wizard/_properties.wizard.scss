@@ -21,12 +21,12 @@
       --clr-wizard-main-text-color: #{tokens.$cds-alias-typography-color-400};
 
       --clr-wizard-stepnav-bgcolor: #{tokens.$cds-alias-object-interaction-background};
-      --clr-wizard-stepnav-text: #{tokens.$cds-alias-object-interaction-color};
+      --clr-wizard-stepnav-text: #{tokens.$cds-alias-typography-color-400};
       --clr-wizard-stepnav-text-active: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-wizard-stepnav-text-hover: #{tokens.$cds-alias-object-interaction-color-hover};
       // @TODO v18 rename to --clr-wizard-stepnav-text-selected
       --clr-wizard-stepnav-text--active: #{tokens.$cds-alias-object-interaction-color-selected};
-      --clr-wizard-stepnav-text-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-wizard-stepnav-text-disabled: #{tokens.$cds-alias-typography-disabled};
       --clr-wizard-stepnav-item-border-color: #{tokens.$cds-alias-status-neutral-tint};
       --clr-wizard-stepnav-border-size: #{tokens.$cds-global-space-3};
       // @TODO v18 rename to --clr-wizard-stepnav-item-complete-border-color
