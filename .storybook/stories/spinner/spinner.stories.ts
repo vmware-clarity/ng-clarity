@@ -35,7 +35,14 @@ export default {
 
 const SpinnerTemplate: StoryFn = args => ({
   template: `
-    <div style="text-align: center">
+    <style>
+      .spinner-inverse-container {
+        background: var(--cds-alias-object-container-background-inverse);
+        color: var(--cds-alias-typography-color-100);
+        padding: 20px;
+      }
+    </style>
+    <div style="text-align: center" [class.spinner-inverse-container]="clrInverse">
       <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
         {{ text }}
       </clr-spinner>
