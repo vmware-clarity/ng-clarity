@@ -50,7 +50,7 @@ export default {
 };
 
 const template = `
-  <div style="margin-top: 100px; text-align: center">
+  <div style="padding: 250px; text-align: center">
     <clr-signpost>
       <clr-signpost-content [clrPosition]="clrPosition">
         {{ content }}
@@ -75,13 +75,13 @@ export const Opened = {
   },
 };
 
+// visual regression test for CDE-2226
 export const OpenedLongContent = {
   render: SignpostTemplate,
   async play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
   args: {
-    clrPosition: 'right-bottom',
     content: 'Hello World! '.repeat(100),
   },
 };
