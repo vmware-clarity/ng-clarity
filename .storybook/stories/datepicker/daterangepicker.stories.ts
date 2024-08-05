@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatepickerModule, ClrDateRangeEndInput, ClrDateRangeStartInput } from '@clr/angular';
+import { ClrDatepickerModule, ClrDateRangeEndInput, ClrDateRangeStartInput, ClrFormsModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
@@ -16,7 +16,7 @@ export default {
   subcomponents: { ClrDateRangeEndInput },
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDatepickerModule],
+      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
     }),
   ],
   argTypes: {

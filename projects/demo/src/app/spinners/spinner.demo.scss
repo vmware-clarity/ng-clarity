@@ -8,7 +8,7 @@
 .clr-example {
   text-align: center;
 
-  &.example-dark {
-    background: hsl(0, 0%, 19%);
+  &.example-inversed {
+    background: var(--cds-alias-object-container-background-inverse);
   }
 }

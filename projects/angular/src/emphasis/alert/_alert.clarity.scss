@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -306,22 +306,42 @@
 
     &.alert-info {
       @include generateAlertType(app-info);
+
+      .alert-item .btn {
+        @extend .btn-info-outline;
+      }
     }
 
     &.alert-danger {
       @include generateAlertType(app-danger);
+
+      .alert-item .btn {
+        @extend .btn-danger-outline;
+      }
     }
 
     &.alert-neutral {
       @include generateAlertType(app-neutral);
+
+      .alert-item .btn {
+        @extend .btn-neutral-outline;
+      }
     }
 
     &.alert-warning {
       @include generateAlertType(app-warning);
+
+      .alert-item .btn {
+        @extend .btn-warning-outline;
+      }
     }
 
     &.alert-success {
       @include generateAlertType(app-success);
+
+      .alert-item .btn {
+        @extend .btn-success-outline;
+      }
     }
 
     .alert-items {

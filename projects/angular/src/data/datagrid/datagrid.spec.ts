@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
-import { async, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
@@ -485,6 +485,27 @@ class PanelTrackByTest {
   });
   trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
 }
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>Item</clr-dg-column>
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+      <ng-template [(clrIfDetail)]="preState" let-detail>
+        <clr-dg-detail></clr-dg-detail>
+      </ng-template>
+    </clr-datagrid>
+  `,
+})
+class PanelInitializeOpenedTest {
+  items = Array.from(Array(3), (v, i) => {
+    return { name: v, id: i };
+  });
+  preState = this.items[0];
+}
 
 export default function (): void {
   describe('ClrDatagrid component', function () {
@@ -504,7 +525,10 @@ export default function (): void {
         expect(refreshed).toBe(true);
       });
 
-      it('allows to manually resize the datagrid', function () {
+      it('allows to manually resize the datagrid', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
         let resizeSteps = 0;
         organizer.renderStep.subscribe(() => {
@@ -513,7 +537,7 @@ export default function (): void {
         expect(resizeSteps).toBe(0);
         context.clarityDirective.resize();
         expect(resizeSteps).toBe(5);
-      });
+      }));
     });
 
     describe('Template API', function () {
@@ -789,7 +813,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-column.datagrid-expandable-caret')).toBeNull();
       });
 
-      it('can expand rows on initialization', async(function () {
+      it('can expand rows on initialization', waitForAsync(function () {
         const context = this.create(ClrDatagrid, ExpandedOnInitTest);
         const caretIcon = context.clarityElement.querySelector('.datagrid-expandable-caret-icon');
         expect(caretIcon).not.toBeNull();
@@ -1348,10 +1372,17 @@ export default function (): void {
       });
 
       // Tests if manual style="width: 123px" was applied and not overridden during the calculation from the above test.
-      it('column width manual setting is applied', function () {
+      it('column width manual setting is applied', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').clientWidth).toBe(123);
+
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').getAttribute('style')).toBe('width: 123px;');
-      });
+      }));
     });
 
     describe('detail pane and track by', function () {
@@ -1383,6 +1414,20 @@ export default function (): void {
 
         /* make sure that the same item is still selected */
         expect(detailService.state).toEqual(context.testComponent.items[1]);
+      });
+    });
+    describe('initialize datagrid with opened detail', function () {
+      let context: TestContext<ClrDatagrid, PanelInitializeOpenedTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PanelInitializeOpenedTest, DATAGRID_SPEC_PROVIDERS);
+      });
+
+      it('should be with opened panel and one column visible', () => {
+        const hiddenColumns = context.clarityElement.querySelectorAll('[role=columnheader].datagrid-hidden-column');
+
+        /* make sure that the state is set */
+        expect(hiddenColumns.length).toEqual(1);
       });
     });
   });
