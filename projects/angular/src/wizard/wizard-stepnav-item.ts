@@ -6,35 +6,11 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { ClarityIcons } from '@cds/core/icon';
-import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 
 import { ClrCommonStringsService } from '../utils';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardPage } from './wizard-page';
-
-// Custom icons because:
-// - check-circle and exclamation-circle are too small
-// - error-standard works, but there is no matching check-standard
-const wizardStepnavIcons: IconShapeTuple[] = [
-  [
-    'wizard-stepnav-success',
-    `
-<svg width="24" height="24" viewBox="4 4 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm0 14.667a6.667 6.667 0 1 1 0-13.334 6.667 6.667 0 0 1 0 13.334Zm-4.44-6.174 3.333 3.334 5.46-5.46a.667.667 0 0 0-.94-.94l-4.52 4.52L8.5 11.553a.667.667 0 0 0-.94.94Z"/>
-</svg>
-    `,
-  ],
-  [
-    'wizard-stepnav-error',
-    `
-<svg width="24" height="24" viewBox="4 4 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm7.133.513a.867.867 0 0 0 1.734 0v-4a.867.867 0 0 0-1.734 0v4ZM12 18.667a6.667 6.667 0 1 1 0-13.334 6.667 6.667 0 0 1 0 13.334Zm.967-3.32a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
-</svg>
-    `,
-  ],
-];
 
 @Component({
   selector: '[clr-wizard-stepnav-item]',
@@ -46,8 +22,8 @@ const wizardStepnavIcons: IconShapeTuple[] = [
       [attr.disabled]="isDisabled ? '' : null"
     >
       <div class="clr-wizard-stepnav-link-icon">
-        <cds-icon *ngIf="hasError" shape="wizard-stepnav-error" aria-label="error"></cds-icon>
-        <cds-icon *ngIf="!hasError && isComplete" shape="wizard-stepnav-success" aria-label="complete"></cds-icon>
+        <cds-icon *ngIf="hasError" shape="error-standard" aria-label="error"></cds-icon>
+        <cds-icon *ngIf="!hasError && isComplete" shape="success-standard" aria-label="complete"></cds-icon>
       </div>
 
       <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
@@ -78,9 +54,7 @@ export class ClrWizardStepnavItem {
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public commonStrings: ClrCommonStringsService
-  ) {
-    ClarityIcons.addIcons(...wizardStepnavIcons);
-  }
+  ) {}
 
   get id(): string {
     this.pageGuard();
