@@ -21,15 +21,12 @@ import { ClrWizardPage } from './wizard-page';
       (click)="click()"
       [attr.disabled]="isDisabled ? '' : null"
     >
-      <span class="clr-wizard-stepnav-link-suffix">
-        <cds-icon
-          shape="error-standard"
-          status="danger"
-          class="clr-wizard-stepnav-item-error-icon"
-          *ngIf="hasError"
-        ></cds-icon>
-        <ng-content *ngIf="!hasError"></ng-content>
-      </span>
+      <div class="clr-wizard-stepnav-link-icon">
+        <cds-icon *ngIf="hasError" shape="error-standard" aria-label="error"></cds-icon>
+        <cds-icon *ngIf="!hasError && isComplete" shape="success-standard" aria-label="complete"></cds-icon>
+      </div>
+
+      <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
       <span class="clr-wizard-stepnav-link-title">
         <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
       </span>
