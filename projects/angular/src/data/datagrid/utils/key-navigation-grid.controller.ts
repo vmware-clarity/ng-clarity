@@ -117,12 +117,12 @@ export class KeyNavigationGridController implements OnDestroy {
             e.code === 'PageUp' ||
             e.code === 'PageDown'
           ) {
-            const { x, y } = this.getNextItemCoordinate(e);
-            const activeItem = this.rows
-              ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
-              : null;
-            if (activeItem) {
-              this.setActiveCell(activeItem);
+            console.log('is current active cell in details: ', this.isCurrentActiveCellInDetails());
+            console.log('is row 1 expanded: ', this.isRowExpanded(1));
+            const nextActiveItem = this.getNextItem(e);
+
+            if (nextActiveItem) {
+              this.setActiveCell(nextActiveItem);
             }
             e.preventDefault();
           }
@@ -169,7 +169,7 @@ export class KeyNavigationGridController implements OnDestroy {
     }
   }
 
-  private getNextItemCoordinate(e: any) {
+  private getNextItem(e: any) {
     let currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
     if (e.code === 'Tab') {
       currentCell = document.activeElement as HTMLElement;
@@ -192,9 +192,13 @@ export class KeyNavigationGridController implements OnDestroy {
       Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.rows[0].clientHeight) - 1 || 0;
 
     if (e.code === 'ArrowUp' && y !== 0) {
-      y = y - 1;
+      if (!this.isCurrentActiveCellInDetails()) {
+        y = y - 1;
+      }
     } else if (e.code === 'ArrowDown' && y < numOfRows) {
-      y = y + 1;
+      if (!this.isRowExpanded(y) || (this.isRowExpanded(y) && this.isCurrentActiveCellInDetails())) {
+        y = y + 1;
+      }
     } else if (e.code === inlineStart && x !== 0) {
       x = x - 1;
     } else if (e.code === inlineEnd && x < numOfColumns) {
@@ -217,6 +221,65 @@ export class KeyNavigationGridController implements OnDestroy {
       y = y + itemsPerPage < numOfRows ? y + itemsPerPage : numOfRows;
     }
 
-    return { x, y };
+    let nextActiveItem;
+
+    if (e.code === 'ArrowUp' && y !== 0) {
+      if (this.isCurrentActiveCellInDetails()) {
+        console.log('up!');
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll('.datagrid-scrolling-cells'))[0].querySelectorAll(
+              '.datagrid-cell'
+            )[0] as HTMLElement)
+          : null;
+      } else {
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+          : null;
+      }
+    } else if (e.code === 'ArrowDown' && y < numOfRows) {
+      // TODO: Go to next row
+      if (!this.isCurrentActiveCellInDetails() && this.isRowExpanded(y)) {
+        console.log('go to next details');
+        // TODO: Go to details
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll('.datagrid-row-detail'))[0] as HTMLElement)
+          : null;
+      } else {
+        if (this.isCurrentActiveCellInDetails()) {
+          nextActiveItem = this.rows
+            ? (Array.from(this.rows[y].querySelectorAll('.datagrid-scrolling-cells'))[0].querySelectorAll(
+                '.datagrid-cell'
+              )[0] as HTMLElement)
+            : null;
+        } else {
+          nextActiveItem = this.rows
+            ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+            : null;
+        }
+      }
+    } else {
+      nextActiveItem = this.rows
+        ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+        : null;
+    }
+
+    // eslint-disable-next-line prefer-const
+    // nextActiveItem = this.rows
+    //     ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+    //     : null;
+
+    return nextActiveItem;
+  }
+
+  private isRowExpanded(y: number): boolean {
+    console.log('isRowExpanded: ', this.rows[y]);
+    return !!this.rows[y].querySelector('.datagrid-row-detail');
+  }
+
+  private isCurrentActiveCellInDetails(): boolean {
+    return (
+      this.getActiveCell().parentElement.classList.contains('datagrid-row-detail') ||
+      this.getActiveCell().classList.contains('datagrid-row-detail')
+    );
   }
 }
