@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
 
     input::-ms-reveal,
     input::-ms-clear {

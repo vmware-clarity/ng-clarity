@@ -545,7 +545,7 @@ describe('Form layouts', () => {
     });
 
     describe('file', () => {
-      it('control height', () => verifyHeight('#file', base * 17.5, false));
+      it('control height', () => verifyHeight('#file', base * 16.5, false));
 
       it('label height', () => verifyHeight('#file .clr-control-label', base * 4));
 
@@ -565,7 +565,7 @@ describe('Form layouts', () => {
         fileInput = height('#file-plain input');
       });
 
-      it('control height', () => verifyHeight('#file-plain', fileInput + base * 11.5));
+      it('control height', () => verifyHeight('#file-plain', fileInput + base * 10.5));
 
       it('label height', () => verifyHeight('#file-plain .clr-control-label', base * 4));
 
@@ -705,7 +705,7 @@ describe('Form layouts', () => {
     });
 
     describe('file', () => {
-      it('control height', () => verifyHeight('#file', base * 13.5, false));
+      it('control height', () => verifyHeight('#file', base * 12.5, false));
 
       it('label height', () => verifyHeight('#file .clr-control-label', base * 4));
 
@@ -725,7 +725,7 @@ describe('Form layouts', () => {
         fileInput = height('#file-plain input');
       });
 
-      it('control height', () => verifyHeight('#file-plain', fileInput + base * 7.5, false));
+      it('control height', () => verifyHeight('#file-plain', fileInput + base * 6.5, false));
 
       it('label height', () => verifyHeight('#file-plain .clr-control-label', base * 4, false));
 
