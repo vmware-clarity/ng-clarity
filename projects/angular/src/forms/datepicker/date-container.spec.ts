@@ -101,7 +101,7 @@ export default function () {
         context.detectChanges();
         actionButton.click();
         context.detectChanges();
-        expect(document.activeElement).toEqual(actionButton);
+        expect(document.activeElement).toBe(actionButton);
       });
 
       it('should not call focus when date-picker is not visible', () => {
