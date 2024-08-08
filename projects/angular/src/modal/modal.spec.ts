@@ -270,14 +270,14 @@ describe('Modal', () => {
     // Just make sure we have the "x" to close the modal,
     // because this is different from the clrModalClosable option.
     expect(compiled.querySelector('.close')).not.toBeNull();
-    expect(document.activeElement).toEqual(titleWrapperElement);
+    expect(document.activeElement).toBe(titleWrapperElement);
 
     focusStealButton.focus();
-    expect(document.activeElement).toEqual(focusStealButton);
+    expect(document.activeElement).toBe(focusStealButton);
 
     backdrop.click();
     flushAndExpectOpen(fixture, true);
-    expect(document.activeElement).toEqual(titleWrapperElement);
+    expect(document.activeElement).toBe(titleWrapperElement);
   }));
 
   it('traps user focus', () => {
