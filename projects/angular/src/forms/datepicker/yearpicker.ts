@@ -82,7 +82,7 @@ export class ClrYearpicker implements AfterViewInit {
     private _dateNavigationService: DateNavigationService,
     private _viewManagerService: ViewManagerService,
     private _datepickerFocusService: DatepickerFocusService,
-    private _elRef: ElementRef,
+    private _elRef: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService
   ) {
     this.yearRangeModel = new YearRangeModel(this.calendarYear);

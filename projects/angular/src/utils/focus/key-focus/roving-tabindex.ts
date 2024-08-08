@@ -18,7 +18,7 @@ import { ClrKeyFocus } from './key-focus';
 export class ClrRovingTabindex extends ClrKeyFocus {
   private disabled = false;
 
-  constructor(elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {
     super(elementRef);
   }
 

@@ -34,7 +34,7 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
   private _isEnabled: boolean;
 
   constructor(
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(FOCUS_ON_VIEW_INIT) private focusOnViewInit: boolean,
     @Inject(DOCUMENT) document: any,

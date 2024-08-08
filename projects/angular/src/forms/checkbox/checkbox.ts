@@ -29,7 +29,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef,
+    el: ElementRef<HTMLInputElement>,
     @Attribute('clrToggle') private toggle: string
   ) {
     super(vcr, ClrCheckboxWrapper, injector, control, renderer, el);

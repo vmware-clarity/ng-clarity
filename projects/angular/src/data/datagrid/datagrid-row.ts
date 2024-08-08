@@ -88,7 +88,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
 
   @ViewChild(ClrExpandableAnimation) expandAnimation: ClrExpandableAnimation;
-  @ViewChild('detailButton') detailButton: ElementRef;
+  @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
   @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
@@ -113,7 +113,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
     private renderer: Renderer2,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     @Inject(DOCUMENT) private document: any

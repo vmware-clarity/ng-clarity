@@ -71,13 +71,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
     @Inject(IF_ACTIVE_ID) public id: number,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
     private toggleService: ClrPopoverToggleService,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
-    parentHost: ElementRef,
+    parentHost: ElementRef<HTMLElement>,
     @Inject(DOCUMENT) private document: any
   ) {
     if (!parentHost) {

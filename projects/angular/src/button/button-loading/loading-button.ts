@@ -75,7 +75,7 @@ export class ClrLoadingButton implements LoadingListener {
   buttonState = ClrLoadingState;
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
-  constructor(public el: ElementRef, private renderer: Renderer2) {}
+  constructor(public el: ElementRef<HTMLButtonElement>, private renderer: Renderer2) {}
 
   loadingStateChange(state: ClrLoadingState): void {
     if (state === this.state) {

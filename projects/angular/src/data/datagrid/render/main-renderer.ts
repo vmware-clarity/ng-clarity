@@ -72,7 +72,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     private items: Items,
     private page: Page,
     private domAdapter: DomAdapter,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private detailService: DetailService,
     private tableSizeService: TableSizeService,

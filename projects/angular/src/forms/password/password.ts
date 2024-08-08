@@ -39,7 +39,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef,
+    el: ElementRef<HTMLInputElement>,
     @Optional() private focusService: FocusService,
     @Optional()
     @Inject(TOGGLE_SERVICE)
