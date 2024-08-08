@@ -117,8 +117,8 @@ export class KeyNavigationGridController implements OnDestroy {
             e.code === 'PageUp' ||
             e.code === 'PageDown'
           ) {
-            console.log('is current active cell in details: ', this.isCurrentActiveCellInDetails());
-            console.log('is row 1 expanded: ', this.isRowExpanded(1));
+            // console.log('is current active cell in details: ', this.isCurrentActiveCellInDetails());
+            // console.log('is row 1 expanded: ', this.isRowExpanded(1));
             const nextActiveItem = this.getNextItem(e);
 
             if (nextActiveItem) {
@@ -225,7 +225,7 @@ export class KeyNavigationGridController implements OnDestroy {
 
     if (e.code === 'ArrowUp' && y !== 0) {
       if (this.isCurrentActiveCellInDetails()) {
-        console.log('up!');
+        // console.log('up!');
         nextActiveItem = this.rows
           ? (Array.from(this.rows[y].querySelectorAll('.datagrid-scrolling-cells'))[0].querySelectorAll(
               '.datagrid-cell'
@@ -262,11 +262,6 @@ export class KeyNavigationGridController implements OnDestroy {
         ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
         : null;
     }
-
-    // eslint-disable-next-line prefer-const
-    // nextActiveItem = this.rows
-    //     ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
-    //     : null;
 
     return nextActiveItem;
   }
