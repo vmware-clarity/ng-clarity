@@ -25,6 +25,15 @@ jobs:
           workflow: ${{github.event.workflow_run.workflow_id}}
           run_id: ${{github.event.workflow_run.id}}
           if_no_artifact_found: ignore
+      - name: Download A11y Report Artifact
+        id: download-a11y-report
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: accessibility-report
+          path: .
+          workflow: ${{github.event.workflow_run.workflow_id}}
+          run_id: ${{github.event.workflow_run.id}}
+          if_no_artifact_found: ignore
       - name: Download Coverage Artifact
         id: download-coverage
         uses: dawidd6/action-download-artifact@v2
@@ -48,3 +57,10 @@ jobs:
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: npx netlify-cli deploy --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}
+      - name: Deploy A11y Test Report
+        if: ${{steps.download-docs.outputs.found_artifact == 'true'}}
+        timeout-minutes: 5
+        env:
+          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+        run: npx netlify-cli deploy --dir=/accessibility-report --alias ${{steps.get-pr-event.outputs.pullRequestNumber}}-a11y-report
