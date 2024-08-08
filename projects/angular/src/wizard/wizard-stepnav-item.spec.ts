@@ -478,6 +478,17 @@ export default function (): void {
           expect(myStepnavItem.querySelector('cds-icon[shape="error-standard"]')).not.toBeNull();
         });
 
+        it('should have a cds-icon when page has is complete', () => {
+          expect(myStepnavItem.classList.contains('error')).toBe(
+            false,
+            'stepnav item does not have .error class when page has no error'
+          );
+          fakeOutPage.completed = true;
+          fakeOutPage.hasError = false;
+          fixture.detectChanges();
+          expect(myStepnavItem.querySelector('cds-icon[shape="success-standard"]')).not.toBeNull();
+        });
+
         it('should have a span with text "Error" when page has an error', () => {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
