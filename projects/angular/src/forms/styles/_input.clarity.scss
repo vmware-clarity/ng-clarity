@@ -12,8 +12,6 @@
   .clr-input-wrapper {
     white-space: nowrap;
     max-height: forms-variables.$clr-forms-input-wrapper-height;
-
-    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
   .clr-input {
