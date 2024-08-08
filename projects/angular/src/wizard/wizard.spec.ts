@@ -798,7 +798,7 @@ export default function (): void {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
           const titleString = context.hostElement.querySelector('.modal-title').textContent.trim();
-          expect(titleString).toEqual(document.activeElement.textContent.trim());
+          expect(document.activeElement.textContent.trim()).toEqual(titleString);
         });
       });
     });
