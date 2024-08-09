@@ -152,7 +152,6 @@ export const OpenDetail: StoryObj = {
     removeFocusOutline({ canvasElement });
   },
   args: {
-    highlight: false,
     detailContentType: 'datagrid',
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
     height: 500,
