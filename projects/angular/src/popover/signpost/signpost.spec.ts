@@ -255,7 +255,7 @@ class TestCustomTriggerSignpost {
   @ViewChild(ClrSignpost) signpost: ClrSignpost;
   openState = false;
 
-  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef;
+  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 
   position = 'right-middle';
 }
@@ -276,5 +276,5 @@ class TestDefaultSignpost {
 
   openState = false;
 
-  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef;
+  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
 }

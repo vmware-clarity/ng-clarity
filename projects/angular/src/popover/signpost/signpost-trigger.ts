@@ -40,7 +40,7 @@ export class ClrSignpostTrigger implements OnDestroy {
 
   constructor(
     private toggleService: ClrPopoverToggleService,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(DOCUMENT) document: any,

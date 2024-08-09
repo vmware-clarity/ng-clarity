@@ -84,7 +84,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
 
-  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef;
+  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
 
   // @ContentChild would have been more succinct
   // but it doesn't offer a way to query only an immediate child
@@ -316,7 +316,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   private setTabIndex(value: number) {
     this.contentContainerTabindex = value;
-    this.contentContainer.nativeElement.setAttribute('tabindex', value);
+    this.contentContainer.nativeElement.setAttribute('tabindex', value.toString());
   }
 
   private checkTabIndex(nodeId: string): void {

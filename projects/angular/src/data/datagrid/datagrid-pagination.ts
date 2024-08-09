@@ -130,7 +130,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
 
   @ContentChild(ClrDatagridPageSize) _pageSizeComponent: ClrDatagridPageSize;
 
-  @ViewChild('currentPageInput') currentPageInputRef: ElementRef;
+  @ViewChild('currentPageInput') currentPageInputRef: ElementRef<HTMLInputElement>;
 
   /**
    * Subscription to the page service changes
@@ -291,6 +291,6 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
      * Set the input's value to the new current page. This is needed because the code
      * above may have changed the value from what the user entered in.
      */
-    this.currentPageInputRef.nativeElement.value = this.page.current;
+    this.currentPageInputRef.nativeElement.value = this.page.current.toString();
   }
 }

@@ -23,7 +23,7 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
 })
 class TestHost {
-  @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;
 }
 
 interface TestContext {

@@ -65,7 +65,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
-    parentHost: ElementRef,
+    parentHost: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,

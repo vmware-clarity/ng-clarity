@@ -32,7 +32,7 @@ export class CdkDragModule_CdkDrag extends CdkDrag {
    * https://github.com/storybookjs/storybook/issues/23534
    */
   constructor(
-    elementRef: ElementRef,
+    elementRef: ElementRef<HTMLElement>,
     @Optional() @Inject(CDK_DROP_LIST) dropContainer: any,
     @Optional() @Inject(DOCUMENT) document: any,
     ngZone: NgZone,

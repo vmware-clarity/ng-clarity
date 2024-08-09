@@ -32,7 +32,7 @@ export class DatagridHeaderRenderer implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private organizer: DatagridRenderOrganizer,
     private domAdapter: DomAdapter,

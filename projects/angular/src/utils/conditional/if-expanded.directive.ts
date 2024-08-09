@@ -38,7 +38,7 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
   constructor(
     @Optional() private template: TemplateRef<any>,
     private container: ViewContainerRef,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private expand: IfExpandService
   ) {

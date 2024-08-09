@@ -30,7 +30,7 @@ export class ClrSidePanel implements OnInit {
 
   @ViewChild(ClrModal) private modal: ClrModal;
 
-  constructor(private element: ElementRef, private configuration: ClrModalConfigurationService) {}
+  constructor(private element: ElementRef<HTMLElement>, private configuration: ClrModalConfigurationService) {}
 
   @Input()
   get clrSidePanelBackdrop(): boolean {
@@ -56,7 +56,11 @@ export class ClrSidePanel implements OnInit {
 
   @HostListener('document:pointerup', ['$event'])
   private documentClick(event: Event) {
-    if (!this.element.nativeElement.contains(event.target) && this.modal._open && !this.configuration.backdrop) {
+    if (
+      !this.element.nativeElement.contains(event.target as Node) &&
+      this.modal._open &&
+      !this.configuration.backdrop
+    ) {
       this.modal.close();
     }
   }

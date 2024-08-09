@@ -83,8 +83,8 @@ export class ClrCombobox<T>
    */
   @Output('clrSelectionChange') clrSelectionChange = this.optionSelectionService.selectionChanged;
 
-  @ViewChild('textboxInput') textbox: ElementRef;
-  @ViewChild('trigger') trigger: ElementRef;
+  @ViewChild('textboxInput') textbox: ElementRef<HTMLInputElement>;
+  @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
   invalid = false;
@@ -113,7 +113,7 @@ export class ClrCombobox<T>
     @Optional()
     public control: NgControl,
     protected override renderer: Renderer2,
-    protected override el: ElementRef,
+    protected override el: ElementRef<HTMLElement>,
     public optionSelectionService: OptionSelectionService<T>,
     public commonStrings: ClrCommonStringsService,
     private toggleService: ClrPopoverToggleService,

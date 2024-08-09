@@ -32,7 +32,7 @@ import { ClrPopoverToggleService } from '../../../../angular/src/utils/popover/p
 export class DummyAnchor {
   @Input() openOnFocus = false;
 
-  @ViewChild('ignore') ignore: ElementRef;
+  @ViewChild('ignore') ignore: ElementRef<HTMLButtonElement>;
 
   constructor(private toggleService: ClrPopoverToggleService) {}
 

@@ -391,10 +391,10 @@ class RenderWidthTest {
   hasActions = false;
   selected: any[] = [];
   singleSelect;
-  @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef;
-  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef;
-  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef;
-  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef;
+  @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef<HTMLElement>;
+  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef<HTMLElement>;
+  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef<HTMLElement>;
+  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef<HTMLElement>;
 }
 
 @Component({

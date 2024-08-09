@@ -59,7 +59,7 @@ import { ModalStackService } from './modal-stack.service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
-  @ViewChild('title') title: ElementRef;
+  @ViewChild('title') title: ElementRef<HTMLElement>;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);

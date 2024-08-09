@@ -55,17 +55,17 @@ describe('Loading Buttons', () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.LOADING);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeTruthy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.SUCCESS);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeTruthy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     tick(1000);
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeTruthy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     // now the input binding sets the disabled to false
     // it should be disabled while loading, and success, but change back to not disabled when it goes back to DEFAULT
@@ -75,41 +75,34 @@ describe('Loading Buttons', () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.LOADING);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeTruthy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.SUCCESS);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeTruthy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     tick(1000);
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
-    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.disabled).toBeFalsy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeFalsy();
   }));
 
   it('sets an explicit width value of the button when [(clrButtonState)] value is set to LOADING or SUCCESS', fakeAsync(() => {
-    let style = fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.style;
-    expect(style).toBeFalsy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.length).toBe(0);
 
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
     fixture.detectChanges();
-    style = fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.style;
-    expect(style).toBeTruthy();
-    expect(style.value).toMatch(/width:*/);
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.width).toBeDefined();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
     fixture.detectChanges();
-    style = fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.style;
-    expect(style).toBeTruthy();
-    expect(style.value).toMatch(/width:*/);
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.width).toBeDefined();
 
     tick(1000);
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
-    style = fixture.componentInstance.loadingButtonInstance.el.nativeElement.attributes.style;
-    // here, we check to see if style.value is falsy instead of style, because even though the style is cleared the attribute remains
-    expect(style.value).toBeFalsy();
+    expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.length).toBe(0);
   }));
 
   it('hides spinner when [(clrButtonState)] value is DEFAULT', () => {

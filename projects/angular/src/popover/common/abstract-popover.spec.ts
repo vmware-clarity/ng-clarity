@@ -41,7 +41,7 @@ class TestPopoverWithIfOpenDirective {
   providers: [ClrPopoverToggleService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
 })
 class InputFocusPopover {
-  @ViewChild('ignoreInput') ignore: ElementRef;
+  @ViewChild('ignoreInput') ignore: ElementRef<HTMLInputElement>;
   @ViewChild('ignoreElement') popover: any; // cant use TestPopoverIgnoreElement as type since it will refer to class before declaration in es2015+
 
   constructor(private toggleService: ClrPopoverToggleService) {}
@@ -56,7 +56,7 @@ class InputFocusPopover {
   template: `<div class="test-popover">Popover</div>`,
 })
 class TestPopoverIgnoreElement extends AbstractPopover {
-  constructor(injector: Injector, @Optional() parent: ElementRef, parentHost: InputFocusPopover) {
+  constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>, parentHost: InputFocusPopover) {
     super(injector, parent);
     if (parentHost && parentHost.ignore) {
       this.ignoredElement = parentHost.ignore.nativeElement;

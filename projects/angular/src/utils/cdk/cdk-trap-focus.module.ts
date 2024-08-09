@@ -21,7 +21,11 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
    * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
    * https://github.com/storybookjs/storybook/issues/23534
    */
-  constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, @Optional() @Inject(DOCUMENT) document: any) {
+  constructor(
+    elementRef: ElementRef<HTMLElement>,
+    focusTrapFactory: FocusTrapFactory,
+    @Optional() @Inject(DOCUMENT) document: any
+  ) {
     super(elementRef, focusTrapFactory, document);
   }
 }

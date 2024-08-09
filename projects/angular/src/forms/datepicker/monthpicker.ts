@@ -90,7 +90,7 @@ export class ClrMonthpicker implements AfterViewInit {
     private _localeHelperService: LocaleHelperService,
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
-    private _elRef: ElementRef,
+    private _elRef: ElementRef<HTMLElement>,
     private _viewManagerService: ViewManagerService,
     public commonStrings: ClrCommonStringsService
   ) {

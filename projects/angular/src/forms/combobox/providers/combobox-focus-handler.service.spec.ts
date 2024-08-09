@@ -23,9 +23,9 @@ import { OptionSelectionService } from './option-selection.service';
   `,
 })
 class SimpleHost {
-  @ViewChild('textInput') textInput: ElementRef;
-  @ViewChild('trigger') trigger: ElementRef;
-  @ViewChild('listbox') listbox: ElementRef;
+  @ViewChild('textInput') textInput: ElementRef<HTMLInputElement>;
+  @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
+  @ViewChild('listbox') listbox: ElementRef<HTMLUListElement>;
   onSubmit() {
     // do nothing; it makes eslint happy
   }

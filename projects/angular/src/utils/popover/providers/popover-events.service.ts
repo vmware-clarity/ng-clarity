@@ -19,9 +19,9 @@ export class ClrPopoverEventsService implements OnDestroy {
   outsideClickClose = true;
   scrollToClose = true;
   ignoredEvent: any;
-  anchorButtonRef: ElementRef;
-  closeButtonRef: ElementRef;
-  contentRef: ElementRef;
+  anchorButtonRef: ElementRef<HTMLButtonElement>;
+  closeButtonRef: ElementRef<HTMLButtonElement>;
+  contentRef: ElementRef<HTMLElement>;
 
   private documentClickListener: () => void;
   private escapeListener: () => void;

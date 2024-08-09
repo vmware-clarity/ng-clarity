@@ -35,7 +35,7 @@ export class ClrExpandableAnimation {
 
   startHeight = 0;
 
-  constructor(private element: ElementRef, private domAdapter: DomAdapter, private renderer: Renderer2) {}
+  constructor(private element: ElementRef<HTMLElement>, private domAdapter: DomAdapter, private renderer: Renderer2) {}
 
   @HostBinding('@expandAnimation')
   get expandAnimation() {

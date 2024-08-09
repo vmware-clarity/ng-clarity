@@ -130,7 +130,7 @@ class SimpleTest {
   open: boolean;
   buttonLabel: string;
 
-  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef;
+  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef<HTMLButtonElement>;
 
   clrDgActionOverflowOpenChangeFn(_$event: boolean) {
     // Do nothing

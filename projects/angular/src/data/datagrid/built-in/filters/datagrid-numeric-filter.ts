@@ -64,7 +64,7 @@ export class DatagridNumericFilter<T = any>
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input_low') input: ElementRef;
+  @ViewChild('input_low') input: ElementRef<HTMLInputElement>;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.

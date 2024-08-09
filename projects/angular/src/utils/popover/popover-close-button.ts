@@ -24,7 +24,7 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLButtonElement>,
     private smartEventsService: ClrPopoverEventsService,
     private smartOpenService: ClrPopoverToggleService
   ) {

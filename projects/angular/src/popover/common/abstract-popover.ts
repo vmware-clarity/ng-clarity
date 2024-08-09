@@ -33,7 +33,7 @@ export abstract class AbstractPopover implements AfterViewChecked, OnDestroy {
    */
   closeOnOutsideClick = false;
 
-  protected el: ElementRef;
+  protected el: ElementRef<HTMLElement>;
   protected toggleService: ClrPopoverToggleService;
   protected renderer: Renderer2;
   protected ngZone: NgZone;

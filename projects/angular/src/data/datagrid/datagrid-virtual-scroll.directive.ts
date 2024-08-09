@@ -329,7 +329,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
           },
         },
       },
-    } as ElementRef;
+    } as ElementRef<HTMLElement>;
 
     virtualScrollViewport.setTotalContentSize = (value: number) => {
       totalContentSize = value;

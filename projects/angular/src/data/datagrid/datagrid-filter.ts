@@ -99,7 +99,7 @@ export class ClrDatagridFilter<T = any>
     content: ClrAlignment.END,
   };
 
-  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef;
+  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
 
   private _open = false;
   private subs: Subscription[] = [];
