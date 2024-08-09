@@ -28,7 +28,7 @@
 
       <div class="modal-content">
         <div class="modal-header--accessible">
-          <div class="modal-title-wrapper" id="{{modalId}}" cdkFocusInitial tabindex="-1">
+          <div class="modal-title-wrapper" #title id="{{modalId}}" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>
           </div>
           <button
@@ -50,5 +50,5 @@
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
 
-  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="staticBackdrop || close()"></div>
+  <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
 </div>
