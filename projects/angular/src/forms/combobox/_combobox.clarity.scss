@@ -137,7 +137,6 @@
       variables.$clr-use-custom-properties
     );
     @include mixins.css-var(font-weight, clr-combobox-font-weight, inherit, variables.$clr-use-custom-properties);
-    line-height: variables.$clr_baselineRem_0_83;
 
     &.multi {
       min-width: calc(min(combobox-variables.$clr-ng-multiselect-min-width, 100%));

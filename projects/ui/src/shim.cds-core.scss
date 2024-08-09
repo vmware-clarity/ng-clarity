@@ -1130,6 +1130,10 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-combobox-item-icon-override: calc(-1 * #{tokens.$cds-global-space-1});
   --clr-combobox-pill-content-padding: 0;
 
+  .clr-combobox-wrapper {
+    line-height: baselinePx(20);
+  }
+
   .clr-combobox-wrapper .clr-combobox-remove-btn {
     display: flex;
     padding: 0;
