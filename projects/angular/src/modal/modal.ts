@@ -6,7 +6,18 @@
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChange,
+  ViewChild,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
@@ -48,6 +59,7 @@ import { ModalStackService } from './modal-stack.service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
+  @ViewChild('title') title: ElementRef;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
@@ -107,6 +119,15 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = true;
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
+  }
+
+  backdropClick(): void {
+    if (this.staticBackdrop) {
+      this.title.nativeElement.focus();
+      return;
+    }
+
+    this.close();
   }
 
   close(): void {
