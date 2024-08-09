@@ -12,7 +12,7 @@ import { StoryContext } from '@storybook/angular';
 
 export const CommonModules = [CommonModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule];
 
-export function removeFocusOutline({ canvasElement }: StoryContext) {
+export function removeFocusOutline({ canvasElement }: Pick<StoryContext, 'canvasElement'>) {
   // remove keyboard focus outline from focused element (e.g. modal title)
   canvasElement.querySelector<HTMLElement>(':focus')?.blur();
 }
