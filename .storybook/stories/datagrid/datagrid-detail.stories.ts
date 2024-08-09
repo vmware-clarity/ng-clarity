@@ -140,7 +140,7 @@ const DetailTemplate: StoryFn = args => {
     props: { ...args },
   };
 };
-export const Default: StoryObj = {
+export const Detail: StoryObj = {
   render: DetailTemplate,
 };
 
