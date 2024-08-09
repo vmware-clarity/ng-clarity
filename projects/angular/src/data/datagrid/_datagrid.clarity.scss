@@ -553,6 +553,12 @@
     flex: 1 1 auto;
     align-content: flex-start;
 
+    .datagrid-rows {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+
     .datagrid-body {
       width: auto;
     }
