@@ -2796,6 +2796,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
+    backdropClick(): void;
+    // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
     closable: boolean;
@@ -2834,6 +2836,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     staticBackdrop: boolean;
     // (undocumented)
     stopClose: boolean;
+    // (undocumented)
+    title: ElementRef;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; "bypassScrollService": "clrModalOverrideScrollService"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
