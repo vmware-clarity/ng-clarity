@@ -62,7 +62,7 @@
 
       cds-icon,
       clr-icon {
-        fill: forms-variables.$clr-forms-icon-color;
+        --color: forms-variables.$clr-forms-icon-color;
         @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
         transform: translate(calc(-1 * #{tokens.$cds-global-space-1}), calc(-1 * #{tokens.$cds-global-space-1}));
       }
