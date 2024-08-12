@@ -184,6 +184,8 @@ export class KeyNavigationGridController implements OnDestroy {
         : 0;
     let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
 
+    console.log('x is:', x);
+
     const dir = this.host.dir;
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
@@ -242,7 +244,9 @@ export class KeyNavigationGridController implements OnDestroy {
         console.log('go to next details');
         // TODO: Go to details
         nextActiveItem = this.rows
-          ? (Array.from(this.rows[y].querySelectorAll('.datagrid-row-detail'))[0] as HTMLElement)
+          ? (Array.from(this.rows[y].querySelectorAll('.datagrid-row-detail'))[0].querySelectorAll('.datagrid-cell')[
+              x
+            ] as HTMLElement)
           : null;
       } else {
         if (this.isCurrentActiveCellInDetails()) {
