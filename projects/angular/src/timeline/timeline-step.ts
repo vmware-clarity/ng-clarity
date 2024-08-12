@@ -39,7 +39,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
-  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef;
+  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef<HTMLElement>;
 
   stepTitleText: string;
 

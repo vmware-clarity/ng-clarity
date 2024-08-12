@@ -50,7 +50,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
-  @ViewChild('controlContainer') controlContainer: ElementRef;
+  @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;
 
   constructor(
     ifControlStateService: IfControlStateService,

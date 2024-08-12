@@ -114,11 +114,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
   @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
 
-  private toggleButton: ElementRef;
+  private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
-    elem: ElementRef,
+    elem: ElementRef<HTMLElement>,
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,

@@ -53,7 +53,7 @@ export class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> imple
   constructor(
     viewContainerRef: ViewContainerRef,
     injector: Injector,
-    protected override el: ElementRef,
+    protected override el: ElementRef<HTMLInputElement>,
     protected override renderer: Renderer2,
     @Inject(DOCUMENT) protected document: any,
     @Self()

@@ -32,7 +32,7 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetailHeader implements AfterViewInit {
-  @ViewChild('title') title: ElementRef;
+  @ViewChild('title') title: ElementRef<HTMLElement>;
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 

@@ -117,8 +117,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
-  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef;
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;

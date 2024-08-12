@@ -23,7 +23,7 @@ export class DummyMenu extends AbstractPopover {
     injector: Injector,
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
-    parentHost: ElementRef,
+    parentHost: ElementRef<HTMLElement>,
     private parent: DummyAnchor
   ) {
     super(injector, parentHost);
