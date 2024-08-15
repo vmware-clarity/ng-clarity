@@ -262,9 +262,19 @@ export class KeyNavigationGridController implements OnDestroy {
         }
       }
     } else {
-      nextActiveItem = this.rows
-        ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
-        : null;
+      if (!this.isCurrentActiveCellInDetails()) {
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+          : null;
+      } else if (this.isCurrentActiveCellInDetails() && e.code === inlineEnd) {
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x + 1] as HTMLElement)
+          : null;
+      } else if (this.isCurrentActiveCellInDetails() && e.code === inlineStart) {
+        nextActiveItem = this.rows
+          ? (Array.from(this.rows[y].querySelectorAll(this.config.keyGridCells))[x] as HTMLElement)
+          : null;
+      }
     }
 
     return nextActiveItem;
