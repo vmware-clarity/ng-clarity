@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@ang
 import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { Keys } from '../../utils/enums/keys.enum';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
