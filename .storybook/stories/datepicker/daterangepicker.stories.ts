@@ -5,18 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatepickerModule, ClrDateRangeEndInput, ClrDateRangeStartInput, ClrFormsModule } from '@clr/angular';
+import {
+  ClrAlertModule,
+  ClrDatepickerModule,
+  ClrDateRangeEndInput,
+  ClrDateRangeStartInput,
+  ClrFormsModule,
+} from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from 'helpers/common';
 
 export default {
-  title: 'Datepicker/DateRangepicker',
+  title: 'Datepicker/DateRangepicker (do not use)',
   component: ClrDateRangeStartInput,
   subcomponents: { ClrDateRangeEndInput },
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
+      imports: [...CommonModules, ClrAlertModule, ClrFormsModule, ClrDatepickerModule],
     }),
   ],
   argTypes: {
@@ -59,6 +65,14 @@ export default {
 
 const DateRangePickerTemplate: StoryFn = args => ({
   template: `
+    <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">
+          This is component is not ready for external use! It may change in breaking ways in future releases. Do not use!
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+
     <clr-date-range-container [min]="getDateString(min)" [max]="getDateString(max)">
       <label for="dateRangeCtrl">Date Range</label>
       <input
