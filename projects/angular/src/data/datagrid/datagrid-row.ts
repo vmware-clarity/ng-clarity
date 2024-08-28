@@ -139,7 +139,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
             this.renderer.removeClass(this.el.nativeElement, 'datagrid-row-replaced');
           }
         }
-      )
+      ),
+      this.detailService.stateChange.subscribe(() => {
+        if (this.detailsDisabled && this.detailService.isRowOpen(this.item)) {
+          this.detailService.close();
+        }
+      })
     );
   }
 
