@@ -40,12 +40,5 @@ module.exports = {
         },
       },
     ],
-    [
-      'semantic-release-slack-bot',
-      {
-        notifyOnSuccess: true,
-        markdownReleaseNotes: true,
-      },
-    ],
   ],
 };
