@@ -61,6 +61,7 @@ let nbRow = 0;
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
+  @Input('clrDgDetailsDisabled') detailsDisabled = false;
 
   id: string;
   radioId: string;

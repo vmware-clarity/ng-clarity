@@ -124,6 +124,7 @@
         <div
           *ngIf="detailService.enabled"
           class="datagrid-detail-caret datagrid-fixed-column datagrid-cell"
+          [attr.aria-disabled]="detailsDisabled"
           role="gridcell"
         >
           <button
@@ -137,6 +138,7 @@
             [attr.aria-expanded]="detailService.isRowOpen(item)"
             [attr.aria-controls]="detailService.id"
             aria-haspopup="dialog"
+            [disabled]="detailsDisabled"
           >
             <cds-icon
               shape="angle-double"
