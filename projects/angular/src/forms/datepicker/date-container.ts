@@ -5,16 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ElementRef,
-  Input,
-  Optional,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
 import { startWith } from 'rxjs/operators';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
@@ -29,19 +20,16 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrDateRangeEndInput } from './date-range-end-input';
-import { ClrDateRangeStartInput } from './date-range-start-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
 @Component({
-  selector: 'clr-date-container, clr-date-range-container',
+  selector: 'clr-date-container',
   template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
@@ -49,8 +37,6 @@ import { ViewManagerService } from './providers/view-manager.service';
       <div class="clr-input-wrapper" clrPopoverAnchor>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrDate]"></ng-content>
-          <ng-content select="[clrRangeStartDate]"></ng-content>
-          <ng-content select="[clrRangeEndDate]"></ng-content>
           <button
             #actionButton
             type="button"
@@ -98,7 +84,6 @@ import { ViewManagerService } from './providers/view-manager.service';
     DateFormControlService,
     ViewManagerService,
     IfControlStateService,
-    DatePickerHelperService,
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
@@ -111,14 +96,10 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  @ContentChild(ClrDateRangeStartInput) clrRangeStartEl: ClrDateRangeStartInput;
-  @ContentChild(ClrDateRangeEndInput) clrRangeEndEl: ClrDateRangeEndInput;
-
   private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
-    elem: ElementRef<HTMLElement>,
     private toggleService: ClrPopoverToggleService,
     private dateNavigationService: DateNavigationService,
     private datepickerEnabledService: DatepickerEnabledService,
@@ -145,40 +126,12 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
         this.dateFormControlService.markAsTouched();
       })
     );
-
-    if (this.dateNavigationService) {
-      const tagName = elem.nativeElement.tagName.toLowerCase();
-      this.dateNavigationService.isRangePicker = tagName === 'clr-date-range-container';
-    }
   }
 
   @Input('clrPosition')
   set clrPosition(position: string) {
     if (position && (ClrPopoverPositions as Record<string, any>)[position]) {
       this.viewManagerService.position = (ClrPopoverPositions as Record<string, any>)[position];
-    }
-  }
-
-  @Input('rangeOptions')
-  set rangeOptions(rangeOptions) {
-    this.dateIOService.setRangeOptions(rangeOptions);
-  }
-
-  @Input()
-  set min(dateString: string) {
-    this.dateIOService.setMinDate(dateString);
-    if (this.clrRangeStartEl && this.clrRangeEndEl) {
-      this.clrRangeStartEl.triggerControlInputValidation();
-      this.clrRangeEndEl.triggerControlInputValidation();
-    }
-  }
-
-  @Input()
-  set max(dateString: string) {
-    this.dateIOService.setMaxDate(dateString);
-    if (this.clrRangeStartEl && this.clrRangeEndEl) {
-      this.clrRangeStartEl.triggerControlInputValidation();
-      this.clrRangeEndEl.triggerControlInputValidation();
     }
   }
 
@@ -213,15 +166,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   ngAfterViewInit(): void {
-    this.dateRangeStucturalChecks();
     this.subscriptions.push(
       this.toggleService.openChange.subscribe(open => {
         if (open) {
           this.initializeCalendar();
         } else {
-          if (this.dateNavigationService.isRangePicker) {
-            this.dateNavigationService.validateDateRange();
-          }
           this.toggleButton.nativeElement.focus();
         }
       })
@@ -266,16 +215,5 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   private initializeCalendar(): void {
     this.dateNavigationService.initializeCalendar();
-  }
-
-  private dateRangeStucturalChecks() {
-    if (this.dateNavigationService.isRangePicker) {
-      if (!this.clrRangeStartEl) {
-        console.error('Error! clr-date-range-container must contain clrRangeStartDate input');
-      }
-      if (!this.clrRangeEndEl) {
-        console.error('Error! clr-date-range-container must contain clrRangeEndDate input');
-      }
-    }
   }
 }
