@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LoadingListener } from '../../utils/loading/loading-listener';
@@ -543,6 +543,89 @@ export default function (): void {
         context.detectChanges();
       }
     });
+
+    describe('Details', function () {
+      let context: TestContext<ClrDatagridRow<Item>, DatagridWithDisabledDetails>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagridRow, DatagridWithDisabledDetails, DATAGRID_SPEC_PROVIDERS);
+        context.detectChanges();
+      });
+
+      it('displays a clickable double caret when the row have details', function () {
+        expect(context.clarityElement.querySelector('button cds-icon[shape^=angle-double]')).not.toBeNull();
+      });
+
+      it('Detail button must contain aria-controls', function () {
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        expect(button).not.toBeNull();
+        expect(button.getAttribute('aria-controls')).not.toBeNull();
+      });
+
+      it('display the details when pre selected', fakeAsync(function () {
+        context.testComponent.preState = context.testComponent.items[0];
+        tick();
+        context.detectChanges();
+
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
+
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
+      }));
+
+      it('open and close the details', fakeAsync(function () {
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(detailBody.innerText).toBe('' + context.testComponent.items[0].id);
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+      }));
+
+      it('try open the disabled details', fakeAsync(function () {
+        context.testComponent.disabledIndex = 0;
+        tick();
+        context.detectChanges();
+
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+      }));
+
+      it('disabled prestate details can not be open', fakeAsync(function () {
+        context.testComponent.disabledIndex = 0;
+        tick();
+        context.detectChanges();
+
+        context.testComponent.preState = context.testComponent.items[context.testComponent.disabledIndex];
+        tick();
+        context.detectChanges();
+
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+      }));
+    });
   });
 }
 
@@ -617,4 +700,43 @@ class NgForDatagridWithTrackBy {
 
   readonly items: Item[] = [{ id: 42 }];
   readonly trackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-row
+        *ngFor="let item of items; let i = index"
+        [clrDgItem]="item"
+        [clrDgDetailsDisabled]="i == disabledIndex"
+      ></clr-dg-row>
+
+      <ng-template [(clrIfDetail)]="preState" let-detail>
+        <clr-dg-detail>
+          <clr-dg-detail-header>Title</clr-dg-detail-header>
+          <clr-dg-detail-body>{{ detail.id }}</clr-dg-detail-body>
+        </clr-dg-detail>
+      </ng-template>
+    </clr-datagrid>
+  `,
+})
+class DatagridWithDisabledDetails {
+  disabledIndex = -1;
+
+  readonly items: Item[] = [];
+  private _preState: Item = null;
+
+  constructor(private cdr: ChangeDetectorRef) {
+    this.items.push({ id: 42 });
+    this.items.push({ id: 22 });
+  }
+
+  get preState(): Item {
+    return this._preState;
+  }
+
+  set preState(value: Item) {
+    this._preState = value;
+    this.cdr.detectChanges();
+  }
 }
