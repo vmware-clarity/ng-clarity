@@ -1605,6 +1605,10 @@ $metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, san
   --clr-tooltip-arrow-horizontal-size: calc(-1 * #{tokens.$cds-global-space-6});
   --clr-tooltip-arrow-vertical-size: calc(-1 * #{tokens.$cds-global-space-6});
 
+  .tooltip > .tooltip-content li {
+    color: inherit;
+  }
+
   /* Wizard */
   --clr-wizard-main-padding: #{tokens.$cds-global-space-9};
   --clr-wizard-stepnav-link-font-size: #{tokens.$cds-global-typography-font-size-4};
