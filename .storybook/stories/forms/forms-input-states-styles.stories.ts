@@ -84,23 +84,6 @@ const FormInputTemplate: StoryFn = args => ({
         </div>
       </div>
 
-      <clr-password-container>
-        <label>Password container</label>
-        <input
-          clrPassword
-          [disabled]="isDisabled"
-          autocomplete="current-password"
-          placeholder="Password container"
-          [(ngModel)]="password"
-          name="password"
-          required
-          minlength="8"
-        />
-        <clr-control-helper>Helper Subtext</clr-control-helper>
-        <clr-control-success>Success message</clr-control-success>
-        <clr-control-error *clrIfError="'required'">This field is required!</clr-control-error>
-      </clr-password-container>
-
       <div class="clr-form-control" [ngClass]="{ 'clr-form-control-disabled': isDisabled }">
         <label for="textarea-basic-error" class="clr-control-label">Textarea</label>
         <div class="clr-control-container" [ngClass]="{ 'clr-success': isSuccess, 'clr-error': isError }">
