@@ -29,6 +29,7 @@ export class DatagridFullDemo {
 
     server: false,
     latency: '500',
+    nameFilter: 'd',
   };
 
   resetting = true;
@@ -40,8 +41,6 @@ export class DatagridFullDemo {
   isServerDriven = false;
   loading = true;
   total: number;
-
-  nameFilter = 'd';
 
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
