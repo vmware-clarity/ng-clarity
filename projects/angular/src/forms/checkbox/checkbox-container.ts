@@ -22,8 +22,10 @@ import { ClrCheckbox } from './checkbox';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-checkbox-wrapper,clr-toggle-wrapper"></ng-content>
-      <div class="clr-subtext-wrapper">
-        <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
+      <div *ngIf="showHelper" class="clr-subtext-wrapper">
+        <ng-content select="clr-control-helper"></ng-content>
+      </div>
+      <div *ngIf="showInvalid || showValid" class="clr-subtext-wrapper">
         <cds-icon
           *ngIf="showInvalid"
           class="clr-validate-icon"
