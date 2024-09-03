@@ -31,8 +31,12 @@ export default {
     clrDetailAriaLabelledBy: {
       description: "Id or multiple space separated Id's referencing existing text on the page",
     },
-    disabledElement: {
-      description: 'Disabled element page index.',
+    disabledDetailIndex: {
+      description: 'Disabled detail button index.',
+      control: { type: 'number', min: -1, max: 50 },
+    },
+    hiddenDetailIndex: {
+      description: 'Hidden detail button index.',
       control: { type: 'number', min: -1, max: 50 },
     },
   },
@@ -52,7 +56,8 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
-    disabledElement: -1,
+    disabledDetailIndex: -1,
+    hiddenDetailIndex: -1,
   },
 };
 
@@ -108,7 +113,8 @@ const DetailTemplate: StoryFn = args => {
         <clr-dg-row
           *clrDgItems="let element of elements; let index = index"
           [clrDgItem]="element"
-          [clrDgDetailsDisabled]="disabledElement === index"
+          [clrDgDetailDisabled]="disabledDetailIndex === index"
+          [clrDgDetailHidden]="hiddenDetailIndex === index"
         >
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
@@ -217,7 +223,7 @@ export const OpenLongUninterruptedContentDetail: StoryObj = {
   },
 };
 
-export const DisabledDetail: StoryObj = {
+export const DisabledDetailButton: StoryObj = {
   render: DetailTemplate,
   play({ canvasElement }: StoryContext) {
     canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
@@ -226,7 +232,19 @@ export const DisabledDetail: StoryObj = {
   },
   args: {
     detailContentType: 'datagrid',
-    // Disabled element cannot be opened. (CDE-1073)
-    disabledElement: 0,
+    disabledDetailIndex: 1,
+  },
+};
+
+export const HiddenDetailButton: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    hiddenDetailIndex: 1,
   },
 };

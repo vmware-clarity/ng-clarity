@@ -14,13 +14,13 @@ export function getTabableItems(el: HTMLElement) {
     'a[href]',
     'area[href]',
     'input:not([disabled])',
-    'button:not([disabled])',
+    'button:not([disabled]):not(.is-not-visible)',
     'select:not([disabled])',
     'textarea:not([disabled])',
     'iframe',
     'object',
     'embed',
-    '*[tabindex]:not([disabled])',
+    '*[tabindex]:not([disabled]):not(.is-not-visible)',
     '*[contenteditable=true]',
     '[role=button]:not([disabled])',
   ].join(',');
@@ -160,8 +160,10 @@ export class KeyNavigationGridController implements OnDestroy {
 
     activeCell.setAttribute('tabindex', '0');
     this._activeCell = activeCell;
+    console.log(activeCell);
 
     const items = getTabableItems(activeCell);
+    console.log(items);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
 
     if (!this.skipItemFocus) {

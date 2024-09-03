@@ -1274,6 +1274,10 @@
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
         color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
+
+      &.is-not-visible {
+        visibility: hidden;
+      }
     }
 
     .datagrid-detail-caret-icon {
