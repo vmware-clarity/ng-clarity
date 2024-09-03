@@ -26,20 +26,25 @@ import { ClrStandaloneCdkTrapFocus } from '../../utils/focus/focus-trap';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
-import '@cds/core/internal-components/close-button/register.js';
-
-const createCdsCloseButton = (document: Document, ariaLabel: string) => {
-  const cdsCloseButton = document.createElement('cds-internal-close-button');
-  cdsCloseButton.setAttribute('icon-size', '32');
-  cdsCloseButton.setAttribute('aria-label', ariaLabel);
-  cdsCloseButton.setAttribute('aria-hidden', 'true');
-  cdsCloseButton.setAttribute('type', 'button');
+const createCloseButton = (document: Document, ariaLabel: string) => {
+  const closeButton = document.createElement('button');
+  closeButton.setAttribute('aria-label', ariaLabel);
+  closeButton.setAttribute('aria-hidden', 'true');
+  closeButton.setAttribute('role', 'button');
+  closeButton.setAttribute('tabindex', '0');
+  closeButton.innerHTML = `
+    <cds-icon
+      inner-offset="1"
+      shape="close"
+      size="32"
+    </cds-icon>
+  `;
   /**
    * The button is hidden by default based on our Desktop-first approach.
    */
-  cdsCloseButton.setAttribute('hidden', 'true');
-  cdsCloseButton.className = 'clr-nav-close';
-  return cdsCloseButton;
+  closeButton.setAttribute('hidden', 'true');
+  closeButton.className = 'clr-nav-close';
+  return closeButton;
 };
 
 @Directive({
@@ -123,7 +128,7 @@ export class ClrNavLevel implements OnInit {
   }
 
   ngAfterViewInit() {
-    const closeButton = createCdsCloseButton(this._document, this.closeButtonAriaLabel);
+    const closeButton = createCloseButton(this._document, this.closeButtonAriaLabel);
     this.renderer.listen(closeButton, 'click', this.close.bind(this));
     this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild); // Adding the button at the top of the nav
 
