@@ -120,6 +120,11 @@
         // make sure this is underneath the tooltip so that user can use their mouse to select text
         z-index: -1;
       }
+
+      // color overrides for components and HTML elements
+      li {
+        color: inherit;
+      }
     }
 
     &:hover > .tooltip-content,
