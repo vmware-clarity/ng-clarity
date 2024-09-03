@@ -86,7 +86,8 @@
     }
 
     .stack-block-label {
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
+        tokens.$cds-global-space-11;
       color: stack-view-variables.$clr-stack-view-row-color;
       background-color: stack-view-variables.$clr-stack-view-row-bg-color;
 
@@ -103,15 +104,6 @@
       flex: 1 1 auto;
       display: flex;
       align-items: center;
-      gap: tokens.$cds-global-space-5;
-
-      &::before {
-        display: inline-block;
-        content: '';
-        float: left;
-        @include mixins.min-equilateral(tokens.$cds-global-space-7);
-        text-align: center;
-      }
 
       &:focus {
         outline-color: Highlight;
@@ -123,14 +115,15 @@
     }
 
     .stack-view-key {
-      flex: 0 0 40%;
+      flex: 0 1 40%;
       max-width: 40%;
-      margin-right: var(--cds-global-space-5);
+      margin-right: var(--cds-global-space-7);
     }
 
     .stack-block-caret {
-      @include mixins.equilateral(tokens.$cds-global-space-7);
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
       --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
+      margin-right: var(--cds-global-space-5);
     }
 
     .stack-block-content {
@@ -165,15 +158,19 @@
 
     .stack-block-expandable {
       > .stack-block-label {
+        padding-left: tokens.$cds-global-space-6;
         color: stack-view-variables.$clr-stack-view-expandable-row-color;
         background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
 
         &::before {
-          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
+          display: inline-block;
+          content: '';
+          @include mixins.min-equilateral(tokens.$cds-global-space-7);
           @include images.icon-background-styles();
+          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);
-          @include mixins.equilateral(tokens.$cds-global-space-7);
+          margin-right: var(--cds-global-space-5);
         }
       }
 
@@ -253,7 +250,9 @@
     .stack-children clr-stack-block,
     .stack-children {
       .stack-block-label {
-        padding-left: mixins.baselinePx(52);
+        .stack-view-key {
+          padding-left: tokens.$cds-global-space-6;
+        }
 
         &::before {
           display: none;
