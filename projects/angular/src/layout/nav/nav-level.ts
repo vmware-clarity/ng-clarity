@@ -30,8 +30,6 @@ const createCloseButton = (document: Document, ariaLabel: string) => {
   const closeButton = document.createElement('button');
   closeButton.setAttribute('aria-label', ariaLabel);
   closeButton.setAttribute('aria-hidden', 'true');
-  closeButton.setAttribute('role', 'button');
-  closeButton.setAttribute('tabindex', '0');
   closeButton.innerHTML = `
     <cds-icon
       inner-offset="1"
