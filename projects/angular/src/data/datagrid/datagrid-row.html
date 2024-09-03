@@ -134,7 +134,7 @@
             class="datagrid-detail-caret-button"
             aria-haspopup="dialog"
             [disabled]="detailDisabled"
-            [class.is-not-visible]="detailHidden"
+            *ngIf="!detailHidden"
             [class.is-open]="detailService.isRowOpen(item)"
             [attr.aria-label]="detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
             [attr.aria-expanded]="detailService.isRowOpen(item)"

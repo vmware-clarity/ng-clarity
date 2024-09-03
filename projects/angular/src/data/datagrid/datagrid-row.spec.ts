@@ -9,6 +9,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LoadingListener } from '../../utils/loading/loading-listener';
+import { ClrDatagrid } from './datagrid';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
@@ -545,15 +546,17 @@ export default function (): void {
     });
 
     describe('Details', function () {
-      let context: TestContext<ClrDatagridRow<Item>, DatagridWithDisabledOrHiddenDetails>;
+      let context: TestContext<ClrDatagrid<Item>, DatagridWithDisabledOrHiddenDetails>;
 
       beforeEach(function () {
-        context = this.create(ClrDatagridRow, DatagridWithDisabledOrHiddenDetails, DATAGRID_SPEC_PROVIDERS);
+        context = this.create(ClrDatagrid, DatagridWithDisabledOrHiddenDetails, DATAGRID_SPEC_PROVIDERS);
         context.detectChanges();
       });
 
       it('displays a clickable double caret when the row have details', function () {
-        expect(context.clarityElement.querySelector('button cds-icon[shape^=angle-double]')).not.toBeNull();
+        expect(context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button').length).toBe(
+          context.testComponent.items.length
+        );
       });
 
       it('Detail button must contain aria-controls', function () {
@@ -570,14 +573,12 @@ export default function (): void {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
 
-        expect(button).not.toBeNull();
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
       }));
 
       it('open and close the details', fakeAsync(function () {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
-        expect(button).not.toBeNull();
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
 
         button.click();
@@ -633,17 +634,8 @@ export default function (): void {
         tick();
         context.detectChanges();
 
-        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button.is-not-visible');
-
-        expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
-
-        button.click();
-        tick();
-        context.detectChanges();
-
-        expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
+        expect(buttons.length).toBe(1);
       }));
 
       it('hidden detail button prestate details are opened', fakeAsync(function () {
@@ -655,9 +647,10 @@ export default function (): void {
         tick();
         context.detectChanges();
 
-        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button.is-not-visible');
-        expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
+        expect(buttons.length).toBe(1);
+
+        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
       }));
     });
   });
