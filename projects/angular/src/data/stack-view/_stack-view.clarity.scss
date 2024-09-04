@@ -86,7 +86,8 @@
     }
 
     .stack-block-label {
-      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+      padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6 tokens.$cds-global-space-5
+        tokens.$cds-global-space-11;
       color: stack-view-variables.$clr-stack-view-row-color;
       background-color: stack-view-variables.$clr-stack-view-row-bg-color;
 
@@ -104,15 +105,6 @@
       display: flex;
       align-items: center;
 
-      &::before {
-        display: inline-block;
-        content: '';
-        float: left;
-        @include mixins.equilateral(tokens.$cds-global-space-7);
-        margin: tokens.$cds-global-space-3 tokens.$cds-global-space-5 0 0;
-        text-align: center;
-      }
-
       &:focus {
         outline-color: Highlight;
         outline-color: -webkit-focus-ring-color;
@@ -123,15 +115,15 @@
     }
 
     .stack-view-key {
-      flex: 0 0 40%;
+      flex: 0 1 40%;
       max-width: 40%;
-      margin: 0 tokens.$cds-global-space-7 0 0;
+      margin-right: var(--cds-global-space-7);
     }
 
     .stack-block-caret {
-      @include mixins.equilateral(tokens.$cds-global-space-7);
-      margin-right: tokens.$cds-global-space-5;
-      fill: stack-view-variables.$clr-stack-view-stack-block-caret-color;
+      @include mixins.min-equilateral(tokens.$cds-global-space-7);
+      --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
+      margin-right: var(--cds-global-space-5);
     }
 
     .stack-block-content {
@@ -162,23 +154,23 @@
       .stack-block-content {
         background-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color;
       }
-
-      .stack-block-label {
-        padding-left: tokens.$cds-global-space-9;
-      }
     }
 
     .stack-block-expandable {
       > .stack-block-label {
+        padding-left: tokens.$cds-global-space-6;
         color: stack-view-variables.$clr-stack-view-expandable-row-color;
         background-color: stack-view-variables.$clr-stack-view-expandable-row-bg-color;
         cursor: pointer;
 
         &::before {
-          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
+          display: inline-block;
+          content: '';
+          @include mixins.min-equilateral(tokens.$cds-global-space-7);
           @include images.icon-background-styles();
+          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
           transform: rotate(-90deg);
-          @include mixins.equilateral(tokens.$cds-global-space-7);
+          margin-right: var(--cds-global-space-5);
         }
       }
 
@@ -246,11 +238,9 @@
     .modal & {
       margin-bottom: 0;
     }
-  }
 
-  //Disable the generated icon without a breaking change for the stackview static markup
-  //Only targets the Angular component as of now. Static will require a breaking change.
-  .stack-view {
+    //Disable the generated icon without a breaking change for the stackview static markup
+    //Only targets the Angular component as of now. Static will require a breaking change.
     clr-stack-block.stack-block-expandable {
       .stack-block-label::before {
         content: none;
@@ -260,7 +250,9 @@
     .stack-children clr-stack-block,
     .stack-children {
       .stack-block-label {
-        padding-left: tokens.$cds-global-space-12;
+        .stack-view-key {
+          padding-left: tokens.$cds-global-space-6;
+        }
 
         &::before {
           display: none;
