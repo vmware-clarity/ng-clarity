@@ -36,19 +36,14 @@ export default {
     getDateString: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
     disabled: false,
     placeholder: '',
     id: '',
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
-    getDateObject: date => {
-      try {
-        return date && new Date(date).toISOString();
-      } catch {
-        return undefined;
-      }
-    },
+    getDateObject: date => new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
 };
@@ -61,7 +56,7 @@ const DatePickerTemplate: StoryFn = args => ({
         #date
         type="date"
         [id]="id"
-        [clrDate]="getDateObject(date.value || clrDate)"
+        [clrDate]="getDateObject(clrDate || date.value)"
         [min]="getDateString(min)"
         [max]="getDateString(max)"
         [disabled]="disabled"
