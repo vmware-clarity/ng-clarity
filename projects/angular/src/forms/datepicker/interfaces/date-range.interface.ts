@@ -11,9 +11,3 @@ export interface DateRange {
   minDate?: DayModel;
   maxDate?: DayModel;
 }
-
-export interface DateRangeOption {
-  label: string;
-  value: string[];
-  isCustomRange?: boolean;
-}

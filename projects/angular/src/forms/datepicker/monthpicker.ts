@@ -64,12 +64,8 @@ import { ViewManagerService } from './providers/view-manager.service';
         *ngFor="let month of monthNames; let monthIndex = index"
         (click)="changeMonth(monthIndex)"
         [class.is-selected]="isSelected(monthIndex)"
-        [class.is-start-range]="getIsRangeStartMonth(monthIndex)"
-        [class.is-end-range]="getIsRangeEndMonth(monthIndex)"
-        [class.in-range]="isInRange(monthIndex)"
         [attr.tabindex]="getTabIndex(monthIndex)"
         [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
-        (mouseenter)="onHover(monthIndex)"
       >
         {{ month }}
       </button>
@@ -87,11 +83,11 @@ export class ClrMonthpicker implements AfterViewInit {
   private _focusedMonthIndex: number;
 
   constructor(
+    private _viewManagerService: ViewManagerService,
     private _localeHelperService: LocaleHelperService,
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _elRef: ElementRef<HTMLElement>,
-    private _viewManagerService: ViewManagerService,
     public commonStrings: ClrCommonStringsService
   ) {
     this._focusedMonthIndex = this.calendarMonthIndex;
@@ -110,13 +106,6 @@ export class ClrMonthpicker implements AfterViewInit {
    */
   get calendarMonthIndex(): number {
     return this._dateNavigationService.displayedCalendar.month;
-  }
-
-  /**
-   * Gets the year which the user is currently on.
-   */
-  get calendarEndMonthIndex(): number {
-    return this._dateNavigationService.selectedEndDay?.month;
   }
 
   get yearAttrString(): string {
@@ -140,22 +129,6 @@ export class ClrMonthpicker implements AfterViewInit {
     return new Date().getMonth();
   }
 
-  getIsRangeStartMonth(monthIndex: number): boolean {
-    return (
-      this._dateNavigationService.isRangePicker &&
-      this.calendarYear === this._dateNavigationService.selectedDay?.year &&
-      monthIndex === this._dateNavigationService.selectedDay?.month
-    );
-  }
-
-  getIsRangeEndMonth(monthIndex: number): boolean {
-    return (
-      this._dateNavigationService.isRangePicker &&
-      this.calendarYear === this._dateNavigationService.selectedEndDay?.year &&
-      monthIndex === this._dateNavigationService.selectedEndDay?.month
-    );
-  }
-
   /**
    * Calls the ViewManagerService to change to the yearpicker view.
    */
@@ -164,7 +137,7 @@ export class ClrMonthpicker implements AfterViewInit {
   }
 
   /**
-   * Focuses on the current calendar month when the view is initialized.
+   * Focuses on the current calendar month when the View is initialized.
    */
   ngAfterViewInit() {
     this._datepickerFocusService.focusCell(this._elRef);
@@ -202,19 +175,11 @@ export class ClrMonthpicker implements AfterViewInit {
 
   isSelected(monthIndex: number): boolean {
     return (
-      (this._dateNavigationService.selectedDay?.year === this.calendarYear &&
-        monthIndex === this._dateNavigationService.selectedDay?.month) ||
-      (this._dateNavigationService.selectedEndDay?.year === this.calendarYear &&
-        monthIndex === this.calendarEndMonthIndex)
+      this._dateNavigationService.selectedDay?.year === this.calendarYear &&
+      monthIndex === this._dateNavigationService.selectedDay?.month
     );
   }
 
-  /**
-   * Calls the DateNavigationService to update the hovered month value of the calendar
-   */
-  onHover(monthIndex: number): void {
-    this._dateNavigationService.hoveredMonth = monthIndex;
-  }
   /**
    * Calls the DateNavigationService to update the month value of the calendar.
    * Also changes the view to the daypicker.
@@ -250,41 +215,5 @@ export class ClrMonthpicker implements AfterViewInit {
    */
   currentYear(): void {
     this._dateNavigationService.moveToCurrentMonth();
-  }
-
-  /**
-   * Applicable only to date range picker
-   * Compares the month passed is in between the start and end date range
-   */
-  isInRange(monthIndex: number): boolean {
-    if (!this._dateNavigationService.isRangePicker) {
-      return false;
-    }
-    if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) {
-      return (
-        (this.calendarYear === this._dateNavigationService.selectedDay.year &&
-          monthIndex > this._dateNavigationService.selectedDay.month &&
-          this.calendarYear === this._dateNavigationService.selectedEndDay.year &&
-          monthIndex < this._dateNavigationService.selectedEndDay.month) ||
-        (this._dateNavigationService.selectedDay.year !== this._dateNavigationService.selectedEndDay.year &&
-          this.calendarYear === this._dateNavigationService.selectedDay.year &&
-          monthIndex > this._dateNavigationService.selectedDay.month) ||
-        (this._dateNavigationService.selectedDay.year !== this._dateNavigationService.selectedEndDay.year &&
-          this.calendarYear === this._dateNavigationService.selectedEndDay.year &&
-          monthIndex < this._dateNavigationService.selectedEndDay.month) ||
-        (this.calendarYear > this._dateNavigationService.selectedDay.year &&
-          this.calendarYear < this._dateNavigationService.selectedEndDay.year)
-      );
-    } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
-      return (
-        (this.calendarYear === this._dateNavigationService.selectedDay.year &&
-          monthIndex > this._dateNavigationService.selectedDay.month &&
-          monthIndex < this._dateNavigationService.hoveredMonth) ||
-        (this.calendarYear > this._dateNavigationService.selectedDay.year &&
-          monthIndex < this._dateNavigationService.hoveredMonth)
-      );
-    } else {
-      return false;
-    }
   }
 }
