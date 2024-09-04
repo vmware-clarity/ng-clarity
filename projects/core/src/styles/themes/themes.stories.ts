@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { html } from 'lit';
 import { default as tokenData } from '@cds/core/tokens/tokens.json';
-import light from '../../../.storybook/public/assets/images/clarity-high-contrast-light.png';
+import { html } from 'lit';
+
 import dark from '../../../.storybook/public/assets/images/clarity-high-contrast-dark.png';
+import light from '../../../.storybook/public/assets/images/clarity-high-contrast-light.png';
 
 export default {
   title: 'Stories/Themes',

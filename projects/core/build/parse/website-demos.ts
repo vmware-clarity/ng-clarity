@@ -1,11 +1,13 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import * as glob from 'glob';
-import { extractFilename, DocDemos, parseStories } from './utils';
+
+import { DocDemos, extractFilename, parseStories } from './utils';
 
 const stories: DocDemos[] = [];
 // Note: even though this is in the parse directory, it executes the scripts form the build directory, one level up from here.

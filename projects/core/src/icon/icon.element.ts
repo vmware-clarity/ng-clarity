@@ -1,24 +1,26 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import {
   Directions,
-  hasStringPropertyChanged,
-  hasStringPropertyChangedAndNotNil,
-  Orientations,
-  property,
-  state,
-  StatusTypes,
-  isString,
-  pxToRem,
   EventSubscription,
   GlobalStateService,
+  hasStringPropertyChanged,
+  hasStringPropertyChangedAndNotNil,
+  isString,
+  Orientations,
+  property,
+  pxToRem,
+  state,
+  StatusTypes,
 } from '@cds/core/internal';
-import { html, LitElement, svg, PropertyValues } from 'lit';
+import { html, LitElement, PropertyValues, svg } from 'lit';
 import { query } from 'lit/decorators/query.js';
+
 import styles from './icon.element.scss';
 import { ClarityIcons } from './icon.service.js';
 import { updateIconSizeStyle } from './utils/icon.classnames.js';
@@ -44,12 +46,72 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers.js';
  * @cssprop --badge-color
  */
 export class CdsIcon extends LitElement {
+  /**
+   * Takes a directional value that rotates the icon 90° with the
+   * top of the icon pointing in the specified direction.
+   * @type {up | down | left | right}
+   */
+  @property({ type: String }) direction: Directions;
+
+  /**
+   * Takes an orientation value that reverses the orientation of the icon vertically or horizontally'
+   * @type {horizontal | vertical}
+   */
+  @property({ type: String }) flip: Orientations;
+
+  /**
+   * Displays most icons in their "filled" version if set to `true`.
+   */
+  @property({ type: Boolean }) solid = false;
+
+  /**
+   * Changes color of icon fills and outlines
+   * @type {neutral | info | success | warning | danger}
+   */
+  @property({ type: String }) status: StatusTypes;
+
+  /**
+   * Inverts color of icon fills and outlines if `true`.
+   * Useful for displaying icons on a dark background.
+   */
+  @property({ type: Boolean }) inverse = false;
+
+  /**
+   * Sets the color of the icon decoration that appears in the top-right corner
+   * of the glyph. The icon decoration is derived from the following predefined types.
+   *
+   * The color of the badge can change according to the following
+   * list of statuses:
+   * 'info'  -> blue dot
+   * 'success' -> green dot
+   * 'warning' -> yellow dot
+   * 'danger' -> red dot
+   * 'inherit' -> dot inherits color of full icon glyph
+   * 'warning-triangle' -> yellow triangle
+   * 'inherit-triangle' -> triangle inherits color of full icon glyph
+   * unrecognized value, empty string, or true -> red dot
+   *
+   * By default, the badge displays a 'danger' dot (a red-colored dot).
+   *
+   * Setting the badge to 'false' or removing the attribute will remove the default icon badge.
+   * @type {neutral | info | success | warning | danger | inherit | warning-triangle | inherit-triangle}
+   */
+  @property({ type: String }) badge: StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
+
+  /**
+   * @private
+   * given a pixel value offset any surrounding whitespace within the svg
+   */
+  @state({ type: Number }) innerOffset: number; // Performance optimization: default to undefined so attr is not initially rendered
+
+  @query('svg') private svg: SVGElement;
+  private _shape = 'unknown';
+  private _size: string;
+  private subscription: EventSubscription;
+
   static get styles() {
     return [styles];
   }
-
-  private _shape = 'unknown';
-  private _size: string;
 
   @property({ type: String })
   get shape() {
@@ -85,75 +147,6 @@ export class CdsIcon extends LitElement {
       this.requestUpdate('size', oldVal);
     }
   }
-
-  /**
-   * Takes a directional value that rotates the icon 90° with the
-   * top of the icon pointing in the specified direction.
-   * @type {up | down | left | right}
-   */
-  @property({ type: String })
-  direction: Directions;
-
-  /**
-   * Takes an orientation value that reverses the orientation of the icon vertically or horizontally'
-   * @type {horizontal | vertical}
-   */
-  @property({ type: String })
-  flip: Orientations;
-
-  /**
-   * Displays most icons in their "filled" version if set to `true`.
-   */
-  @property({ type: Boolean })
-  solid = false;
-
-  /**
-   * Changes color of icon fills and outlines
-   * @type {neutral | info | success | warning | danger}
-   */
-  @property({ type: String })
-  status: StatusTypes;
-
-  /**
-   * Inverts color of icon fills and outlines if `true`.
-   * Useful for displaying icons on a dark background.
-   */
-  @property({ type: Boolean })
-  inverse = false;
-
-  /**
-   * Sets the color of the icon decoration that appears in the top-right corner
-   * of the glyph. The icon decoration is derived from the following predefined types.
-   *
-   * The color of the badge can change according to the following
-   * list of statuses:
-   * 'info'  -> blue dot
-   * 'success' -> green dot
-   * 'warning' -> yellow dot
-   * 'danger' -> red dot
-   * 'inherit' -> dot inherits color of full icon glyph
-   * 'warning-triangle' -> yellow triangle
-   * 'inherit-triangle' -> triangle inherits color of full icon glyph
-   * unrecognized value, empty string, or true -> red dot
-   *
-   * By default, the badge displays a 'danger' dot (a red-colored dot).
-   *
-   * Setting the badge to 'false' or removing the attribute will remove the default icon badge.
-   * @type {neutral | info | success | warning | danger | inherit | warning-triangle | inherit-triangle}
-   */
-  @property({ type: String })
-  badge: StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
-
-  /**
-   * @private
-   * given a pixel value offset any surrounding whitespace within the svg
-   */
-  @state({ type: Number })
-  innerOffset: number; // Performance optimization: default to undefined so attr is not initially rendered
-
-  @query('svg') private svg: SVGElement;
-
-  private subscription: EventSubscription;
 
   updated(props: PropertyValues<this>) {
     if (props.has('innerOffset') && this.innerOffset > 0) {
