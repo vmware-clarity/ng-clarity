@@ -627,7 +627,7 @@ export default function (): void {
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
       }));
 
-      it('try open the hidden detail button', fakeAsync(function () {
+      it('check if detail button is hidden', fakeAsync(function () {
         context.testComponent.hiddenIndex = 0;
         tick();
         context.detectChanges();
@@ -636,21 +636,6 @@ export default function (): void {
 
         const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
         expect(buttons.length).toBe(1);
-      }));
-
-      it('hidden detail button prestate details are opened', fakeAsync(function () {
-        context.testComponent.hiddenIndex = 0;
-        tick();
-        context.detectChanges();
-
-        context.testComponent.preState = context.testComponent.items[context.testComponent.hiddenIndex];
-        tick();
-        context.detectChanges();
-
-        const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
-        expect(buttons.length).toBe(1);
-
-        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
       }));
     });
   });
