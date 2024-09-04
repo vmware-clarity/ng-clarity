@@ -32,7 +32,6 @@ export class DatagridDetailDemo implements AfterViewInit {
   get preState() {
     return this._preState;
   }
-
   set preState(value: any) {
     this._preState = value;
     this.cdr.detectChanges();
