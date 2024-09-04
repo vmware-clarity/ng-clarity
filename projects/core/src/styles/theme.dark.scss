@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@import './dist/@cds/core/tokens/tokens';
+@import './dist/@clr/core/tokens/tokens';
 
 [cds-theme~='dark'] {
   --cds-global-typography-color-500: #{$cds-global-color-white};

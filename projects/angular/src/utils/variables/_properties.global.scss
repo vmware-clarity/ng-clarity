@@ -6,7 +6,7 @@
  */
 @use '../mixins';
 @use 'variables.global';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 @include mixins.exports('global.properties') {
   :root [cds-theme] {

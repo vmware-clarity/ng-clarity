@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClarityIcons, ellipsisHorizontalIcon } from '@cds/core/icon';
+import { ClarityIcons, ellipsisHorizontalIcon } from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrConditionalModule } from '../../utils/conditional/conditional.module';

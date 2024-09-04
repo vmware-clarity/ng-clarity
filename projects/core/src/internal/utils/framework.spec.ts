@@ -6,7 +6,7 @@
  */
 
 import { getAngularJSVersion, getAngularVersion, getReactVersion, getVueVersion, isStorybook } from './framework.js';
-import '@cds/core/badge/register.js'; // trigger global setup
+import '@clr/core/badge/register.js'; // trigger global setup
 
 describe('framework utils for logging and debugging', () => {
   it('should getAngularVersion', () => {

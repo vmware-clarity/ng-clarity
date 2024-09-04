@@ -13,8 +13,8 @@ To use the icon component import the component in your JavaScript.
 To see all available icons check out the <a href="./?path=/story/stories-icon--all">Collections Demo</a>.
 
 ```typescript
-import '@cds/core/icon/register.js';
-import { ClarityIcons, userIcon } from '@cds/core/icon';
+import '@clr/core/icon/register.js';
+import { ClarityIcons, userIcon } from '@clr/core/icon';
 
 ClarityIcons.addIcons(userIcon);
 ```
@@ -66,10 +66,10 @@ content then the icon should have an `aria-label` and `role="img"` attribute.
 </p>
 ```
 
-If using JSX or TSX, import the icon name from `@cds/core/icon` and include it in the `shape` prop to improve type safety:
+If using JSX or TSX, import the icon name from `@clr/core/icon` and include it in the `shape` prop to improve type safety:
 
 ```tsx
-import { ClarityIcons, userIcon, userIconName } from '@cds/core/icon';
+import { ClarityIcons, userIcon, userIconName } from '@clr/core/icon';
 import { CdsIcon } from '@cds/react/icon';
 
 ClarityIcons.addIcons(userIcon);

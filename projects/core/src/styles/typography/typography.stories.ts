@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/card/register.js';
+import '@clr/core/card/register.js';
 import { html } from 'lit';
 
 export default {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { GlobalStateService } from '@cds/core/internal';
+import { GlobalStateService } from '@clr/core/internal';
 
 import { IconAlias, IconRegistry, IconShapeTuple } from './interfaces/icon.interfaces.js';
 import { unknownIcon } from './shapes/unknown.js';

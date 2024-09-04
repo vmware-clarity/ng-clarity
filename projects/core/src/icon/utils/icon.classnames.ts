@@ -14,7 +14,7 @@ import {
   replaceWord,
   unsetElementStyles,
   updateElementStyles,
-} from '@cds/core/internal';
+} from '@clr/core/internal';
 
 import { CdsIcon } from '../icon.element.js';
 

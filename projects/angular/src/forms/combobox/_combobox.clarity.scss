@@ -10,7 +10,7 @@
 @use '../styles/mixins.forms' as styles-mixins;
 @use '../styles/variables.forms' as forms-variables;
 @use 'variables.combobox' as combobox-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 @include meta.load-css('properties.combobox');
 
 @function caret-gap() {

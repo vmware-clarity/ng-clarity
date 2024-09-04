@@ -17,7 +17,7 @@ import {
   pxToRem,
   state,
   StatusTypes,
-} from '@cds/core/internal';
+} from '@clr/core/internal';
 import { html, LitElement, PropertyValues, svg } from 'lit';
 import { query } from 'lit/decorators/query.js';
 
@@ -31,8 +31,8 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers.js';
  * To load an icon, import the icon with the icon service.
  *
  * ```typescript
- * import '@cds/core/icon/register.js';
- * import { ClarityIcons, userIcon } from '@cds/core/icon';
+ * import '@clr/core/icon/register.js';
+ * import { ClarityIcons, userIcon } from '@clr/core/icon';
  *
  * ClarityIcons.addIcons(userIcon);
  * ```

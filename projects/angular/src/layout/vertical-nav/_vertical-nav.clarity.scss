@@ -8,7 +8,7 @@
 @use '../../utils/a11y';
 @use '../../utils/mixins';
 @use 'variables.vertical-nav' as vertical-nav-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 @use '../tabs/tabs.clarity' as tabs;
 
 @mixin vertical-nav-link-colors() {

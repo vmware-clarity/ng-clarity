@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/polyfills';
+import '@clr/core/polyfills';
 
 /** @internal private module to Clarity Core */
 

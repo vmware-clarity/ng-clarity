@@ -117,8 +117,8 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "styles": [
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "node_modules/@clr/core/global.min.css",
+              "node_modules/@clr/core/styles/theme.dark.min.css",
               "projects/ui/src/clr-ui.scss"
             ],
             "main": "projects/angular/src/test.ts",
@@ -137,9 +137,9 @@
             "port": 6006,
             "styles": [
               ".storybook/public/preview.css",
-              "node_modules/@cds/core/styles/module.reset.min.css",
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "node_modules/@clr/core/styles/module.reset.min.css",
+              "node_modules/@clr/core/global.min.css",
+              "node_modules/@clr/core/styles/theme.dark.min.css",
               "projects/ui/src/clr-ui.scss"
             ]
           }
@@ -154,9 +154,9 @@
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "styles": [
               ".storybook/public/preview.css",
-              "node_modules/@cds/core/styles/module.reset.min.css",
-              "node_modules/@cds/core/global.min.css",
-              "node_modules/@cds/core/styles/theme.dark.min.css",
+              "node_modules/@clr/core/styles/module.reset.min.css",
+              "node_modules/@clr/core/global.min.css",
+              "node_modules/@clr/core/styles/theme.dark.min.css",
               "projects/ui/src/clr-ui.scss"
             ]
           }

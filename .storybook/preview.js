@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/icon/register.js';
+import '@clr/core/icon/register.js';
 
-import { loadCoreIconSet, loadEssentialIconSet } from '@cds/core/icon';
+import { loadCoreIconSet, loadEssentialIconSet } from '@clr/core/icon';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';

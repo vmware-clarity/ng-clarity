@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/icon/register.js';
-import '@cds/core/button/register.js';
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { homeIcon } from '@cds/core/icon/shapes/home.js';
-import { imageIcon } from '@cds/core/icon/shapes/image.js';
-import { userIcon } from '@cds/core/icon/shapes/user.js';
-import { baseStyles, getElementStorybookArgs, property, spreadProps } from '@cds/core/internal';
+import '@clr/core/icon/register.js';
+import '@clr/core/button/register.js';
+import { ClarityIcons } from '@clr/core/icon/icon.service.js';
+import { homeIcon } from '@clr/core/icon/shapes/home.js';
+import { imageIcon } from '@clr/core/icon/shapes/image.js';
+import { userIcon } from '@clr/core/icon/shapes/user.js';
+import { baseStyles, getElementStorybookArgs, property, spreadProps } from '@clr/core/internal';
 import { html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
@@ -36,7 +36,7 @@ class AllIcons extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    import('@cds/core/icon').then(module => {
+    import('@clr/core/icon').then(module => {
       module.loadChartIconSet();
       module.loadCommerceIconSet();
       module.loadCoreIconSet();
@@ -77,7 +77,7 @@ class CollectionIcons extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    import('@cds/core/icon').then(module => {
+    import('@clr/core/icon').then(module => {
       const collection = (module as any)[`${this.collection}CollectionIcons`];
       const aliases = (module as any)[`${this.collection}CollectionAliases`];
 

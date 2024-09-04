@@ -5,14 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
+import { ClarityIcons } from '@clr/core/icon/icon.service.js';
+import { componentIsStable, createTestElement, removeTestElement } from '@clr/core/test';
 import { html } from 'lit';
 
 import { CdsIcon } from '../index.js';
 import { IconShapeCollection } from '../interfaces/icon.interfaces.js';
 import { hasAlertBadge } from './icon.svg-helpers.js';
-import '@cds/core/icon/register.js';
+import '@clr/core/icon/register.js';
 
 const testIcon: IconShapeCollection = {
   outline: '<path d="outline-svg"></path>',

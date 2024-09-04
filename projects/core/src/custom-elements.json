@@ -91,7 +91,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Icon component that renders svg shapes that can be customized.\nTo load an icon, import the icon with the icon service.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { ClarityIcons, userIcon } from '@cds/core/icon';\n\nClarityIcons.addIcons(userIcon);\n```\n\n```html\n<cds-icon shape=\"user\"></cds-icon>\n```",
+          "description": "Icon component that renders svg shapes that can be customized.\nTo load an icon, import the icon with the icon service.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { ClarityIcons, userIcon } from '@clr/core/icon';\n\nClarityIcons.addIcons(userIcon);\n```\n\n```html\n<cds-icon shape=\"user\"></cds-icon>\n```",
           "name": "CdsIcon",
           "cssProperties": [
             {
@@ -7580,7 +7580,7 @@
         {
           "kind": "function",
           "name": "loadChartIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadChartIconSet } from '@cds/core/icon';\n\nloadChartIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadChartIconSet } from '@clr/core/icon';\n\nloadChartIconSet();\n```"
         }
       ],
       "exports": [
@@ -7639,7 +7639,7 @@
         {
           "kind": "function",
           "name": "loadCommerceIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadCommerceIconSet } from '@cds/core/icon';\n\nloadCommerceIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadCommerceIconSet } from '@clr/core/icon';\n\nloadCommerceIconSet();\n```"
         }
       ],
       "exports": [
@@ -7692,7 +7692,7 @@
         {
           "kind": "function",
           "name": "loadCoreIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadCoreIconSet } from '@cds/core/icon';\n\nloadCoreIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadCoreIconSet } from '@clr/core/icon';\n\nloadCoreIconSet();\n```"
         }
       ],
       "exports": [
@@ -7745,7 +7745,7 @@
         {
           "kind": "function",
           "name": "loadEssentialIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadEssentialIconSet } from '@cds/core/icon';\n\nloadEssentialIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadEssentialIconSet } from '@clr/core/icon';\n\nloadEssentialIconSet();\n```"
         }
       ],
       "exports": [
@@ -7798,7 +7798,7 @@
         {
           "kind": "function",
           "name": "loadMediaIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadMediaIconSet } from '@cds/core/icon';\n\nloadMediaIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadMediaIconSet } from '@clr/core/icon';\n\nloadMediaIconSet();\n```"
         }
       ],
       "exports": [
@@ -7851,7 +7851,7 @@
         {
           "kind": "function",
           "name": "loadMiniIconSet",
-          "description": "Function that can be called to load the mini icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadMiniIconSet } from '@cds/core/icon';\n\nloadMiniIconSet();\n```"
+          "description": "Function that can be called to load the mini icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadMiniIconSet } from '@clr/core/icon';\n\nloadMiniIconSet();\n```"
         }
       ],
       "exports": [
@@ -7904,7 +7904,7 @@
         {
           "kind": "function",
           "name": "loadSocialIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadSocialIconSet } from '@cds/core/icon';\n\nloadSocialIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadSocialIconSet } from '@clr/core/icon';\n\nloadSocialIconSet();\n```"
         }
       ],
       "exports": [
@@ -7957,7 +7957,7 @@
         {
           "kind": "function",
           "name": "loadTechnologyIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadTechnologyIconSet } from '@cds/core/icon';\n\nloadTechnologyIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadTechnologyIconSet } from '@clr/core/icon';\n\nloadTechnologyIconSet();\n```"
         }
       ],
       "exports": [
@@ -8034,7 +8034,7 @@
         {
           "kind": "function",
           "name": "loadTextEditIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadTextEditIconSet } from '@cds/core/icon';\n\nloadTextEditIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadTextEditIconSet } from '@clr/core/icon';\n\nloadTextEditIconSet();\n```"
         }
       ],
       "exports": [
@@ -8087,7 +8087,7 @@
         {
           "kind": "function",
           "name": "loadTravelIconSet",
-          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@cds/core/icon/register.js';\nimport { loadTravelIconSet } from '@cds/core/icon';\n\nloadTravelIconSet();\n```"
+          "description": "Function that can be called to load the core icon set.\n\n```typescript\nimport '@clr/core/icon/register.js';\nimport { loadTravelIconSet } from '@clr/core/icon';\n\nloadTravelIconSet();\n```"
         }
       ],
       "exports": [

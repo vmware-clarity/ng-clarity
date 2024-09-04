@@ -6,7 +6,7 @@
  */
 
 @use '../_utils/clarity-variables';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 .clr-example {
   $border-color: tokens.$cds-alias-object-interaction-border-color;

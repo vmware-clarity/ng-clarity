@@ -5,18 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { ellipsisVerticalIcon } from '@cds/core/icon/shapes/ellipsis-vertical.js';
+import { ClarityIcons } from '@clr/core/icon/icon.service.js';
+import { ellipsisVerticalIcon } from '@clr/core/icon/shapes/ellipsis-vertical.js';
 import { html, testBundleSize, testRenderTime } from 'web-test-runner-performance/browser.js';
-import '@cds/core/icon/register.js';
+import '@clr/core/icon/register.js';
 
 ClarityIcons.addIcons(ellipsisVerticalIcon);
 
 describe('cds-icon performance', () => {
   it(`should bundle and treeshake individual icons`, async () => {
     const bundle = `
-      import { ClarityIcons, userIcon } from '@cds/core/icon';
-      import '@cds/core/icon/register.js';
+      import { ClarityIcons, userIcon } from '@clr/core/icon';
+      import '@clr/core/icon/register.js';
       ClarityIcons.addIcons(userIcon);
     `;
     expect((await testBundleSize(bundle)).kb).toBeLessThan(19.5);
@@ -24,8 +24,8 @@ describe('cds-icon performance', () => {
 
   it(`should bundle all icons`, async () => {
     const bundle = `
-    import { loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet } from '@cds/core/icon';
-    import '@cds/core/icon/register.js';
+    import { loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet } from '@clr/core/icon';
+    import '@clr/core/icon/register.js';
       loadChartIconSet();
       loadCommerceIconSet();
       loadCoreIconSet();

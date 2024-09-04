@@ -241,8 +241,8 @@ export const technologyCollectionAliases: IconAlias[] = [
  * Function that can be called to load the core icon set.
  *
  * ```typescript
- * import '@cds/core/icon/register.js';
- * import { loadTechnologyIconSet } from '@cds/core/icon';
+ * import '@clr/core/icon/register.js';
+ * import { loadTechnologyIconSet } from '@clr/core/icon';
  *
  * loadTechnologyIconSet();
  * ```
@@ -253,7 +253,7 @@ export function loadTechnologyIconSet() {
   ClarityIcons.addAliases(...technologyCollectionAliases);
 }
 
-declare module '@cds/core/internal' {
+declare module '@clr/core/internal' {
   interface IconRegistrySources {
     [administratorIconName]: string;
     [animationIconName]: string;

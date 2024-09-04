@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { default as tokenData } from '@cds/core/tokens/tokens.json';
+import { default as tokenData } from '@clr/core/tokens/tokens.json';
 import { html } from 'lit';
 
 import dark from '../../../.storybook/public/assets/images/clarity-high-contrast-dark.png';

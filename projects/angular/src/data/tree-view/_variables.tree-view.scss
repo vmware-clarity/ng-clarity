@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 // Usage: ../data/tree-view/_tree-vioew.clarity.scss
 $clr-tree-border-radius: var(--clr-tree-border-radius) !default;

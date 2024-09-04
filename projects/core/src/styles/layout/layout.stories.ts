@@ -5,15 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import '@cds/core/divider/register.js';
-import '@cds/core/card/register.js';
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { applicationsIcon } from '@cds/core/icon/shapes/applications.js';
-import { blocksGroupIcon } from '@cds/core/icon/shapes/blocks-group.js';
-import { buildingIcon } from '@cds/core/icon/shapes/building.js';
-import { bundleIcon } from '@cds/core/icon/shapes/bundle.js';
-import { cogIcon } from '@cds/core/icon/shapes/cog.js';
-import { baseStyles } from '@cds/core/internal';
+import '@clr/core/divider/register.js';
+import '@clr/core/card/register.js';
+import { ClarityIcons } from '@clr/core/icon/icon.service.js';
+import { applicationsIcon } from '@clr/core/icon/shapes/applications.js';
+import { blocksGroupIcon } from '@clr/core/icon/shapes/blocks-group.js';
+import { buildingIcon } from '@clr/core/icon/shapes/building.js';
+import { bundleIcon } from '@clr/core/icon/shapes/bundle.js';
+import { cogIcon } from '@clr/core/icon/shapes/cog.js';
+import { baseStyles } from '@clr/core/internal';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 

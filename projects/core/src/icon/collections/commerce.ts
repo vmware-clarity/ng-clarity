@@ -63,8 +63,8 @@ export const commerceCollectionAliases: IconAlias[] = [[piggyBankIconName, ['sav
  * Function that can be called to load the core icon set.
  *
  * ```typescript
- * import '@cds/core/icon/register.js';
- * import { loadCommerceIconSet } from '@cds/core/icon';
+ * import '@clr/core/icon/register.js';
+ * import { loadCommerceIconSet } from '@clr/core/icon';
  *
  * loadCommerceIconSet();
  * ```
@@ -75,7 +75,7 @@ export function loadCommerceIconSet() {
   ClarityIcons.addAliases(...commerceCollectionAliases);
 }
 
-declare module '@cds/core/internal' {
+declare module '@clr/core/internal' {
   interface IconRegistrySources {
     [bankIconName]: string;
     [bitcoinIconName]: string;

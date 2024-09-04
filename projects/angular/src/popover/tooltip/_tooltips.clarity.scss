@@ -6,7 +6,7 @@
  */
 @use 'sass:map';
 @use 'sass:meta';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 @use '../../button/variables.buttons' as button-variables;
 @use '../../utils/mixins';
 @use '../../utils/variables/variables.global';

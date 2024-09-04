@@ -10,7 +10,7 @@
 @use '../../image/images.clarity';
 @use '../../utils/mixins';
 @use 'variables.stack-view' as stack-view-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.stack-view');
 

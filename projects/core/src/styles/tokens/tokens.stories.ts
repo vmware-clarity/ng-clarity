@@ -5,16 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClarityIcons } from '@cds/core/icon/icon.service.js';
-import { downloadIcon } from '@cds/core/icon/shapes/download.js';
-import { homeIcon } from '@cds/core/icon/shapes/home.js';
-import { plusIcon } from '@cds/core/icon/shapes/plus.js';
-import { trashIcon } from '@cds/core/icon/shapes/trash.js';
-import { hslToRgb, rgbToHex } from '@cds/core/internal';
-import { default as tokenData } from '@cds/core/tokens/tokens.json';
+import { ClarityIcons } from '@clr/core/icon/icon.service.js';
+import { downloadIcon } from '@clr/core/icon/shapes/download.js';
+import { homeIcon } from '@clr/core/icon/shapes/home.js';
+import { plusIcon } from '@clr/core/icon/shapes/plus.js';
+import { trashIcon } from '@clr/core/icon/shapes/trash.js';
+import { hslToRgb, rgbToHex } from '@clr/core/internal';
+import { default as tokenData } from '@clr/core/tokens/tokens.json';
 import { html, TemplateResult } from 'lit';
 
-import '@cds/core/navigation/register.js';
+import '@clr/core/navigation/register.js';
 
 ClarityIcons.addIcons(homeIcon, plusIcon, trashIcon, downloadIcon);
 

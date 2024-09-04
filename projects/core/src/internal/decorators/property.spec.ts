@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { componentIsStable, createTestElement, removeTestElement } from '@cds/core/test';
+import { componentIsStable, createTestElement, removeTestElement } from '@clr/core/test';
 import { html, LitElement } from 'lit';
 
 import { registerElementSafely } from '../utils/registration.js';

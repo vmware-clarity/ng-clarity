@@ -6,7 +6,7 @@
  */
 
 import { LogService } from './log.service.js';
-import '@cds/core/badge/register.js'; // trigger global setup
+import '@clr/core/badge/register.js'; // trigger global setup
 
 describe('LogService', () => {
   it('should not log when in a test environment', () => {

@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityIcons, folderOpenIcon } from '@cds/core/icon';
+import { ClarityIcons, folderOpenIcon } from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';

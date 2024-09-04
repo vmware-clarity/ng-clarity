@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClarityIcons, windowCloseIcon } from '@cds/core/icon';
+import { ClarityIcons, windowCloseIcon } from '@clr/core/icon';
 
 import { ClrIconModule } from '../icon/icon.module';
 import { CdkTrapFocusModule } from '../utils/cdk/cdk-trap-focus.module';

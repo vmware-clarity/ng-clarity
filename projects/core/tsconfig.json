@@ -8,7 +8,7 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "outDir": "./dist/@cds/core",
+    "outDir": "./dist/@clr/core",
     "declaration": true,
     "types": ["jasmine"],
     "alwaysStrict": true,
@@ -26,7 +26,7 @@
     "baseUrl": "./",
     "rootDir": "./",
     "paths": {
-      "@cds/core/*": ["./src/*"]
+      "@clr/core/*": ["./src/*"]
     },
     "plugins": [
       {

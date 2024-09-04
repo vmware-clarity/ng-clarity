@@ -110,8 +110,8 @@ export const coreCollectionAliases: IconAlias[] = [
  * Function that can be called to load the core icon set.
  *
  * ```typescript
- * import '@cds/core/icon/register.js';
- * import { loadCoreIconSet } from '@cds/core/icon';
+ * import '@clr/core/icon/register.js';
+ * import { loadCoreIconSet } from '@clr/core/icon';
  *
  * loadCoreIconSet();
  * ```
@@ -122,7 +122,7 @@ export function loadCoreIconSet() {
   ClarityIcons.addAliases(...coreCollectionAliases);
 }
 
-declare module '@cds/core/internal' {
+declare module '@clr/core/internal' {
   interface IconRegistrySources {
     [unknownIconName]: string;
     [angleIconName]: string;

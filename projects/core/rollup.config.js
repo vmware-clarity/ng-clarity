@@ -26,14 +26,14 @@ import {
 
 const config = {
   baseDir: './projects/core/src',
-  outDir: join('dist', '@cds', 'core'), // rollup will fail on Windows if we don't normalize path deliminters
+  outDir: join('dist', '@clr', 'core'), // rollup will fail on Windows if we don't normalize path deliminters
   assets: ['./README.md'],
   modules: {
     entryPoints: ['./projects/core/src/**/index.ts', './projects/core/src/**/register.ts'],
     sideEffects: ['./projects/core/src/**/register.ts', './projects/core/src/polyfills/*.ts'],
   },
   styles: [
-    { input: './projects/core/src/styles/global.scss', output: './dist/@cds/core/global.css' },
+    { input: './projects/core/src/styles/global.scss', output: './dist/@clr/core/global.css' },
     './projects/core/src/styles/module.layout.scss',
     './projects/core/src/styles/module.reset.scss',
     './projects/core/src/styles/module.typography.scss',
@@ -78,7 +78,7 @@ export default [
       styles({ mode: 'emit' }),
       litSass(),
       nodeResolve(),
-      typescript({ outDir: './dist/@cds/core', tsconfig: './projects/core/tsconfig.lib.json' }),
+      typescript({ outDir: './dist/@clr/core', tsconfig: './projects/core/tsconfig.lib.json' }),
       copy({
         copyOnce: true,
         targets: [
@@ -110,7 +110,7 @@ export default [
       prod ? webComponentAnalyer(config.outDir) : [],
       prod ? packageCheck(config.outDir) : [],
       del({
-        targets: ['./dist/@cds/core/**/assets', './dist/@cds/core/**/.tsbuildinfo', './dist/@cds/core/**/_virtual'],
+        targets: ['./dist/@clr/core/**/assets', './dist/@clr/core/**/.tsbuildinfo', './dist/@clr/core/**/_virtual'],
         hook: 'writeBundle',
       }),
     ],

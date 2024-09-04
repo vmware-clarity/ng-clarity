@@ -15,18 +15,18 @@ import { baseTheme } from './tokens';
 const tokens: Token[] = Object.entries(flattenTokens(baseTheme)).map(token => token[1]);
 const experimental = `This token format is currently experimental and may change in the future`;
 
-fs.mkdirSync('./dist/@cds/core/styles/', { recursive: true });
-fs.mkdirSync('./dist/@cds/core/tokens/', { recursive: true });
-fs.mkdirSync('./dist/@cds/core/styles/tokens/generated', { recursive: true });
+fs.mkdirSync('./dist/@clr/core/styles/', { recursive: true });
+fs.mkdirSync('./dist/@clr/core/tokens/', { recursive: true });
+fs.mkdirSync('./dist/@clr/core/styles/tokens/generated', { recursive: true });
 
 // Public API Tokens
-buildCSSTokens('./dist/@cds/core/styles/module.tokens.css');
-buildJSONTokens('./dist/@cds/core/tokens/tokens.json');
-buildJSTokens('./dist/@cds/core/tokens/tokens.ts');
-buildSassTokens('./dist/@cds/core/tokens/tokens.scss');
+buildCSSTokens('./dist/@clr/core/styles/module.tokens.css');
+buildJSONTokens('./dist/@clr/core/tokens/tokens.json');
+buildJSTokens('./dist/@clr/core/tokens/tokens.ts');
+buildSassTokens('./dist/@clr/core/tokens/tokens.scss');
 
 // Internal API Tokens for custom elements with fallback values
-buildInternalSassTokens('./dist/@cds/core/styles/tokens/generated/_index.scss');
+buildInternalSassTokens('./dist/@clr/core/styles/tokens/generated/_index.scss');
 
 function buildJSTokens(path) {
   fs.writeFileSync(

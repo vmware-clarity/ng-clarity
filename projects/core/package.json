@@ -1,5 +1,5 @@
 {
-  "name": "@cds/core",
+  "name": "@clr/core",
   "description": "Clarity Core",
   "homepage": "https://core.clarity.design",
   "keywords": [
@@ -22,7 +22,7 @@
     "_build:lib": "rollup --config ./rollup.config.js",
     "_build:tokens": "ts-node ./build/build.tokens.ts"
   },
-  "customElements": "./dist/@cds/core/custom-elements.json",
+  "customElements": "./dist/@clr/core/custom-elements.json",
   "sideEffects": [
     "./src/**/*.register.js"
   ],

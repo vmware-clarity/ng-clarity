@@ -19,7 +19,7 @@ import {
   timesIcon,
   viewColumnsIcon,
   windowCloseIcon,
-} from '@cds/core/icon';
+} from '@clr/core/icon';
 
 import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrIconModule } from '../../icon/icon.module';

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { onceEvent } from '@cds/core/test';
+import { onceEvent } from '@clr/core/test';
 
 import { GlobalStateService } from '../services/global.service.js';
 import { setupCDSGlobal } from './global.js';

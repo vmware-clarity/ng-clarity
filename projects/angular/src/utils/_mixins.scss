@@ -8,7 +8,7 @@
 @use 'sass:map';
 @use 'sass:selector';
 @use 'variables/variables';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once

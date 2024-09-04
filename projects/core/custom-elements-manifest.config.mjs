@@ -13,7 +13,7 @@ export default {
     '**/test/**',
     '**/demo/**',
   ],
-  outdir: '../../../dist/@cds/core',
+  outdir: '../../../dist/@clr/core',
   litelement: true,
   plugins: [readonlyPlugin(), tsExtensionPlugin(), orderElements()],
 };

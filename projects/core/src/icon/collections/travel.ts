@@ -74,8 +74,8 @@ export const travelCollectionAliases: IconAlias[] = [
  * Function that can be called to load the core icon set.
  *
  * ```typescript
- * import '@cds/core/icon/register.js';
- * import { loadTravelIconSet } from '@cds/core/icon';
+ * import '@clr/core/icon/register.js';
+ * import { loadTravelIconSet } from '@clr/core/icon';
  *
  * loadTravelIconSet();
  * ```
@@ -86,7 +86,7 @@ export function loadTravelIconSet() {
   ClarityIcons.addAliases(...travelCollectionAliases);
 }
 
-declare module '@cds/core/internal' {
+declare module '@clr/core/internal' {
   interface IconRegistrySources {
     [airplaneIconName]: string;
     [bicycleIconName]: string;

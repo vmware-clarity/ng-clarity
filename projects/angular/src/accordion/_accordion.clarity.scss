@@ -7,7 +7,7 @@
 @use 'sass:meta';
 @use '../utils/a11y';
 @use '../utils/mixins';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 @use 'variables.accordion' as accordion-variables;
 @include meta.load-css('properties.accordion');
 

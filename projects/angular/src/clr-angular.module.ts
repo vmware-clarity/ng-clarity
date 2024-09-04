@@ -27,7 +27,7 @@ import { ClrPopoverModuleNext } from './utils/popover/popover.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 
 // Register the icon library
-import '@cds/core/icon/register';
+import '@clr/core/icon/register';
 
 @NgModule({
   exports: [

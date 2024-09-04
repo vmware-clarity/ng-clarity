@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { createTestElement, removeTestElement } from '@cds/core/test';
+import { createTestElement, removeTestElement } from '@clr/core/test';
 import { html, LitElement } from 'lit';
 
 import { updateElementStyles } from './css.js';

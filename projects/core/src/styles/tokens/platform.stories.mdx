@@ -1,4 +1,4 @@
-import '@cds/core/alert/register.js';
+import '@clr/core/alert/register.js';
 import { Meta, Story, Preview } from '@web/storybook-prebuilt/addon-docs/blocks.js';
 
 <Meta title="Foundation/Platforms" />
@@ -9,7 +9,7 @@ The design tokens for Clarity are shipped by default as CSS Custom Properties fo
 However, we do provide experimental formats for other various platforms.
 
 ```css
-@import '@cds/core/styles/module.tokens.css'; /* automatically included if using global.css */
+@import '@clr/core/styles/module.tokens.css'; /* automatically included if using global.css */
 
 div {
   background: var(--cds-global-color-blue-50);
@@ -29,7 +29,7 @@ to the native CSS custom properties and require the global CSS or tokens to be
 loaded in the document.
 
 ```scss
-@import '@cds/core/tokens/tokens';
+@import '@clr/core/tokens/tokens';
 
 div {
   background: $cds-global-color-blue-50; // 'var(--cds-global-color-blue-50)'
@@ -44,7 +44,7 @@ The variables refer to the native CSS custom properties and require the global
 CSS or tokens to be loaded in the document.
 
 ```typescript
-import { globalColorBlue50 } from '@cds/core/tokens/tokens.js';
+import { globalColorBlue50 } from '@clr/core/tokens/tokens.js';
 
 console.log(globalColorBlue50); // 'var(--cds-global-color-blue-50)'
 ```
@@ -57,7 +57,7 @@ between tokens. If using JavaScript to apply styles, use the `tokens.js` option 
 it will allow unused tokens to tree shake out of the final build and inherit theme styles.
 
 ```typescript
-import * as tokens from '@cds/core/tokens/tokens.json';
+import * as tokens from '@clr/core/tokens/tokens.json';
 ```
 
 ### Android
@@ -66,7 +66,7 @@ For Android, we provide an XML theme file. If the token is an alias, it will pro
 the token that is being aliased.
 
 ```xml
-<!-- Sample of @cds/core/tokens/tokens.android.xml -->
+<!-- Sample of @clr/core/tokens/tokens.android.xml -->
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="globalLayoutSpaceSm">6dp</dimen>
@@ -90,7 +90,7 @@ the token that is being aliased.
 For iOS, we provide a swift theme file that defines each token as a variable.
 
 ```swift
-// Sample of @cds/core/tokens/tokens.ios.swift
+// Sample of @clr/core/tokens/tokens.ios.swift
 let globalLayoutSpaceSm = CGFloat(6.00);
 let globalLayoutSpaceMd = CGFloat(12.00);
 let globalLayoutSpaceLg = CGFloat(24.00);

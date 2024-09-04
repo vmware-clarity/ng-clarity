@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '@cds/core/icon';
+import { angleIcon, checkCircleIcon, ClarityIcons, exclamationCircleIcon, windowCloseIcon } from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
