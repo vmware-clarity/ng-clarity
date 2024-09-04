@@ -13,10 +13,8 @@ import { Keys } from '../../utils/enums/keys.enum';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DayModel } from './model/day.model';
 import { ClrMonthpicker } from './monthpicker';
-import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
@@ -44,8 +42,6 @@ export default function () {
           ClrPopoverToggleService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
-          DatePickerHelperService,
-          DateFormControlService,
         ]);
         localeHelperService = context.getClarityProvider(LocaleHelperService);
       });
@@ -132,8 +128,6 @@ export default function () {
           ClrPopoverToggleService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
-          DatePickerHelperService,
-          DateFormControlService,
         ]);
         localeHelperService = context.getClarityProvider(LocaleHelperService);
       });
@@ -203,8 +197,6 @@ export default function () {
           ClrPopoverToggleService,
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
-          DatePickerHelperService,
-          DateFormControlService,
         ]);
       }
 

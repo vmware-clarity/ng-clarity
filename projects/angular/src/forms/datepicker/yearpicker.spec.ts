@@ -12,11 +12,8 @@ import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
-import { DateFormControlService } from './providers/date-form-control.service';
-import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { DatePickerHelperService } from './providers/datepicker-helper.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { ClrYearpicker } from './yearpicker';
@@ -44,9 +41,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       });
 
@@ -183,9 +177,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       });
 
@@ -260,7 +251,7 @@ export default function () {
         context.clarityDirective.changeYear(2015);
 
         expect(viewManagerService.isYearView).toBe(false);
-        expect(viewManagerService.isMonthView).toBe(true);
+        expect(viewManagerService.isDayView).toBe(true);
       });
 
       it('updates year value in the date navigation service', () => {
@@ -292,9 +283,6 @@ export default function () {
           { provide: DateNavigationService, useValue: dateNavigationService },
           LocaleHelperService,
           ClrCommonStringsService,
-          DatePickerHelperService,
-          DateIOService,
-          DateFormControlService,
         ]);
       }
 

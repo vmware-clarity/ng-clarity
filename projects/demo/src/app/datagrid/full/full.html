@@ -50,6 +50,12 @@
     </select>
   </clr-select-container>
 
+  <clr-input-container *ngIf="!isServerDriven">
+    <label>Name filter</label>
+    <input clrInput type="text" name="nameFilter" [(ngModel)]="options.nameFilter" />
+    <clr-control-helper>Pre applied client side filter</clr-control-helper>
+  </clr-input-container>
+
   <button class="btn btn-primary">Apply</button>
 </form>
 
@@ -66,7 +72,7 @@
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilter">
+    <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="options.nameFilter">
       <ng-container *clrDgHideableColumn>Name</ng-container>
     </clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">

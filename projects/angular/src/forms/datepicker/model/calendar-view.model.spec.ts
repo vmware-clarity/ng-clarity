@@ -95,7 +95,6 @@ export default function (): void {
         new CalendarModel(year, month),
         null,
         null,
-        null,
         todaysDateInCal,
         0,
         dateRange
@@ -129,15 +128,7 @@ export default function (): void {
     function testCalendarDisabledDayViews(year: number, month: number) {
       // Uses the given year/month to create a new CalendarModel
       // Note that dateRange is defined above for use in multiple places
-      const calendar = new CalendarViewModel(
-        new CalendarModel(year, month),
-        null,
-        null,
-        null,
-        todaysDateInCal,
-        0,
-        dateRange
-      );
+      const calendar = new CalendarViewModel(new CalendarModel(year, month), null, null, todaysDateInCal, 0, dateRange);
       // calView is an array of 'week' arrays that represents the six possible lines (including days for end of previous / beginning of next month)
       // for the days of the month.
       const calView: DayViewModel[][] = calendar.calendarView;
@@ -159,7 +150,6 @@ export default function (): void {
     it('generates a CalendarViewModel with the CalendarView of 6x7', () => {
       const testJan2018: CalendarViewModel = new CalendarViewModel(
         calJan2018,
-        null,
         null,
         null,
         todaysDateInCal,
@@ -190,7 +180,6 @@ export default function (): void {
     it('generates the calendar with the correct month, year and excluded values', () => {
       const testJan2018: CalendarViewModel = new CalendarViewModel(
         calJan2018,
-        null,
         null,
         null,
         todaysDateInCal,
@@ -231,7 +220,6 @@ export default function (): void {
         calJan2018,
         null,
         null,
-        null,
         todaysDateInCal,
         0,
         dateRange
@@ -245,7 +233,7 @@ export default function (): void {
         .map((_e, i) => i + 1);
       testCalendarViewDates(prevUS, currUS, nextUS, testJan2018US);
 
-      const testJan2018Fr = new CalendarViewModel(calJan2018, null, null, null, todaysDateInCal, 1, dateRange);
+      const testJan2018Fr = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 1, dateRange);
       const prevFr: number[] = [];
       const currFr: number[] = Array(31)
         .fill(0)
@@ -255,7 +243,7 @@ export default function (): void {
         .map((_e, i) => i + 1);
       testCalendarViewDates(prevFr, currFr, nextFr, testJan2018Fr);
 
-      const testJan2018Random = new CalendarViewModel(calJan2018, null, null, null, todaysDateInCal, 5, dateRange);
+      const testJan2018Random = new CalendarViewModel(calJan2018, null, null, todaysDateInCal, 5, dateRange);
       const prevRandom: number[] = [29, 30, 31];
       const currRandom: number[] = Array(31)
         .fill(0)
@@ -271,7 +259,6 @@ export default function (): void {
       let testJan2018US: CalendarViewModel = new CalendarViewModel(
         calJan2018,
         dayModel,
-        dayModel,
         null,
         todaysDateInCal,
         0,
@@ -282,7 +269,7 @@ export default function (): void {
       testCalendarViewSelectedDates(testJan2018US, 0, 5, false);
 
       dayModel = new DayModel(2017, 0, 5);
-      testJan2018US = new CalendarViewModel(calJan2018, dayModel, null, null, todaysDateInCal, 0, dateRange);
+      testJan2018US = new CalendarViewModel(calJan2018, dayModel, null, todaysDateInCal, 0, dateRange);
 
       // Everything should be false
       testCalendarViewSelectedDates(testJan2018US, 0, 5, true);
@@ -293,7 +280,6 @@ export default function (): void {
       () => {
         const testJan2018US: CalendarViewModel = new CalendarViewModel(
           calJan2018,
-          null,
           null,
           null,
           todaysDateInCal,
@@ -314,7 +300,6 @@ export default function (): void {
           calJan2018,
           null,
           null,
-          null,
           todaysDateNotInCal,
           0,
           dateRange
@@ -329,7 +314,6 @@ export default function (): void {
       const dayModel: DayModel = new DayModel(2018, 0, 5);
       const testJan2018US: CalendarViewModel = new CalendarViewModel(
         calJan2018,
-        dayModel,
         dayModel,
         null,
         todaysDateInCal,
@@ -346,7 +330,6 @@ export default function (): void {
       const testJan2018US: CalendarViewModel = new CalendarViewModel(
         calJan2018,
         null,
-        null,
         dayModel,
         todaysDateInCal,
         0,
@@ -361,7 +344,6 @@ export default function (): void {
       let dayModel: DayModel = new DayModel(2018, 0, 5);
       const testJan2018US: CalendarViewModel = new CalendarViewModel(
         calJan2018,
-        null,
         null,
         dayModel,
         todaysDateInCal,
