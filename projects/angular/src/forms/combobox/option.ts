@@ -78,8 +78,9 @@ export class ClrOption<T> implements OnInit {
     }
   }
 
-  @HostListener('click')
-  onClick() {
+  @HostListener('click', ['$event'])
+  onClick(event) {
+    event.stopPropagation();
     if (this.optionSelectionService.multiselectable) {
       this.optionSelectionService.toggle(this.value);
     } else {
