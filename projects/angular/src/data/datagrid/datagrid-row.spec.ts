@@ -575,6 +575,7 @@ export default function (): void {
 
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
+        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
       }));
 
       it('open and close the details', fakeAsync(function () {
@@ -588,12 +589,14 @@ export default function (): void {
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.items[0].id);
+        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
 
         button.click();
         tick();
         context.detectChanges();
 
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
       }));
 
       it('try open the disabled details', fakeAsync(function () {
@@ -604,6 +607,7 @@ export default function (): void {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
         expect(button).not.toBeNull();
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
 
         button.click();
         tick();
@@ -611,20 +615,7 @@ export default function (): void {
 
         expect(button).not.toBeNull();
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
-      }));
-
-      it('disabled prestate details can opened', fakeAsync(function () {
-        context.testComponent.disabledIndex = 0;
-        tick();
-        context.detectChanges();
-
-        context.testComponent.preState = context.testComponent.items[context.testComponent.disabledIndex];
-        tick();
-        context.detectChanges();
-
-        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
-        expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
       }));
 
       it('check if detail button is hidden', fakeAsync(function () {
