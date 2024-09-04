@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsMo
 import { By } from '@angular/platform-browser';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
+import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -20,9 +21,8 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
-import { ClrDateInput } from './date-single-input';
+import { ClrDateInput } from './date-input';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
