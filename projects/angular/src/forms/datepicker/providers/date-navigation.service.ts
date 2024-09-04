@@ -8,7 +8,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 import { CalendarModel } from '../model/calendar.model';
 import { DayModel } from '../model/day.model';
@@ -22,18 +21,12 @@ import { DayModel } from '../model/day.model';
 @Injectable()
 export class DateNavigationService {
   selectedDay: DayModel;
-  selectedEndDay: DayModel;
   focusedDay: DayModel;
-  hoveredDay: DayModel;
-  hoveredMonth: number;
-  hoveredYear: number;
-  isRangePicker = false;
 
   private _displayedCalendar: CalendarModel;
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
-  private _selectedEndDayChange = new Subject<DayModel>();
   private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
@@ -48,10 +41,6 @@ export class DateNavigationService {
 
   get selectedDayChange(): Observable<DayModel> {
     return this._selectedDayChange.asObservable();
-  }
-
-  get selectedEndDayChange(): Observable<DayModel> {
-    return this._selectedEndDayChange.asObservable();
   }
 
   /**
@@ -72,7 +61,7 @@ export class DateNavigationService {
    * This observable lets the subscriber know that the focused day in the displayed calendar has changed.
    */
   get focusedDayChange(): Observable<DayModel> {
-    return this._focusedDayChange.asObservable().pipe(tap((day: DayModel) => (this.focusedDay = day)));
+    return this._focusedDayChange.asObservable();
   }
 
   /**
@@ -80,23 +69,8 @@ export class DateNavigationService {
    * Note: Only to be called from day.ts
    */
   notifySelectedDayChanged(dayModel: DayModel) {
-    if (this.isRangePicker) {
-      if (
-        !this.selectedDay ||
-        (!!this.selectedDay && !!this.selectedEndDay) ||
-        (!!this.selectedDay && dayModel?.isBefore(this.selectedDay))
-      ) {
-        if (this.selectedEndDay) {
-          this.hoveredDay = this.hoveredMonth = this.hoveredYear = undefined;
-          this.setSelectedEndDay(undefined);
-        }
-        this.setSelectedDay(dayModel);
-      } else {
-        this.setSelectedEndDay(dayModel);
-      }
-    } else {
-      this.setSelectedDay(dayModel);
-    }
+    this.selectedDay = dayModel;
+    this._selectedDayChange.next(dayModel);
   }
 
   /**
@@ -166,35 +140,6 @@ export class DateNavigationService {
       this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
     }
     this._focusOnCalendarChange.next();
-  }
-
-  setSelectedDay(dayModel: DayModel | undefined): void {
-    this.selectedDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
-    this._selectedDayChange.next(dayModel);
-  }
-
-  setSelectedEndDay(dayModel: DayModel | undefined): void {
-    this.selectedEndDay = dayModel;
-    this.updateDisplayedCalendarOnDaySelection(dayModel);
-    this._selectedEndDayChange.next(dayModel);
-  }
-
-  updateDisplayedCalendarOnDaySelection(day: DayModel | undefined): void {
-    if (day && this._displayedCalendar && !this._displayedCalendar.isDayInCalendar(day)) {
-      this.setDisplayedCalendar(new CalendarModel(day.year, day.month));
-    }
-  }
-
-  validateDateRange() {
-    if (!this.selectedDay || !this.selectedEndDay) {
-      if (this.selectedDay) {
-        this.setSelectedDay(undefined);
-      }
-      if (this.selectedEndDay) {
-        this.setSelectedEndDay(undefined);
-      }
-    }
   }
 
   // not a setter because i want this to remain private
