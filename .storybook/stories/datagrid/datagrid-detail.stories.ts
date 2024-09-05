@@ -6,8 +6,9 @@
  */
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
+import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
 
 export default {
@@ -30,6 +31,14 @@ export default {
     clrDetailAriaLabelledBy: {
       description: "Id or multiple space separated Id's referencing existing text on the page",
     },
+    disabledDetailIndex: {
+      description: 'Disabled detail button index.',
+      control: { type: 'number', min: -1, max: 50 },
+    },
+    hiddenDetailIndex: {
+      description: 'Hidden detail button index.',
+      control: { type: 'number', min: -1, max: 50 },
+    },
   },
   args: {
     //inputs
@@ -39,6 +48,7 @@ export default {
     elements,
     detailContentType: 'json',
     showLongContent: false,
+    showLongUninterruptedContent: false,
     highlight: true,
     singleSelectable: false,
     multiSelectable: false,
@@ -46,6 +56,8 @@ export default {
     compact: false,
     hidableColumns: false,
     height: 0,
+    disabledDetailIndex: -1,
+    hiddenDetailIndex: -1,
   },
 };
 
@@ -56,8 +68,18 @@ const longContentElement: Element = {
   electronegativity: 1.1,
 };
 
+const longUninterruptedContentElement: Element = {
+  name: 'aReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongUninterruptedContent',
+  symbol: 'Ac',
+  number: 89,
+  electronegativity: 1.1,
+};
+
 const DetailTemplate: StoryFn = args => {
   args.elements = args.showLongContent ? [longContentElement, ...args.elements] : args.elements;
+  args.elements = args.showLongUninterruptedContent
+    ? [longUninterruptedContentElement, ...args.elements]
+    : args.elements;
 
   return {
     template: `
@@ -75,7 +97,7 @@ const DetailTemplate: StoryFn = args => {
         ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
         [ngClass]="{ 'datagrid-compact': compact }"
       >
-        <clr-dg-column [style.width.px]="250">
+        <clr-dg-column ${args.showLongUninterruptedContent ? '' : '[style.width.px]="250"'}>
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
         </clr-dg-column>
         <clr-dg-column [style.width.px]="250">
@@ -88,7 +110,12 @@ const DetailTemplate: StoryFn = args => {
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
         </clr-dg-column>
 
-        <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
+        <clr-dg-row
+          *clrDgItems="let element of elements; let index = index"
+          [clrDgItem]="element"
+          [clrDgDetailDisabled]="disabledDetailIndex === index"
+          [clrDgDetailHidden]="hiddenDetailIndex === index"
+        >
           <clr-dg-cell>{{ element.name }}</clr-dg-cell>
           <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
           <clr-dg-cell>{{ element.number }}</clr-dg-cell>
@@ -153,4 +180,71 @@ const DetailTemplate: StoryFn = args => {
 
 export const Detail: StoryObj = {
   render: DetailTemplate,
+};
+
+export const OpenDetail: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
+    height: 500,
+  },
+};
+
+export const OpenLongContentDetail: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    showLongContent: true,
+  },
+};
+
+// Open uninterrupted content cell regression test for nested datagrid CDE-2208.
+export const OpenLongUninterruptedContentDetail: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    showLongUninterruptedContent: true,
+  },
+};
+
+export const DisabledDetailButton: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    disabledDetailIndex: 1,
+  },
+};
+
+export const HiddenDetailButton: StoryObj = {
+  render: DetailTemplate,
+  play({ canvasElement }: StoryContext) {
+    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+
+    removeFocusOutline({ canvasElement });
+  },
+  args: {
+    detailContentType: 'datagrid',
+    hiddenDetailIndex: 1,
+  },
 };

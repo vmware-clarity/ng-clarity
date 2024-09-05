@@ -12,6 +12,7 @@ import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { TemplateApiWizardTestComponent } from './test-components/api-wizard.mock';
 import { BasicWizardTestComponent } from './test-components/basic-wizard.mock';
+import { DynamicEmptyWizardTestComponent } from './test-components/dynamic-empty-wizard.mock';
 import { DynamicWizardTestComponent } from './test-components/dynamic-wizard.mock';
 import { UnopenedWizardTestComponent } from './test-components/unopened-wizard.mock';
 import { ClrWizard } from './wizard';
@@ -659,6 +660,15 @@ export default function (): void {
       });
     });
 
+    // CDE-2156
+    describe('Initialization', () => {
+      it('should be initilized empty and with navigation prevented.', function () {
+        expect(() => {
+          this.create(ClrWizard, DynamicEmptyWizardTestComponent);
+        }).not.toThrow();
+      });
+    });
+
     describe('Dynamic Content', () => {
       let context: TestContext<ClrWizard, DynamicWizardTestComponent>;
       let wizard: ClrWizard;
@@ -788,7 +798,7 @@ export default function (): void {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
           const titleString = context.hostElement.querySelector('.modal-title').textContent.trim();
-          expect(titleString).toEqual(document.activeElement.textContent.trim());
+          expect(document.activeElement.textContent.trim()).toBe(titleString);
         });
       });
     });

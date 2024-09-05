@@ -23,6 +23,7 @@ import { GridNestingDemo } from './nesting/nesting';
 import { GridNoGuttersDemo } from './no-gutters/no-gutters';
 import { GridColumnOffsettingDemo } from './offsets/grid-column-offsetting';
 import { GridOrderingDemo } from './ordering/ordering';
+import { GridContainerDemo } from './overflow/grid-container';
 import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
 
 @NgModule({
@@ -42,6 +43,7 @@ import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
     GridColumnWrappingDemo,
     GridOrderingDemo,
     GridNestingDemo,
+    GridContainerDemo,
   ],
   exports: [
     GridDemo,

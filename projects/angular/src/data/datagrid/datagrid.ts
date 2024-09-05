@@ -117,8 +117,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @ContentChildren(ClrDatagridRow) rows: QueryList<ClrDatagridRow<T>>;
 
-  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef;
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef;
+  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
@@ -269,33 +269,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this._displayedRows.insert(row._view);
         });
 
-        // Try to update only when there is something cached and its open.
-        if (this.detailService.state && this.detailService.isOpen) {
-          const row = this.rows.find(
-            row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state)
-          );
-
-          /**
-           * Reopen updated row or close it
-           */
-          if (row) {
-            this.detailService.open(row.item, row.detailButton.nativeElement);
-            // always keep open when virtual scroll is available otherwise close it
-          } else if (!this.hasVirtualScroller) {
-            // Using setTimeout to make sure the inner cycles in rows are done
-            setTimeout(() => {
-              this.detailService.close();
-            });
-          }
-        }
+        this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        const active = this.keyNavigation.getActiveCell();
-
-        if (active) {
-          this.zone.runOutsideAngular(() => {
-            setTimeout(() => this.keyNavigation.setActiveCell(active));
-          });
+        if (this.hasVirtualScroller) {
+          const active = this.keyNavigation.getActiveCell();
+          const isFocusInsideDatagrid = this.datagrid.nativeElement.contains(document.activeElement);
+          if (active && isFocusInsideDatagrid) {
+            this.zone.runOutsideAngular(() => {
+              setTimeout(() => this.keyNavigation.setActiveCell(active));
+            });
+          }
         }
       })
     );
@@ -306,6 +290,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   ngAfterViewInit() {
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
+    this.updateDetailState();
 
     // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
     this.refresh.emit(this.stateProvider.state);
@@ -399,6 +384,30 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   resize(): void {
     this.organizer.resize();
+  }
+
+  /**
+   * Checks the state of detail panel and if it's opened then
+   * find the matching row and trigger the detail panel
+   */
+  updateDetailState() {
+    // Try to update only when there is something cached and its open.
+    if (this.detailService.state && this.detailService.isOpen) {
+      const row = this.rows.find(row => this.items.trackBy(row.item) === this.items.trackBy(this.detailService.state));
+
+      /**
+       * Reopen updated row or close it
+       */
+      if (row) {
+        this.detailService.open(row.item, row.detailButton.nativeElement);
+        // always keep open when virtual scroll is available otherwise close it
+      } else if (!this.hasVirtualScroller) {
+        // Using setTimeout to make sure the inner cycles in rows are done
+        setTimeout(() => {
+          this.detailService.close();
+        });
+      }
+    }
   }
 
   /**

@@ -23,7 +23,11 @@ export class ColumnResizerService {
   private widthBeforeResize: number;
   private _resizedBy = 0;
 
-  constructor(private el: ElementRef, private domAdapter: DomAdapter, private organizer: DatagridRenderOrganizer) {}
+  constructor(
+    private el: ElementRef<HTMLElement>,
+    private domAdapter: DomAdapter,
+    private organizer: DatagridRenderOrganizer
+  ) {}
 
   get resizedBy() {
     return this._resizedBy;

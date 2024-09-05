@@ -20,7 +20,7 @@ export class DatagridCellRenderer implements OnDestroy {
   private stateSubscription: Subscription;
   private subscriptions: Subscription[] = [];
 
-  constructor(private el: ElementRef, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
+  constructor(private el: ElementRef<HTMLElement>, private renderer: Renderer2, organizer: DatagridRenderOrganizer) {
     this.subscriptions.push(
       organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
     );

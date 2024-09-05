@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -69,6 +69,7 @@
     }
     font-size: combobox-variables.$clr-combobox-font-size;
     font-weight: combobox-variables.$clr-combobox-font-weight;
+    line-height: mixins.baselinePx(20);
 
     &.multi {
       min-width: calc(min(combobox-variables.$clr-combobox-multi-min-width, 100%));
@@ -184,7 +185,7 @@
     clr-icon[shape='angle'] {
       color: combobox-variables.$clr-combobox-trigger-font-color;
 
-      @include mixins.min-equilateral(clr-combobox-caret-icon-size);
+      @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
     }
   }
 

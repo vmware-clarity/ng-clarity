@@ -416,7 +416,12 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    align-content: flex-start;
+
+    .datagrid-rows {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
 
     .datagrid-body {
       width: auto;
@@ -432,7 +437,8 @@
       border: none;
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -635,7 +641,8 @@
       }
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -1252,6 +1259,10 @@
       @include mixins.clr-no-styles-button();
       cursor: pointer;
       @include mixins.equilateral(tokens.$cds-global-space-9);
+
+      &:disabled cds-icon.datagrid-detail-caret-icon {
+        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      }
 
       &.is-open .datagrid-detail-caret-icon {
         border-radius: tokens.$cds-alias-object-border-radius-100;

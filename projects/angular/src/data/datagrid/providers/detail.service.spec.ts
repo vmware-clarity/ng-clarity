@@ -42,7 +42,7 @@ export default function (): void {
       provider.open('value', button);
       expect(provider.isOpen);
       provider.close();
-      expect(document.activeElement).toEqual(button);
+      expect(document.activeElement).toBe(button);
       expect(button.focus).toHaveBeenCalled();
       document.body.removeChild(button);
     });

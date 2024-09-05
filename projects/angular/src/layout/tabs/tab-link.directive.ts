@@ -42,7 +42,7 @@ export class ClrTabLink {
   constructor(
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) readonly id: number,
-    public el: ElementRef,
+    public el: ElementRef<HTMLElement>,
     private cfr: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef,
     private tabsService: TabsService,

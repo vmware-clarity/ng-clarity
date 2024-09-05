@@ -26,7 +26,7 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
   private filter = '';
 
   constructor(
-    private element: ElementRef,
+    private element: ElementRef<HTMLElement>,
     private optionSelectionService: OptionSelectionService<T>,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}

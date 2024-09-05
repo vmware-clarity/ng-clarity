@@ -6,6 +6,7 @@
  */
 
 import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
@@ -175,8 +176,12 @@ export default function (): void {
       columnSeparator.hideTracker();
     };
 
-    beforeEach(function () {
+    beforeEach(fakeAsync(function () {
       context = this.create(ClrDatagrid, HeaderResizeTestComponent);
+
+      context.detectChanges();
+      tick();
+
       columnHeader1DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
       columnHeader2DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
       columnHeader3DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[2];
@@ -199,7 +204,7 @@ export default function (): void {
       columnHeader3ColumnSeparatorDebugElement = context.fixture.debugElement.queryAll(
         By.directive(ClrDatagridColumnSeparator)
       )[2];
-    });
+    }));
 
     it('each header should have min-width', function () {
       expect(columnHeader1ResizerService.minColumnWidth).toBe(96);
@@ -222,9 +227,13 @@ export default function (): void {
       expect(column4InitialWidth).toBeGreaterThan(columnHeader4ResizerService.minColumnWidth);
     });
 
-    it('expands other flexible headers if header width shrinks', function () {
+    it('expands other flexible headers if header width shrinks', fakeAsync(function () {
       const resizeBy = -20;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBeGreaterThan(column2InitialWidth);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -232,7 +241,7 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBeGreaterThan(column4InitialWidth);
-    });
+    }));
 
     it('resized header should have fixed width class', function () {
       expect(columnHeader1Element.classList.contains(STRICT_WIDTH_CLASS)).toBeFalse();
@@ -253,9 +262,13 @@ export default function (): void {
       expect(widthOf(columnHeader4Element)).toBeLessThan(column4InitialWidth);
     });
 
-    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", function () {
+    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", fakeAsync(function () {
       const resizeBy = 1000;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBe(120);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -263,7 +276,7 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBe(96);
-    });
+    }));
 
     it('gives header its min-width if a user tried to drag too much to left', function () {
       const resizeBy = -1000;
@@ -271,11 +284,15 @@ export default function (): void {
       expect(widthOf(columnHeader1Element)).toBe(96);
     });
 
-    it('emits new header width once resizing ends', function () {
+    it('emits new header width once resizing ends', fakeAsync(function () {
       expect(context.testComponent.newWidth).toBeUndefined();
       const resizeBy = 20;
       emulateResizeOnColumn(resizeBy, columnHeader3ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(context.testComponent.newWidth).toBe(column3InitialWidth + resizeBy);
-    });
+    }));
   });
 }

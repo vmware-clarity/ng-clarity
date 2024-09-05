@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { Keys } from '../../utils/enums/keys.enum';
@@ -48,7 +48,7 @@ export default function () {
 
       it('renders the months correctly', () => {
         const months: ReadonlyArray<string> = localeHelperService.localeMonthsWide;
-        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button');
+        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
 
         expect(buttons.length).toBe(months.length);
 
@@ -62,7 +62,7 @@ export default function () {
       it('changes month when a month is clicked', () => {
         spyOn(context.clarityDirective, 'changeMonth');
 
-        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button');
+        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
 
         buttons[0].click();
         context.detectChanges();
@@ -71,12 +71,12 @@ export default function () {
       });
 
       it('has the correct month selected', () => {
-        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button');
+        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
         expect(buttons[selectedMonth].classList.contains('is-selected')).toBe(true);
       });
 
       it('initializes the tab indices correctly', () => {
-        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button');
+        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
         let count = 0;
         for (const button of buttons) {
           if (count === selectedMonth) {
@@ -88,32 +88,32 @@ export default function () {
         }
       });
 
-      it('updates the tab indices correctly', async(() => {
-        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button');
+      it('updates the tab indices correctly', waitForAsync(() => {
+        const buttons: HTMLButtonElement[] = context.clarityElement.querySelectorAll('button.month');
         expect(buttons[1].tabIndex).toBe(0);
 
         context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         context.detectChanges();
 
         expect(buttons[1].tabIndex).toBe(-1);
-        expect(buttons[2].tabIndex).toBe(0);
+        expect(buttons[3].tabIndex).toBe(0);
 
         context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         context.detectChanges();
 
-        expect(buttons[2].tabIndex).toBe(-1);
+        expect(buttons[3].tabIndex).toBe(-1);
         expect(buttons[1].tabIndex).toBe(0);
 
         context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         context.detectChanges();
 
         expect(buttons[1].tabIndex).toBe(-1);
-        expect(buttons[7].tabIndex).toBe(0);
+        expect(buttons[2].tabIndex).toBe(0);
 
         context.clarityElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         context.detectChanges();
 
-        expect(buttons[7].tabIndex).toBe(-1);
+        expect(buttons[2].tabIndex).toBe(-1);
         expect(buttons[1].tabIndex).toBe(0);
       }));
     });
@@ -205,7 +205,7 @@ export default function () {
 
         expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 doesn't have tabindex 0");
 
-        for (let i = 10; i >= 0; i--) {
+        for (let i = 9; i >= 0; i = i - 2) {
           context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
           expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + " doesn't have tabindex 0");
           expect(context.clarityDirective.getTabIndex(i + 1)).toBe(
@@ -215,9 +215,9 @@ export default function () {
         }
 
         // Boundary
-        expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 does't have tabindex 0");
+        expect(context.clarityDirective.getTabIndex(1)).toBe(0, "Month 0 does't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 does't have tabindex 0");
+        expect(context.clarityDirective.getTabIndex(1)).toBe(0, "Month 0 does't have tabindex 0");
       });
 
       it('handles the down arrow', function () {
@@ -225,7 +225,7 @@ export default function () {
 
         expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 doesn't have tabindex 0");
 
-        for (let i = 1; i <= 11; i++) {
+        for (let i = 2; i <= 11; i = i + 2) {
           context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
           expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + " doesn't have tabindex 0");
           expect(context.clarityDirective.getTabIndex(i - 1)).toBe(
@@ -235,63 +235,38 @@ export default function () {
         }
 
         // Boundary
-        expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 does't have tabindex 0");
+        expect(context.clarityDirective.getTabIndex(10)).toBe(0, "Month 11 does't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 does't have tabindex 0");
+        expect(context.clarityDirective.getTabIndex(10)).toBe(0, "Month 11 does't have tabindex 0");
       });
 
       // IE doesn't handle KeyboardEvent constructor
       it('handles the right arrow', function () {
         createMonthPicker(this, new DayModel(2015, 0, 1));
-        expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 doesn't have tabindex 0");
 
-        for (let i = 0; i < 5; i++) {
-          // Inner for loop tests boundary
-          // We start with the 0th index and move right twice
-          for (let j = 0; j < 2; j++) {
+        for (let i = 0; i < 12; i++) {
+          expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + (i + 2) + "doesn't have tabindex 0");
+          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+          // tests boundary
+          if (i === 11) {
             context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-            expect(context.clarityDirective.getTabIndex(i + 6)).toBe(0, 'Month ' + (i + 6) + "doesn't have tabindex 0");
-            expect(context.clarityDirective.getTabIndex(i)).toBe(-1, 'Month ' + i + "doesn't have tabindex -1");
+            expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + "doesn't have tabindex -1");
           }
-
-          // After each boundary test we adjust the focus to the next month
-          // Jan -> Feb -> Mar -> Apr -> May -> Jun
-          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         }
-
-        expect(context.clarityDirective.getTabIndex(5)).toBe(0, "Month 5 doesn't have the tabindex 0");
-        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expect(context.clarityDirective.getTabIndex(5)).toBe(-1, "Month 5 doesn't have the tabindex -1");
-        expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 doesn't have the tabindex -1");
       });
 
       it('handles the left arrow', function () {
-        createMonthPicker(this, new DayModel(2015, 6, 1));
-        expect(context.clarityDirective.getTabIndex(6)).toBe(0, "Month 6 doesn't have tabindex 0");
+        createMonthPicker(this, new DayModel(2015, 11, 1));
 
-        for (let i = 0; i < 5; i++) {
-          // Inner for loop tests boundary
-          // We start with the 6th index and move left twice
-          for (let j = 0; j < 2; j++) {
+        for (let i = 11; i > -1; i--) {
+          expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + "doesn't have tabindex 0");
+          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+
+          if (i === 0) {
             context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-            expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + "doesn't have tabindex 0");
-            expect(context.clarityDirective.getTabIndex(i + 6)).toBe(
-              -1,
-              'Month ' + (i + 6) + "doesn't have tabindex -1"
-            );
+            expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + "doesn't have tabindex -1");
           }
-
-          // After each boundary test we adjust the focus to the next month
-          // Jul -> Aug -> Sept -> Oct -> Nov -> Dec
-          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-          context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         }
-
-        expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 doesn't have the tabindex 0");
-        context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-        expect(context.clarityDirective.getTabIndex(5)).toBe(0, "Month 5 doesn't have the tabindex 0");
-        expect(context.clarityDirective.getTabIndex(11)).toBe(-1, "Month 11 doesn't have the tabindex -1");
       });
     });
   });

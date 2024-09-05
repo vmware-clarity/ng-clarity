@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -71,7 +71,7 @@
 
   .clr-accordion-number {
     padding: 0 tokens.$cds-global-space-7;
-    display: none;
+    display: none !important;
   }
 
   .clr-accordion-header-button {
@@ -115,6 +115,7 @@
     .clr-accordion-title {
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
+      width: 100%;
       @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
         margin-left: tokens.$cds-global-space-7;
       }
@@ -177,15 +178,11 @@
     .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
-    .clr-accordion-panel-complete {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
-      }
+    .clr-accordion-panel-complete > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
-    .clr-accordion-panel-error {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      }
+    .clr-accordion-panel-error > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
     }
 
     & > .clr-accordion-content-region .clr-accordion-content {
@@ -211,16 +208,16 @@
   }
 
   .clr-accordion-panel-complete {
-    .clr-accordion-complete-icon {
+    & > .clr-accordion-complete-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-complete-color;
     }
 
-    .clr-accordion-angle {
+    & > .clr-accordion-angle {
       visibility: visible;
     }
 
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
 
@@ -230,14 +227,14 @@
   }
 
   .clr-accordion-panel-error {
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
       border-color: accordion-variables.$clr-accordion-error-color;
       border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
       background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
-    .clr-accordion-error-icon {
+    & > .clr-accordion-error-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-error-color;
     }

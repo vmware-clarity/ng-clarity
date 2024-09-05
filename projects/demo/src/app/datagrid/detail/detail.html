@@ -246,10 +246,12 @@
   <clr-dg-column [clrDgField]="'color'"><ng-container *clrDgHideableColumn>Favorite color</ng-container></clr-dg-column>
 
   <clr-dg-row
-    *clrDgItems="let user of users | slice:0:4"
+    *clrDgItems="let user of users | slice:0:4; let i = index;"
     [clrDgItem]="user"
     [clrDgDetailOpenLabel]="'Open row details for ' + user.name"
     [clrDgDetailCloseLabel]="'Open row details for ' + user.name"
+    [clrDgDetailDisabled]="i === 0"
+    [clrDgDetailHidden]="i === 1"
   >
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>

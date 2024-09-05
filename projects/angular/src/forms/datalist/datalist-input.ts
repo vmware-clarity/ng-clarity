@@ -41,7 +41,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef,
+    el: ElementRef<HTMLInputElement>,
     private datalistIdService: DatalistIdService
   ) {
     super(vcr, ClrDatalistContainer, injector, control, renderer, el);

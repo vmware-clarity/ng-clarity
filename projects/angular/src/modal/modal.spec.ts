@@ -17,6 +17,7 @@ import { ClrModalModule } from './modal.module';
 
 @Component({
   template: `
+    <button class="btn to-focus"></button>
     <clr-modal
       [(clrModalOpen)]="opened"
       [clrModalClosable]="closable"
@@ -29,7 +30,7 @@ import { ClrModalModule } from './modal.module';
         <p>Body</p>
       </div>
       <div class="modal-footer">
-        <button (click)="opened = false">Footer</button>
+        <button class="btn" (click)="opened = false">Footer</button>
       </div>
     </clr-modal>
   `,
@@ -181,7 +182,7 @@ describe('Modal', () => {
   }));
 
   it('focuses on the title when opened', fakeAsync(() => {
-    expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
   it('supports a clrModalSize option', fakeAsync(() => {
@@ -256,6 +257,27 @@ describe('Modal', () => {
 
     backdrop.click();
     flushAndExpectOpen(fixture, false);
+  }));
+
+  it('focus trap remain active after clicking on backdrop', fakeAsync(() => {
+    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
+    const titleWrapperElement: HTMLElement = compiled.querySelector('div.modal-title-wrapper');
+    const focusStealButton: HTMLElement = compiled.querySelector('button.btn.to-focus');
+
+    fixture.componentInstance.staticBackdrop = true;
+    fixture.detectChanges();
+
+    // Just make sure we have the "x" to close the modal,
+    // because this is different from the clrModalClosable option.
+    expect(compiled.querySelector('.close')).not.toBeNull();
+    expect(document.activeElement).toBe(titleWrapperElement);
+
+    focusStealButton.focus();
+    expect(document.activeElement).toBe(focusStealButton);
+
+    backdrop.click();
+    flushAndExpectOpen(fixture, true);
+    expect(document.activeElement).toBe(titleWrapperElement);
   }));
 
   it('traps user focus', () => {

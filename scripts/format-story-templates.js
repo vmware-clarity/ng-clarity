@@ -73,7 +73,7 @@ function findStoryTemplates(storyTsCode) {
     if (
       (ts.isPropertyAssignment(node) || ts.isVariableDeclaration(node)) &&
       ts.isIdentifier(node.name) &&
-      node.name.text === 'template' &&
+      (node.name.text === 'template' || node.name.text.endsWith('Template')) &&
       ts.isTemplateLiteral(node.initializer)
     ) {
       const length = node.initializer.end - node.initializer.getStart();

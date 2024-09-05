@@ -107,7 +107,7 @@ export default function (): void {
       context.detectChanges();
       await context.fixture.whenStable();
       const firstButton: HTMLButtonElement = context.testComponent.actionItem.nativeElement;
-      expect(document.activeElement).toEqual(firstButton);
+      expect(document.activeElement).toBe(firstButton);
     });
   });
 }
@@ -130,7 +130,7 @@ class SimpleTest {
   open: boolean;
   buttonLabel: string;
 
-  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef;
+  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef<HTMLButtonElement>;
 
   clrDgActionOverflowOpenChangeFn(_$event: boolean) {
     // Do nothing

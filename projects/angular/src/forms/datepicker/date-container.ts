@@ -96,7 +96,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  private toggleButton: ElementRef;
+  private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,

@@ -41,7 +41,7 @@ import { StepperService } from './providers/stepper.service';
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   override isAccordion = false;
 
-  @ViewChild('headerButton') headerButton: ElementRef;
+  @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
 
   private subscriptions: Subscription[] = [];
 
@@ -81,6 +81,10 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
       this.subscriptions.push(
         this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
+          if (!this.formGroup.touched) {
+            return;
+          }
+
           if (status === 'VALID') {
             this.stepperService.setPanelValid(this.id);
           } else if (status === 'INVALID') {

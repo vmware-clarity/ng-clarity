@@ -33,7 +33,7 @@ export class ClrOption<T> implements OnInit {
   private _value: T;
 
   constructor(
-    public elRef: ElementRef,
+    public elRef: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private focusHandler: ComboboxFocusHandler<T>,
     private optionSelectionService: OptionSelectionService<T>
@@ -78,8 +78,9 @@ export class ClrOption<T> implements OnInit {
     }
   }
 
-  @HostListener('click')
-  onClick() {
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    event.stopPropagation();
     if (this.optionSelectionService.multiselectable) {
       this.optionSelectionService.toggle(this.value);
     } else {

@@ -102,7 +102,7 @@ export default function (): void {
         this.focusHandler.initialFocus = InitialFocus.LAST_ITEM;
         this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toEqual(lastChild);
+        expect(document.activeElement).toBe(lastChild);
       });
 
       it('focus last button in the menu on key down events', function (this: TestContext) {
@@ -110,7 +110,7 @@ export default function (): void {
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         const lastChild = this.menu.children[this.menu.children.length - 1];
-        expect(document.activeElement).toEqual(lastChild);
+        expect(document.activeElement).toBe(lastChild);
       });
 
       it('does not prevent moving focus to a different part of the page', function (this: TestContext) {

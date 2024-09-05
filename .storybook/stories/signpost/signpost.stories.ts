@@ -50,7 +50,7 @@ export default {
 };
 
 const template = `
-  <div style="margin-top: 100px; text-align: center">
+  <div style="padding: 250px; text-align: center">
     <clr-signpost>
       <clr-signpost-content [clrPosition]="clrPosition">
         {{ content }}
@@ -70,7 +70,18 @@ export const Initial: StoryObj = {
 
 export const Opened = {
   render: SignpostTemplate,
-  async play({ canvasElement }) {
+  play({ canvasElement }) {
     canvasElement.querySelector('button').click();
+  },
+};
+
+// visual regression test for CDE-2226
+export const OpenedLongContent = {
+  render: SignpostTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
+  args: {
+    content: 'Hello World! '.repeat(110),
   },
 };

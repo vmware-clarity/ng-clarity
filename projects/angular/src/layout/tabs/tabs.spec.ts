@@ -156,7 +156,7 @@ class NoClrIfActiveTest {
   `,
 })
 class ScalingTestComponent {
-  @ViewChild('content') content: ElementRef;
+  @ViewChild('content') content: ElementRef<HTMLElement>;
 }
 
 describe('Tabs', () => {

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -100,6 +100,9 @@
 @include mixins.exports('responsive-nav.clarity') {
   .clr-nav-close {
     margin: tokens.$cds-global-space-7;
+    background: none;
+    border: none;
+    color: var(--color);
     --color: #{tokens.$cds-global-color-white};
 
     &:hover,
@@ -113,8 +116,7 @@
     display: none;
   }
 
-  .header-hamburger-trigger,
-  .clr-nav-close {
+  .header-hamburger-trigger {
     $trigger-span-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,
@@ -152,8 +154,7 @@
     }
   }
 
-  .header-overflow-trigger,
-  .clr-nav-close {
+  .header-overflow-trigger {
     $overflow-trigger-psuedo-positioning: calc(-1 * tokens.$cds-global-space-5);
 
     & > span,

@@ -68,7 +68,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
   constructor(
     viewContainerRef: ViewContainerRef,
     injector: Injector,
-    protected override el: ElementRef,
+    protected override el: ElementRef<HTMLInputElement>,
     protected override renderer: Renderer2,
     @Self()
     @Optional()

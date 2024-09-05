@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.   
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -40,7 +40,7 @@
 .modal.static {
   position: relative;
   padding: $clr_baselineRem_3;
-  z-index: map-get($clr-layers, side-panel-bg) - 1;
+  z-index: map-get($clr-layers, sidepanel-bg) - 1;
 }
 
 .modal-backdrop.static {
@@ -49,7 +49,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: map-get($clr-layers, side-panel-bg) - 2;
+  z-index: map-get($clr-layers, sidepanel-bg) - 2;
 }
 
 .modal-icon {
