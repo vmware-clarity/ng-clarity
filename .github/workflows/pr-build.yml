@@ -86,7 +86,7 @@ jobs:
       - name: Discover Stories
         run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Update Visual Snapshots
-        run: npx playwright test --update-snapshots
+        run: npx playwright test --update-snapshots ./tests/visual-snapshots.spec.ts
       - name: Collect Changes
         id: diff
         run: |
@@ -97,3 +97,38 @@ jobs:
         with:
           name: visual-snapshot-changes-${{matrix.browser}}.diff
           path: visual-snapshot-changes-${{matrix.browser}}.diff
+  pr-a11y-test:
+    name: PR A11y Test
+    continue-on-error: true
+    timeout-minutes: 30
+    # This job intentionally does not use the `ubuntu-latest` image.
+    # An updated image could generate different snapshots, so we should explicitly update the image version.
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        browser: ['chromium', 'firefox']
+    env:
+      CLARITY_VRT_BROWSER: ${{matrix.browser}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps ${{matrix.browser}}
+      - name: Build Storybook
+        run: npm run _build:storybook
+      - name: Discover Stories
+        run: npm run ts-node -- ./scripts/write-story-list.ts
+      - name: Run Accessibility Tests on Storybook
+        run: npx playwright test --retries=0 --reporter=html ./tests/accessibility.spec.ts
+      - name: Upload Report
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-report
+          path: playwright-report
