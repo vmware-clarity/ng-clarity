@@ -1265,6 +1265,10 @@
       cursor: pointer;
       @include mixins.equilateral(tokens.$cds-global-space-9);
 
+      &:disabled cds-icon.datagrid-detail-caret-icon {
+        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      }
+
       &.is-open .datagrid-detail-caret-icon {
         border-radius: tokens.$cds-alias-object-border-radius-100;
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
