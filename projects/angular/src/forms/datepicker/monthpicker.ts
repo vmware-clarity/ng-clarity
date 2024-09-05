@@ -7,7 +7,6 @@
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
 
-import { ClrCommonStringsService } from '../../utils';
 import { Keys } from '../../utils/enums/keys.enum';
 import { normalizeKey } from '../../utils/focus/key-focus/util';
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -18,58 +17,16 @@ import { ViewManagerService } from './providers/view-manager.service';
 @Component({
   selector: 'clr-monthpicker',
   template: `
-    <div class="calendar-header in-monthpicker">
-      <div class="year-view-switcher">
-        <button
-          class="calendar-btn yearpicker-trigger"
-          type="button"
-          (click)="changeToYearView()"
-          [attr.aria-label]="yearAttrString"
-          [attr.title]="yearAttrString"
-        >
-          {{ calendarYear }}
-        </button>
-      </div>
-      <div class="calendar-switchers">
-        <button
-          class="calendar-btn switcher"
-          type="button"
-          (click)="previousYear()"
-          [attr.aria-label]="commonStrings.keys.datepickerPreviousMonth"
-        >
-          <cds-icon shape="angle" direction="left" [attr.title]="commonStrings.keys.datepickerPreviousMonth"></cds-icon>
-        </button>
-        <button
-          class="calendar-btn switcher"
-          type="button"
-          (click)="currentYear()"
-          [attr.aria-label]="commonStrings.keys.datepickerCurrentMonth"
-        >
-          <cds-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentMonth"></cds-icon>
-        </button>
-        <button
-          class="calendar-btn switcher"
-          type="button"
-          (click)="nextYear()"
-          [attr.aria-label]="commonStrings.keys.datepickerNextMonth"
-        >
-          <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextMonth"></cds-icon>
-        </button>
-      </div>
-    </div>
-    <div class="months">
-      <button
-        type="button"
-        class="calendar-btn month"
-        *ngFor="let month of monthNames; let monthIndex = index"
-        (click)="changeMonth(monthIndex)"
-        [class.is-selected]="isSelected(monthIndex)"
-        [attr.tabindex]="getTabIndex(monthIndex)"
-        [class.is-today]="calendarYear === currentCalendarYear && monthIndex === currentCalendarMonth"
-      >
-        {{ month }}
-      </button>
-    </div>
+    <button
+      type="button"
+      class="calendar-btn month"
+      *ngFor="let month of monthNames; let monthIndex = index"
+      (click)="changeMonth(monthIndex)"
+      [class.is-selected]="monthIndex === calendarMonthIndex"
+      [attr.tabindex]="getTabIndex(monthIndex)"
+    >
+      {{ month }}
+    </button>
   `,
   host: {
     '[class.monthpicker]': 'true',
@@ -87,8 +44,7 @@ export class ClrMonthpicker implements AfterViewInit {
     private _localeHelperService: LocaleHelperService,
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
-    private _elRef: ElementRef<HTMLElement>,
-    public commonStrings: ClrCommonStringsService
+    private _elRef: ElementRef<HTMLElement>
   ) {
     this._focusedMonthIndex = this.calendarMonthIndex;
   }
@@ -108,34 +64,6 @@ export class ClrMonthpicker implements AfterViewInit {
     return this._dateNavigationService.displayedCalendar.month;
   }
 
-  get yearAttrString(): string {
-    return this.commonStrings.parse(this.commonStrings.keys.datepickerSelectYearText, {
-      CALENDAR_YEAR: this.calendarYear.toString(),
-    });
-  }
-
-  /**
-   * Returns the year value of the calendar.
-   */
-  get calendarYear(): number {
-    return this._dateNavigationService.displayedCalendar.year;
-  }
-
-  get currentCalendarYear(): number {
-    return new Date().getFullYear();
-  }
-
-  get currentCalendarMonth(): number {
-    return new Date().getMonth();
-  }
-
-  /**
-   * Calls the ViewManagerService to change to the yearpicker view.
-   */
-  changeToYearView(): void {
-    this._viewManagerService.changeToYearView();
-  }
-
   /**
    * Focuses on the current calendar month when the View is initialized.
    */
@@ -153,31 +81,24 @@ export class ClrMonthpicker implements AfterViewInit {
     // to create extra observables just to move this logic to the service.
     if (event) {
       const key = normalizeKey(event.key);
-      if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
-        event.preventDefault();
-        this._focusedMonthIndex -= 2;
-        this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 10) {
-        event.preventDefault();
-        this._focusedMonthIndex += 2;
-        this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 11) {
-        event.preventDefault();
-        this._focusedMonthIndex++;
-        this._datepickerFocusService.focusCell(this._elRef);
-      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 0) {
+      if (key === Keys.ArrowUp && this._focusedMonthIndex > 0) {
         event.preventDefault();
         this._focusedMonthIndex--;
         this._datepickerFocusService.focusCell(this._elRef);
+      } else if (key === Keys.ArrowDown && this._focusedMonthIndex < 11) {
+        event.preventDefault();
+        this._focusedMonthIndex++;
+        this._datepickerFocusService.focusCell(this._elRef);
+      } else if (key === Keys.ArrowRight && this._focusedMonthIndex < 6) {
+        event.preventDefault();
+        this._focusedMonthIndex = this._focusedMonthIndex + 6;
+        this._datepickerFocusService.focusCell(this._elRef);
+      } else if (key === Keys.ArrowLeft && this._focusedMonthIndex > 5) {
+        event.preventDefault();
+        this._focusedMonthIndex = this._focusedMonthIndex - 6;
+        this._datepickerFocusService.focusCell(this._elRef);
       }
     }
-  }
-
-  isSelected(monthIndex: number): boolean {
-    return (
-      this._dateNavigationService.selectedDay?.year === this.calendarYear &&
-      monthIndex === this._dateNavigationService.selectedDay?.month
-    );
   }
 
   /**
@@ -194,26 +115,5 @@ export class ClrMonthpicker implements AfterViewInit {
    */
   getTabIndex(monthIndex: number): number {
     return monthIndex === this._focusedMonthIndex ? 0 : -1;
-  }
-
-  /**
-   * Calls the DateNavigationService to move to the next month.
-   */
-  nextYear(): void {
-    this._dateNavigationService.moveToNextYear();
-  }
-
-  /**
-   * Calls the DateNavigationService to move to the previous month.
-   */
-  previousYear(): void {
-    this._dateNavigationService.moveToPreviousYear();
-  }
-
-  /**
-   * Calls the DateNavigationService to move to the current month.
-   */
-  currentYear(): void {
-    this._dateNavigationService.moveToCurrentMonth();
   }
 }

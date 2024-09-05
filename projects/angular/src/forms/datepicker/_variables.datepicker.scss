@@ -26,7 +26,7 @@ $clr-calendar-height: calc(
 );
 
 $clr-calendar-btn-color: var(--clr-calendar-btn-color) !default;
-$clr-calendar-btn-hover-color: var(--clr-calendar-btn-hover-color) !default;
+$clr-calendar-btn-hover-focus-color: var(--clr-calendar-btn-hover-focus-color) !default;
 $clr-calendar-btn-active-color-bg: var(--clr-calendar-btn-active-color-bg) !default;
 $clr-calendar-btn-hover-focus-color-text: var(--clr-calendar-btn-hover-focus-color-text) !default;
 $clr-calendar-btn-active-color: var(--clr-calendar-btn-active-color) !default;
@@ -34,8 +34,7 @@ $clr-calendar-btn-picker-trigger-color: var(--clr-calendar-btn-picker-trigger-co
 
 $clr-calendar-btn-padding: 0;
 
-$clr-calendar-year-cell-height: #{tokens.$cds-global-space-12};
-$clr-calendar-month-cell-height: #{tokens.$cds-global-space-11};
+$clr-calendar-month-cell-height: #{tokens.$cds-global-space-12};
 $clr-calendar-month-cell-padding: #{tokens.$cds-global-space-6};
 
 $clr-calendar-picker-btn-font-size: var(--clr-calendar-picker-btn-font-size);
@@ -53,9 +52,6 @@ $clr-calendar-weekday-font-size: var(--clr-calendar-weekday-font-size);
 $clr-switcher-width: calc($clr-calendar-click-target * 3);
 
 $clr-monthpicker-min-height: calc(6 * $clr-calendar-month-cell-height);
-$clr-yearpicker-min-height: calc(6 * $clr-calendar-year-cell-height);
 $clr-month-year-btn-width: calc(
   0.5 * #{$clr-calendar-width} - #{tokens.$cds-global-space-7} - #{tokens.$cds-alias-object-border-width-100}
 );
-
-$clr-calendar-today-date-cell-border-color: var(--clr-calendar-today-date-cell-border-color);
