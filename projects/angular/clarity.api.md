@@ -2973,7 +2973,7 @@ export class ClrOption<T> implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    onClick(): void;
+    onClick(event: MouseEvent): void;
     // (undocumented)
     get optionId(): string;
     set optionId(id: string);
