@@ -37,6 +37,7 @@ export default {
     stepCount: 3,
     form: formMappingKey,
     ngSubmit: action('ngSubmit'),
+    alignmentTest: false,
   },
 };
 
@@ -44,7 +45,7 @@ const StepperTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [clrInitialStep]="clrInitialStep" [formGroup]="form" (ngSubmit)="ngSubmit()">
       <clr-stepper-panel *ngFor="let _ of createArray(stepCount); let i = index" formGroupName="step{{ i + 1 }}">
-        <clr-step-title>Step {{ i + 1 }}</clr-step-title>
+        <clr-step-title>Step {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}</clr-step-title>
         <clr-step-description>Step {{ i + 1 }} description.</clr-step-description>
         <clr-step-content *clrIfExpanded>
           <clr-input-container>
@@ -79,4 +80,11 @@ function getForm() {
 
 export const Stepper: StoryObj = {
   render: StepperTemplate,
+};
+
+export const StepperAlignmentTest: StoryObj = {
+  render: StepperTemplate,
+  args: {
+    alignmentTest: true,
+  },
 };

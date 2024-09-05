@@ -20,7 +20,7 @@ export function getTabableItems(el: HTMLElement) {
     'iframe',
     'object',
     'embed',
-    '*[tabindex]',
+    '*[tabindex]:not([disabled])',
     '*[contenteditable=true]',
     '[role=button]:not([disabled])',
   ].join(',');
