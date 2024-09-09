@@ -118,20 +118,6 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
-  /**
-   * Moves the displayed calendar to the next year.
-   */
-  moveToNextYear(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.nextYear());
-  }
-
-  /**
-   * Moves the displayed calendar to the previous year.
-   */
-  moveToPreviousYear(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.previousYear());
-  }
-
   incrementFocusDay(value: number): void {
     this.focusedDay = this.focusedDay.incrementBy(value);
     if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
