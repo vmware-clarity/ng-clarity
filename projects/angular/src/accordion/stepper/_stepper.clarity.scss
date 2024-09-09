@@ -57,7 +57,7 @@
       color: accordion-variables.$clr-accordion-complete-color;
     }
 
-    .clr-accordion-header-button {
+    > .clr-accordion-header-button {
       align-items: center;
       gap: tokens.$cds-global-space-12;
       min-height: mixins.baselinePx(56);
