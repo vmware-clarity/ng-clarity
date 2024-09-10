@@ -79,6 +79,13 @@
 
   .clr-control-container {
     display: inline-block;
+
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-RG-EXP',
+      (
+        font-size: forms-variables.$clr-forms-field-font-size,
+      )
+    );
   }
 
   .clr-control-inline {
