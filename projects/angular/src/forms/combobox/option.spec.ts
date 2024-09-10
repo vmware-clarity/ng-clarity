@@ -91,7 +91,7 @@ export default function (): void {
       it('calls to update the selection when an option is clicked', () => {
         spyOn(optionSelectionService, 'select');
 
-        context.clarityDirective.onClick();
+        context.clarityDirective.elRef.nativeElement.click();
 
         expect(optionSelectionService.select).toHaveBeenCalled();
       });
