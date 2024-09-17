@@ -6,9 +6,6 @@
  */
 @use '@cds/core/tokens/tokens.scss';
 [cds-theme] {
-  // Utility tangerine
-  --cds-alias-utility-tangerine: #{tokens.$cds-global-color-tangerine-300};
-
   --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
   --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};
   --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-100};
@@ -28,6 +25,10 @@
   --cds-alias-object-container-background-inverse: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-container-background-inverse-tint: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-container-background-inverse-shade: #{tokens.$cds-global-color-construction-500};
+}
+
+[cds-theme~='light'] {
+  --cds-alias-utility-tangerine: #{tokens.$cds-global-color-tangerine-300};
 }
 
 [cds-theme~='dark'] {
