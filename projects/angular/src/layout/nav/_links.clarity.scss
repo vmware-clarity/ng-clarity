@@ -8,14 +8,40 @@
 @use 'variables.nav' as nav-variables;
 
 @include mixins.exports('links.clarity') {
-  a:link {
-    /*
-    * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.alert-action` and `badge`
-    * it overrides the styles of both which is not required.
-    * Also `.btn, .nav-link, .dropdown-item, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
-    */
-    &:not(.btn, .nav-link, .dropdown-item, .alert-action, .badge) {
-      @include mixins.generate-typography-token('LINK-13');
+  a {
+    &:link {
+      /*
+      * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.alert-action` and `badge`
+      * it overrides the styles of both which is not required.
+      * Also `.btn, .nav-link, .dropdown-item, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
+      */
+      &:not(.btn, .nav-link, .dropdown-item, .alert-action, .badge) {
+        @include mixins.generate-typography-token('LINK-13');
+      }
+    }
+    &:active {
+      cds-icon,
+      clr-icon {
+        color: nav-variables.$clr-link-active-color;
+      }
+    }
+    &:hover {
+      cds-icon,
+      clr-icon {
+        color: nav-variables.$clr-link-hover-color;
+      }
+    }
+    &:visited {
+      cds-icon,
+      clr-icon {
+        color: nav-variables.$clr-link-visited-color;
+      }
+      &:hover {
+        cds-icon,
+        clr-icon {
+          color: nav-variables.$clr-link-visited-color-hover;
+        }
+      }
     }
   }
 
