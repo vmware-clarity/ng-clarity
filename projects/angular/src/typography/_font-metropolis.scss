@@ -41,4 +41,71 @@
     font-weight: 600;
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'Broadhevan';
+    src: url('./font/Metropolis-Light.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Broadhevan';
+    src: url('./font/Metropolis-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Broadhevan';
+    // medium
+    src: url('./font/Metropolis-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Broadhevan';
+    // semibold
+    src: url('./font/Metropolis-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  /* light */
+  @font-face {
+    font-family: 'Clarity City';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/ClarityCity-Light.woff2') format('woff2'), url('./font/ClarityCity-Light.woff') format('woff');
+  }
+
+  /* regular */
+  @font-face {
+    font-family: 'Clarity City';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/ClarityCity-Regular.woff2') format('woff2'), url('./font/ClarityCity-Regular.woff') format('woff');
+  }
+
+  /* medium */
+  @font-face {
+    font-family: 'Clarity City';
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/ClarityCity-Medium.woff2') format('woff2'), url('./font/ClarityCity-Medium.woff') format('woff');
+  }
+
+  /* semi bold */
+  @font-face {
+    font-family: 'Clarity City';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/ClarityCity-SemiBold.woff2') format('woff2'),
+      url('./font/ClarityCity-SemiBold.woff') format('woff');
+  }
 }

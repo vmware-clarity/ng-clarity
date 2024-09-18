@@ -4,14 +4,21 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+@use '@cds/core/tokens/tokens.scss';
 @import '../../../../angular/src/utils/variables/variables.color';
 @import '../../../../angular/src/utils/variables/variables.global';
 
 $full-lh-block-width: $clr_baselineRem_1_5;
 $ruler-highlight-width: $full-lh-block-width * 0.25;
 
+.glyph-ruler-wrapper {
+  border-style: solid;
+  border-width: tokens.$cds-alias-object-border-width-100;
+  border-color: tokens.$cds-alias-object-border-color;
+}
+
 .glyph-rulers {
-  margin-top: $clr_baselineRem_1;
+  margin-top: $clr_baselineRem_7;
   position: relative;
   width: 100%;
   height: 1000px;
