@@ -2807,7 +2807,6 @@ export class ClrMainContainerModule {
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ClrModalConfigurationService" needs to be exported by the entry point index.d.ts
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
@@ -2871,6 +2870,18 @@ export class ClrModalBody implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrModalBody, ".modal-body", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalBody, never>;
+}
+
+// @public (undocumented)
+export class ClrModalConfigurationService {
+    // (undocumented)
+    backdrop: boolean;
+    // (undocumented)
+    fadeMove: string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
 }
 
 // @public (undocumented)
