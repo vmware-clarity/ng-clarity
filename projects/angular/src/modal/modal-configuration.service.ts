@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ClrModalConfigurationService {
   fadeMove = 'fadeDown';
   backdrop = true;
