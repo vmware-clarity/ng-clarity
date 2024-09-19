@@ -255,10 +255,12 @@ export default function (): void {
         const expectedUpdatedTitle = 'This is my bar';
 
         it('projects page nav title as expected', () => {
-          expect(myStepnavItem.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
+          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title');
+
+          expect(titleElement.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
           fixture.componentInstance.projector = 'bar';
           fixture.detectChanges();
-          expect(myStepnavItem.textContent.trim()).toBe(expectedUpdatedTitle, 'projects updated value');
+          expect(titleElement.textContent.trim()).toBe(expectedUpdatedTitle, 'projects updated value');
         });
       });
     });
@@ -475,7 +477,10 @@ export default function (): void {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.querySelector('cds-icon[shape="error-standard"]')).not.toBeNull();
+
+          const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
+          expect(iconElement).not.toBeNull();
+          expect(iconElement.getAttribute('aria-label')).toBe('Error');
         });
 
         it('should have a cds-icon when page has is complete', () => {
@@ -486,25 +491,10 @@ export default function (): void {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = false;
           fixture.detectChanges();
-          expect(myStepnavItem.querySelector('cds-icon[shape="success-standard"]')).not.toBeNull();
-        });
 
-        it('should have a span with text "Error" when page has an error', () => {
-          fakeOutPage.completed = true;
-          fakeOutPage.hasError = true;
-          fixture.detectChanges();
-          const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
-          expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual('Error');
-        });
-
-        it('should have a span with text "Completed" when page is completed', () => {
-          fakeOutPage.completed = true;
-          fakeOutPage.hasError = false;
-          fixture.detectChanges();
-          const spans: NodeList = myStepnavItem.querySelectorAll('span.clr-sr-only');
-          expect(spans.length).toEqual(1);
-          expect(spans[0].textContent).toEqual('Completed');
+          const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
+          expect(iconElement).not.toBeNull();
+          expect(iconElement.getAttribute('aria-label')).toBe('Completed');
         });
       });
 

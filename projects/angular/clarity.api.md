@@ -1049,6 +1049,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
+    wizardStep: string;
     wizardStepError: string;
     wizardStepnavAriaLabel: string;
     wizardStepSuccess: string;
