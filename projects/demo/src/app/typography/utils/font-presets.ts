@@ -30,6 +30,15 @@ export const fontPresets: [string, FontMeasurements][] = [
     },
   ],
   [
+    'Clarity City',
+    {
+      topGap: 0.108,
+      ascender: 0.17,
+      xHeight: 0.516,
+      descenderOverage: 0,
+    },
+  ],
+  [
     'Arial',
     {
       topGap: 0.13,
