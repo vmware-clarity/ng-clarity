@@ -4,7 +4,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 [cds-theme] {
   --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
   --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-50};

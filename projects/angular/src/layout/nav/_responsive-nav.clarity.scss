@@ -16,7 +16,7 @@
 @use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/tabs.clarity' as tabs;
 @use 'variables.subnav' as nav-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 @mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
   display: flex;

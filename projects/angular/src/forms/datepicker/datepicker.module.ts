@@ -14,7 +14,7 @@ import {
   ClarityIcons,
   eventIcon,
   exclamationCircleIcon,
-} from '@cds/core/icon';
+} from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { CdkTrapFocusModule } from '../../utils/cdk/cdk-trap-focus.module';

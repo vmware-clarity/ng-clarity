@@ -7,7 +7,7 @@
 @use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 $clr-sliding-panel-text-color: var(--clr-sliding-panel-text-color) !default;
 $clr-nav-background-color: var(--clr-nav-background-color) !default;

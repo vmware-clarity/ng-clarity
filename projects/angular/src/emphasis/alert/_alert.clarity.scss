@@ -11,7 +11,7 @@
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
 @use 'variables.alert' as alert-variables;
 @use '../../button/buttons.clarity';
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 @include meta.load-css('properties.alert');
 

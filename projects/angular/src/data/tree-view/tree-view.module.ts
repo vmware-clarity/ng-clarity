@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
+import { angleIcon, ClarityIcons } from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrLoadingModule } from '../../utils/loading/loading.module';

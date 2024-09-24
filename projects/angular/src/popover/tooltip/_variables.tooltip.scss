@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 // Usage: ../popover/tooltip/_tooltips.clarity.scss
 $clr-tooltip-arrow-height: #{tokens.$cds-global-space-5} !default;

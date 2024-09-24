@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { angleIcon, ClarityIcons } from '@cds/core/icon';
+import { angleIcon, ClarityIcons } from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';

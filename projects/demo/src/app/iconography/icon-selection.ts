@@ -16,7 +16,7 @@ import {
   technologyCollectionIcons as TechnologyShapes,
   textEditCollectionIcons as TextEditShapes,
   travelCollectionIcons as TravelShapes,
-} from '@cds/core/icon';
+} from '@clr/core/icon';
 
 @Component({
   selector: 'clr-icon-selection-demo',

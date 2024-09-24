@@ -7,7 +7,7 @@
 @use 'sass:meta';
 @use '../utils/mixins';
 @use 'variables.badges' as badges-variables;
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 @include meta.load-css('properties.badges');
 
 @mixin generateBadgeStyles($color: gray, $alias: 1) {

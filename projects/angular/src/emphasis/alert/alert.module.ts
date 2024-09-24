@@ -16,7 +16,7 @@ import {
   successStandardIcon,
   warningStandardIcon,
   windowCloseIcon,
-} from '@cds/core/icon';
+} from '@clr/core/icon';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrDropdownModule } from '../../popover/dropdown/dropdown.module';

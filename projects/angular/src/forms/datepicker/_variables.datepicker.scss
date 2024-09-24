@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/core/tokens/tokens.scss';
 
 $clr-calendar-click-target: #{tokens.$cds-global-space-11};
 $clr-calendar-background-color: var(--clr-calendar-background-color) !default;
