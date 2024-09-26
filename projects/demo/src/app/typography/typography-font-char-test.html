@@ -22,6 +22,51 @@
 <div class="clr-row">
   <div class="clr-col-12">
     <div class="card">
+      <div class="card-header">
+        Text over lap
+        <button class="btn btn-primary" (click)="showBroadhevan = !showBroadhevan">
+          Broadhevan {{showBroadhevan ? 'on': 'off' }}
+        </button>
+        <button class="btn btn-success" (click)="showMetropolis = !showMetropolis">
+          Metropolis {{showMetropolis ? 'on': 'off' }}
+        </button>
+        <button class="btn btn-danger" (click)="showClarityCity = !showClarityCity">
+          Clarity City {{showClarityCity ? 'on': 'off' }}
+        </button>
+      </div>
+      <div class="card-block wrapper">
+        <div class="top broadhevan" *ngIf="showBroadhevan">
+          ​‌A​‌B​‌C​‌Ć​‌Č​‌D​‌Đ​‌E​‌F​‌G​‌H​‌I​‌J​‌K​‌L​‌M​‌N​‌O​‌P​‌Q​‌R​‌S​‌Š​‌T​‌U​‌V​‌W​‌X​‌Y​‌Z​‌Ž​‌
+          a​‌b​‌c​‌č​‌ć​‌d​‌đ​‌e​‌f​‌g​‌h​‌i​‌j​‌k​‌l​‌m​‌n​‌o​‌p​‌q​‌r​‌s​‌š​‌t​‌u​‌v​‌w​‌x​‌y​‌z​‌ž​‌
+          1​‌2​‌3​‌4​‌5​‌6​‌7​‌8​‌9​‌0​‌‘​‌?​‌’​‌“​‌!​‌”​‌(​‌%​‌)​‌[​‌#​‌]​‌ {{ '{' }} ​‌@ {{ '}' }}
+          ​‌/​‌&​‌<​‌-​‌+​‌÷​‌×​‌=​‌>​‌®​‌©​‌$​‌€​‌£​‌¥​‌¢​‌:​‌;​‌,​‌.​‌*
+          <br />
+          `H`ello
+        </div>
+        <div class="middle metropolis" *ngIf="showMetropolis">
+          ​‌A​‌B​‌C​‌Ć​‌Č​‌D​‌Đ​‌E​‌F​‌G​‌H​‌I​‌J​‌K​‌L​‌M​‌N​‌O​‌P​‌Q​‌R​‌S​‌Š​‌T​‌U​‌V​‌W​‌X​‌Y​‌Z​‌Ž​‌
+          a​‌b​‌c​‌č​‌ć​‌d​‌đ​‌e​‌f​‌g​‌h​‌i​‌j​‌k​‌l​‌m​‌n​‌o​‌p​‌q​‌r​‌s​‌š​‌t​‌u​‌v​‌w​‌x​‌y​‌z​‌ž​‌
+          1​‌2​‌3​‌4​‌5​‌6​‌7​‌8​‌9​‌0​‌‘​‌?​‌’​‌“​‌!​‌”​‌(​‌%​‌)​‌[​‌#​‌]​‌ {{ '{' }} ​‌@ {{ '}' }}
+          ​‌/​‌&​‌<​‌-​‌+​‌÷​‌×​‌=​‌>​‌®​‌©​‌$​‌€​‌£​‌¥​‌¢​‌:​‌;​‌,​‌.​‌*
+          <br />
+          `H`ello
+        </div>
+        <div class="bottom clarity-city" *ngIf="showClarityCity">
+          ​‌A​‌B​‌C​‌Ć​‌Č​‌D​‌Đ​‌E​‌F​‌G​‌H​‌I​‌J​‌K​‌L​‌M​‌N​‌O​‌P​‌Q​‌R​‌S​‌Š​‌T​‌U​‌V​‌W​‌X​‌Y​‌Z​‌Ž​‌
+          a​‌b​‌c​‌č​‌ć​‌d​‌đ​‌e​‌f​‌g​‌h​‌i​‌j​‌k​‌l​‌m​‌n​‌o​‌p​‌q​‌r​‌s​‌š​‌t​‌u​‌v​‌w​‌x​‌y​‌z​‌ž​‌
+          1​‌2​‌3​‌4​‌5​‌6​‌7​‌8​‌9​‌0​‌‘​‌?​‌’​‌“​‌!​‌”​‌(​‌%​‌)​‌[​‌#​‌]​‌ {{ '{' }} ​‌@ {{ '}' }}
+          ​‌/​‌&​‌<​‌-​‌+​‌÷​‌×​‌=​‌>​‌®​‌©​‌$​‌€​‌£​‌¥​‌¢​‌:​‌;​‌,​‌.​‌*
+          <br />
+          `H`ello
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="clr-row">
+  <div class="clr-col-12">
+    <div class="card">
       <div class="card-header">P0</div>
       <div class="card-block">
         <div class="p0">
