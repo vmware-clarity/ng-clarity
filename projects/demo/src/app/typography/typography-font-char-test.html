@@ -24,14 +24,19 @@
     <div class="card">
       <div class="card-header">
         Text over lap
-        <button class="btn btn-primary" (click)="showBroadhevan = !showBroadhevan">
-          Broadhevan {{showBroadhevan ? 'on': 'off' }}
+        <button class="btn btn-primary" *ngIf="showBroadhevan" (click)="showBroadhevan = false">Broadhevan on</button>
+        <button class="btn btn-primary-outline" *ngIf="!showBroadhevan" (click)="showBroadhevan = true">
+          Broadhevan off
         </button>
-        <button class="btn btn-neutral" (click)="showMetropolis = !showMetropolis">
-          Metropolis {{showMetropolis ? 'on': 'off' }}
+        <button class="btn btn-neutral" *ngIf="showMetropolis" (click)="showMetropolis = false">Metropolis on</button>
+        <button class="btn btn-neutral-outline" *ngIf="!showMetropolis" (click)="showMetropolis = true">
+          Metropolis off
         </button>
-        <button class="btn btn-danger" (click)="showClarityCity = !showClarityCity">
-          Clarity City {{showClarityCity ? 'on': 'off' }}
+        <button class="btn btn-danger" *ngIf="showClarityCity" (click)="showClarityCity = false">
+          Clarity City on
+        </button>
+        <button class="btn btn-danger-outline" *ngIf="!showClarityCity" (click)="showClarityCity = true">
+          Clarity City off
         </button>
       </div>
       <div class="card-block wrapper">

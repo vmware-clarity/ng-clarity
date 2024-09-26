@@ -36,6 +36,7 @@
 .broadhevan {
   font-family: Broadhevan, sans-serif;
   color: tokens.$cds-alias-status-info;
+  opacity: 0.5;
 }
 
 .clarity-city {
@@ -45,7 +46,7 @@
 
 .metropolis {
   font-family: Metropolis, sans-serif;
-  color: tokens.$cds-alias-status-neutral;
+  color: tokens.$cds-alias-typography-color-450;
 }
 .top {
   z-index: 9;
