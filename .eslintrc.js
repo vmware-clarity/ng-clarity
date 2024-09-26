@@ -50,6 +50,7 @@ module.exports = {
           },
         ],
         '@typescript-eslint/no-var-requires': 'error',
+        '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
         curly: 'error',
         'decorator-position/decorator-position': 'error',
         eqeqeq: 'error',

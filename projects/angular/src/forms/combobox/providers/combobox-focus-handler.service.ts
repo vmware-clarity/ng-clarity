@@ -224,13 +224,10 @@ export class ComboboxFocusHandler<T> {
 export const COMBOBOX_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(ComboboxFocusHandler);
 
 export class OptionData<T> {
-  id: string;
   el: HTMLElement;
-  value: T;
-  constructor(id: string, value: T) {
-    this.id = id;
-    this.value = value;
-  }
+
+  constructor(public id: string, public value: T) {}
+
   equals(other: OptionData<T>): boolean {
     if (!other) {
       return false;
