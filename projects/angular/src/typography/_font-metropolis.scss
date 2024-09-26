@@ -45,14 +45,16 @@
   // Broadhevan
   @font-face {
     font-family: 'Broadhevan';
-    src: url('./font/Metropolis-Light.ttf') format('truetype');
+    // light
+    src: url('./font/Broadhaven-Regular.woff2') format('woff2'), url('./font/Broadhaven-Regular.woff') format('woff');
     font-weight: 200;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Broadhevan';
-    src: url('./font/Metropolis-Regular.ttf') format('truetype');
+    // regular
+    src: url('./font/Broadhaven-Light.woff2') format('woff2'), url('./font/Broadhaven-Light.woff') format('woff');
     font-weight: 400;
     font-style: normal;
   }
@@ -60,7 +62,7 @@
   @font-face {
     font-family: 'Broadhevan';
     // medium
-    src: url('./font/Metropolis-Medium.ttf') format('truetype');
+    src: url('./font/Broadhaven-Medium.woff2') format('woff2'), url('./font/Broadhaven-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
   }
@@ -68,7 +70,7 @@
   @font-face {
     font-family: 'Broadhevan';
     // semibold
-    src: url('./font/Metropolis-SemiBold.ttf') format('truetype');
+    src: url('./font/Broadhaven-SemiBold.woff2') format('woff2'), url('./font/Broadhaven-SemiBold.woff') format('woff');
     font-weight: 600;
     font-style: normal;
   }

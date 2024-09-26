@@ -34,7 +34,7 @@ export const fontPresets: [string, FontMeasurements][] = [
     {
       topGap: 0.108,
       ascender: 0.17,
-      xHeight: 0.516,
+      xHeight: 0.517,
       descenderOverage: 0,
     },
   ],
