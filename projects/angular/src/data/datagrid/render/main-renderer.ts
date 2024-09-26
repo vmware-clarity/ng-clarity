@@ -73,27 +73,25 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     private page: Page,
     private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private detailService: DetailService,
+    detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
     private ngZone: NgZone,
     private keyNavigation: KeyNavigationGridController
   ) {
     this.subscriptions.push(
-      this.organizer
-        .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
-        .subscribe(() => this.computeHeadersWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS).subscribe(() => this.computeHeadersWidth())
     );
 
     this.subscriptions.push(
-      this.page.sizeChange.subscribe(() => {
+      page.sizeChange.subscribe(() => {
         if (this._heightSet) {
           this.resetDatagridHeight();
         }
       })
     );
-    this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
-    this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+    this.subscriptions.push(detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
+    this.subscriptions.push(items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
   }
 
   ngOnInit() {

@@ -34,10 +34,10 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     public template: TemplateRef<NgForOfContext<T>>,
     private differs: IterableDiffers,
     private items: Items,
-    private vcr: ViewContainerRef
+    vcr: ViewContainerRef
   ) {
     items.smartenUp();
-    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
+    this.iterableProxy = new NgForOf<T>(vcr, template, differs);
     this.subscriptions.push(
       items.change.subscribe(newItems => {
         this.iterableProxy.ngForOf = newItems;

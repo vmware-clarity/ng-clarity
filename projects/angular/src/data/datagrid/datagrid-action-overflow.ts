@@ -81,12 +81,12 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     @Inject(PLATFORM_ID) private platformId: any,
     private smartToggleService: ClrPopoverToggleService
   ) {
-    this.rowActionService.register();
+    rowActionService.register();
     this.subscriptions.push(
-      this.smartToggleService.openChange.subscribe(openState => {
+      smartToggleService.openChange.subscribe(openState => {
         this.open = openState;
       }),
-      this.smartToggleService.popoverVisible.subscribe(visible => {
+      smartToggleService.popoverVisible.subscribe(visible => {
         if (visible) {
           this.initializeFocus();
         }

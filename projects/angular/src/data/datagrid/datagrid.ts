@@ -156,7 +156,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     const datagridId = uniqueIdFactory();
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
-    this.detailService.id = datagridId;
+    detailService.id = datagridId;
   }
 
   /**

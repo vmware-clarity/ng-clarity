@@ -46,7 +46,7 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
   ) {
     super(vcr, ClrDatalistContainer, injector, control, renderer, el);
 
-    if (!this.focusService) {
+    if (!focusService) {
       throw new Error('clrDatalist requires being wrapped in <clr-datalist-container>');
     }
   }

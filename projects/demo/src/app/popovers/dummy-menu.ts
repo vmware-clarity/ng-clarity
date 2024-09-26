@@ -24,12 +24,12 @@ export class DummyMenu extends AbstractPopover {
     @Optional()
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
-    private parent: DummyAnchor
+    parent: DummyAnchor
   ) {
     super(injector, parentHost);
     this.configurePopover();
-    if (this.parent && this.parent.ignore) {
-      this.ignoredElement = this.parent.ignore.nativeElement;
+    if (parent && parent.ignore) {
+      this.ignoredElement = parent.ignore.nativeElement;
     }
   }
 
