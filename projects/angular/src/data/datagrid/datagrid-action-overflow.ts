@@ -6,17 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Output,
-  PLATFORM_ID,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
@@ -89,7 +79,6 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService: RowActionService,
     public commonStrings: ClrCommonStringsService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private zone: NgZone,
     private smartToggleService: ClrPopoverToggleService
   ) {
     this.rowActionService.register();
