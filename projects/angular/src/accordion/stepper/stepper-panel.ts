@@ -81,6 +81,10 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
 
       this.subscriptions.push(
         this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
+          if (!this.formGroup.touched) {
+            return;
+          }
+
           if (status === 'VALID') {
             this.stepperService.setPanelValid(this.id);
           } else if (status === 'INVALID') {
