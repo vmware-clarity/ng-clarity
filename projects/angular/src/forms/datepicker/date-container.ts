@@ -136,7 +136,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   @ViewChild('actionButton')
-  set actionButton(button: ElementRef) {
+  set actionButton(button: ElementRef<HTMLButtonElement>) {
     this.toggleButton = button;
   }
 

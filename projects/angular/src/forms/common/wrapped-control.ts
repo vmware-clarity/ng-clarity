@@ -47,7 +47,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
+  protected el: ElementRef<HTMLElement>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -67,7 +67,7 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     injector: Injector,
     private ngControl: NgControl | null,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLElement>
   ) {
     this.renderer = renderer;
     this.el = el;
