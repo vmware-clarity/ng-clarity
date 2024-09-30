@@ -36,6 +36,15 @@
       <input type="checkbox" clrCheckbox [(ngModel)]="options.server" name="server" />
       <label>Server-driven</label>
     </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input
+        type="checkbox"
+        clrCheckbox
+        [(ngModel)]="options.loadRowActionsDynamically"
+        name="load-row-actions-dynamically"
+      />
+      <label>Load Row Actions dynamically</label>
+    </clr-checkbox-wrapper>
   </clr-checkbox-container>
 
   <clr-select-container>
@@ -92,15 +101,17 @@
 
     <clr-dg-placeholder>No users found</clr-dg-placeholder>
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
-        <button class="action-item">
-          <cds-icon shape="note"></cds-icon>
-          Edit
-        </button>
-        <button class="action-item">
-          <cds-icon shape="trash"></cds-icon>
-          Delete
-        </button>
+      <clr-dg-action-overflow
+        (click)="loadDynamicRowActions()"
+        (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
+      >
+        <span *ngIf="rowActionsLoading; else actions">
+          <span class="spinner spinner-inline">Loading...</span>
+          Loading...
+        </span>
+        <ng-template #actions>
+          <button class="action-item" *ngFor="let action of rowActions">{{ action }}</button>
+        </ng-template>
       </clr-dg-action-overflow>
 
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
