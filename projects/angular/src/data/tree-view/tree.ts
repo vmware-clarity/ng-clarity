@@ -35,30 +35,30 @@ import { ClrTreeNode } from './tree-node';
   host: {
     tabindex: '0',
     '[attr.role]': '"tree"',
-    '[attr.aria-multiselectable]': 'isMultiSelectable',
   },
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
   private subscriptions: Subscription[] = [];
+  private _isMultiSelectable = false;
 
   constructor(
     public featuresService: TreeFeaturesService<T>,
     private focusManagerService: TreeFocusManagerService<T>,
-    { nativeElement }: ElementRef<HTMLElement>,
-    renderer: Renderer2,
+    private renderer: Renderer2,
+    private el: ElementRef<HTMLElement>,
     ngZone: NgZone
   ) {
     const subscription = ngZone.runOutsideAngular(() =>
-      fromEvent(nativeElement, 'focusin').subscribe((event: FocusEvent) => {
-        if (event.target === nativeElement) {
+      fromEvent(el.nativeElement, 'focusin').subscribe((event: FocusEvent) => {
+        if (event.target === el.nativeElement) {
           // After discussing with the team, I've made it so that when the tree receives focus, the first visible node will be focused.
           // This will prevent from the page scrolling abruptly to the first selected node if it exist in a deeply nested tree.
           focusManagerService.focusFirstVisibleNode();
           // when the first child gets focus,
           // tree should no longer have tabindex of 0.
-          renderer.removeAttribute(nativeElement, 'tabindex');
+          renderer.removeAttribute(el.nativeElement, 'tabindex');
         }
       })
     );
@@ -72,13 +72,15 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   get isMultiSelectable() {
-    return this.featuresService.selectable && this.rootNodes.length > 0;
+    return this._isMultiSelectable;
   }
 
   ngAfterContentInit() {
     this.setRootNodes();
     this.subscriptions.push(
       this.rootNodes.changes.subscribe(() => {
+        this.setMultiSelectable();
+
         this.setRootNodes();
       })
     );
@@ -86,6 +88,16 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private setMultiSelectable() {
+    if (this.featuresService.selectable && this.rootNodes.length > 0) {
+      this._isMultiSelectable = true;
+      this.renderer.setAttribute(this.el.nativeElement, 'aria-multiselectable', 'true');
+    } else {
+      this._isMultiSelectable = false;
+      this.renderer.removeAttribute(this.el.nativeElement, 'aria-multiselectable');
+    }
   }
 
   private setRootNodes(): void {

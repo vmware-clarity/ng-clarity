@@ -4309,7 +4309,7 @@ export class ClrTooltipTrigger {
 // @public (undocumented)
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point index.d.ts
-    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, { nativeElement }: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone);
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
     // (undocumented)
     featuresService: TreeFeaturesService<T>;
     // (undocumented)
