@@ -79,13 +79,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     this.setRootNodes();
     this.subscriptions.push(
       this.rootNodes.changes.subscribe(() => {
-        if (this.featuresService.selectable && this.rootNodes.length > 0) {
-          this._isMultiSelectable = true;
-          this.renderer.setAttribute(this.el.nativeElement, 'aria-multiselectable', 'true');
-        } else {
-          this._isMultiSelectable = false;
-          this.renderer.removeAttribute(this.el.nativeElement, 'aria-multiselectable');
-        }
+        this.setMultiSelectable();
 
         this.setRootNodes();
       })
@@ -94,6 +88,16 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private setMultiSelectable() {
+    if (this.featuresService.selectable && this.rootNodes.length > 0) {
+      this._isMultiSelectable = true;
+      this.renderer.setAttribute(this.el.nativeElement, 'aria-multiselectable', 'true');
+    } else {
+      this._isMultiSelectable = false;
+      this.renderer.removeAttribute(this.el.nativeElement, 'aria-multiselectable');
+    }
   }
 
   private setRootNodes(): void {
