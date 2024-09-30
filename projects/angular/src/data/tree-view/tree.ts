@@ -51,14 +51,14 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     ngZone: NgZone
   ) {
     const subscription = ngZone.runOutsideAngular(() =>
-      fromEvent(this.el.nativeElement, 'focusin').subscribe((event: FocusEvent) => {
-        if (event.target === this.el.nativeElement) {
+      fromEvent(el.nativeElement, 'focusin').subscribe((event: FocusEvent) => {
+        if (event.target === el.nativeElement) {
           // After discussing with the team, I've made it so that when the tree receives focus, the first visible node will be focused.
           // This will prevent from the page scrolling abruptly to the first selected node if it exist in a deeply nested tree.
           focusManagerService.focusFirstVisibleNode();
           // when the first child gets focus,
           // tree should no longer have tabindex of 0.
-          renderer.removeAttribute(this.el.nativeElement, 'tabindex');
+          renderer.removeAttribute(el.nativeElement, 'tabindex');
         }
       })
     );
