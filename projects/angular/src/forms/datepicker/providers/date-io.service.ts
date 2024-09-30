@@ -39,8 +39,8 @@ export class DateIOService {
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
-  constructor(private _localeHelperService: LocaleHelperService) {
-    this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
+  constructor(localeHelperService: LocaleHelperService) {
+    this.cldrLocaleDateFormat = localeHelperService.localeDateFormat;
     this.initializeLocaleDisplayFormat();
   }
 

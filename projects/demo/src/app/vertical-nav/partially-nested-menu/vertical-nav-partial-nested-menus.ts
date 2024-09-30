@@ -19,8 +19,8 @@ export class VerticalNavPartiallyNestedMenusDemo {
 
   private _collapse = false;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.partiallyNestedMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.partiallyNestedMenu;
   }
 
   get collapse(): boolean {

@@ -20,8 +20,8 @@ export class VerticalNavRoutingDemo {
   groupExpand = true;
   navCollapsed = false;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.allNestedIconMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.allNestedIconMenu;
   }
 
   updateGroupExpand(event: any) {

@@ -52,14 +52,14 @@ export class ClrHeader implements OnDestroy {
     private responsiveNavService: ResponsiveNavigationService,
     public commonStrings: ClrCommonStringsService
   ) {
-    this._subscription = this.responsiveNavService.registeredNavs.subscribe({
+    this._subscription = responsiveNavService.registeredNavs.subscribe({
       next: (navLevelList: number[]) => {
         this.initializeNavTriggers(navLevelList);
       },
     });
 
     this._subscription.add(
-      this.responsiveNavService.navControl
+      responsiveNavService.navControl
         .pipe(
           filter(
             ({ controlCode }) =>

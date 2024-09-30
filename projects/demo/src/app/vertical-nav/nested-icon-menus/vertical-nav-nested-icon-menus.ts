@@ -18,7 +18,7 @@ export class VerticalNavNestedIconMenusDemo {
   case: any;
   collapse = false;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.allNestedIconMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.allNestedIconMenu;
   }
 }

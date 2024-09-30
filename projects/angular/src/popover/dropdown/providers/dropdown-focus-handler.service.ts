@@ -44,7 +44,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   ) {
     this.resetChildren();
     this.moveToFirstItemWhenOpen();
-    if (!this.parent) {
+    if (!parent) {
       this.handleRootFocus();
     }
   }

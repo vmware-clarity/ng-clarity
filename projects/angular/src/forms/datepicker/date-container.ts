@@ -106,7 +106,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private dateFormControlService: DateFormControlService,
     private dateIOService: DateIOService,
     public commonStrings: ClrCommonStringsService,
-    private focusService: FocusService,
+    focusService: FocusService,
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
@@ -116,14 +116,14 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
+      focusService.focusChange.subscribe(state => {
         this.focus = state;
       })
     );
 
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(() => {
-        this.dateFormControlService.markAsTouched();
+      toggleService.openChange.subscribe(() => {
+        dateFormControlService.markAsTouched();
       })
     );
   }

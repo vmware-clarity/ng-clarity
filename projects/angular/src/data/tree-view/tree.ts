@@ -55,7 +55,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
         if (event.target === nativeElement) {
           // After discussing with the team, I've made it so that when the tree receives focus, the first visible node will be focused.
           // This will prevent from the page scrolling abruptly to the first selected node if it exist in a deeply nested tree.
-          this.focusManagerService.focusFirstVisibleNode();
+          focusManagerService.focusFirstVisibleNode();
           // when the first child gets focus,
           // tree should no longer have tabindex of 0.
           renderer.removeAttribute(nativeElement, 'tabindex');

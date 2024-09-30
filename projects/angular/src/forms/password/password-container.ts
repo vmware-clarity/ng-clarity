@@ -98,7 +98,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
 
     /* The unsubscribe is handle inside the ClrAbstractContainer */
     this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
+      focusService.focusChange.subscribe(state => {
         this.focus = state;
       })
     );
