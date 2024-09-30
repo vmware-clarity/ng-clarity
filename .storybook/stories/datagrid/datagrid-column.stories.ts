@@ -139,3 +139,10 @@ const ColumnFilterTemplate: StoryFn = args => ({
 export const ColumnFilter: StoryObj = {
   render: ColumnFilterTemplate,
 };
+
+export const ColumnNumberFilterOpened = {
+  render: ColumnFilterTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('.datagrid-filter-toggle').click();
+  },
+};
