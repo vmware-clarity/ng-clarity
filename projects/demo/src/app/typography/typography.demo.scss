@@ -14,17 +14,17 @@
 
   td > ul.list-unstyled {
     margin-left: 0;
-    list-style-position: 0;
+    list-style-position: inside;
   }
 }
+
 .wrapper {
   position: relative;
-  min-height: tokens.$cds-global-space-12;
+  min-height: tokens.$cds-global-space-15;
+  height: tokens.$cds-global-space-15;
 }
 
-.top,
-.middle,
-.bottom {
+.font {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,23 +37,17 @@
   font-family: Broadhevan, sans-serif;
   color: tokens.$cds-alias-status-info;
   opacity: 0.5;
-}
-
-.clarity-city {
-  font-family: 'Clarity City', sans-serif;
-  color: tokens.$cds-alias-status-danger;
+  z-index: 9;
 }
 
 .metropolis {
   font-family: Metropolis, sans-serif;
   color: tokens.$cds-alias-typography-color-450;
-}
-.top {
-  z-index: 9;
-}
-.middle {
   z-index: 8;
 }
-.bottom {
+
+.clarity-city {
+  font-family: 'Clarity City', sans-serif;
+  color: tokens.$cds-alias-status-danger;
   z-index: 7;
 }
