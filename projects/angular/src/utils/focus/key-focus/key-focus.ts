@@ -40,7 +40,7 @@ export class ClrKeyFocus {
   private _current = 0;
   private _focusableItems: Array<FocusableItem>;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef<HTMLElement>) {}
 
   /**
    * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.

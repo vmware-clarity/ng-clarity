@@ -24,14 +24,14 @@ export class ClrModalBody implements OnDestroy {
   constructor(private readonly renderer: Renderer2, private readonly host: ElementRef<HTMLElement>, ngZone: NgZone) {
     ngZone.runOutsideAngular(() => {
       this.observer = new ResizeObserver(() => this.addOrRemoveTabIndex());
-      this.observer.observe(this.host.nativeElement);
+      this.observer.observe(host.nativeElement);
 
       this.unlisteners.push(
-        this.renderer.listen(this.host.nativeElement, 'mouseup', () => {
+        renderer.listen(host.nativeElement, 'mouseup', () => {
           // set the tabindex binding back when click is completed with mouseup
           this.addOrRemoveTabIndex();
         }),
-        this.renderer.listen(this.host.nativeElement, 'mousedown', () => {
+        renderer.listen(host.nativeElement, 'mousedown', () => {
           // tabindex = 0 binding should be removed
           // so it won't be focused when click starts with mousedown
           this.removeTabIndex();

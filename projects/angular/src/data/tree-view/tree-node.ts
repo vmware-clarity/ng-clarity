@@ -102,7 +102,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     private elementRef: ElementRef<HTMLElement>,
     injector: Injector
   ) {
-    if (this.featuresService.recursion) {
+    if (featuresService.recursion) {
       // I'm completely stuck, we have to hack into private properties until either
       // https://github.com/angular/angular/issues/14935 or https://github.com/angular/angular/issues/15998
       // are fixed

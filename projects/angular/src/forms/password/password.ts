@@ -43,16 +43,16 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     @Optional() private focusService: FocusService,
     @Optional()
     @Inject(TOGGLE_SERVICE)
-    private toggleService: BehaviorSubject<boolean>
+    toggleService: BehaviorSubject<boolean>
   ) {
     super(vcr, ClrPasswordContainer, injector, control, renderer, el);
 
-    if (!this.focusService) {
+    if (!focusService) {
       throw new Error('clrPassword requires being wrapped in <clr-password-container>');
     }
 
     this.subscriptions.push(
-      this.toggleService.subscribe(toggle => {
+      toggleService.subscribe(toggle => {
         renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
       })
     );

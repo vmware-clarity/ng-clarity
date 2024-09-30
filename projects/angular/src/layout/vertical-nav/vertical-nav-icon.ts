@@ -15,7 +15,7 @@ import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 })
 export class ClrVerticalNavIcon implements OnDestroy {
   constructor(private _verticalNavIconService: VerticalNavIconService) {
-    this._verticalNavIconService.registerIcon();
+    _verticalNavIconService.registerIcon();
   }
 
   ngOnDestroy() {

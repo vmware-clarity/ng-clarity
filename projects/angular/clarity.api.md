@@ -356,7 +356,7 @@ export class ClrAccordionTitle {
 export class ClrAlert implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point index.d.ts
-    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef);
+    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get alertClass(): string;
     // (undocumented)
@@ -659,7 +659,7 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DateNavigationService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DatepickerFocusService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateIOService" needs to be exported by the entry point index.d.ts
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>);
     // Warning: (ae-forgotten-export) The symbol "CalendarModel" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -860,7 +860,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
 
 // @public (undocumented)
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
-    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef);
+    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     // (undocumented)
     controlContainer: ElementRef<HTMLElement>;
     // (undocumented)
@@ -1079,7 +1079,7 @@ export class ClrConditionalModule {
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -1153,8 +1153,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1263,7 +1262,7 @@ export class ClrDatagridActionBar {
 
 // @public (undocumented)
 export class ClrDatagridActionOverflow implements OnDestroy {
-    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, zone: NgZone, smartToggleService: ClrPopoverToggleService);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, smartToggleService: ClrPopoverToggleService);
     // (undocumented)
     buttonLabel: string;
     // (undocumented)
@@ -1388,6 +1387,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
     constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverToggleService: ClrPopoverToggleService);
     // (undocumented)
     allColumnsSelected(): void;
@@ -1992,7 +1992,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point index.d.ts
     constructor(renderer: Renderer2, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
-    set actionButton(button: ElementRef);
+    set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
     set clrPosition(position: string);
     // (undocumented)
@@ -2619,7 +2619,7 @@ export class ClrIfSuccess extends AbstractIfState {
 
 // @public (undocumented)
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2652,7 +2652,7 @@ export class ClrInputModule {
 
 // @public (undocumented)
 export class ClrLabel implements OnInit, OnDestroy {
-    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef);
+    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef<HTMLLabelElement>);
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
@@ -2774,7 +2774,7 @@ export enum ClrLoadingState {
 
 // @public (undocumented)
 export class ClrMainContainer implements OnDestroy, OnInit {
-    constructor(elRef: ElementRef, responsiveNavService: ResponsiveNavigationService);
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
     // (undocumented)
     controlNav(controlCode: string, navClass: string): void;
     // (undocumented)
@@ -3133,7 +3133,7 @@ export class ClrPasswordModule {
 
 // @public (undocumented)
 export class ClrPopoverAnchor {
-    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef);
+    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef<HTMLButtonElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3354,7 +3354,7 @@ export class ClrProgressBarModule {
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3422,7 +3422,7 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
 
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3491,7 +3491,7 @@ export interface ClrRecursiveForOfContext<T> {
 
 // @public (undocumented)
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -4074,7 +4074,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     tabLinkElements: HTMLElement[];
     // (undocumented)
-    set tabOverflowEl(value: ElementRef);
+    set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)
     tabsId: number;
     // (undocumented)
@@ -4113,7 +4113,7 @@ export class ClrTabsModule {
 
 // @public (undocumented)
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -4455,7 +4455,7 @@ export class ClrVerticalNav implements OnDestroy {
 // @public (undocumented)
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point index.d.ts
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
@@ -5076,11 +5076,11 @@ export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)
-    protected el: ElementRef<any>;
+    protected el: ElementRef<HTMLElement>;
     // (undocumented)
     protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
     // (undocumented)
@@ -5253,7 +5253,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)

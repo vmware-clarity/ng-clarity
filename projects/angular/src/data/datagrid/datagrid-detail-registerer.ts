@@ -18,8 +18,8 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 })
 export class DatagridDetailRegisterer {
   constructor(@Optional() private expandableRowsCount: ExpandableRowsCount) {
-    if (this.expandableRowsCount) {
-      this.expandableRowsCount.register();
+    if (expandableRowsCount) {
+      expandableRowsCount.register();
     }
   }
 

@@ -43,7 +43,7 @@ export class ClrIfOpen implements OnDestroy {
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    this.subscription = this.toggleService.openChange.subscribe(change => {
+    this.subscription = toggleService.openChange.subscribe(change => {
       this.updateView(change);
       this.openChange.emit(change);
     });

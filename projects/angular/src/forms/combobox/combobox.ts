@@ -129,7 +129,7 @@ export class ClrCombobox<T>
       control.valueAccessor = this;
     }
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-    this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
+    optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     this.updateControlValue();
   }
 

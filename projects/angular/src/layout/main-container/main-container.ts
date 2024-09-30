@@ -20,7 +20,7 @@ export class ClrMainContainer implements OnDestroy, OnInit {
   private _subscription: Subscription;
   private _classList: DOMTokenList;
 
-  constructor(private elRef: ElementRef, private responsiveNavService: ResponsiveNavigationService) {}
+  constructor(private elRef: ElementRef<HTMLElement>, private responsiveNavService: ResponsiveNavigationService) {}
 
   ngOnInit() {
     this._classList = this.elRef.nativeElement.classList;

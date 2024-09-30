@@ -17,7 +17,7 @@ export class DatepickerEnabledService {
   private _innerWidth: number;
 
   constructor(@Inject(DOCUMENT) private _document: any) {
-    if (this._document) {
+    if (_document) {
       this._isUserAgentMobile = MOBILE_USERAGENT_REGEX.test(_document.defaultView.navigator.userAgent);
       this._innerWidth = _document.defaultView.innerWidth;
     }
