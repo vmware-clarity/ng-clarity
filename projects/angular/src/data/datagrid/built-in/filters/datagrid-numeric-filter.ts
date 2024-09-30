@@ -23,9 +23,9 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open" class="clr-form-horizontal">
-      <div class="datagrid-numeric-filter-input-wrapper">
+      <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label"> From: </label>
+          <label class="clr-control-label"> {{ datagridNumericFilterFromValue }}: </label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -39,7 +39,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label"> To: </label>
+          <label class="clr-control-label"> {{ datagridNumericFilterToValue }}: </label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -62,6 +62,8 @@ export class DatagridNumericFilter<T = any>
 {
   @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
+  @Input('datagridNumericFilterFrom') datagridNumericFilterFrom: string;
+  @Input('datagridNumericFilterTo') datagridNumericFilterTo: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -147,6 +149,14 @@ export class DatagridNumericFilter<T = any>
 
   get minPlaceholderValue() {
     return this.minPlaceholder || this.commonStrings.keys.minValue;
+  }
+
+  get datagridNumericFilterFromValue() {
+    return this.minPlaceholder || this.commonStrings.keys.datagridNumericFilterFrom;
+  }
+
+  get datagridNumericFilterToValue() {
+    return this.minPlaceholder || this.commonStrings.keys.datagridNumericFilterTo;
   }
 
   get low() {

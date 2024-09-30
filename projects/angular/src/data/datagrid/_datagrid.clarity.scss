@@ -453,6 +453,9 @@
 
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
+        .clr-form-control {
+          margin-top: 0;
+        }
       }
 
       .datagrid-filter-toggle {
@@ -1415,6 +1418,14 @@
     .datagrid-filter-apply {
       margin-bottom: 0;
     }
+
+    .datagrid-numeric-filter-form {
+      display: flex;
+      gap: tokens.$cds-global-space-6;
+      .clr-form-control {
+        margin-top: 0;
+      }
+    }
   }
 
   .datagrid-action-overflow {
@@ -1502,9 +1513,4 @@
   }
 
   // END Calculation classes.
-}
-
-.datagrid-numeric-filter-input-wrapper {
-  display: flex;
-  gap: tokens.$cds-global-space-6;
 }
