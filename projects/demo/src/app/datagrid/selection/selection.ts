@@ -30,10 +30,10 @@ export class DatagridSelectionDemo {
   loading = true;
 
   constructor(private inventory: Inventory) {
-    this.inventory.size = this.total;
-    this.inventory.latency = 500;
-    this.inventory.reset();
-    this.clientNoTrackByUsers = this.clientTrackByIndexUsers = this.clientTrackByIdUsers = this.inventory.all;
+    inventory.size = this.total;
+    inventory.latency = 500;
+    inventory.reset();
+    this.clientNoTrackByUsers = this.clientTrackByIndexUsers = this.clientTrackByIdUsers = inventory.all;
   }
 
   trackByIndex: TrackByFunction<User> = index => index;

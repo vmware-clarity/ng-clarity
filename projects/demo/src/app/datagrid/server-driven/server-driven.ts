@@ -24,7 +24,7 @@ export class DatagridServerDrivenDemo {
 
   constructor(private inventory: Inventory) {
     inventory.size = 103;
-    this.inventory.latency = 500;
+    inventory.latency = 500;
     inventory.reset();
   }
 

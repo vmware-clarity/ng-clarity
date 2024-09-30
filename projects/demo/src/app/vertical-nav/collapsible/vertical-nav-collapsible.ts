@@ -20,8 +20,8 @@ export class VerticalNavCollapsibleDemo {
 
   private _collapse = true;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.basicMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.basicMenu;
   }
 
   get collapse(): boolean {

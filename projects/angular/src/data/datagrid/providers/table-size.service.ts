@@ -25,7 +25,7 @@ export class TableSizeService {
     this._tableRef = element;
   }
 
-  set table(table: ElementRef) {
+  set table(table: ElementRef<HTMLElement>) {
     if (isPlatformBrowser(this.platformId) && table.nativeElement) {
       this.tableRef = table.nativeElement.querySelector('.datagrid-table');
     }

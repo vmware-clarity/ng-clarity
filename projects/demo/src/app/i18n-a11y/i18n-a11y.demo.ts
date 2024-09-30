@@ -23,7 +23,7 @@ export class I18nA11yDemo implements OnDestroy {
   test: ClrCommonStrings;
 
   constructor(private commonStrings: ClrCommonStringsService) {
-    this.commonStrings.localize(frenchTranslation);
+    commonStrings.localize(frenchTranslation);
   }
 
   // We want to reset the strings when leaving this demo.

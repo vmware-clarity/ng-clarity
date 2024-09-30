@@ -25,7 +25,7 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLElement>
   ) {
     super(vcr, ClrControlContainer, injector, control, renderer, el);
   }

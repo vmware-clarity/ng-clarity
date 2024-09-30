@@ -32,7 +32,14 @@ module.exports = {
     {
       files: ['**/*.ts'],
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-      plugins: ['license-header', '@typescript-eslint', 'jasmine', 'unused-imports', 'decorator-position'],
+      plugins: [
+        'license-header',
+        '@typescript-eslint',
+        'jasmine',
+        'unused-imports',
+        'decorator-position',
+        'ng-clarity-eslint-rules',
+      ],
       rules: {
         '@typescript-eslint/explicit-member-accessibility': [
           'error',
@@ -50,6 +57,7 @@ module.exports = {
           },
         ],
         '@typescript-eslint/no-var-requires': 'error',
+        '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
         curly: 'error',
         'decorator-position/decorator-position': 'error',
         eqeqeq: 'error',
@@ -80,6 +88,9 @@ module.exports = {
           },
         ],
         'unused-imports/no-unused-imports-ts': 'error',
+
+        // custom eslint-rules
+        'ng-clarity-eslint-rules/no-parameter-property-this-in-constructor': 'error',
       },
     },
     {

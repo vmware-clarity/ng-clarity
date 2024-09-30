@@ -69,11 +69,11 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    private focusService: FocusService,
+    focusService: FocusService,
     protected override ifControlStateService: IfControlStateService
   ) {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
-    this.subscriptions.push(this.focusService.focusChange.subscribe(state => (this.focus = state)));
+    this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
   }
 }
