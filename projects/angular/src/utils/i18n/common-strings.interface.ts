@@ -302,7 +302,7 @@ export interface ClrCommonStrings {
   clearFile: string;
   clearFiles: string;
 
-  // Tree node
+  // Tree
   selectedTreeNode: string;
   unselectedTreeNode: string;
 }
