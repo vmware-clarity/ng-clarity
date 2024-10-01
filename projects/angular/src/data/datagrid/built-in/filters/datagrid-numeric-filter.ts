@@ -22,7 +22,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   selector: 'clr-dg-numeric-filter',
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
-    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open" class="clr-form-horizontal">
+    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
           <label class="clr-control-label"> {{ datagridNumericFilterFromValue }}: </label>
