@@ -184,6 +184,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }
 
+  get selectedString() {
+    return this.commonStrings.keys.selectedTreeNode;
+  }
+
+  get unselectedString() {
+    return this.commonStrings.keys.unselectedTreeNode;
+  }
+
   private get isParent() {
     return this._model.children && this._model.children.length > 0;
   }

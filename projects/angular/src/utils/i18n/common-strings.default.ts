@@ -126,4 +126,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   fileCount: '{COUNT} files',
   clearFile: 'Clear {FILE}',
   clearFiles: 'Clear {COUNT} files',
+
+  // Tree node
+  selectedTreeNode: 'selected',
+  unselectedTreeNode: 'unselected',
 };

@@ -65,8 +65,8 @@
   <ng-template #treenodeContent>
     <ng-content></ng-content>
     <div class="clr-sr-only" *ngIf="featuresService.selectable || ariaSelected">
-      <span *ngIf="ariaSelected"> selected</span>
-      <span *ngIf="!ariaSelected"> unselected</span>
+      <span *ngIf="ariaSelected"> {{selectedString}} </span>
+      <span *ngIf="!ariaSelected"> {{unselectedString}} </span>
     </div>
   </ng-template>
 </div>

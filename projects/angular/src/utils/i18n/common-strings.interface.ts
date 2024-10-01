@@ -301,4 +301,8 @@ export interface ClrCommonStrings {
   fileCount: string;
   clearFile: string;
   clearFiles: string;
+
+  // Tree node
+  selectedTreeNode: string;
+  unselectedTreeNode: string;
 }
