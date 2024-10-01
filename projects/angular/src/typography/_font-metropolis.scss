@@ -114,4 +114,24 @@
     src: url('./font/ClarityCity-SemiBold.woff2') format('woff2'),
       url('./font/ClarityCity-SemiBold.woff') format('woff');
   }
+
+  // Avenir Next
+  /* regular */
+  @font-face {
+    font-family: 'Avenir';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/AvenirNextLTPro-Regular.otf') format('opentype');
+  }
+
+  // Helvetica Neue
+  /* regular */
+  @font-face {
+    font-family: 'Helvetica';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url('./font/Helvetica.ttf') format('truetype');
+  }
 }
