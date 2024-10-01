@@ -16,7 +16,7 @@ import { FontPreset, fontPresets, getPreset } from './utils/font-presets';
   templateUrl: './typography-font-autopsy.html',
 })
 export class TypographyFontAutopsyDemo {
-  @ViewChild('compareSelect', { read: ElementRef }) compareSelect: ElementRef<HTMLSelectElement>;
+  @ViewChild('compareSelect', { read: ElementRef }) compareSelect: ElementRef<HTMLSelectElement> | undefined;
 
   model = new FormGroup({
     font: new FormControl('Metropolis', [Validators.required]),
@@ -80,7 +80,9 @@ export class TypographyFontAutopsyDemo {
   loadPreset(presetToLoad: FontPreset) {
     this.fontField = presetToLoad.font;
     this.model.patchValue(presetToLoad);
-    this.compareSelect.nativeElement.value = '';
+    if (this.compareSelect) {
+      this.compareSelect.nativeElement.value = '';
+    }
   }
 }
 
