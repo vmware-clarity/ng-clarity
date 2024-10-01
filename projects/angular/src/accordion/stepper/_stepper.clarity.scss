@@ -32,7 +32,13 @@
           }
 
           .clr-accordion-status {
-            min-width: tokens.$cds-global-space-14;
+            min-width: tokens.$cds-global-space-15;
+            width: tokens.$cds-global-space-15;
+
+            .clr-accordion-number {
+              //visibility: hidden;
+              //display: inline-block;
+            }
           }
 
           @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
@@ -49,7 +55,6 @@
       > .clr-accordion-header-button
       > .clr-accordion-status
       > .clr-accordion-number {
-      padding: 0 tokens.$cds-global-space-7;
       display: inline-block !important;
     }
 
@@ -58,10 +63,15 @@
       > .clr-accordion-panel-error
       > .clr-accordion-header
       > .clr-accordion-header-button
-      > .clr-accordion-status
+      > .clr-accordion-status {
+      > .clr-accordion-number {
+        padding-left: tokens.$cds-global-space-7;
+      }
+
       > .clr-accordion-error-icon {
-      display: inline-block;
-      color: accordion-variables.$clr-accordion-error-color;
+        display: inline-block;
+        color: accordion-variables.$clr-accordion-error-color;
+      }
     }
 
     &
@@ -96,7 +106,10 @@
     }
 
     .clr-accordion-number {
-      padding: 0 tokens.$cds-global-space-7;
+      margin-left: tokens.$cds-global-space-10;
+      padding: tokens.$cds-global-space-0;
+      @include mixins.min-equilateral(tokens.$cds-global-space-9);
+
       display: inline-block;
     }
 
