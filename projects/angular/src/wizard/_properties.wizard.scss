@@ -31,6 +31,7 @@
       --clr-wizard-stepnav-border-size: #{tokens.$cds-global-space-3};
       // @TODO v18 rename to --clr-wizard-stepnav-item-complete-border-color
       --clr-wizard-stepnav-item-border-color--active: #{tokens.$cds-alias-status-success};
+      --clr-wizard-stepnav-selected-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
       // @TODO v18 remove in favor of --clr-wizard-stepnav-selected-bgcolor
       --clr-wizard-stepnav-active-bgcolor: #{tokens.$cds-alias-object-interaction-background-selected};
       --clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-active-bgcolor);
