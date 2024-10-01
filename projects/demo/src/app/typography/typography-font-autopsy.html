@@ -12,6 +12,15 @@
         [fontName]="fontField"
         (switchFontPreset)="loadPreset($event)"
       ></clr-typography-font-switcher>
+      <clr-select-container>
+        <label>Compare to</label>
+        <select #compareSelect clrSelect (change)="compareTo($event)">
+          <option value="">-- None --</option>
+          <option value="Metropolis">Metropolis</option>
+          <option value="Clarity City">Clarity City</option>
+          <option value="Broadhevan">Broadhevan</option>
+        </select>
+      </clr-select-container>
 
       <form class="clr-row" clrForm (submit)="noop()" [formGroup]="model" clrLayout="vertical">
         <clr-input-container class="clr-col-3">
