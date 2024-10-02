@@ -45,14 +45,10 @@ export class DatagridPreserveSelectionDemo {
   backUpUsers: User[] = [];
 
   constructor(private inventory: Inventory) {
-    this.inventory.size = this.total;
-    this.inventory.latency = 500;
-    this.inventory.reset();
-    this.users =
-      this.clientNoTrackByUsers =
-      this.clientTrackByIndexUsers =
-      this.clientTrackByIdUsers =
-        this.inventory.all;
+    inventory.size = this.total;
+    inventory.latency = 500;
+    inventory.reset();
+    this.users = this.clientNoTrackByUsers = this.clientTrackByIndexUsers = this.clientTrackByIdUsers = inventory.all;
   }
 
   trackByIndex: TrackByFunction<User> = index => index;

@@ -16,10 +16,10 @@ import { filter, first } from 'rxjs/operators';
 export class DatepickerFocusService {
   constructor(private _ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: any) {}
 
-  focusCell(elRef: ElementRef): void {
+  focusCell(elRef: ElementRef<HTMLElement>): void {
     this._ngZone.runOutsideAngular(() => {
       this.ngZoneIsStableInBrowser().subscribe(() => {
-        const focusEl = elRef.nativeElement.querySelector('[tabindex="0"]');
+        const focusEl = elRef.nativeElement.querySelector<HTMLElement>('[tabindex="0"]');
         if (focusEl) {
           focusEl.focus();
         }

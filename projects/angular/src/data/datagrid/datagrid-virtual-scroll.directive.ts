@@ -102,11 +102,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
-    this.items.smartenUp();
-    this.datagrid.hasVirtualScroller = true;
-    this.datagrid.detailService.preventFocusScroll = true;
+    items.smartenUp();
+    datagrid.hasVirtualScroller = true;
+    datagrid.detailService.preventFocusScroll = true;
 
-    this.datagridElementRef = this.datagrid.el;
+    this.datagridElementRef = datagrid.el;
 
     // default
     this.cdkVirtualForTemplateCacheSize = 20;

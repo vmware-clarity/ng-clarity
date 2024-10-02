@@ -138,7 +138,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   private _pageSubscription: Subscription;
 
   constructor(public page: Page, public commonStrings: ClrCommonStringsService, public detailService: DetailService) {
-    this.page.activated = true;
+    page.activated = true;
   }
 
   /**
