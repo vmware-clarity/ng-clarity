@@ -43,8 +43,8 @@ export class ClrTabLink {
     public ifActiveService: IfActiveService,
     @Inject(IF_ACTIVE_ID) readonly id: number,
     public el: ElementRef<HTMLElement>,
-    private cfr: ComponentFactoryResolver,
-    private viewContainerRef: ViewContainerRef,
+    cfr: ComponentFactoryResolver,
+    viewContainerRef: ViewContainerRef,
     private tabsService: TabsService,
     @Inject(TABS_ID) public tabsId: number
   ) {
@@ -55,9 +55,9 @@ export class ClrTabLink {
     // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
     // Here, we create a container so that its template can be used to create embeddedView on the fly.
     // See TabsService's renderView() method and how it's used in Tabs class for an example.
-    const factory = this.cfr.resolveComponentFactory(TemplateRefContainer);
-    this.templateRefContainer = this.viewContainerRef.createComponent(factory, undefined, undefined, [
-      [this.el.nativeElement],
+    const factory = cfr.resolveComponentFactory(TemplateRefContainer);
+    this.templateRefContainer = viewContainerRef.createComponent(factory, undefined, undefined, [
+      [el.nativeElement],
     ]).instance;
   }
 

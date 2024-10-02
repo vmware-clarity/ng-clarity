@@ -67,7 +67,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     @Inject(POPOVER_HOST_ANCHOR)
     parentHost: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
-    private signpostIdService: SignpostIdService,
+    signpostIdService: SignpostIdService,
     private signpostFocusManager: SignpostFocusManager,
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) document: any
@@ -79,7 +79,7 @@ export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Defaults
     this.position = 'right-middle';
     this.closeOnOutsideClick = true;
-    this.signpostIdService.setId(this.signpostContentId);
+    signpostIdService.setId(this.signpostContentId);
 
     this.document = document;
   }

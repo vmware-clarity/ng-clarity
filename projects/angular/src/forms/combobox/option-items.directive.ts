@@ -39,9 +39,9 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     private differs: IterableDiffers,
     private optionService: OptionSelectionService<T>,
     private positionService: ClrPopoverPositionService,
-    private vcr: ViewContainerRef
+    vcr: ViewContainerRef
   ) {
-    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
+    this.iterableProxy = new NgForOf<T>(vcr, template, differs);
     this.subscriptions.push(
       optionService.inputChanged.subscribe(filter => {
         this.filter = filter;

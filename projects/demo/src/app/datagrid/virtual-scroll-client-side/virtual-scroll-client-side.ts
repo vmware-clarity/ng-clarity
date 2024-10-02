@@ -46,14 +46,14 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     public inventory: Inventory,
     private dynamicData: DynamicData,
     private cdr: ChangeDetectorRef,
-    private applicationRef: ApplicationRef
+    applicationRef: ApplicationRef
   ) {
     this.timeCD = new ChangeDetectionPerfRecord();
 
     this.rows = this.allRows;
 
-    const originalTick = this.applicationRef.tick;
-    this.applicationRef.tick = function () {
+    const originalTick = applicationRef.tick;
+    applicationRef.tick = function () {
       const before = window.performance.now();
       const retValue = originalTick.apply(this);
       const after = window.performance.now();

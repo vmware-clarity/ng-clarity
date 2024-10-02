@@ -25,7 +25,7 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLSelectElement>
   ) {
     super(vcr, ClrSelectContainer, injector, control, renderer, el);
   }

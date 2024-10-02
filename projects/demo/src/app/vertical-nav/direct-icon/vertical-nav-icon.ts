@@ -19,8 +19,8 @@ export class VerticalNavDirectIconDemo {
 
   private _collapse = false;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.iconMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.iconMenu;
   }
 
   get collapse(): boolean {

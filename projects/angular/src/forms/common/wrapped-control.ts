@@ -44,10 +44,8 @@ export enum CHANGE_KEYS {
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
-  protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -66,12 +64,9 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected wrapperType: Type<W>,
     injector: Injector,
     private ngControl: NgControl | null,
-    renderer: Renderer2,
-    el: ElementRef
+    protected renderer: Renderer2,
+    protected el: ElementRef<HTMLElement>
   ) {
-    this.renderer = renderer;
-    this.el = el;
-
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);

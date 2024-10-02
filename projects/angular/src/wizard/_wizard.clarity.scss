@@ -187,6 +187,7 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
+        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;

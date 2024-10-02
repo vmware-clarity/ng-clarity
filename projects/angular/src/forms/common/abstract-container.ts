@@ -40,7 +40,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+      ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
         this.state = state;
         // Make sure everything is updated before dispatching the values for helpers
         setTimeout(() => {
@@ -50,7 +50,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     );
 
     this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
+      ngControlService.controlChanges.subscribe(control => {
         this.control = control;
       })
     );

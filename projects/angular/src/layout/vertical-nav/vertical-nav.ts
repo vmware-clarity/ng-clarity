@@ -35,7 +35,7 @@ export class ClrVerticalNav implements OnDestroy {
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
     public commonStrings: ClrCommonStringsService
   ) {
-    this._sub = this._navService.collapsedChanged.subscribe(value => {
+    this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
   }

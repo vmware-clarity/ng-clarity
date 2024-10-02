@@ -158,7 +158,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   @ViewChild(ClrTabOverflowContent, { read: ElementRef })
-  set tabOverflowEl(value: ElementRef) {
+  set tabOverflowEl(value: ElementRef<HTMLElement>) {
     this._tabOverflowEl = value && value.nativeElement;
     if (this.toggleService.open && value) {
       // only when tab overflow view element is registered,
