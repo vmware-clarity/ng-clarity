@@ -1017,6 +1017,8 @@ export interface ClrCommonStrings {
     select: string;
     selectAll: string;
     selectedRows: string;
+    // (undocumented)
+    selectedTreeNode: string;
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
@@ -1042,6 +1044,8 @@ export interface ClrCommonStrings {
     timelineStepSuccess: string;
     totalPages: string;
     unknown: string;
+    // (undocumented)
+    unselectedTreeNode: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
