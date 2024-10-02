@@ -104,9 +104,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
       this.stepperService.activeStep
         .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
         .subscribe(() => {
-          //Adding timeout so that the status of the previous step is read by Voice Over on Safari,
-          //before focusing on the next stepper panel header
-          setTimeout(() => this.headerButton.nativeElement.focus(), 1500);
+          this.headerButton.nativeElement.focus();
         })
     );
   }
