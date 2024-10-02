@@ -6,7 +6,7 @@
  */
 
 import { Component, Injectable, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -121,7 +121,6 @@ describe('ClrStep Reactive Forms', () => {
       expect(input.focus).not.toHaveBeenCalled();
 
       (stepperService as MockStepperService).activeStep.next('groupName');
-      tick(1500);
 
       expect(input.focus).toHaveBeenCalled();
     }));
