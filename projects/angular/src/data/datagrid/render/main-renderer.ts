@@ -22,6 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnStateDiff } from '../interfaces/column-state.interface';
@@ -68,6 +69,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private columnsSizesStable = false;
 
   constructor(
+    private datagrid: ClrDatagrid,
     private organizer: DatagridRenderOrganizer,
     private items: Items,
     private page: Page,
@@ -121,7 +123,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   }
 
   ngAfterViewChecked() {
-    if (this.shouldStabilizeColumns) {
+    const datagridIsVisible = this.checkAndUpdateVisibility();
+    if (this.shouldStabilizeColumns && datagridIsVisible) {
       this.stabilizeColumns();
     }
     if (this.shouldComputeHeight()) {
@@ -279,6 +282,16 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     if (this.items.displayed.length > 0) {
       this.organizer.resize();
       this.columnsSizesStable = true;
+    }
+  }
+
+  private checkAndUpdateVisibility() {
+    if (this.el.nativeElement.offsetParent) {
+      // this.datagrid.datagrid.nativeElement.style.visibility = 'visible';
+      return true;
+    } else {
+      // this.datagrid.datagrid.nativeElement.style.visibility = 'hidden';
+      return false;
     }
   }
 }
