@@ -15,7 +15,10 @@ import {
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { NumberFilter } from '../../../projects/demo/src/app/datagrid/utils/number-filter';
 import { elements } from '../../helpers/elements.data';
+
+const numberFilter = new NumberFilter();
 
 export default {
   title: 'Datagrid/Column Filter',
@@ -50,6 +53,7 @@ export default {
     clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
     clrFilterStringPlaceholder: commonStringsDefault.filterItems,
     clrFilterValue: '',
+    numberFilter: numberFilter,
     clrDgSortOrder: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
     // outputs
     clrDgColumnResize: action('clrDgColumnResize'),
@@ -69,6 +73,7 @@ export default {
 };
 
 const ColumnFilterTemplate: StoryFn = args => ({
+  props: { ...args },
   template: `
     <style>
       .highlight {
@@ -106,6 +111,7 @@ const ColumnFilterTemplate: StoryFn = args => ({
       </clr-dg-column>
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
+        <clr-dg-numeric-filter [clrDgNumericFilter]="numberFilter"></clr-dg-numeric-filter>
       </clr-dg-column>
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
@@ -133,7 +139,6 @@ const ColumnFilterTemplate: StoryFn = args => ({
       </clr-dg-footer>
     </clr-datagrid>
   `,
-  props: { ...args },
 });
 
 export const ColumnFilter: StoryObj = {
@@ -143,6 +148,6 @@ export const ColumnFilter: StoryObj = {
 export const ColumnNumberFilterOpened = {
   render: ColumnFilterTemplate,
   play({ canvasElement }) {
-    canvasElement.querySelector('.datagrid-filter-toggle').click();
+    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
   },
 };
