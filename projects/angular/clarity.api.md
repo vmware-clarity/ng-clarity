@@ -954,6 +954,8 @@ export interface ClrCommonStrings {
     datagridExpandableRowsHelperText: string;
     datagridFilterAriaLabel: string;
     datagridFilterDialogAriaLabel: string;
+    datagridNumericFilterFrom: string;
+    datagridNumericFilterTo: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -4907,6 +4909,14 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
+    // (undocumented)
+    datagridNumericFilterFrom: string;
+    // (undocumented)
+    get datagridNumericFilterFromValue(): string;
+    // (undocumented)
+    datagridNumericFilterTo: string;
+    // (undocumented)
+    get datagridNumericFilterToValue(): string;
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
@@ -4933,7 +4943,7 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "datagridNumericFilterFrom": "datagridNumericFilterFrom"; "datagridNumericFilterTo": "datagridNumericFilterTo"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
