@@ -152,11 +152,11 @@ export class DatagridNumericFilter<T = any>
   }
 
   get datagridNumericFilterFromValue() {
-    return this.datagridNumericFilterFrom || this.commonStrings.keys.datagridNumericFilterFrom;
+    return this.datagridNumericFilterFrom || this.commonStrings.keys.numericFilterLabelFrom;
   }
 
   get datagridNumericFilterToValue() {
-    return this.datagridNumericFilterTo || this.commonStrings.keys.datagridNumericFilterTo;
+    return this.datagridNumericFilterTo || this.commonStrings.keys.numericFilterLabelTo;
   }
 
   get low() {
