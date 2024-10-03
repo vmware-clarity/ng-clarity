@@ -32,7 +32,7 @@ import { StepperService } from './providers/stepper.service';
 
 @Component({
   selector: 'clr-stepper-panel',
-  templateUrl: '../accordion-panel.html',
+  templateUrl: 'stepper-panel.html',
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
