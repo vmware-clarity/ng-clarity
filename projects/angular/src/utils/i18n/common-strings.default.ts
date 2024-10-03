@@ -56,6 +56,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridFilterDialogAriaLabel: 'Filter dialog',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
+  fromLabel: 'From',
+  toLabel: 'To',
   // Alert
   alertCloseButtonAriaLabel: 'Close alert',
   alertNextAlertAriaLabel: 'Next alert message, {CURRENT} of {COUNT}',

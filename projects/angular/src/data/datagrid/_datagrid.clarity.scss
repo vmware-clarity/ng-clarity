@@ -455,13 +455,11 @@
         align-items: center;
       }
 
-      .datagrid-filter-input-spacer {
-        width: tokens.$cds-global-space-6;
-        display: inline-block;
-      }
-
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
+        .clr-form-control {
+          margin-top: 0;
+        }
       }
 
       .datagrid-filter-toggle {
@@ -1423,6 +1421,14 @@
     // FIXME: remove
     .datagrid-filter-apply {
       margin-bottom: 0;
+    }
+
+    .datagrid-numeric-filter-form {
+      display: flex;
+      gap: tokens.$cds-global-space-6;
+      .clr-form-control {
+        margin-top: 0;
+      }
     }
   }
 
