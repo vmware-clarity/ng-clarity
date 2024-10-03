@@ -22,16 +22,23 @@ import { ClrWizardPage } from './wizard-page';
       [attr.disabled]="isDisabled ? '' : null"
     >
       <div class="clr-wizard-stepnav-link-icon">
-        <cds-icon *ngIf="hasError" shape="error-standard" aria-label="error"></cds-icon>
-        <cds-icon *ngIf="!hasError && isComplete" shape="success-standard" aria-label="complete"></cds-icon>
+        <cds-icon
+          *ngIf="hasError"
+          shape="error-standard"
+          [attr.aria-label]="commonStrings.keys.wizardStepError"
+        ></cds-icon>
+        <cds-icon
+          *ngIf="!hasError && isComplete"
+          shape="success-standard"
+          [attr.aria-label]="commonStrings.keys.wizardStepSuccess"
+        ></cds-icon>
       </div>
 
+      <span class="clr-sr-only">{{ commonStrings.keys.wizardStep }}</span>
       <div class="clr-wizard-stepnav-link-page-number"><ng-content></ng-content></div>
       <span class="clr-wizard-stepnav-link-title">
         <ng-template [ngTemplateOutlet]="page.navTitle"></ng-template>
       </span>
-      <span *ngIf="hasError" class="clr-sr-only">{{ commonStrings.keys.wizardStepError }}</span>
-      <span *ngIf="!hasError && isComplete" class="clr-sr-only">{{ commonStrings.keys.wizardStepSuccess }}</span>
     </button>
   `,
   host: {
