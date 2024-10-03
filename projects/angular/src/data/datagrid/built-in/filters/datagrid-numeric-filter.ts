@@ -39,7 +39,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label"> {{ datagridNumericFilterToValue }}: </label>
+          <label class="clr-control-label">{{ datagridNumericFilterToValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
