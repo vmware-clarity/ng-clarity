@@ -420,7 +420,11 @@
     .datagrid-rows {
       display: flex;
       flex-direction: column;
-      flex: 0 1 auto;
+      flex: 1 1 auto;
+
+      &.virtual-scroller {
+        flex-grow: 0;
+      }
     }
 
     .datagrid-body {
