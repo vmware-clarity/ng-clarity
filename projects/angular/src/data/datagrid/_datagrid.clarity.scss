@@ -147,6 +147,10 @@
     overflow: auto;
     flex: 1 1 auto;
     margin-top: tokens.$cds-global-space-6;
+
+    &.cdk-virtual-scrollable .datagrid-rows {
+      flex-grow: 0;
+    }
   }
 
   .datagrid-container {
@@ -421,10 +425,6 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-
-      &.virtual-scroller {
-        flex-grow: 0;
-      }
     }
 
     .datagrid-body {
