@@ -104,7 +104,7 @@ const ColumnFilterTemplate: StoryFn = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
       </clr-dg-column>
-      <clr-dg-column [clrDgColType]="'number'" clrDgField="number" [style.width.px]="250">
+      <clr-dg-column [clrDgField]="'number'" [clrDgColType]="'number'" [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
       <clr-dg-column>
