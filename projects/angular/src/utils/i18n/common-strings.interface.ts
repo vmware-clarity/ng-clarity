@@ -149,11 +149,11 @@ export interface ClrCommonStrings {
   /**
    * Datagrid numeric filter from handler string
    */
-  datagridNumericFilterFrom: string;
+  numericFilterLabelFrom: string;
   /**
    * Datagrid numeric filter to handler string
    */
-  datagridNumericFilterTo: string;
+  numericFilterLabelTo: string;
   /**
    * Modal start of content
    */
