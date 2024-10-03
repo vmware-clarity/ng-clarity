@@ -266,6 +266,11 @@ export interface ClrCommonStrings {
   comboboxOpen: string;
 
   /**
+   * Wizard: Screen-reader text for "step" (read before step number).
+   */
+  wizardStep: string;
+
+  /**
    * Wizard: Screen-reader text for completed step.
    */
   wizardStepSuccess: string;
