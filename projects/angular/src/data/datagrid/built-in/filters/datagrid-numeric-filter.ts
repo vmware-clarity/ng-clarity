@@ -25,7 +25,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ datagridNumericFilterFromValue }}</label>
+          <label class="clr-control-label">{{ minPlaceholderValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -39,7 +39,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ datagridNumericFilterToValue }}</label>
+          <label class="clr-control-label">{{ maxPlaceholderValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -152,11 +152,11 @@ export class DatagridNumericFilter<T = any>
   }
 
   get minLabelValue() {
-    return this.datagridNumericFilterTo || this.commonStrings.keys.numericFilterLabelTo;
+    return this.maxPlaceholder || this.commonStrings.keys.fromLabel;
   }
 
   get maxLabelValue() {
-    return this.datagridNumericFilterFrom || this.commonStrings.keys.numericFilterLabelFrom;
+    return this.minPlaceholder || this.commonStrings.keys.toLabel;
   }
 
   get low() {

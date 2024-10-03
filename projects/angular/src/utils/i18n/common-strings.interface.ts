@@ -147,13 +147,13 @@ export interface ClrCommonStrings {
    */
   columnSeparatorDescription: string;
   /**
-   * Datagrid numeric filter from handler string
+   * Numeric filter from handler string
    */
-  numericFilterLabelFrom: string;
+  fromLabel: string;
   /**
-   * Datagrid numeric filter to handler string
+   * Numeric filter to handler string
    */
-  numericFilterLabelTo: string;
+  toLabel: string;
   /**
    * Modal start of content
    */
