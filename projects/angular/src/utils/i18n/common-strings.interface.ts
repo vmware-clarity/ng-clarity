@@ -147,11 +147,11 @@ export interface ClrCommonStrings {
    */
   columnSeparatorDescription: string;
   /**
-   * Numeric filter from handler string
+   * Numeric filter from label string
    */
   fromLabel: string;
   /**
-   * Numeric filter to handler string
+   * Numeric filter to label string
    */
   toLabel: string;
   /**

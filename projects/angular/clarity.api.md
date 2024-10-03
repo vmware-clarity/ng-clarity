@@ -985,6 +985,7 @@ export interface ClrCommonStrings {
     fileCount: string;
     filterItems: string;
     firstPage: string;
+    fromLabel: string;
     hide: string;
     info: string;
     lastPage: string;
@@ -998,8 +999,6 @@ export interface ClrCommonStrings {
     neutral: string;
     next: string;
     nextPage: string;
-    numericFilterLabelFrom: string;
-    numericFilterLabelTo: string;
     open: string;
     passwordHide: string;
     // (undocumented)
@@ -1044,6 +1043,7 @@ export interface ClrCommonStrings {
     timelineStepProcessing: string;
     // (undocumented)
     timelineStepSuccess: string;
+    toLabel: string;
     totalPages: string;
     unknown: string;
     // (undocumented)
@@ -4913,17 +4913,13 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
-    // (undocumented)
-    datagridNumericFilterFrom: string;
-    // (undocumented)
-    get datagridNumericFilterFromValue(): string;
-    // (undocumented)
-    datagridNumericFilterTo: string;
-    // (undocumented)
-    get datagridNumericFilterToValue(): string;
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
+    // (undocumented)
+    fromLabel: string;
+    // (undocumented)
+    get fromLabelValue(): string;
     // (undocumented)
     get high(): number | string;
     set high(high: number | string);
@@ -4944,10 +4940,14 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
+    // (undocumented)
+    toLabel: string;
+    // (undocumented)
+    get toLabelValue(): string;
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "datagridNumericFilterFrom": "datagridNumericFilterFrom"; "datagridNumericFilterTo": "datagridNumericFilterTo"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "fromLabel": "clrFilterFromLabel"; "toLabel": "clrFilterToLabel"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
