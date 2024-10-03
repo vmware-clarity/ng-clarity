@@ -23,10 +23,19 @@ export const fontPresets: [string, FontMeasurements][] = [
   [
     'Metropolis',
     {
-      topGap: 0.147,
+      topGap: 0.148,
       ascender: 0.17,
-      xHeight: 0.518,
+      xHeight: 0.517,
       descenderOverage: 0.013,
+    },
+  ],
+  [
+    'Clarity City',
+    {
+      topGap: 0.108,
+      ascender: 0.17,
+      xHeight: 0.517,
+      descenderOverage: 0,
     },
   ],
   [
