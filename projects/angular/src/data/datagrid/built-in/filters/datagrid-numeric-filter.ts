@@ -25,7 +25,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ minPlaceholderValue }}</label>
+          <label class="clr-control-label">{{ fromLabelValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -39,7 +39,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ maxPlaceholderValue }}</label>
+          <label class="clr-control-label">{{ toLabelValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -62,8 +62,8 @@ export class DatagridNumericFilter<T = any>
 {
   @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
-  @Input('clrFilterMinValue') minLabel: string;
-  @Input('clrFilterMaxValue') maxValue: string;
+  @Input('clrFilterFromLabel') fromLabel: string;
+  @Input('clrFilterToLabel') toLabel: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -151,12 +151,12 @@ export class DatagridNumericFilter<T = any>
     return this.minPlaceholder || this.commonStrings.keys.minValue;
   }
 
-  get minLabelValue() {
-    return this.maxPlaceholder || this.commonStrings.keys.fromLabel;
+  get fromLabelValue() {
+    return this.fromLabel || this.commonStrings.keys.fromLabel;
   }
 
-  get maxLabelValue() {
-    return this.minPlaceholder || this.commonStrings.keys.toLabel;
+  get toLabelValue() {
+    return this.toLabel || this.commonStrings.keys.toLabel;
   }
 
   get low() {
