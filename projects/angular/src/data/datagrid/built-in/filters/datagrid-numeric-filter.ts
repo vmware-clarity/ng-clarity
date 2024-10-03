@@ -25,7 +25,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label"> {{ datagridNumericFilterFromValue }}: </label>
+          <label class="clr-control-label">{{ datagridNumericFilterFromValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
