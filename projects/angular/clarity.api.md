@@ -954,8 +954,6 @@ export interface ClrCommonStrings {
     datagridExpandableRowsHelperText: string;
     datagridFilterAriaLabel: string;
     datagridFilterDialogAriaLabel: string;
-    datagridNumericFilterFrom: string;
-    datagridNumericFilterTo: string;
     // (undocumented)
     datepickerCurrentDecade: string;
     // (undocumented)
@@ -1000,6 +998,8 @@ export interface ClrCommonStrings {
     neutral: string;
     next: string;
     nextPage: string;
+    numericFilterLabelFrom: string;
+    numericFilterLabelTo: string;
     open: string;
     passwordHide: string;
     // (undocumented)
