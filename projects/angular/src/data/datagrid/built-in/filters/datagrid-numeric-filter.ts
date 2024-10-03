@@ -152,7 +152,7 @@ export class DatagridNumericFilter<T = any>
   }
 
   get datagridNumericFilterFromValue() {
-    return this.minPlaceholder || this.commonStrings.keys.datagridNumericFilterFrom;
+    return this.datagridNumericFilterFrom || this.commonStrings.keys.datagridNumericFilterFrom;
   }
 
   get datagridNumericFilterToValue() {
