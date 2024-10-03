@@ -85,7 +85,6 @@ export default {
 };
 
 const ColumnFilterTemplate: StoryFn = args => ({
-  props: { ...args },
   template: `
     <style>
       .highlight {
@@ -150,6 +149,7 @@ const ColumnFilterTemplate: StoryFn = args => ({
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  props: { ...args },
 });
 
 export const ColumnFilter: StoryObj = {
