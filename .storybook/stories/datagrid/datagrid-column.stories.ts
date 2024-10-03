@@ -51,7 +51,6 @@ export default {
     clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
     clrFilterStringPlaceholder: commonStringsDefault.filterItems,
     clrFilterValue: '',
-    numberFilter: numberFilter,
     clrDgSortOrder: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
     // outputs
     clrDgColumnResize: action('clrDgColumnResize'),
