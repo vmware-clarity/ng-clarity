@@ -18,20 +18,6 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
-class NumberFilter implements ClrDatagridNumericFilterInterface<any> {
-  accepts(row: any, low: number, high: number): boolean {
-    if (low !== null && row.number < low) {
-      return false;
-    }
-    if (high !== null && row.number > high) {
-      return false;
-    }
-    return true;
-  }
-}
-
-const numberFilter = new NumberFilter();
-
 export default {
   title: 'Datagrid/Column Filter',
   component: ClrDatagridColumn,
