@@ -154,7 +154,7 @@ export class DatagridNumericFilter<T = any>
   get minLabelValue() {
     return this.datagridNumericFilterTo || this.commonStrings.keys.numericFilterLabelTo;
   }
-  
+
   get maxLabelValue() {
     return this.datagridNumericFilterFrom || this.commonStrings.keys.numericFilterLabelFrom;
   }
