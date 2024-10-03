@@ -9,7 +9,6 @@ import {
   ClrConditionalModule,
   ClrDatagridColumn,
   ClrDatagridModule,
-  ClrDatagridNumericFilterInterface,
   ClrDatagridSortOrder,
   commonStringsDefault,
 } from '@clr/angular';
