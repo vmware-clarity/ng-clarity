@@ -62,8 +62,8 @@ export class DatagridNumericFilter<T = any>
 {
   @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
-  @Input('datagridNumericFilterFrom') datagridNumericFilterFrom: string;
-  @Input('datagridNumericFilterTo') datagridNumericFilterTo: string;
+  @Input('clrFilterMinValue') minLabel: string;
+  @Input('clrFilterMaxValue') maxValue: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
