@@ -156,7 +156,7 @@ export class DatagridNumericFilter<T = any>
   }
 
   get datagridNumericFilterToValue() {
-    return this.minPlaceholder || this.commonStrings.keys.datagridNumericFilterTo;
+    return this.datagridNumericFilterTo || this.commonStrings.keys.datagridNumericFilterTo;
   }
 
   get low() {
