@@ -23,7 +23,7 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrRangeContainer, injector, control, renderer, el);
   }

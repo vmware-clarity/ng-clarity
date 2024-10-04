@@ -76,7 +76,7 @@ export default function (): void {
     });
 
     it('adds the aria-multiselectable if tree is selectable and has children', function (this: Context) {
-      expect(this.clarityElement.getAttribute('aria-multiselectable')).toBe('false');
+      expect(this.clarityElement.getAttribute('aria-multiselectable')).toBeNull();
       this.getClarityProvider(TreeFeaturesService).selectable = true;
       this.hostComponent.hasChild = true;
       this.detectChanges();

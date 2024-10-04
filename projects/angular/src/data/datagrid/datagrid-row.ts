@@ -61,6 +61,8 @@ let nbRow = 0;
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
+  @Input('clrDgDetailDisabled') detailDisabled = false;
+  @Input('clrDgDetailHidden') detailHidden = false;
 
   id: string;
   radioId: string;
@@ -112,8 +114,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     public detailService: DetailService,
     private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
-    private renderer: Renderer2,
-    private el: ElementRef<HTMLElement>,
+    renderer: Renderer2,
+    el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     @Inject(DOCUMENT) private document: any
@@ -125,20 +127,18 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     this.expandableId = expand.expandableId;
 
     this.subscriptions.push(
-      combineLatest(this.expand.replace, this.expand.expandChange).subscribe(
-        ([expandReplaceValue, expandChangeValue]) => {
-          if (expandReplaceValue && expandChangeValue) {
-            // replaced and expanding
-            this.replaced = true;
-            this.renderer.addClass(this.el.nativeElement, 'datagrid-row-replaced');
-          } else {
-            this.replaced = false;
-            // Handles these cases: not replaced and collapsing & replaced and
-            // collapsing and not replaced and expanding.
-            this.renderer.removeClass(this.el.nativeElement, 'datagrid-row-replaced');
-          }
+      combineLatest(expand.replace, expand.expandChange).subscribe(([expandReplaceValue, expandChangeValue]) => {
+        if (expandReplaceValue && expandChangeValue) {
+          // replaced and expanding
+          this.replaced = true;
+          renderer.addClass(el.nativeElement, 'datagrid-row-replaced');
+        } else {
+          this.replaced = false;
+          // Handles these cases: not replaced and collapsing & replaced and
+          // collapsing and not replaced and expanding.
+          renderer.removeClass(el.nativeElement, 'datagrid-row-replaced');
         }
-      )
+      })
     );
   }
 

@@ -35,11 +35,11 @@ export class ClrDropdown implements OnDestroy {
     public parent: ClrDropdown,
     public toggleService: ClrPopoverToggleService,
     public focusHandler: DropdownFocusHandler,
-    private cdr: ChangeDetectorRef,
+    cdr: ChangeDetectorRef,
     dropdownService: RootDropdownService
   ) {
-    this.subscriptions.push(dropdownService.changes.subscribe(value => (this.toggleService.open = value)));
-    this.subscriptions.push(toggleService.openChange.subscribe(() => this.cdr.markForCheck()));
+    this.subscriptions.push(dropdownService.changes.subscribe(value => (toggleService.open = value)));
+    this.subscriptions.push(toggleService.openChange.subscribe(() => cdr.markForCheck()));
   }
 
   ngOnDestroy() {

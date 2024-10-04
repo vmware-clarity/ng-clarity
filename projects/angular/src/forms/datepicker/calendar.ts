@@ -37,7 +37,7 @@ export class ClrCalendar implements OnDestroy {
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef
+    private _elRef: ElementRef<HTMLElement>
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();
@@ -56,10 +56,6 @@ export class ClrCalendar implements OnDestroy {
 
   get selectedDay(): DayModel {
     return this._dateNavigationService.selectedDay;
-  }
-
-  get selectedEndDay(): DayModel {
-    return this._dateNavigationService.selectedEndDay;
   }
 
   get focusedDay(): DayModel {
@@ -133,18 +129,6 @@ export class ClrCalendar implements OnDestroy {
     );
 
     this._subs.push(
-      this._dateNavigationService.selectedDayChange.subscribe((selectedDay: DayModel) => {
-        this.calendarViewModel.updateSelectedDay(selectedDay);
-      })
-    );
-
-    this._subs.push(
-      this._dateNavigationService.selectedEndDayChange.subscribe((selectedDay: DayModel) => {
-        this.calendarViewModel.updateSelectedEndDay(selectedDay);
-      })
-    );
-
-    this._subs.push(
       this._dateNavigationService.focusOnCalendarChange.subscribe(() => {
         this._datepickerFocusService.focusCell(this._elRef);
       })
@@ -158,7 +142,6 @@ export class ClrCalendar implements OnDestroy {
     this.calendarViewModel = new CalendarViewModel(
       this.calendar,
       this.selectedDay,
-      this.selectedEndDay,
       this.focusedDay,
       this.today,
       this._localeHelperService.firstDayOfWeek,

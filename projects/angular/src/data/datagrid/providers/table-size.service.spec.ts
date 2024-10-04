@@ -33,7 +33,7 @@ import { TableSizeService } from './table-size.service';
 class TestComponent {
   height = 300;
 
-  constructor(public elementRef: ElementRef) {}
+  constructor(public elementRef: ElementRef<HTMLElement>) {}
 }
 
 interface TestContext {

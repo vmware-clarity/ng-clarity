@@ -26,7 +26,7 @@ export class ClrLabel implements OnInit, OnDestroy {
     @Optional() private layoutService: LayoutService,
     @Optional() private ngControlService: NgControlService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef<HTMLLabelElement>
   ) {}
 
   get labelText(): string {

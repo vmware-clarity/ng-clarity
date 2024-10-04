@@ -27,12 +27,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
         run: npx semantic-release
       - name: Deploy Docs
         continue-on-error: true
         timeout-minutes: 5
         env:
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: npx netlify-cli deploy $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || ([[ $GITHUB_REF_NAME == "beta" ]] && echo "--prod --site v17-storybook-clarity-design" || echo "alias $GITHUB_REF_NAME"))
+        run: npx netlify-cli deploy --site storybook-clarity-design $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")

@@ -44,10 +44,8 @@ export enum CHANGE_KEYS {
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
-  protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -58,8 +56,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
   private _containerInjector: Injector;
   private differs: KeyValueDiffers;
   private differ: KeyValueDiffer<any, any>;
-  private additionalDiffer = new Map<NgControl, KeyValueDiffer<any, any>>();
-  private ngControl: NgControl | null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -67,13 +63,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private _ngControl: NgControl | null,
-    renderer: Renderer2,
-    el: ElementRef
+    private ngControl: NgControl | null,
+    protected renderer: Renderer2,
+    protected el: ElementRef<HTMLElement>
   ) {
-    this.renderer = renderer;
-    this.el = el;
-
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
@@ -100,6 +93,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
         })
       );
     }
+
+    if (ngControl) {
+      this.differ = this.differs.find(ngControl).create();
+    }
   }
 
   @Input()
@@ -112,10 +109,6 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
-  }
-
-  private get hasAdditionalControls() {
-    return this.additionalDiffer.size > 0;
   }
 
   ngOnInit() {
@@ -133,24 +126,23 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService && this._ngControl) {
-      if (!this.ngControlService.getControl()) {
-        this.ngControl = this._ngControl;
-        this.ngControlService.setControl(this.ngControl);
-        this.differ = this.differs.find(this._ngControl).create();
-      } else {
-        this.ngControl = this.ngControlService.getControl();
-        this.ngControlService.addAdditionalControl(this._ngControl);
-        this.additionalDiffer.set(this._ngControl, this.differs.find(this._ngControl).create());
-      }
+    if (this.ngControlService && this.ngControl) {
+      this.ngControlService.setControl(this.ngControl);
     }
   }
 
   ngDoCheck() {
-    this.triggerDoCheck(this.differ, this.ngControl);
-    if (this.hasAdditionalControls) {
-      for (const [ngControl, differ] of this.additionalDiffer) {
-        this.triggerDoCheck(differ, ngControl);
+    if (this.differ) {
+      const changes = this.differ.diff(this.ngControl);
+      if (changes) {
+        changes.forEachChangedItem(change => {
+          if (
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
+            change.currentValue !== change.previousValue
+          ) {
+            this.triggerValidation();
+          }
+        });
       }
     }
   }
@@ -178,32 +170,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     }
   }
 
-  private triggerDoCheck(differ, ngControl) {
-    if (differ) {
-      const changes = differ.diff(ngControl);
-      if (changes) {
-        changes.forEachChangedItem(change => {
-          if (
-            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
-            change.currentValue !== change.previousValue
-          ) {
-            this.triggerValidation();
-          }
-        });
-      }
-    }
-  }
-
   private markAsTouched(): void {
     if (this.ngControl) {
       this.ngControl.control.markAsTouched();
       this.ngControl.control.updateValueAndValidity();
-    }
-    if (this.ngControlService && this.ngControlService.hasAdditionalControls) {
-      this.ngControlService.getAdditionalControls()?.forEach((ngControl: NgControl) => {
-        ngControl.control.markAsTouched();
-        ngControl.control.updateValueAndValidity();
-      });
     }
   }
 

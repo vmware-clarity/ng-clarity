@@ -147,6 +147,10 @@
     overflow: auto;
     flex: 1 1 auto;
     margin-top: tokens.$cds-global-space-6;
+
+    &.cdk-virtual-scrollable .datagrid-rows {
+      flex-grow: 0;
+    }
   }
 
   .datagrid-container {
@@ -451,13 +455,11 @@
         align-items: center;
       }
 
-      .datagrid-filter-input-spacer {
-        width: tokens.$cds-global-space-6;
-        display: inline-block;
-      }
-
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
+        .clr-form-control {
+          margin-top: 0;
+        }
       }
 
       .datagrid-filter-toggle {
@@ -1265,6 +1267,10 @@
       cursor: pointer;
       @include mixins.equilateral(tokens.$cds-global-space-9);
 
+      &:disabled cds-icon.datagrid-detail-caret-icon {
+        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      }
+
       &.is-open .datagrid-detail-caret-icon {
         border-radius: tokens.$cds-alias-object-border-radius-100;
         background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
@@ -1415,6 +1421,14 @@
     // FIXME: remove
     .datagrid-filter-apply {
       margin-bottom: 0;
+    }
+
+    .datagrid-numeric-filter-form {
+      display: flex;
+      gap: tokens.$cds-global-space-6;
+      .clr-form-control {
+        margin-top: 0;
+      }
     }
   }
 

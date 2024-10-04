@@ -35,7 +35,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     private viewContainer: ViewContainerRef,
     private detailService: DetailService
   ) {
-    this.detailService.enabled = true;
+    detailService.enabled = true;
   }
 
   @Input('clrIfDetail')

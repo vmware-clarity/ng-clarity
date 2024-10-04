@@ -38,7 +38,7 @@ export class ClrOption<T> implements OnInit {
     private focusHandler: ComboboxFocusHandler<T>,
     private optionSelectionService: OptionSelectionService<T>
   ) {
-    this.optionProxy.el = this.elRef.nativeElement;
+    this.optionProxy.el = elRef.nativeElement;
   }
 
   @Input('id')
@@ -78,8 +78,9 @@ export class ClrOption<T> implements OnInit {
     }
   }
 
-  @HostListener('click')
-  onClick() {
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    event.stopPropagation();
     if (this.optionSelectionService.multiselectable) {
       this.optionSelectionService.toggle(this.value);
     } else {

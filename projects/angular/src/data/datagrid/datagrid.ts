@@ -150,14 +150,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     public el: ElementRef<HTMLElement>,
     private page: Page,
     public commonStrings: ClrCommonStringsService,
-    private columnsService: ColumnsService,
     public keyNavigation: KeyNavigationGridController,
     private zone: NgZone
   ) {
     const datagridId = uniqueIdFactory();
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
-    this.detailService.id = datagridId;
+    detailService.id = datagridId;
   }
 
   /**
@@ -272,12 +271,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        const active = this.keyNavigation.getActiveCell();
-
-        if (active) {
-          this.zone.runOutsideAngular(() => {
-            setTimeout(() => this.keyNavigation.setActiveCell(active));
-          });
+        if (this.hasVirtualScroller) {
+          const active = this.keyNavigation.getActiveCell();
+          const isFocusInsideDatagrid = this.datagrid.nativeElement.contains(document.activeElement);
+          if (active && isFocusInsideDatagrid) {
+            this.zone.runOutsideAngular(() => {
+              setTimeout(() => this.keyNavigation.setActiveCell(active));
+            });
+          }
         }
       })
     );
