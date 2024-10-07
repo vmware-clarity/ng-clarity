@@ -985,6 +985,7 @@ export interface ClrCommonStrings {
     fileCount: string;
     filterItems: string;
     firstPage: string;
+    fromLabel: string;
     hide: string;
     info: string;
     lastPage: string;
@@ -1017,6 +1018,8 @@ export interface ClrCommonStrings {
     select: string;
     selectAll: string;
     selectedRows: string;
+    // (undocumented)
+    selectedTreeNode: string;
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
@@ -1040,11 +1043,15 @@ export interface ClrCommonStrings {
     timelineStepProcessing: string;
     // (undocumented)
     timelineStepSuccess: string;
+    toLabel: string;
     totalPages: string;
     unknown: string;
     // (undocumented)
+    unselectedTreeNode: string;
+    // (undocumented)
     verticalNavToggle: string;
     warning: string;
+    wizardStep: string;
     wizardStepError: string;
     wizardStepnavAriaLabel: string;
     wizardStepSuccess: string;
@@ -4911,6 +4918,10 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
+    fromLabel: string;
+    // (undocumented)
+    get fromLabelValue(): string;
+    // (undocumented)
     get high(): number | string;
     set high(high: number | string);
     input: ElementRef<HTMLInputElement>;
@@ -4930,10 +4941,14 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
+    // (undocumented)
+    toLabel: string;
+    // (undocumented)
+    get toLabelValue(): string;
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "fromLabel": "clrFilterFromLabel"; "toLabel": "clrFilterToLabel"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
@@ -5253,7 +5268,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)

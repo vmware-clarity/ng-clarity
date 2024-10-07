@@ -104,7 +104,7 @@ const ColumnFilterTemplate: StoryFn = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
       </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
+      <clr-dg-column [clrDgField]="'number'" [clrDgColType]="'number'" [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
       <clr-dg-column>
@@ -138,4 +138,11 @@ const ColumnFilterTemplate: StoryFn = args => ({
 
 export const ColumnFilter: StoryObj = {
   render: ColumnFilterTemplate,
+};
+
+export const ColumnNumberFilterOpened = {
+  render: ColumnFilterTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
+  },
 };

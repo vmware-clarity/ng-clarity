@@ -16,6 +16,7 @@
 | --clr-wizard-stepnav-border-size               | Wizard navigation border size                                                             |
 | --clr-wizard-stepnav-item-border-color         | Wizard navigation border color                                                            |
 | --clr-wizard-stepnav-item-border-color--active | Wizard navigation item complete border color (misnamed)                                   |
+| --clr-wizard-stepnav-selected-border-color     | Wizard navigation border color of current not completed step                              |
 | --clr-wizard-stepnav-active-bgcolor            | _Deprecated in v18_ Wizard navigation background color for the currently selected element |
 | --clr-wizard-stepnav-selected-bgcolor          | Wizard navigation background color for the currently selected element                     |
 | --clr-wizard-stepnav-selected-hover-bgcolor    | Wizard navigation background color for the currently hovered selected element             |
