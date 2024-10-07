@@ -117,8 +117,6 @@ export class KeyNavigationGridController implements OnDestroy {
             e.code === 'PageUp' ||
             e.code === 'PageDown'
           ) {
-            // console.log('is current active cell in details: ', this.isCurrentActiveCellInDetails());
-            // console.log('is row 1 expanded: ', this.isRowExpanded(1));
             const nextActiveItem = this.getNextItem(e);
 
             if (nextActiveItem) {
@@ -184,8 +182,6 @@ export class KeyNavigationGridController implements OnDestroy {
         : 0;
     let y = currentRow && currentCell && this.rows ? Array.from(this.rows).indexOf(currentRow) : 0;
 
-    console.log('x is:', x);
-
     const dir = this.host.dir;
     const inlineStart = dir === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
     const inlineEnd = dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
@@ -227,7 +223,6 @@ export class KeyNavigationGridController implements OnDestroy {
 
     if (e.code === 'ArrowUp' && y !== 0) {
       if (this.isCurrentActiveCellInDetails()) {
-        // console.log('up!');
         nextActiveItem = this.rows
           ? (Array.from(this.rows[y].querySelectorAll('.datagrid-scrolling-cells'))[0].querySelectorAll(
               '.datagrid-cell'
@@ -241,7 +236,6 @@ export class KeyNavigationGridController implements OnDestroy {
     } else if (e.code === 'ArrowDown' && y < numOfRows) {
       // TODO: Go to next row
       if (!this.isCurrentActiveCellInDetails() && this.isRowExpanded(y)) {
-        console.log('go to next details');
         // TODO: Go to details
         nextActiveItem = this.rows
           ? (Array.from(this.rows[y].querySelectorAll('.datagrid-row-detail'))[0].querySelectorAll('.datagrid-cell')[
@@ -281,7 +275,6 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   private isRowExpanded(y: number): boolean {
-    console.log('isRowExpanded: ', this.rows[y]);
     return !!this.rows[y].querySelector('.datagrid-row-detail');
   }
 
