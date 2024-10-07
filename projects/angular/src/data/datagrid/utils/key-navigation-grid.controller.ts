@@ -287,8 +287,8 @@ export class KeyNavigationGridController implements OnDestroy {
 
   private isCurrentActiveCellInDetails(): boolean {
     return (
-      this.getActiveCell().parentElement.classList.contains('datagrid-row-detail') ||
-      this.getActiveCell().classList.contains('datagrid-row-detail')
+      this.getActiveCell()?.parentElement.classList.contains('datagrid-row-detail') ||
+      this.getActiveCell()?.classList.contains('datagrid-row-detail')
     );
   }
 }
