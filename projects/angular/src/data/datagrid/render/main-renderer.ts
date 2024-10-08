@@ -252,6 +252,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
                 row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
               }
             });
+            this.updateColumnSeparatorsVisibility();
             this.keyNavigation.resetKeyGrid();
             break;
           case DatagridColumnChanges.INITIALIZE:
@@ -294,5 +295,16 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       this.datagrid.datagrid.nativeElement.style.visibility = 'hidden';
       return false;
     }
+  }
+
+  private updateColumnSeparatorsVisibility() {
+    const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
+    visibleColumns.forEach((column, index) => {
+      if (index === visibleColumns.length - 1) {
+        column.showSeparator = false;
+      } else if (!column.showSeparator) {
+        column.showSeparator = true;
+      }
+    });
   }
 }

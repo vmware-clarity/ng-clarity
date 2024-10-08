@@ -1313,7 +1313,7 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
@@ -1334,6 +1334,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
+    get isHidden(): boolean;
+    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
@@ -1342,7 +1344,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     set projectedFilter(custom: any);
     // (undocumented)
-    showSeparator: boolean;
+    get showSeparator(): boolean;
+    set showSeparator(value: boolean);
     sort(reverse?: boolean): void;
     get sortable(): boolean;
     // (undocumented)
