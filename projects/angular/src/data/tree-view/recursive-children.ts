@@ -42,8 +42,8 @@ export class RecursiveChildren<T> {
 
   constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
     if (expandService) {
-      this.subscription = this.expandService.expandChange.subscribe(value => {
-        if (!value && this.parent && !this.featuresService.eager && this.featuresService.recursion) {
+      this.subscription = expandService.expandChange.subscribe(value => {
+        if (!value && this.parent && !featuresService.eager && featuresService.recursion) {
           // In the case of lazy-loading recursive trees, we clear the children on collapse.
           // This is better in case they change between two user interaction, and that way
           // the app itself can decide whether to cache them or not.

@@ -38,7 +38,7 @@ export class ClrOption<T> implements OnInit {
     private focusHandler: ComboboxFocusHandler<T>,
     private optionSelectionService: OptionSelectionService<T>
   ) {
-    this.optionProxy.el = this.elRef.nativeElement;
+    this.optionProxy.el = elRef.nativeElement;
   }
 
   @Input('id')

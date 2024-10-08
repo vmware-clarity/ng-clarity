@@ -25,7 +25,7 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrInputContainer, injector, control, renderer, el);
   }

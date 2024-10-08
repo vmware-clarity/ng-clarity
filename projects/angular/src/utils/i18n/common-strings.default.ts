@@ -56,6 +56,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridFilterDialogAriaLabel: 'Filter dialog',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
+  fromLabel: 'From',
+  toLabel: 'To',
   // Alert
   alertCloseButtonAriaLabel: 'Close alert',
   alertNextAlertAriaLabel: 'Next alert message, {CURRENT} of {COUNT}',
@@ -101,6 +103,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridExpandableRowContent: 'Expandable row content',
   datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
   // Wizard
+  wizardStep: 'Step',
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
   wizardStepnavAriaLabel: 'Step navigation',
@@ -126,4 +129,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   fileCount: '{COUNT} files',
   clearFile: 'Clear {FILE}',
   clearFiles: 'Clear {COUNT} files',
+
+  // Tree
+  selectedTreeNode: 'selected',
+  unselectedTreeNode: 'unselected',
 };

@@ -57,15 +57,15 @@ export class ClrDatagridHideableColumn implements OnDestroy {
 
   constructor(
     private titleTemplateRef: TemplateRef<any>,
-    private viewContainerRef: ViewContainerRef,
+    viewContainerRef: ViewContainerRef,
     private columnsService: ColumnsService,
     @Optional()
     @Inject(COLUMN_STATE)
     private columnState: BehaviorSubject<ColumnState>
   ) {
-    this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
+    viewContainerRef.createEmbeddedView(titleTemplateRef);
 
-    if (!this.columnState) {
+    if (!columnState) {
       throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
     }
   }

@@ -36,7 +36,7 @@ export default function (): void {
         this.eventService = fixture.debugElement.injector.get(ClrPopoverEventsService, null);
         this.toggleService = fixture.debugElement.injector.get(ClrPopoverToggleService, null);
       });
-      function setupAnchor(context: TestContext): ElementRef {
+      function setupAnchor(context: TestContext): ElementRef<HTMLButtonElement> {
         const anchor = document.createElement('button');
         const anchorRef = new ElementRef(anchor);
         anchor.textContent = 'AnchorButton';
@@ -46,14 +46,14 @@ export default function (): void {
         context.eventService.anchorButtonRef = anchorRef;
         return anchorRef;
       }
-      function setupContent(context: TestContext): ElementRef {
+      function setupContent(context: TestContext): ElementRef<HTMLDivElement> {
         const content = document.createElement('div');
         const contentRef = new ElementRef(content);
         content.textContent = 'Popover content container';
         context.eventService.contentRef = contentRef;
         return contentRef;
       }
-      function setupCloseButton(context: TestContext): ElementRef {
+      function setupCloseButton(context: TestContext): ElementRef<HTMLButtonElement> {
         const closeBtn = document.createElement('button');
         const closeBtnRef = new ElementRef(closeBtn);
 

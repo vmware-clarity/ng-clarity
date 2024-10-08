@@ -55,7 +55,7 @@ export class ClrIfActive implements OnDestroy {
   ) {
     this.checkAndUpdateView(ifActiveService.current);
 
-    this.subscription = this.ifActiveService.currentChange.subscribe(newCurrentId => {
+    this.subscription = ifActiveService.currentChange.subscribe(newCurrentId => {
       this.checkAndUpdateView(newCurrentId);
     });
   }

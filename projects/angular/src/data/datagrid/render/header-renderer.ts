@@ -34,14 +34,14 @@ export class DatagridHeaderRenderer implements OnDestroy {
   constructor(
     private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private organizer: DatagridRenderOrganizer,
+    organizer: DatagridRenderOrganizer,
     private domAdapter: DomAdapter,
     private columnResizerService: ColumnResizerService,
     private columnsService: ColumnsService,
     @Inject(COLUMN_STATE) private columnState: BehaviorSubject<ColumnState>
   ) {
     this.subscriptions.push(
-      this.organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth())
     );
   }
 

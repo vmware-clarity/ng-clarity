@@ -21,7 +21,7 @@ import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
 class TestPopover extends AbstractPopover {
   closeOnOutsideClick = true;
 
-  constructor(injector: Injector, @Optional() parent: ElementRef) {
+  constructor(injector: Injector, @Optional() parent: ElementRef<HTMLElement>) {
     super(injector, parent);
   }
 }

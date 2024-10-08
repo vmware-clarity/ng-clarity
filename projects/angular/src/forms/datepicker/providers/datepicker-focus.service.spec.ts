@@ -91,5 +91,5 @@ class MockNgZone extends NgZone {
 class TestComponent {
   tabIndex = '0';
 
-  constructor(public elementRef: ElementRef) {}
+  constructor(public elementRef: ElementRef<HTMLElement>) {}
 }

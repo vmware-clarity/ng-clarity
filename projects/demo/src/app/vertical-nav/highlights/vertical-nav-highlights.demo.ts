@@ -17,7 +17,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 export class VerticalNavHighlightsDemo {
   case: any;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.highlights;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.highlights;
   }
 }

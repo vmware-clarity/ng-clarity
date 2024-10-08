@@ -80,7 +80,13 @@ class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
   selector: '[testControl3]',
 })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
-  constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef) {
+  constructor(
+    vcr: ViewContainerRef,
+    injector: Injector,
+    control: NgControl,
+    renderer: Renderer2,
+    el: ElementRef<HTMLElement>
+  ) {
     super(vcr, TestWrapper3, injector, control, renderer, el);
   }
 }

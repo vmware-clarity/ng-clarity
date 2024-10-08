@@ -22,7 +22,7 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef
+    el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrRadioWrapper, injector, control, renderer, el);
   }
