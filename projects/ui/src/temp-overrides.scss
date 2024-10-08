@@ -32,6 +32,8 @@
 }
 
 [cds-theme~='dark'] {
+  --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-300};
+
   // utility
   --cds-alias-status-alt: #{tokens.$cds-global-color-violet-700};
   --cds-alias-status-alt-tint: #{tokens.$cds-global-color-violet-600};
