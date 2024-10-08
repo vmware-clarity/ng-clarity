@@ -20,12 +20,6 @@
       padding: tokens.$cds-global-space-5 tokens.$cds-global-space-8 tokens.$cds-global-space-5
         tokens.$cds-global-space-9;
 
-      > .clr-accordion-description,
-      > .clr-step-description {
-        margin-left: tokens.$cds-global-space-9;
-        @include mixins.generate-typography-token('BODY-14-RG-STD');
-      }
-
       > .clr-step-status {
         min-height: tokens.$cds-global-space-9;
         height: tokens.$cds-global-space-9;
@@ -72,8 +66,40 @@
         }
       }
 
+      > .clr-accordion-description,
+      > .clr-step-description {
+        margin-left: tokens.$cds-global-space-9;
+        @include mixins.generate-typography-token('BODY-14-RG-STD');
+      }
+
       @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
-        gap: tokens.$cds-global-space-5;
+        gap: tokens.$cds-global-space-3;
+
+        > .clr-step-status {
+          min-width: initial;
+          width: initial;
+        }
+
+        > .clr-step-title {
+          width: initial;
+
+          > .clr-step-number {
+            min-width: initial;
+          }
+        }
+
+        > .clr-accordion-description,
+        > .clr-step-description {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .clr-accordion-panel-inactive:not(.clr-accordion-panel-open) > .clr-stepper-header .clr-step-angle {
+      visibility: hidden;
+
+      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        display: none;
       }
     }
 
