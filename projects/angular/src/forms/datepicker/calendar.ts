@@ -37,7 +37,7 @@ export class ClrCalendar implements OnDestroy {
     private _dateNavigationService: DateNavigationService,
     private _datepickerFocusService: DatepickerFocusService,
     private _dateIOService: DateIOService,
-    private _elRef: ElementRef
+    private _elRef: ElementRef<HTMLElement>
   ) {
     this.generateCalendarView();
     this.initializeSubscriptions();

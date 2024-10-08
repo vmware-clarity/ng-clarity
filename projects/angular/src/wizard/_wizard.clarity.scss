@@ -169,7 +169,7 @@
       border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
         wizard-variables.$clr-wizard-stepnav-item-border-color;
 
-      margin: 0 0 calc(-1 * #{tokens.$cds-alias-object-border-width-100}) 0;
+      margin-bottom: tokens.$cds-global-space-1;
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
@@ -187,6 +187,7 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
+        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;

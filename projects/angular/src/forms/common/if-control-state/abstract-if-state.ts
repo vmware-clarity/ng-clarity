@@ -24,7 +24,7 @@ export abstract class AbstractIfState {
   ) {
     if (ngControlService) {
       this.subscriptions.push(
-        this.ngControlService.controlChanges.subscribe(control => {
+        ngControlService.controlChanges.subscribe(control => {
           this.control = control;
         })
       );
@@ -32,7 +32,7 @@ export abstract class AbstractIfState {
 
     if (ifControlStateService) {
       this.subscriptions.push(
-        this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+        ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
           this.handleState(state);
         })
       );

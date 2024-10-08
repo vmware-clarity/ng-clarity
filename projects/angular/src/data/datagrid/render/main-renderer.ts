@@ -22,6 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnStateDiff } from '../interfaces/column-state.interface';
@@ -68,33 +69,31 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private columnsSizesStable = false;
 
   constructor(
+    private datagrid: ClrDatagrid,
     private organizer: DatagridRenderOrganizer,
     private items: Items,
     private page: Page,
-    private domAdapter: DomAdapter,
     private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private detailService: DetailService,
+    detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
     private ngZone: NgZone,
     private keyNavigation: KeyNavigationGridController
   ) {
     this.subscriptions.push(
-      this.organizer
-        .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
-        .subscribe(() => this.computeHeadersWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS).subscribe(() => this.computeHeadersWidth())
     );
 
     this.subscriptions.push(
-      this.page.sizeChange.subscribe(() => {
+      page.sizeChange.subscribe(() => {
         if (this._heightSet) {
           this.resetDatagridHeight();
         }
       })
     );
-    this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
-    this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+    this.subscriptions.push(detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
+    this.subscriptions.push(items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
   }
 
   ngOnInit() {
@@ -121,10 +120,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   }
 
   ngAfterViewChecked() {
-    if (this.shouldStabilizeColumns) {
-      setTimeout(() => {
-        this.stabilizeColumns();
-      }, 0);
+    const datagridIsVisible = this.checkAndUpdateVisibility();
+    if (this.shouldStabilizeColumns && datagridIsVisible) {
+      this.stabilizeColumns();
     }
 
     if (this.shouldComputeHeight()) {
@@ -285,6 +283,16 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     if (this.items.displayed.length > 0) {
       this.organizer.resize();
       this.columnsSizesStable = true;
+    }
+  }
+
+  private checkAndUpdateVisibility() {
+    if (this.el.nativeElement.offsetParent) {
+      this.datagrid.datagrid.nativeElement.style.visibility = 'visible';
+      return true;
+    } else {
+      this.datagrid.datagrid.nativeElement.style.visibility = 'hidden';
+      return false;
     }
   }
 }

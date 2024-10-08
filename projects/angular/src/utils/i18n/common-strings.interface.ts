@@ -147,6 +147,14 @@ export interface ClrCommonStrings {
    */
   columnSeparatorDescription: string;
   /**
+   * Numeric filter from label string
+   */
+  fromLabel: string;
+  /**
+   * Numeric filter to label string
+   */
+  toLabel: string;
+  /**
    * Modal start of content
    */
   modalContentStart: string;
@@ -266,6 +274,11 @@ export interface ClrCommonStrings {
   comboboxOpen: string;
 
   /**
+   * Wizard: Screen-reader text for "step" (read before step number).
+   */
+  wizardStep: string;
+
+  /**
    * Wizard: Screen-reader text for completed step.
    */
   wizardStepSuccess: string;
@@ -301,4 +314,8 @@ export interface ClrCommonStrings {
   fileCount: string;
   clearFile: string;
   clearFiles: string;
+
+  // Tree
+  selectedTreeNode: string;
+  unselectedTreeNode: string;
 }

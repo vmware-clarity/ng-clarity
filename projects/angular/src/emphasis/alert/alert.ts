@@ -49,7 +49,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     @Optional() private multiAlertService: MultiAlertService,
     private commonStrings: ClrCommonStringsService,
     private renderer: Renderer2,
-    private hostElement: ElementRef
+    private hostElement: ElementRef<HTMLElement>
   ) {}
 
   @Input('clrAlertLightweight')

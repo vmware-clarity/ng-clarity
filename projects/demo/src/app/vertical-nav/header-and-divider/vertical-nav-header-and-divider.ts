@@ -17,7 +17,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
 export class VerticalNavHeaderAndDividerDemo {
   case: any;
 
-  constructor(public verticalNavCases: VerticalNavCases) {
-    this.case = this.verticalNavCases.basicMenu;
+  constructor(verticalNavCases: VerticalNavCases) {
+    this.case = verticalNavCases.basicMenu;
   }
 }

@@ -41,7 +41,7 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     private renderer: Renderer2,
     ngZone: NgZone
   ) {
-    this._isEnabled = this.focusOnViewInit;
+    this._isEnabled = focusOnViewInit;
 
     // Angular compiler doesn't understand the type Document
     // when working out the metadata for injectable parameters,
@@ -55,8 +55,8 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
         .subscribe(() => {
           if (!this.directFocus) {
             // manually set attributes and styles should be removed
-            this.renderer.removeAttribute(this.el.nativeElement, 'tabindex');
-            this.renderer.setStyle(this.el.nativeElement, 'outline', null);
+            renderer.removeAttribute(el.nativeElement, 'tabindex');
+            renderer.setStyle(el.nativeElement, 'outline', null);
           }
         })
     );
