@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 import {
   AfterContentInit,
   Component,
@@ -15,6 +16,7 @@ import {
   OnDestroy,
   QueryList,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
@@ -25,11 +27,24 @@ import { ClrTreeNode } from './tree-node';
 @Component({
   selector: 'clr-tree',
   template: `
-    <ng-content></ng-content>
+    {{ rootNodes }}
+    {{ dumpdump() | json }}
+    <cdk-virtual-scroll-viewport itemSize="24" class="example-viewport">
+      <div class="clr-tree-node example-item" *cdkVirtualFor="let portal of featuresService.portals">
+        <ng-template [cdkPortalOutlet]="portal"></ng-template>
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+    <div hidden>
+      <ng-content></ng-content>
+    </div>
+
+    <!--
     <clr-recursive-children
       *ngIf="featuresService.recursion"
       [children]="featuresService.recursion.root"
     ></clr-recursive-children>
+    -->
   `,
   providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService],
   host: {
@@ -37,8 +52,10 @@ import { ClrTreeNode } from './tree-node';
     '[attr.role]': '"tree"',
   },
 })
-export class ClrTree<T> implements AfterContentInit, OnDestroy {
-  @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
+export class ClrTree<T> implements AfterContentInit, /*AfterViewInit,*/ OnDestroy {
+  @ContentChildren(ClrTreeNode) rootNodes: QueryList<ClrTreeNode<T>>;
+
+  @ViewChild(CdkPortalOutlet) portalOutlet!: CdkPortalOutlet;
 
   private subscriptions: Subscription[] = [];
   private _isMultiSelectable = false;
@@ -71,6 +88,11 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     this.featuresService.eager = !value;
   }
 
+  @Input('clrFlat')
+  set flatTree(value: boolean) {
+    this.featuresService.flat = value;
+  }
+
   get isMultiSelectable() {
     return this._isMultiSelectable;
   }
@@ -86,8 +108,18 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     );
   }
 
+  ngAfterViewInit() {
+    this.featuresService.portals?.forEach(p => {
+      console.log(p.element);
+    });
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  dumpdump() {
+    return this.featuresService.rawPortals.map(p => p.position);
   }
 
   private setMultiSelectable() {

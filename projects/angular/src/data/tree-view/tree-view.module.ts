@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { PortalModule } from '@angular/cdk/portal';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { angleIcon, ClarityIcons } from '@cds/core/icon';
@@ -20,7 +22,7 @@ import { ClrTreeNodeLink } from './tree-node-link';
 export const CLR_TREE_VIEW_DIRECTIVES: Type<any>[] = [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink];
 
 @NgModule({
-  imports: [CommonModule, ClrIconModule, ClrLoadingModule],
+  imports: [CommonModule, ClrIconModule, ClrLoadingModule, PortalModule, ScrollingModule],
   declarations: [CLR_TREE_VIEW_DIRECTIVES, RecursiveChildren],
   exports: [CLR_TREE_VIEW_DIRECTIVES],
 })

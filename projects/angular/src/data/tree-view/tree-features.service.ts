@@ -5,21 +5,35 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { DomPortal } from '@angular/cdk/portal';
 import { Injectable, Optional, SkipSelf, TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 
+export interface PortalKeeper {
+  position: number;
+  portal: DomPortal;
+}
+
 @Injectable()
 export class TreeFeaturesService<T> {
   selectable = false;
   eager = true;
+  flat = false;
+  rawPortals: PortalKeeper[] = [];
+
   recursion: {
     template: TemplateRef<ClrRecursiveForOfContext<T>>;
     root: RecursiveTreeNodeModel<T>[];
   };
+
   childrenFetched = new Subject<void>();
+
+  get portals() {
+    return this.rawPortals.sort((a, b) => a.position - b.position).map(portal => portal.portal);
+  }
 }
 
 export function treeFeaturesFactory<T>(existing: TreeFeaturesService<T>) {

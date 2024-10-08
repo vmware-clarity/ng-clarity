@@ -37,8 +37,27 @@ const TreeViewTemplate: StoryFn = args => ({
   props: args,
 });
 
+const VirtualTreeTemplate: StoryFn = args => ({
+  template: `
+    <clr-tree>
+      <clr-tree-node>
+        One!
+        <clr-tree-node *ngFor="let x of [].constructor(5)">
+          Two!
+          <clr-tree-node *ngFor="let x of [].constructor(5)">Three!</clr-tree-node>
+        </clr-tree-node>
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
+
 export const TreeView: StoryObj = {
   render: TreeViewTemplate,
+};
+
+export const VirtualTree: StoryObj = {
+  render: VirtualTreeTemplate,
 };
 
 export const TreeViewAsLink: StoryObj = {

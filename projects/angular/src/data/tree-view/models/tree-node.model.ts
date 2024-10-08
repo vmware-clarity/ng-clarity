@@ -16,6 +16,7 @@ export abstract class TreeNodeModel<T> {
   textContent: string;
   loading$ = new BehaviorSubject(false);
   selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
+  hidden = false;
 
   /*
    * Being able to push this down to the RecursiveTreeNodeModel would require too much work on the angular components
@@ -99,6 +100,13 @@ export abstract class TreeNodeModel<T> {
     if (this.parent) {
       this.parent._updateSelectionFromChildren();
     }
+  }
+
+  hideChildren() {
+    this.children.forEach(child => {
+      child.hidden = true;
+      child.hideChildren();
+    });
   }
 
   private computeSelectionStateFromChildren() {

@@ -12,11 +12,21 @@
 @include meta.load-css('properties.tree-view');
 
 @include mixins.exports('tree-view.clarity') {
+  .example-viewport {
+    height: 200px;
+    width: 200px;
+    border: 1px solid black;
+  }
+
+  .example-item {
+    height: 24px;
+  }
+
   .clr-tree-node {
     //Display
     display: block;
 
-    &.disabled .clr-tree-node-content-container {
+    .clr-tree-node-content-container.clr-form-control-disabled {
       cursor: not-allowed;
 
       .clr-treenode-link {
@@ -102,7 +112,7 @@
 
     //Dimensions
     &:first-child {
-      margin-left: tree-view-variables.$clr-tree-node-touch-target;
+      // margin-left: tree-view-variables.$clr-tree-node-touch-target;
     }
 
     &.clr-treenode-text-only {
@@ -216,7 +226,7 @@
 
   .clr-treenode-children {
     //Dimensions
-    margin-left: tree-view-variables.$clr-tree-node-children-margin;
+    // margin-left: tree-view-variables.$clr-tree-node-children-margin;
     will-change: height;
     overflow-y: hidden;
   }

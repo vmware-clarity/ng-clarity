@@ -6,6 +6,7 @@
  */
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DomPortal } from '@angular/cdk/portal';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
@@ -38,6 +39,7 @@ import { LoadingListener } from '../../utils/loading/loading-listener';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
 import { TreeNodeModel } from './models/tree-node.model';
+import { ClrTree } from './tree';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
@@ -78,13 +80,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
+  @ViewChild('portalContent', { read: ElementRef }) portalElement: ElementRef;
 
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
-
-  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
+  private flatPosition = 0;
+  @ViewChild('contentContainer', { read: ElementRef }) private contentContainer: ElementRef<HTMLElement>;
 
   // @ContentChild would have been more succinct
   // but it doesn't offer a way to query only an immediate child
@@ -95,6 +98,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     @Optional()
     @SkipSelf()
     parent: ClrTreeNode<T>,
+    public root: ClrTree<T>,
     public featuresService: TreeFeaturesService<T>,
     public expandService: IfExpandService,
     public commonStrings: ClrCommonStringsService,
@@ -184,8 +188,72 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }
 
+  get distanceFromRoot() {
+    let distance = 0;
+    let parent = this._model.parent;
+    while (parent !== null) {
+      distance++;
+      parent = parent.parent;
+    }
+    return distance;
+  }
+
+  get positionInTree() {
+    let position = 0;
+    let node = this._model;
+
+    if (node.parent === null) {
+      // For the root noded, there is no parent, so we take the siblings from the pre-saved rootNodeModels
+      position += this.findPositionAmongSiblings(
+        node,
+        this.root.rootNodes?.map(node => node._model)
+      );
+    } else {
+      while (node.parent !== null) {
+        position++;
+        position += this.findPositionAmongSiblings(node, node.parent?.children || []);
+        node = node.parent;
+      }
+    }
+
+    return position;
+  }
+
   private get isParent() {
     return this._model.children && this._model.children.length > 0;
+  }
+
+  findPositionAmongSiblings(node: TreeNodeModel<T>, siblings: TreeNodeModel<T>[]) {
+    let position = 0;
+
+    // let siblings = allSiblings.filter(sibling => !sibling.hidden);
+
+    if (siblings) {
+      // If these siblings do not contain the current node, we need to add them all to the count.
+      // This is adjacent branch - children of a parent sibling that preceeds us.
+      if (siblings.indexOf(node) === -1) {
+        return siblings.length;
+      }
+
+      for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i] === node) {
+          break;
+        } else {
+          position++;
+          position += this.countChildren(siblings[i]);
+        }
+      }
+    }
+    return position;
+  }
+
+  countChildren(node) {
+    let result = 0;
+    result += node.children?.length || 0;
+    node.children?.forEach(child => {
+      result += this.countChildren(child);
+    });
+    return result;
   }
 
   ngOnInit() {
@@ -216,6 +284,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.subscriptions.push(
       this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
     );
+
+    // We need to save the position, so we can insert the item before its children.
+    // this.flatPosition = this.featuresService.portals.length;
+
+    this.updateVisibility(this._model);
   }
 
   ngAfterContentInit() {
@@ -232,6 +305,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     if (!this._model.textContent) {
       this._model.textContent = trimAndLowerCase(this.elementRef.nativeElement.textContent);
     }
+    const portal = new DomPortal(this.portalElement.nativeElement);
+    // this.featuresService.portals.splice(this.positionInTree, 0, portal);
+    this.featuresService.rawPortals.push({ position: this.positionInTree, portal: portal });
   }
 
   ngOnDestroy() {
@@ -257,6 +333,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       containerEl.focus();
       containerEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
+  }
+
+  toggle() {
+    this.expandService.toggle();
+    this.updateVisibility(this._model);
   }
 
   broadcastFocusOnContainer() {
@@ -334,6 +415,24 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this.expandService.expanded = !this.expanded;
     } else {
       this.triggerDefaultAction();
+    }
+  }
+
+  private updateVisibility(node: TreeNodeModel<T>) {
+    if (node.expanded && !node.hidden) {
+      node.children.forEach(child => {
+        child.hidden = false;
+        if (child.children.length > 0 && child.expanded) {
+          this.updateVisibility(child);
+        }
+      });
+    } else {
+      node.children.forEach(child => {
+        child.hidden = true;
+        if (child.children.length > 0) {
+          this.updateVisibility(child);
+        }
+      });
     }
   }
 
