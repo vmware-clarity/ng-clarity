@@ -34,11 +34,6 @@
 [cds-theme~='dark'] {
   --cds-alias-utility-gray: #{tokens.$cds-global-color-construction-300};
 
-  // utility
-  --cds-alias-status-alt: #{tokens.$cds-global-color-violet-700};
-  --cds-alias-status-alt-tint: #{tokens.$cds-global-color-violet-600};
-  --cds-alias-status-alt-shade: #{tokens.$cds-global-color-violet-900};
-
   --cds-alias-object-container-backdrop-background: #{tokens.$cds-alias-object-opacity-300};
   --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
