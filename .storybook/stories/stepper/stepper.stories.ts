@@ -10,7 +10,7 @@ import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } fr
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { CommonModules } from '../../helpers/common';
+import { CommonModules, removeFocusOutline } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 
@@ -50,14 +50,14 @@ const StepperTemplate: StoryFn = args => ({
         <clr-step-content *clrIfExpanded>
           <clr-input-container>
             <label>Value</label>
-            <input clrInput formControlName="value" />
+            <input clrInput formControlName="value" required />
           </clr-input-container>
 
           <br />
           <button class="btn" (click)="form.patchValue({})">Patch Form</button>
           <button class="btn" (click)="form.reset()">Reset Form</button>
 
-          <button *ngIf="stepCount > i + 1" clrStepButton="next">next</button>
+          <button *ngIf="stepCount > i + 1" id="next-button-{{ i + 1 }}" clrStepButton="next">next</button>
           <button *ngIf="stepCount === i + 1" clrStepButton="submit">submit</button>
         </clr-step-content>
       </clr-stepper-panel>
@@ -66,12 +66,12 @@ const StepperTemplate: StoryFn = args => ({
   props: { ...args },
 });
 
-function getForm() {
+function getForm({ firstStepControlValue = undefined }: { firstStepControlValue?: string } = {}) {
   const controls: { [key: string]: AbstractControl } = {};
 
   for (let i = 0; i < 100; i++) {
     controls[`step${i + 1}`] = new FormGroup({
-      value: new FormControl(),
+      value: new FormControl(i === 0 ? firstStepControlValue : undefined),
     });
   }
 
@@ -86,5 +86,22 @@ export const StepperAlignmentTest: StoryObj = {
   render: StepperTemplate,
   args: {
     alignmentTest: true,
+  },
+};
+
+export const StepperPanelStatusIndicators: StoryObj = {
+  render: StepperTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector<HTMLButtonElement>('#next-button-1').click();
+    canvasElement.querySelector<HTMLButtonElement>('#next-button-2').click();
+    removeFocusOutline({ canvasElement });
+  },
+  argTypes: {
+    // story helpers
+    form: {
+      control: { disable: true },
+      table: { disable: true },
+      mapping: { [formMappingKey]: getForm({ firstStepControlValue: 'test value' }) },
+    },
   },
 };
