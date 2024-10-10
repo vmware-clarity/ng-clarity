@@ -900,7 +900,7 @@ export default function (): void {
         expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
-        expect(document.activeElement).toBe(cells[0]);
+        expect(document.activeElement).toEqual(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         // second time, to avoid cycling over cells with radios
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
