@@ -38,6 +38,7 @@ export default {
     form: formMappingKey,
     ngSubmit: action('ngSubmit'),
     alignmentTest: false,
+    showPreviousButton: false,
   },
 };
 
@@ -57,6 +58,8 @@ const StepperTemplate: StoryFn = args => ({
           <button class="btn" (click)="form.patchValue({})">Patch Form</button>
           <button class="btn" (click)="form.reset()">Reset Form</button>
 
+          <br />
+          <button *ngIf="showPreviousButton" clrStepButton="previous">previous</button>
           <button *ngIf="stepCount > i + 1" id="next-button-{{ i + 1 }}" clrStepButton="next">next</button>
           <button *ngIf="stepCount === i + 1" clrStepButton="submit">submit</button>
         </clr-step-content>
@@ -80,6 +83,13 @@ function getForm({ firstStepControlValue = undefined }: { firstStepControlValue?
 
 export const Stepper: StoryObj = {
   render: StepperTemplate,
+};
+
+export const StepperWithPreviousButton: StoryObj = {
+  render: StepperTemplate,
+  args: {
+    showPreviousButton: true,
+  },
 };
 
 export const StepperAlignmentTest: StoryObj = {
