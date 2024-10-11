@@ -30,14 +30,32 @@ class TestComponent {
   form = new FormGroup({ group: new FormGroup({}) });
 }
 
+@Component({
+  template: `
+    <form clrStepper [formGroup]="form">
+      <clr-stepper-panel formGroupName="group">
+        <button [clrStepButton]="buttonType">Previous</button>
+      </clr-stepper-panel>
+    </form>
+  `,
+})
+class TestPreviousButtonComponent {
+  @ViewChild(ClrStepButton) button: ClrStepButton;
+  buttonType = ClrStepButtonType.Previous;
+  form = new FormGroup({ group: new FormGroup({}) });
+}
+
 @Injectable()
 class MockStepperService extends StepperService {
   navigateToNextPanel() {
     // Do nothing.
   }
+  navigateToPreviousPanel(currentPanelId: string) {
+    super.navigateToPreviousPanel(currentPanelId);
+  }
 }
 
-describe('ClrStepButton', () => {
+describe('ClrStepButton Next', () => {
   let fixture: ComponentFixture<any>;
   let testComponent: TestComponent;
 
@@ -67,5 +85,29 @@ describe('ClrStepButton', () => {
     fixture.nativeElement.querySelector('.clr-step-button').click();
     fixture.detectChanges();
     expect(stepperService.navigateToNextPanel).toHaveBeenCalled();
+  });
+});
+
+describe('ClrStepButton Previous', () => {
+  let fixture: ComponentFixture<any>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestPreviousButtonComponent],
+      providers: [StepperService, { provide: StepperService, useClass: MockStepperService }],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+    });
+
+    fixture = TestBed.createComponent(TestPreviousButtonComponent);
+    fixture.detectChanges();
+  });
+
+  it('should trigger click that sets the previous step', () => {
+    const stepperService = fixture.debugElement.query(By.directive(ClrStepButton)).injector.get(StepperService);
+    spyOn(stepperService, 'navigateToPreviousPanel');
+
+    fixture.nativeElement.querySelector('.clr-step-button').click();
+    fixture.detectChanges();
+    expect(stepperService.navigateToPreviousPanel).toHaveBeenCalled();
   });
 });

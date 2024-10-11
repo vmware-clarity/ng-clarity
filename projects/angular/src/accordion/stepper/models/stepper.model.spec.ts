@@ -147,6 +147,21 @@ describe('StepperModel', () => {
     expect(stepper.panels[0].status).toBe(AccordionStatus.Error);
   });
 
+  it('navigate to previous step', () => {
+    stepper.navigateToNextPanel(step1Id);
+    stepper.navigateToNextPanel(step2Id);
+
+    expect(stepper.panels[0].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[1].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[2].open).toBe(true);
+
+    stepper.navigateToPreviousPanel(step3Id);
+
+    expect(stepper.panels[0].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[1].open).toBe(true);
+    expect(stepper.panels[2].status).toBe(AccordionStatus.Inactive);
+  });
+
   /**
    * This test is a bit long, but it's hard to test private property without
    * going over the flow of the public methods.
