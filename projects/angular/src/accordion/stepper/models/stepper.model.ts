@@ -38,6 +38,10 @@ export class StepperModel extends AccordionModel {
     }
   }
 
+  navigateToPreviousPanel(currentPanelId: string) {
+    this.openPreviousPanel(this._panels[currentPanelId].id);
+  }
+
   navigateToNextPanel(currentPanelId: string, currentPanelValid = true) {
     if (currentPanelValid) {
       this.completePanel(currentPanelId);
@@ -85,6 +89,10 @@ export class StepperModel extends AccordionModel {
     return this.panels.find(s => s.index === this._panels[currentPanelId].index + 1);
   }
 
+  getPreviousPanel(currentPanelId: string) {
+    return this.panels.find(s => s.index === this._panels[currentPanelId].index - 1);
+  }
+
   private resetAllFuturePanels(panelId: string) {
     this.panels.filter(panel => panel.index >= this._panels[panelId].index).forEach(panel => this.resetPanel(panel.id));
   }
@@ -127,6 +135,18 @@ export class StepperModel extends AccordionModel {
       this.resetAllFuturePanels(nextPanel.id);
       this._panels[nextPanel.id].open = true;
       this._panels[nextPanel.id].disabled = true;
+    }
+  }
+
+  private openPreviousPanel(currentPanelId: string) {
+    const prevPanel = this.getPreviousPanel(currentPanelId);
+
+    if (prevPanel) {
+      this._panels[currentPanelId].open = false;
+      this._panels[currentPanelId].disabled = false;
+
+      this._panels[prevPanel.id].open = true;
+      this._panels[prevPanel.id].disabled = true;
     }
   }
 
