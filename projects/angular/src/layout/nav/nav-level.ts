@@ -17,6 +17,7 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
+import { ClarityIcons, windowCloseIcon } from '@cds/core/icon';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -27,15 +28,17 @@ import { ResponsiveNavigationService } from './providers/responsive-navigation.s
 import { ResponsiveNavCodes } from './responsive-nav-codes';
 
 const createCloseButton = (document: Document, ariaLabel: string) => {
+  ClarityIcons.addIcons(windowCloseIcon);
+
   const closeButton = document.createElement('button');
   closeButton.setAttribute('aria-label', ariaLabel);
   closeButton.setAttribute('aria-hidden', 'true');
   closeButton.innerHTML = `
     <cds-icon
       inner-offset="1"
-      shape="close"
+      shape="window-close"
       size="32"
-    </cds-icon>
+    ></cds-icon>
   `;
   /**
    * The button is hidden by default based on our Desktop-first approach.
