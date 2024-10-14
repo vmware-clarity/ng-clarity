@@ -190,6 +190,39 @@ class SingleSelectionTest {
 
 @Component({
   template: `
+    <clr-datagrid>
+      <clr-dg-column>User ID</clr-dg-column>
+      <clr-dg-column>Name</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let user of users">
+        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+
+        <clr-dg-row-detail *clrIfExpanded>
+          <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
+          <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
+        </clr-dg-row-detail>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+    </clr-datagrid>
+  `,
+})
+class ExpandablePerColumnTest {
+  users = [
+    {
+      id: 1,
+      name: 'john',
+    },
+    {
+      id: 2,
+      name: 'doe',
+    },
+  ];
+}
+
+@Component({
+  template: `
     <clr-datagrid clrDgSingleActionableAriaLabel="Select one of actionable rows">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
@@ -982,6 +1015,29 @@ export default function (): void {
         expect(document.activeElement).toBe(cells[11]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true }));
         expect(document.activeElement).toBe(cells[0]);
+      });
+    });
+
+    describe('Focus on expandable per column', () => {
+      // We use ExpandablePerColumnTest to test focusing on expanded content in cells
+      let context: TestContext<ClrDatagrid<number>, ExpandablePerColumnTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ExpandablePerColumnTest, [Selection]);
+      });
+
+      it('Moves focus on per column expanded cell', done => {
+        const grid = context.clarityElement.querySelector('[role=grid]');
+        const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+        cells[4].click();
+        cells[6].focus();
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
+
+        setTimeout(() => {
+          expect(document.activeElement).toEqual(cells[7]);
+        }, 1);
+
+        done();
       });
     });
 
