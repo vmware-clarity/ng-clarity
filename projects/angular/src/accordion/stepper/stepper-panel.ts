@@ -40,6 +40,7 @@ import { StepperService } from './providers/stepper.service';
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
+  readonly AccordionStatus = AccordionStatus;
 
   private subscriptions: Subscription[] = [];
 

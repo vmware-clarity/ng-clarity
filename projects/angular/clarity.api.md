@@ -297,10 +297,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
@@ -3918,6 +3914,10 @@ export class ClrStepperModule {
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
