@@ -28,11 +28,11 @@
             class="clr-step-complete-icon"
           ></cds-icon>
         </span>
-        <span class="clr-step-title">
+        <span class="clr-step-title-wrapper">
           <span class="clr-step-number">{{panelNumber}}.</span>
-          <ng-content select="clr-accordion-title, clr-step-title"></ng-content>
+          <ng-content select="clr-step-title"></ng-content>
         </span>
-        <ng-content select="clr-accordion-description, clr-step-description"></ng-content>
+        <ng-content select="clr-step-description"></ng-content>
       </button>
       <div class="clr-sr-only" role="status">
         <ng-container *ngIf="panel.status === AccordionStatus.Error"> {{ stepErrorText(panelNumber)}} </ng-container>

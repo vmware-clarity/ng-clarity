@@ -44,7 +44,7 @@
         }
       }
 
-      > .clr-step-title {
+      > .clr-step-title-wrapper {
         min-width: accordion-variables.$clr-accordion-step-title-min-width;
         max-width: calc(264 * (1rem / var(--cds-global-base)));
         width: 100%;
@@ -80,7 +80,7 @@
           width: initial;
         }
 
-        > .clr-step-title {
+        > .clr-step-title-wrapper {
           width: initial;
 
           > .clr-step-number {
