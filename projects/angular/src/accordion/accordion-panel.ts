@@ -49,7 +49,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   readonly AccordionStatus = AccordionStatus;
 
-  isAccordion = true;
   panel: Observable<AccordionPanelModel>;
 
   private _id = uniqueIdFactory();

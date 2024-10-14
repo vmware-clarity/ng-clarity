@@ -317,8 +317,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     get id(): string;
     set id(value: string);
     // (undocumented)
-    isAccordion: boolean;
-    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnInit(): void;
@@ -3929,8 +3927,6 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     get id(): string;
     set id(_value: string);
-    // (undocumented)
-    isAccordion: boolean;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
