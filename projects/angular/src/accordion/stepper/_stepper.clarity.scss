@@ -105,8 +105,9 @@
     }
 
     .clr-step-button {
-      display: block;
+      display: inline-block;
       margin-top: tokens.$cds-global-space-9;
+      margin-right: tokens.$cds-global-space-6;
     }
   }
 

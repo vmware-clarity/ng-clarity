@@ -3854,6 +3854,8 @@ export class ClrStepButton implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
+    previousButton: boolean;
+    // (undocumented)
     submitButton: boolean;
     // (undocumented)
     type: ClrStepButtonType | string;
@@ -3867,6 +3869,8 @@ export class ClrStepButton implements OnInit {
 export enum ClrStepButtonType {
     // (undocumented)
     Next = "next",
+    // (undocumented)
+    Previous = "previous",
     // (undocumented)
     Submit = "submit"
 }

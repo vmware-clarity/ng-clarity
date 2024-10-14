@@ -70,4 +70,14 @@ describe('StepperService', () => {
     stepperService.navigateToNextPanel('1', true);
     expect(activeStepId).toBe('1');
   });
+
+  it('navigate to previous step', () => {
+    stepperService.navigateToNextPanel(panel1Id, true);
+    stepperService.navigateToPreviousPanel(panel2Id);
+
+    stepperService
+      .getPanelChanges(panel1Id)
+      .pipe(take(1))
+      .subscribe(step => expect(step.open).toBe(true));
+  });
 });
