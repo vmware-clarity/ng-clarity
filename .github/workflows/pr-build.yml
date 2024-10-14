@@ -64,7 +64,7 @@ jobs:
     timeout-minutes: 30
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         browser: ['chromium', 'firefox']
