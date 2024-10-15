@@ -86,6 +86,13 @@
         font-size: forms-variables.$clr-forms-field-font-size,
       )
     );
+
+    &.clr-error,
+    &.clr-success {
+      & > .clr-subtext-wrapper .clr-validate-icon {
+        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
+      }
+    }
   }
 
   .clr-control-inline {
@@ -147,15 +154,6 @@
     .clr-form-control {
       display: flex;
       flex-direction: row;
-    }
-  }
-
-  .clr-form:not(.clr-form-compact) .clr-control-container {
-    &.clr-error,
-    &.clr-success {
-      & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{tokens.$cds-global-space-3});
-      }
     }
   }
 
