@@ -297,10 +297,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
@@ -316,8 +312,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     // (undocumented)
     get id(): string;
     set id(value: string);
-    // (undocumented)
-    isAccordion: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
@@ -3920,6 +3914,10 @@ export class ClrStepperModule {
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -3930,13 +3928,11 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     get id(): string;
     set id(_value: string);
     // (undocumented)
-    isAccordion: boolean;
-    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }

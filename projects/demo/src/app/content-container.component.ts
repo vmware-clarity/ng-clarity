@@ -13,7 +13,7 @@ import { APP_ROUTES } from './app.routing';
 @Component({
   selector: 'my-app-content-container',
   template: `
-    <clr-vertical-nav>
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true">
       <ng-container *ngFor="let route of routes">
         <a
           *ngIf="route.path != ''"

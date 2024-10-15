@@ -26,7 +26,6 @@ import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionDescription } from './accordion-description';
-import { AccordionStatus } from './enums/accordion-status.enum';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
 import { panelAnimation } from './utils/animation';
@@ -47,9 +46,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  readonly AccordionStatus = AccordionStatus;
-
-  isAccordion = true;
   panel: Observable<AccordionPanelModel>;
 
   private _id = uniqueIdFactory();

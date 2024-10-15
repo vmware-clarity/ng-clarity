@@ -69,11 +69,6 @@
     }
   }
 
-  .clr-accordion-number {
-    padding: 0 tokens.$cds-global-space-7;
-    display: none !important;
-  }
-
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
@@ -144,7 +139,7 @@
     }
 
     &.ng-trigger {
-      padding: 0; // inner element/padding to prevent extra hight in ng animation
+      padding: 0; // inner element/padding to prevent extra height in ng animation
     }
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
@@ -163,14 +158,6 @@
   .clr-accordion-angle {
     transition: all 200ms ease-in-out;
     transform: rotate(90deg);
-  }
-
-  .clr-accordion-error-icon,
-  .clr-accordion-complete-icon {
-    @include mixins.equilateral(tokens.$cds-global-space-9);
-    display: none;
-    padding: 0;
-    margin: 0 tokens.$cds-global-space-6;
   }
 
   // panel states
@@ -229,9 +216,6 @@
   .clr-accordion-panel-error {
     & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      border-color: accordion-variables.$clr-accordion-error-color;
-      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
-      background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
     & > .clr-accordion-error-icon {
