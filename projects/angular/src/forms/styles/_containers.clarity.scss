@@ -157,18 +157,15 @@
     }
   }
 
-  .clr-form-compact {
+  .clr-form.clr-form-compact {
     .clr-form-control > .clr-control-label {
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
       min-width: calc(32 * #{forms-variables.$clr-forms-baseline});
+      margin-top: tokens.$cds-global-space-3;
     }
     .clr-form-control.clr-row > .clr-control-label {
       width: auto;
       min-width: auto;
-    }
-
-    .clr-control-label {
-      margin-top: tokens.$cds-global-space-3;
     }
 
     .clr-form-control {
@@ -179,36 +176,35 @@
 
     .clr-control-container {
       display: flex;
-    }
 
-    .clr-subtext {
-      display: inline-block;
-
-      // special margin left based on --clr-forms-icon-size
-      // to align subtexts when error/success icon is missing.
-      margin-left: forms-variables.$clr-forms-icon-size;
-    }
-
-    .clr-error,
-    .clr-success {
       .clr-subtext {
-        margin-left: tokens.$cds-global-space-3;
+        display: inline-block;
 
-        &.error,
-        &.success {
-          margin-left: tokens.$cds-global-space-4;
+        // special margin left based on --clr-forms-icon-size
+        // to align subtexts when error/success icon is missing.
+        margin-left: forms-variables.$clr-forms-icon-size;
+      }
+      .clr-subtext-wrapper {
+        flex-basis: auto;
+        display: inline-block;
+      }
+
+      &.clr-error,
+      &.clr-success {
+        .clr-subtext {
+          margin-left: tokens.$cds-global-space-3;
+
+          &.error,
+          &.success {
+            margin-left: tokens.$cds-global-space-4;
+          }
+        }
+
+        // Center the validation icon
+        .clr-validate-icon {
+          margin-left: 0;
         }
       }
-
-      // Center the validation icon
-      .clr-validate-icon {
-        margin-left: 0;
-      }
-    }
-
-    .clr-subtext-wrapper {
-      flex-basis: auto;
-      display: inline-block;
     }
   }
 }
