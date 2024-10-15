@@ -32,16 +32,15 @@ import { StepperService } from './providers/stepper.service';
 
 @Component({
   selector: 'clr-stepper-panel',
-  templateUrl: '../accordion-panel.html',
-  host: { '[class.clr-accordion-panel]': 'true' },
+  templateUrl: 'stepper-panel.html',
+  host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: stepAnimation,
   providers: [IfExpandService],
 })
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
-  override isAccordion = false;
-
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
+  readonly AccordionStatus = AccordionStatus;
 
   private subscriptions: Subscription[] = [];
 
