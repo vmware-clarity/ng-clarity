@@ -10,6 +10,7 @@ import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
+import { animationFrameTick } from '../../utils/testing/helpers.spec';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagrid } from './datagrid';
@@ -1026,19 +1027,23 @@ export default function (): void {
         context = this.create(ClrDatagrid, ExpandablePerColumnTest, [Selection]);
       });
 
-      it('Moves focus on per column expanded cell', done => {
+      it('Moves focus on per column expanded cell', fakeAsync(() => {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        cells[4].click();
-        cells[6].focus();
+
+        spyOn(cells[1], 'focus').and.callThrough();
+        spyOn(cells[2], 'focus').and.callThrough();
+        spyOn(cells[3], 'focus').and.callThrough();
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
 
-        setTimeout(() => {
-          expect(document.activeElement).toEqual(cells[7]);
-        }, 1);
+        animationFrameTick();
 
-        done();
-      });
+        expect(cells[1].focus).toHaveBeenCalled();
+        expect(cells[2].focus).toHaveBeenCalled();
+        expect(cells[3].focus).not.toHaveBeenCalled();
+      }));
     });
 
     describe('Single selection', function () {
