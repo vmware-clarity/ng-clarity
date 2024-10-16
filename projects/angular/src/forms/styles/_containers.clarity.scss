@@ -192,7 +192,7 @@
       &.clr-error,
       &.clr-success {
         .clr-subtext {
-          margin-left: tokens.$cds-global-space-3;
+          margin-left: 0;
 
           &.error,
           &.success {
