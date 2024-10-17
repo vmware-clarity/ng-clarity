@@ -27,6 +27,11 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
           <label class="clr-control-label">{{ fromLabelValue }}</label>
+          <clr-signpost>
+            <clr-signpost-content [clrPosition]="'bottom-middle'">
+              {{ 'Lowest possible value' }}
+            </clr-signpost-content>
+          </clr-signpost>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -41,6 +46,11 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         </div>
         <div class="clr-form-control">
           <label class="clr-control-label">{{ toLabelValue }}</label>
+          <clr-signpost>
+            <clr-signpost-content [clrPosition]="'bottom-middle'">
+              {{ 'Highest possible value' }}
+            </clr-signpost-content>
+          </clr-signpost>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
