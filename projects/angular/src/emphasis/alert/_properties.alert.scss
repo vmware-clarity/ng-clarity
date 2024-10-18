@@ -54,7 +54,7 @@
     // Warning type
     // Usage: ./_alert.clarity.scss
     --clr-alert-warning-bg-color: #{tokens.$cds-alias-status-warning-tint};
-    --clr-alert-warning-font-color: #{tokens.$cds-global-color-black};
+    --clr-alert-warning-font-color: #{tokens.$cds-alias-typography-color-500};
     --clr-alert-warning-border-color: #{tokens.$cds-alias-status-warning};
     --clr-alert-warning-icon-color: var(--clr-alert-warning-font-color);
     --clr-alert-warning-close-icon-color: var(--clr-alert-warning-font-color);
