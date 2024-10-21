@@ -199,7 +199,7 @@ class SingleSelectionTest {
         <clr-dg-cell>{{ user.id }}</clr-dg-cell>
         <clr-dg-cell>{{ user.name }}</clr-dg-cell>
 
-        <clr-dg-row-detail *clrIfExpanded>
+        <clr-dg-row-detail *clrIfExpanded="true">
           <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
           <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
         </clr-dg-row-detail>
@@ -1031,18 +1031,23 @@ export default function (): void {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
 
-        spyOn(cells[1], 'focus').and.callThrough();
-        spyOn(cells[2], 'focus').and.callThrough();
-        spyOn(cells[3], 'focus').and.callThrough();
+        cells[0].focus();
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
 
         animationFrameTick();
 
-        expect(cells[1].focus).toHaveBeenCalled();
-        expect(cells[2].focus).toHaveBeenCalled();
-        expect(cells[3].focus).not.toHaveBeenCalled();
+        expect(document.activeElement).toBe(cells[2]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
+
+        expect(document.activeElement).toBe(cells[0]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
+
+        expect(document.activeElement).toBe(cells[4]);
       }));
     });
 
