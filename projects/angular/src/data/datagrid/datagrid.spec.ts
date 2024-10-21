@@ -1038,15 +1038,18 @@ export default function (): void {
 
         animationFrameTick();
 
+        console.log('d1');
         expect(document.activeElement).toBe(cells[2]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowLeft }));
 
+        console.log('d2');
         expect(document.activeElement).toBe(cells[0]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
 
+        console.log('d3');
         expect(document.activeElement).toBe(cells[4]);
       }));
     });
