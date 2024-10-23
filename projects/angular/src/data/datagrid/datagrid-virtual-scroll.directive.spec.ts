@@ -210,13 +210,17 @@ export default function (): void {
         fixture.autoDetectChanges();
         fixture.whenStable();
         fixture.whenRenderingDone();
+
         const grid = compiled.querySelector('[role=grid]');
+
         // need to start with this cell exactly, because it has tabindex=0
         const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
         headerCheckboxCell.focus();
         sleep(10);
         fixture.detectChanges();
+
         expect(document.activeElement).toBe(headerCheckboxCell);
+
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
@@ -226,15 +230,18 @@ export default function (): void {
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb383
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[41]);
+
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
         sleep();
         fixture.whenStable();
         fixture.whenRenderingDone();
         // active checkbox input with ID clr-dg-row-cb360
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[19]);
+
         flush();
         flushMicrotasks();
         discardPeriodicTasks();
+
         fixture.autoDetectChanges(false);
         fixture.destroy();
       }));
