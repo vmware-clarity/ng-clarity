@@ -26,12 +26,14 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
       <h6 aria-description="filter type">Numeric filter</h6>
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ fromLabelValue }}</label>
-          <clr-signpost>
-            <clr-signpost-content [clrPosition]="'bottom-middle'">
-              {{ 'Lowest possible value' }}
-            </clr-signpost-content>
-          </clr-signpost>
+          <div>
+            <label class="clr-control-label clr-display-inline">{{ fromLabelValue }}</label>
+            <clr-signpost>
+              <clr-signpost-content [clrPosition]="'bottom-middle'">
+                {{ 'Lowest possible value' }}
+              </clr-signpost-content>
+            </clr-signpost>
+          </div>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -45,12 +47,14 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ toLabelValue }}</label>
-          <clr-signpost>
-            <clr-signpost-content [clrPosition]="'bottom-middle'">
-              {{ 'Highest possible value' }}
-            </clr-signpost-content>
-          </clr-signpost>
+          <div>
+            <label class="clr-control-label clr-display-inline">{{ toLabelValue }}</label>
+            <clr-signpost>
+              <clr-signpost-content [clrPosition]="'bottom-middle'">
+                {{ 'Highest possible value' }}
+              </clr-signpost-content>
+            </clr-signpost>
+          </div>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
