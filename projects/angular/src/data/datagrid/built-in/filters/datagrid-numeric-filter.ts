@@ -75,6 +75,8 @@ export class DatagridNumericFilter<T = any>
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
   @Input('clrFilterFromLabel') fromLabel: string;
   @Input('clrFilterToLabel') toLabel: string;
+  @Input('clrFilterFromExplanation') fromExplanation: string;
+  @Input('clrFilterToExplanation') toExplanation: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -168,6 +170,14 @@ export class DatagridNumericFilter<T = any>
 
   get toLabelValue() {
     return this.toLabel || this.commonStrings.keys.toLabel;
+  }
+
+  get fromLabelExplanationValue() {
+    return this.fromExplanation || this.commonStrings.keys.fromExplanation;
+  }
+
+  get toLabelExplanationValue() {
+    return this.toExplanation || this.commonStrings.keys.toExplanation;
   }
 
   get low() {
