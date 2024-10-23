@@ -23,7 +23,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
-      <h6 aria-description="filter type">Numeric filter</h6>
+      <div aria-description="filter type" class="modal-header">Numeric filter</div>
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
           <div>
