@@ -224,6 +224,7 @@ export default function (): void {
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         // active checkbox input with ID clr-dg-row-cb364
         expect(document.activeElement).toBe(grid.querySelectorAll('[type=checkbox]')[22]);
+
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
         sleep();
         fixture.whenStable();
