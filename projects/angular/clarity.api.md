@@ -979,6 +979,7 @@ export interface ClrCommonStrings {
     fileCount: string;
     filterItems: string;
     firstPage: string;
+    fromExplanation: string;
     fromLabel: string;
     hide: string;
     info: string;
@@ -1037,6 +1038,7 @@ export interface ClrCommonStrings {
     timelineStepProcessing: string;
     // (undocumented)
     timelineStepSuccess: string;
+    toExplanation: string;
     toLabel: string;
     totalPages: string;
     unknown: string;
@@ -4921,7 +4923,11 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
+    fromExplanation: string;
+    // (undocumented)
     fromLabel: string;
+    // (undocumented)
+    get fromLabelExplanationValue(): string;
     // (undocumented)
     get fromLabelValue(): string;
     // (undocumented)
@@ -4945,13 +4951,17 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     ngOnDestroy(): void;
     open: boolean;
     // (undocumented)
+    toExplanation: string;
+    // (undocumented)
     toLabel: string;
+    // (undocumented)
+    get toLabelExplanationValue(): string;
     // (undocumented)
     get toLabelValue(): string;
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "fromLabel": "clrFilterFromLabel"; "toLabel": "clrFilterToLabel"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "fromLabel": "clrFilterFromLabel"; "toLabel": "clrFilterToLabel"; "fromExplanation": "clrFilterFromExplanation"; "toExplanation": "clrFilterToExplanation"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
