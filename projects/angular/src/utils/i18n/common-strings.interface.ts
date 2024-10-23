@@ -155,6 +155,14 @@ export interface ClrCommonStrings {
    */
   toLabel: string;
   /**
+   * Numeric filter from label explanation
+   */
+  fromExplanation: string;
+  /**
+   * Numeric filter to label explanation
+   */
+  toExplanation: string;
+  /**
    * Modal start of content
    */
   modalContentStart: string;

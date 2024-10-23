@@ -23,9 +23,17 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
+      <div aria-description="filter type" class="modal-header">Numeric filter</div>
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ fromLabelValue }}</label>
+          <div>
+            <label class="clr-control-label clr-display-inline">{{ fromLabelValue }}</label>
+            <clr-signpost>
+              <clr-signpost-content [clrPosition]="'bottom-middle'">
+                {{ fromLabelExplanationValue }}
+              </clr-signpost-content>
+            </clr-signpost>
+          </div>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -39,7 +47,14 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ toLabelValue }}</label>
+          <div>
+            <label class="clr-control-label clr-display-inline">{{ toLabelValue }}</label>
+            <clr-signpost>
+              <clr-signpost-content [clrPosition]="'bottom-middle'">
+                {{ toLabelExplanationValue }}
+              </clr-signpost-content>
+            </clr-signpost>
+          </div>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -64,6 +79,8 @@ export class DatagridNumericFilter<T = any>
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
   @Input('clrFilterFromLabel') fromLabel: string;
   @Input('clrFilterToLabel') toLabel: string;
+  @Input('clrFilterFromExplanation') fromExplanation: string;
+  @Input('clrFilterToExplanation') toExplanation: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -157,6 +174,14 @@ export class DatagridNumericFilter<T = any>
 
   get toLabelValue() {
     return this.toLabel || this.commonStrings.keys.toLabel;
+  }
+
+  get fromLabelExplanationValue() {
+    return this.fromExplanation || this.commonStrings.keys.fromExplanation;
+  }
+
+  get toLabelExplanationValue() {
+    return this.toExplanation || this.commonStrings.keys.toExplanation;
   }
 
   get low() {

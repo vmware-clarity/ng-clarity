@@ -66,7 +66,6 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     <div
       class="datagrid-filter"
       [id]="popoverId"
-      cdkTrapFocus
       *clrPopoverContent="open; at: smartPosition; outsideClickToClose: true; scrollToClose: true"
       role="dialog"
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"

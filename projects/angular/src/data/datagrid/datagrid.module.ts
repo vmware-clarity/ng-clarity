@@ -23,6 +23,7 @@ import {
 
 import { ClrFormsModule } from '../../forms/forms.module';
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrSignpostModule } from '../../popover';
 import { ClrSpinnerModule } from '../../progress/spinner/spinner.module';
 import { ClrExpandableAnimationModule } from '../../utils/animations/expandable-animation/expandable-animation.module';
 import { CdkDragModule } from '../../utils/cdk/cdk-drag.module';
@@ -130,6 +131,7 @@ const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridCo
     ClrSpinnerModule,
     ClrPopoverModuleNext,
     ClrKeyFocusModule,
+    ClrSignpostModule,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
   exports: [CLR_DATAGRID_DIRECTIVES],

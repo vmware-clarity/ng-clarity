@@ -58,6 +58,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   columnSeparatorDescription: 'Use left or right key to resize the column',
   fromLabel: 'From',
   toLabel: 'To',
+  fromExplanation: 'Lowest possible value',
+  toExplanation: 'Highest possible value',
   // Alert
   alertCloseButtonAriaLabel: 'Close alert',
   alertNextAlertAriaLabel: 'Next alert message, {CURRENT} of {COUNT}',
