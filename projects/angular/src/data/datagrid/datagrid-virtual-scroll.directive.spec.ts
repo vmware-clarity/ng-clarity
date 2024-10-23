@@ -163,9 +163,6 @@ export default function (): void {
       let compiled: any;
       let instance: any;
 
-      // TODO: Delete obsolete lint workaround
-      compiled ? 1 : 2;
-
       beforeEach(async function () {
         await TestBed.configureTestingModule({
           imports: [ClarityModule, NoopAnimationsModule],
