@@ -25,7 +25,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ fromLabelValue }}</label>
+          <label class="clr-control-label" [attr.aria-label]="'From'">{{ fromLabelValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
@@ -39,7 +39,7 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
           />
         </div>
         <div class="clr-form-control">
-          <label class="clr-control-label">{{ toLabelValue }}</label>
+          <label class="clr-control-label" [attr.aria-label]="'To'">{{ toLabelValue }}</label>
           <input
             clrInput
             class="datagrid-numeric-filter-input"
