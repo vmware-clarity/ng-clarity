@@ -32,18 +32,14 @@
     --clr-vertical-nav-item-active-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
 
     // Selected background colors
-    --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-selected);
-    --clr-vertical-nav-selected-hover-bg-color: var(
-      --cds-alias-object-interaction-vertical-navigation-background-selected-hover
-    );
-    --clr-vertical-nav-selected-active-bg-color: var(
-      --cds-alias-object-interaction-vertical-navigation-background-selected-active
-    );
+    --clr-vertical-nav-selected-bg-color: var(--cds-alias-object-interaction-background-shade-selected);
+    --clr-vertical-nav-selected-hover-bg-color: var(--cds-alias-object-interaction-background-shade-selected-hover);
+    --clr-vertical-nav-selected-active-bg-color: var(--cds-alias-object-interaction-background-shade-selected-active);
 
     // NOT selected background colors
-    --clr-vertical-nav-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-color);
-    --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-hover);
-    --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-vertical-navigation-background-active);
+    --clr-vertical-nav-bg-color: var(--cds-alias-object-interaction-background-shade);
+    --clr-vertical-nav-hover-bg-color: var(--cds-alias-object-interaction-background-shade-hover);
+    --clr-vertical-nav-active-bg-color: var(--cds-alias-object-interaction-background-shade-active);
 
     --clr-vertical-nav-active-color: #{tokens.$cds-alias-object-interaction-color-active};
     --clr-vertical-nav-item-top-level-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
