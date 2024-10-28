@@ -408,24 +408,4 @@
   table {
     border-spacing: 0;
   }
-
-  a:link {
-    color: nav-variables.$clr-link-color;
-  }
-
-  a:visited {
-    color: nav-variables.$clr-link-visited-color;
-
-    &:hover {
-      color: nav-variables.$clr-link-visited-color-hover;
-    }
-  }
-
-  a:hover {
-    color: nav-variables.$clr-link-hover-color;
-  }
-
-  a:active {
-    color: nav-variables.$clr-link-active-color;
-  }
 }
