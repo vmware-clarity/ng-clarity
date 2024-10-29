@@ -39,6 +39,8 @@
 | day-btn             | Day button inside calendar                       |
 | weekday             | Weekday table heading                            |
 | weekdays            | Weekdays table row wrapper                       |
+| week-number         | Calendar week number column heading              |
+| week-number-cell    | Calendar week number column cell                 |
 | month               | Month buttons inside month picker                |
 | monthpicker         | Main month picker element                        |
 | monthpicker-trigger | Month picker button trigger                      |
