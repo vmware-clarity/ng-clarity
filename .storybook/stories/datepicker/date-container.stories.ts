@@ -21,6 +21,7 @@ export default {
   argTypes: {
     // inputs
     clrPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
+    clrShowWeekNumbers: { control: 'boolean' },
     // methods
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
@@ -28,13 +29,14 @@ export default {
   args: {
     // inputs
     clrPosition: 'bottom-left',
+    clrShowWeekNumbers: true,
   },
 };
 
 const DatePickerTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 300px; display: flex; justify-content: center">
-      <clr-date-container [clrPosition]="clrPosition">
+      <clr-date-container [clrPosition]="clrPosition" [clrShowWeekNumbers]="clrShowWeekNumbers">
         <label>Date</label>
         <input type="date" autocomplete="off" clrDate />
       </clr-date-container>
