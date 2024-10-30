@@ -148,7 +148,8 @@
 
   .week-number,
   .week-number-cell {
-    border-right: tokens.$cds-alias-object-border-width-100 solid datepicker-variables.$clr-calendar-week-number-separator-color;
+    border-right: tokens.$cds-alias-object-border-width-100 solid
+      datepicker-variables.$clr-calendar-week-number-separator-color;
   }
 
   .calendar-btn {
