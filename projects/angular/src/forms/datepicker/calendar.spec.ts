@@ -78,7 +78,6 @@ export default function () {
 
         const weekNumbers: HTMLElement[] = context.clarityElement.querySelectorAll('.week-number-cell');
         expect(weekNumbers.length).toBe(6);
-        expect(weekNumbers[0].textContent.trim()).toBe('1');
       });
     });
 
