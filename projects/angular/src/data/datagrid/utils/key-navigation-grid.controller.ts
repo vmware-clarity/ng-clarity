@@ -174,8 +174,8 @@ export class KeyNavigationGridController implements OnDestroy {
   private isDetailsCell(cell: HTMLElement) {
     const detailRowElementName = reflectComponentType(ClrDatagridRowDetail).selector.toLowerCase();
     return (
-      cell.tagName.toLowerCase() !== detailRowElementName &&
-      cell.parentElement.tagName.toLowerCase() !== detailRowElementName
+      cell.tagName.toLowerCase() === detailRowElementName ||
+      cell.parentElement.tagName.toLowerCase() === detailRowElementName
     );
   }
 
