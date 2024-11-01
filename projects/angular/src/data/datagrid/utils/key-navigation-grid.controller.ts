@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy, reflectComponentType } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { ClrDatagridRowDetail } from '../datagrid-row-detail';
 
 export function getTabableItems(el: HTMLElement) {
   const tabableSelector = [
@@ -164,9 +166,17 @@ export class KeyNavigationGridController implements OnDestroy {
     const items = getTabableItems(activeCell);
     const item = activeCell.getAttribute('role') !== 'columnheader' && items[0] ? items[0] : activeCell;
 
-    if (!this.skipItemFocus) {
+    if (!this.skipItemFocus && !this.isDetailsCell(activeCell)) {
       item.focus();
     }
+  }
+
+  private isDetailsCell(cell: HTMLElement) {
+    const detailRowElementName = reflectComponentType(ClrDatagridRowDetail).selector;
+    return (
+      cell.tagName.toLowerCase() !== detailRowElementName &&
+      cell.parentElement.tagName.toLowerCase() !== detailRowElementName
+    );
   }
 
   private getNextItemCoordinate(e: any) {
