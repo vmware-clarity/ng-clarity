@@ -33,7 +33,7 @@ import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
-      <h6 aria-description="filter type">String filter</h6>
+      <div aria-description="filter type">String filter</div>
       <input
         #input
         type="text"
