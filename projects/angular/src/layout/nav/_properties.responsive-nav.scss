@@ -10,7 +10,6 @@
 @include mixins.exports('responsive-nav.properties') {
   :root [cds-theme] {
     --clr-sliding-panel-text-color: #{tokens.$cds-global-color-gray-700}; // CDS token
-    --clr-nav-background-color: #{tokens.$cds-alias-object-container-background-dark};
     --clr-responsive-nav-trigger-bg-color: #{tokens.$cds-global-color-gray-0}; // CDS token
 
     --clr-responsive-nav-trigger-border-radius: #{tokens.$cds-alias-object-border-radius-100};
