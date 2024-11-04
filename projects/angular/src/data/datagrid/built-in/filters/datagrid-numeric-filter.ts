@@ -28,11 +28,6 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         <div class="clr-form-control">
           <div>
             <label class="clr-control-label clr-display-inline">{{ fromLabelValue }}</label>
-            <clr-signpost>
-              <clr-signpost-content [clrPosition]="'bottom-middle'">
-                {{ fromLabelExplanationValue }}
-              </clr-signpost-content>
-            </clr-signpost>
           </div>
           <input
             clrInput
@@ -49,11 +44,6 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
         <div class="clr-form-control">
           <div>
             <label class="clr-control-label clr-display-inline">{{ toLabelValue }}</label>
-            <clr-signpost>
-              <clr-signpost-content [clrPosition]="'bottom-middle'">
-                {{ toLabelExplanationValue }}
-              </clr-signpost-content>
-            </clr-signpost>
           </div>
           <input
             clrInput
