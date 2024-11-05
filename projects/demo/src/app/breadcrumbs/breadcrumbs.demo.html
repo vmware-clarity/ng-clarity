@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <h2>Breadcrumbs</h2>
+
+  <div class="main-container">
+    <header class="header">
+      <div class="branding">
+        <a routerLink="/" routerLinkActive="active">
+          <cds-icon shape="bolt"></cds-icon>
+          <span class="title">Breadcrumbs</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav>
+        <a clrVerticalNavLink routerLink="./framework" routerLinkActive="active">Framework</a>
+        <a clrVerticalNavLink routerLink="./tools" routerLinkActive="active">Tools</a>
+      </clr-vertical-nav>
+      <div class="content-area">
+        <clr-breadcrumbs [items]="menuItems" (onItemClicked)="updateTitle($event)"></clr-breadcrumbs>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

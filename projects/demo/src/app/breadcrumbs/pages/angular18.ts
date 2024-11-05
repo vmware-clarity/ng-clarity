@@ -5,9 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './layout.module';
-export * from './main-container/index';
-export * from './nav/index';
-export * from './tabs/index';
-export * from './vertical-nav/index';
-export * from './breadcrumbs/index';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-angular18-demo',
+  template: `
+    <h5 clrFocusOnViewInit>Angular 18</h5>
+    <p>Angular 18 description</p>
+  `,
+})
+export class Angular18Demo {}
