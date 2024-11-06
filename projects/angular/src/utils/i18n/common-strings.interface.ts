@@ -95,6 +95,10 @@ export interface ClrCommonStrings {
    */
   sortColumn: string;
   /**
+   * Datagrid: sortable of columns
+   */
+  sortableColumn: string;
+  /**
    * Datagrid: first page
    */
   firstPage: string;

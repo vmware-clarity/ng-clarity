@@ -30,6 +30,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   pickColumns: 'Manage Columns',
   showColumns: 'Show Columns',
   sortColumn: 'Sort Column',
+  sortableColumn: 'Column Sortable',
   firstPage: 'First Page',
   lastPage: 'Last Page',
   nextPage: 'Next Page',

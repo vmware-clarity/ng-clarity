@@ -23,6 +23,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrCommonStringsService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -88,6 +89,7 @@ import { WrappedColumn } from './wrapped-column';
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',
+    '[attr.aria-label]': 'sortable ? commonStrings.keys.sortableColumn : null',
     role: 'columnheader',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -153,7 +155,8 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    public commonStrings: ClrCommonStringsService
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -209,12 +212,6 @@ export class ClrDatagridColumn<T = any>
     } else {
       delete this._sortBy;
     }
-
-    // if (this._sortBy) {
-    //   this._sorters.addComparator(this._sortBy);
-    // } else {
-    //   this._sorters.removeComparator(this._sortBy);
-    // }
   }
 
   @Input('clrDgSortOrder')
