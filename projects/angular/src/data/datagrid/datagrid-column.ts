@@ -374,7 +374,7 @@ export class ClrDatagridColumn<T = any>
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
         return;
-      // the Unsorted case happens when the current state is either Asc or Desc
+      // the Unsorted case happens when the current state is neither Asc nor Desc
       case ClrDatagridSortOrder.UNSORTED:
       default:
         this._sort.clear();
