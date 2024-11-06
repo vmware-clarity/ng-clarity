@@ -368,18 +368,18 @@ export class ClrDatagridColumn<T = any>
 
   private doSort(value: ClrDatagridSortOrder) {
     switch (value) {
-      // the Unsorted case happens when the current state is either Asc or Desc
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        this._sort.clear();
-        this._sortDirection = null;
-        break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
-        break;
+        return;
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
-        break;
+        return;
+      // the Unsorted case happens when the current state is either Asc or Desc
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        this._sort.clear();
+        this._sortDirection = null;
+        return;
     }
   }
 
@@ -400,7 +400,6 @@ export class ClrDatagridColumn<T = any>
       if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
         this._sortOrder = ClrDatagridSortOrder.UNSORTED;
         this.sortOrderChange.emit(this._sortOrder);
-        //     this._sortDirection = null;
       }
     });
   }
