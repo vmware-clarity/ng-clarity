@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 $clr-dropdown-active-text-color: var(--clr-dropdown-active-text-color) !default;
 $clr-dropdown-bg-color: var(--clr-dropdown-bg-color) !default;
 $clr-dropdown-border-color: var(--clr-dropdown-border-color) !default;
@@ -33,8 +33,12 @@ $clr-dropdown-item-bg-color: var(--clr-dropdown-item-bg-color) !default;
 $clr-dropdown-item-hover-color: var(--clr-dropdown-item-hover-color) !default;
 $clr-dropdown-item-hover-bg-color: $clr-dropdown-bg-hover-color !default; // var(--clr-dropdown-item-hover-bg-color) !default;
 $clr-dropdown-item-active-color: var(--clr-dropdown-item-active-color) !default;
-$clr-dropdown-item-active-bg-color: $clr-dropdown-selection-color !default; // var(--clr-dropdown-item-active-bg-color) !default;
+$clr-dropdown-item-active-bg-color: var(
+  --clr-dropdown-item-active-bg-color
+) !default; // var(--clr-dropdown-item-active-bg-color) !default;
 $clr-dropdown-item-selected-color: var(--clr-dropdown-item-selected-color) !default;
 $clr-dropdown-item-selected-bg-color: var(--clr-dropdown-item-selected-bg-color) !default;
+$clr-dropdown-item-selected-hover-bg-color: var(--clr-dropdown-item-selected-hover-bg-color) !default;
+$clr-dropdown-item-selected-active-bg-color: var(--clr-dropdown-item-selected-active-bg-color) !default;
 $clr-dropdown-item-disabled-color: var(--clr-dropdown-item-disabled-color) !default;
 $clr-dropdown-item-disabled-bg-color: var(--clr-dropdown-item-disabled-bg-color) !default;

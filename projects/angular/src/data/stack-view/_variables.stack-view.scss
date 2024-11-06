@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -35,6 +36,8 @@ $clr-stack-view-bg-color: var(--clr-stack-view-bg-color) !default;
 $clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-stack-block-expandable-hover) !default;
 $clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-stack-block-expanded-text-color) !default;
 $clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-stack-block-expanded-bg-color) !default;
+$clr-stack-view-expanded-hover-row-bg-color: var(--clr-stack-view-expanded-hover-row-bg-color) !default;
+$clr-stack-view-expanded-active-row-bg-color: var(--clr-stack-view-expanded-active-row-bg-color) !default;
 
 /// END DEPRECATED variables
 

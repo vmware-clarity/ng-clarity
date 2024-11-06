@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
 import { CommonModules } from '../../helpers/common';
@@ -24,28 +25,26 @@ export default {
   ],
   component: ClrCheckboxContainer,
   argTypes: {
-    // inputs
-    clrInline: { defaultValue: false, control: { type: 'boolean' } },
     // methods
     addGrid: { control: { disable: true }, table: { disable: true } },
     controlClass: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    type: {
-      defaultValue: CheckboxType.Checkbox,
-      control: { type: 'inline-radio', options: CheckboxType },
-    },
+    type: { control: 'inline-radio', options: CheckboxType },
     createArray: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrInline: false,
     // story helpers
+    type: CheckboxType.Checkbox,
     label: 'Options',
     createArray: n => new Array(n),
     optionCount: 4,
   },
 };
 
-const CheckboxToggleContainerTemplate: Story = args => {
+const CheckboxToggleContainerTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
@@ -61,7 +60,7 @@ const CheckboxToggleContainerTemplate: Story = args => {
   };
 };
 
-const CheckBoxAllTemplate: Story = args => {
+const CheckBoxAllTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -40,12 +41,12 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     @Optional()
     control: NgControl,
     renderer: Renderer2,
-    el: ElementRef,
+    el: ElementRef<HTMLInputElement>,
     private datalistIdService: DatalistIdService
   ) {
     super(vcr, ClrDatalistContainer, injector, control, renderer, el);
 
-    if (!this.focusService) {
+    if (!focusService) {
       throw new Error('clrDatalist requires being wrapped in <clr-datalist-container>');
     }
   }

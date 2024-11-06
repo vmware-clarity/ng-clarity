@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -39,14 +40,17 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy,
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+      ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
         this.state = state;
-        this.updateHelpers();
+        // Make sure everything is updated before dispatching the values for helpers
+        setTimeout(() => {
+          this.updateHelpers();
+        });
       })
     );
 
     this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
+      ngControlService.controlChanges.subscribe(control => {
         this.control = control;
       })
     );

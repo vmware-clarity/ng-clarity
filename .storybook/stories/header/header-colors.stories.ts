@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -29,13 +30,7 @@ export default {
   ],
   component: ClrHeader,
   argTypes: {
-    color: {
-      defaultValue: 'header-1',
-      control: {
-        type: 'select',
-        options: HEADER_VARIANTS,
-      },
-    },
+    color: { control: 'select', options: HEADER_VARIANTS },
     // methods
     closeOpenNav: { control: { disable: true }, table: { disable: true } },
     initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
@@ -45,11 +40,12 @@ export default {
     HEADER_VARIANTS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    color: 'header-1',
     HEADER_VARIANTS,
   },
 };
 
-const HeaderColorTemplate: Story = args => ({
+const HeaderColorTemplate: StoryFn = args => ({
   template: `
     <header class="{{ color }}">
       <div class="branding">
@@ -63,7 +59,7 @@ const HeaderColorTemplate: Story = args => ({
   props: args,
 });
 
-const HeaderColorAllTemplate: Story = args => ({
+const HeaderColorAllTemplate: StoryFn = args => ({
   template: `
     <div style="margin-top: 10px" *ngFor="let color of HEADER_VARIANTS">
       <header [class]="color">

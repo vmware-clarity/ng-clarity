@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -95,7 +96,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;
 
-  private toggleButton: ElementRef;
+  private toggleButton: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
@@ -105,7 +106,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private dateFormControlService: DateFormControlService,
     private dateIOService: DateIOService,
     public commonStrings: ClrCommonStringsService,
-    private focusService: FocusService,
+    focusService: FocusService,
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
@@ -115,14 +116,14 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
+      focusService.focusChange.subscribe(state => {
         this.focus = state;
       })
     );
 
     this.subscriptions.push(
-      this.toggleService.openChange.subscribe(() => {
-        this.dateFormControlService.markAsTouched();
+      toggleService.openChange.subscribe(() => {
+        dateFormControlService.markAsTouched();
       })
     );
   }
@@ -135,7 +136,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   @ViewChild('actionButton')
-  set actionButton(button: ElementRef) {
+  set actionButton(button: ElementRef<HTMLButtonElement>) {
     this.toggleButton = button;
   }
 

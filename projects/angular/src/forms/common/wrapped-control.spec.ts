@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -79,7 +80,13 @@ class TestWrapper3 extends ClrAbstractContainer implements DynamicWrapper {
   selector: '[testControl3]',
 })
 class TestControl3 extends WrappedFormControl<TestWrapper3> {
-  constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef) {
+  constructor(
+    vcr: ViewContainerRef,
+    injector: Injector,
+    control: NgControl,
+    renderer: Renderer2,
+    el: ElementRef<HTMLElement>
+  ) {
     super(vcr, TestWrapper3, injector, control, renderer, el);
   }
 }

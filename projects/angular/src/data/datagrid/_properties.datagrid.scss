@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
 @use 'variables.datagrid' as datagrid-variables;
@@ -31,6 +31,8 @@
     --clr-datagrid-action-popover-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
     --clr-datagrid-row-selected: #{tokens.$cds-alias-typography-color-500};
     --clr-datagrid-row-selected-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-datagrid-row-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
+    --clr-datagrid-row-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
 
     --clr-datagrid-column-switch-header-font-color: #{tokens.$cds-alias-object-interaction-color};
     --clr-datagrid-column-switch-header-font-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
@@ -41,7 +43,7 @@
 
     --clr-datagrid-placeholder-color: #{tokens.$cds-alias-typography-color-200};
 
-    --clr-datagrid-loading-background: #{tokens.$cds-alias-object-overlay-backdrop-background};
+    --clr-datagrid-loading-background: var(--cds-alias-object-container-backdrop-background);
 
     --clr-datagrid-column-toggle-gap: #{tokens.$cds-global-space-3};
     --clr-datagrid-column-toggle-padding: 0 #{tokens.$cds-global-space-5};
@@ -73,6 +75,7 @@
     --clr-datagrid-popovers-box-shadow: #{tokens.$cds-alias-object-shadow-100};
     --clr-datagrid-column-separator-height: calc(100% - #{tokens.$cds-global-space-5});
     --clr-datagrid-column-separator-width: #{tokens.$cds-global-space-1};
+    --clr-datagrid-column-resize-handler-color: #{tokens.$cds-alias-object-interaction-border-color};
     --clr-datagrid-filter-toggle-size: #{tokens.$cds-global-space-7};
 
     --clr-datagrid-footer-pagination-gap: #{tokens.$cds-global-space-6};

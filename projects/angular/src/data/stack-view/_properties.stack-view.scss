@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -34,6 +35,8 @@
     --clr-stack-view-expandable-row-bg-active: #{tokens.$cds-alias-object-interaction-background-active};
     --clr-stack-view-expanded-row-color: #{tokens.$cds-alias-object-interaction-color-selected};
     --clr-stack-view-expanded-row-bg-color: #{tokens.$cds-alias-object-interaction-background-selected};
+    --clr-stack-view-expanded-hover-row-bg-color: var(--cds-alias-object-interaction-background-selected-hover);
+    --clr-stack-view-expanded-active-row-bg-color: var(--cds-alias-object-interaction-background-selected-active);
 
     /// Typography override
     --clr-stack-view-row-font-size: #{tokens.$cds-alias-typography-secondary-font-size};

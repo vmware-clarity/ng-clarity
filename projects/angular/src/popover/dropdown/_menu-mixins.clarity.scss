@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -65,11 +66,17 @@
     color: dropdown-variables.$clr-dropdown-item-hover-color;
     background-color: dropdown-variables.$clr-dropdown-item-hover-bg-color;
     text-decoration: none;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-hover-bg-color;
+    }
   }
 
   &:active {
     color: dropdown-variables.$clr-dropdown-item-active-color;
     background-color: dropdown-variables.$clr-dropdown-item-active-bg-color;
+    &.active {
+      background-color: dropdown-variables.$clr-dropdown-item-selected-active-bg-color;
+    }
   }
 
   &:focus {

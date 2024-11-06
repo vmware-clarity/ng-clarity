@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -25,16 +27,17 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrLabelSize: { defaultValue: 2, control: { type: 'number', min: 1, max: 12 } },
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     patterns: { control: { disable: true }, table: { disable: true } },
     data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
-    },
+    clrLayout: { control: 'radio', options: Object.values(ClrFormLayout).filter(value => typeof value === 'string') },
   },
   args: {
+    // inputs
+    clrLabelSize: 2,
     // story helpers
+    elements,
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
@@ -42,7 +45,7 @@ export default {
   },
 };
 
-const TemplateDrivenStory: Story = args => ({
+const TemplateDrivenStory: StoryFn = args => ({
   template: `
     <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
       <span class="clr-sr-only">{{ screenReaderContent }}</span>
@@ -64,6 +67,14 @@ const TemplateDrivenStory: Story = args => ({
         <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
         <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
       </clr-input-container>
+      <clr-datalist-container>
+        <label>Element</label>
+        <input clrDatalistInput name="element" [(ngModel)]="data.element" />
+        <datalist>
+          <option *ngFor="let element of elements" [value]="element.symbol">{{ element.name }}</option>
+        </datalist>
+        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+      </clr-datalist-container>
       <clr-password-container>
         <label>Password</label>
         <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password" />
@@ -106,6 +117,11 @@ function getForm() {
 
 export const HorizontalLayout: StoryObj = {
   render: TemplateDrivenStory,
+};
+
+export const HorizontalLayoutLabelSize6: StoryObj = {
+  render: TemplateDrivenStory,
+  args: { clrLabelSize: 6 },
 };
 
 export const VerticalLayout: StoryObj = {

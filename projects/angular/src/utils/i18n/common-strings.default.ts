@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -51,10 +52,12 @@ export const commonStringsDefault: ClrCommonStrings = {
   singleSelectionAriaLabel: 'Single selection header',
   singleActionableAriaLabel: 'Single actionable header',
   detailExpandableAriaLabel: 'Toggle more row content',
-  datagridFilterAriaLabel: 'Toggle {COLUMN} filter',
+  datagridFilterAriaLabel: '{COLUMN} filter',
   datagridFilterDialogAriaLabel: 'Filter dialog',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
+  fromLabel: 'From',
+  toLabel: 'To',
   // Alert
   alertCloseButtonAriaLabel: 'Close alert',
   alertNextAlertAriaLabel: 'Next alert message, {CURRENT} of {COUNT}',
@@ -100,6 +103,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   datagridExpandableRowContent: 'Expandable row content',
   datagridExpandableRowsHelperText: `Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button`,
   // Wizard
+  wizardStep: 'Step',
   wizardStepSuccess: 'Completed',
   wizardStepError: 'Error',
   wizardStepnavAriaLabel: 'Step navigation',
@@ -115,4 +119,18 @@ export const commonStringsDefault: ClrCommonStrings = {
    * Datagrid footer; sr-only text after the number of selected rows.
    */
   selectedRows: 'Selected rows',
+
+  // Accordion/Stepper
+  stepComplete: 'Step {STEP} complete',
+  stepError: 'Error in step {STEP}',
+
+  // File input
+  browse: 'Browse',
+  fileCount: '{COUNT} files',
+  clearFile: 'Clear {FILE}',
+  clearFiles: 'Clear {COUNT} files',
+
+  // Tree
+  selectedTreeNode: 'selected',
+  unselectedTreeNode: 'unselected',
 };

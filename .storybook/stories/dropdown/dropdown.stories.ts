@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -20,14 +21,11 @@ export default {
   ],
   component: ClrDropdown,
   argTypes: {
-    open: { defaultValue: false, control: { type: 'boolean' } },
-    clrCloseMenuOnItemClick: { defaultValue: true, control: { type: 'boolean' } },
-    iconButton: { defaultValue: false, control: { type: 'boolean' } },
-    buttonType: { defaultValue: 'btn-primary', control: { type: 'radio', options: DROPDOWN_BUTTON_TYPE } },
+    buttonType: { control: 'radio', options: DROPDOWN_BUTTON_TYPE },
     DROPDOWN_BUTTON_TYPE: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
-    open: null,
+    open: false,
     clrCloseMenuOnItemClick: true,
     iconButton: false,
     buttonType: 'btn-primary',
@@ -35,7 +33,7 @@ export default {
   },
 };
 
-const DropdownTemplate: Story = args => ({
+const DropdownTemplate: StoryFn = args => ({
   template: `
     <div style="margin-bottom: 200px">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">

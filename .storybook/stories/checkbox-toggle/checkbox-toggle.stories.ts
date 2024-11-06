@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { getSelectors } from '../../helpers/checkbox-toggle.helpers';
 import { CommonModules } from '../../helpers/common';
@@ -24,26 +25,24 @@ export default {
   ],
   component: ClrCheckbox,
   argTypes: {
-    // inputs
-    id: { defaultValue: '' },
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
     // story helpers
-    type: {
-      defaultValue: CheckboxType.Checkbox,
-      control: { type: 'inline-radio', options: CheckboxType },
-    },
+    type: { control: 'inline-radio', options: CheckboxType },
   },
   args: {
+    // inputs
+    id: '',
     // story helpers
+    type: CheckboxType.Checkbox,
     label: 'Option',
     checked: false,
     disabled: false,
   },
 };
 
-const CheckBoxToggleTemplate: Story = args => {
+const CheckBoxToggleTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `
@@ -59,7 +58,7 @@ const CheckBoxToggleTemplate: Story = args => {
   };
 };
 
-const CheckBoxTemplate: Story = args => {
+const CheckBoxTemplate: StoryFn = args => {
   const { containerSelector, wrapperSelector, directive } = getSelectors(args.type);
   return {
     template: `

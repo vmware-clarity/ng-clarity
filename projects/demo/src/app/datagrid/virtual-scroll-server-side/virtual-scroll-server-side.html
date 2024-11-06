@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Virtual scroll server side</h2>
+<div>
+  <clr-input-container>
+    <label>Rows</label>
+    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="currentPageSize" />
+  </clr-input-container>
+  <button class="btn" (click)="refreshPage()">Recalculate Datagrid</button>
+  <div>Current Page Size: {{currentPageSize}}</div>
+</div>
+
+<clr-datagrid
+  *ngIf="{ users: users | async }; let data"
+  [clrDgLoading]="loading"
+  [clrLoadingMoreItems]="loadingMoreItems"
+  [(clrDgSelected)]="selected"
+  (clrDgRefresh)="refresh($event)"
+  class="datagrid-compact"
+  style="height: 30rem"
+>
+  <clr-dg-column [clrDgField]="'id'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Name</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Creation date</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Pokemon</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Favorite color</ng-container>
+  </clr-dg-column>
+
+  <ng-template
+    *ngIf="data.users"
+    ClrVirtualScroll
+    let-user
+    [clrVirtualRowsOf]="data.users"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user">
+      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
+        <button class="action-item">
+          <cds-icon shape="note"></cds-icon>
+          Edit
+        </button>
+        <button class="action-item">
+          <cds-icon shape="trash"></cds-icon>
+          Delete
+        </button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell> {{user.pokemon.name}} </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+
+      <clr-dg-row-detail [clrIfExpanded]="user.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+        Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+        arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
+      </clr-dg-row-detail>
+    </clr-dg-row>
+  </ng-template>
+
+  <clr-dg-footer> {{data.users?.length}} </clr-dg-footer>
+</clr-datagrid>
+
+<br />
+{{selected|json}}

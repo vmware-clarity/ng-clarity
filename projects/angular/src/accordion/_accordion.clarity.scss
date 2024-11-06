@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:meta';
 @use '../utils/a11y';
 @use '../utils/mixins';
@@ -69,11 +69,6 @@
     }
   }
 
-  .clr-accordion-number {
-    padding: 0 tokens.$cds-global-space-7;
-    display: none;
-  }
-
   .clr-accordion-header-button {
     display: flex;
     flex-flow: row wrap;
@@ -115,6 +110,7 @@
     .clr-accordion-title {
       min-width: accordion-variables.$clr-accordion-step-title-min-width;
       max-width: mixins.baselinePx(264);
+      width: 100%;
       @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
         margin-left: tokens.$cds-global-space-7;
       }
@@ -143,7 +139,7 @@
     }
 
     &.ng-trigger {
-      padding: 0; // inner element/padding to prevent extra hight in ng animation
+      padding: 0; // inner element/padding to prevent extra height in ng animation
     }
 
     @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
@@ -164,28 +160,16 @@
     transform: rotate(90deg);
   }
 
-  .clr-accordion-error-icon,
-  .clr-accordion-complete-icon {
-    @include mixins.equilateral(tokens.$cds-global-space-9);
-    display: none;
-    padding: 0;
-    margin: 0 tokens.$cds-global-space-6;
-  }
-
   // panel states
   .clr-accordion-panel-open {
     .clr-accordion-header {
       box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
     }
-    .clr-accordion-panel-complete {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
-      }
+    .clr-accordion-panel-complete > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
-    .clr-accordion-panel-error {
-      .clr-accordion-header {
-        box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      }
+    .clr-accordion-panel-error > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
     }
 
     & > .clr-accordion-content-region .clr-accordion-content {
@@ -193,11 +177,14 @@
     }
 
     & > .clr-accordion-header {
-      background: accordion-variables.$clr-accordion-active-background-color;
+      background: accordion-variables.$clr-accordion-header-open-background-color;
 
+      &:hover {
+        background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+      }
       &:active {
         color: accordion-variables.$clr-accordion-text-color-active;
-        background-color: accordion-variables.$clr-accordion-header-active-background-color;
+        background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
       }
 
       .clr-accordion-angle {
@@ -208,16 +195,16 @@
   }
 
   .clr-accordion-panel-complete {
-    .clr-accordion-complete-icon {
+    & > .clr-accordion-complete-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-complete-color;
     }
 
-    .clr-accordion-angle {
+    & > .clr-accordion-angle {
       visibility: visible;
     }
 
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
     }
 
@@ -227,14 +214,11 @@
   }
 
   .clr-accordion-panel-error {
-    .clr-accordion-header {
+    & > .clr-accordion-header {
       box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
-      border-color: accordion-variables.$clr-accordion-error-color;
-      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-left-color-error;
-      background-color: accordion-variables.$clr-accordion-active-background-color;
     }
 
-    .clr-accordion-error-icon {
+    & > .clr-accordion-error-icon {
       display: inline-block;
       color: accordion-variables.$clr-accordion-error-color;
     }

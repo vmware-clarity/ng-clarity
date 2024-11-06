@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -14,6 +15,7 @@ import { ClrFormsModule } from './forms/forms.module';
 import { ClrIconModule } from './icon/icon.module';
 import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
+import { ClrSidePanelModule } from './modal/side-panel.module';
 import { ClrPopoverModule } from './popover/popover.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
@@ -41,6 +43,7 @@ import '@cds/core/icon/register';
     ClrLayoutModule,
     ClrPopoverModule,
     ClrWizardModule,
+    ClrSidePanelModule,
     ClrStepperModule,
     ClrSpinnerModule,
     ClrProgressBarModule,

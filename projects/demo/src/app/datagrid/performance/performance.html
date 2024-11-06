@@ -1,17 +1,16 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
 <h2>Performance</h2>
+<p>This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example.</p>
+
 <p>
-  So far, our examples' data only contained a few entries. The point of a datagrid is to display large amounts of data,
-  and we can't reasonably display it all at the same time on the page. To solve this, our datagrid supports pagination.
-</p>
-<p>
-  Here is an example of how to use pagination, and attach a template reference variable to it to display information on
-  the current page.
+  With change detection calculation button can see how many CPU cycles a render is taking. Perfect timing is under 3ms
+  per cycle.
 </p>
 
 <div>

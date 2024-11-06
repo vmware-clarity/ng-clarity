@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -206,5 +207,7 @@ export class ClrStackBlock implements OnInit {
 function eventIsInputEvent(event?: Event) {
   const targetElement = event?.target as HTMLElement;
 
-  return targetElement?.tagName === 'INPUT';
+  return targetElement?.tagName
+    ? ['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT', 'OPTION'].includes(targetElement.tagName)
+    : false;
 }

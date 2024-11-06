@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -12,7 +13,7 @@ import {
   commonStringsDefault,
 } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
 
@@ -26,20 +27,12 @@ export default {
   ],
   argTypes: {
     // inputs
-    clrDgColType: { defaultValue: 'string' },
     clrDgField: { control: { disable: true } },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
-      defaultValue: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
-      control: {
-        type: 'radio',
-        options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
-      },
+      control: 'radio',
+      options: Object.values(ClrDatagridSortOrder).filter(value => typeof value === 'string'),
     },
-    clrFilterNumberMaxPlaceholder: { defaultValue: commonStringsDefault.maxValue },
-    clrFilterNumberMinPlaceholder: { defaultValue: commonStringsDefault.minValue },
-    clrFilterStringPlaceholder: { defaultValue: commonStringsDefault.filterItems },
-    clrFilterValue: { defaultValue: '', type: 'string' },
     // outputs
     clrDgColumnResize: { control: { disable: true } },
     clrDgSortOrderChange: { control: { disable: true } },
@@ -51,6 +44,13 @@ export default {
     ClrDatagridSortOrder: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDgColType: 'string',
+    clrFilterNumberMaxPlaceholder: commonStringsDefault.maxValue,
+    clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
+    clrFilterStringPlaceholder: commonStringsDefault.filterItems,
+    clrFilterValue: '',
+    clrDgSortOrder: ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED],
     // outputs
     clrDgColumnResize: action('clrDgColumnResize'),
     clrDgSortOrderChange: action('clrDgSortOrderChange'),
@@ -68,7 +68,7 @@ export default {
   },
 };
 
-const ColumnFilterTemplate: Story = args => ({
+const ColumnFilterTemplate: StoryFn = args => ({
   template: `
     <style>
       .highlight {
@@ -104,7 +104,7 @@ const ColumnFilterTemplate: Story = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
       </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
+      <clr-dg-column [clrDgField]="'number'" [clrDgColType]="'number'" [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
       <clr-dg-column>
@@ -138,4 +138,11 @@ const ColumnFilterTemplate: Story = args => ({
 
 export const ColumnFilter: StoryObj = {
   render: ColumnFilterTemplate,
+};
+
+export const ColumnNumberFilterOpened = {
+  render: ColumnFilterTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
+  },
 };

@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @import '../../../node_modules/@cds/core/styles/module.reset.min.css';
 @import '../../../node_modules/@cds/core/styles/module.tokens.min.css';
 @import '../../../node_modules/@cds/core/styles/module.layout.min.css';
@@ -11,6 +11,7 @@
 @import '../../../node_modules/@cds/core/styles/theme.dark.min.css';
 @import './app/_utils/clarity-variables';
 @import '../../angular/src/utils/variables/variables';
+@import '../../ui/src/temp-overrides.scss'; // @TODO remove in v18
 
 :root {
   --clr-test-header-text-color: magenta;

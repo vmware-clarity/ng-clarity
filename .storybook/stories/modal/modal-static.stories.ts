@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -17,7 +18,7 @@ export default {
     }),
   ],
   argTypes: {
-    size: { defaultValue: 'md', control: { type: 'radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    size: { control: 'radio', options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
   },
   args: {
     title: 'Small Modal',
@@ -26,15 +27,24 @@ export default {
   },
 };
 
-const ModalStaticTemplate: Story = args => ({
+const ModalStaticTemplate: StoryFn = args => ({
   template: `
     <style>
       .backdrop-example-container {
         position: relative;
         padding: 24px;
       }
+
+      .backdrop-example-container.full-screen {
+        padding: 0;
+        height: 400px;
+      }
+
       .modal.static {
         position: relative;
+      }
+
+      .modal:not(.modal-full-screen).static {
         padding: 72px;
       }
 
@@ -46,8 +56,8 @@ const ModalStaticTemplate: Story = args => ({
         left: 0;
       }
     </style>
-    <div class="backdrop-example-container">
-      <div class="modal static">
+    <div class="backdrop-example-container" [ngClass]="{ 'full-screen': size === 'full-screen' }">
+      <div class="modal modal-{{ size }} static">
         <div class="modal-dialog modal-{{ size }}" role="dialog" aria-hidden="true">
           <div class="modal-content">
             <div class="modal-header">
@@ -97,5 +107,14 @@ export const ExtraLargeModal: StoryObj = {
     title: 'Extra Large Modal',
     body: 'This is a extra Large modal.',
     size: 'xl',
+  },
+};
+
+export const FullScreenModal: StoryObj = {
+  render: ModalStaticTemplate,
+  args: {
+    title: 'Full-Screen Modal',
+    body: 'This is a full-screen modal.',
+    size: 'full-screen',
   },
 };

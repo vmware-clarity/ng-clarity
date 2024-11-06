@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -23,7 +24,7 @@ import { TreeFeaturesService } from './tree-features.service';
     </ng-container>
   `,
   host: {
-    '[attr.role]': '"group"', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
+    '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
 })
 /**
@@ -37,11 +38,12 @@ export class RecursiveChildren<T> {
   @Input('children') children: TreeNodeModel<T>[];
 
   subscription: Subscription;
+  role: string;
 
   constructor(public featuresService: TreeFeaturesService<T>, @Optional() private expandService: IfExpandService) {
     if (expandService) {
-      this.subscription = this.expandService.expandChange.subscribe(value => {
-        if (!value && this.parent && !this.featuresService.eager && this.featuresService.recursion) {
+      this.subscription = expandService.expandChange.subscribe(value => {
+        if (!value && this.parent && !featuresService.eager && featuresService.recursion) {
           // In the case of lazy-loading recursive trees, we clear the children on collapse.
           // This is better in case they change between two user interaction, and that way
           // the app itself can decide whether to cache them or not.
@@ -49,6 +51,10 @@ export class RecursiveChildren<T> {
         }
       });
     }
+  }
+
+  ngAfterContentInit() {
+    this.setAriaRoles();
   }
 
   shouldRender() {
@@ -72,5 +78,9 @@ export class RecursiveChildren<T> {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  private setAriaRoles() {
+    this.role = this.parent ? 'group' : null;
   }
 }

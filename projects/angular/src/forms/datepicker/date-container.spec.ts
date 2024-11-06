@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
@@ -98,7 +99,7 @@ export default function () {
         context.detectChanges();
         actionButton.click();
         context.detectChanges();
-        expect(document.activeElement).toEqual(actionButton);
+        expect(document.activeElement).toBe(actionButton);
       });
 
       it('should not call focus when date-picker is not visible', () => {
@@ -149,16 +150,15 @@ export default function () {
         expect(document.querySelector('clr-datepicker-view-manager')).not.toBeNull();
       });
 
-      it('tracks the disabled state', async(() => {
+      it('tracks the disabled state', async () => {
         expect(context.clarityElement.className).not.toContain('clr-form-control-disabled');
         context.testComponent.disabled = true;
         context.detectChanges();
         // Have to wait for the whole control to settle or it doesn't track
-        context.fixture.whenStable().then(() => {
-          context.detectChanges();
-          expect(context.clarityElement.className).toContain('clr-form-control-disabled');
-        });
-      }));
+        await context.fixture.whenStable();
+        context.detectChanges();
+        expect(context.clarityElement.className).toContain('clr-form-control-disabled');
+      });
 
       it('should set disabled state when dateFormControlService.disabled is true', () => {
         dateFormControlService.disabled = true;

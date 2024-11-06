@@ -1,34 +1,28 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+
+import { removeFocusOutline } from '../../helpers/common';
 
 export default {
   title: 'Wizard/Wizard Long Titles',
   component: ClrWizard,
   decorators: [
     moduleMetadata({
-      imports: [ClrWizardModule, BrowserAnimationsModule],
+      imports: [ClrWizardModule],
     }),
   ],
   argTypes: {
     // inputs
-    clrHeadingLevel: { defaultValue: 1, control: { type: 'number', min: 1, max: 6 } },
-    clrWizardOpen: { defaultValue: true }, // the default value is really false, but that doesn't really work for the story
-    clrWizardClosable: { defaultValue: true },
-    clrWizardDisableStepnav: { defaultValue: false },
-    clrWizardPreventNavigation: { defaultValue: false },
-    clrWizardForceForwardNavigation: { defaultValue: false },
-    clrWizardPreventDefaultNext: { defaultValue: false },
-    clrWizardPreventDefaultCancel: { defaultValue: false },
-    clrWizardStepnavAriaLabel: { defaultValue: commonStringsDefault.wizardStepnavAriaLabel },
-    clrWizardSize: { defaultValue: 'xl', control: { type: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] } },
+    clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
+    clrWizardSize: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChanged: { control: { disable: true } },
@@ -56,6 +50,17 @@ export default {
     pageCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrWizardOpen: true, // the default value is really false, but that doesn't really work for the story
+    clrWizardSize: 'xl',
+    clrHeadingLevel: 1,
+    clrWizardClosable: true,
+    clrWizardDisableStepnav: false,
+    clrWizardPreventNavigation: false,
+    clrWizardForceForwardNavigation: false,
+    clrWizardPreventDefaultNext: false,
+    clrWizardPreventDefaultCancel: false,
+    clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     // outputs
     clrWizardOpenChange: action('clrWizardOpenChange'),
     clrWizardCurrentPageChanged: action('clrWizardCurrentPageChanged'),
@@ -68,9 +73,17 @@ export default {
     createArray: n => new Array(n),
     pageCount: 4,
   },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 700,
+      },
+    },
+  },
 };
 
-const WizardLongTitlesTemplate: Story = args => ({
+const WizardLongTitlesTemplate: StoryFn = args => ({
   template: `
     <clr-wizard
       [clrWizardOpen]="clrWizardOpen"
@@ -111,4 +124,5 @@ const WizardLongTitlesTemplate: Story = args => ({
 
 export const WizardLongTitles: StoryObj = {
   render: WizardLongTitlesTemplate,
+  play: removeFocusOutline,
 };

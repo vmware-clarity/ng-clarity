@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use 'sass:map';
 @use 'sass:meta';
 @use '../tables.clarity';
@@ -147,6 +147,10 @@
     overflow: auto;
     flex: 1 1 auto;
     margin-top: tokens.$cds-global-space-6;
+
+    &.cdk-virtual-scrollable .datagrid-rows {
+      flex-grow: 0;
+    }
   }
 
   .datagrid-container {
@@ -218,6 +222,17 @@
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
     }
 
+    &.datagrid-selected {
+      &:hover,
+      &:hover .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
+      }
+      &:active,
+      &:active .datagrid-row-sticky {
+        background-color: datagrid-variables.$clr-datagrid-row-selected-active-background-color;
+      }
+    }
+
     &:active,
     &:active .datagrid-row-sticky {
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
@@ -242,12 +257,7 @@
         tokens.$cds-global-space-5 - tables-variables.$clr-table-borderwidth
       ); // This fixed an issue that made the cell too wide.
       align-items: center;
-
-      .clr-checkbox-wrapper {
-        display: block;
-        // compensate for the default checkbox margin, defined in its ::before section
-        margin-top: calc(-1 * tokens.$cds-global-space-4);
-      }
+      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
 
       &,
       input {
@@ -269,6 +279,20 @@
       .signpost-trigger {
         height: inherit;
         line-height: tokens.$cds-global-space-9;
+      }
+    }
+
+    &.datagrid-row-loading {
+      .datagrid-row-sticky {
+        display: none;
+      }
+
+      .datagrid-cell {
+        display: flex;
+        padding: tokens.$cds-global-space-9;
+        align-items: center;
+        gap: tokens.$cds-global-space-6;
+        justify-content: center;
       }
     }
   }
@@ -396,7 +420,12 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    align-content: flex-start;
+
+    .datagrid-rows {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
 
     .datagrid-body {
       width: auto;
@@ -412,7 +441,8 @@
       border: none;
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -425,13 +455,11 @@
         align-items: center;
       }
 
-      .datagrid-filter-input-spacer {
-        width: tokens.$cds-global-space-6;
-        display: inline-block;
-      }
-
       .datagrid-numeric-filter-input {
         width: tokens.$cds-global-space-14;
+        .clr-form-control {
+          margin-top: 0;
+        }
       }
 
       .datagrid-filter-toggle {
@@ -620,7 +648,8 @@
       }
 
       &:focus {
-        outline: -webkit-focus-ring-color solid tokens.$cds-global-space-2;
+        outline: tokens.$cds-alias-object-interaction-outline;
+        outline-color: -webkit-focus-ring-color;
         outline-offset: calc(-1 * tokens.$cds-global-space-2);
       }
 
@@ -695,6 +724,15 @@
       &.datagrid-column,
       &.datagrid-cell {
         display: none;
+      }
+    }
+    .datagrid-row-scrollable {
+      .datagrid-column {
+        .datagrid-column-separator {
+          &::after {
+            background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
+          }
+        }
       }
     }
   }
@@ -854,21 +892,6 @@
     z-index: map.get(variables.$clr-layers, datagrid-host); // Keeps the spinner above the datagrid header.
   }
 
-  .datagrid-select {
-    .clr-control-label {
-      min-height: tokens.$cds-global-space-6;
-      margin-top: calc(-1 * tokens.$cds-global-space-3);
-      padding-left: tokens.$cds-global-space-7;
-    }
-  }
-
-  .datagrid-table > .datagrid-row .datagrid-select {
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::before,
-    .clr-checkbox-wrapper input[type='checkbox'] + .clr-control-label::after {
-      top: 50%;
-    }
-  }
-
   .datagrid-compact {
     .datagrid-header {
       min-height: tokens.$cds-global-space-9;
@@ -878,6 +901,16 @@
       &::after {
         height: calc(100% - (0.5 * #{datagrid-variables.$clr-datagrid-column-separator-expandby}));
       }
+    }
+
+    .datagrid-row {
+      .datagrid-select {
+        padding: 0 tokens.$cds-global-space-7;
+      }
+    }
+
+    .datagrid-detail-caret.datagrid-cell {
+      padding: 0;
     }
 
     .datagrid-cell {
@@ -933,7 +966,7 @@
     }
 
     .datagrid-footer {
-      padding: 0 tables-variables.$clr-table-cellpadding;
+      padding: 0 tokens.$cds-global-space-7;
       line-height: tokens.$cds-global-space-9 - tokens.$cds-global-space-1;
 
       .pagination {
@@ -1044,6 +1077,10 @@
     flex: 0 0 auto !important;
     min-width: 0 !important;
     display: block !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
   }
 
   /**
@@ -1076,6 +1113,10 @@
          * To get rid of detail-pane overlapping the content inside the rows
          */
         overflow: hidden;
+      }
+
+      & > .cdk-virtual-scrollable div.datagrid-table {
+        overflow: unset;
       }
 
       clr-dg-cell {
@@ -1215,11 +1256,10 @@
 
   .datagrid-detail-caret {
     display: flex;
-    align-items: center;
     justify-content: center;
 
     &.datagrid-cell {
-      padding: 0;
+      padding: tokens.$cds-global-space-3 0;
     }
 
     .datagrid-detail-caret-button {
@@ -1227,13 +1267,14 @@
       cursor: pointer;
       @include mixins.equilateral(tokens.$cds-global-space-9);
 
-      &.is-open {
-        background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
-        border-radius: tokens.$cds-alias-object-border-radius-100;
+      &:disabled cds-icon.datagrid-detail-caret-icon {
+        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      }
 
-        .datagrid-detail-caret-icon {
-          color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
-        }
+      &.is-open .datagrid-detail-caret-icon {
+        border-radius: tokens.$cds-alias-object-border-radius-100;
+        background-color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-bg-color;
+        color: datagrid-variables.$clr-datagrid-detail-caret-icon-open-icon-color;
       }
     }
 
@@ -1255,13 +1296,15 @@
   .datagrid-detail-overlay {
     // too specific query needed to avoid issues with nested datagrids
     &.datagrid-detail-open > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
-      display: none;
+      width: 0;
+      min-width: unset;
     }
 
     .datagrid-detail-pane {
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
       border-radius: tokens.$cds-alias-object-border-radius-100;
+      width: 100%;
     }
   }
 
@@ -1379,6 +1422,14 @@
     .datagrid-filter-apply {
       margin-bottom: 0;
     }
+
+    .datagrid-numeric-filter-form {
+      display: flex;
+      gap: tokens.$cds-global-space-6;
+      .clr-form-control {
+        margin-top: 0;
+      }
+    }
   }
 
   .datagrid-action-overflow {
@@ -1437,6 +1488,10 @@
 
       .datagrid-row {
         display: table-row;
+
+        clr-expandable-animation {
+          display: none;
+        }
 
         .datagrid-cell {
           // This is a hack b/c styles were not applied out of the box when moving columns into the

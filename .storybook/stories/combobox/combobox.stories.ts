@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -20,10 +21,6 @@ export default {
   ],
   component: ClrCombobox,
   argTypes: {
-    // inputs
-    clrMulti: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: 'Placeholder text' },
-    id: { defaultValue: '' },
     // outputs
     clrInputChange: { control: { disable: true } },
     clrOpenChange: { control: { disable: true } },
@@ -48,9 +45,13 @@ export default {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
-    updateOn: { defaultValue: 'change', control: { type: 'radio', options: ['change', 'blur', 'submit'] } },
+    updateOn: { control: 'radio', options: ['change', 'blur', 'submit'] },
   },
   args: {
+    // inputs
+    clrMulti: false,
+    placeholder: 'Placeholder text',
+    id: '',
     // outputs
     clrInputChange: action('clrInputChange'),
     clrOpenChange: action('clrOpenChange'),

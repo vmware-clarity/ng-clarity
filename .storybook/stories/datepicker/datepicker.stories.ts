@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDateInput, ClrDatepickerModule } from '@clr/angular';
+import { ClrDateInput, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
@@ -15,7 +16,7 @@ export default {
   component: ClrDateInput,
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ClrDatepickerModule],
+      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
     }),
   ],
   argTypes: {
@@ -23,9 +24,6 @@ export default {
     clrDate: { control: { type: 'date' } },
     max: { control: { type: 'date' } },
     min: { control: { type: 'date' } },
-    disabled: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: '' },
-    id: { defaultValue: '' },
     // outputs
     clrDateChange: { control: { disable: true } },
     // methods
@@ -38,6 +36,10 @@ export default {
     getDateString: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    disabled: false,
+    placeholder: '',
+    id: '',
     // outputs
     clrDateChange: action('clrDateChange'),
     // story helpers
@@ -74,7 +76,7 @@ export const Datepicker: StoryObj = {
 export const DefaultDate: StoryObj = {
   render: DatePickerTemplate,
   args: {
-    clrDate: 1641038400000,
+    clrDate: '2022-01-01 00:00:00.000',
   },
 };
 

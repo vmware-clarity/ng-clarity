@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -109,10 +110,10 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       expect(group1.valid).toBe(false, 'first panel form is now invalid');
-      expect(stepperService.setPanelInvalid).toHaveBeenCalledTimes(1);
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
-    it('should set the panel status to invalid immediately', () => {
+    it('should not set the panel status to invalid immediately', () => {
       // setup
       spyOn(stepperService, 'setPanelInvalid');
       const form = testComponent.form.controls.group;
@@ -122,7 +123,7 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       // assert
-      expect(stepperService.setPanelInvalid).toHaveBeenCalledTimes(1);
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
     it('should set the panel status to valid if form was previously invalid', () => {
@@ -132,6 +133,12 @@ describe('ClrStepper', () => {
 
       // act 1 (make form invalid)
       form.controls.name.setValue('');
+      fixture.detectChanges();
+
+      form.controls.name.markAsTouched();
+      form.controls.name.markAsDirty();
+      form.controls.name.updateValueAndValidity();
+
       fixture.detectChanges();
 
       // act 2 (make form valid)

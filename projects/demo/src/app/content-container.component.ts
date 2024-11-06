@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -12,7 +13,7 @@ import { APP_ROUTES } from './app.routing';
 @Component({
   selector: 'my-app-content-container',
   template: `
-    <clr-vertical-nav>
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true">
       <ng-container *ngFor="let route of routes">
         <a
           *ngIf="route.path != ''"

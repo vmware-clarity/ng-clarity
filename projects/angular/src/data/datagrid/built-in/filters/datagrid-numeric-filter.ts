@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -22,27 +23,36 @@ import { DatagridNumericFilterImpl } from './datagrid-numeric-filter-impl';
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
-      <input
-        class="datagrid-numeric-filter-input"
-        #input_low
-        type="number"
-        autocomplete="off"
-        name="low"
-        [(ngModel)]="low"
-        [placeholder]="minPlaceholderValue"
-        [attr.aria-label]="minPlaceholderValue"
-      />
-      <span class="datagrid-filter-input-spacer"></span>
-      <input
-        class="datagrid-numeric-filter-input"
-        #input_high
-        type="number"
-        autocomplete="off"
-        name="high"
-        [(ngModel)]="high"
-        [placeholder]="maxPlaceholderValue"
-        [attr.aria-label]="maxPlaceholderValue"
-      />
+      <div class="datagrid-numeric-filter-form">
+        <div class="clr-form-control">
+          <label class="clr-control-label">{{ fromLabelValue }}</label>
+          <input
+            clrInput
+            class="datagrid-numeric-filter-input"
+            #input_low
+            type="number"
+            autocomplete="off"
+            name="low"
+            [(ngModel)]="low"
+            [placeholder]="minPlaceholderValue"
+            [attr.aria-label]="minPlaceholderValue"
+          />
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">{{ toLabelValue }}</label>
+          <input
+            clrInput
+            class="datagrid-numeric-filter-input"
+            #input_high
+            type="number"
+            autocomplete="off"
+            name="high"
+            [(ngModel)]="high"
+            [placeholder]="maxPlaceholderValue"
+            [attr.aria-label]="maxPlaceholderValue"
+          />
+        </div>
+      </div>
     </clr-dg-filter>
   `,
 })
@@ -52,6 +62,8 @@ export class DatagridNumericFilter<T = any>
 {
   @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
+  @Input('clrFilterFromLabel') fromLabel: string;
+  @Input('clrFilterToLabel') toLabel: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -63,7 +75,7 @@ export class DatagridNumericFilter<T = any>
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input_low') input: ElementRef;
+  @ViewChild('input_low') input: ElementRef<HTMLInputElement>;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
@@ -137,6 +149,14 @@ export class DatagridNumericFilter<T = any>
 
   get minPlaceholderValue() {
     return this.minPlaceholder || this.commonStrings.keys.minValue;
+  }
+
+  get fromLabelValue() {
+    return this.fromLabel || this.commonStrings.keys.fromLabel;
+  }
+
+  get toLabelValue() {
+    return this.toLabel || this.commonStrings.keys.toLabel;
   }
 
   get low() {

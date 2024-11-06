@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -18,13 +19,13 @@ export default {
   ],
   component: ClrRadio,
   argTypes: {
-    // inputs
-    id: { defaultValue: '' },
     // methods
     getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
     triggerValidation: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // id
+    id: '',
     // story helpers
     label: 'Option',
     disabled: false,

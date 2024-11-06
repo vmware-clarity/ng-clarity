@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -37,6 +38,8 @@ import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
+import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
+import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 const ROUTES: Routes = [
   {
@@ -62,6 +65,8 @@ const ROUTES: Routes = [
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
       { path: 'placeholder', component: DatagridPlaceholderDemo },
+      { path: 'virtual-scroll-client-side', component: DatagridVirtualScrollClientSideDemo },
+      { path: 'virtual-scroll-server-side', component: DatagridVirtualScrollServerSideDemo },
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'compact', component: DatagridCompactDemo },

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -30,7 +31,7 @@ export class DatagridRenderOrganizer {
       this._renderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
     }
     this._renderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
-    this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS);
+    this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS); // NOT USED
     this.alreadySized = true;
     this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
   }

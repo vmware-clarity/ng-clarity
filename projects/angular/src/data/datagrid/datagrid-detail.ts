@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -20,13 +21,14 @@ import { DetailService } from './providers/detail.service';
   template: `
     <div
       cdkTrapFocus
-      [cdkTrapFocusAutoCapture]="true"
+      [cdkTrapFocusAutoCapture]="!header"
       class="datagrid-detail-pane-content"
       *ngIf="detailService.isOpen"
       role="dialog"
       [id]="detailService.id"
       aria-modal="true"
-      [attr.aria-describedby]="header ? header.titleId : ''"
+      [attr.aria-labelledby]="labelledBy"
+      [attr.aria-label]="label"
     >
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneStart }}</div>
       <ng-content></ng-content>
@@ -35,9 +37,31 @@ import { DetailService } from './providers/detail.service';
   `,
 })
 export class ClrDatagridDetail {
+  @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
+  @Input('clrDetailAriaLabel') ariaLabel: string;
+
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
+
+  get labelledBy(): string {
+    if (this.ariaLabelledBy) {
+      return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
+    } else if (this.ariaLabel) {
+      // If aria-label is set by the end user, do not set aria-labelledby
+      return null;
+    } else {
+      return this.header?.titleId || '';
+    }
+  }
+
+  get label(): string {
+    if (!this.ariaLabelledBy) {
+      return this.ariaLabel || null;
+    } else {
+      return null;
+    }
+  }
 
   close(): void {
     this.detailService.close();

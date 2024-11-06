@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrTabs, ClrTabsModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
 
@@ -19,7 +20,7 @@ export default {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { defaultValue: TabsLayout.HORIZONTAL, control: { type: 'inline-radio', options: TabsLayout } },
+    clrLayout: { control: 'inline-radio', options: TabsLayout },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -34,6 +35,8 @@ export default {
     activeTab: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrLayout: TabsLayout.HORIZONTAL,
     // story helpers
     createArray: n => new Array(n),
     tabCount: 4,
@@ -43,7 +46,7 @@ export default {
   },
 };
 
-const tabsTemplate: Story = args => ({
+const tabsTemplate: StoryFn = args => ({
   template: `
     <clr-tabs [clrLayout]="clrLayout">
       <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -72,7 +73,7 @@ function findStoryTemplates(storyTsCode) {
     if (
       (ts.isPropertyAssignment(node) || ts.isVariableDeclaration(node)) &&
       ts.isIdentifier(node.name) &&
-      node.name.text === 'template' &&
+      (node.name.text === 'template' || node.name.text.endsWith('Template')) &&
       ts.isTemplateLiteral(node.initializer)
     ) {
       const length = node.initializer.end - node.initializer.getStart();

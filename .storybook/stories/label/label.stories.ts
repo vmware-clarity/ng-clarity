@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const LABEL_COLOR_TYPES = ['', 'label-purple', 'label-blue', 'label-orange', 'label-light-blue'];
 
@@ -14,10 +15,7 @@ export default {
   title: 'Label/Label',
   argTypes: {
     // story helpers
-    labelType: {
-      defaultValue: '',
-      control: { type: 'radio', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
-    },
+    labelType: { control: 'radio', options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
     LABEL_COLOR_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
     LABEL_STATUS_TYPES: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
@@ -33,7 +31,7 @@ export default {
   },
 };
 
-const LabelTemplate: Story = args => ({
+const LabelTemplate: StoryFn = args => ({
   template: `
     <span class="label" [class.clickable]="clickable" [ngClass]="labelType">
       <span class="text">{{ content }}</span>
@@ -44,7 +42,7 @@ const LabelTemplate: Story = args => ({
   props: args,
 });
 
-const LabelAllTemplate: Story = args => ({
+const LabelAllTemplate: StoryFn = args => ({
   template: `
     <h6>Default Label</h6>
     <div style="margin-top: 5px">

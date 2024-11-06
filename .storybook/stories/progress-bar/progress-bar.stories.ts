@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrProgressBar } from '@clr/angular';
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-const ProgressBarTemplate: Story = args => ({
+const ProgressBarTemplate: StoryFn = args => ({
   template: `
     <clr-progress-bar
       [id]="id"
@@ -28,7 +29,7 @@ const ProgressBarTemplate: Story = args => ({
   props: { ...args },
 });
 
-const ProgressBarTemplateAll: Story = args => ({
+const ProgressBarTemplateAll: StoryFn = args => ({
   template: `
     <h6>Progress Bar with Status</h6>
     <div style="margin-top: 5px" *ngFor="let type of TYPES">
@@ -98,21 +99,24 @@ export default {
   component: ClrProgressBar,
   argTypes: {
     // inputs
-    clrDisplayval: { defaultValue: '' },
-    clrFade: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlash: { defaultValue: false, control: { type: 'boolean' } },
-    clrFlashDanger: { defaultValue: false, control: { type: 'boolean' } },
-    clrLabeled: { defaultValue: false, control: { type: 'boolean' } },
-    clrLoop: { defaultValue: false, control: { type: 'boolean' } },
-    clrMax: { defaultValue: 100, control: { type: 'number' } },
-    clrColor: { defaultValue: '', control: { type: 'radio', options: ['', 'success', 'warning', 'danger'] } },
-    clrValue: { defaultValue: 33, control: { type: 'number' } },
-    clrCompact: { defaultValue: false, control: { type: 'boolean' } },
-    id: { defaultValue: '' },
+    clrColor: { control: 'radio', options: ['', 'success', 'warning', 'danger'] },
     // methods
     displayStringValue: { control: { disable: true }, table: { disable: true } },
   },
-  args: {},
+  args: {
+    // inputs
+    clrDisplayval: '',
+    clrFade: false,
+    clrFlash: false,
+    clrFlashDanger: false,
+    clrLabeled: false,
+    clrLoop: false,
+    clrMax: 100,
+    clrColor: '',
+    clrValue: 33,
+    clrCompact: false,
+    id: '',
+  },
 };
 
 export const ProgressBar: StoryObj = {

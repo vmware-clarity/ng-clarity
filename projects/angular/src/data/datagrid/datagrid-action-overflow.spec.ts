@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -106,7 +107,7 @@ export default function (): void {
       context.detectChanges();
       await context.fixture.whenStable();
       const firstButton: HTMLButtonElement = context.testComponent.actionItem.nativeElement;
-      expect(document.activeElement).toEqual(firstButton);
+      expect(document.activeElement).toBe(firstButton);
     });
   });
 }
@@ -129,7 +130,7 @@ class SimpleTest {
   open: boolean;
   buttonLabel: string;
 
-  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef;
+  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef<HTMLButtonElement>;
 
   clrDgActionOverflowOpenChangeFn(_$event: boolean) {
     // Do nothing

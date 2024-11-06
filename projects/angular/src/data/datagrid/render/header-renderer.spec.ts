@@ -1,10 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
@@ -101,12 +103,12 @@ export default function (): void {
     });
 
     it('can set the width of a column', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
       expect(context.clarityElement.style.width).toBe('123px');
     });
 
     it('resets the header to default width when notified', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123 });
       expect(context.clarityElement.style.width).toBe('123px');
       organizer.updateRenderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
       expect(context.clarityElement.style.width).toBeFalsy();
@@ -128,19 +130,19 @@ export default function (): void {
 
     it('does not set the width when the user declared a strict one', function () {
       domAdapter._scrollWidth = 123;
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 24 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 24 });
       expect(context.clarityElement.classList).toContain(STRICT_WIDTH_CLASS);
       expect(context.clarityElement.style.width).toBeFalsy();
 
-      stateSub.next({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 0 });
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 123, strictWidth: 0 });
       expect(context.clarityElement.style.width).toBe('123px');
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
     });
 
     it('sets proper hidden class for hidden cell', function () {
-      stateSub.next({ changes: [DatagridColumnChanges.HIDDEN], hidden: true });
+      context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: true });
       expect(context.clarityElement.classList).toContain(HIDDEN_COLUMN_CLASS);
-      stateSub.next({ changes: [DatagridColumnChanges.HIDDEN], hidden: false });
+      context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: false });
       expect(context.clarityElement.classList).not.toContain(HIDDEN_COLUMN_CLASS);
     });
   });
@@ -174,8 +176,12 @@ export default function (): void {
       columnSeparator.hideTracker();
     };
 
-    beforeEach(function () {
+    beforeEach(fakeAsync(function () {
       context = this.create(ClrDatagrid, HeaderResizeTestComponent);
+
+      context.detectChanges();
+      tick();
+
       columnHeader1DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
       columnHeader2DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
       columnHeader3DebugElement = context.fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[2];
@@ -198,7 +204,7 @@ export default function (): void {
       columnHeader3ColumnSeparatorDebugElement = context.fixture.debugElement.queryAll(
         By.directive(ClrDatagridColumnSeparator)
       )[2];
-    });
+    }));
 
     it('each header should have min-width', function () {
       expect(columnHeader1ResizerService.minColumnWidth).toBe(96);
@@ -221,9 +227,13 @@ export default function (): void {
       expect(column4InitialWidth).toBeGreaterThan(columnHeader4ResizerService.minColumnWidth);
     });
 
-    it('expands other flexible headers if header width shrinks', function () {
+    it('expands other flexible headers if header width shrinks', fakeAsync(function () {
       const resizeBy = -20;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBeGreaterThan(column2InitialWidth);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -231,7 +241,7 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBeGreaterThan(column4InitialWidth);
-    });
+    }));
 
     it('resized header should have fixed width class', function () {
       expect(columnHeader1Element.classList.contains(STRICT_WIDTH_CLASS)).toBeFalse();
@@ -252,9 +262,13 @@ export default function (): void {
       expect(widthOf(columnHeader4Element)).toBeLessThan(column4InitialWidth);
     });
 
-    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", function () {
+    it("shouldn't shrink flexible headers below their min-width if header width expands by large amount", fakeAsync(function () {
       const resizeBy = 1000;
       emulateResizeOnColumn(resizeBy, columnHeader1ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(widthOf(columnHeader1Element)).toBe(column1InitialWidth + resizeBy);
       expect(widthOf(columnHeader2Element)).toBe(120);
       expect(widthOf(columnHeader3Element)).toBe(
@@ -262,7 +276,7 @@ export default function (): void {
         `A strict width shouldn't change when other header's width changes`
       );
       expect(widthOf(columnHeader4Element)).toBe(96);
-    });
+    }));
 
     it('gives header its min-width if a user tried to drag too much to left', function () {
       const resizeBy = -1000;
@@ -270,11 +284,15 @@ export default function (): void {
       expect(widthOf(columnHeader1Element)).toBe(96);
     });
 
-    it('emits new header width once resizing ends', function () {
+    it('emits new header width once resizing ends', fakeAsync(function () {
       expect(context.testComponent.newWidth).toBeUndefined();
       const resizeBy = 20;
       emulateResizeOnColumn(resizeBy, columnHeader3ColumnSeparatorDebugElement.componentInstance);
+
+      context.detectChanges();
+      tick();
+
       expect(context.testComponent.newWidth).toBe(column3InitialWidth + resizeBy);
-    });
+    }));
   });
 }

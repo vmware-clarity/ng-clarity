@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component } from '@angular/core';
 import { fakeAsync } from '@angular/core/testing';
-import { CdsInternalCloseButton } from '@cds/core/internal-components/close-button';
 
 import { LARGE_BREAKPOINT } from '../../utils/breakpoints/breakpoints';
 import { spec } from '../../utils/testing/helpers.spec';
@@ -58,7 +58,7 @@ describe('NavLevelDirective', function () {
 
   it('should set [attr.hidden] when called hideCloseButton()', function () {
     const navLevel = this.clarityDirective;
-    const element = this.fixture.nativeElement.querySelector('cds-internal-close-button');
+    const element = this.fixture.nativeElement.querySelector('.clr-nav-close');
     navLevel.hideCloseButton();
     expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
@@ -66,7 +66,7 @@ describe('NavLevelDirective', function () {
 
   it('should remove [attr.hidden] when called showCloseButton()', function () {
     const navLevel = this.clarityDirective;
-    const element = this.fixture.nativeElement.querySelector('cds-internal-close-button');
+    const element = this.fixture.nativeElement.querySelector('.clr-nav-close');
     navLevel.hideCloseButton();
     expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
@@ -190,9 +190,9 @@ describe('NavLevelDirective', function () {
 
   describe('ngAfterViewInit: ', function () {
     it('should add close button to the host element', function () {
-      const closeButtons = this.fixture.elementRef.nativeElement.querySelectorAll('cds-internal-close-button');
+      const closeButtons = this.fixture.elementRef.nativeElement.querySelectorAll('.clr-nav-close');
       expect(closeButtons.length).toBe(1);
-      expect(closeButtons[0]).toBeInstanceOf(CdsInternalCloseButton);
+      expect(closeButtons[0]).toBeInstanceOf(HTMLButtonElement);
     });
   });
 
@@ -201,7 +201,7 @@ describe('NavLevelDirective', function () {
       /**
        * Tried to spyOn on the 'close` function but since we are using `this.close.bind(this)` the spy is not working.
        */
-      const closeButton = this.fixture.elementRef.nativeElement.querySelector('cds-internal-close-button');
+      const closeButton = this.fixture.elementRef.nativeElement.querySelector('.clr-nav-close');
       this.clarityDirective._isOpen = false;
       closeButton.click();
       expect(this.clarityDirective.isOpen).toBe(false);

@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { CLR_MENU_POSITIONS, ClrDropdownMenu, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -19,7 +20,7 @@ export default {
   component: ClrDropdownMenu,
   argTypes: {
     // inputs
-    clrPosition: { defaultValue: 'top-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
+    clrPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
     // methods
     anchor: { control: { disable: true }, table: { disable: true } },
     release: { control: { disable: true }, table: { disable: true } },
@@ -30,6 +31,8 @@ export default {
     CLR_MENU_POSITIONS: { control: { disable: true }, table: { disable: true }, type: 'array' },
   },
   args: {
+    // inputs
+    clrPosition: 'top-left',
     // story helpers
     createArray: n => new Array(n),
     menuCount: 3,
@@ -38,7 +41,7 @@ export default {
   },
 };
 
-const DropdownMenuTemplate: Story = args => ({
+const DropdownMenuTemplate: StoryFn = args => ({
   template: `
     <div style="margin: 200px; text-align: center">
       <clr-dropdown>
@@ -68,7 +71,7 @@ const DropdownMenuTemplate: Story = args => ({
   props: args,
 });
 
-const DropdownMenuAllTemplate: Story = args => ({
+const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
     <div *ngFor="let position of CLR_MENU_POSITIONS">
       <div style="margin: 5px">

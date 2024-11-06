@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, style, transition, trigger } from '@angular/animations';
+import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
@@ -30,29 +31,33 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
   providers: [DomAdapter],
 })
 export class ClrExpandableAnimation {
-  @Input() clrExpandTrigger: any;
+  @Input() clrExpandTrigger = false;
 
   startHeight = 0;
 
-  constructor(private element: ElementRef, private domAdapter: DomAdapter, private renderer: Renderer2) {}
+  constructor(private element: ElementRef<HTMLElement>, private domAdapter: DomAdapter, private renderer: Renderer2) {}
 
   @HostBinding('@expandAnimation')
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
-  @HostListener('@expandAnimation.start')
-  animationStart() {
-    this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+  @HostListener('@expandAnimation.start', ['$event'])
+  animationStart(event: AnimationEvent) {
+    if (event.fromState !== 'void') {
+      this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+    }
   }
-  @HostListener('@expandAnimation.done')
-  animationDone() {
-    this.renderer.removeStyle(this.element.nativeElement, 'overflow');
+  @HostListener('@expandAnimation.done', ['$event'])
+  animationDone(event: AnimationEvent) {
+    if (event.fromState !== 'void') {
+      this.renderer.removeStyle(this.element.nativeElement, 'overflow');
 
-    // A "safe" auto-update of the height ensuring basic OOTB user experience .
-    // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
-    // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
-    this.updateStartHeight();
+      // A "safe" auto-update of the height ensuring basic OOTB user experience .
+      // Prone to small jumps in initial animation height if data was changed in the meantime, window was resized, etc.
+      // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
+      this.updateStartHeight();
+    }
   }
 
   updateStartHeight() {

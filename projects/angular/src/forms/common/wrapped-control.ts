@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -43,10 +44,8 @@ export enum CHANGE_KEYS {
 export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
-  protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -65,12 +64,9 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoC
     protected wrapperType: Type<W>,
     injector: Injector,
     private ngControl: NgControl | null,
-    renderer: Renderer2,
-    el: ElementRef
+    protected renderer: Renderer2,
+    protected el: ElementRef<HTMLElement>
   ) {
-    this.renderer = renderer;
-    this.el = el;
-
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);

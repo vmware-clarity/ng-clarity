@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
 @use '../../utils/variables/variables';
 @use '../variables.tables' as tables-variables;
 
@@ -25,6 +25,8 @@ $clr-datagrid-popover-font-color: var(--clr-datagrid-popover-font-color) !defaul
 $clr-datagrid-action-popover-hover-color: var(--clr-datagrid-action-popover-hover-color) !default;
 $clr-datagrid-row-selected: var(--clr-datagrid-row-selected) !default;
 $clr-datagrid-row-selected-background-color: var(--clr-datagrid-row-selected-background-color) !default;
+$clr-datagrid-row-selected-active-background-color: var(--clr-datagrid-row-selected-active-background-color) !default;
+$clr-datagrid-row-selected-hover-background-color: var(--clr-datagrid-row-selected-hover-background-color) !default;
 
 $clr-datagrid-column-switch-header-font-color: var(--clr-datagrid-column-switch-header-font-color) !default;
 $clr-datagrid-column-switch-header-font-hover-color: var(--clr-datagrid-column-switch-header-font-hover-color) !default;
@@ -68,6 +70,7 @@ $clr-datagrid-placeholder-background-color: var(--clr-datagrid-placeholder-backg
 $clr-datagrid-popovers-box-shadow: var(--clr-datagrid-popovers-box-shadow) !default;
 $clr-datagrid-column-separator-height: var(--clr-datagrid-column-separator-height) !default;
 $clr-datagrid-column-separator-width: var(--clr-datagrid-column-separator-width) !default;
+$clr-datagrid-column-resize-handler-color: var(--clr-datagrid-column-resize-handler-color) !default;
 $clr-datagrid-filter-toggle-size: var(--clr-datagrid-filter-toggle-size) !default;
 
 $clr-datagrid-footer-pagination-gap: var(--clr-datagrid-footer-pagination-gap) !default;

@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Story, StoryObj } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 const buttonTypes = ['btn-primary', 'btn-outline', 'btn-link'];
 
@@ -13,12 +14,7 @@ export default {
   argTypes: {
     // story helpers
     createArray: { control: { disable: true }, table: { disable: true } },
-    clickable: { defaultValue: true, control: { type: 'boolean' } },
-    hasImage: { defaultValue: true, control: { type: 'boolean' } },
-    buttonType: {
-      defaultValue: 'btn-outline',
-      control: { type: 'radio', options: buttonTypes },
-    },
+    buttonType: { control: 'radio', options: buttonTypes },
   },
   args: {
     // story helpers
@@ -29,10 +25,13 @@ export default {
     header: 'Header',
     title: 'Title',
     content: 'Hello World!',
+    buttonType: 'btn-outline',
+    clickable: true,
+    hasImage: true,
   },
 };
 
-const cardTemplate: Story = args => ({
+const cardTemplate: StoryFn = args => ({
   template: `
     <div [style.maxWidth.px]="maxWidth" class="card" [ngClass]="{ clickable }">
       <div *ngIf="hasImage" class="card-img">

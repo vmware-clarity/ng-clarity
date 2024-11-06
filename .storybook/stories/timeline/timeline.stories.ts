@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStepState } from '@clr/angular';
-import { moduleMetadata, Story, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
@@ -19,20 +20,19 @@ export default {
   component: ClrTimeline,
   argTypes: {
     // inputs
-    clrLayout: {
-      defaultValue: ClrTimelineLayout.HORIZONTAL,
-      control: { type: 'inline-radio', options: ClrTimelineLayout },
-    },
+    clrLayout: { control: 'inline-radio', options: ClrTimelineLayout },
     // story helpers
     ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
     // story helpers
     ClrTimelineStepState,
   },
 };
 
-const TimelineTempate: Story = args => ({
+const TimelineTempate: StoryFn = args => ({
   template: `
     <clr-timeline [clrLayout]="clrLayout">
       <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">

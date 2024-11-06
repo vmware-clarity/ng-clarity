@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -65,6 +66,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Input('clrWizardClosable') closable = true;
 
   /**
+   * Used to communicate to the underlying modal that animations are not
+   * wanted. Primary use is for the display of static/inline wizards.
+   * Set using `[clrWizardPreventModalAnimation]` input.
+   */
+  @Input('clrWizardPreventModalAnimation') _stopModalAnimations = false;
+
+  /**
    * Emits when the wizard is opened or closed.
    * Listen via `(clrWizardOpenChange)` event.
    */
@@ -108,7 +116,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
-  @ViewChild('pageTitle') pageTitle: ElementRef;
+  @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
   @ContentChildren(ClrWizardPage, { descendants: true }) pages: QueryList<ClrWizardPage>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
@@ -132,6 +140,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     public pageCollection: PageCollectionService,
     public buttonService: ButtonHubService,
     public headerActionService: HeaderActionService,
+    private elementRef: ElementRef<HTMLElement>,
     differs: IterableDiffers
   ) {
     this.subscriptions.push(
@@ -250,9 +259,18 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return this.navService.currentPageIsFirst;
   }
 
+  get isInline(): boolean {
+    return this.elementRef.nativeElement.classList.contains('clr-wizard--inline');
+  }
+
+  get stopModalAnimations(): string {
+    return this._stopModalAnimations ? 'true' : 'false';
+  }
+
   ngAfterContentInit(): void {
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
+    this.initializeButtons();
   }
 
   ngDoCheck(): void {
@@ -478,6 +496,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     if (changes) {
       changes.forEachAddedItem(() => this.navService.updateNavigation());
       changes.forEachRemovedItem(() => this.navService.updateNavigation());
+    }
+  }
+
+  private initializeButtons(): void {
+    // Only trigger buttons ready if default is open (inlined)
+    if (this._open) {
+      this.buttonService.buttonsReady = true;
     }
   }
 
