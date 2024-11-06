@@ -1021,6 +1021,7 @@ export interface ClrCommonStrings {
     signpostToggle: string;
     singleActionableAriaLabel: string;
     singleSelectionAriaLabel: string;
+    sortable: string;
     sortColumn: string;
     stackViewChanged: string;
     // (undocumented)
@@ -1307,12 +1308,14 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
     get colType(): 'string' | 'number';
     set colType(value: 'string' | 'number');
+    // (undocumented)
+    commonStrings: ClrCommonStringsService;
     customFilter: boolean;
     // (undocumented)
     get field(): string;

@@ -89,7 +89,7 @@ import { WrappedColumn } from './wrapped-column';
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',
-    '[attr.aria-label]': 'sortable ? commonStrings.keys.sortableColumn : null',
+    '[attr.aria-label]': 'sortable ? commonStrings.keys.sortable : null',
     role: 'columnheader',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
