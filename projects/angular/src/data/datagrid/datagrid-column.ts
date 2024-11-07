@@ -23,7 +23,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrCommonStringsService } from '../../utils';
 import { HostWrapper } from '../../utils/host-wrapping/host-wrapper';
 import { ClrPopoverHostDirective } from '../../utils/popover/popover-host.directive';
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
@@ -89,7 +88,6 @@ import { WrappedColumn } from './wrapped-column';
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',
-    '[attr.aria-label]': 'sortable ? commonStrings.keys.sortable : null',
     role: 'columnheader',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -155,8 +153,7 @@ export class ClrDatagridColumn<T = any>
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
     private detailService: DetailService,
-    private changeDetectorRef: ChangeDetectorRef,
-    public commonStrings: ClrCommonStringsService
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -400,6 +397,7 @@ export class ClrDatagridColumn<T = any>
       if (this.sortOrder !== ClrDatagridSortOrder.UNSORTED && sort.comparator !== this._sortBy) {
         this._sortOrder = ClrDatagridSortOrder.UNSORTED;
         this.sortOrderChange.emit(this._sortOrder);
+        this._sortDirection = null;
       }
     });
   }
