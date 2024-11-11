@@ -140,6 +140,12 @@
 
       @extend %dropdown-content;
 
+      &:hover {
+        outline-offset: calc(-3 * tokens.$cds-global-space-1);
+        outline: tokens.$cds-global-space-2 solid tokens.$cds-global-color-black;
+        border-radius: calc(tokens.$cds-global-space-3 + tokens.$cds-global-space-1);
+      }
+
       &.expandable {
         padding-right: tokens.$cds-global-space-5;
 
