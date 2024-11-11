@@ -36,12 +36,4 @@ export class DatagridSortingDemo {
     inventory.reset();
     this.users = inventory.all;
   }
-
-  setSortOrder(newOrder: ClrDatagridSortOrder) {
-    this.sortOrder = newOrder;
-  }
-
-  clrDgSortOrderChange($event: ClrDatagridSortOrder) {
-    console.log($event);
-  }
 }
