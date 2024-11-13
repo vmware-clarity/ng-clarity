@@ -21,6 +21,18 @@
   }
 }
 
+// ::ng-deep .clr-treenode-caret-icon {
+//   display: none;
+// }
+
+// ::ng-deep [role="treeitem"][aria-expanded="true"] .clr-treenode-caret::after {
+//   content: "▿";
+// }
+
+// ::ng-deep [role="treeitem"][aria-expanded="false"] .clr-treenode-caret::after {
+//   content: "▹";
+// }
+
 .example-display-json {
   padding: $clr_baselineRem_0_5;
   margin: 0;

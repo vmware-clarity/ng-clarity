@@ -16,7 +16,7 @@ import { InfiniteTree } from '../utils/infinite-tree';
   templateUrl: './lazy-recursive-tree.html',
 })
 export class LazyRecursiveTreeDemo {
-  tree = new InfiniteTree(3);
+  tree = new InfiniteTree(1000);
   asyncTree = new AsyncInfiniteTree(3, 500);
   lazierTree = new AsyncInfiniteTree(3, 500);
 

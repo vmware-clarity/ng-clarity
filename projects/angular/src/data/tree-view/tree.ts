@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -36,6 +37,7 @@ import { ClrTreeNode } from './tree-node';
     tabindex: '0',
     '[attr.role]': '"tree"',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;

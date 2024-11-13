@@ -6,20 +6,14 @@
   -->
 
 <h4>Synchronous infinite tree</h4>
-<p>Selected: {{tree.selected.join(', ')}}</p>
+<!-- <p>Selected: {{tree.selected.join(', ')}}</p> -->
 <div class="clr-example">
   <clr-tree [clrLazy]="true">
-    <clr-tree-node
-      *clrRecursiveFor="let node of tree.root; getChildren: synchronousChildren"
-      [clrSelected]="tree.isSelected(node)"
-      (clrSelectedChange)="tree.select(node, $event)"
-    >
-      {{node}}
-    </clr-tree-node>
+    <clr-tree-node *clrRecursiveFor="let node of tree.root; getChildren: synchronousChildren"> {{node}} </clr-tree-node>
   </clr-tree>
 </div>
 
-<h4>Asynchronous, pre-loading 1 level ahead</h4>
+<!-- <h4>Asynchronous, pre-loading 1 level ahead</h4>
 <p>Selected: {{asyncTree.selected.join(', ')}}</p>
 <div class="clr-example">
   <clr-tree [clrLazy]="true">
@@ -46,4 +40,4 @@
       {{node}}
     </clr-tree-node>
   </clr-tree>
-</div>
+</div> -->

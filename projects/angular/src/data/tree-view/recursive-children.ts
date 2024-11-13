@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Optional } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
@@ -26,6 +26,7 @@ import { TreeFeaturesService } from './tree-features.service';
   host: {
     '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
  * Internal component, do not export!

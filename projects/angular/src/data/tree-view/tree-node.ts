@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
+//import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -27,7 +28,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { Keys } from '../../utils/enums/keys.enum';
@@ -52,18 +53,19 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   selector: 'clr-tree-node',
   templateUrl: './tree-node.html',
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
-  animations: [
-    trigger('toggleChildrenAnim', [
-      transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-      transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-      state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed', style({ height: 0 })),
-    ]),
-  ],
+  // animations: [
+  //   trigger('toggleChildrenAnim', [
+  //     transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
+  //     transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
+  //     state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
+  //     state('collapsed', style({ height: 0 })),
+  //   ]),
+  // ],
   host: {
     '[class.clr-tree-node]': 'true',
     '[class.disabled]': 'this._model.disabled',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.
@@ -184,38 +186,38 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }
 
-  private get isParent() {
-    return this._model.children && this._model.children.length > 0;
+  private get hasChildren() {
+    return this._model.hasChildren;
   }
 
   ngOnInit() {
     this._model.expanded = this.expanded;
     this._model.disabled = this.disabled;
-    this.subscriptions.push(
-      this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
-        this.selectedChange.emit(value);
-      })
-    );
+    // this.subscriptions.push(
+    //   this._model.selected.pipe(filter(() => !this.skipEmitChange)).subscribe(value => {
+    //     this.selectedChange.emit(value);
+    //   })
+    // );
     this.subscriptions.push(
       this.expandService.expandChange.subscribe(value => {
-        this.expandedChange.emit(value);
+        //this.expandedChange.emit(value);
         this._model.expanded = value;
       })
     );
-    this.subscriptions.push(
-      this.focusManager.focusRequest.subscribe(nodeId => {
-        if (this.nodeId === nodeId) {
-          this.focusTreeNode();
-        }
-      }),
-      this.focusManager.focusChange.subscribe(nodeId => {
-        this.checkTabIndex(nodeId);
-      })
-    );
+    // this.subscriptions.push(
+    //   this.focusManager.focusRequest.subscribe(nodeId => {
+    //     if (this.nodeId === nodeId) {
+    //       this.focusTreeNode();
+    //     }
+    //   }),
+    //   this.focusManager.focusChange.subscribe(nodeId => {
+    //     this.checkTabIndex(nodeId);
+    //   })
+    // );
 
-    this.subscriptions.push(
-      this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
-    );
+    // this.subscriptions.push(
+    //   this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
+    // );
   }
 
   ngAfterContentInit() {
@@ -243,7 +245,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     if (typeof this.expandable !== 'undefined') {
       return this.expandable;
     }
-    return !!this.expandService.expandable || this.isParent;
+    return !!this.expandService.expandable || this.hasChildren;
   }
 
   isSelectable() {
@@ -344,7 +346,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
     if (this.expanded) {
       // if the node is already expanded and has children, focus its very first child
-      if (this.isParent) {
+      if (this.hasChildren) {
         this.focusManager.focusNodeBelow(this._model);
       }
     } else {

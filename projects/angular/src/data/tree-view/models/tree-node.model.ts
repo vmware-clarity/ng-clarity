@@ -18,6 +18,14 @@ export abstract class TreeNodeModel<T> {
   selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
 
   /*
+   * Values:
+   *   0 -> unselected
+   *   2 * children.length -> selected
+   *   anything in between -> indeterminate
+   */
+  childSelectionCounter = 0;
+
+  /*
    * Being able to push this down to the RecursiveTreeNodeModel would require too much work on the angular components
    * right now for them to know which kind of model they are using. So I'm lifting the public properties to this
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
@@ -51,6 +59,10 @@ export abstract class TreeNodeModel<T> {
     this._disabled = value;
   }
 
+  get hasChildren() {
+    return this.children && this.children.length > 0;
+  }
+
   destroy() {
     // Just to be safe
     this.selected.complete();
@@ -61,16 +73,21 @@ export abstract class TreeNodeModel<T> {
     if (state === this.selected.value) {
       return;
     }
+    const oldState = this.selected.value;
     this.selected.next(state);
     if (propagateDown && state !== ClrSelectedState.INDETERMINATE && this.children) {
+      this.childSelectionCounter = 0;
       this.children.forEach(child => {
         if (!child.disabled) {
+          if (state === ClrSelectedState.SELECTED) {
+            this.childSelectionCounter += 2;
+          }
           child.setSelected(state, false, true);
         }
       });
     }
     if (propagateUp && this.parent) {
-      this.parent._updateSelectionFromChildren();
+      this.parent.setSelectionFromChild(this.selected.value, oldState);
     }
   }
 
@@ -87,53 +104,110 @@ export abstract class TreeNodeModel<T> {
     this.setSelected(newState, true, propagate);
   }
 
-  /*
-   * Internal, but needs to be called by other nodes
-   */
-  _updateSelectionFromChildren() {
-    const newState = this.computeSelectionStateFromChildren();
-    if (newState === this.selected.value) {
+  private setSelectionFromChild(newChildState: ClrSelectedState, oldChildState: ClrSelectedState) {
+    /**
+     * selected     + selected     => selected - stop
+     * selected     + unselected   => calc
+     * selected     + indeterminate => indeterminate
+     * unselected   + selected     => calc
+     * unselected   + unselected   => unselected - stop
+     * unselected   + indeterminate => indeterminate
+     * indeterminate + selected     => calc
+     * indeterminate + unselected   => calc
+     * indeterminate + indeterminate => indeterminate - stop
+     *
+     */
+
+    if (this.selected.value === newChildState) {
       return;
     }
-    this.selected.next(newState);
+
+    const oldState = this.selected.value;
+
+    /*
+     * Between SELECTED and UNSELECTED - add or subtract 2
+     * Between INDETERMINIATE and any other - add or subtract 1
+     */
+    if (newChildState === ClrSelectedState.SELECTED) {
+      if (oldChildState === ClrSelectedState.INDETERMINATE) {
+        this.childSelectionCounter++;
+      } else if (oldChildState === ClrSelectedState.UNSELECTED) {
+        this.childSelectionCounter += 2;
+      }
+    } else if (newChildState === ClrSelectedState.UNSELECTED) {
+      if (oldChildState === ClrSelectedState.INDETERMINATE) {
+        this.childSelectionCounter--;
+      } else if (oldChildState === ClrSelectedState.SELECTED) {
+        this.childSelectionCounter -= 2;
+      }
+    } else {
+      // INDETERMINATE
+      if (oldChildState === ClrSelectedState.SELECTED) {
+        this.childSelectionCounter--;
+      } else if (oldChildState === ClrSelectedState.UNSELECTED) {
+        this.childSelectionCounter++;
+      }
+    }
+
+    if (newChildState === ClrSelectedState.INDETERMINATE) {
+      this.selected.next(ClrSelectedState.INDETERMINATE);
+      this.parent?.setSelectionFromChild(ClrSelectedState.INDETERMINATE, oldState);
+      return;
+    }
+    switch (this.childSelectionCounter) {
+      case 0:
+        if (this.selected.value !== ClrSelectedState.UNSELECTED) {
+          this.selected.next(ClrSelectedState.UNSELECTED);
+        }
+        break;
+      case 2 * this.children.length:
+        if (this.selected.value !== ClrSelectedState.SELECTED) {
+          this.selected.next(ClrSelectedState.SELECTED);
+        }
+        break;
+      default:
+        if (this.selected.value !== ClrSelectedState.INDETERMINATE) {
+          this.selected.next(ClrSelectedState.INDETERMINATE);
+        }
+    }
     if (this.parent) {
-      this.parent._updateSelectionFromChildren();
+      this.parent.setSelectionFromChild(this.selected.value, oldState);
     }
   }
 
-  private computeSelectionStateFromChildren() {
-    let oneSelected = false;
-    let oneUnselected = false;
-    // Using a good old for loop to exit as soon as we can tell, for better performance on large trees.
-    for (const child of this.children) {
-      switch (child.selected.value) {
-        case ClrSelectedState.INDETERMINATE:
-          if (child.disabled) {
-            continue;
-          }
-          return ClrSelectedState.INDETERMINATE;
-        case ClrSelectedState.SELECTED:
-          oneSelected = true;
-          if (oneUnselected) {
-            return ClrSelectedState.INDETERMINATE;
-          }
-          break;
-        case ClrSelectedState.UNSELECTED:
-        default:
-          // Default is the same as unselected, in case an undefined somehow made it all the way here.
-          oneUnselected = true;
-          if (oneSelected) {
-            return ClrSelectedState.INDETERMINATE;
-          }
-          break;
-      }
-    }
-    if (!oneSelected) {
-      return ClrSelectedState.UNSELECTED;
-    } else if (!oneUnselected) {
-      return ClrSelectedState.SELECTED;
-    } else {
-      return ClrSelectedState.UNSELECTED;
-    }
-  }
+  // private computeSelectionStateFromChildren() {
+  //   let oneSelected = false;
+  //   let oneUnselected = false;
+  //   // Using a good old for loop to exit as soon as we can tell, for better performance on large trees.
+  //   for (const child of this.children) {
+  //     switch (child.selected.value) {
+  //       case ClrSelectedState.INDETERMINATE:
+  //         if (child.disabled) {
+  //           continue;
+  //         }
+  //         return ClrSelectedState.INDETERMINATE;
+  //       case ClrSelectedState.SELECTED:
+  //         oneSelected = true;
+  //         if (oneUnselected) {
+  //           return ClrSelectedState.INDETERMINATE;
+  //         }
+  //         break;
+  //       case ClrSelectedState.UNSELECTED:
+  //       default:
+  //         // Default is the same as unselected, in case an undefined somehow made it all the way here.
+  //         oneUnselected = true;
+  //         if (oneSelected) {
+  //           return ClrSelectedState.INDETERMINATE;
+  //         }
+  //         break;
+  //     }
+  //   }
+  //   if (!oneSelected) {
+  //     return ClrSelectedState.UNSELECTED;
+  //   } else if (!oneUnselected) {
+  //     return ClrSelectedState.SELECTED;
+  //   } else {
+  //     return ClrSelectedState.UNSELECTED;
+  //   }
+  // }
 }

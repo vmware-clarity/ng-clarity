@@ -12,7 +12,6 @@
   tabindex="-1"
   [class.clr-form-control-disabled]="disabled"
   [attr.aria-disabled]="disabled"
-  [attr.aria-expanded]="isExpandable() ? expanded : null"
   [attr.aria-selected]="ariaSelected"
   (keydown)="onKeyDown($event)"
   (focus)="broadcastFocusOnContainer()"
@@ -71,7 +70,7 @@
 </div>
 <div
   class="clr-treenode-children"
-  [@toggleChildrenAnim]="expandService.expanded ? 'expanded' : 'collapsed'"
+  *ngIf="expandService.expanded"
   [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
 >
   <ng-content select="clr-tree-node"></ng-content>
