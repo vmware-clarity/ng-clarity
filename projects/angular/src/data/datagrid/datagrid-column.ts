@@ -99,7 +99,6 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
   @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
-  @Input('clrDgSortDisableUnsort') clrDgSortDisableUnsort = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
@@ -355,7 +354,7 @@ export class ClrDatagridColumn<T = any>
       return;
     }
 
-    if (!this.clrDgSortDisableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+    if (reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
       this._sortOrder = ClrDatagridSortOrder.UNSORTED;
       this._sort.clear();
       this._sortDirection = null;
