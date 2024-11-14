@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
 
@@ -29,7 +30,7 @@ export default function (): void {
       let computeStateSpy: jasmine.Spy;
       let columnsService: ColumnsService;
 
-      beforeEach(function () {
+      beforeEach(fakeAsync(function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         context = this.createWithOverrideDirective(
           DatagridMainRenderer,
@@ -41,7 +42,10 @@ export default function (): void {
         organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
         computeStateSpy = spyOn(DatagridHeaderRenderer.prototype, 'getColumnWidthState');
         columnsService = context.getClarityProvider(ColumnsService);
-      });
+
+        context.detectChanges();
+        tick();
+      }));
 
       it('triggers the render process on initialization', function () {
         expect(resizeSpy.calls.count()).toBe(1);
@@ -99,37 +103,45 @@ export default function (): void {
       let context: TestContext<DatagridMainRenderer, DynamicTest>;
       let resizeSpy, rowsSpy: jasmine.Spy;
 
-      beforeEach(function () {
+      beforeEach(fakeAsync(function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
-        rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setColumnState');
+        rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
         context = this.create(DatagridMainRenderer, DynamicTest);
-      });
 
-      it('does not trigger the render process until the rows are loaded', function () {
+        context.detectChanges();
+        tick();
+      }));
+
+      it('does not trigger the render process until the rows are loaded', fakeAsync(function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
-      });
+      }));
 
-      it('ignores columns changes until the rows are loaded', function () {
+      it('ignores columns changes until the rows are loaded', fakeAsync(function () {
         context.testComponent.secondColumn = false;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.projected = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
         context.testComponent.secondColumn = true;
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(2);
-      });
+      }));
 
-      it('triggers the render process if the rows are given through *clrDgItems', function () {
+      it('triggers the render process if the rows are given through *clrDgItems', fakeAsync(function () {
         expect(resizeSpy.calls.count()).toBe(0);
         context.testComponent.clrDgItems = [1];
         context.detectChanges();
+        tick();
         expect(resizeSpy.calls.count()).toBe(1);
-      });
+      }));
 
       it('tracks changes of cells', function () {
         context.testComponent.clrDgItems = [0, 1, 2];
@@ -379,10 +391,10 @@ class RenderWidthTest {
   hasActions = false;
   selected: any[] = [];
   singleSelect;
-  @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef;
-  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef;
-  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef;
-  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef;
+  @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef<HTMLElement>;
+  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef<HTMLElement>;
+  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef<HTMLElement>;
+  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef<HTMLElement>;
 }
 
 @Component({

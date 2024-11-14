@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -16,7 +17,12 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   selector: 'clr-signpost',
   template: `
     <ng-container *ngIf="!useCustomTrigger">
-      <button type="button" class="signpost-action btn btn-sm btn-icon btn-link" clrSignpostTrigger>
+      <button
+        type="button"
+        class="signpost-action btn btn-sm btn-icon btn-link"
+        clrSignpostTrigger
+        [attr.aria-label]="commonStrings.keys.signpostToggle"
+      >
         <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
       </button>
     </ng-container>

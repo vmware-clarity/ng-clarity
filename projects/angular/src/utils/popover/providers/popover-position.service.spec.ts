@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -22,7 +23,7 @@ import { ClrPopoverToggleService } from './popover-toggle.service';
   providers: [ClrPopoverEventsService, ClrPopoverPositionService, ClrPopoverToggleService],
 })
 class TestHost {
-  @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;
 }
 
 interface TestContext {
@@ -393,6 +394,28 @@ export default function (): void {
           expect(handleHorizontalAxisOneViolationSpy).not.toHaveBeenCalled();
           expect(handleVerticalAxisTwoViolationsSpy).not.toHaveBeenCalled();
           expect(handleHorizontalAxisTwoViolationsSpy.calls.count()).toEqual(1);
+        });
+
+        it('content is rendered within the the body (y >= 0) when AXIS is HORIZONTAL and there is a BOTTOM ViewportViolation', function (this: TestContext) {
+          const bottomLeftViolation: ClrPopoverPosition = {
+            axis: ClrAxis.VERTICAL,
+            side: ClrSide.AFTER,
+            anchor: ClrAlignment.END,
+            content: ClrAlignment.START,
+          };
+
+          // Set the popover content to be as big as the window
+          popoverContent.style.width = '25px';
+          popoverContent.style.height = window.innerHeight + 'px';
+          // Set the anchor element to render at the bottom of the body/window
+          this.eventService.anchorButtonRef.nativeElement.style.bottom = '100%';
+          this.eventService.anchorButtonRef.nativeElement.style.position = 'absolute';
+          this.positionService.position = bottomLeftViolation;
+          document.body.appendChild(popoverContent);
+          const result = this.positionService.alignContent(popoverContent);
+
+          // Verify the yOffset is not a negative value (on the view this would translate to a negative top value).
+          expect(result.yOffset).toBeGreaterThanOrEqual(0);
         });
       });
 

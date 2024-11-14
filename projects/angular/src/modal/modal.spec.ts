@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -16,6 +17,7 @@ import { ClrModalModule } from './modal.module';
 
 @Component({
   template: `
+    <button class="btn to-focus"></button>
     <clr-modal
       [(clrModalOpen)]="opened"
       [clrModalClosable]="closable"
@@ -28,7 +30,7 @@ import { ClrModalModule } from './modal.module';
         <p>Body</p>
       </div>
       <div class="modal-footer">
-        <button (click)="opened = false">Footer</button>
+        <button class="btn" (click)="opened = false">Footer</button>
       </div>
     </clr-modal>
   `,
@@ -180,7 +182,7 @@ describe('Modal', () => {
   }));
 
   it('focuses on the title when opened', fakeAsync(() => {
-    expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('.modal-title-wrapper'));
   }));
 
   it('supports a clrModalSize option', fakeAsync(() => {
@@ -198,6 +200,12 @@ describe('Modal', () => {
 
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).not.toBeNull();
+
+    fixture.componentInstance.size = 'full-screen';
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-lg')).toBeNull();
+    expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
   }));
 
   it('supports a clrModalClosable option', fakeAsync(() => {
@@ -251,6 +259,27 @@ describe('Modal', () => {
     flushAndExpectOpen(fixture, false);
   }));
 
+  it('focus trap remain active after clicking on backdrop', fakeAsync(() => {
+    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
+    const titleWrapperElement: HTMLElement = compiled.querySelector('div.modal-title-wrapper');
+    const focusStealButton: HTMLElement = compiled.querySelector('button.btn.to-focus');
+
+    fixture.componentInstance.staticBackdrop = true;
+    fixture.detectChanges();
+
+    // Just make sure we have the "x" to close the modal,
+    // because this is different from the clrModalClosable option.
+    expect(compiled.querySelector('.close')).not.toBeNull();
+    expect(document.activeElement).toBe(titleWrapperElement);
+
+    focusStealButton.focus();
+    expect(document.activeElement).toBe(focusStealButton);
+
+    backdrop.click();
+    flushAndExpectOpen(fixture, true);
+    expect(document.activeElement).toBe(titleWrapperElement);
+  }));
+
   it('traps user focus', () => {
     fixture.detectChanges();
     const focusTrap = fixture.debugElement.query(By.directive(CdkTrapFocusModule_CdkTrapFocus));
@@ -269,10 +298,29 @@ describe('Modal', () => {
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
 
-  it('should add expected aria-labelledby', () => {
-    // open modal
+  it('should use modal id for aria-labelledby by default', () => {
     modal.open();
     fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
+  });
+
+  it('should allow a custom aria-labelledby attribute value', () => {
+    modal.labelledBy = 'custom-id';
+
+    modal.open();
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');
+  });
+
+  it('should fall back to the modal id for the aria-labelledby attribute value', () => {
+    // set to a falsy value
+    modal.labelledBy = '';
+
+    modal.open();
+    fixture.detectChanges();
+
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 

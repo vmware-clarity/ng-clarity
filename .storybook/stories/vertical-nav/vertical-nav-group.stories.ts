@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -8,10 +9,9 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNavGroup, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -22,42 +22,15 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const defaultStory: Story = args => ({
-  template: `
-    <div class="main-container">
-      <div class="content-container">
-        <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-          <clr-vertical-nav-group
-            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-          >
-            <cds-icon *ngIf="includeIcons" shape="bars" clrVerticalNavIcon></cds-icon>
-            Menu
-            <clr-vertical-nav-group-children>
-              <a *ngFor="let navLink of navLinks; let index = index"
-                clrVerticalNavLink
-                [ngClass]="{ 'active': index == activeIndex }"
-                href="javascript:void(0)"
-                (click)="activeIndex = index"
-              >
-                <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-                {{navLink.text}}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-        </clr-vertical-nav>
-      </div>
-    </div>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Vertical Nav/Vertical Nav Group',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
   component: ClrVerticalNavGroup,
   argTypes: {
-    // inputs
-    clrVerticalNavGroupExpanded: { defaultValue: false, control: { type: 'boolean' } },
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     // methods
@@ -69,6 +42,8 @@ const defaultParameters: Parameters = {
     navLinks: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrVerticalNavGroupExpanded: false,
     // outputs
     clrVerticalNavGroupExpandedChange: action('clrVerticalNavGroupExpandedChange'),
     // story helpers
@@ -78,23 +53,65 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrVerticalNavGroupExpanded: false,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavGroupExpanded: true,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavGroupExpanded: false,
-    includeIcons: false,
-  },
-  {
-    clrVerticalNavGroupExpanded: true,
-    includeIcons: false,
-  },
-];
+const NavGroupTemplate: StoryFn = args => ({
+  template: `
+    <div class="main-container">
+      <div class="content-container">
+        <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+          <clr-vertical-nav-group
+            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+          >
+            <cds-icon *ngIf="includeIcons" shape="bars" clrVerticalNavIcon></cds-icon>
+            Menu
+            <clr-vertical-nav-group-children>
+              <a
+                *ngFor="let navLink of navLinks; let index = index"
+                clrVerticalNavLink
+                [ngClass]="{ active: index == activeIndex }"
+                href="javascript:void(0)"
+                (click)="activeIndex = index"
+              >
+                <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                {{ navLink.text }}
+              </a>
+            </clr-vertical-nav-group-children>
+          </clr-vertical-nav-group>
+        </clr-vertical-nav>
+      </div>
+    </div>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);
+export const NavGroupCollapsedWithIcons: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: false,
+    includeIcons: true,
+  },
+};
+
+export const NavGroupExpandedWithIcons: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: true,
+    includeIcons: true,
+  },
+};
+
+export const BasicNavGroupCollapsed: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: false,
+    includeIcons: false,
+  },
+};
+
+export const BasicNavGroupExpanded: StoryObj = {
+  render: NavGroupTemplate,
+  args: {
+    clrVerticalNavGroupExpanded: true,
+    includeIcons: false,
+  },
+};

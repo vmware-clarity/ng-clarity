@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -11,6 +12,7 @@ import { ClrStepperPanel } from './stepper-panel';
 
 export enum ClrStepButtonType {
   Next = 'next',
+  Previous = 'previous',
   Submit = 'submit',
 }
 
@@ -24,16 +26,23 @@ export enum ClrStepButtonType {
 })
 export class ClrStepButton implements OnInit {
   @Input('clrStepButton') type: ClrStepButtonType | string = ClrStepButtonType.Next;
-  @HostBinding('class.btn-primary') submitButton = false;
+  @HostBinding('class.btn-success') submitButton = false;
+  @HostBinding('class.btn-link') previousButton = false;
 
   constructor(private clrStep: ClrStepperPanel, private stepperService: StepperService) {}
 
   ngOnInit() {
     this.submitButton = this.type === ClrStepButtonType.Submit;
+    this.previousButton = this.type === ClrStepButtonType.Previous;
   }
 
   @HostListener('click')
   navigateToNextPanel() {
+    if (this.previousButton) {
+      this.stepperService.navigateToPreviousPanel(this.clrStep.id);
+      return;
+    }
+
     this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
   }
 }

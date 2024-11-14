@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -15,7 +16,6 @@ export const cdsThemeAttribute = 'cds-theme';
     <clr-select-container>
       <label>Cds Theme</label>
       <select #cdsThemeSelectElement clrSelect [value]="theme" (change)="applyTheme(cdsThemeSelectElement.value)">
-        <option value="">None</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>
@@ -23,12 +23,12 @@ export const cdsThemeAttribute = 'cds-theme';
   `,
 })
 export class CdsThemeSelectComponent implements OnInit, OnDestroy {
-  theme = '';
+  theme = 'light';
 
   constructor(private readonly router: Router) {}
 
   ngOnInit() {
-    this.applyTheme(getCdsThemeFromQueryString());
+    this.applyTheme(getCdsThemeFromQueryString() || this.theme);
   }
 
   ngOnDestroy() {

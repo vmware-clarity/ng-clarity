@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -24,10 +25,10 @@ export class IfControlStateService implements OnDestroy {
   // Implement our own status changes observable, since Angular controls don't
   private _statusChanges = new BehaviorSubject(CONTROL_STATE.NONE);
 
-  constructor(private ngControlService: NgControlService) {
+  constructor(ngControlService: NgControlService) {
     // Wait for the control to be available
     this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
+      ngControlService.controlChanges.subscribe(control => {
         if (control) {
           this.control = control;
           // Subscribe to the status change events, only after touched

@@ -1,23 +1,40 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
 })
 export class StepperDemo {
-  stepOpen = true;
   showSecondStep = true;
-  initialStep = 'contact';
+  initialStep = 'name';
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+
+  #fb = inject(FormBuilder);
+  expanded = false;
+  formGroup = this.#fb.group({
+    group: this.#fb.group({
+      step: new FormControl(null, Validators.required),
+    }),
+  });
+
+  @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
+
+  stepsExpandedState = {
+    name: false,
+    contact: false,
+    password: false,
+  };
+  loading = false;
 
   submit() {
     console.log('reactive form submit', this.form.value);
@@ -35,10 +52,18 @@ export class StepperDemo {
     console.log('value', value);
   }
 
+  changeStep() {
+    this.loading = true;
+    setTimeout(() => {
+      this.initialStep = 'contact';
+      this.loading = false;
+    }, 400);
+  }
+
   private getReactiveForm() {
     return new FormGroup({
       name: new FormGroup({
-        first: new FormControl('Luke', Validators.required),
+        first: new FormControl('', Validators.minLength(4)),
         last: new FormControl('Skywalker', Validators.required),
       }),
       contact: new FormGroup({

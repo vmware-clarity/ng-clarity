@@ -1,42 +1,44 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-stack-view>
-      <clr-stack-block
-        *ngFor="let _ of createArray(blockCount); let i = index"
-        [clrSbExpanded]="!!openIndices[i]"
-      >
-        <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
-        <clr-stack-content>{{ content }}</clr-stack-content>
-        <clr-stack-block>
-          <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
-          <clr-stack-content>{{ subContent }}</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
-    </clr-stack-view>
-  `,
-  props: { ...args },
-});
+const STACK_VIEW_STATES = [
+  {
+    openIndices: [true],
+  },
+  {
+    openIndices: [false, false, false, true],
+  },
+  {
+    openIndices: [false, true, true, false],
+  },
+  {
+    openIndices: [true, true, true, true],
+  },
+];
 
-const defaultParameters: Parameters = {
+export default {
   title: 'Stack View/Stack View',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStackViewModule],
+    }),
+  ],
   component: ClrStackView,
   argTypes: {
     // story helpers
     openIndices: { control: { disable: true }, table: { disable: true } },
     createArray: { control: { disable: true }, table: { disable: true } },
     blockCount: { control: { type: 'number', min: 1, max: 100 } },
+    STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
   },
   args: {
     // story helpers
@@ -47,30 +49,58 @@ const defaultParameters: Parameters = {
     content: 'Block content',
     subLabel: 'Sub-block',
     subContent: 'Sub-block content',
+    STACK_VIEW_STATES,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    blockCount: 4,
-    openIndices: [],
-  },
-  {
-    blockCount: 4,
-    openIndices: [true],
-  },
-  {
-    blockCount: 4,
-    openIndices: [false, false, false, true],
-  },
-  {
-    blockCount: 4,
-    openIndices: [false, true, true, false],
-  },
-  {
-    blockCount: 4,
-    openIndices: [true, true, true, true],
-  },
-];
+const StackViewTemplate: StoryFn = args => ({
+  template: `
+    <clr-stack-view>
+      <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
+        <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+        <clr-stack-content>{{ content }}</clr-stack-content>
+        <clr-stack-block>
+          <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+          <clr-stack-content>{{ subContent }}</clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+    </clr-stack-view>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrStackViewModule, defaultStory, defaultParameters, variants);
+const StackViewAllTemplate: StoryFn = args => ({
+  template: `
+    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top: 20px">
+      <clr-stack-view>
+        <clr-stack-block
+          *ngFor="let _ of createArray(blockCount); let i = index"
+          [clrSbExpanded]="!!state.openIndices[i]"
+        >
+          <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+          <clr-stack-content>{{ content }}</clr-stack-content>
+          <clr-stack-block>
+            <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+            <clr-stack-content>{{ subContent }}</clr-stack-content>
+          </clr-stack-block>
+        </clr-stack-block>
+      </clr-stack-view>
+    </div>
+  `,
+  props: args,
+});
+
+export const StackView: StoryObj = {
+  render: StackViewTemplate,
+};
+
+export const StackViewShowcase: StoryObj = {
+  render: StackViewAllTemplate,
+  args: {
+    blockCount: 4,
+  },
+  parameters: {
+    actions: { disable: true },
+    controls: { disable: true },
+  },
+};

@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, Injectable, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -43,16 +44,10 @@ export default function () {
     let controlClassService: ControlClassService;
     let datepickerFocusService: DatepickerFocusService;
     let ifControlStateService: IfControlStateService;
-    const setControlSpy = jasmine.createSpy();
-
-    @Injectable()
-    class MockNgControlService extends NgControlService {
-      setControl = setControlSpy;
-    }
 
     const DATEPICKER_PROVIDERS: any[] = [
       ControlClassService,
-      { provide: NgControlService, useClass: MockNgControlService },
+      NgControlService,
       NgControl,
       LayoutService,
       IfControlStateService,
@@ -104,10 +99,6 @@ export default function () {
         it('should capture any classes set on the control', () => {
           expect(controlClassService).toBeTruthy();
           expect(controlClassService.className).toContain('test-class');
-        });
-
-        it('should set the control on NgControlService', () => {
-          expect(setControlSpy).toHaveBeenCalled();
         });
 
         it('should handle focus and blur events', () => {
@@ -363,15 +354,23 @@ export default function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
+          providers: [NgControlService],
           declarations: [TestComponentWithNgModel],
         });
 
+        spyOn(TestBed.inject(NgControlService), 'setControl');
+
         fixture = TestBed.createComponent(TestComponentWithNgModel);
         fixture.detectChanges();
+
         dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
         dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
         dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
       });
+
+      it('should set control on NgControlService', fakeAsync(() => {
+        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+      }));
 
       it('updates the selectedDay when the app changes the ngModel value', fakeAsync(() => {
         fixture.componentInstance.dateValue = '01/02/2015';
@@ -479,16 +478,24 @@ export default function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [ReactiveFormsModule, ClrFormsModule],
+          providers: [NgControlService],
           declarations: [TestComponentWithReactiveForms],
         });
 
+        spyOn(TestBed.inject(NgControlService), 'setControl');
+
         fixture = TestBed.createComponent(TestComponentWithReactiveForms);
         fixture.detectChanges();
+
         dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
         dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
         dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
         dateFormControlService = dateContainerDebugElement.injector.get(DateFormControlService);
       });
+
+      it('should set control on NgControlService', fakeAsync(() => {
+        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+      }));
 
       it('initializes the input and the selected day with the value set by the user', () => {
         expect(fixture.componentInstance.testForm.get('date').value).not.toBeNull();
@@ -558,8 +565,12 @@ export default function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
+          providers: [NgControlService],
           declarations: [TestComponentWithTemplateDrivenForms],
         });
+
+        spyOn(TestBed.inject(NgControlService), 'setControl');
+
         fixture = TestBed.createComponent(TestComponentWithTemplateDrivenForms);
         fixture.detectChanges();
 
@@ -567,30 +578,30 @@ export default function () {
         dateFormControlService = dateContainerDebugElement.injector.get(DateFormControlService);
       });
 
-      it('marks the form as touched when the markAsTouched event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').touched).toBe(false);
+      it('should set control on NgControlService', fakeAsync(() => {
+        expect(TestBed.inject(NgControlService).setControl).toHaveBeenCalled();
+      }));
 
-          dateFormControlService.markAsTouched();
+      it('marks the form as touched when the markAsTouched event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').touched).toBe(false);
 
-          fixture.detectChanges();
-          expect(form.get('date').touched).toBe(true);
-          done();
-        });
+        dateFormControlService.markAsTouched();
+
+        fixture.detectChanges();
+        expect(form.get('date').touched).toBe(true);
       });
 
-      it('marks the form as dirty when the markAsDirty event is received', done => {
-        fixture.whenStable().then(() => {
-          const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').dirty).toBe(false);
+      it('marks the form as dirty when the markAsDirty event is received', async () => {
+        await fixture.whenStable();
+        const form = fixture.componentInstance.templateForm.form;
+        expect(form.get('date').dirty).toBe(false);
 
-          dateFormControlService.markAsDirty();
+        dateFormControlService.markAsDirty();
 
-          fixture.detectChanges();
-          expect(form.get('date').dirty).toBe(true);
-          done();
-        });
+        fixture.detectChanges();
+        expect(form.get('date').dirty).toBe(true);
       });
 
       it('outputs the date when the user manually changes the date', () => {
@@ -626,15 +637,23 @@ export default function () {
       beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
+          providers: [NgControlService],
           declarations: [TestComponentWithClrDate],
         });
 
+        spyOn(TestBed.inject(NgControlService), 'setControl');
+
         fixture = TestBed.createComponent(TestComponentWithClrDate);
         fixture.detectChanges();
+
         dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
         dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
         dateNavigationService = dateContainerDebugElement.injector.get(DateNavigationService);
       });
+
+      it('should not set control on NgControlService', fakeAsync(() => {
+        expect(TestBed.inject(NgControlService).setControl).not.toHaveBeenCalled();
+      }));
 
       it('when disabled is true there must be attribute attached to the input', () => {
         fixture.componentInstance.disabled = true;

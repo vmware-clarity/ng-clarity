@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -25,7 +26,6 @@ import { IfExpandService } from '../utils/conditional/if-expanded.service';
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ClrAccordionDescription } from './accordion-description';
-import { AccordionStatus } from './enums/accordion-status.enum';
 import { AccordionPanelModel } from './models/accordion.model';
 import { AccordionService } from './providers/accordion.service';
 import { panelAnimation } from './utils/animation';
@@ -46,9 +46,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  readonly AccordionStatus = AccordionStatus;
-
-  isAccordion = true;
   panel: Observable<AccordionPanelModel>;
 
   private _id = uniqueIdFactory();
@@ -109,6 +106,14 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
 
   getAccordionHeaderId(id: string) {
     return `clr-accordion-header-${id}`;
+  }
+
+  protected stepCompleteText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+  }
+
+  protected stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
   private emitPanelChange(panel: AccordionPanelModel) {

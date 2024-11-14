@@ -1,45 +1,31 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
 import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tree>
-      <clr-tree-node
-        [clrExpandable]="clrExpandable"
-        [clrExpanded]="clrExpanded"
-        ${args.clrSelected === undefined ? '' : '[clrSelected]="clrSelected"'}
-        (clrExpandedChange)="clrExpandedChange($event)"
-        (clrSelectedChange)="clrSelectedChange($event)"
-      >
-        Files
-        ${getFileTreeNodeMarkup(filesRoot)}
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tree/Tree Node',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTreeViewModule],
+    }),
+  ],
   component: ClrTreeNode,
   argTypes: {
     // inputs
-    clrExpandable: { defaultValue: undefined, control: { type: 'boolean' } },
-    clrExpanded: { defaultValue: false, control: { type: 'boolean' } },
+    clrExpandable: { control: { type: 'boolean' } },
     clrSelected: {
-      defaultValue: 'not selectable',
-      control: { type: 'inline-radio', options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'] },
+      control: 'inline-radio',
+      options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
         'not selectable': undefined,
         UNSELECTED: ClrSelectedState.UNSELECTED,
@@ -58,25 +44,62 @@ const defaultParameters: Parameters = {
     onKeyDown: { control: { disable: true }, table: { disable: true } },
   },
   args: {
+    // inputs
+    clrDisabled: false,
+    clrExpandable: true,
+    clrExpanded: false,
+    clrSelected: 'not selectable',
     // outputs
     clrExpandedChange: action('clrExpandedChange'),
     clrSelectedChange: action('clrSelectedChange'),
   },
 };
 
-const variants: Parameters[] = [
-  // not selectable
-  { clrExpanded: false },
-  { clrExpanded: true },
-  // unselected
-  { clrExpanded: false, clrSelected: ClrSelectedState.UNSELECTED },
-  { clrExpanded: true, clrSelected: ClrSelectedState.UNSELECTED },
-  // indeterminate
-  { clrExpanded: false, clrSelected: ClrSelectedState.INDETERMINATE },
-  { clrExpanded: true, clrSelected: ClrSelectedState.INDETERMINATE },
-  // selected
-  { clrExpanded: false, clrSelected: ClrSelectedState.SELECTED },
-  { clrExpanded: true, clrSelected: ClrSelectedState.SELECTED },
-];
+const TreeViewNodeTemplate: StoryFn = args => ({
+  template: `
+    <clr-tree>
+      <clr-tree-node
+        [clrExpandable]="clrExpandable"
+        [clrExpanded]="clrExpanded"
+        [clrDisabled]="clrDisabled"
+        ${args.clrSelected === undefined ? '' : '[clrSelected]="clrSelected"'}
+        (clrExpandedChange)="clrExpandedChange($event)"
+        (clrSelectedChange)="clrSelectedChange($event)"
+      >
+        Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot, args) : ''}
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrTreeViewModule, defaultStory, defaultParameters, variants);
+export const TreeNode: StoryObj = {
+  render: TreeViewNodeTemplate,
+  args: {
+    clrExpanded: true,
+  },
+};
+
+export const CheckboxSelected: StoryObj = {
+  render: TreeViewNodeTemplate,
+  args: {
+    clrExpanded: true,
+    clrSelected: ClrSelectedState.SELECTED,
+  },
+};
+
+export const CheckboxIndeterminate: StoryObj = {
+  render: TreeViewNodeTemplate,
+  args: {
+    clrExpanded: true,
+    clrSelected: ClrSelectedState.INDETERMINATE,
+  },
+};
+
+export const CheckboxUnselected: StoryObj = {
+  render: TreeViewNodeTemplate,
+  args: {
+    clrExpanded: true,
+    clrSelected: ClrSelectedState.UNSELECTED,
+  },
+};

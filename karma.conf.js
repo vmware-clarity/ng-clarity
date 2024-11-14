@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -36,9 +37,17 @@ module.exports = function (config) {
       suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/ng-test'),
+      dir: require('path').join(__dirname, './coverage'),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }],
+      check: {
+        global: {
+          statements: 90,
+          branches: 83,
+          functions: 90,
+          lines: 90,
+        },
+      },
     },
     reporters: ['mocha'],
     port: 9876,

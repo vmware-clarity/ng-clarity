@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -35,13 +36,13 @@
   <div class="alert-items">
     <div class="alert-item static">
       <div class="alert-icon-wrapper">
-        <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+        <cds-icon class="alert-icon" shape="info-standard"></cds-icon>
       </div>
       <span class="alert-text">Why use an object instead of the function directly?</span>
     </div>
     <div class="alert-item static">
       <div class="alert-icon-wrapper">
-        <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+        <cds-icon class="alert-icon" shape="info-standard"></cds-icon>
       </div>
       <span>
         Using an object implementing an interface allows strong type-checking, which is safer for your application. If
@@ -51,7 +52,7 @@
     </div>
     <div class="alert-item static">
       <div class="alert-icon-wrapper">
-        <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+        <cds-icon class="alert-icon" shape="info-standard"></cds-icon>
       </div>
       <span>
         Admittedly, we could achieve strong typing by exporting a function signature instead of a whole interface, but
@@ -80,7 +81,7 @@
 <clr-datagrid>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'" [clrDgSortBy]="userCreationComparator">Creation date</clr-dg-column>
   <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator" [(clrDgSortOrder)]="sortOrder">
     Pokemon
   </clr-dg-column>

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -32,7 +33,7 @@ import { AccordionService } from './providers/accordion.service';
 })
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
-  @ContentChildren(ClrAccordionPanel, { descendants: true }) panels: QueryList<ClrAccordionPanel>;
+  @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
   subscriptions: Subscription[] = [];
 
   constructor(private accordionService: AccordionService) {}

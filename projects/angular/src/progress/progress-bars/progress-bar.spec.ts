@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -34,8 +35,7 @@ class TestDisplayValueComponent {}
       clrLabeled
       clrFade
       clrLoop
-      clrSuccess
-      clrDanger
+      clrColor="danger"
       clrFlash
       clrFlashDanger
       class="random"
@@ -100,13 +100,13 @@ describe('ClrProgressBar component', () => {
         clrProgressBar = fixture.debugElement.query(By.directive(ClrProgressBar)).nativeElement;
       });
 
-      it('should add classes based on attributes "labeled fade loop success danger flash flash-danger"', () => {
+      it('should add classes based on attributes "labeled fade loop danger flash flash-danger"', () => {
         const klasses = clrProgressBar
           .getAttribute('class')
           .split(' ')
           .sort((a, b) => (a > b ? 1 : -1))
           .join(' ');
-        expect(klasses).toContain('danger flash flash-danger labeled loop progress progress-fade random success');
+        expect(klasses).toContain('danger flash flash-danger labeled loop progress progress-fade random');
       });
 
       it('should be able to add custom class if needed', () => {

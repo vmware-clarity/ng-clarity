@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -22,6 +23,7 @@ import { GridNestingDemo } from './nesting/nesting';
 import { GridNoGuttersDemo } from './no-gutters/no-gutters';
 import { GridColumnOffsettingDemo } from './offsets/grid-column-offsetting';
 import { GridOrderingDemo } from './ordering/ordering';
+import { GridContainerDemo } from './overflow/grid-container';
 import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
 
 @NgModule({
@@ -41,6 +43,7 @@ import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
     GridColumnWrappingDemo,
     GridOrderingDemo,
     GridNestingDemo,
+    GridContainerDemo,
   ],
   exports: [
     GridDemo,

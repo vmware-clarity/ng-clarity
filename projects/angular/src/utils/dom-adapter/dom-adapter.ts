@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -14,10 +15,19 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DomAdapter {
+  /* 
+    We clone the element and take its measurements from outside the grid
+    so we don't trigger reflow for the whole datagrid.
+  */
   userDefinedWidth(element: HTMLElement): number {
-    element.classList.add('datagrid-cell-width-zero');
-    const userDefinedWidth = this.clientRect(element).width;
-    element.classList.remove('datagrid-cell-width-zero');
+    const clonedElement = element.cloneNode(true) as HTMLElement;
+    if (clonedElement.id) {
+      clonedElement.id = clonedElement.id + '-clone';
+    }
+    clonedElement.classList.add('datagrid-cell-width-zero');
+    document.body.appendChild(clonedElement);
+    const userDefinedWidth = this.clientRect(clonedElement).width;
+    clonedElement.remove();
     return userDefinedWidth;
   }
 

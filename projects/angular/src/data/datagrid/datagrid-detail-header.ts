@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { DetailService } from './providers/detail.service';
@@ -15,7 +16,7 @@ import { DetailService } from './providers/detail.service';
     '[class.datagrid-detail-header]': 'true',
   },
   template: `
-    <div class="datagrid-detail-header-title" cdkFocusInitial tabindex="-1" [id]="titleId">
+    <div #title class="datagrid-detail-header-title" tabindex="-1" [id]="titleId">
       <ng-content></ng-content>
     </div>
     <div class="datagrid-detail-pane-close">
@@ -30,10 +31,16 @@ import { DetailService } from './providers/detail.service';
     </div>
   `,
 })
-export class ClrDatagridDetailHeader {
+export class ClrDatagridDetailHeader implements AfterViewInit {
+  @ViewChild('title') title: ElementRef<HTMLElement>;
+
   constructor(public detailService: DetailService, public commonStrings: ClrCommonStringsService) {}
 
   get titleId() {
     return `${this.detailService.id}-title`;
+  }
+
+  ngAfterViewInit(): void {
+    this.title.nativeElement.focus();
   }
 }

@@ -1,10 +1,8 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
-@use '@cds/core/global.min.css'; // provides the Clarity Core design tokens
 @use '../../angular/src/main';
-@use './shim.cds-core.scss'; // the shim file
-@use '@cds/core/styles/theme.dark.min.css'; // dark theme
+@use './temp-overrides.scss';

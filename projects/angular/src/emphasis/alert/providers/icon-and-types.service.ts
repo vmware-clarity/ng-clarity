@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -12,7 +13,7 @@ import { ALERT_TYPES } from '../utils/alert-types';
 
 @Injectable()
 export class AlertIconAndTypesService {
-  private defaultIconShape = 'info-circle';
+  private defaultIconShape = 'info-standard';
   private _alertIconShape = '';
   private _alertType = 'info';
 
@@ -50,19 +51,34 @@ export class AlertIconAndTypesService {
 
     switch (type) {
       case 'warning':
-        returnObj.shape = 'exclamation-triangle';
+        returnObj.shape = 'warning-standard';
         returnObj.cssClass = 'alert-warning';
         returnObj.title = this.commonStrings.keys.warning;
         break;
       case 'danger':
-        returnObj.shape = 'exclamation-circle';
+        returnObj.shape = 'error-standard';
         returnObj.cssClass = 'alert-danger';
         returnObj.title = this.commonStrings.keys.danger;
         break;
       case 'success':
-        returnObj.shape = 'check-circle';
+        returnObj.shape = 'success-standard';
         returnObj.cssClass = 'alert-success';
         returnObj.title = this.commonStrings.keys.success;
+        break;
+      case 'neutral':
+        returnObj.shape = 'note';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.neutral;
+        break;
+      case 'unknown':
+        returnObj.shape = 'help';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.unknown;
+        break;
+      case 'loading':
+        returnObj.shape = 'loading';
+        returnObj.cssClass = 'alert-neutral';
+        returnObj.title = this.commonStrings.keys.unknown;
         break;
       default:
         returnObj.shape = this.defaultIconShape;

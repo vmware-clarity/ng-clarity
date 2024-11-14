@@ -1,10 +1,18 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { defineConfig, devices } from '@playwright/test';
+
+const browser = process.env['CLARITY_VRT_BROWSER'];
+
+const deviceMap = {
+  chromium: 'Desktop Chrome',
+  firefox: 'Desktop Firefox',
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -18,13 +26,13 @@ export default defineConfig({
   },
   fullyParallel: true,
   forbidOnly: true,
-  retries: 0,
+  retries: 2,
   workers: 3,
   reporter: 'html',
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: browser,
+      use: { ...devices[deviceMap[browser]] },
     },
   ],
   webServer: {

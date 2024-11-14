@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -9,9 +10,14 @@ import { AccordionModel } from '../../models/accordion.model';
 
 export class StepperModel extends AccordionModel {
   private stepperModelInitialize = false;
+  private initialPanel: string;
 
   get allPanelsCompleted(): boolean {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
+  }
+
+  get shouldOpenFirstPanel() {
+    return !this.initialPanel || (this._panels && Object.keys(this._panels).length && !this._panels[this.initialPanel]);
   }
 
   override addPanel(id: string, open = false) {
@@ -32,6 +38,10 @@ export class StepperModel extends AccordionModel {
     }
   }
 
+  navigateToPreviousPanel(currentPanelId: string) {
+    this.openPreviousPanel(this._panels[currentPanelId].id);
+  }
+
   navigateToNextPanel(currentPanelId: string, currentPanelValid = true) {
     if (currentPanelValid) {
       this.completePanel(currentPanelId);
@@ -42,6 +52,7 @@ export class StepperModel extends AccordionModel {
   }
 
   overrideInitialPanel(panelId: string) {
+    this.initialPanel = panelId;
     this.panels
       .filter(() => this._panels[panelId] !== undefined)
       .forEach(panel => {
@@ -53,6 +64,14 @@ export class StepperModel extends AccordionModel {
           this._panels[panel.id].open = false;
         }
       });
+  }
+
+  setPanelValid(panelId: string) {
+    this._panels[panelId].status = AccordionStatus.Complete;
+  }
+
+  setPanelInvalid(panelId: string) {
+    this._panels[panelId].status = AccordionStatus.Error;
   }
 
   setPanelsWithErrors(ids: string[]) {
@@ -70,6 +89,10 @@ export class StepperModel extends AccordionModel {
     return this.panels.find(s => s.index === this._panels[currentPanelId].index + 1);
   }
 
+  getPreviousPanel(currentPanelId: string) {
+    return this.panels.find(s => s.index === this._panels[currentPanelId].index - 1);
+  }
+
   private resetAllFuturePanels(panelId: string) {
     this.panels.filter(panel => panel.index >= this._panels[panelId].index).forEach(panel => this.resetPanel(panel.id));
   }
@@ -81,6 +104,9 @@ export class StepperModel extends AccordionModel {
   }
 
   private openFirstPanel() {
+    if (!this.shouldOpenFirstPanel) {
+      return;
+    }
     const firstPanel = this.getFirstPanel();
     /**
      * You need to call updatePanelOrder first to get the correct order,
@@ -109,6 +135,18 @@ export class StepperModel extends AccordionModel {
       this.resetAllFuturePanels(nextPanel.id);
       this._panels[nextPanel.id].open = true;
       this._panels[nextPanel.id].disabled = true;
+    }
+  }
+
+  private openPreviousPanel(currentPanelId: string) {
+    const prevPanel = this.getPreviousPanel(currentPanelId);
+
+    if (prevPanel) {
+      this._panels[currentPanelId].open = false;
+      this._panels[currentPanelId].disabled = false;
+
+      this._panels[prevPanel.id].open = true;
+      this._panels[prevPanel.id].disabled = true;
     }
   }
 

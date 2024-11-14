@@ -1,17 +1,34 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
-const story: Story = args => ({
+export default {
+  title: 'Modal/Nested Popover',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const NestedPopoverTemplate: StoryFn = args => ({
   template: `
     <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
 
@@ -36,18 +53,16 @@ const story: Story = args => ({
 
         <clr-combobox>
           <ng-container *clrOptionSelected="let selected">
-            {{selected}}
+            {{ selected }}
           </ng-container>
           <clr-options>
-            <clr-option *ngFor="let element of elements" [clrValue]="element.symbol">{{element.name}}</clr-option>
+            <clr-option *ngFor="let element of elements" [clrValue]="element.symbol">{{ element.name }}</clr-option>
           </clr-options>
         </clr-combobox>
         <br />
 
         <clr-signpost>
-          <clr-signpost-content>
-            This is a signpost.
-          </clr-signpost-content>
+          <clr-signpost-content>This is a signpost.</clr-signpost-content>
         </clr-signpost>
       </div>
       <div class="modal-footer">
@@ -55,19 +70,9 @@ const story: Story = args => ({
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const parameters: Parameters = {
-  title: 'Modal/Nested Popover',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const NestedPopover: StoryObj = {
+  render: NestedPopoverTemplate,
 };
-
-setupStorybook([ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule], story, parameters);

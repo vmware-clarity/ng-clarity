@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -18,6 +19,7 @@ import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribut
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;
   @Input('clrDisplayval') displayval: string;
+  @Input('clrColor') color: string;
 
   /*
    * No need to convert to `number` cause we could have
@@ -34,10 +36,9 @@ export class ClrProgressBar {
   private _labeled: boolean;
   private _fade: boolean;
   private _loop: boolean;
-  private _success: boolean;
-  private _danger: boolean;
   private _flash: boolean;
   private _flashDanger: boolean;
+  private _compact: boolean;
 
   @Input()
   get id() {
@@ -51,6 +52,16 @@ export class ClrProgressBar {
   @HostBinding('class.progress')
   get progressClass() {
     return true;
+  }
+
+  @Input('clrCompact')
+  set clrCompact(value: boolean | string) {
+    this._compact = isBooleanAttributeSet(value);
+  }
+
+  @HostBinding('class.compact')
+  get compactClass() {
+    return this._compact;
   }
 
   @Input('clrLabeled')
@@ -83,26 +94,19 @@ export class ClrProgressBar {
     return this._loop;
   }
 
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrSuccess')
-  set clrSuccess(value: boolean | string) {
-    this._success = isBooleanAttributeSet(value);
+  @HostBinding('class.warning')
+  get warningClass() {
+    return this.color === 'warning';
   }
 
   @HostBinding('class.success')
   get successClass() {
-    return this._success;
-  }
-
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrDanger')
-  set clrDanger(value: boolean | string) {
-    this._danger = isBooleanAttributeSet(value);
+    return this.color === 'success';
   }
 
   @HostBinding('class.danger')
   get dangerClass() {
-    return this._danger;
+    return this.color === 'danger';
   }
 
   @Input('clrFlash')

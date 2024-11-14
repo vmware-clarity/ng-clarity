@@ -1,31 +1,23 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
 import { filesRoot } from '../../helpers/files.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tree>
-      <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
-        {{file.name}}
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: {
-    ...args,
-  },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tree/Tree with recursive nodes',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTreeViewModule],
+    }),
+  ],
   component: ClrTree,
   argTypes: {
     // inputs
@@ -41,6 +33,17 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const RecursiveTreeViewTemplate: StoryFn = args => ({
+  template: `
+    <clr-tree>
+      <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
+        {{ file.name }}
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrTreeViewModule, defaultStory, defaultParameters, variants);
+export const RecursiveNodes: StoryObj = {
+  render: RecursiveTreeViewTemplate,
+};

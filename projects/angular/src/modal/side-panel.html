@@ -1,0 +1,15 @@
+<clr-modal
+  [clrModalOpen]="_open"
+  (clrModalOpenChange)="openChange.emit($event)"
+  [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
+  [clrModalSize]="size"
+  [clrModalSkipAnimation]="skipAnimation"
+  [clrModalStaticBackdrop]="staticBackdrop"
+  [clrModalLabelledById]="labelledById"
+  [clrModalPreventClose]="preventClose"
+  (clrModalAlternateClose)="altClose.emit($event)"
+>
+  <div class="modal-title"><ng-content select=".side-panel-title"></ng-content></div>
+  <div class="modal-body"><ng-content select=".side-panel-body"></ng-content></div>
+  <div class="modal-footer"><ng-content select=".side-panel-footer"></ng-content></div>
+</clr-modal>

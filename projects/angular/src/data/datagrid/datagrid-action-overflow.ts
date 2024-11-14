@@ -1,21 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Output,
-  PLATFORM_ID,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ClrKeyFocus } from '../../utils/focus/key-focus';
@@ -36,6 +27,7 @@ let clrDgActionId = 0;
   hostDirectives: [ClrPopoverHostDirective],
   template: `
     <button
+      tabindex="-1"
       class="datagrid-action-toggle"
       type="button"
       role="button"
@@ -87,15 +79,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService: RowActionService,
     public commonStrings: ClrCommonStringsService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private zone: NgZone,
     private smartToggleService: ClrPopoverToggleService
   ) {
-    this.rowActionService.register();
+    rowActionService.register();
     this.subscriptions.push(
-      this.smartToggleService.openChange.subscribe(openState => {
+      smartToggleService.openChange.subscribe(openState => {
         this.open = openState;
       }),
-      this.smartToggleService.popoverVisible.subscribe(visible => {
+      smartToggleService.popoverVisible.subscribe(visible => {
         if (visible) {
           this.initializeFocus();
         }

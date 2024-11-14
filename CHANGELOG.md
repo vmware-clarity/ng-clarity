@@ -1,3 +1,3 @@
 # Changelog
 
-You can view the full release notes at https://angular.clarity.design/news.
+You can view the full release notes at https://github.com/vmware-clarity/ng-clarity/releases.

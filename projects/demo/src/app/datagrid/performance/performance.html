@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Performance</h2>
+<p>This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example.</p>
+
+<p>
+  With change detection calculation button can see how many CPU cycles a render is taking. Perfect timing is under 3ms
+  per cycle.
+</p>
+
+<div>
+  <button class="btn" (click)="showChangeDetection()">Calc change detect</button>
+
+  <div>ms per tick: {{timeCD.msPerTick}}</div>
+  <div>Total ticks: {{timeCD.numTicks}}</div>
+  <div>Total time in MS: {{timeCD.numTicks * timeCD.msPerTick}}</div>
+  <div>time change detection JSON: {{timeCD|json}}</div>
+</div>
+
+<div>
+  <clr-input-container>
+    <label>Total Cols</label>
+    <input clrInput type="number" name="cols" [(ngModel)]="totalCols" />
+  </clr-input-container>
+  <clr-input-container>
+    <label>Rows</label>
+    <input clrInput id="rows" type="number" name="rows" [(ngModel)]="totalRows" />
+  </clr-input-container>
+  <button class="btn" (click)="changeDatagridDimensions()">Recalculate Datagrid</button>
+  <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
+</div>
+
+<clr-datagrid>
+  <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
+    <ng-container>{{col.name}}</ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let row of rows; trackBy: rowByIndex" [clrDgItem]="row">
+    <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+    <ng-container ngProjectAs="clr-dg-row-detail">
+      <clr-dg-row-detail *clrIfExpanded>{{row|json}}</clr-dg-row-detail>
+    </ng-container>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="1000">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,1000]">Elements per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

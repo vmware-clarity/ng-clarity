@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -53,19 +54,19 @@ export default function (): void {
     describe('alertIconShape()', function () {
       it('returns shape based on alertType if not set', function () {
         expect(testMe.alertType).toBe('info');
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
       });
 
       it('can change alertIconShape', function () {
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
         testMe.alertIconShape = 'house';
         expect(testMe.alertIconShape).toBe('house');
       });
 
       it('will set to empty string and return based on alertType if set to junk', function () {
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
         testMe.alertIconShape = null;
-        expect(testMe.alertIconShape).toBe('info-circle');
+        expect(testMe.alertIconShape).toBe('info-standard');
       });
     });
 
@@ -79,8 +80,8 @@ export default function (): void {
 
     describe('iconInfoFromType()', function () {
       it('returns default shape as fallthrough', function () {
-        expect(testShape(null)).toBe('info-circle');
-        expect(testShape('ohai')).toBe('info-circle');
+        expect(testShape(null)).toBe('info-standard');
+        expect(testShape('ohai')).toBe('info-standard');
       });
 
       it('returns .alert-info class as fallthrough', function () {
@@ -94,7 +95,7 @@ export default function (): void {
       });
 
       it('returns warning icon', function () {
-        expect(testShape('warning')).toBe('exclamation-triangle');
+        expect(testShape('warning')).toBe('warning-standard');
       });
 
       it('returns .alert-warning', function () {
@@ -106,7 +107,7 @@ export default function (): void {
       });
 
       it('returns danger icon', function () {
-        expect(testShape('danger')).toBe('exclamation-circle');
+        expect(testShape('danger')).toBe('error-standard');
       });
 
       it('returns .alert-danger', function () {
@@ -118,7 +119,7 @@ export default function (): void {
       });
 
       it('returns success icon', function () {
-        expect(testShape('success')).toBe('check-circle');
+        expect(testShape('success')).toBe('success-standard');
       });
 
       it('returns .alert-success', function () {
@@ -130,7 +131,7 @@ export default function (): void {
       });
 
       it('returns info icon', function () {
-        expect(testShape('info')).toBe('info-circle');
+        expect(testShape('info')).toBe('info-standard');
       });
 
       it('returns .alert-info', function () {

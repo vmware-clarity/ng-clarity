@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -34,7 +35,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     private viewContainer: ViewContainerRef,
     private detailService: DetailService
   ) {
-    this.detailService.enabled = true;
+    detailService.enabled = true;
   }
 
   @Input('clrIfDetail')
@@ -43,6 +44,10 @@ export class ClrIfDetail implements OnInit, OnDestroy {
       this.detailService.toggle(model);
     }
     this.skip = false;
+  }
+
+  get viewContext() {
+    return { $implicit: this.detailService.state };
   }
 
   ngOnInit() {
@@ -65,12 +70,11 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     let stateChangeParams = null;
 
     if (showPanel === true) {
-      const embeddedViewContext = { $implicit: this.detailService.state };
-
-      if (this.embeddedViewRef) {
-        this.embeddedViewRef.context = embeddedViewContext;
-      } else {
-        this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, embeddedViewContext);
+      if (!this.embeddedViewRef) {
+        // Create a context forward `Proxy` that will always bind to the user-specified context,
+        // without having to re-assign it whenever changes.
+        const viewContext = this._createContextForwardProxy();
+        this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, viewContext);
       }
 
       this.skip = true;
@@ -81,5 +85,30 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     }
 
     this.stateChange.emit(stateChangeParams);
+  }
+
+  /**
+   * For a given outlet instance, we create a proxy object that delegates
+   * to the user-specified context. This allows changing, or swapping out
+   * the context object completely without having to destroy/re-create the view.
+   */
+  private _createContextForwardProxy() {
+    return new Proxy(
+      {},
+      {
+        set: (_target, prop, newValue) => {
+          if (!this.viewContext) {
+            return false;
+          }
+          return Reflect.set(this.viewContext, prop, newValue);
+        },
+        get: (_target, prop, receiver) => {
+          if (!this.viewContext) {
+            return undefined;
+          }
+          return Reflect.get(this.viewContext, prop, receiver);
+        },
+      }
+    );
   }
 }

@@ -13,14 +13,22 @@ import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DragDrop } from '@angular/cdk/drag-drop';
+import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
+import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -30,6 +38,7 @@ import * as i6 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
+import { ListRange } from '@angular/cdk/collections';
 import { NgControl } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
@@ -44,6 +53,7 @@ import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
+import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
@@ -55,6 +65,7 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
+import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
 export class CdsIconCustomTag {
@@ -62,6 +73,14 @@ export class CdsIconCustomTag {
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
+}
+
+// @public (undocumented)
+export enum CHANGE_KEYS {
+    // (undocumented)
+    FORM = "form",
+    // (undocumented)
+    MODEL = "model"
 }
 
 // @public (undocumented)
@@ -73,7 +92,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_12" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_6" needs to be exported by the entry point index.d.ts
@@ -82,14 +101,15 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i10_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11_4" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12_3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13_3" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i17_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i18_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_11.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_2.ClrStepperModule, typeof i14_2.ClrSpinnerModule, typeof i15_2.ClrProgressBarModule, typeof i16_2.ClrPopoverModuleNext, typeof i17_2.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, never, [typeof i1.ClrEmphasisModule, typeof i2_4.ClrDataModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule, typeof i8_6.ClrButtonModule, typeof i9_2.ClrFormsModule, typeof i10_4.ClrLayoutModule, typeof i11_4.ClrPopoverModule, typeof i12_3.ClrWizardModule, typeof i13_3.ClrSidePanelModule, typeof i14_2.ClrStepperModule, typeof i15.ClrSpinnerModule, typeof i16_2.ClrProgressBarModule, typeof i17_2.ClrPopoverModuleNext, typeof i18_2.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -130,6 +150,9 @@ export const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_PROGRESS_BAR_DIRECTIVES: Type<any>[];
+
+// @public (undocumented)
+export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
@@ -256,16 +279,16 @@ export class ClrAccordionModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_47" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_35" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_27" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_18" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_49" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_36" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_28" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_19" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_10" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_9" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof i1_47.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_27.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_47.ClrAccordion, typeof i2_35.ClrAccordionPanel, typeof i3_27.ClrAccordionTitle, typeof i4_18.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof i1_49.ClrAccordion, typeof i2_36.ClrAccordionPanel, typeof i3_28.ClrAccordionTitle, typeof i4_19.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_49.ClrAccordion, typeof i2_36.ClrAccordionPanel, typeof i3_28.ClrAccordionTitle, typeof i4_19.ClrAccordionDescription, typeof i5_15.ClrAccordionContent, typeof i6_10.AccordionOompaLoompa, typeof i7_9.AccordionWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -274,10 +297,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     constructor(commonStrings: ClrCommonStringsService, accordionService: AccordionService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
     // (undocumented)
@@ -294,8 +313,6 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     get id(): string;
     set id(value: string);
     // (undocumented)
-    isAccordion: boolean;
-    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnInit(): void;
@@ -309,6 +326,10 @@ export class ClrAccordionPanel implements OnInit, OnChanges {
     panelOpen: boolean;
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
+    // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
     // (undocumented)
     togglePanel(): void;
     // (undocumented)
@@ -329,7 +350,7 @@ export class ClrAccordionTitle {
 export class ClrAlert implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point index.d.ts
-    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
+    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get alertClass(): string;
     // (undocumented)
@@ -350,12 +371,15 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     clrCloseButtonAriaLabel: string;
     // (undocumented)
+    configAlertType(val: string): void;
+    // (undocumented)
     get hidden(): boolean;
     set hidden(value: boolean);
     // (undocumented)
     isAppLevel: boolean;
     // (undocumented)
-    isLight: boolean;
+    get isLightweight(): boolean;
+    set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
     // (undocumented)
@@ -365,9 +389,9 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isLight": "clrAlertLightweight"; "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": "clrAlertSizeSmall"; "closable": "clrAlertClosable"; "isAppLevel": "clrAlertAppLevel"; "clrCloseButtonAriaLabel": "clrCloseButtonAriaLabel"; "isLightweight": "clrAlertLightweight"; "alertType": "clrAlertType"; "alertIconShape": "clrAlertIcon"; "closed": "clrAlertClosed"; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -396,7 +420,7 @@ export class ClrAlertModule {
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule], [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule, typeof i15.ClrSpinnerModule], [typeof i1_3.ClrAlert, typeof i2.ClrAlertItem, typeof i3.ClrAlerts, typeof i4.ClrAlertsPager, typeof i5.ClrAlertText]>;
 }
 
 // @public (undocumented)
@@ -602,11 +626,11 @@ export class ClrButtonGroupModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_35" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_25" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_36" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_26" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i16_2.ClrPopoverModuleNext], [typeof i1_35.ClrButton, typeof i2_25.ClrButtonGroup]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof i1_36.ClrButton, typeof i2_26.ClrButtonGroup], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i17_2.ClrPopoverModuleNext], [typeof i1_36.ClrButton, typeof i2_26.ClrButtonGroup]>;
 }
 
 // @public (undocumented)
@@ -616,11 +640,11 @@ export class ClrButtonModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_33" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_24" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_34" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_25" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof i1_33.ClrLoadingButtonModule, typeof i2_24.ClrButtonGroupModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonModule, never, never, [typeof i1_34.ClrLoadingButtonModule, typeof i2_25.ClrButtonGroupModule]>;
 }
 
 // @public (undocumented)
@@ -629,7 +653,7 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DateNavigationService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DatepickerFocusService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateIOService" needs to be exported by the entry point index.d.ts
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>);
     // Warning: (ae-forgotten-export) The symbol "CalendarModel" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -657,7 +681,7 @@ export class ClrCalendar implements OnDestroy {
 
 // @public
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, toggle: string);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -699,14 +723,14 @@ export class ClrCheckboxModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCheckboxModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_12" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_8" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_8" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_6" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_3" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof i1_12.ClrCheckbox, typeof i2_8.ClrCheckboxContainer, typeof i3_8.ClrCheckboxWrapper], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_12.ClrCheckbox, typeof i2_8.ClrCheckboxContainer, typeof i3_8.ClrCheckboxWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof i1_13.ClrCheckbox, typeof i2_8.ClrCheckboxContainer, typeof i3_8.ClrCheckboxWrapper], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_13.ClrCheckbox, typeof i2_8.ClrCheckboxContainer, typeof i3_8.ClrCheckboxWrapper]>;
 }
 
 // @public (undocumented)
@@ -732,7 +756,7 @@ export class ClrCheckboxWrapper implements DynamicWrapper, OnInit, OnDestroy {
 export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point index.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, toggleService: ClrPopoverToggleService, positionService: ClrPopoverPositionService, controlStateService: IfControlStateService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -752,7 +776,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get displayField(): string;
     // (undocumented)
-    protected el: ElementRef;
+    protected el: ElementRef<HTMLElement>;
     // (undocumented)
     focused: boolean;
     // (undocumented)
@@ -815,9 +839,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
-    textbox: ElementRef;
+    textbox: ElementRef<HTMLInputElement>;
     // (undocumented)
-    trigger: ElementRef;
+    trigger: ElementRef<HTMLButtonElement>;
     // (undocumented)
     unselect(item: T): void;
     // (undocumented)
@@ -830,9 +854,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
 
 // @public (undocumented)
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
-    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef);
+    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     // (undocumented)
-    controlContainer: ElementRef;
+    controlContainer: ElementRef<HTMLElement>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -850,7 +874,7 @@ export class ClrComboboxModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrComboboxModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_14" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_15" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_9" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_9" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_6" needs to be exported by the entry point index.d.ts
@@ -859,7 +883,7 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "i49" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_14.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i49.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i16_2.ClrPopoverModuleNext, typeof i14_2.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_14.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_5.ClrOptionItems], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i49.ClrKeyFocusModule, typeof i2_6.ClrCommonFormsModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i15.ClrSpinnerModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_15.ClrCombobox, typeof i2_9.ClrComboboxContainer, typeof i3_9.ClrOptions, typeof i4_6.ClrOption, typeof i5_4.ClrOptionSelected, typeof i6_2.ClrConditionalModule, typeof i6_5.ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -869,7 +893,7 @@ export class ClrCommonFormsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonFormsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_12" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_6" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_4" needs to be exported by the entry point index.d.ts
@@ -881,7 +905,7 @@ export class ClrCommonFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i10_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof i1_11.ClrLabel, typeof i2_7.ClrControlError, typeof i3_6.ClrControlSuccess, typeof i4_4.ClrControlHelper, typeof i5_3.ClrIfError, typeof i6_4.ClrIfSuccess, typeof i7_2.ClrForm, typeof i8_3.ClrLayout, typeof i9_3.ClrControlContainer, typeof i10_2.ClrControl], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_11.ClrLabel, typeof i2_7.ClrControlError, typeof i3_6.ClrControlSuccess, typeof i4_4.ClrControlHelper, typeof i5_3.ClrIfError, typeof i6_4.ClrIfSuccess, typeof i7_2.ClrForm, typeof i8_3.ClrLayout, typeof i9_3.ClrControlContainer, typeof i10_2.ClrControl]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof i1_12.ClrLabel, typeof i2_7.ClrControlError, typeof i3_6.ClrControlSuccess, typeof i4_4.ClrControlHelper, typeof i5_3.ClrIfError, typeof i6_4.ClrIfSuccess, typeof i7_2.ClrForm, typeof i8_3.ClrLayout, typeof i9_3.ClrControlContainer, typeof i10_2.ClrControl], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_12.ClrLabel, typeof i2_7.ClrControlError, typeof i3_6.ClrControlSuccess, typeof i4_4.ClrControlHelper, typeof i5_3.ClrIfError, typeof i6_4.ClrIfSuccess, typeof i7_2.ClrForm, typeof i8_3.ClrLayout, typeof i9_3.ClrControlContainer, typeof i10_2.ClrControl]>;
 }
 
 // @public (undocumented)
@@ -890,6 +914,12 @@ export interface ClrCommonStrings {
     alertNextAlertAriaLabel: string;
     alertPreviousAlertAriaLabel: string;
     allColumnsSelected: string;
+    // (undocumented)
+    browse: string;
+    // (undocumented)
+    clearFile: string;
+    // (undocumented)
+    clearFiles: string;
     close: string;
     collapse: string;
     columnSeparatorAriaLabel: string;
@@ -945,8 +975,11 @@ export interface ClrCommonStrings {
     detailPaneEnd: string;
     detailPaneStart: string;
     expand: string;
+    // (undocumented)
+    fileCount: string;
     filterItems: string;
     firstPage: string;
+    fromLabel: string;
     hide: string;
     info: string;
     lastPage: string;
@@ -957,6 +990,7 @@ export interface ClrCommonStrings {
     modalContentEnd: string;
     modalContentStart: string;
     more: string;
+    neutral: string;
     next: string;
     nextPage: string;
     open: string;
@@ -978,6 +1012,8 @@ export interface ClrCommonStrings {
     select: string;
     selectAll: string;
     selectedRows: string;
+    // (undocumented)
+    selectedTreeNode: string;
     show: string;
     showColumns: string;
     showColumnsMenuDescription: string;
@@ -987,6 +1023,10 @@ export interface ClrCommonStrings {
     singleSelectionAriaLabel: string;
     sortColumn: string;
     stackViewChanged: string;
+    // (undocumented)
+    stepComplete: string;
+    // (undocumented)
+    stepError: string;
     success: string;
     // (undocumented)
     timelineStepCurrent: string;
@@ -997,10 +1037,15 @@ export interface ClrCommonStrings {
     timelineStepProcessing: string;
     // (undocumented)
     timelineStepSuccess: string;
+    toLabel: string;
     totalPages: string;
+    unknown: string;
+    // (undocumented)
+    unselectedTreeNode: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
+    wizardStep: string;
     wizardStepError: string;
     wizardStepnavAriaLabel: string;
     wizardStepSuccess: string;
@@ -1035,7 +1080,7 @@ export class ClrConditionalModule {
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -1109,9 +1154,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point index.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef, page: Page, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
     get allSelected(): boolean;
     set allSelected(_value: boolean);
     // (undocumented)
@@ -1131,24 +1174,36 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     commonStrings: ClrCommonStringsService;
     dataChanged(): void;
     // (undocumented)
-    datagridTable: ElementRef;
+    datagrid: ElementRef<HTMLElement>;
+    // (undocumented)
+    datagridTable: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "DetailService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     detailService: DetailService;
     // (undocumented)
     _displayedRows: ViewContainerRef;
+    // (undocumented)
+    el: ElementRef<HTMLElement>;
     // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    // (undocumented)
+    hasVirtualScroller: boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     items: Items<T>;
     iterator: ClrDatagridItems<T>;
+    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    keyNavigation: KeyNavigationGridController;
     get loading(): boolean;
     set loading(value: boolean);
+    // (undocumented)
+    loadingMoreItems: boolean;
     // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
@@ -1188,9 +1243,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     singleSelectedChanged: EventEmitter<T>;
     // (undocumented)
-    set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
+    toggleAllSelected($event: any): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    set trackBy(value: ClrDatagridItemsTrackByFunction<T>);
+    updateDetailState(): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": "clrLoadingMoreItems"; "clrDgSingleSelectionAriaLabel": "clrDgSingleSelectionAriaLabel"; "clrDgSingleActionableAriaLabel": "clrDgSingleActionableAriaLabel"; "clrDetailExpandableAriaLabel": "clrDetailExpandableAriaLabel"; "clrDgDisablePageFocus": "clrDgDisablePageFocus"; "loading": "clrDgLoading"; "selected": "clrDgSelected"; "singleSelected": "clrDgSingleSelected"; "clrDgPreserveSelection": "clrDgPreserveSelection"; "rowSelectionMode": "clrDgRowSelection"; "trackBy": "clrDgItemsTrackBy"; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; }, ["iterator", "placeholder", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -1205,7 +1263,7 @@ export class ClrDatagridActionBar {
 
 // @public (undocumented)
 export class ClrDatagridActionOverflow implements OnDestroy {
-    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, zone: NgZone, smartToggleService: ClrPopoverToggleService);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, smartToggleService: ClrPopoverToggleService);
     // (undocumented)
     buttonLabel: string;
     // (undocumented)
@@ -1249,7 +1307,7 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point index.d.ts
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     get ariaSort(): "none" | "ascending" | "descending";
     // (undocumented)
@@ -1270,6 +1328,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
+    get isHidden(): boolean;
+    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
@@ -1278,7 +1338,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     set projectedFilter(custom: any);
     // (undocumented)
-    showSeparator: boolean;
+    get showSeparator(): boolean;
+    set showSeparator(value: boolean);
     sort(reverse?: boolean): void;
     get sortable(): boolean;
     // (undocumented)
@@ -1330,6 +1391,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point index.d.ts
     constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverToggleService: ClrPopoverToggleService);
     // (undocumented)
     allColumnsSelected(): void;
@@ -1391,6 +1453,10 @@ export interface ClrDatagridComparatorInterface<T> {
 export class ClrDatagridDetail {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
+    ariaLabel: string;
+    // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     close(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -1399,7 +1465,11 @@ export class ClrDatagridDetail {
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {}, {}, ["header"], ["*"], false, never>;
+    get label(): string;
+    // (undocumented)
+    get labelledBy(): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": "clrDetailAriaLabelledBy"; "ariaLabel": "clrDetailAriaLabel"; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -1413,12 +1483,16 @@ export class ClrDatagridDetailBody {
 }
 
 // @public (undocumented)
-export class ClrDatagridDetailHeader {
+export class ClrDatagridDetailHeader implements AfterViewInit {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    title: ElementRef<HTMLElement>;
     // (undocumented)
     get titleId(): string;
     // (undocumented)
@@ -1431,10 +1505,10 @@ export class ClrDatagridDetailHeader {
 //
 // @public
 export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnChanges, OnDestroy {
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, elementRef: ElementRef<HTMLElement>);
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, smartToggleService: ClrPopoverToggleService, platformId: any, elementRef: ElementRef<HTMLElement>, keyNavigation: KeyNavigationGridController);
     get active(): boolean;
     // (undocumented)
-    anchor: ElementRef;
+    anchor: ElementRef<HTMLButtonElement>;
     // (undocumented)
     ariaExpanded: boolean;
     // (undocumented)
@@ -1461,7 +1535,7 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": "clrDgFilterOpen"; "customFilter": "clrDgFilter"; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -1538,17 +1612,6 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrDatagridItemsTrackBy<T = any> {
-    constructor(_items: Items<T>);
-    // (undocumented)
-    set trackBy(value: TrackByFunction<T>);
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItemsTrackBy<any>, "[ngForTrackBy]", never, { "trackBy": "ngForTrackBy"; }, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItemsTrackBy<any>, [{ optional: true; }]>;
-}
-
-// @public (undocumented)
 export type ClrDatagridItemsTrackByFunction<T> = (item: T) => any;
 
 // @public (undocumented)
@@ -1558,7 +1621,7 @@ export class ClrDatagridModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_10" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_3" needs to be exported by the entry point index.d.ts
@@ -1572,7 +1635,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point index.d.ts
@@ -1600,7 +1663,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i46" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_10.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridItemsTrackBy, typeof i15.ClrDatagridPageSize, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPlaceholder, typeof i18.ClrDatagridRow, typeof i19.ClrDatagridRowDetail, typeof i20.ClrDatagridSelectionCellDirective, typeof i21.ClrIfDetail, typeof i22.DatagridDetailRegisterer, typeof i23.WrappedCell, typeof i24.WrappedColumn, typeof i25.WrappedRow, typeof i26.DatagridCellRenderer, typeof i27.DatagridHeaderRenderer, typeof i28.DatagridMainRenderer, typeof i29.DatagridRowRenderer, typeof i30.ActionableOompaLoompa, typeof i31.DatagridWillyWonka, typeof i32.ExpandableOompaLoompa, typeof i33.DatagridNumericFilter, typeof i34.DatagridStringFilter, typeof i35.ClrDatagridColumnToggle, typeof i36.ClrDatagridColumnToggleButton], [typeof i6.CommonModule, typeof i38.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i9_2.ClrFormsModule, typeof i42.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i45.ClrOutsideClickModule, typeof i46.ClrExpandableAnimationModule, typeof i14_2.ClrSpinnerModule, typeof i16_2.ClrPopoverModuleNext, typeof i49.ClrKeyFocusModule], [typeof i1_10.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridItemsTrackBy, typeof i15.ClrDatagridPageSize, typeof i16.ClrDatagridPagination, typeof i17.ClrDatagridPlaceholder, typeof i18.ClrDatagridRow, typeof i19.ClrDatagridRowDetail, typeof i20.ClrDatagridSelectionCellDirective, typeof i21.ClrIfDetail, typeof i22.DatagridDetailRegisterer, typeof i23.WrappedCell, typeof i24.WrappedColumn, typeof i25.WrappedRow, typeof i26.DatagridCellRenderer, typeof i27.DatagridHeaderRenderer, typeof i28.DatagridMainRenderer, typeof i29.DatagridRowRenderer, typeof i30.ActionableOompaLoompa, typeof i31.DatagridWillyWonka, typeof i32.ExpandableOompaLoompa, typeof i33.DatagridNumericFilter, typeof i34.DatagridStringFilter]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridPageSize, typeof i15_2.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrDatagridVirtualScrollDirective, typeof i21.ClrIfDetail, typeof i22.DatagridDetailRegisterer, typeof i23.WrappedCell, typeof i24.WrappedColumn, typeof i25.WrappedRow, typeof i26.DatagridCellRenderer, typeof i27.DatagridHeaderRenderer, typeof i28.DatagridMainRenderer, typeof i29.DatagridRowRenderer, typeof i30.ActionableOompaLoompa, typeof i31.DatagridWillyWonka, typeof i32.ExpandableOompaLoompa, typeof i33.DatagridNumericFilter, typeof i34.DatagridStringFilter, typeof i35.ClrDatagridColumnToggle, typeof i36.ClrDatagridColumnToggleButton], [typeof i6.CommonModule, typeof i38.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i9_2.ClrFormsModule, typeof i42.FormsModule, typeof i5_7.ClrLoadingModule, typeof i6_2.ClrConditionalModule, typeof i45.ClrOutsideClickModule, typeof i46.ClrExpandableAnimationModule, typeof i15.ClrSpinnerModule, typeof i17_2.ClrPopoverModuleNext, typeof i49.ClrKeyFocusModule], [typeof i1_11.ClrDatagrid, typeof i2_5.ClrDatagridActionBar, typeof i3_5.ClrDatagridActionOverflow, typeof i4_3.ClrDatagridCell, typeof i5_2.ClrDatagridColumn, typeof i6_3.ClrDatagridColumnSeparator, typeof i7.ClrDatagridDetail, typeof i8_2.ClrDatagridDetailBody, typeof i9.ClrDatagridDetailHeader, typeof i10.ClrDatagridFilter, typeof i11.ClrDatagridFooter, typeof i12.ClrDatagridHideableColumn, typeof i13.ClrDatagridItems, typeof i14.ClrDatagridPageSize, typeof i15_2.ClrDatagridPagination, typeof i16.ClrDatagridPlaceholder, typeof i17.ClrDatagridRow, typeof i18.ClrDatagridRowDetail, typeof i19.ClrDatagridSelectionCellDirective, typeof i20.ClrDatagridVirtualScrollDirective, typeof i21.ClrIfDetail, typeof i22.DatagridDetailRegisterer, typeof i23.WrappedCell, typeof i24.WrappedColumn, typeof i25.WrappedRow, typeof i26.DatagridCellRenderer, typeof i27.DatagridHeaderRenderer, typeof i28.DatagridMainRenderer, typeof i29.DatagridRowRenderer, typeof i30.ActionableOompaLoompa, typeof i31.DatagridWillyWonka, typeof i32.ExpandableOompaLoompa, typeof i33.DatagridNumericFilter, typeof i34.DatagridStringFilter]>;
 }
 
 // @public (undocumented)
@@ -1636,7 +1699,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     get currentPage(): number;
     set currentPage(page: number);
     // (undocumented)
-    currentPageInputRef: ElementRef;
+    currentPageInputRef: ElementRef<HTMLInputElement>;
     // (undocumented)
     detailService: DetailService;
     // (undocumented)
@@ -1680,7 +1743,7 @@ export class ClrDatagridPlaceholder<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStringsService, items: Items, document: any);
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -1701,7 +1764,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailButton: ElementRef;
+    detailButton: ElementRef<HTMLButtonElement>;
+    // (undocumented)
+    detailDisabled: boolean;
+    // (undocumented)
+    detailHidden: boolean;
     // (undocumented)
     detailService: DetailService;
     dgCells: QueryList<ClrDatagridCell>;
@@ -1765,7 +1832,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowSelectionLabel": "clrDgRowSelectionLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": "clrDgDetailDisabled"; "detailHidden": "clrDgDetailHidden"; "item": "clrDgItem"; "clrDgSelectable": "clrDgSelectable"; "selected": "clrDgSelected"; "expanded": "clrDgExpanded"; "clrDgDetailOpenLabel": "clrDgDetailOpenLabel"; "clrDgDetailCloseLabel": "clrDgDetailCloseLabel"; "clrDgRowSelectionLabel": "clrDgRowSelectionLabel"; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-row-detail", "clr-dg-action-overflow", "clr-dg-cell"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
 }
@@ -1877,7 +1944,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
 
 // @public (undocumented)
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
-    constructor(focusService: FocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, datalistIdService: DatalistIdService);
+    constructor(focusService: FocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
     // (undocumented)
     listValue: string;
     // (undocumented)
@@ -1899,13 +1966,13 @@ export class ClrDatalistModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatalistModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_25" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_19" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_14" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6_7" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_26" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_20" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_15" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i7_5" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof i1_25.ClrDatalist, typeof i2_19.ClrDatalistInput, typeof i3_14.ClrDatalistContainer], [typeof i6.CommonModule, typeof i6_7.ClrInputModule, typeof i3_2.ClrIconModule], [typeof i1_25.ClrDatalist, typeof i2_19.ClrDatalistInput, typeof i3_14.ClrDatalistContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof i1_26.ClrDatalist, typeof i2_20.ClrDatalistInput, typeof i3_15.ClrDatalistContainer], [typeof i6.CommonModule, typeof i7_5.ClrInputModule, typeof i3_2.ClrIconModule], [typeof i1_26.ClrDatalist, typeof i2_20.ClrDatalistInput, typeof i3_15.ClrDatalistContainer]>;
 }
 
 // @public (undocumented)
@@ -1914,12 +1981,12 @@ export class ClrDataModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_9" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_20" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_10" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_21" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_17" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof i1_9.ClrDatagridModule, typeof i2_20.ClrStackViewModule, typeof i3_16.ClrTreeViewModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof i1_10.ClrDatagridModule, typeof i2_21.ClrStackViewModule, typeof i3_17.ClrTreeViewModule]>;
 }
 
 // @public (undocumented)
@@ -1929,7 +1996,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point index.d.ts
     constructor(renderer: Renderer2, toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
-    set actionButton(button: ElementRef);
+    set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
     set clrPosition(position: string);
     // (undocumented)
@@ -1962,7 +2029,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
 // @public (undocumented)
 export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FocusService_2, datepickerFocusService: DatepickerFocusService);
     // (undocumented)
     protected control: NgControl;
     // (undocumented)
@@ -1973,7 +2040,7 @@ export class ClrDateInput extends WrappedFormControl<ClrDateContainer> implement
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     // (undocumented)
-    protected el: ElementRef;
+    protected el: ElementRef<HTMLInputElement>;
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2035,7 +2102,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i9_4" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i16_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7_3.ClrHostWrappingModule, typeof i6_2.ClrConditionalModule, typeof i17_2.ClrPopoverModuleNext, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i1_18.ClrDay, typeof i2_12.ClrDateContainer, typeof i3_12.ClrDateInput, typeof i4_8.ClrDateInputValidator, typeof i5_6.ClrDatepickerViewManager, typeof i6_6.ClrMonthpicker, typeof i7_4.ClrYearpicker, typeof i8_4.ClrDaypicker, typeof i9_4.ClrCalendar]>;
 }
 
 // @public (undocumented)
@@ -2201,14 +2268,16 @@ export class ClrEmphasisModule {
 // @public (undocumented)
 export class ClrExpandableAnimation {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point index.d.ts
-    constructor(element: ElementRef, domAdapter: DomAdapter);
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     // (undocumented)
-    animationDone(): void;
+    animationDone(event: AnimationEvent_2): void;
     // (undocumented)
-    clrExpandTrigger: any;
+    animationStart(event: AnimationEvent_2): void;
+    // (undocumented)
+    clrExpandTrigger: boolean;
     // (undocumented)
     get expandAnimation(): {
-        value: any;
+        value: boolean;
         params: {
             startHeight: number;
         };
@@ -2224,8 +2293,99 @@ export class ClrExpandableAnimation {
 }
 
 // @public (undocumented)
+export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
+    constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    // (undocumented)
+    readonly elementRef: ElementRef<HTMLInputElement>;
+    // (undocumented)
+    selection: ClrFileInputSelection;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
+}
+
+// @public (undocumented)
+export class ClrFileInputContainer extends ClrAbstractContainer {
+    // (undocumented)
+    protected browse(): void;
+    // (undocumented)
+    protected get browseButtonDescribedBy(): string;
+    // (undocumented)
+    protected clearSelectedFiles(): void;
+    // (undocumented)
+    protected readonly commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    customButtonLabel: string;
+    // (undocumented)
+    protected get disabled(): boolean;
+    // (undocumented)
+    protected readonly fileInput: ClrFileInput;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, { "customButtonLabel": "clrButtonLabel"; }, {}, ["fileInput"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputContainer, never>;
+}
+
+// @public (undocumented)
+export class ClrFileInputModule {
+    constructor();
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1_19" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_9" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof i1_19.ClrFileInput, typeof i2_13.ClrFileInputContainer, typeof i3_13.ClrFileInputValidator, typeof i4_9.ClrFileInputValueAccessor], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_19.ClrFileInput, typeof i2_13.ClrFileInputContainer, typeof i3_13.ClrFileInputValidator, typeof i4_9.ClrFileInputValueAccessor]>;
+}
+
+// @public (undocumented)
+export interface ClrFileInputSelection {
+    // (undocumented)
+    buttonLabel: string;
+    // (undocumented)
+    clearFilesButtonLabel: string;
+    // (undocumented)
+    fileCount: number;
+}
+
+// @public (undocumented)
+export class ClrFileInputValidator implements Validator {
+    constructor(elementRef: ElementRef<HTMLInputElement>);
+    // (undocumented)
+    maxFileSize: number;
+    // (undocumented)
+    minFileSize: number;
+    // (undocumented)
+    validate(control: AbstractControl<FileList>): ValidationErrors;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValidator, "input[type=\"file\"][clrFileInput]", never, { "minFileSize": "clrMinFileSize"; "maxFileSize": "clrMaxFileSize"; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputValidator, never>;
+}
+
+// @public (undocumented)
+export class ClrFileInputValueAccessor implements ControlValueAccessor {
+    constructor(elementRef: ElementRef<HTMLInputElement>);
+    // (undocumented)
+    registerOnChange(fn: (value: FileList) => void): void;
+    // (undocumented)
+    registerOnTouched(fn: () => void): void;
+    // (undocumented)
+    writeValue(value: FileList): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValueAccessor, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputValueAccessor, never>;
+}
+
+// @public (undocumented)
 export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
-    constructor(el: ElementRef, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
+    constructor(el: ElementRef<HTMLElement>, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
     // (undocumented)
     set isEnabled(value: boolean | string);
     // (undocumented)
@@ -2244,10 +2404,10 @@ export class ClrFocusOnViewInitModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInitModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFocusOnViewInitModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_32" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_33" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof i1_32.ClrFocusOnViewInit], [typeof i6.CommonModule], [typeof i1_32.ClrFocusOnViewInit]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof i1_33.ClrFocusOnViewInit], [typeof i6.CommonModule], [typeof i1_33.ClrFocusOnViewInit]>;
 }
 
 // @public (undocumented)
@@ -2289,15 +2449,16 @@ export class ClrFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i3_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_5" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i7_5" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i6_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9_5" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10_3" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrInputModule, typeof i7_5.ClrPasswordModule, typeof i8_5.ClrRadioModule, typeof i9_5.ClrSelectModule, typeof i10_3.ClrTextareaModule, typeof i11_2.ClrRangeModule, typeof i12_2.ClrDatalistModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i6.CommonModule], [typeof i2_6.ClrCommonFormsModule, typeof i3_7.ClrCheckboxModule, typeof i4_5.ClrComboboxModule, typeof i5_5.ClrDatepickerModule, typeof i6_7.ClrFileInputModule, typeof i7_5.ClrInputModule, typeof i8_5.ClrPasswordModule, typeof i9_5.ClrRadioModule, typeof i10_3.ClrSelectModule, typeof i11_2.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13_2.ClrDatalistModule]>;
 }
 
 // @public (undocumented)
@@ -2388,6 +2549,10 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     // (undocumented)
     stateChange: EventEmitter<any>;
     // (undocumented)
+    get viewContext(): {
+        $implicit: any;
+    };
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": "clrIfDetail"; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
@@ -2412,7 +2577,7 @@ export class ClrIfError extends AbstractIfState {
 
 // @public (undocumented)
 export class ClrIfExpanded implements OnInit, OnDestroy {
-    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef, renderer: Renderer2, expand: IfExpandService);
+    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
     // (undocumented)
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
@@ -2458,7 +2623,7 @@ export class ClrIfSuccess extends AbstractIfState {
 
 // @public (undocumented)
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2482,16 +2647,16 @@ export class ClrInputModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrInputModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_19" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_20" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_14" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof i1_19.ClrInput, typeof i2_13.ClrInputContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_19.ClrInput, typeof i2_13.ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof i1_20.ClrInput, typeof i2_14.ClrInputContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_20.ClrInput, typeof i2_14.ClrInputContainer]>;
 }
 
 // @public (undocumented)
 export class ClrLabel implements OnInit, OnDestroy {
-    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef);
+    constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef<HTMLLabelElement>);
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
@@ -2534,13 +2699,13 @@ export class ClrLayoutModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayoutModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_36" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_26" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_19" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_14" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_37" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_27" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_15" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_36.ClrMainContainerModule, typeof i2_26.ClrNavigationModule, typeof i3_19.ClrTabsModule, typeof i4_14.ClrVerticalNavModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_37.ClrMainContainerModule, typeof i2_27.ClrNavigationModule, typeof i3_20.ClrTabsModule, typeof i4_15.ClrVerticalNavModule]>;
 }
 
 // @public (undocumented)
@@ -2561,7 +2726,7 @@ export class ClrLoading implements OnDestroy {
 
 // @public (undocumented)
 export class ClrLoadingButton implements LoadingListener {
-    constructor(el: ElementRef, renderer: Renderer2);
+    constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
@@ -2569,7 +2734,7 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     disabled: boolean;
     // (undocumented)
-    el: ElementRef;
+    el: ElementRef<HTMLButtonElement>;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -2586,10 +2751,10 @@ export class ClrLoadingButtonModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButtonModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingButtonModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_34" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_35" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof i1_34.ClrLoadingButton], [typeof i6.CommonModule], [typeof i1_34.ClrLoadingButton]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingButtonModule, [typeof i1_35.ClrLoadingButton], [typeof i6.CommonModule], [typeof i1_35.ClrLoadingButton]>;
 }
 
 // @public (undocumented)
@@ -2598,10 +2763,10 @@ export class ClrLoadingModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_26" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_27" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof i1_26.ClrLoading], [typeof i6.CommonModule], [typeof i1_26.ClrLoading]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof i1_27.ClrLoading], [typeof i6.CommonModule], [typeof i1_27.ClrLoading]>;
 }
 
 // @public (undocumented)
@@ -2618,7 +2783,7 @@ export enum ClrLoadingState {
 
 // @public (undocumented)
 export class ClrMainContainer implements OnDestroy, OnInit {
-    constructor(elRef: ElementRef, responsiveNavService: ResponsiveNavigationService);
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
     // (undocumented)
     controlNav(controlCode: string, navClass: string): void;
     // (undocumented)
@@ -2641,19 +2806,25 @@ export class ClrMainContainerModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMainContainerModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_37" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_38" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof i1_37.ClrMainContainer], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_37.ClrMainContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof i1_38.ClrMainContainer], [typeof i6.CommonModule, typeof i3_2.ClrIconModule], [typeof i1_38.ClrMainContainer]>;
 }
 
 // @public (undocumented)
 export class ClrModal implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ScrollingService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "ModalStackService" needs to be exported by the entry point index.d.ts
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService);
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
+    // (undocumented)
+    get backdrop(): boolean;
+    // (undocumented)
+    backdropClick(): void;
+    // (undocumented)
+    bypassScrollService: boolean;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -2664,6 +2835,9 @@ export class ClrModal implements OnChanges, OnDestroy {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     fadeDone(e: AnimationEvent_2): void;
+    // (undocumented)
+    get fadeMove(): string;
+    set fadeMove(move: string);
     // (undocumented)
     labelledBy: string;
     // (undocumented)
@@ -2689,7 +2863,9 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    title: ElementRef<HTMLElement>;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": "clrModalOpen"; "closable": "clrModalClosable"; "closeButtonAriaLabel": "clrModalCloseButtonAriaLabel"; "size": "clrModalSize"; "staticBackdrop": "clrModalStaticBackdrop"; "skipAnimation": "clrModalSkipAnimation"; "stopClose": "clrModalPreventClose"; "labelledBy": "clrModalLabelledById"; "bypassScrollService": "clrModalOverrideScrollService"; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, never, [".modal-nav", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
@@ -2706,22 +2882,34 @@ export class ClrModalBody implements OnDestroy {
 }
 
 // @public (undocumented)
+export class ClrModalConfigurationService {
+    // (undocumented)
+    backdrop: boolean;
+    // (undocumented)
+    fadeMove: string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
+}
+
+// @public (undocumented)
 export class ClrModalModule {
     constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_31" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_23" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_32" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_24" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_31.ClrModal, typeof i2_23.ClrModalBody, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof i1_32.ClrModal, typeof i2_24.ClrModalBody], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule], [typeof i1_32.ClrModal, typeof i2_24.ClrModalBody, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
 export class ClrMonthpicker implements AfterViewInit {
-    constructor(_viewManagerService: ViewManagerService, _localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef);
+    constructor(_viewManagerService: ViewManagerService, _localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>);
     get calendarMonthIndex(): number;
     changeMonth(monthIndex: number): void;
     getTabIndex(monthIndex: number): number;
@@ -2740,14 +2928,14 @@ export class ClrNavigationModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_38" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_27" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_18" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_12" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_39" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_28" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_19" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_10" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_18.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule], [typeof i1_38.ClrHeader, typeof i2_27.ClrNavLevel, typeof i3_18.ClrAriaCurrentLink, typeof i4_12.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof i1_39.ClrHeader, typeof i2_28.ClrNavLevel, typeof i3_19.ClrAriaCurrentLink, typeof i4_13.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8.ClrDropdownModule], [typeof i1_39.ClrHeader, typeof i2_28.ClrNavLevel, typeof i3_19.ClrAriaCurrentLink, typeof i4_13.NavDetectionOompaLoompa, typeof i5_10.MainContainerWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -2788,24 +2976,24 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     protected showNavigation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; "closeButtonAriaLabel": "closeAriaLabel"; }, {}, never, never, false, [{ directive: typeof i1_39.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": "clr-nav-level"; "closeButtonAriaLabel": "closeAriaLabel"; }, {}, never, never, false, [{ directive: typeof i1_40.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
 
 // @public (undocumented)
 export class ClrOption<T> implements OnInit {
-    constructor(elRef: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
+    constructor(elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, optionSelectionService: OptionSelectionService<T>);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    elRef: ElementRef;
+    elRef: ElementRef<HTMLElement>;
     // (undocumented)
     get focusClass(): boolean;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    onClick(): void;
+    onClick(event: MouseEvent): void;
     // (undocumented)
     get optionId(): string;
     set optionId(id: string);
@@ -2847,7 +3035,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
 
 // @public (undocumented)
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
-    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, toggleService: ClrPopoverToggleService, parentHost: ElementRef, document: any);
+    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, toggleService: ClrPopoverToggleService, parentHost: ElementRef<HTMLElement>, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     get emptyOptions(): boolean;
@@ -2866,6 +3054,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    get noResultsElementId(): string;
     // (undocumented)
     optionSelectionService: OptionSelectionService<T>;
     // (undocumented)
@@ -2897,7 +3087,7 @@ export class ClrOptionSelected<T> {
 
 // @public (undocumented)
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef, focusService: FocusService_2, toggleService: BehaviorSubject<boolean>);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FocusService_2, toggleService: BehaviorSubject<boolean>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2923,7 +3113,11 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     focusService: FocusService_2;
     // (undocumented)
+    hidePasswordText(label: string): string;
+    // (undocumented)
     show: boolean;
+    // (undocumented)
+    showPasswordText(label: string): string;
     // (undocumented)
     toggle(): void;
     // (undocumented)
@@ -2939,16 +3133,16 @@ export class ClrPasswordModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_20" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_14" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_21" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_15" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof i1_20.ClrPassword, typeof i2_14.ClrPasswordContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_20.ClrPassword, typeof i2_14.ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof i1_21.ClrPassword, typeof i2_15.ClrPasswordContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_21.ClrPassword, typeof i2_15.ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
 export class ClrPopoverAnchor {
-    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef);
+    constructor(smartEventService: ClrPopoverEventsService, element: ElementRef<HTMLButtonElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -2988,11 +3182,11 @@ export class ClrPopoverEventsService implements OnDestroy {
     // (undocumented)
     addScrollListener(): void;
     // (undocumented)
-    anchorButtonRef: ElementRef;
+    anchorButtonRef: ElementRef<HTMLButtonElement>;
     // (undocumented)
-    closeButtonRef: ElementRef;
+    closeButtonRef: ElementRef<HTMLButtonElement>;
     // (undocumented)
-    contentRef: ElementRef;
+    contentRef: ElementRef<HTMLElement>;
     // (undocumented)
     ignoredEvent: any;
     // (undocumented)
@@ -3031,11 +3225,11 @@ export class ClrPopoverModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
-    // Warning: (ae-forgotten-export) The symbol "i2_30" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_23" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_31" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_24" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i8.ClrDropdownModule, typeof i2_30.ClrSignpostModule, typeof i3_23.ClrTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i8.ClrDropdownModule, typeof i2_31.ClrSignpostModule, typeof i3_24.ClrTooltipModule]>;
 }
 
 // @public
@@ -3102,8 +3296,8 @@ export class ClrPopoverToggleService {
 
 // @public (undocumented)
 export class ClrProgressBar {
-    // @deprecated (undocumented)
-    set clrDanger(value: boolean | string);
+    // (undocumented)
+    set clrCompact(value: boolean | string);
     // (undocumented)
     set clrFade(value: boolean | string);
     // (undocumented)
@@ -3114,8 +3308,10 @@ export class ClrProgressBar {
     set clrLabeled(value: boolean | string);
     // (undocumented)
     set clrLoop(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrSuccess(value: boolean | string);
+    // (undocumented)
+    color: string;
+    // (undocumented)
+    get compactClass(): boolean;
     // (undocumented)
     get dangerClass(): boolean;
     displayStringValue(): boolean;
@@ -3146,7 +3342,9 @@ export class ClrProgressBar {
     // (undocumented)
     value: number | string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "value": "clrValue"; "id": "id"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrSuccess": "clrSuccess"; "clrDanger": "clrDanger"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
+    get warningClass(): boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrProgressBar, "clr-progress-bar", never, { "max": "clrMax"; "displayval": "clrDisplayval"; "color": "clrColor"; "value": "clrValue"; "id": "id"; "clrCompact": "clrCompact"; "clrLabeled": "clrLabeled"; "clrFade": "clrFade"; "clrLoop": "clrLoop"; "clrFlash": "clrFlash"; "clrFlashDanger": "clrFlashDanger"; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBar, never>;
 }
@@ -3157,15 +3355,15 @@ export class ClrProgressBarModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrProgressBarModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_48" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_50" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof i1_48.ClrProgressBar], [typeof i6.CommonModule], [typeof i1_48.ClrProgressBar]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof i1_50.ClrProgressBar], [typeof i6.CommonModule], [typeof i1_50.ClrProgressBar]>;
 }
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3176,10 +3374,14 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
+    // (undocumented)
+    groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
     protected ifControlStateService: IfControlStateService;
     // (undocumented)
@@ -3193,7 +3395,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": "clrInline"; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null, null]>;
 }
@@ -3205,12 +3407,12 @@ export class ClrRadioModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRadioModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_21" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_15" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_22" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_14" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof i1_21.ClrRadio, typeof i2_15.ClrRadioContainer, typeof i3_13.ClrRadioWrapper], [typeof i6.CommonModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule, typeof i3_2.ClrIconModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_21.ClrRadio, typeof i2_15.ClrRadioContainer, typeof i3_13.ClrRadioWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof i1_22.ClrRadio, typeof i2_16.ClrRadioContainer, typeof i3_14.ClrRadioWrapper], [typeof i6.CommonModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule, typeof i3_2.ClrIconModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_22.ClrRadio, typeof i2_16.ClrRadioContainer, typeof i3_14.ClrRadioWrapper]>;
 }
 
 // @public (undocumented)
@@ -3229,7 +3431,7 @@ export class ClrRadioWrapper implements DynamicWrapper, OnInit {
 
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3259,11 +3461,11 @@ export class ClrRangeModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRangeModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_24" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_18" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_25" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_19" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof i1_24.ClrRange, typeof i2_18.ClrRangeContainer], [typeof i6.CommonModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule, typeof i3_2.ClrIconModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_24.ClrRange, typeof i2_18.ClrRangeContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof i1_25.ClrRange, typeof i2_19.ClrRangeContainer], [typeof i6.CommonModule, typeof i2_6.ClrCommonFormsModule, typeof i7_3.ClrHostWrappingModule, typeof i3_2.ClrIconModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_25.ClrRange, typeof i2_19.ClrRangeContainer]>;
 }
 
 // @public (undocumented)
@@ -3298,7 +3500,7 @@ export interface ClrRecursiveForOfContext<T> {
 
 // @public (undocumented)
 export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -3347,11 +3549,11 @@ export class ClrSelectModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_22" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_23" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_17" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof i1_22.ClrSelect, typeof i2_16.ClrSelectContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_22.ClrSelect, typeof i2_16.ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof i1_23.ClrSelect, typeof i2_17.ClrSelectContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_23.ClrSelect, typeof i2_17.ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -3360,6 +3562,54 @@ export enum ClrSide {
     AFTER = 1,
     // (undocumented)
     BEFORE = -1
+}
+
+// @public (undocumented)
+export class ClrSidePanel implements OnInit {
+    constructor(element: ElementRef<HTMLElement>, configuration: ClrModalConfigurationService);
+    // (undocumented)
+    altClose: EventEmitter<boolean>;
+    // (undocumented)
+    close(): void;
+    // (undocumented)
+    closeButtonAriaLabel: string | undefined;
+    // (undocumented)
+    get clrSidePanelBackdrop(): boolean;
+    set clrSidePanelBackdrop(backdrop: boolean);
+    // (undocumented)
+    labelledById: string;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    open(): void;
+    // (undocumented)
+    _open: boolean;
+    // (undocumented)
+    openChange: EventEmitter<boolean>;
+    // (undocumented)
+    preventClose: boolean;
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    skipAnimation: string;
+    // (undocumented)
+    staticBackdrop: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "_open": "clrSidePanelOpen"; "closeButtonAriaLabel": "clrSidePanelCloseButtonAriaLabel"; "size": "clrSidePanelSize"; "skipAnimation": "clrSidePanelSkipAnimation"; "labelledById": "clrSidePanelLabelledById"; "staticBackdrop": "clrSidePanelStaticBackdrop"; "preventClose": "clrSidePanelPreventClose"; "clrSidePanelBackdrop": "clrSidePanelBackdrop"; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
+}
+
+// @public (undocumented)
+export class ClrSidePanelModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1_47" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof i1_47.ClrSidePanel], [typeof i6.CommonModule, typeof i39.CdkTrapFocusModule, typeof i3_2.ClrIconModule, typeof i4_12.ClrModalModule], [typeof i1_47.ClrSidePanel, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -3379,7 +3629,7 @@ export class ClrSignpost {
 export class ClrSignpostContent extends AbstractPopover implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
+    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: any);
     close(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -3402,23 +3652,21 @@ export class ClrSignpostModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_43" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_31" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_22" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_44" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_32" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_23" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_22.ClrSignpostTrigger], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_43.ClrSignpost, typeof i2_31.ClrSignpostContent, typeof i3_22.ClrSignpostTrigger, typeof i6_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof i1_44.ClrSignpost, typeof i2_32.ClrSignpostContent, typeof i3_23.ClrSignpostTrigger], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_44.ClrSignpost, typeof i2_32.ClrSignpostContent, typeof i3_23.ClrSignpostTrigger, typeof i6_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(toggleService: ClrPopoverToggleService, el: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    constructor(toggleService: ClrPopoverToggleService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
     ariaExpanded: boolean;
-    // (undocumented)
-    commonStrings: ClrCommonStringsService;
     // (undocumented)
     isOpen: boolean;
     // (undocumented)
@@ -3462,10 +3710,10 @@ export class ClrSpinnerModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSpinnerModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSpinnerModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_17" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_9" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof i1_17.ClrSpinner], [typeof i6.CommonModule], [typeof i1_17.ClrSpinner]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSpinnerModule, [typeof i1_9.ClrSpinner], [typeof i6.CommonModule], [typeof i1_9.ClrSpinner]>;
 }
 
 // @public (undocumented)
@@ -3577,22 +3825,23 @@ export class ClrStackViewModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_29" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_21" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_15" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_9" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_30" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_22" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_10" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_8" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1_29.ClrStackView, typeof i2_21.ClrStackHeader, typeof i3_15.ClrStackBlock, typeof i4_9.ClrStackContentInput, typeof i5_8.ClrStackViewLabel, typeof i5_8.ClrStackViewCustomTags], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i46.ClrExpandableAnimationModule], [typeof i1_29.ClrStackView, typeof i2_21.ClrStackHeader, typeof i3_15.ClrStackBlock, typeof i4_9.ClrStackContentInput, typeof i5_8.ClrStackViewLabel, typeof i5_8.ClrStackViewCustomTags]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_8.ClrStackViewLabel, typeof i5_8.ClrStackViewCustomTags], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i46.ClrExpandableAnimationModule], [typeof i1_30.ClrStackView, typeof i2_22.ClrStackHeader, typeof i3_16.ClrStackBlock, typeof i4_10.ClrStackContentInput, typeof i5_8.ClrStackViewLabel, typeof i5_8.ClrStackViewCustomTags]>;
 }
 
 // @public (undocumented)
 export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -3603,6 +3852,8 @@ export class ClrStepButton implements OnInit {
     navigateToNextPanel(): void;
     // (undocumented)
     ngOnInit(): void;
+    // (undocumented)
+    previousButton: boolean;
     // (undocumented)
     submitButton: boolean;
     // (undocumented)
@@ -3617,6 +3868,8 @@ export class ClrStepButton implements OnInit {
 export enum ClrStepButtonType {
     // (undocumented)
     Next = "next",
+    // (undocumented)
+    Previous = "previous",
     // (undocumented)
     Submit = "submit"
 }
@@ -3652,37 +3905,39 @@ export class ClrStepperModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_46" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_34" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_26" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_17" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_48" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_35" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_27" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_18" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_14" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_8" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof i1_46.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_26.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8_8.ClrAccordionModule], [typeof i1_46.ClrStepper, typeof i2_34.ClrStepButton, typeof i3_26.ClrStepperPanel, typeof i4_17.StepperOompaLoompa, typeof i5_14.StepperWillyWonka, typeof i8_8.ClrAccordionModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof i1_48.ClrStepper, typeof i2_35.ClrStepButton, typeof i3_27.ClrStepperPanel, typeof i4_18.StepperOompaLoompa, typeof i5_14.StepperWillyWonka], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i8_8.ClrAccordionModule], [typeof i1_48.ClrStepper, typeof i2_35.ClrStepButton, typeof i3_27.ClrStepperPanel, typeof i4_18.StepperOompaLoompa, typeof i5_14.StepperWillyWonka, typeof i8_8.ClrAccordionModule]>;
 }
 
 // @public (undocumented)
 export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly AccordionStatus: typeof AccordionStatus;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get formGroup(): FormGroup<any>;
     // (undocumented)
-    headerButton: ElementRef;
+    headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
     get id(): string;
     set id(_value: string);
-    // (undocumented)
-    isAccordion: boolean;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
@@ -3747,7 +4002,7 @@ export class ClrTabContent implements OnDestroy {
 
 // @public (undocumented)
 export class ClrTabLink {
-    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef, cfr: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
+    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, cfr: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
     // (undocumented)
     activate(): void;
     // (undocumented)
@@ -3757,7 +4012,9 @@ export class ClrTabLink {
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
-    el: ElementRef;
+    el: ElementRef<HTMLElement>;
+    // (undocumented)
+    readonly id: number;
     // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)
@@ -3832,7 +4089,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     tabLinkElements: HTMLElement[];
     // (undocumented)
-    set tabOverflowEl(value: ElementRef);
+    set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)
     tabsId: number;
     // (undocumented)
@@ -3856,22 +4113,22 @@ export class ClrTabsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_40" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_28" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_20" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_13" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_41" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_29" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_21" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_14" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_8" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_7" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11_3" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_20.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_3.ClrTemplateRefModule, typeof i49.ClrKeyFocusModule], [typeof i1_40.ClrTabContent, typeof i2_28.ClrTab, typeof i3_20.ClrTabs, typeof i4_13.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof i1_41.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa], [typeof i6.CommonModule, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i11_3.ClrTemplateRefModule, typeof i49.ClrKeyFocusModule], [typeof i1_41.ClrTabContent, typeof i2_29.ClrTab, typeof i3_21.ClrTabs, typeof i4_14.ClrTabOverflowContent, typeof i5_11.ClrTabLink, typeof i6_8.TabsWillyWonka, typeof i7_7.ActiveOompaLoompa, typeof i6_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
 export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -3895,11 +4152,11 @@ export class ClrTextareaModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextareaModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_23" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_17" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_24" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_18" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof i1_23.ClrTextarea, typeof i2_17.ClrTextareaContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_23.ClrTextarea, typeof i2_17.ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof i1_24.ClrTextarea, typeof i2_18.ClrTextareaContainer], [typeof i6.CommonModule, typeof i42.FormsModule, typeof i3_2.ClrIconModule, typeof i2_6.ClrCommonFormsModule], [typeof i2_6.ClrCommonFormsModule, typeof i1_24.ClrTextarea, typeof i2_18.ClrTextareaContainer]>;
 }
 
 // @public (undocumented)
@@ -3929,14 +4186,14 @@ export class ClrTimelineModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_49" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_36" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_28" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_19" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_51" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_37" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_29" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_20" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_16" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof i1_49.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_28.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i14_2.ClrSpinnerModule], [typeof i1_49.ClrTimeline, typeof i2_36.ClrTimelineStep, typeof i3_28.ClrTimelineStepDescription, typeof i4_19.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle, typeof i3_2.ClrIconModule, typeof i14_2.ClrSpinnerModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof i1_51.ClrTimeline, typeof i2_37.ClrTimelineStep, typeof i3_29.ClrTimelineStepDescription, typeof i4_20.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i15.ClrSpinnerModule], [typeof i1_51.ClrTimeline, typeof i2_37.ClrTimelineStep, typeof i3_29.ClrTimelineStepDescription, typeof i4_20.ClrTimelineStepHeader, typeof i5_16.ClrTimelineStepTitle, typeof i3_2.ClrIconModule, typeof i15.ClrSpinnerModule]>;
 }
 
 // @public (undocumented)
@@ -3956,7 +4213,7 @@ export class ClrTimelineStep {
     // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)
-    stepTitle: ElementRef;
+    stepTitle: ElementRef<HTMLElement>;
     // (undocumented)
     stepTitleText: string;
     // (undocumented)
@@ -4015,7 +4272,7 @@ export class ClrTooltip {
 export class ClrTooltipContent extends AbstractPopover implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "TooltipMouseService" needs to be exported by the entry point index.d.ts
-    constructor(injector: Injector, parentHost: ElementRef, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
+    constructor(injector: Injector, parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService);
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -4039,12 +4296,12 @@ export class ClrTooltipModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_44" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_32" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_24" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_45" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_33" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_25" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_24.ClrTooltipContent], [typeof i6.CommonModule], [typeof i1_44.ClrTooltip, typeof i2_32.ClrTooltipTrigger, typeof i3_24.ClrTooltipContent, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof i1_45.ClrTooltip, typeof i2_33.ClrTooltipTrigger, typeof i3_25.ClrTooltipContent], [typeof i6.CommonModule], [typeof i1_45.ClrTooltip, typeof i2_33.ClrTooltipTrigger, typeof i3_25.ClrTooltipContent, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule]>;
 }
 
 // @public (undocumented)
@@ -4067,7 +4324,7 @@ export class ClrTooltipTrigger {
 // @public (undocumented)
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point index.d.ts
-    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, { nativeElement }: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone);
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
     // (undocumented)
     featuresService: TreeFeaturesService<T>;
     // (undocumented)
@@ -4097,6 +4354,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     contentContainerTabindex: number;
+    // (undocumented)
+    get disabled(): boolean;
+    set disabled(value: boolean);
     // (undocumented)
     expandable: boolean | undefined;
     // (undocumented)
@@ -4138,9 +4398,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     STATES: typeof ClrSelectedState;
     // (undocumented)
+    get treeNodeContentTextOnly(): boolean;
+    // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": "clrExpandable"; "selected": "clrSelected"; "expanded": "clrExpanded"; "clrForTypeAhead": "clrForTypeAhead"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": "clrExpandable"; "disabled": "clrDisabled"; "selected": "clrSelected"; "expanded": "clrExpanded"; "clrForTypeAhead": "clrForTypeAhead"; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
 }
@@ -4165,14 +4427,14 @@ export class ClrTreeViewModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_30" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_22" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_17" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_10" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_31" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_23" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_18" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_9" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink, typeof i5_9.RecursiveChildren], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i5_7.ClrLoadingModule], [typeof i1_30.ClrTree, typeof i2_22.ClrTreeNode, typeof i3_17.ClrRecursiveForOf, typeof i4_10.ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof i1_31.ClrTree, typeof i2_23.ClrTreeNode, typeof i3_18.ClrRecursiveForOf, typeof i4_11.ClrTreeNodeLink, typeof i5_9.RecursiveChildren], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i5_7.ClrLoadingModule], [typeof i1_31.ClrTree, typeof i2_23.ClrTreeNode, typeof i3_18.ClrRecursiveForOf, typeof i4_11.ClrTreeNodeLink]>;
 }
 
 // @public (undocumented)
@@ -4208,7 +4470,7 @@ export class ClrVerticalNav implements OnDestroy {
 // @public (undocumented)
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point index.d.ts
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
@@ -4276,19 +4538,19 @@ export class ClrVerticalNavModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_42" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_29" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_21" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_15" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_43" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_30" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_22" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_16" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_12" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_21.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_42.ClrVerticalNav, typeof i2_29.ClrVerticalNavLink, typeof i3_21.ClrVerticalNavGroup, typeof i4_15.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof i1_43.ClrVerticalNav, typeof i2_30.ClrVerticalNavLink, typeof i3_22.ClrVerticalNavGroup, typeof i4_16.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon], [typeof i6.CommonModule, typeof i3_2.ClrIconModule, typeof i6_2.ClrConditionalModule, typeof i7_6.ClrFocusOnViewInitModule], [typeof i1_43.ClrVerticalNav, typeof i2_30.ClrVerticalNavLink, typeof i3_22.ClrVerticalNavGroup, typeof i4_16.ClrVerticalNavGroupChildren, typeof i5_12.ClrVerticalNavIcon, typeof i6_2.ClrConditionalModule, typeof i3_2.ClrIconModule, typeof i7_6.ClrFocusOnViewInitModule]>;
 }
 
 // @public (undocumented)
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, differs: IterableDiffers);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
     // Warning: (ae-forgotten-export) The symbol "ButtonHubService" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -4319,6 +4581,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     get isFirst(): boolean;
     // (undocumented)
+    get isInline(): boolean;
+    // (undocumented)
     get isLast(): boolean;
     modalCancel(): void;
     // Warning: (ae-forgotten-export) The symbol "WizardNavigationService" needs to be exported by the entry point index.d.ts
@@ -4347,13 +4611,16 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     pages: QueryList<ClrWizardPage>;
     // (undocumented)
-    pageTitle: ElementRef;
+    pageTitle: ElementRef<HTMLElement>;
     previous(): void;
     reset(): void;
     size: string;
     stepnavAriaLabel: string;
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
+    // (undocumented)
+    get stopModalAnimations(): string;
+    _stopModalAnimations: boolean;
     get stopNavigation(): boolean;
     set stopNavigation(value: boolean);
     get stopNext(): boolean;
@@ -4365,7 +4632,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "closable": "clrWizardClosable"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": "clrWizardStepnavAriaLabel"; "size": "clrWizardSize"; "closable": "clrWizardClosable"; "_stopModalAnimations": "clrWizardPreventModalAnimation"; "forceForward": "clrWizardForceForwardNavigation"; "clrWizardOpen": "clrWizardOpen"; "stopNext": "clrWizardPreventDefaultNext"; "stopCancel": "clrWizardPreventDefaultCancel"; "stopNavigation": "clrWizardPreventNavigation"; "disableStepnav": "clrWizardDisableStepnav"; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -4438,10 +4705,10 @@ export class ClrWizardModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_45" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2_33" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3_25" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_46" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_34" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_26" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_17" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_13" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_9" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7_8" needs to be exported by the entry point index.d.ts
@@ -4451,7 +4718,7 @@ export class ClrWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i11_5" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_25.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_11.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_45.ClrWizard, typeof i2_33.ClrWizardPage, typeof i3_25.ClrWizardStepnav, typeof i4_16.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof i1_46.ClrWizard, typeof i2_34.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions], [typeof i6.CommonModule, typeof i4_12.ClrModalModule, typeof i1_2.ClrAlertModule], [typeof i1_46.ClrWizard, typeof i2_34.ClrWizardPage, typeof i3_26.ClrWizardStepnav, typeof i4_17.ClrWizardStepnavItem, typeof i5_13.ClrWizardButton, typeof i6_9.ClrWizardHeaderAction, typeof i7_8.ClrWizardTitle, typeof i8_7.ClrWizardPageTitle, typeof i9_6.ClrWizardPageNavTitle, typeof i10_5.ClrWizardPageButtons, typeof i11_5.ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -4616,7 +4883,7 @@ export class ClrWizardTitle {
 
 // @public (undocumented)
 export class ClrYearpicker implements AfterViewInit {
-    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, commonStrings: ClrCommonStringsService);
+    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
     get calendarYear(): number;
     changeYear(year: number): void;
     // (undocumented)
@@ -4659,9 +4926,13 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
+    fromLabel: string;
+    // (undocumented)
+    get fromLabelValue(): string;
+    // (undocumented)
     get high(): number | string;
     set high(high: number | string);
-    input: ElementRef;
+    input: ElementRef<HTMLInputElement>;
     // (undocumented)
     get low(): number | string;
     set low(low: number | string);
@@ -4678,10 +4949,14 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
+    // (undocumented)
+    toLabel: string;
+    // (undocumented)
+    get toLabelValue(): string;
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": "clrFilterMinPlaceholder"; "maxPlaceholder": "clrFilterMaxPlaceholder"; "fromLabel": "clrFilterFromLabel"; "toLabel": "clrFilterToLabel"; "value": "clrFilterValue"; "customNumericFilter": "clrDgNumericFilter"; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
@@ -4728,7 +5003,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
-    input: ElementRef;
+    input: ElementRef<HTMLInputElement>;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -4823,12 +5098,12 @@ export const TOGGLE_SERVICE_PROVIDER: {
 export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 
 // @public (undocumented)
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl, renderer: Renderer2, el: ElementRef);
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
+    constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)
-    protected el: ElementRef<any>;
+    protected el: ElementRef<HTMLElement>;
     // (undocumented)
     protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
     // (undocumented)
@@ -4840,6 +5115,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected index: number;
     // (undocumented)
     protected ngControlService: NgControlService;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -4903,7 +5180,7 @@ export class ÇlrActiveOompaLoompa extends OompaLoompa {
 
 // @public (undocumented)
 export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    constructor(elementRef: ElementRef, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
+    constructor(elementRef: ElementRef<HTMLButtonElement>, smartEventsService: ClrPopoverEventsService, smartOpenService: ClrPopoverToggleService);
     // (undocumented)
     closeChange: EventEmitter<void>;
     // (undocumented)
@@ -4924,13 +5201,13 @@ export class ÇlrClrPopoverModuleNext {
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverModuleNext, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
-    // Warning: (ae-forgotten-export) The symbol "i1_16" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_17" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_11" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_7" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof i1_16.ClrPopoverAnchor, typeof i2_11.ClrPopoverCloseButton, typeof i3_11.ClrPopoverOpenCloseButton, typeof i4_7.ClrPopoverContent], never, [typeof i1_16.ClrPopoverAnchor, typeof i2_11.ClrPopoverCloseButton, typeof i3_11.ClrPopoverOpenCloseButton, typeof i4_7.ClrPopoverContent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof i1_17.ClrPopoverAnchor, typeof i2_11.ClrPopoverCloseButton, typeof i3_11.ClrPopoverOpenCloseButton, typeof i4_7.ClrPopoverContent], never, [typeof i1_17.ClrPopoverAnchor, typeof i2_11.ClrPopoverCloseButton, typeof i3_11.ClrPopoverOpenCloseButton, typeof i4_7.ClrPopoverContent]>;
 }
 
 // @public (undocumented)
@@ -4950,11 +5227,15 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridCellRenderer implements OnDestroy {
-    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer);
-    // (undocumented)
-    set columnState(columnState: BehaviorSubject<ColumnState>);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    resetState(state: ColumnState): void;
+    // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4974,7 +5255,7 @@ export class ÇlrDatagridDetailRegisterer {
 
 // @public (undocumented)
 export class ÇlrDatagridHeaderRenderer implements OnDestroy {
-    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
     getColumnWidthState(): Partial<ColumnState>;
     // (undocumented)
@@ -4984,6 +5265,10 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridHeaderRenderer, never>;
@@ -4991,7 +5276,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone);
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -5000,6 +5285,8 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     toggleDetailPane(state: boolean): void;
     // (undocumented)
@@ -5012,13 +5299,17 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
 export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
     constructor(columnsService: ColumnsService);
     // (undocumented)
+    cells: QueryList<ÇlrDatagridCellRenderer>;
+    // (undocumented)
+    expandableRow: ÇlrDatagridRowRenderer;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    setColumnState(): void;
+    setCellsState(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["cells"], never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row, clr-dg-row-detail", never, {}, {}, ["expandableRow", "cells"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowRenderer, never>;
 }
@@ -5030,6 +5321,48 @@ export class ÇlrDatagridSelectionCellDirective {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridSelectionCellDirective, never>;
+}
+
+// @public (undocumented)
+export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    get cdkVirtualForOf(): CdkVirtualForInputs<T>['cdkVirtualForOf'];
+    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
+    // (undocumented)
+    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>['cdkVirtualForTemplate'];
+    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
+    // (undocumented)
+    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize'];
+    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
+    // (undocumented)
+    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>['cdkVirtualForTrackBy'];
+    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
+    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    get itemSize(): CdkFixedSizeVirtualScrollInputs['itemSize'];
+    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
+    // (undocumented)
+    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs['maxBufferPx'];
+    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
+    // (undocumented)
+    get minBufferPx(): CdkFixedSizeVirtualScrollInputs['minBufferPx'];
+    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    renderedRangeChange: EventEmitter<ListRange>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[ClrVirtualScroll]", never, { "cdkVirtualForOf": "clrVirtualRowsOf"; "cdkVirtualForTrackBy": "clrVirtualRowsTrackBy"; "cdkVirtualForTemplate": "clrVirtualRowsTemplate"; "cdkVirtualForTemplateCacheSize": "clrVirtualRowsTemplateCacheSize"; "itemSize": "clrVirtualRowsItemSize"; "minBufferPx": "clrVirtualRowsMinBufferPx"; "maxBufferPx": "clrVirtualRowsMaxBufferPx"; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, [null, null, { skipSelf: true; }, null, null, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -5135,7 +5468,7 @@ export class ÇlrWrappedRow implements DynamicWrapper, AfterViewInit, OnDestroy 
 // Warnings were encountered during analysis:
 //
 // dist/clr-angular/button/button-group/button-group.d.ts:59:217 - (ae-forgotten-export) The symbol "i1_6" needs to be exported by the entry point index.d.ts
-// dist/clr-angular/layout/nav/nav-level.d.ts:35:185 - (ae-forgotten-export) The symbol "i1_39" needs to be exported by the entry point index.d.ts
+// dist/clr-angular/layout/nav/nav-level.d.ts:34:185 - (ae-forgotten-export) The symbol "i1_40" needs to be exported by the entry point index.d.ts
 // dist/clr-angular/utils/popover/popover-host.directive.d.ts:5:114 - (ae-forgotten-export) The symbol "i1_7" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -1,17 +1,21 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import {
   Directive,
+  DoCheck,
   ElementRef,
   HostBinding,
   HostListener,
   InjectionToken,
   Injector,
   Input,
+  KeyValueDiffer,
+  KeyValueDiffers,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -31,14 +35,17 @@ import { ControlIdService } from './providers/control-id.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { Helpers, NgControlService } from './providers/ng-control.service';
 
+export enum CHANGE_KEYS {
+  FORM = 'form',
+  MODEL = 'model',
+}
+
 @Directive()
-export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnDestroy {
+export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, DoCheck, OnDestroy {
   _id: string;
 
-  protected renderer: Renderer2;
   protected controlIdService: ControlIdService;
   protected ngControlService: NgControlService;
-  protected el: ElementRef<any>;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
@@ -47,6 +54,8 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
+  private differs: KeyValueDiffers;
+  private differ: KeyValueDiffer<any, any>;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -54,18 +63,16 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl,
-    renderer: Renderer2,
-    el: ElementRef
+    private ngControl: NgControl | null,
+    protected renderer: Renderer2,
+    protected el: ElementRef<HTMLElement>
   ) {
-    this.renderer = renderer;
-    this.el = el;
-
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.ifControlStateService = injector.get(IfControlStateService, null);
       this.controlClassService = injector.get(ControlClassService, null);
       this.markControlService = injector.get(MarkControlService, null);
+      this.differs = injector.get(KeyValueDiffers, null);
     }
 
     if (this.controlClassService) {
@@ -85,6 +92,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
           this.setAriaDescribedBy(state);
         })
       );
+    }
+
+    if (ngControl) {
+      this.differ = this.differs.find(ngControl).create();
     }
   }
 
@@ -115,8 +126,24 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
       this._id = this.controlIdService.id;
     }
 
-    if (this.ngControlService) {
+    if (this.ngControlService && this.ngControl) {
       this.ngControlService.setControl(this.ngControl);
+    }
+  }
+
+  ngDoCheck() {
+    if (this.differ) {
+      const changes = this.differ.diff(this.ngControl);
+      if (changes) {
+        changes.forEachChangedItem(change => {
+          if (
+            (change.key === CHANGE_KEYS.FORM || change.key === CHANGE_KEYS.MODEL) &&
+            change.currentValue !== change.previousValue
+          ) {
+            this.triggerValidation();
+          }
+        });
+      }
     }
   }
 
@@ -144,8 +171,10 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   }
 
   private markAsTouched(): void {
-    this.ngControl.control.markAsTouched();
-    this.ngControl.control.updateValueAndValidity();
+    if (this.ngControl) {
+      this.ngControl.control.markAsTouched();
+      this.ngControl.control.updateValueAndValidity();
+    }
   }
 
   private setAriaDescribedBy(helpers: Helpers) {
@@ -161,26 +190,24 @@ export class WrappedFormControl<W extends DynamicWrapper> implements OnInit, OnD
   }
 
   private getAriaDescribedById(helpers: Helpers): string | null {
-    let suffix = CONTROL_SUFFIX.HELPER;
-
-    if (helpers.showInvalid) {
-      suffix = CONTROL_SUFFIX.ERROR;
-    } else if (helpers.showValid) {
-      suffix = CONTROL_SUFFIX.SUCCESS;
-    }
-
-    if (this.containerIdService) {
-      return this.containerIdService.id.concat('-', suffix);
-    }
-
-    if (this.controlIdService) {
-      return this.controlIdService.id.concat('-', suffix);
-    }
-
+    const elementId = this.containerIdService?.id || this.controlIdService?.id;
     /**
      * If ContainerIdService or ControlIdService are missing don't try to guess
      * Don't set anything.
      */
-    return null;
+    if (!elementId) {
+      return null;
+    }
+
+    /**
+     * As the helper text is now always visible. If we have error/success then we should use both ids.
+     */
+    const describedByIds = [`${elementId}-${CONTROL_SUFFIX.HELPER}`];
+    if (helpers.showInvalid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.ERROR}`);
+    } else if (helpers.showValid) {
+      describedByIds.push(`${elementId}-${CONTROL_SUFFIX.SUCCESS}`);
+    }
+    return describedByIds.join(' ');
   }
 }

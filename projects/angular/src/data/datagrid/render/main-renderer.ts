@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -21,6 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnStateDiff } from '../interfaces/column-state.interface';
@@ -29,6 +31,7 @@ import { DetailService } from '../providers/detail.service';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
+import { KeyNavigationGridController } from '../utils/key-navigation-grid.controller';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
@@ -52,7 +55,7 @@ export const domAdapterFactory = (platformId: any) => {
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
-  @ContentChildren(DatagridRowRenderer, { descendants: true }) private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
+  @ContentChildren(DatagridRowRenderer) private rows: QueryList<DatagridRowRenderer>;
 
   private _heightSet = false;
   private shouldStabilizeColumns = true;
@@ -66,32 +69,35 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private columnsSizesStable = false;
 
   constructor(
+    private datagrid: ClrDatagrid,
     private organizer: DatagridRenderOrganizer,
     private items: Items,
     private page: Page,
-    private domAdapter: DomAdapter,
-    private el: ElementRef,
+    private el: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private detailService: DetailService,
+    detailService: DetailService,
     private tableSizeService: TableSizeService,
     private columnsService: ColumnsService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private keyNavigation: KeyNavigationGridController
   ) {
     this.subscriptions.push(
-      this.organizer
-        .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
-        .subscribe(() => this.computeHeadersWidth())
+      organizer.filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS).subscribe(() => this.computeHeadersWidth())
     );
 
     this.subscriptions.push(
-      this.page.sizeChange.subscribe(() => {
+      page.sizeChange.subscribe(() => {
         if (this._heightSet) {
           this.resetDatagridHeight();
         }
       })
     );
-    this.subscriptions.push(this.detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
-    this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+    this.subscriptions.push(detailService.stateChange.subscribe(state => this.toggleDetailPane(state)));
+    this.subscriptions.push(items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+  }
+
+  ngOnInit() {
+    this.columnsService.columnsStateChange.subscribe(change => this.columnStateChanged(change));
   }
 
   ngAfterContentInit() {
@@ -114,9 +120,11 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   }
 
   ngAfterViewChecked() {
-    if (this.shouldStabilizeColumns) {
+    const datagridIsVisible = this.checkAndUpdateVisibility();
+    if (this.shouldStabilizeColumns && datagridIsVisible) {
       this.stabilizeColumns();
     }
+
     if (this.shouldComputeHeight()) {
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
@@ -151,7 +159,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
   private setupColumns() {
     this.headers.forEach((header, index) => header.setColumnState(index));
     this.columnsService.columns.splice(this.headers.length); // Trim any old columns
-    this.rows.forEach(row => row.setColumnState());
+    // Sets columnIndex for each column
+    this.columnsService.columns.forEach((column, index) => {
+      this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });
+    });
   }
 
   private shouldComputeHeight(): boolean {
@@ -174,9 +185,8 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
    * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
    */
   private computeDatagridHeight() {
-    // IE doesn't return correct value for getComputedStyle(element).getPropertyValue("height")
-    const value: number = this.domAdapter.clientRect(this.el.nativeElement).height;
-    this.renderer.setStyle(this.el.nativeElement, 'height', value + 'px');
+    const height = window.getComputedStyle(this.el.nativeElement).height;
+    this.renderer.setStyle(this.el.nativeElement, 'height', height);
     this._heightSet = true;
   }
 
@@ -190,6 +200,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
    */
   private computeHeadersWidth() {
     const nbColumns: number = this.headers.length;
+    const headerWidths = this.headers.map(header => {
+      return header.getColumnWidthState();
+    });
     let allStrict = true;
     this.headers.forEach((header, index) => {
       // On the last header column check whether all columns have strict widths.
@@ -198,7 +211,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       // gap in the Datagrid.
       const state: ColumnStateDiff = {
         changes: [DatagridColumnChanges.WIDTH],
-        ...header.getColumnWidthState(),
+        ...headerWidths[index],
       };
 
       if (!state.strictWidth) {
@@ -211,6 +224,51 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
       this.columnsService.emitStateChangeAt(index, state);
     });
+  }
+
+  private columnStateChanged(state) {
+    // eslint-disable-next-line eqeqeq
+    if (!this.headers || state.columnIndex == null) {
+      return;
+    }
+    const columnIndex = state.columnIndex;
+    if (state.changes && state.changes.length) {
+      state.changes.forEach(change => {
+        switch (change) {
+          case DatagridColumnChanges.WIDTH:
+            this.headers.get(columnIndex).setWidth(state);
+            this.rows.forEach(row => {
+              if (row?.cells.length === this.columnsService.columns.length) {
+                row.cells.get(columnIndex).setWidth(state);
+                row.expandableRow?.cells.get(columnIndex)?.setWidth(state);
+              }
+            });
+            break;
+          case DatagridColumnChanges.HIDDEN:
+            this.headers.get(columnIndex).setHidden(state);
+            this.rows.forEach(row => {
+              if (row.cells && row.cells.length) {
+                row.cells.get(columnIndex).setHidden(state);
+                row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
+              }
+            });
+            this.updateColumnSeparatorsVisibility();
+            this.keyNavigation.resetKeyGrid();
+            break;
+          case DatagridColumnChanges.INITIALIZE:
+            if (state.hideable && state.hidden) {
+              this.headers.get(columnIndex).setHidden(state);
+              this.rows.forEach(row => {
+                row.setCellsState();
+                row.expandableRow?.setCellsState();
+              });
+            }
+            break;
+          default:
+            break;
+        }
+      });
+    }
   }
 
   /**
@@ -227,5 +285,26 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       this.organizer.resize();
       this.columnsSizesStable = true;
     }
+  }
+
+  private checkAndUpdateVisibility() {
+    if (this.el.nativeElement.offsetParent) {
+      this.datagrid.datagrid.nativeElement.style.visibility = 'visible';
+      return true;
+    } else {
+      this.datagrid.datagrid.nativeElement.style.visibility = 'hidden';
+      return false;
+    }
+  }
+
+  private updateColumnSeparatorsVisibility() {
+    const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
+    visibleColumns.forEach((column, index) => {
+      if (index === visibleColumns.length - 1) {
+        column.showSeparator = false;
+      } else if (!column.showSeparator) {
+        column.showSeparator = true;
+      }
+    });
   }
 }

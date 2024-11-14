@@ -1,16 +1,36 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Header/Header',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule],
+    }),
+  ],
+  component: ClrHeader,
+  argTypes: {
+    // methods
+    closeOpenNav: { control: { disable: true }, table: { disable: true } },
+    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
+    openNav: { control: { disable: true }, table: { disable: true } },
+    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
+    toggleNav: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+  },
+  args: {},
+};
+
+const HeaderTemplate: StoryFn = args => ({
   template: `
     <clr-main-container>
       <clr-header [role]="role">
@@ -34,39 +54,24 @@ const defaultStory: Story = args => ({
       <nav class="subnav" [clr-nav-level]="2">
         <ul class="nav">
           <li class="nav-item">
-              <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
+            <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Management</a>
+            <a class="nav-link" href="javascript://">Management</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Cloud</a>
+            <a class="nav-link" href="javascript://">Cloud</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="javascript://">Tenants</a>
+            <a class="nav-link" href="javascript://">Tenants</a>
           </li>
         </ul>
       </nav>
     </clr-main-container>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Header/Header',
-  component: ClrHeader,
-  argTypes: {
-    // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-  },
-  args: {},
+export const Header: StoryObj = {
+  render: HeaderTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrMainContainerModule, ClrNavigationModule], defaultStory, defaultParameters, variants);

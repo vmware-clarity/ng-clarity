@@ -1,17 +1,34 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComboboxModule, ClrDropdownModule, ClrModalModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
-import { elements } from 'helpers/elements.data';
+import { ClrModalModule } from '@clr/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
+import { elements } from '../../helpers/elements.data';
 
-const story: Story = args => ({
+export default {
+  title: 'Modal/Stacked Modal',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+};
+
+const StackedModalTemplate: StoryFn = args => ({
   template: `
     <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
 
@@ -31,27 +48,15 @@ const story: Story = args => ({
 
     <clr-modal [(clrModalOpen)]="modal2Open">
       <h3 class="modal-title">Modal 2</h3>
-      <div class="modal-body">
-        This is modal 2. Pressing escape should only close this modal, not both.
-      </div>
+      <div class="modal-body">This is modal 2. Pressing escape should only close this modal, not both.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="modal2Open = false">Close</button>
       </div>
     </clr-modal>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const parameters: Parameters = {
-  title: 'Modal/Stacked Modal',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elements,
-  },
+export const StackedModal: StoryObj = {
+  render: StackedModalTemplate,
 };
-
-setupStorybook([ClrModalModule, ClrComboboxModule, ClrDropdownModule], story, parameters);

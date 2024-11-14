@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -49,7 +50,7 @@ export class ClrTabContent implements OnDestroy {
   }
 
   get ariaLabelledBy(): string {
-    return this.tabsService.children.find(tab => tab.tabContent === this)?.tabLink?.tabLinkId;
+    return this.tabsService.children.find(tab => tab.tabLink.id === this.id)?.tabLink?.tabLinkId;
   }
 
   // The template must be applied on the top-down phase of view-child initialization to prevent

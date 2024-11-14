@@ -11,10 +11,9 @@
 | --clr-btn-padding                               | Button padding                                                             |
 | --clr-btn-height                                | Button height                                                              |
 | --clr-btn-height-sm                             | Small button height                                                        |
-| --clr-btn-font-weight                           | Button text font weight                                                    |
 | --clr-btn-border-radius                         | Button border radius                                                       |
 | --clr-btn-border-width                          | Button border width                                                        |
-| --clr-btn-outline-bg-color                      | Default outline button background color                                    |
+| --clr-btn-outline-bg-color                      | Base outline button background color                                       |
 | --clr-btn-default-color                         | Default button text color                                                  |
 | --clr-btn-default-bg-color                      | Default button background color                                            |
 | --clr-btn-default-border-color                  | Default button border color                                                |

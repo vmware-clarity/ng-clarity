@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -29,6 +30,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
     '[class.alert-info]': "this.currentAlertType == 'info'",
     '[class.alert-success]': "this.currentAlertType == 'success'",
     '[class.alert-warning]': "this.currentAlertType == 'warning'",
+    '[class.alert-neutral]': "this.currentAlertType == 'neutral'",
   },
   styles: [':host { display: block }'],
 })

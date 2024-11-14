@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -40,11 +41,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   constructor(
     private _itemExpand: IfExpandService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
-    private _navGroupService: VerticalNavGroupService,
+    navGroupService: VerticalNavGroupService,
     private _navService: VerticalNavService,
     public commonStrings: ClrCommonStringsService
   ) {
-    this._navGroupRegistrationService.registerNavGroup();
+    _navGroupRegistrationService.registerNavGroup();
 
     // FIXME: This subscription handles a corner case
     // Vertical Nav collapse requires the animation to run first and then
@@ -53,10 +54,10 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // and wait for it to complete. This subscription makes sure that the
     // animation states are correct for that edge case.
     this._subscriptions.push(
-      this._itemExpand.expandChange.subscribe(value => {
+      _itemExpand.expandChange.subscribe(value => {
         if (value && this.expandAnimationState === COLLAPSED_STATE) {
-          if (this._navService.collapsed) {
-            this._navService.collapsed = false;
+          if (_navService.collapsed) {
+            _navService.collapsed = false;
           }
           this.expandAnimationState = EXPANDED_STATE;
         } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
@@ -68,7 +69,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // 1. If the nav is collapsing, close the open nav group + save its state
     // 2. If the nav is expanding, expand the nav group if the previous state was expanded
     this._subscriptions.push(
-      this._navService.animateOnCollapsed.subscribe((goingToCollapse: boolean) => {
+      _navService.animateOnCollapsed.subscribe((goingToCollapse: boolean) => {
         if (goingToCollapse && this.expanded) {
           this.wasExpanded = true;
           this.expandAnimationState = COLLAPSED_STATE;
@@ -81,7 +82,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
     // If a link is clicked, expand the nav group
     this._subscriptions.push(
-      this._navGroupService.expandChange.subscribe((expand: boolean) => {
+      navGroupService.expandChange.subscribe((expand: boolean) => {
         if (expand && !this.expanded) {
           this.expandGroup();
         }

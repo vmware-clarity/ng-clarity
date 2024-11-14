@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrSpinnerModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 interface Block {
   label: string;
@@ -34,7 +34,25 @@ class ElementsBlockService {
   }
 }
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Stack View/Stack View with lazy-loaded blocks',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStackViewModule, ClrSpinnerModule],
+    }),
+  ],
+  component: ClrStackView,
+  argTypes: {
+    // story helpers
+    elementsBlockService: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // story helpers
+    elementsBlockService: new ElementsBlockService(),
+  },
+};
+
+const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
       <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">
@@ -51,22 +69,9 @@ const defaultStory: Story = args => ({
       </clr-stack-block>
     </clr-stack-view>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Stack View/Stack View with lazy-loaded blocks',
-  component: ClrStackView,
-  argTypes: {
-    // story helpers
-    elementsBlockService: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {
-    // story helpers
-    elementsBlockService: new ElementsBlockService(),
-  },
+export const LazyLoading: StoryObj = {
+  render: StackViewTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook([ClrStackViewModule, ClrSpinnerModule], defaultStory, defaultParameters, variants);

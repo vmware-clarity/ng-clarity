@@ -1,16 +1,35 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDropdownModule, ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Header/Headers Static',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
+    }),
+  ],
+  component: ClrHeader,
+  argTypes: {
+    // methods
+    closeOpenNav: { control: { disable: true }, table: { disable: true } },
+    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
+    openNav: { control: { disable: true }, table: { disable: true } },
+    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
+    toggleNav: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {},
+};
+
+const HeaderStaticTemplate: StoryFn = args => ({
   template: `
     <header class="header-6">
       <div class="branding">
@@ -29,7 +48,7 @@ const defaultStory: Story = args => ({
         </a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -39,16 +58,21 @@ const defaultStory: Story = args => ({
       </div>
       <form class="search">
         <label for="search_input">
-          <input id="search_input" type="text" placeholder="Search for keywords...">
+          <input id="search_input" type="text" placeholder="Search for keywords..." />
         </label>
       </form>
       <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-icon-text">
+          <cds-icon shape="user" inverse></cds-icon>
+          <span class="nav-text">username</span>
+        </a>
         <a href="#" class="nav-link nav-icon" aria-label="settings">
           <cds-icon shape="cog"></cds-icon>
         </a>
+        <a href="javascript://" class="nav-link nav-text">Log Out</a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -70,7 +94,7 @@ const defaultStory: Story = args => ({
         </clr-dropdown>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -79,12 +103,10 @@ const defaultStory: Story = args => ({
         </a>
       </div>
       <div class="header-actions">
-        <a href="#" class="nav-link nav-text">
-          Log Out
-        </a>
+        <a href="#" class="nav-link nav-text">Log Out</a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="javascript://" class="nav-link">
@@ -99,7 +121,7 @@ const defaultStory: Story = args => ({
         </a>
       </div>
     </header>
-    <br/>
+    <br />
     <header class="header-6">
       <div class="branding">
         <a href="#" class="nav-link">
@@ -121,28 +143,9 @@ const defaultStory: Story = args => ({
       </div>
     </header>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Header/Headers Static',
-  component: ClrHeader,
-  argTypes: {
-    // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-  },
-  args: {},
+export const HeaderStatic: StoryObj = {
+  render: HeaderStaticTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(
-  [ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],
-  defaultStory,
-  defaultParameters,
-  variants
-);

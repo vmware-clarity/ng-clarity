@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -17,7 +18,7 @@ export class DatagridIfExpandService extends IfExpandService {
   expandableId = '';
 
   private _replace = new BehaviorSubject(false);
-  private _animate = new Subject<boolean>();
+  private _animate = new Subject<void>();
 
   constructor() {
     super();
@@ -41,7 +42,7 @@ export class DatagridIfExpandService extends IfExpandService {
     return this._replace.asObservable();
   }
 
-  get animate(): Observable<boolean> {
+  get animate(): Observable<void> {
     return this._animate.asObservable();
   }
 

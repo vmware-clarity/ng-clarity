@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -65,12 +66,12 @@ export class ClrPopoverPositionService {
      *
      *   Note, more than 3 viewport violations and there isn't anything we can do to help. Also when there are two
      *   violations, we can't help if the violations are TOP+BOTTOM || LEFT+RIGHT => There is no transformation we
-     *   can make to the postion that will help.
+     *   can make to the position that will help.
      *
      *   Some examples:
      *   There is only one error and Primary axis is VERTICAL
      *   - this.handleVerticalAxisOneViolation has a switch that will use the error sum to apply the correct
-     *   transform to the postion based on the reduction of visibilityViolations.
+     *   transform to the position based on the reduction of visibilityViolations.
      *
      *   There are two errors and Primary axis is HORIZONTAL
      *   - handleHorizontalAxisTwoViolations has a switch that uses the error sum to apply both transforms needed to
@@ -101,6 +102,15 @@ export class ClrPopoverPositionService {
      */
     if (this.currentContentCoords.top < 0) {
       this.contentOffsets.yOffset += Math.abs(this.currentContentCoords.top);
+    }
+
+    /**
+     * This detects the condition where the popover is flipped because it would violate the bottom of the viewport, but flipping it results in the
+     * popover rendering above the top of the body (y coordinate outside the body). In that event, it should be rendered within the body
+     * as much as possible, so this logic sets the top of popover to render touching the top of the body.
+     */
+    if (this.contentOffsets.yOffset + this.currentAnchorCoords.y < 0) {
+      this.contentOffsets.yOffset = 0 - this.currentContentCoords.top;
     }
 
     return this.contentOffsets;

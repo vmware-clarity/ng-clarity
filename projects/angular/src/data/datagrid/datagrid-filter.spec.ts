@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -43,6 +44,7 @@ export default function (): void {
           new ClrCommonStringsService(),
           toggleService,
           'browser' as any,
+          undefined,
           undefined
         );
       });
@@ -137,9 +139,11 @@ export default function (): void {
         expect(toggle.getAttribute('aria-expanded')).toBe('true');
       });
 
-      it('has a button with the correct aria-label', function () {
+      it('has a button with the correct aria-label', async () => {
+        await context.fixture.whenStable();
+        context.detectChanges();
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
-        expect(toggle.getAttribute('aria-label')).toBe('Toggle user filter');
+        expect(toggle.getAttribute('aria-label')).toBe('user filter');
       });
 
       it('has role and label on the filter dialog', function () {

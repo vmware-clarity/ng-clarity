@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -20,9 +21,9 @@ import { Subject } from 'rxjs';
 export class WillyWonka implements AfterViewChecked {
   disableChocolateCheck = false;
 
-  private _chocolate = new Subject<string>();
+  private _chocolate = new Subject<void>();
 
-  get chocolate(): Observable<string> {
+  get chocolate(): Observable<void> {
     return this._chocolate.asObservable();
   }
 

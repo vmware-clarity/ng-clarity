@@ -1,52 +1,26 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrCombobox, ClrComboboxModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-combobox-container>
-      <label>{{label}}</label>
-      <clr-combobox
-        [id]="id"
-        [clrMulti]="clrMulti"
-        [ngModel]="clrMulti ? multiModel : singleModel"
-        [placeholder]="placeholder"
-        (clrInputChange)="clrInputChange($event)"
-        (clrOpenChange)="clrOpenChange($event)"
-        (clrSelectionChange)="clrSelectionChange($event)"
-        [disabled]="controlDisabled"
-        name="combo"
-      >
-        <ng-container *clrOptionSelected="let selected">
-          {{selected}}
-        </ng-container>
-        <clr-options>
-          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">{{element.name}}</clr-option>
-        </clr-options>
-      </clr-combobox>
-    </clr-combobox-container>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Combobox/Combobox',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrComboboxModule],
+    }),
+  ],
   component: ClrCombobox,
   argTypes: {
-    // inputs
-    clrMulti: { defaultValue: false, control: { type: 'boolean' } },
-    placeholder: { defaultValue: 'Placeholder text' },
-    id: { defaultValue: '' },
     // outputs
     clrInputChange: { control: { disable: true } },
     clrOpenChange: { control: { disable: true } },
@@ -71,8 +45,13 @@ const defaultParameters: Parameters = {
     // story helpers
     elements: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
+    updateOn: { control: 'radio', options: ['change', 'blur', 'submit'] },
   },
   args: {
+    // inputs
+    clrMulti: false,
+    placeholder: 'Placeholder text',
+    id: '',
     // outputs
     clrInputChange: action('clrInputChange'),
     clrOpenChange: action('clrOpenChange'),
@@ -81,6 +60,9 @@ const defaultParameters: Parameters = {
     optionCount: elements.length,
     content: 'Option',
     controlDisabled: false,
+    controlRequired: false,
+    controlHelper: false,
+    updateOn: 'change',
     elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
@@ -88,32 +70,95 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrMulti: false,
-    singleModel: '',
-    label: 'Single/Placeholder',
-  },
-  {
-    clrMulti: false,
-    singleModel: 'Ba',
-    label: 'Single/Preselected',
-  },
-  {
-    clrMulti: false,
-    singleModel: 'Ba',
-    controlDisabled: true,
-    label: 'Single/Disabled',
-  },
-  {
-    clrMulti: true,
-    label: 'Multi/Placeholder/Preselected',
-  },
-  {
-    clrMulti: true,
-    controlDisabled: true,
-    label: 'Multi/Disabled',
-  },
-];
+const ComboboxTemplate: StoryFn = args => ({
+  template: `
+    <clr-combobox-container>
+      <label>{{ label }}</label>
+      <clr-combobox
+        [id]="id"
+        [clrMulti]="clrMulti"
+        [ngModel]="clrMulti ? multiModel : singleModel"
+        [ngModelOptions]="{ updateOn: updateOn }"
+        [placeholder]="placeholder"
+        (clrInputChange)="clrInputChange($event)"
+        (clrOpenChange)="clrOpenChange($event)"
+        (clrSelectionChange)="clrSelectionChange($event)"
+        [disabled]="controlDisabled"
+        name="combo"
+        [required]="controlRequired"
+      >
+        <ng-container *clrOptionSelected="let selected">
+          {{ selected }}
+        </ng-container>
+        <clr-options>
+          <clr-option *clrOptionItems="let element of elements; let i = index" [clrValue]="element.symbol">
+            {{ element.name }}
+          </clr-option>
+        </clr-options>
+      </clr-combobox>
+      <clr-control-helper *ngIf="controlHelper">Helper text</clr-control-helper>
+      <clr-control-error *ngIf="controlRequired">There was an error</clr-control-error>
+    </clr-combobox-container>
+  `,
+  props: { ...args },
+});
 
-setupStorybook(ClrComboboxModule, defaultStory, defaultParameters, variants);
+export const SingleSelection: StoryObj = {
+  render: ComboboxTemplate,
+};
+
+export const SingleSelection_Preselected: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: 'Ba',
+  },
+};
+
+export const SingleSelectionDisabled: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: 'Ba',
+    controlDisabled: true,
+  },
+};
+
+export const MultiSelection: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+  },
+};
+
+export const MultiSelection_Preselected: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+  },
+};
+
+export const MultiSelectionDisabled: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    clrMulti: true,
+    controlDisabled: true,
+  },
+};
+
+export const SingleSelectionRequired: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    singleModel: '',
+    controlHelper: true,
+    controlRequired: true,
+  },
+};
+
+export const MultiSelectionRequired: StoryObj = {
+  render: ComboboxTemplate,
+  args: {
+    multiModel: [],
+    clrMulti: true,
+    controlHelper: true,
+    controlRequired: true,
+  },
+};

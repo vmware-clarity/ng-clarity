@@ -1,34 +1,23 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
+import { CommonModules } from '../../helpers/common';
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-datalist-container>
-      <input clrDatalistInput [disabled]="disabled" placeholder="Options" />
-      <datalist>
-        <ng-container *ngFor="let element of elements; let i = index">
-          <option *ngIf="i < optionCount" [value]="element.symbol">{{element.name}}</option>
-        </ng-container>
-      </datalist>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>There was an error</clr-control-error>
-    </clr-datalist-container>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Datalist/Datalist',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrDatalistModule, ClrFormsModule],
+    }),
+  ],
   component: ClrDatalist,
   argTypes: {
     // story helpers
@@ -39,18 +28,33 @@ const defaultParameters: Parameters = {
     // story helpers
     elements,
     optionCount: elements.length,
-    content: 'Option',
+    placeholder: 'Options',
     disabled: false,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    disabled: false,
-  },
-  {
-    disabled: true,
-  },
-];
+const DatalistTemplate: StoryFn = args => ({
+  template: `
+    <clr-datalist-container>
+      <label>Element</label>
+      <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
+      <datalist>
+        <ng-container *ngFor="let element of elements; let i = index">
+          <option *ngIf="i < optionCount" [value]="element.symbol">{{ element.name }}</option>
+        </ng-container>
+      </datalist>
+      <clr-control-helper>Helper text</clr-control-helper>
+      <clr-control-error>There was an error</clr-control-error>
+    </clr-datalist-container>
+  `,
+  props: args,
+});
 
-setupStorybook([ClrDatalistModule, ClrFormsModule], defaultStory, defaultParameters, variants);
+export const Datalist: StoryObj = {
+  render: DatalistTemplate,
+};
+
+export const Disabled: StoryObj = {
+  render: DatalistTemplate,
+  args: { disabled: true },
+};

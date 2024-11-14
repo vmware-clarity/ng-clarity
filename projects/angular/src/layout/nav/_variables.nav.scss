@@ -1,14 +1,16 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
 @use '../../utils/variables/variables.color';
 
 // Usage: ../utils/_reboot.scss
 // Link colors
-$clr-link-active-color: variables.$clr-color-secondary-action-500 !default;
-$clr-link-color: variables.$clr-color-action-600 !default;
-$clr-link-hover-color: variables.$clr-color-action-600 !default;
-$clr-link-visited-color: hsl(238, 41%, 53%) !default;
-$clr-custom-links-hover-color: variables.$clr-color-neutral-200 !default;
+$clr-link-active-color: var(--clr-link-active-color) !default;
+$clr-link-color: var(--clr-link-color) !default;
+$clr-link-hover-color: var(--clr-link-hover-color) !default;
+$clr-link-visited-color: var(--clr-link-visited-color) !default;
+$clr-link-visited-color-hover: var(--clr-link-visited-color-hover) !default;

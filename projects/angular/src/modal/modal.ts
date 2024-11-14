@@ -1,15 +1,28 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChange,
+  ViewChild,
+} from '@angular/core';
 
 import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
 import { uniqueIdFactory } from '../utils/id-generator/id-generator.service';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
+import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
 
 @Component({
@@ -27,9 +40,16 @@ import { ModalStackService } from './modal-stack.service';
     `,
   ],
   animations: [
-    trigger('fadeDown', [
-      transition('* => false', [style({ opacity: 0, transform: 'translate(0, -25%)' }), animate('0.2s ease-in-out')]),
-      transition('false => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' }))]),
+    trigger('fadeMove', [
+      transition('* => fadeDown', [
+        style({ opacity: 0, transform: 'translate(0, -25%)' }),
+        animate('0.2s ease-in-out'),
+      ]),
+      transition('fadeDown => *', [
+        animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
+      ]),
+      transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
+      transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
     ]),
     trigger('fade', [
       transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
@@ -39,6 +59,7 @@ import { ModalStackService } from './modal-stack.service';
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
+  @ViewChild('title') title: ElementRef<HTMLElement>;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
@@ -52,19 +73,34 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
 
-  @Input('clrModalLabelledById') labelledBy = this.modalId;
+  @Input('clrModalLabelledById') labelledBy: string;
+
+  // presently this is only used by inline wizards
+  @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
   constructor(
     private _scrollingService: ScrollingService,
     public commonStrings: ClrCommonStringsService,
-    private modalStackService: ModalStackService
+    private modalStackService: ModalStackService,
+    private configuration: ClrModalConfigurationService
   ) {}
+
+  get fadeMove(): string {
+    return this.skipAnimation ? '' : this.configuration.fadeMove;
+  }
+  set fadeMove(move: string) {
+    this.configuration.fadeMove = move;
+  }
+
+  get backdrop(): boolean {
+    return this.configuration.backdrop;
+  }
 
   // Detect when _open is set to true and set no-scrolling to true
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
+    if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this._scrollingService.stopScrolling();
+        this.backdrop && this._scrollingService.stopScrolling();
         this.modalStackService.trackModalOpen(this);
       } else {
         this._scrollingService.resumeScrolling();
@@ -83,6 +119,15 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = true;
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
+  }
+
+  backdropClick(): void {
+    if (this.staticBackdrop) {
+      this.title.nativeElement.focus();
+      return;
+    }
+
+    this.close();
   }
 
   close(): void {

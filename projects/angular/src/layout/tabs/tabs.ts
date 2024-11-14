@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -157,7 +158,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   @ViewChild(ClrTabOverflowContent, { read: ElementRef })
-  set tabOverflowEl(value: ElementRef) {
+  set tabOverflowEl(value: ElementRef<HTMLElement>) {
     this._tabOverflowEl = value && value.nativeElement;
     if (this.toggleService.open && value) {
       // only when tab overflow view element is registered,

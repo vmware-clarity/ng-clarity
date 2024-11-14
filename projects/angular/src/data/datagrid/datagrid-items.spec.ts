@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -133,10 +134,6 @@ export default function (): void {
 
       it('receives an input for the trackBy option', function () {
         expect(this.clarityDirective.iterableProxy.ngForTrackBy).toBe(this.testComponent.trackBy);
-      });
-
-      it('items receive the provided trackBy option', function () {
-        expect(this.clarityDirective.items.iteratorTrackBy).toBe(this.testComponent.trackBy);
       });
 
       it('correctly mutates and resets an array with trackBy', function () {

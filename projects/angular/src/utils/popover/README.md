@@ -41,7 +41,7 @@ This is what it looks like from the implementing component perspective:
   <header class="header-4" role="heading">
     Header
     <button role="button" class="btn btn-link" clrPopoverCloseButton>
-      <cds-icon shape="window-close" size="36" class="is-inverse"></cds-icon>
+      <cds-icon shape="window-close" size="36"></cds-icon>
     </button>
   </header>
   <section role="region">

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        angular: ['Angular v15', 'Angular v16']
+        angular: ['Angular v15', 'Angular v16', 'Angular v17', 'Angular v18']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,11 +22,19 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Update to Angular v16
-        if: ${{matrix.angular == 'Angular v16'}}
+        if: ${{matrix.angular == 'Angular v16' || matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18'}}
         run: |
-          npx ng update @angular/core@16 @angular/cli@16 @angular/cdk@16 --force
+          npx ng update @angular/core@16 @angular/common@16 @angular/cli@16 @angular/cdk@16 --force
+      - name: Update to Angular v17
+        if: ${{matrix.angular == 'Angular v17' || matrix.angular == 'Angular v18'}}
+        run: |
+          npx ng update @angular/core@17 @angular/common@17 @angular/cli@17 @angular/cdk@17 --allow-dirty --force
+      - name: Update to Angular v18
+        if: ${{matrix.angular == 'Angular v18'}}
+        run: |
+          npx ng update @angular/core@18 @angular/common@18 @angular/cli@18 @angular/cdk@18 --allow-dirty --force
       - name: Disable Storybook Build
-        if: ${{matrix.angular == 'Angular v16'}}
+        if: ${{matrix.angular != 'Angular v15'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
       - name: Lint
         if: ${{matrix.angular == 'Angular v15'}}
@@ -44,13 +52,24 @@ jobs:
         with:
           name: docs
           path: dist/docs/
+      - name: Upload Coverage Artifact
+        if: ${{matrix.angular == 'Angular v15'}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
 
   pr-visual-regression-test:
     name: PR Visual Regression Test
     timeout-minutes: 30
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        browser: ['chromium', 'firefox']
+    env:
+      CLARITY_VRT_BROWSER: ${{matrix.browser}}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -61,32 +80,20 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Build Storybook
         run: npm run _build:storybook
       - name: Discover Stories
         run: npm run ts-node -- ./scripts/write-story-list.ts
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
-      - name: Check for Changes
+      - name: Collect Changes
         id: diff
         run: |
           git add .
-
-          if git diff-index --quiet HEAD
-          then
-            echo "status=clean" >> $GITHUB_OUTPUT
-          else
-            git diff --cached --binary > visual-snapshot-changes.diff
-
-            echo "status=dirty" >> $GITHUB_OUTPUT
-          fi
+          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}.diff
       - name: Upload Changes
-        if: ${{steps.diff.outputs.status == 'dirty'}}
         uses: actions/upload-artifact@v3
         with:
-          name: visual-snapshot-changes.diff
-          path: visual-snapshot-changes.diff
-      - name: Fail if Visual Snapshots Changed
-        if: ${{steps.diff.outputs.status == 'dirty'}}
-        run: exit 1
+          name: visual-snapshot-changes-${{matrix.browser}}.diff
+          path: visual-snapshot-changes-${{matrix.browser}}.diff

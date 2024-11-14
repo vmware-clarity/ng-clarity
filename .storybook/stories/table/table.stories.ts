@@ -1,18 +1,38 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { StoryFn, StoryObj } from '@storybook/angular';
 
 import { elements } from '../../helpers/elements.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Table/Table',
+  argTypes: {
+    // story helpers
+    elements: { control: { disable: true }, table: { disable: true } },
+    rowCount: { control: { type: 'number', min: 0, max: elements.length } },
+  },
+  args: {
+    // story helpers
+    elements,
+    rowCount: 10,
+    leftAligned: false,
+    bordered: false,
+    compact: false,
+    vertical: false,
+  },
+};
+
+const TableTemplate: StoryFn = args => ({
   template: `
-    <table class="table" [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }">
+    <table
+      class="table"
+      [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }"
+    >
       <thead>
         <tr>
           <th [ngClass]="{ left: leftAligned }">Element Name</th>
@@ -24,10 +44,10 @@ const defaultStory: Story = args => ({
       <tbody>
         <ng-container *ngFor="let element of elements; let i = index">
           <tr *ngIf="i < rowCount">
-            <td [ngClass]="{ left: leftAligned }">{{element.name}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.symbol}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.number}}</td>
-            <td [ngClass]="{ left: leftAligned }">{{element.electronegativity}}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
+            <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
           </tr>
         </ng-container>
       </tbody>
@@ -36,17 +56,9 @@ const defaultStory: Story = args => ({
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Table/Table',
-  argTypes: {
-    // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
-    rowCount: { control: { type: 'number', min: 0, max: elements.length } },
-  },
+export const Basic: StoryObj = {
+  render: TableTemplate,
   args: {
-    // story helpers
-    elements,
-    rowCount: elements.length,
     leftAligned: false,
     bordered: true,
     compact: false,
@@ -54,42 +66,42 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [
-  {
-    rowCount: 10,
+export const Compact: StoryObj = {
+  render: TableTemplate,
+  args: {
+    leftAligned: false,
+    bordered: true,
+    compact: true,
+    vertical: false,
+  },
+};
+
+export const NonBordered: StoryObj = {
+  render: TableTemplate,
+  args: {
     leftAligned: false,
     bordered: false,
     compact: false,
     vertical: false,
   },
-  {
-    rowCount: 10,
+};
+
+export const LeftAligned: StoryObj = {
+  render: TableTemplate,
+  args: {
     leftAligned: true,
     bordered: true,
     compact: false,
     vertical: false,
   },
-  {
-    rowCount: 10,
-    leftAligned: false,
-    bordered: true,
-    compact: true,
-    vertical: false,
-  },
-  {
-    rowCount: 10,
-    leftAligned: true,
-    bordered: true,
-    compact: true,
-    vertical: false,
-  },
-  {
-    rowCount: 10,
+};
+
+export const Vertical: StoryObj = {
+  render: TableTemplate,
+  args: {
     leftAligned: false,
     bordered: true,
     compact: false,
     vertical: true,
   },
-];
-
-setupStorybook([], defaultStory, defaultParameters, variants);
+};

@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LoadingListener } from '../../utils/loading/loading-listener';
+import { ClrDatagrid } from './datagrid';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
@@ -185,54 +187,26 @@ export default function (): void {
     });
 
     describe('Conditional Selection with *ngFor', () => {
-      describe('DatagridWithNgForTrackBy', () => {
-        let fixture: ComponentFixture<NgForDatagridWithNgForTrackBy>;
-        let nativeElement: HTMLElement;
+      let fixture: ComponentFixture<NgForDatagridWithTrackBy>;
+      let nativeElement: HTMLElement;
 
-        beforeEach(() => {
-          TestBed.configureTestingModule({
-            imports: [ClrDatagridModule],
-            declarations: [NgForDatagridWithNgForTrackBy],
-          });
-
-          fixture = TestBed.createComponent(NgForDatagridWithNgForTrackBy);
-          nativeElement = fixture.nativeElement;
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrDatagridModule],
+          declarations: [NgForDatagridWithTrackBy],
         });
 
-        it('does NOT disable the selection checkbox when clrDgSelectable is false (broken behavior)', () => {
-          fixture.componentInstance.clrDgSelectable = false;
-          fixture.detectChanges();
-
-          const checkboxElement = nativeElement.querySelector("input[type='checkbox']");
-
-          expect(checkboxElement.getAttribute('disabled')).toBeNull();
-        });
+        fixture = TestBed.createComponent(NgForDatagridWithTrackBy);
+        nativeElement = fixture.nativeElement;
       });
 
-      [NgForDatagridWithDatagridTrackBy, NgForDatagridWithDatagridTrackByAndNgForTrackBy].forEach(testComponentType => {
-        describe(testComponentType.name, () => {
-          let fixture: ComponentFixture<{ clrDgSelectable: boolean }>;
-          let nativeElement: HTMLElement;
+      it('does disable the selection checkbox when clrDgSelectable is false', () => {
+        fixture.componentInstance.clrDgSelectable = false;
+        fixture.detectChanges();
 
-          beforeEach(() => {
-            TestBed.configureTestingModule({
-              imports: [ClrDatagridModule],
-              declarations: [testComponentType],
-            });
+        const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']");
 
-            fixture = TestBed.createComponent<{ clrDgSelectable: boolean }>(testComponentType);
-            nativeElement = fixture.nativeElement;
-          });
-
-          it('does disable the selection checkbox when clrDgSelectable is false', () => {
-            fixture.componentInstance.clrDgSelectable = false;
-            fixture.detectChanges();
-
-            const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']");
-
-            expect(checkboxElement.getAttribute('disabled')).toBeDefined();
-          });
-        });
+        expect(checkboxElement.getAttribute('disabled')).toBeDefined();
       });
     });
 
@@ -570,6 +544,91 @@ export default function (): void {
         context.detectChanges();
       }
     });
+
+    describe('Details', function () {
+      let context: TestContext<ClrDatagrid<Item>, DatagridWithDisabledOrHiddenDetails>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, DatagridWithDisabledOrHiddenDetails, DATAGRID_SPEC_PROVIDERS);
+        context.detectChanges();
+      });
+
+      it('displays a clickable double caret when the row have details', function () {
+        expect(context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button').length).toBe(
+          context.testComponent.items.length
+        );
+      });
+
+      it('Detail button must contain aria-controls', function () {
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        expect(button).not.toBeNull();
+        expect(button.getAttribute('aria-controls')).not.toBeNull();
+      });
+
+      it('display the details when pre selected', fakeAsync(function () {
+        context.testComponent.preState = context.testComponent.items[0];
+        tick();
+        context.detectChanges();
+
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
+
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
+        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
+      }));
+
+      it('open and close the details', fakeAsync(function () {
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(detailBody.innerText).toBe('' + context.testComponent.items[0].id);
+        expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
+      }));
+
+      it('try open the disabled details', fakeAsync(function () {
+        context.testComponent.disabledIndex = 0;
+        tick();
+        context.detectChanges();
+
+        const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
+
+        button.click();
+        tick();
+        context.detectChanges();
+
+        expect(button).not.toBeNull();
+        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
+      }));
+
+      it('check if detail button is hidden', fakeAsync(function () {
+        context.testComponent.hiddenIndex = 0;
+        tick();
+        context.detectChanges();
+        tick();
+        context.detectChanges();
+
+        const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
+        expect(buttons.length).toBe(1);
+      }));
+    });
   });
 }
 
@@ -634,30 +693,12 @@ class ExpandTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]">
-      <clr-dg-row
-        *ngFor="let item of items; trackBy: trackBy"
-        [clrDgItem]="item"
-        [clrDgSelectable]="clrDgSelectable"
-      ></clr-dg-row>
-    </clr-datagrid>
-  `,
-})
-class NgForDatagridWithNgForTrackBy {
-  clrDgSelectable = true;
-
-  readonly items: Item[] = [{ id: 42 }];
-  readonly trackBy: TrackByFunction<Item> = (_index, item) => item.id;
-}
-
-@Component({
-  template: `
     <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
       <clr-dg-row *ngFor="let item of items" [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
     </clr-datagrid>
   `,
 })
-class NgForDatagridWithDatagridTrackBy {
+class NgForDatagridWithTrackBy {
   clrDgSelectable = true;
 
   readonly items: Item[] = [{ id: 42 }];
@@ -666,19 +707,41 @@ class NgForDatagridWithDatagridTrackBy {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsTrackBy]="trackBy">
+    <clr-datagrid>
       <clr-dg-row
-        *ngFor="let item of items; trackBy: iteratorTrackBy"
+        *ngFor="let item of items; let i = index"
         [clrDgItem]="item"
-        [clrDgSelectable]="clrDgSelectable"
+        [clrDgDetailDisabled]="i === disabledIndex"
+        [clrDgDetailHidden]="i === hiddenIndex"
       ></clr-dg-row>
+
+      <ng-template [(clrIfDetail)]="preState" let-detail>
+        <clr-dg-detail>
+          <clr-dg-detail-header>Title</clr-dg-detail-header>
+          <clr-dg-detail-body>{{ detail.id }}</clr-dg-detail-body>
+        </clr-dg-detail>
+      </ng-template>
     </clr-datagrid>
   `,
 })
-class NgForDatagridWithDatagridTrackByAndNgForTrackBy {
-  clrDgSelectable = true;
+class DatagridWithDisabledOrHiddenDetails {
+  disabledIndex = -1;
+  hiddenIndex = -1;
 
-  readonly items: Item[] = [{ id: 42 }];
-  readonly datagridTrackBy: ClrDatagridItemsTrackByFunction<Item> = item => item.id;
-  readonly iteratorTrackBy: TrackByFunction<Item> = (_index, item) => item.id;
+  readonly items: Item[] = [];
+  private _preState: Item = null;
+
+  constructor(private cdr: ChangeDetectorRef) {
+    this.items.push({ id: 42 });
+    this.items.push({ id: 22 });
+  }
+
+  get preState(): Item {
+    return this._preState;
+  }
+
+  set preState(value: Item) {
+    this._preState = value;
+    this.cdr.detectChanges();
+  }
 }

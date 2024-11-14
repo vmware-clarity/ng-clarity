@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -9,6 +10,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Injector,
   Input,
@@ -35,6 +37,7 @@ import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
+import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
 
@@ -100,8 +103,6 @@ export class ClrDatagridColumn<T = any>
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
-  showSeparator = true;
-
   /**
    * A custom filter for this column that can be provided in the projected content
    */
@@ -144,7 +145,10 @@ export class ClrDatagridColumn<T = any>
    */
   private subscriptions: Subscription[] = [];
 
+  private _showSeparator = true;
+
   constructor(
+    private el: ElementRef<HTMLElement>,
     private _sort: Sort<T>,
     filters: FiltersProvider<T>,
     private vcr: ViewContainerRef,
@@ -154,6 +158,18 @@ export class ClrDatagridColumn<T = any>
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
     this.subscriptions.push(this.listenForDetailPaneChanges());
+  }
+
+  get isHidden() {
+    return this.el.nativeElement.classList.contains(HIDDEN_COLUMN_CLASS);
+  }
+
+  get showSeparator() {
+    return this._showSeparator;
+  }
+  set showSeparator(value: boolean) {
+    this._showSeparator = value;
+    this.changeDetectorRef.markForCheck();
   }
 
   // TODO: We might want to make this an enum in the future
@@ -186,16 +202,12 @@ export class ClrDatagridColumn<T = any>
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
+    } else if (comparator) {
+      this._sortBy = comparator;
+    } else if (this.field) {
+      this._sortBy = new DatagridPropertyComparator(this.field);
     } else {
-      if (comparator) {
-        this._sortBy = comparator;
-      } else {
-        if (this.field) {
-          this._sortBy = new DatagridPropertyComparator(this.field);
-        } else {
-          delete this._sortBy;
-        }
-      }
+      delete this._sortBy;
     }
   }
 
@@ -214,16 +226,17 @@ export class ClrDatagridColumn<T = any>
     }
 
     switch (value) {
-      // the Unsorted case happens when the current state is either Asc or Desc
-      default:
-      case ClrDatagridSortOrder.UNSORTED:
-        this._sort.clear();
-        break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
         break;
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
+        break;
+      // the Unsorted case happens when the current state is neither Asc nor Desc
+      case ClrDatagridSortOrder.UNSORTED:
+      default:
+        this._sort.clear();
+        this._sortDirection = null;
         break;
     }
   }
@@ -341,6 +354,14 @@ export class ClrDatagridColumn<T = any>
       return;
     }
 
+    if (reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
+      this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+      this._sort.clear();
+      this._sortDirection = null;
+      this.sortOrderChange.emit(this._sortOrder);
+      return;
+    }
+
     this._sort.toggle(this._sortBy, reverse);
 
     // setting the private variable to not retrigger the setter logic
@@ -354,8 +375,6 @@ export class ClrDatagridColumn<T = any>
     return this.detailService.stateChange.subscribe(state => {
       if (this.showSeparator !== !state) {
         this.showSeparator = !state;
-        // Have to manually change because of OnPush
-        this.changeDetectorRef.markForCheck();
       }
     });
   }

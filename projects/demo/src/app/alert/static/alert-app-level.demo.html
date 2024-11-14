@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -10,9 +11,25 @@
       <div class="alert-items">
         <div class="alert-item static">
           <div class="alert-icon-wrapper">
-            <cds-icon class="alert-icon" shape="exclamation-circle"></cds-icon>
+            <cds-icon class="alert-icon" shape="error-standard"></cds-icon>
           </div>
           <div class="alert-text">Alert Type: Danger</div>
+          <div class="alert-actions">
+            <button class="btn alert-action">Action</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="close" aria-label="Close">
+        <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
+      </button>
+    </div>
+    <div class="alert alert-app-level alert-success" style="margin-bottom: 24px">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <cds-icon class="alert-icon" shape="success-standard"></cds-icon>
+          </div>
+          <div class="alert-text">Alert Type: Success</div>
           <div class="alert-actions">
             <button class="btn alert-action">Action</button>
           </div>
@@ -26,7 +43,7 @@
       <div class="alert-items">
         <div class="alert-item static">
           <div class="alert-icon-wrapper">
-            <cds-icon class="alert-icon" shape="exclamation-triangle"></cds-icon>
+            <cds-icon class="alert-icon" shape="warning-standard"></cds-icon>
           </div>
           <div class="alert-text">Alert Type: Warning</div>
           <div class="alert-actions">
@@ -38,13 +55,29 @@
         <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
       </button>
     </div>
-    <div class="alert alert-app-level alert-info">
+    <div class="alert alert-app-level alert-info" style="margin-bottom: 24px">
       <div class="alert-items">
         <div class="alert-item static">
           <div class="alert-icon-wrapper">
-            <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+            <cds-icon class="alert-icon" shape="info-standard"></cds-icon>
           </div>
           <div class="alert-text">Alert Type: Info</div>
+          <div class="alert-actions">
+            <button class="btn alert-action">Action</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="close" aria-label="Close">
+        <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
+      </button>
+    </div>
+    <div class="alert alert-app-level alert-neutral">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <cds-icon class="alert-icon" shape="note"></cds-icon>
+          </div>
+          <div class="alert-text">Alert Type: Neutral</div>
           <div class="alert-actions">
             <button class="btn alert-action">Action</button>
           </div>
@@ -65,7 +98,7 @@
       <div class="alert-items">
         <div class="alert-item static">
           <div class="alert-icon-wrapper">
-            <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+            <cds-icon class="alert-icon" shape="info-standard"></cds-icon>
           </div>
           <div class="alert-text">A new update is now available. Upgrade to v.1234.</div>
           <div class="alert-actions">

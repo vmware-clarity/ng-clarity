@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -59,6 +60,29 @@
     </div>
   </div>
 
+  <div class="progress-block">
+    <label>Compact Layout</label>
+    <div class="progress-group">
+      <div class="clr-row">
+        <div class="clr-col-6">Left</div>
+        <div class="clr-col-6 text-right">Right</div>
+      </div>
+      <div class="progress-static danger labeled compact">
+        <div
+          class="progress-meter"
+          [attr.data-value]="staticDangerValue"
+          [attr.data-displayval]="staticDangerValue + '%'"
+        ></div>
+        <span>{{staticDangerValue}}%</span>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-6">Left</div>
+        <div class="clr-col-6 text-right">Right</div>
+      </div>
+    </div>
+    <span>more text</span>
+  </div>
+
   <h4>Stacked Progress Bars</h4>
   <div class="progress-block">
     <label>Stacked Layout</label>
@@ -93,7 +117,7 @@
   <div class="progress-block">
     <label>Stacked (but resized) Layout</label>
     <div class="progress-group" style="font-size: 1px">
-      <div class="progress-static danger">
+      <div class="progress-static danger compact">
         <div
           class="progress-meter"
           [attr.data-value]="staticDangerValue"
@@ -101,7 +125,7 @@
         ></div>
         <span>{{staticDangerValue}}%</span>
       </div>
-      <div class="progress-static">
+      <div class="progress-static compact">
         <div
           class="progress-meter"
           [attr.data-value]="staticLabeledProgbarValue"
@@ -109,7 +133,7 @@
         ></div>
         <span>{{staticLabeledProgbarValue}}%</span>
       </div>
-      <div class="progress-static success">
+      <div class="progress-static success compact">
         <div
           class="progress-meter"
           [attr.data-value]="staticSuccessValue"

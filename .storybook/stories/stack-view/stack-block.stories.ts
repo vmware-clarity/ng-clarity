@@ -1,39 +1,23 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-stack-view>
-      <clr-stack-block
-        ${args.clrSbExpandable === undefined ? '' : '[clrSbExpandable]="clrSbExpandable"'}
-        [clrSbExpanded]="clrSbExpanded"
-        [clrStackViewLevel]="clrStackViewLevel"
-        (clrSbExpandedChange)="clrSbExpandedChange($event)"
-      >
-        <clr-stack-label>{{ label }}</clr-stack-label>
-        <clr-stack-content>{{ content }}</clr-stack-content>
-        <clr-stack-block>
-          <clr-stack-label>{{ subLabel }}</clr-stack-label>
-          <clr-stack-content>{{ subContent }}</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
-    </clr-stack-view>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Stack View/Stack Block',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrStackViewModule],
+    }),
+  ],
   component: ClrStackBlock,
   argTypes: {
     // outputs
@@ -56,6 +40,48 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [{ clrSbExpandable: false }, { clrSbExpanded: false }, { clrSbExpanded: true }];
+const StackViewTemplate: StoryFn = args => ({
+  template: `
+    <clr-stack-view>
+      <clr-stack-block
+        ${args.clrSbExpandable === undefined ? '' : '[clrSbExpandable]="clrSbExpandable"'}
+        [clrSbExpanded]="clrSbExpanded"
+        [clrStackViewLevel]="clrStackViewLevel"
+        (clrSbExpandedChange)="clrSbExpandedChange($event)"
+        [clrSbNotifyChange]="clrSbNotifyChange"
+      >
+        <clr-stack-label>{{ label }}</clr-stack-label>
+        <clr-stack-content>{{ content }}</clr-stack-content>
+        <clr-stack-block>
+          <clr-stack-label>{{ subLabel }}</clr-stack-label>
+          <clr-stack-content>{{ subContent }}</clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+    </clr-stack-view>
+  `,
+  props: args,
+});
 
-setupStorybook(ClrStackViewModule, defaultStory, defaultParameters, variants);
+export const StackView: StoryObj = {
+  render: StackViewTemplate,
+};
+
+export const StackViewNonExpandable: StoryObj = {
+  render: StackViewTemplate,
+  args: { clrSbExpandable: false },
+};
+
+export const StackViewColapsed: StoryObj = {
+  render: StackViewTemplate,
+  args: { clrSbExpanded: false },
+};
+
+export const StackViewExpanded: StoryObj = {
+  render: StackViewTemplate,
+  args: { clrSbExpanded: true },
+};
+
+export const StackViewNotifyChange: StoryObj = {
+  render: StackViewTemplate,
+  args: { clrSbNotifyChange: true },
+};

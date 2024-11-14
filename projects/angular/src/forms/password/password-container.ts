@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -38,9 +39,9 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
             class="clr-input-group-icon-action"
             type="button"
           >
-            <cds-icon status="info" class="clr-password-eye-icon" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
+            <cds-icon class="clr-password-eye-icon" [attr.shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
             <span class="clr-sr-only">
-              {{ show ? commonStrings.keys.passwordHide : commonStrings.keys.passwordShow }}
+              {{ show ? hidePasswordText(label?.labelText) : showPasswordText(label?.labelText) }}
             </span>
           </button>
         </div>
@@ -97,7 +98,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
 
     /* The unsubscribe is handle inside the ClrAbstractContainer */
     this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
+      focusService.focusChange.subscribe(state => {
         this.focus = state;
       })
     );
@@ -117,5 +118,13 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
   toggle() {
     this.show = !this.show;
     this.toggleService.next(this.show);
+  }
+
+  showPasswordText(label: string) {
+    return this.commonStrings.parse(this.commonStrings.keys.passwordShow, { LABEL: label });
+  }
+
+  hidePasswordText(label: string) {
+    return this.commonStrings.parse(this.commonStrings.keys.passwordHide, { LABEL: label });
   }
 }

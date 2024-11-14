@@ -1,39 +1,48 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Datepicker/DateContainer',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],
+    }),
+  ],
+  component: ClrDateContainer,
+  argTypes: {
+    // inputs
+    clrPosition: { control: 'radio', options: CLR_MENU_POSITIONS },
+    // methods
+    addGrid: { control: { disable: true }, table: { disable: true } },
+    controlClass: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrPosition: 'bottom-left',
+  },
+};
+
+const DatePickerTemplate: StoryFn = args => ({
   template: `
-    <div style="margin-top: 300px; text-align: center;">
-      <clr-date-container style="display: inline-block;" [clrPosition]="clrPosition">
+    <div style="margin-top: 300px; display: flex; justify-content: center">
+      <clr-date-container [clrPosition]="clrPosition">
         <label>Date</label>
-        <input type="date" autocomplete="off" clrDate>
+        <input type="date" autocomplete="off" clrDate />
       </clr-date-container>
     </div>
   `,
   props: { ...args },
 });
 
-const defaultParameters: Parameters = {
-  title: 'Datepicker/DateContainer',
-  component: ClrDateContainer,
-  argTypes: {
-    // inputs
-    clrPosition: { defaultValue: 'bottom-left', control: { type: 'radio', options: CLR_MENU_POSITIONS } },
-    // methods
-    addGrid: { control: { disable: true }, table: { disable: true } },
-    controlClass: { control: { disable: true }, table: { disable: true } },
-  },
+export const DateContainer: StoryObj = {
+  render: DatePickerTemplate,
 };
-
-const variants: Parameters[] = [];
-
-setupStorybook(ClrDatepickerModule, defaultStory, defaultParameters, variants);

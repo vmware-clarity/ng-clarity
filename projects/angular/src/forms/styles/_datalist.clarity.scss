@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 @use 'sass:map';
 @use '../../utils/mixins';
 @use '../../utils/variables/variables';
-@use 'properties.forms' as forms-properties;
 @use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
 
 input[clrDatalistInput] {
   position: relative;
@@ -25,36 +26,17 @@ input[clrDatalistInput] {
   }
 
   .clr-datalist-caret {
-    @include mixins.equilateral-var(
-      clr-forms-datalist-caret-icon-size,
-      variables.$clr_baselineRem_0_667,
-      variables.$clr-use-custom-properties
-    );
-    @include mixins.css-var(
-      color,
-      clr-forms-datalist-caret-color,
-      variables.$clr-color-neutral-600,
-      variables.$clr-use-custom-properties
-    );
     position: absolute;
-    @include mixins.css-var(
-      right,
-      clr-forms-baseline,
-      forms-variables.$clr-forms-baseline,
-      variables.$clr-use-custom-properties
-    );
-    cursor: text;
     top: 25%;
+    right: tokens.$cds-global-space-5;
+    color: forms-variables.$clr-forms-datalist-caret-color;
+    cursor: text;
+    @include mixins.equilateral(forms-variables.$clr-forms-datalist-caret-icon-size);
   }
 }
 
 .clr-form-control-disabled .clr-datalist-caret {
-  @include mixins.css-var(
-    color,
-    clr-forms-datalist-caret-disabled-color,
-    variables.$clr-color-neutral-600,
-    variables.$clr-use-custom-properties
-  );
+  color: forms-variables.$clr-forms-datalist-caret-disabled-color;
 }
 
 // Keeps the browser added datalist toggle on the right side of the input underline

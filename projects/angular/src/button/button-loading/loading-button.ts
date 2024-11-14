@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -16,24 +17,29 @@ const MIN_BUTTON_WIDTH = 42;
 @Component({
   selector: 'button[clrLoading]',
   template: `
-    <ng-container [ngSwitch]="state">
-      <span *ngSwitchCase="buttonState.LOADING">
+    <span @parent [ngSwitch]="state">
+      <ng-container *ngSwitchCase="buttonState.LOADING">
         <span @spinner class="spinner spinner-inline"></span>
-      </span>
-      <span *ngSwitchCase="buttonState.SUCCESS">
+      </ng-container>
+      <ng-container *ngSwitchCase="buttonState.SUCCESS">
         <span
           @validated
           (@validated.done)="this.loadingStateChange(this.buttonState.DEFAULT)"
           class="spinner spinner-inline spinner-check"
         ></span>
-      </span>
-      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
+      </ng-container>
+      <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton class="clr-loading-btn-content">
         <ng-content></ng-content>
       </span>
-    </ng-container>
+    </span>
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   animations: [
+    trigger('parent', [
+      // Skip :enter animation on first render.
+      // The button text/content should only be faded when transitioning to or from a non-default state.
+      transition(':enter', []),
+    ]),
     trigger('defaultButton', [
       transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
       // TODO: see if we can get leave animation to work before spinner's enter animation
@@ -69,7 +75,7 @@ export class ClrLoadingButton implements LoadingListener {
   buttonState = ClrLoadingState;
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
-  constructor(public el: ElementRef, private renderer: Renderer2) {}
+  constructor(public el: ElementRef<HTMLButtonElement>, private renderer: Renderer2) {}
 
   loadingStateChange(state: ClrLoadingState): void {
     if (state === this.state) {

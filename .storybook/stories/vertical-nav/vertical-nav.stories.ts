@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -8,10 +9,9 @@ import { bellIcon, calendarIcon, folderIcon, homeIcon, searchIcon, userIcon } fr
 import { IconShapeTuple } from '@cds/core/icon/interfaces/icon.interfaces';
 import { ClrVerticalNav, ClrVerticalNavModule } from '@clr/angular';
 import { action } from '@storybook/addon-actions';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
+import { CommonModules } from '../../helpers/common';
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -22,7 +22,36 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const defaultStory: Story = args => ({
+export default {
+  title: 'Vertical Nav/Vertical Nav',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrVerticalNavModule],
+    }),
+  ],
+  component: ClrVerticalNav,
+  argTypes: {
+    // outputs
+    clrVerticalNavCollapsedChange: { control: { disable: true } },
+    // methods
+    toggleByButton: { control: { disable: true }, table: { disable: true } },
+    // story helpers
+    navLinks: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
+    // outputs
+    clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
+    // story helpers
+    navLinks,
+    activeIndex: 0,
+    includeIcons: true,
+  },
+};
+
+const VerticalNavTemplate: StoryFn = args => ({
   template: `
     <div class="main-container">
       <div class="content-container">
@@ -34,70 +63,61 @@ const defaultStory: Story = args => ({
           <a
             *ngFor="let navLink of navLinks; let index = index"
             clrVerticalNavLink
-            [ngClass]="{ 'active': index == activeIndex }"
+            [ngClass]="{ active: index == activeIndex }"
             href="javascript:void(0)"
             (click)="activeIndex = index"
           >
             <cds-icon *ngIf="includeIcons" [attr.shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-            {{navLink.text}}
+            {{ navLink.text }}
           </a>
         </clr-vertical-nav>
       </div>
     </div>
   `,
-  props: { ...args },
+  props: args,
 });
 
-const defaultParameters: Parameters = {
-  title: 'Vertical Nav/Vertical Nav',
-  component: ClrVerticalNav,
-  argTypes: {
-    // inputs
-    clrVerticalNavCollapsible: { defaultValue: false, control: { type: 'boolean' } },
-    clrVerticalNavCollapsed: { defaultValue: false, control: { type: 'boolean' } },
-    // outputs
-    clrVerticalNavCollapsedChange: { control: { disable: true } },
-    // methods
-    toggleByButton: { control: { disable: true }, table: { disable: true } },
-    // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
-  },
+export const BasicNav: StoryObj = {
+  render: VerticalNavTemplate,
   args: {
-    // outputs
-    clrVerticalNavCollapsedChange: action('clrVerticalNavCollapsedChange'),
-    // story helpers
-    navLinks,
-    activeIndex: 0,
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
+    includeIcons: false,
+  },
+};
+
+export const NonCollapsibleWithIcons: StoryObj = {
+  render: VerticalNavTemplate,
+  args: {
+    clrVerticalNavCollapsible: false,
+    clrVerticalNavCollapsed: false,
     includeIcons: true,
   },
 };
 
-const variants: Parameters[] = [
-  {
-    clrVerticalNavCollapsible: false,
-    clrVerticalNavCollapsed: false,
-    includeIcons: true,
-  },
-  {
-    clrVerticalNavCollapsible: false,
-    clrVerticalNavCollapsed: false,
-    includeIcons: false,
-  },
-  {
+export const CollapsibleWithIcons: StoryObj = {
+  render: VerticalNavTemplate,
+  args: {
     clrVerticalNavCollapsible: true,
     clrVerticalNavCollapsed: false,
     includeIcons: true,
   },
-  {
+};
+
+export const Expanded: StoryObj = {
+  render: VerticalNavTemplate,
+  args: {
     clrVerticalNavCollapsible: true,
     clrVerticalNavCollapsed: false,
     includeIcons: false,
   },
-  {
+};
+
+export const Collapsed: StoryObj = {
+  render: VerticalNavTemplate,
+  args: {
     clrVerticalNavCollapsible: true,
     clrVerticalNavCollapsed: true,
     includeIcons: true,
   },
-];
-
-setupStorybook(ClrVerticalNavModule, defaultStory, defaultParameters, variants);
+};

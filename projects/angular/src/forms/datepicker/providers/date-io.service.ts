@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -38,8 +39,8 @@ export class DateIOService {
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
-  constructor(private _localeHelperService: LocaleHelperService) {
-    this.cldrLocaleDateFormat = this._localeHelperService.localeDateFormat;
+  constructor(localeHelperService: LocaleHelperService) {
+    this.cldrLocaleDateFormat = localeHelperService.localeDateFormat;
     this.initializeLocaleDisplayFormat();
   }
 
@@ -93,7 +94,7 @@ export class DateIOService {
   }
 
   getDateValueFromDateString(date: string): Date {
-    if (!date) {
+    if (!date || typeof date !== 'string') {
       return null;
     }
     const dateParts: string[] = date.match(USER_INPUT_REGEX);

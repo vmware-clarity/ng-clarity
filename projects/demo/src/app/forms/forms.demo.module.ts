@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -17,6 +18,7 @@ import { FormsRadioDemo } from './controls/radio';
 import { FormsSelectDemo } from './controls/select';
 import { FormsTextDemo } from './controls/text';
 import { FormsTextareaDemo } from './controls/textarea';
+import { DynamicControlsDemo } from './dynamic-controls/dynamic-controls.demo';
 import { FormsDemo } from './forms.demo';
 import { ROUTING } from './forms.demo.routing';
 import { FormsGenericContainerDemo } from './generic-container/generic-container';
@@ -69,6 +71,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsA11yDemo,
     FormsGenericContainerDemo,
     FormsValidationDemo,
+    DynamicControlsDemo,
   ],
   exports: [
     FormsDemo,
@@ -97,6 +100,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsA11yDemo,
     FormsGenericContainerDemo,
     FormsValidationDemo,
+    DynamicControlsDemo,
   ],
 })
 export class FormsDemoModule {}

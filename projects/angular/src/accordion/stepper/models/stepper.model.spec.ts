@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -144,6 +145,21 @@ describe('StepperModel', () => {
   it('should set the specified errors of a step', () => {
     stepper.setPanelsWithErrors([step1Id]);
     expect(stepper.panels[0].status).toBe(AccordionStatus.Error);
+  });
+
+  it('navigate to previous step', () => {
+    stepper.navigateToNextPanel(step1Id);
+    stepper.navigateToNextPanel(step2Id);
+
+    expect(stepper.panels[0].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[1].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[2].open).toBe(true);
+
+    stepper.navigateToPreviousPanel(step3Id);
+
+    expect(stepper.panels[0].status).toBe(AccordionStatus.Complete);
+    expect(stepper.panels[1].open).toBe(true);
+    expect(stepper.panels[2].status).toBe(AccordionStatus.Inactive);
   });
 
   /**

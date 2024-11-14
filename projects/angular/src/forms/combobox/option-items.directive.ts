@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -38,9 +39,9 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     private differs: IterableDiffers,
     private optionService: OptionSelectionService<T>,
     private positionService: ClrPopoverPositionService,
-    private vcr: ViewContainerRef
+    vcr: ViewContainerRef
   ) {
-    this.iterableProxy = new NgForOf<T>(this.vcr, this.template, this.differs);
+    this.iterableProxy = new NgForOf<T>(vcr, template, differs);
     this.subscriptions.push(
       optionService.inputChanged.subscribe(filter => {
         this.filter = filter;
@@ -87,27 +88,36 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     if (!this._rawItems || this.filter === undefined || this.filter === null) {
       return;
     }
+
+    const normalizedFilterValue = normalizeValue(this.filter);
+
     if (this.optionService.showAllOptions) {
       this.filteredItems = this._rawItems;
     } else if (this._filterField) {
       this.filteredItems = this._rawItems.filter(item => {
         const objValue = (item as any)[this._filterField];
-        return objValue ? objValue.toString().toLowerCase().indexOf(this.filter.toLowerCase().toString()) > -1 : false;
+        return objValue ? normalizeValue(objValue).includes(normalizedFilterValue) : false;
       });
     } else {
       // Filter by all item object values
       this.filteredItems = this._rawItems.filter(item => {
         if (typeof item !== 'object') {
-          return item.toString().toLowerCase().indexOf(this.filter.toString().toLowerCase()) > -1;
+          return normalizeValue(item).includes(normalizedFilterValue);
         }
         const objValues = Object.values(item).filter(value => {
-          return value !== null && value !== undefined
-            ? value.toString().toLowerCase().indexOf(this.filter.toString().toLowerCase()) > -1
-            : false;
+          return value !== null && value !== undefined ? normalizeValue(value).includes(normalizedFilterValue) : false;
         });
         return objValues.length > 0;
       });
     }
     this.iterableProxy.ngForOf = this.filteredItems;
   }
+}
+
+function normalizeValue(value: any) {
+  return value
+    .toString()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase();
 }

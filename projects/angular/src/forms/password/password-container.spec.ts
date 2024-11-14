@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -104,10 +105,10 @@ export default function (): void {
 
       it('should provide screen-reader only text for toggle button', () => {
         const button: HTMLButtonElement = containerEl.querySelector('button');
-        expect(button.textContent.trim()).toEqual('Show password');
+        expect(button.textContent.trim()).toEqual('Show password for Hello World');
         button.click();
         fixture.detectChanges();
-        expect(button.textContent.trim()).toEqual('Hide password');
+        expect(button.textContent.trim()).toEqual('Hide password for Hello World');
       });
     });
   });

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -45,6 +46,10 @@ export class ModalStackService {
 
   private onKeyUp(event: KeyboardEvent) {
     if (this.modalStack.length && normalizeKey(event.key) === Keys.Escape) {
+      // We blur the active element because escaping with an input element in focus could cause
+      // an ExpressionChangedAfterItHasBeenCheckedError for the touched state. (CDE-1662)
+      (document.activeElement as HTMLElement).blur();
+
       this.modalStack[0].close();
     }
   }

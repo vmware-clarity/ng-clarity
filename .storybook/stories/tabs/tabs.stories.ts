@@ -1,38 +1,26 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrTabs, ClrTabsModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { TabsLayout } from '../../../projects/angular/src/layout/tabs/enums/tabs-layout.enum';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tabs [clrLayout]="clrLayout">
-      <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
-        <button clrTabLink>{{title}} {{i + 1}}</button>
-        <clr-tab-content *clrIfActive="activeTab === (i + 1)">
-          <p>
-            {{content}} {{i + 1}}
-          </p>
-        </clr-tab-content>
-      </clr-tab>
-    </clr-tabs>
-  `,
-  props: { ...args },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tabs/Tabs',
+  decorators: [
+    moduleMetadata({
+      imports: [ClrTabsModule],
+    }),
+  ],
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { defaultValue: TabsLayout.HORIZONTAL, control: { type: 'inline-radio', options: TabsLayout } },
+    clrLayout: { control: 'inline-radio', options: TabsLayout },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -47,6 +35,8 @@ const defaultParameters: Parameters = {
     activeTab: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
+    // inputs
+    clrLayout: TabsLayout.HORIZONTAL,
     // story helpers
     createArray: n => new Array(n),
     tabCount: 4,
@@ -56,20 +46,36 @@ const defaultParameters: Parameters = {
   },
 };
 
-setupStorybook(ClrTabsModule, defaultStory, defaultParameters, generateVariants());
+const tabsTemplate: StoryFn = args => ({
+  template: `
+    <clr-tabs [clrLayout]="clrLayout">
+      <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
+        <button clrTabLink>{{ title }} {{ i + 1 }}</button>
+        <clr-tab-content *clrIfActive="activeTab === i + 1">
+          <p>{{ content }} {{ i + 1 }}</p>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  `,
+  props: { ...args },
+});
 
-function generateVariants() {
-  const variants: Parameters[] = [];
+export const Tabs: StoryObj = {
+  render: tabsTemplate,
+};
 
-  for (const clrLayout of [TabsLayout.HORIZONTAL, TabsLayout.VERTICAL]) {
-    for (const activeTab of [1, 2, 3, 4]) {
-      variants.push({
-        clrLayout,
-        activeTab,
-        tabCount: 4,
-      });
-    }
-  }
+export const VerticalTabs: StoryObj = {
+  render: tabsTemplate,
+  args: {
+    clrLayout: TabsLayout.VERTICAL,
+  },
+};
 
-  return variants;
-}
+export const TabsResponsive: StoryObj = {
+  render: tabsTemplate,
+  parameters: {
+    viewport: {
+      defaultViewport: 'large',
+    },
+  },
+};

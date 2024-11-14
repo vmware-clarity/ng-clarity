@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, TrackByFunction, Type } from '@angular/core';
-import { async, fakeAsync, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Keys } from '../../utils/enums/keys.enum';
@@ -410,23 +411,37 @@ class ProjectionTest {
   template: `
     <clr-datagrid>
       <clr-dg-column>
-        <ng-container *clrDgHideableColumn="{ hidden: true }">First</ng-container>
+        <ng-container *clrDgHideableColumn="{ hidden: firstColumnHidden }">First</ng-container>
       </clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
       <clr-dg-row *ngFor="let item of items">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
         <clr-dg-cell>{{ item * item }}</clr-dg-cell>
-        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="true">
-          <clr-dg-cell class="hidden-cell">{{ item }} (col 1 detail)</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replaceCells">
+          <clr-dg-cell class="first-expandable-row-cell">{{ item }} (col 1 detail)</clr-dg-cell>
           <clr-dg-cell>{{ item * item }} detail (col 2 detail)</clr-dg-cell>
         </clr-dg-row-detail>
       </clr-dg-row>
+
+      <ng-template [(clrIfDetail)]="detailItem">
+        <clr-dg-detail>
+          <clr-datagrid>
+            <clr-dg-column>Detail Column</clr-dg-column>
+            <clr-dg-row>
+              <clr-dg-cell class="nested-datagrid-cell">Detail Cell</clr-dg-cell>
+            </clr-dg-row>
+          </clr-datagrid>
+        </clr-dg-detail>
+      </ng-template>
     </clr-datagrid>
   `,
 })
-class ExpandedReplacedCellsTest {
+class ExpandedCellsTest {
   items = [1, 2, 3];
+  detailItem = null;
+  replaceCells = false;
+  firstColumnHidden = false;
 }
 
 @Component({
@@ -455,24 +470,6 @@ class TabsIntegrationTest {
 
 @Component({
   template: `
-    <clr-datagrid>
-      <clr-dg-column>Item</clr-dg-column>
-      <clr-dg-row *ngFor="let item of items; trackBy: trackById" [clrDgItem]="item">
-        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
-      </clr-dg-row>
-      <clr-dg-detail *clrIfDetail></clr-dg-detail>
-    </clr-datagrid>
-  `,
-})
-class PanelIteratorTrackByTest {
-  items = Array.from(Array(3), (v, i) => {
-    return { name: v, id: i };
-  });
-  trackById: TrackByFunction<{ id: number }> = (index, item) => item.id;
-}
-
-@Component({
-  template: `
     <clr-datagrid [clrDgItemsTrackBy]="trackById">
       <clr-dg-column>Item</clr-dg-column>
       <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
@@ -482,30 +479,32 @@ class PanelIteratorTrackByTest {
     </clr-datagrid>
   `,
 })
-class PanelDatagridTrackByTest {
+class PanelTrackByTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
   trackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
 }
-
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsTrackBy]="datagridTrackById">
+    <clr-datagrid>
       <clr-dg-column>Item</clr-dg-column>
-      <clr-dg-row *ngFor="let item of items; trackBy: iteratorTrackBy" [clrDgItem]="item">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *ngFor="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
       </clr-dg-row>
-      <clr-dg-detail *clrIfDetail></clr-dg-detail>
+      <ng-template [(clrIfDetail)]="preState" let-detail>
+        <clr-dg-detail></clr-dg-detail>
+      </ng-template>
     </clr-datagrid>
   `,
 })
-class PanelDatagridAndIteratorTrackByTest {
+class PanelInitializeOpenedTest {
   items = Array.from(Array(3), (v, i) => {
     return { name: v, id: i };
   });
-  datagridTrackById: ClrDatagridItemsTrackByFunction<{ id: number }> = item => item.id;
-  iteratorTrackBy: TrackByFunction<{ id: number }> = () => Math.random(); // detail pane tracking won't work correctly if this function is used
+  preState = this.items[0];
 }
 
 export default function (): void {
@@ -526,7 +525,10 @@ export default function (): void {
         expect(refreshed).toBe(true);
       });
 
-      it('allows to manually resize the datagrid', function () {
+      it('allows to manually resize the datagrid', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         const organizer: DatagridRenderOrganizer = context.getClarityProvider(DatagridRenderOrganizer);
         let resizeSteps = 0;
         organizer.renderStep.subscribe(() => {
@@ -535,7 +537,7 @@ export default function (): void {
         expect(resizeSteps).toBe(0);
         context.clarityDirective.resize();
         expect(resizeSteps).toBe(5);
-      });
+      }));
     });
 
     describe('Template API', function () {
@@ -694,17 +696,17 @@ export default function (): void {
         });
 
         it('focuses the datagrid on page change', function () {
-          expect(context.clarityDirective.datagridTable.nativeElement).not.toEqual(document.activeElement);
+          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(context.clarityDirective.datagridTable.nativeElement).toEqual(document.activeElement);
+          expect(document.activeElement).toBe(context.clarityDirective.datagridTable.nativeElement);
         });
 
         it('does not focus the datagrid on page change when disabled', function () {
           context.testComponent.disableFocus = true;
           context.detectChanges();
-          expect(context.clarityDirective.datagridTable.nativeElement).not.toEqual(document.activeElement);
+          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
           context.getClarityProvider(Page).current = 2;
-          expect(context.clarityDirective.datagridTable.nativeElement).not.toEqual(document.activeElement);
+          expect(document.activeElement).not.toBe(context.clarityDirective.datagridTable.nativeElement);
         });
       });
     });
@@ -789,13 +791,12 @@ export default function (): void {
         expect(actionOverflowCell.length).toEqual(0);
       });
 
-      it('should have aria-label with value `Select one of actionable rows`', function () {
+      it('should have screen reader only text with value `Select one of actionable rows`', function () {
         context = this.create(ClrDatagrid, ActionableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
-          context.clarityElement
-            .querySelector('.datagrid-header .datagrid-column.datagrid-row-actions')
-            .getAttribute('aria-label')
+          context.clarityElement.querySelector('.datagrid-header .datagrid-column.datagrid-row-actions .clr-sr-only')
+            .textContent
         ).toBe('Select one of actionable rows');
       });
     });
@@ -812,7 +813,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-column.datagrid-expandable-caret')).toBeNull();
       });
 
-      it('can expand rows on initialization', async(function () {
+      it('can expand rows on initialization', waitForAsync(function () {
         const context = this.create(ClrDatagrid, ExpandedOnInitTest);
         const caretIcon = context.clarityElement.querySelector('.datagrid-expandable-caret-icon');
         expect(caretIcon).not.toBeNull();
@@ -821,12 +822,48 @@ export default function (): void {
         expect(rowDetail).not.toBeNull();
       }));
 
-      it('hides cells in dg-row-detail when columns are hidden and rows are replaced', function () {
-        const context = this.create(ClrDatagrid, ExpandedReplacedCellsTest);
+      it('hides cells in dg-row-detail when column is hidden and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = true;
         context.detectChanges();
-        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.hidden-cell');
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
         expect(hiddenCell.classList).toContain(HIDDEN_COLUMN_CLASS);
         expect(window.getComputedStyle(hiddenCell).display).toBe('none');
+      });
+
+      it('shows cells in dg-row-detail when column is shown and rows are replaced', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.replaceCells = true;
+        context.testComponent.firstColumnHidden = false;
+        context.detectChanges();
+
+        const hiddenCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(hiddenCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(hiddenCell).display).toBe('block');
+      });
+
+      // regression test for CDE-2199
+      it('does not hide cells in nested datagrid', function () {
+        const context = this.create(ClrDatagrid, ExpandedCellsTest);
+        context.testComponent.firstColumnHidden = false;
+        context.testComponent.detailItem = context.testComponent.items[0];
+        context.detectChanges();
+
+        // It is important to hide column after first render for this test.
+        context.testComponent.firstColumnHidden = true;
+        context.detectChanges();
+
+        // The expandable row cell should be hidden.
+        const firstExpandableRowCell: HTMLElement = context.clarityElement.querySelector('.first-expandable-row-cell');
+        expect(firstExpandableRowCell.classList).toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(firstExpandableRowCell).display).toBe('none');
+
+        // The nested datagrid cell should not be hidden.
+        const nestedDatagridCell: HTMLElement = context.clarityElement.querySelector('.nested-datagrid-cell');
+        expect(nestedDatagridCell.classList).not.toContain(HIDDEN_COLUMN_CLASS);
+        expect(window.getComputedStyle(nestedDatagridCell).display).toBe('block');
       });
 
       it('can render mixed expandable/non-expandable', function () {
@@ -841,9 +878,9 @@ export default function (): void {
         const context = this.create(ClrDatagrid, ExpandableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
-          context.clarityElement
-            .querySelector('.datagrid-header .datagrid-column.datagrid-expandable-caret')
-            .getAttribute('aria-label')
+          context.clarityElement.querySelector(
+            '.datagrid-header .datagrid-column.datagrid-expandable-caret .clr-sr-only'
+          ).textContent
         ).toBe('Expand one of the rows');
       });
     });
@@ -860,10 +897,10 @@ export default function (): void {
         const grid = context.clarityElement.querySelector('[role=grid]');
         expect(grid).toBeDefined();
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
-        expect(cells.length).toBe(13); // 3*2 data, 3 select radios, 3 headers and 1 placeholder
+        expect(cells.length).toBe(12); // 3*2 data, 3 select radios, 3 headers
         // need to start with this cell exactly, because it has tabindex=0
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
         // second time, to avoid cycling over cells with radios
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowRight }));
@@ -880,65 +917,71 @@ export default function (): void {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toEqual(cells[3].querySelector('[type=radio]'));
+        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
       });
 
       it('Does not move focus to the placeholder element', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
         // we're at the edge, then we click once more to get to the placeholder
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: Keys.ArrowDown }));
-        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
       });
 
       it('Moves focus to a clicked element', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         const testCell = 7;
-        expect(document.activeElement).not.toEqual(cells[testCell]);
+        expect(document.activeElement).not.toBe(cells[testCell]);
         cells[testCell].dispatchEvent(new MouseEvent('mousedown', { buttons: 1, bubbles: true }));
-        expect(document.activeElement).toEqual(cells[testCell]);
+        expect(document.activeElement).toBe(cells[testCell]);
       });
 
       it('Moves focus on PageDown and PageUp', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
+
+        // focus at most left header cell
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
+
+        // focus at bottom datagrid radio input
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageDown' }));
-        expect(document.activeElement).toEqual(cells[9].querySelector('[type=radio]'));
+        expect(document.activeElement).toBe(cells[9].querySelector('[type=radio]'));
+
+        // focus at top datagrid radio input
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'PageUp' }));
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[3].querySelector('[type=radio]'));
       });
 
       it('Moves focus on Home and End', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End' }));
-        expect(document.activeElement).toEqual(cells[2]);
+        expect(document.activeElement).toBe(cells[2]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home' }));
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
       });
 
       it('Moves focus on Ctrl-Home and Ctrl-End', function () {
         const grid = context.clarityElement.querySelector('[role=grid]');
         const cells = grid.querySelectorAll('[role=gridcell], [role=columnheader]');
         cells[0].focus();
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'End', ctrlKey: true }));
-        expect(document.activeElement).toEqual(cells[11]);
+        expect(document.activeElement).toBe(cells[11]);
         grid.dispatchEvent(new KeyboardEvent('keydown', { code: 'Home', ctrlKey: true }));
-        expect(document.activeElement).toEqual(cells[0]);
+        expect(document.activeElement).toBe(cells[0]);
       });
     });
 
@@ -1329,60 +1372,63 @@ export default function (): void {
       });
 
       // Tests if manual style="width: 123px" was applied and not overridden during the calculation from the above test.
-      it('column width manual setting is applied', function () {
+      it('column width manual setting is applied', fakeAsync(function () {
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').clientWidth).toBe(123);
+
+        context.detectChanges();
+        tick();
+
         expect(context.clarityElement.querySelector('.datagrid-column').getAttribute('style')).toBe('width: 123px;');
-      });
+      }));
     });
 
-    interface AbstractDetailPaneTrackByTestComponent {
-      items: { name: any; id: number }[];
-    }
+    describe('detail pane and track by', function () {
+      let context: TestContext<ClrDatagrid, PanelTrackByTest>;
+      let detailService;
 
-    function testDetailPaneTrackBy(
-      description: string,
-      testComponentType: Type<AbstractDetailPaneTrackByTestComponent>
-    ) {
-      describe(description, function () {
-        let context: TestContext<ClrDatagrid, AbstractDetailPaneTrackByTestComponent>;
-        let detailService;
-
-        beforeEach(function () {
-          context = this.create(ClrDatagrid, testComponentType, DATAGRID_SPEC_PROVIDERS);
-          detailService = context.getClarityProvider(DetailService) as DetailService;
-        });
-
-        it('should keep open the panel', () => {
-          /**
-           * trackBy function is defined inside the testComponent and
-           * it is tracking by `id` so unless the id is not changed the
-           * item must stay the same.
-           */
-          /* Open second detail pane */
-          const detailButton = context.clarityElement.querySelectorAll('.datagrid-detail-caret-button')[1];
-          detailService.open(context.testComponent.items[1], detailButton);
-          context.detectChanges();
-
-          /* make sure that the state is set */
-          expect(detailService.state).toEqual(context.testComponent.items[1]);
-
-          /* update the name of the second pane */
-          context.testComponent.items[1].name = 'changed';
-          context.detectChanges();
-
-          /* make sure that the same item is still selected */
-          expect(detailService.state).toEqual(context.testComponent.items[1]);
-        });
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
+        detailService = context.getClarityProvider(DetailService) as DetailService;
       });
-    }
 
-    testDetailPaneTrackBy('detail pane and iteratorTrackBy', PanelIteratorTrackByTest);
+      it('should keep open the panel', () => {
+        /**
+         * trackBy function is defined inside the testComponent and
+         * it is tracking by `id` so unless the id is not changed the
+         * item must stay the same.
+         */
+        /* Open second detail pane */
+        const detailButton = context.clarityElement.querySelectorAll('.datagrid-detail-caret-button')[1];
+        detailService.open(context.testComponent.items[1], detailButton);
+        context.detectChanges();
 
-    testDetailPaneTrackBy('detail pane and datagridTrackBy', PanelDatagridTrackByTest);
+        /* make sure that the state is set */
+        expect(detailService.state).toEqual(context.testComponent.items[1]);
 
-    testDetailPaneTrackBy(
-      'detail pane and datagridTrackBy (and not iteratorTrackBy)',
-      PanelDatagridAndIteratorTrackByTest
-    );
+        /* update the name of the second pane */
+        context.testComponent.items[1].name = 'changed';
+        context.detectChanges();
+
+        /* make sure that the same item is still selected */
+        expect(detailService.state).toEqual(context.testComponent.items[1]);
+      });
+    });
+    describe('initialize datagrid with opened detail', function () {
+      let context: TestContext<ClrDatagrid, PanelInitializeOpenedTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PanelInitializeOpenedTest, DATAGRID_SPEC_PROVIDERS);
+      });
+
+      it('should be with opened panel and one column visible', () => {
+        const hiddenColumns = context.clarityElement.querySelectorAll('[role=columnheader].datagrid-hidden-column');
+
+        /* make sure that the state is set */
+        expect(hiddenColumns.length).toEqual(1);
+      });
+    });
   });
 }

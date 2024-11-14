@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
 import { ClrConditionalModule, ClrLoadingModule, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
+import { CommonModules } from '../../helpers/common';
 import { filesRoot } from '../../helpers/files.data';
-import { setupStorybook } from '../../helpers/setup-storybook.helpers';
 
 class FileService {
   loading = false;
@@ -29,26 +29,13 @@ class FileService {
   }
 }
 
-const defaultStory: Story = args => ({
-  template: `
-    <clr-tree [clrLazy]="true">
-      <clr-tree-node [clrLoading]="fileService.loading">
-        Files
-        <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
-          <clr-tree-node *ngFor="let filename of fileService.filenames | async">
-            {{ filename }}
-          </clr-tree-node>
-        </ng-template>
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: {
-    ...args,
-  },
-});
-
-const defaultParameters: Parameters = {
+export default {
   title: 'Tree/Tree with lazy-loaded nodes',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrTreeViewModule, ClrConditionalModule, ClrLoadingModule],
+    }),
+  ],
   component: ClrTree,
   argTypes: {
     // inputs
@@ -62,6 +49,22 @@ const defaultParameters: Parameters = {
   },
 };
 
-const variants: Parameters[] = [];
+const LazyLoadedTreeTemplate: StoryFn = args => ({
+  template: `
+    <clr-tree [clrLazy]="true">
+      <clr-tree-node [clrLoading]="fileService.loading">
+        Files
+        <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
+          <clr-tree-node *ngFor="let filename of fileService.filenames | async">
+            {{ filename }}
+          </clr-tree-node>
+        </ng-template>
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  props: args,
+});
 
-setupStorybook([ClrTreeViewModule, ClrConditionalModule, ClrLoadingModule], defaultStory, defaultParameters, variants);
+export const LazyLoadedNodes: StoryObj = {
+  render: LazyLoadedTreeTemplate,
+};

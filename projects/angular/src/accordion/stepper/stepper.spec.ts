@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -94,7 +95,7 @@ describe('ClrStepper', () => {
 
     it('should reset if a previously completed panel is revisited and put into an invalid state', () => {
       // all setup...
-      spyOn(stepperService, 'navigateToNextPanel');
+      spyOn(stepperService, 'setPanelInvalid');
       const group1 = testComponent.form.controls.group as FormGroup;
       group1.controls.name.setValue('lmnop');
       fixture.detectChanges();
@@ -109,8 +110,56 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       expect(group1.valid).toBe(false, 'first panel form is now invalid');
-      // making a previously valid form invalid forces navigation; called once earlier and only once after this
-      expect(stepperService.navigateToNextPanel).toHaveBeenCalledTimes(2);
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
+    });
+
+    it('should not set the panel status to invalid immediately', () => {
+      // setup
+      spyOn(stepperService, 'setPanelInvalid');
+      const form = testComponent.form.controls.group;
+
+      // act (make form invalid)
+      form.controls.name.setValue('');
+      fixture.detectChanges();
+
+      // assert
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
+    });
+
+    it('should set the panel status to valid if form was previously invalid', () => {
+      // setup
+      spyOn(stepperService, 'setPanelValid');
+      const form = testComponent.form.controls.group;
+
+      // act 1 (make form invalid)
+      form.controls.name.setValue('');
+      fixture.detectChanges();
+
+      form.controls.name.markAsTouched();
+      form.controls.name.markAsDirty();
+      form.controls.name.updateValueAndValidity();
+
+      fixture.detectChanges();
+
+      // act 2 (make form valid)
+      form.controls.name.setValue('Bob');
+      fixture.detectChanges();
+
+      // assert
+      expect(stepperService.setPanelValid).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not set the panel status to valid if the form was not previously invalid', () => {
+      // setup
+      spyOn(stepperService, 'setPanelInvalid');
+      const form = testComponent.form.controls.group;
+
+      // act (make form valid)
+      form.controls.name.setValue('Bob');
+      fixture.detectChanges();
+
+      // assert
+      expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
   });
 

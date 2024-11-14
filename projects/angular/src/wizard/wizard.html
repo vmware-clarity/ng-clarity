@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -9,6 +10,8 @@
   [clrModalSize]="size"
   [clrModalClosable]="closable"
   [clrModalStaticBackdrop]="true"
+  [clrModalSkipAnimation]="stopModalAnimations"
+  [clrModalOverrideScrollService]="isInline"
   [clrModalPreventClose]="true"
   (clrModalAlternateClose)="modalCancel()"
   [clrModalLabelledById]="wizardId"
@@ -20,7 +23,7 @@
     <clr-wizard-stepnav></clr-wizard-stepnav>
   </div>
 
-  <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage.pageTitle.headingLevel || 2">
+  <div class="modal-title" role="heading" [attr.aria-level]="navService.currentPage?.pageTitle.headingLevel || 2">
     <span tabindex="-1" #pageTitle class="modal-title-text">
       <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
     </span>

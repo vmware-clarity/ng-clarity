@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -25,42 +26,29 @@
     font-weight: 200;
     text-shadow: none;
     line-height: inherit;
-    @include mixins.css-var(
-      color,
-      string.unquote('clr-close-color--normal'),
-      variables.$clr-close-color--normal,
-      variables.$clr-use-custom-properties
-    );
+
+    color: variables.$clr-close-color;
 
     cds-icon,
     clr-icon {
-      @include mixins.css-var(
-        fill,
-        string.unquote('clr-close-color--normal'),
-        variables.$clr-close-color--normal,
-        variables.$clr-use-custom-properties
-      );
+      fill: variables.$clr-close-color;
     }
 
-    &:focus,
-    &:hover,
-    &:active {
-      opacity: 1;
-      @include mixins.css-var(
-        color,
-        string.unquote('clr-close-color--hover'),
-        variables.$clr-close-color--hover,
-        variables.$clr-use-custom-properties
-      );
+    &:hover {
+      color: variables.$clr-close-color-hover;
 
       cds-icon,
       clr-icon {
-        @include mixins.css-var(
-          fill,
-          string.unquote('clr-close-color--hover'),
-          variables.$clr-close-color--hover,
-          variables.$clr-use-custom-properties
-        );
+        fill: variables.$clr-close-color-hover;
+      }
+    }
+
+    &:active {
+      color: variables.$clr-close-color-active;
+
+      cds-icon,
+      clr-icon {
+        fill: variables.$clr-close-color-active;
       }
     }
 

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -62,10 +63,6 @@ export default function (): void {
       expect(trigger.classList.contains('active')).toBeFalsy();
     });
 
-    it('has a default label from common strings', () => {
-      expect(trigger.getAttribute('aria-label')).toEqual('Signpost Toggle');
-    });
-
     it('preserves explicitly set label', () => {
       const testLabel = 'Test label';
       fixture.debugElement.componentInstance.label = testLabel;
@@ -74,7 +71,7 @@ export default function (): void {
     });
 
     it('reflects the correct aria-expanded state', () => {
-      expect(trigger.getAttribute('aria-expanded')).toBeFalsy();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
       trigger.click();
       fixture.detectChanges();
       expect(trigger.getAttribute('aria-expanded')).toBe('true');

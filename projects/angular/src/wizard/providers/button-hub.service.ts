@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -12,34 +13,34 @@ import { Subject } from 'rxjs';
 export class ButtonHubService {
   buttonsReady = false;
 
-  private _previousBtnClicked = new Subject<any>();
-  private _nextBtnClicked = new Subject<any>();
-  private _dangerBtnClicked = new Subject<any>();
-  private _cancelBtnClicked = new Subject<any>();
-  private _finishBtnClicked = new Subject<any>();
-  private _customBtnClicked = new Subject<any>();
+  private _previousBtnClicked = new Subject<void>();
+  private _nextBtnClicked = new Subject<void>();
+  private _dangerBtnClicked = new Subject<void>();
+  private _cancelBtnClicked = new Subject<void>();
+  private _finishBtnClicked = new Subject<void>();
+  private _customBtnClicked = new Subject<string>();
 
-  get previousBtnClicked(): Observable<any> {
+  get previousBtnClicked(): Observable<void> {
     return this._previousBtnClicked.asObservable();
   }
 
-  get nextBtnClicked(): Observable<any> {
+  get nextBtnClicked(): Observable<void> {
     return this._nextBtnClicked.asObservable();
   }
 
-  get dangerBtnClicked(): Observable<any> {
+  get dangerBtnClicked(): Observable<void> {
     return this._dangerBtnClicked.asObservable();
   }
 
-  get cancelBtnClicked(): Observable<any> {
+  get cancelBtnClicked(): Observable<void> {
     return this._cancelBtnClicked.asObservable();
   }
 
-  get finishBtnClicked(): Observable<any> {
+  get finishBtnClicked(): Observable<void> {
     return this._finishBtnClicked.asObservable();
   }
 
-  get customBtnClicked(): Observable<any> {
+  get customBtnClicked(): Observable<string> {
     return this._customBtnClicked.asObservable();
   }
 

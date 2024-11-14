@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -73,7 +74,7 @@ export default function (): void {
         expect(navGroup.expandAnimationState).toBe('collapsed');
       });
 
-      it('provides a method which toggles the expanded state of a nav group', () => {
+      it('provides a method which toggles the expanded state of a nav group', async () => {
         expect(navGroup.expanded).toBe(false);
 
         navGroup.toggleExpand();
@@ -85,13 +86,12 @@ export default function (): void {
         fixture.detectChanges();
         expect(navGroup.expandAnimationState).toBe('collapsed');
 
-        fixture.whenStable().then(() => {
-          expect(navGroup.expanded).toBe(false);
-          expect(expandService.expanded).toBe(false);
-        });
+        await fixture.whenStable();
+        expect(navGroup.expanded).toBe(false);
+        expect(expandService.expanded).toBe(false);
       });
 
-      it('sets the expanded state to false when the nav is collapsed', () => {
+      it('sets the expanded state to false when the nav is collapsed', async () => {
         vertNavService.collapsible = true;
 
         navGroup.toggleExpand();
@@ -102,10 +102,9 @@ export default function (): void {
 
         fixture.detectChanges();
 
-        fixture.whenStable().then(() => {
-          expect(navGroup.expandAnimationState).toBe('collapsed');
-          expect(navGroup.expanded).toBe(false);
-        });
+        await fixture.whenStable();
+        expect(navGroup.expandAnimationState).toBe('collapsed');
+        expect(navGroup.expanded).toBe(false);
       });
 
       it(
@@ -166,7 +165,7 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('provides an input to set the expanded state of the nav group', () => {
+      it('provides an input to set the expanded state of the nav group', async () => {
         expect(fixture.componentInstance.expanded).toBe(false);
 
         fixture.componentInstance.expanded = true;
@@ -180,10 +179,9 @@ export default function (): void {
 
         // when stable because collapse animation happens first.
         // need when stable for the nav group to complete the animation.
-        fixture.whenStable().then(() => {
-          expect(navGroup.expanded).toBe(false);
-          expect(expandService.expanded).toBe(false);
-        });
+        await fixture.whenStable();
+        expect(navGroup.expanded).toBe(false);
+        expect(expandService.expanded).toBe(false);
       });
 
       it('emits the expanded state when its changed', fakeAsync(function () {

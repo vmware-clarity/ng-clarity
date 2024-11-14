@@ -9,6 +9,7 @@
 | --clr-progress-alt-color-2   | Danger color     |
 | --clr-progress-alt-color-3   | Warning color    |
 | --clr-progress-bg-color      | Background color |
+| --clr-progress-label-color   | Label color      |
 
 ## CSS Classes
 
@@ -27,3 +28,4 @@
 | danger          | Combined with `progress loop` or `progress-static` to set progress color |
 | warning         | Combined with `progress loop` or `progress-static` to set progress color |
 | success         | Combined with `progress loop` or `progress-static` to set progress color |
+| compact         | Used with `progress` or `progress-static` to minify the bar              |

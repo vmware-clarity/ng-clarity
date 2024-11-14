@@ -1,5 +1,6 @@
 <!--
-  ~ Copyright (c) 2016-2023 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -32,6 +33,7 @@
 </label>
 
 <div class="clr-example">
+  Menu buttons populated synchronously:
   <clr-button-group class="btn-primary" [clrMenuPosition]="position">
     <clr-button (click)="handleClick(1)">1</clr-button>
     <clr-button (click)="handleClick(2)">2</clr-button>
@@ -40,6 +42,19 @@
     <clr-button [clrInMenu]="true" (click)="handleClick(5)">5</clr-button>
     <clr-button [clrInMenu]="true" (click)="handleClick(6)">6</clr-button>
     <clr-button [clrInMenu]="true" (click)="handleClick(7)">7</clr-button>
+  </clr-button-group>
+</div>
+
+<div class="clr-example">
+  Menu buttons populated asynchronously:
+  <clr-button-group class="btn-primary" [clrMenuPosition]="position">
+    <clr-button (click)="handleClick(1)">1</clr-button>
+    <clr-button (click)="handleClick(2)">2</clr-button>
+    <clr-button (click)="handleClick(3)">3</clr-button>
+    <clr-button (click)="handleClick(4)">4</clr-button>
+    <clr-button *ngFor="let button of asyncMenuButtons | async" [clrInMenu]="true" (click)="handleClick(button)">
+      {{button}}
+    </clr-button>
   </clr-button-group>
 </div>
 
