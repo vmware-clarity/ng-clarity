@@ -55,7 +55,7 @@ export const domAdapterFactory = (platformId: any) => {
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
-  @ContentChildren(DatagridRowRenderer, { descendants: true }) private rows: QueryList<DatagridRowRenderer>; // if expandable row is expanded initially, query its cells too.
+  @ContentChildren(DatagridRowRenderer) private rows: QueryList<DatagridRowRenderer>;
 
   private _heightSet = false;
   private shouldStabilizeColumns = true;
@@ -242,6 +242,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row?.cells.length === this.columnsService.columns.length) {
                 row.cells.get(columnIndex).setWidth(state);
+                row.expandableRow?.cells.get(columnIndex)?.setWidth(state);
               }
             });
             break;
@@ -250,6 +251,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.rows.forEach(row => {
               if (row.cells && row.cells.length) {
                 row.cells.get(columnIndex).setHidden(state);
+                row.expandableRow?.cells.get(columnIndex)?.setHidden(state);
               }
             });
             this.updateColumnSeparatorsVisibility();
@@ -260,6 +262,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
               this.headers.get(columnIndex).setHidden(state);
               this.rows.forEach(row => {
                 row.setCellsState();
+                row.expandableRow?.setCellsState();
               });
             }
             break;

@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  ContentChild,
+  ContentChildren,
+  Directive,
+  forwardRef,
+  OnDestroy,
+  QueryList,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ColumnsService } from '../providers/columns.service';
@@ -16,6 +24,7 @@ import { DatagridCellRenderer } from './cell-renderer';
 })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
   @ContentChildren(DatagridCellRenderer) cells: QueryList<DatagridCellRenderer>;
+  @ContentChild(forwardRef(() => DatagridRowRenderer)) expandableRow: DatagridRowRenderer;
 
   private subscriptions: Subscription[] = [];
 
