@@ -202,12 +202,16 @@ export class ClrDatagridColumn<T = any>
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
     if (typeof comparator === 'string') {
       this._sortBy = new DatagridPropertyComparator(comparator);
-    } else if (comparator) {
-      this._sortBy = comparator;
-    } else if (this.field) {
-      this._sortBy = new DatagridPropertyComparator(this.field);
     } else {
-      delete this._sortBy;
+      if (comparator) {
+        this._sortBy = comparator;
+      } else {
+        if (this.field) {
+          this._sortBy = new DatagridPropertyComparator(this.field);
+        } else {
+          delete this._sortBy;
+        }
+      }
     }
   }
 
@@ -226,17 +230,16 @@ export class ClrDatagridColumn<T = any>
     }
 
     switch (value) {
+      // the Unsorted case happens when the current state is either Asc or Desc
+      default:
+      case ClrDatagridSortOrder.UNSORTED:
+        this._sort.clear();
+        break;
       case ClrDatagridSortOrder.ASC:
         this.sort(false);
         break;
       case ClrDatagridSortOrder.DESC:
         this.sort(true);
-        break;
-      // the Unsorted case happens when the current state is neither Asc nor Desc
-      case ClrDatagridSortOrder.UNSORTED:
-      default:
-        this._sort.clear();
-        this._sortDirection = null;
         break;
     }
   }
@@ -351,14 +354,6 @@ export class ClrDatagridColumn<T = any>
    */
   sort(reverse?: boolean) {
     if (!this.sortable) {
-      return;
-    }
-
-    if (reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
-      this._sortOrder = ClrDatagridSortOrder.UNSORTED;
-      this._sort.clear();
-      this._sortDirection = null;
-      this.sortOrderChange.emit(this._sortOrder);
       return;
     }
 

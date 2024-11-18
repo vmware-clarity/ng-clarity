@@ -95,8 +95,6 @@ export default function (): void {
         expect(component.sortOrder).toBe(ClrDatagridSortOrder.ASC);
         component.sort();
         expect(component.sortOrder).toBe(ClrDatagridSortOrder.DESC);
-        component.sort();
-        expect(component.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
       });
 
       it('knows when the column has an ascending sortDirection', function () {
@@ -116,18 +114,9 @@ export default function (): void {
 
       it('sets the column sortDirection to null when sort is cleared', function () {
         component.sortBy = comparator;
-        expect(component.sortDirection).toBeUndefined();
+        expect(component.sortDirection).toBe(undefined);
         component.sort();
         sortService.clear();
-        expect(component.sortDirection).toBeNull();
-      });
-
-      it('sets the column sortDirection to null when sort is rotated to initial state', function () {
-        component.sortBy = comparator;
-        expect(component.sortDirection).toBeUndefined();
-        component.sort();
-        component.sort();
-        component.sort();
         expect(component.sortDirection).toBeNull();
       });
 
@@ -323,9 +312,6 @@ export default function (): void {
         title.click();
         context.detectChanges();
         expect(context.clarityDirective.sortOrder).toBe(ClrDatagridSortOrder.DESC);
-        title.click();
-        context.detectChanges();
-        expect(context.clarityDirective.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
       });
 
       it('adds and removes the correct direction when sorting', function () {
