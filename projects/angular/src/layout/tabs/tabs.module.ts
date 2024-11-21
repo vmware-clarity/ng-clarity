@@ -16,10 +16,12 @@ import { ClrTemplateRefModule } from '../../utils/template-ref/template-ref.modu
 import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
 import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { ClrTab } from './tab';
+import { ClrTabAction } from './tab-action.directive';
 import { ClrTabContent } from './tab-content';
 import { ClrTabLink } from './tab-link.directive';
 import { ClrTabOverflowContent } from './tab-overflow-content';
 import { ClrTabs } from './tabs';
+import { ClrTabsActions } from './tabs-actions';
 
 export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabContent,
@@ -27,6 +29,8 @@ export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabs,
   ClrTabOverflowContent,
   ClrTabLink,
+  ClrTabAction,
+  ClrTabsActions,
   TabsWillyWonka,
   ActiveOompaLoompa,
 ];
