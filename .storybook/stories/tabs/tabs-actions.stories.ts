@@ -21,6 +21,7 @@ export default {
   argTypes: {
     // inputs
     clrLayout: { control: 'inline-radio', options: TabsLayout },
+    tabsActionsPosition: { control: 'inline-radio', options: ['left', 'right'] },
     // methods
     closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
     closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
@@ -38,6 +39,7 @@ export default {
   args: {
     // inputs
     clrLayout: TabsLayout.HORIZONTAL,
+    tabsActionsPosition: 'right',
     // story helpers
     createArray: n => new Array(n),
     clickTabAction: () => alert('Tab action clicked!'),
@@ -51,7 +53,7 @@ export default {
 const tabsTemplate: StoryFn = args => ({
   template: `
     <clr-tabs [clrLayout]="clrLayout">
-      <clr-tabs-actions position="right">
+      <clr-tabs-actions [position]="tabsActionsPosition">
         <button class="btn btn-icon btn-link" (click)="clickTabAction()" clrTabAction>
           <cds-icon shape="plus"></cds-icon>
           Tab Action
@@ -75,6 +77,7 @@ export const Tabs: StoryObj = {
 export const VerticalTabs: StoryObj = {
   render: tabsTemplate,
   args: {
+    tabsActionsPosition: 'left',
     clrLayout: TabsLayout.VERTICAL,
   },
 };
@@ -85,5 +88,12 @@ export const TabsResponsive: StoryObj = {
     viewport: {
       defaultViewport: 'large',
     },
+  },
+};
+
+export const TabsActionsLeft: StoryObj = {
+  render: tabsTemplate,
+  args: {
+    tabsActionsPosition: 'left',
   },
 };

@@ -5,9 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChildren, ElementRef, HostBinding, Input, QueryList } from '@angular/core';
-
-import { ClrTabAction } from './tab-action.directive';
+import { Component, HostBinding, Input } from '@angular/core';
 
 export type ClrTabsActionsPosition = 'left' | 'right';
 
@@ -26,6 +24,4 @@ export class ClrTabsActions {
   @Input()
   @HostBinding('attr.position')
   position: ClrTabsActionsPosition = 'right';
-
-  @ContentChildren(ClrTabAction, { read: ElementRef }) actions: QueryList<ElementRef>;
 }

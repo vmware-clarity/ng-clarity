@@ -4114,11 +4114,9 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 // @public (undocumented)
 export class ClrTabsActions {
     // (undocumented)
-    actions: QueryList<ElementRef>;
-    // (undocumented)
     position: ClrTabsActionsPosition;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": "position"; }, {}, ["actions"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": "position"; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
 }
