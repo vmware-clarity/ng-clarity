@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 import { ClrKeyFocusModule } from '../../../../angular/src/utils/focus/key-focus/key-focus.module';
+import { TabsActionsAngularDemo } from './tabs-actions-angular';
 import { TabsAngularDemo } from './tabs-angular';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsDemo } from './tabs.demo';
@@ -17,7 +18,7 @@ import { ROUTING } from './tabs.demo.routing';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING, ClrKeyFocusModule],
-  declarations: [TabsDemo, TabsStaticDemo, TabsAngularDemo],
-  exports: [TabsDemo, TabsStaticDemo, TabsAngularDemo],
+  declarations: [TabsDemo, TabsStaticDemo, TabsAngularDemo, TabsActionsAngularDemo],
+  exports: [TabsDemo, TabsStaticDemo, TabsAngularDemo, TabsActionsAngularDemo],
 })
 export class TabsDemoModule {}
