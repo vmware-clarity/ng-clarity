@@ -28,5 +28,14 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     el: ElementRef<HTMLInputElement>
   ) {
     super(vcr, ClrInputContainer, injector, control, renderer, el);
+    if (this.el.nativeElement.getAttribute('type') === 'number') {
+      console.warn(`Warning: Inputs of type "number" should utilize the number-input component for proper handling.\n
+  Example usage:
+  <clr-number-input-container>
+    <label for="numberInput">Number Input</label>
+    <input clrInput id="numberInput" type="number"/>
+  </clr-number-input-container>
+      `);
+    }
   }
 }
